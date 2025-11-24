@@ -48,6 +48,7 @@
 #include <QProcess>
 #include <QElapsedTimer>
 #include <QFileInfo>
+#include <QStorageInfo>
 #include <qtextcodec.h>
 
 namespace OCC {
@@ -632,6 +633,7 @@ void SyncEngine::startSync()
     _remnantReadOnlyFolders.clear();
 
     _discoveryPhase = std::make_unique<DiscoveryPhase>();
+    _discoveryPhase->_fileSystemReliablePermissions = _filesystemPermissionsReliable;
     _discoveryPhase->_leadingAndTrailingSpacesFilesAllowed = _leadingAndTrailingSpacesFilesAllowed;
     _discoveryPhase->_account = _account;
     _discoveryPhase->_excludes = _excludedFiles.data();
@@ -1261,7 +1263,7 @@ void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QS
         // only execute if logging is enabled
         auto debug = qDebug(lcEngine);
         debug << "paths to discover locally";
-        for (auto path : _localDiscoveryPaths) {
+        for (const auto &path : _localDiscoveryPaths) {
             debug << path;
         }
     }
@@ -1291,6 +1293,11 @@ void SyncEngine::setSingleItemDiscoveryOptions(const SingleItemDiscoveryOptions 
 const SyncEngine::SingleItemDiscoveryOptions &SyncEngine::singleItemDiscoveryOptions() const
 {
     return _singleItemDiscoveryOptions;
+}
+
+void SyncEngine::setFilesystemPermissionsReliable(bool reliable)
+{
+    _filesystemPermissionsReliable = reliable;
 }
 
 bool SyncEngine::shouldDiscoverLocally(const QString &path) const
@@ -1354,8 +1361,9 @@ void SyncEngine::wipeVirtualFiles(const QString &localPath, SyncJournalDb &journ
 {
     qCInfo(lcEngine) << "Wiping virtual files inside" << localPath;
     const auto resGetFilesBelowPath = journal.getFilesBelowPath(QByteArray(), [&](const SyncJournalFileRecord &rec) {
-        if (rec._type != ItemTypeVirtualFile && rec._type != ItemTypeVirtualFileDownload)
+        if (rec._type != ItemTypeVirtualFile && rec._type != ItemTypeVirtualFileDownload && rec._type != ItemTypeVirtualDirectory) {
             return;
+        }
 
         qCDebug(lcEngine) << "Removing db record for" << rec.path();
         if (!journal.deleteFileRecord(rec._path)) {

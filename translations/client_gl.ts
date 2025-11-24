@@ -326,12 +326,12 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="290"/>
+        <location filename="../src/libsync/filesystem.cpp" line="296"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>Produciuse un erro ao retirar «%1»: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="333"/>
+        <location filename="../src/libsync/filesystem.cpp" line="339"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>Non foi posíbel retirar o cartafol «%1»</translation>
     </message>
@@ -444,17 +444,17 @@
         <translation>Ligazón pública para compartir</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1062"/>
+        <location filename="../src/libsync/account.cpp" line="1070"/>
         <source>File %1 is already locked by %2.</source>
         <translation>O ficheiro %1 xa está bloqueado por %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1064"/>
+        <location filename="../src/libsync/account.cpp" line="1072"/>
         <source>Lock operation on %1 failed with error %2</source>
         <translation>A operación de bloqueo en %1 fallou co erro %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1066"/>
+        <location filename="../src/libsync/account.cpp" line="1074"/>
         <source>Unlock operation on %1 failed with error %2</source>
         <translation>A operación de desbloqueo en %1 fallou co erro %2</translation>
     </message>
@@ -462,30 +462,30 @@
 <context>
     <name>OCC::AccountManager</name>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="243"/>
+        <location filename="../src/gui/accountmanager.cpp" line="244"/>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>Detectouse unha conta dun cliente de escritorio estilo antigo.
 Debería importarse a conta?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="245"/>
-        <location filename="../src/gui/accountmanager.cpp" line="326"/>
+        <location filename="../src/gui/accountmanager.cpp" line="246"/>
+        <location filename="../src/gui/accountmanager.cpp" line="357"/>
         <source>Legacy import</source>
         <translation>Importar estilo antigo</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="246"/>
+        <location filename="../src/gui/accountmanager.cpp" line="247"/>
         <source>Import</source>
         <translation>Importar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="247"/>
+        <location filename="../src/gui/accountmanager.cpp" line="248"/>
         <source>Skip</source>
         <translation>Omitir</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="327"/>
+        <location filename="../src/gui/accountmanager.cpp" line="358"/>
         <source>Could not import accounts from legacy client configuration.</source>
         <translation>Non foi posíbel importar contas da configuración do cliente estilo antigo.</translation>
     </message>
@@ -557,12 +557,12 @@ Debería importarse a conta?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="92"/>
         <source>End-to-end Encryption with Virtual Files</source>
-        <translation>Cifrado de extremo a extremo con ficheiros virtuais</translation>
+        <translation>Cifraxe de extremo a extremo con ficheiros virtuais</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Parece que a función de ficheiros virtuais está activada neste cartafol. Polo momento, non é posíbel descargar implícitamente ficheiros virtuais cifrados de extremo a extremo. Para obter a mellor experiencia cos ficheiros virtuais e o cifrado de extremo a extremo, asegúrese de que o cartafol cifrado estea marcado con «Estar sempre dispoñíbel localmente».</translation>
+        <translation>Parece que a función de ficheiros virtuais está activada neste cartafol. Polo momento, non é posíbel descargar implícitamente ficheiros virtuais cifrados de extremo a extremo. Para obter a mellor experiencia cos ficheiros virtuais e a cifraxe de extremo a extremo, asegúrese de que o cartafol cifrado estea marcado con «Estar sempre dispoñíbel localmente».</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="101"/>
@@ -579,24 +579,24 @@ Debería importarse a conta?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="114"/>
         <source>End-to-end Encryption</source>
-        <translation>Cifrado de extremo a extremo</translation>
+        <translation>Cifraxe de extremo a extremo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="117"/>
         <source>This will encrypt your folder and all files within it. These files will no longer be accessible without your encryption mnemonic key. 
 &lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</source>
-        <translation>Isto cifrará o seu cartafol e todos os ficheiros que conteña. Estes ficheiros xa non serán accesíbeis sen a súa chave mnemónica de cifrado.
+        <translation>Isto cifrará o seu cartafol e todos os ficheiros que conteña. Estes ficheiros xa non serán accesíbeis sen a súa chave mnemónica de cifraxe.
 &lt;b&gt;Este proceso non é reversíbel. Confirma que quere continuar?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="280"/>
         <source>End-to-end encryption has not been initialized on this account.</source>
-        <translation>O cifrado de extremo a extremo aínda non foi preparado para esta conta</translation>
+        <translation>A cifraxe de extremo a extremo aínda non foi preparada para esta conta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="302"/>
         <source>Forget encryption setup</source>
-        <translation>Esquecer a configuración do cifrado</translation>
+        <translation>Esquecer a configuración da cifraxe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="312"/>
@@ -606,7 +606,7 @@ Debería importarse a conta?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="319"/>
         <source>Encryption is set-up. Remember to &lt;b&gt;Encrypt&lt;/b&gt; a folder to end-to-end encrypt any new files added to it.</source>
-        <translation>O cifrado está configurado. Lembre &lt;b&gt;cifrar&lt;/b&gt; un cartafol para cifrar de extremo a extremo calquera ficheiro novo que engada nel.</translation>
+        <translation>A cifraxe está configurada. Lembre &lt;b&gt;cifrar&lt;/b&gt; un cartafol para cifrar de extremo a extremo calquera ficheiro novo que engada nel.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="352"/>
@@ -621,18 +621,18 @@ Debería importarse a conta?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="400"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation>O cartafol ten un pequeno problema de sincronización. O cifrado deste cartafol será posíbel unha vez que se sincronice correctamente</translation>
+        <translation>O cartafol ten un problema menor de sincronización. A cifraxe deste cartafol será posíbel unha vez que se sincronice correctamente</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="402"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation>O cartafol ten un erro de sincronización. O cifrado deste cartafol será posíbel unha vez que se sincronice correctamente</translation>
+        <translation>O cartafol ten un erro de sincronización. A cifraxe deste cartafol será posíbel unha vez que se sincronice correctamente</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="413"/>
         <source>You cannot encrypt this folder because the end-to-end encryption is not set-up yet on this device.
 Would you like to do this now?</source>
-        <translation>Non pode cifrar este cartafol porque o cifrado de extremo a extremo aínda non está configurado neste dispositivo.
+        <translation>Non pode cifrar este cartafol porque a cifraxe de extremo a extremo aínda non está configurada neste dispositivo.
 Gustaríalle facelo agora?</translation>
     </message>
     <message>
@@ -645,7 +645,7 @@ Agarde a nova sincronización e logo cífreo.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="461"/>
         <source>Encryption failed</source>
-        <translation>Fallou o cifrado</translation>
+        <translation>Produciuse un fallo na cifraxe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="461"/>
@@ -751,7 +751,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1095"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation>Mnemónico de cifrado de extremo a extremo</translation>
+        <translation>Mnemónico de cifraxe de extremo a extremo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1097"/>
@@ -761,17 +761,17 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1122"/>
         <source>Forget the end-to-end encryption on this device</source>
-        <translation>Ignorar o cifrado de extremo a extremo neste dispositivo</translation>
+        <translation>Ignorar a cifraxe de extremo a extremo neste dispositivo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1123"/>
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
-        <translation>Confirma que quere ignorar os axustes de cifrado de extremo a extremo para %1 neste dispositivo?</translation>
+        <translation>Confirma que quere ignorar os axustes da cifraxe de extremo a extremo para %1 neste dispositivo?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1124"/>
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
-        <translation>Ignorar o cifrado de extremo a extremo eliminará os datos sensíbeis e todos os ficheiros cifrados deste dispositivo.&lt;br&gt;Porén, os ficheiros cifrados permanecerán no servidor e en todos os seus outros dispositivos, se están configurados.</translation>
+        <translation>Ignorar a cifraxe de extremo a extremo eliminará os datos sensíbeis e todos os ficheiros cifrados deste dispositivo.&lt;br&gt;Porén, os ficheiros cifrados permanecerán no servidor e en todos os seus outros dispositivos, se están configurados.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1197"/>
@@ -801,17 +801,17 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1695"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
-        <translation>O cifrado de extremo a extremo foi preparado nesta conta con outro dispositivo.&lt;br&gt;Introduza o mnemotécnico único para que os cartafoles cifrados tamén se sincronicen neste dispositivo.</translation>
+        <translation>A cifraxe de extremo a extremo foi preparada nesta conta con outro dispositivo.&lt;br&gt;Introduza o mnemotécnico único para que os cartafoles cifrados tamén se sincronicen neste dispositivo.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1753"/>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
-        <translation>Esta conta admite o cifrado de extremo a extremo, mais hai que configuralo primeiro.</translation>
+        <translation>Esta conta admite a cifraxe de extremo a extremo, mais hai que configuralo primeiro.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1757"/>
         <source>Set up encryption</source>
-        <translation>Definir o cifrado</translation>
+        <translation>Definir a cifraxe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1319"/>
@@ -1070,71 +1070,71 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="174"/>
+        <location filename="../src/gui/application.cpp" line="177"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Algúns axustes configuráronse nas versións %1 deste cliente e usan funcións que non están dispoñíbeis nesta versión. &lt;br&gt;&lt;br&gt;Continuar significará que &lt;b&gt;%2 estes axustes&lt;/b&gt;. &lt;br&gt;&lt;br&gt;Xa se fixo unha copia de seguranza do ficheiro de configuración actual en &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="180"/>
+        <location filename="../src/gui/application.cpp" line="183"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>máis recente</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="180"/>
+        <location filename="../src/gui/application.cpp" line="183"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>máis antigo</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="181"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>ignoring</source>
         <translation>ignorando</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="181"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>deleting</source>
         <translation>eliminando</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="183"/>
+        <location filename="../src/gui/application.cpp" line="186"/>
         <source>Quit</source>
         <translation>Saír</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="184"/>
+        <location filename="../src/gui/application.cpp" line="187"/>
         <source>Continue</source>
         <translation>Continuar</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="515"/>
+        <location filename="../src/gui/application.cpp" line="520"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 contas</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="516"/>
+        <location filename="../src/gui/application.cpp" line="521"/>
         <source>1 account</source>
         <translation>1 conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="518"/>
+        <location filename="../src/gui/application.cpp" line="523"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 cartafoles</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="519"/>
+        <location filename="../src/gui/application.cpp" line="524"/>
         <source>1 folder</source>
         <translation>1 cartafol</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="521"/>
+        <location filename="../src/gui/application.cpp" line="526"/>
         <source>Legacy import</source>
         <translation>Importar estilo antigo</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="522"/>
+        <location filename="../src/gui/application.cpp" line="527"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1142,12 +1142,12 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
 % 3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="605"/>
+        <location filename="../src/gui/application.cpp" line="610"/>
         <source>Error accessing the configuration file</source>
         <translation>Produciuse un erro ao acceder ao ficheiro de configuración</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="606"/>
+        <location filename="../src/gui/application.cpp" line="611"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Produciuse un erro ao acceder ao ficheiro de configuración en %1. Comprobe que é posíbel acceder ao ficheiro coa súa conta do sistema.</translation>
     </message>
@@ -1235,7 +1235,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation>Non é posíbel descargar o ficheiro %1 xa que falta información do cifrado.</translation>
+        <translation>Non é posíbel descargar o ficheiro %1 xa que falta información da cifraxe</translation>
     </message>
 </context>
 <context>
@@ -1486,7 +1486,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="2275"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Introduza a súa frase de contrasinal de cifrado de extremo a extremo: &lt;br&gt;&lt;br&gt;Usuario: %2&lt;br&gt;Conta: %3&lt;br&gt;</translation>
+        <translation>Introduza a súa frase de contrasinal de cifraxe de extremo a extremo: &lt;br&gt;&lt;br&gt;Usuario: %2&lt;br&gt;Conta: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="2283"/>
@@ -1868,7 +1868,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <location filename="../src/libsync/encryptfolderjob.cpp" line="118"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
-        <translation>Non foi posíbel xerar os metadatos para o cifrado, Desbloqueando o cartafol.
+        <translation>Non foi posíbel xerar os metadatos para a cifraxe, Desbloqueando o cartafol.
 Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
     </message>
 </context>
@@ -2842,7 +2842,7 @@ Para usuarios avanzados: este problema pode estar relacionado con varios ficheir
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="285"/>
-        <location filename="../src/gui/generalsettings.cpp" line="660"/>
+        <location filename="../src/gui/generalsettings.cpp" line="661"/>
         <source>Create Debug Archive</source>
         <translation>Crear arquivo de depuración</translation>
     </message>
@@ -2988,17 +2988,17 @@ Non é posíbel reverter as versións inmediatamente: cambiar de estábel a empr
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="662"/>
+        <location filename="../src/gui/generalsettings.cpp" line="663"/>
         <source>Zip Archives</source>
         <translation>Arquivos Zip</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="672"/>
+        <location filename="../src/gui/generalsettings.cpp" line="673"/>
         <source>Debug Archive Created</source>
         <translation>Creose o arquivo de depuración</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="673"/>
+        <location filename="../src/gui/generalsettings.cpp" line="674"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation>Redacte a información considerada sensíbel antes de compartir! O ficheiro de depuración foi creado en %1</translation>
     </message>
@@ -4134,100 +4134,80 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>O ficheiro ten a extensión reservada para ficheiros virtuais.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="780"/>
-        <source>size</source>
-        <translation>tamaño</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="782"/>
-        <source>permission</source>
-        <translation>permiso</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="786"/>
-        <source>file id</source>
-        <translation>ID do ficheiro</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="790"/>
-        <source>Server reported no %1</source>
-        <translation>O servidor non informou de %1</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="784"/>
+        <location filename="../src/libsync/discovery.cpp" line="788"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>Non é posíbel acceder ao cartafol no servidor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="785"/>
+        <location filename="../src/libsync/discovery.cpp" line="789"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>Non é posíbel acceder ao ficheiro no servidor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1203"/>
+        <location filename="../src/libsync/discovery.cpp" line="1202"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Non é posíbel sincronizar por mor dunha hora de modificación incorrecta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1219"/>
+        <location filename="../src/libsync/discovery.cpp" line="1218"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>O envío de %1 excede en %2 o espazo restante nos ficheiros persoais.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1222"/>
+        <location filename="../src/libsync/discovery.cpp" line="1221"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>O envío de %1 excede en %2 o espazo restante no cartafol %3.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1238"/>
+        <location filename="../src/libsync/discovery.cpp" line="1237"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Non foi posíbel enviar o ficheiro porque está aberto en «%1».</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1288"/>
+        <location filename="../src/libsync/discovery.cpp" line="1287"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Produciuse un erro ao eliminar o rexistro do ficheiro %1 da base de datos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1568"/>
-        <location filename="../src/libsync/discovery.cpp" line="2041"/>
+        <location filename="../src/libsync/discovery.cpp" line="1567"/>
+        <location filename="../src/libsync/discovery.cpp" line="2040"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Moveuse a un destino non válido, restaurándo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1896"/>
+        <location filename="../src/libsync/discovery.cpp" line="1895"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Non é posíbel modificar o elemento cifrado porque o certificado seleccionado non é válido.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1965"/>
+        <location filename="../src/libsync/discovery.cpp" line="1964"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorado por mor da lista de bloqueo de «Escoller que sincronizar»</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1999"/>
+        <location filename="../src/libsync/discovery.cpp" line="1998"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Non se lle permite porque Vde. non ten permiso para engadir subcartafoles neste cartafol</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2005"/>
+        <location filename="../src/libsync/discovery.cpp" line="2004"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Non se lle permite porque Vde. non ten permiso para engadir ficheiros neste cartafol</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2019"/>
+        <location filename="../src/libsync/discovery.cpp" line="2018"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Non está permitido o envío xa que o ficheiro é só de lectura no servidor, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2055"/>
+        <location filename="../src/libsync/discovery.cpp" line="2054"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Non está permitido retiralo, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2226"/>
+        <location filename="../src/libsync/discovery.cpp" line="2225"/>
         <source>Error while reading the database</source>
         <translation>Produciuse un erro ao ler a base de datos</translation>
     </message>
@@ -4281,7 +4261,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="473"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation>Non é posíbel descargar o ficheiro %1 xa que falta información do cifrado.</translation>
+        <translation>Non é posíbel descargar o ficheiro %1 xa que falta información da cifraxe</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
@@ -4649,11 +4629,6 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="544"/>
-        <source>Missing ETag from server</source>
-        <translation>Falta ETag do servidor</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="544"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>Non é posíbel acceder ao cartafol no servidor.</translation>
@@ -4907,7 +4882,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="542"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
-        <translation>A conta %1 non ten o cifrado de extremo a extremo configurado. Configure isto nos axustes  da súa conta para activar o cifrado do cartafol.</translation>
+        <translation>A conta %1 non ten a cifraxe de extremo a extremo configurada. Configure isto nos axustes  da súa conta para activar a cifraxe do cartafol.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="561"/>
@@ -5612,12 +5587,12 @@ O servidor respondeu co erro: %2</translation>
         <translation>Ligazón pública para compartir</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1079"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>Abrir o Asistente de Nextcloud no navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1079"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Abrir Parladoiro de Nextcloud no navegador</translation>
     </message>
@@ -5853,7 +5828,7 @@ O servidor respondeu co erro: %2</translation>
 <context>
     <name>OCC::WebFlowCredentials</name>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="171"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="172"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
         <translation>Foi desconectado da súa conta %1 en %2. Volva a acceder.</translation>
     </message>
@@ -6278,7 +6253,7 @@ O servidor respondeu co erro: %2</translation>
         <translation>Sincronizou %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="322"/>
+        <location filename="../src/libsync/filesystem.cpp" line="328"/>
         <source>Error deleting the file</source>
         <translation>Produciuse un erro ao eliminar o ficheiro</translation>
     </message>
@@ -6670,12 +6645,12 @@ O servidor respondeu co erro: %2</translation>
         <translation>Abrir o cartafol local</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="86"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="87"/>
         <source>Connected</source>
         <translation>Conectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="86"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="87"/>
         <source>Disconnected</source>
         <translation>Desconectado</translation>
     </message>
@@ -6969,17 +6944,17 @@ O servidor respondeu co erro: %2</translation>
 <context>
     <name>ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="250"/>
+        <location filename="../src/common/checksums.cpp" line="258"/>
         <source>The checksum header is malformed.</source>
         <translation>A cabeceira da suma de comprobación é incorrecta.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="284"/>
+        <location filename="../src/common/checksums.cpp" line="292"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
         <translation>A cabeceira da suma de comprobación contiña un tipo de suma de comprobación descoñecido «%1»</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="289"/>
+        <location filename="../src/common/checksums.cpp" line="297"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
         <translation>O ficheiro descargado non coincide coa suma de comprobación. Retomase. «%1» != «%2»</translation>
     </message>

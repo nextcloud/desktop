@@ -225,13 +225,11 @@ private slots:
         //  (they should be recovered, and a conflict shall be created)
         auto editReadOnly = [&] (const QString &file)  {
             QVERIFY(!QFileInfo(fakeFolder.localPath() + file).permission(QFile::WriteOwner));
-            QFile(fakeFolder.localPath() + file).setPermissions(QFile::WriteOwner | QFile::ReadOwner);
+            FileSystem::setFileReadOnly(fakeFolder.localPath() + file, false);
             fakeFolder.localModifier().appendByte(file);
         };
         editReadOnly("normalDirectory_PERM_CKDNVG_/cannotBeModified_PERM_GDVN_.data");
-#if !defined Q_OS_WINDOWS
         editReadOnly("readonlyDirectory_PERM_MG_/cannotBeModified_PERM_GDVN_.data");
-#endif
 
         //4. Edit other files
         //  (they should be uploaded)
@@ -251,9 +249,7 @@ private slots:
         //1.
         // File should be recovered
         QVERIFY(currentLocalState.find("normalDirectory_PERM_CKDNVG_/cannotBeRemoved_PERM_GWVN_.data"));
-#if !defined Q_OS_WINDOWS
         QCOMPARE(currentLocalState.find("readonlyDirectory_PERM_MG_/cannotBeModified_PERM_GDVN_.data")->size, cannotBeModifiedSize);
-#endif
         QVERIFY(currentLocalState.find("readonlyDirectory_PERM_MG_/cannotBeRemoved_PERM_GWVN_.data"));
 
         //2.
@@ -268,16 +264,12 @@ private slots:
         auto c1 = findConflict(currentLocalState, "normalDirectory_PERM_CKDNVG_/cannotBeModified_PERM_GDVN_.data");
         QVERIFY(c1);
         QCOMPARE(c1->size, cannotBeModifiedSize + 1);
-#if !defined Q_OS_WINDOWS
         auto c2 = findConflict(currentLocalState, "readonlyDirectory_PERM_MG_/cannotBeModified_PERM_GDVN_.data");
         QVERIFY(c2);
         QCOMPARE(c2->size, cannotBeModifiedSize + 1);
-#endif
         // remove the conflicts for the next state comparison
         fakeFolder.localModifier().remove(c1->path());
-#if !defined Q_OS_WINDOWS
         removeReadOnly(c2->path());
-#endif
 
         //4. File should be updated, that's tested by assertLocalAndRemoteDir
         QCOMPARE(currentLocalState.find("normalDirectory_PERM_CKDNVG_/canBeModified_PERM_GW_.data")->size, canBeModifiedSize + 1);
@@ -419,9 +411,9 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         assertCsyncJournalOk(fakeFolder.syncJournal());
 
-        QThread::sleep(1); // make sure changes have different mtime
         editReadOnly("readonlyDirectory_PERM_MG_/cannotBeModified_PERM_GDVN_.data");
         fakeFolder.localModifier().setContents("readonlyDirectory_PERM_MG_/cannotBeModified_PERM_GDVN_.data", 'd');
+        fakeFolder.localModifier().setModTime("readonlyDirectory_PERM_MG_/cannotBeModified_PERM_GDVN_.data", QDateTime::currentDateTime().addDays(1)); // make sure changes have different mtime
 
         //do the sync
         applyPermissionsFromName(fakeFolder.remoteModifier());
@@ -632,7 +624,7 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        const auto folderStatus = std::filesystem::status(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("/readOnlyFolder")).toStdWString());
+        const auto folderStatus = std::filesystem::status(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("readOnlyFolder")).toStdWString());
         QVERIFY(folderStatus.permissions() & std::filesystem::perms::owner_read);
     }
 
@@ -649,7 +641,7 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        const auto folderStatus = std::filesystem::status(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("/readWriteFolder")).toStdWString());
+        const auto folderStatus = std::filesystem::status(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("readWriteFolder")).toStdWString());
         QVERIFY(folderStatus.permissions() & std::filesystem::perms::owner_read);
         QVERIFY(folderStatus.permissions() & std::filesystem::perms::owner_write);
     }
@@ -667,21 +659,21 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        QVERIFY(isReadOnlyFolder(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("/testFolder")).toStdWString()));
+        QVERIFY(isReadOnlyFolder(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("testFolder")).toStdWString()));
 
         remote.find("testFolder")->permissions = RemotePermissions::fromServerString("CKWDNVRSMG");
 
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        QVERIFY(!isReadOnlyFolder(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("/testFolder")).toStdWString()));
+        QVERIFY(!isReadOnlyFolder(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("testFolder")).toStdWString()));
 
         remote.find("testFolder")->permissions = RemotePermissions::fromServerString("MG");
 
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        QVERIFY(isReadOnlyFolder(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("/testFolder")).toStdWString()));
+        QVERIFY(isReadOnlyFolder(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("testFolder")).toStdWString()));
     }
 
     void testChangePermissionsForFolderHierarchy()
@@ -705,9 +697,9 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        QVERIFY(isReadOnlyFolder(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("/testFolder")).toStdWString()));
-        QVERIFY(!isReadOnlyFolder(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("/testFolder/subFolderReadWrite")).toStdWString()));
-        QVERIFY(isReadOnlyFolder(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("/testFolder/subFolderReadOnly")).toStdWString()));
+        QVERIFY(isReadOnlyFolder(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("testFolder")).toStdWString()));
+        QVERIFY(!isReadOnlyFolder(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("testFolder/subFolderReadWrite")).toStdWString()));
+        QVERIFY(isReadOnlyFolder(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("testFolder/subFolderReadOnly")).toStdWString()));
 
         remote.find("testFolder/subFolderReadOnly")->permissions = RemotePermissions::fromServerString("CKWDNVRSmG");
         remote.find("testFolder/subFolderReadWrite")->permissions = RemotePermissions::fromServerString("mG");
@@ -719,9 +711,9 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        QVERIFY(isReadOnlyFolder(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("/testFolder")).toStdWString()));
-        QVERIFY(isReadOnlyFolder(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("/testFolder/subFolderReadWrite")).toStdWString()));
-        QVERIFY(!isReadOnlyFolder(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("/testFolder/subFolderReadOnly")).toStdWString()));
+        QVERIFY(isReadOnlyFolder(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("testFolder")).toStdWString()));
+        QVERIFY(isReadOnlyFolder(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("testFolder/subFolderReadWrite")).toStdWString()));
+        QVERIFY(!isReadOnlyFolder(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("testFolder/subFolderReadOnly")).toStdWString()));
 
         remote.rename("testFolder/subFolderReadOnly", "testFolder/subFolderReadWriteNew");
         remote.rename("testFolder/subFolderReadWrite", "testFolder/subFolderReadOnlyNew");
@@ -730,7 +722,7 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QVERIFY(isReadOnlyFolder(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("/testFolder")).toStdWString()));
+        QVERIFY(isReadOnlyFolder(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("testFolder")).toStdWString()));
     }
 
     void testDeleteChildItemsInReadOnlyFolder()
@@ -760,7 +752,7 @@ private slots:
             const auto itemStatus = std::filesystem::status(static_cast<QString>(fakeFolder.localPath() + path).toStdWString());
             return static_cast<bool>(itemStatus.permissions() & std::filesystem::perms::owner_read);
         };
-        QVERIFY(ensureReadOnlyItem("/readOnlyFolder"));
+        QVERIFY(ensureReadOnlyItem("readOnlyFolder"));
     }
 
     void testRenameChildItemsInReadOnlyFolder()
@@ -790,9 +782,9 @@ private slots:
             const auto itemStatus = std::filesystem::status(static_cast<QString>(fakeFolder.localPath() + path).toStdWString());
             return static_cast<bool>(itemStatus.permissions() & std::filesystem::perms::owner_read);
         };
-        QVERIFY(ensureReadOnlyItem("/readOnlyFolder"));
-        QVERIFY(ensureReadOnlyItem("/readOnlyFolder/testRename"));
-        QVERIFY(ensureReadOnlyItem("/readOnlyFolder/readOnlyFileRename.txt"));
+        QVERIFY(ensureReadOnlyItem("readOnlyFolder"));
+        QVERIFY(ensureReadOnlyItem("readOnlyFolder/testRename"));
+        QVERIFY(ensureReadOnlyItem("readOnlyFolder/readOnlyFileRename.txt"));
     }
 
     void testMoveChildItemsInReadOnlyFolder()
@@ -824,10 +816,10 @@ private slots:
             const auto itemStatus = std::filesystem::status(static_cast<QString>(fakeFolder.localPath() + path).toStdWString());
             return static_cast<bool>(itemStatus.permissions() & std::filesystem::perms::owner_read);
         };
-        QVERIFY(ensureReadOnlyItem("/readOnlyFolder"));
-        QVERIFY(ensureReadOnlyItem("/readOnlyFolder/child"));
-        QVERIFY(ensureReadOnlyItem("/readOnlyFolder/child/test"));
-        QVERIFY(ensureReadOnlyItem("/readOnlyFolder/child/readOnlyFile.txt"));
+        QVERIFY(ensureReadOnlyItem("readOnlyFolder"));
+        QVERIFY(ensureReadOnlyItem("readOnlyFolder/child"));
+        QVERIFY(ensureReadOnlyItem("readOnlyFolder/child/test"));
+        QVERIFY(ensureReadOnlyItem("readOnlyFolder/child/readOnlyFile.txt"));
     }
 
     void testModifyChildItemsInReadOnlyFolder()
@@ -860,11 +852,11 @@ private slots:
             const auto itemStatus = std::filesystem::status(static_cast<QString>(fakeFolder.localPath() + path).toStdWString());
             return static_cast<bool>(itemStatus.permissions() & std::filesystem::perms::owner_read);
         };
-        QVERIFY(ensureReadOnlyItem("/readOnlyFolder"));
-        QVERIFY(ensureReadOnlyItem("/readOnlyFolder/test"));
-        QVERIFY(ensureReadOnlyItem("/readOnlyFolder/readOnlyFile.txt"));
-        QVERIFY(ensureReadOnlyItem("/readOnlyFolder/test/newFile.txt"));
-        QVERIFY(ensureReadOnlyItem("/readOnlyFolder/newFolder"));
+        QVERIFY(ensureReadOnlyItem("readOnlyFolder"));
+        QVERIFY(ensureReadOnlyItem("readOnlyFolder/test"));
+        QVERIFY(ensureReadOnlyItem("readOnlyFolder/readOnlyFile.txt"));
+        QVERIFY(ensureReadOnlyItem("readOnlyFolder/test/newFile.txt"));
+        QVERIFY(ensureReadOnlyItem("readOnlyFolder/newFolder"));
     }
 
     void testForbiddenDownload()

@@ -1334,13 +1334,13 @@ void PropagateDownloadFile::downloadFinished()
         return;
     }
 
+    FileSystem::setFileHidden(filename, false);
+
     if (_needParentFolderRestorePermissions) {
         FileSystem::setFolderPermissions(QString::fromStdWString(_parentPath.wstring()), FileSystem::FolderPermissions::ReadOnly);
         emit propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
         _needParentFolderRestorePermissions = false;
     }
-
-    FileSystem::setFileHidden(filename, false);
 
     // Maybe we downloaded a newer version of the file than we thought we would...
     // Get up to date information for the journal.

@@ -101,7 +101,9 @@ static time_t FileTimeToUnixTime(FILETIME *filetime, DWORD *remainder)
     }
 }
 
-std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *handle, OCC::Vfs *vfs) {
+std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *handle, OCC::Vfs *vfs, bool checkPermissionsValidity)
+{
+  Q_UNUSED(checkPermissionsValidity)
 
   std::unique_ptr<csync_file_stat_t> file_stat;
   DWORD rem = 0;
@@ -125,7 +127,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
   }
   auto path = QString::fromWCharArray(handle->ffd.cFileName);
   if (path == QLatin1String(".") || path == QLatin1String(".."))
-      return csync_vio_local_readdir(handle, vfs);
+      return csync_vio_local_readdir(handle, vfs, true);
 
   file_stat = std::make_unique<csync_file_stat_t>();
   file_stat->path = path.toUtf8();
@@ -170,7 +172,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
 
     // path always ends with '\', by construction
 
-    if (csync_vio_local_stat(handle->path + QString::fromWCharArray(handle->ffd.cFileName), file_stat.get()) < 0) {
+    if (csync_vio_local_stat(handle->path + QString::fromWCharArray(handle->ffd.cFileName), file_stat.get(), true) < 0) {
         // Will get excluded by _csync_detect_update.
         file_stat->type = ItemTypeSkip;
     }
@@ -178,8 +180,10 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
     return file_stat;
 }
 
-int csync_vio_local_stat(const QString &uri, csync_file_stat_t *buf)
+int csync_vio_local_stat(const QString &uri, csync_file_stat_t *buf, bool checkPermissionsValidity)
 {
+    Q_UNUSED(checkPermissionsValidity)
+
     /* Almost nothing to do since csync_vio_local_readdir already filled up most of the information
        But we still need to fetch the file ID.
        Possible optimisation: only fetch the file id when we need it (for new files)
