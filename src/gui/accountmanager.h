@@ -108,6 +108,7 @@ signals:
     void removeAccountFolders(OCC::AccountState *account);
     void forceLegacyImportChanged();
     void capabilitiesChanged();
+    void accountListInitialized();
 
 private:
     // saving and loading Account to settings
