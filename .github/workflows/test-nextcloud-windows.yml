@@ -27,9 +27,10 @@ jobs:
           python -m pip install aqtinstall
 
       # 4. Install Qt 6.9.1 MSVC 2019 64-bit
-      - name: Install Qt 6.9.1
+      - name: Install Qt 6.7.2
         run: |
-          python -m aqt install-qt windows desktop 6.9.1 win64_msvc2019_64 -O C:\Qt
+          python -m aqt install-qt windows desktop 6.7.2 win64_msvc2019_64 -O C:\Qt
+
 
       # 5. Install Ninja build tool
       - name: Install Ninja
