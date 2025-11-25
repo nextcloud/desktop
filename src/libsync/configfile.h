@@ -14,6 +14,7 @@
 #include <QString>
 #include <QVariant>
 #include <chrono>
+#include <QVersionNumber>
 
 class QWidget;
 class QHeaderView;
@@ -56,24 +57,24 @@ public:
 
     bool exists();
 
-    [[nodiscard]] QString defaultConnection() const;
+    [[nodiscard]] QString defaultConnectionGroupName() const;
 
     // the certs do not depend on a connection.
     QByteArray caCerts();
     void setCaCerts(const QByteArray &);
 
-    bool passwordStorageAllowed(const QString &connection = QString());
+    bool passwordStorageAllowed(const QString &name = QString());
 
     /* Server poll interval in milliseconds */
-    [[nodiscard]] std::chrono::milliseconds remotePollInterval(const QString &connection = QString()) const;
+    [[nodiscard]] std::chrono::milliseconds remotePollInterval(const QString &connectionGroup = QString()) const;
     /* Set poll interval. Value in milliseconds has to be larger than 5000 */
-    void setRemotePollInterval(std::chrono::milliseconds interval, const QString &connection = QString());
+    void setRemotePollInterval(std::chrono::milliseconds interval, const QString &connectionGroupName = QString());
 
     /* Interval to check for new notifications */
-    [[nodiscard]] std::chrono::milliseconds notificationRefreshInterval(const QString &connection = QString()) const;
+    [[nodiscard]] std::chrono::milliseconds notificationRefreshInterval(const QString &connectionGroup = QString()) const;
 
     /* Force sync interval, in milliseconds */
-    [[nodiscard]] std::chrono::milliseconds forceSyncInterval(const QString &connection = QString()) const;
+    [[nodiscard]] std::chrono::milliseconds forceSyncInterval(const QString &connectionGroup = QString()) const;
 
     /**
      * Interval in milliseconds within which full local discovery is required
@@ -181,15 +182,15 @@ public:
     void restoreGeometry(QWidget *w);
 
     // how often the check about new versions runs
-    [[nodiscard]] std::chrono::milliseconds updateCheckInterval(const QString &connection = QString()) const;
+    [[nodiscard]] std::chrono::milliseconds updateCheckInterval(const QString &connectionGroupName = QString()) const;
 
     // skipUpdateCheck completely disables the updater and hides its UI
-    [[nodiscard]] bool skipUpdateCheck(const QString &connection = QString()) const;
-    void setSkipUpdateCheck(bool, const QString &);
+    [[nodiscard]] bool skipUpdateCheck(const QString &connectionGroupName = QString()) const;
+    void setSkipUpdateCheck(bool, const QString &connectionGroupName);
 
     // autoUpdateCheck allows the user to make the choice in the UI
-    [[nodiscard]] bool autoUpdateCheck(const QString &connection = QString()) const;
-    void setAutoUpdateCheck(bool, const QString &);
+    [[nodiscard]] bool autoUpdateCheck(const QString &connectionGroupName = QString()) const;
+    void setAutoUpdateCheck(bool, const QString &connectionGroupName);
 
     /** Query-parameter 'updatesegment' for the update check, value between 0 and 99.
         Used to throttle down desktop release rollout in order to keep the update servers alive at peak times.
@@ -223,6 +224,9 @@ public:
     [[nodiscard]] QString clientVersionString() const;
     void setClientVersionString(const QString &version);
 
+    [[nodiscard]] QString clientPreviousVersionString() const;
+    void setClientPreviousVersionString(const QString &version);
+
     /** If the option 'Launch on system startup' is set
         Updated by configVersionMigration() at client startup. */
     [[nodiscard]] bool launchOnSystemStartup() const;
@@ -237,6 +241,10 @@ public:
     /// Enforce a specific language used for the UI
     [[nodiscard]] QString language() const;
     void setLanguage(const QString &language);
+
+    /// Store and retrieve the last selected account identifier
+    [[nodiscard]] uint lastSelectedAccount() const;
+    void setLastSelectedAccount(const uint accountId);
 
     /**  Returns a new settings pre-set in a specific group.  The Settings will be created
          with the given parent. If no parent is specified, the caller must destroy the settings */
@@ -256,15 +264,45 @@ public:
     void removeFileProviderDomainUuidMapping(const QString &accountId);
     void removeFileProviderDomainMappingByDomainIdentifier(const QString domainIdentifier);
 
+    /// Helper function for migration/upgrade proccess
+    enum MigrationPhase {
+        NotStarted,
+        SetupConfigFile,
+        SetupUsers,
+        SetupFolders,
+        Done
+    };
+    [[nodiscard]] bool isUpgrade() const;
+    [[nodiscard]] bool isDowngrade() const;
+    [[nodiscard]] bool shouldTryUnbrandedToBrandedMigration() const;
+    [[nodiscard]] bool isUnbrandedToBrandedMigrationInProgress() const;
+    [[nodiscard]] bool shouldTryToMigrate() const;
+    [[nodiscard]] bool isClientVersionSet() const;
+    [[nodiscard]] bool isMigrationInProgress() const;
+    [[nodiscard]] MigrationPhase migrationPhase() const;
+    void setMigrationPhase(const MigrationPhase phase);
+    static constexpr char unbrandedAppName[] = "Nextcloud";
+    static constexpr char legacyAppName[] = "Owncloud";
+
+    static constexpr char clientVersionC[] = "clientVersion";
+
     static constexpr char isVfsEnabledC[] = "isVfsEnabled";
     static constexpr char launchOnSystemStartupC[] = "launchOnSystemStartup";
+    static constexpr char monoIconsC[] = "monoIcons";
     static constexpr char optionalServerNotificationsC[] = "optionalServerNotifications";
     static constexpr char promptDeleteC[] = "promptDeleteAllFiles";
     static constexpr char showCallNotificationsC[] = "showCallNotifications";
     static constexpr char showQuotaWarningNotificationsC[] = "showQuotaWarningNotifications";
     static constexpr char showChatNotificationsC[] = "showChatNotifications";
     static constexpr char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
-
+    static constexpr char confirmExternalStorageC[] = "confirmExternalStorage";
+    static constexpr char useNewBigFolderSizeLimitC[] = "useNewBigFolderSizeLimit";
+    static constexpr char newBigFolderSizeLimitC[] = "newBigFolderSizeLimit";
+    static constexpr char notifyExistingFoldersOverLimitC[] = "notifyExistingFoldersOverLimit";
+    static constexpr char stopSyncingExistingFoldersOverLimitC[] = "stopSyncingExistingFoldersOverLimit";
+    static constexpr char moveToTrashC[] = "moveToTrash";
+    static constexpr char updateChannelC[] = "updateChannel";
+    static constexpr char autoUpdateCheckC[] = "autoUpdateCheck";
     static constexpr char useUploadLimitC[] = "BWLimit/useUploadLimit";
     static constexpr char useDownloadLimitC[] = "BWLimit/useDownloadLimit";
     static constexpr char uploadLimitC[] = "BWLimit/uploadLimit";
@@ -288,6 +326,7 @@ private:
 
     static QString _confDir;
     static QString _discoveredLegacyConfigPath;
+    static MigrationPhase _migrationPhase;
 };
 }
 #endif // CONFIGFILE_H

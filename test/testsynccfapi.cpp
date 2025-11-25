@@ -7,13 +7,14 @@
  * any purpose.
  */
 
-#include <QtTest>
 #include "syncenginetestutils.h"
+
 #include "common/vfs.h"
-#include "config.h"
-#include <syncengine.h>
 #include "openfilemanager.h"
+#include "syncengine.h"
 #include "vfs/cfapi/cfapiwrapper.h"
+
+#include <QtTest>
 
 namespace cfapi {
 using namespace OCC::CfApiWrapper;
@@ -1575,6 +1576,70 @@ private slots:
         QVERIFY(!wrongSecondFolderInfo.exists());
 
         QVERIFY(fakeFolder.syncOnce());
+    }
+
+    void switchVfsOffWithOnDemandFolder()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        setupVfs(fakeFolder);
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        fakeFolder.remoteModifier().insert("firstFile1.txt");
+        fakeFolder.remoteModifier().insert("firstFile2.txt");
+        fakeFolder.remoteModifier().insert("firstFile3.txt");
+        fakeFolder.remoteModifier().mkdir("directory");
+        fakeFolder.remoteModifier().mkdir("directory/subdir");
+        fakeFolder.remoteModifier().insert("directory/file1");
+        fakeFolder.remoteModifier().insert("directory/file2");
+        fakeFolder.remoteModifier().insert("directory/file3");
+        fakeFolder.remoteModifier().insert("directory/subdir/fileTxt1.txt");
+        fakeFolder.remoteModifier().insert("directory/subdir/fileTxt2.txt");
+        fakeFolder.remoteModifier().insert("directory/subdir/fileTxt3.txt");
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(completeSpy.size(), 4);
+        QVERIFY(itemInstruction(completeSpy, "directory", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "firstFile1.txt", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "firstFile2.txt", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "firstFile3.txt", CSYNC_INSTRUCTION_NEW));
+        completeSpy.clear();
+
+        SyncEngine::wipeVirtualFiles(fakeFolder.localPath(), fakeFolder.syncJournal(), *fakeFolder.syncEngine().syncOptions()._vfs);
+
+        fakeFolder.syncEngine().syncOptions()._vfs->stop();
+        fakeFolder.syncEngine().syncOptions()._vfs->unregisterFolder();
+
+        auto noVfsPlugin = QSharedPointer<Vfs>(createVfsFromPlugin(Vfs::Off).release());
+        QObject::connect(&fakeFolder.syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged,
+                         noVfsPlugin.data(), &Vfs::fileStatusChanged);
+        fakeFolder.switchToVfs(noVfsPlugin);
+
+        ::setPinState(fakeFolder.localPath(), PinState::Unspecified, cfapi::NoRecurse);
+
+        fakeFolder.syncJournal().setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(completeSpy.size(), 11);
+        QVERIFY(itemInstruction(completeSpy, "directory", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "firstFile1.txt", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "firstFile2.txt", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "firstFile3.txt", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "directory/subdir", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "directory/file1", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "directory/file2", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "directory/file3", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "directory/subdir/fileTxt1.txt", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "directory/subdir/fileTxt2.txt", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "directory/subdir/fileTxt3.txt", CSYNC_INSTRUCTION_NEW));
+        completeSpy.clear();
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(completeSpy.size(), 0);
     }
 };
 

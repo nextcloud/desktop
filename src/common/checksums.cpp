@@ -175,7 +175,10 @@ ComputeChecksum::ComputeChecksum(QObject *parent)
 {
 }
 
-ComputeChecksum::~ComputeChecksum() = default;
+ComputeChecksum::~ComputeChecksum()
+{
+    _checksumCalculator.reset();
+}
 
 void ComputeChecksum::setChecksumType(const QByteArray &type)
 {
@@ -201,6 +204,11 @@ void ComputeChecksum::startImpl(const QString &filePath)
 
     _checksumCalculator.reset(new ChecksumCalculator(filePath, _checksumType));
     _watcher.setFuture(QtConcurrent::run([this]() {
+        if (!_checksumCalculator) {
+            qCDebug(lcChecksums) << "checksumCalculator instance was destroyed before calculation started, returning empty checksum";
+            return QByteArray();
+        }
+
         return _checksumCalculator->calculate();
     }));
 }

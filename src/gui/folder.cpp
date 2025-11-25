@@ -248,7 +248,6 @@ QString Folder::shortGuiLocalPath() const
     return QDir::toNativeSeparators(p);
 }
 
-
 bool Folder::ignoreHiddenFiles()
 {
     bool re(_definition.ignoreHiddenFiles);
@@ -396,7 +395,6 @@ void Folder::etagRetrievedFromSyncEngine(const QByteArray &etag, const QDateTime
     accountState()->tagLastSuccessfullETagRequest(time);
     _lastEtag = etag;
 }
-
 
 void Folder::showSyncResultPopup()
 {
@@ -642,7 +640,6 @@ void Folder::slotWatchedPathChanged(const QStringView &path, const ChangeReason 
         return;
     }
 #endif
-
 
     SyncJournalFileRecord record;
     if (!_journal.getFileRecord(relativePathBytes, &record)) {
@@ -1159,6 +1156,7 @@ void Folder::startSync(const QStringList &pathList)
     }
 
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
+    _engine->setFilesystemPermissionsReliable(_folderWatcher->canSetPermissions());
 
     correctPlaceholderFiles();
 
@@ -1309,7 +1307,6 @@ void Folder::slotSyncFinished(bool success)
             _timeSinceLastFullLocalDiscovery.start();
         }
     }
-
 
     emit syncStateChange();
 
@@ -1696,6 +1693,7 @@ void Folder::registerFolderWatcher()
     connect(_folderWatcher.data(), &FolderWatcher::filesLockImposed, this, &Folder::slotFilesLockImposed, Qt::UniqueConnection);
     _folderWatcher->init(path());
     _folderWatcher->startNotificatonTest(path() + QLatin1String(".nextcloudsync.log"));
+    _folderWatcher->performSetPermissionsTest(path() + QLatin1String(".nextcloudpermissions.log"));
     connect(_engine.data(), &SyncEngine::lockFileDetected, _folderWatcher.data(), &FolderWatcher::slotLockFileDetectedExternally);
 }
 
@@ -1917,6 +1915,5 @@ QString FolderDefinition::defaultJournalPath(AccountPtr account)
 {
     return SyncJournalDb::makeDbName(localPath, account->url(), targetPath, account->credentials()->user());
 }
-
 
 } // namespace OCC

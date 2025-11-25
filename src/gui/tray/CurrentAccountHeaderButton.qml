@@ -12,6 +12,7 @@ import "../filedetails/"
 
 import Style
 import com.nextcloud.desktopclient
+import com.nextcloud.desktopclient as NC
 
 Button {
     id: root
@@ -246,8 +247,8 @@ Button {
                 id: currentAccountStatusIndicatorBackground
                 visible: UserModel.currentUser && UserModel.currentUser.isConnected
                          && UserModel.currentUser.serverHasUserStatus
-                         && UserModel.currentUser.status !== UserStatus.Invisible
-                         && UserModel.currentUser.status !== UserStatus.Offline
+                         && UserModel.currentUser.status !== NC.userStatus.Invisible
+                         && UserModel.currentUser.status !== NC.userStatus.Offline
                 width: Style.accountAvatarStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset
                 height: width
                 color: "white"
@@ -260,8 +261,8 @@ Button {
                 id: currentAccountStatusIndicator
                 visible: UserModel.currentUser && UserModel.currentUser.isConnected
                          && UserModel.currentUser.serverHasUserStatus
-                         && UserModel.currentUser.status !== UserStatus.Invisible
-                         && UserModel.currentUser.status !== UserStatus.Offline
+                         && UserModel.currentUser.status !== NC.userStatus.Invisible
+                         && UserModel.currentUser.status !== NC.userStatus.Offline
                 source: UserModel.currentUser ? UserModel.currentUser.statusIcon : ""
                 cache: false
                 x: currentAccountStatusIndicatorBackground.x + Style.trayFolderStatusIndicatorSizeOffset / 2
