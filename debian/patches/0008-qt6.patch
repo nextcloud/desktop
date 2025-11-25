@@ -370,7 +370,7 @@ index 0000000000..44395bc6dd
 +//-----------------------------------------------------------------------------
 +//-----------------------------------------------------------------------------
 diff --git a/src/csync/csync_exclude.cpp b/src/csync/csync_exclude.cpp
-index fa3c97c487..c0505b76f7 100644
+index b92cfa08e4..38f3d462ec 100644
 --- a/src/csync/csync_exclude.cpp
 +++ b/src/csync/csync_exclude.cpp
 @@ -21,6 +21,7 @@
@@ -381,7 +381,7 @@ index fa3c97c487..c0505b76f7 100644
  #include "../version.h"
  
  #include <QString>
-@@ -297,7 +298,7 @@ void ExcludedFiles::loadExcludeFilePatterns(const QString &basePath, QFile &file
+@@ -300,7 +301,7 @@ void ExcludedFiles::loadExcludeFilePatterns(const QString &basePath, QFile &file
          if (line.isEmpty() || line.startsWith('#'))
              continue;
          const auto patternStr = QString::fromUtf8(line);
@@ -390,7 +390,7 @@ index fa3c97c487..c0505b76f7 100644
              continue;
          }
          csync_exclude_expand_escapes(line);
-@@ -459,10 +460,10 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
+@@ -462,10 +463,10 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
          QRegularExpressionMatch m;
          if (filetype == ItemTypeDirectory
              && _bnameTraversalRegexDir.contains(basePath)) {
@@ -470,7 +470,7 @@ index f49410d6ea..db71b8e12d 100644
  
                  onClicked: {
 diff --git a/src/gui/accountstate.cpp b/src/gui/accountstate.cpp
-index 458f68cf84..d248e4ee55 100644
+index b6b0d0c334..c187ba9761 100644
 --- a/src/gui/accountstate.cpp
 +++ b/src/gui/accountstate.cpp
 @@ -17,6 +17,7 @@
@@ -482,7 +482,7 @@ index 458f68cf84..d248e4ee55 100644
  #include <QSettings>
  #include <QTimer>
 diff --git a/src/gui/application.cpp b/src/gui/application.cpp
-index f2f6a0503e..cc972dd676 100644
+index a250954dae..6e36ba6465 100644
 --- a/src/gui/application.cpp
 +++ b/src/gui/application.cpp
 @@ -36,6 +36,7 @@
@@ -493,7 +493,7 @@ index f2f6a0503e..cc972dd676 100644
  
  #include "config.h"
  
-@@ -1019,7 +1020,7 @@ void Application::setupTranslations()
+@@ -1025,7 +1026,7 @@ void Application::setupTranslations()
  {
      qCInfo(lcApplication) << "System UI languages are:" << QLocale::system().uiLanguages();
      const auto enforcedLocale = enforcedLanguage();
@@ -526,7 +526,7 @@ index c061eff726..2a0751b07c 100644
                  }
              }
 diff --git a/src/gui/folderman.cpp b/src/gui/folderman.cpp
-index 17d693bf71..f7105f131c 100644
+index 282fb299da..2a03b9155e 100644
 --- a/src/gui/folderman.cpp
 +++ b/src/gui/folderman.cpp
 @@ -16,6 +16,7 @@
@@ -571,7 +571,7 @@ index 3dc10ad198..637b58acf5 100644
          });
          _virtualFilesCheckBox->setChecked(bestAvailableVfsMode() == Vfs::WindowsCfApi);
 diff --git a/src/gui/generalsettings.cpp b/src/gui/generalsettings.cpp
-index de5ed4d049..bb8ffb4585 100644
+index d1caae9ac6..eaf5474f4d 100644
 --- a/src/gui/generalsettings.cpp
 +++ b/src/gui/generalsettings.cpp
 @@ -44,6 +44,7 @@
@@ -582,7 +582,7 @@ index de5ed4d049..bb8ffb4585 100644
  #include <KZip>
  #include <chrono>
  
-@@ -178,6 +179,7 @@ bool createDebugArchive(const QString &filename)
+@@ -197,6 +198,7 @@ bool createDebugArchive(const QString &filename)
  }
  
  }
@@ -590,7 +590,7 @@ index de5ed4d049..bb8ffb4585 100644
  
  namespace OCC {
  
-@@ -271,7 +273,11 @@ GeneralSettings::GeneralSettings(QWidget *parent)
+@@ -290,7 +292,11 @@ GeneralSettings::GeneralSettings(QWidget *parent)
      _ui->monoIconsCheckBox->setVisible(Theme::instance()->monoIconsAvailable());
  
      connect(_ui->ignoredFilesButton, &QAbstractButton::clicked, this, &GeneralSettings::slotIgnoreFilesEditor);
@@ -602,7 +602,7 @@ index de5ed4d049..bb8ffb4585 100644
  
      // accountAdded means the wizard was finished and the wizard might change some options.
      connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
-@@ -634,6 +640,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
+@@ -654,6 +660,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
      }
  }
  
@@ -610,7 +610,7 @@ index de5ed4d049..bb8ffb4585 100644
  void GeneralSettings::slotCreateDebugArchive()
  {
      const auto filename = QFileDialog::getSaveFileName(
-@@ -655,6 +662,7 @@ void GeneralSettings::slotCreateDebugArchive()
+@@ -675,6 +682,7 @@ void GeneralSettings::slotCreateDebugArchive()
          );
      }
  }
@@ -978,7 +978,7 @@ index 5820fc0c8a..a70abc9c8d 100644
      PRIVATE
          cxx_std_17
 diff --git a/src/libsync/account.cpp b/src/libsync/account.cpp
-index a1fedb873d..ece9f14fba 100644
+index 159375d9fa..77ee9b3e33 100644
 --- a/src/libsync/account.cpp
 +++ b/src/libsync/account.cpp
 @@ -23,6 +23,7 @@
@@ -989,7 +989,7 @@ index a1fedb873d..ece9f14fba 100644
  #include "clientsideencryption.h"
  #include "ocsuserstatusconnector.h"
  
-@@ -1246,7 +1247,8 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
+@@ -1254,7 +1255,8 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
                                            serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
                                            newEntry);
  
@@ -1068,7 +1068,7 @@ index 9ce1b567fa..ef19a95180 100644
      return decryptedAndUnGzipped;
  }
 diff --git a/src/libsync/discovery.cpp b/src/libsync/discovery.cpp
-index 44f7f7e55c..747c3ecb0a 100644
+index b9a1b03a02..de2052d56a 100644
 --- a/src/libsync/discovery.cpp
 +++ b/src/libsync/discovery.cpp
 @@ -23,6 +23,7 @@
@@ -1080,7 +1080,7 @@ index 44f7f7e55c..747c3ecb0a 100644
  #include "csync.h"
  
 diff --git a/src/libsync/discoveryphase.cpp b/src/libsync/discoveryphase.cpp
-index c560166aff..b0c4e60e0e 100644
+index 220a74973e..a9c4a1c2c0 100644
 --- a/src/libsync/discoveryphase.cpp
 +++ b/src/libsync/discoveryphase.cpp
 @@ -17,6 +17,7 @@
@@ -1092,7 +1092,7 @@ index c560166aff..b0c4e60e0e 100644
  #include <csync_exclude.h>
  #include "vio/csync_vio_local.h"
 diff --git a/src/libsync/filesystem.cpp b/src/libsync/filesystem.cpp
-index b6a8708498..4e4f991c50 100644
+index 6c6c11ed0a..27b0bb5408 100644
 --- a/src/libsync/filesystem.cpp
 +++ b/src/libsync/filesystem.cpp
 @@ -7,6 +7,7 @@
@@ -1475,6 +1475,19 @@ index e76b158775..4431aee63a 100644
  #include "account.h"
  #include "accountstate.h"
  #include "logger.h"
+diff --git a/test/testaccountsettings.cpp b/test/testaccountsettings.cpp
+index b43723f630..93568774f0 100644
+--- a/test/testaccountsettings.cpp
++++ b/test/testaccountsettings.cpp
+@@ -16,6 +16,8 @@
+ 
+ #include "accountsettings.h"
+ 
++#include "common/qtcompat.h"
++
+ using namespace OCC;
+ 
+ class TestAccountSettings : public QObject
 diff --git a/test/testdatefieldbackend.cpp b/test/testdatefieldbackend.cpp
 index 850e9c919c..fc0371170e 100644
 --- a/test/testdatefieldbackend.cpp
@@ -1487,6 +1500,18 @@ index 850e9c919c..fc0371170e 100644
  
  using namespace OCC;
  
+diff --git a/test/testfilesystem.cpp b/test/testfilesystem.cpp
+index 912e28312d..ed77a043d2 100644
+--- a/test/testfilesystem.cpp
++++ b/test/testfilesystem.cpp
+@@ -12,6 +12,7 @@
+ #include <QTemporaryFile>
+ 
+ #include "common/filesystembase.h"
++#include "common/qtcompat.h"
+ #include "logger.h"
+ 
+ #include "libsync/filesystem.h"
 diff --git a/test/testfolder.cpp b/test/testfolder.cpp
 index b45cf49114..060f9aca0b 100644
 --- a/test/testfolder.cpp
