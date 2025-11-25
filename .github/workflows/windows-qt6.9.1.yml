@@ -1,0 +1,113 @@
+name: 3klika Nextcloud Windows (Qt 6.9.1)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      # 1) Checkout source
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # 2) aqtinstall
+      - name: Install aqtinstall
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install aqtinstall
+
+      # 3) Install Qt 6.9.1 (MSVC2022)
+      - name: Install Qt 6.9.1 (MSVC 2022)
+        run: |
+          python -m aqt install-qt windows desktop 6.9.1 win64_msvc2022_64 -O C:\Qt
+
+      # 4) Install Ninja
+      - name: Install Ninja
+        shell: powershell
+        run: |
+          choco install ninja -y
+
+      # 5) Install pkg-config
+      - name: Install pkg-config
+        shell: powershell
+        run: |
+          choco install pkgconfiglite -y
+
+      # 6) Create FAKE libp11 so CMake stops failing on Windows
+      - name: Create fake libp11
+        shell: powershell
+        run: |
+          New-Item -ItemType Directory -Force -Path "C:\fake-libp11\lib\pkgconfig" | Out-Null
+          Set-Content -Path "C:\fake-libp11\lib\pkgconfig\libp11.pc" -Value @"
+prefix=C:/fake-libp11
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: libp11
+Description: Fake libp11 for Windows build
+Version: 1.0
+Libs:
+Cflags:
+"@
+
+      # 7) Export PKG_CONFIG_PATH
+      - name: Add fake libp11 to PKG_CONFIG_PATH
+        shell: powershell
+        run: |
+          echo "PKG_CONFIG_PATH=C:\fake-libp11\lib\pkgconfig" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      # 8) Minimal vcpkg deps
+      - name: Setup vcpkg and install base deps
+        shell: powershell
+        run: |
+          if (!(Test-Path "C:\vcpkg")) {
+            git clone https://github.com/microsoft/vcpkg C:\vcpkg
+          }
+          C:\vcpkg\bootstrap-vcpkg.bat
+
+          C:\vcpkg\vcpkg.exe install `
+            openssl:x64-windows `
+            zlib:x64-windows `
+            sqlite3:x64-windows `
+            ecm:x64-windows
+
+      # 9) Setup MSVC environment
+      - name: Setup MSVC environment
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      # 10) CMake configure
+      - name: Configure (CMake)
+        shell: cmd
+        run: |
+          mkdir build
+          cd build
+          cmake -G "Ninja" ^
+            -DCMAKE_BUILD_TYPE=Release ^
+            -DBUILD_UPDATER=OFF ^
+            -DWITH_CRASHREPORTER=OFF ^
+            -DBUILD_SHELL_INTEGRATION=OFF ^
+            -DQT_INSTALL_PREFIX=C:\Qt\6.9.1\msvc2022_64 ^
+            -DCMAKE_PREFIX_PATH=C:\Qt\6.9.1\msvc2022_64 ^
+            -DVCPKG_TARGET_TRIPLET=x64-windows ^
+            -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake ^
+            ..
+
+      # 11) Build
+      - name: Build
+        shell: cmd
+        run: |
+          cd build
+          cmake --build . --config Release
+
+      # 12) Upload EXE artifacts
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nextcloud-3klika-qt6.9.1
+          path: |
+            build/**/*.exe
