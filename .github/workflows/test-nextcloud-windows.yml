@@ -18,7 +18,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install aqtinstall
 
-      # 3) Qt 6.9.1, MSVC 2022 (ovo je bitno!)
+      # 3) Qt 6.9.1, MSVC 2022 (OVO JE BITNO!)
       - name: Install Qt 6.9.1 (MSVC 2022)
         run: |
           python -m aqt install-qt windows desktop 6.9.1 win64_msvc2022_64 -O C:\Qt
@@ -29,7 +29,13 @@ jobs:
         run: |
           choco install ninja -y
 
-      # 5) Minimalni vcpkg (samo osnovne libove)
+      # 5) pkg-config (OBAVEZNO!)
+      - name: Install pkg-config
+        shell: powershell
+        run: |
+          choco install pkgconfiglite -y
+
+      # 6) Minimalni vcpkg (samo osnovni libovi)
       - name: Setup vcpkg and install deps
         shell: powershell
         run: |
@@ -44,13 +50,13 @@ jobs:
             sqlite3:x64-windows `
             ecm:x64-windows
 
-      # 6) MSVC okruženje (da koristi cl, ne mingw)
+      # 7) MSVC okruženje
       - name: Setup MSVC environment
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: x64
 
-      # 7) CMake configure
+      # 8) CMake configure
       - name: Configure (CMake)
         shell: cmd
         run: |
@@ -67,17 +73,18 @@ jobs:
             -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake ^
             ..
 
-      # 8) Build (Ninja)
+      # 9) Build
       - name: Build
         shell: cmd
         run: |
           cd build
           cmake --build . --config Release
 
-      # 9) Upload .exe da možeš da skineš
+      # 10) Upload .exe
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: nextcloud-3klika-qt6.9.1
           path: |
             build/**/*.exe
+
