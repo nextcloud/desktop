@@ -1,56 +1,49 @@
 name: Test Nextcloud Windows (Qt + vcpkg + CMake)
 
 on:
-  workflow_dispatch:   # ručno pokretanje iz Actions taba
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-      # 1) Klonira tvoj fork repoa
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      # 2) Test okruženja (da vidimo da Windows runner radi)
       - name: Test environment
+        shell: powershell
         run: |
-          echo "Windows runner radi!"
-          wmic cpu get name
-          systeminfo | findstr /C:"Total Physical Memory"
+          Write-Host "Windows runner radi!"
+          Get-CimInstance Win32_Processor | Select-Object Name
+          Get-CimInstance Win32_ComputerSystem | Select-Object TotalPhysicalMemory
 
-      # 3) Instaliraj aqtinstall (alat za skidanje Qt-a)
       - name: Install aqtinstall
         run: |
           python -m pip install --upgrade pip
           python -m pip install aqtinstall
 
-      # 4) Instaliraj Qt 6.9.1 za MSVC na C:\Qt
       - name: Install Qt 6.9.1
         run: |
           python -m aqt install-qt windows desktop 6.9.1 win64_msvc2019_64 -O C:\Qt
 
-      # 5) Instaliraj Ninja (ako slučajno nije već tu)
       - name: Install Ninja
         run: |
           choco install ninja -y
         shell: powershell
 
-      # 6) Kloniraj i bootstrap-uj vcpkg u C:\vcpkg
       - name: Setup vcpkg
         run: |
           git clone https://github.com/microsoft/vcpkg C:\vcpkg
           C:\vcpkg\bootstrap-vcpkg.bat
 
-      # 7) (Opcioni, za početak minimalno) par osnovnih paketa
-      # Ako nešto fail-uje, videćemo u logu i proširićemo listu
       - name: Install base vcpkg packages
+        shell: powershell
         run: |
           C:\vcpkg\vcpkg.exe install openssl:x64-windows zlib:x64-windows sqlite3:x64-windows
-        shell: powershell
 
-      # 8) CMake configure (bez build-a, za sada)
       - name: CMake configure (no build yet)
+        shell: cmd
         run: |
           mkdir build
           cd build
@@ -64,4 +57,4 @@ jobs:
             -DVCPKG_TARGET_TRIPLET=x64-windows ^
             -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake ^
             ..
-        shell: cmd
+
