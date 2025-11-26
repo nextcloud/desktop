@@ -717,7 +717,9 @@ QString ConfigFile::defaultUpdateChannel() const
 QString ConfigFile::currentUpdateChannel() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(updateChannelC), defaultUpdateChannel()).toString();
+    const auto currentChannel = UpdateChannel::fromString(settings.value(QLatin1String(updateChannelC), defaultUpdateChannel()).toString());
+    const auto enterpriseChannel = UpdateChannel::fromString(desktopEnterpriseChannel());
+    return UpdateChannel::mostStable(currentChannel, enterpriseChannel).toString();
 }
 
 void ConfigFile::setUpdateChannel(const QString &channel)
@@ -1212,10 +1214,9 @@ QString ConfigFile::desktopEnterpriseChannel() const
 void ConfigFile::setDesktopEnterpriseChannel(const QString &channel)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(desktopEnterpriseChannelName), channel);
-    const auto currentUpdateChannel = UpdateChannel::fromString(this->currentUpdateChannel());
+    const auto currentEnterpriseChannel = UpdateChannel::fromString(desktopEnterpriseChannel());
     const auto newEnterpriseUpdateChannel = UpdateChannel::fromString(channel);
-    setUpdateChannel(UpdateChannel::mostStable(currentUpdateChannel, newEnterpriseUpdateChannel).toString());
+    settings.setValue(QLatin1String(desktopEnterpriseChannelName), UpdateChannel::mostStable(currentEnterpriseChannel, newEnterpriseUpdateChannel).toString());
 }
 
 QString ConfigFile::language() const
