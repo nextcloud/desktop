@@ -6,11 +6,11 @@
 
 #include "config.h"
 
+#include "common/asserts.h"
+#include "common/utility.h"
 #include "configfile.h"
 #include "theme.h"
-#include "version.h"
-#include "common/utility.h"
-#include "common/asserts.h"
+#include "updatechannel.h"
 #include "version.h"
 
 #include "creds/abstractcredentials.h"
@@ -1213,6 +1213,9 @@ void ConfigFile::setDesktopEnterpriseChannel(const QString &channel)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(desktopEnterpriseChannelName), channel);
+    const auto currentUpdateChannel = UpdateChannel::fromString(this->currentUpdateChannel());
+    const auto newEnterpriseUpdateChannel = UpdateChannel::fromString(channel);
+    setUpdateChannel(UpdateChannel::mostStable(currentUpdateChannel, newEnterpriseUpdateChannel).toString());
 }
 
 QString ConfigFile::language() const
