@@ -25,6 +25,11 @@ QString UpdateChannel::toString() const
 
 std::strong_ordering UpdateChannel::operator<=>(const UpdateChannel &rhs) const = default;
 
+UpdateChannel UpdateChannel::mostStable(const UpdateChannel &a, const UpdateChannel &b)
+{
+    return std::max(a, b);
+}
+
 UpdateChannel UpdateChannel::fromString(const QString &channelName) // static
 {
     using enum ChannelName;

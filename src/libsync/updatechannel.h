@@ -27,6 +27,7 @@ public:
     std::strong_ordering operator<=>(const UpdateChannel &rhs) const;
 
     static UpdateChannel fromString(const QString &channelName);
+    static UpdateChannel mostStable(const UpdateChannel &a, const UpdateChannel &b);
 
 private:
     UpdateChannel();
