@@ -277,8 +277,6 @@ void ConnectionValidator::slotCapabilitiesRecieved(const QJsonDocument &json)
         slotUserFetched(nullptr);
         return;
     }
-
-    fetchUser();
 }
 
 void ConnectionValidator::fetchUser()
