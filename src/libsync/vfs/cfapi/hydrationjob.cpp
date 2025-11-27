@@ -106,6 +106,16 @@ void OCC::HydrationJob::setE2eMangledName(const QString &e2eMangledName)
     _e2eMangledName = e2eMangledName;
 }
 
+qint64 OCC::HydrationJob::fileTotalSize() const
+{
+    return _fileTotalSize;
+}
+
+void OCC::HydrationJob::setFileTotalSize(qint64 fileTotalSize)
+{
+    _fileTotalSize = fileTotalSize;
+}
+
 OCC::HydrationJob::Status OCC::HydrationJob::status() const
 {
     return _status;
@@ -299,6 +309,9 @@ void OCC::HydrationJob::slotFetchMetadataJobFinished(int statusCode, const QStri
             qCDebug(lcHydration) << "Found matching encrypted metadata for file, starting download" << _requestId << _folderPath;
             _transferDataSocket = _transferDataServer->nextPendingConnection();
             _job = new GETEncryptedFileJob(_account, Utility::trailingSlashPath(_remoteSyncRootPath) + e2eMangledName(), _transferDataSocket, {}, {}, 0, file, this);
+            if (_fileTotalSize >= 0) {
+                _job->setDecompressionThresholdBase(_fileTotalSize);
+            }
 
             connect(qobject_cast<GETEncryptedFileJob *>(_job), &GETEncryptedFileJob::finishedSignal, this, &HydrationJob::onGetFinished);
             _job->start();
@@ -341,6 +354,9 @@ void OCC::HydrationJob::handleNewConnection()
     qCInfo(lcHydration) << "Got new connection starting GETFileJob" << _requestId << _folderPath;
     _transferDataSocket = _transferDataServer->nextPendingConnection();
     _job = new GETFileJob(_account, Utility::trailingSlashPath(_remoteSyncRootPath) + _folderPath, _transferDataSocket, {}, {}, 0, this);
+    if (_fileTotalSize >= 0) {
+        _job->setDecompressionThresholdBase(_fileTotalSize);
+    }
     connect(_job, &GETFileJob::finishedSignal, this, &HydrationJob::onGetFinished);
     _job->start();
 }
