@@ -11,9 +11,17 @@
 #include <QtTest>
 #include <QDebug>
 
+#include "accessmanager.h"
 #include "propagatedownload.h"
 #include "owncloudpropagator_p.h"
 #include "syncenginetestutils.h"
+
+using namespace Qt::StringLiterals;
+
+#ifdef HAVE_QHTTPSERVER
+#include <QHttpServer>
+#include <QTcpServer>
+#endif
 
 using namespace OCC;
 namespace OCC {
@@ -111,7 +119,85 @@ private slots:
         // verify buffer is not changed
         QCOMPARE(reply->readAll().size(), body.size());
     }
+
+#ifdef HAVE_QHTTPSERVER
+    void testGETFileJobDecompressionThreshold()
+    {
+        // generate 50 MiB of easily compressable data, and compress it with
+        // the highest possible level to achieve a big enough decompression
+        // ratio for Qt's decompression check to kick in
+        const QByteArray decompressedContent(50 * 1024 * 1024, 'A');
+        // skip the first 4 bytes of compression header to only serve the pure
+        // deflate stream
+        const auto compressedContent = qCompress(decompressedContent, 9).mid(4);
+        // ensure the ratio is greater than 40:1 (default for gzip/deflate as
+        // per Qt docs)
+        const auto ratio = double(decompressedContent.size()) / (compressedContent.size());
+        qInfo() << "Compression ratio is" << ratio;
+        QCOMPARE_GT(ratio, 40.0);
+
+        // spin up a temprary test-specific HTTP server that serves the
+        // compressed data
+        // with a fake QNAM and overrides we would skip the decompression checks
+        // done internally in QNetworkReply
+        QHttpServer httpServer;
+        httpServer.route("/remote.php/dav/files/admin/someTestFile", [&compressedContent](QHttpServerResponder &responder) -> void {
+            QHttpHeaders headers;
+            headers.append(QHttpHeaders::WellKnownHeader::ContentEncoding, "deflate"_ba);
+            headers.append("OC-ETag"_ba, "0123456789abcdef"_ba);
+            headers.append("ETag"_ba, "0123456789abcdef"_ba);
+            responder.write(compressedContent, headers);
+        });
+
+        QTcpServer tcpServer;
+        QVERIFY(tcpServer.listen(QHostAddress::LocalHost));
+        QVERIFY(httpServer.bind(&tcpServer));
+        const QString baseUrl = "http://%1:%2"_L1.arg(tcpServer.serverAddress().toString(), QString::number(tcpServer.serverPort()));
+        qInfo() << "Listening on" << baseUrl;
+
+        auto account = OCC::Account::create();
+        account->setCredentials(new FakeCredentials{new OCC::AccessManager{this}});
+        account->setUrl(baseUrl);
+
+        {
+            qInfo() << "Test: with default decompression threshold (20 MiB)";
+            QBuffer receivedContent;
+            receivedContent.open(QIODevice::ReadWrite);
+
+            auto job = GETFileJob(account, "/someTestFile"_L1, &receivedContent, {}, {}, 0);
+            QSignalSpy spy(&job, &GETFileJob::finishedSignal);
+
+            job.start();
+            spy.wait(1000);
+
+            QVERIFY(spy.isEmpty()); // the request failed, so the finishedSignal never was emitted
+            QVERIFY(job.reply());
+            QCOMPARE(job.reply()->error(), QNetworkReply::UnknownContentError);
+            // the download was aborted below the configured threshold
+            QCOMPARE_LT(receivedContent.size(), job.reply()->request().decompressedSafetyCheckThreshold());
+        }
+
+        {
+            qInfo() << "Test with decompression threshold set from expected file size (50 MiB + default 20MiB)";
+            QBuffer receivedContent;
+            receivedContent.open(QIODevice::WriteOnly);
+
+            auto job = GETFileJob(account, "/someTestFile"_L1, &receivedContent, {}, {}, 0);
+            QSignalSpy spy(&job, &GETFileJob::finishedSignal);
+
+            job.setDecompressionThresholdBase(decompressedContent.size()); // expect a response of 50MiB
+            job.start();
+            spy.wait(1000);
+
+            QVERIFY(!spy.isEmpty());
+            QVERIFY(job.reply());
+            QCOMPARE(job.reply()->error(), QNetworkReply::NoError);
+            // the download succeeded
+            QCOMPARE(receivedContent.size(), decompressedContent.size());
+        }
+    }
+#endif
 };
 
-QTEST_APPLESS_MAIN(TestNextcloudPropagator)
+QTEST_GUILESS_MAIN(TestNextcloudPropagator)
 #include "testnextcloudpropagator.moc"
