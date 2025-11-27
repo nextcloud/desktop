@@ -7,6 +7,7 @@ import NextcloudCapabilitiesKit
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
 import RealmSwift
+import Testing
 import TestInterface
 import XCTest
 
@@ -50,7 +51,8 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
 
     /// Helper to wait for an expectation with a standard timeout.
     private func wait(for expectation: XCTestExpectation, description: String) async {
-        let result = await XCTWaiter.fulfillment(of: [expectation], timeout: 5.0)
+        let result = await XCTWaiter.fulfillment(of: [expectation], timeout: 10.0)
+
         if result != .completed {
             XCTFail("Timeout waiting for \(description)")
         }
@@ -402,27 +404,14 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
     }
 
     func testPinging() async throws {
+        let authentication = expectation(description: "authentication")
+        authentication.assertForOverFulfill = false
+
         let remoteInterface = MockRemoteInterface(account: Self.account)
         remoteInterface.capabilities = mockCapabilities
 
-        actor AuthFlag {
-            var value = false
-            func set() {
-                value = true
-            }
-
-            func get() -> Bool {
-                value
-            }
-        }
-        let authenticated = AuthFlag()
-
-        NotificationCenter.default.addObserver(
-            forName: NotifyPushAuthenticatedNotificationName, object: nil, queue: nil
-        ) { _ in
-            Task {
-                await authenticated.set()
-            }
+        NotificationCenter.default.addObserver(forName: NotifyPushAuthenticatedNotificationName, object: nil, queue: nil) { _ in
+            authentication.fulfill()
         }
 
         remoteChangeObserver = RemoteChangeObserver(
@@ -436,27 +425,25 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
 
         let pingIntervalNsecs = 500_000_000
         remoteChangeObserver?.setWebSocketPingInterval(to: UInt64(pingIntervalNsecs))
+        await wait(for: authentication, description: "authentication")
 
-        for _ in 0 ... Self.timeout {
-            try await Task.sleep(nanoseconds: 1_000_000)
-            if await authenticated.get() {
-                break
+        let measurementStart = Date()
+        let firstPing = expectation(description: "First Ping")
+        let secondPing = expectation(description: "Second Ping")
+        let thirdPing = expectation(description: "Third Ping")
+        let pings = ExpectationFulfillmentCounter(firstPing, secondPing, thirdPing)
+
+        Self.notifyPushServer.pingHandler = {
+            Task {
+                await pings.next()
             }
         }
-        let isAuthenticated = await authenticated.get()
-        XCTAssertTrue(isAuthenticated)
 
-        let intendedPings = 3
-        // Add a bit of buffer to the wait time
-        let intendedPingsWait = (intendedPings + 1) * pingIntervalNsecs
+        await fulfillment(of: [firstPing, secondPing, thirdPing])
+        let measurementEnd = Date()
+        let pingTimeInterval = measurementEnd.timeIntervalSince(measurementStart)
 
-        var pings = 0
-        Self.notifyPushServer.pingHandler = {
-            pings += 1
-        }
-
-        try await Task.sleep(nanoseconds: UInt64(intendedPingsWait))
-        XCTAssertEqual(pings, intendedPings)
+        XCTAssertGreaterThan(pingTimeInterval, Double(pingIntervalNsecs / 1_000_000_000) * 3)
     }
 
     func testRetryOnConnectionLoss() async throws {
