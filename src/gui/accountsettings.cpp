@@ -394,7 +394,7 @@ void AccountSettings::doExpand()
 
 bool AccountSettings::canEncryptOrDecrypt(const FolderStatusModel::SubFolderInfo *info)
 {
-    if (const auto folderSyncStatus = info->_folder->syncResult().status(); folderSyncStatus != SyncResult::Status::Success) {
+    if (const auto folderSyncStatus = info->_folder->syncResult().status(); info->_fileId.isEmpty()) {
         auto message = tr("Please wait for the folder to sync before trying to encrypt it.");
         if (folderSyncStatus == SyncResult::Status::Problem) {
             message = tr("The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully");
