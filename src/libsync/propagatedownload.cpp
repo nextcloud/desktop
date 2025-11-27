@@ -116,7 +116,7 @@ void GETFileJob::start()
     }
 
     req.setPriority(QNetworkRequest::LowPriority); // Long downloads must not block non-propagation jobs.
-    req.setDecompressedSafetyCheckThreshold(CustomDecompressedSafetyCheckThreshold);
+    req.setDecompressedSafetyCheckThreshold(_decompressionThresholdBase + CustomDecompressedSafetyCheckThreshold);
 
     if (_directDownloadUrl.isEmpty()) {
         sendRequest("GET", makeDavUrl(path()), req);
@@ -736,6 +736,9 @@ void PropagateDownloadFile::startDownload()
         _job = new GETFileJob(propagator()->account(),
             url,
             &_tmpFile, headers, expectedEtagForResume, _resumeStart, this);
+    }
+    if (_item->_size >= 0) {
+        _job->setDecompressionThresholdBase(_item->_size);
     }
     _job->setBandwidthManager(&propagator()->_bandwidthManager);
     connect(_job.data(), &GETFileJob::finishedSignal, this, &PropagateDownloadFile::slotGetFinished);

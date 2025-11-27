@@ -61,7 +61,7 @@ public:
     void setE2eMangledName(const QString &e2eMangledName);
 
     qint64 fileTotalSize() const;
-    void setFileTotalSize(qint64 totalSize);
+    void setFileTotalSize(qint64 fileTotalSize);
 
     Status status() const;
 
@@ -102,6 +102,7 @@ private:
 
     bool _isEncryptedFile = false;
     QString _e2eMangledName;
+    qint64 _fileTotalSize = 0;
 
     QLocalServer *_transferDataServer = nullptr;
     QLocalServer *_signalServer = nullptr;
