@@ -370,7 +370,7 @@ index 0000000000..44395bc6dd
 +//-----------------------------------------------------------------------------
 +//-----------------------------------------------------------------------------
 diff --git a/src/csync/csync_exclude.cpp b/src/csync/csync_exclude.cpp
-index fa3c97c487..c0505b76f7 100644
+index b92cfa08e4..38f3d462ec 100644
 --- a/src/csync/csync_exclude.cpp
 +++ b/src/csync/csync_exclude.cpp
 @@ -21,6 +21,7 @@
@@ -381,7 +381,7 @@ index fa3c97c487..c0505b76f7 100644
  #include "../version.h"
  
  #include <QString>
-@@ -297,7 +298,7 @@ void ExcludedFiles::loadExcludeFilePatterns(const QString &basePath, QFile &file
+@@ -300,7 +301,7 @@ void ExcludedFiles::loadExcludeFilePatterns(const QString &basePath, QFile &file
          if (line.isEmpty() || line.startsWith('#'))
              continue;
          const auto patternStr = QString::fromUtf8(line);
@@ -390,7 +390,7 @@ index fa3c97c487..c0505b76f7 100644
              continue;
          }
          csync_exclude_expand_escapes(line);
-@@ -459,10 +460,10 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
+@@ -462,10 +463,10 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
          QRegularExpressionMatch m;
          if (filetype == ItemTypeDirectory
              && _bnameTraversalRegexDir.contains(basePath)) {
@@ -1077,7 +1077,7 @@ index 9ce1b567fa..ef19a95180 100644
      return decryptedAndUnGzipped;
  }
 diff --git a/src/libsync/discovery.cpp b/src/libsync/discovery.cpp
-index f91c368f41..d635251b40 100644
+index dfc9a1cdbe..d3bab6871b 100644
 --- a/src/libsync/discovery.cpp
 +++ b/src/libsync/discovery.cpp
 @@ -23,6 +23,7 @@
@@ -1089,7 +1089,7 @@ index f91c368f41..d635251b40 100644
  #include "csync.h"
  
 diff --git a/src/libsync/discoveryphase.cpp b/src/libsync/discoveryphase.cpp
-index 8f57ef72f9..a38f7c5b65 100644
+index 05f72b38c2..f8c6cd5cde 100644
 --- a/src/libsync/discoveryphase.cpp
 +++ b/src/libsync/discoveryphase.cpp
 @@ -17,6 +17,7 @@
@@ -1101,7 +1101,7 @@ index 8f57ef72f9..a38f7c5b65 100644
  #include <csync_exclude.h>
  #include "vio/csync_vio_local.h"
 diff --git a/src/libsync/filesystem.cpp b/src/libsync/filesystem.cpp
-index b6a8708498..4e4f991c50 100644
+index 6c6c11ed0a..27b0bb5408 100644
 --- a/src/libsync/filesystem.cpp
 +++ b/src/libsync/filesystem.cpp
 @@ -7,6 +7,7 @@
@@ -1533,6 +1533,19 @@ index b45cf49114..060f9aca0b 100644
  #include "folder.h"
  
  #include "account.h"
+diff --git a/test/testnextcloudpropagator.cpp b/test/testnextcloudpropagator.cpp
+index 8a3797d783..d748391643 100644
+--- a/test/testnextcloudpropagator.cpp
++++ b/test/testnextcloudpropagator.cpp
+@@ -16,6 +16,8 @@
+ #include "owncloudpropagator_p.h"
+ #include "syncenginetestutils.h"
+ 
++#include "common/qtcompat.h"
++
+ using namespace Qt::StringLiterals;
+ 
+ #ifdef HAVE_QHTTPSERVER
 diff --git a/test/testsyncengine.cpp b/test/testsyncengine.cpp
 index 503454e4d7..5f073a2a9e 100644
 --- a/test/testsyncengine.cpp
