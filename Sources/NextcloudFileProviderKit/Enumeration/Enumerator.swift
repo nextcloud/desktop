@@ -7,7 +7,7 @@ import NextcloudKit
 ///
 /// The `NSFileProviderEnumerator` implementation to enumerate file provider items and related change sets.
 ///
-final public class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
+public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     let enumeratedItemIdentifier: NSFileProviderItemIdentifier
     private let enumeratedItemMetadata: SendableItemMetadata?
 
@@ -111,8 +111,8 @@ final public class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                     return
                 }
 
-                let domain = self.domain
-                let enumeratedItemIdentifier = self.enumeratedItemIdentifier
+                let domain = domain
+                let enumeratedItemIdentifier = enumeratedItemIdentifier
 
                 let (_, trashedItems, _, trashReadError) = await remoteInterface.listingTrashAsync(
                     filename: nil,
@@ -305,8 +305,8 @@ final public class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                     return
                 }
 
-                let domain = self.domain
-                let enumeratedItemIdentifier = self.enumeratedItemIdentifier
+                let domain = domain
+                let enumeratedItemIdentifier = enumeratedItemIdentifier
 
                 let (_, trashedItems, _, trashReadError) = await remoteInterface.listingTrashAsync(
                     filename: nil,
@@ -371,14 +371,14 @@ final public class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
             }
 
             guard readError == nil else {
-                logger.error("Finished enumerating changes.", [.url: self.serverUrl, .error: readError])
+                logger.error("Finished enumerating changes.", [.url: serverUrl, .error: readError])
 
-                let error = readError?.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: self.enumeratedItemIdentifier) ?? NSFileProviderError(.cannotSynchronize)
+                let error = readError?.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: enumeratedItemIdentifier) ?? NSFileProviderError(.cannotSynchronize)
 
                 if readError!.isNotFoundError {
-                    logger.info("404 error means item no longer exists. Deleting metadata and reporting deletion without error.", [.url: self.serverUrl])
+                    logger.info("404 error means item no longer exists. Deleting metadata and reporting deletion without error.", [.url: serverUrl])
 
-                    guard let itemMetadata = self.enumeratedItemMetadata else {
+                    guard let itemMetadata = enumeratedItemMetadata else {
                         logger.error("Invalid enumeratedItemMetadata. Could not delete metadata nor report deletion.")
                         observer.finishEnumeratingWithError(error)
                         return
@@ -397,7 +397,7 @@ final public class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                     completeChangesObserver(
                         observer,
                         anchor: anchor,
-                        enumeratedItemIdentifier: self.enumeratedItemIdentifier,
+                        enumeratedItemIdentifier: enumeratedItemIdentifier,
                         account: account,
                         remoteInterface: remoteInterface,
                         dbManager: dbManager,
@@ -416,12 +416,12 @@ final public class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                 return
             }
 
-            logger.info("Finished reading remote changes.", [.account: self.account.ncKitAccount, .url: self.serverUrl])
+            logger.info("Finished reading remote changes.", [.account: account.ncKitAccount, .url: serverUrl])
 
             completeChangesObserver(
                 observer,
                 anchor: anchor,
-                enumeratedItemIdentifier: self.enumeratedItemIdentifier,
+                enumeratedItemIdentifier: enumeratedItemIdentifier,
                 account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,

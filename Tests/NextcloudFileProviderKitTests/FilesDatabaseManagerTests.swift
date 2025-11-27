@@ -341,7 +341,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             account: "TestAccount", underServerUrl: "https://example.com"
         )
         XCTAssertEqual(remainingMetadatas.filter(\.deleted).count, 1)
-        XCTAssertEqual(remainingMetadatas.filter { !$0.deleted }.count, 2)
+        XCTAssertEqual(remainingMetadatas.count(where: { !$0.deleted }), 2)
 
         XCTAssertNotNil(remainingMetadatas.first { $0.ocId == "id-1" })
         XCTAssertNotNil(remainingMetadatas.first { $0.ocId == "id-3" })
@@ -467,7 +467,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         // Check the actual database state after the write transaction
         XCTAssertEqual(remainingMetadatas.filter(\.deleted).count, 1)
-        XCTAssertEqual(remainingMetadatas.filter { !$0.deleted }.count, 2)
+        XCTAssertEqual(remainingMetadatas.count(where: { !$0.deleted }), 2)
 
         let survivingItem = remainingMetadatas.last
         XCTAssertNotNil(survivingItem, "An item should survive.")

@@ -162,9 +162,9 @@ final class RemoteChangeObserverEtagOptimizationTests: NextcloudFileProviderKitT
         XCTAssertGreaterThan(enumerateCallCount, 0, "At least one enumerate call should be made")
 
         // Count how many times the Customers folder was enumerated
-        let customersEnumerateCount = enumeratedPaths.filter {
+        let customersEnumerateCount = enumeratedPaths.count(where: {
             $0.contains("Customers")
-        }.count
+        })
 
         print("Customers folder enumerated \(customersEnumerateCount) times")
 

@@ -410,8 +410,9 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
             func set() {
                 value = true
             }
+
             func get() -> Bool {
-                return value
+                value
             }
         }
         let authenticated = AuthFlag()

@@ -1341,7 +1341,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue))
         }
         XCTAssertEqual(
-            observer.items.filter { $0.contentType?.conforms(to: .folder) ?? false }.count,
+            observer.items.count(where: { $0.contentType?.conforms(to: .folder) ?? false }),
             6
         )
         XCTAssertTrue(observer.items.last?.contentType?.conforms(to: .folder) ?? false)

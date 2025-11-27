@@ -84,13 +84,13 @@ public struct TestableRemoteInterface: RemoteInterface, @unchecked Sendable {
     ) async -> (account: String, data: Data?, error: NKError) { ("", nil, .invalidResponseError) }
 
     public func downloadAsync(
-        serverUrlFileName: Any,
-        fileNameLocalPath: String,
-        account: String,
-        options: NKRequestOptions,
-        requestHandler: @escaping (_ request: DownloadRequest) -> Void,
-        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void,
-        progressHandler: @escaping (_ progress: Progress) -> Void
+        serverUrlFileName _: Any,
+        fileNameLocalPath _: String,
+        account _: String,
+        options _: NKRequestOptions,
+        requestHandler _: @escaping (_ request: DownloadRequest) -> Void,
+        taskHandler _: @Sendable @escaping (_ task: URLSessionTask) -> Void,
+        progressHandler _: @escaping (_ progress: Progress) -> Void
     ) async -> (
         account: String,
         etag: String?,
@@ -130,11 +130,11 @@ public struct TestableRemoteInterface: RemoteInterface, @unchecked Sendable {
     }
 
     public func listingTrashAsync(
-        filename: String?,
-        showHiddenFiles: Bool,
-        account: String,
-        options: NKRequestOptions,
-        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void
+        filename _: String?,
+        showHiddenFiles _: Bool,
+        account _: String,
+        options _: NKRequestOptions,
+        taskHandler _: @Sendable @escaping (_ task: URLSessionTask) -> Void
     ) async -> (
         account: String,
         items: [NKTrash]?,
@@ -159,9 +159,9 @@ public struct TestableRemoteInterface: RemoteInterface, @unchecked Sendable {
     ) async -> (account: String, data: Data?, error: NKError) { ("", nil, .invalidResponseError) }
 
     public func getUserProfileAsync(
-        account: String,
-        options: NKRequestOptions,
-        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void
+        account _: String,
+        options _: NKRequestOptions,
+        taskHandler _: @Sendable @escaping (_ task: URLSessionTask) -> Void
     ) async -> (
         account: String,
         userProfile: NKUserProfile?,

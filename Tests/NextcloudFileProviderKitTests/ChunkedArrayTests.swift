@@ -62,7 +62,7 @@ final class ChunkedArrayTests: NextcloudFileProviderKitTestCase {
             }
 
             func getResults() -> [Int] {
-                return results
+                results
             }
         }
 
@@ -87,7 +87,7 @@ final class ChunkedArrayTests: NextcloudFileProviderKitTestCase {
             }
 
             func isEmpty() -> Bool {
-                return results.isEmpty
+                results.isEmpty
             }
         }
 

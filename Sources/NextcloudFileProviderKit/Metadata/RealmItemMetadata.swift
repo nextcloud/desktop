@@ -62,7 +62,7 @@ class RealmItemMetadata: Object, ItemMetadata {
     @Persisted var sessionTaskIdentifier: Int?
     @Persisted var storedShareType = List<Int>()
     var shareType: [Int] {
-        get { storedShareType.map { $0 } }
+        get { storedShareType.map(\.self) }
         set {
             storedShareType = List<Int>()
             storedShareType.append(objectsIn: newValue)
@@ -73,7 +73,7 @@ class RealmItemMetadata: Object, ItemMetadata {
     // TODO: Find a way to compare these two below in remote state check
     @Persisted var storedSharePermissionsCloudMesh = List<String>()
     var sharePermissionsCloudMesh: [String] {
-        get { storedSharePermissionsCloudMesh.map { $0 } }
+        get { storedSharePermissionsCloudMesh.map(\.self) }
         set {
             storedSharePermissionsCloudMesh = List<String>()
             storedSharePermissionsCloudMesh.append(objectsIn: newValue)
@@ -84,7 +84,7 @@ class RealmItemMetadata: Object, ItemMetadata {
     @Persisted var status: Int = 0
     @Persisted var storedTags = List<String>()
     var tags: [String] {
-        get { storedTags.map { $0 } }
+        get { storedTags.map(\.self) }
         set {
             storedTags = List<String>()
             storedTags.append(objectsIn: newValue)

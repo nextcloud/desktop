@@ -8,7 +8,7 @@ import UniformTypeIdentifiers
 ///
 /// Data model implementation for file provider items as defined by the file provider framework and `NSFileProviderItemProtocol`.
 ///
-final public class Item: NSObject, NSFileProviderItem, Sendable {
+public final class Item: NSObject, NSFileProviderItem, Sendable {
     public enum FileProviderItemTransferError: Error {
         case downloadError
         case uploadError

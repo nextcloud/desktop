@@ -491,7 +491,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
         )
-        
+
         let createdItem = try XCTUnwrap(createdItemMaybe)
 
         XCTAssertNil(error)

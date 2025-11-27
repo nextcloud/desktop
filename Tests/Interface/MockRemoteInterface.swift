@@ -581,7 +581,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         rootTrashItem: MockRemoteItem? = nil,
         pagination: Bool = false
     ) {
-        self.mockedAccounts[account.ncKitAccount] = account
+        mockedAccounts[account.ncKitAccount] = account
         self.rootItem = rootItem
         self.rootTrashItem = rootTrashItem
         self.pagination = pagination
@@ -950,7 +950,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         }
 
         let matchingNameChildCount =
-            destinationParent.children.filter { $0.name == sourceItem.name }.count
+            destinationParent.children.count(where: { $0.name == sourceItem.name })
 
         if !overwrite, matchingNameChildCount > 0 {
             sourceItem.name += " (\(matchingNameChildCount))"
@@ -1002,10 +1002,10 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         serverUrlFileName: Any,
         fileNameLocalPath: String,
         account: String,
-        options: NKRequestOptions,
-        requestHandler: @escaping (_ request: DownloadRequest) -> Void = { _ in },
-        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void = { _ in },
-        progressHandler: @escaping (_ progress: Progress) -> Void = { _ in }
+        options _: NKRequestOptions,
+        requestHandler _: @escaping (_ request: DownloadRequest) -> Void = { _ in },
+        taskHandler _: @Sendable @escaping (_ task: URLSessionTask) -> Void = { _ in },
+        progressHandler _: @escaping (_ progress: Progress) -> Void = { _ in }
     ) async -> (
         account: String,
         etag: String?,
@@ -1201,11 +1201,11 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     }
 
     public func listingTrashAsync(
-        filename: String?,
-        showHiddenFiles: Bool,
+        filename _: String?,
+        showHiddenFiles _: Bool,
         account: String,
-        options: NKRequestOptions,
-        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void
+        options _: NKRequestOptions,
+        taskHandler _: @Sendable @escaping (_ task: URLSessionTask) -> Void
     ) async -> (
         account: String,
         items: [NKTrash]?,
@@ -1265,8 +1265,8 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
 
     public func getUserProfileAsync(
         account: String,
-        options: NKRequestOptions,
-        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void
+        options _: NKRequestOptions,
+        taskHandler _: @Sendable @escaping (_ task: URLSessionTask) -> Void
     ) async -> (
         account: String,
         userProfile: NKUserProfile?,
