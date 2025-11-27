@@ -2191,14 +2191,18 @@ This means that the synchronization client might not upload local changes immedi
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Um grande número de ficheiros no servidor foi eliminado.
+Por favor, confirme se pretende prosseguir com estas exclusões.
+Em alternativa, pode restaurar todos os ficheiros eliminados enviando-os da pasta  &apos;%1&apos; para o servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1724"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Um grande número de ficheiros na sua pasta local &apos;%1&apos; foi eliminado.
+Confirme se pretende prosseguir com estas exclusões.
+Em alternativa, pode restaurar todos os ficheiros eliminados, descarregando-os do servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1725"/>
@@ -3083,7 +3087,9 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>Os ficheiros ou pastas que correspondam a um padrão não serão sincronizados.
+
+Os itens cuja eliminação é permitida serão eliminados se impedirem a remoção de um diretório. Isto é útil para metadados.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="107"/>
@@ -4767,7 +4773,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="758"/>
         <source>Internal link</source>
-        <translation type="unfinished"/>
+        <translation>Ligação interna</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="760"/>
@@ -5297,7 +5303,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="216"/>
         <source>See below for warnings</source>
-        <translation type="unfinished"/>
+        <translation>Veja abaixo os avisos.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="285"/>
