@@ -1630,12 +1630,12 @@ This action will abort any currently running synchronization.</source>
         <translation>หมดเวลา</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="299"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="297"/>
         <source>The configured server for this client is too old</source>
         <translation>เซิร์ฟเวอร์ที่กำหนดค่าสำหรับไคลเอ็นต์นี้เก่าเกินไป</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="300"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="298"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>กรุณาอัปเดตเซิร์ฟเวอร์เป็นรุ่นใหม่ล่าสุดและเริ่มต้นไคลเอ็นต์ใหม่</translation>
     </message>
@@ -4230,7 +4230,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1365"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1368"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation type="unfinished"/>
     </message>
@@ -4250,44 +4250,44 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>พื้นที่ว่างในดิสก์น้อยกว่า %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="858"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="861"/>
         <source>File was deleted from server</source>
         <translation>ไฟล์ถูกลบออกจากเซิร์ฟเวอร์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="930"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="933"/>
         <source>The file could not be downloaded completely.</source>
         <translation>ไม่สามารถดาวน์โหลดไฟล์ได้ครบถ้วน</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="937"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="940"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1199"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1213"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1202"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1216"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1286"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1289"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1397"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1400"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1400"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1403"/>
         <source>The file %1 is currently in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="492"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1315"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1318"/>
         <source>File has changed since discovery</source>
         <translation>ไฟล์มีการเปลี่ยนแปลงตั้งแต่ถูกพบ</translation>
     </message>

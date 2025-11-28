@@ -1635,12 +1635,12 @@ This action will abort any currently running synchronization.</source>
         <translation>Λήξη χρόνου</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="299"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="297"/>
         <source>The configured server for this client is too old</source>
         <translation>Ο ρυθμισμένος διακομιστής για αυτό το δέκτη είναι πολύ παλιός</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="300"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="298"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Παρακαλώ ενημερώστε το διακομιστή στη νεώτερη έκδοση και επανεκκινήστε το δέκτη.</translation>
     </message>
@@ -4247,7 +4247,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1365"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1368"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Αδυναμία διαγραφής εγγραφής αρχείου %1 από την τοπική ΒΔ</translation>
     </message>
@@ -4267,44 +4267,44 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Ο διαθέσιμος χώρος στο δίσκο είναι λιγότερος από %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="858"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="861"/>
         <source>File was deleted from server</source>
         <translation>Το αρχείο διαγράφηκε από τον διακομιστή</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="930"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="933"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Η λήψη του αρχείου δεν ολοκληρώθηκε.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="937"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="940"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation>Το αρχείο που λήφθηκε είναι κενό, αλλά ο διακομιστής είπε ότι θα έπρεπε να ήταν %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1199"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1213"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1202"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1216"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
         <translation>Το αρχείο %1 έχει μη έγκυρο χρόνο τροποποίησης όπως αναφέρει ο διακομιστής. Μην το αποθηκεύσετε.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1286"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1289"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>Το αρχείο %1 λήφθηκε αλλά προκλήθηκε διένεξη με το όνομα ενός τοπικού αρχείου!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1397"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1400"/>
         <source>Error updating metadata: %1</source>
         <translation>Σφάλμα ενημέρωσης μεταδεδομένων: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1400"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1403"/>
         <source>The file %1 is currently in use</source>
         <translation>Το αρχείο %1 χρησιμοποιείται αυτήν τη στιγμή</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="492"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1315"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1318"/>
         <source>File has changed since discovery</source>
         <translation>Το αρχείο έχει αλλάξει από όταν ανακαλύφθηκε</translation>
     </message>

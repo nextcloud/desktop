@@ -1635,12 +1635,12 @@ This action will abort any currently running synchronization.</source>
         <translation>Тајмаут</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="299"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="297"/>
         <source>The configured server for this client is too old</source>
         <translation>Подешени сервер је сувише стар за ову верзију клијента</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="300"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="298"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Ажурирајте сервер и поново покрените клијента.</translation>
     </message>
@@ -4266,7 +4266,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1365"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1368"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Не може да се обрише фајл запис %1 из локалне базе</translation>
     </message>
@@ -4286,44 +4286,44 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Слободан простор на диску је мањи од %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="858"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="861"/>
         <source>File was deleted from server</source>
         <translation>Фајл је обрисан са сервера</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="930"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="933"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Фајл није могао бити преузет у потпуности.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="937"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="940"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation>Преузети фајл је празан, а сервер је рекао да треба да буде %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1199"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1213"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1202"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1216"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
         <translation>Сервер је пријавио неисправно време измене фајла %1. Немојте да га чувате.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1286"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1289"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>Фајл %1 је преузет, али је изазвао судар са називом локалног фајла!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1397"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1400"/>
         <source>Error updating metadata: %1</source>
         <translation>Грешка приликом ажурирања метаподатака: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1400"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1403"/>
         <source>The file %1 is currently in use</source>
         <translation>Фајл %1 се тренутно користи</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="492"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1315"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1318"/>
         <source>File has changed since discovery</source>
         <translation>Фајл је измењен у међувремену</translation>
     </message>
