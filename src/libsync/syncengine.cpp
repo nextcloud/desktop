@@ -580,7 +580,18 @@ void SyncEngine::startSync()
 
     verStr.append(" SSL library ").append(QSslSocket::sslLibraryVersionString().toUtf8().data());
     verStr.append(" on ").append(Utility::platformName());
-    qCInfo(lcEngine) << verStr;
+    qCInfo(lcEngine) << verStr << "vfs mode: " << _syncOptions._vfs->mode();
+
+    switch (_syncOptions._vfs->mode())
+    {
+    case Vfs::Off:
+        _account->setSynchronizationType(QStringLiteral("classical"));
+    case Vfs::WithSuffix:
+    case Vfs::WindowsCfApi:
+    case Vfs::XAttr:
+        _account->setSynchronizationType(QStringLiteral("virtual"));
+        break;
+    }
 
     // This creates the DB if it does not exist yet.
     if (!_journal->open()) {
