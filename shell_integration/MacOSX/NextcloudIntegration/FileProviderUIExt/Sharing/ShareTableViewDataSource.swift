@@ -20,8 +20,10 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
 
     let kit = NextcloudKit.shared
     let logger: FileProviderLogger
+    let serviceResolver: ServiceResolver
 
     var uiDelegate: ShareViewDataSourceUIDelegate?
+
     var sharesTableView: NSTableView? {
         didSet {
             sharesTableView?.register(shareItemViewNib, forIdentifier: shareItemViewIdentifier)
@@ -31,17 +33,28 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             sharesTableView?.reloadData()
         }
     }
+
     var capabilities: Capabilities?
 
     private(set) var itemURL: URL?
     private(set) var itemServerRelativePath: String?
+
     private(set) var shares: [NKShare] = [] {
-        didSet { Task { @MainActor in sharesTableView?.reloadData() } }
+        didSet {
+            Task { @MainActor in
+                sharesTableView?.reloadData()
+            }
+        }
     }
+
     private(set) var userAgent: String = "Nextcloud-macOS/FileProviderUIExt"
+
     private(set) var account: Account? {
         didSet {
-            guard let account = account else { return }
+            guard let account = account else {
+                return
+            }
+
             kit.appendSession(
                 account: account.ncKitAccount,
                 urlBase: account.serverUrl,
@@ -54,13 +67,15 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         }
     }
 
-    init(log: any FileProviderLogging) {
+    init(serviceResolver: ServiceResolver, log: any FileProviderLogging) {
         self.logger = FileProviderLogger(category: "ShareTableViewDataSource", log: log)
+        self.serviceResolver = serviceResolver
     }
 
     func loadItem(url: URL) {
         itemServerRelativePath = nil
         itemURL = url
+
         Task {
             await reload()
         }
@@ -79,12 +94,14 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             presentError(String(localized: "No item URL, cannot reload data!"))
             return
         }
+
         guard let itemIdentifier = await withCheckedContinuation({
             (continuation: CheckedContinuation<NSFileProviderItemIdentifier?, Never>) -> Void in
-            NSFileProviderManager.getIdentifierForUserVisibleFile(
-                at: itemURL
-            ) { identifier, domainIdentifier, error in
-                defer { continuation.resume(returning: identifier) }
+            NSFileProviderManager.getIdentifierForUserVisibleFile(at: itemURL) { identifier, domainIdentifier, error in
+                defer {
+                    continuation.resume(returning: identifier)
+                }
+
                 guard error == nil else {
                     self.presentError("No item with identifier: \(error.debugDescription)")
                     return
@@ -96,12 +113,12 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         }
 
         do {
-            let connection = try await serviceConnection(url: itemURL, interruptionHandler: {
-                self.logger.error("Service connection interrupted")
-            })
+            let connection = try await serviceResolver.getService(at: itemURL)
+
             if let acquiredUserAgent = await connection.userAgent() {
                 userAgent = acquiredUserAgent as String
             }
+
             guard let serverPath = await connection.itemServerPath(identifier: itemIdentifier),
                   let credentials = await connection.credentials() as? Dictionary<String, String>,
                   let convertedAccount = Account(dictionary: credentials),
@@ -111,33 +128,40 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 reattempt()
                 return
             }
+
             let serverPathString = serverPath as String
             itemServerRelativePath = serverPathString
             account = convertedAccount
             await sharesTableView?.deselectAll(self)
             capabilities = await fetchCapabilities()
-            guard capabilities != nil else { return }
+
+            guard capabilities != nil else {
+                return
+            }
+
             guard capabilities?.filesSharing?.apiEnabled == true else {
                 presentError(String(localized: "Server does not support shares."))
                 return
             }
+
             guard let account else {
                 presentError(String(localized: "Account data is unavailable, cannot reload data!"))
                 return
             }
+
             guard let itemMetadata = await fetchItemMetadata(
                 itemRelativePath: serverPathString, account: account, kit: kit
             ) else {
                 presentError(String(localized: "Unable to retrieve file metadata…"))
                 return
             }
+
             guard itemMetadata.permissions.contains("R") == true else {
                 presentError(String(localized: "This file cannot be shared."))
                 return
             }
-            shares = await fetch(
-                itemIdentifier: itemIdentifier, itemRelativePath: serverPathString
-            )
+
+            shares = await fetch(itemIdentifier: itemIdentifier, itemRelativePath: serverPathString)
             shares.append(Self.generateInternalShare(for: itemMetadata))
         } catch let error {
             presentError(String(format: String(localized: "Could not reload data: %@, will try again."), error.localizedDescription))
@@ -145,11 +169,16 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         }
     }
 
-    private func fetch(
-        itemIdentifier: NSFileProviderItemIdentifier, itemRelativePath: String
-    ) async -> [NKShare] {
-        Task { @MainActor in uiDelegate?.fetchStarted() }
-        defer { Task { @MainActor in uiDelegate?.fetchFinished() } }
+    private func fetch(itemIdentifier: NSFileProviderItemIdentifier, itemRelativePath: String) async -> [NKShare] {
+        Task { @MainActor in
+            uiDelegate?.fetchStarted()
+        }
+
+        defer {
+            Task { @MainActor in
+                uiDelegate?.fetchFinished()
+            }
+        }
 
         let rawIdentifier = itemIdentifier.rawValue
         logger.info("Fetching shares for item \(rawIdentifier)")
@@ -162,12 +191,14 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         let parameter = NKShareParameter(path: itemRelativePath)
 
         return await withCheckedContinuation { continuation in
-            kit.readShares(
-                parameters: parameter, account: account.ncKitAccount
-            ) { account, shares, data, error in
+            kit.readShares(parameters: parameter, account: account.ncKitAccount) { account, shares, data, error in
                 let shareCount = shares?.count ?? 0
                 self.logger.info("Received \(shareCount) shares")
-                defer { continuation.resume(returning: shares ?? []) }
+
+                defer {
+                    continuation.resume(returning: shares ?? [])
+                }
+
                 guard error == .success else {
                     self.presentError(String(localized: "Error fetching shares: \(error.errorDescription)"))
                     return
@@ -184,6 +215,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         internalShare.displaynameOwner = file.ownerDisplayName
         internalShare.displaynameFileOwner = file.ownerDisplayName
         internalShare.path = file.path
+
         return internalShare
     }
 
@@ -209,7 +241,10 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
 
     private func presentError(_ errorString: String) {
         logger.error("\(errorString)")
-        Task { @MainActor in self.uiDelegate?.showError(errorString) }
+
+        Task { @MainActor in
+            self.uiDelegate?.showError(errorString)
+        }
     }
 
     // MARK: - NSTableViewDataSource protocol methods
@@ -220,26 +255,31 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
 
     // MARK: - NSTableViewDelegate protocol methods
 
-    @objc func tableView(
-        _ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int
-    ) -> NSView? {
+    @objc func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let share = shares[row]
-        guard let view = tableView.makeView(
-            withIdentifier: shareItemViewIdentifier, owner: self
-        ) as? ShareTableItemView else {
+
+        guard let view = tableView.makeView(withIdentifier: shareItemViewIdentifier, owner: self) as? ShareTableItemView else {
             logger.error("Acquired item view from table is not a share item view!")
             return nil
         }
+
         view.share = share
         return view
     }
 
     @objc func tableViewSelectionDidChange(_ notification: Notification) {
         guard let selectedRow = sharesTableView?.selectedRow, selectedRow >= 0 else {
-            Task { @MainActor in uiDelegate?.hideOptions(self) }
+            Task { @MainActor in
+                uiDelegate?.hideOptions(self)
+            }
+
             return
         }
+
         let share = shares[selectedRow]
-        Task { @MainActor in uiDelegate?.showOptions(share: share) }
+
+        Task { @MainActor in
+            uiDelegate?.showOptions(share: share)
+        }
     }
 }

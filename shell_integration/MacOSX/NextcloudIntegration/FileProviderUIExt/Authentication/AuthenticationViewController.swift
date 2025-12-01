@@ -23,6 +23,8 @@ class AuthenticationViewController: NSViewController {
         }
     }
 
+    var serviceResolver: ServiceResolver?
+
     @IBOutlet var activityDescription: NSTextField!
     @IBOutlet var cancellationButton: NSButton!
     @IBOutlet var progressIndicator: NSProgressIndicator!
@@ -96,9 +98,15 @@ class AuthenticationViewController: NSViewController {
 
         let url = try await manager.getUserVisibleURL(for: .rootContainer)
 
-        let connection = try await serviceConnection(url: url, interruptionHandler: {
-            self.logger.error("Service connection interrupted")
-        })
+        guard let log else {
+            fatalError("Log is not available yet!")
+        }
+
+        guard let serviceResolver else {
+            fatalError("Service resolver is not available yet!")
+        }
+
+        let connection = try await serviceResolver.getService(at: url)
 
         if let error = await connection.authenticate() {
             logger.error("An error was returned from the authentication call: \(error.localizedDescription)")
