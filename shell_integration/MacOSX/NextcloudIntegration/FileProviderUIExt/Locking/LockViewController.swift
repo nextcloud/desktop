@@ -19,6 +19,7 @@ class LockViewController: NSViewController {
     let locking: Bool
     let log: any FileProviderLogging
     let logger: FileProviderLogger
+    let serviceResolver: ServiceResolver
 
     @IBOutlet weak var fileNameIcon: NSImageView!
     @IBOutlet weak var fileNameLabel: NSTextField!
@@ -35,11 +36,13 @@ class LockViewController: NSViewController {
         return parent as? DocumentActionViewController
     }
 
-    init(_ itemIdentifiers: [NSFileProviderItemIdentifier], locking: Bool, log: any FileProviderLogging) {
+    init(_ itemIdentifiers: [NSFileProviderItemIdentifier], locking: Bool, serviceResolver: ServiceResolver, log: any FileProviderLogging) {
         self.itemIdentifiers = itemIdentifiers
         self.locking = locking
         self.log = log
         self.logger = FileProviderLogger(category: "LockViewController", log: log)
+        self.serviceResolver = serviceResolver
+
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -161,9 +164,7 @@ class LockViewController: NSViewController {
         }
 
         do {
-            let connection = try await serviceConnection(url: localItemUrl, interruptionHandler: {
-                self.presentError("File provider service connection interrupted!")
-            })
+            let connection = try await serviceResolver.getService(at: localItemUrl)
 
             guard let serverPath = await connection.itemServerPath(identifier: itemIdentifier),
                   let credentials = await connection.credentials() as? Dictionary<String, String>,

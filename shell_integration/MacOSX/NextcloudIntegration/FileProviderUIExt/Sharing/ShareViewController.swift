@@ -13,6 +13,7 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
     let itemIdentifiers: [NSFileProviderItemIdentifier]
     let log: any FileProviderLogging
     let logger: FileProviderLogger
+    let serviceResolver: ServiceResolver
 
     @IBOutlet weak var fileNameIcon: NSImageView!
     @IBOutlet weak var fileNameLabel: NSTextField!
@@ -37,11 +38,13 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
         return parent as? DocumentActionViewController
     }
 
-    init(_ itemIdentifiers: [NSFileProviderItemIdentifier], log: any FileProviderLogging) {
+    init(_ itemIdentifiers: [NSFileProviderItemIdentifier], serviceResolver: ServiceResolver, log: any FileProviderLogging) {
         self.itemIdentifiers = itemIdentifiers
         self.log = log
         self.logger = FileProviderLogger(category: "ShareViewController", log: log)
-        self.shareDataSource = ShareTableViewDataSource(log: log)
+        self.shareDataSource = ShareTableViewDataSource(serviceResolver: serviceResolver, log: log)
+        self.serviceResolver = serviceResolver
+
         super.init(nibName: nil, bundle: nil)
 
         guard let firstItem = itemIdentifiers.first else {
