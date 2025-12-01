@@ -120,11 +120,11 @@ void FileSystem::setFileReadOnly(const QString &filename, bool readonly)
     auto newFileAttributes = fileAttributes;
     if (readonly) {
         // replace any existing access denied ACE on this object with one that allows us to at least modify the file attributes
-        setAclPermission(filename, FileSystem::FolderPermissions::ReadOnly, false);
+        setAclPermission(filename, FileSystem::FolderPermissions::ReadOnly);
         newFileAttributes = newFileAttributes | FILE_ATTRIBUTE_READONLY;
     } else {
         // remove the access denied ACE from this object in case we have a too restrictive setting that does not allow to modify file attributes
-        setAclPermission(filename, FileSystem::FolderPermissions::ReadWrite, false);
+        setAclPermission(filename, FileSystem::FolderPermissions::ReadWrite);
         newFileAttributes = newFileAttributes & (~FILE_ATTRIBUTE_READONLY);
     }
 
@@ -755,7 +755,7 @@ QString FileSystem::pathtoUNC(const QString &_str)
     return QStringLiteral(R"(\\?\)") + str;
 }
 
-bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions permissions, bool applyAlsoToFiles)
+bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions permissions)
 {
     Utility::UniqueHandle fileHandle;
 
@@ -863,34 +863,6 @@ bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions p
         }
         newAceIndex++;
     }
-
-#if 0
-    // TODO: figure out if this is necessary; before 4.0.2 this did not work at all
-    //       --> currentFolder used to be the parent directory of `path`, so this ended up to be
-    //           iterating over nonexisting entries inside `path`.
-    //           due to the early `return` in the loop this may have never reached the call to
-    //           what-used-to-be `SetFileSecurityW` (now `SetSecurityInfo`)
-    if (safePathFileInfo.isDir() && applyAlsoToFiles) {
-        const auto currentFolder = QDir{path};
-        const auto childFiles = currentFolder.entryList(QDir::Filter::Files);
-        for (const auto &oneEntry : childFiles) {
-            const auto childFile = joinPath(path, oneEntry);
-            const auto rawChildFile = reinterpret_cast<const wchar_t *>(childFile.utf16());;
-
-            // apparently as long as we do not attempt to read the file contents we will not trigger an implicit hydration ourselves
-            Utility::UniqueHandle childFileHandle(CreateFileW(rawChildFile, desiredAccess, shareMode, nullptr, creationDisposition, flagsAndAttributes, nullptr));
-            if (childFileHandle.get() == INVALID_HANDLE_VALUE) {
-                qCWarning(lcFileSystem).nospace() << "CreateFileW failed, path=" << childFile << " errorMessage=" << Utility::formatWinError(GetLastError());
-                return false;
-            }
-
-            if (const auto lastError = SetSecurityInfo(childFileHandle.get(), SE_FILE_OBJECT, PROTECTED_DACL_SECURITY_INFORMATION | securityInfo, nullptr, nullptr, newDacl.get(), nullptr); lastError != ERROR_SUCCESS) {
-                qCWarning(lcFileSystem).nospace() << "SetSecurityInfo failed, path=" << childFile << " errorMessage=" << Utility::formatWinError(lastError);
-                return false;
-            }
-        }
-    }
-#endif
 
     if (const auto lastError = SetSecurityInfo(fileHandle.get(), SE_FILE_OBJECT, PROTECTED_DACL_SECURITY_INFORMATION | securityInfo, nullptr, nullptr, newDacl.get(), nullptr); lastError != ERROR_SUCCESS) {
         qCWarning(lcFileSystem).nospace() << "SetSecurityInfo failed, path=" << path << " errorMessage=" << Utility::formatWinError(lastError);
