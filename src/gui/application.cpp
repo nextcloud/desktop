@@ -296,10 +296,8 @@ Application::Application(int &argc, char **argv)
     }
 
     // In the config, set the enterprise update channel to invalid, so it can be bumped up
-    // when recieving server capabilites.
-    ConfigFile configFile;
-    constexpr bool forced = true;
-    configFile.setDesktopEnterpriseChannel(UpdateChannel::fromString("invalid").toString(), forced);
+    // when recieving server capabilities.
+    ConfigFile().setDesktopEnterpriseChannel(UpdateChannel::Invalid.toString());
 
     if (_theme->doNotUseProxy()) {
         ConfigFile().setProxyType(QNetworkProxy::NoProxy);

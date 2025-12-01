@@ -1212,17 +1212,10 @@ QString ConfigFile::desktopEnterpriseChannel() const
     return settings.value(QLatin1String(desktopEnterpriseChannelName), defaultUpdateChannelName).toString();
 }
 
-void ConfigFile::setDesktopEnterpriseChannel(const QString &channel, bool forced)
+void ConfigFile::setDesktopEnterpriseChannel(const QString &channel)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    if (forced) {
-        settings.setValue(QLatin1String(desktopEnterpriseChannelName), UpdateChannel::fromString(channel).toString());
-    } else {
-        const auto currentEnterpriseChannel = UpdateChannel::fromString(desktopEnterpriseChannel());
-        const auto newEnterpriseUpdateChannel = UpdateChannel::fromString(channel);
-        settings.setValue(QLatin1String(desktopEnterpriseChannelName),
-                          UpdateChannel::mostStable(currentEnterpriseChannel, newEnterpriseUpdateChannel).toString());
-    }
+    settings.setValue(QLatin1String(desktopEnterpriseChannelName), UpdateChannel::fromString(channel).toString());
 }
 
 QString ConfigFile::language() const

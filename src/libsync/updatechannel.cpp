@@ -30,6 +30,12 @@ UpdateChannel UpdateChannel::mostStable(const UpdateChannel &a, const UpdateChan
     return std::max(a, b);
 }
 
+const UpdateChannel UpdateChannel::Invalid = UpdateChannel::fromString("invalid");
+const UpdateChannel UpdateChannel::Daily = UpdateChannel::fromString("daily");
+const UpdateChannel UpdateChannel::Beta = UpdateChannel::fromString("beta");
+const UpdateChannel UpdateChannel::Stable = UpdateChannel::fromString("stable");
+const UpdateChannel UpdateChannel::Enterprise = UpdateChannel::fromString("enterprise");
+
 UpdateChannel UpdateChannel::fromString(const QString &channelName) // static
 {
     using enum ChannelName;

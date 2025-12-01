@@ -1273,6 +1273,11 @@ void Account::setServerHasValidSubscription(bool valid)
     _serverHasValidSubscription = valid;
 }
 
+UpdateChannel Account::enterpriseUpdateChannel() const
+{
+    return _enterpriseUpdateChannel;
+}
+
 void Account::updateServerSubcription()
 {
     ConfigFile currentConfig;
@@ -1287,11 +1292,14 @@ void Account::updateServerSubcription()
 
 void Account::updateDesktopEnterpriseChannel()
 {
+    const auto capabilityEnterpriseChannel = UpdateChannel::fromString(_capabilities.desktopEnterpriseChannel());
+    _enterpriseUpdateChannel = capabilityEnterpriseChannel;
+    qCInfo(lcAccount()) << "lulu | enterp chn updated: " << _enterpriseUpdateChannel.toString() << "  str: " << _capabilities.desktopEnterpriseChannel();
+
     ConfigFile currentConfig;
-    const auto serverEnterpriseChannel = UpdateChannel::fromString(_capabilities.desktopEnterpriseChannel());
-    const auto currentEnterpriseChannel = UpdateChannel::fromString(currentConfig.desktopEnterpriseChannel());
-    if (serverEnterpriseChannel > currentEnterpriseChannel) {
-        currentConfig.setDesktopEnterpriseChannel(serverEnterpriseChannel.toString());
+    const auto configEnterpriseChannel = UpdateChannel::fromString(currentConfig.desktopEnterpriseChannel());
+    if (capabilityEnterpriseChannel > configEnterpriseChannel) {
+        currentConfig.setDesktopEnterpriseChannel(capabilityEnterpriseChannel.toString());
     }
 }
 
