@@ -372,7 +372,7 @@ bool FileSystem::setFolderPermissions(const QString &path,
     // current read-only folder ACL needs to be removed from files also when making a folder read-write
     // we currently have a too limited set of authorization for files when applying the restrictive ACL for folders on the child files
     setFileReadOnly(path, permissions == FileSystem::FolderPermissions::ReadOnly);
-    setAclPermission(path, permissions, permissions == FileSystem::FolderPermissions::ReadWrite ? true : false);
+    setAclPermission(path, permissions);
 
     permissionsDidChange = true;
 #else
