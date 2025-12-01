@@ -185,11 +185,11 @@ void OwncloudSetupWizard::slotCheckServer(const QUrl &serverURL, const OCC::Wiza
     if (!_ocWizard->_clientSslCertificate.isNull()) {
         sslConfiguration.setLocalCertificate(_ocWizard->_clientSslCertificate);
         sslConfiguration.setPrivateKey(_ocWizard->_clientSslKey);
+        // Merge client side CA with system CA
+        auto ca = sslConfiguration.systemCaCertificates();
+        ca.append(_ocWizard->_clientSslCaCertificates);
+        sslConfiguration.setCaCertificates(ca);
     }
-    // Be sure to merge the CAs
-    auto ca = sslConfiguration.systemCaCertificates();
-    ca.append(_ocWizard->_clientSslCaCertificates);
-    sslConfiguration.setCaCertificates(ca);
     account->setSslConfiguration(sslConfiguration);
 
     // Make sure TCP connections get re-established
