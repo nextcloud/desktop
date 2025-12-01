@@ -728,6 +728,11 @@ AccountState *AccountManager::addAccount(const AccountPtr &newAccount)
 
     const auto newAccountState = new AccountState(newAccount);
     addAccountState(newAccountState);
+
+    if (_accounts.size() == 1) {
+        emit(accountListInitialized());
+    }
+
     return newAccountState;
 }
 
