@@ -175,7 +175,7 @@ namespace FileSystem {
     std::filesystem::perms OCSYNC_EXPORT filePermissionsWin(const QString &filename);
     void OCSYNC_EXPORT setFilePermissionsWin(const QString &filename, const std::filesystem::perms &perms);
 
-    bool OCSYNC_EXPORT setAclPermission(const QString &path, FileSystem::FolderPermissions permissions, bool applyAlsoToFiles);
+    bool OCSYNC_EXPORT setAclPermission(const QString &path, FileSystem::FolderPermissions permissions);
 #endif
 
     /**
