@@ -29,6 +29,12 @@ public:
     static UpdateChannel fromString(const QString &channelName);
     static UpdateChannel mostStable(const UpdateChannel &a, const UpdateChannel &b);
 
+    static const UpdateChannel Invalid;
+    static const UpdateChannel Daily;
+    static const UpdateChannel Beta;
+    static const UpdateChannel Stable;
+    static const UpdateChannel Enterprise;
+
 private:
     UpdateChannel();
     UpdateChannel &setChannelName(ChannelName channelName);
