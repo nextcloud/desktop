@@ -4,19 +4,16 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include "config.h"
+#include "configfile.h"
 
 #include "common/asserts.h"
 #include "common/utility.h"
-#include "configfile.h"
+#include "config.h"
+#include "creds/keychainchunk.h"
+#include "csync_exclude.h"
 #include "theme.h"
 #include "updatechannel.h"
 #include "version.h"
-
-#include "creds/abstractcredentials.h"
-#include "creds/keychainchunk.h"
-
-#include "csync_exclude.h"
 
 #ifndef TOKEN_AUTH_ONLY
 #include <QWidget>
@@ -718,8 +715,12 @@ QString ConfigFile::currentUpdateChannel() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     const auto currentChannel = UpdateChannel::fromString(settings.value(QLatin1String(updateChannelC), defaultUpdateChannel()).toString());
-    const auto enterpriseChannel = UpdateChannel::fromString(desktopEnterpriseChannel());
-    return UpdateChannel::mostStable(currentChannel, enterpriseChannel).toString();
+    if (serverHasValidSubscription()) {
+        const auto enterpriseChannel = UpdateChannel::fromString(desktopEnterpriseChannel());
+        return UpdateChannel::mostStable(currentChannel, enterpriseChannel).toString();
+    }
+
+    return currentChannel.toString();
 }
 
 void ConfigFile::setUpdateChannel(const QString &channel)
@@ -1211,12 +1212,17 @@ QString ConfigFile::desktopEnterpriseChannel() const
     return settings.value(QLatin1String(desktopEnterpriseChannelName), defaultUpdateChannelName).toString();
 }
 
-void ConfigFile::setDesktopEnterpriseChannel(const QString &channel)
+void ConfigFile::setDesktopEnterpriseChannel(const QString &channel, bool forced)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    const auto currentEnterpriseChannel = UpdateChannel::fromString(desktopEnterpriseChannel());
-    const auto newEnterpriseUpdateChannel = UpdateChannel::fromString(channel);
-    settings.setValue(QLatin1String(desktopEnterpriseChannelName), UpdateChannel::mostStable(currentEnterpriseChannel, newEnterpriseUpdateChannel).toString());
+    if (forced) {
+        settings.setValue(QLatin1String(desktopEnterpriseChannelName), UpdateChannel::fromString(channel).toString());
+    } else {
+        const auto currentEnterpriseChannel = UpdateChannel::fromString(desktopEnterpriseChannel());
+        const auto newEnterpriseUpdateChannel = UpdateChannel::fromString(channel);
+        settings.setValue(QLatin1String(desktopEnterpriseChannelName),
+                          UpdateChannel::mostStable(currentEnterpriseChannel, newEnterpriseUpdateChannel).toString());
+    }
 }
 
 QString ConfigFile::language() const

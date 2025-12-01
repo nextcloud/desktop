@@ -236,7 +236,7 @@ public:
     void setServerHasValidSubscription(bool valid);
 
     [[nodiscard]] QString desktopEnterpriseChannel() const;
-    void setDesktopEnterpriseChannel(const QString &channel);
+    void setDesktopEnterpriseChannel(const QString &channel, bool forced = false);
 
     /// Enforce a specific language used for the UI
     [[nodiscard]] QString language() const;
