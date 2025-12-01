@@ -116,26 +116,21 @@ void FileSystem::setFileReadOnly(const QString &filename, bool readonly)
         return;
     }
 
-    // current read-only folder ACL needs to be removed from files also when making a folder read-write
-    // we currently have a too limited set of authorization for files when applying the restrictive ACL for folders on the child files
-    // the file's attributes can only be modified if there's no access denied ACE present
-    setAclPermission(filename, FileSystem::FolderPermissions::ReadWrite, false);
 
     auto newFileAttributes = fileAttributes;
     if (readonly) {
+        // replace any existing access denied ACE on this object with one that allows us to at least modify the file attributes
+        setAclPermission(filename, FileSystem::FolderPermissions::ReadOnly);
         newFileAttributes = newFileAttributes | FILE_ATTRIBUTE_READONLY;
     } else {
+        // remove the access denied ACE from this object in case we have a too restrictive setting that does not allow to modify file attributes
+        setAclPermission(filename, FileSystem::FolderPermissions::ReadWrite);
         newFileAttributes = newFileAttributes & (~FILE_ATTRIBUTE_READONLY);
     }
 
     if (SetFileAttributesW(rawWindowsFilename, newFileAttributes) == 0) {
         const auto lastError = GetLastError();
         qCWarning(lcFileSystem()).nospace() << "SetFileAttributesW failed, action=" << (readonly ? "readonly" : "read write") << " filename=" << windowsFilename << " lastError=" << lastError << " errorMessage=" << Utility::formatWinError(lastError);
-    }
-
-    if (readonly) {
-        // re-add the previously removed readonly ACE
-        setAclPermission(filename, FileSystem::FolderPermissions::ReadWrite, true);
     }
 
     return;
@@ -760,7 +755,7 @@ QString FileSystem::pathtoUNC(const QString &_str)
     return QStringLiteral(R"(\\?\)") + str;
 }
 
-bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions permissions, bool applyAlsoToFiles)
+bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions permissions)
 {
     Utility::UniqueHandle fileHandle;
 
@@ -776,10 +771,11 @@ bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions p
     const auto safePathFileInfo = QFileInfo{path};
 
     // CreateFileW is known to work with long paths in the \\?\ variant
-    constexpr DWORD desiredAccess = READ_CONTROL | WRITE_DAC;
+    // MAXIMUM_ALLOWED will not propagate ACEs to children when setting the DACL
+    constexpr DWORD desiredAccess = READ_CONTROL | WRITE_DAC | MAXIMUM_ALLOWED;
     constexpr DWORD shareMode = FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE;
     constexpr DWORD creationDisposition = OPEN_EXISTING;
-    constexpr DWORD flagsAndAttributes = FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT | FILE_FLAG_OPEN_NO_RECALL;
+    constexpr DWORD flagsAndAttributes = FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT;
     fileHandle.reset(CreateFileW(rawPath, desiredAccess, shareMode, nullptr, creationDisposition, flagsAndAttributes, nullptr));
 
     if (fileHandle.get() == INVALID_HANDLE_VALUE) {
@@ -828,8 +824,8 @@ bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions p
 
     if (permissions == FileSystem::FolderPermissions::ReadOnly) {
         // the access denied ACE needs to appear at the start of the ACL
-        if (!AddAccessDeniedAceEx(newDacl.get(), ACL_REVISION, OBJECT_INHERIT_ACE | CONTAINER_INHERIT_ACE,
-                                  FILE_DELETE_CHILD | DELETE | FILE_WRITE_DATA | FILE_WRITE_ATTRIBUTES | FILE_WRITE_EA | FILE_APPEND_DATA, sid.get())) {
+        if (!AddAccessDeniedAceEx(newDacl.get(), ACL_REVISION, NO_PROPAGATE_INHERIT_ACE,
+                                  FILE_DELETE_CHILD | DELETE | FILE_WRITE_DATA | FILE_WRITE_EA | FILE_APPEND_DATA, sid.get())) {
             qCWarning(lcFileSystem).nospace() << "AddAccessDeniedAceEx failed, path=" << path << " errorMessage=" << Utility::formatWinError(GetLastError());
             return false;
         }
@@ -858,7 +854,6 @@ bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions p
         }
 
         if (!AddAce(newDacl.get(), ACL_REVISION, newAceIndex, currentAce, currentAceHeader->AceSize)) {
-            const auto lastError = GetLastError();
             qCWarning(lcFileSystem).nospace() << "AddAce failed,"
                 << " path=" << path
                 << " errorMessage=" << Utility::formatWinError(GetLastError())
@@ -867,34 +862,6 @@ bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions p
             return false;
         }
         newAceIndex++;
-    }
-
-    if (safePathFileInfo.isDir() && applyAlsoToFiles) {
-        const auto currentFolder = QDir{path};
-        const auto childFiles = currentFolder.entryList(QDir::Filter::Files);
-        for (const auto &oneEntry : childFiles) {
-            const auto childFile = joinPath(path, oneEntry);
-
-            const auto rawChildFile = reinterpret_cast<const wchar_t *>(childFile.utf16());;
-            const auto attributes = GetFileAttributesW(rawChildFile);
-
-            // testing if that could be a pure virtual placeholder file (i.e. CfApi file without data)
-            // we do not want to trigger implicit hydration ourself
-            if ((attributes & FILE_ATTRIBUTE_SPARSE_FILE) != 0) {
-                continue;
-            }
-
-            Utility::UniqueHandle childFileHandle(CreateFileW(rawChildFile, desiredAccess, shareMode, nullptr, creationDisposition, flagsAndAttributes, nullptr));
-            if (childFileHandle.get() == INVALID_HANDLE_VALUE) {
-                qCWarning(lcFileSystem).nospace() << "CreateFileW failed, path=" << childFile << " errorMessage=" << Utility::formatWinError(GetLastError());
-                return false;
-            }
-
-            if (const auto lastError = SetSecurityInfo(childFileHandle.get(), SE_FILE_OBJECT, PROTECTED_DACL_SECURITY_INFORMATION | securityInfo, nullptr, nullptr, newDacl.get(), nullptr); lastError != ERROR_SUCCESS) {
-                qCWarning(lcFileSystem).nospace() << "SetSecurityInfo failed, path=" << childFile << " errorMessage=" << Utility::formatWinError(lastError);
-                return false;
-            }
-        }
     }
 
     if (const auto lastError = SetSecurityInfo(fileHandle.get(), SE_FILE_OBJECT, PROTECTED_DACL_SECURITY_INFORMATION | securityInfo, nullptr, nullptr, newDacl.get(), nullptr); lastError != ERROR_SUCCESS) {
