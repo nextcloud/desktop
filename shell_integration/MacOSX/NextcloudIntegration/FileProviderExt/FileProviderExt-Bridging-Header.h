@@ -7,5 +7,6 @@
 #define FileProviderExt_Bridging_Header_h
 
 #import "Services/ClientCommunicationProtocol.h"
+#import "Services/MainAppServiceProtocol.h"
 
 #endif /* FileProviderExt_Bridging_Header_h */

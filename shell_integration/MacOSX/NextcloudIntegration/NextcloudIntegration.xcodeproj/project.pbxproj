@@ -54,6 +54,7 @@
 		AA7F17E72E7038370000E928 /* NSError+FileProviderErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7F17E62E7038340000E928 /* NSError+FileProviderErrorCode.swift */; };
 		AA9987862E72B6EF00B2C428 /* NextcloudKit+clearAccountErrorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9987852E72B6DB00B2C428 /* NextcloudKit+clearAccountErrorState.swift */; };
 		AAA69D932E3BB09900BBD44D /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = AAA69D922E3BB09900BBD44D /* Localizable.xcstrings */; };
+		AAB4F2142ED9EB12004E4AC5 /* MainAppServiceProtocol.h in Sources */ = {isa = PBXBuildFile; fileRef = AAB4F2132ED9EB06004E4AC5 /* MainAppServiceProtocol.h */; };
 		AAC00D2A2E37B29D006010FE /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = AAC00D292E37B29D006010FE /* Localizable.xcstrings */; };
 		AAF19A682E8D5B4E005FE5B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAF19A672E8D5B4E005FE5B0 /* Assets.xcassets */; };
 		AAF19A7A2E8D5B63005FE5B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAF19A792E8D5B63005FE5B0 /* Assets.xcassets */; };
@@ -206,6 +207,7 @@
 		AA826BEE2E8EAA7500CE49C4 /* Build.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Build.xcconfig; sourceTree = "<group>"; };
 		AA9987852E72B6DB00B2C428 /* NextcloudKit+clearAccountErrorState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NextcloudKit+clearAccountErrorState.swift"; sourceTree = "<group>"; };
 		AAA69D922E3BB09900BBD44D /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		AAB4F2132ED9EB06004E4AC5 /* MainAppServiceProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainAppServiceProtocol.h; sourceTree = "<group>"; };
 		AAC00D292E37B29D006010FE /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		AAF19A672E8D5B4E005FE5B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AAF19A792E8D5B63005FE5B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 		5350E4C72B0C368B00F276CB /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				AAB4F2132ED9EB06004E4AC5 /* MainAppServiceProtocol.h */,
 				5350E4E72B0C514400F276CB /* ClientCommunicationProtocol.h */,
 				5350E4E82B0C534A00F276CB /* ClientCommunicationService.swift */,
 				537630962B860D920026BFAB /* FPUIExtensionService.swift */,
@@ -868,6 +871,7 @@
 				53ED473029C9CE0B00795DB1 /* FileProviderExtension+ClientInterface.swift in Sources */,
 				538E396D27F4765000FA63D5 /* FileProviderExtension.swift in Sources */,
 				AA7F17E72E7038370000E928 /* NSError+FileProviderErrorCode.swift in Sources */,
+				AAB4F2142ED9EB12004E4AC5 /* MainAppServiceProtocol.h in Sources */,
 				536EFBF7295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift in Sources */,
 				AA02B2AB2E7048C800C72B34 /* Keychain.swift in Sources */,
 				537630972B860D920026BFAB /* FPUIExtensionService.swift in Sources */,
