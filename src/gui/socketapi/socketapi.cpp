@@ -385,7 +385,6 @@ void SocketApi::slotReadSocket()
             if (out == -1) {
                 listener->sendError(QStringLiteral("Function %1 not found").arg(QString::fromUtf8(functionWithArguments)));
             }
-            ASSERT(out != -1)
             return out;
         }();
 
