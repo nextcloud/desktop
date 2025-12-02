@@ -32,14 +32,12 @@ public:
 
     [[nodiscard]] FileProviderXPC *xpc() const;
     [[nodiscard]] FileProviderDomainManager *domainManager() const;
-    [[nodiscard]] FileProviderSocketServer *socketServer() const;
 
 private slots:
     void configureXPC();
 
 private:
     std::unique_ptr<FileProviderDomainManager> _domainManager;
-    std::unique_ptr<FileProviderSocketServer> _socketServer;
     std::unique_ptr<FileProviderXPC> _xpc;
 
     static FileProvider *_instance;

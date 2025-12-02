@@ -114,7 +114,7 @@ ownCloudGui::ownCloudGui(Application *parent)
 
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    connect(Mac::FileProvider::instance()->socketServer(), &Mac::FileProviderSocketServer::syncStateChanged, this, &ownCloudGui::slotComputeOverallSyncStatus);
+    // FIXME: Wire up the MainAppService with the slot!
 #endif
 
     connect(Logger::instance(), &Logger::guiLog, this, &ownCloudGui::slotShowTrayMessage);
@@ -325,27 +325,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
             if (!fileProvider->xpc()->fileProviderDomainReachable(accountFpId)) {
                 problemFileProviderAccounts.append(accountTooltipLabel);
             } else {
-                switch (fileProvider->socketServer()->latestReceivedSyncStatusForAccount(accountState->account())) {
-                case SyncResult::Undefined:
-                case SyncResult::NotYetStarted:
-                    idleFileProviderAccounts.append(accountTooltipLabel);
-                    break;
-                case SyncResult::SyncPrepare:
-                case SyncResult::SyncRunning:
-                case SyncResult::SyncAbortRequested:
-                    syncingFileProviderAccounts.append(accountTooltipLabel);
-                    break;
-                case SyncResult::Success:
-                    successFileProviderAccounts.append(accountTooltipLabel);
-                    break;
-                case SyncResult::Problem:
-                case SyncResult::Error:
-                case SyncResult::SetupError:
-                    problemFileProviderAccounts.append(accountTooltipLabel);
-                    break;
-                case SyncResult::Paused: // This is not technically possible with VFS
-                    break;
-                }
+                // FIXME: Wire up the MainAppService instead!
             }
         }
     }

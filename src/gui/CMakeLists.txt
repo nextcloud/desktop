@@ -313,11 +313,6 @@ IF( APPLE )
             macOS/fileprovideritemmetadata_mac.mm
             macOS/fileprovidersettingscontroller.h
             macOS/fileprovidersettingscontroller_mac.mm
-            macOS/fileprovidersocketcontroller.h
-            macOS/fileprovidersocketcontroller.cpp
-            macOS/fileprovidersocketserver.h
-            macOS/fileprovidersocketserver.cpp
-            macOS/fileprovidersocketserver_mac.mm
             macOS/fileproviderutils.h
             macOS/fileproviderutils_mac.mm
             macOS/fileproviderxpc.h

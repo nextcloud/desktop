@@ -13,7 +13,6 @@
 		5352B36C29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5352B36B29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift */; };
 		53651E442BBC0CA300ECAC29 /* SuggestionsTextFieldKit in Frameworks */ = {isa = PBXBuildFile; productRef = 53651E432BBC0CA300ECAC29 /* SuggestionsTextFieldKit */; };
 		53651E462BBC0D9500ECAC29 /* ShareeSuggestionsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53651E452BBC0D9500ECAC29 /* ShareeSuggestionsDataSource.swift */; };
-		536EFBF7295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */; };
 		5374FD442B95EE1400C78D54 /* ShareController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5374FD432B95EE1400C78D54 /* ShareController.swift */; };
 		537630912B85F4980026BFAB /* ShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 537630902B85F4980026BFAB /* ShareViewController.xib */; };
 		537630932B85F4B00026BFAB /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537630922B85F4B00026BFAB /* ShareViewController.swift */; };
@@ -163,7 +162,6 @@
 		5350E4EA2B0C9CE100F276CB /* FileProviderExt-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FileProviderExt-Bridging-Header.h"; sourceTree = "<group>"; };
 		5352B36B29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderExtension+Thumbnailing.swift"; sourceTree = "<group>"; };
 		53651E452BBC0D9500ECAC29 /* ShareeSuggestionsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareeSuggestionsDataSource.swift; sourceTree = "<group>"; };
-		536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderSocketLineProcessor.swift; sourceTree = "<group>"; };
 		5374FD432B95EE1400C78D54 /* ShareController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareController.swift; sourceTree = "<group>"; };
 		537630902B85F4980026BFAB /* ShareViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareViewController.xib; sourceTree = "<group>"; };
 		537630922B85F4B00026BFAB /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
@@ -348,7 +346,6 @@
 				53ED472F29C9CE0B00795DB1 /* FileProviderExtension+ClientInterface.swift */,
 				530429972DD44226004BB598 /* FileProviderExtension+CustomActions.swift */,
 				5352B36B29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift */,
-				536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */,
 				AA02B2AA2E7048C600C72B34 /* Keychain.swift */,
 				538E397327F4765000FA63D5 /* FileProviderExt.entitlements */,
 				538E397227F4765000FA63D5 /* Info.plist */,
@@ -872,7 +869,6 @@
 				538E396D27F4765000FA63D5 /* FileProviderExtension.swift in Sources */,
 				AA7F17E72E7038370000E928 /* NSError+FileProviderErrorCode.swift in Sources */,
 				AAB4F2142ED9EB12004E4AC5 /* MainAppServiceProtocol.h in Sources */,
-				536EFBF7295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift in Sources */,
 				AA02B2AB2E7048C800C72B34 /* Keychain.swift in Sources */,
 				537630972B860D920026BFAB /* FPUIExtensionService.swift in Sources */,
 				537630952B860D560026BFAB /* FPUIExtensionServiceSource.swift in Sources */,

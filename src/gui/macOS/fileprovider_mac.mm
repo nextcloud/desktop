@@ -39,13 +39,6 @@ FileProvider::FileProvider(QObject * const parent)
         _domainManager->start();
         qCDebug(lcMacFileProvider()) << "Initialized file provider domain manager";
     }
-
-    qCDebug(lcMacFileProvider) << "Initialising file provider socket server.";
-    _socketServer = std::make_unique<FileProviderSocketServer>(this);
-
-    if (_socketServer) {
-        qCDebug(lcMacFileProvider) << "Initialised file provider socket server.";
-    }
 }
 
 FileProvider *FileProvider::instance()
@@ -95,11 +88,6 @@ FileProviderXPC *FileProvider::xpc() const
 FileProviderDomainManager *FileProvider::domainManager() const
 {
     return _domainManager.get();
-}
-
-FileProviderSocketServer *FileProvider::socketServer() const
-{
-    return _socketServer.get();
 }
 
 } // namespace Mac

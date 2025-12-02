@@ -49,7 +49,7 @@ SyncStatusSummary::SyncStatusSummary(QObject *parent)
     connect(folderMan, &FolderMan::folderListChanged, this, &SyncStatusSummary::onFolderListChanged);
     connect(folderMan, &FolderMan::folderSyncStateChange, this, &SyncStatusSummary::onFolderSyncStateChanged);
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    connect(Mac::FileProvider::instance()->socketServer(), &Mac::FileProviderSocketServer::syncStateChanged, this, &SyncStatusSummary::onFileProviderDomainSyncStateChanged);
+    // FIXME: Wire up the MainAppService instead!
 #endif
 }
 
@@ -438,9 +438,7 @@ void SyncStatusSummary::initSyncState()
         const auto account = _accountState->account();
         const auto userIdAtHostWithPort = account->userIdAtHostWithPort();
         if (Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(userIdAtHostWithPort)) {
-            const auto lastKnownSyncState = Mac::FileProvider::instance()->socketServer()->latestReceivedSyncStatusForAccount(account);
-            onFileProviderDomainSyncStateChanged(account, lastKnownSyncState);
-            syncStateFallbackNeeded = false;
+            // FIXME: Wire up the MainAppService instead!
         }
     }
 #endif

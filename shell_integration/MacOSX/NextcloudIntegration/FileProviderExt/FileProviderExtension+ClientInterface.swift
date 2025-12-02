@@ -45,13 +45,6 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
         return progress
     }
 
-    @objc func sendFileProviderDomainIdentifier() {
-        let command = "FILE_PROVIDER_DOMAIN_IDENTIFIER_REQUEST_REPLY"
-        let argument = domain.identifier.rawValue
-        let message = command + ":" + argument + "\n"
-        socketClient?.sendMessage(message)
-    }
-
     private func signalEnumeratorAfterAccountSetup() {
         guard let fpManager = NSFileProviderManager(for: domain) else {
             logger.error("Could not get file provider manager for domain \(self.domain.displayName), cannot notify after account setup")
