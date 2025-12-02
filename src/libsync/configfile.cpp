@@ -713,6 +713,10 @@ QString ConfigFile::defaultUpdateChannel() const
 
 QString ConfigFile::currentUpdateChannel() const
 {
+    if (const auto isBranded = Theme::instance()->isBranded(); isBranded) {
+        return defaultUpdateChannelName;
+    }
+
     QSettings settings(configFile(), QSettings::IniFormat);
     const auto currentChannel = UpdateChannel::fromString(settings.value(QLatin1String(updateChannelC), defaultUpdateChannel()).toString());
     if (serverHasValidSubscription()) {
