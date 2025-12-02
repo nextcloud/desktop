@@ -215,11 +215,11 @@ class LockViewController: NSViewController {
 
             let serverUrlFileName = itemMetadata.serverUrl + "/" + itemMetadata.fileName
 
-            logger.info("About to \(self.locking ? "lock" : "unlock")...", [.url: serverUrlFileName])
+            logger.info("About to \(self.locking ? "lock" : "unlock")...", [.item: itemIdentifier, .name: itemMetadata.fileName, .url: serverUrlFileName])
 
             do {
                 let lock = try await kit.lockUnlockFile(serverUrlFileName: serverUrlFileName, shouldLock: locking, account: account.ncKitAccount)
-                logger.debug(locking ? "Successfully locked file." : "Successfully unlocked file.")
+                logger.info(locking ? "Successfully locked file." : "Successfully unlocked file.", [.item: itemIdentifier, .name: itemMetadata.fileName, .url: serverUrlFileName])
             } catch {
                 presentError("Could not lock file: \(error.localizedDescription)")
             }
@@ -231,9 +231,10 @@ class LockViewController: NSViewController {
 
             if let manager = NSFileProviderManager(for: actionViewController.domain) {
                 do {
-                    try await manager.signalEnumerator(for: itemIdentifier)
+                    try await manager.signalEnumerator(for: .workingSet)
+                    logger.info("Signalled enumerator for item.", [.item: NSFileProviderItemIdentifier.workingSet])
                 } catch let error {
-                    logger.error("Signaling enumerator for item failed.", [.error: error, .item: itemIdentifier])
+                    logger.error("Signaling enumerator for item failed.", [.error: error, .item: NSFileProviderItemIdentifier.workingSet])
                     presentError("Could not signal lock state change in file provider item. Changes may take a while to be reflected on your Mac.")
                 }
             }
