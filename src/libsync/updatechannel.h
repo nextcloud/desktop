@@ -21,23 +21,22 @@ public:
         enterprise = 4
     };
 
-    ChannelName channelName() const;
-    bool isValid() const;
-    QString toString() const;
+    [[nodiscard]] ChannelName channelName() const;
+    [[nodiscard]] bool isValid() const;
+    [[nodiscard]] QString toString() const;
     std::strong_ordering operator<=>(const UpdateChannel &rhs) const;
 
-    static UpdateChannel fromString(const QString &channelName);
-    static UpdateChannel mostStable(const UpdateChannel &a, const UpdateChannel &b);
+    [[nodiscard]] static UpdateChannel fromString(const QString &channelName);
+    [[nodiscard]] static UpdateChannel mostStable(const UpdateChannel &channelA, const UpdateChannel &channelB);
 
     static const UpdateChannel Invalid;
     static const UpdateChannel Daily;
     static const UpdateChannel Beta;
     static const UpdateChannel Stable;
-    static const UpdateChannel Enterprise;
+    static const UpdateChannel Enterprise;    
 
 private:
-    UpdateChannel();
-    UpdateChannel &setChannelName(ChannelName channelName);
+    UpdateChannel(const ChannelName &channelName);
 
     ChannelName _channelName;
 };
