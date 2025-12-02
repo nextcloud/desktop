@@ -22,7 +22,6 @@
 		537630982B8612F00026BFAB /* FPUIExtensionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537630962B860D920026BFAB /* FPUIExtensionService.swift */; };
 		537BD67A2C58D67800446ED0 /* LockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537BD6792C58D67800446ED0 /* LockViewController.swift */; };
 		537BD67C2C58D7B700446ED0 /* LockViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 537BD67B2C58D7B700446ED0 /* LockViewController.xib */; };
-		537BD6802C58F01B00446ED0 /* FileProviderCommunication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537BD67F2C58F01B00446ED0 /* FileProviderCommunication.swift */; };
 		537BD6822C58F72E00446ED0 /* MetadataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537BD6812C58F72E00446ED0 /* MetadataProvider.swift */; };
 		538E396A27F4765000FA63D5 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 538E396927F4765000FA63D5 /* UniformTypeIdentifiers.framework */; };
 		538E396D27F4765000FA63D5 /* FileProviderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E396C27F4765000FA63D5 /* FileProviderExtension.swift */; };
@@ -49,6 +48,7 @@
 		53FE14652B8F6700006C4193 /* ShareViewDataSourceUIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FE14642B8F6700006C4193 /* ShareViewDataSourceUIDelegate.swift */; };
 		53FE14672B8F78B6006C4193 /* ShareOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FE14662B8F78B6006C4193 /* ShareOptionsView.swift */; };
 		AA02B2AB2E7048C800C72B34 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA02B2AA2E7048C600C72B34 /* Keychain.swift */; };
+		AA560CE72EDDB84000CD423E /* ServiceResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA560CE62EDDB82900CD423E /* ServiceResolver.swift */; };
 		AA7F17E12E7017230000E928 /* Authentication.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA7F17E02E7017230000E928 /* Authentication.storyboard */; };
 		AA7F17E32E70173E0000E928 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7F17E22E70173E0000E928 /* AuthenticationViewController.swift */; };
 		AA7F17E72E7038370000E928 /* NSError+FileProviderErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7F17E62E7038340000E928 /* NSError+FileProviderErrorCode.swift */; };
@@ -170,7 +170,6 @@
 		537630962B860D920026BFAB /* FPUIExtensionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPUIExtensionService.swift; sourceTree = "<group>"; };
 		537BD6792C58D67800446ED0 /* LockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockViewController.swift; sourceTree = "<group>"; };
 		537BD67B2C58D7B700446ED0 /* LockViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LockViewController.xib; sourceTree = "<group>"; };
-		537BD67F2C58F01B00446ED0 /* FileProviderCommunication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderCommunication.swift; sourceTree = "<group>"; };
 		537BD6812C58F72E00446ED0 /* MetadataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataProvider.swift; sourceTree = "<group>"; };
 		538E396727F4765000FA63D5 /* FileProviderExt.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FileProviderExt.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		538E396927F4765000FA63D5 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
@@ -200,6 +199,7 @@
 		AA0A6B1D2E8EA94F007F4A7A /* Craft.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = Craft.sh; sourceTree = "<group>"; };
 		AA1191B52E8EAFF900E21C7B /* Build.xcconfig.template */ = {isa = PBXFileReference; lastKnownFileType = text; path = Build.xcconfig.template; sourceTree = "<group>"; };
 		AA27A4E32E93C0D700665051 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		AA560CE62EDDB82900CD423E /* ServiceResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceResolver.swift; sourceTree = "<group>"; };
 		AA7F17E02E7017230000E928 /* Authentication.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Authentication.storyboard; sourceTree = "<group>"; };
 		AA7F17E22E70173E0000E928 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
 		AA7F17E62E7038340000E928 /* NSError+FileProviderErrorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+FileProviderErrorCode.swift"; sourceTree = "<group>"; };
@@ -375,7 +375,7 @@
 				537BD6782C58D0FC00446ED0 /* Locking */,
 				537BD6772C58D0C400446ED0 /* Sharing */,
 				53B979802B84C81F002DA742 /* DocumentActionViewController.swift */,
-				537BD67F2C58F01B00446ED0 /* FileProviderCommunication.swift */,
+				AA560CE62EDDB82900CD423E /* ServiceResolver.swift */,
 				537BD6812C58F72E00446ED0 /* MetadataProvider.swift */,
 				53FE14572B8E3A7C006C4193 /* FileProviderUIExt.entitlements */,
 				53B979852B84C81F002DA742 /* Info.plist */,
@@ -893,6 +893,7 @@
 				537BD6822C58F72E00446ED0 /* MetadataProvider.swift in Sources */,
 				537630932B85F4B00026BFAB /* ShareViewController.swift in Sources */,
 				53FE14672B8F78B6006C4193 /* ShareOptionsView.swift in Sources */,
+				AA560CE72EDDB84000CD423E /* ServiceResolver.swift in Sources */,
 				53651E462BBC0D9500ECAC29 /* ShareeSuggestionsDataSource.swift in Sources */,
 				537BD67A2C58D67800446ED0 /* LockViewController.swift in Sources */,
 				53FE14652B8F6700006C4193 /* ShareViewDataSourceUIDelegate.swift in Sources */,
@@ -902,7 +903,6 @@
 				53FE14592B8E3F6C006C4193 /* ShareTableItemView.swift in Sources */,
 				AA7F17E32E70173E0000E928 /* AuthenticationViewController.swift in Sources */,
 				53FE14502B8E0658006C4193 /* ShareTableViewDataSource.swift in Sources */,
-				537BD6802C58F01B00446ED0 /* FileProviderCommunication.swift in Sources */,
 				537630982B8612F00026BFAB /* FPUIExtensionService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

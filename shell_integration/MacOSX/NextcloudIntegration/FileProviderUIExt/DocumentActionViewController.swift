@@ -28,9 +28,11 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
     ///
     var logger: FileProviderLogger!
 
+    var serviceResolver: ServiceResolver!
+
     // MARK: - Lifecycle
 
-    func setUpLogger() {
+    func setUp() {
         if log == nil {
             log = FileProviderLog(fileProviderDomainIdentifier: domain.identifier)
         }
@@ -38,10 +40,14 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
         if logger == nil, let log {
             logger = FileProviderLogger(category: "DocumentActionViewController", log: log)
         }
+
+        if serviceResolver == nil, let log {
+            serviceResolver = ServiceResolver(log: log)
+        }
     }
 
     func prepare(childViewController: NSViewController) {
-        setUpLogger()
+        setUp()
         addChild(childViewController)
         view.addSubview(childViewController.view)
 
@@ -54,16 +60,16 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
     }
 
     override func prepare(forAction actionIdentifier: String, itemIdentifiers: [NSFileProviderItemIdentifier]) {
-        setUpLogger()
+        setUp()
         logger?.info("Preparing action: \(actionIdentifier)")
 
         switch (actionIdentifier) {
             case "com.nextcloud.desktopclient.FileProviderUIExt.ShareAction":
-                prepare(childViewController: ShareViewController(itemIdentifiers, log: log))
+                prepare(childViewController: ShareViewController(itemIdentifiers, serviceResolver: serviceResolver, log: log))
             case "com.nextcloud.desktopclient.FileProviderUIExt.LockFileAction":
-                prepare(childViewController: LockViewController(itemIdentifiers, locking: true, log: log))
+                prepare(childViewController: LockViewController(itemIdentifiers, locking: true, serviceResolver: serviceResolver, log: log))
             case "com.nextcloud.desktopclient.FileProviderUIExt.UnlockFileAction":
-                prepare(childViewController: LockViewController(itemIdentifiers, locking: false, log: log))
+                prepare(childViewController: LockViewController(itemIdentifiers, locking: false, serviceResolver: serviceResolver, log: log))
             case "com.nextcloud.desktopclient.FileProviderUIExt.EvictAction":
                 evict(itemsWithIdentifiers: itemIdentifiers, inDomain: domain);
                 extensionContext.completeRequest();
@@ -73,12 +79,13 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
     }
 
     override func prepare(forError error: Error) {
-        setUpLogger()
+        setUp()
         logger?.info("Preparing for error.", [.error: error])
 
         let storyboard = NSStoryboard(name: "Authentication", bundle: Bundle(for: type(of: self)))
         let viewController = storyboard.instantiateInitialController() as! AuthenticationViewController
         viewController.log = log
+        viewController.serviceResolver = serviceResolver
 
         prepare(childViewController: viewController)
     }
