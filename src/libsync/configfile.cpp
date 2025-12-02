@@ -74,11 +74,6 @@ static constexpr char certPasswd[] = "http_certificatePasswd";
 static constexpr char serverHasValidSubscriptionC[] = "serverHasValidSubscription";
 static constexpr char desktopEnterpriseChannelName[] = "desktopEnterpriseChannel";
 
-static const QStringList defaultUpdateChannelsList { QStringLiteral("stable"), QStringLiteral("beta"), QStringLiteral("daily") };
-static const QString defaultUpdateChannelName = "stable";
-static const QStringList enterpriseUpdateChannelsList { QStringLiteral("stable"), QStringLiteral("enterprise") };
-static const QString defaultEnterpriseChannel = "enterprise";
-
 static constexpr char languageC[] = "language";
 static constexpr int deleteFilesThresholdDefaultValue = 100;
 }
@@ -680,14 +675,20 @@ QStringList ConfigFile::validUpdateChannels() const
     const auto isBranded = Theme::instance()->isBranded();
 
     if (isBranded) {
-        return { defaultUpdateChannelName };
+        return {UpdateChannel::defaultUpdateChannel().toString()};
     }
 
+    const QList<UpdateChannel> *channel_list = &UpdateChannel::defaultUpdateChannelList();
     if (serverHasValidSubscription()) {
-        return enterpriseUpdateChannelsList;
+        channel_list = &UpdateChannel::enterpriseUpdateChannelsList();
     }
 
-    return defaultUpdateChannelsList;
+    QStringList list;
+    for (const auto &channel : *channel_list) {
+        list.append(channel.toString());
+    }
+
+    return list;
 }
 
 QString ConfigFile::defaultUpdateChannel() const
@@ -707,14 +708,14 @@ QString ConfigFile::defaultUpdateChannel() const
         return currentVersionSuffix;
     }
 
-    qCWarning(lcConfigFile()) << "Default update channel is" << defaultUpdateChannelName;
-    return defaultUpdateChannelName;
+    qCWarning(lcConfigFile()) << "Default update channel is" << UpdateChannel::defaultUpdateChannel().toString();
+    return UpdateChannel::defaultUpdateChannel().toString();
 }
 
 QString ConfigFile::currentUpdateChannel() const
 {
     if (const auto isBranded = Theme::instance()->isBranded(); isBranded) {
-        return defaultUpdateChannelName;
+        return UpdateChannel::defaultUpdateChannel().toString();
     }
 
     QSettings settings(configFile(), QSettings::IniFormat);
@@ -1213,7 +1214,7 @@ void ConfigFile::setServerHasValidSubscription(const bool valid)
 QString ConfigFile::desktopEnterpriseChannel() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(desktopEnterpriseChannelName), defaultUpdateChannelName).toString();
+    return settings.value(QLatin1String(desktopEnterpriseChannelName), UpdateChannel::defaultUpdateChannel().toString()).toString();
 }
 
 void ConfigFile::setDesktopEnterpriseChannel(const QString &channel)
