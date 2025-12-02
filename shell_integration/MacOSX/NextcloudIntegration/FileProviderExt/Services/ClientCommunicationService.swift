@@ -13,6 +13,7 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
     let logger: FileProviderLogger
     let serviceName = NSFileProviderServiceName("com.nextcloud.desktopclient.ClientCommunicationService")
     let fpExtension: FileProviderExtension
+    private var mainAppConnection: NSXPCConnection?
 
     init(fpExtension: FileProviderExtension) {
         self.logger = FileProviderLogger(category: "ClientCommunicationService", log: fpExtension.log)
@@ -24,6 +25,7 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
     func makeListenerEndpoint() throws -> NSXPCListenerEndpoint {
         listener.delegate = self
         listener.resume()
+
         return listener.endpoint
     }
 
@@ -31,7 +33,9 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
         newConnection.exportedInterface = NSXPCInterface(with: ClientCommunicationProtocol.self)
         newConnection.exportedObject = self
         newConnection.remoteObjectInterface = NSXPCInterface(with: MainAppServiceProtocol.self)
+        self.mainAppConnection = newConnection
         newConnection.resume()
+
         return true
     }
 
@@ -78,5 +82,23 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
     func setIgnoreList(_ ignoreList: [String]) {
         self.fpExtension.ignoredFiles = IgnoredFilesMatcher(ignoreList: ignoreList)
         logger.info("Ignore list updated.")
+    }
+
+    // MARK: - Report status to main app
+
+    func reportStatusToMainApp(status: String) {
+        guard let connection = self.mainAppConnection else {
+            logger.error("Main app connection not available, cannot report status!")
+            return
+        }
+
+        guard let remote = connection.remoteObjectProxy as? MainAppServiceProtocol else {
+            logger.error("Remote object proxy does not conform to MainAppServiceProtocol!")
+            return
+        }
+
+            let domainId = self.fpExtension.domain.identifier
+            remote.reportStatus(forDomain: domainId, status: status)
+            logger.debug("Reported status to main app", [.domain: domainId.rawValue, .name: status])
     }
 }

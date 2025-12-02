@@ -299,6 +299,8 @@ IF( APPLE )
             macOS/ClientCommunicationProtocol.h
             macOS/MainAppServiceProtocol.h
             # End of symlink files
+            macOS/MainAppService.h
+            macOS/MainAppService.mm
             macOS/fileprovider.h
             macOS/fileprovider_mac.mm
             macOS/fileproviderdomainmanager.h

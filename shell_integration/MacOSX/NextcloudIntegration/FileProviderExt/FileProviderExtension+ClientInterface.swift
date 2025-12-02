@@ -34,9 +34,8 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
         completionHandler: @escaping ([NSFileProviderServiceSource]?, Error?) -> Void
     ) -> Progress {
         logger.debug("Serving supported service sources")
-        let clientCommService = ClientCommunicationService(fpExtension: self)
         let fpuiExtService = FPUIExtensionServiceSource(fpExtension: self)
-        let services: [NSFileProviderServiceSource] = [clientCommService, fpuiExtService]
+        let services: [NSFileProviderServiceSource] = [clientCommunicationService, fpuiExtService]
         completionHandler(services, nil)
         let progress = Progress()
         progress.cancellationHandler = {
@@ -215,27 +214,32 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
     }
 
     func updatedSyncStateReporting(oldActions: Set<UUID>) {
+        logger.debug("About to report status to main app...")
+
         actionsLock.lock()
 
         guard oldActions.isEmpty != syncActions.isEmpty else {
+            logger.debug("Cancelled because old actions and synchronization actions are equal, meaning no change.")
             actionsLock.unlock()
             return
         }
 
-        let command = "FILE_PROVIDER_DOMAIN_SYNC_STATE_CHANGE"
         var argument: String?
-        if oldActions.isEmpty, !syncActions.isEmpty {
+
+        if oldActions.isEmpty, syncActions.isEmpty == false {
             argument = "SYNC_STARTED"
-        } else if !oldActions.isEmpty, syncActions.isEmpty {
+        } else if oldActions.isEmpty == false, syncActions.isEmpty {
             argument = errorActions.isEmpty ? "SYNC_FINISHED" : "SYNC_FAILED"
             errorActions = []
         }
-        
+
         actionsLock.unlock()
 
-        guard let argument else { return }
-        logger.debug("Reporting sync \(argument)")
-        let message = command + ":" + argument + "\n"
-        socketClient?.sendMessage(message)
+        guard let argument else {
+            logger.error("Status should not be a nil string!")
+            return
+        }
+
+        clientCommunicationService.reportStatusToMainApp(status: argument)
     }
 }

@@ -3,13 +3,18 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-import FileProvider
+@preconcurrency import FileProvider
 import NCDesktopClientSocketKit
 import NextcloudKit
 import NextcloudFileProviderKit
 import OSLog
 
-@objc class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
+@objc class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, @unchecked Sendable {
+    ///
+    /// The custom file provider extension service implementation exposed to the main appthrough XPC.
+    ///
+    var clientCommunicationService: ClientCommunicationService!
+
     let domain: NSFileProviderDomain
 
     let keychain: Keychain
@@ -57,7 +62,7 @@ import OSLog
     lazy var config = FileProviderDomainDefaults(identifier: domain.identifier, log: log)
 
     required init(domain: NSFileProviderDomain) {
-        // The containing application must create a domain using 
+        // The containing application must create a domain using
         // `NSFileProviderManager.add(_:, completionHandler:)`. The system will then launch the
         // application extension process, call `FileProviderExtension.init(domain:)` to instantiate
         // the extension for that domain, and call methods on the instance.
@@ -82,6 +87,7 @@ import OSLog
         self.keychain = Keychain(log: log)
 
         super.init()
+        self.clientCommunicationService = ClientCommunicationService(fpExtension: self)
         socketClient?.start()
     }
 
@@ -90,6 +96,8 @@ import OSLog
     }
 
     func insertSyncAction(_ actionId: UUID) {
+        logger.debug("Inserting sync action.", [.name: actionId])
+
         actionsLock.lock()
         let oldActions = syncActions
         syncActions.insert(actionId)
@@ -98,6 +106,8 @@ import OSLog
     }
 
     func insertErrorAction(_ actionId: UUID) {
+        logger.debug("Inserting error action.", [.name: actionId])
+
         actionsLock.lock()
         let oldActions = syncActions
         syncActions.remove(actionId)
@@ -107,6 +117,8 @@ import OSLog
     }
 
     func removeSyncAction(_ actionId: UUID) {
+        logger.debug("Removing sync action.", [.name: actionId])
+
         actionsLock.lock()
         let oldActions = syncActions
         syncActions.remove(actionId)

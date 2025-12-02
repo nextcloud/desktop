@@ -10,6 +10,7 @@
 
 #import "ClientCommunicationProtocol.h"
 #import "MainAppServiceProtocol.h"
+#import "MainAppService.h"
 
 namespace OCC::Mac::FileProviderXPCUtils {
 

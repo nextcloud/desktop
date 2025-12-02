@@ -13,6 +13,7 @@
 #include "gui/macOS/fileprovider.h"
 #include "gui/macOS/fileprovideritemmetadata.h"
 #include "gui/macOS/fileproviderutils.h"
+#include "gui/macOS/fileproviderxpc_mac_utils.h"
 
 // Objective-C imports
 #import <Foundation/Foundation.h>
@@ -47,6 +48,7 @@ public:
     {
         q = parent;
         initialCheck();
+        setupPersistentMainAppService();
     };
 
     ~MacImplementation() override = default;
@@ -156,10 +158,44 @@ private:
         [[maybe_unused]] const auto result = enableVfsForAllAccounts();
     }
 
+    void setupPersistentMainAppService()
+    {
+        using namespace OCC::Mac::FileProviderXPCUtils;
+        qCInfo(lcFileProviderSettingsController) << "Setting up persistent MainAppService XPC connections.";
+        NSArray<NSFileProviderManager *> *managers = getDomainManagers();
+        if (managers.count == 0) {
+            qCWarning(lcFileProviderSettingsController) << "No File Provider managers found; skipping XPC setup.";
+            return;
+        }
+
+        NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *services = getFileProviderServices(managers);
+        if (services.count == 0) {
+            qCWarning(lcFileProviderSettingsController) << "No File Provider services found; skipping XPC setup.";
+            return;
+        }
+
+        NSArray<NSXPCConnection *> *connections = connectToFileProviderServices(services);
+        if (connections.count == 0) {
+            qCWarning(lcFileProviderSettingsController) << "No XPC connections obtained; skipping XPC setup.";
+            return;
+        }
+
+        // Configure connections (sets exported interface/object and resumes), and keep them alive.
+        for (NSXPCConnection *connection in connections) {
+            configureFileProviderConnection(connection);
+            _serviceConnections.append(connection);
+        }
+
+        // Optionally initialize remote client communication proxies to keep them active.
+        [[maybe_unused]] auto proxies = processClientCommunicationConnections(connections);
+        Q_UNUSED(proxies);
+    }
+
     FileProviderSettingsController *q = nullptr;
     NSUserDefaults *_userDefaults = NSUserDefaults.standardUserDefaults;
     NSString *_accountsKey = [NSString stringWithUTF8String:enabledAccountsSettingsKey];
     QHash<QString, unsigned long long> _storageUsage;
+    QVector<NSXPCConnection *> _serviceConnections;
 };
 
 FileProviderSettingsController *FileProviderSettingsController::instance()

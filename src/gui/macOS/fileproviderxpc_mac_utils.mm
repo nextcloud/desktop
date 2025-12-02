@@ -8,6 +8,7 @@
 #include <QLoggingCategory>
 
 #include "gui/accountmanager.h"
+#import "MainAppService.h"
 
 namespace {
 const char *const clientCommunicationServiceName = "com.nextcloud.desktopclient.ClientCommunicationService";
@@ -198,13 +199,20 @@ NSArray<NSXPCConnection *> *connectToFileProviderServices(NSArray<NSDictionary<N
 void configureFileProviderConnection(NSXPCConnection *const connection)
 {
     Q_ASSERT(connection != nil);
+    // Expose the MainAppService to the File Provider extension over this connection
+    connection.exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(MainAppServiceProtocol)];
+    connection.exportedObject = [MainAppService sharedInstance];
+
     connection.interruptionHandler = ^{
         qCInfo(lcFileProviderXPCUtils) << "File provider connection interrupted";
     };
+
     connection.invalidationHandler = ^{
         qCInfo(lcFileProviderXPCUtils) << "File provider connection invalidated";
     };
-    [connection resume];
+
+    // Note: Connections obtained from getFileProviderConnectionWithCompletionHandler
+    // are already resumed and should not be resumed again to avoid XPC API misuse
 }
 
 NSObject *getRemoteServiceObject(NSXPCConnection *const connection, Protocol *const protocol)
