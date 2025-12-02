@@ -1278,6 +1278,11 @@ UpdateChannel Account::enterpriseUpdateChannel() const
     return _enterpriseUpdateChannel;
 }
 
+void Account::setEnterpriseUpdateChannel(const UpdateChannel &channel)
+{
+    _enterpriseUpdateChannel = channel;
+}
+
 void Account::updateServerSubcription()
 {
     ConfigFile currentConfig;

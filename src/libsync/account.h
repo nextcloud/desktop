@@ -413,6 +413,7 @@ public:
     void setServerHasValidSubscription(bool valid);
 
     [[nodiscard]] UpdateChannel enterpriseUpdateChannel() const;
+    void setEnterpriseUpdateChannel(const UpdateChannel &channel);
 
     [[nodiscard]] bool enforceUseHardwareTokenEncryption() const;
 
