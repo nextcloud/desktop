@@ -7,6 +7,7 @@
 #ifndef UPDATECHANNEL_H
 #define UPDATECHANNEL_H
 
+#include <QList>
 #include <QString>
 
 class UpdateChannel
@@ -29,11 +30,16 @@ public:
     [[nodiscard]] static UpdateChannel fromString(const QString &channelName);
     [[nodiscard]] static UpdateChannel mostStable(const UpdateChannel &channelA, const UpdateChannel &channelB);
 
+    [[nodiscard]] static const QList<UpdateChannel> &defaultUpdateChannelList();
+    [[nodiscard]] static const UpdateChannel &defaultUpdateChannel();
+    [[nodiscard]] static const QList<UpdateChannel> &enterpriseUpdateChannelsList();
+    [[nodiscard]] static const UpdateChannel &defaultEnterpriseChannel();
+
     static const UpdateChannel Invalid;
     static const UpdateChannel Daily;
     static const UpdateChannel Beta;
     static const UpdateChannel Stable;
-    static const UpdateChannel Enterprise;    
+    static const UpdateChannel Enterprise;
 
 private:
     UpdateChannel(const ChannelName &channelName);

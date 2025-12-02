@@ -36,6 +36,30 @@ UpdateChannel UpdateChannel::mostStable(const UpdateChannel &channelA, const Upd
     return std::max(channelA, channelB);
 }
 
+const QList<UpdateChannel> &UpdateChannel::defaultUpdateChannelList()
+{
+    static const QList<UpdateChannel> list{UpdateChannel::Stable, UpdateChannel::Beta, UpdateChannel::Daily};
+    return list;
+}
+
+const UpdateChannel &UpdateChannel::defaultUpdateChannel()
+{
+    static const auto channel = UpdateChannel::Stable;
+    return channel;
+}
+
+const QList<UpdateChannel> &UpdateChannel::enterpriseUpdateChannelsList()
+{
+    static const QList<UpdateChannel> list{UpdateChannel::Stable, UpdateChannel::Enterprise};
+    return list;
+}
+
+const UpdateChannel &UpdateChannel::defaultEnterpriseChannel()
+{
+    static const auto channel = UpdateChannel::Enterprise;
+    return channel;
+}
+
 const UpdateChannel UpdateChannel::Invalid = UpdateChannel::fromString("invalid");
 const UpdateChannel UpdateChannel::Daily = UpdateChannel::fromString("daily");
 const UpdateChannel UpdateChannel::Beta = UpdateChannel::fromString("beta");
