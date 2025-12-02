@@ -776,7 +776,8 @@ void AccountManager::updateServerDesktopEnterpriseUpdateChannel()
 {
     UpdateChannel most_stable_channel = UpdateChannel::Invalid;
     for (const auto &account : std::as_const(_accounts)) {
-        if (auto accounts_channel = account->account()->enterpriseUpdateChannel(); accounts_channel > most_stable_channel) {
+        if (const auto accounts_channel = account->account()->enterpriseUpdateChannel();
+            account->account()->serverHasValidSubscription() && accounts_channel > most_stable_channel) {
             most_stable_channel = accounts_channel;
         }
     }
