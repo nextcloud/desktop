@@ -1299,7 +1299,6 @@ void Account::updateDesktopEnterpriseChannel()
 {
     const auto capabilityEnterpriseChannel = UpdateChannel::fromString(_capabilities.desktopEnterpriseChannel());
     _enterpriseUpdateChannel = capabilityEnterpriseChannel;
-    qCInfo(lcAccount()) << "lulu | enterp chn updated: " << _enterpriseUpdateChannel.toString() << "  str: " << _capabilities.desktopEnterpriseChannel();
 
     ConfigFile currentConfig;
     const auto configEnterpriseChannel = UpdateChannel::fromString(currentConfig.desktopEnterpriseChannel());
