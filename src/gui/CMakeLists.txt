@@ -297,6 +297,7 @@ IF( APPLE )
         list(APPEND client_SRCS
             # Symlinks to files in shell_integration/MacOSX/NextcloudIntegration/
             macOS/ClientCommunicationProtocol.h
+            macOS/MainAppServiceProtocol.h
             # End of symlink files
             macOS/fileprovider.h
             macOS/fileprovider_mac.mm
