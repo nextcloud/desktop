@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2025 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
 #include "updatechannel.h"
 
 #include <QMap>
@@ -25,9 +31,9 @@ QString UpdateChannel::toString() const
 
 std::strong_ordering UpdateChannel::operator<=>(const UpdateChannel &rhs) const = default;
 
-UpdateChannel UpdateChannel::mostStable(const UpdateChannel &a, const UpdateChannel &b)
+UpdateChannel UpdateChannel::mostStable(const UpdateChannel &channelA, const UpdateChannel &channelB)
 {
-    return std::max(a, b);
+    return std::max(channelA, channelB);
 }
 
 const UpdateChannel UpdateChannel::Invalid = UpdateChannel::fromString("invalid");
@@ -45,16 +51,10 @@ UpdateChannel UpdateChannel::fromString(const QString &channelName) // static
                                                              {"stable", stable},
                                                              {"enterprise", enterprise}};
     auto channelEnum = nameToEnumLut.contains(channelName) ? nameToEnumLut.value(channelName) : invalid;
-    return UpdateChannel().setChannelName(channelEnum);
+    return UpdateChannel(channelEnum);
 }
 
-UpdateChannel::UpdateChannel()
-    : _channelName(ChannelName::invalid)
+UpdateChannel::UpdateChannel(const ChannelName &channelName)
+    : _channelName(channelName)
 {
-}
-
-UpdateChannel &UpdateChannel::setChannelName(ChannelName channelName)
-{
-    _channelName = channelName;
-    return *this;
 }
