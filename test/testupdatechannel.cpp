@@ -39,14 +39,16 @@ private slots:
     void testUpdateChannel()
     {
         QScopedPointer<FakeQNAM> fakeQnam(new FakeQNAM({}));
+
+        // Set override for delete operation. This is needed, because by default FakeQNAM results in an
+        // error reply, and also requires a filename in the url (which we don't have here).
         fakeQnam->setOverride([this](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device) {
             Q_UNUSED(req);
             Q_UNUSED(device);
             QNetworkReply *reply = nullptr;
 
             if (op == QNetworkAccessManager::DeleteOperation) {
-                FileInfo fi;
-                reply = new FakeFakeDeleteReply(this);
+                reply = new FakePayloadReply(op, req, QByteArray(), this);
                 return reply;
             }
 

@@ -353,27 +353,6 @@ public:
     qint64 readData(char *, qint64) override { return 0; }
 };
 
-class FakeFakeDeleteReply : public FakeReply
-{
-    Q_OBJECT
-public:
-    FakeFakeDeleteReply(QObject *parent)
-        : FakeReply(parent)
-    {
-    }
-
-    // Q_INVOKABLE void respond();
-
-    void abort() override
-    {
-    }
-
-    qint64 readData(char *, qint64) override
-    {
-        return 0;
-    }
-};
-
 class FakeMoveReply : public FakeReply
 {
     Q_OBJECT
