@@ -18,7 +18,7 @@
 // End of Objective-C imports
 
 namespace {
-constexpr auto fpSettingsQmlPath = "qrc:/qml/src/gui/macOS/FileProviderSettings.qml";
+constexpr auto fpSettingsQmlPath = "qrc:/qml/src/gui/macOS/ui/FileProviderSettings.qml";
 
 // QML properties -- make sure they match up in QML file!
 constexpr auto fpAccountUserIdAtHostProp = "accountUserIdAtHost";
