@@ -295,32 +295,13 @@ IF( APPLE )
 
     if (BUILD_FILE_PROVIDER_MODULE)
         list(APPEND client_SRCS
-            # Symlinks to files in shell_integration/MacOSX/NextcloudIntegration/
             macOS/ClientCommunicationProtocol.h
-            macOS/MainAppServiceProtocol.h
-            # End of symlink files
+            macOS/fileprovidersettingscontroller.h
+            macOS/fileprovidersettingscontroller.mm
             macOS/MainAppService.h
             macOS/MainAppService.mm
-            macOS/fileprovider.h
-            macOS/fileprovider_mac.mm
-            macOS/fileproviderdomainmanager.h
-            macOS/fileproviderdomainmanager_mac.mm
-            macOS/fileprovidereditlocallyjob.h
-            macOS/fileprovidereditlocallyjob.cpp
-            macOS/fileprovidereditlocallyjob_mac.mm
-            macOS/fileprovideritemmetadata.h
-            macOS/fileprovideritemmetadata.cpp
-            macOS/fileprovideritemmetadata_mac.mm
-            macOS/fileprovidersettingscontroller.h
-            macOS/fileprovidersettingscontroller_mac.mm
-            macOS/fileproviderutils.h
-            macOS/fileproviderutils_mac.mm
-            macOS/fileproviderxpc.h
-            macOS/fileproviderxpc_mac.mm
-            macOS/fileproviderxpc_mac_utils.h
-            macOS/fileproviderxpc_mac_utils.mm
-            macOS/progressobserver.h
-            macOS/progressobserver.m)
+            macOS/MainAppServiceProtocol.h
+        )
     endif()
 
     list(APPEND client_SRCS foregroundbackground_interface.h)
