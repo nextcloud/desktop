@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: CC0-1.0
+ * SPDX-License-Identifier: GPL-2.0-or-later
  *
  * This software is in the public domain, furnished "as is", without technical
  * support, and with no warranty, express or implied, as to its usefulness for
