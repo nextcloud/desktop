@@ -6,7 +6,6 @@
 
 #include "socketapi.h"
 #include "socketapi_p.h"
-#include "socketapi/socketuploadjob.h"
 
 #include "conflictdialog.h"
 #include "conflictsolver.h"
@@ -240,7 +239,6 @@ SocketApi::SocketApi(QObject *parent)
 
     qRegisterMetaType<SocketListener *>("SocketListener*");
     qRegisterMetaType<QSharedPointer<SocketApiJob>>("QSharedPointer<SocketApiJob>");
-    qRegisterMetaType<QSharedPointer<SocketApiJobV2>>("QSharedPointer<SocketApiJobV2>");
 
     if (Utility::isWindows()) {
         socketPath = QLatin1String(R"(\\.\pipe\)")
@@ -381,8 +379,6 @@ void SocketApi::slotReadSocket()
             QByteArray functionWithArguments = QByteArrayLiteral("command_");
             if (command.startsWith("ASYNC_")) {
                 functionWithArguments += command + QByteArrayLiteral("(QSharedPointer<SocketApiJob>)");
-            } else if (command.startsWith("V2/")) {
-                functionWithArguments += QByteArrayLiteral("V2_") + command.mid(3) + QByteArrayLiteral("(QSharedPointer<SocketApiJobV2>)");
             } else {
                 functionWithArguments += command + QByteArrayLiteral("(QString,SocketListener*)");
             }
@@ -391,7 +387,6 @@ void SocketApi::slotReadSocket()
             if (out == -1) {
                 listener->sendError(QStringLiteral("Function %1 not found").arg(QString::fromUtf8(functionWithArguments)));
             }
-            ASSERT(out != -1)
             return out;
         }();
 
@@ -417,24 +412,6 @@ void SocketApi::slotReadSocket()
                 qCWarning(lcSocketApi) << "The command is not supported by this version of the client:" << command
                                        << "with argument:" << argument;
                 socketApiJob->reject(QStringLiteral("command not found"));
-            }
-        } else if (command.startsWith("V2/")) {
-            QJsonParseError error{};
-            const auto json = QJsonDocument::fromJson(argument.toUtf8(), &error).object();
-            if (error.error != QJsonParseError::NoError) {
-                qCWarning(lcSocketApi()) << "Invalid json" << argument << error.errorString();
-                listener->sendError(error.errorString());
-                return;
-            }
-            auto socketApiJob = QSharedPointer<SocketApiJobV2>::create(listener, command, json);
-            if (indexOfMethod != -1) {
-                staticMetaObject.method(indexOfMethod)
-                    .invoke(this, Qt::QueuedConnection,
-                        Q_ARG(QSharedPointer<SocketApiJobV2>, socketApiJob));
-            } else {
-                qCWarning(lcSocketApi) << "The command is not supported by this version of the client:" << command
-                                       << "with argument:" << argument;
-                socketApiJob->failure(QStringLiteral("command not found"));
             }
         } else if (command.startsWith("ENCRYPT")) {
             if (indexOfMethod != -1) {
@@ -1103,23 +1080,6 @@ void SocketApi::setFileLock(const QString &localFile, const SyncFileItem::LockSt
     shareFolder->scheduleThisFolderSoon();
 }
 
-void SocketApi::command_V2_LIST_ACCOUNTS(const QSharedPointer<SocketApiJobV2> &job) const
-{
-    QJsonArray out;
-    const auto accounts = AccountManager::instance()->accounts();
-    for (auto acc : accounts) {
-        // TODO: Use uuid once https://github.com/owncloud/client/pull/8397 is merged
-        out << QJsonObject({ { "name", acc->account()->displayName() }, { "id", acc->account()->id() } });
-    }
-    job->success({ { "accounts", out } });
-}
-
-void SocketApi::command_V2_UPLOAD_FILES_FROM(const QSharedPointer<SocketApiJobV2> &job) const
-{
-    auto uploadJob = new SocketUploadJob(job);
-    uploadJob->start();
-}
-
 void SocketApi::emailPrivateLink(const QString &link)
 {
     Utility::openEmailComposer(
@@ -1695,31 +1655,6 @@ void SocketApiJob::resolve(const QJsonObject &response)
 void SocketApiJob::reject(const QString &response)
 {
     _socketListener->sendMessage(QStringLiteral("REJECT|") + _jobId + QLatin1Char('|') + response);
-}
-
-SocketApiJobV2::SocketApiJobV2(const QSharedPointer<SocketListener> &socketListener, const QByteArray &command, const QJsonObject &arguments)
-    : _socketListener(socketListener)
-    , _command(command)
-    , _jobId(arguments[QStringLiteral("id")].toString())
-    , _arguments(arguments[QStringLiteral("arguments")].toObject())
-{
-    ASSERT(!_jobId.isEmpty())
-}
-
-void SocketApiJobV2::success(const QJsonObject &response) const
-{
-    doFinish(response);
-}
-
-void SocketApiJobV2::failure(const QString &error) const
-{
-    doFinish({ { QStringLiteral("error"), error } });
-}
-
-void SocketApiJobV2::doFinish(const QJsonObject &obj) const
-{
-    _socketListener->sendMessage(_command + QStringLiteral("_RESULT:") + QJsonDocument({ { QStringLiteral("id"), _jobId }, { QStringLiteral("arguments"), obj } }).toJson(QJsonDocument::Compact));
-    Q_EMIT finished();
 }
 
 } // namespace OCC

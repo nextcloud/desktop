@@ -26,7 +26,6 @@ class Folder;
 class SocketListener;
 class DirectEditor;
 class SocketApiJob;
-class SocketApiJobV2;
 
 Q_DECLARE_LOGGING_CATEGORY(lcSocketApi)
 
@@ -141,10 +140,6 @@ private:
     Q_INVOKABLE void command_OPENNEWWINDOW(const QString &localFile, OCC::SocketListener *listener);
     Q_INVOKABLE void command_OPEN(const QString &localFile, OCC::SocketListener *listener);
 #endif
-
-    // External sync
-    Q_INVOKABLE void command_V2_LIST_ACCOUNTS(const QSharedPointer<OCC::SocketApiJobV2> &job) const;
-    Q_INVOKABLE void command_V2_UPLOAD_FILES_FROM(const QSharedPointer<OCC::SocketApiJobV2> &job) const;
 
     // Fetch the private link and call targetFun
     void fetchPrivateLinkUrlHelper(const QString &localFile, const std::function<void(const QString &url)> &targetFun);

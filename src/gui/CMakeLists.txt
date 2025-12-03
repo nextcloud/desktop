@@ -561,7 +561,6 @@ add_subdirectory(socketapi)
 # skip unity inclusion for files which cause problems with a CMake unity build
 set_property(SOURCE
     ${CMAKE_CURRENT_SOURCE_DIR}/socketapi/socketapi.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/socketapi/socketuploadjob.cpp
     PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
 
 foreach(FILE IN LISTS client_UI_SRCS)

@@ -128,29 +128,6 @@ protected:
     QJsonObject _arguments;
 };
 
-class SocketApiJobV2 : public QObject
-{
-    Q_OBJECT
-public:
-    explicit SocketApiJobV2(const QSharedPointer<SocketListener> &socketListener, const QByteArray &command, const QJsonObject &arguments);
-
-    void success(const QJsonObject &response) const;
-    void failure(const QString &error) const;
-
-    [[nodiscard]] const QJsonObject &arguments() const { return _arguments; }
-    [[nodiscard]] QByteArray command() const { return _command; }
-
-Q_SIGNALS:
-    void finished() const;
-
-private:
-    void doFinish(const QJsonObject &obj) const;
-
-    QSharedPointer<SocketListener> _socketListener;
-    const QByteArray _command;
-    QString _jobId;
-    QJsonObject _arguments;
-};
 }
 
 Q_DECLARE_METATYPE(OCC::SocketListener *)
