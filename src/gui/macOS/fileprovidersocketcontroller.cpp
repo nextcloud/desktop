@@ -99,6 +99,7 @@ void FileProviderSocketController::parseReceivedLine(const QString &receivedLine
         reportSyncState("SYNC_FINISHED");
         return;
     } else if (command == "FILE_PROVIDER_DOMAIN_SYNC_STATE_CHANGE") {
+        qCDebug(lcFileProviderSocketController) << "Received FILE_PROVIDER_DOMAIN_SYNC_STATE_CHANGE:" << argument;
         reportSyncState(argument);
         return;
     }
