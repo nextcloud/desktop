@@ -90,6 +90,8 @@ import OSLog
     }
 
     func insertSyncAction(_ actionId: UUID) {
+        logger.debug("Inserting synchronization action.", [.item: actionId])
+
         actionsLock.lock()
         let oldActions = syncActions
         syncActions.insert(actionId)
@@ -98,6 +100,8 @@ import OSLog
     }
 
     func insertErrorAction(_ actionId: UUID) {
+        logger.debug("Inserting error action.", [.item: actionId])
+
         actionsLock.lock()
         let oldActions = syncActions
         syncActions.remove(actionId)
@@ -107,6 +111,8 @@ import OSLog
     }
 
     func removeSyncAction(_ actionId: UUID) {
+        logger.debug("Removing synchronization action.", [.item: actionId])
+
         actionsLock.lock()
         let oldActions = syncActions
         syncActions.remove(actionId)
@@ -274,11 +280,23 @@ import OSLog
                 log: log
             )
 
-            if error != nil {
-                insertErrorAction(actionId)
-                signalEnumerator(completionHandler: { _ in })
-            } else {
+            if error == nil {
                 removeSyncAction(actionId)
+            } else {
+                // Do not consider the exclusion of a lock file a synchronization error resulting in a misleading status report because exclusion is expected.
+                // Though, the exclusion error code is only available starting with macOS 13, hence this logic reads a bit more cumbersome.
+
+                if #available(macOS 13.0, *) {
+                    if isLockFileName(itemTemplate.filename), let fileProviderError = error as? NSFileProviderError, fileProviderError.code == .excludedFromSync {
+                        removeSyncAction(actionId)
+                    } else {
+                        insertErrorAction(actionId)
+                        signalEnumerator(completionHandler: { _ in })
+                    }
+                } else {
+                    insertErrorAction(actionId)
+                    signalEnumerator(completionHandler: { _ in })
+                }
             }
 
             logger.debug("Calling item creation completion handler.", [.item: item?.itemIdentifier, .name: item?.filename, .error: error])
