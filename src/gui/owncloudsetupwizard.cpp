@@ -727,7 +727,7 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
             Mac::FileProvider::instance()->domainManager()->addFileProviderDomainForAccount(account);
             auto const accountId = account->account()->userIdAtHostWithPort();
             // let the user settings know that VFS is enabled
-            Mac::FileProviderSettingsController::instance()->setVfsEnabledForAccount(accountId, true, false);
+            Mac::FileProviderSettingsController::instance()->setFileProviderEnabledForAccount(accountId, true, false);
             _ocWizard->appendToConfigurationLog(
                 tr("<font color=\"green\"><b>File Provider-based account %1 successfully created!</b></font>").arg(accountId));
             _ocWizard->done(result);

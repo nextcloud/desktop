@@ -313,7 +313,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
         for (const auto &accountState : allAccounts) {
             const auto account = accountState->account();
             const auto userIdAtHostWithPort = account->userIdAtHostWithPort();
-            if (!Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(userIdAtHostWithPort)) {
+            if (!Mac::FileProviderSettingsController::instance()->isFileProviderEnabledForAccount(userIdAtHostWithPort)) {
                 continue;
             }
             allPaused = false;

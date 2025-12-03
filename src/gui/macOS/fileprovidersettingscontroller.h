@@ -24,31 +24,28 @@ public:
     static FileProviderSettingsController *instance();
 
     [[nodiscard]] QQuickWidget *settingsViewWidget(const QString &accountUserIdAtHost, QWidget *const parent = nullptr, const QQuickWidget::ResizeMode resizeMode = QQuickWidget::SizeRootObjectToView);
-    [[nodiscard]] Q_INVOKABLE bool vfsEnabledForAccount(const QString &userIdAtHost) const;
+    [[nodiscard]] Q_INVOKABLE bool isFileProviderEnabledForAccount(const QString &userIdAtHost) const;
 
 public slots:
-    void setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled, const bool showInformationDialog = true);
+    void setFileProviderEnabledForAccount(const QString &userIdAtHost, const bool setEnabled, const bool showInformationDialog = true);
 
 signals:
-    void vfsEnabledAccountsChanged();
+    void enabledAccountsChanged();
 
 private:
-    enum class VfsAccountsAction {
-        VfsAccountsNoAction,
-        VfsAccountsEnabledChanged,
+    enum class FileProviderAction {
+        NoAction,
+        EnabledChanged,
     };
 
     explicit FileProviderSettingsController(QObject *parent = nullptr);
 
-    [[nodiscard]] void *nsEnabledAccounts() const;
-    [[nodiscard]] VfsAccountsAction setVfsEnabledForAccountImpl(const QString &userIdAtHost, const bool setEnabled);
+    [[nodiscard]] void *accountsInUserDefaultsEnabledForFileProviders() const;
+    [[nodiscard]] FileProviderAction setFileProviderEnabledForAccountImpl(const QString &userIdAtHost, const bool setEnabled);
     void setupPersistentMainAppService();
 
-    QHash<QString, UserInfo*> _userInfos;
     void *_userDefaults; // NSUserDefaults* - stored as void* to avoid Objective-C in header
     void *_accountsKey;  // NSString* - stored as void* to avoid Objective-C in header
-    QHash<QString, unsigned long long> _storageUsage;
-    QVector<void *> _serviceConnections; // QVector<NSXPCConnection*> - stored as void* to avoid Objective-C in header
 };
 
 } // Mac

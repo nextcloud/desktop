@@ -45,18 +45,6 @@ FileProviderSettingsController::FileProviderSettingsController(QObject *parent)
     , _userDefaults(NSUserDefaults.standardUserDefaults)
     , _accountsKey([NSString stringWithUTF8String:enabledAccountsSettingsKey])
 {
-    const auto accManager = AccountManager::instance();
-    const auto accountsList = accManager->accounts();
-
-    for (const auto &accountState : accountsList) {
-        const auto userInfo = new UserInfo(accountState.data(), false, false, this);
-        const auto account = accountState->account();
-        const auto accountUserIdAtHost = account->userIdAtHostWithPort();
-
-        _userInfos.insert(accountUserIdAtHost, userInfo);
-        userInfo->setActive(true);
-    }
-
     setupPersistentMainAppService();
 }
 
@@ -71,17 +59,18 @@ QQuickWidget *FileProviderSettingsController::settingsViewWidget(const QString &
     return settingsViewWidget;
 }
 
-bool FileProviderSettingsController::vfsEnabledForAccount(const QString &userIdAtHost) const
+bool FileProviderSettingsController::isFileProviderEnabledForAccount(const QString &userIdAtHost) const
 {
-    NSArray<NSString *> *const vfsEnabledAccounts = static_cast<NSArray<NSString *> *>(nsEnabledAccounts());
-    return [vfsEnabledAccounts containsObject:userIdAtHost.toNSString()];
+    NSArray<NSString *> *const enabledAccounts = static_cast<NSArray<NSString *> *>(accountsInUserDefaultsEnabledForFileProviders());
+    return [enabledAccounts containsObject:userIdAtHost.toNSString()];
 }
 
-void FileProviderSettingsController::setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled, const bool showInformationDialog)
+void FileProviderSettingsController::setFileProviderEnabledForAccount(const QString &userIdAtHost, const bool setEnabled, const bool showInformationDialog)
 {
-    const auto enabledAccountsAction = setVfsEnabledForAccountImpl(userIdAtHost, setEnabled);
-    if (enabledAccountsAction == VfsAccountsAction::VfsAccountsEnabledChanged) {
-        emit vfsEnabledAccountsChanged();
+    const auto enabledAccountsAction = setFileProviderEnabledForAccountImpl(userIdAtHost, setEnabled);
+
+    if (enabledAccountsAction == FileProviderAction::EnabledChanged) {
+        emit enabledAccountsChanged();
 
         if (setEnabled && showInformationDialog) {
             QMessageBox::information(nullptr, tr("Virtual files enabled"),
@@ -91,98 +80,58 @@ void FileProviderSettingsController::setVfsEnabledForAccount(const QString &user
     }
 }
 
-void *FileProviderSettingsController::nsEnabledAccounts() const
+void *FileProviderSettingsController::accountsInUserDefaultsEnabledForFileProviders() const
 {
     NSUserDefaults *userDefaults = static_cast<NSUserDefaults *>(_userDefaults);
     NSString *accountsKey = static_cast<NSString *>(_accountsKey);
     return [userDefaults objectForKey:accountsKey];
 }
 
-FileProviderSettingsController::VfsAccountsAction FileProviderSettingsController::setVfsEnabledForAccountImpl(const QString &userIdAtHost, const bool setEnabled)
+FileProviderSettingsController::FileProviderAction FileProviderSettingsController::setFileProviderEnabledForAccountImpl(const QString &userIdAtHost, const bool setEnabled)
 {
     NSUserDefaults *userDefaults = static_cast<NSUserDefaults *>(_userDefaults);
     NSString *accountsKey = static_cast<NSString *>(_accountsKey);
-    NSArray<NSString *> *vfsEnabledAccounts = static_cast<NSArray<NSString *> *>(nsEnabledAccounts());
+    NSArray<NSString *> *enabledAccounts = static_cast<NSArray<NSString *> *>(accountsInUserDefaultsEnabledForFileProviders());
 
-    qCInfo(lcFileProviderSettingsController) << "Setting file provider-based vfs of account"
+    qCInfo(lcFileProviderSettingsController) << "Changing file provider enablement for"
                                              << userIdAtHost
                                              << "to"
                                              << setEnabled;
 
-    if (vfsEnabledAccounts == nil) {
-        qCDebug(lcFileProviderSettingsController) << "Received nil array for accounts, creating new array";
-        vfsEnabledAccounts = NSArray.array;
+    if (enabledAccounts == nil) {
+        qCDebug(lcFileProviderSettingsController) << "Received nil array for accounts, creating new array.";
+        enabledAccounts = NSArray.array;
     }
 
     NSString *const nsUserIdAtHost = userIdAtHost.toNSString();
-    const BOOL accountEnabled = [vfsEnabledAccounts containsObject:nsUserIdAtHost];
+    const BOOL accountEnabled = [enabledAccounts containsObject:nsUserIdAtHost];
 
     if (accountEnabled == setEnabled) {
-        qCDebug(lcFileProviderSettingsController) << "VFS enablement status for"
+        qCDebug(lcFileProviderSettingsController) << "File provider enablement status for"
                                                   << userIdAtHost
-                                                  << "matches config.";
-        return VfsAccountsAction::VfsAccountsNoAction;
+                                                  << "matches statet in user defaults.";
+        return FileProviderAction::NoAction;
     }
 
-    NSMutableArray<NSString *> *const mutableVfsAccounts = vfsEnabledAccounts.mutableCopy;
+    NSMutableArray<NSString *> *const mutableAccounts = enabledAccounts.mutableCopy;
 
     if (setEnabled) {
-        [mutableVfsAccounts addObject:nsUserIdAtHost];
+        [mutableAccounts addObject:nsUserIdAtHost];
     } else {
-        [mutableVfsAccounts removeObject:nsUserIdAtHost];
+        [mutableAccounts removeObject:nsUserIdAtHost];
     }
 
-    NSArray<NSString *> *const modifiedVfsAccounts = mutableVfsAccounts.copy;
-    [userDefaults setObject:modifiedVfsAccounts forKey:accountsKey];
+    NSArray<NSString *> *const modifiedAccounts = mutableAccounts.copy;
+    [userDefaults setObject:modifiedAccounts forKey:accountsKey];
 
-    Q_ASSERT(vfsEnabledForAccount(userIdAtHost) == setEnabled);
+    Q_ASSERT(isFileProviderEnabledForAccount(userIdAtHost) == setEnabled);
 
-    return VfsAccountsAction::VfsAccountsEnabledChanged;
+    return FileProviderAction::EnabledChanged;
 }
 
 void FileProviderSettingsController::setupPersistentMainAppService()
 {
-    // TODO: Implement FileProviderXPCUtils functions for XPC connection management
-    // The following code is disabled until the XPC utility functions are implemented
-    
     qCInfo(lcFileProviderSettingsController) << "XPC connection setup not yet implemented.";
-    
-    /* Original code that needs FileProviderXPCUtils implementation:
-    
-    using namespace OCC::Mac::FileProviderXPCUtils;
-    qCInfo(lcFileProviderSettingsController) << "Setting up persistent MainAppService XPC connections.";
-    NSArray<NSFileProviderDomainIdentifier> *domainIdentifiers = getDomainIdentifiers();
-
-    if (domainIdentifiers.count == 0) {
-        qCWarning(lcFileProviderSettingsController) << "No File Provider domain identifiers found; skipping XPC setup.";
-        return;
-    }
-
-    NSDictionary<NSFileProviderDomainIdentifier, NSFileProviderService *> *services = getFileProviderServices(domainIdentifiers);
-
-    if (services.count == 0) {
-        qCWarning(lcFileProviderSettingsController) << "No File Provider services found; skipping XPC setup.";
-        return;
-    }
-
-    NSDictionary<NSFileProviderDomainIdentifier, NSXPCConnection *> *connections = connectToFileProviderServices(services);
-    if (connections.count == 0) {
-        qCWarning(lcFileProviderSettingsController) << "No XPC connections obtained; skipping XPC setup.";
-        return;
-    }
-
-    // Configure connections (sets exported interface/object and resumes), and keep them alive.
-    for (NSFileProviderDomainIdentifier domainId in connections) {
-        NSXPCConnection *connection = connections[domainId];
-        configureFileProviderConnection(connection);
-        NSXPCConnection *nsConnection = static_cast<NSXPCConnection *>(connection);
-        _serviceConnections.append(nsConnection);
-    }
-
-    // Optionally initialize remote client communication proxies to keep them active.
-    [[maybe_unused]] auto proxies = processClientCommunicationConnections(connections);
-    Q_UNUSED(proxies);
-    */
 }
 
 } // namespace Mac

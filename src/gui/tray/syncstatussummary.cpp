@@ -436,7 +436,7 @@ void SyncStatusSummary::initSyncState()
     if (Mac::FileProvider::fileProviderAvailable() && _accountState) {
         const auto account = _accountState->account();
         const auto userIdAtHostWithPort = account->userIdAtHostWithPort();
-        if (Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(userIdAtHostWithPort)) {
+        if (Mac::FileProviderSettingsController::instance()->isFileProviderEnabledForAccount(userIdAtHostWithPort)) {
             // FIXME: Wire up the MainAppService instead!
         }
     }
