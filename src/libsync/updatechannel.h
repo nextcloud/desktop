@@ -6,10 +6,12 @@
 #ifndef UPDATECHANNEL_H
 #define UPDATECHANNEL_H
 
+#include "owncloudlib.h"
+
 #include <QList>
 #include <QString>
 
-class UpdateChannel
+class OWNCLOUDSYNC_EXPORT UpdateChannel
 {
 public:
     enum class ChannelName : unsigned int {
