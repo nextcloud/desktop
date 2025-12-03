@@ -9,24 +9,25 @@
 #include <iostream>
 #include <random>
 
-#include "config.h"
 #include "account.h"
+#include "accountmanager.h"
 #include "accountsetupcommandlinemanager.h"
 #include "accountstate.h"
-#include "editlocallymanager.h"
+#include "clientproxy.h"
+#include "config.h"
+#include "configfile.h"
 #include "connectionvalidator.h"
+#include "creds/abstractcredentials.h"
+#include "editlocallymanager.h"
 #include "folder.h"
 #include "folderman.h"
 #include "logger.h"
-#include "configfile.h"
+#include "pushnotifications.h"
+#include "shellextensionsserver.h"
 #include "socketapi/socketapi.h"
 #include "sslerrordialog.h"
 #include "theme.h"
-#include "clientproxy.h"
-#include "accountmanager.h"
-#include "creds/abstractcredentials.h"
-#include "pushnotifications.h"
-#include "shellextensionsserver.h"
+#include "updatechannel.h"
 
 #if defined(BUILD_UPDATER)
 #include "updater/ocupdater.h"
@@ -293,6 +294,10 @@ Application::Application(int &argc, char **argv)
     } else {
         setupConfigFile();
     }
+
+    // In the config, set the enterprise update channel to invalid, so it can be bumped up
+    // when recieving server capabilities.
+    ConfigFile().setDesktopEnterpriseChannel(UpdateChannel::Invalid.toString());
 
     if (_theme->doNotUseProxy()) {
         ConfigFile().setProxyType(QNetworkProxy::NoProxy);

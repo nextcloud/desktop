@@ -16,6 +16,7 @@
 #include "networkjobs.h"
 #include "pushnotifications.h"
 #include "theme.h"
+#include "updatechannel.h"
 #include "version.h"
 
 #include "deletejob.h"
@@ -1272,6 +1273,16 @@ void Account::setServerHasValidSubscription(bool valid)
     _serverHasValidSubscription = valid;
 }
 
+UpdateChannel Account::enterpriseUpdateChannel() const
+{
+    return _enterpriseUpdateChannel;
+}
+
+void Account::setEnterpriseUpdateChannel(const UpdateChannel &channel)
+{
+    _enterpriseUpdateChannel = channel;
+}
+
 void Account::updateServerSubcription()
 {
     ConfigFile currentConfig;
@@ -1286,10 +1297,13 @@ void Account::updateServerSubcription()
 
 void Account::updateDesktopEnterpriseChannel()
 {
+    const auto capabilityEnterpriseChannel = UpdateChannel::fromString(_capabilities.desktopEnterpriseChannel());
+    _enterpriseUpdateChannel = capabilityEnterpriseChannel;
+
     ConfigFile currentConfig;
-    if (const auto desktopEnterpriseChannel = _capabilities.desktopEnterpriseChannel();
-        desktopEnterpriseChannel != currentConfig.desktopEnterpriseChannel()) {
-        currentConfig.setDesktopEnterpriseChannel(desktopEnterpriseChannel);
+    const auto configEnterpriseChannel = UpdateChannel::fromString(currentConfig.desktopEnterpriseChannel());
+    if (capabilityEnterpriseChannel > configEnterpriseChannel) {
+        currentConfig.setDesktopEnterpriseChannel(capabilityEnterpriseChannel.toString());
     }
 }
 

@@ -78,6 +78,7 @@ constexpr auto maxAccountsVersion = 13;
 constexpr auto maxAccountVersion = 13;
 
 constexpr auto serverHasValidSubscriptionC = "serverHasValidSubscription";
+constexpr auto serverDesktopEnterpriseUpdateChannelC = "desktopEnterpriseChannel";
 
 constexpr auto generalC = "General";
 }
@@ -424,6 +425,7 @@ void AccountManager::saveAccountHelper(const AccountPtr &account, QSettings &set
     settings.setValue(QLatin1String(serverColorC), account->_serverColor);
     settings.setValue(QLatin1String(serverTextColorC), account->_serverTextColor);
     settings.setValue(QLatin1String(serverHasValidSubscriptionC), account->serverHasValidSubscription());
+    settings.setValue(QLatin1String(serverDesktopEnterpriseUpdateChannelC), account->enterpriseUpdateChannel().toString());
     settings.setValue(QLatin1String(encryptionCertificateSha256FingerprintC), account->encryptionCertificateFingerprint());
     if (!account->_skipE2eeMetadataChecksumValidation) {
         settings.remove(QLatin1String(skipE2eeMetadataChecksumValidationC));
@@ -757,10 +759,9 @@ void AccountManager::deleteAccount(OCC::AccountState *account)
 
     account->account()->deleteAppToken();
 
-    // clean up config from subscriptions if the account removed was the only with valid subscription
-    if (account->account()->serverHasValidSubscription()) {
-        updateServerHasValidSubscriptionConfig();
-    }
+    // clean up config from subscriptions and enterprise channel
+    updateServerHasValidSubscriptionConfig();
+    updateServerDesktopEnterpriseUpdateChannel();
 
     emit accountSyncConnectionRemoved(account);
     emit accountRemoved(account);
@@ -770,15 +771,28 @@ void AccountManager::updateServerHasValidSubscriptionConfig()
 {
     auto serverHasValidSubscription = false;
     for (const auto &account : std::as_const(_accounts)) {
-        if (!account->account()->serverHasValidSubscription()) {
-            continue;
+        if (account->account()->serverHasValidSubscription()) {
+            serverHasValidSubscription = true;
+            break;
         }
-
-        serverHasValidSubscription = true;
-        break;
     }
 
-    ConfigFile().setServerHasValidSubscription(serverHasValidSubscription);
+    if (ConfigFile().serverHasValidSubscription() != serverHasValidSubscription) {
+        ConfigFile().setServerHasValidSubscription(serverHasValidSubscription);
+    }
+}
+
+void AccountManager::updateServerDesktopEnterpriseUpdateChannel()
+{
+    UpdateChannel most_stable_channel = UpdateChannel::Invalid;
+    for (const auto &account : std::as_const(_accounts)) {
+        if (const auto accounts_channel = account->account()->enterpriseUpdateChannel();
+            account->account()->serverHasValidSubscription() && accounts_channel > most_stable_channel) {
+            most_stable_channel = accounts_channel;
+        }
+    }
+
+    ConfigFile().setDesktopEnterpriseChannel(most_stable_channel.toString());
 }
 
 AccountPtr AccountManager::createAccount()
@@ -842,10 +856,8 @@ void AccountManager::addAccountState(AccountState *const accountState)
     _accounts << ptr;
     ptr->trySignIn();
 
-    // update config subscriptions if the account added is the only with valid subscription
-    if (accountState->account()->serverHasValidSubscription() && !ConfigFile().serverHasValidSubscription()) {
-        updateServerHasValidSubscriptionConfig();
-    }
+    updateServerHasValidSubscriptionConfig();
+    updateServerDesktopEnterpriseUpdateChannel();
 
     emit accountAdded(accountState);
 }

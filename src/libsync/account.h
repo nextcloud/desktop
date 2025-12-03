@@ -12,8 +12,9 @@
 #include "clientsideencryption.h"
 #include "clientstatusreporting.h"
 #include "common/utility.h"
-#include "syncfileitem.h"
 #include "common/vfs.h"
+#include "syncfileitem.h"
+#include "updatechannel.h"
 
 #include <QByteArray>
 #include <QUrl>
@@ -411,6 +412,9 @@ public:
     [[nodiscard]] bool serverHasValidSubscription() const;
     void setServerHasValidSubscription(bool valid);
 
+    [[nodiscard]] UpdateChannel enterpriseUpdateChannel() const;
+    void setEnterpriseUpdateChannel(const UpdateChannel &channel);
+
     [[nodiscard]] bool enforceUseHardwareTokenEncryption() const;
 
     [[nodiscard]] QString encryptionHardwareTokenDriverPath() const;
@@ -577,6 +581,7 @@ private:
     unsigned int _uploadLimit = 0;
     unsigned int _downloadLimit = 0;
     bool _serverHasValidSubscription = false;
+    UpdateChannel _enterpriseUpdateChannel = UpdateChannel::Invalid;
     QByteArray _encryptionCertificateFingerprint;
 
     /* IMPORTANT - remove later - FIXME MS@2019-12-07 -->
