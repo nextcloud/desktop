@@ -163,12 +163,14 @@ private:
         using namespace OCC::Mac::FileProviderXPCUtils;
         qCInfo(lcFileProviderSettingsController) << "Setting up persistent MainAppService XPC connections.";
         NSArray<NSFileProviderManager *> *managers = getDomainManagers();
+
         if (managers.count == 0) {
             qCWarning(lcFileProviderSettingsController) << "No File Provider managers found; skipping XPC setup.";
             return;
         }
 
         NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *services = getFileProviderServices(managers);
+
         if (services.count == 0) {
             qCWarning(lcFileProviderSettingsController) << "No File Provider services found; skipping XPC setup.";
             return;

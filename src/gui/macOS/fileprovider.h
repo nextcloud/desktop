@@ -8,7 +8,6 @@
 #include <QObject>
 
 #include "fileproviderdomainmanager.h"
-#include "fileprovidersocketserver.h"
 #include "fileproviderxpc.h"
 
 namespace OCC {

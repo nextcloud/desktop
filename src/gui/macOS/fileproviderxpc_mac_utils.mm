@@ -232,30 +232,6 @@ NSObject *getRemoteServiceObject(NSXPCConnection *const connection, Protocol *co
     return remoteServiceObject;
 }
 
-NSString *getFileProviderDomainIdentifier(NSObject<ClientCommunicationProtocol> *const clientCommService)
-{
-    Q_ASSERT(clientCommService != nil);
-    __block NSString *domainIdentifier;
-    dispatch_group_t group = dispatch_group_create();
-    dispatch_group_enter(group);
-
-    [clientCommService getFileProviderDomainIdentifierWithCompletionHandler:^(NSString *const extensionAccountId, NSError *const error){
-        if (error != nil) {
-            qCWarning(lcFileProviderXPCUtils) << "Error getting domain id from file provider service" << error;
-            dispatch_group_leave(group);
-
-            return;
-        }
-
-        domainIdentifier = [[NSString alloc] initWithString:extensionAccountId];
-        dispatch_group_leave(group);
-    }];
-
-    dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-
-    return domainIdentifier;
-}
-
 QHash<QString, void*> processClientCommunicationConnections(NSArray<NSXPCConnection *> *const connections)
 {
     QHash<QString, void*> clientCommServices;

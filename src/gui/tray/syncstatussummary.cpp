@@ -14,7 +14,6 @@
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "gui/macOS/fileprovider.h"
-#include "gui/macOS/fileprovidersocketserver.h"
 #include "gui/macOS/fileprovidersettingscontroller.h"
 #endif
 

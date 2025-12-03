@@ -14,18 +14,21 @@
 
 namespace OCC::Mac::FileProviderXPCUtils {
 
+/**
+    @brief Get file provider domain managers for all file provider domains managed by this application.
+ */
 NSArray<NSFileProviderManager *> *getDomainManagers();
+
+/**
+    @brief Return the user-visible URLs for the root containers of the domains belonging to the given managers.
+ */
 NSArray<NSURL *> *getDomainUrlsForManagers(NSArray<NSFileProviderManager *> *managers);
+
 NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *getFileProviderServices(NSArray<NSFileProviderManager *> *managers);
 NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *getFileProviderServicesAtUrls(NSArray<NSURL *> *urls);
 NSArray<NSXPCConnection *> *connectToFileProviderServices(NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *fpServices);
 void configureFileProviderConnection(NSXPCConnection *connection);
 NSObject *getRemoteServiceObject(NSXPCConnection *connection, Protocol *protocol);
-
-/**
- * @brief Get the domain identifier for and from a given client communication service.
- */
-NSString *getFileProviderDomainIdentifier(NSObject<ClientCommunicationProtocol> *clientCommService);
 
 QHash<QString, void*> processClientCommunicationConnections(NSArray<NSXPCConnection *> *connections);
 

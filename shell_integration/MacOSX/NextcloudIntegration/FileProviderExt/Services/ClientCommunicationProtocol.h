@@ -10,11 +10,6 @@
 
 @protocol ClientCommunicationProtocol
 
-/**
- * @brief Get the raw file provider domain identifier value.
- */
-- (void)getFileProviderDomainIdentifierWithCompletionHandler:(void(^)(NSString *extensionAccountId, NSError *error))completionHandler;
-
 - (void)configureAccountWithUser:(NSString *)user
                           userId:(NSString *)userId
                        serverUrl:(NSString *)serverUrl

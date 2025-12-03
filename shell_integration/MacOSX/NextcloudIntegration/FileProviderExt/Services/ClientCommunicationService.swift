@@ -41,12 +41,6 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
 
     //MARK: - Client Communication Protocol methods
 
-    func getFileProviderDomainIdentifier(completionHandler: @escaping (String?, Error?) -> Void) {
-        let identifier = self.fpExtension.domain.identifier.rawValue
-        logger.debug("Returning file provider domain identifier.", [.domain: identifier])
-        completionHandler(identifier, nil)
-    }
-
     func configureAccount(
         withUser user: String,
         userId: String,
