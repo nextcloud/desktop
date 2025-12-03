@@ -12,10 +12,6 @@
 #include "editlocallyjob.h"
 #include "editlocallyverificationjob.h"
 
-#ifdef BUILD_FILE_PROVIDER_MODULE
-#include "macOS/fileprovidereditlocallyjob.h"
-#endif
-
 namespace OCC {
 
 class EditLocallyManager : public QObject
@@ -60,10 +56,6 @@ private:
 
     QHash<QString, EditLocallyVerificationJobPtr> _verificationJobs;
     QHash<QString, EditLocallyJobPtr> _editLocallyJobs;
-
-#ifdef BUILD_FILE_PROVIDER_MODULE
-    QHash<QString, Mac::FileProviderEditLocallyJobPtr> _editLocallyFpJobs;
-#endif
 };
 
 }

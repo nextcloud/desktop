@@ -53,10 +53,6 @@
 #include <QJsonDocument>
 #include <QToolTip>
 
-#ifdef BUILD_FILE_PROVIDER_MODULE
-#include "macOS/fileprovider.h"
-#endif
-
 #include "account.h"
 
 namespace {
