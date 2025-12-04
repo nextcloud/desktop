@@ -39,6 +39,7 @@
 #include "common/vfs.h"
 
 #include "config.h"
+#include "settings/migration.h"
 
 #if defined(Q_OS_WIN)
 #include <windows.h>
@@ -121,20 +122,21 @@ namespace {
 bool Application::configVersionMigration()
 {
     ConfigFile configFile;
-    const auto shouldTryToMigrate = configFile.shouldTryToMigrate();
+    Migration migration;
+    const auto shouldTryToMigrate = migration.shouldTryToMigrate();
     if (!shouldTryToMigrate) {
         qCInfo(lcApplication) << "This is not an upgrade/downgrade/migration. Proceed to read current application config file.";
-        configFile.setMigrationPhase(ConfigFile::MigrationPhase::Done);
+        migration.setMigrationPhase(Migration::MigrationPhase::Done);
         return false;
     }
 
-    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupConfigFile);
+    migration.setMigrationPhase(Migration::MigrationPhase::SetupConfigFile);
     QStringList deleteKeys, ignoreKeys;
     AccountManager::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
     FolderMan::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
     
-    qCDebug(lcApplication) << "Migration is in progress:"  << configFile.isMigrationInProgress();
-    const auto versionChanged = configFile.hasVersionChanged();
+    qCDebug(lcApplication) << "Migration is in progress:"  << migration.isInProgress();
+    const auto versionChanged = migration.versionChanged();
     if (versionChanged) {
         qCInfo(lcApplication) << "Version changed. Removing updater settings from config.";
         configFile.cleanUpdaterConfiguration();
@@ -180,7 +182,7 @@ bool Application::configVersionMigration()
                "Continuing will mean <b>%2 these settings</b>.<br>"
                "<br>"
                "The current configuration file was already backed up to <i>%3</i>.")
-                .arg((configFile.isDowngrade() ? tr("newer", "newer software version") : tr("older", "older software version")),
+                .arg((Migration().isDowngrade() ? tr("newer", "newer software version") : tr("older", "older software version")),
                      deleteKeys.isEmpty()? tr("ignoring") : tr("deleting"),
                      backupFilesList.join("<br>")));
         box.addButton(tr("Quit"), QMessageBox::AcceptRole);
@@ -493,18 +495,18 @@ void Application::setupAccountsAndFolders()
 {
     _folderManager.reset(new FolderMan);
     ConfigFile configFile;
-    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupUsers);
+    auto migration = configFile.migration();
+    migration.setMigrationPhase(Migration::MigrationPhase::SetupUsers);
     const auto accountsRestoreResult = restoreLegacyAccount();
     if (accountsRestoreResult == AccountManager::AccountsNotFound || accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
         qCWarning(lcApplication) << "Migration result: " << accountsRestoreResult;
         qCDebug(lcApplication) << "is migration disabled?" << DISABLE_ACCOUNT_MIGRATION;
         qCWarning(lcApplication) << "No accounts were migrated, prompting user to set up accounts and folders from scratch.";
-        configFile.setMigrationPhase(ConfigFile::MigrationPhase::Done);
-
+        migration.setMigrationPhase(Migration::MigrationPhase::Done);
         return;
     }
 
-    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupFolders);
+    migration.setMigrationPhase(Migration::MigrationPhase::SetupFolders);
     const auto foldersListSize = FolderMan::instance()->setupFolders();
     FolderMan::instance()->setSyncEnabled(true);
 
@@ -519,6 +521,7 @@ void Application::setupAccountsAndFolders()
     const auto accounts = AccountManager::instance()->accounts();
     const auto accountsListSize = accounts.size();
     if (accountsRestoreResult == AccountManager::AccountsRestoreSuccessFromLegacyVersion
+        && accountsListSize > 0
         && Theme::instance()->displayLegacyImportDialog()
         && !AccountManager::instance()->forceLegacyImport()
         && accountsListSize > 0) {
