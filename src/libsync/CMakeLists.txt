@@ -164,6 +164,8 @@ set(libsync_SRCS
     creds/keychainchunk.cpp
     caseclashconflictsolver.h
     caseclashconflictsolver.cpp
+    settings/migration.h
+    settings/migration.cpp
 )
 
 if (WIN32)
