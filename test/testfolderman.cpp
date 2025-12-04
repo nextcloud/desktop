@@ -22,6 +22,7 @@
 #include "syncenginetestutils.h"
 #include "testhelper.h"
 
+using namespace Qt::StringLiterals;
 using namespace OCC;
 
 static QByteArray fake400Response = R"(
@@ -449,6 +450,105 @@ private slots:
             QString(dirPath + "/ownCloud3"));
         QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2", url, FolderMan::GoodPathStrategy::AllowOnlyNewPath),
             QString(dirPath + "/ownCloud22"));
+    }
+
+    void testProcessingFileIdsPushNotification()
+    {
+        _fm.reset({});
+        _fm.reset(new FolderMan{});
+
+        QTemporaryDir tempDir;
+        ConfigFile::setConfDir(tempDir.path()); // we don't want to pollute the user's config file
+        QVERIFY(tempDir.isValid());
+        QDir dir(tempDir.path());
+        QVERIFY(dir.mkpath("user1_root"));
+        QVERIFY(dir.mkpath("user1_subfolder"));
+        QVERIFY(dir.mkpath("user2_root"));
+        const auto dirPath = dir.canonicalPath();
+
+        const auto createAccount = [](const QString &userName) -> AccountState * {
+            auto account = Account::create();
+            auto credentials = new FakeCredentials{new FakeQNAM({})};
+            credentials->setUserName(userName);
+            account->setCredentials(credentials);
+            account->setUrl(QUrl{"http://nextcloud.test"});
+            return new FakeAccountState(account);
+        };
+
+        auto user1 = createAccount("user1");
+        auto user2 = createAccount("user2");
+
+        const auto addFolderForTesting = [this, &dirPath](AccountState * const account, const QString &alias, const QString &localPath, const QString &targetPath, const int rootFileId, const QList<qint64> &fileIds) -> void {
+            FolderDefinition definition;
+            definition.alias = alias;
+            definition.localPath = dirPath + localPath;
+            definition.targetPath = targetPath;
+
+            auto folder = _fm->addFolder(account, definition);
+            QVERIFY(folder);
+
+            Q_EMIT folder->syncEngine().rootFileIdReceived(rootFileId);
+
+            auto journal = folder->journalDb();
+            for (const auto &fileId : fileIds) {
+                SyncJournalFileRecord record;
+                record._fileId = u"%1oc123xyz987e"_s.arg(fileId, 8, 10, '0'_L1).toLocal8Bit();
+                record._modtime = QDateTime::currentSecsSinceEpoch();
+                record._path = u"item%1"_s.arg(fileId).toLocal8Bit();
+                record._type = ItemTypeFile;
+                record._etag = "etag"_ba;
+                QVERIFY(journal->setFileRecord(record));
+            }
+        };
+
+        const auto verifyFolderSyncChangesOnReceivedFileIdNotification = [this](AccountState * const user, const QList<qint64> &fileIds, const QStringList &expectedFolderAliasesToSync) -> void {
+            QStringList folderAliasesToBeSynced = {};
+
+            _fm->_scheduledFolders.clear();
+            QSignalSpy spy(_fm.get(), &FolderMan::folderSyncStateChange);
+
+            // the account received a push notification about for specific file ids
+            _fm->slotProcessFileIdsPushNotification(user->account().get(), fileIds);
+
+            // expect the sync state for all folders of that account containing this file id to change
+            QCOMPARE(spy.size(), expectedFolderAliasesToSync.size());
+
+            for (const auto &signalParameters : std::as_const(spy)) {
+                QVERIFY(signalParameters.size() == 1);
+                const auto folderAlias = signalParameters.front().value<Folder *>()->alias();
+                QVERIFY2(
+                    expectedFolderAliasesToSync.contains(folderAlias),
+                    qPrintable("Unexpected folder alias '%1'; expected were [%2]"_L1.arg(folderAlias, expectedFolderAliasesToSync.join(", ")))
+                );
+                folderAliasesToBeSynced.append(folderAlias);
+            }
+
+            // all expected folders received a sync request!
+            folderAliasesToBeSynced.sort();
+            QCOMPARE(folderAliasesToBeSynced, expectedFolderAliasesToSync);
+        };
+
+        addFolderForTesting(user1, "0", "/user1_root",      "/",          10, {11, 12, 13, 50});
+        addFolderForTesting(user1, "1", "/user1_subfolder", "/subfolder", 15, {16, 17, 18, 50});
+        addFolderForTesting(user2, "2", "/user2_root",      "/",          20, {21, 22, 23, 50});
+
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {10},                  {"0"});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {11},                  {"0"});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {13, 11},              {"0"});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {15},                  {"1"});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {16},                  {"1"});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {18, 16},              {"1"});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {15, 11},              {"0", "1"});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {11, 16, 21},          {"0", "1"});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {50},                  {"0", "1"});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {20, 21, 22, 23, 404}, {});
+
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user2, {20},                  {"2"});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user2, {21},                  {"2"});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user2, {23, 21},              {"2"});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user2, {11, 16, 21},          {"2"});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user2, {50},                  {"2"});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user2, {10, 11, 17, 18, 404}, {});
     }
 };
 
