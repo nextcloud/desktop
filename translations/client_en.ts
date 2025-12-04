@@ -426,22 +426,22 @@
 <context>
     <name>OCC::Account</name>
     <message>
-        <location filename="../src/libsync/account.cpp" line="226"/>
+        <location filename="../src/libsync/account.cpp" line="227"/>
         <source>Public Share Link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1070"/>
+        <location filename="../src/libsync/account.cpp" line="1071"/>
         <source>File %1 is already locked by %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1072"/>
+        <location filename="../src/libsync/account.cpp" line="1073"/>
         <source>Lock operation on %1 failed with error %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1074"/>
+        <location filename="../src/libsync/account.cpp" line="1075"/>
         <source>Unlock operation on %1 failed with error %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -449,29 +449,29 @@
 <context>
     <name>OCC::AccountManager</name>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="249"/>
+        <location filename="../src/gui/accountmanager.cpp" line="250"/>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="251"/>
-        <location filename="../src/gui/accountmanager.cpp" line="362"/>
+        <location filename="../src/gui/accountmanager.cpp" line="252"/>
+        <location filename="../src/gui/accountmanager.cpp" line="363"/>
         <source>Legacy import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="252"/>
+        <location filename="../src/gui/accountmanager.cpp" line="253"/>
         <source>Import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="253"/>
+        <location filename="../src/gui/accountmanager.cpp" line="254"/>
         <source>Skip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="363"/>
+        <location filename="../src/gui/accountmanager.cpp" line="364"/>
         <source>Could not import accounts from legacy client configuration.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1049,83 +1049,83 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="177"/>
+        <location filename="../src/gui/application.cpp" line="178"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="183"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="183"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="184"/>
+        <location filename="../src/gui/application.cpp" line="185"/>
         <source>ignoring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="184"/>
+        <location filename="../src/gui/application.cpp" line="185"/>
         <source>deleting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="186"/>
+        <location filename="../src/gui/application.cpp" line="187"/>
         <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="187"/>
+        <location filename="../src/gui/application.cpp" line="188"/>
         <source>Continue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="520"/>
+        <location filename="../src/gui/application.cpp" line="525"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="521"/>
+        <location filename="../src/gui/application.cpp" line="526"/>
         <source>1 account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="523"/>
+        <location filename="../src/gui/application.cpp" line="528"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="524"/>
+        <location filename="../src/gui/application.cpp" line="529"/>
         <source>1 folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="526"/>
+        <location filename="../src/gui/application.cpp" line="531"/>
         <source>Legacy import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="527"/>
+        <location filename="../src/gui/application.cpp" line="532"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="610"/>
+        <location filename="../src/gui/application.cpp" line="615"/>
         <source>Error accessing the configuration file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="611"/>
+        <location filename="../src/gui/application.cpp" line="616"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2978,22 +2978,22 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="809"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="786"/>
         <source>Password for share required</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="810"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="787"/>
         <source>Please enter a password for your link share:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="836"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="813"/>
         <source>Sharing error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="837"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="814"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -4803,111 +4803,111 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="777"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="754"/>
         <source>Context menu share</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1126"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1086"/>
         <source>I shared something with you</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1139"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1176"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1099"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1136"/>
         <source>Share options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1143"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1103"/>
         <source>Send private link by email …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1142"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1102"/>
         <source>Copy private link to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="543"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="520"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="544"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="521"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="563"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="540"/>
         <source>Failed to encrypt folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="564"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="541"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="571"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="548"/>
         <source>Folder encrypted successfully</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="572"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="549"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1053"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1030"/>
         <source>Select new location …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1140"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1356"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1100"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1316"/>
         <source>Activity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1168"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1128"/>
         <source>Leave this share</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1174"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1134"/>
         <source>Resharing this file is not allowed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1174"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1134"/>
         <source>Resharing this folder is not allowed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1218"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1178"/>
         <source>Encrypt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1229"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1189"/>
         <source>Lock file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1232"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1192"/>
         <source>Unlock file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1247"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1207"/>
         <source>Locked by %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1251"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1211"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
         <translation>
@@ -4916,43 +4916,43 @@ Server replied with error: %2</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1391"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1351"/>
         <source>Resolve conflict …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1395"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1355"/>
         <source>Move and rename …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1398"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1358"/>
         <source>Move, rename and upload …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1400"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1360"/>
         <source>Delete local changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1406"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1366"/>
         <source>Move and upload …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1407"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1367"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1180"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1140"/>
         <source>Copy internal link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1362"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1364"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1322"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1324"/>
         <source>Open in browser</source>
         <translation type="unfinished"></translation>
     </message>

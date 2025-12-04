@@ -439,22 +439,22 @@
 <context>
     <name>OCC::Account</name>
     <message>
-        <location filename="../src/libsync/account.cpp" line="226"/>
+        <location filename="../src/libsync/account.cpp" line="227"/>
         <source>Public Share Link</source>
         <translation>公開分享連結</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1070"/>
+        <location filename="../src/libsync/account.cpp" line="1071"/>
         <source>File %1 is already locked by %2.</source>
         <translation>檔案 %1 已被 %2 鎖定。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1072"/>
+        <location filename="../src/libsync/account.cpp" line="1073"/>
         <source>Lock operation on %1 failed with error %2</source>
         <translation>%1 的鎖定操作失敗，錯誤為 %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1074"/>
+        <location filename="../src/libsync/account.cpp" line="1075"/>
         <source>Unlock operation on %1 failed with error %2</source>
         <translation>%1 的解除鎖定操作失敗，錯誤為 %2</translation>
     </message>
@@ -462,30 +462,30 @@
 <context>
     <name>OCC::AccountManager</name>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="244"/>
+        <location filename="../src/gui/accountmanager.cpp" line="245"/>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>偵測到來自舊版桌面客戶端的帳號。
 應該匯入帳號嗎？</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="246"/>
-        <location filename="../src/gui/accountmanager.cpp" line="357"/>
+        <location filename="../src/gui/accountmanager.cpp" line="247"/>
+        <location filename="../src/gui/accountmanager.cpp" line="358"/>
         <source>Legacy import</source>
         <translation>舊版匯入</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="247"/>
+        <location filename="../src/gui/accountmanager.cpp" line="248"/>
         <source>Import</source>
         <translation>匯入</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="248"/>
+        <location filename="../src/gui/accountmanager.cpp" line="249"/>
         <source>Skip</source>
         <translation>略過</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="358"/>
+        <location filename="../src/gui/accountmanager.cpp" line="359"/>
         <source>Could not import accounts from legacy client configuration.</source>
         <translation>無法從舊版客戶端組態設定中匯入帳號。</translation>
     </message>
@@ -1071,71 +1071,71 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="177"/>
+        <location filename="../src/gui/application.cpp" line="178"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>有些設定是在此客戶端的 %1 版本中設定的，並使用了此版本中無法使用的功能。&lt;br&gt;&lt;br&gt;繼續則代表 &lt;b&gt;%2 這些設定&lt;/b&gt;。&lt;br&gt;&lt;br&gt;目前設定組態檔已備份至 &lt;i&gt;%3&lt;/i&gt;。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="183"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>較新</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="183"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>較舊</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="184"/>
+        <location filename="../src/gui/application.cpp" line="185"/>
         <source>ignoring</source>
         <translation>忽略</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="184"/>
+        <location filename="../src/gui/application.cpp" line="185"/>
         <source>deleting</source>
         <translation>刪除</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="186"/>
+        <location filename="../src/gui/application.cpp" line="187"/>
         <source>Quit</source>
         <translation>離開</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="187"/>
+        <location filename="../src/gui/application.cpp" line="188"/>
         <source>Continue</source>
         <translation>繼續</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="520"/>
+        <location filename="../src/gui/application.cpp" line="525"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 個帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="521"/>
+        <location filename="../src/gui/application.cpp" line="526"/>
         <source>1 account</source>
         <translation>1 個帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="523"/>
+        <location filename="../src/gui/application.cpp" line="528"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 個資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="524"/>
+        <location filename="../src/gui/application.cpp" line="529"/>
         <source>1 folder</source>
         <translation>1 個資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="526"/>
+        <location filename="../src/gui/application.cpp" line="531"/>
         <source>Legacy import</source>
         <translation>舊版匯入</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="527"/>
+        <location filename="../src/gui/application.cpp" line="532"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1143,12 +1143,12 @@ This action will abort any currently running synchronization.</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="610"/>
+        <location filename="../src/gui/application.cpp" line="615"/>
         <source>Error accessing the configuration file</source>
         <translation>存取組態設定檔時發生錯誤</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="611"/>
+        <location filename="../src/gui/application.cpp" line="616"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>存取位於 %1 的組態設定檔時發生錯誤。請確保您的系統帳號可以存取該檔案。</translation>
     </message>
@@ -3008,22 +3008,22 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="807"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="784"/>
         <source>Password for share required</source>
         <translation>透過密碼保護分享連結</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="808"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="785"/>
         <source>Please enter a password for your link share:</source>
         <translation>請輸入您分享連結採用的密碼：</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="834"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="811"/>
         <source>Sharing error</source>
         <translation>分享發生錯誤</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="835"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="812"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -4851,48 +4851,48 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="775"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="752"/>
         <source>Context menu share</source>
         <translation>分享情境選單</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1124"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1084"/>
         <source>I shared something with you</source>
         <translation>我和您分享了一些東西</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1137"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1174"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1097"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1134"/>
         <source>Share options</source>
         <translation>分享選項</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1141"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1101"/>
         <source>Send private link by email …</source>
         <translation>經由電子郵件發送私人連結…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1140"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1100"/>
         <source>Copy private link to clipboard</source>
         <translation>將私人連結複製到剪貼簿</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="541"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="518"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
         <translation>無法加密在「%1」的資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="542"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="519"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
         <translation>帳號 %1 沒有設定端對端加密組態。請在您的帳號設定中設定這個組態以啟用資料夾加密。</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="561"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="538"/>
         <source>Failed to encrypt folder</source>
         <translation>無法加密資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="562"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="539"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
@@ -4901,105 +4901,105 @@ Server replied with error: %2</source>
 伺服器回覆錯誤：%2</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="569"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="546"/>
         <source>Folder encrypted successfully</source>
         <translation>資料夾加密成功</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="570"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="547"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
         <translation>以下資料夾加密成功：「%1」</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1051"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1028"/>
         <source>Select new location …</source>
         <translation>選取新位置…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1138"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1354"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1098"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1314"/>
         <source>Activity</source>
         <translation>活動狀態</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1166"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1126"/>
         <source>Leave this share</source>
         <translation>離開此分享</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1172"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1132"/>
         <source>Resharing this file is not allowed</source>
         <translation>此檔案不允許轉發分享</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1172"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1132"/>
         <source>Resharing this folder is not allowed</source>
         <translation>此資料夾不允許轉發分享</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1216"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1176"/>
         <source>Encrypt</source>
         <translation>加密</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1227"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1187"/>
         <source>Lock file</source>
         <translation>鎖定檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1230"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1190"/>
         <source>Unlock file</source>
         <translation>解鎖檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1245"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1205"/>
         <source>Locked by %1</source>
         <translation>被 %1 鎖定</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1249"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1209"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
         <translation><numerusform>%1分鐘後過期</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1389"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1349"/>
         <source>Resolve conflict …</source>
         <translation>解決衝突…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1393"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1353"/>
         <source>Move and rename …</source>
         <translation>移動並重新命名…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1396"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1356"/>
         <source>Move, rename and upload …</source>
         <translation>移動、重新命名並上傳…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1398"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1358"/>
         <source>Delete local changes</source>
         <translation>刪除本機變更</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1404"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1364"/>
         <source>Move and upload …</source>
         <translation>移動並上傳…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1405"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1365"/>
         <source>Delete</source>
         <translation>刪除</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1178"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1138"/>
         <source>Copy internal link</source>
         <translation>複製內部連結</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1360"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1362"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1320"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1322"/>
         <source>Open in browser</source>
         <translation>用瀏覽器打開</translation>
     </message>

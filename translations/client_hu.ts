@@ -439,22 +439,22 @@
 <context>
     <name>OCC::Account</name>
     <message>
-        <location filename="../src/libsync/account.cpp" line="226"/>
+        <location filename="../src/libsync/account.cpp" line="227"/>
         <source>Public Share Link</source>
         <translation>Nyilvános megosztási hivatkozás</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1070"/>
+        <location filename="../src/libsync/account.cpp" line="1071"/>
         <source>File %1 is already locked by %2.</source>
         <translation>A(z) %1 fájlt %2 már zárolta.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1072"/>
+        <location filename="../src/libsync/account.cpp" line="1073"/>
         <source>Lock operation on %1 failed with error %2</source>
         <translation>A(z) %1 zárolási művelete sikertelen a következő hibával: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1074"/>
+        <location filename="../src/libsync/account.cpp" line="1075"/>
         <source>Unlock operation on %1 failed with error %2</source>
         <translation>A(z) %1 feloldási művelete sikertelen a következő hibával: %2</translation>
     </message>
@@ -462,30 +462,30 @@
 <context>
     <name>OCC::AccountManager</name>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="244"/>
+        <location filename="../src/gui/accountmanager.cpp" line="245"/>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>Egy örökölt asztali klienst használó fiók észlelhető.
 Legyen ez a fiók importálva?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="246"/>
-        <location filename="../src/gui/accountmanager.cpp" line="357"/>
+        <location filename="../src/gui/accountmanager.cpp" line="247"/>
+        <location filename="../src/gui/accountmanager.cpp" line="358"/>
         <source>Legacy import</source>
         <translation>Importálás örökölt kliensből</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="247"/>
+        <location filename="../src/gui/accountmanager.cpp" line="248"/>
         <source>Import</source>
         <translation>Importálás</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="248"/>
+        <location filename="../src/gui/accountmanager.cpp" line="249"/>
         <source>Skip</source>
         <translation>Kihagyás</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="358"/>
+        <location filename="../src/gui/accountmanager.cpp" line="359"/>
         <source>Could not import accounts from legacy client configuration.</source>
         <translation>Nem sikerült a fiókok importálása az örökölt kliensbeállításokból.</translation>
     </message>
@@ -1070,71 +1070,71 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="177"/>
+        <location filename="../src/gui/application.cpp" line="178"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Néhány beállítást a kliens %1 verzióiban konfiguráltak, és olyan funkciókat használnak, amelyek ebben a verzióban nem érhetők el. &lt;br&gt;&lt;br&gt;A folytatás &lt;b&gt;ezen beállítások %2&lt;/b&gt; jelenti.&lt;br&gt;&lt;br&gt;Az aktuális konfigurációs fájlról már készült biztonsági másolat: &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="183"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>újabb</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="183"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>régebbi</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="184"/>
+        <location filename="../src/gui/application.cpp" line="185"/>
         <source>ignoring</source>
         <translation>mellőzését</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="184"/>
+        <location filename="../src/gui/application.cpp" line="185"/>
         <source>deleting</source>
         <translation>törlését</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="186"/>
+        <location filename="../src/gui/application.cpp" line="187"/>
         <source>Quit</source>
         <translation>Kilépés</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="187"/>
+        <location filename="../src/gui/application.cpp" line="188"/>
         <source>Continue</source>
         <translation>Folytatás</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="520"/>
+        <location filename="../src/gui/application.cpp" line="525"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 fiók</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="521"/>
+        <location filename="../src/gui/application.cpp" line="526"/>
         <source>1 account</source>
         <translation>1 fiók</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="523"/>
+        <location filename="../src/gui/application.cpp" line="528"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 mappa</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="524"/>
+        <location filename="../src/gui/application.cpp" line="529"/>
         <source>1 folder</source>
         <translation>1 mappa</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="526"/>
+        <location filename="../src/gui/application.cpp" line="531"/>
         <source>Legacy import</source>
         <translation>Importálás örökölt kliensből</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="527"/>
+        <location filename="../src/gui/application.cpp" line="532"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1142,12 +1142,12 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="610"/>
+        <location filename="../src/gui/application.cpp" line="615"/>
         <source>Error accessing the configuration file</source>
         <translation>Hiba a konfigurációs fájl elérésekor</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="611"/>
+        <location filename="../src/gui/application.cpp" line="616"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Hiba történt a következő konfigurációs fájl elérésekor: %1. Győződjön meg róla, hogy a fájlt eléri a rendszerfiók.</translation>
     </message>
@@ -3007,22 +3007,22 @@ A verziók visszaváltása nem lehetséges azonnal: a stabilról vállalatira va
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="807"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="784"/>
         <source>Password for share required</source>
         <translation>A megosztáshoz jelszó szükséges</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="808"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="785"/>
         <source>Please enter a password for your link share:</source>
         <translation>Adjon meg egy jelszót a megosztási hivatkozásához:</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="834"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="811"/>
         <source>Sharing error</source>
         <translation>Megosztási hiba</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="835"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="812"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -4850,48 +4850,48 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="775"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="752"/>
         <source>Context menu share</source>
         <translation>Megosztás a helyi menüből</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1124"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1084"/>
         <source>I shared something with you</source>
         <translation>Megosztottam Önnel valamit</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1137"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1174"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1097"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1134"/>
         <source>Share options</source>
         <translation>Megosztási beállítások</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1141"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1101"/>
         <source>Send private link by email …</source>
         <translation>Személyes hivatkozás küldése e-mailben…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1140"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1100"/>
         <source>Copy private link to clipboard</source>
         <translation>Személyes hivatkozás másolása a vágólapra</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="541"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="518"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
         <translation>A következő helyen lévő mappa titkosítása sikertelen: „%1”</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="542"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="519"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
         <translation>A(z) %1 fióknál nincs beállítva a végpontok közti titkosítás. A mappatitkosítás engedélyezéséhez állítsa be a fiókbeállításaiban.</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="561"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="538"/>
         <source>Failed to encrypt folder</source>
         <translation>A mappa titkosítása sikertelen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="562"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="539"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
@@ -4900,105 +4900,105 @@ Server replied with error: %2</source>
 A kiszolgáló hibával válaszolt: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="569"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="546"/>
         <source>Folder encrypted successfully</source>
         <translation>A mappa sikeresen titkosítva</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="570"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="547"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
         <translation>A következő mappa sikeresen titkosítva lett: „%1”</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1051"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1028"/>
         <source>Select new location …</source>
         <translation>Új hely kiválasztása…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1138"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1354"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1098"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1314"/>
         <source>Activity</source>
         <translation>Tevékenység</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1166"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1126"/>
         <source>Leave this share</source>
         <translation>Megosztás elhagyása</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1172"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1132"/>
         <source>Resharing this file is not allowed</source>
         <translation>Ezt a fájlt nem lehet továbbosztani</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1172"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1132"/>
         <source>Resharing this folder is not allowed</source>
         <translation>A mappa továbbosztása nem megengedett</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1216"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1176"/>
         <source>Encrypt</source>
         <translation>Titkosítás</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1227"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1187"/>
         <source>Lock file</source>
         <translation>Fájl zárolása</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1230"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1190"/>
         <source>Unlock file</source>
         <translation>Fájl feloldása</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1245"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1205"/>
         <source>Locked by %1</source>
         <translation>%1 zárolta</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1249"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1209"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
         <translation><numerusform>%1 perc múlva lejár</numerusform><numerusform>%1 perc múlva lejár</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1389"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1349"/>
         <source>Resolve conflict …</source>
         <translation>Konfliktus feloldása…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1393"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1353"/>
         <source>Move and rename …</source>
         <translation>Áthelyezés és átnevezés…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1396"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1356"/>
         <source>Move, rename and upload …</source>
         <translation>Áthelyezés, átnevezés és feltöltés…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1398"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1358"/>
         <source>Delete local changes</source>
         <translation>Helyi módosítások törlése</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1404"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1364"/>
         <source>Move and upload …</source>
         <translation>Áthelyezés és feltöltés…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1405"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1365"/>
         <source>Delete</source>
         <translation>Törlés</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1178"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1138"/>
         <source>Copy internal link</source>
         <translation>Belső hivatkozás másolása</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1360"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1362"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1320"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1322"/>
         <source>Open in browser</source>
         <translation>Megnyitás böngészőben</translation>
     </message>
