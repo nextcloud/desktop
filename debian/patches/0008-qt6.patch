@@ -404,7 +404,7 @@ index b92cfa08e4..38f3d462ec 100644
              continue;
          }
 diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
-index 54d32c3580..2d1c6fd8be 100644
+index c0683881a8..129be29836 100644
 --- a/src/gui/CMakeLists.txt
 +++ b/src/gui/CMakeLists.txt
 @@ -3,7 +3,7 @@
@@ -434,7 +434,7 @@ index 54d32c3580..2d1c6fd8be 100644
  if(KF6GuiAddons_FOUND)
    target_link_libraries(nextcloudCore
      PUBLIC
-@@ -763,3 +770,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
+@@ -762,3 +769,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
  endif()
  
  configure_file(configgui.h.in ${CMAKE_CURRENT_BINARY_DIR}/configgui.h)
@@ -633,7 +633,7 @@ index b62a7b3c07..85de6f00a1 100644
      void slotShowLegalNotice();
      void slotRemotePollIntervalChanged(int seconds);
 diff --git a/src/gui/owncloudsetupwizard.cpp b/src/gui/owncloudsetupwizard.cpp
-index 44d51f7a96..045b5db84c 100644
+index 1bf485d6f2..cabda402f5 100644
 --- a/src/gui/owncloudsetupwizard.cpp
 +++ b/src/gui/owncloudsetupwizard.cpp
 @@ -9,6 +9,7 @@
@@ -657,10 +657,10 @@ index 3caee2fc56..b9782171e8 100644
  #include <QUrl>
  #include <QJsonDocument>
 diff --git a/src/gui/socketapi/socketapi.cpp b/src/gui/socketapi/socketapi.cpp
-index 68b717498f..d91dd74e91 100644
+index 018bc3c9c8..4b75472786 100644
 --- a/src/gui/socketapi/socketapi.cpp
 +++ b/src/gui/socketapi/socketapi.cpp
-@@ -19,6 +19,7 @@
+@@ -18,6 +18,7 @@
  #include "encryptfolderjob.h"
  #include "theme.h"
  #include "common/syncjournalfilerecord.h"
@@ -1092,7 +1092,7 @@ index 220a74973e..a9c4a1c2c0 100644
  #include <csync_exclude.h>
  #include "vio/csync_vio_local.h"
 diff --git a/src/libsync/filesystem.cpp b/src/libsync/filesystem.cpp
-index 6c6c11ed0a..27b0bb5408 100644
+index 25a72f7f13..2818dac61e 100644
 --- a/src/libsync/filesystem.cpp
 +++ b/src/libsync/filesystem.cpp
 @@ -7,6 +7,7 @@
@@ -1524,6 +1524,19 @@ index b45cf49114..060f9aca0b 100644
  #include "folder.h"
  
  #include "account.h"
+diff --git a/test/testnextcloudpropagator.cpp b/test/testnextcloudpropagator.cpp
+index 8a3797d783..d748391643 100644
+--- a/test/testnextcloudpropagator.cpp
++++ b/test/testnextcloudpropagator.cpp
+@@ -16,6 +16,8 @@
+ #include "owncloudpropagator_p.h"
+ #include "syncenginetestutils.h"
+ 
++#include "common/qtcompat.h"
++
+ using namespace Qt::StringLiterals;
+ 
+ #ifdef HAVE_QHTTPSERVER
 diff --git a/test/testsyncengine.cpp b/test/testsyncengine.cpp
 index 503454e4d7..5f073a2a9e 100644
 --- a/test/testsyncengine.cpp
