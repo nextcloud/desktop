@@ -5,7 +5,7 @@
 // The common name of the signing certificate to use for code signing.
 // It must be present in your keychain and a development certificate.
 //
-CODE_SIGN_IDENTITY=Apple Development//: Iva Horn (U949586L5B)
+CODE_SIGN_IDENTITY=Apple Development
 
 //
 // Xcode should automatically manage signing assets.
