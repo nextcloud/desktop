@@ -21,6 +21,8 @@
 
 using namespace OCC;
 
+Q_LOGGING_CATEGORY(lcNextcloudCloudProviderIntegration, "nextcloud.cloudprovider.integration", QtInfoMsg)
+
 GSimpleActionGroup *actionGroup = nullptr;
 
 int CloudProviderWrapper::preferredTextWidth = 0;
@@ -53,6 +55,11 @@ CloudProviderWrapper::CloudProviderWrapper(QObject *parent, Folder *folder, int 
     updatePauseStatus();
     g_clear_object (&model);
     g_clear_object (&action_group);
+}
+
+void mainMenuWasDeleted(gpointer data, GObject *where_the_object_was)
+{
+    qCDebug(lcNextcloudCloudProviderIntegration) << "I was deleted" << data << where_the_object_was;
 }
 
 CloudProviderWrapper::~CloudProviderWrapper()
@@ -222,6 +229,8 @@ GMenuModel* CloudProviderWrapper::getMenuModel() {
     GMenuItem* item = nullptr;
 
     _mainMenu = g_menu_new();
+    g_object_ref(_mainMenu);
+    g_object_weak_ref(reinterpret_cast<GObject*>(_mainMenu), mainMenuWasDeleted, this);
 
     section = g_menu_new();
     item = addMenuItem(tr("Open %1 Desktop", "Open Nextcloud main window. Placeholer will be the application name. Please keep it.").arg(APPLICATION_NAME), "cloudprovider.openmaindialog");
