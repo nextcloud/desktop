@@ -282,6 +282,7 @@ void Logger::dumpCrashLog()
             out << _crashLog[(_crashLogIndex + i) % CrashLogSize] << QLatin1Char('\n');
         }
     }
+    qDebug() << "crash log written in" << logFile.fileName();
 }
 
 void Logger::enterNextLogFileNoLock(const QString &baseFileName, LogType type)
