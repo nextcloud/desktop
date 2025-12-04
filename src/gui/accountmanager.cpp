@@ -338,6 +338,7 @@ bool AccountManager::restoreFromLegacySettings()
     if (!settings->childKeys().isEmpty()) {
         settings->beginGroup(accountsC);
         const auto childGroups = selectedAccountIds.isEmpty() ? settings->childGroups() : selectedAccountIds;
+        auto accountsLoaded = false;
         for (const auto &accountId : childGroups) {
             settings->beginGroup(accountId);
             const auto acc = loadAccountHelper(*settings);
@@ -345,12 +346,13 @@ bool AccountManager::restoreFromLegacySettings()
                 continue;
             }
             addAccount(acc);
+            accountsLoaded = true;
             migrateNetworkSettings(acc, *settings);
             settings->endGroup();
         }
         configFile.cleanupGlobalNetworkConfiguration();
-        ClientProxy().cleanupGlobalNetworkConfiguration();   
-        return true;
+        ClientProxy().cleanupGlobalNetworkConfiguration();
+        return accountsLoaded;
     }
 
     if (wasLegacyImportDialogDisplayed) {
