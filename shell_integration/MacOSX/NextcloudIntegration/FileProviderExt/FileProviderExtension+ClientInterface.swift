@@ -218,12 +218,14 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
         actionsLock.lock()
 
         guard oldActions.isEmpty != syncActions.isEmpty else {
+            logger.debug("Cancelling synchronization state report due to lack of state change.")
             actionsLock.unlock()
             return
         }
 
         let command = "FILE_PROVIDER_DOMAIN_SYNC_STATE_CHANGE"
         var argument: String?
+
         if oldActions.isEmpty, !syncActions.isEmpty {
             argument = "SYNC_STARTED"
         } else if !oldActions.isEmpty, syncActions.isEmpty {
@@ -233,8 +235,13 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
         
         actionsLock.unlock()
 
-        guard let argument else { return }
-        logger.debug("Reporting sync \(argument)")
+        guard let argument else {
+            logger.error("State argument is nil!")
+            return
+        }
+
+        logger.debug("Reporting synchronization state.", [.name: argument])
+
         let message = command + ":" + argument + "\n"
         socketClient?.sendMessage(message)
     }
