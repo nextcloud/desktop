@@ -23,6 +23,7 @@ class ExcludedFiles;
 namespace OCC {
 
 class AbstractCredentials;
+class Migration;
 
 /**
  * @brief The ConfigFile class
@@ -267,25 +268,8 @@ public:
     /// File Provider app sandbox migration flag
     [[nodiscard]] bool fileProviderDomainsAppSandboxMigrationCompleted() const;
     void setFileProviderDomainsAppSandboxMigrationCompleted(bool completed);
+    [[nodiscard]] static Migration &migration();
 
-    /// Helper function for migration/upgrade proccess
-    enum MigrationPhase {
-        NotStarted,
-        SetupConfigFile,
-        SetupUsers,
-        SetupFolders,
-        Done
-    };
-    [[nodiscard]] bool isUpgrade() const;
-    [[nodiscard]] bool isDowngrade() const;
-    [[nodiscard]] bool shouldTryUnbrandedToBrandedMigration() const;
-    [[nodiscard]] bool isUnbrandedToBrandedMigrationInProgress() const;
-    [[nodiscard]] bool shouldTryToMigrate() const;
-    /// Does the current app has a different version of the config version
-    [[nodiscard]] bool hasVersionChanged() const;
-    [[nodiscard]] bool isMigrationInProgress() const;
-    [[nodiscard]] MigrationPhase migrationPhase() const;
-    void setMigrationPhase(const MigrationPhase phase);
     static constexpr char unbrandedAppName[] = "Nextcloud";
     static constexpr char legacyAppName[] = "Owncloud";
 
@@ -331,7 +315,7 @@ private:
 
     static QString _confDir;
     static QString _discoveredLegacyConfigPath;
-    static MigrationPhase _migrationPhase;
+    static Migration _migration;
 };
 }
 #endif // CONFIGFILE_H
