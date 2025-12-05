@@ -17,6 +17,7 @@
 #include "logger.h"
 
 using namespace OCC;
+using namespace Qt::StringLiterals;
 
 class TestSyncJournalDB : public QObject
 {
@@ -507,6 +508,73 @@ private slots:
         QCOMPARE(getRaw("online"), PinState::Inherited);
         list = _db.internalPinStates().rawList();
         QCOMPARE(list->size(), 0);
+    }
+
+    void testHasFileIds()
+    {
+        QList<qint64> allFileIds = {};
+        const auto makeEntry = [this, &allFileIds](const qint64 &fileId) -> void {
+            SyncJournalFileRecord record;
+            record._fileId = u"%1oc123xyz987e"_s.arg(fileId, 8, 10, '0'_L1).toLocal8Bit();
+            record._modtime = QDateTime::currentSecsSinceEpoch();
+            record._path = u"item%1"_s.arg(fileId).toLocal8Bit();
+            record._type = ItemTypeFile;
+            record._etag = "etag"_ba;
+            QVERIFY(_db.setFileRecord(record));
+
+            allFileIds.append(fileId);
+        };
+
+        // generate some test data: -9, 0..32, int32_max..(int32_max + 32), (int64_max - 32)..int64_max
+        makeEntry(-9);
+
+        for (qint64 fileId = 0; fileId <= 32; fileId++) {
+            makeEntry(fileId);
+        }
+
+        constexpr qint64 maxInt32 = std::numeric_limits<qint32>::max();
+        for (qint64 fileId = maxInt32; fileId <= maxInt32 + 32; fileId++) {
+            makeEntry(fileId);
+        }
+
+        constexpr qint64 maxInt64 = std::numeric_limits<qint64>::max();
+        for (qint64 fileId = maxInt64 - 32; fileId < maxInt64; fileId++) {
+            makeEntry(fileId);
+        }
+        makeEntry(maxInt64); // have an entry for the maximum int64 value
+
+        // these exist:
+        QVERIFY(_db.hasFileIds({4}));
+        QVERIFY(_db.hasFileIds({-9}));
+        QVERIFY(_db.hasFileIds({8, 25, 31}));
+        QVERIFY(_db.hasFileIds({maxInt32 + 4, maxInt64 - 17}));
+        QVERIFY(_db.hasFileIds({maxInt64 - 17}));
+        QVERIFY(_db.hasFileIds({maxInt64}));
+
+        // these don't:
+        QVERIFY(!_db.hasFileIds({-8}));
+        QVERIFY(!_db.hasFileIds({-16}));
+        QVERIFY(!_db.hasFileIds({-(maxInt32 + 4)}));
+        QVERIFY(!_db.hasFileIds({maxInt64 - 33}));
+        QVERIFY(!_db.hasFileIds({maxInt32 + 33}));
+        QVERIFY(!_db.hasFileIds({std::numeric_limits<qint32>::min()}));
+        QVERIFY(!_db.hasFileIds({std::numeric_limits<qint64>::min()}));
+
+        // as fileids are padded with zeroes, ensure that there is no accidental base-8 conversion done
+        // 0o37 (octal) == 31 (decimal) --> 37(dec) does not exist, but 31(dec) does.
+        QVERIFY(_db.hasFileIds({037})); // octal
+        QVERIFY(!_db.hasFileIds({37})); // decimal
+
+        QVERIFY(!_db.hasFileIds({33}));    // 33 does not exist...
+        QVERIFY(_db.hasFileIds({33, 25})); // ...but 25 does
+
+        // nothing doesn't exist
+        QVERIFY(!_db.hasFileIds({}));
+
+        // checking for a large amount of file ids should also work just fine, and be reasonably fast.
+        QBENCHMARK {
+            QVERIFY(_db.hasFileIds(allFileIds));
+        }
     }
 
 private:

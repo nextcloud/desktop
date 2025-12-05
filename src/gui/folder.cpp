@@ -92,6 +92,7 @@ Folder::Folder(const FolderDefinition &definition,
 
     connect(_accountState.data(), &AccountState::isConnectedChanged, this, &Folder::canSyncChanged);
     connect(_engine.data(), &SyncEngine::rootEtag, this, &Folder::etagRetrievedFromSyncEngine);
+    connect(_engine.data(), &SyncEngine::rootFileIdReceived, this, &Folder::rootFileIdReceivedFromSyncEngine);
 
     connect(_engine.data(), &SyncEngine::started, this, &Folder::slotSyncStarted, Qt::QueuedConnection);
     connect(_engine.data(), &SyncEngine::finished, this, &Folder::slotSyncFinished, Qt::QueuedConnection);
@@ -394,6 +395,12 @@ void Folder::etagRetrievedFromSyncEngine(const QByteArray &etag, const QDateTime
     qCInfo(lcFolder) << "Root etag from during sync:" << etag;
     accountState()->tagLastSuccessfullETagRequest(time);
     _lastEtag = etag;
+}
+
+void Folder::rootFileIdReceivedFromSyncEngine(const qint64 fileId)
+{
+    qCDebug(lcFolder).nospace() << "retrieved root fileId=" << fileId;
+    _rootFileId = fileId;
 }
 
 void Folder::showSyncResultPopup()
@@ -1000,6 +1007,11 @@ void Folder::migrateBlackListPath(const QString &legacyPath)
         removePathFromSelectiveSyncList(legacyPath, SyncJournalDb::SelectiveSyncBlackList);
         blacklistPath(legacyPath.mid(1));
     }
+}
+
+bool Folder::hasFileIds(const QList<qint64>& fileIds) const
+{
+    return fileIds.contains(_rootFileId) || journalDb()->hasFileIds(fileIds);
 }
 
 QString Folder::filePath(const QString& fileName)
