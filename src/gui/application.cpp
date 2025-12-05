@@ -495,12 +495,11 @@ void Application::setupAccountsAndFolders()
     ConfigFile configFile;
     configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupUsers);
     const auto accountsRestoreResult = restoreLegacyAccount();
-    const auto accounts = AccountManager::instance()->accounts();
-    if (accountsRestoreResult != AccountManager::AccountsRestoreSuccessFromLegacyVersion
-        && accounts.empty()) {
+    if (accountsRestoreResult == AccountManager::AccountsNotFound || accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
         qCWarning(lcApplication) << "Migration result: " << accountsRestoreResult;
         qCDebug(lcApplication) << "is migration disabled?" << DISABLE_ACCOUNT_MIGRATION;
         qCWarning(lcApplication) << "No accounts were migrated, prompting user to set up accounts and folders from scratch.";
+        configFile.setMigrationPhase(ConfigFile::MigrationPhase::Done);
 
         return;
     }
@@ -517,10 +516,12 @@ void Application::setupAccountsAndFolders()
         return list.join("\n");
     };
 
+    const auto accounts = AccountManager::instance()->accounts();
     const auto accountsListSize = accounts.size();
     if (accountsRestoreResult == AccountManager::AccountsRestoreSuccessFromLegacyVersion
         && Theme::instance()->displayLegacyImportDialog()
-        && !AccountManager::instance()->forceLegacyImport()) {
+        && !AccountManager::instance()->forceLegacyImport()
+        && accountsListSize > 0) {
         const auto accountsRestoreMessage = accountsListSize > 1
             ? tr("%1 accounts", "number of accounts imported").arg(QString::number(accountsListSize))
             : tr("1 account");
