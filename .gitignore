@@ -200,4 +200,4 @@ theme.qrc
 DerivedData
 
 # Swift Package Manager Build Artifacts
-.swiftpm
+.swiftpm_codeql_detected_source_root
