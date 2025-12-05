@@ -494,7 +494,7 @@ public:
                 }
             }];
         } else if (@available(macOS 11.0, *)) {
-            qCInfo(lcMacFileProviderDomainManager) << "Removing all file provider domains, can't specify wipe on macOS 11";
+            qCInfo(lcMacFileProviderDomainManager) << "Cannot wipe file provider domains on macOS versions prior to 12.0, removing instead.";
             removeAllFileProviderDomains();
         }
     }
@@ -665,6 +665,22 @@ void FileProviderDomainManager::updateFileProviderDomains()
     if (!d) {
         return;
     }
+
+    // MARK: Completely remove all file provider domains once as part of the app sandbox migration.
+
+    ConfigFile cfg;
+
+    if (cfg.fileProviderDomainsAppSandboxMigrationCompleted() == false) {
+        qCInfo(lcMacFileProviderDomainManager) << "App sandbox migration for file provider domains not completed yet, wiping all file provider domains.";
+
+        d->wipeAllFileProviderDomains();
+        d->findExistingFileProviderDomains();
+
+        cfg.setFileProviderDomainsAppSandboxMigrationCompleted(true);
+        qCInfo(lcMacFileProviderDomainManager) << "App sandbox migration for file provider domains completed.";
+    }
+
+    // MARK: Update file provider domains based on client configuration.
 
     const auto fileProviderEnabledAccountIds = FileProviderSettingsController::instance()->vfsEnabledAccounts();
     auto accountIdsOfFoundFileProviderDomains = d->getAccountIdsOfFoundFileProviderDomains();
