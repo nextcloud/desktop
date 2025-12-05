@@ -17,6 +17,7 @@
 #include "ocsuserstatusconnector.h"
 #include "pushnotifications.h"
 #include "networkjobs.h"
+#include "settings/migration.h"
 
 #include <QSettings>
 #include <QTimer>
@@ -297,9 +298,10 @@ void AccountState::checkConnectivity()
     if (!account()->credentials()->wasFetched()) {
         _waitingForNewCredentials = true;
         ConfigFile configFile;
-        const auto shouldTryUnbrandedToBrandedMigration = configFile.shouldTryUnbrandedToBrandedMigration();
+        auto migration = configFile.migration();
+        const auto shouldTryUnbrandedToBrandedMigration = migration.shouldTryUnbrandedToBrandedMigration();
         qCDebug(lcAccountState) << "shouldTryUnbrandedToBrandedMigration?" << shouldTryUnbrandedToBrandedMigration;
-        qCDebug(lcAccountState) << "migrationPhase?" << configFile.migrationPhase();
+        qCDebug(lcAccountState) << "migrationPhase?" << migration.migrationPhase();
         const auto appName = shouldTryUnbrandedToBrandedMigration ? configFile.unbrandedAppName : "";
         account()->credentials()->fetchFromKeychain(appName);
         return;
@@ -498,8 +500,9 @@ void AccountState::slotCredentialsFetched(AbstractCredentials *)
                            << "attempting to connect";
     _waitingForNewCredentials = false;
     ConfigFile configFile;
-    if (configFile.isMigrationInProgress()) {
-        configFile.setMigrationPhase(ConfigFile::MigrationPhase::Done);
+    auto migration = configFile.migration();
+    if (migration.isInProgress()) {
+        migration.setMigrationPhase(Migration::MigrationPhase::Done);
     }
     checkConnectivity();
 }
