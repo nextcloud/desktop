@@ -191,7 +191,9 @@ void NetworkSettings::saveProxySettings()
     if (_account) { // We must be setting up network proxy for a specific account
         _account->setProxySettings(proxyType, host, port, needsAuth, user, password);
         const auto accountState = AccountManager::instance()->accountFromUserId(_account->userIdAtHostWithPort());
-        accountState->freshConnectionAttempt();
+        if (accountState) {
+            accountState->freshConnectionAttempt();
+        }
         AccountManager::instance()->saveAccount(_account);
     }
 }
