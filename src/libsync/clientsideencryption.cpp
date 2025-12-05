@@ -2679,13 +2679,13 @@ bool EncryptionHelper::dataDecryption(const QByteArray &key, const QByteArray &i
 
     /* Create and initialise the context */
     if (!ctx) {
-        qCInfo(lcCse()) << "Could not create context";
+        qCWarning(lcCse()) << "Could not create context";
         return false;
     }
 
     /* Initialise the decryption operation. */
     if (!EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), nullptr, nullptr, nullptr)) {
-        qCInfo(lcCse()) << "Could not init cipher";
+        qCWarning(lcCse()) << "Could not init cipher";
         return false;
     }
 
@@ -2693,13 +2693,13 @@ bool EncryptionHelper::dataDecryption(const QByteArray &key, const QByteArray &i
 
     /* Set IV length. */
     if (!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), nullptr)) {
-        qCInfo(lcCse()) << "Could not set iv length";
+        qCWarning(lcCse()) << "Could not set iv length";
         return false;
     }
 
     /* Initialise key and IV */
     if (!EVP_DecryptInit_ex(ctx, nullptr, nullptr, (const unsigned char *)key.constData(), (const unsigned char *)iv.constData())) {
-        qCInfo(lcCse()) << "Could not set key and iv";
+        qCWarning(lcCse()) << "Could not set key and iv";
         return false;
     }
 
@@ -2717,12 +2717,12 @@ bool EncryptionHelper::dataDecryption(const QByteArray &key, const QByteArray &i
         QByteArray data = inputBuffer.read(toRead);
 
         if (data.size() == 0) {
-            qCInfo(lcCse()) << "Could not read data from file";
+            qCWarning(lcCse()) << "Could not read data from file";
             return false;
         }
 
         if (!EVP_DecryptUpdate(ctx, unsignedData(out), &len, (unsigned char *)data.constData(), data.size())) {
-            qCInfo(lcCse()) << "Could not decrypt";
+            qCWarning(lcCse()) << "Could not decrypt";
             return false;
         }
 
@@ -2733,12 +2733,12 @@ bool EncryptionHelper::dataDecryption(const QByteArray &key, const QByteArray &i
 
     /* Set expected e2EeTag value. Works in OpenSSL 1.0.1d and later */
     if (!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, e2EeTag.size(), (unsigned char *)e2EeTag.constData())) {
-        qCInfo(lcCse()) << "Could not set expected e2EeTag";
+        qCWarning(lcCse()) << "Could not set expected e2EeTag";
         return false;
     }
 
     if (1 != EVP_DecryptFinal_ex(ctx, unsignedData(out), &len)) {
-        qCInfo(lcCse()) << "Could not finalize decryption";
+        qCWarning(lcCse()) << "Could not finalize decryption";
         return false;
     }
     outputBuffer.write(out, len);
