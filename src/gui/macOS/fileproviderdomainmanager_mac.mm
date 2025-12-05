@@ -433,11 +433,15 @@ public:
         if (@available(macOS 11.0, *)) {
             qCDebug(lcMacFileProviderDomainManager) << "Removing all file provider domains.";
 
+            dispatch_group_t dispatchGroup = dispatch_group_create();
+            dispatch_group_enter(dispatchGroup);
+
             [NSFileProviderManager removeAllDomainsWithCompletionHandler:^(NSError * const error) {
                 if(error) {
                     qCWarning(lcMacFileProviderDomainManager) << "Error removing all file provider domains: "
                                                             << error.code
                                                             << error.localizedDescription;
+                    dispatch_group_leave(dispatchGroup);
                     return;
                 }
 
@@ -453,7 +457,11 @@ public:
                 }
 
                 _registeredDomains.clear();
+
+                dispatch_group_leave(dispatchGroup);
             }];
+
+            dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER);
         }
     }
 
@@ -462,15 +470,25 @@ public:
         if (@available(macOS 12.0, *)) {
             qCInfo(lcMacFileProviderDomainManager) << "Removing and wiping all file provider domains";
 
+            dispatch_group_t dispatchGroup = dispatch_group_create();
+            dispatch_group_enter(dispatchGroup); // wait for getDomains completion path
+
             [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> * const domains, NSError * const error) {
                 if (error) {
                     qCWarning(lcMacFileProviderDomainManager) << "Error removing and wiping file provider domains: "
                                                               << error.code
                                                               << error.localizedDescription;
+                    dispatch_group_leave(dispatchGroup);
+                    return;
+                }
+
+                if (domains.count == 0) {
+                    dispatch_group_leave(dispatchGroup);
                     return;
                 }
 
                 for (NSFileProviderDomain * const domain in domains) {
+                    dispatch_group_enter(dispatchGroup);
                     [NSFileProviderManager removeDomain:domain mode:NSFileProviderDomainRemovalModeRemoveAll completionHandler:^(NSURL * const preservedLocation, NSError * const error) {
                         Q_UNUSED(preservedLocation)
 
@@ -479,6 +497,7 @@ public:
                                                                       << domain.displayName
                                                                       << error.code
                                                                       << error.localizedDescription;
+                            dispatch_group_leave(dispatchGroup);
                             return;
                         }
 
@@ -490,11 +509,17 @@ public:
                         if (registeredDomainPtr != nil) {
                             [domain release];
                         }
+
+                        dispatch_group_leave(dispatchGroup);
                     }];
                 }
+
+                dispatch_group_leave(dispatchGroup);
             }];
+
+            dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER);
         } else if (@available(macOS 11.0, *)) {
-            qCInfo(lcMacFileProviderDomainManager) << "Removing all file provider domains, can't specify wipe on macOS 11";
+            qCInfo(lcMacFileProviderDomainManager) << "Cannot wipe file provider domains on macOS versions prior to 12.0, removing instead.";
             removeAllFileProviderDomains();
         }
     }
@@ -665,6 +690,22 @@ void FileProviderDomainManager::updateFileProviderDomains()
     if (!d) {
         return;
     }
+
+    // MARK: Completely remove all file provider domains once as part of the app sandbox migration.
+
+    ConfigFile cfg;
+
+    if (cfg.fileProviderDomainsAppSandboxMigrationCompleted() == false) {
+        qCInfo(lcMacFileProviderDomainManager) << "App sandbox migration for file provider domains not completed yet, wiping all file provider domains.";
+
+        d->wipeAllFileProviderDomains();
+        d->findExistingFileProviderDomains();
+
+        cfg.setFileProviderDomainsAppSandboxMigrationCompleted(true);
+        qCInfo(lcMacFileProviderDomainManager) << "App sandbox migration for file provider domains completed.";
+    }
+
+    // MARK: Update file provider domains based on client configuration.
 
     const auto fileProviderEnabledAccountIds = FileProviderSettingsController::instance()->vfsEnabledAccounts();
     auto accountIdsOfFoundFileProviderDomains = d->getAccountIdsOfFoundFileProviderDomains();
