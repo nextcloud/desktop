@@ -69,94 +69,94 @@
 <context>
     <name>CloudProviderWrapper</name>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="104"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="111"/>
         <source>%1 (%2, %3)</source>
         <translation>%1(%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="121"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="128"/>
         <source>Checking for changes in &quot;%1&quot;</source>
         <translation>&quot;%1&quot;의 변경 사항 확인 중</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="126"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="133"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>%2 중 %1 동기화 중(%3 남음)</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="131"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="138"/>
         <source>Syncing %1 of %2</source>
         <translation>%2 중 %1 동기화 중</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="138"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="145"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>%1 동기화 중(%2 남음)</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="141"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="148"/>
         <source>Syncing %1</source>
         <translation>%1 동기화 중</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="162"/>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="241"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="169"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="250"/>
         <source>No recently changed files</source>
         <translation>최근에 변경한 파일 없음</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="182"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="189"/>
         <source>Sync paused</source>
         <translation>동기화 일시 정지됨</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="185"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="192"/>
         <source>Syncing</source>
         <translation>동기화 중</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="224"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="233"/>
         <source>Open website</source>
         <translation>웹 사이트 열기</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="227"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="236"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
         <translation>%1 데스크톱 열기</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="234"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="243"/>
         <source>Open in browser</source>
         <translation>브라우저에서 열기</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="255"/>
         <source>Recently changed</source>
         <translation>최근 변경됨</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="253"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="262"/>
         <source>Pause synchronization</source>
         <translation>동기화 일시 정지</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="260"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="269"/>
         <source>Help</source>
         <translation>도움말</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="263"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="272"/>
         <source>Settings</source>
         <translation>설정</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="266"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="275"/>
         <source>Log out</source>
         <translation>로그아웃</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="269"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="278"/>
         <source>Quit sync client</source>
         <translation>동기화 클라이언트 끝내기</translation>
     </message>
