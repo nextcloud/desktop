@@ -264,6 +264,10 @@ public:
     void removeFileProviderDomainUuidMapping(const QString &accountId);
     void removeFileProviderDomainMappingByDomainIdentifier(const QString domainIdentifier);
 
+    /// File Provider app sandbox migration flag
+    [[nodiscard]] bool fileProviderDomainsAppSandboxMigrationCompleted() const;
+    void setFileProviderDomainsAppSandboxMigrationCompleted(bool completed);
+
     /// Helper function for migration/upgrade proccess
     enum MigrationPhase {
         NotStarted,

@@ -59,6 +59,7 @@ static constexpr char logExpireC[] = "logExpire";
 static constexpr char logFlushC[] = "logFlush";
 static constexpr char showExperimentalOptionsC[] = "showExperimentalOptions";
 static constexpr char clientPreviousVersionC[] = "clientPreviousVersion";
+static constexpr char fileProviderDomainsAppSandboxMigrationCompletedC[] = "fileProviderDomainsAppSandboxMigrationCompleted";
 
 static constexpr char proxyHostC[] = "Proxy/host";
 static constexpr char proxyTypeC[] = "Proxy/type";
@@ -1367,6 +1368,18 @@ void ConfigFile::removeFileProviderDomainMappingByDomainIdentifier(const QString
     if (!accountIdentifier.isEmpty()) {
         removeData(QStringLiteral("FileProviderDomainUuids"), accountIdentifier);
     }
+}
+
+bool ConfigFile::fileProviderDomainsAppSandboxMigrationCompleted() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(fileProviderDomainsAppSandboxMigrationCompletedC, false).toBool();
+}
+
+void ConfigFile::setFileProviderDomainsAppSandboxMigrationCompleted(const bool completed)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(fileProviderDomainsAppSandboxMigrationCompletedC, completed);
 }
 
 bool ConfigFile::isUpgrade() const
