@@ -433,11 +433,15 @@ public:
         if (@available(macOS 11.0, *)) {
             qCDebug(lcMacFileProviderDomainManager) << "Removing all file provider domains.";
 
+            dispatch_group_t dispatchGroup = dispatch_group_create();
+            dispatch_group_enter(dispatchGroup);
+
             [NSFileProviderManager removeAllDomainsWithCompletionHandler:^(NSError * const error) {
                 if(error) {
                     qCWarning(lcMacFileProviderDomainManager) << "Error removing all file provider domains: "
                                                             << error.code
                                                             << error.localizedDescription;
+                    dispatch_group_leave(dispatchGroup);
                     return;
                 }
 
@@ -453,34 +457,60 @@ public:
                 }
 
                 _registeredDomains.clear();
+
+                dispatch_group_leave(dispatchGroup);
             }];
+
+            dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER);
         }
     }
 
     void wipeAllFileProviderDomains()
     {
         if (@available(macOS 12.0, *)) {
-            qCInfo(lcMacFileProviderDomainManager) << "Removing and wiping all file provider domains";
+            qCInfo(lcMacFileProviderDomainManager) << "Removing and wiping all domains...";
+
+            dispatch_group_t dispatchGroup = dispatch_group_create();
+            dispatch_group_enter(dispatchGroup); // wait for getDomains completion path
 
             [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> * const domains, NSError * const error) {
                 if (error) {
                     qCWarning(lcMacFileProviderDomainManager) << "Error removing and wiping file provider domains: "
                                                               << error.code
                                                               << error.localizedDescription;
+                    dispatch_group_leave(dispatchGroup);
+                    return;
+                }
+
+                qCDebug(lcMacFileProviderDomainManager) << "Found"
+                                                        << domains.count
+                                                        << "domains to wipe...";
+
+                if (domains.count == 0) {
+                    dispatch_group_leave(dispatchGroup);
                     return;
                 }
 
                 for (NSFileProviderDomain * const domain in domains) {
+                    dispatch_group_enter(dispatchGroup);
+
+                    qCDebug(lcMacFileProviderDomainManager) << "About to wipe domain"
+                                                            << domain.identifier;
+
                     [NSFileProviderManager removeDomain:domain mode:NSFileProviderDomainRemovalModeRemoveAll completionHandler:^(NSURL * const preservedLocation, NSError * const error) {
                         Q_UNUSED(preservedLocation)
 
                         if (error) {
-                            qCWarning(lcMacFileProviderDomainManager) << "Error removing and wiping file provider domain: "
+                            qCWarning(lcMacFileProviderDomainManager) << "Error removing and wiping domain: "
                                                                       << domain.displayName
                                                                       << error.code
                                                                       << error.localizedDescription;
+                            dispatch_group_leave(dispatchGroup);
                             return;
                         }
+                        
+                        qCDebug(lcMacFileProviderDomainManager) << "Removed domain"
+                                                                << domain.identifier;
 
                         removeFileProviderDomainData(domain.identifier);
 
@@ -490,9 +520,20 @@ public:
                         if (registeredDomainPtr != nil) {
                             [domain release];
                         }
+
+                        qCDebug(lcMacFileProviderDomainManager) << "Completed wipe of domain"
+                                                                << domain.identifier;
+
+                        dispatch_group_leave(dispatchGroup);
                     }];
                 }
+
+                dispatch_group_leave(dispatchGroup);
             }];
+
+            dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER);
+
+            qCInfo(lcMacFileProviderDomainManager) << "Completed wipe of all domains.";
         } else if (@available(macOS 11.0, *)) {
             qCInfo(lcMacFileProviderDomainManager) << "Cannot wipe file provider domains on macOS versions prior to 12.0, removing instead.";
             removeAllFileProviderDomains();
