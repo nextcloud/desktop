@@ -1373,7 +1373,7 @@ void ConfigFile::removeFileProviderDomainMappingByDomainIdentifier(const QString
 bool ConfigFile::fileProviderDomainsAppSandboxMigrationCompleted() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(fileProviderDomainsAppSandboxMigrationCompletedC, true).toBool();
+    return settings.value(fileProviderDomainsAppSandboxMigrationCompletedC, false).toBool();
 }
 
 void ConfigFile::setFileProviderDomainsAppSandboxMigrationCompleted(const bool completed)
