@@ -3300,14 +3300,14 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="374"/>
-        <location filename="../src/libsync/logger.cpp" line="404"/>
+        <location filename="../src/libsync/logger.cpp" line="375"/>
+        <location filename="../src/libsync/logger.cpp" line="405"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="375"/>
-        <location filename="../src/libsync/logger.cpp" line="405"/>
+        <location filename="../src/libsync/logger.cpp" line="376"/>
+        <location filename="../src/libsync/logger.cpp" line="406"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation type="unfinished"></translation>
     </message>
