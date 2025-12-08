@@ -210,6 +210,8 @@ public:
                 return;
             }
 
+            dispatch_group_t domainOpsGroup = dispatch_group_create();
+
             for (NSFileProviderDomain * const domain in domains) {
                 const auto accountId = accountIdFromDomain(domain);
 
@@ -232,6 +234,7 @@ public:
                                                                   << "and display name:"
                                                                   << domain.displayName;
 
+                        dispatch_group_enter(domainOpsGroup);
                         [NSFileProviderManager removeDomain:domain completionHandler:^(NSError * const error) {
                             if (error) {
                                 qCWarning(lcMacFileProviderDomainManager) << "Error removing domain with illegal domain identifier: "
@@ -244,21 +247,25 @@ public:
 
                             removeFileProviderDomainData(domain.identifier);
                             [domain release];
+
+                            dispatch_group_leave(domainOpsGroup);
                         }];
 
-                        return;
+                        continue;
                     }
 
                     _registeredDomains.insert(accountId, domain);
 
                     NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:domain];
 
+                    dispatch_group_enter(domainOpsGroup);
                     [fpManager reconnectWithCompletionHandler:^(NSError * const error) {
                         if (error) {
                             qCWarning(lcMacFileProviderDomainManager) << "Error reconnecting domain: "
                                                                       << domain.displayName
                                                                       << error.code
                                                                       << error.localizedDescription;
+                            dispatch_group_leave(domainOpsGroup);
                             return;
                         }
 
@@ -266,6 +273,8 @@ public:
                                                                << domain.identifier
                                                                << "and display name:"
                                                                << domain.displayName;
+
+                        dispatch_group_leave(domainOpsGroup);
                     }];
 
                 } else {
@@ -275,6 +284,7 @@ public:
                                                            << (accountState ? "NON-NULL ACCOUNTSTATE" : "NULL")
                                                            << (accountState && accountState->account() ? domainDisplayNameForAccount(accountState->account()) : "NULL");
 
+                    dispatch_group_enter(domainOpsGroup);
                     [NSFileProviderManager removeDomain:domain completionHandler:^(NSError * const error) {
                         if (error) {
                             qCWarning(lcMacFileProviderDomainManager) << "Error removing domain: "
@@ -283,9 +293,13 @@ public:
                         }
 
                         removeFileProviderDomainData(domain.identifier);
+
+                        dispatch_group_leave(domainOpsGroup);
                     }];
                 }
             }
+
+            dispatch_group_wait(domainOpsGroup, DISPATCH_TIME_FOREVER);
 
             dispatch_group_leave(dispatchGroup);
         }];
