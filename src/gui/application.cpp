@@ -132,10 +132,9 @@ bool Application::configVersionMigration()
     QStringList deleteKeys, ignoreKeys;
     AccountManager::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
     FolderMan::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
-    configFile.setClientPreviousVersionString(configFile.clientVersionString());
     
     qCDebug(lcApplication) << "Migration is in progress:"  << configFile.isMigrationInProgress();
-    const auto versionChanged = configFile.isUpgrade() || configFile.isDowngrade();
+    const auto versionChanged = configFile.hasVersionChanged();
     if (versionChanged) {
         qCInfo(lcApplication) << "Version changed. Removing updater settings from config.";
         configFile.cleanUpdaterConfiguration();
@@ -205,6 +204,7 @@ bool Application::configVersionMigration()
         }
     }
 
+    configFile.setClientPreviousVersionString(configFile.clientVersionString());
     configFile.setClientVersionString(MIRALL_VERSION_STRING);
     return true;
 }

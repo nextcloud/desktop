@@ -277,7 +277,8 @@ public:
     [[nodiscard]] bool shouldTryUnbrandedToBrandedMigration() const;
     [[nodiscard]] bool isUnbrandedToBrandedMigrationInProgress() const;
     [[nodiscard]] bool shouldTryToMigrate() const;
-    [[nodiscard]] bool isClientVersionSet() const;
+    /// Does the current app has a different version of the config version
+    [[nodiscard]] bool hasVersionChanged() const;
     [[nodiscard]] bool isMigrationInProgress() const;
     [[nodiscard]] MigrationPhase migrationPhase() const;
     void setMigrationPhase(const MigrationPhase phase);
