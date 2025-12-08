@@ -189,13 +189,15 @@ public:
 
     void findExistingFileProviderDomains()
     {
+        qCDebug(lcMacFileProviderDomainManager) << "Looking for existing domains...";
+
         // Wait for this to finish
         dispatch_group_t dispatchGroup = dispatch_group_create();
         dispatch_group_enter(dispatchGroup);
 
         [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> * const domains, NSError * const error) {
             if (error) {
-                qCWarning(lcMacFileProviderDomainManager) << "Could not get existing file provider domains: "
+                qCWarning(lcMacFileProviderDomainManager) << "Could not get existing domains: "
                                                           << error.code
                                                           << error.localizedDescription;
                 dispatch_group_leave(dispatchGroup);
@@ -203,7 +205,7 @@ public:
             }
 
             if (domains.count == 0) {
-                qCInfo(lcMacFileProviderDomainManager) << "Found no existing file provider domains at all.";
+                qCInfo(lcMacFileProviderDomainManager) << "Found no existing domains at all.";
                 dispatch_group_leave(dispatchGroup);
                 return;
             }
@@ -216,7 +218,7 @@ public:
                         accountState->account() &&
                         domainDisplayNameForAccount(accountState->account()) == QString::fromNSString(domain.displayName)) {
 
-                    qCInfo(lcMacFileProviderDomainManager) << "Found existing file provider domain with identifier:"
+                    qCInfo(lcMacFileProviderDomainManager) << "Found existing domain with identifier:"
                                                            << domain.identifier
                                                            << "and display name:"
                                                            << domain.displayName
@@ -225,19 +227,18 @@ public:
                     [domain retain];
 
                     if (OCC::Mac::FileProviderUtils::illegalDomainIdentifier(QString::fromNSString(domain.identifier))) {
-                        qCWarning(lcMacFileProviderDomainManager) << "Found existing file provider domain with illegal domain identifier:"
+                        qCWarning(lcMacFileProviderDomainManager) << "Found existing domain with illegal domain identifier to remove:"
                                                                   << domain.identifier
                                                                   << "and display name:"
-                                                                  << domain.displayName
-                                                                  << "removing and recreating";
+                                                                  << domain.displayName;
 
                         [NSFileProviderManager removeDomain:domain completionHandler:^(NSError * const error) {
                             if (error) {
-                                qCWarning(lcMacFileProviderDomainManager) << "Error removing file provider domain with illegal domain identifier: "
+                                qCWarning(lcMacFileProviderDomainManager) << "Error removing domain with illegal domain identifier: "
                                                                           << error.code
                                                                           << error.localizedDescription;
                             } else {
-                                qCInfo(lcMacFileProviderDomainManager) << "Successfully removed file provider domain with illegal domain identifier: "
+                                qCInfo(lcMacFileProviderDomainManager) << "Successfully removed domain with illegal domain identifier: "
                                                                        << domain.identifier;
                             }
 
@@ -251,30 +252,32 @@ public:
                     _registeredDomains.insert(accountId, domain);
 
                     NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:domain];
+
                     [fpManager reconnectWithCompletionHandler:^(NSError * const error) {
                         if (error) {
-                            qCWarning(lcMacFileProviderDomainManager) << "Error reconnecting file provider domain: "
+                            qCWarning(lcMacFileProviderDomainManager) << "Error reconnecting domain: "
                                                                       << domain.displayName
                                                                       << error.code
                                                                       << error.localizedDescription;
                             return;
                         }
 
-                        qCInfo(lcMacFileProviderDomainManager) << "Successfully reconnected file provider domain: "
+                        qCInfo(lcMacFileProviderDomainManager) << "Successfully reconnected domain: "
                                                                << domain.identifier
                                                                << "and display name:"
                                                                << domain.displayName;
                     }];
 
                 } else {
-                    qCInfo(lcMacFileProviderDomainManager) << "Found existing file provider domain with no known configured account:"
+                    qCInfo(lcMacFileProviderDomainManager) << "Found and will remove existing domain with no associated account:"
                                                            << domain.displayName
                                                            << accountState
                                                            << (accountState ? "NON-NULL ACCOUNTSTATE" : "NULL")
                                                            << (accountState && accountState->account() ? domainDisplayNameForAccount(accountState->account()) : "NULL");
+
                     [NSFileProviderManager removeDomain:domain completionHandler:^(NSError * const error) {
                         if (error) {
-                            qCWarning(lcMacFileProviderDomainManager) << "Error removing file provider domain: "
+                            qCWarning(lcMacFileProviderDomainManager) << "Error removing domain: "
                                                                       << error.code
                                                                       << error.localizedDescription;
                         }
@@ -288,6 +291,7 @@ public:
         }];
 
         dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER);
+        qCDebug(lcMacFileProviderDomainManager) << "Completed looking for existing domains.";
     }
 
     NSFileProviderDomain *domainForAccount(const AccountState * const accountState)
@@ -427,7 +431,7 @@ public:
 
         [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> * const domains, NSError * const error) {
             if (error) {
-                qCWarning(lcMacFileProviderDomainManager) << "Error removing and wiping file provider domains: "
+                qCWarning(lcMacFileProviderDomainManager) << "Error removing and wiping domains:"
                                                           << error.code
                                                           << error.localizedDescription;
                 dispatch_group_leave(dispatchGroup);
@@ -453,7 +457,7 @@ public:
                     Q_UNUSED(preservedLocation)
 
                     if (error) {
-                        qCWarning(lcMacFileProviderDomainManager) << "Error removing and wiping domain: "
+                        qCWarning(lcMacFileProviderDomainManager) << "Error removing and wiping domain:"
                                                                   << domain.displayName
                                                                   << error.code
                                                                   << error.localizedDescription;
