@@ -301,7 +301,7 @@ IF( APPLE )
             macOS/fileprovider.h
             macOS/fileprovider_mac.mm
             macOS/fileproviderdomainmanager.h
-            macOS/fileproviderdomainmanager_mac.mm
+            macOS/fileproviderdomainmanager.mm
             macOS/fileprovidereditlocallyjob.h
             macOS/fileprovidereditlocallyjob.cpp
             macOS/fileprovidereditlocallyjob_mac.mm
