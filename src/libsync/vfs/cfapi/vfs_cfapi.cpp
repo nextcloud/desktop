@@ -536,15 +536,41 @@ int VfsCfApi::finalizeNewPlaceholders(const QList<PlaceholderCreateInfo> &newEnt
     const auto &journal = params().journal;
 
     for (const auto &entryInfo : newEntries) {
-
         auto folderRecord = SyncJournalFileRecord{};
+
+        folderRecord._checksumHeader = entryInfo.parsedProperties.checksumHeader;
         folderRecord._fileId = entryInfo.parsedProperties.fileId;
         folderRecord._fileSize = entryInfo.parsedProperties.size;
-        folderRecord._etag = entryInfo.parsedProperties.etag;
         folderRecord._path = entryInfo.fullPath.toUtf8();
-        folderRecord._type = (entryInfo.parsedProperties.isDirectory ? ItemTypeVirtualDirectory : ItemTypeVirtualFile);
         folderRecord._remotePerm = entryInfo.parsedProperties.remotePerm;
         folderRecord._modtime = entryInfo.parsedProperties.modtime;
+        folderRecord._isShared = entryInfo.parsedProperties.remotePerm.hasPermission(RemotePermissions::IsShared) || entryInfo.parsedProperties.sharedByMe;
+        folderRecord._sharedByMe = entryInfo.parsedProperties.sharedByMe;
+        folderRecord._lastShareStateFetchedTimestamp = QDateTime::currentMSecsSinceEpoch();
+        folderRecord._type = (entryInfo.parsedProperties.isDirectory ? ItemTypeVirtualDirectory : ItemTypeVirtualFile);
+        folderRecord._etag = entryInfo.parsedProperties.etag;
+        folderRecord._e2eEncryptionStatus = static_cast<SyncJournalFileRecord::EncryptionStatus>(entryInfo.parsedProperties.isE2eEncrypted() ? SyncFileItem::EncryptionStatus::EncryptedMigratedV2_0 : SyncFileItem::EncryptionStatus::NotEncrypted);
+        folderRecord._lockstate._locked = (entryInfo.parsedProperties.locked == SyncFileItemEnums::LockStatus::LockedItem);
+        folderRecord._lockstate._lockOwnerDisplayName = entryInfo.parsedProperties.lockOwnerDisplayName;
+        folderRecord._lockstate._lockOwnerId = entryInfo.parsedProperties.lockOwnerId;
+        folderRecord._lockstate._lockOwnerType = static_cast<qint64>(entryInfo.parsedProperties.lockOwnerType);
+        folderRecord._lockstate._lockEditorApp = entryInfo.parsedProperties.lockEditorApp;
+        folderRecord._lockstate._lockTime = entryInfo.parsedProperties.lockTime;
+        folderRecord._lockstate._lockTimeout = entryInfo.parsedProperties.lockTimeout;
+        folderRecord._lockstate._lockToken = entryInfo.parsedProperties.lockToken;
+
+        folderRecord._isLivePhoto = entryInfo.parsedProperties.isLivePhoto;
+        folderRecord._livePhotoFile = entryInfo.parsedProperties.livePhotoFile;
+
+        folderRecord._folderQuota.bytesUsed = entryInfo.parsedProperties.folderQuota.bytesUsed;
+        folderRecord._folderQuota.bytesAvailable = entryInfo.parsedProperties.folderQuota.bytesAvailable;
+
+        auto inode = quint64{0};
+        if (FileSystem::getInode(params().filesystemPath + entryInfo.fullPath, &inode)) {
+            folderRecord._inode = inode;
+        } else {
+            qCWarning(lcCfApi) << "Impossible to query inode for file" << entryInfo.fullPath;
+        }
 
         const auto updateRecordDbResult = journal->setFileRecord(folderRecord);
         if (!updateRecordDbResult) {
