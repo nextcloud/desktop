@@ -23,6 +23,7 @@ class ExcludedFiles;
 namespace OCC {
 
 class AbstractCredentials;
+class Migration;
 
 /**
  * @brief The ConfigFile class
@@ -264,23 +265,8 @@ public:
     void removeFileProviderDomainUuidMapping(const QString &accountId);
     void removeFileProviderDomainMappingByDomainIdentifier(const QString domainIdentifier);
 
-    /// Helper function for migration/upgrade proccess
-    enum MigrationPhase {
-        NotStarted,
-        SetupConfigFile,
-        SetupUsers,
-        SetupFolders,
-        Done
-    };
-    [[nodiscard]] bool isUpgrade() const;
-    [[nodiscard]] bool isDowngrade() const;
-    [[nodiscard]] bool shouldTryUnbrandedToBrandedMigration() const;
-    [[nodiscard]] bool isUnbrandedToBrandedMigrationInProgress() const;
-    [[nodiscard]] bool shouldTryToMigrate() const;
-    [[nodiscard]] bool isClientVersionSet() const;
-    [[nodiscard]] bool isMigrationInProgress() const;
-    [[nodiscard]] MigrationPhase migrationPhase() const;
-    void setMigrationPhase(const MigrationPhase phase);
+    [[nodiscard]] static Migration &migration();
+
     static constexpr char unbrandedAppName[] = "Nextcloud";
     static constexpr char legacyAppName[] = "Owncloud";
 
@@ -326,7 +312,7 @@ private:
 
     static QString _confDir;
     static QString _discoveredLegacyConfigPath;
-    static MigrationPhase _migrationPhase;
+    static Migration _migration;
 };
 }
 #endif // CONFIGFILE_H
