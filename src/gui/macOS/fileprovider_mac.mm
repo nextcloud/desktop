@@ -25,12 +25,6 @@ FileProvider::FileProvider(QObject * const parent)
 {
     Q_ASSERT(!_instance);
 
-    if (!fileProviderAvailable()) {
-        qCInfo(lcMacFileProvider) << "File provider system is not available on this version of macOS.";
-        deleteLater();
-        return;
-    }
-
     qCInfo(lcMacFileProvider) << "Initialising file provider domain manager.";
     _domainManager = std::make_unique<FileProviderDomainManager>(this);
 
@@ -50,11 +44,6 @@ FileProvider::FileProvider(QObject * const parent)
 
 FileProvider *FileProvider::instance()
 {
-    if (!fileProviderAvailable()) {
-        qCInfo(lcMacFileProvider) << "File provider system is not available on this version of macOS.";
-        return nullptr;
-    }
-
     if (!_instance) {
         _instance = new FileProvider();
     }
@@ -64,15 +53,6 @@ FileProvider *FileProvider::instance()
 FileProvider::~FileProvider()
 {
     _instance = nullptr;
-}
-
-bool FileProvider::fileProviderAvailable()
-{
-    if (@available(macOS 11.0, *)) {
-        return true;
-    }
-
-    return false;
 }
 
 void FileProvider::configureXPC()

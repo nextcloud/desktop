@@ -28,8 +28,6 @@ public:
     static FileProvider *instance();
     ~FileProvider() override;
 
-    [[nodiscard]] static bool fileProviderAvailable();
-
     [[nodiscard]] FileProviderXPC *xpc() const;
     [[nodiscard]] FileProviderDomainManager *domainManager() const;
     [[nodiscard]] FileProviderSocketServer *socketServer() const;
