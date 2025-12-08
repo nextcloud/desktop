@@ -514,7 +514,7 @@ bool OwncloudSetupWizard::checkDowngradeAdvised(QNetworkReply *reply)
 void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString &localFolder, const QString &remoteFolder)
 {
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    if (Mac::FileProvider::fileProviderAvailable() && _ocWizard->useVirtualFileSync()) {
+    if (_ocWizard->useVirtualFileSync()) {
         qCInfo(lcWizard) << "Not creating local/remote folders as because macOS File Provider uses its own sync root";
         finalizeSetup(true);
         return;
