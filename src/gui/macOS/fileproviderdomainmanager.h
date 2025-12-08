@@ -36,7 +36,6 @@ public slots:
     void addFileProviderDomainForAccount(const OCC::AccountState * const accountState);
 
 private slots:
-    void setupFileProviderDomains();
     void updateFileProviderDomains();
 
     void removeFileProviderDomainForAccount(const OCC::AccountState * const accountState);

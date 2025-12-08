@@ -613,7 +613,7 @@ void FileProviderDomainManager::start()
 {
     ConfigFile cfg;
 
-    setupFileProviderDomains();
+    updateFileProviderDomains();
 
     // If an account is deleted from the client, accountSyncConnectionRemoved will be
     // emitted first. So we treat accountRemoved as only being relevant to client
@@ -631,16 +631,6 @@ void FileProviderDomainManager::start()
             this, &FileProviderDomainManager::updateFileProviderDomains);
 }
 
-void FileProviderDomainManager::setupFileProviderDomains()
-{
-    if (!d) {
-        return;
-    }
-
-    d->findExistingFileProviderDomains();
-    updateFileProviderDomains();
-}
-
 void FileProviderDomainManager::updateFileProviderDomains()
 {
     qCDebug(lcMacFileProviderDomainManager) << "Updating file provider domains.";
@@ -648,6 +638,8 @@ void FileProviderDomainManager::updateFileProviderDomains()
     if (!d) {
         return;
     }
+
+    d->findExistingFileProviderDomains();
 
     // MARK: Completely remove all file provider domains once as part of the app sandbox migration.
 
@@ -657,9 +649,8 @@ void FileProviderDomainManager::updateFileProviderDomains()
         qCInfo(lcMacFileProviderDomainManager) << "App sandbox migration for file provider domains not completed yet, wiping all file provider domains.";
 
         d->wipeAllFileProviderDomains();
-        d->findExistingFileProviderDomains();
-
         cfg.setFileProviderDomainsAppSandboxMigrationCompleted(true);
+
         qCInfo(lcMacFileProviderDomainManager) << "App sandbox migration for file provider domains completed.";
     }
 
