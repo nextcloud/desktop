@@ -344,6 +344,8 @@ public:
         NSFileProviderDomain * const fileProviderDomain = [[NSFileProviderDomain alloc] initWithIdentifier:domainId.toNSString()
                                                                                                displayName:domainDisplayName.toNSString()];
 
+        dispatch_semaphore_t addDomainSemaphore = dispatch_semaphore_create(0);
+
         [NSFileProviderManager addDomain:fileProviderDomain completionHandler:^(NSError * const error) {
             if(error) {
                 qCWarning(lcMacFileProviderDomainManager) << "Error adding file provider domain: "
@@ -352,7 +354,11 @@ public:
             }
 
             _registeredDomains.insert(accountId, fileProviderDomain);  // Store by account ID for easier lookup
+
+            dispatch_semaphore_signal(addDomainSemaphore);
         }];
+
+        dispatch_semaphore_wait(addDomainSemaphore, DISPATCH_TIME_FOREVER);
     }
 
     void removeFileProviderDomainData(NSString * const domainIdentifier)
@@ -404,6 +410,7 @@ public:
         }
 
         NSFileProviderDomain * const fileProviderDomain = _registeredDomains[accountId];
+        dispatch_semaphore_t removeDomainSemaphore = dispatch_semaphore_create(0);
 
         [NSFileProviderManager removeDomain:fileProviderDomain completionHandler:^(NSError *error) {
             if (error) {
@@ -419,7 +426,11 @@ public:
             // Clean up the UUID mapping when removing the domain
             OCC::ConfigFile cfg;
             cfg.removeFileProviderDomainUuidMapping(accountId);
+
+            dispatch_semaphore_signal(removeDomainSemaphore);
         }];
+
+        dispatch_semaphore_wait(removeDomainSemaphore, DISPATCH_TIME_FOREVER);
     }
 
     void wipeAllFileProviderDomains()
@@ -440,7 +451,7 @@ public:
 
             qCDebug(lcMacFileProviderDomainManager) << "Found"
                                                     << domains.count
-                                                    << "domains to wipe...";
+                                                    << "domains to wipe.";
 
             if (domains.count == 0) {
                 dispatch_group_leave(dispatchGroup);
