@@ -345,6 +345,11 @@ QString FileInfo::absolutePath() const
     return OCC::Utility::trailingSlashPath(parentPath) + name;
 }
 
+QByteArray FileInfo::numericFileId() const
+{
+    return fileId.left(fileId.indexOf("oc1x2y3z4w"));
+}
+
 void FileInfo::fixupParentPathRecursively()
 {
     auto p = path();
@@ -433,7 +438,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
                                                                                                                                 OCC::SharePermissionDelete |
                                                                                                                                 OCC::SharePermissionShare))));
         xml.writeTextElement(ocUri, QStringLiteral("id"), QString::fromUtf8(fileInfo.fileId));
-        xml.writeTextElement(ocUri, QStringLiteral("fileid"), QString::fromUtf8(fileInfo.fileId));
+        xml.writeTextElement(ocUri, QStringLiteral("fileid"), QString::fromUtf8(fileInfo.numericFileId()));
         xml.writeTextElement(ocUri, QStringLiteral("checksums"), QString::fromUtf8(fileInfo.checksums));
         xml.writeTextElement(ocUri, QStringLiteral("privatelink"), href);
         xml.writeTextElement(ncUri, QStringLiteral("lock-owner"), fileInfo.lockOwnerId);
