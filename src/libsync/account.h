@@ -97,6 +97,9 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_PROPERTY(bool enforceUseHardwareTokenEncryption READ enforceUseHardwareTokenEncryption NOTIFY enforceUseHardwareTokenEncryptionChanged)
     Q_PROPERTY(QString encryptionHardwareTokenDriverPath READ encryptionHardwareTokenDriverPath NOTIFY encryptionHardwareTokenDriverPathChanged)
     Q_PROPERTY(QByteArray encryptionCertificateFingerprint READ encryptionCertificateFingerprint WRITE setEncryptionCertificateFingerprint NOTIFY encryptionCertificateFingerprintChanged)
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    Q_PROPERTY(QString fileProviderDomainIdentifier READ fileProviderDomainIdentifier WRITE setFileProviderDomainIdentifier)
+#endif
 
 public:
     enum class AccountNetworkTransferLimitSetting {
@@ -422,6 +425,11 @@ public:
     [[nodiscard]] QByteArray encryptionCertificateFingerprint() const;
     void setEncryptionCertificateFingerprint(const QByteArray &fingerprint);
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    [[nodiscard]] QString fileProviderDomainIdentifier() const;
+    void setFileProviderDomainIdentifier(const QString &identifier);
+#endif
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -583,6 +591,9 @@ private:
     bool _serverHasValidSubscription = false;
     UpdateChannel _enterpriseUpdateChannel = UpdateChannel::Invalid;
     QByteArray _encryptionCertificateFingerprint;
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    QString _fileProviderDomainIdentifier;
+#endif
 
     /* IMPORTANT - remove later - FIXME MS@2019-12-07 -->
      * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!

@@ -93,7 +93,7 @@ void FileProviderSocketController::parseReceivedLine(const QString &receivedLine
             domainIdentifier.replace(portColonPos, 1, ':');
         }
 
-        _accountState = FileProviderDomainManager::accountStateFromFileProviderDomainIdentifier(domainIdentifier);
+        _accountState = AccountManager::instance()->accountFromFileProviderDomainIdentifier(domainIdentifier);
         sendIgnoreList();
         sendAccountDetails();
         reportSyncState("SYNC_FINISHED");

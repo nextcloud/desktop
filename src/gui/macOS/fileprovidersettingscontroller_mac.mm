@@ -8,11 +8,13 @@
 #include <QFileDialog>
 #include <QQmlApplicationEngine>
 
+#include "gui/accountmanager.h"
 #include "gui/systray.h"
 #include "gui/userinfo.h"
 #include "gui/macOS/fileprovider.h"
 #include "gui/macOS/fileprovideritemmetadata.h"
 #include "gui/macOS/fileproviderutils.h"
+#include "libsync/configfile.h"
 
 // Objective-C imports
 #import <Foundation/Foundation.h>
@@ -46,7 +48,6 @@ public:
     explicit MacImplementation(FileProviderSettingsController *const parent)
     {
         q = parent;
-        initialCheck();
     };
 
     ~MacImplementation() override = default;
@@ -54,13 +55,17 @@ public:
     [[nodiscard]] QStringList enabledAccounts() const
     {
         QStringList qEnabledAccounts;
-        NSArray<NSString *> *const enabledAccounts = nsEnabledAccounts();
+        const auto accountStates = AccountManager::instance()->accounts();
 
-        for (NSString *const userIdAtHostString in enabledAccounts) {
-            qCDebug(lcFileProviderSettingsController) << "Found VFS-enabled account in user defaults:"
-                                                      << userIdAtHostString;
+        for (const auto &accountState : accountStates) {
+            const auto account = accountState->account();
+            const auto domainId = account->fileProviderDomainIdentifier();
 
-            qEnabledAccounts.append(QString::fromNSString(userIdAtHostString));
+            if (domainId.isEmpty()) {
+                continue;
+            }
+
+            qEnabledAccounts.append(account->userIdAtHostWithPort());
         }
 
         return qEnabledAccounts;
@@ -68,99 +73,81 @@ public:
 
     [[nodiscard]] bool vfsEnabledForAccount(const QString &userIdAtHost) const
     {
-        NSArray<NSString *> *const vfsEnabledAccounts = nsEnabledAccounts();
-        return [vfsEnabledAccounts containsObject:userIdAtHost.toNSString()];
+        return q->fileProviderDomainIdentifierForAccount(userIdAtHost).isEmpty() == false;
     }
 
     [[nodiscard]] VfsAccountsAction setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled) const
     {
-        NSArray<NSString *> *vfsEnabledAccounts = nsEnabledAccounts();
-
-        qCInfo(lcFileProviderSettingsController) << "Setting file provider-based vfs of account"
+        qCInfo(lcFileProviderSettingsController) << "Setting file provider enablement of account"
                                                  << userIdAtHost
                                                  << "to"
                                                  << setEnabled;
 
-        if (vfsEnabledAccounts == nil) {
-            qCDebug(lcFileProviderSettingsController) << "Received nil array for accounts, creating new array";
-            vfsEnabledAccounts = NSArray.array;
-        }
+        const auto existingDomainId = q->fileProviderDomainIdentifierForAccount(userIdAtHost);
 
-        NSString *const nsUserIdAtHost = userIdAtHost.toNSString();
-        const BOOL accountEnabled = [vfsEnabledAccounts containsObject:nsUserIdAtHost];
-
-        if (accountEnabled == setEnabled) {
-            qCDebug(lcFileProviderSettingsController) << "VFS enablement status for"
-                                                      << userIdAtHost
-                                                      << "matches config.";
+        if (existingDomainId.isEmpty() == false) {
+            qCWarning(lcFileProviderSettingsController) << "Cancelling because account already has a domain identifier!" << userIdAtHost;
             return VfsAccountsAction::VfsAccountsNoAction;
         }
 
-        NSMutableArray<NSString *> *const mutableVfsAccounts = vfsEnabledAccounts.mutableCopy;
+        const auto accountManager = AccountManager::instance();
+        const auto accountState = accountManager->accountFromUserId(userIdAtHost);
 
-        if (setEnabled) {
-            [mutableVfsAccounts addObject:nsUserIdAtHost];
-        } else {
-            [mutableVfsAccounts removeObject:nsUserIdAtHost];
+        if (!accountState) {
+            qCWarning(lcFileProviderSettingsController) << "Unable to set file provider enablement, account not found!"
+                                                        << userIdAtHost;
+            return VfsAccountsAction::VfsAccountsNoAction;
         }
 
-        NSArray<NSString *> *const modifiedVfsAccounts = mutableVfsAccounts.copy;
-        [_userDefaults setObject:modifiedVfsAccounts forKey:_accountsKey];
+        const auto account = accountState->account();
 
-        Q_ASSERT(vfsEnabledForAccount(userIdAtHost) == setEnabled);
+        auto const identifier = Mac::FileProvider::instance()->domainManager()->addFileProviderDomainForAccount(accountState.data());
+        accountManager->setFileProviderDomainIdentifier(userIdAtHost, identifier);
 
         return VfsAccountsAction::VfsAccountsEnabledChanged;
     }
 
-    [[nodiscard]] VfsAccountsAction enableVfsForAllAccounts() const
+    void migrateEnabledAccountsFromUserDefaults()
     {
-        const auto accManager = AccountManager::instance();
-        const auto accountsList = accManager->accounts();
+        ConfigFile cfg;
 
-        if (accountsList.count() == 0) {
-            return VfsAccountsAction::VfsAccountsNoAction;
-        }
-
-        auto overallActResult = VfsAccountsAction::VfsAccountsNoAction;
-
-        for (const auto &account : accountsList) {
-            const auto qAccountUserIdAtHost = account->account()->userIdAtHostWithPort();
-            const auto accountActResult = setVfsEnabledForAccount(qAccountUserIdAtHost, true);
-
-            if (accountActResult == VfsAccountsAction::VfsAccountsEnabledChanged) {
-                overallActResult = accountActResult;
-            }
-        }
-
-        return overallActResult;
-    }
-
-private:
-    [[nodiscard]] NSArray<NSString *> *nsEnabledAccounts() const
-    {
-        return (NSArray<NSString *> *)[_userDefaults objectForKey:_accountsKey];
-    }
-
-    void initialCheck()
-    {
-        qCInfo(lcFileProviderSettingsController) << "Running initial checks for file provider settings controller.";
-        NSArray<NSString *> *const vfsEnabledAccounts = nsEnabledAccounts();
-
-        if (vfsEnabledAccounts != nil) {
+        if (cfg.fileProviderDomainsAppSandboxMigrationCompleted()) {
             return;
         }
 
-        qCInfo(lcFileProviderSettingsController) << "Initial check for file provider settings found nil enabled vfs accounts array."
-                                                  << "Enabling all accounts on initial setup.";
+        qCInfo(lcFileProviderSettingsController) << "Migrating VFS enabled accounts from user defaults.";
 
-        [[maybe_unused]] const auto result = enableVfsForAllAccounts();
+        const auto userDefaults = NSUserDefaults.standardUserDefaults;
+        NSString *const accountsKey = [NSString stringWithUTF8String:enabledAccountsSettingsKey];
+        NSArray<NSString *> *const legacyEnabledAccounts = (NSArray<NSString *> *)[userDefaults objectForKey:accountsKey];
+
+        const auto accManager = AccountManager::instance();
+        const auto accountsList = accManager->accounts();
+
+        for (const auto &accountState : accountsList) {
+            const auto account = accountState->account();
+            const auto accountIdentifier = account->userIdAtHostWithPort();
+            const bool accountEnabled = legacyEnabledAccounts && [legacyEnabledAccounts containsObject:accountIdentifier.toNSString()];
+
+            if (accountEnabled == false) {
+                continue;
+            }
+
+            auto const identifier = Mac::FileProvider::instance()->domainManager()->addFileProviderDomainForAccount(accountState.data());
+            accManager->setFileProviderDomainIdentifier(accountIdentifier, identifier);
+        }
     }
 
-    FileProviderSettingsController *q = nullptr;
-    NSUserDefaults *_userDefaults = NSUserDefaults.standardUserDefaults;
-    NSString *_accountsKey = [NSString stringWithUTF8String:enabledAccountsSettingsKey];
-    QHash<QString, unsigned long long> _storageUsage;
+private:
+    [[maybe_unused]] FileProviderSettingsController *q = nullptr;
 };
+
+void FileProviderSettingsController::migrateEnabledAccountsFromUserDefaults()
+{
+    if (d) {
+        d->migrateEnabledAccountsFromUserDefaults();
+    }
+}
 
 FileProviderSettingsController *FileProviderSettingsController::instance()
 {
@@ -232,7 +219,11 @@ bool FileProviderSettingsController::trashDeletionEnabledForAccount(const QStrin
         return true;
     }
 
-    const auto domainId = FileProviderUtils::domainIdentifierForAccountIdentifier(userIdAtHost);
+    const auto domainId = fileProviderDomainIdentifierForAccount(userIdAtHost);
+
+    if (domainId.isEmpty()) {
+        return false;
+    }
 
     if (const auto trashDeletionState = xpc->trashDeletionEnabledStateForFileProviderDomain(domainId)) {
         return trashDeletionState->first;
@@ -249,7 +240,11 @@ bool FileProviderSettingsController::trashDeletionSetForAccount(const QString &u
         return false;
     }
 
-    const auto domainId = FileProviderUtils::domainIdentifierForAccountIdentifier(userIdAtHost);
+    const auto domainId = fileProviderDomainIdentifierForAccount(userIdAtHost);
+
+    if (domainId.isEmpty()) {
+        return false;
+    }
 
     if (const auto state = xpc->trashDeletionEnabledStateForFileProviderDomain(domainId)) {
         return state->second;
@@ -269,12 +264,35 @@ void FileProviderSettingsController::setTrashDeletionEnabledForAccount(const QSt
         return;
     }
 
-    const auto domainId = FileProviderUtils::domainIdentifierForAccountIdentifier(userIdAtHost);
+    const auto domainId = fileProviderDomainIdentifierForAccount(userIdAtHost);
+
+    if (domainId.isEmpty()) {
+        return;
+    }
 
     xpc->setTrashDeletionEnabledForFileProviderDomain(domainId, setEnabled);
 
     emit trashDeletionEnabledForAccountChanged(userIdAtHost);
     emit trashDeletionSetForAccountChanged(userIdAtHost);
+}
+
+QString FileProviderSettingsController::fileProviderDomainIdentifierForAccount(const QString &userIdAtHost) const
+{
+    const auto accountState = AccountManager::instance()->accountFromUserId(userIdAtHost);
+
+    if (!accountState) {
+        qCWarning(lcFileProviderSettingsController) << "Account not found for user" << userIdAtHost;
+        return {};
+    }
+
+    const auto account = accountState->account();
+
+    if (!account) {
+        qCWarning(lcFileProviderSettingsController) << "Account missing in state for user" << userIdAtHost;
+        return {};
+    }
+
+    return account->fileProviderDomainIdentifier();
 }
 
 } // namespace Mac

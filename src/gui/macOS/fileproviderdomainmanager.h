@@ -9,6 +9,12 @@
 
 #include "accountstate.h"
 
+#ifdef __OBJC__
+@class NSFileProviderDomain;
+#else
+class NSFileProviderDomain;
+#endif
+
 namespace OCC {
 
 class Account;
@@ -23,17 +29,19 @@ public:
     explicit FileProviderDomainManager(QObject * const parent = nullptr);
     ~FileProviderDomainManager() override;
 
-    static AccountStatePtr accountStateFromFileProviderDomainIdentifier(const QString &domainIdentifier);
-    QString fileProviderDomainIdentifierFromAccountId(const QString &accountId);
-    
     void start();
-    void* domainForAccount(const OCC::AccountState * const accountState);
+
+    NSFileProviderDomain *domainForAccount(const OCC::Account *account) const;
 
 signals:
     void domainSetupComplete();
 
 public slots:
-    void addFileProviderDomainForAccount(const OCC::AccountState * const accountState);
+    /**
+     * @brief Add a new file provider domain for the given account.
+     * @return The raw identifier of the added domain as a string.
+     */
+    QString addFileProviderDomainForAccount(const OCC::AccountState * const accountState);
 
 private slots:
     void updateFileProviderDomains();

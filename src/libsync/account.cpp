@@ -1178,6 +1178,23 @@ void Account::setEncryptionCertificateFingerprint(const QByteArray &fingerprint)
     Q_EMIT wantsAccountSaved(sharedFromThis());
 }
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+QString Account::fileProviderDomainIdentifier() const
+{
+    return _fileProviderDomainIdentifier;
+}
+
+void Account::setFileProviderDomainIdentifier(const QString &identifier)
+{
+    if (_fileProviderDomainIdentifier == identifier) {
+        return;
+    }
+
+    _fileProviderDomainIdentifier = identifier;
+    Q_EMIT wantsAccountSaved(sharedFromThis());
+}
+#endif
+
 void Account::setAskUserForMnemonic(const bool ask)
 {
     _e2eAskUserForMnemonic = ask;
