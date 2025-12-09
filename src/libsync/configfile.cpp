@@ -1396,15 +1396,14 @@ bool ConfigFile::isUnbrandedToBrandedMigrationInProgress() const
 
 bool ConfigFile::shouldTryToMigrate() const
 {
-    return !isClientVersionSet() && (isUpgrade() || isDowngrade());
+    return hasVersionChanged() && (isUpgrade() || isDowngrade());
 }
 
-bool ConfigFile::isClientVersionSet() const
+bool ConfigFile::hasVersionChanged() const
 {
-    const auto currentVersion = QVersionNumber::fromString(MIRALL_VERSION_STRING);
-    const auto clientConfigVersion = QVersionNumber::fromString(clientVersionString());
-    const auto isVersionSet = !clientConfigVersion.isNull() && !clientPreviousVersionString().isEmpty();
-    return isVersionSet && clientConfigVersion == currentVersion;
+    const auto currentVersion = QVersionNumber::fromString(MIRALL_VERSION_STRING); //app running
+    const auto clientConfigVersion = QVersionNumber::fromString(clientVersionString()); //config version
+    return clientConfigVersion != currentVersion;
 }
 
 bool ConfigFile::isMigrationInProgress() const
