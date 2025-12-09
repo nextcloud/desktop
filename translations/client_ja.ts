@@ -2804,17 +2804,17 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="87"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation>指定された容量を以上の新しいフォルダを同期する前に確認する。</translation>
+        <translation>指定された容量より大きな新しいフォルダーを同期する前に確認する</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="150"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation>同期されたフォルダのサイズが指定した上限を超えた場合に通知する</translation>
+        <translation>同期されたフォルダーのサイズが指定した上限を超えた場合に通知する</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="177"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation>制限を超えたフォルダの同期を自動的に無効にする</translation>
+        <translation>制限を超えたフォルダーの同期を自動的に無効にする</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="201"/>
@@ -2824,7 +2824,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="212"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
-        <translation>エクスプローラのナビゲーションペインに同期フォルダを表示する</translation>
+        <translation>エクスプローラーのナビゲーションペインに同期フォルダーを表示する</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="224"/>
@@ -5458,7 +5458,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/theme.cpp" line="449"/>
         <source>%1 Desktop Client Version %2 (%3)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name.</comment>
-        <translation>%1 デスクトプクライアントバージョン %2 (%3)</translation>
+        <translation>%1 デスクトップクライアント バージョン %2 (%3)</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="634"/>
