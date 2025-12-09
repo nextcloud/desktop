@@ -29,13 +29,13 @@ public:
     void setError(const QString &error);
 
 public Q_SLOTS:
-    void slotAuthResult(Flow2Auth::Result, const QString &errorString, const QString &user, const QString &appPassword);
+    void slotAuthResult(OCC::Flow2Auth::Result, const QString &errorString, const QString &user, const QString &appPassword);
     void slotPollNow();
-    void slotStatusChanged(Flow2Auth::PollStatus status, int secondsLeft);
+    void slotStatusChanged(OCC::Flow2Auth::PollStatus status, int secondsLeft);
     void slotStyleChanged();
 
 Q_SIGNALS:
-    void authResult(Flow2Auth::Result, const QString &errorString, const QString &user, const QString &appPassword);
+    void authResult(OCC::Flow2Auth::Result, const QString &errorString, const QString &user, const QString &appPassword);
     void pollNow();
 
 private:

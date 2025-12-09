@@ -30,15 +30,15 @@ public slots:
     void handleRequest(const QUrl &url);
 
 private slots:
-    void verify(const AccountStatePtr &accountState,
+    void verify(const OCC::AccountStatePtr &accountState,
                 const QString &relPath,
                 const QString &token);
-    void editLocally(const AccountStatePtr &accountState,
+    void editLocally(const OCC::AccountStatePtr &accountState,
                      const QString &relPath,
                      const QString &token);
     
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    void editLocallyFileProvider(const AccountStatePtr &accountState,
+    void editLocallyFileProvider(const OCC::AccountStatePtr &accountState,
                                  const QString &relPath,
                                  const QString &token);
 #endif

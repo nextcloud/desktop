@@ -7,11 +7,13 @@
 #ifndef KEYCHAINCHUNK_H
 #define KEYCHAINCHUNK_H
 
-#include <QObject>
+#include "owncloudlib.h"
+
+#include "accountfwd.h"
 
 #include <qt6keychain/keychain.h>
 
-#include "accountfwd.h"
+#include <QObject>
 
 // We don't support insecure fallback
 // #define KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK
@@ -125,7 +127,7 @@ public:
     bool exec();
 
 signals:
-    void finished(KeychainChunk::WriteJob *incomingJob);
+    void finished(OCC::KeychainChunk::WriteJob *incomingJob);
 
 private slots:
     void slotWriteJobDone(QKeychain::Job *incomingJob);
@@ -158,7 +160,7 @@ public:
     bool exec();
 
 signals:
-    void finished(KeychainChunk::ReadJob *incomingJob);
+    void finished(OCC::KeychainChunk::ReadJob *incomingJob);
 
 private slots:
     void slotReadJobDone(QKeychain::Job *incomingJob);
@@ -196,7 +198,7 @@ public:
     bool exec();
 
 signals:
-    void finished(KeychainChunk::DeleteJob *incomingJob);
+    void finished(OCC::KeychainChunk::DeleteJob *incomingJob);
 
 private slots:
     void slotDeleteJobDone(QKeychain::Job *incomingJob);

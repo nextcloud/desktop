@@ -133,7 +133,7 @@ signals:
     void firstDirectoryPermissions(OCC::RemotePermissions);
     void etag(const QByteArray &, const QDateTime &time);
     void finished(const OCC::HttpResult<QVector<OCC::RemoteInfo>> &result);
-    void setfolderQuota(const FolderQuota &folderQuota);
+    void setfolderQuota(const OCC::FolderQuota &folderQuota);
 
 private slots:
     void directoryListingIteratedSlot(const QString &, const QMap<QString, QString> &);
@@ -341,7 +341,7 @@ signals:
       */
     void silentlyExcluded(const QString &folderPath);
 
-    void addErrorToGui(const SyncFileItem::Status status, const QString &errorMessage, const QString &subject, const OCC::ErrorCategory category);
+    void addErrorToGui(const OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject, const OCC::ErrorCategory category);
 
     void remnantReadOnlyFolderDiscovered(const OCC::SyncFileItemPtr &item);
 private slots:

@@ -431,7 +431,7 @@ public slots:
     void listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise,
                           const QString &remoteSyncRootPath,
                           const QString &subPath,
-                          SyncJournalDb *journalForFolder);
+                          OCC::SyncJournalDb *journalForFolder);
 
 signals:
     /// Emitted whenever there's network activity
@@ -451,7 +451,7 @@ signals:
 
     void wantsFoldersSynced();
 
-    void serverVersionChanged(const AccountPtr &account, const QString &newVersion, const QString &oldVersion);
+    void serverVersionChanged(const OCC::AccountPtr &account, const QString &newVersion, const QString &oldVersion);
 
     void accountChangedAvatar();
     void accountChangedDisplayName();
@@ -498,7 +498,7 @@ protected Q_SLOTS:
     void slotDirectEditingRecieved(const QJsonDocument &json);
 
 private slots:
-    void removeLockStatusChangeInprogress(const QString &serverRelativePath, const SyncFileItem::LockStatus lockStatus);
+    void removeLockStatusChangeInprogress(const QString &serverRelativePath, const OCC::SyncFileItemEnums::LockStatus lockStatus);
 
 private:
     Account(QObject *parent = nullptr);

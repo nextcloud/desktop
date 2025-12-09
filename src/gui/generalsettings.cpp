@@ -47,6 +47,8 @@
 #include <KZip>
 #include <chrono>
 
+Q_LOGGING_CATEGORY(lcGeneralSettings, "com.nextcloud.settings.general")
+
 namespace {
 struct ZipEntry {
     QString localFilename;
@@ -134,7 +136,11 @@ bool createDebugArchive(const QString &filename)
     const auto entries = createDebugArchiveFileList();
 
     KZip zip(filename);
-    zip.open(QIODevice::WriteOnly);
+    const auto opennResult = zip.open(QIODevice::WriteOnly);
+    if (!opennResult) {
+        qCWarning(lcGeneralSettings) << "failed to open zip archive to create a debug archive";
+        return false;
+    }
 
     for (const auto &entry : entries) {
         zip.addLocalFile(entry.localFilename, entry.zipFilename);

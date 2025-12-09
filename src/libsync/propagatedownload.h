@@ -239,10 +239,10 @@ private slots:
     /// Called when it's time to update the db metadata
     void updateMetadata(bool isConflict);
 
-    void abort(PropagatorJob::AbortType abortType) override;
+    void abort(OCC::PropagatorJob::AbortType abortType) override;
     void slotDownloadProgress(qint64, qint64);
     void slotChecksumFail(const QString &errMsg, const QByteArray &calculatedChecksumType,
-        const QByteArray &calculatedChecksum, const ValidateChecksumHeader::FailureReason reason);
+        const QByteArray &calculatedChecksum, const OCC::ValidateChecksumHeader::FailureReason reason);
     void processChecksumRecalculate(const QNetworkReply *reply, const QByteArray &originalChecksumHeader, const QString &errorMessage);
     void checksumValidateFailedAbortDownload(const QString &errMsg);
 

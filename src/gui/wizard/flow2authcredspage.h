@@ -36,7 +36,7 @@ public:
     [[nodiscard]] bool isComplete() const override;
 
 public Q_SLOTS:
-    void slotFlow2AuthResult(Flow2Auth::Result, const QString &errorString, const QString &user, const QString &appPassword);
+    void slotFlow2AuthResult(OCC::Flow2Auth::Result, const QString &errorString, const QString &user, const QString &appPassword);
     void slotPollNow();
     void slotStyleChanged();
 

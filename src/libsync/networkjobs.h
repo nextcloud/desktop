@@ -416,7 +416,7 @@ public:
 
 signals:
     void etagRetrieved(const QByteArray &etag, const QDateTime &time);
-    void finishedWithResult(const HttpResult<QByteArray> &etag);
+    void finishedWithResult(const OCC::HttpResult<QByteArray> &etag);
 
 private slots:
     bool finished() override;

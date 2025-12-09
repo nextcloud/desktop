@@ -38,7 +38,7 @@ public:
     [[nodiscard]] QString errorString() const;
 
 signals:
-    void finished(int status, EncryptionStatusEnums::ItemEncryptionStatus encryptionStatus);
+    void finished(int status, OCC::EncryptionStatusEnums::ItemEncryptionStatus encryptionStatus);
 
 private:
     void uploadMetadata();
