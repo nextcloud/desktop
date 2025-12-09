@@ -1223,7 +1223,7 @@ void FakeQNAM::setServerVersion(const QString &version)
     _serverVersion = version;
 }
 
-FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo, const QString &remotePath)
+FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo, const QString &remotePath, const bool performInitialSync)
     : _tempDirLocalPath(QFileInfo(_tempDir.path()).canonicalFilePath())
     , _localModifier(_tempDirLocalPath)
 {
@@ -1263,10 +1263,12 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInf
     // Ensure we have a valid VfsOff instance "running"
     switchToVfs(_syncEngine->syncOptions()._vfs);
 
-    // A new folder will update the local file state database on first sync.
-    // To have a state matching what users will encounter, we have to a sync
-    // using an identical local/remote file tree first.
-    ENFORCE(syncOnce());
+    if (performInitialSync) {
+        // A new folder will update the local file state database on first sync.
+        // To have a state matching what users will encounter, we have to a sync
+        // using an identical local/remote file tree first.
+        ENFORCE(syncOnce());
+    }
 }
 
 void FakeFolder::switchToVfs(QSharedPointer<OCC::Vfs> vfs)

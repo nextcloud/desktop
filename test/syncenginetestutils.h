@@ -604,7 +604,7 @@ class FakeFolder
     QString _serverVersion = QStringLiteral("10.0.0");
 
 public:
-    FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo = {}, const QString &remotePath = {});
+    FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo = {}, const QString &remotePath = {}, const bool performInitialSync = true);
 
     void switchToVfs(QSharedPointer<OCC::Vfs> vfs);
 
