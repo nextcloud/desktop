@@ -101,6 +101,11 @@ public slots:
 
     void setForceLegacyImport(const bool forceLegacyImport);
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    void setFileProviderDomainIdentifier(const QString &accountUserIdAtHost, const QString &identifier);
+    [[nodiscard]] AccountStatePtr accountFromFileProviderDomainIdentifier(const QString &identifier) const;
+#endif
+
 signals:
     void accountAdded(OCC::AccountState *account);
     void accountRemoved(OCC::AccountState *account);

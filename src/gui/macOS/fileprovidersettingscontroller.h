@@ -16,6 +16,9 @@ class UserInfo;
 
 namespace Mac {
 
+/**
+ * @brief Dedicated type to manage account configuration related to macOS file provider domains.
+ */
 class FileProviderSettingsController : public QObject
 {
     Q_OBJECT
@@ -28,6 +31,7 @@ public:
                                                    const QQuickWidget::ResizeMode resizeMode = QQuickWidget::SizeRootObjectToView);
 
     [[nodiscard]] QStringList vfsEnabledAccounts() const;
+    void migrateEnabledAccountsFromUserDefaults();
     [[nodiscard]] Q_INVOKABLE bool vfsEnabledForAccount(const QString &userIdAtHost) const;
     [[nodiscard]] Q_INVOKABLE bool trashDeletionEnabledForAccount(const QString &userIdAtHost) const;
     [[nodiscard]] Q_INVOKABLE bool trashDeletionSetForAccount(const QString &userIdAtHost) const;
@@ -44,7 +48,10 @@ signals:
 private:
     explicit FileProviderSettingsController(QObject *parent = nullptr);
 
+    [[nodiscard]] QString fileProviderDomainIdentifierForAccount(const QString &userIdAtHost) const;
+
     class MacImplementation;
+    friend class MacImplementation;
     MacImplementation *d;
 
     QHash<QString, UserInfo*> _userInfos;

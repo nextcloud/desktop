@@ -53,7 +53,7 @@ void FileProviderXPC::authenticateFileProviderDomains()
 
 void FileProviderXPC::authenticateFileProviderDomain(const QString &fileProviderDomainIdentifier) const
 {
-    const auto accountState = FileProviderDomainManager::accountStateFromFileProviderDomainIdentifier(fileProviderDomainIdentifier);
+    const auto accountState = AccountManager::instance()->accountFromFileProviderDomainIdentifier(fileProviderDomainIdentifier);
 
     if (!accountState) {
         qCWarning(lcFileProviderXPC) << "Account state is null for file provider domain to authenticate"
@@ -160,8 +160,14 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
                                          << fileProviderDomainIdentifier
                                          << "going to attempt reconfiguring interface";
             const auto ncDomainManager = FileProvider::instance()->domainManager();
-            const auto accountState = ncDomainManager->accountStateFromFileProviderDomainIdentifier(fileProviderDomainIdentifier);
-            const auto domain = (NSFileProviderDomain *)(ncDomainManager->domainForAccount(accountState.get()));
+            const auto accountState = AccountManager::instance()->accountFromFileProviderDomainIdentifier(fileProviderDomainIdentifier);
+
+            if (!accountState || !accountState->account()) {
+                qCWarning(lcFileProviderXPC) << "Could not get account for domain" << fileProviderDomainIdentifier << "during reconfigure.";
+                return response;
+            }
+
+            const auto domain = (NSFileProviderDomain *)(ncDomainManager->domainForAccount(accountState->account().data()));
             const auto manager = [NSFileProviderManager managerForDomain:domain];
             const auto fpServices = FileProviderXPCUtils::getFileProviderServices(@[manager]);
             const auto connections = FileProviderXPCUtils::connectToFileProviderServices(fpServices);
