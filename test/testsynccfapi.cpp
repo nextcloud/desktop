@@ -1641,6 +1641,65 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(completeSpy.size(), 0);
     }
+
+    void moveItemsFromClientShouldBeMoveOnServer()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        setupVfs(fakeFolder);
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+        const auto cleanup = [&]() {
+            completeSpy.clear();
+        };
+
+        fakeFolder.remoteModifier().mkdir("zdirectory");
+        fakeFolder.remoteModifier().mkdir("zdirectory/zsubdir");
+        fakeFolder.remoteModifier().insert("fileFromRoot.txt");
+        fakeFolder.remoteModifier().insert("zdirectory/afileFromDirectory.txt");
+        fakeFolder.remoteModifier().insert("zdirectory/zsubdir/afileFromSubdir.txt");
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(completeSpy.size(), 2);
+        QVERIFY(itemInstruction(completeSpy, "zdirectory", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "fileFromRoot.txt", CSYNC_INSTRUCTION_NEW));
+        cleanup();
+
+        OCC::showInFileManager(fakeFolder.localPath() + "zdirectory");
+
+        QTest::qWait(5000);
+
+        OCC::showInFileManager(fakeFolder.localPath() + "zdirectory");
+
+        QTest::qWait(5000);
+
+        OCC::showInFileManager(fakeFolder.localPath() + "zdirectory/zsubdir");
+
+        QTest::qWait(5000);
+
+        const auto afileFromDirectoryInfo = fakeFolder.localModifier().find("zdirectory/afileFromDirectory.txt");
+        QVERIFY(afileFromDirectoryInfo.exists());
+        const auto zsubdirInfo = fakeFolder.localModifier().find("zdirectory/zsubdir");
+        QVERIFY(zsubdirInfo.exists());
+        const auto afileFromSubdirInfo = fakeFolder.localModifier().find("zdirectory/zsubdir/afileFromSubdir.txt");
+        QVERIFY(afileFromSubdirInfo.exists());
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(completeSpy.size(), 0);
+        cleanup();
+
+        fakeFolder.localModifier().rename("fileFromRoot.txt", "zdirectory/zsubdir/fileFromRoot.txt");
+        fakeFolder.localModifier().rename("zdirectory/afileFromDirectory.txt", "afileFromDirectory.txt");
+        fakeFolder.localModifier().rename("zdirectory/zsubdir/afileFromSubdir.txt", "afileFromSubdir.txt");
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(completeSpy.size(), 3);
+
+        QVERIFY(itemInstruction(completeSpy, "zdirectory/zsubdir/fileFromRoot.txt", CSYNC_INSTRUCTION_RENAME));
+        QVERIFY(itemInstruction(completeSpy, "afileFromDirectory.txt", CSYNC_INSTRUCTION_RENAME));
+        QVERIFY(itemInstruction(completeSpy, "afileFromSubdir.txt", CSYNC_INSTRUCTION_RENAME));
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncCfApi)
