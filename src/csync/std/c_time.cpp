@@ -52,7 +52,8 @@ int c_utimes(const QString &uri, const time_t time)
     FILETIME filetime;
     HANDLE hFile = nullptr;
 
-    const auto wuri = reinterpret_cast<const wchar_t *>(OCC::FileSystem::longWinPath(uri).utf16());
+    const auto longPathUri = OCC::FileSystem::longWinPath(uri);
+    const auto wuri = reinterpret_cast<const wchar_t *>(longPathUri.utf16());
 
     UnixTimeToFiletime(time, &filetime);
 
