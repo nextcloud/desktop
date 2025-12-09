@@ -14,6 +14,7 @@
 #include <localdiscoverytracker.h>
 
 using namespace OCC;
+using namespace Qt::StringLiterals;
 
 class TestLocalDiscovery : public QObject
 {
@@ -970,6 +971,72 @@ private slots:
         syncSpy.clear();
         QVERIFY(!fakeFolder.syncOnce());
         QCOMPARE(syncSpy.findItem(fileNameE)->_status, SyncFileItem::Status::Success);
+    }
+
+    void testMissingInodeAndFixThem()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        fakeFolder.remoteModifier().mkdir(u"A"_s);
+        fakeFolder.remoteModifier().mkdir(u"A/B"_s);
+        fakeFolder.remoteModifier().insert(u"textFile.txt"_s);
+        fakeFolder.remoteModifier().insert(u"document.md"_s);
+        fakeFolder.remoteModifier().insert(u"A/B/sub-folder.md"_s);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto documentFileRecord = SyncJournalFileRecord{};
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(u"document.md"_s, &documentFileRecord));
+        QCOMPARE_GT(documentFileRecord._inode, 0);
+        documentFileRecord._inode = 0;
+        QVERIFY(fakeFolder.syncJournal().setFileRecord(documentFileRecord).isValid());
+
+        auto textFileFileRecord = SyncJournalFileRecord{};
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(u"textFile.txt"_s, &textFileFileRecord));
+        QCOMPARE_GT(textFileFileRecord._inode, 0);
+        textFileFileRecord._inode = 0;
+        QVERIFY(fakeFolder.syncJournal().setFileRecord(textFileFileRecord).isValid());
+
+        auto aFolderFileRecord = SyncJournalFileRecord{};
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(u"A"_s, &aFolderFileRecord));
+        QCOMPARE_GT(aFolderFileRecord._inode, 0);
+        aFolderFileRecord._inode = 0;
+        QVERIFY(fakeFolder.syncJournal().setFileRecord(aFolderFileRecord).isValid());
+
+        auto bFolderFileRecord = SyncJournalFileRecord{};
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(u"A/B"_s, &bFolderFileRecord));
+        QCOMPARE_GT(bFolderFileRecord._inode, 0);
+        bFolderFileRecord._inode = 0;
+        QVERIFY(fakeFolder.syncJournal().setFileRecord(bFolderFileRecord).isValid());
+
+        auto subFolderFileRecord = SyncJournalFileRecord{};
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(u"A/B/sub-folder.md"_s, &subFolderFileRecord));
+        QCOMPARE_GT(subFolderFileRecord._inode, 0);
+        subFolderFileRecord._inode = 0;
+        QVERIFY(fakeFolder.syncJournal().setFileRecord(subFolderFileRecord).isValid());
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
+        QVERIFY(fakeFolder.syncOnce());
+
+        documentFileRecord = SyncJournalFileRecord{};
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(u"document.md"_s, &documentFileRecord));
+        QCOMPARE_GT(documentFileRecord._inode, 0);
+
+        textFileFileRecord = SyncJournalFileRecord{};
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(u"textFile.txt"_s, &textFileFileRecord));
+        QCOMPARE_GT(textFileFileRecord._inode, 0);
+
+        aFolderFileRecord = SyncJournalFileRecord{};
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(u"A"_s, &aFolderFileRecord));
+        QCOMPARE_GT(aFolderFileRecord._inode, 0);
+
+        bFolderFileRecord = SyncJournalFileRecord{};
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(u"A/B"_s, &bFolderFileRecord));
+        QCOMPARE_GT(bFolderFileRecord._inode, 0);
+
+        subFolderFileRecord = SyncJournalFileRecord{};
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(u"A/B/sub-folder.md"_s, &subFolderFileRecord));
+        QCOMPARE_GT(subFolderFileRecord._inode, 0);
     }
 };
 
