@@ -101,7 +101,7 @@ void FileProviderXPC::slotAccountStateChanged(const AccountState::State state) c
 {
     const auto slotSender = dynamic_cast<AccountState*>(sender());
     Q_ASSERT(slotSender);
-    const auto extensionAccountId = slotSender->account()->userIdAtHostWithPort();
+    const auto fileProviderDomainId = slotSender->account()->fileProviderDomainIdentifier();
 
     switch(state) {
     case AccountState::Disconnected:
@@ -116,11 +116,11 @@ void FileProviderXPC::slotAccountStateChanged(const AccountState::State state) c
     case AccountState::RedirectDetected:
     case AccountState::NeedToSignTermsOfService:
         // Notify File Provider that it should show the not authenticated message
-        unauthenticateFileProviderDomain(extensionAccountId);
+        unauthenticateFileProviderDomain(fileProviderDomainId);
         break;
     case AccountState::Connected:
         // Provide credentials
-        authenticateFileProviderDomain(extensionAccountId);
+        authenticateFileProviderDomain(fileProviderDomainId);
         break;
     }
 }
