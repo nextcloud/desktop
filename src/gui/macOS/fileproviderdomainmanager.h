@@ -43,10 +43,14 @@ public slots:
      */
     QString addFileProviderDomainForAccount(const OCC::AccountState * const accountState);
 
+    /**
+     * @brief Remove the file provider domain for the given account.
+     */
+    void removeFileProviderDomainForAccount(const OCC::AccountState * const accountState);
+
 private slots:
     void updateFileProviderDomains();
 
-    void removeFileProviderDomainForAccount(const OCC::AccountState * const accountState);
     void disconnectFileProviderDomainForAccount(const OCC::AccountState * const accountState, const QString &reason);
     void reconnectFileProviderDomainForAccount(const OCC::AccountState * const accountState);
 
