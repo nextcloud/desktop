@@ -45,8 +45,9 @@ void FileProviderXPC::connectToFileProviderDomains()
 
 void FileProviderXPC::authenticateFileProviderDomains()
 {
+    qCInfo(lcFileProviderXPC) << "Authenticating file provider domains...";
+
     for (const auto &fileProviderDomainIdentifier : _clientCommServices.keys()) {
-        qCInfo(lcFileProviderXPC) << "Authenticating file provider domains.";
         authenticateFileProviderDomain(fileProviderDomainIdentifier);
     }
 }
@@ -56,8 +57,7 @@ void FileProviderXPC::authenticateFileProviderDomain(const QString &fileProvider
     const auto accountState = AccountManager::instance()->accountFromFileProviderDomainIdentifier(fileProviderDomainIdentifier);
 
     if (!accountState) {
-        qCWarning(lcFileProviderXPC) << "Account state is null for file provider domain to authenticate"
-                                     << fileProviderDomainIdentifier;
+        qCWarning(lcFileProviderXPC) << "Account state is null for file provider domain to authenticate" << fileProviderDomainIdentifier;
         return;
     }
 
