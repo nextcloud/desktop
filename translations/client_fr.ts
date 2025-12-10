@@ -470,7 +470,7 @@ Le compte doit-il être importé ?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="247"/>
-        <location filename="../src/gui/accountmanager.cpp" line="358"/>
+        <location filename="../src/gui/accountmanager.cpp" line="360"/>
         <source>Legacy import</source>
         <translation>Importation de l&apos;héritage</translation>
     </message>
@@ -485,7 +485,7 @@ Le compte doit-il être importé ?</translation>
         <translation>Ignorer</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="359"/>
+        <location filename="../src/gui/accountmanager.cpp" line="361"/>
         <source>Could not import accounts from legacy client configuration.</source>
         <translation>Impossible d&apos;importer des comptes à partir de l&apos;ancienne configuration client.</translation>
     </message>
@@ -1067,71 +1067,71 @@ Vous prenez vos propres risques.</translation>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="178"/>
+        <location filename="../src/gui/application.cpp" line="177"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Des paramètres ont été configurés dans des versions %1 de ce client et utilisent des fonctionnalités non disponibles dans la version actuelle. &lt;br&gt;&lt;br&gt;Continuer impliquera que &lt;b&gt;ces paramètres seront %2&lt;/b&gt;.&lt;br&gt;&lt;br&gt; Le fichier de configuration actuel a été sauvegardé dans &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="184"/>
+        <location filename="../src/gui/application.cpp" line="183"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>ultérieures</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="184"/>
+        <location filename="../src/gui/application.cpp" line="183"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>antérieures</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="185"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>ignoring</source>
         <translation>ignorés</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="185"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>deleting</source>
         <translation>supprimés</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="187"/>
+        <location filename="../src/gui/application.cpp" line="186"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="188"/>
+        <location filename="../src/gui/application.cpp" line="187"/>
         <source>Continue</source>
         <translation>Continuer</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="525"/>
+        <location filename="../src/gui/application.cpp" line="526"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 comptes</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="526"/>
+        <location filename="../src/gui/application.cpp" line="527"/>
         <source>1 account</source>
         <translation>1 compte</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="528"/>
+        <location filename="../src/gui/application.cpp" line="529"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 dossiers</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="529"/>
+        <location filename="../src/gui/application.cpp" line="530"/>
         <source>1 folder</source>
         <translation>1 dossier</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="531"/>
+        <location filename="../src/gui/application.cpp" line="532"/>
         <source>Legacy import</source>
         <translation>Importation héritée</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="532"/>
+        <location filename="../src/gui/application.cpp" line="533"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1139,12 +1139,12 @@ Vous prenez vos propres risques.</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="615"/>
+        <location filename="../src/gui/application.cpp" line="616"/>
         <source>Error accessing the configuration file</source>
         <translation>Erreur lors de l&apos;accès au fichier de configuration</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="616"/>
+        <location filename="../src/gui/application.cpp" line="617"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Une erreur est survenue lors de l&apos;accès au fichier de configuration à %1. Merci de vérifier que le fichier est accessible du compte système.</translation>
     </message>
