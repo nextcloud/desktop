@@ -868,6 +868,20 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
             }
             item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
             item->_direction = SyncFileItem::Down;
+        } else if (serverEntry.requestUpload && !serverEntry.isDirectory && (localEntry.isValid() || _queryLocal == ParentNotChanged)) {
+            // Server requested re-upload of this file. Check if we have a local copy and trigger upload.
+            qCInfo(lcDisco) << "Server requested re-upload for file:" << item->_file;
+            item->_instruction = CSYNC_INSTRUCTION_SYNC;
+            item->_direction = SyncFileItem::Up;
+            if (localEntry.isValid()) {
+                item->_size = localEntry.size;
+                item->_modtime = localEntry.modtime;
+            } else {
+                // If we're in ParentNotChanged mode and don't have localEntry, use db values
+                item->_size = dbEntry._fileSize;
+                item->_modtime = dbEntry._modtime;
+            }
+            _childModified = true;
         } else {
             // if (is virtual mode enabled and folder is encrypted - check if the size is the same as on the server and then - trigger server query
             // to update a placeholder with corrected size (-16 Bytes)
@@ -931,6 +945,17 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
         item->_instruction = CSYNC_INSTRUCTION_IGNORE;
         emit _discoveryData->itemDiscovered(item);
 
+        return;
+    }
+
+    // Check if server requested re-upload and we have a local copy
+    if (serverEntry.requestUpload && !serverEntry.isDirectory && localEntry.isValid()) {
+        qCInfo(lcDisco) << "Server requested re-upload for new file:" << item->_file;
+        item->_instruction = CSYNC_INSTRUCTION_SYNC;
+        item->_direction = SyncFileItem::Up;
+        item->_size = localEntry.size;
+        item->_modtime = localEntry.modtime;
+        processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
         return;
     }
 
