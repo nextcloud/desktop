@@ -177,7 +177,8 @@ ComputeChecksum::ComputeChecksum(QObject *parent)
 
 ComputeChecksum::~ComputeChecksum()
 {
-    _checksumCalculator.reset();
+    // let the checksum calculation complete before deleting the checksumCalculator instance
+    _watcher.waitForFinished();
 }
 
 void ComputeChecksum::setChecksumType(const QByteArray &type)
