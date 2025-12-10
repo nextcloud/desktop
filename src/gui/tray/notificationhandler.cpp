@@ -171,6 +171,15 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
             activity._links.insert(link._primary? 0 : activity._links.size(), link);
         }
 
+        // e.g. announcement
+        if (activity._objectType != "remote_share"_L1 && activity._links.isEmpty()) {
+            ActivityLink link;
+            link._label = tr("Dismiss");
+            link._verb = "DELETE";
+            link._primary = true;
+            activity._links.append(link);
+        }
+
         QUrl url(json.value("link"_L1).toString());
         if (!url.isEmpty()) {
             if (url.host().isEmpty()) {
