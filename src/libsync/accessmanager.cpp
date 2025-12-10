@@ -82,6 +82,9 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
     }
 #endif
 
+    // We handle redirects ourselves
+    newRequest.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::ManualRedirectPolicy);
+
     const auto reply = QNetworkAccessManager::createRequest(op, newRequest, outgoingData);
     HttpLogger::logRequest(reply, op, outgoingData);
     return reply;
