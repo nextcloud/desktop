@@ -404,7 +404,7 @@ index b92cfa08e4..38f3d462ec 100644
              continue;
          }
 diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
-index c3a77451ae..26b3191e96 100644
+index 8b616e30f8..7514e2b420 100644
 --- a/src/gui/CMakeLists.txt
 +++ b/src/gui/CMakeLists.txt
 @@ -3,7 +3,7 @@
@@ -434,7 +434,7 @@ index c3a77451ae..26b3191e96 100644
  if(KF6GuiAddons_FOUND)
    target_link_libraries(nextcloudCore
      PUBLIC
-@@ -756,3 +763,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
+@@ -755,3 +762,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
  endif()
  
  configure_file(configgui.h.in ${CMAKE_CURRENT_BINARY_DIR}/configgui.h)
@@ -482,10 +482,10 @@ index d139565a56..41e2924fce 100644
  #include <QSettings>
  #include <QTimer>
 diff --git a/src/gui/application.cpp b/src/gui/application.cpp
-index a250954dae..6e36ba6465 100644
+index bea238ecc0..4f4bd4c347 100644
 --- a/src/gui/application.cpp
 +++ b/src/gui/application.cpp
-@@ -36,6 +36,7 @@
+@@ -37,6 +37,7 @@
  #include "version.h"
  #include "csync_exclude.h"
  #include "common/vfs.h"
@@ -493,7 +493,7 @@ index a250954dae..6e36ba6465 100644
  
  #include "config.h"
  
-@@ -1025,7 +1026,7 @@ void Application::setupTranslations()
+@@ -1031,7 +1032,7 @@ void Application::setupTranslations()
  {
      qCInfo(lcApplication) << "System UI languages are:" << QLocale::system().uiLanguages();
      const auto enforcedLocale = enforcedLanguage();
@@ -571,7 +571,7 @@ index 3dc10ad198..637b58acf5 100644
          });
          _virtualFilesCheckBox->setChecked(bestAvailableVfsMode() == Vfs::WindowsCfApi);
 diff --git a/src/gui/generalsettings.cpp b/src/gui/generalsettings.cpp
-index d1caae9ac6..eaf5474f4d 100644
+index bc6e01809f..18b831ece7 100644
 --- a/src/gui/generalsettings.cpp
 +++ b/src/gui/generalsettings.cpp
 @@ -44,6 +44,7 @@
@@ -582,7 +582,7 @@ index d1caae9ac6..eaf5474f4d 100644
  #include <KZip>
  #include <chrono>
  
-@@ -197,6 +198,7 @@ bool createDebugArchive(const QString &filename)
+@@ -203,6 +204,7 @@ bool createDebugArchive(const QString &filename)
  }
  
  }
@@ -590,7 +590,7 @@ index d1caae9ac6..eaf5474f4d 100644
  
  namespace OCC {
  
-@@ -290,7 +292,11 @@ GeneralSettings::GeneralSettings(QWidget *parent)
+@@ -296,7 +298,11 @@ GeneralSettings::GeneralSettings(QWidget *parent)
      _ui->monoIconsCheckBox->setVisible(Theme::instance()->monoIconsAvailable());
  
      connect(_ui->ignoredFilesButton, &QAbstractButton::clicked, this, &GeneralSettings::slotIgnoreFilesEditor);
@@ -602,7 +602,7 @@ index d1caae9ac6..eaf5474f4d 100644
  
      // accountAdded means the wizard was finished and the wizard might change some options.
      connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
-@@ -654,6 +660,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
+@@ -660,6 +666,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
      }
  }
  
@@ -610,7 +610,7 @@ index d1caae9ac6..eaf5474f4d 100644
  void GeneralSettings::slotCreateDebugArchive()
  {
      const auto filename = QFileDialog::getSaveFileName(
-@@ -675,6 +682,7 @@ void GeneralSettings::slotCreateDebugArchive()
+@@ -681,6 +688,7 @@ void GeneralSettings::slotCreateDebugArchive()
          );
      }
  }
@@ -633,7 +633,7 @@ index b62a7b3c07..85de6f00a1 100644
      void slotShowLegalNotice();
      void slotRemotePollIntervalChanged(int seconds);
 diff --git a/src/gui/owncloudsetupwizard.cpp b/src/gui/owncloudsetupwizard.cpp
-index 9326713d4c..888b10c525 100644
+index 8fe46dca5d..83a5810d95 100644
 --- a/src/gui/owncloudsetupwizard.cpp
 +++ b/src/gui/owncloudsetupwizard.cpp
 @@ -9,6 +9,7 @@
@@ -666,10 +666,10 @@ index 8f7314d96e..d9ad7ef190 100644
  #include <QUrl>
  #include <QJsonDocument>
 diff --git a/src/gui/socketapi/socketapi.cpp b/src/gui/socketapi/socketapi.cpp
-index 78cbf4706e..85d8bd1d0b 100644
+index 3ffbfd377b..1a4eb9d454 100644
 --- a/src/gui/socketapi/socketapi.cpp
 +++ b/src/gui/socketapi/socketapi.cpp
-@@ -19,6 +19,7 @@
+@@ -18,6 +18,7 @@
  #include "encryptfolderjob.h"
  #include "theme.h"
  #include "common/syncjournalfilerecord.h"
@@ -948,7 +948,7 @@ index b65a604b72..b15ac6c1e2 100644
  #include <QTimer>
  #include <QJsonDocument>
 diff --git a/src/libsync/CMakeLists.txt b/src/libsync/CMakeLists.txt
-index 5820fc0c8a..a70abc9c8d 100644
+index 5829eabdcf..329d5e34e8 100644
 --- a/src/libsync/CMakeLists.txt
 +++ b/src/libsync/CMakeLists.txt
 @@ -2,7 +2,7 @@
@@ -960,7 +960,7 @@ index 5820fc0c8a..a70abc9c8d 100644
  include(DefinePlatformDefaults)
  
  set(CMAKE_AUTOMOC TRUE)
-@@ -162,6 +162,8 @@ set(libsync_SRCS
+@@ -164,6 +164,8 @@ set(libsync_SRCS
      creds/keychainchunk.cpp
      caseclashconflictsolver.h
      caseclashconflictsolver.cpp
@@ -969,7 +969,7 @@ index 5820fc0c8a..a70abc9c8d 100644
  )
  
  if (WIN32)
-@@ -228,10 +230,15 @@ target_link_libraries(nextcloudsync
+@@ -230,10 +232,15 @@ target_link_libraries(nextcloudsync
    Qt::Gui
    Qt::Svg
    Qt::Widgets
@@ -987,10 +987,10 @@ index 5820fc0c8a..a70abc9c8d 100644
      PRIVATE
          cxx_std_17
 diff --git a/src/libsync/account.cpp b/src/libsync/account.cpp
-index 159375d9fa..77ee9b3e33 100644
+index 9e49f1d5d9..dc1ba7b579 100644
 --- a/src/libsync/account.cpp
 +++ b/src/libsync/account.cpp
-@@ -23,6 +23,7 @@
+@@ -24,6 +24,7 @@
  
  #include "common/syncjournaldb.h"
  #include "common/asserts.h"
@@ -998,7 +998,7 @@ index 159375d9fa..77ee9b3e33 100644
  #include "clientsideencryption.h"
  #include "ocsuserstatusconnector.h"
  
-@@ -1254,7 +1255,8 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
+@@ -1255,7 +1256,8 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
                                            serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
                                            newEntry);
  
@@ -1077,7 +1077,7 @@ index 9ce1b567fa..ef19a95180 100644
      return decryptedAndUnGzipped;
  }
 diff --git a/src/libsync/discovery.cpp b/src/libsync/discovery.cpp
-index dfc9a1cdbe..d3bab6871b 100644
+index 66423a3086..f0445bea4d 100644
 --- a/src/libsync/discovery.cpp
 +++ b/src/libsync/discovery.cpp
 @@ -23,6 +23,7 @@
@@ -1101,7 +1101,7 @@ index 05f72b38c2..f8c6cd5cde 100644
  #include <csync_exclude.h>
  #include "vio/csync_vio_local.h"
 diff --git a/src/libsync/filesystem.cpp b/src/libsync/filesystem.cpp
-index 6c6c11ed0a..27b0bb5408 100644
+index 25a72f7f13..2818dac61e 100644
 --- a/src/libsync/filesystem.cpp
 +++ b/src/libsync/filesystem.cpp
 @@ -7,6 +7,7 @@
@@ -1533,6 +1533,19 @@ index b45cf49114..060f9aca0b 100644
  #include "folder.h"
  
  #include "account.h"
+diff --git a/test/testlocaldiscovery.cpp b/test/testlocaldiscovery.cpp
+index e5e2a943dc..6b02d0e8b7 100644
+--- a/test/testlocaldiscovery.cpp
++++ b/test/testlocaldiscovery.cpp
+@@ -13,6 +13,8 @@
+ #include <syncengine.h>
+ #include <localdiscoverytracker.h>
+ 
++#include "common/qtcompat.h"
++
+ using namespace OCC;
+ using namespace Qt::StringLiterals;
+ 
 diff --git a/test/testnextcloudpropagator.cpp b/test/testnextcloudpropagator.cpp
 index 8a3797d783..d748391643 100644
 --- a/test/testnextcloudpropagator.cpp
