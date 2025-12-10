@@ -225,6 +225,20 @@ private slots:
 #endif
     }
 
+#ifdef Q_OS_LINUX
+    void testDeletingComputeChecksumBeforeCalculationCompletionDoesNotCrash()
+    {
+        // Running this multiple times in a loop makes it easier to run into a crash
+        for (auto i = 0; i < 4096; i++) {
+            auto computeChecksum = new ComputeChecksum();
+            computeChecksum->setChecksumType("MD5");
+            computeChecksum->start("/dev/zero");
+            delete computeChecksum;
+        }
+
+        QVERIFY(true); // no crash occurred
+    }
+#endif
 
     void cleanupTestCase() {
     }
