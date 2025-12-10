@@ -1611,38 +1611,23 @@ private slots:
         QCOMPARE(completeSpy.size(), 9);
         QVERIFY(itemInstruction(completeSpy, "rootfile1", CSYNC_INSTRUCTION_NEW));
         QVERIFY(itemInstruction(completeSpy, "first folder", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "first folder/file1", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "first folder/file2", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "first folder/file3", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "first folder/second folder", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "first folder/second folder/second file1", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "first folder/second folder/second file2", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "first folder/second folder/second file3", CSYNC_INSTRUCTION_NEW));
 
         cleanup();
 
-        OCC::showInFileManager(fakeFolder.localPath() + "first folder");
-
-        QTest::qWait(5000);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(completeSpy.size(), 0);
+        cleanup();
 
         QVERIFY(fakeFolder.syncOnce());
-
-        OCC::showInFileManager(fakeFolder.localPath() + "first folder");
-
-        QTest::qWait(5000);
-
-        const auto file3Info = fakeFolder.localModifier().find("first folder/file3");
-        QVERIFY(file3Info.exists());
-        const auto secondFolderInfo = fakeFolder.localModifier().find("first folder/second folder");
-        QVERIFY(secondFolderInfo.exists());
-        const auto wrongFirstFolderInfo = fakeFolder.localModifier().find("first folder/first folder");
-        QVERIFY(!wrongFirstFolderInfo.exists());
-
-        QVERIFY(fakeFolder.syncOnce());
-
-        OCC::showInFileManager(fakeFolder.localPath() + "first folder/second folder");
-
-        QTest::qWait(5000);
-
-        const auto secondFile3Info = fakeFolder.localModifier().find("first folder/second folder/second file3");
-        QVERIFY(secondFile3Info.exists());
-        const auto wrongSecondFolderInfo = fakeFolder.localModifier().find("first folder/second folder/second folder");
-        QVERIFY(!wrongSecondFolderInfo.exists());
-
-        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(completeSpy.size(), 0);
+        cleanup();
     }
 
     void switchVfsOffWithOnDemandFolder()
@@ -1727,29 +1712,13 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-        QCOMPARE(completeSpy.size(), 2);
+        QCOMPARE(completeSpy.size(), 5);
         QVERIFY(itemInstruction(completeSpy, "zdirectory", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "zdirectory/zsubdir", CSYNC_INSTRUCTION_NEW));
         QVERIFY(itemInstruction(completeSpy, "fileFromRoot.txt", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "zdirectory/afileFromDirectory.txt", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "zdirectory/zsubdir/afileFromSubdir.txt", CSYNC_INSTRUCTION_NEW));
         cleanup();
-
-        OCC::showInFileManager(fakeFolder.localPath() + "zdirectory");
-
-        QTest::qWait(5000);
-
-        OCC::showInFileManager(fakeFolder.localPath() + "zdirectory");
-
-        QTest::qWait(5000);
-
-        OCC::showInFileManager(fakeFolder.localPath() + "zdirectory/zsubdir");
-
-        QTest::qWait(5000);
-
-        const auto afileFromDirectoryInfo = fakeFolder.localModifier().find("zdirectory/afileFromDirectory.txt");
-        QVERIFY(afileFromDirectoryInfo.exists());
-        const auto zsubdirInfo = fakeFolder.localModifier().find("zdirectory/zsubdir");
-        QVERIFY(zsubdirInfo.exists());
-        const auto afileFromSubdirInfo = fakeFolder.localModifier().find("zdirectory/zsubdir/afileFromSubdir.txt");
-        QVERIFY(afileFromSubdirInfo.exists());
 
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(completeSpy.size(), 0);
