@@ -85,7 +85,7 @@ public:
 
         const auto existingDomainId = q->fileProviderDomainIdentifierForAccount(userIdAtHost);
 
-        if (existingDomainId.isEmpty() == false) {
+        if (setEnabled && existingDomainId.isEmpty() == false) {
             qCWarning(lcFileProviderSettingsController) << "Cancelling because account already has a domain identifier!" << userIdAtHost;
             return VfsAccountsAction::VfsAccountsNoAction;
         }
@@ -94,15 +94,17 @@ public:
         const auto accountState = accountManager->accountFromUserId(userIdAtHost);
 
         if (!accountState) {
-            qCWarning(lcFileProviderSettingsController) << "Unable to set file provider enablement, account not found!"
-                                                        << userIdAtHost;
+            qCWarning(lcFileProviderSettingsController) << "Unable to set file provider enablement, account not found!" << userIdAtHost;
             return VfsAccountsAction::VfsAccountsNoAction;
         }
 
-        const auto account = accountState->account();
-
-        auto const identifier = Mac::FileProvider::instance()->domainManager()->addFileProviderDomainForAccount(accountState.data());
-        accountManager->setFileProviderDomainIdentifier(userIdAtHost, identifier);
+        if (setEnabled) {
+            auto const identifier = Mac::FileProvider::instance()->domainManager()->addFileProviderDomainForAccount(accountState.data());
+            accountManager->setFileProviderDomainIdentifier(userIdAtHost, identifier);
+        } else {
+            Mac::FileProvider::instance()->domainManager()->removeFileProviderDomainForAccount(accountState.data());
+            accountManager->setFileProviderDomainIdentifier(userIdAtHost, "");
+        }
 
         return VfsAccountsAction::VfsAccountsEnabledChanged;
     }
@@ -136,6 +138,9 @@ public:
             auto const identifier = Mac::FileProvider::instance()->domainManager()->addFileProviderDomainForAccount(accountState.data());
             accManager->setFileProviderDomainIdentifier(accountIdentifier, identifier);
         }
+
+        // Cleanup migrated legacy preference to avoid reprocessing
+        [userDefaults removeObjectForKey:accountsKey];
     }
 
 private:
