@@ -5,6 +5,7 @@
  */
 
 #include "config.h"
+#include "libsync/creds/abstractcredentials.h"
 #include "owncloudpropagator_p.h"
 #include "propagatedownload.h"
 #include "networkjobs.h"
@@ -122,6 +123,7 @@ void GETFileJob::start()
         sendRequest("GET", makeDavUrl(path()), req);
     } else {
         // Use direct URL
+        req.setAttribute(AbstractCredentials::DontAddCredentialsAttribute, true);
         sendRequest("GET", _directDownloadUrl, req);
     }
 

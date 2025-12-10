@@ -82,7 +82,9 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
     }
 #endif
 
-    // We handle redirects ourselves
+    // We handle redirects ourselves in AbstractNetworkJob::slotFinished
+    // Qt's automatic handling of redirects will transmit all set headers from the original
+    // request again, including e.g. `Authorization`.
     newRequest.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::ManualRedirectPolicy);
 
     const auto reply = QNetworkAccessManager::createRequest(op, newRequest, outgoingData);
