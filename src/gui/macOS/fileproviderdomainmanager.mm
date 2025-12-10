@@ -135,7 +135,7 @@ public:
      */
     void reconnect(NSFileProviderDomain *domain)
     {
-        qCInfo(lcMacFileProviderDomainManager) << "Attempt to reconnect domain:"
+        qCInfo(lcMacFileProviderDomainManager) << "Attempt to reconnect domain"
                                                << domain.identifier;
 
         NSFileProviderManager * const manager = [NSFileProviderManager managerForDomain:domain];
@@ -153,7 +153,7 @@ public:
                 return;
             }
 
-            qCInfo(lcMacFileProviderDomainManager) << "Successfully reconnected domain:"
+            qCInfo(lcMacFileProviderDomainManager) << "Successfully reconnected domain"
                                                    << domain.identifier;
 
             dispatch_group_leave(dispatchGroup);
@@ -170,7 +170,7 @@ public:
      */
     void removeDomain(NSFileProviderDomain *domain)
     {
-        qCInfo(lcMacFileProviderDomainManager) << "Removing domain:"
+        qCInfo(lcMacFileProviderDomainManager) << "Removing domain"
                                                << domain.identifier;
 
         dispatch_group_t dispatchGroup = dispatch_group_create();
@@ -180,7 +180,7 @@ public:
             (void)dataURL; // dataURL is currently unused
 
             if (error) {
-                qCWarning(lcMacFileProviderDomainManager) << "Error removing domain: "
+                qCWarning(lcMacFileProviderDomainManager) << "Error removing domain"
                                                           << error.code
                                                           << error.localizedDescription;
                 dispatch_group_leave(dispatchGroup);
@@ -188,7 +188,7 @@ public:
             }
 
             removeFileProviderDomainData(domain.identifier);
-            qCInfo(lcMacFileProviderDomainManager) << "Removed domain:"
+            qCInfo(lcMacFileProviderDomainManager) << "Removed domain"
                                                    << domain.identifier;
             dispatch_group_leave(dispatchGroup);
         }];
@@ -205,7 +205,7 @@ public:
 
         [manager signalEnumeratorForContainerItemIdentifier:NSFileProviderWorkingSetContainerItemIdentifier completionHandler:^(NSError * const error) {
             if (error != nil) {
-                qCWarning(lcMacFileProviderDomainManager) << "Error signalling:" << error.localizedDescription;
+                qCWarning(lcMacFileProviderDomainManager) << "Error signalling" << error.localizedDescription;
                 dispatch_group_leave(dispatchGroup);
                 return;
             }
@@ -261,7 +261,10 @@ public:
             const auto identifier = QString::fromNSString(domain.identifier);
             
             if (!configuredDomainIdentifiers.contains(identifier)) {
+                qCInfo(lcMacFileProviderDomainManager) << "Identified orphaned domain" << domain.identifier;
                 removeDomain(domain);
+            } else {
+                qCInfo(lcMacFileProviderDomainManager) << "Identified domain belonging to an account" << domain.identifier;
             }
         }
 
@@ -303,6 +306,12 @@ public:
                 if (!newIdentifier.isEmpty()) {
                     AccountManager::instance()->setFileProviderDomainIdentifier(account->userIdAtHostWithPort(), newIdentifier);
                 }
+            } else {
+                qCInfo(lcMacFileProviderDomainManager) << "Domain"
+                                                       << identifier
+                                                       << "for account"
+                                                       << account->userIdAtHostWithPort()
+                                                       << "is still there.";
             }
         }
 
