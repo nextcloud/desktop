@@ -171,7 +171,9 @@ public:
         dispatch_group_t dispatchGroup = dispatch_group_create();
         dispatch_group_enter(dispatchGroup);
 
-        [NSFileProviderManager removeDomain:domain completionHandler:^(NSError *error) {
+        [NSFileProviderManager removeDomain:domain mode:NSFileProviderDomainRemovalModeRemoveAll completionHandler:^(NSURL * const dataURL, NSError * const error) {
+            (void)dataURL; // dataURL is currently unused
+
             if (error) {
                 qCWarning(lcMacFileProviderDomainManager) << "Error removing domain: "
                                                           << error.code
