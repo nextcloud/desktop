@@ -112,11 +112,16 @@ public:
                 return;
             }
 
-            for (NSFileProviderDomain * const domain in domains) {
-                qCInfo(lcMacFileProviderDomainManager) << "Found domain:" << domain.identifier;
+            if (domains.count > 0) {
+                for (NSFileProviderDomain * const domain in domains) {
+                    qCInfo(lcMacFileProviderDomainManager) << "Found domain:" << domain.identifier;
+                }
+            } else {
+                qCInfo(lcMacFileProviderDomainManager) << "Found no existing domains.";
             }
-            
-            returnValue = domains;
+
+            // Ensure the array (and contained domains) stay retained after the completion block returns.
+            returnValue = [domains copy];
             dispatch_group_leave(dispatchGroup);
         }];
 
