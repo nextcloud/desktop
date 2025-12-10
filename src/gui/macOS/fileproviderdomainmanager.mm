@@ -112,7 +112,10 @@ public:
                 return;
             }
 
-            qCInfo(lcMacFileProviderDomainManager) << "Found existing domains:" << domains.count;
+            for (NSFileProviderDomain * const domain in domains) {
+                qCInfo(lcMacFileProviderDomainManager) << "Found domain:" << domain.identifier;
+            }
+            
             returnValue = domains;
             dispatch_group_leave(dispatchGroup);
         }];
@@ -251,7 +254,6 @@ public:
             const auto identifier = QString::fromNSString(domain.identifier);
             
             if (!configuredDomainIdentifiers.contains(identifier)) {
-                qCInfo(lcMacFileProviderDomainManager) << "Removing orphaned domain with identifier" << identifier;
                 removeDomain(domain);
             }
         }
