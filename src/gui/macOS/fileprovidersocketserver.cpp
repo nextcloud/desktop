@@ -21,8 +21,12 @@ Q_LOGGING_CATEGORY(lcFileProviderSocketServer, "nextcloud.gui.macos.fileprovider
 FileProviderSocketServer::FileProviderSocketServer(QObject *parent)
     : QObject{parent}
 {
+    qCDebug(lcFileProviderSocketServer) << "Initializing...";
+
     _socketPath = fileProviderSocketPath();
     startListening();
+
+    qCDebug(lcFileProviderSocketServer) << "Initialized.";
 }
 
 void FileProviderSocketServer::startListening()
