@@ -9,6 +9,8 @@
 #include "activitydata.h"
 #include "folderman.h"
 
+using namespace Qt::StringLiterals;
+
 namespace {
 QUrl stringToUrl(const QUrl &accountUrl, const QString &link) {
     auto url = QUrl::fromUserInput(link);
@@ -60,36 +62,36 @@ Activity::Identifier Activity::ident() const
 ActivityLink ActivityLink::createFomJsonObject(const QJsonObject &obj)
 {
     ActivityLink activityLink;
-    activityLink._label = QUrl::fromPercentEncoding(obj.value(QStringLiteral("label")).toString().toUtf8());
-    activityLink._link = obj.value(QStringLiteral("link")).toString();
-    activityLink._verb = obj.value(QStringLiteral("type")).toString().toUtf8();
-    activityLink._primary = obj.value(QStringLiteral("primary")).toBool();
+    activityLink._label = QUrl::fromPercentEncoding(obj.value("label"_L1).toString().toUtf8());
+    activityLink._link = obj.value("link"_L1).toString();
+    activityLink._verb = obj.value("type"_L1).toString().toUtf8();
+    activityLink._primary = obj.value("primary"_L1).toBool();
 
     return activityLink;
 }
 
 OCC::Activity Activity::fromActivityJson(const QJsonObject &json, const AccountPtr account)
 {
-    const auto activityUser = json.value(QStringLiteral("user")).toString();
+    const auto activityUser = json.value("user"_L1).toString();
 
     Activity activity;
     activity._type = Activity::ActivityType;
-    activity._objectType = json.value(QStringLiteral("object_type")).toString();
-    activity._objectId = json.value(QStringLiteral("object_id")).toInt();
-    activity._objectName = json.value(QStringLiteral("object_name")).toString();
-    activity._id = json.value(QStringLiteral("activity_id")).toInteger();
-    activity._fileAction = json.value(QStringLiteral("type")).toString();
+    activity._objectType = json.value("object_type"_L1).toString();
+    activity._objectId = json.value("object_id"_L1).toInt();
+    activity._objectName = json.value("object_name"_L1).toString();
+    activity._id = json.value("activity_id"_L1).toInteger();
+    activity._fileAction = json.value("type"_L1).toString();
     activity._accName = account->displayName();
-    activity._subject = json.value(QStringLiteral("subject")).toString();
-    activity._message = json.value(QStringLiteral("message")).toString();
-    activity._file = json.value(QStringLiteral("object_name")).toString();
-    activity._link = stringToUrl(account->url(), json.value(QStringLiteral("link")).toString());
-    activity._dateTime = QDateTime::fromString(json.value(QStringLiteral("datetime")).toString(), Qt::ISODate);
-    activity._icon = json.value(QStringLiteral("icon")).toString();
-    activity._isCurrentUserFileActivity = activity._objectType == QStringLiteral("files") && activityUser == account->davUser();
+    activity._subject = json.value("subject"_L1).toString();
+    activity._message = json.value("message"_L1).toString();
+    activity._file = json.value("object_name"_L1).toString();
+    activity._link = stringToUrl(account->url(), json.value("link"_L1).toString());
+    activity._dateTime = QDateTime::fromString(json.value("datetime"_L1).toString(), Qt::ISODate);
+    activity._icon = json.value("icon"_L1).toString();
+    activity._isCurrentUserFileActivity = activity._objectType == "files"_L1 && activityUser == account->davUser();
     activity._isMultiObjectActivity = json.value("objects").toObject().count() > 1;
 
-    auto richSubjectData = json.value(QStringLiteral("subject_rich")).toArray();
+    auto richSubjectData = json.value("subject_rich"_L1).toArray();
 
     if(richSubjectData.size() > 1) {
         activity._subjectRich = richSubjectData[0].toString();
@@ -100,16 +102,16 @@ OCC::Activity Activity::fromActivityJson(const QJsonObject &json, const AccountP
         for (auto i = parameters.begin(); i != parameters.end(); ++i) {
             const auto parameterJsonObject = i.value().toObject();
 
-            const auto richParamLink = stringToUrl(account->url(), parameterJsonObject.value(QStringLiteral("link")).toString());
+            const auto richParamLink = stringToUrl(account->url(), parameterJsonObject.value("link"_L1).toString());
             activity._subjectRichParameters[i.key()] = QVariant::fromValue(Activity::RichSubjectParameter{
-                parameterJsonObject.value(QStringLiteral("type")).toString(),
-                parameterJsonObject.value(QStringLiteral("id")).toString(),
-                parameterJsonObject.value(QStringLiteral("name")).toString(),
-                parameterJsonObject.contains(QStringLiteral("path")) ? parameterJsonObject.value(QStringLiteral("path")).toString() : QString(),
+                parameterJsonObject.value("type"_L1).toString(),
+                parameterJsonObject.value("id"_L1).toString(),
+                parameterJsonObject.value("name"_L1).toString(),
+                parameterJsonObject.contains("path"_L1) ? parameterJsonObject.value("path"_L1).toString() : QString(),
                 richParamLink,
             });
 
-            if (activity._objectType == QStringLiteral("calendar") && activity._link.isEmpty()) {
+            if (activity._objectType == "calendar"_L1 && activity._link.isEmpty()) {
                 activity._link = richParamLink;
             }
         }
@@ -128,43 +130,43 @@ OCC::Activity Activity::fromActivityJson(const QJsonObject &json, const AccountP
         activity._subjectDisplay = displayString;
     }
 
-    const auto previewsData = json.value(QStringLiteral("previews")).toArray();
+    const auto previewsData = json.value("previews"_L1).toArray();
     const QMimeDatabase mimeDb;
 
     for(const auto &preview : previewsData) {
         const auto jsonPreviewData = preview.toObject();
 
         PreviewData data;
-        data._link = jsonPreviewData.value(QStringLiteral("link")).toString();
-        data._mimeType = jsonPreviewData.value(QStringLiteral("mimeType")).toString();
-        data._fileId = jsonPreviewData.value(QStringLiteral("fileId")).toInt();
-        data._view = jsonPreviewData.value(QStringLiteral("view")).toString();
-        data._filename = jsonPreviewData.value(QStringLiteral("filename")).toString();
+        data._link = jsonPreviewData.value("link"_L1).toString();
+        data._mimeType = jsonPreviewData.value("mimeType"_L1).toString();
+        data._fileId = jsonPreviewData.value("fileId"_L1).toInt();
+        data._view = jsonPreviewData.value("view"_L1).toString();
+        data._filename = jsonPreviewData.value("filename"_L1).toString();
 
         const auto mimeType = mimeDb.mimeTypeForName(data._mimeType);
 
-        if(data._mimeType.contains(QStringLiteral("text/")) || data._mimeType.contains(QStringLiteral("/pdf"))) {
+        if(data._mimeType.contains("text/"_L1) || data._mimeType.contains("/pdf"_L1)) {
             data._source = account->url().toString() + relativeServerFileTypeIconPath(mimeType);
             data._isMimeTypeIcon = true;
         } else {
-            data._source = jsonPreviewData.value(QStringLiteral("source")).toString();
-            data._isMimeTypeIcon = jsonPreviewData.value(QStringLiteral("isMimeTypeIcon")).toBool();
+            data._source = jsonPreviewData.value("source"_L1).toString();
+            data._isMimeTypeIcon = jsonPreviewData.value("isMimeTypeIcon"_L1).toBool();
         }
 
         activity._previews.append(data);
     }
 
     if(!previewsData.isEmpty()) {
-        if(activity._icon.contains(QStringLiteral("add-color.svg"))) {
+        if(activity._icon.contains("add-color.svg"_L1)) {
             activity._icon = "image://svgimage-custom-color/add.svg";
-        } else if(activity._icon.contains(QStringLiteral("delete.svg"))) {
+        } else if(activity._icon.contains("delete.svg"_L1)) {
             activity._icon = "image://svgimage-custom-color/delete.svg";
-        } else if(activity._icon.contains(QStringLiteral("change.svg"))) {
+        } else if(activity._icon.contains("change.svg"_L1)) {
             activity._icon = "image://svgimage-custom-color/change.svg";
         }
     }
 
-    auto actions = json.value("actions").toArray();
+    auto actions = json.value("actions"_L1).toArray();
     for (const auto &action : std::as_const(actions)) {
         activity._links.append(ActivityLink::createFomJsonObject(action.toObject()));
     }

@@ -11,6 +11,8 @@
 #include "networkjobs.h"
 #include "systray.h"
 
+using namespace Qt::StringLiterals;
+
 namespace OCC::Mac {
 
 Q_LOGGING_CATEGORY(lcFileProviderEditLocallyJob, "nextcloud.gui.fileprovidereditlocally", QtInfoMsg)
@@ -34,7 +36,7 @@ void FileProviderEditLocallyJob::start()
         return;
     }
 
-    const auto relPathSplit = _relPath.split(QLatin1Char('/'));
+    const auto relPathSplit = _relPath.split(u'/');
     if (relPathSplit.isEmpty()) {
         showError(tr("Could not find a file for local editing. "
                      "Make sure its path is valid and it is synced locally."), _relPath);
@@ -74,7 +76,7 @@ void FileProviderEditLocallyJob::idGetError(const QNetworkReply * const reply)
 
 void FileProviderEditLocallyJob::idGetFinished(const QVariantMap &data)
 {
-    const auto ocId = data.value("id").toString();
+    const auto ocId = data.value("id"_L1).toString();
     if (ocId.isEmpty()) {
         qCWarning(lcFileProviderEditLocallyJob) << "Could not get file ocId.";
         showError(tr("Could not get file identifier."), tr("The file identifier is empty."));
