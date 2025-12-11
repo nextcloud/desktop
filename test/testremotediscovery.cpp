@@ -221,6 +221,26 @@ private slots:
         QCOMPARE(completeSpy.findItem("unlimited")->_folderQuota.bytesAvailable, -3);
         QCOMPARE(completeSpy.findItem("invalidValue")->_folderQuota.bytesAvailable, -1);
     }
+
+    void testRootFileIdReceived()
+    {
+        // disable FakeFolder's initial sync run to allow for spying on the `rootFileIdReceived` signal
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12(), {}, {}, false };
+
+        QSignalSpy rootFileIdSpy(&fakeFolder.syncEngine(), &SyncEngine::rootFileIdReceived);
+        QVERIFY(fakeFolder.syncOnce());
+
+        // root file id signal should only be emitted once
+        QCOMPARE(rootFileIdSpy.size(), 1);
+        const auto expectedRootFileId = fakeFolder.currentRemoteState().numericFileId();
+        const auto receivedRootFileId = QByteArray::number(rootFileIdSpy.takeFirst().at(0).toLongLong(), 10);
+        QCOMPARE(receivedRootFileId, expectedRootFileId);
+
+        // another sync should not emit the root file id signal again as it's already known
+        rootFileIdSpy.clear();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(rootFileIdSpy.size(), 0);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestRemoteDiscovery)

@@ -59,8 +59,9 @@ inline QString getFilePathFromUrl(const QUrl &url)
 inline QByteArray generateEtag() {
     return QByteArray::number(QDateTime::currentDateTimeUtc().toMSecsSinceEpoch(), 16) + QByteArray::number(OCC::Utility::rand(), 16);
 }
+// generates a value as seen in `oc:id` attributes (file ID + instance ID)
 inline QByteArray generateFileId() {
-    return QByteArray::number(OCC::Utility::rand(), 16);
+    return QByteArray::number(OCC::Utility::rand(), 10) + "oc1x2y3z4w";
 }
 
 class PathComponents : public QStringList {
@@ -199,6 +200,10 @@ public:
 
     [[nodiscard]] QString path() const;
     [[nodiscard]] QString absolutePath() const;
+
+    // value of `oc:fileid` from PROPFIND responses, unlike `oc:id` this does
+    // not include the instance ID (i.e. only the numbers)
+    [[nodiscard]] QByteArray numericFileId() const;
 
     void fixupParentPathRecursively();
 
@@ -599,7 +604,7 @@ class FakeFolder
     QString _serverVersion = QStringLiteral("10.0.0");
 
 public:
-    FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo = {}, const QString &remotePath = {});
+    FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo = {}, const QString &remotePath = {}, const bool performInitialSync = true);
 
     void switchToVfs(QSharedPointer<OCC::Vfs> vfs);
 
