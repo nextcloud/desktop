@@ -432,7 +432,7 @@ private slots:
     void etagRetrieved(const QByteArray &, const QDateTime &tp);
     void etagRetrievedFromSyncEngine(const QByteArray &, const QDateTime &time);
 
-    void rootFileIdReceivedFromSyncEngine(const qint64 fileId);
+    void rootFileIdReceivedFromSyncEngine(qint64 fileId);
 
     void slotEmitFinishedDelayed();
 

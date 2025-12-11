@@ -157,7 +157,7 @@ public slots:
 signals:
     // During update, before reconcile
     void rootEtag(const QByteArray &, const QDateTime &);
-    void rootFileIdReceived(const qint64 fileId);
+    void rootFileIdReceived(qint64 fileId);
 
     // after the above signals. with the items that actually need propagating
     void aboutToPropagate(OCC::SyncFileItemVector &);
@@ -200,7 +200,7 @@ signals:
 private slots:
     void slotFolderDiscovered(bool local, const QString &folder);
     void slotRootEtagReceived(const QByteArray &, const QDateTime &time);
-    void slotRootFileIdReceived(const qint64 fileId);
+    void slotRootFileIdReceived(qint64 fileId);
 
     /** When the discovery phase discovers an item */
     void slotItemDiscovered(const OCC::SyncFileItemPtr &item);
