@@ -4172,43 +4172,43 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Błąd podczas usuwania rekordu pliku %1 z bazy danych</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1567"/>
-        <location filename="../src/libsync/discovery.cpp" line="2040"/>
+        <location filename="../src/libsync/discovery.cpp" line="1575"/>
+        <location filename="../src/libsync/discovery.cpp" line="2048"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Przeniesiono do nieprawidłowego obiektu, przywracanie</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1895"/>
+        <location filename="../src/libsync/discovery.cpp" line="1903"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Nie można zmodyfikować zaszyfrowanego elementu, ponieważ wybrany certyfikat jest nieprawidłowy.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1964"/>
+        <location filename="../src/libsync/discovery.cpp" line="1972"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorowane z powodu czarnej listy &quot;Wybierz co synchronizować&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1998"/>
+        <location filename="../src/libsync/discovery.cpp" line="2006"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Niedozwolone, ponieważ nie masz uprawnień do dodawania podkatalogów do tego katalogu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2004"/>
+        <location filename="../src/libsync/discovery.cpp" line="2012"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Niedozwolone, ponieważ nie masz uprawnień do dodawania plików w tym katalogu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2018"/>
+        <location filename="../src/libsync/discovery.cpp" line="2026"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Wysyłanie niedozwolone, ponieważ plik jest tylko do odczytu na serwerze, przywracanie</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2054"/>
+        <location filename="../src/libsync/discovery.cpp" line="2062"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Brak uprawnień by usunąć, przywracanie</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2225"/>
+        <location filename="../src/libsync/discovery.cpp" line="2233"/>
         <source>Error while reading the database</source>
         <translation>Błąd podczas odczytu bazy danych</translation>
     </message>
@@ -6945,17 +6945,17 @@ Serwer odpowiedział błędem: %2</translation>
 <context>
     <name>ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="258"/>
+        <location filename="../src/common/checksums.cpp" line="259"/>
         <source>The checksum header is malformed.</source>
         <translation>Nagłówek sumy kontrolnej jest nieprawidłowy.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="292"/>
+        <location filename="../src/common/checksums.cpp" line="293"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
         <translation>Nagłówek sumy kontrolnej zawierał nieznany typ sumy kontrolnej &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="297"/>
+        <location filename="../src/common/checksums.cpp" line="298"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
         <translation>Pobrany plik nie odpowiada sumie kontrolnej, zostanie wznowiony. &quot;%1&quot; != &quot;%2&quot;</translation>
     </message>

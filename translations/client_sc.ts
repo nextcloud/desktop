@@ -4152,43 +4152,43 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1567"/>
-        <location filename="../src/libsync/discovery.cpp" line="2040"/>
+        <location filename="../src/libsync/discovery.cpp" line="1575"/>
+        <location filename="../src/libsync/discovery.cpp" line="2048"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Tramudadu a un&apos;indiritzu non bàlidu, riprìstinu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1895"/>
+        <location filename="../src/libsync/discovery.cpp" line="1903"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1964"/>
+        <location filename="../src/libsync/discovery.cpp" line="1972"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignoradu ca in sa lista niedda de is cosas de no sincronizare</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1998"/>
+        <location filename="../src/libsync/discovery.cpp" line="2006"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Non podes ca non tenes su permissu pro agiùnghere sutacartellas a custas cartellas</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2004"/>
+        <location filename="../src/libsync/discovery.cpp" line="2012"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation> Non podes ca non tenes su permissu pro agiùnghere archìvios a custa cartella</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2018"/>
+        <location filename="../src/libsync/discovery.cpp" line="2026"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Non podes carrigare custu archìviu ca in su serbidore podes isceti lèghere, riprìstinu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2054"/>
+        <location filename="../src/libsync/discovery.cpp" line="2062"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Non ddu podes bogare, riprìstinu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2225"/>
+        <location filename="../src/libsync/discovery.cpp" line="2233"/>
         <source>Error while reading the database</source>
         <translation>Errore leghende sa base de datos</translation>
     </message>
@@ -6923,17 +6923,17 @@ Server replied with error: %2</source>
 <context>
     <name>ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="258"/>
+        <location filename="../src/common/checksums.cpp" line="259"/>
         <source>The checksum header is malformed.</source>
         <translation>S&apos;intestatzione de su còdighe de controllu.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="292"/>
+        <location filename="../src/common/checksums.cpp" line="293"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
         <translation>S&apos;intestatzione de controllu cunteniat una genia de còdighe de controllu &quot;%1&quot; disconnotu</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="297"/>
+        <location filename="../src/common/checksums.cpp" line="298"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
         <translation> S&apos;archìviu iscarrigadu non torrat cun su còdighe de controllu, at a èssere ripristinadu. &quot;%1&quot; != &quot;%2&quot;</translation>
     </message>
