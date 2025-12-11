@@ -6,6 +6,7 @@
 #include "fileprovidersettingscontroller.h"
 
 #include <QFileDialog>
+#include <QList>
 #include <QQmlApplicationEngine>
 
 #include "gui/accountmanager.h"
@@ -18,6 +19,7 @@
 
 // Objective-C imports
 #import <Foundation/Foundation.h>
+#import <FileProvider/FileProvider.h>
 // End of Objective-C imports
 
 namespace {
@@ -48,6 +50,12 @@ public:
     explicit MacImplementation(FileProviderSettingsController *const parent)
     {
         q = parent;
+
+        migrateToAppSandbox();
+        removeOrphanedDomains();
+        restoreMissingDomains();
+        Mac::FileProvider::instance()->domainManager()->reconnectAll();
+        Mac::FileProvider::instance()->configureXPC();
     };
 
     ~MacImplementation() override = default;
@@ -99,25 +107,37 @@ public:
         }
 
         if (setEnabled) {
-            auto const identifier = Mac::FileProvider::instance()->domainManager()->addFileProviderDomainForAccount(accountState.data());
+            auto const identifier = Mac::FileProvider::instance()->domainManager()->addDomainForAccount(accountState.data());
             accountManager->setFileProviderDomainIdentifier(userIdAtHost, identifier);
         } else {
-            Mac::FileProvider::instance()->domainManager()->removeFileProviderDomainForAccount(accountState.data());
+            Mac::FileProvider::instance()->domainManager()->removeDomainByAccount(accountState.data());
             accountManager->setFileProviderDomainIdentifier(userIdAtHost, "");
         }
+
+        Mac::FileProvider::instance()->configureXPC();
 
         return VfsAccountsAction::VfsAccountsEnabledChanged;
     }
 
-    void migrateEnabledAccountsFromUserDefaults()
+    void migrateToAppSandbox()
     {
         ConfigFile cfg;
 
         if (cfg.fileProviderDomainsAppSandboxMigrationCompleted()) {
+            qCInfo(lcFileProviderSettingsController) << "Migration app sandbox was already completed earlier.";
             return;
         }
 
-        qCInfo(lcFileProviderSettingsController) << "Migrating VFS enabled accounts from user defaults.";
+        qCInfo(lcFileProviderSettingsController) << "Starting migration to app sandbox...";
+        qCInfo(lcFileProviderSettingsController) << "Removing file provider domain to account mappings from configuration file...";
+
+        cfg.removeFileProviderDomainMapping();
+
+        qCInfo(lcFileProviderSettingsController) << "Removing all existing file provider domains...";
+
+        Mac::FileProvider::instance()->domainManager()->removeAllDomains();
+
+        qCInfo(lcFileProviderSettingsController) << "Migrating user defaults...";
 
         const auto userDefaults = NSUserDefaults.standardUserDefaults;
         NSString *const accountsKey = [NSString stringWithUTF8String:enabledAccountsSettingsKey];
@@ -132,27 +152,114 @@ public:
             const bool accountEnabled = legacyEnabledAccounts && [legacyEnabledAccounts containsObject:accountIdentifier.toNSString()];
 
             if (accountEnabled == false) {
+                qCInfo(lcFileProviderSettingsController) << "Skipping file provider disabled account" << accountIdentifier;
                 continue;
+            } else {
+                qCInfo(lcFileProviderSettingsController) << "Migrating file provider enabled account" << accountIdentifier;
             }
 
-            auto const identifier = Mac::FileProvider::instance()->domainManager()->addFileProviderDomainForAccount(accountState.data());
+            auto const identifier = QUuid::createUuid().toString(QUuid::WithoutBraces);
+            qCInfo(lcFileProviderSettingsController) << "Assigning temporary fake file provider domain identifier" << identifier;
             accManager->setFileProviderDomainIdentifier(accountIdentifier, identifier);
         }
 
         // Cleanup migrated legacy preference to avoid reprocessing
         [userDefaults removeObjectForKey:accountsKey];
+        cfg.setFileProviderDomainsAppSandboxMigrationCompleted(true);
+        qCInfo(lcFileProviderSettingsController) << "App sandbox migration completed.";
+    }
+
+    void restoreMissingDomains()
+    {
+        qCInfo(lcFileProviderSettingsController) << "Restoring missing domains...";
+
+        const auto domains = Mac::FileProvider::instance()->domainManager()->getDomains();
+        const auto accountStates = AccountManager::instance()->accounts();
+        QSet<QString> existingDomainIdentifiers;
+
+        for (NSFileProviderDomain * const domain : domains) {
+            existingDomainIdentifiers.insert(QString::fromNSString(domain.identifier));
+        }
+
+        for (const auto &accountState : accountStates) {
+            const auto account = accountState->account();
+
+            if (!account) {
+                continue;
+            }
+
+            const auto identifier = account->fileProviderDomainIdentifier();
+
+            if (identifier.isEmpty()) {
+                continue;
+            }
+
+            if (existingDomainIdentifiers.contains(identifier) == false) {
+                qCInfo(lcFileProviderSettingsController) << "Restoring missing domain with identifier"
+                                                       << identifier
+                                                       << "for account"
+                                                       << account->userIdAtHostWithPort();
+
+                const auto newIdentifier = Mac::FileProvider::instance()->domainManager()->addDomainForAccount(accountState.data());
+
+                if (newIdentifier.isEmpty() == false) {
+                    AccountManager::instance()->setFileProviderDomainIdentifier(account->userIdAtHostWithPort(), newIdentifier);
+                }
+            } else {
+                qCInfo(lcFileProviderSettingsController) << "Domain"
+                                                       << identifier
+                                                       << "for account"
+                                                       << account->userIdAtHostWithPort()
+                                                       << "is still there.";
+            }
+        }
+
+        qCInfo(lcFileProviderSettingsController) << "Finished restoring missing domains.";
+    }
+
+    void removeOrphanedDomains()
+    {
+        qCInfo(lcFileProviderSettingsController) << "Removing orphaned domains...";
+
+        const auto domains = Mac::FileProvider::instance()->domainManager()->getDomains();
+        QSet<QString> configuredDomainIdentifiers;
+        const auto accountStates = AccountManager::instance()->accounts();
+
+        for (const auto &accountState : accountStates) {
+            const auto account = accountState->account();
+
+            if (!account) {
+                continue;
+            }
+
+            const auto identifier = account->fileProviderDomainIdentifier();
+
+            if (identifier.isEmpty()) {
+                continue;
+            }
+
+            configuredDomainIdentifiers.insert(identifier);
+        }
+
+        for (NSFileProviderDomain * const domain : domains) {
+            const auto identifier = QString::fromNSString(domain.identifier);
+
+            if (!configuredDomainIdentifiers.contains(identifier)) {
+                qCInfo(lcFileProviderSettingsController) << "Identified orphaned domain" << domain.identifier;
+                Mac::FileProvider::instance()->domainManager()->removeDomain(domain);
+            } else {
+                qCInfo(lcFileProviderSettingsController) << "Identified domain belonging to an account" << domain.identifier;
+            }
+        }
+
+        qCInfo(lcFileProviderSettingsController) << "Finished removing orphaned domains.";
     }
 
 private:
     [[maybe_unused]] FileProviderSettingsController *q = nullptr;
 };
 
-void FileProviderSettingsController::migrateEnabledAccountsFromUserDefaults()
-{
-    if (d) {
-        d->migrateEnabledAccountsFromUserDefaults();
-    }
-}
+// MARK: -
 
 FileProviderSettingsController *FileProviderSettingsController::instance()
 {
@@ -201,9 +308,8 @@ bool FileProviderSettingsController::vfsEnabledForAccount(const QString &userIdA
 void FileProviderSettingsController::setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled, const bool showInformationDialog)
 {
     const auto enabledAccountsAction = d->setVfsEnabledForAccount(userIdAtHost, setEnabled);
-    if (enabledAccountsAction == MacImplementation::VfsAccountsAction::VfsAccountsEnabledChanged) {
-        emit vfsEnabledAccountsChanged();
 
+    if (enabledAccountsAction == MacImplementation::VfsAccountsAction::VfsAccountsEnabledChanged) {
         if (setEnabled && showInformationDialog) {
             QMessageBox::information(nullptr, tr("Virtual files enabled"),
                                      tr("Virtual files have been enabled for this account.\n\n"

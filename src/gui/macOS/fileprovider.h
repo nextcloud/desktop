@@ -28,12 +28,10 @@ public:
     static FileProvider *instance();
     ~FileProvider() override;
 
+    void configureXPC();
     [[nodiscard]] FileProviderXPC *xpc() const;
     [[nodiscard]] FileProviderDomainManager *domainManager() const;
     [[nodiscard]] FileProviderSocketServer *socketServer() const;
-
-private slots:
-    void configureXPC();
 
 private:
     std::unique_ptr<FileProviderDomainManager> _domainManager;
