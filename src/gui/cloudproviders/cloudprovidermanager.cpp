@@ -11,6 +11,11 @@
 #include "cloudprovidermanager.h"
 #include "account.h"
 #include "cloudproviderconfig.h"
+#include "configfile.h"
+
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(lcNextcloudCloudProviderIntegration)
 
 CloudProvidersProviderExporter *_providerExporter;
 
@@ -42,6 +47,12 @@ void CloudProviderManager::registerSignals()
 
 CloudProviderManager::CloudProviderManager(QObject *parent) : QObject(parent)
 {
+    OCC::ConfigFile cfg;
+    if (!cfg.showCloudProvidersInFileManager()) {
+        qCInfo(lcNextcloudCloudProviderIntegration) << "CloudProviders disabled by user setting";
+        return;
+    }
+
     _folder_index = 0;
     g_bus_own_name (G_BUS_TYPE_SESSION, LIBCLOUDPROVIDERS_DBUS_BUS_NAME, G_BUS_NAME_OWNER_FLAGS_NONE, nullptr, on_name_acquired, nullptr, this, nullptr);
 }

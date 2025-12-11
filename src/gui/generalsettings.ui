@@ -65,6 +65,16 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="showCloudProvidersCheckBox">
+        <property name="text">
+         <string>Show synchronized folders in file manager sidebar</string>
+        </property>
+        <property name="toolTip">
+         <string>When enabled, synchronized folders will appear in the file manager's sidebar via CloudProviders (Linux only). Requires application restart.</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
