@@ -253,7 +253,12 @@ QJsonObject Flow2Auth::handleResponse(QNetworkReply *reply)
 
     if (reply->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError) {
         QString errorReason;
-        if (const QString errorFromJson = json["error"].toString();
+        const auto httpStatus = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+        if (httpStatus == 503) {
+            errorReason = tr("The server is temporarily unavailable because it is in maintenance mode. "
+                             "Please try again once maintenance has finished.");
+        } else if (const QString errorFromJson = json["error"].toString();
             !errorFromJson.isEmpty()) {
             errorReason = tr("Error returned from the server: <em>%1</em>")
             .arg(errorFromJson.toHtmlEscaped());
