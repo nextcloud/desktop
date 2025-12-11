@@ -14,6 +14,8 @@
 #include <QLoggingCategory>
 #include "csync/vio/csync_vio_local.h"
 
+using namespace Qt::StringLiterals;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFileItem, "nextcloud.sync.fileitem", QtInfoMsg)
@@ -193,31 +195,31 @@ SyncFileItemPtr SyncFileItem::fromProperties(const QString &filePath, const QMap
     item->_isShared = item->_remotePerm.hasPermission(RemotePermissions::IsShared);
     item->_lastShareStateFetchedTimestamp = QDateTime::currentMSecsSinceEpoch();
 
-    item->_e2eEncryptionStatus = (properties.value(QStringLiteral("is-encrypted")) == QStringLiteral("1") ? SyncFileItem::EncryptionStatus::EncryptedMigratedV2_0 : SyncFileItem::EncryptionStatus::NotEncrypted);
+    item->_e2eEncryptionStatus = (properties.value("is-encrypted"_L1) == "1"_L1 ? SyncFileItem::EncryptionStatus::EncryptedMigratedV2_0 : SyncFileItem::EncryptionStatus::NotEncrypted);
     if (item->isEncrypted()) {
         item->_e2eEncryptionServerCapability = item->_e2eEncryptionStatus;
     }
     item->_locked =
-        properties.value(QStringLiteral("lock")) == QStringLiteral("1") ? SyncFileItem::LockStatus::LockedItem : SyncFileItem::LockStatus::UnlockedItem;
-    item->_lockOwnerDisplayName = properties.value(QStringLiteral("lock-owner-displayname"));
-    item->_lockOwnerId = properties.value(QStringLiteral("lock-owner"));
-    item->_lockEditorApp = properties.value(QStringLiteral("lock-owner-editor"));
+        properties.value("lock"_L1) == "1"_L1 ? SyncFileItem::LockStatus::LockedItem : SyncFileItem::LockStatus::UnlockedItem;
+    item->_lockOwnerDisplayName = properties.value("lock-owner-displayname"_L1);
+    item->_lockOwnerId = properties.value("lock-owner"_L1);
+    item->_lockEditorApp = properties.value("lock-owner-editor"_L1);
 
     {
         auto ok = false;
-        const auto intConvertedValue = properties.value(QStringLiteral("lock-owner-type")).toULongLong(&ok);
+        const auto intConvertedValue = properties.value("lock-owner-type"_L1).toULongLong(&ok);
         item->_lockOwnerType = ok ? static_cast<SyncFileItem::LockOwnerType>(intConvertedValue) : SyncFileItem::LockOwnerType::UserLock;
     }
 
     {
         auto ok = false;
-        const auto intConvertedValue = properties.value(QStringLiteral("lock-time")).toULongLong(&ok);
+        const auto intConvertedValue = properties.value("lock-time"_L1).toULongLong(&ok);
         item->_lockTime = ok ? intConvertedValue : 0;
     }
 
     {
         auto ok = false;
-        const auto intConvertedValue = properties.value(QStringLiteral("lock-timeout")).toULongLong(&ok);
+        const auto intConvertedValue = properties.value("lock-timeout"_L1).toULongLong(&ok);
         item->_lockTimeout = ok ? intConvertedValue : 0;
     }
 
