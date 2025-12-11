@@ -51,6 +51,7 @@ private slots:
     void slotToggleCallNotifications(bool);
     void slotToggleQuotaWarningNotifications(bool);
     void slotShowInExplorerNavigationPane(bool);
+    void slotToggleCloudProviders(bool);
     void slotIgnoreFilesEditor();
     void slotCreateDebugArchive();
     void loadMiscSettings();
