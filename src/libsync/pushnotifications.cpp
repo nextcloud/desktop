@@ -225,9 +225,9 @@ void PushNotifications::handleNotifyFileId(const QString &message)
     }
 
     if (const auto jsonArray = jsonDoc.array(); jsonDoc.isArray()) {
-        for (const auto& fileid : jsonArray) {
-            if (const auto fid = fileid.toInteger(); fileid.isDouble()) {
-                fileIds.push_back(fid);
+        for (const auto& jsonFileid : jsonArray) {
+            if (const auto fileid = jsonFileid.toInteger(); jsonFileid.isDouble()) {
+                fileIds.push_back(fileid);
             }
         }
     }
