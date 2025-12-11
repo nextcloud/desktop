@@ -2092,7 +2092,7 @@ void FolderMan::slotProcessFilesPushNotification(Account *account)
             continue;
         }
 
-        qCInfo(lcFolderMan).nospace() << "scheduling sync account=" << account->displayName() << " folder=" << folder->alias() << " reason=notify_file";
+        qCInfo(lcFolderMan).nospace() << "scheduling sync folder=" << folder->alias() << " account=" << account->displayName() << " reason=notify_file";
         scheduleFolder(folder);
     }
 }
@@ -2108,11 +2108,11 @@ void FolderMan::slotProcessFileIdsPushNotification(Account *account, const QList
         }
 
         if (!folder->hasFileIds(fileIds)) {
-            qCDebug(lcFolderMan).nospace() << "no matching file ids, ignoring account=" << account->displayName() << " folder=" << folder->alias();
+            qCDebug(lcFolderMan).nospace() << "no matching file ids, ignoring folder=" << folder->alias() << " account=" << account->displayName();
             continue;
         }
 
-        qCInfo(lcFolderMan).nospace() << "scheduling sync account=" << account->displayName() << " folder=" << folder->alias() << " reason=notify_file_id";
+        qCInfo(lcFolderMan).nospace() << "scheduling sync folder=" << folder->alias() << " account=" << account->displayName() << " reason=notify_file_id";
         scheduleFolder(folder);
     }
 }
