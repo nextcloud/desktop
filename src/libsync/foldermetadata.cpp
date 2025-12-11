@@ -792,7 +792,8 @@ bool FolderMetadata::parseFileDropPart(const QJsonDocument &doc)
             if (userParsedId == _account->davUser()) {
                 const auto fileDropEntryUser = UserWithFileDropEntryAccess{
                     userParsedId,
-                    decryptDataWithPrivateKey(QByteArray::fromBase64(userParsed.value(usersEncryptedFiledropKey).toByteArray()))};
+                    QByteArray::fromBase64(decryptDataWithPrivateKey(userParsed.value(usersEncryptedFiledropKey).toByteArray()))
+                };
                 if (!fileDropEntryUser.isValid()) {
                     qCWarning(lcCseMetadata()) << "Could not parse filedrop data. encryptedFiledropKey decryption failed";
                     _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
