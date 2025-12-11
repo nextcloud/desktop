@@ -533,7 +533,7 @@ QString networkReplyErrorString(const QNetworkReply &reply)
             userFriendlyMessage = QObject::tr("We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administrator can help you.");
             break;
         case 503: //Service Unavailable
-            userFriendlyMessage = QObject::tr("The server is busy right now. Please try syncing again in a few minutes or contact your server administrator if it’s urgent.");
+            userFriendlyMessage = QObject::tr("The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.");
             break;
         case 504: //Gateway Timeout
             userFriendlyMessage = QObject::tr("It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administrator.");
