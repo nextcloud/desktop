@@ -345,6 +345,11 @@ QString FileInfo::absolutePath() const
     return OCC::Utility::trailingSlashPath(parentPath) + name;
 }
 
+QByteArray FileInfo::numericFileId() const
+{
+    return fileId.left(fileId.indexOf("oc1x2y3z4w"));
+}
+
 void FileInfo::fixupParentPathRecursively()
 {
     auto p = path();
@@ -433,7 +438,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
                                                                                                                                 OCC::SharePermissionDelete |
                                                                                                                                 OCC::SharePermissionShare))));
         xml.writeTextElement(ocUri, QStringLiteral("id"), QString::fromUtf8(fileInfo.fileId));
-        xml.writeTextElement(ocUri, QStringLiteral("fileid"), QString::fromUtf8(fileInfo.fileId));
+        xml.writeTextElement(ocUri, QStringLiteral("fileid"), QString::fromUtf8(fileInfo.numericFileId()));
         xml.writeTextElement(ocUri, QStringLiteral("checksums"), QString::fromUtf8(fileInfo.checksums));
         xml.writeTextElement(ocUri, QStringLiteral("privatelink"), href);
         xml.writeTextElement(ncUri, QStringLiteral("lock-owner"), fileInfo.lockOwnerId);
@@ -1218,7 +1223,7 @@ void FakeQNAM::setServerVersion(const QString &version)
     _serverVersion = version;
 }
 
-FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo, const QString &remotePath)
+FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo, const QString &remotePath, const bool performInitialSync)
     : _tempDirLocalPath(QFileInfo(_tempDir.path()).canonicalFilePath())
     , _localModifier(_tempDirLocalPath)
 {
@@ -1258,10 +1263,12 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInf
     // Ensure we have a valid VfsOff instance "running"
     switchToVfs(_syncEngine->syncOptions()._vfs);
 
-    // A new folder will update the local file state database on first sync.
-    // To have a state matching what users will encounter, we have to a sync
-    // using an identical local/remote file tree first.
-    ENFORCE(syncOnce());
+    if (performInitialSync) {
+        // A new folder will update the local file state database on first sync.
+        // To have a state matching what users will encounter, we have to a sync
+        // using an identical local/remote file tree first.
+        ENFORCE(syncOnce());
+    }
 }
 
 void FakeFolder::switchToVfs(QSharedPointer<OCC::Vfs> vfs)

@@ -62,7 +62,9 @@ void Flow2AuthWidget::startAuth(Account *account)
     }
 
     _statusUpdateSkipCount = 0;
-
+    _ui.errorLabel->hide();
+    _ui.errorLabel->clear();
+    
     if(account) {
         _account = account;
 

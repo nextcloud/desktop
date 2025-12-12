@@ -88,7 +88,7 @@ private slots:
         QTest::newRow("429") << 429 << QStringLiteral("You made too many requests. Please wait and try again. If you keep seeing this, your server administrator can help.") << true;
         QTest::newRow("500") << 500 << QStringLiteral("Something went wrong on the server. Please try syncing again later, or contact your server administrator if the issue persists.") << true;
         QTest::newRow("502") << 502 << QStringLiteral("We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administrator can help you.") << true;
-        QTest::newRow("503") << 503 << QStringLiteral("The server is busy right now. Please try syncing again in a few minutes or contact your server administrator if it’s urgent.") << true;
+        QTest::newRow("503") << 503 << QStringLiteral("The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.") << true;
         QTest::newRow("504") << 504 << QStringLiteral("It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administrator.") << true;
         QTest::newRow("505") << 505 << QStringLiteral("The server does not support the version of the connection being used. Contact your server administrator for help.") << true;
         QTest::newRow("507") << 507 << QStringLiteral("The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administrator.") << true;
@@ -220,6 +220,26 @@ private slots:
         QCOMPARE(completeSpy.findItem("intValue")->_folderQuota.bytesAvailable, expectedValue);
         QCOMPARE(completeSpy.findItem("unlimited")->_folderQuota.bytesAvailable, -3);
         QCOMPARE(completeSpy.findItem("invalidValue")->_folderQuota.bytesAvailable, -1);
+    }
+
+    void testRootFileIdReceived()
+    {
+        // disable FakeFolder's initial sync run to allow for spying on the `rootFileIdReceived` signal
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12(), {}, {}, false };
+
+        QSignalSpy rootFileIdSpy(&fakeFolder.syncEngine(), &SyncEngine::rootFileIdReceived);
+        QVERIFY(fakeFolder.syncOnce());
+
+        // root file id signal should only be emitted once
+        QCOMPARE(rootFileIdSpy.size(), 1);
+        const auto expectedRootFileId = fakeFolder.currentRemoteState().numericFileId();
+        const auto receivedRootFileId = QByteArray::number(rootFileIdSpy.takeFirst().at(0).toLongLong(), 10);
+        QCOMPARE(receivedRootFileId, expectedRootFileId);
+
+        // another sync should not emit the root file id signal again as it's already known
+        rootFileIdSpy.clear();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(rootFileIdSpy.size(), 0);
     }
 };
 
