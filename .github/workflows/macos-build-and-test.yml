@@ -59,6 +59,11 @@ jobs:
           key: ${{ runner.os }}-craft-${{ hashFiles(inputs.CRAFT_MASTER_CONFIG) }}
 
       - name: Build nextcloud-client
+        env:
+          CODE_SIGNING_REQUIRED: "NO"
+          CODE_SIGNING_ALLOWED: "NO"
+          CODE_SIGN_IDENTITY: ""
+          CODE_SIGN_STYLE: "Manual"
         run: |
           python "${{ inputs.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ inputs.CRAFT_MASTER_CONFIG }}" --target ${{ inputs.CRAFT_TARGET }} -c --options nextcloud-client.srcDir=${{ github.workspace }} --options nextcloud-client.buildFileProviderModule=${{ inputs.buildFileProviderModule }} nextcloud-client
 
