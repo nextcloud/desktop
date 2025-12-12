@@ -1616,23 +1616,23 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="562"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="572"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="592"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="602"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="623"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="660"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="633"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="670"/>
         <source>Encrypted metadata setup error!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="647"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="657"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1925,60 +1925,61 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="258"/>
-        <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="259"/>
+        <source>The server is temporarily unavailable because it is in maintenance mode. Please try again once maintenance has finished.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="265"/>
-        <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="263"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="271"/>
-        <source>The reply from the server did not contain all expected fields: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
+        <source>An unexpected error occurred when trying to access the server. Please try to access it again later or contact your server administrator if the issue continues.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="268"/>
-        <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="276"/>
+        <source>We couldn&apos;t parse the server response. Please try connecting again later or contact your server administrator if the issue continues.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="280"/>
+        <source>The server did not reply with the expected data. Please try connecting again later or contact your server administrator if the issue continues.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>OCC::Flow2AuthWidget</name>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="89"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="91"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="152"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="154"/>
         <source>Waiting for authorization</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="157"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="159"/>
         <source>Polling for authorization</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="162"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="164"/>
         <source>Starting authorization</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="166"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="168"/>
         <source>Link copied to clipboard.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="213"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="215"/>
         <source>Open Browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="215"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="217"/>
         <source>Copy Link</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1986,30 +1987,30 @@ This can be an issue with your OpenSSL libraries.</source>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="451"/>
+        <location filename="../src/gui/folder.cpp" line="458"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="465"/>
+        <location filename="../src/gui/folder.cpp" line="472"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="472"/>
+        <location filename="../src/gui/folder.cpp" line="479"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="479"/>
+        <location filename="../src/gui/folder.cpp" line="486"/>
         <source>%1 has been moved to %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="449"/>
+        <location filename="../src/gui/folder.cpp" line="456"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation>
             <numerusform>%1 and %n other file have been removed.</numerusform>
@@ -2017,22 +2018,22 @@ This can be an issue with your OpenSSL libraries.</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="189"/>
+        <location filename="../src/gui/folder.cpp" line="190"/>
         <source>Please choose a different location. The folder %1 doesn&apos;t exist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="191"/>
+        <location filename="../src/gui/folder.cpp" line="192"/>
         <source>Please choose a different location. %1 isn&apos;t a valid folder.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="193"/>
+        <location filename="../src/gui/folder.cpp" line="194"/>
         <source>Please choose a different location. %1 isn&apos;t a readable folder.</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="456"/>
+        <location filename="../src/gui/folder.cpp" line="463"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation>
             <numerusform>%1 and %n other file have been added.</numerusform>
@@ -2040,13 +2041,13 @@ This can be an issue with your OpenSSL libraries.</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="458"/>
+        <location filename="../src/gui/folder.cpp" line="465"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="463"/>
+        <location filename="../src/gui/folder.cpp" line="470"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation>
             <numerusform>%1 and %n other file have been updated.</numerusform>
@@ -2054,7 +2055,7 @@ This can be an issue with your OpenSSL libraries.</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="470"/>
+        <location filename="../src/gui/folder.cpp" line="477"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation>
             <numerusform>%1 has been renamed to %2 and %n other file has been renamed.</numerusform>
@@ -2062,7 +2063,7 @@ This can be an issue with your OpenSSL libraries.</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="477"/>
+        <location filename="../src/gui/folder.cpp" line="484"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation>
             <numerusform>%1 has been moved to %2 and %n other file has been moved.</numerusform>
@@ -2070,7 +2071,7 @@ This can be an issue with your OpenSSL libraries.</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="484"/>
+        <location filename="../src/gui/folder.cpp" line="491"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation>
             <numerusform>%1 and %n other file have sync conflicts.</numerusform>
@@ -2078,12 +2079,12 @@ This can be an issue with your OpenSSL libraries.</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="486"/>
+        <location filename="../src/gui/folder.cpp" line="493"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="491"/>
+        <location filename="../src/gui/folder.cpp" line="498"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation>
             <numerusform>%1 and %n other file could not be synced due to errors. See the log for details.</numerusform>
@@ -2091,12 +2092,12 @@ This can be an issue with your OpenSSL libraries.</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="493"/>
+        <location filename="../src/gui/folder.cpp" line="500"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="498"/>
+        <location filename="../src/gui/folder.cpp" line="505"/>
         <source>%1 and %n other file(s) are currently locked.</source>
         <translation>
             <numerusform>%1 and %n other file are currently locked.</numerusform>
@@ -2104,75 +2105,75 @@ This can be an issue with your OpenSSL libraries.</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="500"/>
+        <location filename="../src/gui/folder.cpp" line="507"/>
         <source>%1 is currently locked.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="508"/>
+        <location filename="../src/gui/folder.cpp" line="515"/>
         <source>Sync Activity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1119"/>
+        <location filename="../src/gui/folder.cpp" line="1131"/>
         <source>Could not read system exclude file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1409"/>
+        <location filename="../src/gui/folder.cpp" line="1421"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1412"/>
+        <location filename="../src/gui/folder.cpp" line="1424"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1413"/>
+        <location filename="../src/gui/folder.cpp" line="1425"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1470"/>
+        <location filename="../src/gui/folder.cpp" line="1482"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1481"/>
+        <location filename="../src/gui/folder.cpp" line="1493"/>
         <source>Keep syncing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1489"/>
+        <location filename="../src/gui/folder.cpp" line="1501"/>
         <source>Stop syncing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1500"/>
+        <location filename="../src/gui/folder.cpp" line="1512"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1501"/>
+        <location filename="../src/gui/folder.cpp" line="1513"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1576"/>
+        <location filename="../src/gui/folder.cpp" line="1588"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1579"/>
+        <location filename="../src/gui/folder.cpp" line="1591"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1590"/>
+        <location filename="../src/gui/folder.cpp" line="1602"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -2181,41 +2182,41 @@ This means that the synchronization client might not upload local changes immedi
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1628"/>
+        <location filename="../src/gui/folder.cpp" line="1640"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1723"/>
+        <location filename="../src/gui/folder.cpp" line="1735"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you&apos;d like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1724"/>
+        <location filename="../src/gui/folder.cpp" line="1736"/>
         <source>A large number of files in your local &apos;%1&apos; folder have been deleted.
 Please confirm if you&apos;d like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1725"/>
+        <location filename="../src/gui/folder.cpp" line="1737"/>
         <source>Remove all files?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1729"/>
+        <location filename="../src/gui/folder.cpp" line="1741"/>
         <source>Proceed with Deletion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1730"/>
+        <location filename="../src/gui/folder.cpp" line="1742"/>
         <source>Restore Files to Server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1730"/>
+        <location filename="../src/gui/folder.cpp" line="1742"/>
         <source>Restore Files from Server</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2380,7 +2381,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2118"/>
+        <location filename="../src/gui/folderman.cpp" line="2139"/>
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
@@ -4694,6 +4695,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>Reply</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/gui/tray/notificationhandler.cpp" line="177"/>
+        <source>Dismiss</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>OCC::SettingsDialog</name>
@@ -5184,12 +5190,12 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1442"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1453"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1449"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1460"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5234,7 +5240,7 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="814"/>
+        <location filename="../src/libsync/syncengine.cpp" line="825"/>
         <source>Cannot open the sync journal</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6306,7 +6312,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="536"/>
-        <source>The server is busy right now. Please try syncing again in a few minutes or contact your server administrator if it’s urgent.</source>
+        <source>The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6528,7 +6534,7 @@ Server replied with error: %2</source>
 <context>
     <name>SyncJournalDb</name>
     <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="1057"/>
+        <location filename="../src/common/syncjournaldb.cpp" line="1061"/>
         <source>Failed to connect database.</source>
         <translation type="unfinished"></translation>
     </message>
