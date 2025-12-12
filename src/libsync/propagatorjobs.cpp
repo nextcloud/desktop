@@ -63,7 +63,6 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
                                                        [this] (const QString &itemPath, QString *removeError) -> bool {
                                                            auto result = false;
 
-                                                           qCInfo(lcPropagateLocalRemove()) << itemPath << _deleteToClientTrashBin;
                                                            if (_deleteToClientTrashBin.contains(itemPath)) {
                                                                result = FileSystem::moveToTrash(itemPath, removeError);
                                                                if (!result) {
