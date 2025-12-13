@@ -55,9 +55,30 @@ Page {
         }
         
         CheckBox {
-            text: qsTr("Allow deletion of items in Trash")
+            id: trashDeletionCheckBox
+            text: qsTr("Permanently delete files when removed from virtual drive")
             checked: root.controller.trashDeletionEnabledForAccount(root.accountUserIdAtHost)
             onClicked: root.controller.setTrashDeletionEnabledForAccount(root.accountUserIdAtHost, checked)
+
+            Connections {
+                target: root.controller
+                function onTrashDeletionEnabledForAccountChanged(accountUserIdAtHost) {
+                    if (root.accountUserIdAtHost !== accountUserIdAtHost) {
+                        return;
+                    }
+                    trashDeletionCheckBox.checked = root.controller.trashDeletionEnabledForAccount(root.accountUserIdAtHost);
+                }
+            }
+        }
+
+        EnforcedPlainTextLabel {
+            Layout.fillWidth: true
+            Layout.leftMargin: trashDeletionCheckBox.indicator.width + trashDeletionCheckBox.spacing
+            visible: trashDeletionCheckBox.checked
+            text: qsTr("⚠️ Warning: Deleted files will be permanently removed from the server and cannot be restored!")
+            color: "#cc0000"
+            wrapMode: Text.WordWrap
+            font.italic: true
         }
     }
 }

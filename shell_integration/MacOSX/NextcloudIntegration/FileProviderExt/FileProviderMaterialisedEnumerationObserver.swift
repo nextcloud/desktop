@@ -22,7 +22,14 @@ class FileProviderMaterialisedEnumerationObserver: NSObject, NSFileProviderEnume
     }
 
     func didEnumerate(_ updatedItems: [NSFileProviderItemProtocol]) {
-        let updatedItemsIds = Array(updatedItems.map(\.itemIdentifier.rawValue))
+        // Filter out items that are in the trash container to prevent server-trashed
+        // items from appearing in the macOS Trash. Server trash items should only
+        // be managed through the Nextcloud web interface or desktop client.
+        let nonTrashItems = updatedItems.filter { item in
+            item.parentItemIdentifier != .trashContainer
+        }
+
+        let updatedItemsIds = Array(nonTrashItems.map(\.itemIdentifier.rawValue))
 
         for updatedItemsId in updatedItemsIds {
             allEnumeratedItemIds.insert(updatedItemsId)

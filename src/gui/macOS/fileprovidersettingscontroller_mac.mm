@@ -6,6 +6,7 @@
 #include "fileprovidersettingscontroller.h"
 
 #include <QFileDialog>
+#include <QMessageBox>
 #include <QQmlApplicationEngine>
 
 #include "gui/systray.h"
@@ -267,6 +268,25 @@ void FileProviderSettingsController::setTrashDeletionEnabledForAccount(const QSt
         emit trashDeletionEnabledForAccountChanged(userIdAtHost);
         emit trashDeletionSetForAccountChanged(userIdAtHost);
         return;
+    }
+
+    // Show warning dialog when enabling permanent deletion
+    if (setEnabled) {
+        const auto result = QMessageBox::warning(
+            nullptr,
+            tr("Enable permanent file deletion?"),
+            tr("When you delete files from the virtual drive in Finder, they will be permanently deleted from the server.\n\n"
+               "This action cannot be undone. The files will NOT go to the server's trash and cannot be restored.\n\n"
+               "Are you sure you want to enable this feature?"),
+            QMessageBox::Yes | QMessageBox::No,
+            QMessageBox::No);
+
+        if (result != QMessageBox::Yes) {
+            // User cancelled, reset UI state
+            emit trashDeletionEnabledForAccountChanged(userIdAtHost);
+            emit trashDeletionSetForAccountChanged(userIdAtHost);
+            return;
+        }
     }
 
     const auto domainId = FileProviderUtils::domainIdentifierForAccountIdentifier(userIdAtHost);
