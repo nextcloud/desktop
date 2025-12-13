@@ -179,44 +179,44 @@
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="28"/>
         <source>Current account</source>
-        <translation type="unfinished"/>
+        <translation>Compte actual</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="41"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="160"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Reprendre la sincro. per totes</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="41"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="160"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Pausar la sincro. per totes</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="141"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Apondre un compte</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="145"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Apondre un compte novèl</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="179"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Paramètres</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="203"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Sortir</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="244"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Avatar del compte actual</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="274"/>
@@ -292,7 +292,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="86"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Suprimir</translation>
     </message>
 </context>
 <context>
@@ -300,17 +300,17 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
         <source>Virtual files settings</source>
-        <translation type="unfinished"/>
+        <translation>Paramètres dels fichièrs virtuals</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>Paramètres generals</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
         <source>Enable virtual files</source>
-        <translation type="unfinished"/>
+        <translation>Activar los fichièrs virtuals</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
@@ -405,7 +405,7 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="245"/>
         <source>Main content</source>
-        <translation type="unfinished"/>
+        <translation>Contengut principal</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
@@ -415,7 +415,7 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="446"/>
         <source>New activities</source>
-        <translation type="unfinished"/>
+        <translation>Activitats novèlas</translation>
     </message>
 </context>
 <context>
@@ -423,17 +423,17 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="311"/>
         <source>The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Lo servidor a mes tròp de temps per respondre. Verificatz vòstra connexion e tornatz ensajar la sincronizacion. Se fonciona totjorn pas, contactatz l&apos;administrator de vòstre servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="315"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Una error inesperada s&apos;es producha. Tornatz ensajar la sincronizacion o contactatz vòstre administrator de servidor se lo problèma persistís.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="595"/>
         <source>The server enforces strict transport security and does not accept untrusted certificates.</source>
-        <translation type="unfinished"/>
+        <translation>Lo servidor aplica una politica de seguretat de transpòrt estricta e accèpta pas los certificats pas de fisança.</translation>
     </message>
 </context>
 <context>
@@ -441,12 +441,12 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="227"/>
         <source>Public Share Link</source>
-        <translation type="unfinished"/>
+        <translation>Ligam de partatge public</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="1071"/>
         <source>File %1 is already locked by %2.</source>
-        <translation type="unfinished"/>
+        <translation>Lo fichièr %1 es ja verrolhat per %2.</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="1073"/>
@@ -524,7 +524,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="319"/>
         <source>Connection settings</source>
-        <translation type="unfinished"/>
+        <translation>Paramètres de connexion</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="137"/>
@@ -567,7 +567,7 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountsettings.cpp" line="101"/>
         <location filename="../src/gui/accountsettings.cpp" line="123"/>
         <source>Do not encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Chifrar pas lo dossièr</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="104"/>
@@ -578,7 +578,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="114"/>
         <source>End-to-end Encryption</source>
-        <translation type="unfinished"/>
+        <translation>Chiframent del cap a la fin</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="117"/>
@@ -1008,7 +1008,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="497"/>
         <source>Fetching activities …</source>
-        <translation type="unfinished"/>
+        <translation>Recuperacion de las activitats...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="604"/>
@@ -1113,12 +1113,12 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/application.cpp" line="529"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
-        <translation type="unfinished"/>
+        <translation>%1 dossièrs</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="530"/>
         <source>1 folder</source>
-        <translation type="unfinished"/>
+        <translation>1 dossièr</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="532"/>
@@ -1925,13 +1925,13 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="128"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>fa %1 mes</numerusform><numerusform>fa %1 meses</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="131"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>fa %1 an</numerusform><numerusform>fa %1 ans</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="163"/>
@@ -2164,12 +2164,12 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="1481"/>
         <source>Keep syncing</source>
-        <translation type="unfinished"/>
+        <translation>Téner de sincronizar</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1489"/>
         <source>Stop syncing</source>
-        <translation type="unfinished"/>
+        <translation>Arrestar de sincronizar</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1500"/>
@@ -2308,17 +2308,17 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1817"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizacion de %1 de %2 (Demòran unas segondas)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1820"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizacion de %1 de %2 (Demòra %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1823"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizacion de %1 de %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1829"/>
@@ -2504,12 +2504,12 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderstatusmodel.cpp" line="1055"/>
         <source>Download %1/s</source>
         <extracomment>Example text: &quot;Download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation type="unfinished"/>
+        <translation>Telecargament %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1121"/>
         <source>File %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Fichièr %1 de %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="244"/>
@@ -2536,7 +2536,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderstatusmodel.cpp" line="1065"/>
         <source>Upload %1/s</source>
         <extracomment>Example text: &quot;Upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation type="unfinished"/>
+        <translation>Mandadís %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1067"/>
@@ -3474,7 +3474,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/networksettings.ui" line="337"/>
         <location filename="../src/gui/networksettings.ui" line="460"/>
         <source>Limit to 3/4 of estimated bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Limitar al 3/4 de la benda passanta estimada</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="399"/>
@@ -3538,7 +3538,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="144"/>
         <source>Downloading %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Telecargament %1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="146"/>
@@ -3909,25 +3909,25 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="104"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Anullar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="105"/>
         <source>Proxy Settings</source>
         <comment>Proxy Settings button text in new account wizard</comment>
-        <translation type="unfinished"/>
+        <translation>Paramètres proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="107"/>
         <source>Next</source>
         <comment>Next button text in new account wizard</comment>
-        <translation type="unfinished"/>
+        <translation>Seguent</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="108"/>
         <source>Back</source>
         <comment>Next button text in new account wizard</comment>
-        <translation type="unfinished"/>
+        <translation>Precedent</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="512"/>
@@ -4759,17 +4759,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="571"/>
         <source>%1 days</source>
-        <translation type="unfinished"/>
+        <translation>%1 jorns</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="573"/>
         <source>1 day</source>
-        <translation type="unfinished"/>
+        <translation>1 jorn</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="574"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Uèi</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="748"/>
