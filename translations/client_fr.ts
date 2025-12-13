@@ -5673,7 +5673,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1645"/>
         <source>Remove account</source>
-        <translation>Supprimer le compte</translation>
+        <translation>Retirer le compte</translation>
     </message>
 </context>
 <context>
