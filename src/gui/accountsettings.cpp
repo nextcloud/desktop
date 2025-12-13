@@ -193,16 +193,14 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     new ToolTipUpdater(_ui->_folderList);
 
 #if defined(BUILD_FILE_PROVIDER_MODULE)
-    if (Mac::FileProvider::fileProviderAvailable()) {
-        const auto fileProviderTab = _ui->fileProviderTab;
-        const auto fpSettingsLayout = new QVBoxLayout(fileProviderTab);
-        const auto fpAccountUserIdAtHost = _accountState->account()->userIdAtHostWithPort();
-        const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
-        const auto fpSettingsWidget = fpSettingsController->settingsViewWidget(fpAccountUserIdAtHost, fileProviderTab);
-        fpSettingsLayout->setContentsMargins(0, 0, 0, 0);
-        fpSettingsLayout->addWidget(fpSettingsWidget);
-        fileProviderTab->setLayout(fpSettingsLayout);
-    }
+    const auto fileProviderTab = _ui->fileProviderTab;
+    const auto fpSettingsLayout = new QVBoxLayout(fileProviderTab);
+    const auto fpAccountUserIdAtHost = _accountState->account()->userIdAtHostWithPort();
+    const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
+    const auto fpSettingsWidget = fpSettingsController->settingsViewWidget(fpAccountUserIdAtHost, fileProviderTab);
+    fpSettingsLayout->setContentsMargins(0, 0, 0, 0);
+    fpSettingsLayout->addWidget(fpSettingsWidget);
+    fileProviderTab->setLayout(fpSettingsLayout);
 #else
     const auto tabWidget = _ui->tabWidget;
     const auto fileProviderTab = _ui->fileProviderTab;

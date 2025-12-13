@@ -45,19 +45,10 @@
         [syncController setBadgeImage:warning label:@"Ignored" forBadgeIdentifier:@"IGNORE+SWM"];
         [syncController setBadgeImage:error label:@"Error" forBadgeIdentifier:@"ERROR+SWM"];
 
-        // The Mach port name needs to:
-        // - Be prefixed with the code signing Team ID
-        // - Then infixed with the sandbox App Group
-        // - The App Group itself must be a prefix of (or equal to) the application bundle identifier
-        // We end up in the official signed client with: 9B5WD74GWJ.com.owncloud.desktopclient.socket
-        // With ad-hoc signing (the '-' signing identity) we must drop the Team ID.
-        // When the code isn't sandboxed (e.g. the OC client or the legacy overlay icon extension)
-        // the OS doesn't seem to put any restriction on the port name, so we just follow what
-        // the sandboxed App Extension needs.
-        // https://developer.apple.com/library/mac/documentation/Security/Conceptual/AppSandboxDesignGuide/AppSandboxInDepth/AppSandboxInDepth.html#//apple_ref/doc/uid/TP40011183-CH3-SW24
-
         NSURL *container = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:socketApiPrefix];
-        NSURL *socketPath = [container URLByAppendingPathComponent:@".socket" isDirectory:NO];
+        NSURL *library = [container URLByAppendingPathComponent:@"Library" isDirectory:true];
+        NSURL *applicationSupport = [library URLByAppendingPathComponent:@"Application Support" isDirectory:true];
+        NSURL *socketPath = [applicationSupport URLByAppendingPathComponent:@"s" isDirectory:NO];
 
         NSLog(@"Socket path: %@", socketPath.path);
 

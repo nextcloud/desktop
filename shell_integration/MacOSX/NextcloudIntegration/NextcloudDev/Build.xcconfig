@@ -1,0 +1,31 @@
+//  SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
+
+//
+// The common name of the signing certificate to use for code signing.
+// It must be present in your keychain and a development certificate.
+//
+CODE_SIGN_IDENTITY=$(CODE_SIGN_IDENTITY:default=Apple Development)
+
+CODE_SIGNING_ALLOWED=$(CODE_SIGNING_ALLOWED:default=YES)
+CODE_SIGNING_REQUIRED=$(CODE_SIGNING_REQUIRED:default=YES)
+
+//
+// Xcode should automatically manage signing assets.
+//
+CODE_SIGN_STYLE=$(CODE_SIGN_STYLE:default=Automatic)
+
+//
+// The development team identifier registered with Apple.
+//
+DEVELOPMENT_TEAM=$(DEVELOPMENT_TEAM:default=NKUJUXUJ3B)
+
+//
+// The app name.
+//
+OC_APPLICATION_NAME=$(OC_APPLICATION_NAME:default=Nextcloud)
+
+//
+// Reverse base identifier.
+//
+OC_APPLICATION_REV_DOMAIN=$(OC_APPLICATION_REV_DOMAIN:default=com.nextcloud.desktopclient)

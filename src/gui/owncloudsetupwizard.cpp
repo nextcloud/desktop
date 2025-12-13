@@ -514,7 +514,7 @@ bool OwncloudSetupWizard::checkDowngradeAdvised(QNetworkReply *reply)
 void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString &localFolder, const QString &remoteFolder)
 {
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    if (Mac::FileProvider::fileProviderAvailable() && _ocWizard->useVirtualFileSync()) {
+    if (_ocWizard->useVirtualFileSync()) {
         qCInfo(lcWizard) << "Not creating local/remote folders as because macOS File Provider uses its own sync root";
         finalizeSetup(true);
         return;
@@ -724,12 +724,9 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
         if (_ocWizard->useVirtualFileSyncByDefault()) {
-            Mac::FileProvider::instance()->domainManager()->addFileProviderDomainForAccount(account);
             auto const accountId = account->account()->userIdAtHostWithPort();
-            // let the user settings know that VFS is enabled
             Mac::FileProviderSettingsController::instance()->setVfsEnabledForAccount(accountId, true, false);
-            _ocWizard->appendToConfigurationLog(
-                tr("<font color=\"green\"><b>File Provider-based account %1 successfully created!</b></font>").arg(accountId));
+            _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>File Provider-based account %1 successfully created!</b></font>").arg(accountId));
             _ocWizard->done(result);
             emit ownCloudWizardDone(result);
 

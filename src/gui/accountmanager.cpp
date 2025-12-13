@@ -57,6 +57,9 @@ constexpr auto networkDownloadLimitSettingC = "networkDownloadLimitSetting";
 constexpr auto networkUploadLimitC = "networkUploadLimit";
 constexpr auto networkDownloadLimitC = "networkDownloadLimit";
 constexpr auto encryptionCertificateSha256FingerprintC = "encryptionCertificateSha256Fingerprint";
+#ifdef BUILD_FILE_PROVIDER_MODULE
+constexpr auto fileProviderDomainIdentifierC = "fileProviderDomainIdentifier";
+#endif
 
 constexpr auto dummyAuthTypeC = "dummy";
 constexpr auto httpAuthTypeC = "http";
@@ -432,6 +435,9 @@ void AccountManager::saveAccountHelper(const AccountPtr &account, QSettings &set
     settings.setValue(QLatin1String(serverHasValidSubscriptionC), account->serverHasValidSubscription());
     settings.setValue(QLatin1String(serverDesktopEnterpriseUpdateChannelC), account->enterpriseUpdateChannel().toString());
     settings.setValue(QLatin1String(encryptionCertificateSha256FingerprintC), account->encryptionCertificateFingerprint());
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    settings.setValue(QLatin1String(fileProviderDomainIdentifierC), account->fileProviderDomainIdentifier());
+#endif
     if (!account->_skipE2eeMetadataChecksumValidation) {
         settings.remove(QLatin1String(skipE2eeMetadataChecksumValidationC));
     } else {
@@ -644,6 +650,9 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->_serverTextColor = settings.value(QLatin1String(serverTextColorC)).value<QColor>();
     acc->_skipE2eeMetadataChecksumValidation = settings.value(QLatin1String(skipE2eeMetadataChecksumValidationC), {}).toBool();
     acc->_davUser = settings.value(QLatin1String(davUserC)).toString();
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    acc->setFileProviderDomainIdentifier(settings.value(QLatin1String(fileProviderDomainIdentifierC)).toString());
+#endif
 
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
     acc->setDavDisplayName(settings.value(QLatin1String(displayNameC), "").toString());
@@ -799,6 +808,37 @@ void AccountManager::updateServerDesktopEnterpriseUpdateChannel()
 
     ConfigFile().setDesktopEnterpriseChannel(most_stable_channel.toString());
 }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+void AccountManager::setFileProviderDomainIdentifier(const QString &accountUserIdAtHost, const QString &identifier)
+{
+    if (const auto accState = accountFromUserId(accountUserIdAtHost)) {
+        const auto acc = accState->account();
+        if (acc->fileProviderDomainIdentifier() == identifier) {
+            return;
+        }
+
+        acc->setFileProviderDomainIdentifier(identifier);
+        saveAccount(acc);
+    }
+}
+
+AccountStatePtr AccountManager::accountFromFileProviderDomainIdentifier(const QString &identifier) const
+{
+    if (identifier.isEmpty()) {
+        return {};
+    }
+
+    const auto accountsList = accounts();
+    
+    for (const auto &account : accountsList) {
+        if (account->account()->fileProviderDomainIdentifier() == identifier) {
+            return account;
+        }
+    }
+    return {};
+}
+#endif
 
 AccountPtr AccountManager::createAccount()
 {
