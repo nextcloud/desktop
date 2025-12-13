@@ -4764,7 +4764,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="177"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Zamítnout</translation>
     </message>
 </context>
 <context>

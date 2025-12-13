@@ -1967,7 +1967,7 @@ This can be an issue with your OpenSSL libraries.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="259"/>
         <source>The server is temporarily unavailable because it is in maintenance mode. Please try again once maintenance has finished.</source>
-        <translation type="unfinished"/>
+        <translation>The server is temporarily unavailable because it is in maintenance mode. Please try again once maintenance has finished.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="262"/>
@@ -1978,7 +1978,7 @@ This can be an issue with your OpenSSL libraries.</translation>
         <location filename="../src/gui/creds/flow2auth.cpp" line="263"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="271"/>
         <source>An unexpected error occurred when trying to access the server. Please try to access it again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>An unexpected error occurred when trying to access the server. Please try to access it again later or contact your server administrator if the issue continues.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="265"/>
@@ -1993,12 +1993,12 @@ This can be an issue with your OpenSSL libraries.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="276"/>
         <source>We couldn&apos;t parse the server response. Please try connecting again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>We couldn&apos;t parse the server response. Please try connecting again later or contact your server administrator if the issue continues.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="280"/>
         <source>The server did not reply with the expected data. Please try connecting again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>The server did not reply with the expected data. Please try connecting again later or contact your server administrator if the issue continues.</translation>
     </message>
 </context>
 <context>
@@ -6392,7 +6392,7 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="536"/>
         <source>The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.</source>
-        <translation type="unfinished"/>
+        <translation>The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="539"/>

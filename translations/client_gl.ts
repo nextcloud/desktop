@@ -1967,7 +1967,7 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="259"/>
         <source>The server is temporarily unavailable because it is in maintenance mode. Please try again once maintenance has finished.</source>
-        <translation type="unfinished"/>
+        <translation>O servidor non está dispoñíbel temporalmente, atopase en modo de mantemento. Ténteo de novo unha vez rematado o mantemento.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="262"/>
@@ -1978,7 +1978,7 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
         <location filename="../src/gui/creds/flow2auth.cpp" line="263"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="271"/>
         <source>An unexpected error occurred when trying to access the server. Please try to access it again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un erro non agardado ao tentar acceder ao servidor. Tente acceder de novo máis tarde ou póñase en contacto coa administración do servidor se o problema continúa.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="265"/>
@@ -1993,12 +1993,12 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="276"/>
         <source>We couldn&apos;t parse the server response. Please try connecting again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Non fomos quen de entender a resposta do servidor. Tente conectar de novo máis tarde ou póñase en contacto coa administración do servidor se o problema continúa.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="280"/>
         <source>The server did not reply with the expected data. Please try connecting again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>O servidor non respondeu cos datos agardados. Tente conectar de novo máis tarde ou póñase en contacto coa administración do servidor se o problema continúa.</translation>
     </message>
 </context>
 <context>
@@ -6391,7 +6391,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="536"/>
         <source>The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.</source>
-        <translation type="unfinished"/>
+        <translation>O servidor está ocupado neste momento. Tente volver conectar dentro duns minutos ou póñase en contacto coa administración do servidor se é urxente.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="539"/>

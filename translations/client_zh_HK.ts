@@ -1970,7 +1970,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="259"/>
         <source>The server is temporarily unavailable because it is in maintenance mode. Please try again once maintenance has finished.</source>
-        <translation type="unfinished"/>
+        <translation>伺服器因進入維護模式而暫時無法使用。請在維護完成後再試。</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="262"/>
@@ -1981,7 +1981,7 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/creds/flow2auth.cpp" line="263"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="271"/>
         <source>An unexpected error occurred when trying to access the server. Please try to access it again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>嘗試存取伺服器時發生未預期的錯誤。請稍後再試；若問題持續，請聯絡你的伺服器管理員。</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="265"/>
@@ -1996,12 +1996,12 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="276"/>
         <source>We couldn&apos;t parse the server response. Please try connecting again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>無法分析伺服器回應。請稍後再試連線，如問題持續，請聯絡伺服器管理員。</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="280"/>
         <source>The server did not reply with the expected data. Please try connecting again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>伺服器未傳回預期的資料。請稍後再嘗試連線；若問題持續，請聯絡你的伺服器管理員。</translation>
     </message>
 </context>
 <context>
@@ -6394,7 +6394,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="536"/>
         <source>The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.</source>
-        <translation type="unfinished"/>
+        <translation>伺服器現正忙碌。請數分鐘後再嘗試連接；若情況緊急，請聯絡伺服器管理員。</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="539"/>

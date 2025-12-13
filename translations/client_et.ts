@@ -1967,7 +1967,7 @@ See võib olla seotud kasutatavate OpenSSl-i teekidega.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="259"/>
         <source>The server is temporarily unavailable because it is in maintenance mode. Please try again once maintenance has finished.</source>
-        <translation type="unfinished"/>
+        <translation>Serveri halduse või hoolduse tõttu pole teenus hetkel kasutatav. Palun proovi uuesti siis, kui tööd on lõppenud,</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="262"/>
@@ -1978,7 +1978,7 @@ See võib olla seotud kasutatavate OpenSSl-i teekidega.</translation>
         <location filename="../src/gui/creds/flow2auth.cpp" line="263"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="271"/>
         <source>An unexpected error occurred when trying to access the server. Please try to access it again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Serveri kasutamisel tekkis ootamatu viga. Proovi teha seda hiljem ja kui probleem kordub, siis võta ühendust oma serveri haldajaga.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="265"/>
@@ -1993,12 +1993,12 @@ See võib olla seotud kasutatavate OpenSSl-i teekidega.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="276"/>
         <source>We couldn&apos;t parse the server response. Please try connecting again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Serveri vastuse töötlemine ei õnnestunud. Proovi ühendada uuesti ja kui probleem kordub, siis võta ühendust oma serveri haldajaga.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="280"/>
         <source>The server did not reply with the expected data. Please try connecting again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Serveri vastuses polnud eeldatud andmeid. Proovi ühendada uuesti ja kui probleem kordub, siis võta ühendust oma serveri haldajaga.</translation>
     </message>
 </context>
 <context>
@@ -6386,12 +6386,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="531"/>
         <source>The server is busy right now. Please try syncing again in a few minutes or contact your server administrator if it’s urgent.</source>
-        <translation>Server on hetkel hõivatud. Proovi andmeid hiljem uuesti sünkroonida ja sellega on kiire, siis võta ühendust oma serveri haldajaga.</translation>
+        <translation>Server on hetkel hõivatud. Proovi andmeid hiljem uuesti sünkroonida ja kui sellega on kiire, siis võta ühendust oma serveri haldajaga.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="536"/>
         <source>The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.</source>
-        <translation type="unfinished"/>
+        <translation>Server on hetkel hõivatud. Proovi ühendada paari minuti pärast uuesti ja kui sellega on kiire, siis võta ühendust oma serveri haldajaga.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="539"/>

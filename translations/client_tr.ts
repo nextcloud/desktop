@@ -1967,7 +1967,7 @@ Bu durum OpenSLL kitaplıkları ile ilgili bir sorun olabilir.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="259"/>
         <source>The server is temporarily unavailable because it is in maintenance mode. Please try again once maintenance has finished.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu bakım kipinde olduğundan geçici olarak kullanılamıyor. Lütfen bakım bittiğinde yeniden deneyin.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="262"/>
@@ -1978,7 +1978,7 @@ Bu durum OpenSLL kitaplıkları ile ilgili bir sorun olabilir.</translation>
         <location filename="../src/gui/creds/flow2auth.cpp" line="263"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="271"/>
         <source>An unexpected error occurred when trying to access the server. Please try to access it again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucuya erişmeye çalışırken beklenmeyen bir sorun çıktı. Lütfen bir süre sonra yeniden erişmeyi deneyin veya sorun sürüyorsa sunucu yöneticinizle görüşün.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="265"/>
@@ -1993,12 +1993,12 @@ Bu durum OpenSLL kitaplıkları ile ilgili bir sorun olabilir.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="276"/>
         <source>We couldn&apos;t parse the server response. Please try connecting again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu yanıtı işlenemedi. Lütfen bir süre sonra yeniden bağlanmayı deneyin veya sorun sürüyorsa sunucu yöneticinizle görüşün.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="280"/>
         <source>The server did not reply with the expected data. Please try connecting again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu beklenen verilerle yanıt vermedi. Lütfen bir süre sonra yeniden bağlanmayı deneyin veya sorun sürüyorsa sunucu yöneticinizle görüşün.</translation>
     </message>
 </context>
 <context>
@@ -6390,7 +6390,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="536"/>
         <source>The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu şu anda meşgul. Lütfen birkaç dakika sonra yeniden bağlantı kurmayı deneyin. Aceleniz varsa sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="539"/>

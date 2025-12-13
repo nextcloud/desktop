@@ -4729,7 +4729,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="177"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Descarta</translation>
     </message>
 </context>
 <context>
