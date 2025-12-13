@@ -81,6 +81,7 @@ OCUpdater::OCUpdater(const QUrl &url)
     , _accessManager(new AccessManager(this))
     , _timeoutWatchdog(new QTimer(this))
 {
+    _accessManager->setSynchronizationType(QStringLiteral("updater"));
 }
 
 void OCUpdater::setUpdateUrl(const QUrl &url)
@@ -256,6 +257,10 @@ bool OCUpdater::updateSucceeded() const
     qint64 targetVersionInt = Helper::stringVersionToInt(settings.value(updateTargetVersionC).toString());
     qint64 currentVersion = Helper::currentVersionToInt();
     return currentVersion >= targetVersionInt;
+}
+
+QNetworkAccessManager *OCUpdater::qnam() const {
+    return _accessManager;
 }
 
 void OCUpdater::slotVersionInfoArrived()

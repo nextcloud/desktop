@@ -296,6 +296,11 @@ void Account::setCredentials(AbstractCredentials *cred)
     // processing slotHandleSslErrors().
     _networkAccessManager = QSharedPointer<QNetworkAccessManager>(_credentials->createQNAM(), &QObject::deleteLater);
 
+    const auto accessManager = qobject_cast<AccessManager*>(_networkAccessManager.get());
+    if (accessManager) {
+        accessManager->setSynchronizationType(QStringLiteral("account"));
+    }
+
     if (jar) {
         _networkAccessManager->setCookieJar(jar);
     }
@@ -425,6 +430,11 @@ void Account::resetNetworkAccessManager()
     // Use a QSharedPointer to allow locking the life of the QNAM on the stack.
     // Make it call deleteLater to make sure that we can return to any QNAM stack frames safely.
     _networkAccessManager = QSharedPointer<QNetworkAccessManager>(_credentials->createQNAM(), &QObject::deleteLater);
+
+    const auto accessManager = qobject_cast<AccessManager*>(_networkAccessManager.get());
+    if (accessManager) {
+        accessManager->setSynchronizationType(QStringLiteral("account"));
+    }
 
     _networkAccessManager->setCookieJar(jar); // takes ownership of the old cookie jar
     _networkAccessManager->setProxy(proxy);   // Remember proxy (issue #2108)
@@ -1176,6 +1186,16 @@ void Account::setEncryptionCertificateFingerprint(const QByteArray &fingerprint)
     _e2e.usbTokenInformation()->setSha256Fingerprint(fingerprint);
     Q_EMIT encryptionCertificateFingerprintChanged();
     Q_EMIT wantsAccountSaved(sharedFromThis());
+}
+
+const QString &Account::synchronizationType() const
+{
+    return static_cast<AccessManager*>(_networkAccessManager.get())->synchronizationType();
+}
+
+void Account::setSynchronizationType(const QString &type)
+{
+    static_cast<AccessManager*>(_networkAccessManager.get())->setSynchronizationType(type);
 }
 
 void Account::setAskUserForMnemonic(const bool ask)
