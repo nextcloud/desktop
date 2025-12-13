@@ -417,6 +417,12 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderStat
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.LastAccessTime);
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.ChangeTime);
 
+    // Preserve existing file attributes (especially FILE_ATTRIBUTE_SYSTEM for custom folder icons)
+    const auto currentAttributes = GetFileAttributesW(reinterpret_cast<const wchar_t *>(path.utf16()));
+    if (currentAttributes != INVALID_FILE_ATTRIBUTES) {
+        metadata.BasicInfo.FileAttributes = currentAttributes;
+    }
+
     qCInfo(lcCfApiWrapper) << "updatePlaceholderState" << path << modtime;
     const auto updateFlags = item.isDirectory() ? CF_UPDATE_FLAG_MARK_IN_SYNC | CF_UPDATE_FLAG_ENABLE_ON_DEMAND_POPULATION : CF_UPDATE_FLAG_MARK_IN_SYNC;
 
@@ -1062,15 +1068,21 @@ OCC::Result<void, QString> OCC::CfApiWrapper::createPlaceholderInfo(const QStrin
     cloudEntry.RelativeFileName = relativePath.data();
     cloudEntry.Flags = CF_PLACEHOLDER_CREATE_FLAG_MARK_IN_SYNC;
     cloudEntry.FsMetadata.FileSize.QuadPart = size;
-    cloudEntry.FsMetadata.BasicInfo.FileAttributes = FILE_ATTRIBUTE_NORMAL;
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &cloudEntry.FsMetadata.BasicInfo.CreationTime);
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &cloudEntry.FsMetadata.BasicInfo.LastWriteTime);
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &cloudEntry.FsMetadata.BasicInfo.LastAccessTime);
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &cloudEntry.FsMetadata.BasicInfo.ChangeTime);
 
+    // Preserve existing file attributes (especially FILE_ATTRIBUTE_SYSTEM for custom folder icons)
+    const auto currentAttributes = GetFileAttributesW(reinterpret_cast<const wchar_t *>(path.utf16()));
+    if (currentAttributes != INVALID_FILE_ATTRIBUTES) {
+        cloudEntry.FsMetadata.BasicInfo.FileAttributes = currentAttributes;
+    } else {
+        cloudEntry.FsMetadata.BasicInfo.FileAttributes = fileInfo.isDir() ? FILE_ATTRIBUTE_DIRECTORY : FILE_ATTRIBUTE_NORMAL;
+    }
+
     if (fileInfo.isDir()) {
         cloudEntry.Flags |= CF_PLACEHOLDER_CREATE_FLAG_DISABLE_ON_DEMAND_POPULATION;
-        cloudEntry.FsMetadata.BasicInfo.FileAttributes = FILE_ATTRIBUTE_DIRECTORY;
         cloudEntry.FsMetadata.FileSize.QuadPart = 0;
     }
 
@@ -1116,15 +1128,22 @@ OCC::Result<void, QString> OCC::CfApiWrapper::createPlaceholdersInfo(const QStri
         cloudEntry[itemIndice].RelativeFileName = placeholderInfo.platformNativeRelativePath.data();
         cloudEntry[itemIndice].Flags = CF_PLACEHOLDER_CREATE_FLAG_MARK_IN_SYNC;
         cloudEntry[itemIndice].FsMetadata.FileSize.QuadPart = placeholderInfo.size;
-        cloudEntry[itemIndice].FsMetadata.BasicInfo.FileAttributes = FILE_ATTRIBUTE_NORMAL;
         OCC::Utility::UnixTimeToLargeIntegerFiletime(placeholderInfo.modtime, &cloudEntry[itemIndice].FsMetadata.BasicInfo.CreationTime);
         OCC::Utility::UnixTimeToLargeIntegerFiletime(placeholderInfo.modtime, &cloudEntry[itemIndice].FsMetadata.BasicInfo.LastWriteTime);
         OCC::Utility::UnixTimeToLargeIntegerFiletime(placeholderInfo.modtime, &cloudEntry[itemIndice].FsMetadata.BasicInfo.LastAccessTime);
         OCC::Utility::UnixTimeToLargeIntegerFiletime(placeholderInfo.modtime, &cloudEntry[itemIndice].FsMetadata.BasicInfo.ChangeTime);
 
+        // Preserve existing file attributes (especially FILE_ATTRIBUTE_SYSTEM for custom folder icons)
+        const auto fullPath = localBasePath + QDir::separator() + placeholderInfo.relativePath;
+        const auto currentAttributes = GetFileAttributesW(reinterpret_cast<const wchar_t *>(fullPath.utf16()));
+        if (currentAttributes != INVALID_FILE_ATTRIBUTES) {
+            cloudEntry[itemIndice].FsMetadata.BasicInfo.FileAttributes = currentAttributes;
+        } else {
+            cloudEntry[itemIndice].FsMetadata.BasicInfo.FileAttributes = placeholderInfo.fileInfo.isDir() ? FILE_ATTRIBUTE_DIRECTORY : FILE_ATTRIBUTE_NORMAL;
+        }
+
         if (placeholderInfo.fileInfo.isDir()) {
             cloudEntry[itemIndice].Flags |= CF_PLACEHOLDER_CREATE_FLAG_DISABLE_ON_DEMAND_POPULATION;
-            cloudEntry[itemIndice].FsMetadata.BasicInfo.FileAttributes = FILE_ATTRIBUTE_DIRECTORY;
             cloudEntry[itemIndice].FsMetadata.FileSize.QuadPart = 0;
         }
     }
