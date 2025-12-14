@@ -1966,7 +1966,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="259"/>
         <source>The server is temporarily unavailable because it is in maintenance mode. Please try again once maintenance has finished.</source>
-        <translation type="unfinished"/>
+        <translation>Сервер тимчасово недоступний, оскільки перебуває в режимі обслуговування. Спробуйте ще раз після завершення робіт з обслуговування.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="262"/>
@@ -1977,7 +1977,7 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/creds/flow2auth.cpp" line="263"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="271"/>
         <source>An unexpected error occurred when trying to access the server. Please try to access it again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Неочікувана помилка при спробі отримання доступу до сервера. Спробуйте ще раз пізніше або сконтактуйте з адміністратором хмари, якщо помилка не зникатиме.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="265"/>
@@ -1992,12 +1992,12 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="276"/>
         <source>We couldn&apos;t parse the server response. Please try connecting again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося обробити відповідь сервера. Спробуйте ще раз пізніше або сконтактуйте з адміністратором хмари, якщо помилка не зникатиме.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="280"/>
         <source>The server did not reply with the expected data. Please try connecting again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Сервер не відповів з очікуваним набором даних. Спробуйте ще раз пізніше або сконтактуйте з адміністратором хмари, якщо помилка не зникатиме.</translation>
     </message>
 </context>
 <context>
@@ -6389,7 +6389,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="536"/>
         <source>The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.</source>
-        <translation type="unfinished"/>
+        <translation>Сервер зайнятий. Спробуйте ще раз за декілька хвилин або сконтактуйте з адміністратором хмари, якщо вам потрібний терміновий доступ.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="539"/>
