@@ -1978,7 +1978,7 @@ Dies kann ein Problem mit Ihren OpenSSL-Bibliotheken sein.</translation>
         <location filename="../src/gui/creds/flow2auth.cpp" line="263"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="271"/>
         <source>An unexpected error occurred when trying to access the server. Please try to access it again later or contact your server administrator if the issue continues.</source>
-        <translation>Beim Versuch, auf den Server zuzugreifen, ist ein unerwarteter Fehler aufgetreten. Bitte später erneut versuchen auf ihn zuzugreifen, oder an die Serveradministration wenden, falls das das Problem weiterhin besteht.</translation>
+        <translation>Beim Versuch, auf den Server zuzugreifen, ist ein unerwarteter Fehler aufgetreten. Bitte später erneut versuchen, oder an die Serveradministration wenden, falls das das Problem weiterhin besteht.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="265"/>
