@@ -2364,7 +2364,7 @@ Bir yanlışlık varsa, silinen tüm dosyaları sunucudan indirerek geri yükley
     <message>
         <location filename="../src/gui/folderman.cpp" line="1844"/>
         <source>Sync finished with unresolved conflicts.</source>
-        <translation>Eşitleme çözülememiş çakışmalar ile tamamlandı.</translation>
+        <translation>Eşitleme çözümlenmemiş çakışmalar ile tamamlandı.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1846"/>
@@ -2428,7 +2428,7 @@ To resolve this issue: please remove %1 from one of the accounts and create a ne
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
         <translation>%1 klasörü birden fazla hesaba bağlı.
 Bu kurulum veri kaybına neden olabilir ve artık desteklenmiyor.
-Bu sorunu çözmek için: lütfen %1 klasörünü hesapların birinden kaldırın ve yeni bir eşitleme klasörü oluşturun.
+Bu sorunu çözümlemek için: lütfen %1 klasörünü hesapların birinden kaldırın ve yeni bir eşitleme klasörü oluşturun.
 Uzman kullanıcılar için: Bu sorun, bir klasörde bulunan birden fazla eşitleme veri tabanı dosyasıyla ilgili olabilir. Lütfen %1 klasöründeki güncel olmayan ve kullanılmayan .sync_*.db dosyalarını denetleyip kaldırın.</translation>
     </message>
     <message>
@@ -4988,7 +4988,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1351"/>
         <source>Resolve conflict …</source>
-        <translation>Çakışmayı çöz …</translation>
+        <translation>Çakışmayı çözümle…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1355"/>
@@ -5268,7 +5268,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="453"/>
         <source>Unresolved conflict.</source>
-        <translation>Çözülmemiş çakışma.</translation>
+        <translation>Çözümlenmemiş çakışma.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="375"/>
@@ -5599,7 +5599,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
         <location filename="../src/gui/tray/usermodel.cpp" line="886"/>
         <source>Resolve conflict</source>
-        <translation>Çakışmayı çöz</translation>
+        <translation>Çakışmayı çözümle</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="876"/>
