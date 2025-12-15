@@ -287,7 +287,6 @@ bool FileSystem::removeRecursively(const QString &path,
             } else {
                 removeOk = FileSystem::remove(di.filePath(), &removeError);
             }
-            qCInfo(lcFileSystem()) << "delete" << di.filePath();
             if (removeOk) {
                 if (onDeleted)
                     onDeleted(di.filePath(), false);
@@ -330,7 +329,6 @@ bool FileSystem::removeRecursively(const QString &path,
             allRemoved = false;
         }
 
-        qCInfo(lcFileSystem()) << "delete" << path;
         if (allRemoved) {
             if (onDeleted)
                 onDeleted(path, true);
