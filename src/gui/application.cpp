@@ -405,7 +405,9 @@ Application::Application(int &argc, char **argv)
     }
 
 #if WITH_LIBCLOUDPROVIDERS
-    _gui->setupCloudProviders();
+    if (ConfigFile().showCloudProvidersInFileManager()) {
+        _gui->setupCloudProviders();
+    }
 #endif
 
     if (_theme->doNotUseProxy()) {
