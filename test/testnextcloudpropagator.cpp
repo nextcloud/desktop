@@ -12,6 +12,7 @@
 #include <QDebug>
 
 #include "accessmanager.h"
+#include "creds/webflowcredentials.h"
 #include "propagatedownload.h"
 #include "owncloudpropagator_p.h"
 #include "syncenginetestutils.h"
@@ -194,6 +195,140 @@ private slots:
             QCOMPARE(job.reply()->error(), QNetworkReply::NoError);
             // the download succeeded
             QCOMPARE(receivedContent.size(), decompressedContent.size());
+        }
+    }
+
+    void testDirectUrlCredentials()
+    {
+        // for this one we need two HTTP servers:
+        // - one that acts as a host for direct downloads
+        // - and another one that's our pretend-Nextcloud server
+        //
+        // in any case the requests made to the direct download server should
+        // never contain the `Authorization` header
+
+        QHttpServer directDownloadServer;
+        directDownloadServer.route("/data/directData", [](const QHttpServerRequest &request, QHttpServerResponder &responder) -> void {
+            QVERIFY(!request.headers().contains(QHttpHeaders::WellKnownHeader::Authorization));
+
+            QHttpHeaders headers;
+            headers.append(QHttpHeaders::WellKnownHeader::ContentType, "text/plain"_ba);
+            responder.write("OK directData"_ba, headers);
+        });
+        directDownloadServer.route("/data/redirectToOtherUrl", [](const QHttpServerRequest &request, QHttpServerResponder &responder) -> void {
+            QVERIFY(!request.headers().contains(QHttpHeaders::WellKnownHeader::Authorization));
+
+            QHttpHeaders headers;
+            headers.append(QHttpHeaders::WellKnownHeader::Location, "/someOtherPath/redirectTarget"_ba);
+            responder.write(""_ba, headers, QHttpServerResponder::StatusCode::Found);
+        });
+        directDownloadServer.route("/someOtherPath/redirectTarget", [](const QHttpServerRequest &request, QHttpServerResponder &responder) -> void {
+            QVERIFY(!request.headers().contains(QHttpHeaders::WellKnownHeader::Authorization));
+
+            QHttpHeaders headers;
+            headers.append(QHttpHeaders::WellKnownHeader::ContentType, "text/plain"_ba);
+            headers.append("OC-ETag"_ba, "0123456789abcdef"_ba);
+            headers.append("ETag"_ba, "0123456789abcdef"_ba);
+            responder.write("OK redirectTarget"_ba, headers);
+        });
+
+        QTcpServer directDownloadTcpServer;
+        QVERIFY(directDownloadTcpServer.listen(QHostAddress::LocalHost));
+        QVERIFY(directDownloadServer.bind(&directDownloadTcpServer));
+        const QString directDownloadBaseUrl = "http://%1:%2"_L1.arg(directDownloadTcpServer.serverAddress().toString(), QString::number(directDownloadTcpServer.serverPort()));
+        qInfo() << "Listening on" << directDownloadBaseUrl;
+
+        QHttpServer nextcloudServer;
+        nextcloudServer.route("/remote.php/dav/files/propagatortest/someFile", [](const QHttpServerRequest &request, QHttpServerResponder &responder) -> void {
+            QVERIFY(request.headers().contains(QHttpHeaders::WellKnownHeader::Authorization));
+
+            QHttpHeaders headers;
+            headers.append(QHttpHeaders::WellKnownHeader::ContentType, "text/plain"_ba);
+            headers.append("OC-ETag"_ba, "0123456789abcdef"_ba);
+            headers.append("ETag"_ba, "0123456789abcdef"_ba);
+            responder.write("OK someFile"_ba, headers);
+        });
+        nextcloudServer.route("/remote.php/dav/files/propagatortest/redirectedFile", [&directDownloadBaseUrl](const QHttpServerRequest &request, QHttpServerResponder &responder) -> void {
+            QVERIFY(request.headers().contains(QHttpHeaders::WellKnownHeader::Authorization));
+
+            QHttpHeaders headers;
+            headers.append(QHttpHeaders::WellKnownHeader::ContentType, "text/plain"_ba);
+            headers.append(QHttpHeaders::WellKnownHeader::Location, directDownloadBaseUrl + "/someOtherPath/redirectTarget"_L1);
+            responder.write(""_ba, headers, QHttpServerResponder::StatusCode::Found);
+        });
+
+        QTcpServer nextcloudTcpServer;
+        QVERIFY(nextcloudTcpServer.listen(QHostAddress::LocalHost));
+        QVERIFY(nextcloudServer.bind(&nextcloudTcpServer));
+        const QString nextcloudBaseUrl = "http://%1:%2"_L1.arg(nextcloudTcpServer.serverAddress().toString(), QString::number(nextcloudTcpServer.serverPort()));
+        qInfo() << "Listening on" << nextcloudBaseUrl;
+
+
+        auto account = OCC::Account::create();
+        // using WebFlowCredentials here to to make sure it works as expected for real
+        account->setCredentials(new WebFlowCredentials(u"propagatortest"_s, u"invalid"_s));
+        account->setDavUser(u"propagatortest"_s);
+        account->setUrl(nextcloudBaseUrl);
+
+
+        {
+            qInfo() << "Test: direct URL";
+            QBuffer receivedContent;
+            receivedContent.open(QIODevice::ReadWrite);
+
+            auto job = GETFileJob(account, QUrl{directDownloadBaseUrl + "/data/directData"_L1}, &receivedContent, {}, {}, 0);
+            QSignalSpy spy(&job, &GETFileJob::finishedSignal);
+
+            job.start();
+            spy.wait(1000);
+
+            // The temporary web servers verify the received headers
+            QCOMPARE(receivedContent.data(), "OK directData"_ba);
+        }
+
+        {
+            qInfo() << "Test: direct URL with redirect";
+            QBuffer receivedContent;
+            receivedContent.open(QIODevice::ReadWrite);
+
+            auto job = GETFileJob(account, QUrl{directDownloadBaseUrl + "/data/redirectToOtherUrl"_L1}, &receivedContent, {}, {}, 0);
+            QSignalSpy spy(&job, &GETFileJob::finishedSignal);
+
+            job.start();
+            spy.wait(1000);
+
+            // The temporary web servers verify the received headers
+            QCOMPARE(receivedContent.data(), "OK redirectTarget"_ba);
+        }
+
+        {
+            qInfo() << "Test: standard dav path";
+            QBuffer receivedContent;
+            receivedContent.open(QIODevice::ReadWrite);
+
+            auto job = GETFileJob(account, "/someFile"_L1, &receivedContent, {}, {}, 0);
+            QSignalSpy spy(&job, &GETFileJob::finishedSignal);
+
+            job.start();
+            spy.wait(1000);
+
+            // The temporary web servers verify the received headers
+            QCOMPARE(receivedContent.data(), "OK someFile"_ba);
+        }
+
+        {
+            qInfo() << "Test: standard dav path with a redirect to a different origin";
+            QBuffer receivedContent;
+            receivedContent.open(QIODevice::ReadWrite);
+
+            auto job = GETFileJob(account, "/redirectedFile"_L1, &receivedContent, {}, {}, 0);
+            QSignalSpy spy(&job, &GETFileJob::finishedSignal);
+
+            job.start();
+            spy.wait(1000);
+
+            // The temporary web servers verify the received headers
+            QCOMPARE(receivedContent.data(), "OK redirectTarget"_ba);
         }
     }
 #endif

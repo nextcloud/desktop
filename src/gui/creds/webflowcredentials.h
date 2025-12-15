@@ -37,9 +37,6 @@ class WebFlowCredentials : public AbstractCredentials
     friend class WebFlowCredentialsAccessManager;
 
 public:
-    /// Don't add credentials if this is set on a QNetworkRequest
-    static constexpr QNetworkRequest::Attribute DontAddCredentialsAttribute = QNetworkRequest::User;
-
     explicit WebFlowCredentials();
     WebFlowCredentials(
             const QString &user,

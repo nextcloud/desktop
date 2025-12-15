@@ -67,9 +67,6 @@ class OWNCLOUDSYNC_EXPORT HttpCredentials : public AbstractCredentials
     friend class HttpCredentialsAccessManager;
 
 public:
-    /// Don't add credentials if this is set on a QNetworkRequest
-    static constexpr QNetworkRequest::Attribute DontAddCredentialsAttribute = QNetworkRequest::User;
-
     HttpCredentials();
     explicit HttpCredentials(const QString &user, const QString &password,
             const QByteArray &clientCertBundle = QByteArray(), const QByteArray &clientCertPassword = QByteArray());
