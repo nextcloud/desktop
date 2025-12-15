@@ -962,7 +962,7 @@ void AccountSettings::slotEnableVfsCurrentFolder()
             folder->setRootPinState(PinState::Unspecified);
             for (const auto &entry : oldBlacklist) {
                 folder->journalDb()->schedulePathForRemoteDiscovery(entry);
-                if (!folder->vfs().setPinState(entry, PinState::OnlineOnly)) {
+                if (FileSystem::fileExists(entry) && !folder->vfs().setPinState(entry, PinState::OnlineOnly)) {
                     qCWarning(lcAccountSettings) << "Could not set pin state of" << entry << "to online only";
                 }
             }
