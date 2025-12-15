@@ -126,7 +126,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
                 if (longNameSize > 0) {
                     longfile = QString::fromWCharArray(fileNameBuffer, longNameSize);
                 } else {
-                    qCWarning(lcFolderWatcher) << "Error converting file name" << longfile << "to full length, keeping original name." << Utility::formatWinError(error);
+                    qCWarning(lcFolderWatcher) << "Error converting file name" << longfile << "to full length, keeping original name." << Utility::formatWinError(error) << curEntry->Action;
                 }
             }
 
