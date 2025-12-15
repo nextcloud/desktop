@@ -603,7 +603,7 @@ void Folder::slotWatchedPathChanged(const QStringView &path, const ChangeReason 
     if (_vfs) {
         if (pathIsIgnored(path.toString())) {
             const auto pinState = _vfs->pinState(relativePath.toString());
-            if (!pinState || *pinState != PinState::Excluded) {
+            if ((!pinState || *pinState != PinState::Excluded) && FileSystem::fileExists(relativePath.toString())) {
                 if (!_vfs->setPinState(relativePath.toString(), PinState::Excluded)) {
                     qCWarning(lcFolder) << "Could not set pin state of" << relativePath << "to excluded";
                 }
@@ -639,6 +639,7 @@ void Folder::slotWatchedPathChanged(const QStringView &path, const ChangeReason 
         qCDebug(lcFolder) << "Changed path was touched by SyncEngine, ignoring:" << path;
         return;
     }
+    qCDebug(lcFolder) << "Detected changes in paths:" << path;
 #endif
 
     SyncJournalFileRecord record;
