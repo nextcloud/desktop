@@ -53,6 +53,9 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
     const auto fileInfo = QFileInfo{absolute};
     const auto parentFolderPath = fileInfo.dir().absolutePath();
     const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
+
+    qCInfo(lcPropagateLocalRemove()) << "delete" << absolute;
+
     const auto success = FileSystem::removeRecursively(absolute,
                                                        [&deleted](const QString &path, bool isDir) {
                                                            // by prepending, a folder deletion may be followed by content deletions
@@ -63,6 +66,7 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
                                                        [this] (const QString &itemPath, QString *removeError) -> bool {
                                                            auto result = false;
 
+                                                           propagator()->touchedFile(itemPath);
                                                            if (_deleteToClientTrashBin.contains(itemPath)) {
                                                                result = FileSystem::moveToTrash(itemPath, removeError);
                                                                if (!result) {
