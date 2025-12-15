@@ -107,6 +107,8 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
         bestAvailableVfsMode() == Vfs::WindowsCfApi
 #elif defined(BUILD_FILE_PROVIDER_MODULE)
         Mac::FileProvider::fileProviderAvailable()
+#elif defined Q_OS_LINUX
+        bestAvailableVfsMode() == Vfs::DBusApi
 #else
         false
 #endif

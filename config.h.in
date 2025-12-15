@@ -65,6 +65,8 @@
 
 #cmakedefine01 NEXTCLOUD_DEV
 
+#cmakedefine01 KF6DBusAddons_FOUND
+
 #cmakedefine WITH_WEBENGINE
 
 #cmakedefine01 CLIENTSIDEENCRYPTION_ENFORCE_USB_TOKEN

@@ -704,6 +704,10 @@ install(TARGETS nextcloud
         BUNDLE  DESTINATION "."
  )
 
+if(KF6DBusAddons_FOUND)
+    target_link_libraries(nextcloud PRIVATE KF6::DBusAddons)
+endif()
+
 if (WIN32)
     install(FILES $<TARGET_PDB_FILE:nextcloud> DESTINATION bin OPTIONAL)
 endif()
