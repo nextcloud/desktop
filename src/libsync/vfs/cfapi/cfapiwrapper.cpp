@@ -1013,6 +1013,10 @@ OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &pa
 
 OCC::CfApiWrapper::PlaceHolderInfo OCC::CfApiWrapper::findPlaceholderInfo(const QString &path)
 {
+    if (!FileSystem::fileExists(path)) {
+        return {};
+    }
+
     if (auto handle = handleForPath(path)) {
         std::vector<char> buffer(512);
         DWORD actualSize = {};
