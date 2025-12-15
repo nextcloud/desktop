@@ -9,6 +9,7 @@
 #define MIRALL_CREDS_ABSTRACT_CREDENTIALS_H
 
 #include <QObject>
+#include <QNetworkRequest>
 
 #include <csync.h>
 #include "owncloudlib.h"
@@ -25,6 +26,9 @@ class OWNCLOUDSYNC_EXPORT AbstractCredentials : public QObject
     Q_OBJECT
 
 public:
+    /// Don't add credentials if this is set on a QNetworkRequest
+    static constexpr QNetworkRequest::Attribute DontAddCredentialsAttribute = QNetworkRequest::User;
+
     AbstractCredentials();
     // No need for virtual destructor - QObject already has one.
 

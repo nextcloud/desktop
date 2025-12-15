@@ -47,8 +47,10 @@ protected:
 
         QNetworkRequest req(request);
 
-        QByteArray credHash = QByteArray(_cred->user().toUtf8() + ":" + _cred->password().toUtf8()).toBase64();
-        req.setRawHeader(QByteArray("Authorization"), QByteArray("Basic ") + credHash);
+        if (!req.attribute(AbstractCredentials::DontAddCredentialsAttribute).toBool()) {
+            QByteArray credHash = QByteArray(_cred->user().toUtf8() + ":" + _cred->password().toUtf8()).toBase64();
+            req.setRawHeader(QByteArray("Authorization"), QByteArray("Basic ") + credHash);
+        }
 
         // A pre-authenticated cookie
         QByteArray token = _cred->_token.toUtf8();

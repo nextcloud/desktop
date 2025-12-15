@@ -273,10 +273,24 @@ void AbstractNetworkJob::slotFinished()
                     }
                     _requestBody->seek(0);
                 }
+
+                auto request = reply()->request();
+
+                if (!(requestedUrl.host() == redirectUrl.host() && requestedUrl.port() == redirectUrl.port())) {
+                    qCWarning(lcNetworkJob).nospace() << "redirect target mismatches origin, removing credentials"
+                        << " origin=" << requestedUrl.host() << ":" << requestedUrl.port()
+                        << " target=" << redirectUrl.host() << ":" << redirectUrl.port();
+
+                    auto headers = request.headers();
+                    headers.removeAll(QHttpHeaders::WellKnownHeader::Authorization);
+                    request.setHeaders(headers);
+                    request.setAttribute(AbstractCredentials::DontAddCredentialsAttribute, true);
+                }
+
                 sendRequest(
                     verb,
                     redirectUrl,
-                    reply()->request(),
+                    request,
                     _requestBody);
                 return;
             }
