@@ -646,6 +646,7 @@ void Folder::slotWatchedPathChanged(const QStringView &path, const ChangeReason 
         qCDebug(lcFolder) << "Changed path was touched by SyncEngine, ignoring:" << path;
         return;
     }
+    qCDebug(lcFolder) << "Detected changes in paths:" << path;
 #endif
 
     SyncJournalFileRecord record;
