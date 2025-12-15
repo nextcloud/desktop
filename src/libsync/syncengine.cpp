@@ -1171,6 +1171,8 @@ void SyncEngine::handleRemnantReadOnlyFolders()
             const auto deletionCallback = [this] (const QString &deleteItem, bool) {
                 slotAddTouchedFile(deleteItem);
             };
+
+            qCInfo(lcEngine()) << "delete" << _localPath + oneFolder->_file;
             FileSystem::removeRecursively(_localPath + oneFolder->_file, deletionCallback, nullptr, deletionCallback);
         } else {
             FileSystem::remove(_localPath + oneFolder->_file);
