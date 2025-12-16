@@ -359,10 +359,13 @@ void GeneralSettings::loadUpdateChannelsList() {
     ConfigFile cfgFile;
     if (cfgFile.serverHasValidSubscription()) {
         _ui->updateChannel->hide();
-        _ui->updateChannelLabel->hide();
+        _ui->updateChannelLabel->setAlignment(Qt::AlignCenter);
+        _ui->updateChannelLabel->setText(tr("Update channel: %1\n(enforced by server)").arg(cfgFile.currentUpdateChannel()));
         _ui->restoreUpdateChannelButton->hide();
         return;
     }
+    _ui->updateChannelLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    _ui->updateChannelLabel->setText(tr("Update channel"));
 
     const auto validUpdateChannels = cfgFile.validUpdateChannels();
     const auto currentUpdateChannel = cfgFile.currentUpdateChannel();
