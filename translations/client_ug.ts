@@ -326,12 +326,12 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="296"/>
+        <location filename="../src/libsync/filesystem.cpp" line="295"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>&quot;% 1&quot; نى ئۆچۈرۈشتە خاتالىق:% 2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="339"/>
+        <location filename="../src/libsync/filesystem.cpp" line="337"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>&quot;% 1&quot; ھۆججەت قىسقۇچىنى ئۆچۈرەلمىدى</translation>
     </message>
@@ -421,17 +421,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="311"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="325"/>
         <source>The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
         <translation>سېرۋېر جاۋاب قايتۇرۇشقا بەك ئۇزۇن ۋاقىت كەتتى. ئۇلىنىشىڭىزنى تەكشۈرۈپ، قايتا ماسلاشتۇرۇپ بېقىڭ. ئەگەر يەنىلا ئىشلىمىسە، سېرۋېر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="315"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="329"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation>كۈتۈلمىگەن خاتالىق يۈز بەردى. قايتا ماسلاشتۇرۇپ كۆرۈڭ ياكى مەسىلە داۋاملاشسا، مۇلازىمېتىر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="595"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="609"/>
         <source>The server enforces strict transport security and does not accept untrusted certificates.</source>
         <translation>سېرۋېر قاتتىق توشۇش بىخەتەرلىكىنى يولغا قويىدۇ ۋە ئىشەنچسىز گۇۋاھنامىلەرنى قوبۇل قىلمايدۇ.</translation>
     </message>
@@ -2145,68 +2145,68 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>ماسقەدەملەش پائالىيىتى</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1119"/>
+        <location filename="../src/gui/folder.cpp" line="1120"/>
         <source>Could not read system exclude file</source>
         <translation>ھۆججەتنى چىقىرىۋېتىش سىستېمىسىنى ئوقۇيالمىدى</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1409"/>
+        <location filename="../src/gui/folder.cpp" line="1410"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>% 1 MB دىن چوڭ بولغان يېڭى ھۆججەت قىسقۇچ قوشۇلدى:% 2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1412"/>
+        <location filename="../src/gui/folder.cpp" line="1413"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>سىرتقى ساقلاش بوشلۇقىدىن ھۆججەت قىسقۇچ قوشۇلدى.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1413"/>
+        <location filename="../src/gui/folder.cpp" line="1414"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>چۈشۈرمەكچى بولسىڭىز تەڭشەكلەرگە كىرىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1470"/>
+        <location filename="../src/gui/folder.cpp" line="1471"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>قىسقۇچ بەلگىلەنگەن ھۆججەت قىسقۇچنىڭ چوڭلۇقى% 1MB دىن ئېشىپ كەتتى:% 2.
 % 3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1481"/>
+        <location filename="../src/gui/folder.cpp" line="1482"/>
         <source>Keep syncing</source>
         <translation>ماسقەدەملەشنى داۋاملاشتۇرۇڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1489"/>
+        <location filename="../src/gui/folder.cpp" line="1490"/>
         <source>Stop syncing</source>
         <translation>ماسقەدەملەشنى توختىتىڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1500"/>
+        <location filename="../src/gui/folder.cpp" line="1501"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>% 1 ھۆججەت قىسقۇچ% 2MB لىق ھۆججەت قىسقۇچنىڭ چوڭلۇقىدىن ئېشىپ كەتتى.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1501"/>
+        <location filename="../src/gui/folder.cpp" line="1502"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>بۇ ھۆججەت قىسقۇچنى ماسقەدەملەشنى توختاتامسىز؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1576"/>
+        <location filename="../src/gui/folder.cpp" line="1577"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>% 1 ھۆججەت قىسقۇچى قۇرۇلدى ، ئەمما ماس قەدەمدە چىقىرىۋېتىلدى. ئۇنىڭ ئىچىدىكى سانلىق مەلۇماتلار ماس قەدەمدە بولمايدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1579"/>
+        <location filename="../src/gui/folder.cpp" line="1580"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>% 1 ھۆججىتى قۇرۇلدى ، ئەمما ماس قەدەمدە چىقىرىۋېتىلدى. ئۇ ماس قەدەمدە بولمايدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1590"/>
+        <location filename="../src/gui/folder.cpp" line="1591"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -2219,12 +2219,12 @@ This means that the synchronization client might not upload local changes immedi
 % 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1628"/>
+        <location filename="../src/gui/folder.cpp" line="1629"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>مەۋھۇم ھۆججەت چۈشۈرۈش «% 1» ، ھالەت «% 2» ۋە خاتالىق ئۇچۇرى «% 3» بىلەن مەغلۇپ بولدى.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1723"/>
+        <location filename="../src/gui/folder.cpp" line="1724"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2233,7 +2233,7 @@ Alternatively, you can restore all deleted files by uploading from &apos;%1&apos
 ئۇنىڭدىن باشقا ، &apos;% 1&apos; ھۆججەت قىسقۇچىدىن مۇلازىمېتىرغا يوللاش ئارقىلىق ئۆچۈرۈلگەن ھۆججەتلەرنىڭ ھەممىسىنى ئەسلىگە كەلتۈرەلەيسىز.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1724"/>
+        <location filename="../src/gui/folder.cpp" line="1725"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2242,22 +2242,22 @@ Alternatively, you can restore all deleted files by downloading them from the se
 ئۇنىڭدىن باشقا ، ئۆچۈرۈلگەن ھۆججەتلەرنىڭ ھەممىسىنى مۇلازىمېتىردىن چۈشۈرۈپ ئەسلىگە كەلتۈرەلەيسىز.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1725"/>
+        <location filename="../src/gui/folder.cpp" line="1726"/>
         <source>Remove all files?</source>
         <translation>بارلىق ھۆججەتلەرنى ئۆچۈرەمسىز؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1729"/>
+        <location filename="../src/gui/folder.cpp" line="1730"/>
         <source>Proceed with Deletion</source>
         <translation>ئۆچۈرۈش بىلەن داۋاملاشتۇرۇڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1730"/>
+        <location filename="../src/gui/folder.cpp" line="1731"/>
         <source>Restore Files to Server</source>
         <translation>ھۆججەتلەرنى مۇلازىمېتىرغا ئەسلىگە كەلتۈرۈڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1730"/>
+        <location filename="../src/gui/folder.cpp" line="1731"/>
         <source>Restore Files from Server</source>
         <translation>مۇلازىمېتىردىن ھۆججەتلەرنى ئەسلىگە كەلتۈرۈڭ</translation>
     </message>
@@ -2737,27 +2737,27 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::GETFileJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="187"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="189"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>مۇلازىمېتىردىن ئېلېكترونلۇق خەت تاپشۇرۇۋالمىدى ، ۋاكالەتچى / دەرۋازىنى تەكشۈرۈڭ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="194"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="196"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>ئەسلىگە كەلتۈرۈش ئۈچۈن باشقىچە E-Tag تاپشۇرۇۋالدۇق. كېلەر قېتىم قايتا سىناڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="205"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="207"/>
         <source>We received an unexpected download Content-Length.</source>
         <translation>ئويلىمىغان يەردىن چۈشۈرۈش مەزمۇنىنى تاپشۇرۇۋالدۇق.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="233"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="235"/>
         <source>Server returned wrong content-range</source>
         <translation>مۇلازىمېتىر خاتا مەزمۇن دائىرىسىنى قايتۇردى</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="359"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="361"/>
         <source>Connection Timeout</source>
         <translation>ئۇلىنىش ۋاقتى</translation>
     </message>
@@ -4275,18 +4275,18 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="456"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="458"/>
         <source>Could not get file %1 from local DB</source>
         <translation>يەرلىك سانلىق مەلۇمات ئامبىرىدىن %1 ھۆججىتىنى ئالغىلى بولمىدى</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="473"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="475"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
         <translation>شىفىرلاش ئۇچۇرى كەم بولغاچقا% 1 ھۆججەتنى چۈشۈرگىلى بولمايدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1368"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="515"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1370"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>يەرلىك DB دىن ھۆججەت خاتىرىسىنى% 1 ئۆچۈرەلمىدى</translation>
     </message>
@@ -4296,54 +4296,54 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>يەرلىك ھۆججەت ئىسمى توقۇنۇش سەۋەبىدىن% 1 ھۆججەتنى چۈشۈرگىلى بولمايدۇ!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="696"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="698"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>چۈشۈرۈش ھەقسىز يەرلىك دىسكا بوشلۇقىنى چەكتىن تۆۋەنلىتىدۇ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="700"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="702"/>
         <source>Free space on disk is less than %1</source>
         <translation>دىسكىدىكى بوش ئورۇن% 1 كىمۇ يەتمەيدۇ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="861"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="863"/>
         <source>File was deleted from server</source>
         <translation>ھۆججەت مۇلازىمېتىردىن ئۆچۈرۈلدى</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="933"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="935"/>
         <source>The file could not be downloaded completely.</source>
         <translation>ھۆججەتنى تولۇق چۈشۈرگىلى بولمىدى.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="940"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="942"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation>چۈشۈرۈلگەن ھۆججەت قۇرۇق ، ئەمما مۇلازىمېتىر% 1 بولۇشى كېرەكلىكىنى ئېيتتى.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1202"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1216"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1204"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1218"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
         <translation>% 1 ھۆججەت مۇلازىمېتىر دوكلات قىلغان ئۆزگەرتىلگەن ۋاقىت ئىناۋەتسىز. ئۇنى ساقلىماڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1289"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1291"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>ھۆججەت% 1 چۈشۈرۈلدى ، ئەمما يەرلىك ھۆججەت ئىسمى توقۇنۇشنى كەلتۈرۈپ چىقاردى!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1400"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1402"/>
         <source>Error updating metadata: %1</source>
         <translation>مېتا سانلىق مەلۇماتنى يېڭىلاشتا خاتالىق:% 1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1403"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1405"/>
         <source>The file %1 is currently in use</source>
         <translation>% 1 ھۆججىتى ھازىر ئىشلىتىلىۋاتىدۇ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="492"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1318"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="494"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1320"/>
         <source>File has changed since discovery</source>
         <translation>ھۆججەت بايقالغاندىن بۇيان ئۆزگەردى</translation>
     </message>
@@ -4364,39 +4364,39 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="213"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="217"/>
         <source>could not delete file %1, error: %2</source>
         <translation>% 1 ھۆججەتنى ئۆچۈرەلمىدى ، خاتالىق:% 2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="228"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="232"/>
         <source>Folder %1 cannot be created because of a local file or folder name clash!</source>
         <translation>يەرلىك ھۆججەت ياكى ھۆججەت قىسقۇچ ئىسمى توقۇنۇش سەۋەبىدىن% 1 ھۆججەت قىسقۇچنى قۇرغىلى بولمايدۇ!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="260"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="264"/>
         <source>Could not create folder %1</source>
         <translation>% 1 ھۆججەت قىسقۇچ قۇرالمىدى</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="279"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="285"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="277"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="283"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="289"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>% 1 ھۆججەت قىسقۇچنى ئوقۇشقىلا بولمايدۇ:% 2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="285"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="289"/>
         <source>unknown exception</source>
         <translation>نامەلۇم ئىستىسنا</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="318"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="322"/>
         <source>Error updating metadata: %1</source>
         <translation>مېتا سانلىق مەلۇماتنى يېڭىلاشتا خاتالىق:% 1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="321"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="325"/>
         <source>The file %1 is currently in use</source>
         <translation>% 1 ھۆججىتى ھازىر ئىشلىتىلىۋاتىدۇ</translation>
     </message>
@@ -4404,19 +4404,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateLocalRemove</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="113"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="117"/>
         <source>Could not remove %1 because of a local file name clash</source>
         <translation>يەرلىك ھۆججەت ئىسمى توقۇنۇش سەۋەبىدىن% 1 نى ئۆچۈرەلمىدى</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="153"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="162"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="172"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="157"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="166"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="176"/>
         <source>Temporary error when removing local item removed from server.</source>
         <translation>سېرۋېردىن ئۆچۈرۈلگەن يەرلىك تۈرنى چىقىرىۋېتىشتە ۋاقىتلىق خاتالىق كۆرۈلدى.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="185"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>يەرلىك DB دىن ھۆججەت خاتىرىسىنى% 1 ئۆچۈرەلمىدى</translation>
     </message>
@@ -4424,49 +4424,49 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="378"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="382"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>يەرلىك ھۆججەت ياكى ھۆججەت قىسقۇچ ئىسمى توقۇنۇش سەۋەبىدىن% 1 ھۆججەت قىسقۇچنىڭ نامىنى ئۆزگەرتكىلى بولمايدۇ!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="386"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="390"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>ھۆججەت% 1 چۈشۈرۈلدى ، ئەمما يەرلىك ھۆججەت ئىسمى توقۇنۇشنى كەلتۈرۈپ چىقاردى!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="486"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="573"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="490"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="577"/>
         <source>Could not get file %1 from local DB</source>
         <translation>يەرلىك سانلىق مەلۇمات ئامبىرىدىن %1 ھۆججىتىنى ئالغىلى بولمىدى</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="499"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="560"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="503"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="564"/>
         <source>Error setting pin state</source>
         <translation>Pin ھالىتىنى تەڭشەشتە خاتالىق</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="512"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="516"/>
         <source>Error updating metadata: %1</source>
         <translation>مېتا سانلىق مەلۇماتنى يېڭىلاشتا خاتالىق:% 1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="515"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="519"/>
         <source>The file %1 is currently in use</source>
         <translation>% 1 ھۆججىتى ھازىر ئىشلىتىلىۋاتىدۇ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="550"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="554"/>
         <source>Failed to propagate directory rename in hierarchy</source>
         <translation>دەرىجە بويىچە مۇندەرىجە نامىنى تەشۋىق قىلالمىدى</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="555"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="559"/>
         <source>Failed to rename file</source>
         <translation>ھۆججەتنىڭ نامىنى ئۆزگەرتىش مەغلۇب بولدى</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="578"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="582"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>يەرلىك DB دىن ھۆججەت خاتىرىسىنى% 1 ئۆچۈرەلمىدى</translation>
     </message>
@@ -5257,12 +5257,12 @@ Server replied with error: %2</source>
         <translation>يەرلىك ماسقەدەملەش ساندانىنى ئاچقىلى ياكى قۇرالمىدى. ماسقەدەملەش قىسقۇچىدا يېزىش ھوقۇقىڭىزنىڭ بار-يوقلۇقىنى جەزملەشتۈرۈڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1442"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1428"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>دىسكا بوشلۇقى تۆۋەن:% 1 دىن تۆۋەن بوشلۇقنى ئازايتىدىغان چۈشۈرۈشلەر ئاتلاپ كەتتى.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1449"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1435"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>مۇلازىمېتىردا بەزى يۈكلەشلەر ئۈچۈن يېتەرلىك بوشلۇق يوق.</translation>
     </message>
@@ -6279,7 +6279,7 @@ Server replied with error: %2</source>
         <translation>ماس قەدەمدە% 1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="328"/>
+        <location filename="../src/libsync/filesystem.cpp" line="327"/>
         <source>Error deleting the file</source>
         <translation>ھۆججەتنى ئۆچۈرۈشتە خاتالىق يۈز بەردى</translation>
     </message>
@@ -6289,97 +6289,97 @@ Server replied with error: %2</source>
         <translation>VFS ھالەتتە &apos;#&apos; ھەرپتىن باشلانغان يوللارنى قوللىمايدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="479"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="493"/>
         <source>We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.</source>
         <translation>بىز سىزنىڭ تەلىپىڭىزنى بىر تەرەپ قىلالمىدۇق. كېيىن قايتا ماسلاشتۇرۇپ كۆرۈڭ. ئەگەر بۇ ئىش داۋاملىق يۈز بەرسە، ياردەم ئۈچۈن مۇلازىمېتىر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="482"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="496"/>
         <source>You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.</source>
         <translation>داۋاملاشتۇرۇش ئۈچۈن كىرىشىڭىز كېرەك. ئەگەر كىملىك مەلۇماتلىرىڭىزدا مەسىلە كۆرۈلسە، مۇلازىمېتىر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="485"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="499"/>
         <source>You don’t have access to this resource. If you think this is a mistake, please contact your server administrator.</source>
         <translation>بۇ مەنبەگە كىرىش ھوقۇقىڭىز يوق. ئەگەر بۇنىڭ خاتالىق دەپ ئويلىسىڭىز، سېرۋېر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="488"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="502"/>
         <source>We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.</source>
         <translation>سىز ئىزدىگەن نەرسىنى تاپالمىدۇق. ئۇ يۆتكىلىپ كەتكەن ياكى ئۆچۈرۈۋېتىلگەن بولۇشى مۇمكىن. ياردەمگە ئېھتىياجلىق بولسىڭىز، مۇلازىمېتىر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="491"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="505"/>
         <source>It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.</source>
         <translation>سىز دەلىللەشنى تەلەپ قىلىدىغان ۋاكالەتچى ئىشلىتىۋاتقاندەك قىلىسىز. ۋاكالەتچى تەڭشەكلىرىڭىز ۋە ئىناۋەتلىك ئۇچۇرلىرىڭىزنى تەكشۈرۈڭ. ياردەمگە ئېھتىياجلىق بولسىڭىز، مۇلازىمېتىر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="494"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="508"/>
         <source>The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
         <translation>بۇ تەلەپ ئادەتتىكىدىن ئۇزۇنراق ۋاقىت ئالدى. قايتا ماسلاشتۇرۇپ كۆرۈڭ. ئەگەر يەنىلا ئۈنۈم بەرمىسە، مۇلازىمېتىر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="497"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="511"/>
         <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
         <translation>سىز ئىشلەۋاتقاندا سېرۋېر ھۆججەتلىرى ئۆزگەرتىلدى. قايتا ماسلاشتۇرۇپ كۆرۈڭ. مەسىلە داۋاملاشسا، سېرۋېر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="500"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="514"/>
         <source>This folder or file isn’t available anymore. If you need assistance, please contact your server administrator.</source>
         <translation>بۇ قىسقۇچ ياكى ھۆججەت ئەمدى ئىشلەتكىلى بولمايدۇ. ياردەمگە ئېھتىياجلىق بولسىڭىز، سېرۋېر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="503"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="517"/>
         <source>The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administrator.</source>
         <translation>تەلەپ قىلىنغان بەزى شەرتلەر ئورۇندىلمىغاچقا، تەلەپ تاماملانمىدى. كېيىن قايتا سىنخرونلاشتۇرۇپ كۆرۈڭ. ياردەمگە ئېھتىياجلىق بولسىڭىز، مۇلازىمېتىر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="506"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="520"/>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
         <translation>بۇ ھۆججەتنى يۈكلەشكە بەك چوڭ. كىچىكرەك ھۆججەت تاللىشىڭىز ياكى ياردەم ئۈچۈن مۇلازىمېتىر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىشىڭىز كېرەك بولۇشى مۇمكىن.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="509"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="523"/>
         <source>The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administrator for assistance.</source>
         <translation>تەلەپ قىلىش ئۈچۈن ئىشلىتىلگەن ئادرېس بەك ئۇزۇن بولۇپ، مۇلازىمېتىر بىر تەرەپ قىلالمايدۇ. ئەۋەتىۋاتقان ئۇچۇرلىرىڭىزنى قىسقارتىپ كۆرۈڭ ياكى ياردەم ئۈچۈن مۇلازىمېتىر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="512"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="526"/>
         <source>This file type isn’t supported. Please contact your server administrator for assistance.</source>
         <translation>بۇ ھۆججەت تىپى قوللىمايدۇ. ياردەم ئۈچۈن سېرۋېر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="515"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="529"/>
         <source>The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.</source>
         <translation>بەزى ئۇچۇرلار خاتا ياكى تولۇق ئەمەسلىكى ئۈچۈن، مۇلازىمېتىر تەلىپىڭىزنى بىر تەرەپ قىلالمىدى. كېيىن قايتا ماسلاشتۇرۇپ كۆرۈڭ ياكى ياردەم ئۈچۈن مۇلازىمېتىر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="518"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="532"/>
         <source>The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administrator for assistance.</source>
         <translation>سىز كىرمەكچى بولغان مەنبە ھازىر قۇلۇپلانغان بولۇپ، ئۆزگەرتكىلى بولمايدۇ. كېيىن ئۆزگەرتىۋېتىڭ ياكى ياردەم ئۈچۈن مۇلازىمېتىر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="521"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="535"/>
         <source>This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administrator for help.</source>
         <translation>بۇ تەلەپنىڭ بىر قىسىم تەلەپ قىلىنىدىغان شەرتلىرى يوق بولغاچقا، ئۇنى تاماملىغىلى بولمىدى. كېيىن قايتا سىناپ بېقىڭ ياكى ياردەم ئۈچۈن مۇلازىمېتىر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="524"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="538"/>
         <source>You made too many requests. Please wait and try again. If you keep seeing this, your server administrator can help.</source>
         <translation>سىز بەك كۆپ تەلەپ قىلدىڭىز. بىر ئاز كۈتۈپ قايتا سىناپ بېقىڭ. ئەگەر بۇنى قايتا-قايتا كۆرسىڭىز، مۇلازىمېتىر باشقۇرغۇچىڭىز سىزگە ياردەم بېرەلەيدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="527"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="541"/>
         <source>Something went wrong on the server. Please try syncing again later, or contact your server administrator if the issue persists.</source>
         <translation>سېرۋېردا بىرەر مەسىلە كۆرۈلدى. كېيىن قايتا ماسلاشتۇرۇپ كۆرۈڭ، ئەگەر مەسىلە داۋاملاشسا، سېرۋېر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="530"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="544"/>
         <source>The server does not recognize the request method. Please contact your server administrator for help.</source>
         <translation>سېرۋېر تەلەپ ئۇسۇلىنى تونۇمايدۇ. ياردەم ئۈچۈن سېرۋېر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="533"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="547"/>
         <source>We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administrator can help you.</source>
         <translation>بىز سېرۋېرغا ئۇلىنىشتا قىيىنچىلىققا يولۇقتۇق. قايتا سىناپ بېقىڭ. ئەگەر مەسىلە داۋاملاشسا، سېرۋېر باشقۇرغۇچىڭىز سىزگە ياردەم بېرەلەيدۇ.</translation>
     </message>
@@ -6389,37 +6389,37 @@ Server replied with error: %2</source>
         <translation>ھازىر سېرۋېر ئالدىراش. بىر نەچچە مىنۇتتىن كېيىن قايتا ماسلاشتۇرۇپ كۆرۈڭ ياكى جىددىي بولسا سېرۋېر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="536"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="550"/>
         <source>The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.</source>
         <translation>ھازىر سېرۋېر ئالدىراش. بىر نەچچە مىنۇتتىن كېيىن قايتا ئۇلىنىشنى سىناپ بېقىڭ ياكى جىددىي بولسا سېرۋېر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="539"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="553"/>
         <source>It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administrator.</source>
         <translation>سېرۋېرغا ئۇلىنىش بەك ئۇزۇن ۋاقىت ئېلىۋاتىدۇ. كېيىن قايتا سىناپ بېقىڭ. ياردەمگە ئېھتىياجلىق بولسىڭىز، سېرۋېر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="542"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="556"/>
         <source>The server does not support the version of the connection being used. Contact your server administrator for help.</source>
         <translation>سېرۋېر ئىشلىتىلىۋاتقان ئۇلىنىشنىڭ نەشرىنى قوللىمايدۇ. ياردەم ئۈچۈن سېرۋېر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="545"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="559"/>
         <source>The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administrator.</source>
         <translation>سېرۋېردا تەلىپىڭىزنى تاماملاشقا يېتەرلىك بوشلۇق يوق. سېرۋېر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىپ، ئىشلەتكۈچىڭىزنىڭ قانچىلىك بوشلۇققا ئىگە ئىكەنلىكىنى تەكشۈرۈپ بېقىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="548"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="562"/>
         <source>Your network needs extra authentication. Please check your connection. Contact your server administrator for help if the issue persists.</source>
         <translation>تورىڭىز قوشۇمچە دەلىللەشنى تەلەپ قىلىدۇ. ئۇلىنىشىڭىزنى تەكشۈرۈڭ. مەسىلە داۋاملاشسا، ياردەم ئۈچۈن مۇلازىمېتىر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="551"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="565"/>
         <source>You don’t have permission to access this resource. If you believe this is an error, contact your server administrator to ask for assistance.</source>
         <translation>بۇ مەنبەگە كىرىش ھوقۇقىڭىز يوق. ئەگەر بۇنىڭ خاتالىق دەپ قارىسىڭىز، ياردەم سوراش ئۈچۈن مۇلازىمېتىر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="568"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation>كۈتۈلمىگەن خاتالىق يۈز بەردى. قايتا ماسلاشتۇرۇپ كۆرۈڭ ياكى مەسىلە داۋاملاشسا، مۇلازىمېتىر باشقۇرغۇچىڭىز بىلەن ئالاقىلىشىڭ.</translation>
     </message>
