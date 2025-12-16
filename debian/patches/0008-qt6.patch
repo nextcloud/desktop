@@ -67,10 +67,10 @@ index 0000000000..ccded5d62e
 +#include "qtcompat.h"
 diff --git a/src/common/qtcompat.h b/src/common/qtcompat.h
 new file mode 100644
-index 0000000000..44395bc6dd
+index 0000000000..af75196ca3
 --- /dev/null
 +++ b/src/common/qtcompat.h
-@@ -0,0 +1,298 @@
+@@ -0,0 +1,337 @@
 +
 +#pragma once
 +
@@ -177,10 +177,20 @@ index 0000000000..44395bc6dd
 +    return QLatin1StringOrView(str, size);
 +}
 +
++inline QLatin1Char operator""_L1(char c)
++{
++    return QLatin1Char(c);
++}
++
 +inline QString operator""_s(const char16_t *str, size_t size)
 +{
 +    return QString(QStringPrivate(nullptr, const_cast<char16_t *>(str),
 +                                  qsizetype(size)));
++}
++
++inline QByteArray operator""_ba(const char *str, size_t size)
++{
++    return QByteArray(str, size);
 +}
 +
 +} }
@@ -369,6 +379,47 @@ index 0000000000..44395bc6dd
 +
 +//-----------------------------------------------------------------------------
 +//-----------------------------------------------------------------------------
++
++#ifdef QT_NETWORK_LIB
++
++//-----------------------------------------------------------------------------
++
++#include <QNetworkRequest>
++
++//-----------------------------------------------------------------------------
++
++#if QT_VERSION<QT_VERSION_CHECK(6, 8, 0)
++inline void removeAuthorizationHeaders(QNetworkRequest& request)
++{
++    request.setRawHeader("Authorization", QByteArray());
++}
++#else
++inline void removeAuthorizationHeaders(QNetworkRequest& request)
++{
++    auto headers = request.headers();
++    headers.removeAll(QHttpHeaders::WellKnownHeader::Authorization);
++    request.setHeaders(headers);
++}
++#endif
++
++//-----------------------------------------------------------------------------
++
++#endif // QT_NETWORK_LIB
++
++//-----------------------------------------------------------------------------
++//-----------------------------------------------------------------------------
+diff --git a/src/common/syncjournaldb.cpp b/src/common/syncjournaldb.cpp
+index ab99460a0f..6d911b7217 100644
+--- a/src/common/syncjournaldb.cpp
++++ b/src/common/syncjournaldb.cpp
+@@ -24,6 +24,7 @@
+ #include "common/preparedsqlquerymanager.h"
+ 
+ #include "common/c_jhash.h"
++#include "common/qtcompat.h"
+ 
+ // SQL expression to check whether path.startswith(prefix + '/')
+ // Note: '/' + 1 == '0'
 diff --git a/src/csync/csync_exclude.cpp b/src/csync/csync_exclude.cpp
 index b92cfa08e4..38f3d462ec 100644
 --- a/src/csync/csync_exclude.cpp
@@ -526,7 +577,7 @@ index c061eff726..2a0751b07c 100644
                  }
              }
 diff --git a/src/gui/folderman.cpp b/src/gui/folderman.cpp
-index 282fb299da..2a03b9155e 100644
+index 54eb15e53b..db258f0fe8 100644
 --- a/src/gui/folderman.cpp
 +++ b/src/gui/folderman.cpp
 @@ -16,6 +16,7 @@
@@ -900,7 +951,7 @@ index 674aee5a72..af5b56daf1 100644
  #include <QtCore>
  #include <QAbstractListModel>
 diff --git a/src/gui/tray/notificationhandler.cpp b/src/gui/tray/notificationhandler.cpp
-index 4520c8c2ca..7fce97733b 100644
+index cf0624367a..cde9cec563 100644
 --- a/src/gui/tray/notificationhandler.cpp
 +++ b/src/gui/tray/notificationhandler.cpp
 @@ -8,6 +8,7 @@
@@ -986,6 +1037,29 @@ index 5829eabdcf..329d5e34e8 100644
  target_compile_features(nextcloudsync
      PRIVATE
          cxx_std_17
+diff --git a/src/libsync/abstractnetworkjob.cpp b/src/libsync/abstractnetworkjob.cpp
+index 514983390f..1cf4ba1833 100644
+--- a/src/libsync/abstractnetworkjob.cpp
++++ b/src/libsync/abstractnetworkjob.cpp
+@@ -5,6 +5,7 @@
+  */
+ 
+ #include "common/asserts.h"
++#include "common/qtcompat.h"
+ #include "networkjobs.h"
+ #include "account.h"
+ #include "owncloudpropagator.h"
+@@ -281,9 +282,7 @@ void AbstractNetworkJob::slotFinished()
+                         << " origin=" << requestedUrl.host() << ":" << requestedUrl.port()
+                         << " target=" << redirectUrl.host() << ":" << redirectUrl.port();
+ 
+-                    auto headers = request.headers();
+-                    headers.removeAll(QHttpHeaders::WellKnownHeader::Authorization);
+-                    request.setHeaders(headers);
++                    removeAuthorizationHeaders(request);
+                     request.setAttribute(AbstractCredentials::DontAddCredentialsAttribute, true);
+                 }
+ 
 diff --git a/src/libsync/account.cpp b/src/libsync/account.cpp
 index 9e49f1d5d9..dc1ba7b579 100644
 --- a/src/libsync/account.cpp
@@ -1009,7 +1083,7 @@ index 9e49f1d5d9..dc1ba7b579 100644
  
      promise->start();
 diff --git a/src/libsync/clientsideencryption.cpp b/src/libsync/clientsideencryption.cpp
-index 9ce1b567fa..ef19a95180 100644
+index 174b81727f..494ff3620a 100644
 --- a/src/libsync/clientsideencryption.cpp
 +++ b/src/libsync/clientsideencryption.cpp
 @@ -18,7 +18,7 @@
@@ -1077,7 +1151,7 @@ index 9ce1b567fa..ef19a95180 100644
      return decryptedAndUnGzipped;
  }
 diff --git a/src/libsync/discovery.cpp b/src/libsync/discovery.cpp
-index 66423a3086..f0445bea4d 100644
+index c6f320c682..0862945a11 100644
 --- a/src/libsync/discovery.cpp
 +++ b/src/libsync/discovery.cpp
 @@ -23,6 +23,7 @@
@@ -1089,7 +1163,7 @@ index 66423a3086..f0445bea4d 100644
  #include "csync.h"
  
 diff --git a/src/libsync/discoveryphase.cpp b/src/libsync/discoveryphase.cpp
-index 05f72b38c2..f8c6cd5cde 100644
+index 3fce7fff06..dfe8072772 100644
 --- a/src/libsync/discoveryphase.cpp
 +++ b/src/libsync/discoveryphase.cpp
 @@ -17,6 +17,7 @@
@@ -1101,7 +1175,7 @@ index 05f72b38c2..f8c6cd5cde 100644
  #include <csync_exclude.h>
  #include "vio/csync_vio_local.h"
 diff --git a/src/libsync/filesystem.cpp b/src/libsync/filesystem.cpp
-index 25a72f7f13..2818dac61e 100644
+index c6190c9952..d3314f9fa7 100644
 --- a/src/libsync/filesystem.cpp
 +++ b/src/libsync/filesystem.cpp
 @@ -7,6 +7,7 @@
@@ -1308,7 +1382,7 @@ index 0000000000..ba7eb44067
 +
 +QByteArray unGzipData(const QByteArray& inputData);
 diff --git a/src/libsync/networkjobs.cpp b/src/libsync/networkjobs.cpp
-index b9bb71ad8a..24e01a7488 100644
+index 2b994774f9..57c0f11fd1 100644
 --- a/src/libsync/networkjobs.cpp
 +++ b/src/libsync/networkjobs.cpp
 @@ -10,6 +10,7 @@
@@ -1341,7 +1415,7 @@ index a70088034e..4943ccd79c 100644
  #include <networkjobs.h>
  
 diff --git a/src/libsync/pushnotifications.cpp b/src/libsync/pushnotifications.cpp
-index c7c259ab0f..e7ab6d6ad9 100644
+index d6d7a6731f..4bfba5257e 100644
 --- a/src/libsync/pushnotifications.cpp
 +++ b/src/libsync/pushnotifications.cpp
 @@ -3,6 +3,7 @@
@@ -1352,7 +1426,7 @@ index c7c259ab0f..e7ab6d6ad9 100644
  #include "pushnotifications.h"
  #include "creds/abstractcredentials.h"
  #include "account.h"
-@@ -21,7 +22,7 @@ PushNotifications::PushNotifications(Account *account, QObject *parent)
+@@ -25,7 +26,7 @@ PushNotifications::PushNotifications(Account *account, QObject *parent)
      , _account(account)
      , _webSocket(new QWebSocket(QString(), QWebSocketProtocol::VersionLatest, this))
  {
@@ -1361,7 +1435,7 @@ index c7c259ab0f..e7ab6d6ad9 100644
      connect(_webSocket, &QWebSocket::sslErrors, this, &PushNotifications::onWebSocketSslErrors);
      connect(_webSocket, &QWebSocket::connected, this, &PushNotifications::onWebSocketConnected);
      connect(_webSocket, &QWebSocket::disconnected, this, &PushNotifications::onWebSocketDisconnected);
-@@ -67,7 +68,7 @@ void PushNotifications::closeWebSocket()
+@@ -71,7 +72,7 @@ void PushNotifications::closeWebSocket()
          _reconnectTimer->stop();
      }
  
@@ -1370,15 +1444,24 @@ index c7c259ab0f..e7ab6d6ad9 100644
      disconnect(_webSocket, &QWebSocket::sslErrors, this, &PushNotifications::onWebSocketSslErrors);
  
      _webSocket->close();
-@@ -165,7 +166,7 @@ void PushNotifications::openWebSocket()
+@@ -171,7 +172,7 @@ void PushNotifications::openWebSocket()
      const auto webSocketUrl = capabilities.pushNotificationsWebSocketUrl();
  
-     qCInfo(lcPushNotifications) << "Open connection to websocket on" << webSocketUrl << "for account" << _account->url();
+     qCInfo(lcPushNotifications) << "Open connection to websocket on" << webSocketUrl << "for account" << _account->displayName() << _account->url();
 -    connect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::errorOccurred), this, &PushNotifications::onWebSocketError);
 +    connect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(QWebSocketErrorOccurred), this, &PushNotifications::onWebSocketError);
      connect(_webSocket, &QWebSocket::sslErrors, this, &PushNotifications::onWebSocketSslErrors);
      _webSocket->open(webSocketUrl);
  }
+@@ -216,7 +217,7 @@ void PushNotifications::handleNotifyFileId(const QString &message)
+ 
+     QList<qint64> fileIds{};
+     QJsonParseError parseError;
+-    const auto fileIdsJson = message.mid(NOTIFY_FILE_ID_PREFIX.length());
++    const auto fileIdsJson = message.mid(NOTIFY_FILE_ID_PREFIX.size());
+     const auto jsonDoc = QJsonDocument::fromJson(fileIdsJson.toUtf8(), &parseError);
+ 
+     if (parseError.error != QJsonParseError::NoError) {
 diff --git a/src/libsync/syncfileitem.cpp b/src/libsync/syncfileitem.cpp
 index d5aa8776a1..baf79a8e2e 100644
 --- a/src/libsync/syncfileitem.cpp
@@ -1460,10 +1543,10 @@ index 81342a629e..c0507f205c 100644
  
  bool Theme::displayLegacyImportDialog() const
 diff --git a/test/syncenginetestutils.cpp b/test/syncenginetestutils.cpp
-index f319561550..93aacb2545 100644
+index bf4120cb06..50b05a346c 100644
 --- a/test/syncenginetestutils.cpp
 +++ b/test/syncenginetestutils.cpp
-@@ -418,7 +418,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
+@@ -423,7 +423,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
          xml.writeTextElement(davUri, QStringLiteral("getcontentlength"), QString::number(fileInfo.size));
          xml.writeTextElement(davUri, QStringLiteral("getetag"), QStringLiteral("\"%1\"").arg(QString::fromLatin1(fileInfo.etag)));
          xml.writeTextElement(ocUri, QStringLiteral("quota-available-bytes"), fileInfo.folderQuota.bytesAvailableString());
@@ -1533,6 +1616,18 @@ index b45cf49114..060f9aca0b 100644
  #include "folder.h"
  
  #include "account.h"
+diff --git a/test/testfolderman.cpp b/test/testfolderman.cpp
+index 79eef977cd..f142913b18 100644
+--- a/test/testfolderman.cpp
++++ b/test/testfolderman.cpp
+@@ -14,6 +14,7 @@
+ 
+ #include "QtTest/qtestcase.h"
+ #include "common/utility.h"
++#include "common/qtcompat.h"
+ #include "folderman.h"
+ #include "account.h"
+ #include "accountstate.h"
 diff --git a/test/testlocaldiscovery.cpp b/test/testlocaldiscovery.cpp
 index e5e2a943dc..6b02d0e8b7 100644
 --- a/test/testlocaldiscovery.cpp
@@ -1547,10 +1642,10 @@ index e5e2a943dc..6b02d0e8b7 100644
  using namespace Qt::StringLiterals;
  
 diff --git a/test/testnextcloudpropagator.cpp b/test/testnextcloudpropagator.cpp
-index 8a3797d783..d748391643 100644
+index 1568313f4a..9deea92c6d 100644
 --- a/test/testnextcloudpropagator.cpp
 +++ b/test/testnextcloudpropagator.cpp
-@@ -16,6 +16,8 @@
+@@ -17,6 +17,8 @@
  #include "owncloudpropagator_p.h"
  #include "syncenginetestutils.h"
  
@@ -1572,7 +1667,7 @@ index 503454e4d7..5f073a2a9e 100644
  #include <QFile>
  #include <QtTest>
 diff --git a/test/testsyncjournaldb.cpp b/test/testsyncjournaldb.cpp
-index 1e71e25ff7..7bb62edcd7 100644
+index 38fb455f5b..cec9154e21 100644
 --- a/test/testsyncjournaldb.cpp
 +++ b/test/testsyncjournaldb.cpp
 @@ -14,6 +14,7 @@
