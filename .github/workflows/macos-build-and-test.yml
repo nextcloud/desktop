@@ -48,7 +48,7 @@ jobs:
           brew install homebrew/cask/inkscape
 
       - name: Restore cached Craft directories
-        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache/restore@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
         with:
           path: |
             ${{ inputs.CRAFT_MASTER_LOCATION }}
@@ -61,7 +61,7 @@ jobs:
           python "${{ inputs.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ inputs.CRAFT_MASTER_CONFIG }}" --target ${{ inputs.CRAFT_TARGET }} -c --options nextcloud-client.srcDir=${{ github.workspace }} --options nextcloud-client.buildFileProviderModule=${{ inputs.buildFileProviderModule }} nextcloud-client
 
       - name: Cache Craft directories containing the built client
-        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache/save@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
         with:
           path: |
             ${{ inputs.CRAFT_MASTER_LOCATION }}
@@ -77,7 +77,7 @@ jobs:
     runs-on: macos-15
     steps:
       - name: Restore cached Craft directories containing the built client
-        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache/restore@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
         with:
           path: |
             ${{ inputs.CRAFT_MASTER_LOCATION }}
