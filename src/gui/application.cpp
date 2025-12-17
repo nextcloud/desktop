@@ -295,10 +295,6 @@ Application::Application(int &argc, char **argv)
         setupConfigFile();
     }
 
-    // In the config, set the enterprise update channel to invalid, so it can be bumped up
-    // when recieving server capabilities.
-    ConfigFile().setDesktopEnterpriseChannel(UpdateChannel::Invalid.toString());
-
     if (_theme->doNotUseProxy()) {
         ConfigFile().setProxyType(QNetworkProxy::NoProxy);
         const auto &allAccounts = AccountManager::instance()->accounts();
