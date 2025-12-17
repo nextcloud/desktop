@@ -10,6 +10,9 @@
 #include <QDir>
 #include <QLatin1StringView>
 #include <QLoggingCategory>
+#include <QMutex>
+#include <QMutexLocker>
+#include <QPointer>
 #include <QUuid>
 
 #include "config.h"
@@ -185,7 +188,7 @@ namespace Mac {
 class API_AVAILABLE(macos(11.0)) FileProviderDomainManager::MacImplementation
 {
 public:
-    MacImplementation() = default;
+    explicit MacImplementation(FileProviderDomainManager *manager) : _manager(manager) {}
     ~MacImplementation() = default;
 
     void findExistingFileProviderDomains()
@@ -247,10 +250,13 @@ public:
                                 [domain release];
                             }];
 
-                            return;
+                            continue;  // Continue loop instead of return to avoid deadlock (dispatch_group_leave must be called)
                         }
 
-                        _registeredDomains.insert(accountId, domain);
+                        {
+                            QMutexLocker locker(&_registeredDomainsMutex);
+                            _registeredDomains.insert(accountId, domain);
+                        }
 
                         NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:domain];
                         [fpManager reconnectWithCompletionHandler:^(NSError * const error) {
@@ -301,8 +307,11 @@ public:
             Q_ASSERT(account);
 
             const auto accountId = account->userIdAtHostWithPort();
+            QMutexLocker locker(&_registeredDomainsMutex);
             if (_registeredDomains.contains(accountId)) {
-                return _registeredDomains[accountId];
+                NSFileProviderDomain * const domain = _registeredDomains[accountId];
+                [domain retain];  // Caller must release
+                return domain;
             }
         }
 
@@ -312,6 +321,7 @@ public:
     QString fileProviderDomainIdentifierForAccountId(const QString &accountId)
     {
         if (@available(macOS 11.0, *)) {
+            QMutexLocker locker(&_registeredDomainsMutex);
             if (_registeredDomains.contains(accountId)) {
                 const auto fileProviderDomain = _registeredDomains[accountId];
                 return QString::fromNSString([fileProviderDomain identifier]);
@@ -338,23 +348,42 @@ public:
                                                    << accountId;
 
             // Check if we already have a domain for this account (by account ID, not domain ID)
-            if (_registeredDomains.contains(accountId) && _registeredDomains.value(accountId) != nil) {
-                qCDebug(lcMacFileProviderDomainManager) << "File provider domain already exists for account: "
-                                                        << accountId;
-                return;
+            {
+                QMutexLocker locker(&_registeredDomainsMutex);
+                if (_registeredDomains.contains(accountId) && _registeredDomains.value(accountId) != nil) {
+                    qCDebug(lcMacFileProviderDomainManager) << "File provider domain already exists for account: "
+                                                            << accountId;
+                    return;
+                }
             }
 
             NSFileProviderDomain * const fileProviderDomain = [[NSFileProviderDomain alloc] initWithIdentifier:domainId.toNSString()
                                                                                                    displayName:domainDisplayName.toNSString()];
+
+            // Set supportsSyncingTrash based on user setting (macOS 13.0+)
+            if (@available(macOS 13.0, *)) {
+                const bool trashSyncEnabled =
+                    FileProviderSettingsController::instance()->trashSyncEnabledForAccount(accountId);
+                fileProviderDomain.supportsSyncingTrash = trashSyncEnabled;
+                qCInfo(lcMacFileProviderDomainManager) << "Setting supportsSyncingTrash to"
+                                                       << trashSyncEnabled
+                                                       << "for domain"
+                                                       << domainId;
+            }
 
             [NSFileProviderManager addDomain:fileProviderDomain completionHandler:^(NSError * const error) {
                 if(error) {
                     qCWarning(lcMacFileProviderDomainManager) << "Error adding file provider domain: "
                                                               << error.code
                                                               << error.localizedDescription;
+                    [fileProviderDomain release];
+                    return;
                 }
 
-                _registeredDomains.insert(accountId, fileProviderDomain);  // Store by account ID for easier lookup
+                {
+                    QMutexLocker locker(&_registeredDomainsMutex);
+                    _registeredDomains.insert(accountId, fileProviderDomain);  // Store by account ID for easier lookup
+                }
             }];
         }
     }
@@ -402,13 +431,17 @@ public:
             qCInfo(lcMacFileProviderDomainManager) << "Removing file provider domain for account: "
                                                    << accountId;
 
-            if (!_registeredDomains.contains(accountId)) {
-                qCWarning(lcMacFileProviderDomainManager) << "File provider domain not found for account: "
-                                                          << accountId;
-                return;
+            NSFileProviderDomain *fileProviderDomain = nil;
+            {
+                QMutexLocker locker(&_registeredDomainsMutex);
+                if (!_registeredDomains.contains(accountId)) {
+                    qCWarning(lcMacFileProviderDomainManager) << "File provider domain not found for account: "
+                                                              << accountId;
+                    return;
+                }
+                fileProviderDomain = _registeredDomains[accountId];
+                [fileProviderDomain retain];  // Keep alive during async operation
             }
-
-            NSFileProviderDomain * const fileProviderDomain = _registeredDomains[accountId];
 
             [NSFileProviderManager removeDomain:fileProviderDomain completionHandler:^(NSError *error) {
                 if (error) {
@@ -418,13 +451,169 @@ public:
                 }
 
                 removeFileProviderDomainData(fileProviderDomain.identifier);
-                NSFileProviderDomain * const domain = _registeredDomains.take(accountId);
-                [domain release];
+                NSFileProviderDomain *domain = nil;
+                {
+                    QMutexLocker locker(&_registeredDomainsMutex);
+                    domain = _registeredDomains.take(accountId);
+                }
+                if (domain) {
+                    [domain release];  // Release the map's ownership (if we took it)
+                }
+                [fileProviderDomain release];  // Balance our retain
 
                 // Clean up the UUID mapping when removing the domain
                 OCC::ConfigFile cfg;
                 cfg.removeFileProviderDomainUuidMapping(accountId);
             }];
+        }
+    }
+
+    void reconfigureFileProviderDomain(const QString &accountId)
+    {
+        if (@available(macOS 13.0, *)) {
+            qCInfo(lcMacFileProviderDomainManager) << "Reconfiguring file provider domain for account:"
+                                                   << accountId;
+
+            NSFileProviderDomain *oldDomain = nil;
+            QString domainId;
+            QString displayName;
+            bool oldTrashSyncEnabled = false;
+            {
+                QMutexLocker locker(&_registeredDomainsMutex);
+                if (!_registeredDomains.contains(accountId)) {
+                    qCWarning(lcMacFileProviderDomainManager) << "Cannot reconfigure non-existent domain for account:"
+                                                              << accountId;
+                    return;
+                }
+                oldDomain = _registeredDomains[accountId];
+                [oldDomain retain];  // Keep alive during async operations
+                domainId = QString::fromNSString(oldDomain.identifier);
+                displayName = QString::fromNSString(oldDomain.displayName);
+                oldTrashSyncEnabled = oldDomain.supportsSyncingTrash;
+            }
+
+            const bool newTrashSyncEnabled =
+                FileProviderSettingsController::instance()->trashSyncEnabledForAccount(accountId);
+
+            // Check if reconfiguration is actually needed
+            if (oldTrashSyncEnabled == newTrashSyncEnabled) {
+                qCDebug(lcMacFileProviderDomainManager) << "No reconfiguration needed for account"
+                                                        << accountId
+                                                        << "- supportsSyncingTrash already"
+                                                        << newTrashSyncEnabled;
+                [oldDomain release];  // Balance our retain
+                return;
+            }
+
+            qCInfo(lcMacFileProviderDomainManager) << "Reconfiguring domain"
+                                                   << domainId
+                                                   << "with supportsSyncingTrash ="
+                                                   << newTrashSyncEnabled;
+
+            // Remove from map before async removal to prevent concurrent access to stale pointer
+            {
+                QMutexLocker locker(&_registeredDomainsMutex);
+                _registeredDomains.remove(accountId);
+            }
+
+            // Remove old domain and re-add with new configuration
+            // Note: We don't remove domain data as we're just reconfiguring, not fully removing
+            [NSFileProviderManager removeDomain:oldDomain completionHandler:^(NSError * const removeError) {
+                if (removeError) {
+                    qCWarning(lcMacFileProviderDomainManager) << "Error removing domain for reconfiguration:"
+                                                              << removeError.code
+                                                              << removeError.localizedDescription;
+                    {
+                        QMutexLocker locker(&_registeredDomainsMutex);
+                        _registeredDomains.insert(accountId, oldDomain);
+                    }
+                    const QString errorMsg = QString::fromNSString(removeError.localizedDescription);
+                    QPointer<FileProviderDomainManager> safeManager = _manager;
+                    if (!safeManager) {
+                        return;
+                    }
+                    QMetaObject::invokeMethod(safeManager.data(), [safeManager, accountId, errorMsg]() {
+                        if (safeManager) {
+                            emit safeManager->domainReconfigurationFailed(accountId, errorMsg);
+                        }
+                    }, Qt::QueuedConnection);
+                    return;
+                }
+
+                [oldDomain release];
+
+                NSFileProviderDomain * const newDomain =
+                    [[NSFileProviderDomain alloc] initWithIdentifier:domainId.toNSString()
+                                                         displayName:displayName.toNSString()];
+
+                newDomain.supportsSyncingTrash = newTrashSyncEnabled;
+
+                [NSFileProviderManager addDomain:newDomain completionHandler:^(NSError * const addError) {
+                    if (addError) {
+                        qCWarning(lcMacFileProviderDomainManager) << "Error re-adding domain after reconfiguration:"
+                                                                  << addError.code
+                                                                  << addError.localizedDescription;
+                        const QString addErrorMsg = QString::fromNSString(addError.localizedDescription);
+                        NSFileProviderDomain * const restoredDomain =
+                            [[NSFileProviderDomain alloc] initWithIdentifier:domainId.toNSString()
+                                                                 displayName:displayName.toNSString()];
+                        restoredDomain.supportsSyncingTrash = oldTrashSyncEnabled;
+
+                        [NSFileProviderManager addDomain:restoredDomain completionHandler:^(NSError * const restoreError) {
+                            const bool restoreFailed = (restoreError != nil);
+                            if (restoreFailed) {
+                                qCWarning(lcMacFileProviderDomainManager) << "Failed to restore domain:"
+                                                                          << restoreError.code;
+                                [restoredDomain release];
+                            } else {
+                                qCInfo(lcMacFileProviderDomainManager) << "Successfully restored domain after failed reconfiguration";
+                                {
+                                    QMutexLocker locker(&_registeredDomainsMutex);
+                                    _registeredDomains.insert(accountId, restoredDomain);
+                                }
+                            }
+
+                            QPointer<FileProviderDomainManager> safeManager = _manager;
+                            if (!safeManager) {
+                                return;
+                            }
+                            QMetaObject::invokeMethod(safeManager.data(), [safeManager, accountId, addErrorMsg, oldTrashSyncEnabled, restoreFailed]() {
+                                if (!safeManager) {
+                                    return;
+                                }
+                                if (!restoreFailed) {
+                                    FileProviderSettingsController::instance()->setTrashSyncEnabledForAccount(accountId, oldTrashSyncEnabled);
+                                }
+                                emit safeManager->domainReconfigurationFailed(accountId, addErrorMsg);
+                            }, Qt::QueuedConnection);
+                        }];
+                        [newDomain release];
+                        return;
+                    }
+
+                    qCInfo(lcMacFileProviderDomainManager) << "Successfully reconfigured domain with supportsSyncingTrash:"
+                                                           << newTrashSyncEnabled;
+
+                    {
+                        QMutexLocker locker(&_registeredDomainsMutex);
+                        _registeredDomains.insert(accountId, newDomain);
+                    }
+
+                    // Reconnect the newly configured domain
+                    NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:newDomain];
+                    [fpManager reconnectWithCompletionHandler:^(NSError * const reconnectError) {
+                        if (reconnectError) {
+                            qCWarning(lcMacFileProviderDomainManager) << "Error reconnecting reconfigured domain:"
+                                                                      << reconnectError.code
+                                                                      << reconnectError.localizedDescription;
+                        } else {
+                            qCInfo(lcMacFileProviderDomainManager) << "Successfully reconnected reconfigured domain";
+                        }
+                    }];
+                }];
+            }];
+        } else {
+            qCWarning(lcMacFileProviderDomainManager) << "supportsSyncingTrash requires macOS 13.0+";
         }
     }
 
@@ -441,8 +630,12 @@ public:
                     return;
                 }
 
-                const auto registeredDomainPtrs = _registeredDomains.values();
-                const auto accountIds = _registeredDomains.keys();
+                QList<NSFileProviderDomain*> registeredDomainPtrs;
+                {
+                    QMutexLocker locker(&_registeredDomainsMutex);
+                    registeredDomainPtrs = _registeredDomains.values();
+                    _registeredDomains.clear();
+                }
 
                 for (NSFileProviderDomain * const domain : registeredDomainPtrs) {
                     removeFileProviderDomainData(domain.identifier);
@@ -451,8 +644,6 @@ public:
                         [domain release];
                     }
                 }
-
-                _registeredDomains.clear();
             }];
         }
     }
@@ -485,10 +676,14 @@ public:
                         removeFileProviderDomainData(domain.identifier);
 
                         const QString accountId = accountIdFromDomainId(domain.identifier);
-                        NSFileProviderDomain * const registeredDomainPtr = _registeredDomains.take(accountId);
+                        NSFileProviderDomain *registeredDomainPtr = nil;
+                        {
+                            QMutexLocker locker(&_registeredDomainsMutex);
+                            registeredDomainPtr = _registeredDomains.take(accountId);
+                        }
 
                         if (registeredDomainPtr != nil) {
-                            [domain release];
+                            [registeredDomainPtr release];  // Release OUR retained copy, not the getDomains array element
                         }
                     }];
                 }
@@ -510,13 +705,17 @@ public:
             qCInfo(lcMacFileProviderDomainManager) << "Disconnecting file provider domain for account: "
                                                    << accountId;
 
-            if(!_registeredDomains.contains(accountId)) {
-                qCInfo(lcMacFileProviderDomainManager) << "File provider domain not found for account: "
-                                                       << accountId;
-                return;
+            NSFileProviderDomain *fileProviderDomain = nil;
+            {
+                QMutexLocker locker(&_registeredDomainsMutex);
+                if(!_registeredDomains.contains(accountId)) {
+                    qCInfo(lcMacFileProviderDomainManager) << "File provider domain not found for account: "
+                                                           << accountId;
+                    return;
+                }
+                fileProviderDomain = _registeredDomains[accountId];
+                [fileProviderDomain retain];  // Keep alive during async operation
             }
-
-            NSFileProviderDomain * const fileProviderDomain = _registeredDomains[accountId];
             Q_ASSERT(fileProviderDomain != nil);
 
             NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:fileProviderDomain];
@@ -528,11 +727,11 @@ public:
                                                               << fileProviderDomain.displayName
                                                               << error.code
                                                               << error.localizedDescription;
-                    return;
+                }  else {
+                    qCInfo(lcMacFileProviderDomainManager) << "Successfully disconnected file provider domain: "
+                                                           << fileProviderDomain.displayName;
                 }
-
-                qCInfo(lcMacFileProviderDomainManager) << "Successfully disconnected file provider domain: "
-                                                       << fileProviderDomain.displayName;
+                [fileProviderDomain release];  // Balance the retain
             }];
         }
     }
@@ -548,13 +747,17 @@ public:
             qCInfo(lcMacFileProviderDomainManager) << "Reconnecting file provider domain for account: "
                                                    << accountId;
 
-            if(!_registeredDomains.contains(accountId)) {
-                qCInfo(lcMacFileProviderDomainManager) << "File provider domain not found for account: "
-                                                       << accountId;
-                return;
+            NSFileProviderDomain *fileProviderDomain = nil;
+            {
+                QMutexLocker locker(&_registeredDomainsMutex);
+                if(!_registeredDomains.contains(accountId)) {
+                    qCInfo(lcMacFileProviderDomainManager) << "File provider domain not found for account: "
+                                                           << accountId;
+                    return;
+                }
+                fileProviderDomain = _registeredDomains[accountId];
+                [fileProviderDomain retain];  // Keep alive during async operation
             }
-
-            NSFileProviderDomain * const fileProviderDomain = _registeredDomains[accountId];
             Q_ASSERT(fileProviderDomain != nil);
 
             NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:fileProviderDomain];
@@ -565,13 +768,13 @@ public:
                                                               << fileProviderDomain.displayName
                                                               << error.code
                                                               << error.localizedDescription;
-                    return;
+                } else {
+                    qCInfo(lcMacFileProviderDomainManager) << "Successfully reconnected file provider domain: "
+                                                           << fileProviderDomain.displayName;
+
+                    signalEnumeratorChanged(account.get());
                 }
-
-                qCInfo(lcMacFileProviderDomainManager) << "Successfully reconnected file provider domain: "
-                                                       << fileProviderDomain.displayName;
-
-                signalEnumeratorChanged(account.get());
+                [fileProviderDomain release];  // Balance the retain
             }];
         }
     }
@@ -585,13 +788,17 @@ public:
             qCInfo(lcMacFileProviderDomainManager) << "Signalling enumerator changed in file provider domain for account: "
                                                    << accountId;
 
-            if(!_registeredDomains.contains(accountId)) {
-                qCInfo(lcMacFileProviderDomainManager) << "File provider domain not found for account: "
-                                                       << accountId;
-                return;
+            NSFileProviderDomain *fileProviderDomain = nil;
+            {
+                QMutexLocker locker(&_registeredDomainsMutex);
+                if(!_registeredDomains.contains(accountId)) {
+                    qCInfo(lcMacFileProviderDomainManager) << "File provider domain not found for account: "
+                                                           << accountId;
+                    return;
+                }
+                fileProviderDomain = _registeredDomains[accountId];
+                [fileProviderDomain retain];  // Keep alive during async operation
             }
-
-            NSFileProviderDomain * const fileProviderDomain = _registeredDomains[accountId];
             Q_ASSERT(fileProviderDomain != nil);
 
             NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:fileProviderDomain];
@@ -600,25 +807,63 @@ public:
                     qCWarning(lcMacFileProviderDomainManager) << "Error signalling enumerator changed for working set:"
                                                               << error.localizedDescription;
                 }
+                [fileProviderDomain release];  // Balance the retain
             }];
         }
     }
 
     QStringList getAccountIdsOfFoundFileProviderDomains() const
     {
+        QMutexLocker locker(&_registeredDomainsMutex);
         return _registeredDomains.keys();
     }
 
+    void reconcileTrashSyncSettings()
+    {
+        if (@available(macOS 13.0, *)) {
+            qCDebug(lcMacFileProviderDomainManager) << "Reconciling trash sync settings with existing domains";
+
+            QList<QPair<QString, bool>> accountsToCheck;
+            {
+                QMutexLocker locker(&_registeredDomainsMutex);
+                for (auto it = _registeredDomains.constBegin(); it != _registeredDomains.constEnd(); ++it) {
+                    NSFileProviderDomain * const domain = it.value();
+                    if (domain != nil) {
+                        accountsToCheck.append({it.key(), domain.supportsSyncingTrash});
+                    }
+                }
+            }
+
+            for (const auto &[accountId, domainTrashSyncEnabled] : accountsToCheck) {
+                const bool prefTrashSyncEnabled =
+                    FileProviderSettingsController::instance()->trashSyncEnabledForAccount(accountId);
+
+                if (prefTrashSyncEnabled != domainTrashSyncEnabled) {
+                    qCInfo(lcMacFileProviderDomainManager) << "Trash sync mismatch for account" << accountId
+                                                           << "- pref:" << prefTrashSyncEnabled
+                                                           << "domain:" << domainTrashSyncEnabled
+                                                           << "- triggering reconfiguration";
+                    reconfigureFileProviderDomain(accountId);
+                } else {
+                    qCDebug(lcMacFileProviderDomainManager) << "Trash sync setting matches for account" << accountId
+                                                            << "- value:" << prefTrashSyncEnabled;
+                }
+            }
+        }
+    }
+
 private:
+    FileProviderDomainManager *_manager = nullptr;
     //! keys are accountId, i.e. userIdAtHostWithPort
     QHash<QString, NSFileProviderDomain*> _registeredDomains;
+    mutable QMutex _registeredDomainsMutex;
 };
 
 FileProviderDomainManager::FileProviderDomainManager(QObject * const parent)
     : QObject(parent)
 {
     if (@available(macOS 11.0, *)) {
-        d.reset(new FileProviderDomainManager::MacImplementation());
+        d.reset(new FileProviderDomainManager::MacImplementation(this));
     } else {
         qCWarning(lcMacFileProviderDomainManager()) << "Trying to run File Provider on system that does not support it.";
     }
@@ -646,6 +891,9 @@ void FileProviderDomainManager::start()
 
     connect(FileProviderSettingsController::instance(), &FileProviderSettingsController::vfsEnabledAccountsChanged,
             this, &FileProviderDomainManager::updateFileProviderDomains);
+
+    connect(FileProviderSettingsController::instance(), &FileProviderSettingsController::trashSyncEnabledForAccountChanged,
+            this, &FileProviderDomainManager::reconfigureFileProviderDomainForAccount);
 }
 
 void FileProviderDomainManager::setupFileProviderDomains()
@@ -656,6 +904,7 @@ void FileProviderDomainManager::setupFileProviderDomains()
 
     d->findExistingFileProviderDomains();
     updateFileProviderDomains();
+    d->reconcileTrashSyncSettings();
 }
 
 void FileProviderDomainManager::updateFileProviderDomains()
@@ -766,6 +1015,15 @@ void FileProviderDomainManager::removeFileProviderDomainForAccount(const Account
 
     Q_ASSERT(accountState);
     d->removeFileProviderDomain(accountState);
+}
+
+void FileProviderDomainManager::reconfigureFileProviderDomainForAccount(const QString &accountId)
+{
+    if (!d) {
+        return;
+    }
+
+    d->reconfigureFileProviderDomain(accountId);
 }
 
 void FileProviderDomainManager::disconnectFileProviderDomainForAccount(const AccountState * const accountState, const QString &reason)

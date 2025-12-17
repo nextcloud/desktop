@@ -63,17 +63,6 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
         self.fpExtension.removeAccountConfig()
     }
 
-    func getTrashDeletionEnabledState(completionHandler: @escaping (Bool, Bool) -> Void) {
-        let enabled = fpExtension.config.trashDeletionEnabled
-        let set = fpExtension.config.trashDeletionSet
-        completionHandler(enabled, set)
-    }
-
-    func setTrashDeletionEnabled(_ enabled: Bool) {
-        fpExtension.config.trashDeletionEnabled = enabled
-        logger.info("Trash deletion setting changed to: \(enabled)")
-    }
-
     func setIgnoreList(_ ignoreList: [String]) {
         self.fpExtension.ignoredFiles = IgnoredFilesMatcher(ignoreList: ignoreList)
         logger.info("Ignore list updated.")
