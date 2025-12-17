@@ -1287,11 +1287,6 @@ void Account::updateServerSubcription()
 {
     ConfigFile currentConfig;
     const auto capabilityValidSubscription = _capabilities.serverHasValidSubscription();
-    const auto configValidSubscription = currentConfig.serverHasValidSubscription();
-    if (capabilityValidSubscription != configValidSubscription && !configValidSubscription) {
-        currentConfig.setServerHasValidSubscription(capabilityValidSubscription);
-    }
-
     setServerHasValidSubscription(capabilityValidSubscription);
 }
 
@@ -1304,6 +1299,8 @@ void Account::updateDesktopEnterpriseChannel()
     const auto configEnterpriseChannel = UpdateChannel::fromString(currentConfig.desktopEnterpriseChannel());
     if (capabilityEnterpriseChannel > configEnterpriseChannel) {
         currentConfig.setDesktopEnterpriseChannel(capabilityEnterpriseChannel.toString());
+        const auto configUpdateChannel = UpdateChannel::fromString(currentConfig.currentUpdateChannel());
+        currentConfig.setUpdateChannel(configUpdateChannel.toString());
     }
 }
 
