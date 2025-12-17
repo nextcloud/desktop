@@ -156,6 +156,9 @@ AccountManager::AccountsRestoreResult AccountManager::restore(const bool alsoRes
         }
     }
 
+    updateServerHasValidSubscriptionConfig();
+    updateServerDesktopEnterpriseUpdateChannel();
+
     emit(accountListInitialized());
 
     ConfigFile().cleanupGlobalNetworkConfiguration();
@@ -860,9 +863,6 @@ void AccountManager::addAccountState(AccountState *const accountState)
     AccountStatePtr ptr(accountState);
     _accounts << ptr;
     ptr->trySignIn();
-
-    updateServerHasValidSubscriptionConfig();
-    updateServerDesktopEnterpriseUpdateChannel();
 
     emit accountAdded(accountState);
 }
