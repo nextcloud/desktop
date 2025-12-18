@@ -59,6 +59,9 @@ static constexpr char logExpireC[] = "logExpire";
 static constexpr char logFlushC[] = "logFlush";
 static constexpr char showExperimentalOptionsC[] = "showExperimentalOptions";
 static constexpr char clientPreviousVersionC[] = "clientPreviousVersion";
+static constexpr char fileProviderDomainsAppSandboxMigrationCompletedC[] = "fileProviderDomainsAppSandboxMigrationCompleted";
+static constexpr char fileProviderDomainUuidsGroupC[] = "FileProviderDomainUuids";
+static constexpr char fileProviderAccountIdsGroupC[] = "FileProviderAccountIds";
 
 static constexpr char proxyHostC[] = "Proxy/host";
 static constexpr char proxyTypeC[] = "Proxy/type";
@@ -1312,61 +1315,24 @@ void ConfigFile::setDiscoveredLegacyConfigPath(const QString &discoveredLegacyCo
     _discoveredLegacyConfigPath = discoveredLegacyConfigPath;
 }
 
-QString ConfigFile::fileProviderDomainUuidFromAccountId(const QString &accountId) const
+void ConfigFile::removeFileProviderDomainMapping()
 {
-    if (accountId.isEmpty()) {
-        return {};
-    }
-    return retrieveData(QStringLiteral("FileProviderDomainUuids"), accountId).toString();
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.remove(QLatin1String(fileProviderDomainUuidsGroupC));
+    settings.remove(QLatin1String(fileProviderAccountIdsGroupC));
+    settings.sync();
 }
 
-void ConfigFile::setFileProviderDomainUuidForAccountId(const QString &accountId, const QString &domainUuid)
+bool ConfigFile::fileProviderDomainsAppSandboxMigrationCompleted() const
 {
-    if (accountId.isEmpty() || domainUuid.isEmpty()) {
-        return;
-    }
-
-    storeData(QStringLiteral("FileProviderDomainUuids"), accountId, domainUuid);
-    storeData(QStringLiteral("FileProviderAccountIds"), domainUuid, accountId);
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(fileProviderDomainsAppSandboxMigrationCompletedC, false).toBool();
 }
 
-QString ConfigFile::accountIdFromFileProviderDomainUuid(const QString &domainUuid) const
+void ConfigFile::setFileProviderDomainsAppSandboxMigrationCompleted(const bool completed)
 {
-    if (domainUuid.isEmpty()) {
-        return {};
-    }
-
-    return retrieveData(QStringLiteral("FileProviderAccountIds"), domainUuid).toString();
-}
-
-void ConfigFile::removeFileProviderDomainUuidMapping(const QString &accountId)
-{
-    if (accountId.isEmpty()) {
-        return;
-    }
-
-    const QString domainUuid = fileProviderDomainUuidFromAccountId(accountId);
-
-    if (!domainUuid.isEmpty()) {
-        removeData(QStringLiteral("FileProviderAccountIds"), domainUuid);
-    }
-
-    removeData(QStringLiteral("FileProviderDomainUuids"), accountId);
-}
-
-void ConfigFile::removeFileProviderDomainMappingByDomainIdentifier(const QString domainIdentifier)
-{
-    if (domainIdentifier.isEmpty()) {
-        return;
-    }
-
-    removeData(QStringLiteral("FileProviderAccountIds"), domainIdentifier);
-
-    const QString accountIdentifier = accountIdFromFileProviderDomainUuid(domainIdentifier);
-
-    if (!accountIdentifier.isEmpty()) {
-        removeData(QStringLiteral("FileProviderDomainUuids"), accountIdentifier);
-    }
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(fileProviderDomainsAppSandboxMigrationCompletedC, completed);
 }
 
 bool ConfigFile::isUpgrade() const

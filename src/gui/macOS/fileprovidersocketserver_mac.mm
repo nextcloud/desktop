@@ -16,14 +16,11 @@ namespace Mac
 
 QString fileProviderSocketPath()
 {
-    // This must match the code signing Team setting of the extension
-    // Example for developer builds (with ad-hoc signing identity): "" "com.owncloud.desktopclient" ".fileprovidersocket"
-    // Example for official signed packages: "9B5WD74GWJ." "com.owncloud.desktopclient" ".fileprovidersocket"
-    NSString *appGroupId = @SOCKETAPI_TEAM_IDENTIFIER_PREFIX APPLICATION_REV_DOMAIN;
-
+    NSString *appGroupId = [NSString stringWithFormat:@"%@.%@", @DEVELOPMENT_TEAM, @APPLICATION_REV_DOMAIN];
     NSURL *container = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroupId];
-    NSURL *socketPath = [container URLByAppendingPathComponent:@".fileprovidersocket" isDirectory:false];
-    return QString::fromNSString(socketPath.path);
+    NSURL *socket = [container URLByAppendingPathComponent:@"fps" isDirectory:false];
+
+    return QString::fromNSString(socket.path);
 }
 
 } // namespace Mac

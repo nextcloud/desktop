@@ -63,6 +63,7 @@
 
 #ifdef Q_OS_MACOS
 #include <CoreFoundation/CoreFoundation.h>
+#include "common/utility_mac_sandbox.h"
 #endif
 
 #ifdef HAVE_KGUIADDONS
@@ -295,7 +296,12 @@ SocketApi::SocketApi(QObject *parent)
         }
     }
     if (!_localServer.listen(socketPath)) {
-        qCWarning(lcSocketApi) << "can't start server" << socketPath;
+        qCWarning(lcSocketApi) << "can't start server" 
+                               << socketPath
+                               << "Error:"
+                               << _localServer.errorString()
+                               << "Error code:" 
+                               << _localServer.serverError();
     } else {
         qCInfo(lcSocketApi) << "server started, listening at " << socketPath;
     }
@@ -1025,13 +1031,26 @@ void SocketApi::command_MOVE_ITEM(const QString &localFile, SocketListener *)
     // Add back the folder path
     defaultDirAndName = QDir(fileData.folder->path()).filePath(defaultDirAndName);
 
-    const auto target = QFileDialog::getSaveFileName(
+    // Use getSaveFileUrl for sandbox compatibility
+    const auto targetUrl = QFileDialog::getSaveFileUrl(
         nullptr,
         tr("Select new location …"),
-        defaultDirAndName,
+        QUrl::fromLocalFile(defaultDirAndName),
         QString(), nullptr, QFileDialog::HideNameFilterDetails);
-    if (target.isEmpty())
+    if (targetUrl.isEmpty())
         return;
+
+#ifdef Q_OS_MACOS
+    // On macOS with app sandbox, we need to explicitly access the security-scoped resource
+    auto scopedAccess = Utility::MacSandboxSecurityScopedAccess::create(targetUrl);
+    
+    if (!scopedAccess->isValid()) {
+        qCWarning(lcSocketApi) << "Could not access security-scoped resource for conflict resolution:" << targetUrl;
+        return;
+    }
+#endif
+
+    const auto target = targetUrl.toLocalFile();
 
     ConflictSolver solver;
     solver.setLocalVersionFilename(localFile);

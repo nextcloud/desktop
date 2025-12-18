@@ -59,54 +59,10 @@ static constexpr auto bundleExtensions = std::array{
 static const QRegularExpression illegalChars("[:/]");
 
 /**
- * @brief Synchronously retrieves an NSFileProviderDomain for the given domain identifier.
- *
- * This function searches through all registered file provider domains and returns the one
- * matching the provided identifier. The function blocks until the asynchronous file provider
- * API call completes using a dispatch semaphore.
- *
- * @param domainIdentifier The unique identifier of the domain to find
- * @return A retained NSFileProviderDomain object if found, nil otherwise
- *
- * @warning The returned NSFileProviderDomain has been retained and MUST be released by the caller!
- * @warning This function blocks the calling thread and should not be called frequently
- *          due to its synchronous nature over an asynchronous API
- */
-// Synchronous function to get the domain for a domain identifier
-NSFileProviderDomain *domainForIdentifier(const QString &domainIdentifier);
-
-/**
- * @brief Resolve a file provider domain identifier by the given account.
- *
- * This function checks the list of known identifiers to contain one for the given account
- * and falls back to deterministic legacy identifiers derived from the account identifier.
- */
-QString domainIdentifierForAccount(const OCC::Account * const account);
-
-/**
- * @brief Resolve a file provider domain identifier by the given account pointer.
- */
-QString domainIdentifierForAccount(const OCC::AccountPtr account);
-
-/**
- * @brief Resolve a file provider domain identifier by the given account identifier.
- */
-QString domainIdentifierForAccountIdentifier(const QString &accountId);
-
-/**
- * @brief Resolve a file provider domain identifier by the given account identifier.
- */
-QString domainIdentifierForAccountIdentifier(const NSString *accountId);
-
-/**
  * @brief Whether the given domain identifier contains illegal characters or a known bundle extension.
+ * @todo Refactor this to validate file provider domain display names instead because identifiers are all UUIDs by now.
  */
 bool illegalDomainIdentifier(const QString &domainId);
-
-/**
- * @brief Find the logs directory of the file provider extension for all the domains.
- */
-QDir fileProviderExtensionLogDirectory();
 
 /**
  * @brief Find the logs directory of the file provider domain with the given identifier.
