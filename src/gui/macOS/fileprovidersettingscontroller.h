@@ -29,17 +29,16 @@ public:
 
     [[nodiscard]] QStringList vfsEnabledAccounts() const;
     [[nodiscard]] Q_INVOKABLE bool vfsEnabledForAccount(const QString &userIdAtHost) const;
-    [[nodiscard]] Q_INVOKABLE bool trashDeletionEnabledForAccount(const QString &userIdAtHost) const;
-    [[nodiscard]] Q_INVOKABLE bool trashDeletionSetForAccount(const QString &userIdAtHost) const;
+    [[nodiscard]] Q_INVOKABLE bool trashSyncEnabledForAccount(const QString &userIdAtHost) const;
+    [[nodiscard]] Q_INVOKABLE bool trashSyncSupported() const;
 
 public slots:
     void setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled, const bool showInformationDialog = true);
-    void setTrashDeletionEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);
+    void setTrashSyncEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);
 
 signals:
     void vfsEnabledAccountsChanged();
-    void trashDeletionEnabledForAccountChanged(const QString &userIdAtHost);
-    void trashDeletionSetForAccountChanged(const QString &userIdAtHost);
+    void trashSyncEnabledForAccountChanged(const QString &userIdAtHost);
 
 private:
     explicit FileProviderSettingsController(QObject *parent = nullptr);

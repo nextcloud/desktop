@@ -6,6 +6,7 @@
 #include "fileprovider.h"
 
 #include <QLoggingCategory>
+#include <QMessageBox>
 
 #include "libsync/configfile.h"
 #include "gui/macOS/fileproviderxpc.h"
@@ -36,6 +37,8 @@ FileProvider::FileProvider(QObject * const parent)
 
     if (_domainManager) {
         connect(_domainManager.get(), &FileProviderDomainManager::domainSetupComplete, this, &FileProvider::configureXPC);
+        connect(_domainManager.get(), &FileProviderDomainManager::domainReconfigurationFailed,
+                this, &FileProvider::onDomainReconfigurationFailed);
         _domainManager->start();
         qCDebug(lcMacFileProvider()) << "Initialized file provider domain manager";
     }
@@ -100,6 +103,17 @@ FileProviderDomainManager *FileProvider::domainManager() const
 FileProviderSocketServer *FileProvider::socketServer() const
 {
     return _socketServer.get();
+}
+
+void FileProvider::onDomainReconfigurationFailed(const QString &accountId, const QString &errorMessage)
+{
+    qCWarning(lcMacFileProvider) << "Domain reconfiguration failed for account:" << accountId << "Error:" << errorMessage;
+    QMessageBox::warning(nullptr,
+                         tr("Virtual files configuration error"),
+                         tr("Could not update the virtual files settings for account %1.\n\n"
+                            "Error: %2\n\n"
+                            "Please try again or restart the application.")
+                             .arg(accountId, errorMessage));
 }
 
 } // namespace Mac

@@ -28,8 +28,6 @@ public:
 
     [[nodiscard]] bool fileProviderDomainReachable(const QString &fileProviderDomainIdentifier, bool retry = true, bool reconfigureOnFail = true);
 
-    [[nodiscard]] std::optional<std::pair<bool, bool>> trashDeletionEnabledStateForFileProviderDomain(const QString &fileProviderDomainIdentifier) const;
-
 public slots:
     void connectToFileProviderDomains();
     void authenticateFileProviderDomains();
@@ -37,7 +35,6 @@ public slots:
     void unauthenticateFileProviderDomain(const QString &fileProviderDomainIdentifier) const;
 
     void setIgnoreList() const;
-    void setTrashDeletionEnabledForFileProviderDomain(const QString &fileProviderDomainIdentifier, bool enabled) const;
 
 private slots:
     void slotAccountStateChanged(AccountState::State state) const;

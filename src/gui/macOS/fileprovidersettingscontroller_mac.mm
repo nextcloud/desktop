@@ -26,6 +26,7 @@ constexpr auto fpAccountUserIdAtHostProp = "accountUserIdAtHost";
 
 // NSUserDefaults entries
 constexpr auto enabledAccountsSettingsKey = "enabledAccounts";
+constexpr auto trashSyncEnabledAccountsKey = "trashSyncEnabledAccounts";
 
 } // namespace
 
@@ -220,61 +221,52 @@ void FileProviderSettingsController::setVfsEnabledForAccount(const QString &user
     }
 }
 
-bool FileProviderSettingsController::trashDeletionEnabledForAccount(const QString &userIdAtHost) const
+bool FileProviderSettingsController::trashSyncEnabledForAccount(const QString &userIdAtHost) const
 {
     if (userIdAtHost.isEmpty()) {
-        return false;
+        return true; // Default to enabled for backward compatibility
     }
 
-    const auto xpc = FileProvider::instance()->xpc();
+    NSUserDefaults *const defaults = NSUserDefaults.standardUserDefaults;
+    NSString *const settingsKey = [NSString stringWithUTF8String:trashSyncEnabledAccountsKey];
+    NSDictionary<NSString *, NSNumber *> *const settings = [defaults objectForKey:settingsKey];
 
-    if (!xpc) {
+    if (settings == nil) {
+        return true; // Default to enabled for backward compatibility
+    }
+
+    NSNumber *const value = settings[userIdAtHost.toNSString()];
+    return value == nil ? true : value.boolValue;
+}
+
+void FileProviderSettingsController::setTrashSyncEnabledForAccount(const QString &userIdAtHost, const bool setEnabled)
+{
+    qCInfo(lcFileProviderSettingsController) << "Setting trash sync enabled for account"
+                                             << userIdAtHost
+                                             << "to"
+                                             << setEnabled;
+
+    NSUserDefaults *const defaults = NSUserDefaults.standardUserDefaults;
+    NSString *const settingsKey = [NSString stringWithUTF8String:trashSyncEnabledAccountsKey];
+    NSMutableDictionary<NSString *, NSNumber *> *settings =
+        [[defaults objectForKey:settingsKey] mutableCopy];
+
+    if (settings == nil) {
+        settings = [NSMutableDictionary dictionary];
+    }
+
+    settings[userIdAtHost.toNSString()] = @(setEnabled);
+    [defaults setObject:settings forKey:settingsKey];
+
+    emit trashSyncEnabledForAccountChanged(userIdAtHost);
+}
+
+bool FileProviderSettingsController::trashSyncSupported() const
+{
+    if (@available(macOS 13.0, *)) {
         return true;
     }
-
-    const auto domainId = FileProviderUtils::domainIdentifierForAccountIdentifier(userIdAtHost);
-
-    if (const auto trashDeletionState = xpc->trashDeletionEnabledStateForFileProviderDomain(domainId)) {
-        return trashDeletionState->first;
-    }
-
-    return true;
-}
-
-bool FileProviderSettingsController::trashDeletionSetForAccount(const QString &userIdAtHost) const
-{
-    const auto xpc = FileProvider::instance()->xpc();
-
-    if (!xpc) {
-        return false;
-    }
-
-    const auto domainId = FileProviderUtils::domainIdentifierForAccountIdentifier(userIdAtHost);
-
-    if (const auto state = xpc->trashDeletionEnabledStateForFileProviderDomain(domainId)) {
-        return state->second;
-    }
-
     return false;
-}
-
-void FileProviderSettingsController::setTrashDeletionEnabledForAccount(const QString &userIdAtHost, const bool setEnabled)
-{
-    const auto xpc = FileProvider::instance()->xpc();
-
-    if (!xpc) {
-        // Reset state of UI elements
-        emit trashDeletionEnabledForAccountChanged(userIdAtHost);
-        emit trashDeletionSetForAccountChanged(userIdAtHost);
-        return;
-    }
-
-    const auto domainId = FileProviderUtils::domainIdentifierForAccountIdentifier(userIdAtHost);
-
-    xpc->setTrashDeletionEnabledForFileProviderDomain(domainId, setEnabled);
-
-    emit trashDeletionEnabledForAccountChanged(userIdAtHost);
-    emit trashDeletionSetForAccountChanged(userIdAtHost);
 }
 
 } // namespace Mac

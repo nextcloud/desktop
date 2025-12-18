@@ -161,8 +161,14 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
                                          << "going to attempt reconfiguring interface";
             const auto ncDomainManager = FileProvider::instance()->domainManager();
             const auto accountState = ncDomainManager->accountStateFromFileProviderDomainIdentifier(fileProviderDomainIdentifier);
-            const auto domain = (NSFileProviderDomain *)(ncDomainManager->domainForAccount(accountState.get()));
+            NSFileProviderDomain *const domain = (NSFileProviderDomain *)(ncDomainManager->domainForAccount(accountState.get()));
+            if (domain == nil) {
+                qCWarning(lcFileProviderXPC) << "Cannot reconfigure unreachable domain, domain pointer is nil";
+                return false;
+            }
             const auto manager = [NSFileProviderManager managerForDomain:domain];
+            [domain release];  // Balance retain in domainForAccount
+
             const auto fpServices = FileProviderXPCUtils::getFileProviderServices(@[manager]);
             const auto connections = FileProviderXPCUtils::connectToFileProviderServices(fpServices);
             const auto services = FileProviderXPCUtils::processClientCommunicationConnections(connections);
@@ -177,41 +183,6 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
         }
     }
     return response;
-}
-
-std::optional<std::pair<bool, bool>> FileProviderXPC::trashDeletionEnabledStateForFileProviderDomain(const QString &fileProviderDomainIdentifier) const
-{
-    qCInfo(lcFileProviderXPC) << "Checking if fast enumeration is enabled for file provider domain" << fileProviderDomainIdentifier;
-    const auto service = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(fileProviderDomainIdentifier);
-
-    if (service == nil) {
-        qCWarning(lcFileProviderXPC) << "Could not get service for file provider domain" << fileProviderDomainIdentifier;
-        return std::nullopt;
-    }
-
-    __block BOOL receivedTrashDeletionEnabled = YES; // What is the value of the setting being used by the extension?
-    __block BOOL receivedTrashDeletionEnabledSet = NO; // Has the setting been set by the user?
-    __block BOOL receivedResponse = NO;
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    [service getTrashDeletionEnabledStateWithCompletionHandler:^(BOOL enabled, BOOL set) {
-        receivedTrashDeletionEnabled = enabled;
-        receivedTrashDeletionEnabledSet = set;
-        receivedResponse = YES;
-        dispatch_semaphore_signal(semaphore);
-    }];
-    dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
-    if (!receivedResponse) {
-        qCWarning(lcFileProviderXPC) << "Did not receive response for fast enumeration state";
-        return std::nullopt;
-    }
-    return std::optional<std::pair<bool, bool>>{{receivedTrashDeletionEnabled, receivedTrashDeletionEnabledSet}};
-}
-
-void FileProviderXPC::setTrashDeletionEnabledForFileProviderDomain(const QString &fileProviderDomainIdentifier, bool enabled) const
-{
-    qCInfo(lcFileProviderXPC) << "Setting trash deletion enabled for file provider domain" << fileProviderDomainIdentifier << "to" << enabled;
-    const auto service = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(fileProviderDomainIdentifier);
-    [service setTrashDeletionEnabled:enabled];
 }
 
 void FileProviderXPC::setIgnoreList() const

@@ -31,6 +31,7 @@ public:
 
 signals:
     void domainSetupComplete();
+    void domainReconfigurationFailed(const QString &accountId, const QString &errorMessage);
 
 public slots:
     void addFileProviderDomainForAccount(const OCC::AccountState * const accountState);
@@ -42,6 +43,7 @@ private slots:
     void removeFileProviderDomainForAccount(const OCC::AccountState * const accountState);
     void disconnectFileProviderDomainForAccount(const OCC::AccountState * const accountState, const QString &reason);
     void reconnectFileProviderDomainForAccount(const OCC::AccountState * const accountState);
+    void reconfigureFileProviderDomainForAccount(const QString &accountId);
 
     void signalEnumeratorChanged(const OCC::Account * const account);
     void slotAccountStateChanged(const OCC::AccountState * const accountState);

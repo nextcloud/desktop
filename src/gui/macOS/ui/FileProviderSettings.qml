@@ -53,11 +53,27 @@ Page {
             checked: root.controller.vfsEnabledForAccount(root.accountUserIdAtHost)
             onClicked: root.controller.setVfsEnabledForAccount(root.accountUserIdAtHost, checked)
         }
-        
+
         CheckBox {
-            text: qsTr("Allow deletion of items in Trash")
-            checked: root.controller.trashDeletionEnabledForAccount(root.accountUserIdAtHost)
-            onClicked: root.controller.setTrashDeletionEnabledForAccount(root.accountUserIdAtHost, checked)
+            id: trashSyncCheckBox
+            visible: root.controller.trashSyncSupported()
+            text: qsTr("Integrate macOS Trash")
+            checked: root.controller.trashSyncEnabledForAccount(root.accountUserIdAtHost)
+            onClicked: root.controller.setTrashSyncEnabledForAccount(root.accountUserIdAtHost, checked)
+
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("When enabled, deleted files go to macOS Trash and server trash is visible.\nWhen disabled, Finder shows 'Delete Immediately' (files still recoverable from server trash).")
+            ToolTip.delay: 500
+
+            Connections {
+                target: root.controller
+                function onTrashSyncEnabledForAccountChanged(accountUserIdAtHost) {
+                    if (root.accountUserIdAtHost !== accountUserIdAtHost) {
+                        return;
+                    }
+                    trashSyncCheckBox.checked = root.controller.trashSyncEnabledForAccount(root.accountUserIdAtHost);
+                }
+            }
         }
     }
 }

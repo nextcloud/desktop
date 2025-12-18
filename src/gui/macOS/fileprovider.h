@@ -36,6 +36,7 @@ public:
 
 private slots:
     void configureXPC();
+    void onDomainReconfigurationFailed(const QString &accountId, const QString &errorMessage);
 
 private:
     std::unique_ptr<FileProviderDomainManager> _domainManager;
