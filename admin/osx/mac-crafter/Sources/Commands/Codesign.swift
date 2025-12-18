@@ -14,9 +14,6 @@ struct Codesign: AsyncParsableCommand {
     
     @Option(name: [.short, .long], help: "Code signing identity for desktop client and libs.")
     var codeSignIdentity: String
-    
-    @Flag(help: "Produce a developer build.")
-    var developerBuild = false
 
     @Argument(help: "Location of the entitlements manifest for the app.")
     var appEntitlements: String
@@ -41,6 +38,6 @@ struct Codesign: AsyncParsableCommand {
             "FinderSyncExt.appex": URL(fileURLWithPath: finderSyncEntitlements),
         ]
 
-        try await Signer.signMainBundle(at: url, codeSignIdentity: codeSignIdentity, entitlements: entitlements, developerBuild: developerBuild)
+        try await Signer.signMainBundle(at: url, codeSignIdentity: codeSignIdentity, entitlements: entitlements)
     }
 }

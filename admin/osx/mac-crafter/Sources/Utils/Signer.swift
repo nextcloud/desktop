@@ -103,7 +103,7 @@ enum Signer: Signing {
     ///
     /// Entry point for signing a whole desktop client app bundle.
     ///
-    static func signMainBundle(at location: URL, codeSignIdentity: String, entitlements: [String: URL], developerBuild: Bool) async throws {
+    static func signMainBundle(at location: URL, codeSignIdentity: String, entitlements: [String: URL]) async throws {
         let extensions = try findExtensions(at: location)
         
         for extensionInMainBundle in extensions {

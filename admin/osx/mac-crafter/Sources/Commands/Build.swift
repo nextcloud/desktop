@@ -310,7 +310,7 @@ struct Build: AsyncParsableCommand {
                 }
             }
 
-            try await Signer.signMainBundle(at: clientAppURL, codeSignIdentity: codeSignIdentity, entitlements: entitlements, developerBuild: dev)
+            try await Signer.signMainBundle(at: clientAppURL, codeSignIdentity: codeSignIdentity, entitlements: entitlements)
         }
         
         print("Placing Nextcloud Desktop Client in \(productPath)...")
