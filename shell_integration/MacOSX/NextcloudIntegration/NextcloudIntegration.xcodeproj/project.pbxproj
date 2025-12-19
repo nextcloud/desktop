@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -38,8 +38,6 @@
 		53903D37295618A400D0B308 /* LineProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 53903D36295618A400D0B308 /* LineProcessor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		539158AC27BE71A900816F56 /* FinderSyncSocketLineProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 539158AB27BE71A900816F56 /* FinderSyncSocketLineProcessor.m */; };
 		53B979812B84C81F002DA742 /* DocumentActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B979802B84C81F002DA742 /* DocumentActionViewController.swift */; };
-		53C331B22BCD28C30093D38B /* NextcloudFileProviderKit in Frameworks */ = {isa = PBXBuildFile; productRef = 53C331B12BCD28C30093D38B /* NextcloudFileProviderKit */; };
-		53C331B62BCD3AFF0093D38B /* NextcloudFileProviderKit in Frameworks */ = {isa = PBXBuildFile; productRef = 53C331B52BCD3AFF0093D38B /* NextcloudFileProviderKit */; };
 		53D666612B70C9A70042C03D /* FileProviderDomainDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D666602B70C9A70042C03D /* FileProviderDomainDefaults.swift */; };
 		53ED473029C9CE0B00795DB1 /* FileProviderExtension+ClientInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53ED472F29C9CE0B00795DB1 /* FileProviderExtension+ClientInterface.swift */; };
 		53FE14502B8E0658006C4193 /* ShareTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FE144F2B8E0658006C4193 /* ShareTableViewDataSource.swift */; };
@@ -49,6 +47,8 @@
 		53FE14672B8F78B6006C4193 /* ShareOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FE14662B8F78B6006C4193 /* ShareOptionsView.swift */; };
 		AA02B2AB2E7048C800C72B34 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA02B2AA2E7048C600C72B34 /* Keychain.swift */; };
 		AA560CE72EDDB84000CD423E /* ServiceResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA560CE62EDDB82900CD423E /* ServiceResolver.swift */; };
+		AA5FB9E62EF54F410018BDAE /* NextcloudFileProviderKit in Frameworks */ = {isa = PBXBuildFile; productRef = AA5FB9E52EF54F410018BDAE /* NextcloudFileProviderKit */; };
+		AA5FB9E82EF54FEA0018BDAE /* NextcloudFileProviderKit in Frameworks */ = {isa = PBXBuildFile; productRef = AA5FB9E72EF54FEA0018BDAE /* NextcloudFileProviderKit */; };
 		AA7F17E12E7017230000E928 /* Authentication.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA7F17E02E7017230000E928 /* Authentication.storyboard */; };
 		AA7F17E32E70173E0000E928 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7F17E22E70173E0000E928 /* AuthenticationViewController.swift */; };
 		AA7F17E72E7038370000E928 /* NSError+FileProviderErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7F17E62E7038340000E928 /* NSError+FileProviderErrorCode.swift */; };
@@ -182,7 +182,6 @@
 		538E396927F4765000FA63D5 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		538E396C27F4765000FA63D5 /* FileProviderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderExtension.swift; sourceTree = "<group>"; };
 		538E397227F4765000FA63D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		538E397327F4765000FA63D5 /* FileProviderExt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FileProviderExt.entitlements; sourceTree = "<group>"; };
 		53903D0C2956164F00D0B308 /* NCDesktopClientSocketKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NCDesktopClientSocketKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		53903D0E2956164F00D0B308 /* NCDesktopClientSocketKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NCDesktopClientSocketKit.h; sourceTree = "<group>"; };
 		53903D36295618A400D0B308 /* LineProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LineProcessor.h; sourceTree = "<group>"; };
@@ -197,7 +196,6 @@
 		53D666602B70C9A70042C03D /* FileProviderDomainDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderDomainDefaults.swift; sourceTree = "<group>"; };
 		53ED472F29C9CE0B00795DB1 /* FileProviderExtension+ClientInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderExtension+ClientInterface.swift"; sourceTree = "<group>"; };
 		53FE144F2B8E0658006C4193 /* ShareTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTableViewDataSource.swift; sourceTree = "<group>"; };
-		53FE14572B8E3A7C006C4193 /* FileProviderUIExt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FileProviderUIExt.entitlements; sourceTree = "<group>"; };
 		53FE14582B8E3F6C006C4193 /* ShareTableItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTableItemView.swift; sourceTree = "<group>"; };
 		53FE145A2B8F1305006C4193 /* NKShare+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NKShare+Extensions.swift"; sourceTree = "<group>"; };
 		53FE14642B8F6700006C4193 /* ShareViewDataSourceUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewDataSourceUIDelegate.swift; sourceTree = "<group>"; };
@@ -221,7 +219,6 @@
 		C2B573B91B1CD91E00303B36 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C2B573D71B1CD9CE00303B36 /* FinderSyncExt.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FinderSyncExt.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2B573DA1B1CD9CE00303B36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C2B573DB1B1CD9CE00303B36 /* FinderSyncExt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = FinderSyncExt.entitlements; sourceTree = "<group>"; };
 		C2B573DC1B1CD9CE00303B36 /* FinderSync.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FinderSync.h; sourceTree = "<group>"; };
 		C2B573DD1B1CD9CE00303B36 /* FinderSync.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FinderSync.m; sourceTree = "<group>"; };
 		C2B573EB1B1DAD6400303B36 /* error.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; name = error.iconset; path = ../../icons/nopadding/error.iconset; sourceTree = SOURCE_ROOT; };
@@ -237,8 +234,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				538E396A27F4765000FA63D5 /* UniformTypeIdentifiers.framework in Frameworks */,
+				AA5FB9E62EF54F410018BDAE /* NextcloudFileProviderKit in Frameworks */,
 				53903D302956173F00D0B308 /* NCDesktopClientSocketKit.framework in Frameworks */,
-				53C331B22BCD28C30093D38B /* NextcloudFileProviderKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,8 +250,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				53C331B62BCD3AFF0093D38B /* NextcloudFileProviderKit in Frameworks */,
 				53651E442BBC0CA300ECAC29 /* SuggestionsTextFieldKit in Frameworks */,
+				AA5FB9E82EF54FEA0018BDAE /* NextcloudFileProviderKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,7 +347,6 @@
 				5352B36B29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift */,
 				536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */,
 				AA02B2AA2E7048C600C72B34 /* Keychain.swift */,
-				538E397327F4765000FA63D5 /* FileProviderExt.entitlements */,
 				538E397227F4765000FA63D5 /* Info.plist */,
 				5350E4EA2B0C9CE100F276CB /* FileProviderExt-Bridging-Header.h */,
 				AAA69D922E3BB09900BBD44D /* Localizable.xcstrings */,
@@ -380,7 +376,6 @@
 				53B979802B84C81F002DA742 /* DocumentActionViewController.swift */,
 				AA560CE62EDDB82900CD423E /* ServiceResolver.swift */,
 				537BD6812C58F72E00446ED0 /* MetadataProvider.swift */,
-				53FE14572B8E3A7C006C4193 /* FileProviderUIExt.entitlements */,
 				53B979852B84C81F002DA742 /* Info.plist */,
 				AAC00D292E37B29D006010FE /* Localizable.xcstrings */,
 				AAF19A792E8D5B63005FE5B0 /* Assets.xcassets */,
@@ -473,7 +468,6 @@
 				C2B573EF1B1DAD6400303B36 /* sync.iconset */,
 				C2B573F11B1DAD6400303B36 /* warning.iconset */,
 				C2B573DA1B1CD9CE00303B36 /* Info.plist */,
-				C2B573DB1B1CD9CE00303B36 /* FinderSyncExt.entitlements */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -529,7 +523,7 @@
 			);
 			name = FileProviderExt;
 			packageProductDependencies = (
-				53C331B12BCD28C30093D38B /* NextcloudFileProviderKit */,
+				AA5FB9E52EF54F410018BDAE /* NextcloudFileProviderKit */,
 			);
 			productName = FileProviderExt;
 			productReference = 538E396727F4765000FA63D5 /* FileProviderExt.appex */;
@@ -568,7 +562,7 @@
 			name = FileProviderUIExt;
 			packageProductDependencies = (
 				53651E432BBC0CA300ECAC29 /* SuggestionsTextFieldKit */,
-				53C331B52BCD3AFF0093D38B /* NextcloudFileProviderKit */,
+				AA5FB9E72EF54FEA0018BDAE /* NextcloudFileProviderKit */,
 			);
 			productName = FileProviderUIExt;
 			productReference = 53B9797E2B84C81F002DA742 /* FileProviderUIExt.appex */;
@@ -771,7 +765,7 @@
 			mainGroup = C2B573941B1CD88000303B36;
 			packageReferences = (
 				53651E422BBC0C7F00ECAC29 /* XCRemoteSwiftPackageReference "SuggestionsTextFieldKit" */,
-				53C331B02BCD28C30093D38B /* XCRemoteSwiftPackageReference "NextcloudFileProviderKit" */,
+				AA5FB9E42EF54F410018BDAE /* XCLocalSwiftPackageReference "../NextcloudFileProviderKit" */,
 			);
 			productRefGroup = C2B573B21B1CD91E00303B36 /* Products */;
 			projectDirPath = "";
@@ -1706,6 +1700,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		AA5FB9E42EF54F410018BDAE /* XCLocalSwiftPackageReference "../NextcloudFileProviderKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../NextcloudFileProviderKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		53651E422BBC0C7F00ECAC29 /* XCRemoteSwiftPackageReference "SuggestionsTextFieldKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -1713,14 +1714,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.0;
-			};
-		};
-		53C331B02BCD28C30093D38B /* XCRemoteSwiftPackageReference "NextcloudFileProviderKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/nextcloud/NextcloudFileProviderKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1731,14 +1724,13 @@
 			package = 53651E422BBC0C7F00ECAC29 /* XCRemoteSwiftPackageReference "SuggestionsTextFieldKit" */;
 			productName = SuggestionsTextFieldKit;
 		};
-		53C331B12BCD28C30093D38B /* NextcloudFileProviderKit */ = {
+		AA5FB9E52EF54F410018BDAE /* NextcloudFileProviderKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 53C331B02BCD28C30093D38B /* XCRemoteSwiftPackageReference "NextcloudFileProviderKit" */;
 			productName = NextcloudFileProviderKit;
 		};
-		53C331B52BCD3AFF0093D38B /* NextcloudFileProviderKit */ = {
+		AA5FB9E72EF54FEA0018BDAE /* NextcloudFileProviderKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 53C331B02BCD28C30093D38B /* XCRemoteSwiftPackageReference "NextcloudFileProviderKit" */;
+			package = AA5FB9E42EF54F410018BDAE /* XCLocalSwiftPackageReference "../NextcloudFileProviderKit" */;
 			productName = NextcloudFileProviderKit;
 		};
 /* End XCSwiftPackageProductDependency section */
