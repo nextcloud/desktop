@@ -48,6 +48,7 @@
 		AA02B2AB2E7048C800C72B34 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA02B2AA2E7048C600C72B34 /* Keychain.swift */; };
 		AA560CE72EDDB84000CD423E /* ServiceResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA560CE62EDDB82900CD423E /* ServiceResolver.swift */; };
 		AA5FB9E62EF54F410018BDAE /* NextcloudFileProviderKit in Frameworks */ = {isa = PBXBuildFile; productRef = AA5FB9E52EF54F410018BDAE /* NextcloudFileProviderKit */; };
+		AA5FB9E82EF54FEA0018BDAE /* NextcloudFileProviderKit in Frameworks */ = {isa = PBXBuildFile; productRef = AA5FB9E72EF54FEA0018BDAE /* NextcloudFileProviderKit */; };
 		AA7F17E12E7017230000E928 /* Authentication.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA7F17E02E7017230000E928 /* Authentication.storyboard */; };
 		AA7F17E32E70173E0000E928 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7F17E22E70173E0000E928 /* AuthenticationViewController.swift */; };
 		AA7F17E72E7038370000E928 /* NSError+FileProviderErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7F17E62E7038340000E928 /* NSError+FileProviderErrorCode.swift */; };
@@ -253,6 +254,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				53651E442BBC0CA300ECAC29 /* SuggestionsTextFieldKit in Frameworks */,
+				AA5FB9E82EF54FEA0018BDAE /* NextcloudFileProviderKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -566,6 +568,7 @@
 			name = FileProviderUIExt;
 			packageProductDependencies = (
 				53651E432BBC0CA300ECAC29 /* SuggestionsTextFieldKit */,
+				AA5FB9E72EF54FEA0018BDAE /* NextcloudFileProviderKit */,
 			);
 			productName = FileProviderUIExt;
 			productReference = 53B9797E2B84C81F002DA742 /* FileProviderUIExt.appex */;
@@ -1729,6 +1732,11 @@
 		};
 		AA5FB9E52EF54F410018BDAE /* NextcloudFileProviderKit */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = NextcloudFileProviderKit;
+		};
+		AA5FB9E72EF54FEA0018BDAE /* NextcloudFileProviderKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AA5FB9E42EF54F410018BDAE /* XCLocalSwiftPackageReference "../NextcloudFileProviderKit" */;
 			productName = NextcloudFileProviderKit;
 		};
 /* End XCSwiftPackageProductDependency section */
