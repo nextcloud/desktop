@@ -182,7 +182,6 @@
 		538E396927F4765000FA63D5 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		538E396C27F4765000FA63D5 /* FileProviderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderExtension.swift; sourceTree = "<group>"; };
 		538E397227F4765000FA63D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		538E397327F4765000FA63D5 /* FileProviderExt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FileProviderExt.entitlements; sourceTree = "<group>"; };
 		53903D0C2956164F00D0B308 /* NCDesktopClientSocketKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NCDesktopClientSocketKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		53903D0E2956164F00D0B308 /* NCDesktopClientSocketKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NCDesktopClientSocketKit.h; sourceTree = "<group>"; };
 		53903D36295618A400D0B308 /* LineProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LineProcessor.h; sourceTree = "<group>"; };
@@ -197,7 +196,6 @@
 		53D666602B70C9A70042C03D /* FileProviderDomainDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderDomainDefaults.swift; sourceTree = "<group>"; };
 		53ED472F29C9CE0B00795DB1 /* FileProviderExtension+ClientInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderExtension+ClientInterface.swift"; sourceTree = "<group>"; };
 		53FE144F2B8E0658006C4193 /* ShareTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTableViewDataSource.swift; sourceTree = "<group>"; };
-		53FE14572B8E3A7C006C4193 /* FileProviderUIExt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FileProviderUIExt.entitlements; sourceTree = "<group>"; };
 		53FE14582B8E3F6C006C4193 /* ShareTableItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTableItemView.swift; sourceTree = "<group>"; };
 		53FE145A2B8F1305006C4193 /* NKShare+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NKShare+Extensions.swift"; sourceTree = "<group>"; };
 		53FE14642B8F6700006C4193 /* ShareViewDataSourceUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewDataSourceUIDelegate.swift; sourceTree = "<group>"; };
@@ -221,7 +219,6 @@
 		C2B573B91B1CD91E00303B36 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C2B573D71B1CD9CE00303B36 /* FinderSyncExt.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FinderSyncExt.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2B573DA1B1CD9CE00303B36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C2B573DB1B1CD9CE00303B36 /* FinderSyncExt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = FinderSyncExt.entitlements; sourceTree = "<group>"; };
 		C2B573DC1B1CD9CE00303B36 /* FinderSync.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FinderSync.h; sourceTree = "<group>"; };
 		C2B573DD1B1CD9CE00303B36 /* FinderSync.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FinderSync.m; sourceTree = "<group>"; };
 		C2B573EB1B1DAD6400303B36 /* error.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; name = error.iconset; path = ../../icons/nopadding/error.iconset; sourceTree = SOURCE_ROOT; };
@@ -350,7 +347,6 @@
 				5352B36B29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift */,
 				536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */,
 				AA02B2AA2E7048C600C72B34 /* Keychain.swift */,
-				538E397327F4765000FA63D5 /* FileProviderExt.entitlements */,
 				538E397227F4765000FA63D5 /* Info.plist */,
 				5350E4EA2B0C9CE100F276CB /* FileProviderExt-Bridging-Header.h */,
 				AAA69D922E3BB09900BBD44D /* Localizable.xcstrings */,
@@ -380,7 +376,6 @@
 				53B979802B84C81F002DA742 /* DocumentActionViewController.swift */,
 				AA560CE62EDDB82900CD423E /* ServiceResolver.swift */,
 				537BD6812C58F72E00446ED0 /* MetadataProvider.swift */,
-				53FE14572B8E3A7C006C4193 /* FileProviderUIExt.entitlements */,
 				53B979852B84C81F002DA742 /* Info.plist */,
 				AAC00D292E37B29D006010FE /* Localizable.xcstrings */,
 				AAF19A792E8D5B63005FE5B0 /* Assets.xcassets */,
@@ -473,7 +468,6 @@
 				C2B573EF1B1DAD6400303B36 /* sync.iconset */,
 				C2B573F11B1DAD6400303B36 /* warning.iconset */,
 				C2B573DA1B1CD9CE00303B36 /* Info.plist */,
-				C2B573DB1B1CD9CE00303B36 /* FinderSyncExt.entitlements */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
