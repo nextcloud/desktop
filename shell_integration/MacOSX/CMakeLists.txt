@@ -57,6 +57,8 @@ if(APPLE)
         set(OSX_PLUGINS_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/${XCODE_TARGET_CONFIGURATION})
         set(OSX_PLUGINS_INSTALL_DIR ${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns)
 
+        configure_file(FinderSyncExt.entitlements.cmake ${CMAKE_CURRENT_BINARY_DIR}/FinderSyncExt.entitlements)
+
         install(DIRECTORY ${OSX_PLUGINS_BINARY_DIR}/FinderSyncExt.appex
             DESTINATION ${OSX_PLUGINS_INSTALL_DIR}
             USE_SOURCE_PERMISSIONS)
@@ -65,6 +67,9 @@ if(APPLE)
         install(DIRECTORY DESTINATION ${OSX_PLUGINS_INSTALL_DIR}/FinderSyncExt.appex/Contents/Library)
 
         if (BUILD_FILE_PROVIDER_MODULE)
+            configure_file(FileProviderExt.entitlements.cmake ${CMAKE_CURRENT_BINARY_DIR}/FileProviderExt.entitlements)
+            configure_file(FileProviderUIExt.entitlements.cmake ${CMAKE_CURRENT_BINARY_DIR}/FileProviderUIExt.entitlements)
+
             install(DIRECTORY ${OSX_PLUGINS_BINARY_DIR}/FileProviderExt.appex
                 DESTINATION ${OSX_PLUGINS_INSTALL_DIR}
                 USE_SOURCE_PERMISSIONS)
