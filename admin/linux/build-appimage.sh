@@ -28,9 +28,11 @@ if [ -e "/opt/rh/gcc-toolset-14/enable" ]; then
     source /opt/rh/gcc-toolset-14/enable
 fi
 
+rm -rf /app
 mkdir /app
 
 # Build client
+rm -rf build-client
 mkdir build-client
 cd build-client
 cmake \
