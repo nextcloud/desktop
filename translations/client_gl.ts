@@ -1069,7 +1069,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="44"/>
         <source>Could not access the selected certificate file.</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel acceder ao ficheiro de certificado seleccionado.</translation>
     </message>
 </context>
 <context>
@@ -3021,12 +3021,12 @@ Non é posíbel reverter as versións inmediatamente: cambiar de estábel a empr
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="715"/>
         <source>Failed to Access File</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un fallo ao acceder ao ficheiro</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="716"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel acceder á localización seleccionada. Ténteo de novo ou escolla outra localización.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="673"/>
@@ -6271,17 +6271,17 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="198"/>
         <source>Could not create debug archive in temporary location!</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel crear o arquivo de depuración nunha localización temporal!</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="212"/>
         <source>Could not remove existing file at destination!</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel retirar o ficheiro existente no destino!</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="226"/>
         <source>Could not move debug archive to selected location!</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel mover o arquivo de depuración á localización seleccionada!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="788"/>
