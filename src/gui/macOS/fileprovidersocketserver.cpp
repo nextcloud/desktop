@@ -21,8 +21,12 @@ Q_LOGGING_CATEGORY(lcFileProviderSocketServer, "nextcloud.gui.macos.fileprovider
 FileProviderSocketServer::FileProviderSocketServer(QObject *parent)
     : QObject{parent}
 {
+    qCDebug(lcFileProviderSocketServer) << "Initializing...";
+
     _socketPath = fileProviderSocketPath();
     startListening();
+
+    qCDebug(lcFileProviderSocketServer) << "Initialized.";
 }
 
 void FileProviderSocketServer::startListening()
@@ -30,9 +34,14 @@ void FileProviderSocketServer::startListening()
     QLocalServer::removeServer(_socketPath);
 
     const auto serverStarted = _socketServer.listen(_socketPath);
+
     if (!serverStarted) {
         qCWarning(lcFileProviderSocketServer) << "Could not start file provider socket server"
-                                              << _socketPath;
+                                              << _socketPath
+                                              << "Error:" 
+                                              << _socketServer.errorString()
+                                              << "Error code:" 
+                                              << _socketServer.serverError();
     } else {
         qCInfo(lcFileProviderSocketServer) << "File provider socket server started, listening"
                                            << _socketPath;

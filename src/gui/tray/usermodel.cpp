@@ -588,7 +588,7 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
             return;
         const auto &engine = f->syncEngine();
         const auto style = engine.lastLocalDiscoveryStyle();
-        for (const auto &activity : _activityModel->errorsList()) {
+        for (const auto errorsList = _activityModel->errorsList(); const auto &activity : errorsList) {
             if (activity._expireAtMsecs != -1) {
                 // we process expired activities in a different slot
                 continue;
@@ -602,24 +602,7 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
                 continue;
             }
 
-            if (activity._syncFileItemStatus == SyncFileItem::Conflict && !FileSystem::fileExists(f->path() + activity._file)) {
-                _activityModel->removeActivityFromActivityList(activity);
-                continue;
-            }
-
-            if (activity._syncFileItemStatus == SyncFileItem::FileLocked && !FileSystem::fileExists(f->path() + activity._file)) {
-                _activityModel->removeActivityFromActivityList(activity);
-                continue;
-            }
-
-
-            if (activity._syncFileItemStatus == SyncFileItem::FileIgnored && !FileSystem::fileExists(f->path() + activity._file)) {
-                _activityModel->removeActivityFromActivityList(activity);
-                continue;
-            }
-
-
-            if (!FileSystem::fileExists(f->path() + activity._file)) {
+            if (const auto filePath = f->path() + activity._file; !FileSystem::fileExists(filePath)) {
                 _activityModel->removeActivityFromActivityList(activity);
                 continue;
             }

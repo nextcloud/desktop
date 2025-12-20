@@ -106,7 +106,7 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
 #ifdef Q_OS_WIN
         bestAvailableVfsMode() == Vfs::WindowsCfApi
 #elif defined(BUILD_FILE_PROVIDER_MODULE)
-        Mac::FileProvider::fileProviderAvailable()
+        true
 #else
         false
 #endif
@@ -152,7 +152,7 @@ void OwncloudAdvancedSetupPage::initializePage()
     if (Theme::instance()->disableVirtualFilesSyncFolder()
             || !(Theme::instance()->showVirtualFilesOption()
 #ifdef BUILD_FILE_PROVIDER_MODULE
-                 || Mac::FileProvider::fileProviderAvailable()
+                 || true
 #else
                  && bestAvailableVfsMode() != Vfs::Off
 #endif
@@ -645,10 +645,6 @@ void OwncloudAdvancedSetupPage::setRadioChecked(QRadioButton *radio)
 #ifdef BUILD_FILE_PROVIDER_MODULE
 void OwncloudAdvancedSetupPage::updateMacOsFileProviderRelatedViews()
 {
-    if (!Mac::FileProvider::fileProviderAvailable()) {
-        return;
-    }
-
     const auto freeSpaceHidden = _ui.rVirtualFileSync->isChecked();
     const auto folderSelectionButtonHidden = _ui.rVirtualFileSync->isChecked();
     const auto filePathLabelText =

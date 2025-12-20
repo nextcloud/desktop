@@ -106,6 +106,20 @@ struct Build: AsyncParsableCommand {
     @Flag(help: "Build in developer mode.")
     var dev = false
     
+    ///
+    /// Download the Sparkle framework archive with URLSession.
+    ///
+    private func downloadSparkle() async throws -> URL {
+        guard let url = URL(string: sparkleDownloadUrl) else {
+            throw MacCrafterError.downloadError("Sparkle download URL appears to be invalid: \(sparkleDownloadUrl)")
+        }
+        
+        let request = URLRequest(url: url)
+        let (file, _) = try await URLSession.shared.download(for: request)
+        
+        return file
+    }
+    
     mutating func run() async throws {
         let stopwatch = Stopwatch()
 
@@ -131,59 +145,56 @@ struct Build: AsyncParsableCommand {
         print("Build dependencies are installed.")
 
         let fm = FileManager.default
-        let craftMasterDir = "\(buildPath)/craftmaster"
-        let craftMasterIni = "\(repoRootDir)/craftmaster.ini"
-        let craftMasterPy = "\(craftMasterDir)/CraftMaster.py"
+        let buildURL = URL(fileURLWithPath: buildPath).standardized
+        let repoRootURL = URL(fileURLWithPath: repoRootDir).standardized
+        let craftMasterDir = buildURL.appendingPathComponent("craftmaster")
+        let craftMasterIni = repoRootURL.appendingPathComponent("craftmaster.ini")
+        let craftMasterPy = craftMasterDir.appendingPathComponent("CraftMaster.py")
         let craftTarget = archToCraftTarget(arch)
-        let craftCommand =
-        "python3 \(craftMasterPy) --config \(craftMasterIni) --target \(craftTarget) -c"
-        
-        if !fm.fileExists(atPath: craftMasterDir) || reconfigureCraft {
-            print("Configuring KDE Craft.")
-            
-            print("Configuring KDE Craft...")
+        let craftCommand = "python3 \(craftMasterPy.path) --config \(craftMasterIni.path) --target \(craftTarget) -c"
+
+        if !fm.fileExists(atPath: craftMasterDir.path) || reconfigureCraft {
             stopwatch.record("KDE Craft Setup")
 
-            if fm.fileExists(atPath: craftMasterDir) {
+            if fm.fileExists(atPath: craftMasterDir.path) {
                 print("KDE Craft is already cloned.")
             } else {
                 print("Cloning KDE Craft...")
-                guard await shell("\(gitCloneCommand) \(craftMasterGitUrl) \(craftMasterDir)") == 0 else {
-                    throw MacCrafterError.gitError("The referenced CraftMaster repository could not be cloned.")
+                guard await shell("\(gitCloneCommand) \(craftMasterGitUrl) \(craftMasterDir.path)") == 0 else {
+                    throw MacCrafterError.gitError("The referenced CraftMaster repository could not be cloned from \(craftMasterGitUrl) to \(craftMasterDir.path)")
                 }
             }
             
             print("Configuring required KDE Craft blueprint repositories...")
-            guard await shell("\(craftCommand) --add-blueprint-repository '\(kdeBlueprintsGitUrl)|\(kdeBlueprintsGitRef)|'") == 0 else {
             stopwatch.record("Craft Blueprints Configuration")
 
+            guard await shell("\(craftCommand) --add-blueprint-repository '\(kdeBlueprintsGitUrl)|\(kdeBlueprintsGitRef)|'") == 0 else {
                 throw MacCrafterError.craftError("Error adding KDE blueprint repository.")
             }
-            guard await shell("\(craftCommand) --add-blueprint-repository '\(clientBlueprintsGitUrl)|\(clientBlueprintsGitRef)|'") == 0 else {
 
+            guard await shell("\(craftCommand) --add-blueprint-repository '\(clientBlueprintsGitUrl)|\(clientBlueprintsGitRef)|'") == 0 else {
                 throw MacCrafterError.craftError("Error adding Nextcloud Client blueprint repository.")
             }
             
             print("Crafting KDE Craft...")
-            guard await shell("\(craftCommand) craft") == 0 else {
             stopwatch.record("Craft Crafting")
 
+            guard await shell("\(craftCommand) craft") == 0 else {
                 throw MacCrafterError.craftError("Error crafting KDE Craft.")
             }
             
             print("Crafting Nextcloud Desktop Client dependencies...")
-            guard await shell("\(craftCommand) --install-deps \(craftBlueprintName)") == 0 else {
             stopwatch.record("Nextcloud Client Dependencies Crafting")
 
+            guard await shell("\(craftCommand) --install-deps \(craftBlueprintName)") == 0 else {
                 throw MacCrafterError.craftError("Error installing dependencies.")
             }
         } else {
             print("Skipping KDE Craft configuration because it is already and no reconfiguration was requested.")
         }
-        
 
         var craftOptions = [
-            "\(craftBlueprintName).srcDir=\(repoRootDir)",
+            "\(craftBlueprintName).srcDir=\(repoRootURL.path)",
             "\(craftBlueprintName).osxArchs=\(arch)",
             "\(craftBlueprintName).buildTests=\(buildTests ? "True" : "False")",
             "\(craftBlueprintName).buildMacOSBundle=\(disableAppBundle ? "False" : "True")",
@@ -200,55 +211,56 @@ struct Build: AsyncParsableCommand {
             craftOptions.append("\(craftBlueprintName).devMode=True")
         }
         
-        if !disableAutoUpdater {
+        if disableAutoUpdater == false {
             print("Configuring Sparkle auto-updater.")
             
             stopwatch.record("Sparke Configuration")
 
-            let sparkleDownloadResult = await shell("wget \(sparkleDownloadUrl) -O \(buildPath)/Sparkle.tar.xz")
-            
+            let downloadedArchive = try await downloadSparkle()
             let fm = FileManager.default
-            guard fm.fileExists(atPath: "\(buildPath)/Sparkle.tar.xz") ||
-                    sparkleDownloadResult == 0
-            else {
-                throw MacCrafterError.environmentError("Error downloading sparkle.")
-            }
             
-            let sparkleUnarchiveResult = await shell("tar -xvf \(buildPath)/Sparkle.tar.xz -C \(buildPath)")
+            let sparkleUnarchiveResult = await shell("tar -xvf \(downloadedArchive.path) -C \(buildPath)")
             
-            guard fm.fileExists(atPath: "\(buildPath)/Sparkle.framework") ||
-                    sparkleUnarchiveResult == 0
-            else {
+            guard fm.fileExists(atPath: "\(buildPath)/Sparkle.framework") || sparkleUnarchiveResult == 0 else {
                 throw MacCrafterError.environmentError("Error unpacking sparkle.")
             }
             
-            craftOptions.append(
-                "\(craftBlueprintName).sparkleLibPath=\(buildPath)/Sparkle.framework"
-            )
+            craftOptions.append("\(craftBlueprintName).sparkleLibPath=\(buildPath)/Sparkle.framework")
         }
         
-        let clientBuildDir = "\(buildPath)/\(craftTarget)/build/\(craftBlueprintName)"
+        let clientBuildURL = buildURL
+            .appendingPathComponent(craftTarget)
+            .appendingPathComponent("build")
+            .appendingPathComponent(craftBlueprintName)
+
         print("Crafting \(appName) Desktop Client...")
         stopwatch.record("Desktop Client Crafting")
 
         if fullRebuild {
             do {
-                try fm.removeItem(atPath: clientBuildDir)
+                try fm.removeItem(atPath: clientBuildURL.path)
             } catch let error {
-                print("WARNING! Error removing build directory: \(error)")
+                print("ERROR: Error removing build directory: \(error)")
+                throw MacCrafterError.craftError("Failed to remove existing build directory!")
             }
         } else {
             // HACK: When building the client we often run into issues with the shell integration
             // component -- particularly the FileProviderExt part. So we wipe out the build
             // artifacts so this part gets build first. Let's first check if we have an existing
             // build in the folder we expect
-            let shellIntegrationDir = "\(clientBuildDir)/work/build/shell_integration/MacOSX"
-            if fm.fileExists(atPath: shellIntegrationDir) {
+            let shellIntegrationURL = clientBuildURL
+                .appendingPathComponent("work")
+                .appendingPathComponent("build")
+                .appendingPathComponent("shell_integration")
+                .appendingPathComponent("MacOSX")
+
+            if fm.fileExists(atPath: shellIntegrationURL.path) {
                 print("Removing existing shell integration build artifacts...")
                 do {
-                    try fm.removeItem(atPath: shellIntegrationDir)
+                    try fm.removeItem(atPath: shellIntegrationURL.path)
                 } catch let error {
-                    print("WARNING! Error removing shell integration build directory: \(error)")
+                    print("ERROR: Error removing shell integration build directory: \(error)")
+                    throw MacCrafterError.craftError("Failed to remove existing shell integration build directory!")
                 }
             }
         }
@@ -257,41 +269,62 @@ struct Build: AsyncParsableCommand {
         let offlineMode = offline ? "--offline" : ""
         let allOptionsString = craftOptions.map({ "--options \"\($0)\"" }).joined(separator: " ")
 
-        guard await shell(
-            "\(craftCommand) --buildtype \(buildType) \(buildMode) \(offlineMode) \(allOptionsString) \(craftBlueprintName)"
-        ) == 0 else {
+        guard await shell("\(craftCommand) --buildtype \(buildType) \(buildMode) \(offlineMode) \(allOptionsString) \(craftBlueprintName)") == 0 else {
             // Troubleshooting: This can happen because a CraftMaster repository was cloned which does not contain the commit defined in craftmaster.ini of this project due to use of customized forks.
             throw MacCrafterError.craftError("Error crafting Nextcloud Desktop Client.")
         }
         
-        let clientAppDir = "\(clientBuildDir)/image-\(buildType)-master/\(appName).app"
+        let clientAppURL = clientBuildURL
+            .appendingPathComponent("image-\(buildType)-master")
+            .appendingPathComponent("\(appName).app")
 
         if let codeSignIdentity {
-            print("Code-signing Nextcloud Desktop Client libraries and frameworks...")
+            print("Signing Nextcloud Desktop Client libraries and frameworks...")
             stopwatch.record("Code Signing")
 
-            let entitlementsPath = "\(clientBuildDir)/work/build/admin/osx/macosx.entitlements"
-            try await codesignClientAppBundle(
-                at: clientAppDir,
-                withCodeSignIdentity: codeSignIdentity,
-                usingEntitlements: entitlementsPath,
-                dev: dev
-            )
+            let appEntitlements = clientBuildURL
+                .appendingPathComponent("work")
+                .appendingPathComponent("build")
+                .appendingPathComponent("admin")
+                .appendingPathComponent("osx")
+                .appendingPathComponent("macosx.entitlements")
+
+            let entitlementsDirectory = clientBuildURL
+                .appendingPathComponent("work")
+                .appendingPathComponent("build")
+                .appendingPathComponent("shell_integration")
+                .appendingPathComponent("MacOSX")
+
+            let entitlements: [String: URL] = [
+                "\(appName).app": appEntitlements,
+                "FileProviderExt.appex": entitlementsDirectory.appendingPathComponent("FileProviderExt.entitlements"),
+                "FileProviderUIExt.appex": entitlementsDirectory.appendingPathComponent("FileProviderUIExt.entitlements"),
+                "FinderSyncExt.appex": entitlementsDirectory.appendingPathComponent("FinderSyncExt.entitlements"),
+            ]
+
+            for file in entitlements.values {
+                if FileManager.default.fileExists(atPath: file.path) {
+                    print("Using entitlement manifest: \(file.path)")
+                } else {
+                    print("ERROR: Entitlement manifest does not exist: \(file.path)")
+                }
+            }
+
+            try await Signer.signMainBundle(at: clientAppURL, codeSignIdentity: codeSignIdentity, entitlements: entitlements)
         }
         
         print("Placing Nextcloud Desktop Client in \(productPath)...")
 
         if !fm.fileExists(atPath: productPath) {
-            try fm.createDirectory(
-                atPath: productPath, withIntermediateDirectories: true, attributes: nil
-            )
+            try fm.createDirectory(atPath: productPath, withIntermediateDirectories: true, attributes: nil)
         }
+
         if fm.fileExists(atPath: "\(productPath)/\(appName).app") {
             try fm.removeItem(atPath: "\(productPath)/\(appName).app")
         }
 
-        try fm.copyItem(atPath: clientAppDir, toPath: "\(productPath)/\(appName).app")
-        
+        try fm.copyItem(atPath: clientAppURL.path, toPath: "\(productPath)/\(appName).app")
+
         if package {
             stopwatch.record("Packaging App Bundle")
 

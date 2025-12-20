@@ -1,0 +1,42 @@
+# SPDX-FileCopyrightText: Nextcloud GmbH
+# SPDX-FileCopyrightText: 2025 Iva Horn
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
+name: NextcloudFileProviderKit
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  Lint:
+    runs-on: macos-latest
+
+    defaults:
+      run:
+        working-directory: shell_integration/MacOSX/NextcloudFileProviderKit
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: SwiftFormat
+        run: swiftformat --lint . --reporter github-actions-log
+
+  Tests:
+    runs-on: macos-latest
+
+    defaults:
+      run:
+        working-directory: shell_integration/MacOSX/NextcloudFileProviderKit
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+
+    - name: Run Tests
+      run: xcodebuild clean build test -scheme NextcloudFileProviderKit -destination "platform=macOS,name=My Mac"

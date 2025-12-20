@@ -15,11 +15,6 @@ if [ -f "$HOME/.zprofile" ]; then
     source "$HOME/.zprofile"
 fi
 
-if [ -z "${CODE_SIGN_IDENTITY}" ]; then
-    echo "Error: CODE_SIGN_IDENTITY is not defined or is empty!"
-    exit 1
-fi
-
 DESKTOP_CLIENT_PROJECT_ROOT="$SOURCE_ROOT/../../.."
 
 if [ -d "$DESKTOP_CLIENT_PROJECT_ROOT/admin/osx/mac-crafter" ]; then
@@ -36,5 +31,5 @@ swift run mac-crafter \
     --dev \
     --disable-auto-updater \
     --build-file-provider-module \
-    --code-sign-identity="$CODE_SIGN_IDENTITY" \
+    --code-sign-identity="Apple Development" \
     "$DESKTOP_CLIENT_PROJECT_ROOT"

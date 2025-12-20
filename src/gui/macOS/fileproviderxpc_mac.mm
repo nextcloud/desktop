@@ -45,19 +45,19 @@ void FileProviderXPC::connectToFileProviderDomains()
 
 void FileProviderXPC::authenticateFileProviderDomains()
 {
+    qCInfo(lcFileProviderXPC) << "Authenticating file provider domains...";
+
     for (const auto &fileProviderDomainIdentifier : _clientCommServices.keys()) {
-        qCInfo(lcFileProviderXPC) << "Authenticating file provider domains.";
         authenticateFileProviderDomain(fileProviderDomainIdentifier);
     }
 }
 
 void FileProviderXPC::authenticateFileProviderDomain(const QString &fileProviderDomainIdentifier) const
 {
-    const auto accountState = FileProviderDomainManager::accountStateFromFileProviderDomainIdentifier(fileProviderDomainIdentifier);
+    const auto accountState = AccountManager::instance()->accountFromFileProviderDomainIdentifier(fileProviderDomainIdentifier);
 
     if (!accountState) {
-        qCWarning(lcFileProviderXPC) << "Account state is null for file provider domain to authenticate"
-                                     << fileProviderDomainIdentifier;
+        qCWarning(lcFileProviderXPC) << "Account state is null for file provider domain to authenticate" << fileProviderDomainIdentifier;
         return;
     }
 
@@ -101,7 +101,7 @@ void FileProviderXPC::slotAccountStateChanged(const AccountState::State state) c
 {
     const auto slotSender = dynamic_cast<AccountState*>(sender());
     Q_ASSERT(slotSender);
-    const auto extensionAccountId = slotSender->account()->userIdAtHostWithPort();
+    const auto fileProviderDomainId = slotSender->account()->fileProviderDomainIdentifier();
 
     switch(state) {
     case AccountState::Disconnected:
@@ -116,11 +116,11 @@ void FileProviderXPC::slotAccountStateChanged(const AccountState::State state) c
     case AccountState::RedirectDetected:
     case AccountState::NeedToSignTermsOfService:
         // Notify File Provider that it should show the not authenticated message
-        unauthenticateFileProviderDomain(extensionAccountId);
+        unauthenticateFileProviderDomain(fileProviderDomainId);
         break;
     case AccountState::Connected:
         // Provide credentials
-        authenticateFileProviderDomain(extensionAccountId);
+        authenticateFileProviderDomain(fileProviderDomainId);
         break;
     }
 }
@@ -160,8 +160,14 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
                                          << fileProviderDomainIdentifier
                                          << "going to attempt reconfiguring interface";
             const auto ncDomainManager = FileProvider::instance()->domainManager();
-            const auto accountState = ncDomainManager->accountStateFromFileProviderDomainIdentifier(fileProviderDomainIdentifier);
-            const auto domain = (NSFileProviderDomain *)(ncDomainManager->domainForAccount(accountState.get()));
+            const auto accountState = AccountManager::instance()->accountFromFileProviderDomainIdentifier(fileProviderDomainIdentifier);
+
+            if (!accountState || !accountState->account()) {
+                qCWarning(lcFileProviderXPC) << "Could not get account for domain" << fileProviderDomainIdentifier << "during reconfigure.";
+                return response;
+            }
+
+            const auto domain = (NSFileProviderDomain *)(ncDomainManager->domainForAccount(accountState->account().data()));
             const auto manager = [NSFileProviderManager managerForDomain:domain];
             const auto fpServices = FileProviderXPCUtils::getFileProviderServices(@[manager]);
             const auto connections = FileProviderXPCUtils::connectToFileProviderServices(fpServices);

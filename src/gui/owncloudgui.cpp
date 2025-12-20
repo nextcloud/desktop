@@ -288,10 +288,12 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     QVector<AccountStatePtr> problemAccounts;
 
     const auto &allAccounts = AccountManager::instance()->accounts();
+
     for (const auto &account : allAccounts) {
         if (!account->isSignedOut()) {
             allSignedOut = false;
         }
+
         if (!account->isConnected()) {
             problemAccounts.append(account);
         }
@@ -308,44 +310,43 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     QList<QString> successFileProviderAccounts;
     QList<QString> idleFileProviderAccounts;
 
-    if (Mac::FileProvider::fileProviderAvailable()) {
-        const auto &allAccounts = AccountManager::instance()->accounts();
-        for (const auto &accountState : allAccounts) {
-            const auto account = accountState->account();
-            const auto userIdAtHostWithPort = account->userIdAtHostWithPort();
-            if (!Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(userIdAtHostWithPort)) {
-                continue;
-            }
-            allPaused = false;
-            const auto fileProvider = Mac::FileProvider::instance();
-            const auto accountFpId = fileProvider->domainManager()->fileProviderDomainIdentifierFromAccountId(userIdAtHostWithPort);
-            const auto displayName = account->displayName();
-            const auto accountTooltipLabel = displayName.isEmpty() ? userIdAtHostWithPort : displayName;
+    for (const auto &accountState : allAccounts) {
+        const auto account = accountState->account();
+        const auto userIdAtHostWithPort = account->userIdAtHostWithPort();
 
-            if (!fileProvider->xpc()->fileProviderDomainReachable(accountFpId)) {
+        if (!Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(userIdAtHostWithPort)) {
+            continue;
+        }
+
+        allPaused = false;
+        const auto fileProvider = Mac::FileProvider::instance();
+        const auto accountFpId = account->fileProviderDomainIdentifier();
+        const auto displayName = account->displayName();
+        const auto accountTooltipLabel = displayName.isEmpty() ? userIdAtHostWithPort : displayName;
+
+        if (!fileProvider->xpc()->fileProviderDomainReachable(accountFpId)) {
+            problemFileProviderAccounts.append(accountTooltipLabel);
+        } else {
+            switch (fileProvider->socketServer()->latestReceivedSyncStatusForAccount(accountState->account())) {
+            case SyncResult::Undefined:
+            case SyncResult::NotYetStarted:
+                idleFileProviderAccounts.append(accountTooltipLabel);
+                break;
+            case SyncResult::SyncPrepare:
+            case SyncResult::SyncRunning:
+            case SyncResult::SyncAbortRequested:
+                syncingFileProviderAccounts.append(accountTooltipLabel);
+                break;
+            case SyncResult::Success:
+                successFileProviderAccounts.append(accountTooltipLabel);
+                break;
+            case SyncResult::Problem:
+            case SyncResult::Error:
+            case SyncResult::SetupError:
                 problemFileProviderAccounts.append(accountTooltipLabel);
-            } else {
-                switch (fileProvider->socketServer()->latestReceivedSyncStatusForAccount(accountState->account())) {
-                case SyncResult::Undefined:
-                case SyncResult::NotYetStarted:
-                    idleFileProviderAccounts.append(accountTooltipLabel);
-                    break;
-                case SyncResult::SyncPrepare:
-                case SyncResult::SyncRunning:
-                case SyncResult::SyncAbortRequested:
-                    syncingFileProviderAccounts.append(accountTooltipLabel);
-                    break;
-                case SyncResult::Success:
-                    successFileProviderAccounts.append(accountTooltipLabel);
-                    break;
-                case SyncResult::Problem:
-                case SyncResult::Error:
-                case SyncResult::SetupError:
-                    problemFileProviderAccounts.append(accountTooltipLabel);
-                    break;
-                case SyncResult::Paused: // This is not technically possible with VFS
-                    break;
-                }
+                break;
+            case SyncResult::Paused: // This is not technically possible with VFS
+                break;
             }
         }
     }

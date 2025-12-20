@@ -434,9 +434,10 @@ void SyncStatusSummary::initSyncState()
     }
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    if (Mac::FileProvider::fileProviderAvailable() && _accountState) {
+    if (_accountState) {
         const auto account = _accountState->account();
         const auto userIdAtHostWithPort = account->userIdAtHostWithPort();
+
         if (Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(userIdAtHostWithPort)) {
             const auto lastKnownSyncState = Mac::FileProvider::instance()->socketServer()->latestReceivedSyncStatusForAccount(account);
             onFileProviderDomainSyncStateChanged(account, lastKnownSyncState);

@@ -326,12 +326,12 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="296"/>
+        <location filename="../src/libsync/filesystem.cpp" line="295"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>Chyba při odebírání „%1“: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="339"/>
+        <location filename="../src/libsync/filesystem.cpp" line="337"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>Nedaří se odstranit složku „%1“</translation>
     </message>
@@ -421,17 +421,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="311"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="325"/>
         <source>The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
         <translation>Odpověď serveru trvala příliš dlouho. Zkontrolujte své připojení a zkuste synchronizovat znovu. Pokud to ani tak nefunguje, obraťte se na správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="315"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="329"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation>Došlo k neočekávané chybě. Zkuste synchronizovat znovu nebo, pokud problém přetrvává, se obraťte na správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="595"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="609"/>
         <source>The server enforces strict transport security and does not accept untrusted certificates.</source>
         <translation>Server vynucuje striktní transportní zabezpečení a nepřijímá nedůvěryhodné certifikáty.</translation>
     </message>
@@ -1065,6 +1065,11 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <location filename="../src/gui/addcertificatedialog.cpp" line="28"/>
         <source>Certificate files (*.p12 *.pfx)</source>
         <translation>Soubory certifikátů (*.p12 *.pfx)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/addcertificatedialog.cpp" line="44"/>
+        <source>Could not access the selected certificate file.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2146,67 +2151,67 @@ Toto může být způsobeno problémem s OpenSSL knihovnami.</translation>
         <translation>Průběh synchronizace</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1119"/>
+        <location filename="../src/gui/folder.cpp" line="1120"/>
         <source>Could not read system exclude file</source>
         <translation>Nezdařilo se přečtení systémového souboru s položkami pro vynechání</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1409"/>
+        <location filename="../src/gui/folder.cpp" line="1410"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Byla přidána nová složka větší než %1 MB: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1412"/>
+        <location filename="../src/gui/folder.cpp" line="1413"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Byla přidána složka z externího úložiště.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1413"/>
+        <location filename="../src/gui/folder.cpp" line="1414"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Pokud to chcete stáhnout, jděte do nastavení a vyberte to.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1470"/>
+        <location filename="../src/gui/folder.cpp" line="1471"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Složka překročila nastavený limit velikosti %1MB: %2.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1481"/>
+        <location filename="../src/gui/folder.cpp" line="1482"/>
         <source>Keep syncing</source>
         <translation>Synchronizovat</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1489"/>
+        <location filename="../src/gui/folder.cpp" line="1490"/>
         <source>Stop syncing</source>
         <translation>Zastavit synchronizaci</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1500"/>
+        <location filename="../src/gui/folder.cpp" line="1501"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>Složka %1 překročila nastavený limit velikosti %2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1501"/>
+        <location filename="../src/gui/folder.cpp" line="1502"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Chcete ji přestat synchronizovat?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1576"/>
+        <location filename="../src/gui/folder.cpp" line="1577"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Složka %1 byla vytvořena ale byla už dříve vynechána ze synchronizace. Data, která se v ní nacházejí, nebudou synchronizována.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1579"/>
+        <location filename="../src/gui/folder.cpp" line="1580"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Soubor %1 byl vytvořen ale byl už dříve vynechán ze synchronizace. Nebude synchronizován.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1590"/>
+        <location filename="../src/gui/folder.cpp" line="1591"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -2219,12 +2224,12 @@ To znamená, že se může stávat, že synchronizační klient nebude místní 
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1628"/>
+        <location filename="../src/gui/folder.cpp" line="1629"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Stažení virtuálního souboru se nezdařilo s kódem „%1“, stav „%2“ a chybové hlášení „%3“</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1723"/>
+        <location filename="../src/gui/folder.cpp" line="1724"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2233,7 +2238,7 @@ Potvrďte, že chcete v těchto mazáních pokračovat.
 Případně je možné veškeré smazané soubory obnovit jejich nahráním ze složky „%1“ na server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1724"/>
+        <location filename="../src/gui/folder.cpp" line="1725"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2242,22 +2247,22 @@ Potvrďte, že chcete v těchto mazáních pokračovat.
 Případně je možné veškeré smazané soubory obnovit jejich stažením si ze serveru.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1725"/>
+        <location filename="../src/gui/folder.cpp" line="1726"/>
         <source>Remove all files?</source>
         <translation>Odebrat veškeré soubory?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1729"/>
+        <location filename="../src/gui/folder.cpp" line="1730"/>
         <source>Proceed with Deletion</source>
         <translation>Pokračovat v mazání</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1730"/>
+        <location filename="../src/gui/folder.cpp" line="1731"/>
         <source>Restore Files to Server</source>
         <translation>Obnovit soubory na server</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1730"/>
+        <location filename="../src/gui/folder.cpp" line="1731"/>
         <source>Restore Files from Server</source>
         <translation>Obnovit soubory ze serveru</translation>
     </message>
@@ -2737,27 +2742,27 @@ Pro pokročilé uživatele: tento problém může souviset s vícero databázov�
 <context>
     <name>OCC::GETFileJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="187"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="189"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Ze serveru nebyl obdržen E-Tag, zkontrolujte proxy/bránu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="194"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="196"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Při navazování byl obdržen jiný E-Tag. Bude znovu vyzkoušeno příště.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="205"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="207"/>
         <source>We received an unexpected download Content-Length.</source>
         <translation>Obdržena neočekávaná délka stahovaného obsahu.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="233"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="235"/>
         <source>Server returned wrong content-range</source>
         <translation>Server vrátil chybný rozsah obsahu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="359"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="361"/>
         <source>Connection Timeout</source>
         <translation>Časový limit pro spojení překročen</translation>
     </message>
@@ -3012,6 +3017,16 @@ Přechod na konzervativnější verze není možný: změna ze stable na enterpr
         <location filename="../src/gui/generalsettings.cpp" line="663"/>
         <source>Zip Archives</source>
         <translation>Zip archivy</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="715"/>
+        <source>Failed to Access File</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="716"/>
+        <source>Could not access the selected location. Please try again or choose a different location.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="673"/>
@@ -4275,18 +4290,18 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="456"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="458"/>
         <source>Could not get file %1 from local DB</source>
         <translation>Nepodařilo se získat soubor %1 z lokální databáze</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="473"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="475"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
         <translation>Soubor %1 není možné stáhnout z důvodu chybějících informací o šifrování</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1368"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="515"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1370"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Nepodařilo se smazat záznam o souboru %1 z lokální databáze</translation>
     </message>
@@ -4296,54 +4311,54 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Soubor %1 nemohl být stažen z důvodu kolize názvu se souborem v místním systému!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="696"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="698"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>Stahování by snížilo volné místo na místním disku pod nastavený limit</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="700"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="702"/>
         <source>Free space on disk is less than %1</source>
         <translation>Volného místa na úložišti je méně než %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="861"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="863"/>
         <source>File was deleted from server</source>
         <translation>Soubor byl smazán ze serveru</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="933"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="935"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Soubor nemohl být kompletně stažen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="940"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="942"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation>Stažený soubor je prázdný, ale server sdělil, že měl mít %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1202"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1216"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1204"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1218"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
         <translation>Soubor %1 nemá platný čas změny, hlášený na server. Neukládat ho.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1289"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1291"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>Soubor %1 stažen, ale mělo za následek kolizi stejných názvů lišících se jen velikostí písmen se souborem na stroji!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1400"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1402"/>
         <source>Error updating metadata: %1</source>
         <translation>Chyba při aktualizování metadat: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1403"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1405"/>
         <source>The file %1 is currently in use</source>
         <translation>Soubor %1 je v tuto chvíli používán jinou aplikací</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="492"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1318"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="494"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1320"/>
         <source>File has changed since discovery</source>
         <translation>Soubor se mezitím změnil</translation>
     </message>
@@ -4364,39 +4379,39 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
 <context>
     <name>OCC::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="213"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="217"/>
         <source>could not delete file %1, error: %2</source>
         <translation>smazání souboru %1 se nezdařilo, chyba: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="228"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="232"/>
         <source>Folder %1 cannot be created because of a local file or folder name clash!</source>
         <translation>Složku %1 není možné vytvořit kvůli kolizi stejných názvů lišících se jen velikostí písmen se souborem či složkou na stroji!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="260"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="264"/>
         <source>Could not create folder %1</source>
         <translation>Nepodařilo se vytvořit složku %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="279"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="285"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="277"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="283"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="289"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Složka %1 nemůže být učiněna pouze pro čtení: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="285"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="289"/>
         <source>unknown exception</source>
         <translation>neznámá výjimka</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="318"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="322"/>
         <source>Error updating metadata: %1</source>
         <translation>Chyba při aktualizování metadat: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="321"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="325"/>
         <source>The file %1 is currently in use</source>
         <translation>Soubor %1 je v tuto chvíli používán jinou aplikací</translation>
     </message>
@@ -4404,19 +4419,19 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
 <context>
     <name>OCC::PropagateLocalRemove</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="113"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="117"/>
         <source>Could not remove %1 because of a local file name clash</source>
         <translation>Nelze odstranit %1 z důvodu kolize názvu s místním souborem</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="153"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="162"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="172"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="157"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="166"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="176"/>
         <source>Temporary error when removing local item removed from server.</source>
         <translation>Dočasná chyba při odebírání lokální položky odebrané ze serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="185"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Nepodařilo se smazat záznam o souboru %1 z lokální databáze</translation>
     </message>
@@ -4424,49 +4439,49 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="378"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="382"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>Složku %1 není možné přejmenovat kvůli kolizi stejných názvů lišících se jen velikostí písmen se souborem či složkou na stroji!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="386"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="390"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>Soubor %1 stažen, ale mělo za následek kolizi stejných názvů lišících se jen velikostí písmen se souborem na stroji!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="486"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="573"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="490"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="577"/>
         <source>Could not get file %1 from local DB</source>
         <translation>Nepodařilo se získat soubor %1 z lokální databáze</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="499"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="560"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="503"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="564"/>
         <source>Error setting pin state</source>
         <translation>Chyba při nastavování stavu pin</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="512"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="516"/>
         <source>Error updating metadata: %1</source>
         <translation>Chyba při aktualizování metadat: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="515"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="519"/>
         <source>The file %1 is currently in use</source>
         <translation>Soubor %1 je v tuto chvíli používán jinou aplikací</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="550"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="554"/>
         <source>Failed to propagate directory rename in hierarchy</source>
         <translation>Nepodařilo se zpropagovat přejmenování složky v hierarchii</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="555"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="559"/>
         <source>Failed to rename file</source>
         <translation>Nepodařilo se přejmenovat soubor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="578"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="582"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Nepodařilo se smazat záznam ohledně souboru %1 z lokální databáze</translation>
     </message>
@@ -5257,12 +5272,12 @@ Server odpověděl chybou: %2</translation>
         <translation>Nedaří se otevřít nebo vytvořit místní synchronizační databázi. Ověřte, že máte přístup k zápisu do synchronizační složky.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1442"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1428"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Na disku dochází místo: Stahování které by zmenšilo volné místo pod %1 bude přeskočeno.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1449"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1435"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Na serveru není pro některé z nahrávaných souborů dostatek místa.</translation>
     </message>
@@ -5592,23 +5607,23 @@ Server odpověděl chybou: %2</translation>
         <translation><numerusform>%n notifikace</numerusform><numerusform>%n notifikace</numerusform><numerusform>%n notifikací</numerusform><numerusform>%n notifikace</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="673"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="656"/>
         <source>Retry all uploads</source>
         <translation>Znovu spustit všechna nahrávání</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="886"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="707"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="869"/>
         <source>Resolve conflict</source>
         <translation>Vyřešit konflikt</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="876"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="859"/>
         <source>Rename file</source>
         <translation>Přejmenovat soubor</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1018"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1001"/>
         <source>Public Share Link</source>
         <translation>Odkaz pro veřejné sdílení</translation>
     </message>
@@ -5623,24 +5638,24 @@ Server odpověděl chybou: %2</translation>
         <translation>Otevřít Nextcloud Talk v prohlížeči</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1103"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1086"/>
         <source>Open %1 Assistant in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>Otevřít %1 asistenta v prohlížeči</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1104"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
         <source>Open %1 Talk in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>Otevřít %1 Talk v prohlížeči</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1227"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1210"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation>Kvóta je aktualizována; %1 procent celkového prostoru je využito.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1247"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1230"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation>Varování ohledně kvóty – využíváno %1 procent nebo více z úložiště</translation>
     </message>
@@ -5648,32 +5663,32 @@ Server odpověděl chybou: %2</translation>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1555"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1538"/>
         <source>Confirm Account Removal</source>
         <translation>Potvrďte odebrání účtu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1556"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1539"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Opravdu chcete odebrat propojení s účtem &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Pozn.:&lt;/b&gt; Toto &lt;b&gt;nesmaže&lt;/b&gt; žádné soubory.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1560"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1543"/>
         <source>Remove connection</source>
         <translation>Odebrat spojení</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1561"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1544"/>
         <source>Cancel</source>
         <translation>Storno</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1645"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1628"/>
         <source>Leave share</source>
         <translation>Opustit sdílení</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1645"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1628"/>
         <source>Remove account</source>
         <translation>Odebrat účet</translation>
     </message>
@@ -6254,32 +6269,47 @@ Server odpověděl chybou: %2</translation>
         <translation>Ve zvoleném umístění se nepodařilo vytvořit archiv s ladícími informacemi!</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="805"/>
+        <location filename="../src/gui/generalsettings.cpp" line="198"/>
+        <source>Could not create debug archive in temporary location!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="212"/>
+        <source>Could not remove existing file at destination!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="226"/>
+        <source>Could not move debug archive to selected location!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="788"/>
         <source>You renamed %1</source>
         <translation>Přejmenovali jste %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="807"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="790"/>
         <source>You deleted %1</source>
         <translation>Smazali jste %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="809"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="792"/>
         <source>You created %1</source>
         <translation>Vytvořili jste %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="811"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="794"/>
         <source>You changed %1</source>
         <translation>Změnili jste %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="835"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="818"/>
         <source>Synced %1</source>
         <translation>Synchronizováno %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="328"/>
+        <location filename="../src/libsync/filesystem.cpp" line="327"/>
         <source>Error deleting the file</source>
         <translation>Chyba při mazání souboru</translation>
     </message>
@@ -6289,97 +6319,97 @@ Server odpověděl chybou: %2</translation>
         <translation>Popisy umístění začínajícími na znak „#“ nejsou ve VFS režimu podporovány.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="479"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="493"/>
         <source>We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.</source>
         <translation>Nepodařilo se zpracovat váš požadavek. Zkuste zopakovat synchronizaci později. Pokud se toto stále bude dít, obraťte se o pomoc na správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="482"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="496"/>
         <source>You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.</source>
         <translation>Aby bylo možné pokračovat, je třeba se přihlásit. Pokud máte problémy se svými přihlašovacími údaji, obraťte se na správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="485"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="499"/>
         <source>You don’t have access to this resource. If you think this is a mistake, please contact your server administrator.</source>
         <translation>K tomuto prostředku nemáte přístup. Pokud se domníváte, že se jedná o chybu, obraťte se na správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="488"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="502"/>
         <source>We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.</source>
         <translation>Nepodařilo se najít, co jste hledali. Může být, že bylo přesunuto nebo smazáno. Pokud potřebujete pomoc, obraťte se na správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="491"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="505"/>
         <source>It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.</source>
         <translation>Zdá se, že používáte proxy, která vyžaduje ověření se. Zkontrolujte nastavení pro proxy a přihlašovací údaje. Pokud potřebujete pomoc, obraťte se na správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="494"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="508"/>
         <source>The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
         <translation>Požadavek trvá déle než obvykle. Zkuste zopakovat synchronizaci. Pokud to pořád nefunguje, obraťte se na správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="497"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="511"/>
         <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
         <translation>Zatímco jste pracovali, soubory na serveru byly změněny. Zkuste opakovat synchronizaci. Pokud problém přetrvává, obraťte se na správce serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="500"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="514"/>
         <source>This folder or file isn’t available anymore. If you need assistance, please contact your server administrator.</source>
         <translation>Tato složka nebo soubor už není k dispozici. Pokud potřebujete pomoc, obraťte se na správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="503"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="517"/>
         <source>The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administrator.</source>
         <translation>Požadavek nebylo možné dokončit protože některé potřebné podmínky nebyly splněny. Zkuste synchronizování znovu později. Pokud potřebujete pomoc, obraťte se na správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="506"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="520"/>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
         <translation>Tento soubor je příliš velký na to, aby ho bylo možné nahrát. Buď zvolte menší soubor nebo se obraťte o pomoc na správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="509"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="523"/>
         <source>The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administrator for assistance.</source>
         <translation>Adresa použitá pro vytvoření požadavku je příliš dlouhá na to, aby byla zvládnutelná serverem. Zkuste odesílanou informaci zkrátit nebo se obraťte o pomoc na správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="512"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="526"/>
         <source>This file type isn’t supported. Please contact your server administrator for assistance.</source>
         <translation>Tento typ souboru není podporován. Obraťte se o pomoc na správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="515"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="529"/>
         <source>The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.</source>
         <translation>Server nebylo schopen zpracovat váš požadavek protože některé údaje nebyly správné nebo kompletní. Zkuste synchronizovat později znovu, nebo se obraťte o pomoc na správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="518"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="532"/>
         <source>The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administrator for assistance.</source>
         <translation>Prostředek ke kterému se pokoušíte přistoupit je v tuto chvíli uzamčený a není možné ho měnit. Zkuste jeho změnu později nebo se obraťte na správce vámi využívaného serveru o pomoc.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="521"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="535"/>
         <source>This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administrator for help.</source>
         <translation>Požadavek nebylo možné dokončit protože mu chybí některé potřebné podmínky. Zkuste to znovu později, nebo se obraťte o pomoc na správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="524"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="538"/>
         <source>You made too many requests. Please wait and try again. If you keep seeing this, your server administrator can help.</source>
         <translation>Odeslali jste příliš mnoho požadavků. Vyčkejte a zkuste to znovu. Pokud zobrazování tohoto přetrvává, může vám pomoci správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="527"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="541"/>
         <source>Something went wrong on the server. Please try syncing again later, or contact your server administrator if the issue persists.</source>
         <translation>Na serveru se něco pokazilo. Zkuste zopakovat synchronizaci později nebo, pokud problém přetrvává, se obraťte na správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="530"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="544"/>
         <source>The server does not recognize the request method. Please contact your server administrator for help.</source>
         <translation>Server nerozpoznává požadovanou metodu. Obraťte se o pomoc na správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="533"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="547"/>
         <source>We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administrator can help you.</source>
         <translation>Je problém s připojením se k serveru. Zkuste to za chvilku znovu. Pokud problém přetrvává, správce vámi využívaného severu vám může pomoc.</translation>
     </message>
@@ -6389,37 +6419,37 @@ Server odpověděl chybou: %2</translation>
         <translation>Server je v tuto chvíli vytížený. Zkuste synchronizaci znovu za pár minut nebo, pokud je to naléhavé, se obraťte na správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="536"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="550"/>
         <source>The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="539"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="553"/>
         <source>It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administrator.</source>
         <translation>Připojení k serveru trvá příliš dlouho. Zkuste to znovu později. Pokud potřebujete pomoc, obraťte se na správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="542"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="556"/>
         <source>The server does not support the version of the connection being used. Contact your server administrator for help.</source>
         <translation>Server nepodporuje verzi použitého spojení. Obraťte se o pomoc na správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="545"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="559"/>
         <source>The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administrator.</source>
         <translation>Server nemá dostatek prostoru pro dokončení vašeho požadavku. Zkontrolujte, jak velkou kvótu máte přidělenou (obraťte se na správce vámi využívaného serveru).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="548"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="562"/>
         <source>Your network needs extra authentication. Please check your connection. Contact your server administrator for help if the issue persists.</source>
         <translation>Vámi využívaná síť vyžaduje dodatečné ověření se. Zkontrolujte připojení. Pokud problém přetrvává, obraťte se na správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="551"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="565"/>
         <source>You don’t have permission to access this resource. If you believe this is an error, contact your server administrator to ask for assistance.</source>
         <translation>Nemáte oprávnění pro přístup k tomuto prostředku. Pokud si myslíte, že se jedná o chybu, obraťte se o pomoc na správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="568"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation>Došlo k neočekávané chybě. Zkuste synchronizovat znovu nebo, pokud problém přetrvává, se obraťte na správce vámi využívaného serveru.</translation>
     </message>

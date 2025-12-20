@@ -21,7 +21,6 @@ if(APPLE)
         "OC_OEM_SHARE_ICNS=${OC_OEM_SHARE_ICNS}"
         "OC_APPLICATION_NAME=${APPLICATION_NAME}"
         "OC_APPLICATION_REV_DOMAIN=${APPLICATION_REV_DOMAIN}"
-        "OC_SOCKETAPI_TEAM_IDENTIFIER_PREFIX=${SOCKETAPI_TEAM_IDENTIFIER_PREFIX}"
         COMMENT building Mac Overlay icons
         VERBATIM)
 
@@ -34,7 +33,6 @@ if(APPLE)
             "OC_APPLICATION_VENDOR=${APPLICATION_VENDOR}"
             "OC_APPLICATION_NAME=${APPLICATION_NAME}"
             "OC_APPLICATION_REV_DOMAIN=${APPLICATION_REV_DOMAIN}"
-            "OC_SOCKETAPI_TEAM_IDENTIFIER_PREFIX=${SOCKETAPI_TEAM_IDENTIFIER_PREFIX}"
             COMMENT building macOS File Provider extension
             VERBATIM)
 
@@ -46,7 +44,6 @@ if(APPLE)
             "OC_APPLICATION_VENDOR=${APPLICATION_VENDOR}"
             "OC_APPLICATION_NAME=${APPLICATION_NAME}"
             "OC_APPLICATION_REV_DOMAIN=${APPLICATION_REV_DOMAIN}"
-            "OC_SOCKETAPI_TEAM_IDENTIFIER_PREFIX=${SOCKETAPI_TEAM_IDENTIFIER_PREFIX}"
             DEPENDS mac_fileproviderplugin
             COMMENT building macOS File Provider UI extension
             VERBATIM)
@@ -60,6 +57,8 @@ if(APPLE)
         set(OSX_PLUGINS_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/${XCODE_TARGET_CONFIGURATION})
         set(OSX_PLUGINS_INSTALL_DIR ${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns)
 
+        configure_file(FinderSyncExt.entitlements.cmake ${CMAKE_CURRENT_BINARY_DIR}/FinderSyncExt.entitlements)
+
         install(DIRECTORY ${OSX_PLUGINS_BINARY_DIR}/FinderSyncExt.appex
             DESTINATION ${OSX_PLUGINS_INSTALL_DIR}
             USE_SOURCE_PERMISSIONS)
@@ -68,6 +67,9 @@ if(APPLE)
         install(DIRECTORY DESTINATION ${OSX_PLUGINS_INSTALL_DIR}/FinderSyncExt.appex/Contents/Library)
 
         if (BUILD_FILE_PROVIDER_MODULE)
+            configure_file(FileProviderExt.entitlements.cmake ${CMAKE_CURRENT_BINARY_DIR}/FileProviderExt.entitlements)
+            configure_file(FileProviderUIExt.entitlements.cmake ${CMAKE_CURRENT_BINARY_DIR}/FileProviderUIExt.entitlements)
+
             install(DIRECTORY ${OSX_PLUGINS_BINARY_DIR}/FileProviderExt.appex
                 DESTINATION ${OSX_PLUGINS_INSTALL_DIR}
                 USE_SOURCE_PERMISSIONS)

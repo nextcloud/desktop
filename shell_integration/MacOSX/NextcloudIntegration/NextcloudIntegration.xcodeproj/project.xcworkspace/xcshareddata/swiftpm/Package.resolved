@@ -1,5 +1,5 @@
 {
-  "originHash" : "74a3274bff88648671702b7d1dfa0c8ea5acb44280987019f6c5bb7055b848b2",
+  "originHash" : "8ed0de7f57594dcc5e2c6f77ae68f568f8272187d12257ccf4aa50e70e374323",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -20,21 +20,12 @@
       }
     },
     {
-      "identity" : "nextcloudfileproviderkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/nextcloud/NextcloudFileProviderKit.git",
-      "state" : {
-        "revision" : "3ff19ffdda3361ec3446266aa757653a8b272898",
-        "version" : "3.2.11"
-      }
-    },
-    {
       "identity" : "nextcloudkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/nextcloud/NextcloudKit",
       "state" : {
-        "revision" : "67f3cf59a5e6ae11c061815a05197e2b2cbcb3ad",
-        "version" : "7.2.2"
+        "revision" : "8ac6f9e08d112b51a9b7a7189fa144009a6f382d",
+        "version" : "7.2.3"
       }
     },
     {
