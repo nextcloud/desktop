@@ -18,6 +18,16 @@
 
 namespace OCC {
 
+QString Utility::appImagePath()
+{
+    return {};
+}
+
+bool Utility::isRunningInAppImage()
+{
+    return false;
+}
+
 QVector<Utility::ProcessInfosForOpenFile> Utility::queryProcessInfosKeepingFileOpen(const QString &filePath)
 {
     Q_UNUSED(filePath)

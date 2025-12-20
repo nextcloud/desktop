@@ -170,6 +170,10 @@ namespace Utility {
     constexpr bool isBSD(); // use with care, does not match OS X
 
     OCSYNC_EXPORT QString platformName();
+
+    // AppImage helpers (Linux only, return empty/false elsewhere)
+    OCSYNC_EXPORT QString appImagePath();
+    OCSYNC_EXPORT bool isRunningInAppImage();
     // crash helper for --debug
     OCSYNC_EXPORT void crash();
 
