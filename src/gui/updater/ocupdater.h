@@ -112,8 +112,7 @@ signals:
     void requestRestart();
 
 public slots:
-    // FIXME Maybe this should be in the NSISUpdater which should have been called WindowsUpdater
-    void slotStartInstaller();
+    virtual void slotStartInstaller();
 
 protected slots:
     void backgroundCheckForUpdate() override;
