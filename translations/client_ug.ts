@@ -4,12 +4,12 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="29"/>
         <source>Open %1 locally</source>
-        <translation>يەرلىك% 1 نى ئېچىڭ</translation>
+        <translation>يەرلىك %1 نى ئېچىڭ</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="35"/>
         <source>In %1</source>
-        <translation>% 1</translation>
+        <translation>%1</translation>
     </message>
 </context>
 <context>
@@ -71,12 +71,12 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="111"/>
         <source>%1 (%2, %3)</source>
-        <translation>% 1 (% 2,% 3)</translation>
+        <translation>%1 (%2,%3)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="128"/>
         <source>Checking for changes in &quot;%1&quot;</source>
-        <translation>&quot;% 1&quot; دىكى ئۆزگىرىشلەرنى تەكشۈرۈش</translation>
+        <translation>&quot;%1&quot; دىكى ئۆزگىرىشلەرنى تەكشۈرۈش</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="133"/>
@@ -1068,7 +1068,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="44"/>
         <source>Could not access the selected certificate file.</source>
-        <translation type="unfinished"/>
+        <translation>تاللانغا گۇۋاھنامە ھۆججىتىگە كىرەلمىدى.</translation>
     </message>
 </context>
 <context>
@@ -1917,43 +1917,43 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="116"/>
         <source>%1 second(s) ago</source>
         <comment>seconds elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 سىكۇنت بۇرۇن</numerusform><numerusform>%1 سىكۇنت بۇرۇن</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="119"/>
         <source>%1 minute(s) ago</source>
         <comment>minutes elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 مىنۇت ئىلگىرى</numerusform><numerusform>%1 مىنۇت ئىلگىرى</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="122"/>
         <source>%1 hour(s) ago</source>
         <comment>hours elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 سائەت ئىلگىرى</numerusform><numerusform>%1 سائەت ئىلگىرى</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="125"/>
         <source>%1 day(s) ago</source>
         <comment>days elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 كۈن ئىلگىرى</numerusform><numerusform>%1 كۈن ئىلگىرى</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="128"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ئاي ئىلگىرى</numerusform><numerusform>%1 ئاي ئىلگىرى</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="131"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 يىل ئىلگىرى</numerusform><numerusform>%1 يىل ئىلگىرى</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="163"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 تەرىپىدىن قۇلۇپلانغان - %2 مىنۇتتا مۇددىتى توشىدۇ</numerusform><numerusform>%1 تەرىپىدىن قۇلۇپلانغان - %2 مىنۇتتا مۇددىتى توشىدۇ</numerusform></translation>
     </message>
 </context>
 <context>
@@ -2071,7 +2071,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="449"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ۋە باشقا %n ھۆججەت چىقىرۋېتىلدى.</numerusform><numerusform>%1 ۋە باشقا %n ھۆججەتلەر چىقىرۋېتىلدى.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="189"/>
@@ -2091,7 +2091,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="456"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ۋە باشقا %n ھۆججەت قوشۇلدى.</numerusform><numerusform>%1 ۋە باشقا %n ھۆججەتلەر قوشۇلدى.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="458"/>
@@ -2102,22 +2102,22 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="463"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ۋە باشقا %n ھۆججەت يېڭىلاندى.</numerusform><numerusform>%1 ۋە باشقا %n ھۆججەتلەر يېڭىلاندى.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="470"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 نىڭ نامى %2 غا ئۆزگەرتىلدى ھەمدە باشقا %n ھۆججەتنىڭ نامى ئۆزگەرتىلدى.</numerusform><numerusform>%1 نىڭ نامى %2 غا ئۆزگەرتىلدى ھەمدە باشقا %n ھۆججەتلەرنىڭ نامى ئۆزگەرتىلدى.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="477"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 بولسا %2 غا يۆتكەلدى ھەمدە باشقا %n ھۆججەتمۇ يۆتكەلدى.</numerusform><numerusform>%1 بولسا %2 غا يۆتكەلدى ھەمدە باشقا %n ھۆججەتلەرمۇ يۆتكەلدى.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="484"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ۋە باشقا %n ھۆججەتنىڭ ماس-قەدەملەش زىددىيتى بار.</numerusform><numerusform>%1 ۋە باشقا %n ھۆججەتلەرنىڭ ماس-قەدەملەش زىددىيتى بار.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="486"/>
@@ -2127,7 +2127,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="491"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ۋە باشقا %n ھۆججەتنى خاتالىق سەۋەبىدىن ماس-قەدەملىگىلى بولمىدى. تەپسىلاتىنى خاتىردىن كۆرۈڭ.</numerusform><numerusform>%1 ۋە باشقا %n ھۆججەتنى خاتالىق سەۋەبىدىن ماس-قەدەملىگىلى بولمىدى. تەپسىلاتىنى خاتىردىن كۆرۈڭ.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="493"/>
@@ -2137,7 +2137,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="498"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ۋە باشقا %n ھۆججەت نۆۋەتتە قۇلۇپلاندى.</numerusform><numerusform>%1 ۋە باشقا %n ھۆججەتلەر نۆۋەتتە قۇلۇپلاندى.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="500"/>
@@ -2605,7 +2605,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1174"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>باشقا %n قىسقۇچنى ساقلاۋاتىدۇ...</numerusform><numerusform>باشقا %n قىسقۇچلارنى ساقلاۋاتىدۇ...</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1174"/>
@@ -3021,12 +3021,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="715"/>
         <source>Failed to Access File</source>
-        <translation type="unfinished"/>
+        <translation>ھۆججەتكە كىرىش مەغلۇپ بولدى</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="716"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
-        <translation type="unfinished"/>
+        <translation>تاللانغان ئورۇنغا كىرگىلى بولمىدى. قايتا سىناڭ ياكى باشقا ئورۇننى تاللاڭ.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="673"/>
@@ -4999,7 +4999,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1211"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 مىنۇتتا مۇددىتى توشىدۇ</numerusform><numerusform>%1 مىنۇتتا مۇددىتى توشىدۇ</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1351"/>
@@ -5604,7 +5604,7 @@ Server replied with error: %2</source>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="176"/>
         <source>%n notification(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n ئۇقتۇرۇش</numerusform><numerusform>%n ئۇقتۇرۇشلار</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="656"/>
@@ -5766,17 +5766,17 @@ Server replied with error: %2</source>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="411"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n مىنۇت</numerusform><numerusform>%n مىنۇت</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="414"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n سائەت</numerusform><numerusform>%n سائەت</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="417"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n كۈن</numerusform><numerusform>%n كۈن</numerusform></translation>
     </message>
 </context>
 <context>
@@ -6200,7 +6200,7 @@ Server replied with error: %2</source>
         <location filename="../src/common/utility.cpp" line="427"/>
         <source>%nd</source>
         <comment>delay in days after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nd</numerusform><numerusform>%nd</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="431"/>
@@ -6211,7 +6211,7 @@ Server replied with error: %2</source>
         <location filename="../src/common/utility.cpp" line="436"/>
         <source>%nh</source>
         <comment>delay in hours after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nh</numerusform><numerusform>%nh</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="442"/>
@@ -6234,13 +6234,13 @@ Server replied with error: %2</source>
         <location filename="../src/common/utility.cpp" line="447"/>
         <source>%nmin</source>
         <comment>delay in minutes after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nmin</numerusform><numerusform>%nmin</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="447"/>
         <source>%nm</source>
         <comment>delay in minutes after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nm</numerusform><numerusform>%nm</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="451"/>
@@ -6271,17 +6271,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="198"/>
         <source>Could not create debug archive in temporary location!</source>
-        <translation type="unfinished"/>
+        <translation>ۋاقىتلىق ئورۇندا خاتالىقنى توغىرلاش ئارخىپى قۇرالمىدى!</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="212"/>
         <source>Could not remove existing file at destination!</source>
-        <translation type="unfinished"/>
+        <translation>نىشاندىكى مەۋجۇت ھۆججەتنى چىقىرۋېتەلمىدى!</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="226"/>
         <source>Could not move debug archive to selected location!</source>
-        <translation type="unfinished"/>
+        <translation>خاتالىقنى توغىرلاش ئارخىپىنى تاللانغان ئورۇنغا يۆتكىيەلمىدى!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="788"/>
@@ -6465,7 +6465,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="48"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ھۆججەت زىددىيەتلىك</numerusform><numerusform>%1 ھۆججەت زىددىيەتلىك</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="55"/>
@@ -6969,32 +6969,32 @@ Server replied with error: %2</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="286"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n يىل</numerusform><numerusform>%n يىل</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="287"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n ئاي</numerusform><numerusform>%n ئاي</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="288"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n كۈن</numerusform><numerusform>%n كۈن</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="289"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n سائەت</numerusform><numerusform>%n سائەت</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="290"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n مىنۇت</numerusform><numerusform>%n مىنۇت</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="291"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n سېكۇنت</numerusform><numerusform>%n سېكۇنت</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="315"/>
