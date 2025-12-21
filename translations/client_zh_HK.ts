@@ -1071,7 +1071,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="44"/>
         <source>Could not access the selected certificate file.</source>
-        <translation type="unfinished"/>
+        <translation>無法存取所選取的憑證檔案。</translation>
     </message>
 </context>
 <context>
@@ -3024,12 +3024,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="715"/>
         <source>Failed to Access File</source>
-        <translation type="unfinished"/>
+        <translation>無法存取檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="716"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
-        <translation type="unfinished"/>
+        <translation>未能存取所選位置。請重試，或選擇另一個位置。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="673"/>
@@ -6274,17 +6274,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="198"/>
         <source>Could not create debug archive in temporary location!</source>
-        <translation type="unfinished"/>
+        <translation>無法在短暫的位置創建排除錯誤封存！</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="212"/>
         <source>Could not remove existing file at destination!</source>
-        <translation type="unfinished"/>
+        <translation>無法移除目的地位置的現有檔案！</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="226"/>
         <source>Could not move debug archive to selected location!</source>
-        <translation type="unfinished"/>
+        <translation>無法將除錯封存檔移至所選位置！</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="788"/>

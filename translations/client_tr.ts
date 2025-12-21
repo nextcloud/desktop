@@ -1069,7 +1069,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="44"/>
         <source>Could not access the selected certificate file.</source>
-        <translation type="unfinished"/>
+        <translation>Seçilmiş sertifika dosyasına erişilemedi.</translation>
     </message>
 </context>
 <context>
@@ -3020,12 +3020,12 @@ Sürümler hemen düşürülemez: Kararlı sürümünden Enterprise sürüme ge�
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="715"/>
         <source>Failed to Access File</source>
-        <translation type="unfinished"/>
+        <translation>Dosyaya erişilemedi</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="716"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
-        <translation type="unfinished"/>
+        <translation>Seçilmiş konuma erişilemedi. Lütfe yeniden deneyin ya da başka bir konum seçin.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="673"/>
@@ -6270,17 +6270,17 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="198"/>
         <source>Could not create debug archive in temporary location!</source>
-        <translation type="unfinished"/>
+        <translation>Geçici konumda hata ayıklama arşivi dosyası oluşturulamadı!</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="212"/>
         <source>Could not remove existing file at destination!</source>
-        <translation type="unfinished"/>
+        <translation>Hedef konumda var olan dosya silinemedi!</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="226"/>
         <source>Could not move debug archive to selected location!</source>
-        <translation type="unfinished"/>
+        <translation>Hata ayıklama arşivi dosyası seçilmiş konuma taşınamadı!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="788"/>
