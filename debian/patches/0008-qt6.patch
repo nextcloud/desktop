@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 800e561448..2ebc72d236 100644
+index 9f98f44e04..2c46ef8ea3 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -31,7 +31,7 @@ set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
@@ -49,10 +49,10 @@ index f584246eb7..efa56ae181 100644
  find_package(Qt${QT_MAJOR_VERSION}Core ${REQUIRED_QT_VERSION} CONFIG QUIET)
  set_package_properties(Qt${QT_MAJOR_VERSION}Core PROPERTIES
 diff --git a/src/common/common.cmake b/src/common/common.cmake
-index 5a19933dc9..6f5dabcb7c 100644
+index f0ba1e2726..391d402e00 100644
 --- a/src/common/common.cmake
 +++ b/src/common/common.cmake
-@@ -39,3 +39,5 @@ elseif(UNIX AND NOT APPLE)
+@@ -41,3 +41,5 @@ elseif(UNIX AND NOT APPLE)
  endif()
  
  configure_file(${CMAKE_CURRENT_LIST_DIR}/vfspluginmetadata.json.in ${CMAKE_CURRENT_BINARY_DIR}/vfspluginmetadata.json)
@@ -455,7 +455,7 @@ index b92cfa08e4..38f3d462ec 100644
              continue;
          }
 diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
-index 8b616e30f8..7514e2b420 100644
+index 66a73d7e91..80471a4059 100644
 --- a/src/gui/CMakeLists.txt
 +++ b/src/gui/CMakeLists.txt
 @@ -3,7 +3,7 @@
@@ -601,7 +601,7 @@ index 42a27bf6e6..4271780812 100644
  #include "folderstatusdelegate.h"
  #include <account.h>
 diff --git a/src/gui/folderwizard.cpp b/src/gui/folderwizard.cpp
-index 3dc10ad198..637b58acf5 100644
+index 9aed5dfbdf..95e8a736a9 100644
 --- a/src/gui/folderwizard.cpp
 +++ b/src/gui/folderwizard.cpp
 @@ -15,6 +15,7 @@
@@ -610,9 +610,9 @@ index 3dc10ad198..637b58acf5 100644
  #include "common/asserts.h"
 +#include "common/qtcompat.h"
  
- #include <QDesktopServices>
- #include <QDir>
-@@ -571,7 +572,7 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
+ #ifdef Q_OS_MACOS
+ #include "common/utility_mac_sandbox.h"
+@@ -586,7 +587,7 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
      if (!Theme::instance()->disableVirtualFilesSyncFolder() && Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() != Vfs::Off) {
          _virtualFilesCheckBox = new QCheckBox(tr("Use virtual files instead of downloading content immediately %1").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
          connect(_virtualFilesCheckBox, &QCheckBox::clicked, this, &FolderWizardSelectiveSync::virtualFilesCheckboxClicked);
@@ -622,7 +622,7 @@ index 3dc10ad198..637b58acf5 100644
          });
          _virtualFilesCheckBox->setChecked(bestAvailableVfsMode() == Vfs::WindowsCfApi);
 diff --git a/src/gui/generalsettings.cpp b/src/gui/generalsettings.cpp
-index bc6e01809f..18b831ece7 100644
+index d123ba0f2c..53682350ec 100644
 --- a/src/gui/generalsettings.cpp
 +++ b/src/gui/generalsettings.cpp
 @@ -44,6 +44,7 @@
@@ -633,7 +633,7 @@ index bc6e01809f..18b831ece7 100644
  #include <KZip>
  #include <chrono>
  
-@@ -203,6 +204,7 @@ bool createDebugArchive(const QString &filename)
+@@ -233,6 +234,7 @@ bool createDebugArchive(const QString &filename)
  }
  
  }
@@ -641,7 +641,7 @@ index bc6e01809f..18b831ece7 100644
  
  namespace OCC {
  
-@@ -296,7 +298,11 @@ GeneralSettings::GeneralSettings(QWidget *parent)
+@@ -326,7 +328,11 @@ GeneralSettings::GeneralSettings(QWidget *parent)
      _ui->monoIconsCheckBox->setVisible(Theme::instance()->monoIconsAvailable());
  
      connect(_ui->ignoredFilesButton, &QAbstractButton::clicked, this, &GeneralSettings::slotIgnoreFilesEditor);
@@ -653,15 +653,15 @@ index bc6e01809f..18b831ece7 100644
  
      // accountAdded means the wizard was finished and the wizard might change some options.
      connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
-@@ -660,6 +666,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
+@@ -690,6 +696,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
      }
  }
  
 +#ifdef HAVE_KARCHIVE
  void GeneralSettings::slotCreateDebugArchive()
  {
-     const auto filename = QFileDialog::getSaveFileName(
-@@ -681,6 +688,7 @@ void GeneralSettings::slotCreateDebugArchive()
+     const auto destination = QFileDialog::getSaveFileUrl(
+@@ -727,6 +734,7 @@ void GeneralSettings::slotCreateDebugArchive()
          );
      }
  }
@@ -684,7 +684,7 @@ index b62a7b3c07..85de6f00a1 100644
      void slotShowLegalNotice();
      void slotRemotePollIntervalChanged(int seconds);
 diff --git a/src/gui/owncloudsetupwizard.cpp b/src/gui/owncloudsetupwizard.cpp
-index 8fe46dca5d..83a5810d95 100644
+index f4840c1730..dcadd89bdf 100644
 --- a/src/gui/owncloudsetupwizard.cpp
 +++ b/src/gui/owncloudsetupwizard.cpp
 @@ -9,6 +9,7 @@
@@ -717,7 +717,7 @@ index 8f7314d96e..d9ad7ef190 100644
  #include <QUrl>
  #include <QJsonDocument>
 diff --git a/src/gui/socketapi/socketapi.cpp b/src/gui/socketapi/socketapi.cpp
-index 3ffbfd377b..1a4eb9d454 100644
+index 58efdddaa7..57c7c5d7bb 100644
 --- a/src/gui/socketapi/socketapi.cpp
 +++ b/src/gui/socketapi/socketapi.cpp
 @@ -18,6 +18,7 @@
@@ -1061,7 +1061,7 @@ index 514983390f..1cf4ba1833 100644
                  }
  
 diff --git a/src/libsync/account.cpp b/src/libsync/account.cpp
-index 9e49f1d5d9..dc1ba7b579 100644
+index 8ad4997646..52a92242e7 100644
 --- a/src/libsync/account.cpp
 +++ b/src/libsync/account.cpp
 @@ -24,6 +24,7 @@
@@ -1072,7 +1072,7 @@ index 9e49f1d5d9..dc1ba7b579 100644
  #include "clientsideencryption.h"
  #include "ocsuserstatusconnector.h"
  
-@@ -1255,7 +1256,8 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
+@@ -1272,7 +1273,8 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
                                            serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
                                            newEntry);
  
