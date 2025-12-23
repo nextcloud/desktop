@@ -20,6 +20,7 @@
 #if !DISABLE_ACCOUNT_MIGRATION
 #include "legacyaccountselectiondialog.h"
 #endif
+#include "settings/migration.h"
 
 #include <QSettings>
 #include <QDir>
@@ -345,7 +346,8 @@ bool AccountManager::restoreFromLegacySettings()
     configFile.setDownloadLimit(settings->value(ConfigFile::downloadLimitC, configFile.downloadLimit()).toInt());
 
     // Try to load the single account.
-    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupUsers);
+    auto migration = configFile.migration();
+    migration.setMigrationPhase(Migration::MigrationPhase::SetupUsers);
     if (!settings->childKeys().isEmpty()) {
         settings->beginGroup(accountsC);
         const auto childGroups = selectedAccountIds.isEmpty() ? settings->childGroups() : selectedAccountIds;
@@ -545,8 +547,9 @@ void AccountManager::migrateNetworkSettings(const AccountPtr &account, const QSe
 
     // Override user settings with global settings if user is set to use global settings
     ConfigFile configFile;
+    auto migration = configFile.migration();
     auto accountProxySetting = settings.value(networkProxySettingC).toInt();
-    if (accountProxySetting == 0 && configFile.isMigrationInProgress()) {
+    if (accountProxySetting == 0 && migration.isInProgress()) {
         accountProxyType = static_cast<QNetworkProxy::ProxyType>(configFile.proxyType());
         accountProxyHost = configFile.proxyHostName();
         accountProxyPort = configFile.proxyPort();
@@ -680,8 +683,9 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->setDownloadLimit(settings.value(networkDownloadLimitC).toInt());
 
     ConfigFile configFile;
+    auto migration = configFile.migration();
     const auto proxyPasswordKey = QString(acc->userIdAtHostWithPort() + networkProxyPasswordKeychainKeySuffixC);
-    const auto appName = configFile.isUnbrandedToBrandedMigrationInProgress() ? ConfigFile::unbrandedAppName 
+    const auto appName = migration.isUnbrandedToBrandedMigration() ? ConfigFile::unbrandedAppName
         : Theme::instance()->appName();
     const auto job = new QKeychain::ReadPasswordJob(appName, this);
     job->setKey(proxyPasswordKey);
