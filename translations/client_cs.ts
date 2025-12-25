@@ -1983,7 +1983,7 @@ Toto může být způsobeno problémem s OpenSSL knihovnami.</translation>
         <location filename="../src/gui/creds/flow2auth.cpp" line="263"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="271"/>
         <source>An unexpected error occurred when trying to access the server. Please try to access it again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Došlo k neočekávané chybě při pokusu o přístup k serveru. Zkuste k němu přistoupit později nebo, pokud potíže přetrvávají, obraťte se na správce vámi využívaného serveru. </translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="265"/>
@@ -2003,7 +2003,7 @@ Toto může být způsobeno problémem s OpenSSL knihovnami.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="280"/>
         <source>The server did not reply with the expected data. Please try connecting again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Server neodpověděl očekávanými daty. Zkuste se připojit znovu později nebo, pokud problém přetrvává, se obraťte na správce vámi využívaného serveru.</translation>
     </message>
 </context>
 <context>
@@ -6421,7 +6421,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="550"/>
         <source>The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.</source>
-        <translation type="unfinished"/>
+        <translation>Server je v tuto chvíli vytížený. Zkuste přiojení znovu za pár minut nebo, pokud je to naléhavé, se obraťte na správce vámi využívaného serveru.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="553"/>

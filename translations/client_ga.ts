@@ -1069,7 +1069,7 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="44"/>
         <source>Could not access the selected certificate file.</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir rochtain a fháil ar an gcomhad teastais roghnaithe.</translation>
     </message>
 </context>
 <context>
@@ -3022,12 +3022,12 @@ Ní féidir leaganacha a íosghrádú láithreach: ciallaíonn athrú ó chobhsa
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="715"/>
         <source>Failed to Access File</source>
-        <translation type="unfinished"/>
+        <translation>Theip ar Rochtain ar Chomhad</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="716"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir rochtain a fháil ar an suíomh roghnaithe. Déan iarracht eile nó roghnaigh suíomh difriúil.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="673"/>
@@ -6272,17 +6272,17 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="198"/>
         <source>Could not create debug archive in temporary location!</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir cartlann dífhabhtaithe a chruthú san áit shealadach!</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="212"/>
         <source>Could not remove existing file at destination!</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir an comhad atá ann cheana a bhaint ag an gceann scríbe!</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="226"/>
         <source>Could not move debug archive to selected location!</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir cartlann dífhabhtaithe a bhogadh go dtí an suíomh roghnaithe!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="788"/>
