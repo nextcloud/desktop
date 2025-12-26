@@ -57,12 +57,10 @@ void UpdaterScheduler::slotTimerFired()
     auto checkInterval = std::chrono::milliseconds(cfg.updateCheckInterval()).count();
     if (checkInterval != _updateCheckTimer.interval()) {
         _updateCheckTimer.setInterval(checkInterval);
-        qCInfo(lcUpdater) << "Setting new update check interval " << checkInterval;
     }
 
     // consider the skipUpdateCheck and !autoUpdateCheck flags in the config.
     if (cfg.skipUpdateCheck() || !cfg.autoUpdateCheck()) {
-        qCInfo(lcUpdater) << "Skipping update check because of config file";
         return;
     }
 
@@ -126,14 +124,11 @@ void OCUpdater::backgroundCheckForUpdate()
     case UpToDate:
     case DownloadFailed:
     case DownloadTimedOut:
-        qCInfo(lcUpdater) << "Checking for available update";
         checkForUpdate();
         break;
     case DownloadComplete:
-        qCInfo(lcUpdater) << "Update is downloaded, skip new check.";
         break;
     case UpdateOnlyAvailableThroughSystem:
-        qCInfo(lcUpdater) << "Update is only available through system, skip check.";
         break;
     }
 }
@@ -260,7 +255,6 @@ bool OCUpdater::updateSucceeded() const
 
 void OCUpdater::slotVersionInfoArrived()
 {
-    qCDebug(lcUpdater) << "received a reply";
     _timeoutWatchdog->stop();
     auto *reply = qobject_cast<QNetworkReply *>(sender());
     reply->deleteLater();
