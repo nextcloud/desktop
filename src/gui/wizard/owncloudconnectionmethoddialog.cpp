@@ -24,6 +24,10 @@ void OwncloudConnectionMethodDialog::setUrl(const QUrl &url)
     ui->label->setText(tr("<html><head/><body><p>Failed to connect to the secure server address <em>%1</em>. How do you wish to proceed?</p></body></html>").arg(url.toDisplayString().toHtmlEscaped()));
 }
 
+void OwncloudConnectionMethodDialog::setHTTPOnly(const bool retryHTTPonly)
+{
+    ui->btnNoTLS->setEnabled(retryHTTPonly);
+}
 
 void OwncloudConnectionMethodDialog::returnNoTLS()
 {
