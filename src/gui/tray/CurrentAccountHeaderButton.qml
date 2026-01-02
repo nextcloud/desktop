@@ -123,6 +123,8 @@ Button {
             id: addAccountButton
             hoverEnabled: true
             visible: Systray.enableAddAccount
+            height: visible ? implicitHeight : 0
+            enabled: visible
             implicitHeight: Style.trayWindowHeaderHeight
 
             readonly property real addAccountIconSize: Style.accountAvatarSize * Style.smallIconScaleFactor
