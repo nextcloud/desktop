@@ -127,23 +127,57 @@ Button {
 
             readonly property real addAccountIconSize: Style.accountAvatarSize * Style.smallIconScaleFactor
             readonly property real addAccountHorizontalOffset: ( (Style.accountAvatarSize - addAccountIconSize) / 2 ) + Style.accountIconsMenuMargin
+            readonly property string addAccountIconSource: "image://svgimage-custom-color/add.svg/" + iconColor
             property var iconColor: !addAccountButton.enabled
                                     ? addAccountButton.palette.mid
                                     : ((addAccountButton.highlighted || addAccountButton.down) && Qt.platform.os !== "windows"
                                         ? addAccountButton.palette.highlightedText
                                         : addAccountButton.palette.text)
 
-            icon.source: "image://svgimage-custom-color/add.svg/" + iconColor
-            icon.width: addAccountIconSize
-            icon.height: addAccountIconSize
-            leftPadding: addAccountHorizontalOffset
-            spacing: Style.userLineSpacing
+            leftPadding: 0
+            rightPadding: 0
+            topPadding: 0
+            bottomPadding: 0
             text: qsTr("Add account")
             onClicked: UserModel.addAccount()
 
             Accessible.role: Accessible.MenuItem
             Accessible.name: qsTr("Add new account")
             Accessible.onPressAction: addAccountButton.clicked()
+
+            contentItem: Item {
+                implicitHeight: Style.trayWindowHeaderHeight
+                implicitWidth: addAccountButton.addAccountHorizontalOffset
+                                + addAccountButton.addAccountIconSize
+                                + Style.userLineSpacing
+                                + addAccountLabel.implicitWidth
+
+                RowLayout {
+                    anchors.fill: parent
+                    anchors.leftMargin: addAccountButton.addAccountHorizontalOffset
+                    spacing: Style.userLineSpacing
+
+                    Image {
+                        source: addAccountButton.addAccountIconSource
+                        sourceSize.width: addAccountButton.addAccountIconSize
+                        sourceSize.height: addAccountButton.addAccountIconSize
+                        Layout.preferredWidth: addAccountButton.addAccountIconSize
+                        Layout.preferredHeight: addAccountButton.addAccountIconSize
+                        Layout.alignment: Qt.AlignVCenter
+                    }
+
+                    Text {
+                        id: addAccountLabel
+                        text: addAccountButton.text
+                        horizontalAlignment: Text.AlignLeft
+                        verticalAlignment: Text.AlignVCenter
+                        elide: Text.ElideRight
+                        font: addAccountButton.font
+                        Layout.alignment: Qt.AlignVCenter
+                        color: addAccountButton.iconColor
+                    }
+                }
+            }
         }
 
         MenuSeparator {}
