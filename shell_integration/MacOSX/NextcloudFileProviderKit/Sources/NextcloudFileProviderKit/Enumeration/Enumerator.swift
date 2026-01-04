@@ -173,20 +173,31 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
             // Do not pass in the NSFileProviderPage default pages, these are not valid Nextcloud
             // pagination tokens
             var pageTotal: Int? = nil
+            var pageIndex = 0
+            var parsedPage: NSFileProviderPage? = nil
 
             if page != NSFileProviderPage.initialPageSortedByName as NSFileProviderPage, page != NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage {
                 if let enumPageResponse = try? JSONDecoder().decode(EnumeratorPageResponse.self, from: page.rawValue) {
                     if let total = enumPageResponse.total {
                         pageTotal = total
                     }
+                    pageIndex = enumPageResponse.index
+                    parsedPage = page
                 } else {
                     logger.error("Could not parse page")
                 }
             }
 
+            // Enable pagination by passing page settings
+            let pageSettings: (page: NSFileProviderPage?, index: Int, size: Int) = (
+                page: parsedPage,
+                index: pageIndex,
+                size: pageItemCount
+            )
+
             let readResult = await Self.readServerUrl(
                 serverUrl,
-                pageSettings: nil,
+                pageSettings: pageSettings,
                 account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
@@ -223,7 +234,8 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                 nextPage = nil
             }
 
-            nextPage = nil
+            // NOTE: Removed unconditional `nextPage = nil` that was disabling pagination
+            // This was the root cause of large folders (1500+ files) not updating properly
 
             logger.info(
                 """

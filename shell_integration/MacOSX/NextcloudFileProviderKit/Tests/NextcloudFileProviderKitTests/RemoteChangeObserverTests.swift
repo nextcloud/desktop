@@ -526,4 +526,117 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
         Self.notifyPushServer.send(message: "notify_file")
         await wait(for: change2, description: "second change")
     }
+
+    // MARK: - Large Folder Change Detection Tests (Bug Fix Verification)
+
+    /// Test that verifies large folders with many new files are correctly detected.
+    /// This test addresses the bug where folders with 1500+ files stop updating.
+    func testLargeFolderChangeRecognised() async throws {
+        let db = Self.dbManager.ncDatabase()
+        debugPrint(db)
+
+        let testStartDate = Date()
+        // Enable pagination in MockRemoteInterface to properly test the fix
+        let remoteInterface = MockRemoteInterface(
+            account: Self.account,
+            rootItem: MockRemoteItem.rootItem(account: Self.account),
+            pagination: true
+        )
+        remoteInterface.capabilities = mockCapabilities
+
+        // DB State: A visited folder with old etag (simulating a folder user has accessed before)
+        var largeFolder = SendableItemMetadata(
+            ocId: "largeFolder", fileName: "Scans", account: Self.account
+        )
+        largeFolder.directory = true
+        largeFolder.visitedDirectory = true
+        largeFolder.etag = "ETAG_OLD_BEFORE_NEW_SCANS"
+        Self.dbManager.addItemMetadata(largeFolder)
+
+        // Server State: Folder now has 30 new files (simulating phone scan uploads)
+        let serverFolder = MockRemoteItem(
+            identifier: "largeFolder",
+            versionIdentifier: "ETAG_NEW_WITH_SCANS",
+            name: "Scans",
+            remotePath: Self.account.davFilesUrl + "/Scans",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.davFilesUrl
+        )
+        remoteInterface.rootItem?.children.append(serverFolder)
+
+        // Add 30 new scan files to the folder
+        let newFileCount = 30
+        for i in 0 ..< newFileCount {
+            let newFile = MockRemoteItem(
+                identifier: "scan_\(i)",
+                name: "scan_\(String(format: "%04d", i)).pdf",
+                remotePath: serverFolder.remotePath + "/scan_\(String(format: "%04d", i)).pdf",
+                data: Data(repeating: UInt8(i % 256), count: 100),
+                account: Self.account.ncKitAccount,
+                username: Self.account.username,
+                userId: Self.account.id,
+                serverUrl: serverFolder.remotePath
+            )
+            serverFolder.children.append(newFile)
+        }
+
+        let authExpectation = XCTNSNotificationExpectation(
+            name: NotifyPushAuthenticatedNotificationName
+        )
+        let changeNotifiedExpectation = XCTestExpectation(
+            description: "Large folder change notified"
+        )
+
+        let notificationInterface = MockChangeNotificationInterface {
+            changeNotifiedExpectation.fulfill()
+        }
+
+        remoteChangeObserver = RemoteChangeObserver(
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            changeNotificationInterface: notificationInterface,
+            domain: nil,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        await wait(for: authExpectation, description: "authentication")
+        Self.notifyPushServer.send(message: "notify_file")
+        await wait(for: changeNotifiedExpectation, description: "large folder change notification")
+
+        // Verify folder was updated
+        let updatedFolder = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "largeFolder"))
+        XCTAssertEqual(
+            updatedFolder.etag,
+            "ETAG_NEW_WITH_SCANS",
+            "Folder etag should be updated after change detection"
+        )
+        XCTAssertTrue(
+            updatedFolder.syncTime >= testStartDate,
+            "Folder sync time should be updated"
+        )
+
+        // Verify all new files are in database
+        // NOTE: The exact count depends on whether pagination is working correctly
+        // With the fix, all files should be detected
+        var detectedFileCount = 0
+        for i in 0 ..< newFileCount {
+            if Self.dbManager.itemMetadata(ocId: "scan_\(i)") != nil {
+                detectedFileCount += 1
+            }
+        }
+
+        XCTAssertEqual(
+            detectedFileCount,
+            newFileCount,
+            """
+            BUG FIX VERIFICATION: All \(newFileCount) new scan files should be detected.
+            Before the fix, only the first page (~5 files with default page size) would be found.
+            This test verifies that the pagination fix in Enumerator.swift works correctly.
+            """
+        )
+    }
 }

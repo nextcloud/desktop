@@ -1657,4 +1657,357 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(workingSetIds2.contains(notVisitedFolder.ocId),
                       "Newly visited folder should now be in working set")
     }
+
+    // MARK: - Bug Reproduction Tests (Issue: Large folders stop updating)
+
+    /// Test that reproduces the bug where large folders with many files (1500+) stop updating.
+    /// The bug is caused by pagination being disabled during change enumeration.
+    /// This test should FAIL before the fix and PASS after.
+    func testLargeFolderChangeEnumerationWithPagination() async throws {
+        // Setup a folder with enough children to require multiple pages (simulating 1500+ files)
+        remoteFolder.children = []
+        let itemCount = 25  // Using smaller count but with pageSize of 5 to simulate pagination
+
+        for i in 0 ..< itemCount {
+            let childItem = MockRemoteItem(
+                identifier: "paginatedChangeChild\(i)",
+                name: "scan_\(i).pdf",
+                remotePath: Self.account.davFilesUrl + "/folder/scan_\(i).pdf",
+                data: Data(repeating: UInt8(i % 256), count: 100),
+                account: Self.account.ncKitAccount,
+                username: Self.account.username,
+                userId: Self.account.id,
+                serverUrl: Self.account.serverUrl
+            )
+            childItem.parent = remoteFolder
+            remoteFolder.children.append(childItem)
+        }
+
+        let db = Self.dbManager.ncDatabase()
+        debugPrint(db)
+        // Enable pagination in MockRemoteInterface - this is key to reproducing the bug
+        let remoteInterface = MockRemoteInterface(
+            account: Self.account, rootItem: rootItem, pagination: true
+        )
+
+        // Pre-populate folder metadata with old etag to trigger change detection
+        var folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        folderMetadata.etag = "OLD_ETAG_BEFORE_CHANGES"
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            pageSize: 5,  // Small page size to force multiple pages
+            log: FileProviderLogMock()
+        )
+        let observer = MockChangeObserver(enumerator: enumerator)
+        try await observer.enumerateChanges()
+
+        // BUG: Without the fix, only the first page of items will be detected
+        // With pagination disabled (nextPage = nil at line 226), only ~5 items are found
+        // instead of all 25 items + the folder itself
+
+        // All children + folder should be reported as changes
+        XCTAssertEqual(
+            observer.changedItems.count,
+            itemCount + 1,  // 25 children + 1 folder
+            """
+            BUG REPRODUCTION: All \(itemCount) children plus the folder should be detected.
+            If this fails with a smaller number (e.g., 5-6), pagination is not working
+            during change enumeration. This is the root cause of folders with 1500+ files
+            not updating properly.
+            """
+        )
+
+        // Verify ALL items are in the database
+        for i in 0 ..< itemCount {
+            XCTAssertNotNil(
+                Self.dbManager.itemMetadata(ocId: "paginatedChangeChild\(i)"),
+                "Child item paginatedChangeChild\(i) should be in DB after paginated change enumeration"
+            )
+        }
+    }
+
+    /// Test that verifies pagination works correctly during enumerateItems
+    /// (This should already pass - contrasting with change enumeration)
+    func testLargeFolderItemEnumerationWithPagination() async throws {
+        remoteFolder.children = []
+        let itemCount = 25
+
+        for i in 0 ..< itemCount {
+            let childItem = MockRemoteItem(
+                identifier: "paginatedItemChild\(i)",
+                name: "file_\(i).pdf",
+                remotePath: Self.account.davFilesUrl + "/folder/file_\(i).pdf",
+                data: Data(repeating: UInt8(i % 256), count: 100),
+                account: Self.account.ncKitAccount,
+                username: Self.account.username,
+                userId: Self.account.id,
+                serverUrl: Self.account.serverUrl
+            )
+            childItem.parent = remoteFolder
+            remoteFolder.children.append(childItem)
+        }
+
+        let db = Self.dbManager.ncDatabase()
+        debugPrint(db)
+        let remoteInterface = MockRemoteInterface(
+            account: Self.account, rootItem: rootItem, pagination: true
+        )
+
+        Self.dbManager.addItemMetadata(remoteFolder.toItemMetadata(account: Self.account))
+
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            pageSize: 5,
+            log: FileProviderLogMock()
+        )
+        let observer = MockEnumerationObserver(enumerator: enumerator)
+        try await observer.enumerateItems()
+
+        // This test demonstrates that enumerateItems DOES work with pagination
+        // (if pagination were enabled in that code path)
+        XCTAssertEqual(
+            observer.items.count,
+            itemCount + 1,  // folder + all children
+            "Item enumeration should find all items with pagination"
+        )
+    }
+
+    /// Test simulating the exact bug scenario: folder with many new files added remotely
+    func testIncrementalLargeFolderUpdate() async throws {
+        // 1. Initial state: folder exists with some known items
+        remoteFolder.children = []
+        for i in 0 ..< 5 {
+            let initialItem = MockRemoteItem(
+                identifier: "existing\(i)",
+                versionIdentifier: "V1",
+                name: "existing\(i).txt",
+                remotePath: Self.account.davFilesUrl + "/folder/existing\(i).txt",
+                account: Self.account.ncKitAccount,
+                username: Self.account.username,
+                userId: Self.account.id,
+                serverUrl: Self.account.serverUrl
+            )
+            initialItem.parent = remoteFolder
+            remoteFolder.children.append(initialItem)
+        }
+
+        let db = Self.dbManager.ncDatabase()
+        debugPrint(db)
+        let remoteInterface = MockRemoteInterface(
+            account: Self.account, rootItem: rootItem, pagination: true
+        )
+
+        // Populate DB with initial state
+        var folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        folderMetadata.etag = "INITIAL_ETAG"
+        folderMetadata.visitedDirectory = true
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        for i in 0 ..< 5 {
+            Self.dbManager.addItemMetadata(
+                remoteFolder.children[i].toItemMetadata(account: Self.account)
+            )
+        }
+
+        // 2. Simulate remote changes: 20 NEW files added on server (simulating phone scan uploads)
+        remoteFolder.versionIdentifier = "UPDATED_ETAG"
+        for i in 5 ..< 25 {
+            let newItem = MockRemoteItem(
+                identifier: "newScan\(i)",
+                name: "scan_\(i).pdf",
+                remotePath: Self.account.davFilesUrl + "/folder/scan_\(i).pdf",
+                data: Data(repeating: UInt8(i % 256), count: 100),
+                account: Self.account.ncKitAccount,
+                username: Self.account.username,
+                userId: Self.account.id,
+                serverUrl: Self.account.serverUrl
+            )
+            newItem.parent = remoteFolder
+            remoteFolder.children.append(newItem)
+        }
+
+        // 3. Enumerate changes with pagination
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            pageSize: 5,
+            log: FileProviderLogMock()
+        )
+        let observer = MockChangeObserver(enumerator: enumerator)
+        try await observer.enumerateChanges()
+
+        // 4. BUG CHECK: All 20 new files should be detected
+        // Count new items (those with "newScan" prefix)
+        let newItemsDetected = observer.changedItems.filter {
+            $0.itemIdentifier.rawValue.hasPrefix("newScan")
+        }.count
+
+        XCTAssertEqual(
+            newItemsDetected,
+            20,
+            """
+            BUG: All 20 new scan files should be detected during change enumeration.
+            If only a few are detected (e.g., 5), pagination is broken.
+            This exactly reproduces the issue where folders with 1500+ files
+            stop showing new files in Finder.
+            """
+        )
+
+        // Verify all new items are in DB
+        for i in 5 ..< 25 {
+            XCTAssertNotNil(
+                Self.dbManager.itemMetadata(ocId: "newScan\(i)"),
+                "New scan file newScan\(i) should be in database after change detection"
+            )
+        }
+    }
+
+    /// Test specifically for very large folders with 150+ items
+    /// This directly addresses the original bug report about folders with 1500+ files
+    func testVeryLargeFolderEnumerationWith150Items() async throws {
+        remoteFolder.children = []
+        let itemCount = 150  // Testing with 150 items
+
+        for i in 0 ..< itemCount {
+            let childItem = MockRemoteItem(
+                identifier: "veryLargeChild\(i)",
+                name: "document_\(String(format: "%04d", i)).pdf",
+                remotePath: Self.account.davFilesUrl + "/folder/document_\(String(format: "%04d", i)).pdf",
+                data: Data(repeating: UInt8(i % 256), count: 50),
+                account: Self.account.ncKitAccount,
+                username: Self.account.username,
+                userId: Self.account.id,
+                serverUrl: Self.account.serverUrl
+            )
+            childItem.parent = remoteFolder
+            remoteFolder.children.append(childItem)
+        }
+
+        let db = Self.dbManager.ncDatabase()
+        debugPrint(db)
+        let remoteInterface = MockRemoteInterface(
+            account: Self.account, rootItem: rootItem, pagination: true
+        )
+
+        Self.dbManager.addItemMetadata(remoteFolder.toItemMetadata(account: Self.account))
+
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            pageSize: 50,  // Page size of 50 means 3 pages for 150 items
+            log: FileProviderLogMock()
+        )
+        let observer = MockEnumerationObserver(enumerator: enumerator)
+        try await observer.enumerateItems()
+
+        // folder + all 150 children
+        XCTAssertEqual(
+            observer.items.count,
+            itemCount + 1,
+            """
+            VERY LARGE FOLDER TEST: All \(itemCount) items plus folder should be enumerated.
+            This test verifies the pagination fix works for folders approaching the
+            reported bug threshold of 1500+ files.
+            """
+        )
+
+        // Verify multiple pages were used
+        XCTAssertGreaterThan(
+            observer.observedPages.count,
+            1,
+            "Large folder enumeration should use multiple pages"
+        )
+
+        // Verify all items are in database
+        var itemsInDb = 0
+        for i in 0 ..< itemCount {
+            if Self.dbManager.itemMetadata(ocId: "veryLargeChild\(i)") != nil {
+                itemsInDb += 1
+            }
+        }
+        XCTAssertEqual(
+            itemsInDb,
+            itemCount,
+            "All \(itemCount) items should be saved to database"
+        )
+    }
+
+    /// Test that verifies change enumeration works for very large folders
+    func testVeryLargeFolderChangeEnumerationWith150Items() async throws {
+        remoteFolder.children = []
+        let itemCount = 150
+
+        for i in 0 ..< itemCount {
+            let childItem = MockRemoteItem(
+                identifier: "veryLargeChangeChild\(i)",
+                name: "scan_\(String(format: "%04d", i)).pdf",
+                remotePath: Self.account.davFilesUrl + "/folder/scan_\(String(format: "%04d", i)).pdf",
+                data: Data(repeating: UInt8(i % 256), count: 50),
+                account: Self.account.ncKitAccount,
+                username: Self.account.username,
+                userId: Self.account.id,
+                serverUrl: Self.account.serverUrl
+            )
+            childItem.parent = remoteFolder
+            remoteFolder.children.append(childItem)
+        }
+
+        let db = Self.dbManager.ncDatabase()
+        debugPrint(db)
+        let remoteInterface = MockRemoteInterface(
+            account: Self.account, rootItem: rootItem, pagination: true
+        )
+
+        // Pre-populate with old etag to trigger change detection
+        var folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        folderMetadata.etag = "VERY_OLD_ETAG"
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            pageSize: 50,
+            log: FileProviderLogMock()
+        )
+        let observer = MockChangeObserver(enumerator: enumerator)
+        try await observer.enumerateChanges()
+
+        // All items + folder should be detected as changes
+        XCTAssertEqual(
+            observer.changedItems.count,
+            itemCount + 1,
+            """
+            VERY LARGE FOLDER CHANGE TEST: All \(itemCount) new items plus folder
+            should be detected during change enumeration. This is the critical test
+            for the bug fix - previously only ~50 items would be detected.
+            """
+        )
+
+        // Verify all items in database
+        var itemsInDb = 0
+        for i in 0 ..< itemCount {
+            if Self.dbManager.itemMetadata(ocId: "veryLargeChangeChild\(i)") != nil {
+                itemsInDb += 1
+            }
+        }
+        XCTAssertEqual(
+            itemsInDb,
+            itemCount,
+            "All \(itemCount) items should be saved to database after change enumeration"
+        )
+    }
 }
