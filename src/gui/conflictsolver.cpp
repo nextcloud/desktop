@@ -191,8 +191,8 @@ bool ConflictSolver::confirmDeletion()
 
     QFileInfo info(_localVersionFilename);
     const auto message = FileSystem::isDir(_localVersionFilename)
-        ? tr("Do you want to delete the directory <i>%1</i> and all its contents permanently?").arg(info.dir().dirName())
-                                    : tr("Do you want to delete the file <i>%1</i> permanently?").arg(info.fileName());
+        ? tr("Do you want to delete the directory <i>%1</i> and all its contents permanently?").arg(Utility::escape(info.dir().dirName()))
+                                    : tr("Do you want to delete the file <i>%1</i> permanently?").arg(Utility::escape(info.fileName()));
     const auto result = QMessageBox::question(_parentWidget, tr("Confirm deletion"), message, buttons);
     switch (result)
     {
