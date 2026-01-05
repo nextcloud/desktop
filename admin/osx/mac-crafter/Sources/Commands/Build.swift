@@ -237,11 +237,14 @@ struct Build: AsyncParsableCommand {
         stopwatch.record("Desktop Client Crafting")
 
         if fullRebuild {
-            do {
-                try fm.removeItem(atPath: clientBuildURL.path)
-            } catch let error {
-                print("ERROR: Error removing build directory: \(error)")
-                throw MacCrafterError.craftError("Failed to remove existing build directory!")
+            if fm.fileExists(atPath: clientBuildURL.path) {
+                print("Removing existing client build directory at: \(clientBuildURL.path)")
+
+                do {
+                    try fm.removeItem(atPath: clientBuildURL.path)
+                } catch let error {
+                    throw MacCrafterError.craftError("Failed to remove existing build directory at: \(clientBuildURL.path)")
+                }
             }
         } else {
             // HACK: When building the client we often run into issues with the shell integration
