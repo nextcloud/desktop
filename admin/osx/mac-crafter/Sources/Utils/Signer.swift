@@ -62,7 +62,7 @@ enum Signer: Signing {
                 return true
             }
             
-            print("Found extension bundle: \(item.path)")
+            Log.info("Found extension bundle: \(item.path)")
             return false
         }
         
@@ -86,7 +86,7 @@ enum Signer: Signing {
                 return true
             }
             
-            print("Found framework bundle: \(item.path)")
+            Log.info("Found framework bundle: \(item.path)")
             return false
         }
         
@@ -94,7 +94,7 @@ enum Signer: Signing {
     }
     
     private static func verify(at location: URL) async {
-        print("Verifying: \(location.path)")
+        Log.info("Verifying: \(location.path)")
         await shell("codesign --verify --deep --strict --verbose=2 \"\(location.path)\"")
     }
 
@@ -166,7 +166,7 @@ enum Signer: Signing {
     ///     - codeSignIdentity: The common name of the certificate available in the keychain to use for signing.
     ///
     static func sign(at location: URL, with codeSignIdentity: String, entitlements: URL?) async {
-        print("Signing: \(location.path)")
+        Log.info("Signing: \(location.path)")
 
         var command = [
             "codesign",
