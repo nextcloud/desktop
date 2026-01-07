@@ -93,9 +93,13 @@ enum Signer: Signing {
         return items
     }
     
-    private static func verify(at location: URL) async {
+    private static func verify(at location: URL) async throws {
         Log.info("Verifying: \(location.path)")
-        await shell("codesign --verify --deep --strict --verbose=2 \"\(location.path)\"")
+        let code = await shell("codesign --verify --deep --strict --verbose=2 \"\(location.path)\"")
+
+        if code > 0 {
+            throw MacCrafterError.signing("Signing verification failed because the codesign command terminated with code \(code)")
+        }
     }
 
     // MARK: - Public
@@ -155,7 +159,7 @@ enum Signer: Signing {
         }
 
         await sign(at: location, with: codeSignIdentity, entitlements: mainAppEntitlements)
-        await verify(at: location)
+        try await verify(at: location)
     }
     
     ///
