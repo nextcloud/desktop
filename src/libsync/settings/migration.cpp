@@ -95,7 +95,9 @@ bool Migration::versionChanged()
 bool Migration::shouldTryUnbrandedToBrandedMigration() const
 {
     const auto isUnbrandedToBranded = migrationPhase() == Migration::MigrationPhase::SetupFolders
-        && Theme::instance()->appName() != ConfigFile::unbrandedAppName;
+        && Theme::instance()->appName() != ConfigFile::unbrandedAppName 
+        && !ConfigFile().discoveredLegacyConfigPath().isEmpty();
+
     if (isUnbrandedToBranded) {
         Migration().setMigrationType(MigrationType::UnbrandedToBranded);
     }
