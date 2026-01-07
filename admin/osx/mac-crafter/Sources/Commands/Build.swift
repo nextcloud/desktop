@@ -123,6 +123,8 @@ struct Build: AsyncParsableCommand {
     mutating func run() async throws {
         let stopwatch = Stopwatch()
 
+        // MARK: Dependencies
+
         Log.info("Ensuring build dependencies are met...")
         stopwatch.record("Build Dependencies")
 
@@ -143,6 +145,8 @@ struct Build: AsyncParsableCommand {
         try await installIfMissing("python3", "brew install pyenv && pyenv install 3.12.4")
         
         Log.info("Build dependencies are installed.")
+
+        // MARK: KDE Craft
 
         let fm = FileManager.default
         let buildURL = URL(fileURLWithPath: buildPath).standardized
@@ -233,6 +237,8 @@ struct Build: AsyncParsableCommand {
             .appendingPathComponent("build")
             .appendingPathComponent(craftBlueprintName)
 
+        // MARK: Client Crafting
+
         Log.info("Crafting \(appName) Desktop Client...")
         stopwatch.record("Desktop Client Crafting")
 
@@ -242,7 +248,7 @@ struct Build: AsyncParsableCommand {
 
                 do {
                     try fm.removeItem(atPath: clientBuildURL.path)
-                } catch let error {
+                } catch {
                     throw MacCrafterError.craftError("Failed to remove existing build directory at: \(clientBuildURL.path)")
                 }
             }
@@ -276,7 +282,9 @@ struct Build: AsyncParsableCommand {
             // Troubleshooting: This can happen because a CraftMaster repository was cloned which does not contain the commit defined in craftmaster.ini of this project due to use of customized forks.
             throw MacCrafterError.craftError("Error crafting Nextcloud Desktop Client.")
         }
-        
+
+        // MARK: Signing
+
         let clientAppURL = clientBuildURL
             .appendingPathComponent("image-\(buildType)-master")
             .appendingPathComponent("\(appName).app")
@@ -327,6 +335,8 @@ struct Build: AsyncParsableCommand {
         }
 
         try fm.copyItem(atPath: clientAppURL.path, toPath: "\(productPath)/\(appName).app")
+
+        // MARK: Packaging
 
         if package {
             stopwatch.record("Packaging App Bundle")
