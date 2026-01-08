@@ -151,16 +151,19 @@ enum Signer: Signing {
             .appendingPathComponent("Contents")
             .appendingPathComponent("MacOS")
 
+        dynamicLibraries.append(contentsOf: try findDynamicLibraries(at: binariesLocation))
+
         let pluginsLocation = location
             .appendingPathComponent("Contents")
             .appendingPathComponent("PlugIns")
 
-        dynamicLibraries.append(contentsOf: try findDynamicLibraries(at: binariesLocation))
         dynamicLibraries.append(contentsOf: try findDynamicLibraries(at: pluginsLocation))
 
         for dynamicLibrary in dynamicLibraries {
             await sign(at: dynamicLibrary, with: codeSignIdentity, entitlements: nil)
         }
+
+        await sign(at: binariesLocation.appendingPathComponent("nextcloudcmd"), with: codeSignIdentity, entitlements: nil)
 
         guard let mainAppEntitlements = entitlements[location.lastPathComponent] else {
             throw MacCrafterError.signing("No entitlements provided for: \(location.path)")
