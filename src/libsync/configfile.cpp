@@ -92,7 +92,6 @@ namespace chrono = std::chrono;
 Q_LOGGING_CATEGORY(lcConfigFile, "nextcloud.sync.configfile", QtInfoMsg)
 
 QString ConfigFile::_confDir = {};
-QString ConfigFile::_discoveredLegacyConfigPath = {};
 Migration ConfigFile::_migration = Migration{};
 
 static chrono::milliseconds millisecondsValue(const QSettings &setting, const char *key,
@@ -382,7 +381,7 @@ QString ConfigFile::excludeFile(Scope scope) const
         return ConfigFile::excludeFileFromSystem();
     }
 
-    const auto excludeFilePath = scope == LegacyScope ? discoveredLegacyConfigPath() : configPath();
+    const auto excludeFilePath = scope == LegacyScope ? _migration.discoveredLegacyConfigPath() : configPath();
 
     // prefer sync-exclude.lst, but if it does not exist, check for exclude.lst
     QFileInfo exclFileInfo(excludeFilePath, syncExclFile);
@@ -1302,20 +1301,6 @@ void ConfigFile::setupDefaultExcludeFilePaths(ExcludedFiles &excludedFiles)
     excludedFiles.addExcludeFilePath(userList);
 }
 
-QString ConfigFile::discoveredLegacyConfigPath()
-{
-    return _discoveredLegacyConfigPath;
-}
-
-void ConfigFile::setDiscoveredLegacyConfigPath(const QString &discoveredLegacyConfigPath)
-{
-    if (_discoveredLegacyConfigPath == discoveredLegacyConfigPath) {
-        return;
-    }
-
-    _discoveredLegacyConfigPath = discoveredLegacyConfigPath;
-}
-
 void ConfigFile::removeFileProviderDomainMapping()
 {
     QSettings settings(configFile(), QSettings::IniFormat);
@@ -1334,6 +1319,35 @@ void ConfigFile::setFileProviderDomainsAppSandboxMigrationCompleted(const bool c
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(fileProviderDomainsAppSandboxMigrationCompletedC, completed);
+}
+
+QStringList ConfigFile::backupConfigFiles() const
+{
+    // 'Launch on system startup' defaults to true > 3.11.x
+    const auto theme = Theme::instance();
+    ConfigFile().setLaunchOnSystemStartup(ConfigFile().launchOnSystemStartup());
+    Utility::setLaunchOnStartup(theme->appName(), theme->appNameGUI(), ConfigFile().launchOnSystemStartup());
+
+    // default is now off to displaying dialog warning user of too many files deletion
+    ConfigFile().setPromptDeleteFiles(false);
+
+    // back up all old config files
+    QStringList backupFilesList;
+    QDir configDir(ConfigFile().configPath());
+    const auto anyConfigFileNameList = configDir.entryInfoList({"*.cfg"}, QDir::Files);
+    for (const auto &oldConfig : anyConfigFileNameList) {
+        const auto oldConfigFileName = oldConfig.fileName();
+        const auto oldConfigFilePath = oldConfig.filePath();
+        const auto newConfigFileName = ConfigFile().configFile();
+        backupFilesList.append(backup(oldConfigFileName));
+        if (oldConfigFilePath != newConfigFileName) {
+            if (!QFile::rename(oldConfigFilePath, newConfigFileName)) {
+                qCWarning(lcConfigFile) << "Failed to rename configuration file from" << oldConfigFilePath << "to" << newConfigFileName;
+            }
+        }
+    }
+
+    return backupFilesList;
 }
 
 Migration &ConfigFile::migration() {
