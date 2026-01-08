@@ -126,11 +126,11 @@ bool Application::configVersionMigration()
     const auto shouldTryToMigrate = migration.shouldTryToMigrate();
     if (!shouldTryToMigrate) {
         qCInfo(lcApplication) << "This is not an upgrade/downgrade/migration. Proceed to read current application config file.";
-        migration.setMigrationPhase(Migration::MigrationPhase::Done);
+        migration.setPhase(Migration::Phase::Done);
         return false;
     }
 
-    migration.setMigrationPhase(Migration::MigrationPhase::SetupConfigFile);
+    migration.setPhase(Migration::Phase::SetupConfigFile);
     QStringList deleteKeys, ignoreKeys;
     AccountManager::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
     FolderMan::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
@@ -153,9 +153,25 @@ bool Application::configVersionMigration()
     // default is now off to displaying dialog warning user of too many files deletion
     configFile.setPromptDeleteFiles(false);
 
-    // back up all old config files and message the user either for destructive changes,
+    // back up all old config files
+    QStringList backupFilesList;
+    QDir configDir(configFile.configPath());
+    const auto anyConfigFileNameList = configDir.entryInfoList({"*.cfg"}, QDir::Files);
+    for (const auto &oldConfig : anyConfigFileNameList) {
+        const auto oldConfigFileName = oldConfig.fileName();
+        const auto oldConfigFilePath = oldConfig.filePath();
+        const auto newConfigFileName = configFile.configFile();
+        backupFilesList.append(configFile.backup(oldConfigFileName));
+        if (oldConfigFilePath != newConfigFileName) {
+            if (!QFile::rename(oldConfigFilePath, newConfigFileName)) {
+                qCWarning(lcApplication) << "Failed to rename configuration file from" << oldConfigFilePath << "to" << newConfigFileName;
+            }
+        }
+    }
+
+    // We want to message the user either for destructive changes,
     // or if we're ignoring something and the client version changed.
-    if (const auto backupFilesList = configFile.backupConfigFiles(); configFile.showConfigBackupWarning() && backupFilesList.count() > 0) {
+    if (configFile.showConfigBackupWarning() && backupFilesList.count() > 0) {
         QMessageBox box(
             QMessageBox::Warning,
             APPLICATION_SHORTNAME,
@@ -165,7 +181,7 @@ bool Application::configVersionMigration()
                "Continuing will mean <b>%2 these settings</b>.<br>"
                "<br>"
                "The current configuration file was already backed up to <i>%3</i>.")
-                .arg((configFile.migration().isDowngrade() ? tr("newer", "newer software version") : tr("older", "older software version")),
+                .arg((Migration().isDowngrade() ? tr("newer", "newer software version") : tr("older", "older software version")),
                      deleteKeys.isEmpty()? tr("ignoring") : tr("deleting"),
                      backupFilesList.join("<br>")));
         box.addButton(tr("Quit"), QMessageBox::AcceptRole);
@@ -477,18 +493,18 @@ void Application::setupAccountsAndFolders()
 {
     _folderManager.reset(new FolderMan);
     ConfigFile configFile;
-    auto migration = configFile.migration();
-    migration.setMigrationPhase(Migration::MigrationPhase::SetupUsers);
+    Migration migration;
+    migration.setPhase(Migration::Phase::SetupUsers);
     const auto accountsRestoreResult = restoreLegacyAccount();
     if (accountsRestoreResult == AccountManager::AccountsNotFound || accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
         qCWarning(lcApplication) << "Migration result: " << accountsRestoreResult;
         qCDebug(lcApplication) << "is migration disabled?" << DISABLE_ACCOUNT_MIGRATION;
         qCWarning(lcApplication) << "No accounts were migrated, prompting user to set up accounts and folders from scratch.";
-        migration.setMigrationPhase(Migration::MigrationPhase::Done);
+        migration.setPhase(Migration::Phase::Done);
         return;
     }
 
-    migration.setMigrationPhase(Migration::MigrationPhase::SetupFolders);
+    migration.setPhase(Migration::Phase::SetupFolders);
     const auto foldersListSize = FolderMan::instance()->setupFolders();
     FolderMan::instance()->setSyncEnabled(true);
 

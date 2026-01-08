@@ -92,7 +92,6 @@ namespace chrono = std::chrono;
 Q_LOGGING_CATEGORY(lcConfigFile, "nextcloud.sync.configfile", QtInfoMsg)
 
 QString ConfigFile::_confDir = {};
-Migration ConfigFile::_migration = Migration{};
 
 static chrono::milliseconds millisecondsValue(const QSettings &setting, const char *key,
     chrono::milliseconds defaultValue)
@@ -327,7 +326,8 @@ void ConfigFile::restoreGeometryHeader(QHeaderView *header)
 QVariant ConfigFile::getPolicySetting(const QString &setting, const QVariant &defaultValue) const
 {
     if (Utility::isWindows()) {
-        const auto appName = migration().isUnbrandedToBrandedMigration() ? unbrandedAppName : Theme::instance()->appNameGUI();
+        Migration migration;
+        const auto appName = migration.isUnbrandedToBrandedMigration() ? unbrandedAppName : Theme::instance()->appNameGUI();
         // check for policies first and return immediately if a value is found.
         QSettings userPolicy(QString::fromLatin1(R"(HKEY_CURRENT_USER\Software\Policies\%1\%2)").arg(APPLICATION_VENDOR, appName),
             QSettings::NativeFormat);
@@ -381,7 +381,10 @@ QString ConfigFile::excludeFile(Scope scope) const
         return ConfigFile::excludeFileFromSystem();
     }
 
-    const auto excludeFilePath = scope == LegacyScope ? _migration.discoveredLegacyConfigPath() : configPath();
+    Migration migration;
+    const auto excludeFilePath = scope == LegacyScope 
+        ? migration.discoveredLegacyConfigPath()
+        : configPath();
 
     // prefer sync-exclude.lst, but if it does not exist, check for exclude.lst
     QFileInfo exclFileInfo(excludeFilePath, syncExclFile);
@@ -822,7 +825,8 @@ QVariant ConfigFile::getValue(const QString &param, const QString &group,
     const QVariant &defaultValue) const
 {
     QVariant systemSetting;
-    const auto appName = migration().isUnbrandedToBrandedMigration() ? unbrandedAppName : Theme::instance()->appNameGUI();
+    Migration migration;
+    const auto appName = migration.isUnbrandedToBrandedMigration() ? unbrandedAppName : Theme::instance()->appNameGUI();
     if (Utility::isMac()) {
         QSettings systemSettings(QLatin1String("/Library/Preferences/" APPLICATION_REV_DOMAIN ".plist"), QSettings::NativeFormat);
         if (!group.isEmpty()) {
@@ -1348,10 +1352,6 @@ QStringList ConfigFile::backupConfigFiles() const
     }
 
     return backupFilesList;
-}
-
-Migration &ConfigFile::migration() {
-    return _migration;
 }
 
 }
