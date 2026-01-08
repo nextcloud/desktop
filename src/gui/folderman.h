@@ -38,6 +38,7 @@ class SyncResult;
 class SocketApi;
 class LockWatcher;
 class UpdateE2eeFolderUsersMetadataJob;
+class Migration;
 
 /**
  * @brief The FolderMan class

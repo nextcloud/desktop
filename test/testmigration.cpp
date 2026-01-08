@@ -17,6 +17,7 @@
 #include "syncenginetestutils.h"
 #include "testhelper.h"
 #include "version.h"
+#include "settings/migration.h"
 
 using namespace OCC;
 
