@@ -27,13 +27,11 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcMigration, "nextcloud.settings.migration", QtInfoMsg)
 
-Migration::Migration()
-{
-    _migrationPhase = MigrationPhase::NotStarted;
-    _migrationType = MigrationType::UnbrandedToUnbranded;
-    _versionChangeType = VersionChangeType::NoVersionChange;
-    _discoveredLegacyConfigPath = {};
-}
+Migration::MigrationPhase Migration::_migrationPhase = MigrationPhase::NotStarted;;
+Migration::MigrationType Migration::_migrationType = MigrationType::UnbrandedToUnbranded;
+Migration::VersionChangeType Migration::_versionChangeType = VersionChangeType::NoVersionChange;
+QString Migration::_discoveredLegacyConfigPath = {};
+Migration::LegacyData Migration::_configSettings = {};
 
 QVersionNumber Migration::currentVersion() const
 {
@@ -195,12 +193,11 @@ Migration::LegacyData Migration::legacyData() const
                 configFile.setClientPreviousVersionString(legacyVersion);
                 qCInfo(lcMigration) << "Migrating from" << legacyVersion;
                 qCInfo(lcMigration) << "Copy settings" << oCSettings->allKeys().join(", ");
-                Migration().setDiscoveredLegacyConfigPath(configFileInfo.canonicalPath());
-
-                
+                Migration migration;
+                migration.setDiscoveredLegacyConfigPath(configFileInfo.canonicalPath());
                 legacyData.configFile = configFileString;
                 legacyData.settings.create(oCSettings.release());
-
+                migration.setLegacyData(legacyData);
                 break;
             } else {
                 qCInfo(lcMigration) << "Migrate: could not read old config " << configFileString;
@@ -223,6 +220,12 @@ void Migration::setDiscoveredLegacyConfigPath(const QString &discoveredLegacyCon
     }
 
     _discoveredLegacyConfigPath = discoveredLegacyConfigPath;
+}
+
+void Migration::setLegacyData(const LegacyData &LegacyData)
+{
+    _configSettings.configFile = LegacyData.configFile;
+    _configSettings.settings = LegacyData.settings;
 }
 
 }

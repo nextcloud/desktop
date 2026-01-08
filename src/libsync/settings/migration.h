@@ -16,7 +16,7 @@ namespace OCC {
 class OWNCLOUDSYNC_EXPORT Migration
 {
 public:
-    Migration();
+    Migration() { };
 
     enum MigrationPhase {
         NotStarted,
@@ -58,6 +58,7 @@ public:
     void setVersionChangeType(const VersionChangeType type);
 
     [[nodiscard]] LegacyData legacyData() const;
+    void setLegacyData(const LegacyData &legacyData);
 
     /// Set during first time migration of legacy accounts in AccountManager
     [[nodiscard]] QString discoveredLegacyConfigPath() const;
@@ -73,11 +74,11 @@ public:
     [[nodiscard]] bool isInProgress() const;
 
 private:
-    MigrationPhase _migrationPhase;
-    MigrationType _migrationType;
-    VersionChangeType _versionChangeType;
-    QString _discoveredLegacyConfigPath;
-    LegacyData _configSettings;
+    static MigrationPhase _migrationPhase;
+    static MigrationType _migrationType;
+    static VersionChangeType _versionChangeType;
+    static QString _discoveredLegacyConfigPath;
+    static LegacyData _configSettings;
 };
 }
 #endif // MIGRATION_H

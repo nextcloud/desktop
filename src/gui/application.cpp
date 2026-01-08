@@ -166,7 +166,7 @@ bool Application::configVersionMigration()
                "Continuing will mean <b>%2 these settings</b>.<br>"
                "<br>"
                "The current configuration file was already backed up to <i>%3</i>.")
-                .arg((configFile.migration().isDowngrade() ? tr("newer", "newer software version") : tr("older", "older software version")),
+                .arg((migration.isDowngrade() ? tr("newer", "newer software version") : tr("older", "older software version")),
                      deleteKeys.isEmpty()? tr("ignoring") : tr("deleting"),
                      backupFilesList.join("<br>")));
         box.addButton(tr("Quit"), QMessageBox::AcceptRole);
@@ -479,7 +479,7 @@ void Application::setupAccountsAndFolders()
 {
     _folderManager.reset(new FolderMan);
     ConfigFile configFile;
-    auto migration = configFile.migration();
+    Migration migration;
     migration.setMigrationPhase(Migration::MigrationPhase::SetupUsers);
     const auto accountsRestoreResult = restoreLegacyAccount();
     if (accountsRestoreResult == AccountManager::AccountsNotFound || accountsRestoreResult == AccountManager::AccountsRestoreFailure) {

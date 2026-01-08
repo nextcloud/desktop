@@ -17,6 +17,7 @@
 #include "syncenginetestutils.h"
 #include "testhelper.h"
 #include "version.h"
+#include "settings/migration.h"
 
 using namespace OCC;
 
@@ -159,7 +160,8 @@ private slots:
         // create Nextcloud config with older version
         setupStandarConfig("1.0.0");
         const auto oldAppVersionNumber = QVersionNumber::fromString(_configFile.clientVersionString());
-        QVERIFY(_configFile.isUpgrade());
+        Migration migration;
+        QVERIFY(migration.isUpgrade());
 
         // backup old config
         const auto backupFilesList = _configFile.backupConfigFiles();
@@ -200,8 +202,9 @@ private slots:
         QVERIFY(!configFile.exists());
 
         // owncloud config files exists
-        configFile.findLegacyClientConfigFile();
-        const auto legacyConfigFile = configFile.discoveredLegacyConfigFile();
+        Migration migration;
+        const auto legacyData = migration.legacyData();
+        const auto legacyConfigFile = legacyData.configFile;
         QVERIFY(!legacyConfigFile.isEmpty());
         QCOMPARE(legacyConfigFile, ocConfig);
 
@@ -250,8 +253,9 @@ private slots:
         QVERIFY(!configFile.exists());
 
         // branded owncloud config files exists
-        configFile.findLegacyClientConfigFile();
-        const auto legacyConfigFile = configFile.discoveredLegacyConfigFile();
+        Migration migration;
+        const auto legacyData = migration.legacyData();
+        const auto legacyConfigFile = legacyData.configFile;
         QVERIFY(!legacyConfigFile.isEmpty());
         QCOMPARE(legacyConfigFile, ocBrandedConfig);
     }
@@ -277,8 +281,9 @@ private slots:
         QVERIFY(!configFile.exists());
 
         // owncloud config files exists
-        configFile.findLegacyClientConfigFile();
-        const auto legacyConfigFile = configFile.discoveredLegacyConfigFile();
+        Migration migration;
+        const auto legacyData = migration.legacyData();
+        const auto legacyConfigFile = legacyData.configFile;
         QVERIFY(!legacyConfigFile.isEmpty());
         QCOMPARE(legacyConfigFile, brandedConfig);
     }

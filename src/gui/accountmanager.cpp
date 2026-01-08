@@ -200,7 +200,8 @@ bool AccountManager::restoreFromLegacySettings()
     auto settings = ConfigFile::settingsWithGroup(Theme::instance()->appName());
     auto wasLegacyImportDialogDisplayed = false;
     QStringList selectedAccountIds;
-    if (const auto legacyData = ConfigFile().migration().legacyData(); !legacyData.configFile.isEmpty()) {
+    Migration migration;
+    if (const auto legacyData = migration.legacyData(); !legacyData.configFile.isEmpty()) {
         
         const auto displayLegacyImportDialog = Theme::instance()->displayLegacyImportDialog();
        
@@ -299,7 +300,6 @@ bool AccountManager::restoreFromLegacySettings()
     configFile.setDownloadLimit(settings->value(ConfigFile::downloadLimitC, configFile.downloadLimit()).toInt());
 
     // Try to load the single account.
-    auto migration = configFile.migration();
     migration.setMigrationPhase(Migration::MigrationPhase::SetupUsers);
     if (!settings->childKeys().isEmpty()) {
         settings->beginGroup(accountsC);
@@ -500,7 +500,7 @@ void AccountManager::migrateNetworkSettings(const AccountPtr &account, const QSe
 
     // Override user settings with global settings if user is set to use global settings
     ConfigFile configFile;
-    auto migration = configFile.migration();
+    Migration migration;
     auto accountProxySetting = settings.value(networkProxySettingC).toInt();
     if (accountProxySetting == 0 && migration.isInProgress()) {
         accountProxyType = static_cast<QNetworkProxy::ProxyType>(configFile.proxyType());
@@ -636,7 +636,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->setDownloadLimit(settings.value(networkDownloadLimitC).toInt());
 
     ConfigFile configFile;
-    auto migration = configFile.migration();
+    Migration migration;
     const auto proxyPasswordKey = QString(acc->userIdAtHostWithPort() + networkProxyPasswordKeychainKeySuffixC);
     const auto appName = migration.isUnbrandedToBrandedMigration() ? ConfigFile::unbrandedAppName
         : Theme::instance()->appName();
