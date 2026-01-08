@@ -87,7 +87,6 @@ constexpr auto serverDesktopEnterpriseUpdateChannelC = "desktopEnterpriseChannel
 constexpr auto generalC = "General";
 }
 
-
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcAccountManager, "nextcloud.gui.account.manager", QtInfoMsg)
@@ -197,110 +196,64 @@ bool AccountManager::restoreFromLegacySettings()
 {
     qCInfo(lcAccountManager) << "Migrate: restoreFromLegacySettings, checking settings group"
                              << Theme::instance()->appName();
-
     // try to open the correctly themed settings
     auto settings = ConfigFile::settingsWithGroup(Theme::instance()->appName());
-
     auto wasLegacyImportDialogDisplayed = false;
-    const auto displayLegacyImportDialog = Theme::instance()->displayLegacyImportDialog();
     QStringList selectedAccountIds;
+    if (const auto legacyData = ConfigFile().migration().legacyData(); !legacyData.configFile.isEmpty()) {
+        
+        const auto displayLegacyImportDialog = Theme::instance()->displayLegacyImportDialog();
+       
+        const auto configFile = legacyData.configFile;
+        auto oCSettings = std::move(legacyData.settings);
 
-    // if the settings file could not be opened, the childKeys list is empty
-    // then try to load settings from a very old place
-    if (settings->childKeys().isEmpty()) {
-        // Legacy settings used QDesktopServices to get the location for the config folder in 2.4 and before
-        const auto legacy2_4CfgSettingsLocation = QString(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QStringLiteral("/data"));
-        const auto legacy2_4CfgFileParentFolder = legacy2_4CfgSettingsLocation.left(legacy2_4CfgSettingsLocation.lastIndexOf('/'));
+        oCSettings->beginGroup(QLatin1String(accountsC));
+        const auto childGroups = oCSettings->childGroups();
+        const auto accountsListSize = childGroups.size();
+        oCSettings->endGroup(); // accountsC
 
-        // 2.5+ (rest of 2.x series)
-        const auto legacy2_5CfgSettingsLocation = QStandardPaths::writableLocation(Utility::isWindows() ? QStandardPaths::AppDataLocation : QStandardPaths::AppConfigLocation);
-        const auto legacy2_5CfgFileParentFolder = legacy2_5CfgSettingsLocation.left(legacy2_5CfgSettingsLocation.lastIndexOf('/'));
-
-        // Now try the locations we use today
-        const auto fullLegacyCfgFile = QDir::fromNativeSeparators(settings->fileName());
-        const auto legacyCfgFileParentFolder = fullLegacyCfgFile.left(fullLegacyCfgFile.lastIndexOf('/'));
-        const auto legacyCfgFileGrandParentFolder = legacyCfgFileParentFolder.left(legacyCfgFileParentFolder.lastIndexOf('/'));
-
-        const auto legacyCfgFileNamePath = QString(QStringLiteral("/") + legacyCfgFileNameC);
-        const auto legacyCfgFileRelativePath = QString(legacyRelativeConfigLocationC);
-
-        auto legacyLocations = QVector<QString>{legacy2_4CfgFileParentFolder + legacyCfgFileRelativePath,
-                                                legacy2_5CfgFileParentFolder + legacyCfgFileRelativePath,
-                                                legacyCfgFileParentFolder + legacyCfgFileNamePath,
-                                                legacyCfgFileGrandParentFolder + legacyCfgFileRelativePath};
-
-        if (Theme::instance()->isBranded()) {
-            const auto unbrandedCfgFileNamePath = QString(QStringLiteral("/") + unbrandedCfgFileNameC);
-            const auto unbrandedCfgFileRelativePath = QString(unbrandedRelativeConfigLocationC);
-            legacyLocations.append({legacyCfgFileParentFolder + unbrandedCfgFileNamePath, legacyCfgFileGrandParentFolder + unbrandedCfgFileRelativePath});
-        }
-
-        for (const auto &configFile : std::as_const(legacyLocations)) {
-            auto oCSettings = std::make_unique<QSettings>(configFile, QSettings::IniFormat);
-            if (oCSettings->status() != QSettings::Status::NoError) {
-                qCInfo(lcAccountManager) << "Error reading legacy configuration file" << oCSettings->status();
-                break;
-            }
-
-            oCSettings->beginGroup(QLatin1String(accountsC));
-            const auto childGroups = oCSettings->childGroups();
-            const auto accountsListSize = childGroups.size();
-            oCSettings->endGroup(); //accountsC
-            if (const QFileInfo configFileInfo(configFile);
-                configFileInfo.exists() && configFileInfo.isReadable()) {
-
-                qCInfo(lcAccountManager) << "Migrate: checking old config " << configFile;
-                if (!forceLegacyImport() && accountsListSize > 0 && displayLegacyImportDialog) {
-                    wasLegacyImportDialogDisplayed = true;
-                    if (accountsListSize == 1) {
-                        const auto importQuestion =
-                            tr("An account was detected from a legacy desktop client.\n"
-                               "Should the account be imported?");
-                        QMessageBox importMessageBox(QMessageBox::Question, tr("Legacy import"), importQuestion);
-                        importMessageBox.addButton(tr("Import"), QMessageBox::AcceptRole);
-                        const auto skipButton = importMessageBox.addButton(tr("Skip"), QMessageBox::DestructiveRole);
-                        importMessageBox.exec();
-                        if (importMessageBox.clickedButton() == skipButton) {
-                            return false;
-                        }
-                        selectedAccountIds = childGroups;
-                    } else {
-                        QVector<LegacyAccountSelectionDialog::AccountItem> accountsToDisplay;
-                        oCSettings->beginGroup(QLatin1String(accountsC));
-                        for (const auto &accId : childGroups) {
-                            oCSettings->beginGroup(accId);
-                            const auto displayName = oCSettings->value(QLatin1String(displayNameC)).toString();
-                            const auto urlStr = oCSettings->value(QLatin1String(urlC)).toString();
-                            oCSettings->endGroup(); //accId
-                            const auto label = QString("%1 - %2").arg(displayName, urlStr);
-                            accountsToDisplay.push_back({accId, label});
-                        }
-                        oCSettings->endGroup(); //accountsC
-
-                        LegacyAccountSelectionDialog accountSelectionDialog(accountsToDisplay);
-                        if (accountSelectionDialog.exec() != QDialog::Accepted) {
-                            return false;
-                        }
-                        selectedAccountIds = accountSelectionDialog.selectedAccountIds();
-                        if (selectedAccountIds.isEmpty()) {
-                            return false;
-                        }
-                    }
-                } else {
-                    selectedAccountIds = childGroups;
+        qCInfo(lcAccountManager) << "Migrate: checking old config " << configFile;
+        if (!forceLegacyImport() && displayLegacyImportDialog && accountsListSize > 0) {
+            wasLegacyImportDialogDisplayed = true;
+            if (childGroups.size() == 1) {
+                const auto importQuestion =
+                    tr("An account was detected from a legacy desktop client.\n"
+                        "Should the account be imported?");
+                QMessageBox importMessageBox(QMessageBox::Question, tr("Legacy import"), importQuestion);
+                importMessageBox.addButton(tr("Import"), QMessageBox::AcceptRole);
+                const auto skipButton = importMessageBox.addButton(tr("Skip"), QMessageBox::DestructiveRole);
+                importMessageBox.exec();
+                if (importMessageBox.clickedButton() == skipButton) {
+                    return false;
                 }
-
-                const auto legacyVersion = oCSettings->value(ConfigFile::clientVersionC, {}).toString();
-                ConfigFile().setClientPreviousVersionString(legacyVersion);
-                qCInfo(lcAccountManager) << "Migrating from" << legacyVersion;
-                qCInfo(lcAccountManager) << "Copy settings" << oCSettings->allKeys().join(", ");
-                settings = std::move(oCSettings);
-                ConfigFile::setDiscoveredLegacyConfigPath(configFileInfo.canonicalPath());
-                break;
+                selectedAccountIds = childGroups;
             } else {
-                qCInfo(lcAccountManager) << "Migrate: could not read old config " << configFile;
+                QVector<LegacyAccountSelectionDialog::AccountItem> accountsToDisplay;
+                oCSettings->beginGroup(QLatin1String(accountsC));
+                for (const auto &accId : childGroups) {
+                    oCSettings->beginGroup(accId);
+                    const auto displayName = oCSettings->value(QLatin1String(displayNameC)).toString();
+                    const auto urlStr = oCSettings->value(QLatin1String(urlC)).toString();
+                    oCSettings->endGroup(); // accId
+                    const auto label = QString("%1 - %2").arg(displayName, urlStr);
+                    accountsToDisplay.push_back({accId, label});
+                }
+                oCSettings->endGroup(); // accountsC
+
+                LegacyAccountSelectionDialog accountSelectionDialog(accountsToDisplay);
+                if (accountSelectionDialog.exec() != QDialog::Accepted) {
+                    return false;
+                }
+                selectedAccountIds = accountSelectionDialog.selectedAccountIds();
+                if (selectedAccountIds.isEmpty()) {
+                    return false;
+                }
             }
+        } else {
+            selectedAccountIds = childGroups;
         }
+
+        settings.reset(oCSettings.get());
     }
 
     ConfigFile configFile;
