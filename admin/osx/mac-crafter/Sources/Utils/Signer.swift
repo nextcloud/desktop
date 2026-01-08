@@ -21,9 +21,11 @@ enum Signer: Signing {
         let dynamicFrameworksLocation = url
             .appendingPathComponent("Contents")
             .appendingPathComponent("PlugIns")
-        
+
+        Log.info("Looking for dynamic libraries in \(dynamicFrameworksLocation.path)")
+
         guard let enumerator = FileManager.default.enumerator(at: dynamicFrameworksLocation, includingPropertiesForKeys: nil) else {
-            fatalError("ERROR: Failed to get enumerator for: \(url.path)")
+            throw MacCrafterError.environmentError("Failed to get enumerator for: \(url.path)")
         }
         
         let dynamicLibaries: [URL] = enumerator.compactMap { element in
@@ -38,7 +40,8 @@ enum Signer: Signing {
             guard candidate.pathExtension == "dylib" else {
                 return nil
             }
-            
+
+            Log.info("Found dynamic library: \(candidate.path)")
             return candidate
         }
         
@@ -54,16 +57,18 @@ enum Signer: Signing {
         let pluginsLocation = url
             .appendingPathComponent("Contents")
             .appendingPathComponent("PlugIns")
-        
+
+        Log.info("Looking for extensions in \(pluginsLocation.path)")
         var items = try FileManager.default.contentsOfDirectory(at: pluginsLocation, includingPropertiesForKeys: nil)
         
         items.removeAll { item in
-            if item.path.hasSuffix(".appex") == false {
+            if item.path.hasSuffix(".appex") {
+                Log.info("Found extension bundle: \(item.path)")
+                return false
+            } else {
+                Log.info("Skipping item that is not an extension bundle: \(item.path)")
                 return true
             }
-            
-            Log.info("Found extension bundle: \(item.path)")
-            return false
         }
         
         return items
@@ -78,16 +83,18 @@ enum Signer: Signing {
         let frameworksLocation = url
             .appendingPathComponent("Contents")
             .appendingPathComponent("Frameworks")
-        
+
+        Log.info("Looking for frameworks in \(frameworksLocation.path)")
         var items = try FileManager.default.contentsOfDirectory(at: frameworksLocation, includingPropertiesForKeys: nil)
         
         items.removeAll { item in
-            if item.path.hasSuffix(".framework") == false {
+            if ["dylib", "framework"].contains(item.pathExtension) {
+                Log.info("Found item to sign: \(item.path)")
+                return false
+            } else {
+                Log.info("Skipping item due to invalid path extension: \(item.path)")
                 return true
             }
-            
-            Log.info("Found framework bundle: \(item.path)")
-            return false
         }
         
         return items
