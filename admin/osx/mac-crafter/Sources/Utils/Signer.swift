@@ -164,6 +164,7 @@ enum Signer: Signing {
         }
 
         await sign(at: binariesLocation.appendingPathComponent("nextcloudcmd"), with: codeSignIdentity, entitlements: nil)
+        await sign(at: binariesLocation.appendingPathComponent("nextclouddevcmd"), with: codeSignIdentity, entitlements: nil)
 
         guard let mainAppEntitlements = entitlements[location.lastPathComponent] else {
             throw MacCrafterError.signing("No entitlements provided for: \(location.path)")
