@@ -158,14 +158,8 @@ enum Signer: Signing {
         dynamicLibraries.append(contentsOf: try findDynamicLibraries(at: binariesLocation))
         dynamicLibraries.append(contentsOf: try findDynamicLibraries(at: pluginsLocation))
 
-        try await withThrowingTaskGroup(of: Void.self) { group in
-            for dynamicLibrary in dynamicLibraries {
-                group.addTask {
-                    await sign(at: dynamicLibrary, with: codeSignIdentity, entitlements: nil)
-                }
-            }
-
-            try await group.waitForAll()
+        for dynamicLibrary in dynamicLibraries {
+            await sign(at: dynamicLibrary, with: codeSignIdentity, entitlements: nil)
         }
 
         guard let mainAppEntitlements = entitlements[location.lastPathComponent] else {
