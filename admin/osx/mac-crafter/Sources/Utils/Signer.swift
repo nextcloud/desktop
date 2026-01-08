@@ -18,13 +18,9 @@ enum Signer: Signing {
     // MARK: - Private
     
     private static func findDynamicLibraries(at url: URL) throws -> [URL] {
-        let dynamicFrameworksLocation = url
-            .appendingPathComponent("Contents")
-            .appendingPathComponent("PlugIns")
+        Log.info("Looking for dynamic libraries in \(url.path)")
 
-        Log.info("Looking for dynamic libraries in \(dynamicFrameworksLocation.path)")
-
-        guard let enumerator = FileManager.default.enumerator(at: dynamicFrameworksLocation, includingPropertiesForKeys: nil) else {
+        guard let enumerator = FileManager.default.enumerator(at: url, includingPropertiesForKeys: nil) else {
             throw MacCrafterError.environmentError("Failed to get enumerator for: \(url.path)")
         }
         
@@ -44,7 +40,7 @@ enum Signer: Signing {
             Log.info("Found dynamic library: \(candidate.path)")
             return candidate
         }
-        
+
         return dynamicLibaries
     }
     
@@ -149,7 +145,18 @@ enum Signer: Signing {
             try await group.waitForAll()
         }
 
-        let dynamicLibraries = try findDynamicLibraries(at: location)
+        var dynamicLibraries = [URL]()
+
+        let binariesLocation = location
+            .appendingPathComponent("Contents")
+            .appendingPathComponent("MacOS")
+
+        let pluginsLocation = location
+            .appendingPathComponent("Contents")
+            .appendingPathComponent("PlugIns")
+
+        dynamicLibraries.append(contentsOf: try findDynamicLibraries(at: binariesLocation))
+        dynamicLibraries.append(contentsOf: try findDynamicLibraries(at: pluginsLocation))
 
         try await withThrowingTaskGroup(of: Void.self) { group in
             for dynamicLibrary in dynamicLibraries {
