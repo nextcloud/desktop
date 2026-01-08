@@ -27,11 +27,11 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcMigration, "nextcloud.settings.migration", QtInfoMsg)
 
-Migration::MigrationPhase Migration::_migrationPhase = MigrationPhase::NotStarted;;
-Migration::MigrationType Migration::_migrationType = MigrationType::UnbrandedToUnbranded;
-Migration::VersionChangeType Migration::_versionChangeType = VersionChangeType::NoVersionChange;
+Migration::Phase Migration::_phase = Phase::NotStarted;;
+Migration::BrandingType Migration::_brandingType = BrandingType::UnbrandedToUnbranded;
+Migration::UpgradeType Migration::_upgradeType = UpgradeType::NoChange;
 QString Migration::_discoveredLegacyConfigPath = {};
-Migration::LegacyData Migration::_configSettings = {};
+Migration::LegacyData Migration::_legacyData = {};
 
 QVersionNumber Migration::currentVersion() const
 {
@@ -48,55 +48,55 @@ QVersionNumber Migration::configVersion() const
     return QVersionNumber::fromString(ConfigFile().clientVersionString());
 }
 
-void Migration::setMigrationPhase(const MigrationPhase phase)
+void Migration::setPhase(const Phase phase)
 {
     // do not rollback
-    if (phase > _migrationPhase) {
-        _migrationPhase = phase;
+   if (phase > _phase) {
+        _phase = phase;
     }
 }
 
-Migration::MigrationPhase Migration::migrationPhase() const
+Migration::Phase Migration::phase() const
 {
-    return _migrationPhase;
+    return _phase;
 }
 
-void Migration::setMigrationType(const MigrationType type)
+void Migration::setBrandingType(const BrandingType type)
 {
-    _migrationType = type;
+    _brandingType = type;
 }
 
-Migration::MigrationType Migration::migrationType() const
+Migration::BrandingType Migration::brandingType() const
 {
-    return _migrationType;
+    return _brandingType;
 }
 
-Migration::VersionChangeType Migration::versionChangeType() const
+Migration::UpgradeType Migration::upgradeType() const
 {
-    return _versionChangeType;
+    return _upgradeType;
 }
 
-void Migration::setVersionChangeType(const VersionChangeType type)
+void Migration::setUpgradeType(const UpgradeType type)
 {
-    _versionChangeType = type;
+    _upgradeType = type;
 }
 
 bool Migration::isUpgrade()
 {
     const auto isUpgrade = currentVersion() > previousVersion();
     if (isUpgrade) {
-        setVersionChangeType(VersionChangeType::Upgrade);
+        setUpgradeType(UpgradeType::Upgrade);
     }
-    return versionChangeType() == VersionChangeType::Upgrade;
+    return _upgradeType == UpgradeType::Upgrade;
 }
 
 bool Migration::isDowngrade()
 {
     const auto isDowngrade = previousVersion() > currentVersion();
     if (isDowngrade) {
-        setVersionChangeType(VersionChangeType::Downgrade);
+        setUpgradeType(UpgradeType::Downgrade);
     }
-    return versionChangeType() == VersionChangeType::Downgrade;
+    return _upgradeType == UpgradeType::Downgrade;
 }
 
 bool Migration::versionChanged()
@@ -104,21 +104,21 @@ bool Migration::versionChanged()
     return isUpgrade() || isDowngrade();
 }
 
-bool Migration::shouldTryUnbrandedToBrandedMigration() const
+bool Migration::shouldTryUnbrandedToBrandedMigration()
 {
-    const auto isUnbrandedToBranded = migrationPhase() == Migration::MigrationPhase::SetupFolders
+    const auto isUnbrandedToBranded = phase() == Migration::Phase::SetupFolders
         && Theme::instance()->appName() != ConfigFile::unbrandedAppName 
         && !_discoveredLegacyConfigPath.isEmpty();
 
     if (isUnbrandedToBranded) {
-        Migration().setMigrationType(MigrationType::UnbrandedToBranded);
+        setBrandingType(BrandingType::UnbrandedToBranded);
     }
-    return migrationType() == MigrationType::UnbrandedToBranded;
+    return _brandingType == BrandingType::UnbrandedToBranded;
 }
 
 bool Migration::isUnbrandedToBrandedMigration() const
 {
-    return isInProgress() && migrationType() == MigrationType::UnbrandedToBranded;
+    return isInProgress() && brandingType() == BrandingType::UnbrandedToBranded;
 }
 
 bool Migration::shouldTryToMigrate()
@@ -136,9 +136,9 @@ bool Migration::isClientVersionSet() const
 
 bool Migration::isInProgress() const
 {
-    const auto currentPhase = migrationPhase();
-    return currentPhase != MigrationPhase::NotStarted
-        && currentPhase != MigrationPhase::Done;
+    const auto currentPhase = phase();
+    return currentPhase != Phase::NotStarted 
+        && currentPhase != Phase::Done;
 }
 
 Migration::LegacyData Migration::legacyData() const
@@ -195,8 +195,7 @@ Migration::LegacyData Migration::legacyData() const
                 qCInfo(lcMigration) << "Copy settings" << oCSettings->allKeys().join(", ");
                 Migration migration;
                 migration.setDiscoveredLegacyConfigPath(configFileInfo.canonicalPath());
-                legacyData.configFile = configFileString;
-                legacyData.settings.create(oCSettings.release());
+                legacyData.reset(oCSettings.get());
                 migration.setLegacyData(legacyData);
                 break;
             } else {
@@ -222,10 +221,9 @@ void Migration::setDiscoveredLegacyConfigPath(const QString &discoveredLegacyCon
     _discoveredLegacyConfigPath = discoveredLegacyConfigPath;
 }
 
-void Migration::setLegacyData(const LegacyData &LegacyData)
+void Migration::setLegacyData(const LegacyData legacyData)
 {
-    _configSettings.configFile = LegacyData.configFile;
-    _configSettings.settings = LegacyData.settings;
+    _legacyData = legacyData;
 }
 
 }

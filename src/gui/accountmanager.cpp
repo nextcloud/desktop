@@ -201,19 +201,18 @@ bool AccountManager::restoreFromLegacySettings()
     auto wasLegacyImportDialogDisplayed = false;
     QStringList selectedAccountIds;
     Migration migration;
-    if (const auto legacyData = migration.legacyData(); !legacyData.configFile.isEmpty()) {
+    if (const auto legacyData = migration.legacyData(); !legacyData.isNull()) {
         
         const auto displayLegacyImportDialog = Theme::instance()->displayLegacyImportDialog();
        
-        const auto configFile = legacyData.configFile;
-        auto oCSettings = std::move(legacyData.settings);
+        auto oCSettings = std::move(legacyData);
 
         oCSettings->beginGroup(QLatin1String(accountsC));
         const auto childGroups = oCSettings->childGroups();
         const auto accountsListSize = childGroups.size();
         oCSettings->endGroup(); // accountsC
 
-        qCInfo(lcAccountManager) << "Migrate: checking old config " << configFile;
+        qCInfo(lcAccountManager) << "Migrate: checking old config";
         if (!forceLegacyImport() && displayLegacyImportDialog && accountsListSize > 0) {
             wasLegacyImportDialogDisplayed = true;
             if (childGroups.size() == 1) {
@@ -300,7 +299,7 @@ bool AccountManager::restoreFromLegacySettings()
     configFile.setDownloadLimit(settings->value(ConfigFile::downloadLimitC, configFile.downloadLimit()).toInt());
 
     // Try to load the single account.
-    migration.setMigrationPhase(Migration::MigrationPhase::SetupUsers);
+    migration.setPhase(Migration::Phase::SetupUsers);
     if (!settings->childKeys().isEmpty()) {
         settings->beginGroup(accountsC);
         const auto childGroups = selectedAccountIds.isEmpty() ? settings->childGroups() : selectedAccountIds;

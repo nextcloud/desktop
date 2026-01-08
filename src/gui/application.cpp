@@ -126,11 +126,11 @@ bool Application::configVersionMigration()
     const auto shouldTryToMigrate = migration.shouldTryToMigrate();
     if (!shouldTryToMigrate) {
         qCInfo(lcApplication) << "This is not an upgrade/downgrade/migration. Proceed to read current application config file.";
-        migration.setMigrationPhase(Migration::MigrationPhase::Done);
+        migration.setPhase(Migration::Phase::Done);
         return false;
     }
 
-    migration.setMigrationPhase(Migration::MigrationPhase::SetupConfigFile);
+    migration.setPhase(Migration::Phase::SetupConfigFile);
     QStringList deleteKeys, ignoreKeys;
     AccountManager::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
     FolderMan::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
@@ -480,17 +480,17 @@ void Application::setupAccountsAndFolders()
     _folderManager.reset(new FolderMan);
     ConfigFile configFile;
     Migration migration;
-    migration.setMigrationPhase(Migration::MigrationPhase::SetupUsers);
+    migration.setPhase(Migration::Phase::SetupUsers);
     const auto accountsRestoreResult = restoreLegacyAccount();
     if (accountsRestoreResult == AccountManager::AccountsNotFound || accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
         qCWarning(lcApplication) << "Migration result: " << accountsRestoreResult;
         qCDebug(lcApplication) << "is migration disabled?" << DISABLE_ACCOUNT_MIGRATION;
         qCWarning(lcApplication) << "No accounts were migrated, prompting user to set up accounts and folders from scratch.";
-        migration.setMigrationPhase(Migration::MigrationPhase::Done);
+        migration.setPhase(Migration::Phase::Done);
         return;
     }
 
-    migration.setMigrationPhase(Migration::MigrationPhase::SetupFolders);
+    migration.setPhase(Migration::Phase::SetupFolders);
     const auto foldersListSize = FolderMan::instance()->setupFolders();
     FolderMan::instance()->setSyncEnabled(true);
 

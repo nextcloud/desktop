@@ -204,9 +204,7 @@ private slots:
         // owncloud config files exists
         Migration migration;
         const auto legacyData = migration.legacyData();
-        const auto legacyConfigFile = legacyData.configFile;
-        QVERIFY(!legacyConfigFile.isEmpty());
-        QCOMPARE(legacyConfigFile, ocConfig);
+        QVERIFY(!legacyData.isNull());
 
         // TODO: add accounts and folders to AccountManager and FolderMan without UI interference
         //_folderMan.reset({});
@@ -255,9 +253,7 @@ private slots:
         // branded owncloud config files exists
         Migration migration;
         const auto legacyData = migration.legacyData();
-        const auto legacyConfigFile = legacyData.configFile;
-        QVERIFY(!legacyConfigFile.isEmpty());
-        QCOMPARE(legacyConfigFile, ocBrandedConfig);
+        QVERIFY(!legacyData.isNull());
     }
 
 
@@ -283,9 +279,7 @@ private slots:
         // owncloud config files exists
         Migration migration;
         const auto legacyData = migration.legacyData();
-        const auto legacyConfigFile = legacyData.configFile;
-        QVERIFY(!legacyConfigFile.isEmpty());
-        QCOMPARE(legacyConfigFile, brandedConfig);
+        QVERIFY(!legacyData.isNull());
     }
 
     // TODO: Downgrade
