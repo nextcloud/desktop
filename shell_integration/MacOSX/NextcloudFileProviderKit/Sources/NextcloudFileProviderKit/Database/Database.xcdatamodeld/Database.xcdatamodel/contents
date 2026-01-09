@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24512" systemVersion="25C56" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="DatabaseItem" representedClassName="DatabaseItem" syncable="YES" codeGenerationType="class">
+        <attribute name="fileProviderItemIdentifier" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" attributeType="String"/>
+    </entity>
+    <entity name="RemoteFileChunk" representedClassName="RemoteFileChunk" syncable="YES" codeGenerationType="class"/>
+</model>
