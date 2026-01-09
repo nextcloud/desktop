@@ -101,20 +101,16 @@ enum Signer: Signing {
     ///
     private static func isExecutable(_ file: URL) async throws -> Bool {
         let outPipe = Pipe()
-        let errPipe = Pipe()
         let task = Process()
+        task.executableURL = URL(fileURLWithPath: "/bin/zsh")
+        task.arguments = ["-c", "file \"\(file.path)\""]
         task.standardOutput = outPipe
-        task.standardError = errPipe
+        task.standardError = Pipe()
 
-        let command = "file \"\(file.path)\""
+        try task.run()
+        task.waitUntilExit()
 
-        guard await run("/bin/zsh", ["-c", command], task: task) == 0 else {
-            throw MacCrafterError.signing("Failed to determine if \(file.path) is an executable.")
-        }
-
-        let outputFileHandle = outPipe.fileHandleForReading
-        let outputData = outputFileHandle.readDataToEndOfFile()
-        try outputFileHandle.close()
+        let outputData = outPipe.fileHandleForReading.readDataToEndOfFile()
         let output = String(data: outputData, encoding: .utf8) ?? ""
 
         return output.contains("Mach-O 64-bit executable")
@@ -135,7 +131,13 @@ enum Signer: Signing {
             .appendingPathComponent("Helpers")
             .appendingPathComponent("QtWebEngineProcess.app")
 
-        await sign(at: location, with: codeSignIdentity, entitlements: nil)
+        let entitlements = location
+            .appendingPathComponent("Contents")
+            .appendingPathComponent("Resources")
+            .appendingPathComponent("QtWebEngineProcess")
+            .appendingPathExtension("entitlements")
+
+        await sign(at: location, with: codeSignIdentity, entitlements: entitlements)
     }
 
     ///
@@ -151,7 +153,8 @@ enum Signer: Signing {
             .appendingPathComponent("Versions")
             .appendingPathComponent("B")
             .appendingPathComponent("XPCServices")
-            .appendingPathComponent("Downloader.xpc")
+            .appendingPathComponent("Downloader")
+            .appendingPathExtension("xpc")
 
         await sign(at: location, with: codeSignIdentity, entitlements: nil)
     }
@@ -168,7 +171,8 @@ enum Signer: Signing {
             .appendingPathComponent("Sparkle.framework")
             .appendingPathComponent("Versions")
             .appendingPathComponent("B")
-            .appendingPathComponent("Updater.app")
+            .appendingPathComponent("Updater")
+            .appendingPathExtension("app")
 
         await sign(at: location, with: codeSignIdentity, entitlements: nil)
     }
@@ -188,9 +192,6 @@ enum Signer: Signing {
                 await sign(at: candidate, with: codeSignIdentity, entitlements: nil)
             }
         }
-
-        await sign(at: location.appendingPathComponent("nextcloudcmd"), with: codeSignIdentity, entitlements: nil)
-        await sign(at: location.appendingPathComponent("nextclouddevcmd"), with: codeSignIdentity, entitlements: nil)
     }
 
     private static func verify(at location: URL) async throws {
@@ -284,21 +285,23 @@ enum Signer: Signing {
     static func sign(at location: URL, with codeSignIdentity: String, entitlements: URL?) async {
         Log.info("Signing: \(location.path)")
 
-        var command = [
+        var commandComponents = [
             "codesign",
             location.path,
             "--timestamp",
-            "--verbose 4",
-            "--preserve-metadata entitlements",
+            "--verbose=4",
             "--force",
-            "--options runtime",
-            "--sign \"\(codeSignIdentity)\""
+            "--options=runtime",
+            "--sign=\"\(codeSignIdentity)\""
         ]
 
         if let entitlements {
-            command.append(" --entitlements=\"\(entitlements.path)\"")
+            commandComponents.append(" --entitlements=\"\(entitlements.path)\"")
+        } else {
+            commandComponents.append("--preserve-metadata=entitlements")
         }
-        
-        await shell(command.joined(separator: " "))
+
+        let command = commandComponents.joined(separator: " ")
+        await shell(command)
     }
 }

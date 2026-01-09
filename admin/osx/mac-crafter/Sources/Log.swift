@@ -11,7 +11,6 @@ import os
 actor Log: Sendable {
     private static let shared = Log()
     private let handle: FileHandle?
-    private let logger: Logger
 
     init() {
         let manager = FileManager.default
@@ -30,8 +29,6 @@ actor Log: Sendable {
         } else {
             handle = nil
         }
-
-        logger = Logger(subsystem: "com.nextcloud.mac-crafter", category: "")
     }
 
     private func log(level: OSLogType, message: String) {
@@ -40,7 +37,6 @@ actor Log: Sendable {
         }
 
         print(message)
-        logger.log(level: level, "\(message, privacy: .public)")
 
         guard let handle else {
             return
