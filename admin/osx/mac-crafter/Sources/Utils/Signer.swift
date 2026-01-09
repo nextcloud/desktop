@@ -95,7 +95,104 @@ enum Signer: Signing {
         
         return items
     }
-    
+
+    ///
+    /// Check whether the given file is an native executable binary or not.
+    ///
+    private static func isExecutable(_ file: URL) async throws -> Bool {
+        let outPipe = Pipe()
+        let errPipe = Pipe()
+        let task = Process()
+        task.standardOutput = outPipe
+        task.standardError = errPipe
+
+        let command = "file \"\(file.path)\""
+
+        guard await run("/bin/zsh", ["-c", command], task: task) == 0 else {
+            throw MacCrafterError.signing("Failed to determine if \(file.path) is an executable.")
+        }
+
+        let outputFileHandle = outPipe.fileHandleForReading
+        let outputData = outputFileHandle.readDataToEndOfFile()
+        try outputFileHandle.close()
+        let output = String(data: outputData, encoding: .utf8) ?? ""
+
+        return output.contains("Mach-O 64-bit executable")
+    }
+
+    ///
+    /// Find and sign the Qt web engine helper app inside the QtWebEngineCore framework.
+    ///
+    /// This needs explicit treatment because codesign does not automatically sign it when signing the upstream framework bundle.
+    ///
+    private static func signQtWebEngineProcessApp(in bundle: URL, with codeSignIdentity: String) async {
+        let location = bundle
+            .appendingPathComponent("Contents")
+            .appendingPathComponent("Frameworks")
+            .appendingPathComponent("QtWebEngineCore.framework")
+            .appendingPathComponent("Versions")
+            .appendingPathComponent("A")
+            .appendingPathComponent("Helpers")
+            .appendingPathComponent("QtWebEngineProcess.app")
+
+        await sign(at: location, with: codeSignIdentity, entitlements: nil)
+    }
+
+    ///
+    /// Find and sign the Sparkle downloader inside the Sparkle framework.
+    ///
+    /// This needs explicit treatment because codesign does not automatically sign it when signing the upstream framework bundle.
+    ///
+    private static func signSparkleDownloader(in bundle: URL, with codeSignIdentity: String) async {
+        let location = bundle
+            .appendingPathComponent("Contents")
+            .appendingPathComponent("Frameworks")
+            .appendingPathComponent("Sparkle.framework")
+            .appendingPathComponent("Versions")
+            .appendingPathComponent("B")
+            .appendingPathComponent("XPCServices")
+            .appendingPathComponent("Downloader.xpc")
+
+        await sign(at: location, with: codeSignIdentity, entitlements: nil)
+    }
+
+    ///
+    /// Find and sign the Sparkle updater app inside the Sparkle framework.
+    ///
+    /// This needs explicit treatment because codesign does not automatically sign it when signing the upstream framework bundle.
+    ///
+    private static func signSparkleUpdaterApp(in bundle: URL, with codeSignIdentity: String) async {
+        let location = bundle
+            .appendingPathComponent("Contents")
+            .appendingPathComponent("Frameworks")
+            .appendingPathComponent("Sparkle.framework")
+            .appendingPathComponent("Versions")
+            .appendingPathComponent("B")
+            .appendingPathComponent("Updater.app")
+
+        await sign(at: location, with: codeSignIdentity, entitlements: nil)
+    }
+
+    ///
+    /// There may be additional executables in the binaries directory which also need to be signed.
+    ///
+    private static func signAdditionalBinaries(in bundle: URL, with codeSignIdentity: String) async throws {
+        let location = bundle
+            .appendingPathComponent("Contents")
+            .appendingPathComponent("MacOS")
+
+        let candidates = try FileManager.default.contentsOfDirectory(at: location, includingPropertiesForKeys: nil)
+
+        for candidate in candidates {
+            if try await isExecutable(candidate) {
+                await sign(at: candidate, with: codeSignIdentity, entitlements: nil)
+            }
+        }
+
+        await sign(at: location.appendingPathComponent("nextcloudcmd"), with: codeSignIdentity, entitlements: nil)
+        await sign(at: location.appendingPathComponent("nextclouddevcmd"), with: codeSignIdentity, entitlements: nil)
+    }
+
     private static func verify(at location: URL) async throws {
         Log.info("Verifying: \(location.path)")
         let code = await shell("codesign --verify --deep --strict --verbose=2 \"\(location.path)\"")
@@ -132,7 +229,11 @@ enum Signer: Signing {
 
             await sign(at: extensionInMainBundle, with: codeSignIdentity, entitlements: extensionEntitlements)
         }
-        
+
+        await signQtWebEngineProcessApp(in: location, with: codeSignIdentity)
+        await signSparkleDownloader(in: location, with: codeSignIdentity)
+        await signSparkleUpdaterApp(in: location, with: codeSignIdentity)
+
         let frameworksInsideMainBundle = try findFrameworks(at: location)
 
         try await withThrowingTaskGroup(of: Void.self) { group in
@@ -163,8 +264,7 @@ enum Signer: Signing {
             await sign(at: dynamicLibrary, with: codeSignIdentity, entitlements: nil)
         }
 
-        await sign(at: binariesLocation.appendingPathComponent("nextcloudcmd"), with: codeSignIdentity, entitlements: nil)
-        await sign(at: binariesLocation.appendingPathComponent("nextclouddevcmd"), with: codeSignIdentity, entitlements: nil)
+        try await signAdditionalBinaries(in: location, with: codeSignIdentity)
 
         guard let mainAppEntitlements = entitlements[location.lastPathComponent] else {
             throw MacCrafterError.signing("No entitlements provided for: \(location.path)")
@@ -188,10 +288,11 @@ enum Signer: Signing {
             "codesign",
             location.path,
             "--timestamp",
-            "--verbose=4",
-            "--preserve-metadata=entitlements",
+            "--verbose 4",
+            "--preserve-metadata entitlements",
             "--force",
-            "--sign=\"\(codeSignIdentity)\""
+            "--options runtime",
+            "--sign \"\(codeSignIdentity)\""
         ]
 
         if let entitlements {
