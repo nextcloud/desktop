@@ -5,7 +5,6 @@
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
 import NextcloudKit
-import RealmSwift
 @testable import TestInterface
 import XCTest
 
@@ -29,7 +28,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
 
         rootItem = MockRemoteItem.rootItem(account: Self.account)
 

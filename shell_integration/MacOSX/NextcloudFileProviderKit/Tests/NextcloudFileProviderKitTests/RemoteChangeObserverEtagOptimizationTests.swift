@@ -6,7 +6,6 @@ import Foundation
 import NextcloudCapabilitiesKit
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
-import RealmSwift
 import TestInterface
 import XCTest
 
@@ -20,7 +19,6 @@ final class RemoteChangeObserverEtagOptimizationTests: NextcloudFileProviderKitT
     var mockRemoteInterface: MockRemoteInterface!
 
     override func setUp() {
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
         dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
         mockRemoteInterface = MockRemoteInterface(account: Self.account, rootItem: MockRemoteItem.rootItem(account: Self.account))
     }

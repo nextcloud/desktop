@@ -6,7 +6,6 @@ import Foundation
 import NextcloudCapabilitiesKit
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
-import RealmSwift
 import Testing
 import TestInterface
 import XCTest
@@ -35,7 +34,6 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
     var remoteChangeObserver: RemoteChangeObserver?
 
     override func setUp() async throws {
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
         let server = Self.notifyPushServer
 
         Task {

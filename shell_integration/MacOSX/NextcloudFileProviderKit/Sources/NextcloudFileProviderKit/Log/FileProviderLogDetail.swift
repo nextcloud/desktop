@@ -8,9 +8,6 @@ import NextcloudKit
 ///
 /// An enum that can represent any JSON value and is `Encodable`.
 ///
-/// > To Do: Add custom encodings for:
-/// > - `RealmItemMetadata`
-///
 public enum FileProviderLogDetail: Encodable {
     ///
     /// RFC 3339 formatter for the dates.

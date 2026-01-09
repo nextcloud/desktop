@@ -6,7 +6,6 @@ import Foundation
 import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
 import NextcloudKit
-import RealmSwift
 import TestInterface
 import XCTest
 
@@ -14,11 +13,6 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
-
-    override func setUp() {
-        super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
-    }
 
     func testMaterialisedObserverWithNoPreexistingState() async {
         let dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())

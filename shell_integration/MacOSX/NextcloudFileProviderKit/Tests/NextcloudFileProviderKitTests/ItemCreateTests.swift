@@ -5,7 +5,6 @@
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
 import NextcloudKit
-import RealmSwift
 import TestInterface
 import UniformTypeIdentifiers
 import XCTest
@@ -20,7 +19,6 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
 
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
         rootItem = MockRemoteItem.rootItem(account: Self.account)
     }
 
