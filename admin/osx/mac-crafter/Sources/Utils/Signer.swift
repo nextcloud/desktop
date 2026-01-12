@@ -160,6 +160,42 @@ enum Signer: Signing {
     }
 
     ///
+    /// Find and sign the Sparkle Installer inside the Sparkle framework.
+    ///
+    /// This needs explicit treatment because codesign does not automatically sign it when signing the upstream framework bundle.
+    ///
+    private static func signSparkleInstaller(in bundle: URL, with codeSignIdentity: String) async {
+        let location = bundle
+            .appendingPathComponent("Contents")
+            .appendingPathComponent("Frameworks")
+            .appendingPathComponent("Sparkle.framework")
+            .appendingPathComponent("Versions")
+            .appendingPathComponent("B")
+            .appendingPathComponent("XPCServices")
+            .appendingPathComponent("Installer")
+            .appendingPathExtension("xpc")
+
+        await sign(at: location, with: codeSignIdentity, entitlements: nil)
+    }
+    
+    ///
+    /// Find and sign the Sparkle autoupdate inside the Sparkle framework.
+    ///
+    /// This needs explicit treatment because codesign does not automatically sign it when signing the upstream framework bundle.
+    ///
+    private static func signSparkleAutoupdate(in bundle: URL, with codeSignIdentity: String) async {
+        let location = bundle
+            .appendingPathComponent("Contents")
+            .appendingPathComponent("Frameworks")
+            .appendingPathComponent("Sparkle.framework")
+            .appendingPathComponent("Versions")
+            .appendingPathComponent("B")
+            .appendingPathComponent("Autoupdate")
+
+        await sign(at: location, with: codeSignIdentity, entitlements: nil)
+    }
+
+    ///
     /// Find and sign the Sparkle updater app inside the Sparkle framework.
     ///
     /// This needs explicit treatment because codesign does not automatically sign it when signing the upstream framework bundle.
@@ -234,6 +270,8 @@ enum Signer: Signing {
         await signQtWebEngineProcessApp(in: location, with: codeSignIdentity)
         await signSparkleDownloader(in: location, with: codeSignIdentity)
         await signSparkleUpdaterApp(in: location, with: codeSignIdentity)
+        await signSparkleInstaller(in: location, with: codeSignIdentity)
+        await signSparkleAutoupdate(in: location, with: codeSignIdentity)
 
         let frameworksInsideMainBundle = try findFrameworks(at: location)
 
