@@ -28,6 +28,7 @@ class EndToEndTestHelper;
 class TestSyncConflictsModel;
 class TestRemoteWipe;
 class FolderManTestHelper;
+class TestMigration;
 
 namespace OCC {
 
@@ -36,6 +37,7 @@ class SyncResult;
 class SocketApi;
 class LockWatcher;
 class UpdateE2eeFolderUsersMetadataJob;
+class Migration;
 
 /**
  * @brief The FolderMan class
@@ -418,6 +420,7 @@ private:
     friend class ::TestFolderStatusModel;
     friend class ::TestRemoteWipe;
     friend class ::FolderManTestHelper;
+    friend class ::TestMigration;
 };
 
 } // namespace OCC
