@@ -38,7 +38,7 @@ namespace {
 const QString TOOLBAR_CSS()
 {
     return QStringLiteral("QToolBar { background: %1; margin: 0; padding: 0; border: none; border-right: 1px solid %2; spacing: 0; } "
-                          "QToolBar QToolButton { background: %1; border: none; border-bottom: 1px solid %2; margin: 0; padding: 5px; } "
+                          "QToolBar QToolButton { background: %1; border: none; margin: 0; padding: 8px 10px; font-size: 13px; } "
                           "QToolBar QToolBarExtension { padding:0; } "
                           "QToolBar QToolButton:checked { background: %3; color: %4; }");
 }
@@ -84,6 +84,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _toolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     _toolBar->setOrientation(Qt::Vertical);
     _toolBar->setMovable(false);
+    _toolBar->setMinimumWidth(220);
     _ui->mainLayout->insertWidget(0, _toolBar);
     _ui->mainLayout->setStretch(0, 0);
     _ui->mainLayout->setStretch(1, 1);
@@ -112,6 +113,9 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     QAction *generalAction = createColorAwareAction(QLatin1String(":/client/theme/settings.svg"), tr("General"));
     _actionGroup->addAction(generalAction);
     _toolBar->addAction(generalAction);
+    auto *accountSpacer = new QWidget(this);
+    accountSpacer->setFixedHeight(8);
+    _toolBar->addWidget(accountSpacer);
     _toolBar->addSeparator();
     auto *generalSettings = new GeneralSettings;
     _ui->stack->addWidget(generalSettings);
