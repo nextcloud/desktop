@@ -49,7 +49,7 @@ public:
     bool checkAccountExists(bool openSettings);
 
     static void raiseDialog(QWidget *raiseWidget);
-    static QSize settingsDialogSize() { return {800, 500}; }
+    static QSize settingsDialogSize() { return {720, 500}; }
     void setupOverlayIcons();
 #ifdef WITH_LIBCLOUDPROVIDERS
     void setupCloudProviders();
