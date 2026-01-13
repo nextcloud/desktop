@@ -5,10 +5,15 @@
 
 # Read the available environment paths which include (for example) Homebrew.
 for f in /etc/paths.d/*; do
+    echo "Found to source: $f"
+
     while read -r line; do
+        echo "Adding to PATH: $line"
         export PATH="$PATH:$line"
     done < "$f"
 done
+
+echo "Final PATH: $PATH"
 
 if [ -f "$HOME/.zprofile" ]; then
     echo "Sourcing $HOME/.zprofile to include possible PATH definitions..."

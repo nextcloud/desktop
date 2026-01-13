@@ -22,3 +22,8 @@ OC_APPLICATION_NAME=$(OC_APPLICATION_NAME:default=Nextcloud)
 // Reverse base identifier.
 //
 OC_APPLICATION_REV_DOMAIN=$(OC_APPLICATION_REV_DOMAIN:default=com.nextcloud.desktopclient)
+
+//
+// Hardened runtime as required for notarization.
+//
+ENABLE_HARDENED_RUNTIME=YES
