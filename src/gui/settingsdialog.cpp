@@ -38,7 +38,7 @@ namespace {
 const QString TOOLBAR_CSS()
 {
     return QStringLiteral("QToolBar { background: %1; margin: 0; padding: 0; border: none; spacing: 0; } "
-                          "QToolBar QToolButton { background: %1; border: none; margin: 0; padding: 8px 12px; font-size: 14px; } "
+                          "QToolBar QToolButton { background: %1; border: none; margin: 2px 8px; padding: 6px 10px; font-size: 14px; border-radius: 10px; } "
                           "QToolBar QToolBarExtension { padding:0; } "
                           "QToolBar QToolButton:checked { background: %3; color: %4; }");
 }
@@ -64,7 +64,9 @@ QString shortDisplayNameForSettings(OCC::Account *account, int width)
         host = fm.elidedText(host, Qt::ElideMiddle, width);
         user = fm.elidedText(user, Qt::ElideRight, width);
     }
-    return QStringLiteral("%1\n%2").arg(user, host);
+    return QStringLiteral("<span style=\"font-weight:600; font-size:13px;\">%1</span><br>"
+                          "<span style=\"font-size:11px;\">%2</span>")
+        .arg(user.toHtmlEscaped(), host.toHtmlEscaped());
 }
 }
 
@@ -80,24 +82,37 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     _ui->setupUi(this);
     _ui->mainLayout->setContentsMargins(12, 12, 12, 12);
-    _ui->mainLayout->setSpacing(0);
+    _ui->mainLayout->setSpacing(12);
     _toolBar = new QToolBar;
     _toolBar->setIconSize(QSize(32, 32));
     _toolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     _toolBar->setOrientation(Qt::Vertical);
     _toolBar->setMovable(false);
     _toolBar->setMinimumWidth(220);
-    auto *shellContainer = new QWidget(this);
-    shellContainer->setObjectName(QLatin1String("settings_shell"));
-    auto *shellLayout = new QHBoxLayout(shellContainer);
-    shellLayout->setContentsMargins(12, 12, 12, 12);
-    shellLayout->setSpacing(12);
-    shellLayout->addWidget(_toolBar);
-    shellLayout->addWidget(_ui->stack);
-    shellLayout->setStretch(0, 0);
-    shellLayout->setStretch(1, 1);
+    _toolBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    auto *sidebarContainer = new QWidget(this);
+    sidebarContainer->setObjectName(QLatin1String("settings_sidebar"));
+    auto *sidebarLayout = new QVBoxLayout(sidebarContainer);
+    sidebarLayout->setContentsMargins(12, 12, 12, 12);
+    sidebarLayout->setSpacing(0);
+    auto *sidebarScroll = new QScrollArea(this);
+    sidebarScroll->setObjectName(QLatin1String("settings_sidebar_scroll"));
+    sidebarScroll->setFrameShape(QFrame::NoFrame);
+    sidebarScroll->setWidgetResizable(true);
+    sidebarScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    sidebarScroll->setWidget(_toolBar);
+    sidebarLayout->addWidget(sidebarScroll);
+    _ui->mainLayout->insertWidget(0, sidebarContainer);
+    _ui->mainLayout->setStretch(0, 0);
+    _ui->mainLayout->setStretch(1, 1);
     _ui->mainLayout->removeWidget(_ui->stack);
-    _ui->mainLayout->insertWidget(0, shellContainer);
+    auto *contentContainer = new QWidget(this);
+    contentContainer->setObjectName(QLatin1String("settings_content"));
+    auto *contentLayout = new QVBoxLayout(contentContainer);
+    contentLayout->setContentsMargins(12, 12, 12, 12);
+    contentLayout->setSpacing(0);
+    contentLayout->addWidget(_ui->stack);
+    _ui->mainLayout->insertWidget(1, contentContainer);
 
     // People perceive this as a Window, so also make Ctrl+W work
     auto *closeWindowAction = new QAction(this);
@@ -124,7 +139,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _actionGroup->addAction(generalAction);
     _toolBar->addAction(generalAction);
     auto *accountSpacer = new QWidget(this);
-    accountSpacer->setFixedHeight(8);
+    accountSpacer->setFixedHeight(16);
     _toolBar->addWidget(accountSpacer);
     auto *generalSettings = new GeneralSettings;
     _ui->stack->addWidget(generalSettings);
@@ -166,14 +181,14 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     cfg.restoreGeometry(this);
     setStyleSheet(QStringLiteral(
         "#Settings { background: #f2f2f2; }"
-        "#settings_shell { background: #e7e7e7; border-radius: 12px; }"
+        "#settings_sidebar, #settings_content { background: #e1e1e1; border-radius: 12px; }"
         "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
         "#accountStatusPanel, #accountStoragePanel, #accountTabsPanel {"
-        " background: #f2f2f2; border-radius: 10px; border: none; }"
+        " background: #e1e1e1; border-radius: 10px; border: none; }"
         "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox {"
-        " margin-top: 8px; padding: 12px; }"
+        " margin-top: 20px; padding: 12px; }"
         "#generalGroupBox::title, #advancedGroupBox::title, #aboutAndUpdatesGroupBox::title {"
-        " subcontrol-origin: margin; left: 12px; top: 6px; padding: 0 4px; }"
+        " subcontrol-origin: margin; left: 12px; top: 0px; padding: 0 4px; font-weight: 600; }"
         "#accountStatusPanel, #accountStoragePanel, #accountTabsPanel { padding: 12px; }"));
 }
 
@@ -354,7 +369,7 @@ void SettingsDialog::accountRemoved(AccountState *s)
 void SettingsDialog::customizeStyle()
 {
     QString highlightColor(palette().highlight().color().name());
-    QString highlightTextColor(palette().highlightedText().color().name());
+    QString highlightTextColor(QStringLiteral("#ffffff"));
     QString dark(palette().dark().color().name());
     QString background(palette().base().color().name());
     _toolBar->setStyleSheet(TOOLBAR_CSS().arg(background, dark, highlightColor, highlightTextColor));
