@@ -52,7 +52,8 @@ extension Item {
             uploaded: false,
             urlBase: account.serverUrl,
             user: account.username,
-            userId: account.id
+            userId: account.id,
+            wasTrashedLocally: false
         )
 
         dbManager.addItemMetadata(metadata)

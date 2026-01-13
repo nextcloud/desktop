@@ -41,6 +41,8 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
         Task {
             try await server.run()
         }
+
+        try await Task.sleep(nanoseconds: 500_000_000) // Add a small delay to ensure the server is fully ready
     }
 
     override func tearDown() async throws {
@@ -238,8 +240,7 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
         )
         serverFolderA.children.append(newFileInA)
 
-        let authExpectation =
-            XCTNSNotificationExpectation(name: NotifyPushAuthenticatedNotificationName)
+        let authExpectation = XCTNSNotificationExpectation(name: NotifyPushAuthenticatedNotificationName)
         let changeNotifiedExpectation = XCTestExpectation(description: "Change Notified")
 
         let notificationInterface = MockChangeNotificationInterface {
@@ -257,9 +258,7 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
 
         // 2. Act & Assert
         await wait(for: authExpectation, description: "authentication")
-
         Self.notifyPushServer.send(message: "notify_file")
-
         await wait(for: changeNotifiedExpectation, description: "change notification")
 
         // 3. Assert Database State
@@ -279,20 +278,14 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
 
         // Check deleted items
         let deletedFileInA = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "fileInA"))
-        XCTAssertTrue(
-            deletedFileInA.deleted, "File inside updated folder should be marked as deleted."
-        )
-        XCTAssertTrue(deletedFileInA.syncTime >= testStartDate,
-                      "Deleted file's sync time should be updated to current time")
-        XCTAssertGreaterThan(deletedFileInA.syncTime, originalFileInASyncTime,
-                             "Deleted file's sync time should be newer than original sync time")
+        XCTAssertTrue(deletedFileInA.deleted, "File inside updated folder should be marked as deleted.")
+        XCTAssertTrue(deletedFileInA.syncTime >= testStartDate, "Deleted file's sync time should be updated to current time")
+        XCTAssertGreaterThan(deletedFileInA.syncTime, originalFileInASyncTime, "Deleted file's sync time should be newer than original sync time")
 
         let deletedFolderB = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "folderB"))
         XCTAssertTrue(deletedFolderB.deleted, "The entire folder should be marked as deleted.")
-        XCTAssertTrue(deletedFolderB.syncTime >= testStartDate,
-                      "Deleted folder's sync time should be updated to current time")
-        XCTAssertGreaterThan(deletedFolderB.syncTime, originalFolderBSyncTime,
-                             "Deleted folder's sync time should be newer than original sync time")
+        XCTAssertTrue(deletedFolderB.syncTime >= testStartDate, "Deleted folder's sync time should be updated to current time")
+        XCTAssertGreaterThan(deletedFolderB.syncTime, originalFolderBSyncTime, "Deleted folder's sync time should be newer than original sync time")
     }
 
     func testIgnoreNonFileNotifications() async throws {

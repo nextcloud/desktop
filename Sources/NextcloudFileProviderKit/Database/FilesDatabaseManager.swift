@@ -40,7 +40,7 @@ public final class FilesDatabaseManager: Sendable {
         )
     }
 
-    private static let schemaVersion = SchemaVersion.addedIsLockFileOfLocalOriginToRealmItemMetadata
+    private static let schemaVersion = SchemaVersion.addedWasTrashedLocallyToRealmItemMetadata
     let logger: FileProviderLogger
     let account: Account
 
@@ -134,6 +134,15 @@ public final class FilesDatabaseManager: Sendable {
                     }
                 }
 
+                if oldSchemaVersion == SchemaVersion.addedIsLockFileOfLocalOriginToRealmItemMetadata.rawValue {
+                    migration.enumerateObjects(ofType: RealmItemMetadata.className()) { _, newObject in
+                        guard let newObject else {
+                            return
+                        }
+
+                        newObject["wasTrashedLocally"] = false
+                    }
+                }
             },
             objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self]
         )
@@ -520,7 +529,7 @@ public final class FilesDatabaseManager: Sendable {
         do {
             try database.write {
                 database.add(RealmItemMetadata(value: metadata), update: .all)
-                logger.debug("Added item metadata.", [.item: metadata.ocId, .name: metadata.name, .url: metadata.serverUrl])
+                logger.debug("Added item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl])
             }
         } catch {
             logger.error("Failed to add item metadata.", [.item: metadata.ocId, .name: metadata.name, .url: metadata.serverUrl, .error: error])

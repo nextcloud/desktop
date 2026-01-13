@@ -96,6 +96,7 @@ public protocol ItemMetadata: Equatable {
     var user: String { get set } // The user who owns the file (Nextcloud username)
     var userId: String { get set } // The user who owns the file (backend user id)
     // (relevant for alt. backends like LDAP)
+    var wasTrashedLocally: Bool { get set }
 }
 
 public extension ItemMetadata {

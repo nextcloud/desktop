@@ -201,7 +201,8 @@ public class MockRemoteItem: Equatable {
             trashbinOriginalLocation: trashbinOriginalLocation ?? "",
             urlBase: account.serverUrl,
             user: account.username,
-            userId: account.id
+            userId: account.id,
+            wasTrashedLocally: false
         )
     }
 }

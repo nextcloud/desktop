@@ -78,6 +78,14 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
     public var user: String
     public var userId: String
 
+    ///
+    /// Whether the item was moved to the trash container on the local device or not.
+    ///
+    /// This is `false` for items which were placed in the trash on the server or on another client and left out in the trash container content enumeration.
+    /// We only want locally trashed items to show up in the trash.
+    ///
+    public var wasTrashedLocally: Bool
+
     public init(
         ocId: String,
         account: String,
@@ -144,7 +152,8 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         uploadDate: Date = Date(),
         urlBase: String,
         user: String,
-        userId: String
+        userId: String,
+        wasTrashedLocally: Bool
     ) {
         self.ocId = ocId
         self.account = account
@@ -212,6 +221,7 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.urlBase = urlBase
         self.user = user
         self.userId = userId
+        self.wasTrashedLocally = wasTrashedLocally
     }
 
     init(value: any ItemMetadata) {
@@ -281,5 +291,6 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         urlBase = value.urlBase
         user = value.user
         userId = value.userId
+        wasTrashedLocally = value.wasTrashedLocally
     }
 }

@@ -5,7 +5,10 @@ import Foundation
 import NextcloudKit
 
 extension NKTrash {
-    func toItemMetadata(account: Account) -> SendableItemMetadata {
+    ///
+    /// Convert a trashed item representation into sendable item metadata.
+    ///
+    func toItemMetadata(account: Account, wasTrashedLocally: Bool = false) -> SendableItemMetadata {
         SendableItemMetadata(
             ocId: ocId,
             account: account.ncKitAccount,
@@ -35,7 +38,8 @@ extension NKTrash {
             trashbinDeletionTime: trashbinDeletionTime,
             urlBase: account.serverUrl,
             user: account.username,
-            userId: account.id
+            userId: account.id,
+            wasTrashedLocally: wasTrashedLocally
         )
     }
 }

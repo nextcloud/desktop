@@ -29,7 +29,8 @@ public extension SendableItemMetadata {
             size: 0,
             urlBase: account.serverUrl,
             user: account.username,
-            userId: account.id
+            userId: account.id,
+            wasTrashedLocally: false
         )
     }
 }

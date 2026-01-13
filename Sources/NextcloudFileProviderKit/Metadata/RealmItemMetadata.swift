@@ -103,6 +103,7 @@ class RealmItemMetadata: Object, ItemMetadata {
     @Persisted var user = "" // The user who owns the file (Nextcloud username)
     @Persisted var userId = "" // The user who owns the file (backend user id)
     // (relevant for alt. backends like LDAP)
+    @Persisted var wasTrashedLocally: Bool = false
 
     override func isEqual(_ object: Any?) -> Bool {
         if let object = object as? RealmItemMetadata {

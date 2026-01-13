@@ -15,7 +15,7 @@ extension NKFile {
         return fileUrl == urlString
     }
 
-    func toItemMetadata(uploaded: Bool = true) -> SendableItemMetadata {
+    func toItemMetadata(uploaded: Bool = true, wasTrashedLocally: Bool = false) -> SendableItemMetadata {
         let creationDate = creationDate ?? date
         let uploadDate = uploadDate ?? date
 
@@ -88,7 +88,8 @@ extension NKFile {
             uploadDate: uploadDate as Date,
             urlBase: urlBase,
             user: user,
-            userId: userId
+            userId: userId,
+            wasTrashedLocally: wasTrashedLocally
         )
     }
 }

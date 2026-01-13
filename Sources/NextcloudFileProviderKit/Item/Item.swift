@@ -267,7 +267,8 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             uploaded: true,
             urlBase: "", // Placeholder as not set in original code
             user: "", // Placeholder as not set in original code
-            userId: "" // Placeholder as not set in original code
+            userId: "", // Placeholder as not set in original code
+            wasTrashedLocally: false
         )
         return Item(
             metadata: metadata,
@@ -310,7 +311,8 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             uploaded: true,
             urlBase: "", // Placeholder as not set in original code
             user: "", // Placeholder as not set in original code
-            userId: "" // Placeholder as not set in original code
+            userId: "", // Placeholder as not set in original code
+            wasTrashedLocally: false
         )
         return Item(
             metadata: metadata,
