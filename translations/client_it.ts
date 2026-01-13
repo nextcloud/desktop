@@ -1069,7 +1069,7 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="44"/>
         <source>Could not access the selected certificate file.</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile accedere al file del certificato selezionato.</translation>
     </message>
 </context>
 <context>
@@ -1972,7 +1972,7 @@ Questo può essere un problema delle le tue librerie OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="259"/>
         <source>The server is temporarily unavailable because it is in maintenance mode. Please try again once maintenance has finished.</source>
-        <translation type="unfinished"/>
+        <translation>Il server è temporaneamente non disponibile perché è in modalità manutenzione. Riprova al termine della manutenzione.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="262"/>
@@ -1983,7 +1983,7 @@ Questo può essere un problema delle le tue librerie OpenSSL.</translation>
         <location filename="../src/gui/creds/flow2auth.cpp" line="263"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="271"/>
         <source>An unexpected error occurred when trying to access the server. Please try to access it again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Si è verificato un errore imprevisto durante il tentativo di accesso al server. Riprova ad accedere più tardi o contatta l&apos;amministratore del server se il problema persiste.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="265"/>
@@ -1998,12 +1998,12 @@ Questo può essere un problema delle le tue librerie OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="276"/>
         <source>We couldn&apos;t parse the server response. Please try connecting again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Non siamo riusciti ad analizzare la risposta del server. Riprova a connetterti più tardi o contatta l&apos;amministratore del server se il problema persiste.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="280"/>
         <source>The server did not reply with the expected data. Please try connecting again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Il server non ha risposto con i dati previsti. Riprova a connetterti più tardi o contatta l&apos;amministratore del server se il problema persiste.</translation>
     </message>
 </context>
 <context>
@@ -3024,12 +3024,12 @@ Il downgrade delle versioni non è possibile immediatamente: passare da stabile 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="715"/>
         <source>Failed to Access File</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile accedere al file</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="716"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile accedere alla posizione selezionata. Riprova o scegli una posizione diversa.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="673"/>
@@ -6266,17 +6266,17 @@ Il server ha risposto con errore: %2</translation>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="198"/>
         <source>Could not create debug archive in temporary location!</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile creare l&apos;archivio di debug nella posizione temporanea!</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="212"/>
         <source>Could not remove existing file at destination!</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile rimuovere il file esistente nella destinazione!</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="226"/>
         <source>Could not move debug archive to selected location!</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile spostare l&apos;archivio di debug nella posizione selezionata!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="788"/>
@@ -6416,7 +6416,7 @@ Il server ha risposto con errore: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="550"/>
         <source>The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.</source>
-        <translation type="unfinished"/>
+        <translation>Al momento il server è occupato. Riprova a connetterti tra qualche minuto o contatta l&apos;amministratore del server in caso di urgenza.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="553"/>
