@@ -180,9 +180,11 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     localPathRect.setTop(remotePathRect.bottom() + margin);
     localPathRect.setBottom(localPathRect.top() + subFm.height());
 
-    iconRect.setBottom(localPathRect.bottom());
-    iconRect.setWidth(iconRect.height());
-
+    constexpr int statusIconSize = 24;
+    constexpr int statusIconTopOffset = 4;
+    iconRect.setSize(QSize(statusIconSize, statusIconSize));
+    iconRect.moveTop(iconRect.top() + statusIconTopOffset);
+    
     const auto nextToIcon = iconRect.right() + aliasMargin;
     aliasRect.setLeft(nextToIcon);
     localPathRect.setLeft(nextToIcon);
