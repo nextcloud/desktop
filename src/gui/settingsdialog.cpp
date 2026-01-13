@@ -80,30 +80,24 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     _ui->setupUi(this);
     _ui->mainLayout->setContentsMargins(12, 12, 12, 12);
-    _ui->mainLayout->setSpacing(12);
+    _ui->mainLayout->setSpacing(0);
     _toolBar = new QToolBar;
     _toolBar->setIconSize(QSize(32, 32));
     _toolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     _toolBar->setOrientation(Qt::Vertical);
     _toolBar->setMovable(false);
     _toolBar->setMinimumWidth(220);
-    auto *sidebarContainer = new QWidget(this);
-    sidebarContainer->setObjectName(QLatin1String("settings_sidebar"));
-    auto *sidebarLayout = new QVBoxLayout(sidebarContainer);
-    sidebarLayout->setContentsMargins(12, 12, 12, 12);
-    sidebarLayout->setSpacing(0);
-    sidebarLayout->addWidget(_toolBar);
-    _ui->mainLayout->insertWidget(0, sidebarContainer);
-    _ui->mainLayout->setStretch(0, 0);
-    _ui->mainLayout->setStretch(1, 1);
+    auto *shellContainer = new QWidget(this);
+    shellContainer->setObjectName(QLatin1String("settings_shell"));
+    auto *shellLayout = new QHBoxLayout(shellContainer);
+    shellLayout->setContentsMargins(12, 12, 12, 12);
+    shellLayout->setSpacing(12);
+    shellLayout->addWidget(_toolBar);
+    shellLayout->addWidget(_ui->stack);
+    shellLayout->setStretch(0, 0);
+    shellLayout->setStretch(1, 1);
     _ui->mainLayout->removeWidget(_ui->stack);
-    auto *contentContainer = new QWidget(this);
-    contentContainer->setObjectName(QLatin1String("settings_content"));
-    auto *contentLayout = new QVBoxLayout(contentContainer);
-    contentLayout->setContentsMargins(16, 16, 16, 16);
-    contentLayout->setSpacing(0);
-    contentLayout->addWidget(_ui->stack);
-    _ui->mainLayout->insertWidget(1, contentContainer);
+    _ui->mainLayout->insertWidget(0, shellContainer);
 
     // People perceive this as a Window, so also make Ctrl+W work
     auto *closeWindowAction = new QAction(this);
@@ -132,7 +126,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     auto *accountSpacer = new QWidget(this);
     accountSpacer->setFixedHeight(8);
     _toolBar->addWidget(accountSpacer);
-    _toolBar->addSeparator();
     auto *generalSettings = new GeneralSettings;
     _ui->stack->addWidget(generalSettings);
     _ui->stack->setStyleSheet(QStringLiteral("QStackedWidget { background: transparent; }"));
@@ -173,7 +166,15 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     cfg.restoreGeometry(this);
     setStyleSheet(QStringLiteral(
         "#Settings { background: #f2f2f2; }"
-        "#settings_sidebar, #settings_content { background: #e7e7e7; border-radius: 12px; }"));
+        "#settings_shell { background: #e7e7e7; border-radius: 12px; }"
+        "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
+        "#accountStatusPanel, #accountStoragePanel, #accountTabsPanel {"
+        " background: #f2f2f2; border-radius: 10px; border: none; }"
+        "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox {"
+        " margin-top: 8px; padding: 12px; }"
+        "#generalGroupBox::title, #advancedGroupBox::title, #aboutAndUpdatesGroupBox::title {"
+        " subcontrol-origin: margin; left: 12px; top: 6px; padding: 0 4px; }"
+        "#accountStatusPanel, #accountStoragePanel, #accountTabsPanel { padding: 12px; }"));
 }
 
 SettingsDialog::~SettingsDialog()
