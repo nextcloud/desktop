@@ -140,43 +140,57 @@ void OCUpdater::backgroundCheckForUpdate()
 
 QString OCUpdater::statusString(UpdateStatusStringFormat format) const
 {
+    ConfigFile configFile;
     QString updateVersion = _updateInfo.versionString();
 
+    QString status;
     switch (downloadState()) {
     case Downloading:
-        return tr("Downloading %1 …").arg(updateVersion);
+        status = tr("Downloading %1 …").arg(updateVersion);
+        break;
     case DownloadComplete:
-        return tr("%1 available. Restart application to start the update.").arg(updateVersion);
+        status = tr("%1 available. Restart application to start the update.").arg(updateVersion);
+        break;
     case DownloadFailed: {
         if (format == UpdateStatusStringFormat::Html) {
-            return tr("Could not download update. Please open <a href='%1'>%1</a> to download the update manually.").arg(_updateInfo.web());
+            status = tr("Could not download update. Please open <a href='%1'>%1</a> to download the update manually.").arg(_updateInfo.web());
+            break;
         }
-        return tr("Could not download update. Please open %1 to download the update manually.").arg(_updateInfo.web());
+        status = tr("Could not download update. Please open %1 to download the update manually.").arg(_updateInfo.web());
+        break;
     }
     case DownloadTimedOut:
-        return tr("Could not check for new updates.");
+        status = tr("Could not check for new updates.");
+        break;
     case UpdateOnlyAvailableThroughSystem: {
         if (format == UpdateStatusStringFormat::Html) {
-            return tr("New %1 is available. Please open <a href='%2'>%2</a> to download the update.").arg(updateVersion, _updateInfo.web());
+            status = tr("New %1 is available. Please open <a href='%2'>%2</a> to download the update.").arg(updateVersion, _updateInfo.web());
+            break;
         }
-        return tr("New %1 is available. Please open %2 to download the update.").arg(updateVersion, _updateInfo.web());
+        status = tr("New %1 is available. Please open %2 to download the update.").arg(updateVersion, _updateInfo.web());
+        break;
     }
     case CheckingServer:
-        return tr("Checking update server …");
+        status = tr("Checking update server …");
+        break;
     case Unknown:
-        return tr("Update status is unknown: Did not check for new updates.");
+        status = tr("Update status is unknown: Did not check for new updates.");
+        break;
     case UpToDate:
     // fall through
     default: {
-        ConfigFile configFile;
-        if (configFile.serverHasValidSubscription()) {
-            return tr("You are using the %1 update channel. Your installation is the latest version.")
-                .arg(configFile.currentUpdateChannel());
-        }
+        status = tr("No updates available. Your installation is the latest version.");
+        break;
+    }
+    }
 
-        return tr("No updates available. Your installation is the latest version.");
+    if (configFile.serverHasValidSubscription()) {
+        const auto lineBreak = format == UpdateStatusStringFormat::Html ? QStringLiteral("<br/>") : QStringLiteral("\n");
+        status += lineBreak + tr("The update channel cannot be changed because of an existing connection to an enterprise server. Current channel: %1")
+                                 .arg(configFile.currentUpdateChannel());
     }
-    }
+
+    return status;
 }
 
 int OCUpdater::downloadState() const
