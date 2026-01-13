@@ -134,7 +134,10 @@ bool createDebugArchive(const QString &filename)
     const auto entries = createDebugArchiveFileList();
 
     KZip zip(filename);
-    zip.open(QIODevice::WriteOnly);
+    const auto zipStatus = zip.open(QIODevice::WriteOnly);
+    if (!zipStatus) {
+        qWarning() << "error when opening debug archive file" << filename;
+    }
 
     for (const auto &entry : entries) {
         zip.addLocalFile(entry.localFilename, entry.zipFilename);
