@@ -9,7 +9,7 @@ jobs:
   build:
     name: Linux Appimage Package
     runs-on: ubuntu-latest
-    container: ghcr.io/nextcloud/continuous-integration-client-appimage-qt6:client-appimage-el8-6.8.3-1
+    container: ghcr.io/nextcloud/continuous-integration-client-appimage-qt6:client-appimage-el8-6.9.3-2
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
@@ -20,7 +20,7 @@ jobs:
         env:
           PR_ID: ${{ github.event.number }}
         run: |
-            BUILDNR=${GITHUB_RUN_ID} VERSION_SUFFIX=${GITHUB_HEAD_REF} BUILD_UPDATER=ON DESKTOP_CLIENT_ROOT=`pwd` EXECUTABLE_NAME=nextcloud QT_BASE_DIR=/opt/qt OPENSSL_ROOT_DIR=/usr/local/lib64  /bin/bash -c "./admin/linux/build-appimage.sh"
+            BUILDNR=${GITHUB_RUN_ID} VERSION_SUFFIX=${GITHUB_HEAD_REF} BUILD_UPDATER=ON DESKTOP_CLIENT_ROOT=`pwd` EXECUTABLE_NAME=nextcloud QT_BASE_DIR=/root/linux-gcc-x86_64 /bin/bash -c "./admin/linux/build-appimage.sh"
 
       - name: Upload AppImage artifact
         id: upload-appimage

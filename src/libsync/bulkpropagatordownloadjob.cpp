@@ -30,7 +30,7 @@ BulkPropagatorDownloadJob::BulkPropagatorDownloadJob(OwncloudPropagator *propaga
 
 namespace
 {
-static QString makeRecallFileName(const QString &fn)
+static QString makeBulkDownloadRecallFileName(const QString &fn)
 {
     auto recallFileName(fn);
     // Add _recall-XXXX  before the extension.
@@ -46,9 +46,9 @@ static QString makeRecallFileName(const QString &fn)
     return recallFileName;
 }
 
-void handleRecallFile(const QString &filePath, const QString &folderPath, SyncJournalDb &journal)
+void handleBulkDownloadRecallFile(const QString &filePath, const QString &folderPath, SyncJournalDb &journal)
 {
-    qCDebug(lcBulkPropagatorDownloadJob) << "handleRecallFile: " << filePath;
+    qCDebug(lcBulkPropagatorDownloadJob) << "handleBulkDownloadRecallFile: " << filePath;
 
     FileSystem::setFileHidden(filePath, true);
 
@@ -81,7 +81,7 @@ void handleRecallFile(const QString &filePath, const QString &folderPath, SyncJo
 
         qCInfo(lcBulkPropagatorDownloadJob) << "Recalling" << localRecalledFile << "Checksum:" << record._checksumHeader;
 
-        const auto &targetPath = makeRecallFileName(recalledFile);
+        const auto &targetPath = makeBulkDownloadRecallFileName(recalledFile);
 
         qCDebug(lcBulkPropagatorDownloadJob) << "Copy recall file: " << recalledFile << " -> " << targetPath;
         // Remove the target first, QFile::copy will not overwrite it.
@@ -197,7 +197,7 @@ bool BulkPropagatorDownloadJob::updateMetadata(const SyncFileItemPtr &item)
     // handle the special recall file
     if (!item->_remotePerm.hasPermission(RemotePermissions::IsShared)
         && (item->_file == QLatin1String(".sys.admin#recall#") || item->_file.endsWith(QLatin1String("/.sys.admin#recall#")))) {
-        handleRecallFile(fullFileName, propagator()->localPath(), *propagator()->_journal);
+        handleBulkDownloadRecallFile(fullFileName, propagator()->localPath(), *propagator()->_journal);
     }
 
     const auto isLockOwnedByCurrentUser = item->_lockOwnerId == propagator()->account()->davUser();

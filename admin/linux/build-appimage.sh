@@ -24,8 +24,8 @@ if [ "$BUILD_UPDATER" != "OFF" ]; then
 fi
 
 # Ensure we use gcc-11 on RHEL-like systems
-if [ -e "/opt/rh/gcc-toolset-11/enable" ]; then
-    source /opt/rh/gcc-toolset-11/enable
+if [ -e "/opt/rh/gcc-toolset-14/enable" ]; then
+    source /opt/rh/gcc-toolset-14/enable
 fi
 
 mkdir /app
