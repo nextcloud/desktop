@@ -40,7 +40,7 @@ const QString TOOLBAR_CSS()
     return QStringLiteral("QToolBar { background: transparent; margin: 0; padding: 0; border: none; spacing: 0; } "
                           "QToolBar QToolButton { background: transparent; border: none; margin: 0; padding: 8px 12px; font-size: 14px; } "
                           "QToolBar QToolBarExtension { padding:0; } "
-                          "QToolBar QToolButton:checked { background: %3; color: %4; border-radius: 8px; margin: 4px 8px; }");
+                          "QToolBar QToolButton:checked { background: #0a84ff; color: #ffffff; border-radius: 8px; margin: 0; }");
 }
 
 const float buttonSizeRatio = 1.618f; // golden ratio
@@ -176,12 +176,10 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
         "#settings_navigation { background: #e7e7e7; border-radius: 12px; }"
         "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
         "#accountStatusPanel, #accountStoragePanel, #accountTabsPanel {"
-        " background: #f2f2f2; border-radius: 10px; border: none; }"
-        "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox {"
-        " margin-top: 8px; padding: 12px; }"
+        " background: #e7e7e7; border-radius: 10px; border: none; margin: 6px; padding: 6px; }"
         "#generalGroupBox::title, #advancedGroupBox::title, #aboutAndUpdatesGroupBox::title {"
         " subcontrol-origin: margin; left: 12px; top: 6px; padding: 0 4px; }"
-        "#accountStatusPanel, #accountStoragePanel, #accountTabsPanel { padding: 12px; }"));
+        ));
 }
 
 SettingsDialog::~SettingsDialog()
@@ -360,11 +358,7 @@ void SettingsDialog::accountRemoved(AccountState *s)
 
 void SettingsDialog::customizeStyle()
 {
-    QString highlightColor(palette().highlight().color().name());
-    QString highlightTextColor(palette().highlightedText().color().name());
-    QString dark(palette().dark().color().name());
-    QString background(palette().base().color().name());
-    _toolBar->setStyleSheet(TOOLBAR_CSS().arg(background, dark, highlightColor, highlightTextColor));
+    _toolBar->setStyleSheet(TOOLBAR_CSS());
 
     const auto &allActions = _actionGroup->actions();
     for (const auto a : allActions) {
