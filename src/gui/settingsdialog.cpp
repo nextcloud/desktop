@@ -37,10 +37,10 @@
 namespace {
 const QString TOOLBAR_CSS()
 {
-    return QStringLiteral("QToolBar { background: %1; margin: 0; padding: 0; border: none; border-bottom: 1px solid %2; spacing: 0; } "
-                          "QToolBar QToolButton { background: %1; border: none; border-bottom: 1px solid %2; margin: 0; padding: 5px; } "
+    return QStringLiteral("QToolBar { background: %1; margin: 0; padding: 0; border: none; spacing: 0; } "
+                          "QToolBar QAbstractButton { background: %1; border: none; margin: 2px 8px; padding: 6px 10px; font-size: 14px; border-radius: 10px; color: #111111; } "
                           "QToolBar QToolBarExtension { padding:0; } "
-                          "QToolBar QToolButton:checked { background: %3; color: %4; }");
+                          "QToolBar QAbstractButton:checked { background: %3; color: %4; }");
 }
 
 const float buttonSizeRatio = 1.618f; // golden ratio
@@ -64,7 +64,9 @@ QString shortDisplayNameForSettings(OCC::Account *account, int width)
         host = fm.elidedText(host, Qt::ElideMiddle, width);
         user = fm.elidedText(user, Qt::ElideRight, width);
     }
-    return QStringLiteral("%1\n%2").arg(user, host);
+    return QStringLiteral("<span style=\"font-weight:600; font-size:13px;\">%1</span><br/>"
+                          "<span style=\"font-size:11px;\">%2</span>")
+        .arg(user.toHtmlEscaped(), host.toHtmlEscaped());
 }
 }
 
@@ -79,10 +81,39 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     ConfigFile cfg;
 
     _ui->setupUi(this);
+    _ui->mainLayout->setContentsMargins(12, 12, 12, 12);
+    _ui->mainLayout->setSpacing(12);
     _toolBar = new QToolBar;
     _toolBar->setIconSize(QSize(32, 32));
-    _toolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    layout()->setMenuBar(_toolBar);
+    _toolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    _toolBar->setOrientation(Qt::Vertical);
+    _toolBar->setMovable(false);
+    _toolBar->setMinimumWidth(260);
+    _toolBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    auto *sidebarContainer = new QWidget(this);
+    sidebarContainer->setObjectName(QLatin1String("settings_sidebar"));
+    auto *sidebarLayout = new QVBoxLayout(sidebarContainer);
+    sidebarLayout->setContentsMargins(12, 12, 12, 12);
+    sidebarLayout->setSpacing(0);
+    auto *sidebarScroll = new QScrollArea(this);
+    sidebarScroll->setObjectName(QLatin1String("settings_sidebar_scroll"));
+    sidebarScroll->setFrameShape(QFrame::NoFrame);
+    sidebarScroll->setWidgetResizable(true);
+    sidebarScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    sidebarScroll->viewport()->setAutoFillBackground(false);
+    sidebarScroll->setWidget(_toolBar);
+    sidebarLayout->addWidget(sidebarScroll);
+    _ui->mainLayout->insertWidget(0, sidebarContainer);
+    _ui->mainLayout->setStretch(0, 0);
+    _ui->mainLayout->setStretch(1, 1);
+    _ui->mainLayout->removeWidget(_ui->stack);
+    auto *contentContainer = new QWidget(this);
+    contentContainer->setObjectName(QLatin1String("settings_content"));
+    auto *contentLayout = new QVBoxLayout(contentContainer);
+    contentLayout->setContentsMargins(12, 12, 12, 12);
+    contentLayout->setSpacing(0);
+    contentLayout->addWidget(_ui->stack);
+    _ui->mainLayout->insertWidget(1, contentContainer);
 
     // People perceive this as a Window, so also make Ctrl+W work
     auto *closeWindowAction = new QAction(this);
@@ -105,17 +136,15 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _actionGroup->setExclusive(true);
     connect(_actionGroup, &QActionGroup::triggered, this, &SettingsDialog::slotSwitchPage);
 
-    // Adds space between users + activities and general + network actions
-    auto *spacer = new QWidget();
-    spacer->setMinimumWidth(10);
-    spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
-    _toolBar->addWidget(spacer);
-
     QAction *generalAction = createColorAwareAction(QLatin1String(":/client/theme/settings.svg"), tr("General"));
     _actionGroup->addAction(generalAction);
     _toolBar->addAction(generalAction);
+    auto *accountSpacer = new QWidget(this);
+    accountSpacer->setFixedHeight(24);
+    _toolBar->addWidget(accountSpacer);
     auto *generalSettings = new GeneralSettings;
     _ui->stack->addWidget(generalSettings);
+    _ui->stack->setStyleSheet(QStringLiteral("QStackedWidget { background: transparent; }"));
 
     // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
     connect(this, &SettingsDialog::styleChanged, generalSettings, &GeneralSettings::slotStyleChanged);
@@ -151,6 +180,21 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint & Qt::Window);
     cfg.restoreGeometry(this);
+    setStyleSheet(QStringLiteral(
+        "#Settings { background: #f2f2f2; }"
+        "#settings_sidebar { background: #e1e1e1; border-radius: 12px; }"
+        "#settings_content { background: transparent; }"
+        "#settings_sidebar_scroll { background: transparent; }"
+        "#settings_sidebar_scroll > QWidget { background: transparent; }"
+        "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
+        "#accountStatusPanel, #accountStoragePanel, #accountTabsPanel {"
+        " background: #e1e1e1; border-radius: 10px; border: none; }"
+        "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox {"
+        " margin-top: 22px; padding: 12px; }"
+        "#generalGroupBox::title, #advancedGroupBox::title, #aboutAndUpdatesGroupBox::title {"
+        " subcontrol-origin: margin; subcontrol-position: top left; left: 12px; top: -12px;"
+        " padding: 0 4px; font-weight: 600; }"
+        "#accountStatusPanel, #accountStoragePanel, #accountTabsPanel { padding: 12px; }"));
 }
 
 SettingsDialog::~SettingsDialog()
@@ -234,7 +278,7 @@ void SettingsDialog::accountAdded(AccountState *s)
         accountAction->setIconText(shortDisplayNameForSettings(s->account().data(), static_cast<int>(height * buttonSizeRatio)));
     }
 
-    _toolBar->insertAction(_toolBar->actions().at(0), accountAction);
+    _toolBar->addAction(accountAction);
     auto accountSettings = new AccountSettings(s, this);
     QString objectName = QLatin1String("accountSettings_");
     objectName += s->account()->displayName();
@@ -330,16 +374,16 @@ void SettingsDialog::accountRemoved(AccountState *s)
 void SettingsDialog::customizeStyle()
 {
     QString highlightColor(palette().highlight().color().name());
-    QString highlightTextColor(palette().highlightedText().color().name());
+    QString highlightTextColor(QStringLiteral("#ffffff"));
     QString dark(palette().dark().color().name());
-    QString background(palette().base().color().name());
+    QString background(QStringLiteral("#e1e1e1"));
     _toolBar->setStyleSheet(TOOLBAR_CSS().arg(background, dark, highlightColor, highlightTextColor));
 
     const auto &allActions = _actionGroup->actions();
     for (const auto a : allActions) {
         QIcon icon = Theme::createColorAwareIcon(a->property("iconPath").toString(), palette());
         a->setIcon(icon);
-        auto *btn = qobject_cast<QToolButton *>(_toolBar->widgetForAction(a));
+        auto *btn = qobject_cast<QAbstractButton *>(_toolBar->widgetForAction(a));
         if (btn)
             btn->setIcon(icon);
     }
@@ -364,14 +408,31 @@ public:
             return nullptr;
         }
 
-        auto *btn = new QToolButton(parent);
+        auto *btn = new QPushButton(parent);
         QString objectName = QLatin1String("settingsdialog_toolbutton_");
         objectName += text();
         btn->setObjectName(objectName);
 
-        btn->setDefaultAction(this);
-        btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-        btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+        btn->setFlat(true);
+        btn->setCheckable(true);
+        btn->setChecked(isChecked());
+        btn->setIcon(icon());
+        auto updateText = [this, btn](bool checked) {
+            const auto color = checked ? QStringLiteral("#ffffff") : QStringLiteral("#111111");
+            btn->setText(QStringLiteral("<span style=\"color:%1;\">%2</span>").arg(color, text()));
+        };
+        updateText(isChecked());
+        btn->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+        btn->setStyleSheet(QStringLiteral("text-align: left;"));
+
+        connect(btn, &QPushButton::clicked, this, [this](bool checked) {
+            if (isCheckable()) {
+                setChecked(checked);
+            }
+            trigger();
+        });
+        connect(this, &QAction::toggled, btn, &QPushButton::setChecked);
+        connect(this, &QAction::toggled, btn, updateText);
         return btn;
     }
 };

@@ -69,7 +69,7 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="advancedGroupBox">
      <property name="title">
       <string>Advanced</string>
      </property>
