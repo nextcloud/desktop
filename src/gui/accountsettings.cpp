@@ -179,6 +179,12 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     const auto delegate = new FolderStatusDelegate;
     delegate->setParent(this);
 
+    #if defined(Q_OS_MACOS)
+    _ui->tabWidget->setStyleSheet(QStringLiteral(
+        "QTabWidget { background: palette(window); }"
+        "QTabWidget::pane { background: palette(window); }"));
+    #endif
+    
     // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
     connect(this, &AccountSettings::styleChanged, delegate, &FolderStatusDelegate::slotStyleChanged);
 

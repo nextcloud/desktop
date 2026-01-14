@@ -315,12 +315,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Allow deletion of items in Trash</source>
-        <translation type="unfinished"/>
+        <translation>Разрешить удаление элементов в корзине</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
         <source>Reset virtual files environment</source>
-        <translation type="unfinished"/>
+        <translation>Сбросить виртуальную файловую среду</translation>
     </message>
 </context>
 <context>
@@ -465,7 +465,8 @@
         <location filename="../src/gui/accountmanager.cpp" line="245"/>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation type="unfinished"/>
+        <translation>Обнаружена учетная запись из устаревшего настольного клиента. 
+Нужно ли импортировать учетную запись?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="247"/>
@@ -1970,7 +1971,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="259"/>
         <source>The server is temporarily unavailable because it is in maintenance mode. Please try again once maintenance has finished.</source>
-        <translation type="unfinished"/>
+        <translation>Сервер временно недоступен, так как находится в режиме обслуживания. Пожалуйста, попробуйте снова после завершения обслуживания.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="262"/>
@@ -1981,7 +1982,7 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/creds/flow2auth.cpp" line="263"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="271"/>
         <source>An unexpected error occurred when trying to access the server. Please try to access it again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Произошла непредвиденная ошибка при попытке доступа к серверу. Пожалуйста, попробуйте подключиться позже или свяжитесь с администратором сервера, если проблема сохранится.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="265"/>
@@ -1991,17 +1992,17 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="268"/>
         <source>The reply from the server did not contain all expected fields: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Ответ от сервера не содержал всех ожидаемых полей: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="276"/>
         <source>We couldn&apos;t parse the server response. Please try connecting again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось разобрать ответ сервера. Пожалуйста, попробуйте подключиться снова позже или свяжитесь с администратором сервера, если проблема сохранится.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="280"/>
         <source>The server did not reply with the expected data. Please try connecting again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Сервер не ответил с ожидаемыми данными. Пожалуйста, попробуйте подключиться снова позже или свяжитесь с администратором сервера, если проблема сохранится.</translation>
     </message>
 </context>
 <context>

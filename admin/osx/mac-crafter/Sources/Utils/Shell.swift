@@ -36,6 +36,9 @@ func run(
     task.launchPath = launchPath
     task.arguments = args
 
+    var stdoutPipe: Pipe?
+    var stderrPipe: Pipe?
+
     if let env,
        let combinedEnv = task.environment?.merging(env, uniquingKeysWith: { (_, new) in new })
     {
@@ -45,10 +48,66 @@ func run(
     if quiet {
         task.standardOutput = nil
         task.standardError = nil
+    } else {
+        stdoutPipe = Pipe()
+        stderrPipe = Pipe()
+        task.standardOutput = stdoutPipe
+        task.standardError = stderrPipe
+
+        // Stream child output into our logging facility.
+        let forward: (Pipe?, @Sendable @escaping (String) -> Void) -> Void = { pipe, logger in
+            pipe?.fileHandleForReading.readabilityHandler = { handle in
+                let data = handle.availableData
+
+                guard !data.isEmpty else {
+                    handle.readabilityHandler = nil
+                    return
+                }
+
+                guard let text = String(data: data, encoding: .utf8), !text.isEmpty else {
+                    return
+                }
+
+                text.split(separator: "\n", omittingEmptySubsequences: true).forEach { line in
+                    logger(String(line))
+                }
+            }
+        }
+
+        forward(stdoutPipe) {
+            Log.info($0)
+        }
+
+        forward(stderrPipe) {
+            Log.error($0)
+        }
     }
 
     task.launch()
     task.waitUntilExit()
+
+    // Ensure we stop observing and collect any remaining buffered output.
+    func flush(_ pipe: Pipe?, to logger: (String) -> Void) {
+        pipe?.fileHandleForReading.readabilityHandler = nil
+
+        if let data = try? pipe?.fileHandleForReading.readToEnd(),
+           let text = String(data: data, encoding: .utf8),
+           !text.isEmpty {
+            text.split(separator: "\n", omittingEmptySubsequences: true).forEach { line in
+                logger(String(line))
+            }
+        }
+    }
+
+    if quiet == false {
+        flush(stdoutPipe) {
+            Log.info($0)
+        }
+
+        flush(stderrPipe) {
+            Log.error($0)
+        }
+    }
 
     return task.terminationStatus
 }
