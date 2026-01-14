@@ -79,7 +79,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     ConfigFile cfg;
 
     _ui->setupUi(this);
-    _ui->mainLayout->setContentsMargins(12, 12, 12, 12);
+    _ui->mainLayout->setContentsMargins(8, 8, 8, 8);
     _ui->mainLayout->setSpacing(0);
     _toolBar = new QToolBar;
     _toolBar->setIconSize(QSize(32, 32));
@@ -176,7 +176,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
         "#settings_navigation { background: #e7e7e7; border-radius: 12px; }"
         "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
         "#accountStatusPanel, #accountStoragePanel, #accountTabsPanel {"
-        " background: #e7e7e7; border-radius: 10px; border: none; margin: 6px; padding: 6px; }"
+        " background: #e7e7e7; border-radius: 10px; border: none; margin: 0px 3px 3px 6px;; padding: 2px; }"
         "#generalGroupBox::title, #advancedGroupBox::title, #aboutAndUpdatesGroupBox::title {"
         " subcontrol-origin: margin; left: 12px; top: 6px; padding: 0 4px; }"
         ));
