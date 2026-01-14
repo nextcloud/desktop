@@ -1352,7 +1352,8 @@ bool ConfigFile::isDowngrade() const
 bool ConfigFile::shouldTryUnbrandedToBrandedMigration() const
 {
     return migrationPhase() == ConfigFile::MigrationPhase::SetupFolders
-        && Theme::instance()->appName() != unbrandedAppName;
+        && Theme::instance()->appName() != unbrandedAppName
+        && !discoveredLegacyConfigPath().isEmpty();
 }
 
 bool ConfigFile::isUnbrandedToBrandedMigrationInProgress() const
