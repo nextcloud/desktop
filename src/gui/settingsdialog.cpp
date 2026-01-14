@@ -177,8 +177,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
         "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
         "#accountStatusPanel, #accountStoragePanel, #accountTabsPanel {"
         " background: #e7e7e7; border-radius: 10px; border: none; margin: 0px 3px 3px 6px;; padding: 2px; }"
-        "#generalGroupBox::title, #advancedGroupBox::title, #aboutAndUpdatesGroupBox::title {"
-        " subcontrol-origin: margin; left: 12px; top: 6px; padding: 0 4px; }"
         ));
 }
 
