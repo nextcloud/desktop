@@ -71,8 +71,21 @@ Button {
             id: userLineInstantiator
             model: UserModel
             delegate: MenuItem {
+                id: userLineMenuItem
                 implicitHeight: instantiatedUserLine.height
-                UserLine {
+                padding: 0
+                leftPadding: 0
+                rightPadding: 0
+                topPadding: 0
+                bottomPadding: 0
+                indicator: null
+
+                background: Rectangle {
+                    color: (userLineMenuItem.highlighted || userLineMenuItem.down) ? Style.ncBlue : "transparent"
+                    radius: 0
+                }
+
+                contentItem: UserLine {
                     id: instantiatedUserLine
                     width: Math.min(accountMenu.widestMenuItemWidth, accountMenu.maximumWidthAllowed)
 

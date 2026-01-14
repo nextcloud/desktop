@@ -134,7 +134,7 @@ ApplicationWindow {
             radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
             border.width: Style.trayWindowBorderWidth
             border.color: palette.dark
-            color: Style.colorWithoutTransparency(palette.base)
+            color: Style.colorWithoutTransparency(palette.dark)
         }
 
         property int userIndex: 0
@@ -180,7 +180,7 @@ ApplicationWindow {
             radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
             border.width: Style.trayWindowBorderWidth
             border.color: palette.dark
-            color: Style.colorWithoutTransparency(palette.base)
+            color: Style.colorWithoutTransparency(palette.dark)
         }
 
         property var folderAccountState: ({})
@@ -239,7 +239,7 @@ ApplicationWindow {
         clip: true
 
         radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
-        color: Style.colorWithoutTransparency(palette.base)
+        color: Style.colorWithoutTransparency(palette.dark)
 
         Accessible.role: Accessible.Grouping
         Accessible.name: qsTr("Main content")
