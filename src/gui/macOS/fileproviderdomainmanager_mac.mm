@@ -347,6 +347,13 @@ public:
             NSFileProviderDomain * const fileProviderDomain = [[NSFileProviderDomain alloc] initWithIdentifier:domainId.toNSString()
                                                                                                    displayName:domainDisplayName.toNSString()];
 
+            if (@available(macOS 13.0, *)) {
+                // supportsSyncingTrash is only available on macOS 13 and later.
+                // The trash is a server feature of which the availability can change any time.
+                // Its availability is checked on demand by the file provider extension itself.
+                fileProviderDomain.supportsSyncingTrash = YES;
+            }
+
             [NSFileProviderManager addDomain:fileProviderDomain completionHandler:^(NSError * const error) {
                 if(error) {
                     qCWarning(lcMacFileProviderDomainManager) << "Error adding file provider domain: "

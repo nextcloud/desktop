@@ -139,21 +139,15 @@ import OSLog
         }
 
         let progress = Progress()
+        
         Task {
             progress.totalUnitCount = 1
-            if let item = await Item.storedItem(
-                identifier: identifier,
-                account: ncAccount,
-                remoteInterface: ncKit,
-                dbManager: dbManager,
-                log: log
-            ) {
+
+            if let item = await Item.storedItem(identifier: identifier, account: ncAccount, remoteInterface: ncKit, dbManager: dbManager, log: log) {
                 progress.completedUnitCount = 1
                 completionHandler(item, nil)
             } else {
-                completionHandler(
-                    nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
-                )
+                completionHandler(nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier))
             }
         }
         return progress
