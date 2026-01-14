@@ -37,10 +37,10 @@
 namespace {
 const QString TOOLBAR_CSS()
 {
-    return QStringLiteral("QToolBar { background: %1; margin: 0; padding: 0; border: none; border-bottom: 1px solid %2; spacing: 0; } "
-                          "QToolBar QToolButton { background: %1; border: none; border-bottom: 1px solid %2; margin: 0; padding: 5px; } "
+    return QStringLiteral("QToolBar { background: transparent; margin: 0; padding: 0; border: none; spacing: 0; } "
+                          "QToolBar QToolButton { background: transparent; border: none; margin: 0; padding: 8px 12px; font-size: 14px; } "
                           "QToolBar QToolBarExtension { padding:0; } "
-                          "QToolBar QToolButton:checked { background: %3; color: %4; }");
+                          "QToolBar QToolButton:checked { background: %3; color: %4; border-radius: 8px; margin: 4px 8px; }");
 }
 
 const float buttonSizeRatio = 1.618f; // golden ratio
@@ -79,10 +79,31 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     ConfigFile cfg;
 
     _ui->setupUi(this);
+    _ui->mainLayout->setContentsMargins(12, 12, 12, 12);
+    _ui->mainLayout->setSpacing(0);
     _toolBar = new QToolBar;
     _toolBar->setIconSize(QSize(32, 32));
-    _toolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    layout()->setMenuBar(_toolBar);
+    _toolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    _toolBar->setOrientation(Qt::Vertical);
+    _toolBar->setMovable(false);
+    _toolBar->setMinimumWidth(220);
+    auto *shellContainer = new QWidget(this);
+    shellContainer->setObjectName(QLatin1String("settings_shell"));
+    auto *shellLayout = new QHBoxLayout(shellContainer);
+    shellLayout->setContentsMargins(12, 12, 12, 12);
+    shellLayout->setSpacing(12);
+    auto *navigationContainer = new QWidget(this);
+    navigationContainer->setObjectName(QLatin1String("settings_navigation"));
+    auto *navigationLayout = new QVBoxLayout(navigationContainer);
+    navigationLayout->setContentsMargins(0, 0, 0, 0);
+    navigationLayout->setSpacing(0);
+    navigationLayout->addWidget(_toolBar);
+    shellLayout->addWidget(navigationContainer);
+    shellLayout->addWidget(_ui->stack);
+    shellLayout->setStretch(0, 0);
+    shellLayout->setStretch(1, 1);
+    _ui->mainLayout->removeWidget(_ui->stack);
+    _ui->mainLayout->insertWidget(0, shellContainer);
 
     // People perceive this as a Window, so also make Ctrl+W work
     auto *closeWindowAction = new QAction(this);
@@ -105,17 +126,15 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _actionGroup->setExclusive(true);
     connect(_actionGroup, &QActionGroup::triggered, this, &SettingsDialog::slotSwitchPage);
 
-    // Adds space between users + activities and general + network actions
-    auto *spacer = new QWidget();
-    spacer->setMinimumWidth(10);
-    spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
-    _toolBar->addWidget(spacer);
-
     QAction *generalAction = createColorAwareAction(QLatin1String(":/client/theme/settings.svg"), tr("General"));
     _actionGroup->addAction(generalAction);
     _toolBar->addAction(generalAction);
+    auto *accountSpacer = new QWidget(this);
+    accountSpacer->setFixedHeight(8);
+    _toolBar->addWidget(accountSpacer);
     auto *generalSettings = new GeneralSettings;
     _ui->stack->addWidget(generalSettings);
+    _ui->stack->setStyleSheet(QStringLiteral("QStackedWidget { background: transparent; }"));
 
     // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
     connect(this, &SettingsDialog::styleChanged, generalSettings, &GeneralSettings::slotStyleChanged);
@@ -151,6 +170,18 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint & Qt::Window);
     cfg.restoreGeometry(this);
+    setStyleSheet(QStringLiteral(
+        "#Settings { background: #f2f2f2; }"
+        "#settings_shell { background: transparent; border-radius: 0; }"
+        "#settings_navigation { background: #e7e7e7; border-radius: 12px; }"
+        "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
+        "#accountStatusPanel, #accountStoragePanel, #accountTabsPanel {"
+        " background: #f2f2f2; border-radius: 10px; border: none; }"
+        "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox {"
+        " margin-top: 8px; padding: 12px; }"
+        "#generalGroupBox::title, #advancedGroupBox::title, #aboutAndUpdatesGroupBox::title {"
+        " subcontrol-origin: margin; left: 12px; top: 6px; padding: 0 4px; }"
+        "#accountStatusPanel, #accountStoragePanel, #accountTabsPanel { padding: 12px; }"));
 }
 
 SettingsDialog::~SettingsDialog()
@@ -234,7 +265,7 @@ void SettingsDialog::accountAdded(AccountState *s)
         accountAction->setIconText(shortDisplayNameForSettings(s->account().data(), static_cast<int>(height * buttonSizeRatio)));
     }
 
-    _toolBar->insertAction(_toolBar->actions().at(0), accountAction);
+    _toolBar->addAction(accountAction);
     auto accountSettings = new AccountSettings(s, this);
     QString objectName = QLatin1String("accountSettings_");
     objectName += s->account()->displayName();
@@ -370,8 +401,8 @@ public:
         btn->setObjectName(objectName);
 
         btn->setDefaultAction(this);
-        btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-        btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+        btn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+        btn->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
         return btn;
     }
 };
