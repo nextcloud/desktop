@@ -37,10 +37,10 @@
 namespace {
 const QString TOOLBAR_CSS()
 {
-    return QStringLiteral("QToolBar { background: %1; margin: 0; padding: 0; border: none; spacing: 0; } "
-                          "QToolBar QToolButton { background: %1; border: none; margin: 0; padding: 8px 12px; font-size: 14px; } "
+    return QStringLiteral("QToolBar { background: transparent; margin: 0; padding: 0; border: none; spacing: 0; } "
+                          "QToolBar QToolButton { background: transparent; border: none; margin: 0; padding: 8px 12px; font-size: 14px; } "
                           "QToolBar QToolBarExtension { padding:0; } "
-                          "QToolBar QToolButton:checked { background: %3; color: %4; }");
+                          "QToolBar QToolButton:checked { background: %3; color: %4; border-radius: 8px; margin: 4px 8px; }");
 }
 
 const float buttonSizeRatio = 1.618f; // golden ratio
@@ -92,7 +92,13 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     auto *shellLayout = new QHBoxLayout(shellContainer);
     shellLayout->setContentsMargins(12, 12, 12, 12);
     shellLayout->setSpacing(12);
-    shellLayout->addWidget(_toolBar);
+    auto *navigationContainer = new QWidget(this);
+    navigationContainer->setObjectName(QLatin1String("settings_navigation"));
+    auto *navigationLayout = new QVBoxLayout(navigationContainer);
+    navigationLayout->setContentsMargins(0, 0, 0, 0);
+    navigationLayout->setSpacing(0);
+    navigationLayout->addWidget(_toolBar);
+    shellLayout->addWidget(navigationContainer);
     shellLayout->addWidget(_ui->stack);
     shellLayout->setStretch(0, 0);
     shellLayout->setStretch(1, 1);
@@ -166,7 +172,8 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     cfg.restoreGeometry(this);
     setStyleSheet(QStringLiteral(
         "#Settings { background: #f2f2f2; }"
-        "#settings_shell { background: #e7e7e7; border-radius: 12px; }"
+        "#settings_shell { background: transparent; border-radius: 0; }"
+        "#settings_navigation { background: #e7e7e7; border-radius: 12px; }"
         "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
         "#accountStatusPanel, #accountStoragePanel, #accountTabsPanel {"
         " background: #f2f2f2; border-radius: 10px; border: none; }"
