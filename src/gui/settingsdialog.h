@@ -68,6 +68,7 @@ private slots:
 
 private:
     void customizeStyle();
+    void requestStyleUpdate();
 
     QAction *createColorAwareAction(const QString &iconName, const QString &fileName);
     QAction *createActionWithIcon(const QIcon &icon, const QString &text, const QString &iconPath = QString());
@@ -85,6 +86,8 @@ private:
     QToolBar *_toolBar;
 
     ownCloudGui *_gui;
+    bool _styleUpdatePending = false;
+    bool _updatingStyle = false;
 };
 }
 
