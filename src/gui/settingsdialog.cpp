@@ -170,6 +170,14 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint & Qt::Window);
     cfg.restoreGeometry(this);
+    setStyleSheet(QStringLiteral(
+        "#Settings { background: #f2f2f2; }"
+        "#settings_shell { background: transparent; border-radius: 0; }"
+        "#settings_navigation { background: #e7e7e7; border-radius: 12px; }"
+        "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
+        "#accountStatusPanel, #accountStoragePanel, #accountTabsPanel {"
+        " background: #e7e7e7; border-radius: 10px; border: none; margin: 0px 3px 3px 6px;; padding: 2px; }"
+        ));
 }
 
 SettingsDialog::~SettingsDialog()
@@ -349,17 +357,6 @@ void SettingsDialog::accountRemoved(AccountState *s)
 void SettingsDialog::customizeStyle()
 {
     _toolBar->setStyleSheet(TOOLBAR_CSS());
-
-    const auto windowColor = palette().window().color();
-    const auto panelColor = palette().alternateBase().color();
-    setStyleSheet(QStringLiteral(
-        "#Settings { background: %1; }"
-        "#settings_shell { background: transparent; border-radius: 0; }"
-        "#settings_navigation { background: %2; border-radius: 12px; }"
-        "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
-        "#accountStatusPanel, #accountStoragePanel, #accountTabsPanel {"
-        " background: %2; border-radius: 10px; border: none; margin: 0px 3px 3px 6px;; padding: 2px; }"
-        ).arg(windowColor.name(), panelColor.name()));
 
     const auto &allActions = _actionGroup->actions();
     for (const auto a : allActions) {
