@@ -33,6 +33,8 @@
 #include <QPainterPath>
 #include <QQuickView>
 #include <QActionGroup>
+#include <QScopedValueRollback>
+#include <QTimer>
 
 namespace {
 const QString TOOLBAR_CSS()
@@ -170,14 +172,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint & Qt::Window);
     cfg.restoreGeometry(this);
-    setStyleSheet(QStringLiteral(
-        "#Settings { background: #f2f2f2; }"
-        "#settings_shell { background: transparent; border-radius: 0; }"
-        "#settings_navigation { background: #e7e7e7; border-radius: 12px; }"
-        "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
-        "#accountStatusPanel, #accountStoragePanel, #accountTabsPanel {"
-        " background: #e7e7e7; border-radius: 10px; border: none; margin: 0px 3px 3px 6px;; padding: 2px; }"
-        ));
 }
 
 SettingsDialog::~SettingsDialog()
@@ -211,10 +205,7 @@ void SettingsDialog::changeEvent(QEvent *e)
     case QEvent::StyleChange:
     case QEvent::PaletteChange:
     case QEvent::ThemeChange:
-        customizeStyle();
-
-        // Notify the other widgets (Dark-/Light-Mode switching)
-        emit styleChanged();
+        requestStyleUpdate();
         break;
     case QEvent::ActivationChange:
         if(isActiveWindow())
@@ -354,9 +345,40 @@ void SettingsDialog::accountRemoved(AccountState *s)
     }
 }
 
+void SettingsDialog::requestStyleUpdate()
+{
+    if (_styleUpdatePending) {
+        return;
+    }
+
+    _styleUpdatePending = true;
+    QTimer::singleShot(0, this, [this]() {
+        _styleUpdatePending = false;
+        customizeStyle();
+
+        // Notify the other widgets (Dark-/Light-Mode switching)
+        emit styleChanged();
+    });
+}
+
 void SettingsDialog::customizeStyle()
 {
+    if (_updatingStyle) {
+        return;
+    }
+
+    const QScopedValueRollback<bool> updatingStyle(_updatingStyle, true);
     _toolBar->setStyleSheet(TOOLBAR_CSS());
+
+    const auto panelColor = palette().window().color();
+    setStyleSheet(QStringLiteral(
+        "#Settings { background: %1; }"
+        "#settings_shell { background: transparent; border-radius: 0; }"
+        "#settings_navigation { background: %1; border-radius: 12px; }"
+        "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
+        "#accountStatusPanel, #accountStoragePanel, #accountTabsPanel {"
+        " background: %1; border-radius: 10px; border: none; margin: 6px; padding: 12px; }"
+        ).arg(panelColor.name()));
 
     const auto &allActions = _actionGroup->actions();
     for (const auto a : allActions) {
