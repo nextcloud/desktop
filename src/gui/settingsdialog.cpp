@@ -377,7 +377,7 @@ void SettingsDialog::customizeStyle()
         "#settings_shell { background: transparent; border-radius: 0; }"
         "#settings_navigation { background: %1; border-radius: 12px; }"
         "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
-        "#accountStatusPanel, #accountStoragePanel, #accountTabsPanel {"
+        "#accountStatusPanel, #accountTabsPanel {"
         " background: %1; border-radius: 10px; border: none; margin: margin: 6px 0px 0px 0px; padding: 6px; }"
         ).arg(windowColor.name(), panelColor.name()));
 
