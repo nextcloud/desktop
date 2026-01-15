@@ -370,6 +370,7 @@ void SettingsDialog::customizeStyle()
     const QScopedValueRollback<bool> updatingStyle(_updatingStyle, true);
     _toolBar->setStyleSheet(TOOLBAR_CSS());
 
+    const auto windowColor = palette().base().color();
     const auto panelColor = palette().window().color();
     setStyleSheet(QStringLiteral(
         "#Settings { background: %1; }"
@@ -378,7 +379,7 @@ void SettingsDialog::customizeStyle()
         "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
         "#accountStatusPanel, #accountStoragePanel, #accountTabsPanel {"
         " background: %1; border-radius: 10px; border: none; margin: margin: 6px 0px 0px 0px; padding: 6px; }"
-        ).arg(panelColor.name()));
+        ).arg(windowColor.name(), panelColor.name()));
 
     const auto &allActions = _actionGroup->actions();
     for (const auto a : allActions) {
