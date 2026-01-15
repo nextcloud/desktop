@@ -3022,7 +3022,7 @@ O downgrade das versões não é possível imediatamente: mudar de estável para
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="715"/>
         <source>Failed to Access File</source>
-        <translation>Falha ao Acessar Arquivo</translation>
+        <translation>Falha ao acessar o arquivo</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="716"/>
