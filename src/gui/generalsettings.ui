@@ -1,73 +1,565 @@
-/*
- * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
- */
-
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-
-import Style 1.0
-import "../../filedetails"
-import "../../tray"
-
-import com.nextcloud.desktopclient 1.0
-
-Page {
-    id: root
-
-    property bool showBorder: false
-    property var controller: FileProviderSettingsController
-    property string accountUserIdAtHost: ""
-
-    title: qsTr("Virtual files settings")
-
-    background: Rectangle {
-        color: palette.window
-        border.width: root.showBorder ? Style.normalBorderWidth : 0
-        border.color: root.palette.dark
-    }
-
-    padding: Style.standardSpacing
-
-    ColumnLayout {
-        id: rootColumn
-
-        anchors {
-            top: parent.top
-            left: parent.left
-            right: parent.right
-        }
-
-        RowLayout {
-            Layout.fillWidth: true
-
-            EnforcedPlainTextLabel {
-                Layout.fillWidth: true
-                text: qsTr("Enable virtual files")
-                elide: Text.ElideRight
-            }
-
-            Switch {
-                id: vfsEnabledCheckBox
-                checked: root.controller.vfsEnabledForAccount(root.accountUserIdAtHost)
-                onClicked: root.controller.setVfsEnabledForAccount(root.accountUserIdAtHost, checked)
-            }
-        }
-
-        RowLayout {
-            Layout.fillWidth: true
-
-            EnforcedPlainTextLabel {
-                Layout.fillWidth: true
-                text: qsTr("Allow deletion of items in Trash")
-                elide: Text.ElideRight
-            }
-
-            Switch {
-                checked: root.controller.trashDeletionEnabledForAccount(root.accountUserIdAtHost)
-                onClicked: root.controller.setTrashDeletionEnabledForAccount(root.accountUserIdAtHost, checked)
-            }
-        }
-    }
-}
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>OCC::GeneralSettings</class>
+ <widget class="QWidget" name="OCC::GeneralSettings">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>667</width>
+    <height>796</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_3">
+   <item row="0" column="0">
+    <widget class="QLabel" name="generalGroupBoxTitle">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>General Settings</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="generalGroupBox">
+     <property name="title">
+      <string/>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="autostartCheckBox">
+        <property name="text">
+         <string>&amp;Launch on System Startup</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="callNotificationsCheckBox">
+        <property name="text">
+         <string>Show Call Notifications</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="monoIconsCheckBox">
+        <property name="toolTip">
+         <string>For System Tray</string>
+        </property>
+        <property name="text">
+         <string>Use &amp;Monochrome Icons</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QCheckBox" name="chatNotificationsCheckBox">
+        <property name="text">
+         <string>Show Chat Notifications</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QCheckBox" name="serverNotificationsCheckBox">
+        <property name="text">
+         <string>Show Server &amp;Notifications</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QCheckBox" name="quotaWarningNotificationsCheckBox">
+        <property name="text">
+         <string>Show &amp;Quota Warning Notifications</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="advancedGroupBoxTitle">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Advanced</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QGroupBox" name="advancedGroupBox">
+     <property name="title">
+      <string/>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QCheckBox" name="newFolderLimitCheckBox">
+            <property name="text">
+             <string>Ask for confirmation before synchronizing new folders larger than</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Policy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>10</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="newFolderLimitSpinBox">
+            <property name="maximum">
+             <number>999999</number>
+            </property>
+            <property name="value">
+             <number>99</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string extracomment="Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; ">MB</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <spacer name="horizontalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Policy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="existingFolderLimitCheckBox">
+            <property name="text">
+             <string>Notify when synchronised folders grow larger than specified limit</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <spacer name="horizontalSpacer_5">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Policy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="stopExistingFolderNowBigSyncCheckBox">
+            <property name="text">
+             <string>Automatically disable synchronisation of folders that overcome limit</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <widget class="QCheckBox" name="newExternalStorage">
+          <property name="text">
+           <string>Ask for confirmation before synchronizing external storages</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_trash">
+        <item>
+         <widget class="QCheckBox" name="moveFilesToTrashCheckBox">
+          <property name="text">
+           <string>Move removed files to trash</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_10">
+        <item>
+         <widget class="QCheckBox" name="showInExplorerNavigationPaneCheckBox">
+          <property name="text">
+           <string>Show sync folders in &amp;Explorer's navigation pane</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QWidget" name="horizontalLayoutWidget_remotePollInterval">
+        <layout class="QHBoxLayout" name="horizontalLayout_remotePollInterval">
+         <item>
+          <widget class="QLabel" name="remotePollIntervalLabel">
+           <property name="text">
+            <string>Server poll interval</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="remotePollIntervalSpinBox">
+           <property name="minimum">
+            <number>5</number>
+           </property>
+           <property name="maximum">
+            <number>999999</number>
+           </property>
+           <property name="singleStep">
+            <number>1</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelInterval">
+           <property name="text">
+            <string>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</string>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::TextFormat::RichText</enum>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
+           </property>
+           <property name="textInteractionFlags">
+            <set>Qt::TextInteractionFlag::LinksAccessibleByKeyboard|Qt::TextInteractionFlag::LinksAccessibleByMouse</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_remotePollInterval">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QPushButton" name="ignoredFilesButton">
+          <property name="text">
+           <string>Edit &amp;Ignored Files</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="debugArchiveButton">
+          <property name="text">
+           <string>Create Debug Archive</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>555</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="aboutAndUpdatesGroupBoxTitle">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Info</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QGroupBox" name="aboutAndUpdatesGroupBox">
+     <property name="title">
+      <string/>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <property name="bottomMargin">
+       <number>10</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="infoAndUpdatesLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Desktop client x.x.x</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="updatesContainer">
+        <layout class="QVBoxLayout" name="updatesLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>1</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="updatesLayout_1">
+           <item>
+            <widget class="QLabel" name="updateChannelLabel">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Update channel</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="updateChannel">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="updateStateLabel">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+             <property name="openExternalLinks">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="restartButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>&amp;Restart &amp;&amp; Update</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="updatesLayout_2">
+           <item>
+            <widget class="QCheckBox" name="autoCheckForUpdatesCheckBox">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>&amp;Automatically check for updates</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="updateButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Check Now</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_6">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="infoContainer">
+        <item>
+         <widget class="QPushButton" name="usageDocumentationButton">
+          <property name="text">
+           <string>Usage Documentation</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="legalNoticeButton">
+          <property name="text">
+           <string>Legal Notice</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="restoreUpdateChannelButton">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Restore &amp;Default</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>autostartCheckBox</tabstop>
+  <tabstop>serverNotificationsCheckBox</tabstop>
+  <tabstop>ignoredFilesButton</tabstop>
+  <tabstop>newFolderLimitCheckBox</tabstop>
+  <tabstop>newFolderLimitSpinBox</tabstop>
+  <tabstop>restartButton</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>newFolderLimitCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>newFolderLimitSpinBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>247</x>
+     <y>188</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>497</x>
+     <y>190</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
