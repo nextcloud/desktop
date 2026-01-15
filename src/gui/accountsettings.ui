@@ -74,30 +74,6 @@
        </widget>
       </item>
       <item>
-       <widget class="KMessageWidget" name="encryptionMessage" native="true"/>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QFrame" name="accountStoragePanel">
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
-     <layout class="QVBoxLayout" name="accountStorageLayout">
-      <property name="leftMargin">
-       <number>12</number>
-      </property>
-      <property name="topMargin">
-       <number>12</number>
-      </property>
-      <property name="rightMargin">
-       <number>12</number>
-      </property>
-      <property name="bottomMargin">
-       <number>12</number>
-      </property>
-      <item>
        <layout class="QHBoxLayout" name="storageGroupBox">
         <item>
          <widget class="QLabel" name="quotaInfoLabel">
@@ -151,10 +127,13 @@
         </item>
        </layout>
       </item>
+      <item>
+       <widget class="KMessageWidget" name="encryptionMessage" native="true"/>
+      </item>
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="1" column="0">
     <widget class="QFrame" name="accountTabsPanel">
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
