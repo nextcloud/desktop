@@ -370,15 +370,16 @@ void SettingsDialog::customizeStyle()
     const QScopedValueRollback<bool> updatingStyle(_updatingStyle, true);
     _toolBar->setStyleSheet(TOOLBAR_CSS());
 
-    const auto windowColor = palette().base().color();
-    const auto panelColor = palette().window().color();
+    const auto windowColor = palette().window().color();
+    const auto isDarkWindow = windowColor.lightness() < 128;
+    const auto panelColor = isDarkWindow ? windowColor.lighter(115) : windowColor.darker(105);
     setStyleSheet(QStringLiteral(
         "#Settings { background: %1; }"
         "#settings_shell { background: transparent; border-radius: 0; }"
-        "#settings_navigation { background: %1; border-radius: 12px; }"
+        "#settings_navigation { background: %2; border-radius: 12px; }"
         "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
         "#accountStatusPanel, #accountTabsPanel {"
-        " background: %1; border-radius: 10px; border: none; margin: margin: 6px 0px 0px 0px; padding: 6px; }"
+        " background: %2; border-radius: 10px; border: none; margin: margin: 6px 0px 0px 0px; padding: 6px; }"
         ).arg(windowColor.name(), panelColor.name()));
 
     const auto &allActions = _actionGroup->actions();
