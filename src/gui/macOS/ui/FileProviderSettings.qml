@@ -39,14 +39,6 @@ Page {
             right: parent.right
         }
 
-        EnforcedPlainTextLabel {
-            Layout.fillWidth: true
-            text: qsTr("General settings")
-            font.bold: true
-            font.pointSize: Style.subheaderFontPtSize
-            elide: Text.ElideRight
-        }
-
         CheckBox {
             id: vfsEnabledCheckBox
             text: qsTr("Enable virtual files")
