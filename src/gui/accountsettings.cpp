@@ -182,7 +182,10 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
     _ui->tabWidget->setStyleSheet(QStringLiteral(
         "QTabWidget { background: transparent; }"
-        "QTabWidget::pane { background: transparent; border: none; }"));
+        "QTabWidget::pane { background: transparent; border: none; }"
+        "QWidget#standardSyncTab { background: transparent; }"));
+    _ui->standardSyncTab->setAutoFillBackground(false);
+    _ui->standardSyncTab->setAttribute(Qt::WA_StyledBackground, false);
     
     // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
     connect(this, &AccountSettings::styleChanged, delegate, &FolderStatusDelegate::slotStyleChanged);
@@ -190,11 +193,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->_folderList->header()->hide();
     _ui->_folderList->setItemDelegate(delegate);
     _ui->_folderList->setModel(_model);
-#if defined(Q_OS_MACOS)
-    _ui->_folderList->setMinimumWidth(400);
-#else
     _ui->_folderList->setMinimumWidth(300);
-#endif
+
     new ToolTipUpdater(_ui->_folderList);
 
 #if defined(BUILD_FILE_PROVIDER_MODULE)
@@ -320,6 +320,7 @@ void AccountSettings::slotE2eEncryptionMnemonicReady()
 
     _ui->encryptionMessage->setMessageType(KMessageWidget::Positive);
     _ui->encryptionMessage->setText(tr("Encryption is set-up. Remember to <b>Encrypt</b> a folder to end-to-end encrypt any new files added to it."));
+    _ui->encryptionMessage->setWordWrap(true);
     _ui->encryptionMessage->setIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/lock.svg")));
     _ui->encryptionMessage->show();
 }
@@ -1766,6 +1767,7 @@ void AccountSettings::setupE2eEncryptionMessage()
 {
     _ui->encryptionMessage->setMessageType(KMessageWidget::Information);
     _ui->encryptionMessage->setText(tr("This account supports end-to-end encryption, but it needs to be set up first."));
+    _ui->encryptionMessage->setWordWrap(true);
     _ui->encryptionMessage->setIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/info.svg")));
     _ui->encryptionMessage->hide();
 

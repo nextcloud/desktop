@@ -81,7 +81,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     ConfigFile cfg;
 
     _ui->setupUi(this);
-    _ui->mainLayout->setContentsMargins(12, 12, 12, 12);
+    _ui->mainLayout->setContentsMargins(8, 8, 8, 8);
     _ui->mainLayout->setSpacing(0);
     _toolBar = new QToolBar;
     _toolBar->setIconSize(QSize(32, 32));
@@ -92,8 +92,8 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     auto *shellContainer = new QWidget(this);
     shellContainer->setObjectName(QLatin1String("settings_shell"));
     auto *shellLayout = new QHBoxLayout(shellContainer);
-    shellLayout->setContentsMargins(12, 12, 12, 12);
-    shellLayout->setSpacing(12);
+    shellLayout->setContentsMargins(6, 6, 6, 6);
+    shellLayout->setSpacing(6);
     auto *navigationContainer = new QWidget(this);
     navigationContainer->setObjectName(QLatin1String("settings_navigation"));
     auto *navigationLayout = new QVBoxLayout(navigationContainer);
@@ -375,10 +375,10 @@ void SettingsDialog::customizeStyle()
     setStyleSheet(QStringLiteral(
         "#Settings { background: %1; }"
         "#settings_shell { background: transparent; border-radius: 0; }"
-        "#settings_navigation { background: %2; border-radius: 12px; }"
+        "#settings_navigation { background: %1; border-radius: 12px; }"
         "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
         "#accountStatusPanel, #accountTabsPanel {"
-        " background: %2; border-radius: 10px; border: none; margin: 6px; padding: 12px; }"
+        " background: %1; border-radius: 10px; border: none; margin: margin: 6px 0px 0px 0px; padding: 6px; }"
         ).arg(windowColor.name(), panelColor.name()));
 
     const auto &allActions = _actionGroup->actions();

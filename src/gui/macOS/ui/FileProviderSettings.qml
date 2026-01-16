@@ -52,8 +52,9 @@ Page {
                 id: vfsEnabledCheckBox
                 checked: root.controller.vfsEnabledForAccount(root.accountUserIdAtHost)
                 onClicked: root.controller.setVfsEnabledForAccount(root.accountUserIdAtHost, checked)
+            }
         }
-        
+
         RowLayout {
             Layout.fillWidth: true
 
