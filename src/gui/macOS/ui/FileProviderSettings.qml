@@ -99,12 +99,6 @@ Page {
                     }
                 }
 
-                CheckBox {
-                    text: qsTr("Allow deletion of items in Trash")
-                    checked: root.controller.trashDeletionEnabledForAccount(root.accountUserIdAtHost)
-                    onClicked: root.controller.setTrashDeletionEnabledForAccount(root.accountUserIdAtHost, checked)
-                }
-
                 Button {
                     text: qsTr("Reset virtual files environment")
                     onPressed: root.controller.resetVfsForAccount(root.accountUserIdAtHost);
