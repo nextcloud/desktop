@@ -379,59 +379,6 @@ void FileProviderSettingsController::setVfsEnabledForAccount(const QString &user
     }
 }
 
-bool FileProviderSettingsController::trashDeletionEnabledForAccount(const QString &userIdAtHost) const
-{
-    const auto xpc = FileProvider::instance()->xpc();
-
-    if (!xpc) {
-        return true;
-    }
-
-    const auto domainId = FileProviderUtils::domainIdentifierForAccountIdentifier(userIdAtHost);
-
-    if (const auto trashDeletionState = xpc->trashDeletionEnabledStateForFileProviderDomain(domainId)) {
-        return trashDeletionState->first;
-    }
-
-    return true;
-}
-
-bool FileProviderSettingsController::trashDeletionSetForAccount(const QString &userIdAtHost) const
-{
-    const auto xpc = FileProvider::instance()->xpc();
-
-    if (!xpc) {
-        return false;
-    }
-
-    const auto domainId = FileProviderUtils::domainIdentifierForAccountIdentifier(userIdAtHost);
-
-    if (const auto state = xpc->trashDeletionEnabledStateForFileProviderDomain(domainId)) {
-        return state->second;
-    }
-
-    return false;
-}
-
-void FileProviderSettingsController::setTrashDeletionEnabledForAccount(const QString &userIdAtHost, const bool setEnabled)
-{
-    const auto xpc = FileProvider::instance()->xpc();
-
-    if (!xpc) {
-        // Reset state of UI elements
-        emit trashDeletionEnabledForAccountChanged(userIdAtHost);
-        emit trashDeletionSetForAccountChanged(userIdAtHost);
-        return;
-    }
-
-    const auto domainId = FileProviderUtils::domainIdentifierForAccountIdentifier(userIdAtHost);
-
-    xpc->setTrashDeletionEnabledForFileProviderDomain(domainId, setEnabled);
-
-    emit trashDeletionEnabledForAccountChanged(userIdAtHost);
-    emit trashDeletionSetForAccountChanged(userIdAtHost);
-}
-
 unsigned long long FileProviderSettingsController::localStorageUsageForAccount(const QString &userIdAtHost) const
 {
     return d->localStorageUsageForAccount(userIdAtHost);
