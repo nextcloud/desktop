@@ -309,11 +309,6 @@
         <source>Enable virtual files</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="58"/>
-        <source>Allow deletion of items in Trash</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>FileSystem</name>

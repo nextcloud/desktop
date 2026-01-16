@@ -451,14 +451,6 @@ import OSLog
             }
             
             logger.debug("Found item for identifier.", [.item: identifier, .name: item.filename])
-
-            guard config.trashDeletionEnabled || item.parentItemIdentifier != .trashContainer else {
-                logger.info("System requested deletion of item in trash, but deleting trash items is disabled. item: \(item.filename)")
-                removeSyncAction(actionId)
-                completionHandler(NSError.fileProviderErrorForRejectedDeletion(of: item))
-                return
-            }
-            
             let error = await item.delete(domain: domain, ignoredFiles: ignoredFiles, dbManager: dbManager)
             
             if error != nil {

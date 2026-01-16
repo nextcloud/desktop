@@ -53,11 +53,5 @@ Page {
             checked: root.controller.vfsEnabledForAccount(root.accountUserIdAtHost)
             onClicked: root.controller.setVfsEnabledForAccount(root.accountUserIdAtHost, checked)
         }
-        
-        CheckBox {
-            text: qsTr("Allow deletion of items in Trash")
-            checked: root.controller.trashDeletionEnabledForAccount(root.accountUserIdAtHost)
-            onClicked: root.controller.setTrashDeletionEnabledForAccount(root.accountUserIdAtHost, checked)
-        }
     }
 }
