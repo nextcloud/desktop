@@ -34,6 +34,7 @@
 #include <QQuickView>
 #include <QActionGroup>
 #include <QScopedValueRollback>
+#include <QScrollArea>
 #include <QTimer>
 
 namespace {
@@ -100,8 +101,20 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     navigationLayout->setContentsMargins(0, 0, 0, 0);
     navigationLayout->setSpacing(0);
     navigationLayout->addWidget(_toolBar);
-    shellLayout->addWidget(navigationContainer);
-    shellLayout->addWidget(_ui->stack);
+    auto *navigationScroll = new QScrollArea(shellContainer);
+    navigationScroll->setWidgetResizable(true);
+    navigationScroll->setFrameShape(QFrame::NoFrame);
+    navigationScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    navigationScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    navigationScroll->setWidget(navigationContainer);
+    auto *contentScroll = new QScrollArea(shellContainer);
+    contentScroll->setWidgetResizable(true);
+    contentScroll->setFrameShape(QFrame::NoFrame);
+    contentScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    contentScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    contentScroll->setWidget(_ui->stack);
+    shellLayout->addWidget(navigationScroll);
+    shellLayout->addWidget(contentScroll);
     shellLayout->setStretch(0, 0);
     shellLayout->setStretch(1, 1);
     _ui->mainLayout->removeWidget(_ui->stack);
