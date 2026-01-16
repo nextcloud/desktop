@@ -69,5 +69,4 @@ Page {
                 onClicked: root.controller.setTrashDeletionEnabledForAccount(root.accountUserIdAtHost, checked)
             }
         }
-    }
 }
