@@ -122,6 +122,7 @@ private slots:
     void openIgnoredFilesDialog(const QString & absFolderPath);
     void customizeStyle();
     void applyEncryptionMessageButtonStyle();
+    void applyEncryptionMessageFrameStyle();
 
     void setupE2eEncryption();
     void forgetE2eEncryption();

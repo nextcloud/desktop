@@ -174,6 +174,10 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     , _userInfo(accountState, false, true)
 {
     _ui->setupUi(this);
+    connect(_ui->encryptionMessage, &KMessageWidget::showAnimationFinished, this, [this] {
+        applyEncryptionMessageButtonStyle();
+        applyEncryptionMessageFrameStyle();
+    });
 
     _model->setAccountState(_accountState);
     _model->setParent(this);
@@ -322,6 +326,7 @@ void AccountSettings::slotE2eEncryptionMnemonicReady()
     _ui->encryptionMessage->setText(tr("Encryption is set-up. Remember to <b>Encrypt</b> a folder to end-to-end encrypt any new files added to it."));
     _ui->encryptionMessage->setWordWrap(true);
     _ui->encryptionMessage->setIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/lock.svg")));
+    applyEncryptionMessageFrameStyle();
     _ui->encryptionMessage->show();
 }
 
@@ -1684,6 +1689,7 @@ void AccountSettings::customizeStyle()
     const auto color = palette().highlight().color();
     _ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));
     applyEncryptionMessageButtonStyle();
+    applyEncryptionMessageFrameStyle();
 }
 
 void AccountSettings::applyEncryptionMessageButtonStyle()
@@ -1693,6 +1699,19 @@ void AccountSettings::applyEncryptionMessageButtonStyle()
         button->setAutoRaise(false);
         button->setToolButtonStyle(Qt::ToolButtonTextOnly);
         button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    }
+}
+
+void AccountSettings::applyEncryptionMessageFrameStyle()
+{
+    auto *contentWidget = _ui->encryptionMessage->findChild<QFrame *>(QStringLiteral("contentWidget"));
+    if (!contentWidget) {
+        return;
+    }
+    const QString overrideStyle = QStringLiteral("QFrame { border: 0px; margin: 0px; }");
+    const QString styleSheet = contentWidget->styleSheet();
+    if (!styleSheet.contains(overrideStyle)) {
+        contentWidget->setStyleSheet(styleSheet + overrideStyle);
     }
 }
 
@@ -1769,6 +1788,7 @@ void AccountSettings::setupE2eEncryptionMessage()
     _ui->encryptionMessage->setText(tr("This account supports end-to-end encryption, but it needs to be set up first."));
     _ui->encryptionMessage->setWordWrap(true);
     _ui->encryptionMessage->setIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/info.svg")));
+    applyEncryptionMessageFrameStyle();
     _ui->encryptionMessage->hide();
 
     auto *const actionSetupE2e = addActionToEncryptionMessage(tr("Set up encryption"), e2EeUiActionSetupEncryptionId);
