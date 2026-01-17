@@ -318,7 +318,7 @@
         <translation>允许删除回收站中的项目</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Reset virtual files environment</source>
         <translation>重置虚拟文件环境</translation>
     </message>

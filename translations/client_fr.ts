@@ -318,7 +318,7 @@
         <translation>Autoriser la suppression des éléments dans la corbeille</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Reset virtual files environment</source>
         <translation>Réinitialiser l&apos;environnement de fichiers virtuels</translation>
     </message>

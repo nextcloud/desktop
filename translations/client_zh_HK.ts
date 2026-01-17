@@ -318,7 +318,7 @@
         <translation>允許刪除垃圾箱中的項目</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Reset virtual files environment</source>
         <translation>重設虛擬檔案環境</translation>
     </message>

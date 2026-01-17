@@ -318,7 +318,7 @@
         <translation>Povoliť vymazanie položiek v Koši</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Reset virtual files environment</source>
         <translation>Obnoviť prostredie virtuálnych súborov</translation>
     </message>
