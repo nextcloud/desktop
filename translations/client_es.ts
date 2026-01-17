@@ -318,7 +318,7 @@
         <translation>Permitir la eliminación de los ítems en la Papelera</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Reset virtual files environment</source>
         <translation>Reiniciar el ambiente de archivos virtuales</translation>
     </message>
