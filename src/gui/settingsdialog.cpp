@@ -35,6 +35,7 @@
 #include <QActionGroup>
 #include <QScopedValueRollback>
 #include <QScrollArea>
+#include <QSizePolicy>
 #include <QTimer>
 
 namespace {
@@ -43,7 +44,7 @@ const QString TOOLBAR_CSS()
     return QStringLiteral("QToolBar { background: transparent; margin: 0; padding: 0; border: none; spacing: 0; } "
                           "QToolBar QToolButton { background: transparent; border: none; margin: 0; padding: 6px 12px; font-size: 14px; } "
                           "QToolBar QToolBarExtension { padding:0; } "
-                          "QToolBar QToolButton:checked { background: #0a84ff; color: #ffffff; border-radius: 8px; margin: 2px 8px; padding: 4px 10px; }");
+                          "QToolBar QToolButton:checked { background: #0a84ff; color: #ffffff; border-radius: 8px; margin: 0; padding: 6px 12px; }");
 }
 
 const float buttonSizeRatio = 1.618f; // golden ratio
@@ -112,7 +113,14 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     contentScroll->setFrameShape(QFrame::NoFrame);
     contentScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     contentScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    contentScroll->setWidget(_ui->stack);
+    auto *contentContainer = new QWidget(contentScroll);
+    auto *contentLayout = new QVBoxLayout(contentContainer);
+    contentLayout->setContentsMargins(0, 0, 0, 0);
+    contentLayout->setSpacing(0);
+    _ui->stack->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+    contentLayout->addWidget(_ui->stack);
+    contentLayout->addStretch(1);
+    contentScroll->setWidget(contentContainer);
     shellLayout->addWidget(navigationScroll);
     shellLayout->addWidget(contentScroll);
     shellLayout->setStretch(0, 0);
@@ -145,7 +153,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _actionGroup->addAction(generalAction);
     _toolBar->addAction(generalAction);
     auto *accountSpacer = new QWidget(this);
-    accountSpacer->setFixedHeight(8);
+    accountSpacer->setFixedHeight(16);
     _toolBar->addWidget(accountSpacer);
     auto *generalSettings = new GeneralSettings;
     _ui->stack->addWidget(generalSettings);
@@ -383,9 +391,10 @@ void SettingsDialog::customizeStyle()
     const QScopedValueRollback<bool> updatingStyle(_updatingStyle, true);
     _toolBar->setStyleSheet(TOOLBAR_CSS());
 
-    const auto windowColor = palette().window().color();
-    const auto isDarkWindow = windowColor.lightness() < 128;
-    const auto panelColor = isDarkWindow ? windowColor.lighter(115) : windowColor.darker(105);
+    const auto baseWindowColor = palette().window().color();
+    const auto windowColor = baseWindowColor.lighter(105);
+    const auto isDarkWindow = baseWindowColor.lightness() < 128;
+    const auto panelColor = isDarkWindow ? baseWindowColor.lighter(115) : baseWindowColor.darker(105);
     setStyleSheet(QStringLiteral(
         "#Settings { background: %1; }"
         "#settings_shell { background: transparent; border-radius: 0; }"

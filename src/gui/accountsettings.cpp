@@ -190,7 +190,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
         "QWidget#standardSyncTab { background: transparent; }"));
     _ui->standardSyncTab->setAutoFillBackground(false);
     _ui->standardSyncTab->setAttribute(Qt::WA_StyledBackground, false);
-    
+
     // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
     connect(this, &AccountSettings::styleChanged, delegate, &FolderStatusDelegate::slotStyleChanged);
 
@@ -206,7 +206,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     const auto fpSettingsLayout = new QVBoxLayout(fileProviderTab);
     const auto fpAccountUserIdAtHost = _accountState->account()->userIdAtHostWithPort();
     const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
-    const auto fpSettingsWidget = fpSettingsController->settingsViewWidget(fpAccountUserIdAtHost, fileProviderTab);
+    const auto fpSettingsWidget = fpSettingsController->settingsViewWidget(fpAccountUserIdAtHost, fileProviderTab,
+                                                                           QQuickWidget::SizeViewToRootObject);
     fpSettingsLayout->setContentsMargins(0, 0, 0, 0);
     fpSettingsLayout->addWidget(fpSettingsWidget);
     fileProviderTab->setLayout(fpSettingsLayout);
