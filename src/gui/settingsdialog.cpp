@@ -392,7 +392,7 @@ void SettingsDialog::customizeStyle()
         "#settings_navigation { background: %2; border-radius: 12px; }"
         "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
         "#accountStatusPanel, #accountTabsPanel {"
-        " background: %2; border-radius: 10px; border: none; margin: 6px 0px 0px 0px; padding: 6px; }"
+        " background: %2; border-radius: 10px; border: none; margin: 0px; padding: 6px; }"
         ).arg(windowColor.name(), panelColor.name()));
 
     const auto &allActions = _actionGroup->actions();
