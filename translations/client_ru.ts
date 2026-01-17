@@ -318,7 +318,7 @@
         <translation>Разрешить удаление элементов в корзине</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Reset virtual files environment</source>
         <translation>Сбросить виртуальную файловую среду</translation>
     </message>

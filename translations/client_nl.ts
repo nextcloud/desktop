@@ -318,7 +318,7 @@
         <translation>Sta verwijdering van items in de prullenbak toe</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Reset virtual files environment</source>
         <translation type="unfinished"/>
     </message>

@@ -318,7 +318,7 @@
         <translation>ごみ箱内のアイテムの削除を許可する</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Reset virtual files environment</source>
         <translation>仮想ファイル環境をリセットする</translation>
     </message>
