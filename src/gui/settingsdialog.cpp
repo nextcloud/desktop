@@ -270,6 +270,7 @@ void SettingsDialog::accountAdded(AccountState *s)
     connect(accountSettings, &AccountSettings::showIssuesList, this, &SettingsDialog::showIssuesList);
     connect(s->account().data(), &Account::accountChangedAvatar, this, &SettingsDialog::slotAccountAvatarChanged);
     connect(s->account().data(), &Account::accountChangedDisplayName, this, &SettingsDialog::slotAccountDisplayNameChanged);
+    updateAccountAvatar(s->account().data());
 
     // Connect styleChanged event, to adapt (Dark-/Light-Mode switching)
     connect(this, &SettingsDialog::styleChanged, accountSettings, &AccountSettings::slotStyleChanged);
@@ -287,14 +288,26 @@ void SettingsDialog::accountAdded(AccountState *s)
 void SettingsDialog::slotAccountAvatarChanged()
 {
     auto *account = dynamic_cast<Account *>(sender());
-    if (account && _actionForAccount.contains(account)) {
-        QAction *action = _actionForAccount[account];
-        if (action) {
-            QImage pix = account->avatar();
-            if (!pix.isNull()) {
-                action->setIcon(QPixmap::fromImage(AvatarJob::makeCircularAvatar(pix)));
-            }
-        }
+    if (!account) {
+        return;
+    }
+    updateAccountAvatar(account);
+}
+
+void SettingsDialog::updateAccountAvatar(const Account *account)
+{
+    if (!account || !_actionForAccount.contains(account)) {
+        return;
+    }
+
+    QAction *action = _actionForAccount[account];
+    if (!action) {
+        return;
+    }
+
+    const QImage pix = account->avatar();
+    if (!pix.isNull()) {
+        action->setIcon(QPixmap::fromImage(AvatarJob::makeCircularAvatar(pix)));
     }
 }
 

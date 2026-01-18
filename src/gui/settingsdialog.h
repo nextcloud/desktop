@@ -69,6 +69,7 @@ private slots:
 private:
     void customizeStyle();
     void requestStyleUpdate();
+    void updateAccountAvatar(const Account *account);
 
     QAction *createColorAwareAction(const QString &iconName, const QString &fileName);
     QAction *createActionWithIcon(const QIcon &icon, const QString &text, const QString &iconPath = QString());
