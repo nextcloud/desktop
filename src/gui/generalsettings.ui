@@ -14,40 +14,49 @@
    <string notr="true">Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <property name="spacing">
+    <number>12</number>
+   </property>
    <item row="0" column="0">
-    <widget class="QLabel" name="generalGroupBoxTitle">
-     <property name="font">
-      <font>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>General Settings</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
     <widget class="QGroupBox" name="generalGroupBox">
      <property name="title">
       <string/>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
+      <item row="0" column="0" colspan="2">
+       <widget class="QLabel" name="generalGroupBoxTitle">
+        <property name="text">
+         <string>General settings</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
        <widget class="QCheckBox" name="autostartCheckBox">
         <property name="text">
          <string>&amp;Launch on System Startup</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="3" column="1">
        <widget class="QCheckBox" name="callNotificationsCheckBox">
         <property name="text">
          <string>Show Call Notifications</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="2" column="0">
        <widget class="QCheckBox" name="monoIconsCheckBox">
         <property name="toolTip">
          <string>For System Tray</string>
@@ -57,21 +66,21 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="2" column="1">
        <widget class="QCheckBox" name="chatNotificationsCheckBox">
         <property name="text">
          <string>Show Chat Notifications</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
+      <item row="1" column="1">
        <widget class="QCheckBox" name="serverNotificationsCheckBox">
         <property name="text">
          <string>Show Server &amp;Notifications</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="4" column="1">
        <widget class="QCheckBox" name="quotaWarningNotificationsCheckBox">
         <property name="text">
          <string>Show &amp;Quota Warning Notifications</string>
@@ -81,25 +90,19 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="advancedGroupBoxTitle">
-     <property name="font">
-      <font>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Advanced</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
+   <item row="1" column="0">
     <widget class="QGroupBox" name="advancedGroupBox">
      <property name="title">
       <string/>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QLabel" name="advancedGroupBoxTitle">
+        <property name="text">
+         <string>Advanced</string>
+        </property>
+       </widget>
+      </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <property name="spacing">
@@ -330,25 +333,19 @@
      </layout>
     </widget>
    </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="aboutAndUpdatesGroupBoxTitle">
-     <property name="font">
-      <font>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Info</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0">
+   <item row="2" column="0">
     <widget class="QGroupBox" name="aboutAndUpdatesGroupBox">
      <property name="title">
       <string/>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QLabel" name="aboutAndUpdatesGroupBoxTitle">
+        <property name="text">
+         <string>Info</string>
+        </property>
+       </widget>
+      </item>
       <property name="bottomMargin">
        <number>10</number>
       </property>
