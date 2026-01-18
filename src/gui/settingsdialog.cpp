@@ -44,7 +44,7 @@ const QString TOOLBAR_CSS()
     return QStringLiteral("QToolBar { background: transparent; margin: 0; padding: 0; border: none; spacing: 0; } "
                           "QToolBar QToolButton { background: transparent; border: none; margin: 0; padding: 6px 12px; font-size: 14px; } "
                           "QToolBar QToolBarExtension { padding:0; } "
-                          "QToolBar QToolButton:checked { background: #0a84ff; color: #ffffff; border-radius: 8px; margin: 0; padding: 6px 12px; }");
+                          "QToolBar QToolButton:checked { background: palette(highlight); color: palette(highlightedText); border-radius: 8px; margin: 0; padding: 6px 12px; }");
 }
 
 const float buttonSizeRatio = 1.618f; // golden ratio
@@ -103,12 +103,14 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     navigationLayout->setSpacing(0);
     navigationLayout->addWidget(_toolBar);
     auto *navigationScroll = new QScrollArea(shellContainer);
+    navigationScroll->setObjectName(QLatin1String("settings_navigation_scroll"));
     navigationScroll->setWidgetResizable(true);
     navigationScroll->setFrameShape(QFrame::NoFrame);
     navigationScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     navigationScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     navigationScroll->setWidget(navigationContainer);
     auto *contentScroll = new QScrollArea(shellContainer);
+    contentScroll->setObjectName(QLatin1String("settings_content_scroll"));
     contentScroll->setWidgetResizable(true);
     contentScroll->setFrameShape(QFrame::NoFrame);
     contentScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -393,13 +395,17 @@ void SettingsDialog::customizeStyle()
     _toolBar->setStyleSheet(TOOLBAR_CSS());
 
     const auto baseWindowColor = palette().window().color();
-    const auto windowColor = baseWindowColor.lighter(105);
+    const auto windowColor = baseWindowColor.lighter(110);
     const auto isDarkWindow = baseWindowColor.lightness() < 128;
-    const auto panelColor = isDarkWindow ? baseWindowColor.lighter(115) : baseWindowColor.darker(105);
+    const auto panelColor = isDarkWindow ? baseWindowColor.darker(110) : baseWindowColor.darker(105);
     setStyleSheet(QStringLiteral(
         "#Settings { background: %1; }"
         "#settings_shell { background: transparent; border-radius: 0; }"
-        "#settings_navigation { background: %2; border-radius: 12px; }"
+        "#settings_navigation_scroll { background: %2; border-radius: 12px; }"
+        "#settings_navigation_scroll > QWidget { background: transparent; border-radius: 12px; }"
+        "#settings_navigation { background: transparent; border-radius: 12px; padding: 4px; }"
+        "#settings_content_scroll { background: transparent; border-radius: 12px; }"
+        "#settings_content_scroll > QWidget { background: transparent; }"
         "#settings_content { background: transparent; }"
         "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
         "#accountStatusPanel, #accountTabsPanel {"
