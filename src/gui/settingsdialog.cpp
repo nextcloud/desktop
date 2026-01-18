@@ -270,7 +270,8 @@ void SettingsDialog::accountAdded(AccountState *s)
 
     const auto actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
     const auto accountAction = createColorAwareAction(QLatin1String(":/client/theme/account.svg"), actionText);
-
+    updateAccountAvatar(s->account().data());
+    
     if (!brandingSingleAccount) {
         accountAction->setToolTip(s->account()->displayName());
         accountAction->setIconText(shortDisplayNameForSettings(s->account().data(), static_cast<int>(height * buttonSizeRatio)));
@@ -311,14 +312,26 @@ void SettingsDialog::accountAdded(AccountState *s)
 void SettingsDialog::slotAccountAvatarChanged()
 {
     auto *account = dynamic_cast<Account *>(sender());
-    if (account && _actionForAccount.contains(account)) {
-        QAction *action = _actionForAccount[account];
-        if (action) {
-            QImage pix = account->avatar();
-            if (!pix.isNull()) {
-                action->setIcon(QPixmap::fromImage(AvatarJob::makeCircularAvatar(pix)));
-            }
-        }
+    if (!account) {
+        return;
+    }
+    updateAccountAvatar(account);
+}
+
+void SettingsDialog::updateAccountAvatar(const Account *account)
+{
+    if (!account || !_actionForAccount.contains(account)) {
+        return;
+    }
+
+    QAction *action = _actionForAccount[account];
+    if (!action) {
+        return;
+    }
+
+    const QImage pix = account->avatar();
+    if (!pix.isNull()) {
+        action->setIcon(QPixmap::fromImage(AvatarJob::makeCircularAvatar(pix)));
     }
 }
 
