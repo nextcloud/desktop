@@ -82,7 +82,7 @@ private:
 
     // Maps the action in the dialog to their according account. Needed in
     // case the account avatar changes
-    QHash<Account *, QAction *> _actionForAccount;
+    QHash<const Account *, QAction *> _actionForAccount;
 
     QToolBar *_toolBar;
 
