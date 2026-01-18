@@ -94,7 +94,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     auto *shellContainer = new QWidget(this);
     shellContainer->setObjectName(QLatin1String("settings_shell"));
     auto *shellLayout = new QHBoxLayout(shellContainer);
-    shellLayout->setContentsMargins(6, 6, 6, 6);
+    shellLayout->setContentsMargins(0, 0, 0, 0);
     shellLayout->setSpacing(6);
     auto *navigationContainer = new QWidget(this);
     navigationContainer->setObjectName(QLatin1String("settings_navigation"));
@@ -114,6 +114,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     contentScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     contentScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     auto *contentContainer = new QWidget(contentScroll);
+    contentContainer->setObjectName(QLatin1String("settings_content"));
     auto *contentLayout = new QVBoxLayout(contentContainer);
     contentLayout->setContentsMargins(0, 0, 0, 0);
     contentLayout->setSpacing(0);
@@ -399,6 +400,7 @@ void SettingsDialog::customizeStyle()
         "#Settings { background: %1; }"
         "#settings_shell { background: transparent; border-radius: 0; }"
         "#settings_navigation { background: %2; border-radius: 12px; }"
+        "#settings_content { background: transparent; }"
         "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
         "#accountStatusPanel, #accountTabsPanel {"
         " background: %2; border-radius: 10px; border: none; margin: 0px; padding: 6px; }"
