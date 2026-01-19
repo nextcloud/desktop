@@ -818,7 +818,7 @@ void AccountSettings::slotFolderWizardAccepted()
             if (!dir.mkpath(".")) {
                 QMessageBox::warning(this, tr("Folder creation failed"),
                     tr("<p>Could not create local folder <i>%1</i>.</p>")
-                        .arg(QDir::toNativeSeparators(definition.localPath)));
+                        .arg(Utility::escape(QDir::toNativeSeparators(definition.localPath))));
                 return;
             }
         }
