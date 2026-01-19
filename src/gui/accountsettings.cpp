@@ -45,6 +45,7 @@
 #include <QListWidgetItem>
 #include <QMessageBox>
 #include <QAction>
+#include <QSizePolicy>
 #include <QVBoxLayout>
 #include <QTreeView>
 #include <QKeySequence>
@@ -186,10 +187,15 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
     _ui->tabWidget->setStyleSheet(QStringLiteral(
         "QTabWidget { background: transparent; }"
-        "QTabWidget::pane { background: transparent; border: none; }"
-        "QWidget#standardSyncTab { background: transparent; }"));
-    _ui->standardSyncTab->setAutoFillBackground(false);
-    _ui->standardSyncTab->setAttribute(Qt::WA_StyledBackground, false);
+        "QTabWidget::pane { background: palette(alternate-base); border: none; }"
+        "QWidget#standardSyncTab, QWidget#fileProviderTab, QWidget#connectionSettingsTab {"
+        " background: palette(alternate-base); }"));
+    _ui->standardSyncTab->setAutoFillBackground(true);
+    _ui->standardSyncTab->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->fileProviderTab->setAutoFillBackground(true);
+    _ui->fileProviderTab->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->connectionSettingsTab->setAutoFillBackground(true);
+    _ui->connectionSettingsTab->setAttribute(Qt::WA_StyledBackground, true);
 
     // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
     connect(this, &AccountSettings::styleChanged, delegate, &FolderStatusDelegate::slotStyleChanged);
@@ -209,7 +215,9 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     const auto fpSettingsWidget = fpSettingsController->settingsViewWidget(fpAccountUserIdAtHost, fileProviderTab,
                                                                            QQuickWidget::SizeViewToRootObject);
     fpSettingsLayout->setContentsMargins(0, 0, 0, 0);
-    fpSettingsLayout->addWidget(fpSettingsWidget);
+    fpSettingsLayout->setSpacing(0);
+    fpSettingsWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    fpSettingsLayout->addWidget(fpSettingsWidget, 1);
     fileProviderTab->setLayout(fpSettingsLayout);
 #else
     const auto tabWidget = _ui->tabWidget;
@@ -224,7 +232,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     const auto connectionSettingsLayout = new QVBoxLayout(connectionSettingsTab);
     const auto networkSettings = new NetworkSettings(_accountState->account(), connectionSettingsTab);
     connectionSettingsLayout->setContentsMargins(0, 0, 0, 0);
-    connectionSettingsLayout->addWidget(networkSettings);
+    connectionSettingsLayout->setSpacing(0);
+    connectionSettingsLayout->addWidget(networkSettings, 1);
     connectionSettingsTab->setLayout(connectionSettingsLayout);
 
     const auto mouseCursorChanger = new MouseCursorChanger(this);
