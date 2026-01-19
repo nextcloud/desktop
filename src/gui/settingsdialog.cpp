@@ -229,7 +229,10 @@ void SettingsDialog::changeEvent(QEvent *e)
     case QEvent::StyleChange:
     case QEvent::PaletteChange:
     case QEvent::ThemeChange:
-        requestStyleUpdate();
+        customizeStyle();
+
+        // Notify the other widgets (Dark-/Light-Mode switching)
+        emit styleChanged();
         break;
     case QEvent::ActivationChange:
         if(isActiveWindow())
@@ -382,22 +385,6 @@ void SettingsDialog::accountRemoved(AccountState *s)
     }
 }
 
-void SettingsDialog::requestStyleUpdate()
-{
-    if (_styleUpdatePending) {
-        return;
-    }
-
-    _styleUpdatePending = true;
-    QTimer::singleShot(0, this, [this]() {
-        _styleUpdatePending = false;
-        customizeStyle();
-
-        // Notify the other widgets (Dark-/Light-Mode switching)
-        emit styleChanged();
-    });
-}
-
 void SettingsDialog::customizeStyle()
 {
     if (_updatingStyle) {
@@ -412,18 +399,29 @@ void SettingsDialog::customizeStyle()
     const auto isDarkWindow = baseWindowColor.lightness() < 128;
     const auto panelColor = isDarkWindow ? baseWindowColor.darker(110) : baseWindowColor.darker(105);
     setStyleSheet(QStringLiteral(
-        "#Settings { background: %1; }"
+        "#Settings { background: palette(window); }"
         "#settings_shell { background: transparent; border-radius: 0; }"
-        "#settings_navigation_scroll { background: %2; border-radius: 12px; }"
+
+        /* Navigation */
+        "#settings_navigation_scroll { background: palette(base); border-radius: 12px; }"
         "#settings_navigation_scroll > QWidget { background: transparent; border-radius: 12px; }"
         "#settings_navigation { background: transparent; border-radius: 12px; padding: 4px; }"
+
+        /* Content area */
         "#settings_content_scroll { background: transparent; border-radius: 12px; }"
         "#settings_content_scroll > QWidget { background: transparent; }"
         "#settings_content { background: transparent; }"
+
+        /* Panels */
         "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
         "#accountStatusPanel, #accountTabsPanel {"
-        " background: %2; border-radius: 10px; border: none; margin: 0px; padding: 6px; }"
-        ).arg(windowColor.name(), panelColor.name()));
+        " background: palette(alternate-base);"
+        " border-radius: 10px;"
+        " border: 1px solid palette(mid);"
+        " margin: 0px;"
+        " padding: 6px;"
+        " }"
+    ));
 
     const auto &allActions = _actionGroup->actions();
     for (const auto a : allActions) {
