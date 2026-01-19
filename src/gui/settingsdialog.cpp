@@ -42,9 +42,9 @@ namespace {
 const QString TOOLBAR_CSS()
 {
     return QStringLiteral("QToolBar { background: transparent; margin: 0; padding: 0; border: none; spacing: 0; } "
-                          "QToolBar QToolButton { background: transparent; border: none; margin: 0; padding: 6px 12px; font-size: 14px; } "
+                          "QToolBar QToolButton { background: transparent; border: none; margin: 0; padding: 8px 12px; font-size: 14px; } "
                           "QToolBar QToolBarExtension { padding:0; } "
-                          "QToolBar QToolButton:checked { background: palette(highlight); color: palette(highlightedText); border-radius: 8px; margin: 0; padding: 6px 12px; }");
+                          "QToolBar QToolButton:checked { background: #0a84ff; color: #ffffff; border-radius: 8px; margin: 0; padding: 6px 12px; }");
 }
 
 const float buttonSizeRatio = 1.618f; // golden ratio
@@ -95,7 +95,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     shellContainer->setObjectName(QLatin1String("settings_shell"));
     auto *shellLayout = new QHBoxLayout(shellContainer);
     shellLayout->setContentsMargins(0, 0, 0, 0);
-    shellLayout->setSpacing(6);
+    shellLayout->setSpacing(12);
     auto *navigationContainer = new QWidget(this);
     navigationContainer->setObjectName(QLatin1String("settings_navigation"));
     auto *navigationLayout = new QVBoxLayout(navigationContainer);
@@ -109,12 +109,14 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     navigationScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     navigationScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     navigationScroll->setWidget(navigationContainer);
+    navigationScroll->viewport()->setAutoFillBackground(false);
     auto *contentScroll = new QScrollArea(shellContainer);
     contentScroll->setObjectName(QLatin1String("settings_content_scroll"));
     contentScroll->setWidgetResizable(true);
     contentScroll->setFrameShape(QFrame::NoFrame);
     contentScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     contentScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    contentScroll->viewport()->setAutoFillBackground(false);
     auto *contentContainer = new QWidget(contentScroll);
     contentContainer->setObjectName(QLatin1String("settings_content"));
     auto *contentLayout = new QVBoxLayout(contentContainer);
@@ -273,7 +275,8 @@ void SettingsDialog::accountAdded(AccountState *s)
 
     const auto actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
     const auto accountAction = createColorAwareAction(QLatin1String(":/client/theme/account.svg"), actionText);
-
+    updateAccountAvatar(s->account().data());
+    
     if (!brandingSingleAccount) {
         accountAction->setToolTip(s->account()->displayName());
         accountAction->setIconText(shortDisplayNameForSettings(s->account().data(), static_cast<int>(height * buttonSizeRatio)));
@@ -297,7 +300,6 @@ void SettingsDialog::accountAdded(AccountState *s)
     connect(accountSettings, &AccountSettings::showIssuesList, this, &SettingsDialog::showIssuesList);
     connect(s->account().data(), &Account::accountChangedAvatar, this, &SettingsDialog::slotAccountAvatarChanged);
     connect(s->account().data(), &Account::accountChangedDisplayName, this, &SettingsDialog::slotAccountDisplayNameChanged);
-    updateAccountAvatar(s->account().data());
 
     // Connect styleChanged event, to adapt (Dark-/Light-Mode switching)
     connect(this, &SettingsDialog::styleChanged, accountSettings, &AccountSettings::slotStyleChanged);
@@ -403,8 +405,8 @@ void SettingsDialog::customizeStyle()
         "#settings_shell { background: transparent; border-radius: 0; }"
 
         /* Navigation */
-        "#settings_navigation_scroll { background: palette(base); border-radius: 12px; }"
-        "#settings_navigation_scroll > QWidget { background: transparent; border-radius: 12px; }"
+        "#settings_navigation_scroll { background: transparent; border-radius: 12px; }"
+        "#settings_navigation_scroll > QWidget { background: palette(alternate-base); border-radius: 12px; }"
         "#settings_navigation { background: transparent; border-radius: 12px; padding: 4px; }"
 
         /* Content area */
@@ -417,7 +419,6 @@ void SettingsDialog::customizeStyle()
         "#accountStatusPanel, #accountTabsPanel {"
         " background: palette(alternate-base);"
         " border-radius: 10px;"
-        " border: 1px solid palette(mid);"
         " margin: 0px;"
         " padding: 6px;"
         " }"
