@@ -405,8 +405,8 @@ void SettingsDialog::customizeStyle()
         "#settings_shell { background: transparent; border-radius: 0; }"
 
         /* Navigation */
-        "#settings_navigation_scroll { background: palette(base); border-radius: 12px; }"
-        "#settings_navigation_scroll > QWidget { background: transparent; border-radius: 12px; }"
+        "#settings_navigation_scroll { background: transparent; border-radius: 12px; }"
+        "#settings_navigation_scroll > QWidget { background: palette(alternate-base); border-radius: 12px; }"
         "#settings_navigation { background: transparent; border-radius: 12px; padding: 4px; }"
 
         /* Content area */
@@ -419,7 +419,6 @@ void SettingsDialog::customizeStyle()
         "#accountStatusPanel, #accountTabsPanel {"
         " background: palette(alternate-base);"
         " border-radius: 10px;"
-        " border: 1px solid palette(mid);"
         " margin: 0px;"
         " padding: 6px;"
         " }"
