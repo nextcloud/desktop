@@ -8,7 +8,6 @@
 #include <QPointer>
 
 #include "gui/accountstate.h"
-#include "libsync/syncresult.h"
 
 class QLocalSocket;
 
@@ -27,7 +26,6 @@ public:
     
 signals:
     void socketDestroyed(const QLocalSocket * const socket);
-    void syncStateChanged(const AccountPtr &account, SyncResult::Status state) const;
 
 public slots:
     void sendMessage(const QString &message) const;
@@ -45,8 +43,6 @@ private slots:
     void sendAccountDetails() const;
     void sendNotAuthenticated() const;
     void sendIgnoreList() const;
-
-    void reportSyncState(const QString &receivedState) const;
 
 private:
     QPointer<QLocalSocket> _socket;

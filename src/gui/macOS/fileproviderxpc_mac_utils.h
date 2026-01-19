@@ -9,6 +9,7 @@
 #import <FileProvider/FileProvider.h>
 
 #import "ClientCommunicationProtocol.h"
+#import "fileproviderservice.h"
 
 namespace OCC::Mac::FileProviderXPCUtils {
 
@@ -25,6 +26,6 @@ NSObject *getRemoteServiceObject(NSXPCConnection *connection, Protocol *protocol
  */
 NSString *getFileProviderDomainIdentifier(NSObject<ClientCommunicationProtocol> *clientCommService);
 
-QHash<QString, void*> processClientCommunicationConnections(NSArray<NSXPCConnection *> *connections);
+QHash<QString, void*> processClientCommunicationConnections(NSArray<NSXPCConnection *> *connections, OCC::Mac::FileProviderService *service);
 
 }

@@ -162,7 +162,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
     }
 
     func testDeleteDoesNotPropagateIgnoredFile() async throws {
-        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.log", "/tmp/"])
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.log", "/tmp/"], log: FileProviderLogMock())
         let metadata = SendableItemMetadata(
             ocId: "ignored-file-id",
             fileName: "debug.log",
