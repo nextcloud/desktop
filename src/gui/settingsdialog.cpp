@@ -109,12 +109,14 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     navigationScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     navigationScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     navigationScroll->setWidget(navigationContainer);
+    navigationScroll->viewport()->setAutoFillBackground(false);
     auto *contentScroll = new QScrollArea(shellContainer);
     contentScroll->setObjectName(QLatin1String("settings_content_scroll"));
     contentScroll->setWidgetResizable(true);
     contentScroll->setFrameShape(QFrame::NoFrame);
     contentScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     contentScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    contentScroll->viewport()->setAutoFillBackground(false);
     auto *contentContainer = new QWidget(contentScroll);
     contentContainer->setObjectName(QLatin1String("settings_content"));
     auto *contentLayout = new QVBoxLayout(contentContainer);
