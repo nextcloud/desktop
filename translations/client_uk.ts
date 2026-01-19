@@ -40,7 +40,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="168"/>
         <source>No activities yet</source>
-        <translation>Поки не було дій</translation>
+        <translation>Відсутні події</translation>
     </message>
 </context>
 <context>
