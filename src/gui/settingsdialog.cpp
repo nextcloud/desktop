@@ -99,11 +99,12 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     shellLayout->setSpacing(12);
     auto *navigationContainer = new QWidget(this);
     navigationContainer->setObjectName(QLatin1String("settings_navigation"));
+    navigationContainer->setAttribute(Qt::WA_StyledBackground);
     auto *navigationLayout = new QVBoxLayout(navigationContainer);
     navigationLayout->setContentsMargins(0, 0, 0, 0);
     navigationLayout->setSpacing(0);
-    navigationLayout->addStretch(1);
     navigationLayout->addWidget(_toolBar);
+    navigationLayout->addStretch(1);
     auto *navigationScroll = new QScrollArea(shellContainer);
     navigationScroll->setObjectName(QLatin1String("settings_navigation_scroll"));
     navigationScroll->setWidgetResizable(true);
@@ -409,8 +410,8 @@ void SettingsDialog::customizeStyle()
         "#settings_shell { background: transparent; border-radius: 0; }"
 
         /* Navigation */
-        "#settings_navigation_scroll { background: transparent; border-radius: 12px; }"
-        "#settings_navigation_viewport { background: transparent; border-radius: 12px; }"
+        "#settings_navigation_scroll { background: transparent; border: none; }"
+        "#settings_navigation_viewport { background: transparent; }"
         "#settings_navigation { background: palette(alternate-base); border-radius: 12px; padding: 4px; }"
 
         /* Content area */
