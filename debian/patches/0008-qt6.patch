@@ -533,7 +533,7 @@ index d139565a56..41e2924fce 100644
  #include <QSettings>
  #include <QTimer>
 diff --git a/src/gui/application.cpp b/src/gui/application.cpp
-index bea238ecc0..4f4bd4c347 100644
+index 1454d93040..c70755f28a 100644
 --- a/src/gui/application.cpp
 +++ b/src/gui/application.cpp
 @@ -37,6 +37,7 @@
@@ -544,7 +544,7 @@ index bea238ecc0..4f4bd4c347 100644
  
  #include "config.h"
  
-@@ -1031,7 +1032,7 @@ void Application::setupTranslations()
+@@ -1027,7 +1028,7 @@ void Application::setupTranslations()
  {
      qCInfo(lcApplication) << "System UI languages are:" << QLocale::system().uiLanguages();
      const auto enforcedLocale = enforcedLanguage();
@@ -601,7 +601,7 @@ index 42a27bf6e6..4271780812 100644
  #include "folderstatusdelegate.h"
  #include <account.h>
 diff --git a/src/gui/folderwizard.cpp b/src/gui/folderwizard.cpp
-index 9aed5dfbdf..95e8a736a9 100644
+index 767f3c9bef..ba26c2c5ca 100644
 --- a/src/gui/folderwizard.cpp
 +++ b/src/gui/folderwizard.cpp
 @@ -15,6 +15,7 @@
@@ -684,7 +684,7 @@ index b62a7b3c07..85de6f00a1 100644
      void slotShowLegalNotice();
      void slotRemotePollIntervalChanged(int seconds);
 diff --git a/src/gui/owncloudsetupwizard.cpp b/src/gui/owncloudsetupwizard.cpp
-index f4840c1730..dcadd89bdf 100644
+index d70dd35817..585a86502e 100644
 --- a/src/gui/owncloudsetupwizard.cpp
 +++ b/src/gui/owncloudsetupwizard.cpp
 @@ -9,6 +9,7 @@
@@ -729,7 +729,7 @@ index 58efdddaa7..57c7c5d7bb 100644
  #include "syncfileitem.h"
  #include "filesystem.h"
 diff --git a/src/gui/sslerrordialog.cpp b/src/gui/sslerrordialog.cpp
-index cc0397f295..c4753ab48d 100644
+index b6ec909176..50716a585e 100644
 --- a/src/gui/sslerrordialog.cpp
 +++ b/src/gui/sslerrordialog.cpp
 @@ -7,6 +7,7 @@
@@ -939,13 +939,13 @@ index dfdc39b91c..2c6954c568 100644
  using namespace Qt::StringLiterals;
  
 diff --git a/src/gui/tray/activitylistmodel.cpp b/src/gui/tray/activitylistmodel.cpp
-index 674aee5a72..af5b56daf1 100644
+index 45f319b5e1..26485d9e65 100644
 --- a/src/gui/tray/activitylistmodel.cpp
 +++ b/src/gui/tray/activitylistmodel.cpp
-@@ -17,6 +17,7 @@
- #include "caseclashfilenamedialog.h"
+@@ -18,6 +18,7 @@
  #include "activitydata.h"
  #include "systray.h"
+ #include "common/utility.h"
 +#include "common/qtcompat.h"
  
  #include <QtCore>
