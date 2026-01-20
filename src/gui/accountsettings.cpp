@@ -1497,37 +1497,9 @@ void AccountSettings::slotSelectiveSyncChanged(const QModelIndex &topLeft,
 
 void AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync()
 {
-    if (!_accountState->account()->e2e()->isInitialized()) {
-        return;
-    }
-
+    // FolderMan handles E2E folder restoration globally via slotE2eInitializationStateChanged
+    // Just disconnect this signal to avoid duplicate handling
     disconnect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, &AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync);
-
-    for (const auto folder : FolderMan::instance()->map()) {
-        if (folder->accountState() != _accountState) {
-            continue;
-        }
-        bool ok = false;
-        const auto foldersToRemoveFromBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, &ok);
-        if (foldersToRemoveFromBlacklist.isEmpty()) {
-            continue;
-        }
-        auto blackList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
-        const auto blackListSize = blackList.size();
-        if (blackListSize == 0) {
-            continue;
-        }
-        for (const auto &pathToRemoveFromBlackList : foldersToRemoveFromBlacklist) {
-            blackList.removeAll(pathToRemoveFromBlackList);
-        }
-        if (blackList.size() != blackListSize) {
-            if (folder->isSyncRunning()) {
-                folderTerminateSyncAndUpdateBlackList(blackList, folder, foldersToRemoveFromBlacklist);
-                return;
-            }
-            updateBlackListAndScheduleFolderSync(blackList, folder, foldersToRemoveFromBlacklist);
-        }
-    }
 }
 
 void AccountSettings::slotE2eEncryptionCertificateNeedMigration()
@@ -1536,35 +1508,6 @@ void AccountSettings::slotE2eEncryptionCertificateNeedMigration()
     connect(actionMigrateCertificate, &QAction::triggered, this, [this] {
         migrateCertificateForAccount(_accountState->account());
     });
-}
-
-void AccountSettings::updateBlackListAndScheduleFolderSync(const QStringList &blackList, OCC::Folder *folder, const QStringList &foldersToRemoveFromBlacklist) const
-{
-    folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
-    folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, {});
-    for (const auto &pathToRemoteDiscover : foldersToRemoveFromBlacklist) {
-        folder->journalDb()->schedulePathForRemoteDiscovery(pathToRemoteDiscover);
-    }
-    FolderMan::instance()->scheduleFolder(folder);
-}
-
-void AccountSettings::folderTerminateSyncAndUpdateBlackList(const QStringList &blackList, OCC::Folder *folder, const QStringList &foldersToRemoveFromBlacklist)
-{
-    if (_folderConnections.contains(folder->alias())) {
-        qCWarning(lcAccountSettings) << "Folder " << folder->alias() << "is already terminating the sync.";
-        return;
-    }
-    // in case sync is already running - terminate it and start a new one
-    const QMetaObject::Connection syncTerminatedConnection = connect(folder, &Folder::syncFinished, this, [this, blackList, folder, foldersToRemoveFromBlacklist]() {
-        const auto foundConnectionIt = _folderConnections.find(folder->alias());
-        if (foundConnectionIt != _folderConnections.end()) {
-            disconnect(*foundConnectionIt);
-            _folderConnections.erase(foundConnectionIt);
-        }
-        updateBlackListAndScheduleFolderSync(blackList, folder, foldersToRemoveFromBlacklist);
-    });
-    _folderConnections.insert(folder->alias(), syncTerminatedConnection);
-    folder->slotTerminateSync();
 }
 
 void AccountSettings::refreshSelectiveSyncStatus()
@@ -1716,14 +1659,14 @@ void AccountSettings::forgetE2eEncryption()
     const auto account = _accountState->account();
     if (!account->e2e()->isInitialized()) {
         FolderMan::instance()->removeE2eFiles(account);
-        
+
         // Clear E2E restoration tracking list for all folders
         for (const auto folder : FolderMan::instance()->map()) {
             if (folder->accountState()->account() == account) {
                 folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, {});
             }
         }
-        
+
         // Reset E2E initialization state to allow re-setup
         account->setE2eEncryptionKeysGenerationAllowed(false);
         account->setAskUserForMnemonic(false);

@@ -111,10 +111,6 @@ protected slots:
     void slotE2eEncryptionCertificateNeedMigration();
 
 private slots:
-    void updateBlackListAndScheduleFolderSync(const QStringList &blackList, OCC::Folder *folder, const QStringList &foldersToRemoveFromBlacklist) const;
-    void folderTerminateSyncAndUpdateBlackList(const QStringList &blackList, OCC::Folder *folder, const QStringList &foldersToRemoveFromBlacklist);
-
-private slots:
     void displayMnemonic(const QString &mnemonic);
     void forgetEncryptionOnDeviceForAccount(const OCC::AccountPtr &account) const;
     void migrateCertificateForAccount(const OCC::AccountPtr &account);
@@ -147,8 +143,6 @@ private:
     QAction *_addAccountAction = nullptr;
 
     bool _menuShown = false;
-
-    QHash<QString, QMetaObject::Connection> _folderConnections;
 };
 
 } // namespace OCC
