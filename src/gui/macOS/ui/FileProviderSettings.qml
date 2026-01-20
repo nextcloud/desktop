@@ -29,15 +29,13 @@ Page {
     }
 
     padding: Style.standardSpacing
+    // 1. Tell the Page how tall it actually is
+    implicitHeight: rootColumn.implicitHeight + topPadding + bottomPadding
 
     ColumnLayout {
         id: rootColumn
 
-        anchors {
-            top: parent.top
-            left: parent.left
-            right: parent.right
-        }
+        spacing: Style.standardSpacing
 
         RowLayout {
             Layout.fillWidth: true
