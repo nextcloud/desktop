@@ -1,0 +1,15 @@
+//  SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
+
+// This file defines Xcode build settings applied to all targets of this project.
+// This avoids redundant definition of the same settings and values per target in the Xcode project file.
+
+CODE_SIGN_STYLE=Manual
+CODE_SIGN_IDENTITY=Apple Development
+CURRENT_PROJECT_VERSION=1
+DEVELOPMENT_TEAM=
+MACOSX_DEPLOYMENT_TARGET=12.0
+MARKETING_VERSION=1.0.0
+SWIFT_VERSION=5.0
+
+#include "NextcloudDev/Build.xcconfig"

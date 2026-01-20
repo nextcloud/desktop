@@ -97,3 +97,12 @@ You have to have local repository clones of the packages somewhere locally, thou
 Drag and drop the package folders into the project navigator of the NextcloudIntegration project.
 This will cause Xcode to resolve to the local and editable package instead of a cached read-only clone from GitHub.
 When you then run the build action of this root project, the local dependency is built as well.
+
+## FileProviderApp
+
+This project contains a native macOS app target which is an alternative to the actual Qt-based multi-platform app maintained in this directory.
+It is minimal and meant for contributors to the macOS file provider extension.
+Its goals are to accelerate the development workflow and lower the barriers to contribute.
+
+If work focusses solely on what happens in Finder or what is happening inside the file provider extension itself, this is a shortcut to solutions.
+If work involves the interprocess communication between the actual client and file provider extension, this is not the right entry point and you should better edit and build the whole Qt client.
