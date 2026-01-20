@@ -17,6 +17,7 @@
 #include <QNetworkProxy>
 #include <QString>
 #include <QList>
+#include <QPalette>
 #include <type_traits>
 
 namespace OCC {
@@ -27,7 +28,15 @@ NetworkSettings::NetworkSettings(const AccountPtr &account, QWidget *parent)
     , _account(account)
 {
     _ui->setupUi(this);
-
+    setAutoFillBackground(true);
+    setBackgroundRole(QPalette::AlternateBase);
+    _ui->proxyGroupBox->setAutoFillBackground(true);
+    _ui->proxyGroupBox->setBackgroundRole(QPalette::AlternateBase);
+    _ui->downloadBox->setAutoFillBackground(true);
+    _ui->downloadBox->setBackgroundRole(QPalette::AlternateBase);
+    _ui->uploadBox->setAutoFillBackground(true);
+    _ui->uploadBox->setBackgroundRole(QPalette::AlternateBase);
+    
     _ui->manualSettings->setVisible(_ui->manualProxyRadioButton->isChecked());
 
     _ui->proxyGroupBox->setVisible(!Theme::instance()->doNotUseProxy());
