@@ -470,8 +470,9 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
             continue;
         }
 
-        if (!m.hasMatch())
+        if (!m.hasMatch()) {
             return CSYNC_NOT_EXCLUDED;
+        }
         if (m.capturedStart(QStringLiteral("exclude")) != -1) {
             return CSYNC_FILE_EXCLUDE_LIST;
         } else if (m.capturedStart(QStringLiteral("excluderemove")) != -1) {
@@ -494,12 +495,13 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
             continue;
         }
 
-        if (m.hasMatch()) {
-            if (m.capturedStart(QStringLiteral("exclude")) != -1) {
-                return CSYNC_FILE_EXCLUDE_LIST;
-            } else if (m.capturedStart(QStringLiteral("excluderemove")) != -1) {
-                return CSYNC_FILE_EXCLUDE_AND_REMOVE;
-            }
+        if (!m.hasMatch()) {
+            continue;
+        }
+        if (m.capturedStart(QStringLiteral("exclude")) != -1) {
+            return CSYNC_FILE_EXCLUDE_LIST;
+        } else if (m.capturedStart(QStringLiteral("excluderemove")) != -1) {
+            return CSYNC_FILE_EXCLUDE_AND_REMOVE;
         }
     }
     return CSYNC_NOT_EXCLUDED;
@@ -533,12 +535,13 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::fullPatternMatch(const QString &p, ItemType fi
             continue;
         }
 
-        if (m.hasMatch()) {
-            if (m.capturedStart(QStringLiteral("exclude")) != -1) {
-                return CSYNC_FILE_EXCLUDE_LIST;
-            } else if (m.capturedStart(QStringLiteral("excluderemove")) != -1) {
-                return CSYNC_FILE_EXCLUDE_AND_REMOVE;
-            }
+        if (!m.hasMatch()) {
+            continue;
+        }
+        if (m.capturedStart(QStringLiteral("exclude")) != -1) {
+            return CSYNC_FILE_EXCLUDE_LIST;
+        } else if (m.capturedStart(QStringLiteral("excluderemove")) != -1) {
+            return CSYNC_FILE_EXCLUDE_AND_REMOVE;
         }
     }
 
