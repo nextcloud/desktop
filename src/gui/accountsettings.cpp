@@ -45,6 +45,7 @@
 #include <QListWidgetItem>
 #include <QMessageBox>
 #include <QAction>
+#include <QAbstractScrollArea>
 #include <QSizePolicy>
 #include <QVBoxLayout>
 #include <QTreeView>
@@ -188,10 +189,10 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->tabWidget->setStyleSheet(QStringLiteral(
         "QTabWidget { background: transparent; }"
         "QTabWidget::pane { background: palette(alternate-base); border: none; }"
-        "QWidget#standardSyncTab, QWidget#connectionSettingsTab, QWidget#fileProviderPanelContents {"
+        "QWidget#syncFoldersPanelContents, QWidget#connectionSettingsTab, QWidget#fileProviderPanelContents {"
         " background: palette(alternate-base); }"));
-    _ui->standardSyncTab->setAutoFillBackground(true);
-    _ui->standardSyncTab->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->syncFoldersPanelContents->setAutoFillBackground(true);
+    _ui->syncFoldersPanelContents->setAttribute(Qt::WA_StyledBackground, true);
     _ui->fileProviderPanelContents->setAutoFillBackground(true);
     _ui->fileProviderPanelContents->setAttribute(Qt::WA_StyledBackground, true);
     _ui->connectionSettingsTab->setAutoFillBackground(true);
@@ -206,6 +207,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->_folderList->setStyleSheet(QStringLiteral("QTreeView { background: palette(alternate-base); }"));
     _ui->_folderList->setItemDelegate(delegate);
     _ui->_folderList->setModel(_model);
+    _ui->_folderList->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
     _ui->_folderList->setMinimumWidth(300);
 
     new ToolTipUpdater(_ui->_folderList);
@@ -263,6 +265,12 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     refreshSelectiveSyncStatus();
     connect(_model, &QAbstractItemModel::rowsInserted,
         this, &AccountSettings::refreshSelectiveSyncStatus);
+    connect(_model, &QAbstractItemModel::rowsInserted,
+        _ui->_folderList, &QWidget::updateGeometry);
+    connect(_model, &QAbstractItemModel::rowsRemoved,
+        _ui->_folderList, &QWidget::updateGeometry);
+    connect(_model, &QAbstractItemModel::modelReset,
+        _ui->_folderList, &QWidget::updateGeometry);
 
     auto *syncNowAction = new QAction(this);
     syncNowAction->setShortcut(QKeySequence(Qt::Key_F6));
