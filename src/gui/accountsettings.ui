@@ -162,6 +162,30 @@
     </widget>
    </item>
    <item row="1" column="0">
+ <widget class="QFrame" name="fileProviderPanel">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <layout class="QVBoxLayout" name="fileProviderPanelLayout">
+      <property name="leftMargin">
+       <number>12</number>
+      </property>
+      <property name="topMargin">
+       <number>12</number>
+      </property>
+      <property name="rightMargin">
+       <number>12</number>
+      </property>
+      <property name="bottomMargin">
+       <number>12</number>
+      </property>
+      <item>
+       <widget class="QWidget" name="fileProviderPanelContents" native="true"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
     <widget class="QFrame" name="accountTabsPanel">
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
@@ -230,11 +254,6 @@
            </widget>
           </item>
          </layout>
-        </widget>
-        <widget class="QWidget" name="fileProviderTab">
-         <attribute name="title">
-          <string>Virtual file sync</string>
-         </attribute>
         </widget>
         <widget class="QWidget" name="connectionSettingsTab">
          <attribute name="title">
