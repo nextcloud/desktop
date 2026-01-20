@@ -439,12 +439,12 @@ QStringList Capabilities::forbiddenFilenameExtensions() const
 
 bool Capabilities::serverHasDeclarativeUi() const
 {
-    return _capabilities[QStringLiteral("declarativeui")].toMap().isEmpty();
+    return _capabilities[QStringLiteral("client_integration")].toMap().isEmpty();
 }
 
 QList<QVariantMap> Capabilities::contextMenuByMimeType(const QMimeType fileMimeType) const
 {
-    const auto declarativeUiMap = _capabilities.value("declarativeui").toMap();
+    const auto declarativeUiMap = _capabilities.value("client_integration").toMap();
     QVariantList contextMenuMapList;
     for (const auto &declarativeUiApp : std::as_const(declarativeUiMap)) {
         const auto declarativeUiContextMenuMap = declarativeUiApp.toMap();
@@ -464,6 +464,8 @@ QList<QVariantMap> Capabilities::contextMenuByMimeType(const QMimeType fileMimeT
     qCDebug(lcServerCapabilities) << "Filtering file actions by mimeType:" << fileMimeTypeName;
     const auto fileMimeTypeAliases = fileMimeType.aliases();
     qCDebug(lcServerCapabilities) << "File actions mimeType aliases:" << fileMimeTypeAliases;
+    const auto fileMimeTypeParents = fileMimeType.parentMimeTypes();
+    qCDebug(lcServerCapabilities) << "File actions parent mimeTypes:" << fileMimeTypeParents;
 
     QList<QVariantMap> contextMenuByMimeType;
     for (const auto &contextMenu : std::as_const(contextMenuMapList)) {
@@ -472,10 +474,24 @@ QList<QVariantMap> Capabilities::contextMenuByMimeType(const QMimeType fileMimeT
         const auto filesMimeTypeFilterList = mimetypeFilters.split(",", Qt::SkipEmptyParts);
 
         for (const auto &mimeType : std::as_const(filesMimeTypeFilterList)) {
-            auto capabilitiesMimeTypeName = mimeType.trimmed();
-            qCDebug(lcServerCapabilities) << "Context menu for mimeType:" << capabilitiesMimeTypeName;
+            auto capabilitiesMimeType = mimeType.trimmed();
+            QString mimeTypeAlias;
+            if(const auto capabilitiesMimeTypeSplit = capabilitiesMimeType.split("/");
+                !capabilitiesMimeTypeSplit.isEmpty()){
+                mimeTypeAlias = capabilitiesMimeTypeSplit.last();
+            }
 
-            if (!fileMimeTypeName.startsWith(capabilitiesMimeTypeName) && !fileMimeTypeAliases.contains(capabilitiesMimeTypeName)) {
+            qCDebug(lcServerCapabilities) << "Context menu for mimeType:" << mimeTypeAlias << capabilitiesMimeType;
+
+            qCDebug(lcServerCapabilities) << fileMimeTypeName << "inherits" << capabilitiesMimeType << "?"
+                                          << fileMimeType.inherits(capabilitiesMimeType);
+
+            if (!fileMimeTypeName.startsWith(capabilitiesMimeType)
+                && !fileMimeTypeName.contains(capabilitiesMimeType)
+                && !fileMimeType.inherits(capabilitiesMimeType) &&
+                !fileMimeTypeName.startsWith(mimeTypeAlias)
+                && !fileMimeTypeName.contains(mimeTypeAlias)
+                && !fileMimeType.inherits(mimeTypeAlias)) {
                 continue;
             }
 
