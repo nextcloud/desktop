@@ -471,7 +471,7 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
         }
 
         if (!m.hasMatch()) {
-            return CSYNC_NOT_EXCLUDED;
+            continue;
         }
         if (m.capturedStart(QStringLiteral("exclude")) != -1) {
             return CSYNC_FILE_EXCLUDE_LIST;
