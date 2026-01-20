@@ -102,6 +102,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     auto *navigationLayout = new QVBoxLayout(navigationContainer);
     navigationLayout->setContentsMargins(0, 0, 0, 0);
     navigationLayout->setSpacing(0);
+    navigationLayout->addStretch(1);
     navigationLayout->addWidget(_toolBar);
     auto *navigationScroll = new QScrollArea(shellContainer);
     navigationScroll->setObjectName(QLatin1String("settings_navigation_scroll"));
@@ -111,6 +112,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     navigationScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     navigationScroll->setWidget(navigationContainer);
     navigationScroll->viewport()->setObjectName("settings_navigation_viewport");
+    navigationScroll->viewport()->setAutoFillBackground(false);
     navigationScroll->viewport()->setStyleSheet("background: transparent;");
     auto *contentScroll = new QScrollArea(shellContainer);
     contentScroll->setObjectName(QLatin1String("settings_content_scroll"));
