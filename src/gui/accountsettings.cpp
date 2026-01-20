@@ -1685,6 +1685,8 @@ void AccountSettings::setupE2eEncryption()
 
     if (_accountState->account()->e2e()->isInitialized()) {
         slotE2eEncryptionMnemonicReady();
+        // Ensure we restore any E2E folders that may have been blacklisted during startup
+        QTimer::singleShot(100, this, &AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync);
     } else {
         setupE2eEncryptionMessage();
 
@@ -1714,6 +1716,17 @@ void AccountSettings::forgetE2eEncryption()
     const auto account = _accountState->account();
     if (!account->e2e()->isInitialized()) {
         FolderMan::instance()->removeE2eFiles(account);
+        
+        // Clear E2E restoration tracking list for all folders
+        for (const auto folder : FolderMan::instance()->map()) {
+            if (folder->accountState()->account() == account) {
+                folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, {});
+            }
+        }
+        
+        // Reset E2E initialization state to allow re-setup
+        account->setE2eEncryptionKeysGenerationAllowed(false);
+        account->setAskUserForMnemonic(false);
     }
 }
 
