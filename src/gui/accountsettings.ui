@@ -162,23 +162,30 @@
     </widget>
    </item>
    <item row="1" column="0">
- <widget class="QFrame" name="fileProviderPanel">
+    <widget class="QFrame" name="fileProviderPanel">
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
      </property>
      <layout class="QVBoxLayout" name="fileProviderPanelLayout">
       <property name="leftMargin">
-       <number>12</number>
+       <number>0</number>
       </property>
       <property name="topMargin">
-       <number>12</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>12</number>
+       <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>12</number>
+       <number>0</number>
       </property>
+      <item>
+       <widget class="QLabel" name="fileProviderPanelTitle">
+        <property name="text">
+         <string>Virtual file provider</string>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="QWidget" name="fileProviderPanelContents" native="true"/>
       </item>
