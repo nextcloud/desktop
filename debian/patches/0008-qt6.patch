@@ -533,7 +533,7 @@ index d139565a56..41e2924fce 100644
  #include <QSettings>
  #include <QTimer>
 diff --git a/src/gui/application.cpp b/src/gui/application.cpp
-index bea238ecc0..4f4bd4c347 100644
+index 1454d93040..c70755f28a 100644
 --- a/src/gui/application.cpp
 +++ b/src/gui/application.cpp
 @@ -37,6 +37,7 @@
@@ -544,7 +544,7 @@ index bea238ecc0..4f4bd4c347 100644
  
  #include "config.h"
  
-@@ -1031,7 +1032,7 @@ void Application::setupTranslations()
+@@ -1027,7 +1028,7 @@ void Application::setupTranslations()
  {
      qCInfo(lcApplication) << "System UI languages are:" << QLocale::system().uiLanguages();
      const auto enforcedLocale = enforcedLanguage();
@@ -601,7 +601,7 @@ index 42a27bf6e6..4271780812 100644
  #include "folderstatusdelegate.h"
  #include <account.h>
 diff --git a/src/gui/folderwizard.cpp b/src/gui/folderwizard.cpp
-index 3dc10ad198..637b58acf5 100644
+index fae6d197a0..68230de64f 100644
 --- a/src/gui/folderwizard.cpp
 +++ b/src/gui/folderwizard.cpp
 @@ -15,6 +15,7 @@
@@ -622,7 +622,7 @@ index 3dc10ad198..637b58acf5 100644
          });
          _virtualFilesCheckBox->setChecked(bestAvailableVfsMode() == Vfs::WindowsCfApi);
 diff --git a/src/gui/generalsettings.cpp b/src/gui/generalsettings.cpp
-index d1caae9ac6..eaf5474f4d 100644
+index 7aedc1b8af..294c18f3ed 100644
 --- a/src/gui/generalsettings.cpp
 +++ b/src/gui/generalsettings.cpp
 @@ -44,6 +44,7 @@
@@ -633,7 +633,7 @@ index d1caae9ac6..eaf5474f4d 100644
  #include <KZip>
  #include <chrono>
  
-@@ -197,6 +198,7 @@ bool createDebugArchive(const QString &filename)
+@@ -200,6 +201,7 @@ bool createDebugArchive(const QString &filename)
  }
  
  }
@@ -641,7 +641,7 @@ index d1caae9ac6..eaf5474f4d 100644
  
  namespace OCC {
  
-@@ -290,7 +292,11 @@ GeneralSettings::GeneralSettings(QWidget *parent)
+@@ -293,7 +295,11 @@ GeneralSettings::GeneralSettings(QWidget *parent)
      _ui->monoIconsCheckBox->setVisible(Theme::instance()->monoIconsAvailable());
  
      connect(_ui->ignoredFilesButton, &QAbstractButton::clicked, this, &GeneralSettings::slotIgnoreFilesEditor);
@@ -653,7 +653,7 @@ index d1caae9ac6..eaf5474f4d 100644
  
      // accountAdded means the wizard was finished and the wizard might change some options.
      connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
-@@ -654,6 +660,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
+@@ -657,6 +663,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
      }
  }
  
@@ -661,7 +661,7 @@ index d1caae9ac6..eaf5474f4d 100644
  void GeneralSettings::slotCreateDebugArchive()
  {
      const auto filename = QFileDialog::getSaveFileName(
-@@ -675,6 +682,7 @@ void GeneralSettings::slotCreateDebugArchive()
+@@ -678,6 +685,7 @@ void GeneralSettings::slotCreateDebugArchive()
          );
      }
  }
@@ -684,7 +684,7 @@ index b62a7b3c07..85de6f00a1 100644
      void slotShowLegalNotice();
      void slotRemotePollIntervalChanged(int seconds);
 diff --git a/src/gui/owncloudsetupwizard.cpp b/src/gui/owncloudsetupwizard.cpp
-index 8fe46dca5d..83a5810d95 100644
+index 0ae0ac1d1b..db96e21848 100644
 --- a/src/gui/owncloudsetupwizard.cpp
 +++ b/src/gui/owncloudsetupwizard.cpp
 @@ -9,6 +9,7 @@
@@ -729,7 +729,7 @@ index 3ffbfd377b..1a4eb9d454 100644
  #include "syncfileitem.h"
  #include "filesystem.h"
 diff --git a/src/gui/sslerrordialog.cpp b/src/gui/sslerrordialog.cpp
-index cc0397f295..c4753ab48d 100644
+index b6ec909176..50716a585e 100644
 --- a/src/gui/sslerrordialog.cpp
 +++ b/src/gui/sslerrordialog.cpp
 @@ -7,6 +7,7 @@
@@ -939,13 +939,13 @@ index dfdc39b91c..2c6954c568 100644
  using namespace Qt::StringLiterals;
  
 diff --git a/src/gui/tray/activitylistmodel.cpp b/src/gui/tray/activitylistmodel.cpp
-index 674aee5a72..af5b56daf1 100644
+index 45f319b5e1..26485d9e65 100644
 --- a/src/gui/tray/activitylistmodel.cpp
 +++ b/src/gui/tray/activitylistmodel.cpp
-@@ -17,6 +17,7 @@
- #include "caseclashfilenamedialog.h"
+@@ -18,6 +18,7 @@
  #include "activitydata.h"
  #include "systray.h"
+ #include "common/utility.h"
 +#include "common/qtcompat.h"
  
  #include <QtCore>
