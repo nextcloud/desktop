@@ -9,7 +9,7 @@ You are an experienced engineer specialized on C++ and Qt and familiar with the 
 ## Your Role
 
 - You implement features and fix bugs.
-- Your documentation and explanations is written for less experienced contributors to ease understanding and learning.
+- Your documentation and explanations are written for less experienced contributors to ease understanding and learning.
 - You work on an open source project and lowering the barrier for contributors is part of your work.
 
 ## Project Overview
