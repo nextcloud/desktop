@@ -20,6 +20,7 @@
 #include <pushnotifications.h>
 #include <syncengine.h>
 #include "updatee2eefolderusersmetadatajob.h"
+#include "libsync/clientsideencryption.h"
 
 #ifdef Q_OS_MACOS
 #include <CoreServices/CoreServices.h>
@@ -861,6 +862,23 @@ void FolderMan::slotAccountStateChanged()
 
     if (accountState->isConnected()) {
         qCInfo(lcFolderMan) << "Account" << accountName << "connected, scheduling its folders";
+        
+        // Set up E2E initialization tracking for this account
+        if (accountState->account()->capabilities().clientSideEncryptionAvailable()) {
+            if (accountState->account()->e2e()) {
+                // Connect to E2E initialization signals to restore blacklisted folders when ready
+                connect(accountState->account()->e2e(), &ClientSideEncryption::initializationStateChanged,
+                        this, &FolderMan::slotE2eInitializationStateChanged, Qt::UniqueConnection);
+                
+                // If E2E is already initialized, trigger immediate folder restoration
+                if (accountState->account()->e2e()->isInitialized()) {
+                    qCInfo(lcFolderMan) << "E2E already initialized for account" << accountName << "- checking for folders to restore";
+                    QTimer::singleShot(500, [this, accountState]() {
+                        restoreE2eFoldersForAccount(accountState);
+                    });
+                }
+            }
+        }
 
         const auto folderMapValues = _folderMap.values();
         for (const auto f : folderMapValues) {
@@ -1361,6 +1379,72 @@ void FolderMan::addFolderToSelectiveSyncList(const QString &path, const SyncJour
         break;
     default:
         Q_UNREACHABLE();
+    }
+}
+
+void FolderMan::restoreE2eFoldersForAccount(AccountState *accountState)
+{
+    if (!accountState || !accountState->account()->e2e() || !accountState->account()->e2e()->isInitialized()) {
+        qCWarning(lcFolderMan) << "Cannot restore E2E folders - E2E not properly initialized";
+        return;
+    }
+    
+    qCInfo(lcFolderMan) << "Restoring E2E encrypted folders for account" << accountState->account()->displayName();
+    
+    for (const auto &folder : _folderMap) {
+        if (folder->accountState() != accountState) {
+            continue;
+        }
+        
+        bool ok = false;
+        const auto foldersToRemoveFromBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, &ok);
+        if (!ok || foldersToRemoveFromBlacklist.isEmpty()) {
+            continue;
+        }
+        
+        auto blackList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+        if (!ok) {
+            qCWarning(lcFolderMan) << "Failed to read blacklist for folder" << folder->alias();
+            continue;
+        }
+        
+        bool folderModified = false;
+        for (const auto &pathToRemove : foldersToRemoveFromBlacklist) {
+            if (blackList.removeAll(pathToRemove) > 0) {
+                folderModified = true;
+                qCInfo(lcFolderMan) << "Restored E2E folder from blacklist:" << pathToRemove << "in folder" << folder->alias();
+            }
+        }
+        
+        if (folderModified) {
+            folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
+            folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, {});
+            
+            // Schedule the folder for sync to pick up the restored folders
+            if (folder->canSync()) {
+                scheduleFolder(folder);
+            }
+        } else {
+            // Clear the restoration list even if no changes were made
+            folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, {});
+        }
+    }
+}
+
+void FolderMan::slotE2eInitializationStateChanged(ClientSideEncryption::InitializationState state)
+{
+    qCInfo(lcFolderMan) << "E2E initialization state changed to:" << static_cast<int>(state);
+    
+    if (state == ClientSideEncryption::InitializationState::Initialized) {
+        // E2E is now initialized - restore blacklisted folders and schedule resync  
+        qCInfo(lcFolderMan) << "E2E initialized - restoring encrypted folders";
+        
+        const auto accountStates = AccountManager::instance()->accounts();
+        for (const auto &accountState : accountStates) {
+            if (accountState && accountState->account() && accountState->account()->e2e() && accountState->account()->e2e()->isInitialized()) {
+                restoreE2eFoldersForAccount(accountState.data());
+            }
+        }
     }
 }
 

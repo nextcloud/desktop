@@ -18,6 +18,7 @@
 #include "navigationpanehelper.h"
 #endif
 #include "syncfileitem.h"
+#include "libsync/clientsideencryption.h"
 
 class TestFolderMan;
 class TestCfApiShellExtensionsIPC;
@@ -294,6 +295,7 @@ private slots:
     void slotFolderCanSyncChanged();
     void slotFolderSyncStarted();
     void slotFolderSyncFinished(const OCC::SyncResult &);
+    void slotE2eInitializationStateChanged(OCC::ClientSideEncryption::InitializationState state);
 
     void slotRunOneEtagJob();
     void slotEtagJobDestroyed(QObject *);
@@ -368,6 +370,8 @@ private:
     [[nodiscard]] bool isSwitchToVfsNeeded(const FolderDefinition &folderDefinition) const;
 
     void addFolderToSelectiveSyncList(const QString &path, const SyncJournalDb::SelectiveSyncListType list);
+    
+    void restoreE2eFoldersForAccount(AccountState *accountState);
 
     QSet<Folder *> _disabledFolders;
     Folder::Map _folderMap;
