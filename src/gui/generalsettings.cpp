@@ -439,6 +439,10 @@ void GeneralSettings::slotUpdateInfo()
         connect(_ui->restartButton, &QAbstractButton::clicked, ocupdater, &OCUpdater::slotStartInstaller, Qt::UniqueConnection);
 
         auto status = ocupdater->statusString(OCUpdater::UpdateStatusStringFormat::Html);
+        if (config.serverHasValidSubscription()) {
+            status.append(QStringLiteral("<br/>%1")
+                              .arg(tr("You are connected to at least one enterprise system and cannot change the update channel.")));
+        }
         Theme::replaceLinkColorStringBackgroundAware(status);
 
         _ui->updateStateLabel->setOpenExternalLinks(false);
@@ -454,7 +458,13 @@ void GeneralSettings::slotUpdateInfo()
 #if defined(Q_OS_MACOS) && defined(HAVE_SPARKLE)
     else if (const auto sparkleUpdater = qobject_cast<SparkleUpdater *>(updater)) {
         connect(sparkleUpdater, &SparkleUpdater::statusChanged, this, &GeneralSettings::slotUpdateInfo, Qt::UniqueConnection);
-        _ui->updateStateLabel->setText(sparkleUpdater->statusString());
+        auto status = sparkleUpdater->statusString();
+        if (config.serverHasValidSubscription()) {
+            const auto separator = Qt::mightBeRichText(status) ? QStringLiteral("<br/>") : QStringLiteral("\n");
+            status.append(separator)
+                .append(tr("You are connected to at least one enterprise system and cannot change the update channel."));
+        }
+        _ui->updateStateLabel->setText(status);
         _ui->restartButton->setVisible(false);
 
         const auto updaterState = sparkleUpdater->state();
