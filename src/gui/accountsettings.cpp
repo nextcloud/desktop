@@ -188,12 +188,12 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->tabWidget->setStyleSheet(QStringLiteral(
         "QTabWidget { background: transparent; }"
         "QTabWidget::pane { background: palette(alternate-base); border: none; }"
-        "QWidget#standardSyncTab, QWidget#fileProviderTab, QWidget#connectionSettingsTab {"
+        "QWidget#standardSyncTab, QWidget#connectionSettingsTab, QWidget#fileProviderPanelContents {"
         " background: palette(alternate-base); }"));
     _ui->standardSyncTab->setAutoFillBackground(true);
     _ui->standardSyncTab->setAttribute(Qt::WA_StyledBackground, true);
-    _ui->fileProviderTab->setAutoFillBackground(true);
-    _ui->fileProviderTab->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->fileProviderPanelContents->setAutoFillBackground(true);
+    _ui->fileProviderPanelContents->setAttribute(Qt::WA_StyledBackground, true);
     _ui->connectionSettingsTab->setAutoFillBackground(true);
     _ui->connectionSettingsTab->setAttribute(Qt::WA_StyledBackground, true);
     
@@ -208,24 +208,19 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     new ToolTipUpdater(_ui->_folderList);
 
 #if defined(BUILD_FILE_PROVIDER_MODULE)
-    const auto fileProviderTab = _ui->fileProviderTab;
-    const auto fpSettingsLayout = new QVBoxLayout(fileProviderTab);
+    const auto fileProviderPanelContents = _ui->fileProviderPanelContents;
+    const auto fpSettingsLayout = new QVBoxLayout(fileProviderPanelContents);
     const auto fpAccountUserIdAtHost = _accountState->account()->userIdAtHostWithPort();
     const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
-    const auto fpSettingsWidget = fpSettingsController->settingsViewWidget(fpAccountUserIdAtHost, fileProviderTab,
+    const auto fpSettingsWidget = fpSettingsController->settingsViewWidget(fpAccountUserIdAtHost, fileProviderPanelContents,
                                                                            QQuickWidget::SizeViewToRootObject);
     fpSettingsLayout->setContentsMargins(0, 0, 0, 0);
     fpSettingsLayout->setSpacing(0);
     fpSettingsWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     fpSettingsLayout->addWidget(fpSettingsWidget, 1);
-    fileProviderTab->setLayout(fpSettingsLayout);
+    fileProviderPanelContents->setLayout(fpSettingsLayout);
 #else
-    const auto tabWidget = _ui->tabWidget;
-    const auto fileProviderTab = _ui->fileProviderTab;
-    if (const auto fileProviderWidgetTabIndex = tabWidget->indexOf(fileProviderTab); fileProviderWidgetTabIndex >= 0) {
-        tabWidget->removeTab(fileProviderWidgetTabIndex);
-    }
-    tabWidget->setCurrentIndex(0);
+    _ui->fileProviderPanel->setVisible(false);
 #endif
 
     const auto connectionSettingsTab = _ui->connectionSettingsTab;
