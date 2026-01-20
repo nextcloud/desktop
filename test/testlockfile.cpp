@@ -880,6 +880,7 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         int nGET = 0, nPUT = 0;
+        auto verifyLackOfTokenIfHeader = false;
         QObject parent;
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData) -> QNetworkReply * {
             Q_UNUSED(outgoingData)
@@ -887,6 +888,11 @@ private slots:
 
             if (op == QNetworkAccessManager::PutOperation) {
                 ++nPUT;
+                if (verifyLackOfTokenIfHeader) {
+                    if (request.hasRawHeader("If")) {
+                        Q_ASSERT(false);
+                    }
+                }
             } else if (op == QNetworkAccessManager::GetOperation) {
                 ++nGET;
             }
@@ -943,11 +949,13 @@ private slots:
         QVERIFY(!fakeFolder.syncOnce());
         QCOMPARE(nGET, 0);
         QCOMPARE(nPUT, 1);
+        fakeFolder.syncJournal().wipeErrorBlacklistCategory(OCC::SyncJournalErrorBlacklistRecord::Normal);
 
         fakeFolder.remoteModifier().mkdir(u"parent/child"_s);
         cleanUpHelper();
         fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem, {u"parent"_s, u"parent/child"_s, u"parent/child/.~lock.hello.odt#"_s, u"parent/child/hello.odt"_s});
-        QVERIFY(!fakeFolder.syncOnce());
+        verifyLackOfTokenIfHeader = true;
+        QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(nGET, 0);
         QCOMPARE(nPUT, 1);
     }
