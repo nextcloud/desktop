@@ -201,6 +201,9 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     connect(this, &AccountSettings::styleChanged, delegate, &FolderStatusDelegate::slotStyleChanged);
 
     _ui->_folderList->header()->hide();
+    _ui->_folderList->setAutoFillBackground(true);
+    _ui->_folderList->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->_folderList->setStyleSheet(QStringLiteral("QTreeView { background: palette(alternate-base); }"));
     _ui->_folderList->setItemDelegate(delegate);
     _ui->_folderList->setModel(_model);
     _ui->_folderList->setMinimumWidth(300);
