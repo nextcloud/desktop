@@ -296,11 +296,11 @@ import OSLog
             if error == nil {
                 removeSyncAction(actionId)
             } else {
-                // Do not consider the exclusion of a lock file a synchronization error resulting in a misleading status report because exclusion is expected.
+                // Do not consider the exclusion of a file a synchronization error resulting in a misleading status report because exclusion is expected.
                 // Though, the exclusion error code is only available starting with macOS 13, hence this logic reads a bit more cumbersome.
 
                 if #available(macOS 13.0, *) {
-                    if isLockFileName(itemTemplate.filename), let fileProviderError = error as? NSFileProviderError, fileProviderError.code == .excludedFromSync {
+                    if let fileProviderError = error as? NSFileProviderError, fileProviderError.code == .excludedFromSync {
                         removeSyncAction(actionId)
                     } else {
                         insertErrorAction(actionId)
@@ -727,7 +727,6 @@ import OSLog
 
         logger.debug("Reporting synchronization state.", [.name: argument])
 
-        let message = command + ":" + argument + "\n"
-        app?.reportSyncStatus(message)
+        app?.reportSyncStatus(argument, forDomainIdentifier: domain.identifier.rawValue)
     }
 }
