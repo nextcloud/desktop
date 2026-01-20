@@ -14,6 +14,11 @@
    <string notr="true">Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+  <rowstretch>
+    <number>0</number> 
+    <number>0</number>
+    <number>1</number>
+   </rowstretch>
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -166,6 +171,11 @@
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
      </property>
+     <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Maximum"> <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+     </property>
      <layout class="QVBoxLayout" name="fileProviderPanelLayout">
       <item>
        <widget class="QLabel" name="fileProviderPanelTitle">
@@ -175,7 +185,14 @@
        </widget>
       </item>
       <item>
-       <widget class="QWidget" name="fileProviderPanelContents" native="true"/>
+       <widget class="QWidget" name="fileProviderPanelContents" native="true">
+         <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+           </sizepolicy>
+         </property>
+       </widget>
       </item>
      </layout>
     </widget>
