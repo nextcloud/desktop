@@ -85,7 +85,7 @@ chmod a+x ${APPIMAGE_NAME}
 rm ./${APPIMAGE_NAME}
 cp -r ./squashfs-root ./linuxdeploy-squashfs-root
 
-export LD_LIBRARY_PATH=/app/usr/lib64:/app/usr/lib:${QT_BASE_DIR}/lib:/usr/local/lib/x86_64-linux-gnu:/usr/local/lib:/usr/local/lib64
+export LD_LIBRARY_PATH=${QT_BASE_DIR}/lib:/app/usr/lib64:/app/usr/lib:/usr/local/lib/x86_64-linux-gnu:/usr/local/lib:/usr/local/lib64
 ./linuxdeploy-squashfs-root/AppRun --desktop-file=${DESKTOP_FILE} --icon-file=usr/share/icons/hicolor/512x512/apps/Nextcloud.png --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir
 
 # Use linuxdeploy-plugin-qt to deploy qt dependencies
@@ -100,7 +100,12 @@ export PATH=${QT_BASE_DIR}/bin:${PATH}
 export QML_SOURCES_PATHS=${DESKTOP_CLIENT_ROOT}/src/gui
 ./linuxdeploy-plugin-qt-squashfs-root/AppRun --appdir=AppDir
 
-./linuxdeploy-squashfs-root/AppRun --desktop-file=${DESKTOP_FILE} --library=/usr/lib64/libsoftokn3.so --icon-file=usr/share/icons/hicolor/512x512/apps/Nextcloud.png --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir --output appimage
+./linuxdeploy-squashfs-root/AppRun --desktop-file=${DESKTOP_FILE} \
+	--library=/root/linux-gcc-x86_64/lib/libharfbuzz.so.0 --library=/root/linux-gcc-x86_64/lib/libharfbuzz-subset.so.0 \
+	--library=/usr/lib64/libX11.so.6 --library=/usr/lib64/libxcb.so.1 \
+	--library=/root/linux-gcc-x86_64/lib/libuuid.so.1 --library=/root/linux-gcc-x86_64/lib/libgpg-error.so.0 --library=/root/linux-gcc-x86_64/lib/libz.so.1 --library=/root/linux-gcc-x86_64/lib/libpcre2-8.so.0 --library=/root/linux-gcc-x86_64/lib/libexpat.so.1 \
+	--library=/root/linux-gcc-x86_64/lib/libfreetype.so.6 --library=/root/linux-gcc-x86_64/lib/libglib-2.0.so.0 --library=/root/linux-gcc-x86_64/lib/libsoftokn3.so \
+	--icon-file=usr/share/icons/hicolor/512x512/apps/Nextcloud.png --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir --output appimage
 
 # Workaround issue #103 and #7231
 export APPIMAGETOOL=appimagetool-x86_64.AppImage
@@ -114,7 +119,6 @@ rm -rf ./squashfs-root
 APPIMAGE=$(ls *.AppImage)
 ./"${APPIMAGE}" --appimage-extract
 rm ./"${APPIMAGE}"
-rm ./squashfs-root/usr/lib/libglib-2.0.so.0
 LD_LIBRARY_PATH="$PWD/appimagetool-squashfs-root/usr/lib":$LD_LIBRARY_PATH PATH="$PWD/appimagetool-squashfs-root/usr/bin":$PATH appimagetool -n ./squashfs-root "${APPIMAGE}"
 
 #move AppImage
