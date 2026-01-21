@@ -432,12 +432,6 @@
      </layout>
     </widget>
    </item>
-  <rowstretch>
-    <number>0</number>
-    <number>0</number>
-    <number>0</number>
-    <number>1</number>
-   </rowstretch>
   </layout>
  </widget>
  <customwidgets>
