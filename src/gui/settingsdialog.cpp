@@ -421,7 +421,7 @@ void SettingsDialog::customizeStyle()
 
         /* Panels */
         "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
-        "#accountStatusPanel, #accountTabsPanel, #fileProviderPanel {"
+        "#accountStatusPanel, #accountTabsPanel, #fileProviderPanel, #syncFoldersPanel {"
         " background: palette(alternate-base);"
         " border-radius: 10px;"
         " margin: 0px;"
