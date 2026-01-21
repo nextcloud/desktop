@@ -190,17 +190,15 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     const auto delegate = new FolderStatusDelegate;
     delegate->setParent(this);
 
-    _ui->tabWidget->setStyleSheet(QStringLiteral(
-        "QTabWidget { background: transparent; }"
-        "QTabWidget::pane { background: palette(alternate-base); border: none; }"
-        "QWidget#syncFoldersPanelContents, QWidget#connectionSettingsTab, QWidget#fileProviderPanelContents {"
+    _ui->accountTabsPanel->setStyleSheet(QStringLiteral(
+        "QWidget#syncFoldersPanelContents, QWidget#connectionSettingsPanelContents, QWidget#fileProviderPanelContents {"
         " background: palette(alternate-base); }"));
     _ui->syncFoldersPanelContents->setAutoFillBackground(true);
     _ui->syncFoldersPanelContents->setAttribute(Qt::WA_StyledBackground, true);
     _ui->fileProviderPanelContents->setAutoFillBackground(true);
     _ui->fileProviderPanelContents->setAttribute(Qt::WA_StyledBackground, true);
-    _ui->connectionSettingsTab->setAutoFillBackground(true);
-    _ui->connectionSettingsTab->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->connectionSettingsPanelContents->setAutoFillBackground(true);
+    _ui->connectionSettingsPanelContents->setAttribute(Qt::WA_StyledBackground, true);
     
     // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
     connect(this, &AccountSettings::styleChanged, delegate, &FolderStatusDelegate::slotStyleChanged);
@@ -239,14 +237,14 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->fileProviderPanel->setVisible(false);
 #endif
 
-    const auto connectionSettingsTab = _ui->connectionSettingsTab;
-    const auto connectionSettingsLayout = new QVBoxLayout(connectionSettingsTab);
-    const auto networkSettings = new NetworkSettings(_accountState->account(), connectionSettingsTab);
+    const auto connectionSettingsPanelContents = _ui->connectionSettingsPanelContents;
+    const auto connectionSettingsLayout = new QVBoxLayout(connectionSettingsPanelContents);
+    const auto networkSettings = new NetworkSettings(_accountState->account(), connectionSettingsPanelContents);
     connectionSettingsLayout->setContentsMargins(0, 0, 0, 0);
     connectionSettingsLayout->setSpacing(0);
     connectionSettingsLayout->addWidget(networkSettings, 1);
-    connectionSettingsTab->setLayout(connectionSettingsLayout);
-
+    connectionSettingsPanelContents->setLayout(connectionSettingsLayout);
+    
     const auto mouseCursorChanger = new MouseCursorChanger(this);
     mouseCursorChanger->folderList = _ui->_folderList;
     mouseCursorChanger->model = _model;
