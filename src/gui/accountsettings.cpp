@@ -176,6 +176,10 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     , _userInfo(accountState, false, true)
 {
     _ui->setupUi(this);
+    _ui->gridLayout->setRowStretch(0, 0);
+    _ui->gridLayout->setRowStretch(1, 0);
+    _ui->gridLayout->setRowStretch(2, 0);
+    _ui->gridLayout->setRowStretch(3, 1);
     connect(_ui->encryptionMessage, &KMessageWidget::showAnimationFinished, this, [this] {
         applyEncryptionMessageButtonStyle();
         applyEncryptionMessageFrameStyle();
