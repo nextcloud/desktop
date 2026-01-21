@@ -9,6 +9,7 @@
 #import "AppProtocol.h"
 
 #include <QLoggingCategory>
+#include <QMetaObject>
 
 #include "accountmanager.h"
 
@@ -71,7 +72,12 @@ Q_LOGGING_CATEGORY(lcMacFileProviderService, "nextcloud.gui.macfileproviderservi
     const auto userId = account->userIdAtHostWithPort();
     qCDebug(OCC::lcMacFileProviderService) << "Received sync state change for account" << userId << "state" << syncState;
     _service->setLatestReceivedSyncStatus(userId, syncState);
-    emit _service->syncStateChanged(account, syncState);
+    
+    // Use QMetaObject::invokeMethod to emit the signal on the correct thread
+    // since this callback may be called on an XPC dispatch queue (non-main thread)
+    QMetaObject::invokeMethod(_service, "syncStateChanged", Qt::QueuedConnection,
+                              Q_ARG(OCC::AccountPtr, account),
+                              Q_ARG(OCC::SyncResult::Status, syncState));
 }
 
 @end
