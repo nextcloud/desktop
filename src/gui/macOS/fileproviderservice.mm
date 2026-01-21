@@ -9,6 +9,8 @@
 #import "AppProtocol.h"
 
 #include <QLoggingCategory>
+#include <QReadLocker>
+#include <QWriteLocker>
 
 #include "accountmanager.h"
 
@@ -119,11 +121,13 @@ void *FileProviderService::delegate() const
 SyncResult::Status FileProviderService::latestReceivedSyncStatusForAccount(const AccountPtr &account) const
 {
     Q_ASSERT(account);
+    QReadLocker locker(&_syncStatusLock);
     return _latestReceivedSyncStatus.value(account->userIdAtHostWithPort(), SyncResult::Undefined);
 }
 
 void FileProviderService::setLatestReceivedSyncStatus(const QString &userId, SyncResult::Status status)
 {
+    QWriteLocker locker(&_syncStatusLock);
     _latestReceivedSyncStatus.insert(userId, status);
 }
 

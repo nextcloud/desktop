@@ -7,6 +7,7 @@
 
 #include <QHash>
 #include <QObject>
+#include <QReadWriteLock>
 
 #include "libsync/account.h"
 #include "libsync/syncresult.h"
@@ -62,6 +63,7 @@ private:
     class MacImplementation;
     std::unique_ptr<MacImplementation> d;
 
+    mutable QReadWriteLock _syncStatusLock;
     QHash<QString, SyncResult::Status> _latestReceivedSyncStatus;
 };
 
