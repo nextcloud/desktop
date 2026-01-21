@@ -100,14 +100,16 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName,
         // When running inside an AppImage, we need to set the path to the
         // AppImage instead of the path to the executable
         const QString appImagePath = qEnvironmentVariable("APPIMAGE");
+        const QString flatpakId = qEnvironmentVariable("FLATPAK_ID");
         const bool runningInsideAppImage = !appImagePath.isNull() && QFile::exists(appImagePath);
-        const QString executablePath = runningInsideAppImage ? appImagePath : QCoreApplication::applicationFilePath();
+        const bool runningInsideFlatpak = !flatpakId.isNull();
+        const QString executablePath = runningInsideAppImage ? QLatin1String("\"%1\"").arg(appImagePath) : runningInsideFlatpak ? QLatin1String("flatpak run %1").arg(flatpakId) : QLatin1String("\"%1\"").arg(QCoreApplication::applicationFilePath());
 
         QTextStream ts(&iniFile);
         ts << QLatin1String("[Desktop Entry]\n")
            << QLatin1String("Name=") << guiName << QLatin1Char('\n')
            << QLatin1String("GenericName=") << QLatin1String("File Synchronizer\n")
-           << QLatin1String("Exec=\"") << executablePath << "\" --background\n"
+           << QLatin1String("Exec=") << executablePath << " --background\n"
            << QLatin1String("Terminal=") << "false\n"
            << QLatin1String("Icon=") << APPLICATION_ICON_NAME << QLatin1Char('\n')
            << QLatin1String("Categories=") << QLatin1String("Network\n")
