@@ -146,7 +146,7 @@ private:
     bool canRemoveCaseClashConflictedCopy(const QString &path, const std::map<QString, Entries> &allEntries);
 
     // check if the path is an e2e encrypted and the e2ee is not set up, and insert it into a corresponding list in the sync journal
-    void checkAndUpdateSelectiveSyncListsForE2eeFolders(const QString &path);
+    void checkAndUpdateSelectiveSyncListsForE2eeFolders(const QString &path, bool shouldTrackForRestoration);
 
     /** Reconcile local/remote/db information for a single item.
      *
