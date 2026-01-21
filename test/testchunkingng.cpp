@@ -144,6 +144,7 @@ private slots:
         const QString filePath = QStringLiteral("A/SQ-0.5%BF-150/a0");
         const int size = 2 * 1000 * 1000; // 2 MB
 
+        fakeFolder.localModifier().mkdir(QStringLiteral("A/SQ-0.5%BF-150"));
         fakeFolder.localModifier().insert(filePath, size);
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!destinationHeader.isEmpty());
