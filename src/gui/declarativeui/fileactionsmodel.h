@@ -43,6 +43,12 @@ public:
         QString url;
     };
 
+    struct QueryItem {
+        QString name;
+        QByteArray value;
+    };
+    using ParamsList = QList<QueryItem>;
+
     [[nodiscard]] AccountState *accountState() const;
     void setAccountState(AccountState *accountState);
 
@@ -83,7 +89,7 @@ private:
         QString name;
         QString url;
         QString method;
-        QList<QString> params;
+        ParamsList params;
     };
     QList<FileAction> _fileActions;
     AccountState *_accountState;
@@ -99,5 +105,7 @@ private:
     static constexpr char filePathC[] = "filePath";
     static constexpr char rowC[] = "row";
 };
-
 }
+
+Q_DECLARE_METATYPE(OCC::FileActionsModel::ParamsList)
+Q_DECLARE_METATYPE(OCC::FileActionsModel::QueryItem)
