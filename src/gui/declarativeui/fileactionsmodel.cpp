@@ -31,7 +31,7 @@ QVariant FileActionsModel::data(const QModelIndex &index, int role) const
     case FileActionMethodRole:
         return _fileActions.at(row).method; // GET
     case FileActionParamsRole:
-        return _fileActions.at(row).params; // filePath
+        return QVariant::fromValue<QList<QueryItem>>(_fileActions.at(row).params);
     }
 
     return {};
@@ -194,11 +194,29 @@ void FileActionsModel::parseEndpoints()
     }
 
     for (const auto &contextMenu : contextMenuList) {
+        ParamsList queryParams;
+        const auto paramsMap = contextMenu.value("params").toMap();
+        for (auto param = paramsMap.cbegin(), end = paramsMap.cend(); param != end; ++param) {
+            const auto name = param.key();
+            QByteArray value;
+            if (name == fileIdC) {
+                value = _fileId;
+            }
+
+            if (param.key() == filePathC) {
+                value = _filePath.toUtf8();
+            }
+
+            if (!value.isEmpty()) {
+                queryParams.append( QueryItem{ name, value } );
+            }
+        }
+
         _fileActions.append({ parseIcon(contextMenu.value("icon").toString()),
                              contextMenu.value("name").toString(),
                              contextMenu.value("url").toString(),
                              contextMenu.value("method").toString(),
-                             contextMenu.value("params").toStringList() });
+                             queryParams });
     }
 
     qCDebug(lcFileActions) << "File" << _localPath << "has" << _fileActions.size() << "actions available.";
@@ -234,18 +252,10 @@ void FileActionsModel::createRequest(const int row)
                                 this);
     connect(job, &JsonApiJob::jsonReceived,
             this, &FileActionsModel::processRequest);
-    QUrlQuery params;
     for (const auto &param : _fileActions.at(row).params) {
-        if (param == fileIdC) {
-            params.addQueryItem(param, _fileId);
-        }
-
-        if (param == filePathC) {
-            params.addQueryItem(param, _filePath);
-        }
-    }
-    if (!params.isEmpty()) {
-        job->addQueryParams(params);
+        QUrlQuery query;
+        query.addQueryItem(param.name, param.value);
+        job->addQueryParams(query);
     }
     const auto verb = job->stringToVerb(_fileActions.at(row).method);
     job->setVerb(verb);
