@@ -285,6 +285,14 @@ public:
         const auto domainId = QUuid::createUuid().toString(QUuid::WithoutBraces);
         const auto domainDisplayName = account->displayName();
         NSFileProviderDomain * const domain = [[NSFileProviderDomain alloc] initWithIdentifier:domainId.toNSString() displayName:domainDisplayName.toNSString()];
+
+        if (@available(macOS 13.0, *)) {
+            // supportsSyncingTrash is only available on macOS 13 and later.
+            // The trash is a server feature of which the availability can change any time.
+            // Its availability is checked on demand by the file provider extension itself.
+            domain.supportsSyncingTrash = YES;
+        }
+
         addDomain(domain);
         AccountManager::instance()->setFileProviderDomainIdentifier(accountId, domainId);
 
