@@ -14,12 +14,6 @@
    <string notr="true">Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-  <rowstretch>
-    <number>0</number>
-    <number>0</number>
-    <number>0</number>
-    <number>1</number>
-   </rowstretch>
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -438,6 +432,12 @@
      </layout>
     </widget>
    </item>
+  <rowstretch>
+    <number>0</number>
+    <number>0</number>
+    <number>0</number>
+    <number>1</number>
+   </rowstretch>
   </layout>
  </widget>
  <customwidgets>
