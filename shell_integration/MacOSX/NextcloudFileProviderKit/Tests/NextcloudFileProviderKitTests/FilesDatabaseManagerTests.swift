@@ -809,6 +809,44 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(Self.dbManager.itemMetadata(account: account, locatedAtRemoteUrl: fullUrl))
     }
 
+    func testFindingItemBasedOnRemotePathInDirectoryWithHashtagInName() throws {
+        let account = "TestAccount"
+        let filename = "super duper new file"
+        let parentUrl = "https://cloud.example.com/files/my great and # dir/dir-2"
+        let fullUrl = parentUrl + "/" + filename
+
+        let deepNestedDirectoryMetadata = RealmItemMetadata()
+        deepNestedDirectoryMetadata.ocId = filename
+        deepNestedDirectoryMetadata.account = account
+        deepNestedDirectoryMetadata.serverUrl = parentUrl
+        deepNestedDirectoryMetadata.fileName = filename
+        deepNestedDirectoryMetadata.directory = true
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write { realm.add(deepNestedDirectoryMetadata) }
+
+        XCTAssertNotNil(Self.dbManager.itemMetadata(account: account, locatedAtRemoteUrl: fullUrl))
+    }
+
+    func testFindingItemBasedOnRemotePathInDirectoryWithQuestionMarkInName() throws {
+        let account = "TestAccount"
+        let filename = "super duper new file"
+        let parentUrl = "https://cloud.example.com/files/my great and incredible dir ?/dir-2"
+        let fullUrl = parentUrl + "/" + filename
+
+        let deepNestedDirectoryMetadata = RealmItemMetadata()
+        deepNestedDirectoryMetadata.ocId = filename
+        deepNestedDirectoryMetadata.account = account
+        deepNestedDirectoryMetadata.serverUrl = parentUrl
+        deepNestedDirectoryMetadata.fileName = filename
+        deepNestedDirectoryMetadata.directory = true
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write { realm.add(deepNestedDirectoryMetadata) }
+
+        XCTAssertNotNil(Self.dbManager.itemMetadata(account: account, locatedAtRemoteUrl: fullUrl))
+    }
+
     func testKeepDownloadedSetting() throws {
         let existingMetadata = RealmItemMetadata()
         existingMetadata.ocId = "id-1"
