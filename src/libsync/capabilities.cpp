@@ -473,6 +473,12 @@ QList<QVariantMap> Capabilities::contextMenuByMimeType(const QMimeType fileMimeT
         const auto mimetypeFilters = contextMenuMap.value("mimetype_filters").toString();
         const auto filesMimeTypeFilterList = mimetypeFilters.split(",", Qt::SkipEmptyParts);
 
+        if (filesMimeTypeFilterList.isEmpty()) {
+            qCDebug(lcServerCapabilities) << "Found file action for all mimetypes:" << contextMenuMap;
+            contextMenuByMimeType.append(contextMenuMap);
+            continue;
+        }
+
         for (const auto &mimeType : std::as_const(filesMimeTypeFilterList)) {
             auto capabilitiesMimeType = mimeType.trimmed();
             QString mimeTypeAlias;
@@ -486,7 +492,8 @@ QList<QVariantMap> Capabilities::contextMenuByMimeType(const QMimeType fileMimeT
             qCDebug(lcServerCapabilities) << fileMimeTypeName << "inherits" << capabilitiesMimeType << "?"
                                           << fileMimeType.inherits(capabilitiesMimeType);
 
-            if (!fileMimeTypeName.startsWith(capabilitiesMimeType)
+            if (!capabilitiesMimeType.isEmpty()
+                && !fileMimeTypeName.startsWith(capabilitiesMimeType)
                 && !fileMimeTypeName.contains(capabilitiesMimeType)
                 && !fileMimeType.inherits(capabilitiesMimeType) &&
                 !fileMimeTypeName.startsWith(mimeTypeAlias)
@@ -497,7 +504,6 @@ QList<QVariantMap> Capabilities::contextMenuByMimeType(const QMimeType fileMimeT
 
             qCDebug(lcServerCapabilities) << "Found file action:" << contextMenuMap;
             contextMenuByMimeType.append(contextMenuMap);
-            break;
         }
     }
 
