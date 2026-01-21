@@ -2219,6 +2219,11 @@ void ClientSideEncryption::checkServerHasSavedKeys()
     };
 
     const auto privateKeyOnServerIsValid = [this] () {
+        qCInfo(lcCse) << "Private key on server is valid, setting state to Initialized";
+        _initializationState = InitializationState::Initialized;
+        qCInfo(lcCse) << "State set to:" << static_cast<int>(_initializationState);
+        emit initializationStateChanged(_initializationState);
+        qCInfo(lcCse) << "Emitting initializationFinished signal";
         Q_EMIT initializationFinished();
     };
 
