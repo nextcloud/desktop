@@ -12,6 +12,7 @@ import QtQuick.Controls
 import Qt5Compat.GraphicalEffects
 import com.nextcloud.desktopclient
 import Style
+import "./../tray"
 
 ApplicationWindow {
     id: root
@@ -77,7 +78,7 @@ ApplicationWindow {
                     Layout.margins: Style.extraSmallSpacing
                 }
 
-                Label {
+                EnforcedPlainTextLabel {
                     id: headerLocalPath
                     text: root.shortLocalPath
                     elide: Text.ElideRight
@@ -231,7 +232,7 @@ ApplicationWindow {
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
-                    Label {
+                    EnforcedPlainTextLabel {
                         text: fileAction.name
                         color: palette.text
                         font.pixelSize: Style.defaultFontPtSize
