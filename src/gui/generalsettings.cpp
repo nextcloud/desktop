@@ -699,7 +699,7 @@ void GeneralSettings::slotCreateDebugArchive()
         tr("Zip Archives") + " (*.zip)"
     );
 
-    if (destination.path().isEmpty()) {
+    if (!destination.isLocalFile() || destination.toLocalFile().isEmpty()) {
         return;
     }
 
@@ -719,11 +719,11 @@ void GeneralSettings::slotCreateDebugArchive()
     }
 #endif
 
-    if (createDebugArchive(destination.path())) {
+    if (createDebugArchive(destination.toLocalFile())) {
         QMessageBox::information(
             this,
             tr("Debug Archive Created"),
-            tr("Redact information deemed sensitive before sharing! Debug archive created at %1").arg(destination.toString())
+            tr("Redact information deemed sensitive before sharing! Debug archive created at %1").arg(destination.toLocalFile())
         );
     }
 }
