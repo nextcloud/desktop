@@ -127,6 +127,32 @@ private slots:
         QCOMPARE(fakeFolder.uploadState().children.count(), 2); // the transfer was done with chunking
     }
 
+    void testDestinationHeaderPercentEncoding()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+        setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
+
+        QByteArray destinationHeader;
+        fakeFolder.setServerOverride([&destinationHeader](QNetworkAccessManager::Operation, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
+            if (destinationHeader.isEmpty() && request.hasRawHeader("Destination")) {
+                destinationHeader = request.rawHeader("Destination");
+            }
+            return nullptr;
+        });
+
+        const QString filePath = QStringLiteral("A/SQ-0.5%BF-150/a0");
+        const int size = 2 * 1000 * 1000; // 2 MB
+
+        fakeFolder.localModifier().mkdir(QStringLiteral("A/SQ-0.5%BF-150"));
+        fakeFolder.localModifier().insert(filePath, size);
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!destinationHeader.isEmpty());
+        QVERIFY(destinationHeader.contains("SQ-0.5%25BF-150"));
+        QVERIFY(destinationHeader.contains("/A/SQ-0.5%25BF-150/"));
+        QVERIFY(!destinationHeader.contains("%2F"));
+    }
+
     // Test resuming when there's a confusing chunk added
     void testResume1() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
