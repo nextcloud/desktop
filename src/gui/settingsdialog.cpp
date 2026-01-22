@@ -128,7 +128,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     contentLayout->setContentsMargins(0, 0, 0, 0);
     contentLayout->setSpacing(0);
     _ui->stack->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    _ui->stack->setSizeAdjustPolicy(QStackedWidget::AdjustToContents);
     contentLayout->addWidget(_ui->stack);
     contentLayout->addStretch(1);
     contentScroll->setWidget(contentContainer);
@@ -256,6 +255,9 @@ void SettingsDialog::changeEvent(QEvent *e)
 void SettingsDialog::slotSwitchPage(QAction *action)
 {
     _ui->stack->setCurrentWidget(_actionGroupWidgets.value(action));
+    if (const auto *currentPage = _ui->stack->currentWidget()) {
+        _ui->stack->setMinimumHeight(currentPage->sizeHint().height());
+    }
     _ui->stack->updateGeometry();
     if (auto *contentContainer = _ui->stack->parentWidget()) {
         contentContainer->updateGeometry();
@@ -408,9 +410,7 @@ void SettingsDialog::customizeStyle()
     _toolBar->setStyleSheet(TOOLBAR_CSS());
 
     const auto baseWindowColor = palette().window().color();
-    const auto windowColor = baseWindowColor.lighter(110);
     const auto isDarkWindow = baseWindowColor.lightness() < 128;
-    const auto panelColor = isDarkWindow ? baseWindowColor.darker(110) : baseWindowColor.darker(105);
     setStyleSheet(QStringLiteral(
         "#Settings { background: palette(window); }"
         "#settings_shell { background: transparent; border-radius: 0; }"
