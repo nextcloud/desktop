@@ -68,6 +68,8 @@ private slots:
 
 private:
     void customizeStyle();
+    void requestStyleUpdate();
+    void updateAccountAvatar(const Account *account);
 
     QAction *createColorAwareAction(const QString &iconName, const QString &fileName);
     QAction *createActionWithIcon(const QIcon &icon, const QString &text, const QString &iconPath = QString());
@@ -80,11 +82,13 @@ private:
 
     // Maps the action in the dialog to their according account. Needed in
     // case the account avatar changes
-    QHash<Account *, QAction *> _actionForAccount;
+    QHash<const Account *, QAction *> _actionForAccount;
 
     QToolBar *_toolBar;
 
     ownCloudGui *_gui;
+    bool _styleUpdatePending = false;
+    bool _updatingStyle = false;
 };
 }
 

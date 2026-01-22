@@ -45,6 +45,8 @@
 #include <QListWidgetItem>
 #include <QMessageBox>
 #include <QAction>
+#include <QAbstractScrollArea>
+#include <QSizePolicy>
 #include <QVBoxLayout>
 #include <QTreeView>
 #include <QKeySequence>
@@ -52,6 +54,7 @@
 #include <QVariant>
 #include <QJsonDocument>
 #include <QToolTip>
+#include <QToolButton>
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "macOS/fileprovider.h"
@@ -173,50 +176,75 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     , _userInfo(accountState, false, true)
 {
     _ui->setupUi(this);
-
+    _ui->gridLayout->setRowStretch(0, 0);
+    _ui->gridLayout->setRowStretch(1, 0);
+    _ui->gridLayout->setRowStretch(2, 0);
+    _ui->gridLayout->setRowStretch(3, 1);
+    connect(_ui->encryptionMessage, &KMessageWidget::showAnimationFinished, this, [this] {
+        applyEncryptionMessageButtonStyle();
+        applyEncryptionMessageFrameStyle();
+    });
+    
     _model->setAccountState(_accountState);
     _model->setParent(this);
     const auto delegate = new FolderStatusDelegate;
     delegate->setParent(this);
 
+    _ui->accountTabsPanel->setStyleSheet(QStringLiteral(
+        "QWidget#syncFoldersPanelContents, QWidget#connectionSettingsPanelContents, QWidget#fileProviderPanelContents {"
+        " background: palette(alternate-base); }"));
+    _ui->syncFoldersPanelContents->setAutoFillBackground(true);
+    _ui->syncFoldersPanelContents->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->fileProviderPanelContents->setAutoFillBackground(true);
+    _ui->fileProviderPanelContents->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->connectionSettingsPanelContents->setAutoFillBackground(true);
+    _ui->connectionSettingsPanelContents->setAttribute(Qt::WA_StyledBackground, true);
+    
     // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
     connect(this, &AccountSettings::styleChanged, delegate, &FolderStatusDelegate::slotStyleChanged);
 
     _ui->_folderList->header()->hide();
+    _ui->_folderList->setAutoFillBackground(true);
+    _ui->_folderList->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->_folderList->setStyleSheet(QStringLiteral("QTreeView { background: palette(alternate-base); }"));
     _ui->_folderList->setItemDelegate(delegate);
     _ui->_folderList->setModel(_model);
-#if defined(Q_OS_MACOS)
-    _ui->_folderList->setMinimumWidth(400);
-#else
+    _ui->_folderList->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
     _ui->_folderList->setMinimumWidth(300);
-#endif
+
     new ToolTipUpdater(_ui->_folderList);
 
 #if defined(BUILD_FILE_PROVIDER_MODULE)
-    const auto fileProviderTab = _ui->fileProviderTab;
-    const auto fpSettingsLayout = new QVBoxLayout(fileProviderTab);
+    const auto fileProviderPanelContents = _ui->fileProviderPanelContents;
+    const auto fpSettingsLayout = new QVBoxLayout(fileProviderPanelContents);
     const auto fpAccountUserIdAtHost = _accountState->account()->userIdAtHostWithPort();
     const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
-    const auto fpSettingsWidget = fpSettingsController->settingsViewWidget(fpAccountUserIdAtHost, fileProviderTab);
+    const auto fpSettingsWidget = fpSettingsController->settingsViewWidget(fpAccountUserIdAtHost, fileProviderPanelContents,
+                                                                           QQuickWidget::SizeViewToRootObject);
     fpSettingsLayout->setContentsMargins(0, 0, 0, 0);
-    fpSettingsLayout->addWidget(fpSettingsWidget);
-    fileProviderTab->setLayout(fpSettingsLayout);
-#else
-    const auto tabWidget = _ui->tabWidget;
-    const auto fileProviderTab = _ui->fileProviderTab;
-    if (const auto fileProviderWidgetTabIndex = tabWidget->indexOf(fileProviderTab); fileProviderWidgetTabIndex >= 0) {
-        tabWidget->removeTab(fileProviderWidgetTabIndex);
+    fpSettingsLayout->setSpacing(0);
+
+    // Ensure the QQuickWidget resizes to the container, not just the root QML object
+    // If settingsViewWidget returns a QQuickWidget, change the ResizeMode:
+    if (auto *quickWidget = qobject_cast<QQuickWidget*>(fpSettingsWidget)) {
+        quickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView); // Forces QML to fill the widget
     }
-    tabWidget->setCurrentIndex(0);
+    
+    fpSettingsWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    fpSettingsLayout->addWidget(fpSettingsWidget);
+    fileProviderPanelContents->setLayout(fpSettingsLayout);
+#else
+    _ui->fileProviderPanel->setVisible(false);
 #endif
 
-    const auto connectionSettingsTab = _ui->connectionSettingsTab;
-    const auto connectionSettingsLayout = new QVBoxLayout(connectionSettingsTab);
-    const auto networkSettings = new NetworkSettings(_accountState->account(), connectionSettingsTab);
+    const auto connectionSettingsPanelContents = _ui->connectionSettingsPanelContents;
+    const auto connectionSettingsLayout = new QVBoxLayout(connectionSettingsPanelContents);
+    const auto networkSettings = new NetworkSettings(_accountState->account(), connectionSettingsPanelContents);
     connectionSettingsLayout->setContentsMargins(0, 0, 0, 0);
-    connectionSettingsLayout->addWidget(networkSettings);
-    connectionSettingsTab->setLayout(connectionSettingsLayout);
-
+    connectionSettingsLayout->setSpacing(0);
+    connectionSettingsLayout->addWidget(networkSettings, 1);
+    connectionSettingsPanelContents->setLayout(connectionSettingsLayout);
+    
     const auto mouseCursorChanger = new MouseCursorChanger(this);
     mouseCursorChanger->folderList = _ui->_folderList;
     mouseCursorChanger->model = _model;
@@ -239,6 +267,12 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     refreshSelectiveSyncStatus();
     connect(_model, &QAbstractItemModel::rowsInserted,
         this, &AccountSettings::refreshSelectiveSyncStatus);
+    connect(_model, &QAbstractItemModel::rowsInserted,
+        _ui->_folderList, &QWidget::updateGeometry);
+    connect(_model, &QAbstractItemModel::rowsRemoved,
+        _ui->_folderList, &QWidget::updateGeometry);
+    connect(_model, &QAbstractItemModel::modelReset,
+        _ui->_folderList, &QWidget::updateGeometry);
 
     auto *syncNowAction = new QAction(this);
     syncNowAction->setShortcut(QKeySequence(Qt::Key_F6));
@@ -315,7 +349,9 @@ void AccountSettings::slotE2eEncryptionMnemonicReady()
 
     _ui->encryptionMessage->setMessageType(KMessageWidget::Positive);
     _ui->encryptionMessage->setText(tr("Encryption is set-up. Remember to <b>Encrypt</b> a folder to end-to-end encrypt any new files added to it."));
+    _ui->encryptionMessage->setWordWrap(true);
     _ui->encryptionMessage->setIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/lock.svg")));
+    applyEncryptionMessageFrameStyle();
     _ui->encryptionMessage->show();
 }
 
@@ -1677,6 +1713,31 @@ void AccountSettings::customizeStyle()
 
     const auto color = palette().highlight().color();
     _ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));
+    applyEncryptionMessageButtonStyle();
+    applyEncryptionMessageFrameStyle();
+}
+
+void AccountSettings::applyEncryptionMessageButtonStyle()
+{
+    const auto buttons = _ui->encryptionMessage->findChildren<QToolButton *>();
+    for (auto *button : buttons) {
+        button->setAutoRaise(false);
+        button->setToolButtonStyle(Qt::ToolButtonTextOnly);
+        button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    }
+}
+
+void AccountSettings::applyEncryptionMessageFrameStyle()
+{
+    auto *contentWidget = _ui->encryptionMessage->findChild<QFrame *>(QStringLiteral("contentWidget"));
+    if (!contentWidget) {
+        return;
+    }
+    const QString overrideStyle = QStringLiteral("QFrame { border: 0px; margin: 0px; }");
+    const QString styleSheet = contentWidget->styleSheet();
+    if (!styleSheet.contains(overrideStyle)) {
+        contentWidget->setStyleSheet(styleSheet + overrideStyle);
+    }
 }
 
 void AccountSettings::setupE2eEncryption()
@@ -1742,6 +1803,7 @@ QAction *AccountSettings::addActionToEncryptionMessage(const QString &actionTitl
         action->setProperty(e2eUiActionIdKey, actionId);
     }
     _ui->encryptionMessage->addAction(action);
+    applyEncryptionMessageButtonStyle();
     return action;
 }
 
@@ -1749,7 +1811,9 @@ void AccountSettings::setupE2eEncryptionMessage()
 {
     _ui->encryptionMessage->setMessageType(KMessageWidget::Information);
     _ui->encryptionMessage->setText(tr("This account supports end-to-end encryption, but it needs to be set up first."));
+    _ui->encryptionMessage->setWordWrap(true);
     _ui->encryptionMessage->setIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/info.svg")));
+    applyEncryptionMessageFrameStyle();
     _ui->encryptionMessage->hide();
 
     auto *const actionSetupE2e = addActionToEncryptionMessage(tr("Set up encryption"), e2EeUiActionSetupEncryptionId);
