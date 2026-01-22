@@ -127,7 +127,8 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     auto *contentLayout = new QVBoxLayout(contentContainer);
     contentLayout->setContentsMargins(0, 0, 0, 0);
     contentLayout->setSpacing(0);
-    _ui->stack->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+    _ui->stack->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    _ui->stack->setSizeAdjustPolicy(QStackedWidget::AdjustToContents);
     contentLayout->addWidget(_ui->stack);
     contentLayout->addStretch(1);
     contentScroll->setWidget(contentContainer);
@@ -255,6 +256,11 @@ void SettingsDialog::changeEvent(QEvent *e)
 void SettingsDialog::slotSwitchPage(QAction *action)
 {
     _ui->stack->setCurrentWidget(_actionGroupWidgets.value(action));
+    _ui->stack->updateGeometry();
+    if (auto *contentContainer = _ui->stack->parentWidget()) {
+        contentContainer->updateGeometry();
+        contentContainer->adjustSize();
+    }
 }
 
 void SettingsDialog::showFirstPage()
