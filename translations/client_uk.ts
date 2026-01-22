@@ -303,11 +303,6 @@
         <translation>Налаштування віртуальних файлів</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
-        <source>General settings</source>
-        <translation>Загальні налаштування</translation>
-    </message>
-    <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
         <source>Enable virtual files</source>
         <translation>Увімкнути підтримку віртуальних файлів</translation>
@@ -321,6 +316,11 @@
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Reset virtual files environment</source>
         <translation>Скинути оточення віртуальних файлів</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
+        <source>General settings</source>
+        <translation>Загальні налаштування</translation>
     </message>
 </context>
 <context>
