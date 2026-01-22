@@ -465,17 +465,16 @@ void GeneralSettings::slotUpdateInfo()
         connect(sparkleUpdater, &SparkleUpdater::statusChanged, this, &GeneralSettings::slotUpdateInfo, Qt::UniqueConnection);
         auto status = sparkleUpdater->statusString();
         if (config.serverHasValidSubscription()) {
-            auto currentChannel = updateChannelToLocalized(config.currentUpdateChannel());
-            if (currentChannel.isEmpty()) {
-                currentChannel = config.currentUpdateChannel();
+            const auto currentChannel = config.currentUpdateChannel();
+            if (Qt::mightBeRichText(status)) {
+                status.append(QStringLiteral("<br/>"))
+                    .append(tr("Connected to an enterprise system. Update channel cannot be changed.<br/>(current: %1)")
+                                .arg(currentChannel));
+            } else {
+                status.append(QStringLiteral("\n"))
+                    .append(tr("Connected to an enterprise system. Update channel cannot be changed.\n(current: %1)")
+                                .arg(currentChannel));
             }
-            const auto separator = Qt::mightBeRichText(status) ? QStringLiteral("<br/>") : QStringLiteral("\n");
-            status.append(separator)
-               .append(isRichText
-                        ? tr("Connected to an enterprise system. Update channel cannot be changed.<br/>(current: %1)")
-                            .arg(currentChannel)
-                        : tr("Connected to an enterprise system. Update channel cannot be changed.\n(current: %1)")
-                            .arg(currentChannel));
         }
         _ui->updateStateLabel->setText(status);
         _ui->restartButton->setVisible(false);
