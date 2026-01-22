@@ -445,7 +445,7 @@ void GeneralSettings::slotUpdateInfo()
                 currentChannel = config.currentUpdateChannel();
             }
             status.append(QStringLiteral("<br/>%1")
-                              .arg(tr("Connected to an enterprise system. Update channel cannot be changed (current: %1).")
+                              .arg(tr("Connected to an enterprise system. Update channel cannot be changed.<br/>(current: %1)")
                                        .arg(currentChannel)));
         }
         Theme::replaceLinkColorStringBackgroundAware(status);
@@ -471,7 +471,10 @@ void GeneralSettings::slotUpdateInfo()
             }
             const auto separator = Qt::mightBeRichText(status) ? QStringLiteral("<br/>") : QStringLiteral("\n");
             status.append(separator)
-                .append(tr("Connected to an enterprise system. Update channel cannot be changed (current: %1).")
+               .append(isRichText
+                        ? tr("Connected to an enterprise system. Update channel cannot be changed.<br/>(current: %1)")
+                            .arg(currentChannel)
+                        : tr("Connected to an enterprise system. Update channel cannot be changed.\n(current: %1)")
                             .arg(currentChannel));
         }
         _ui->updateStateLabel->setText(status);
