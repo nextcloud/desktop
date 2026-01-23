@@ -17,12 +17,12 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="182"/>
         <source>Open file details</source>
-        <translation type="unfinished"/>
+        <translation>Atverti išsamesnę informaciją</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Uždaryti</translation>
     </message>
 </context>
 <context>
@@ -128,7 +128,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="243"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>Atverti naršyklėje</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="255"/>
@@ -179,19 +179,19 @@
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="28"/>
         <source>Current account</source>
-        <translation type="unfinished"/>
+        <translation>Dabartinė paskyra</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="41"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="160"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Atnaujinti visas sinchronizacijas</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="41"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="160"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Sustabdyti visas sinchronizacijas</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="141"/>
@@ -476,7 +476,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="248"/>
         <source>Import</source>
-        <translation type="unfinished"/>
+        <translation>Importuoti</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="249"/>
@@ -670,7 +670,7 @@ Palaukite naujo sinchronizavimo, o tuomet jį šifruokite.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="619"/>
         <location filename="../src/gui/accountsettings.cpp" line="709"/>
         <source>Availability</source>
-        <translation type="unfinished"/>
+        <translation>Pasiekiamumas</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="688"/>
