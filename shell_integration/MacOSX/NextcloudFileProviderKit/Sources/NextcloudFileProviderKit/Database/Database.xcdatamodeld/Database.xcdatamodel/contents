@@ -1,8 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24512" systemVersion="25C56" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="DatabaseItem" representedClassName="DatabaseItem" syncable="YES" codeGenerationType="class">
-        <attribute name="fileProviderItemIdentifier" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="name" attributeType="String"/>
+        <attribute name="capabilities" attributeType="String"/>
+        <attribute name="contentModificationDate" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="contentPolicy" attributeType="Integer 64" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="contentType" attributeType="String"/>
+        <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="documentSize" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="downloadingError" optional="YES" attributeType="String"/>
+        <attribute name="filename" attributeType="String"/>
+        <attribute name="isDownloaded" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isDownloading" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isMostRecentVersionDownloaded" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isShared" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isSharedByCurrentUser" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isUploaded" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isUploading" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="itemIdentifier" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="itemVersion" attributeType="String"/>
+        <attribute name="lastUsedDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="mostRecentEditorNameComponents" optional="YES" attributeType="Binary"/>
+        <attribute name="ocID" attributeType="String"/>
+        <attribute name="ownerNameComponents" optional="YES" attributeType="Binary"/>
+        <attribute name="parentItemIdentifier" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="uploadingError" optional="YES" attributeType="String"/>
+        <fetchIndex name="byItemIdentifier">
+            <fetchIndexElement property="itemIdentifier" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="MappedIdentifier" representedClassName="MappedIdentifier" syncable="YES" codeGenerationType="class">
+        <attribute name="itemIdentifier" attributeType="String"/>
+        <attribute name="uuid" attributeType="UUID" usesScalarValueType="NO"/>
+        <fetchIndex name="byItemIdentifier">
+            <fetchIndexElement property="itemIdentifier" type="Binary" order="ascending"/>
+        </fetchIndex>
     </entity>
     <entity name="RemoteFileChunk" representedClassName="RemoteFileChunk" syncable="YES" codeGenerationType="class"/>
+    <fetchRequest name="MappedIdentifierFetchRequest" entity="MappedIdentifier" predicateString="itemIdentifier == &quot;&quot;" fetchLimit="1" resultType="2"/>
 </model>
