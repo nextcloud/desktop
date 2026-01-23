@@ -7128,7 +7128,7 @@ Il server ha risposto con errore: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="75"/>
         <source>Deleting</source>
-        <translation>Cancellazione</translation>
+        <translation>Eliminazione</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="78"/>
