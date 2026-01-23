@@ -283,7 +283,10 @@ public:
         }
 
         const auto domainId = QUuid::createUuid().toString(QUuid::WithoutBraces);
-        const auto domainDisplayName = account->displayName();
+        // Replace dots with one-dot leader (U+2024) to prevent Finder from treating
+        // folders as bundles when the display name contains extensions like ".app"
+        auto domainDisplayName = account->displayName();
+        domainDisplayName.replace('.', QChar(0x2024));
         NSFileProviderDomain * const domain = [[NSFileProviderDomain alloc] initWithIdentifier:domainId.toNSString() displayName:domainDisplayName.toNSString()];
 
         if (@available(macOS 13.0, *)) {
