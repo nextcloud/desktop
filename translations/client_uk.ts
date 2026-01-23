@@ -896,7 +896,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1317"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation>Версія серверу %1 не підтримується! Продовження операції здійснюватиметься на ваш ризик.</translation>
+        <translation>Версія сервера %1 не підтримується! Продовження операції здійснюватиметься на ваш ризик.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1329"/>
@@ -1677,7 +1677,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="566"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation>Помилка серверу: PROPFIND reply is not XML formatted!</translation>
+        <translation>Помилка сервера: PROPFIND reply is not XML formatted!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="596"/>
@@ -2744,7 +2744,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="189"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>Не отримано E-Tag від серверу, перевірте мережеві налаштування (проксі, шлюз)</translation>
+        <translation>Не отримано E-Tag від сервера, перевірте мережеві налаштування (проксі, шлюз)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="196"/>
@@ -3787,7 +3787,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="320"/>
         <source>Server address does not seem to be valid</source>
-        <translation>Схоже, що адреса серверу не є чинною.</translation>
+        <translation>Схоже, що адреса сервера не є дійсною.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="432"/>
@@ -4935,7 +4935,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 Server replied with error: %2</source>
         <translation>Не вдалося зашифрувати такий каталог: &quot;%1&quot;.
 
-Помилка серверу: %2</translation>
+Помилка сервера: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="548"/>
@@ -5478,7 +5478,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="137"/>
         <source>Link copied to clipboard.</source>
-        <translation>Помилання скопійовано до буферу обміну.</translation>
+        <translation>Помилання скопійовано до буфера обміну.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="178"/>
@@ -5984,7 +5984,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="277"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
-        <translation>Користувач %1 має прийняти умови користування хмарою вашого серверу. Вас буде переспрямовано до %2, де ви зможете переглянути та погодитися з умовами.</translation>
+        <translation>Користувач %1 має прийняти умови користування хмарою вашого сервера. Вас буде переспрямовано до %2, де ви зможете переглянути та погодитися з умовами.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="450"/>
@@ -6504,7 +6504,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="90"/>
         <source>An error occurred setting the share password.</source>
-        <translation>Помилка під час встановоення паролю на спільний доступ</translation>
+        <translation>Помилка під час встановлення пароля на спільний доступ</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="208"/>
