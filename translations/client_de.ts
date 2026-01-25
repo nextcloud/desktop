@@ -2900,7 +2900,7 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="445"/>
         <source>Usage Documentation</source>
-        <translation>Nutzungsdokumentation</translation>
+        <translation>Nutzungsanleitung</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="452"/>
