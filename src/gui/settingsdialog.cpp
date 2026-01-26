@@ -409,8 +409,6 @@ void SettingsDialog::customizeStyle()
     const QScopedValueRollback<bool> updatingStyle(_updatingStyle, true);
     _toolBar->setStyleSheet(TOOLBAR_CSS());
 
-    const auto baseWindowColor = palette().window().color();
-    const auto isDarkWindow = baseWindowColor.lightness() < 128;
     setStyleSheet(QStringLiteral(
         "#Settings { background: palette(window); }"
         "#settings_shell { background: transparent; border-radius: 0; }"
