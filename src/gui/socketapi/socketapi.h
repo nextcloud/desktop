@@ -64,6 +64,8 @@ public slots:
 signals:
     void shareCommandReceived(const QString &localPath);
     void fileActivityCommandReceived(const QString &localPath);
+    void fileActionsCommandReceived(const QString &localPath);
+    void declarativeUiCommandReceived(const QString &localPath);
 
 private slots:
     void slotNewConnection();
@@ -107,6 +109,8 @@ private:
     void processLeaveShareRequest(const QString &localFile, SocketListener *listener);
     void processFileActivityRequest(const QString &localFile);
     void processEncryptRequest(const QString &localFile);
+    void processFileActionsRequest(const QString &localFile);
+    void processDeclarativeUiRequest(const QString &localFile);
 
     Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString &argument, OCC::SocketListener *listener);
     Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString &argument, OCC::SocketListener *listener);
@@ -131,6 +135,7 @@ private:
     Q_INVOKABLE void command_MOVE_ITEM(const QString &localFile, OCC::SocketListener *listener);
     Q_INVOKABLE void command_LOCK_FILE(const QString &localFile, OCC::SocketListener *listener);
     Q_INVOKABLE void command_UNLOCK_FILE(const QString &localFile, OCC::SocketListener *listener);
+    Q_INVOKABLE void command_FILE_ACTIONS(const QString &localFile, OCC::SocketListener *listener);
 
     void setFileLock(const QString &localFile, const SyncFileItem::LockStatus lockState) const;
 
@@ -149,7 +154,7 @@ private:
 
     // Sends the context menu options relating to sharing to listener
     void sendSharingContextMenuOptions(const FileData &fileData, SocketListener *listener, SharingContextItemEncryptedFlag itemEncryptionFlag, SharingContextItemRootEncryptedFolderFlag rootE2eeFolderFlag);
-
+    void sendFileActionsContextMenuOptions(const FileData &fileData, SocketListener *listener);
     void sendEncryptFolderCommandMenuEntries(const QFileInfo &fileInfo,
                                              const FileData &fileData,
                                              const bool isE2eEncryptedPath,

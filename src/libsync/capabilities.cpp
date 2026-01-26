@@ -437,6 +437,79 @@ QStringList Capabilities::forbiddenFilenameExtensions() const
     return _capabilities["files"].toMap()["forbidden_filename_extensions"].toStringList();
 }
 
+bool Capabilities::serverHasDeclarativeUi() const
+{
+    return _capabilities[QStringLiteral("client_integration")].toMap().isEmpty();
+}
+
+QList<QVariantMap> Capabilities::contextMenuByMimeType(const QMimeType fileMimeType) const
+{
+    const auto declarativeUiMap = _capabilities.value("client_integration").toMap();
+    QVariantList contextMenuMapList;
+    for (const auto &declarativeUiApp : std::as_const(declarativeUiMap)) {
+        const auto declarativeUiContextMenuMap = declarativeUiApp.toMap();
+        if (!declarativeUiContextMenuMap.contains("context-menu")) {
+            continue;
+        }
+
+        contextMenuMapList.append(declarativeUiContextMenuMap.value("context-menu").toList());
+    }
+
+    if (contextMenuMapList.empty()) {
+        qCDebug(lcServerCapabilities) << "There is no context menu available in the capabilities.";
+        return {};
+    }
+
+    const auto fileMimeTypeName = fileMimeType.name();
+    qCDebug(lcServerCapabilities) << "Filtering file actions by mimeType:" << fileMimeTypeName;
+    const auto fileMimeTypeAliases = fileMimeType.aliases();
+    qCDebug(lcServerCapabilities) << "File actions mimeType aliases:" << fileMimeTypeAliases;
+    const auto fileMimeTypeParents = fileMimeType.parentMimeTypes();
+    qCDebug(lcServerCapabilities) << "File actions parent mimeTypes:" << fileMimeTypeParents;
+
+    QList<QVariantMap> contextMenuByMimeType;
+    for (const auto &contextMenu : std::as_const(contextMenuMapList)) {
+        const auto contextMenuMap = contextMenu.toMap();
+        const auto mimetypeFilters = contextMenuMap.value("mimetype_filters").toString();
+        const auto filesMimeTypeFilterList = mimetypeFilters.split(",", Qt::SkipEmptyParts);
+
+        if (filesMimeTypeFilterList.isEmpty()) {
+            qCDebug(lcServerCapabilities) << "Found file action for all mimetypes:" << contextMenuMap;
+            contextMenuByMimeType.append(contextMenuMap);
+            continue;
+        }
+
+        for (const auto &mimeType : std::as_const(filesMimeTypeFilterList)) {
+            auto capabilitiesMimeType = mimeType.trimmed();
+            QString mimeTypeAlias;
+            if(const auto capabilitiesMimeTypeSplit = capabilitiesMimeType.split("/");
+                !capabilitiesMimeTypeSplit.isEmpty()){
+                mimeTypeAlias = capabilitiesMimeTypeSplit.last();
+            }
+
+            qCDebug(lcServerCapabilities) << "Context menu for mimeType:" << mimeTypeAlias << capabilitiesMimeType;
+
+            qCDebug(lcServerCapabilities) << fileMimeTypeName << "inherits" << capabilitiesMimeType << "?"
+                                          << fileMimeType.inherits(capabilitiesMimeType);
+
+            if (!capabilitiesMimeType.isEmpty()
+                && !fileMimeTypeName.startsWith(capabilitiesMimeType)
+                && !fileMimeTypeName.contains(capabilitiesMimeType)
+                && !fileMimeType.inherits(capabilitiesMimeType) &&
+                !fileMimeTypeName.startsWith(mimeTypeAlias)
+                && !fileMimeTypeName.contains(mimeTypeAlias)
+                && !fileMimeType.inherits(mimeTypeAlias)) {
+                continue;
+            }
+
+            qCDebug(lcServerCapabilities) << "Found file action:" << contextMenuMap;
+            contextMenuByMimeType.append(contextMenuMap);
+        }
+    }
+
+    return contextMenuByMimeType;
+}
+
 /*-------------------------------------------------------------------------------------*/
 
 // Direct Editing
@@ -465,6 +538,7 @@ DirectEditor* Capabilities::getDirectEditorForOptionalMimetype(const QMimeType &
 
     return nullptr;
 }
+
 
 /*-------------------------------------------------------------------------------------*/
 
