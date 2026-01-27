@@ -5415,8 +5415,8 @@ Server replied with error: %2</source>
     <name>OCC::Theme</name>
     <message>
         <location filename="../src/libsync/theme.cpp" line="449"/>
-        <source>%1 Desktop Client Version %2 (%3)</source>
-        <comment>%1 is application name. %2 is the human version string. %3 is the operating system name.</comment>
+        <source>%1 Desktop Client Version %2 (%3 running on %4)</source>
+        <comment>%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the platform name (wayland, x11, …)</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>

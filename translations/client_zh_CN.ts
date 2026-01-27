@@ -5492,6 +5492,12 @@ Server replied with error: %2</source>
         <translation>%1 桌面客户端版本 %2（%3）</translation>
     </message>
     <message>
+        <location filename="../src/libsync/theme.cpp" line="449"/>
+        <source>%1 Desktop Client Version %2 (%3 running on %4)</source>
+        <comment>%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the platform name (wayland, x11, …)</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/theme.cpp" line="634"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;正使用虚拟文件插件：%1&lt;/small&gt;&lt;/p&gt;</translation>
