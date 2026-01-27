@@ -8,9 +8,9 @@ import FileProvider
 ///
 public enum DatabaseError: Error {
     ///
-    /// No ``DatabaseItem`` with the given file provider item identifier was found in the store.
+    /// No ``DatabaseItem`` was found with the given criteria.
     ///
-    case databaseItemNotFound(NSFileProviderItemIdentifier)
+    case databaseItemNotFound
 
     ///
     /// A managed object could not be downcasted to its expected specific implementation type.

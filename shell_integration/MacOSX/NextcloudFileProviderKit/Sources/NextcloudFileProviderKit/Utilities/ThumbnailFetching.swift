@@ -15,7 +15,7 @@ public func fetchThumbnails(
     requestedSize size: CGSize,
     account: Account,
     usingRemoteInterface remoteInterface: RemoteInterface,
-    andDatabase dbManager: FilesDatabaseManager,
+    andDatabase database: any DatabaseManaging,
     perThumbnailCompletionHandler: @Sendable @escaping (
         NSFileProviderItemIdentifier,
         Data?,
@@ -37,20 +37,10 @@ public func fetchThumbnails(
 
     for itemIdentifier in itemIdentifiers {
         Task {
-            guard let item = await Item.storedItem(
-                identifier: itemIdentifier,
-                account: account,
-                remoteInterface: remoteInterface,
-                dbManager: dbManager,
-                log: logger.log
-            ) else {
-                logger.error("Could not find item, unable to download thumbnail!", [.item: itemIdentifier.rawValue])
+            guard let item = database.getItem(by: itemIdentifier) else {
+                logger.error("Could not find item, unable to download thumbnail.", [.item: itemIdentifier])
 
-                perThumbnailCompletionHandler(
-                    itemIdentifier,
-                    nil,
-                    NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
-                )
+                perThumbnailCompletionHandler(itemIdentifier, nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier))
                 finishCurrent()
                 return
             }

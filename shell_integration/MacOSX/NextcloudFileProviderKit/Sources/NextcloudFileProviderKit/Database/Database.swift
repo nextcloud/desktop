@@ -43,6 +43,25 @@ actor Database {
 
     // MARK: - Private
 
+    private func item(by predicate: NSPredicate) throws -> FileProviderItem {
+        let context = persistentContainer.newBackgroundContext()
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: DatabaseItem.className())
+        fetchRequest.predicate = predicate
+        fetchRequest.fetchLimit = 1
+
+        let results = try context.fetch(fetchRequest)
+
+        guard let result = results.first as? DatabaseItem else {
+            throw DatabaseError.databaseItemNotFound
+        }
+
+        let childItemCountFetchRequest = NSFetchRequest<NSManagedObject>(entityName: DatabaseItem.className())
+        childItemCountFetchRequest.predicate = predicate
+        let childItemCount = try context.count(for: childItemCountFetchRequest)
+
+        return try map(result, childItemCount: childItemCount)
+    }
+
     ///
     /// Convert a database item to a file provider item.
     ///
@@ -343,22 +362,22 @@ actor Database {
         }
 
         let identifier = map(identifier)
-        let context = persistentContainer.newBackgroundContext()
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: DatabaseItem.className())
-        fetchRequest.predicate = NSPredicate(format: "itemIdentifier == %@", identifier.rawValue)
-        fetchRequest.fetchLimit = 1
+        let predicate = NSPredicate(format: "itemIdentifier == %@", identifier.rawValue)
 
-        let results = try context.fetch(fetchRequest)
+        return try item(by: predicate)
+    }
 
-        guard let result = results.first as? DatabaseItem else {
-            throw DatabaseError.databaseItemNotFound(identifier)
+    public func item(byRemoteIdentifier identifier: String) throws -> FileProviderItem {
+        let signpostID = signposter.makeSignpostID()
+        let interval = signposter.beginInterval("itemByRemoteIdentifier", id: signpostID)
+
+        defer {
+            signposter.endInterval("itemByRemoteIdentifier", interval)
         }
 
-        let childItemCountFetchRequest = NSFetchRequest<NSManagedObject>(entityName: DatabaseItem.className())
-        childItemCountFetchRequest.predicate = NSPredicate(format: "parentItemIdentifier == %@", identifier.rawValue)
-        let childItemCount = try context.count(for: childItemCountFetchRequest)
+        let predicate = NSPredicate(format: "ocID == %@", identifier)
 
-        return try map(result, childItemCount: childItemCount)
+        return try item(by: predicate)
     }
 
     ///

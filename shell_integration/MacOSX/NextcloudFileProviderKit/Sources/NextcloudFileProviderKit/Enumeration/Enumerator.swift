@@ -16,7 +16,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     }
 
     let domain: NSFileProviderDomain?
-    let dbManager: FilesDatabaseManager
+    let database: any DatabaseManaging
 
     private let currentAnchor = NSFileProviderSyncAnchor(ISO8601DateFormatter().string(from: Date()).data(using: .utf8)!)
     private let pageItemCount: Int
@@ -29,19 +29,11 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         identifier == .rootContainer || identifier == .trashContainer || identifier == .workingSet
     }
 
-    public init(
-        enumeratedItemIdentifier: NSFileProviderItemIdentifier,
-        account: Account,
-        remoteInterface: RemoteInterface,
-        dbManager: FilesDatabaseManager,
-        domain: NSFileProviderDomain? = nil,
-        pageSize: Int = 100,
-        log: any FileProviderLogging
-    ) {
+    public init(enumeratedItemIdentifier: NSFileProviderItemIdentifier, account: Account, remoteInterface: RemoteInterface, database: any DatabaseManaging, domain: NSFileProviderDomain? = nil, pageSize: Int = 100, log: any FileProviderLogging) {
         self.enumeratedItemIdentifier = enumeratedItemIdentifier
         self.remoteInterface = remoteInterface
         self.account = account
-        self.dbManager = dbManager
+        self.database = database
         self.domain = domain
         pageItemCount = pageSize
         logger = FileProviderLogger(category: "Enumerator", log: log)
@@ -52,8 +44,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
             enumeratedItemMetadata = nil
         } else {
             logger.debug("Providing enumerator for item with identifier.", [.item: enumeratedItemIdentifier])
-            enumeratedItemMetadata = dbManager.itemMetadata(
-                enumeratedItemIdentifier)
+            enumeratedItemMetadata = database.item(by: enumeratedItemIdentifier)
 
             if let enumeratedItemMetadata {
                 serverUrl = enumeratedItemMetadata.serverUrl + "/" + enumeratedItemMetadata.fileName
@@ -108,10 +99,12 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
 
         if enumeratedItemIdentifier == .workingSet {
             logger.info("Upcoming enumeration is of working set.")
-            let ncKitAccount = account.ncKitAccount
-            // Visited folders and downloaded files
-            let materialisedItems = dbManager.materialisedItemMetadatas(account: ncKitAccount)
-            completeEnumerationObserver(observer, nextPage: nil, itemMetadatas: materialisedItems)
+
+            Task {
+                let items = try await database.materializedItems()
+                completeEnumerationObserver(observer, nextPage: nil, itemMetadatas: items)
+            }
+
             return
         }
 
@@ -145,7 +138,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                 pageSettings: nil,
                 account: account,
                 remoteInterface: remoteInterface,
-                dbManager: dbManager,
+                database: database,
                 depth: .targetAndDirectChildren,
                 log: logger.log
             )
@@ -402,7 +395,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     private func completeEnumerationObserver(
         _ observer: NSFileProviderEnumerationObserver,
         nextPage: EnumeratorPageResponse?,
-        itemMetadatas: [SendableItemMetadata],
+        itemMetadatas: [FileProviderItem],
         handleInvalidParent: Bool = true
     ) {
         Task {

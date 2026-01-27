@@ -5,27 +5,38 @@
 import NextcloudKit
 
 extension Enumerator {
-    static func handlePagedReadResults(
-        files: [NKFile], pageIndex: Int, dbManager: FilesDatabaseManager
-    ) -> (metadatas: [SendableItemMetadata]?, error: NKError?) {
+    static func handlePagedReadResults(files: [NKFile], pageIndex: Int, database: any DatabaseManaging) -> (metadatas: [FileProviderItem]?, error: NKError?) {
         // First PROPFIND contains the target item, but we do not want to report this in the
         // retrieved metadatas (the enumeration observers don't expect you to enumerate the
         // target item, hence why we always strip the target item out)
         let startIndex = pageIndex > 0 ? 0 : 1
         if pageIndex == 0 {
-            guard let firstFile = files.first else { return (nil, .invalidResponseError) }
+            guard let firstFile = files.first else {
+                return (nil, .invalidResponseError)
+            }
+
             var metadata = firstFile.toItemMetadata()
+
             if metadata.directory {
                 metadata.visitedDirectory = true
-                if let existingMetadata = dbManager.itemMetadata(ocId: metadata.ocId) {
+
+                if let existingMetadata = database.item(byRemoteIdentifier: metadata.ocId) {
                     metadata.downloaded = existingMetadata.downloaded
                     metadata.keepDownloaded = existingMetadata.keepDownloaded
                 }
             }
-            dbManager.addItemMetadata(metadata)
+
+            database.insert(metadata)
         }
-        let metadatas = files[startIndex...].map { $0.toItemMetadata() }
-        metadatas.forEach { dbManager.addItemMetadata($0) }
+
+        let metadatas = files[startIndex...].map {
+            $0.toItemMetadata()
+        }
+
+        metadatas.forEach {
+            database.insert($0)
+        }
+
         return (metadatas, nil)
     }
 
@@ -35,15 +46,15 @@ extension Enumerator {
     static func handleDepth1ReadFileOrFolder(
         serverUrl: String,
         account: Account,
-        dbManager: FilesDatabaseManager,
+        database: any DatabaseManaging,
         files: [NKFile],
         pageIndex: Int?,
         log: any FileProviderLogging
     ) async -> (
-        metadatas: [SendableItemMetadata]?,
-        newMetadatas: [SendableItemMetadata]?,
-        updatedMetadatas: [SendableItemMetadata]?,
-        deletedMetadatas: [SendableItemMetadata]?,
+        metadatas: [FileProviderItem]?,
+        newMetadatas: [FileProviderItem]?,
+        updatedMetadatas: [FileProviderItem]?,
+        deletedMetadatas: [FileProviderItem]?,
         readError: NKError?
     ) {
         let logger = FileProviderLogger(category: "Enumerator", log: log)
@@ -52,7 +63,7 @@ extension Enumerator {
 
         if let pageIndex {
             let (metadatas, error) =
-                handlePagedReadResults(files: files, pageIndex: pageIndex, dbManager: dbManager)
+                handlePagedReadResults(files: files, pageIndex: pageIndex, database: database)
             return (metadatas, nil, nil, nil, error)
         }
 
@@ -67,7 +78,7 @@ extension Enumerator {
             return (nil, nil, nil, nil, .invalidData)
         }
 
-        if let existingMetadata = dbManager.itemMetadata(ocId: directory.ocId) {
+        if let existingMetadata = database.item(byRemoteIdentifier: directory.ocId) {
             directory.downloaded = existingMetadata.downloaded
             directory.keepDownloaded = existingMetadata.keepDownloaded
         }
@@ -76,7 +87,7 @@ extension Enumerator {
 
         files.insert(directory, at: 0)
 
-        let changedMetadatas = dbManager.depth1ReadUpdateItemMetadatas(
+        let changedMetadatas = database.depth1ReadUpdateItemMetadatas(
             account: account.ncKitAccount,
             serverUrl: serverUrl,
             updatedMetadatas: files,
@@ -110,16 +121,16 @@ extension Enumerator {
         pageSettings: (page: NSFileProviderPage?, index: Int, size: Int)? = nil,
         account: Account,
         remoteInterface: RemoteInterface,
-        dbManager: FilesDatabaseManager,
+        database: any DatabaseManaging,
         domain: NSFileProviderDomain? = nil,
         enumeratedItemIdentifier: NSFileProviderItemIdentifier? = nil,
         depth: EnumerateDepth = .targetAndDirectChildren,
         log: any FileProviderLogging
     ) async -> (
-        metadatas: [SendableItemMetadata]?,
-        newMetadatas: [SendableItemMetadata]?,
-        updatedMetadatas: [SendableItemMetadata]?,
-        deletedMetadatas: [SendableItemMetadata]?,
+        metadatas: [FileProviderItem]?,
+        newMetadatas: [FileProviderItem]?,
+        updatedMetadatas: [FileProviderItem]?,
+        deletedMetadatas: [FileProviderItem]?,
         nextPage: EnumeratorPageResponse?,
         readError: NKError?
     ) {
@@ -180,43 +191,44 @@ extension Enumerator {
         // Generally speaking a PROPFIND will provide the target of the PROPFIND as the first result
         // That is NOT the case for paginated results with offsets
         let isFollowUpPaginatedRequest = (pageSettings?.page != nil && pageSettings?.index ?? 0 > 0)
+
         if !isFollowUpPaginatedRequest {
             guard receivedFile.directory ||
-                serverUrl == dbManager.account.davFilesUrl ||
-                receivedFile.fullUrlMatches(dbManager.account.davFilesUrl + "/.") ||
-                (receivedFile.fileName == NextcloudKit.shared.nkCommonInstance.rootFileName && receivedFile.serverUrl == dbManager.account.davFilesUrl)
+                serverUrl == account.davFilesUrl ||
+                receivedFile.fullUrlMatches(account.davFilesUrl + "/.") ||
+                (receivedFile.fileName == NextcloudKit.shared.nkCommonInstance.rootFileName && receivedFile.serverUrl == account.davFilesUrl)
             else {
                 logger.debug("Read item is a file, converting.", [.url: serverUrl])
                 var metadata = receivedFile.toItemMetadata()
-                let existing = dbManager.itemMetadata(ocId: metadata.ocId)
+                let existing = try await database.item(byRemoteIdentifier: receivedFile.ocId)
                 let isNew = existing == nil
-                let newItems: [SendableItemMetadata] = isNew ? [metadata] : []
+                let newItems: [FileProviderItem] = isNew ? [metadata] : []
                 metadata.lockToken = existing?.lockToken
-                let updatedItems: [SendableItemMetadata] = isNew ? [] : [metadata]
+                let updatedItems: [FileProviderItem] = isNew ? [] : [metadata]
                 metadata.downloaded = existing?.downloaded == true
                 metadata.keepDownloaded = existing?.keepDownloaded == true
-                dbManager.addItemMetadata(metadata)
+                database.insert(metadata)
                 return ([metadata], newItems, updatedItems, nil, nextPage, nil)
             }
         }
 
         if depth == .target {
             var metadata = receivedFile.toItemMetadata()
-            let existing = dbManager.itemMetadata(ocId: metadata.ocId)
+            let existing = database.item(byRemoteIdentifier: receivedFile.ocId)
             let isNew = existing == nil
             let updatedMetadatas = isNew ? [] : [metadata]
             let newMetadatas = isNew ? [metadata] : []
 
             metadata.downloaded = existing?.downloaded == true
             metadata.keepDownloaded = existing?.keepDownloaded == true
-            dbManager.addItemMetadata(metadata)
+            database.insert(metadata)
 
             return ([metadata], newMetadatas, updatedMetadatas, nil, nextPage, nil)
         } else if depth == .targetAndDirectChildren {
             let (allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError) = await handleDepth1ReadFileOrFolder(
                 serverUrl: serverUrl,
                 account: account,
-                dbManager: dbManager,
+                database: database,
                 files: files,
                 pageIndex: pageSettings?.index,
                 log: logger.log
@@ -225,7 +237,7 @@ extension Enumerator {
             return (allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, nextPage, readError)
         } else if let pageIndex = pageSettings?.index {
             let (metadatas, error) = handlePagedReadResults(
-                files: files, pageIndex: pageIndex, dbManager: dbManager
+                files: files, pageIndex: pageIndex, database: database
             )
             return (metadatas, nil, nil, nil, nextPage, error)
         } else {
