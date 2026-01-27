@@ -19,7 +19,7 @@ jobs:
         working-directory: shell_integration/MacOSX/NextcloudFileProviderKit
 
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: SwiftFormat
         run: swiftformat --lint . --reporter github-actions-log
@@ -32,7 +32,7 @@ jobs:
         working-directory: shell_integration/MacOSX/NextcloudFileProviderKit
 
     steps:
-    - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
     - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
       with:
