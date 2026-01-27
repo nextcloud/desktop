@@ -414,7 +414,7 @@ void SettingsDialog::customizeStyle()
         "#settings_shell { background: transparent; border-radius: 0; }"
 
         /* Navigation */
-        "#settings_navigation_scroll { background: transparent; border: none; }"
+        "#settings_navigation_scroll { background: palette(alternate-base); border: none; }"
         "#settings_navigation_viewport { background: transparent; }"
         "#settings_navigation { background: palette(alternate-base); border-radius: 12px; padding: 4px; }"
 
