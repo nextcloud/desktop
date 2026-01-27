@@ -3708,7 +3708,7 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="655"/>
         <source>In Finder&apos;s &quot;Locations&quot; sidebar section</source>
-        <translation>Dans la section « Emplacements » de la barre latérale du Finder</translation>
+        <translation>Dans la section « Emplacements » du panneau latéral du Finder</translation>
     </message>
 </context>
 <context>
@@ -5498,6 +5498,12 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <source>%1 Desktop Client Version %2 (%3)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name.</comment>
         <translation>%1 Version du client de bureau %2 (%3)</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="449"/>
+        <source>%1 Desktop Client Version %2 (%3 running on %4)</source>
+        <comment>%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the platform name (wayland, x11, …)</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="634"/>
