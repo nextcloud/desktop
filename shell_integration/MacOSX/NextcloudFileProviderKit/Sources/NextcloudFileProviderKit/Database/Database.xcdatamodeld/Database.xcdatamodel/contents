@@ -9,6 +9,7 @@
         <attribute name="allowsReading" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="allowsRenaming" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="allowsReparenting" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="allowsSharing" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="allowsTrashing" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="allowsWriting" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="contentModificationDate" attributeType="Date" usesScalarValueType="NO"/>

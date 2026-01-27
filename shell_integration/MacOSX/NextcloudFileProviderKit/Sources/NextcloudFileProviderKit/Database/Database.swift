@@ -127,17 +127,23 @@ actor Database {
         }
 
         if let lock = databaseItem.lock {
-            if lock.type != 0 /* manual user lock */ || lock.owner != user, lock.timeOut ?? Date() > Date() {
+            // Extract lock properties to avoid data race with non-Sendable managed object
+            let lockType = lock.type
+            let lockOwner = lock.owner
+            let lockTimeOut = lock.timeOut
+            
+            if lockType != 0 /* manual user lock */ || lockOwner != user, lockTimeOut ?? Date() > Date() {
                 fileSystemFlags = [
                     .userReadable
                 ]
             }
         }
 
-        guard let itemIdentifier = databaseItem.itemIdentifier else {
+        guard let rawItemIdentifier = databaseItem.itemIdentifier else {
             throw DatabaseError.missingValue
         }
 
+        let itemIdentifier = NSFileProviderItemIdentifier(rawItemIdentifier.uuidString)
         let itemVersion = NSFileProviderItemVersion(entityTag: databaseItem.itemVersion ?? "")
 
         let mostRecentEditorNameComponents: PersonNameComponents? = if let mostRecentEditorNameComponents = databaseItem.mostRecentEditorNameComponents {
@@ -159,7 +165,7 @@ actor Database {
         let parentItemIdentifier = if let parentItemIdentifier = databaseItem.parentItemIdentifier {
             NSFileProviderItemIdentifier(parentItemIdentifier.uuidString)
         } else {
-            NSFileProviderItemIdentifier(itemIdentifier.uuidString)
+            itemIdentifier
         }
 
         let uploadingError: DatabaseError? = if let localizedDescription = databaseItem.uploadingError {
@@ -170,25 +176,19 @@ actor Database {
 
         var userInfo = [AnyHashable: Any]()
 
-        if metadata.lock {
-            // Can be used to display lock/unlock context menu entries for FPUIActions
-            // Note that only files, not folders, should be lockable/unlockable
-            userInfoDict["locked"] = metadata.lock
+        if let lock = databaseItem.lock {
+            userInfo["locked"] = true
         }
 
-        if #available(macOS 13.0, iOS 16.0, visionOS 1.0, *) {
-            userInfoDict["displayKeepDownloaded"] = !metadata.keepDownloaded
-            userInfoDict["displayAllowAutoEvicting"] = metadata.keepDownloaded
-            userInfoDict["displayEvict"] = metadata.downloaded && !metadata.keepDownloaded
-        } else {
-            userInfoDict["displayEvict"] = metadata.downloaded
+        if #available(macOS 13.0, *) {
+            userInfo["displayKeepDownloaded"] = databaseItem.contentPolicy != NSFileProviderContentPolicy.downloadEagerlyAndKeepDownloaded.rawValue
+            userInfo["displayAllowAutoEvicting"] = databaseItem.contentPolicy != NSFileProviderContentPolicy.inherited.rawValue
+            userInfo["displayEvict"] = databaseItem.isDownloaded && databaseItem.contentPolicy == NSFileProviderContentPolicy.downloadEagerlyAndKeepDownloaded.rawValue
         }
 
         // https://docs.nextcloud.com/server/latest/developer_manual/client_apis/WebDAV/basic.html
-        if metadata.permissions.uppercased().contains("R"), // Shareable
-           ![.rootContainer, .trashContainer].contains(itemIdentifier)
-        {
-            userInfoDict["displayShare"] = true
+        if databaseItem.allowsSharing && itemIdentifier != .rootContainer && itemIdentifier != .trashContainer {
+            userInfo["displayShare"] = true
         }
 
         return FileProviderItem(
@@ -209,7 +209,7 @@ actor Database {
             isSharedByCurrentUser: databaseItem.isSharedByCurrentUser,
             isUploaded: databaseItem.isUploaded,
             isUploading: databaseItem.isUploading,
-            itemIdentifier: NSFileProviderItemIdentifier(itemIdentifier.uuidString),
+            itemIdentifier: itemIdentifier,
             itemVersion: itemVersion,
             lastUsedDate: databaseItem.lastUsedDate,
             mostRecentEditorNameComponents: mostRecentEditorNameComponents,
@@ -495,13 +495,13 @@ actor Database {
     /// Getter for the root container item for this file provider domain.
     ///
     public func rootContainer() throws -> FileProviderItem {
-        let item = try item(by: .rootContainer)
+        try item(by: .rootContainer)
     }
 
     ///
     /// Getter for the trash container item for this file provider domain.
     ///
     public func trashContainer() throws -> FileProviderItem {
-        let item = try item(by: .trashContainer)
+        try item(by: .trashContainer)
     }
 }
