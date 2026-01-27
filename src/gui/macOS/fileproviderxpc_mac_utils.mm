@@ -5,6 +5,9 @@
 
 #include "fileproviderxpc_mac_utils.h"
 
+#import "AppProtocol.h"
+#import "fileprovider.h"
+
 #include <QLoggingCategory>
 
 #include "gui/accountmanager.h"
@@ -251,12 +254,22 @@ NSString *getFileProviderDomainIdentifier(NSObject<ClientCommunicationProtocol> 
     return domainIdentifier;
 }
 
-QHash<QString, void*> processClientCommunicationConnections(NSArray<NSXPCConnection *> *const connections)
+QHash<QString, void*> processClientCommunicationConnections(NSArray<NSXPCConnection *> *const connections, OCC::Mac::FileProviderService *const service)
 {
     QHash<QString, void*> clientCommServices;
 
     for (NSXPCConnection * const connection in connections) {
+        const auto exportedInterfaceProtocol = @protocol(AppProtocol);
         const auto remoteObjectInterfaceProtocol = @protocol(ClientCommunicationProtocol);
+        connection.exportedInterface = [NSXPCInterface interfaceWithProtocol:exportedInterfaceProtocol];
+        
+        // Set the FileProviderService delegate as the exported object
+        if (service) {
+            connection.exportedObject = (id<AppProtocol>)service->delegate();
+        } else {
+            qCWarning(lcFileProviderXPCUtils) << "FileProviderService is null, cannot set exported object";
+        }
+        
         connection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:remoteObjectInterfaceProtocol];
         configureFileProviderConnection(connection);
 

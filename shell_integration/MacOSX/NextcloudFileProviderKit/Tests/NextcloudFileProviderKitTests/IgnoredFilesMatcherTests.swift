@@ -2,6 +2,7 @@
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
 @testable import NextcloudFileProviderKit
+import NextcloudFileProviderKitMocks
 import Testing
 
 struct IgnoredFilesMatcherTests {
@@ -14,7 +15,7 @@ struct IgnoredFilesMatcherTests {
             "deep/**"
         ]
 
-        let matcher = IgnoredFilesMatcher(ignoreList: patterns)
+        let matcher = IgnoredFilesMatcher(ignoreList: patterns, log: FileProviderLogMock())
 
         #expect(matcher.isExcluded("foo.tmp"))
         #expect(matcher.isExcluded("a/b/c/hello.tmp"))

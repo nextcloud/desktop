@@ -1,7 +1,5 @@
-/*
- * SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
- */
+//  SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
 import NCDesktopClientSocketKit
@@ -9,12 +7,34 @@ import NextcloudKit
 import NextcloudFileProviderKit
 import OSLog
 
-@objc class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
+///
+/// The file provider replicated extension implementation.
+///
+@objc final class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, @unchecked Sendable {
     let domain: NSFileProviderDomain
 
     let keychain: Keychain
     let log: any FileProviderLogging
     let logger: FileProviderLogger
+
+    // MARK: XPC
+
+    ///
+    /// The remote object proxy to interact with the app.
+    ///
+    /// This is updated by the `NSXPCListenerDelegate` implementation.
+    ///
+    var app: (any AppProtocol)?
+
+    ///
+    /// Connections established by the `NSXPCListenerDelegate` extension on this type.
+    ///
+    /// The individual interr
+    ///
+    var connections = Set<NSXPCConnection>()
+
+    var listener = NSXPCListener.anonymous()
+    let serviceName = NSFileProviderServiceName("com.nextcloud.desktopclient.ClientCommunicationService")
 
     ///
     /// NextcloudKit instance used by this file provider extension object.
@@ -283,11 +303,11 @@ import OSLog
             if error == nil {
                 removeSyncAction(actionId)
             } else {
-                // Do not consider the exclusion of a lock file a synchronization error resulting in a misleading status report because exclusion is expected.
+                // Do not consider the exclusion of a file a synchronization error resulting in a misleading status report because exclusion is expected.
                 // Though, the exclusion error code is only available starting with macOS 13, hence this logic reads a bit more cumbersome.
 
                 if #available(macOS 13.0, *) {
-                    if isLockFileName(itemTemplate.filename), let fileProviderError = error as? NSFileProviderError, fileProviderError.code == .excludedFromSync {
+                    if let fileProviderError = error as? NSFileProviderError, fileProviderError.code == .excludedFromSync {
                         removeSyncAction(actionId)
                     } else {
                         insertErrorAction(actionId)
@@ -527,5 +547,184 @@ import OSLog
         }
 
         fpManager.signalEnumerator(for: .workingSet, completionHandler: completionHandler)
+    }
+
+    @objc func sendFileProviderDomainIdentifier() {
+        let command = "FILE_PROVIDER_DOMAIN_IDENTIFIER_REQUEST_REPLY"
+        let argument = domain.identifier.rawValue
+        let message = command + ":" + argument + "\n"
+        socketClient?.sendMessage(message)
+    }
+
+    private func signalEnumeratorAfterAccountSetup() {
+        guard let fpManager = NSFileProviderManager(for: domain) else {
+            logger.error("Could not get file provider manager for domain \(self.domain.displayName), cannot notify after account setup")
+            return
+        }
+
+        assert(ncAccount != nil)
+
+        fpManager.signalErrorResolved(NSFileProviderError(.notAuthenticated)) { error in
+            if error != nil {
+                self.logger.error("Error resolving not authenticated, received error: \(error!.localizedDescription)")
+            }
+        }
+
+        logger.debug("Signalling enumerators for user \(self.ncAccount!.username) at server \(self.ncAccount!.serverUrl)")
+
+        notifyChange()
+    }
+
+    ///
+    /// - Parameters:
+    ///     - completionHandler: An optional completion handler which will be provided an error, if any occurred. Omitting this completion handler is fine, but you won't get notified of errors.
+    ///
+    @objc func setupDomainAccount(
+        user: String,
+        userId: String,
+        serverUrl: String,
+        password: String,
+        userAgent: String = "Nextcloud-macOS/FileProviderExt",
+        completionHandler: ((NSError?) -> Void)? = nil
+    ) {
+        let account = Account(user: user, id: userId, serverUrl: serverUrl, password: password)
+
+        logger.info("Setting up domain account for user: \(user), userId: \(userId), serverUrl: \(serverUrl), password: \(password.isEmpty ? "<empty>" : "<not-empty>"), ncKitAccount: \(account.ncKitAccount)")
+
+        guard account != ncAccount else {
+            logger.info("Cancelling domain account setup because of receiving the same account information repeatedly!")
+            completionHandler?(NSError(.invalidCredentials))
+            return
+        }
+
+        guard password.isEmpty == false else {
+            logger.info("Cancelling domain account setup because \"password\" is an empty string!")
+            completionHandler?(NSError(.missingAccountInformation))
+            return
+        }
+
+        guard serverUrl.isEmpty == false else {
+            logger.info("Cancelling domain account setup because \"serverUrl\" is an empty string!")
+            completionHandler?(NSError(.missingAccountInformation))
+            return
+        }
+
+        guard user.isEmpty == false else {
+            logger.info("Cancelling domain account setup because \"user\" is an empty string!")
+            completionHandler?(NSError(.missingAccountInformation))
+            return
+        }
+
+        guard userId.isEmpty == false else {
+            logger.info("Cancelling domain account setup because \"userId\" is an empty string!")
+            completionHandler?(NSError(.missingAccountInformation))
+            return
+        }
+
+        // Store account information independently from the main app for later access.
+        config.serverUrl = serverUrl
+        config.user = user
+        config.userId = userId
+        keychain.savePassword(password, for: user, on: serverUrl)
+        NextcloudKit.clearAccountErrorState(for: account.ncKitAccount)
+
+        Task {
+            ncKit.appendSession(
+                account: account.ncKitAccount,
+                urlBase: serverUrl,
+                user: user,
+                userId: userId,
+                password: password,
+                userAgent: userAgent,
+                groupIdentifier: ""
+            )
+
+            var authAttemptState = AuthenticationAttemptResultState.connectionError // default
+
+            // Retry a few times if we have a connection issue
+            let options = NKRequestOptions(checkInterceptor: false)
+
+            for authTimeout in AuthenticationTimeouts {
+                authAttemptState = await ncKit.tryAuthenticationAttempt(account: account, options: options)
+
+                guard authAttemptState == .connectionError else {
+                    break
+                }
+
+                logger.info("\(user) authentication try timed out. Trying again soon.")
+                try? await Task.sleep(nanoseconds: authTimeout)
+            }
+
+            switch (authAttemptState) {
+                case .authenticationError:
+                    logger.error("Authentication of \"\(user)\" failed due to bad credentials, cancelling domain account setup!")
+                    completionHandler?(NSError(.invalidCredentials))
+                    return
+                case .connectionError:
+                    // Despite multiple connection attempts we are still getting connection issues.
+                    // Connection error should be provided
+                    logger.error("Authentication of \"\(user)\" try failed, no connection.")
+                    completionHandler?(NSError(.connection))
+                    return
+                case .success:
+                    logger.info("Successfully authenticated! Nextcloud account set up in file provider extension. User: \(user) at server: \(serverUrl)")
+            }
+
+            Task { @MainActor in
+                ncAccount = account
+                dbManager = FilesDatabaseManager(account: account, fileProviderDomainIdentifier: domain.identifier, log: log)
+
+                if let changeObserver {
+                    changeObserver.invalidate()
+                }
+
+                if let dbManager {
+                    changeObserver = RemoteChangeObserver(
+                        account: account,
+                        remoteInterface: ncKit,
+                        changeNotificationInterface: self,
+                        domain: domain,
+                        dbManager: dbManager,
+                        log: log
+                    )
+                } else {
+                    logger.error("Invalid db manager, cannot start RCO")
+                }
+
+                ncKit.setup(groupIdentifier: Bundle.main.bundleIdentifier!, delegate: changeObserver)
+                completionHandler?(nil)
+                signalEnumeratorAfterAccountSetup()
+            }
+        }
+    }
+
+    func updatedSyncStateReporting(oldActions: Set<UUID>) {
+        actionsLock.lock()
+
+        guard oldActions.isEmpty != syncActions.isEmpty else {
+            logger.debug("Cancelling synchronization state report due to lack of state change.")
+            actionsLock.unlock()
+            return
+        }
+
+        var argument: String?
+
+        if oldActions.isEmpty, !syncActions.isEmpty {
+            argument = "SYNC_STARTED"
+        } else if !oldActions.isEmpty, syncActions.isEmpty {
+            argument = errorActions.isEmpty ? "SYNC_FINISHED" : "SYNC_FAILED"
+            errorActions = []
+        }
+
+        actionsLock.unlock()
+
+        guard let argument else {
+            logger.error("State argument is nil!")
+            return
+        }
+
+        logger.debug("Reporting synchronization state.", [.name: argument])
+
+        app?.reportSyncStatus(argument, forDomainIdentifier: domain.identifier.rawValue)
     }
 }
