@@ -552,7 +552,7 @@ extension RemoteChangeObserver: NextcloudKitDelegate {
                 return
             }
 
-            guard isLockFileName(item.fileName) == false else {
+            guard item.isLockFile == false else {
                 // Skip server requests for locally created lock files.
                 // They are not synchronized to the server for real.
                 // Thus they can be expected not to be found there.

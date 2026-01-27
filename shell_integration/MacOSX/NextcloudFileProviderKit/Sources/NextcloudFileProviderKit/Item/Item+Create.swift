@@ -499,7 +499,7 @@ public extension Item {
 
         let itemTemplateIsFolder = itemTemplate.contentType?.conforms(to: .directory) ?? false
 
-        guard !isLockFileName(itemTemplate.filename) || itemTemplateIsFolder else {
+        guard !itemTemplate.isLockFile || itemTemplateIsFolder else {
             return await Item.createLockFile(
                 basedOn: itemTemplate,
                 parentItemIdentifier: parentItemIdentifier,
