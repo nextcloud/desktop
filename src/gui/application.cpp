@@ -132,7 +132,8 @@ bool Application::configVersionMigration()
     QStringList deleteKeys, ignoreKeys;
     AccountManager::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
     FolderMan::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
-    
+    configFile.setClientPreviousVersionString(configFile.clientVersionString());
+
     qCDebug(lcApplication) << "Migration is in progress:"  << configFile.isMigrationInProgress();
     const auto versionChanged = configFile.hasVersionChanged();
     if (versionChanged) {
@@ -994,23 +995,6 @@ void Application::handleEditLocallyFromOptions()
     _editFileLocallyUrl.clear();
 }
 
-QString substLang(const QString &lang)
-{
-    // Map the more appropriate script codes
-    // to country codes as used by Qt and
-    // transifex translation conventions.
-
-    // Simplified Chinese
-    if (lang == QLatin1String("zh_Hans")) {
-        return QLatin1String("zh_CN");
-    }
-    // Traditional Chinese
-    if (lang == QLatin1String("zh_Hant")) {
-        return QLatin1String("zh_TW");
-    }
-    return lang;
-}
-
 QString enforcedLanguage()
 {
     const ConfigFile cfg;
@@ -1025,11 +1009,6 @@ QString enforcedLanguage()
 
 void Application::setupTranslations()
 {
-    qCInfo(lcApplication) << "System UI languages are:" << QLocale::system().uiLanguages();
-    const auto enforcedLocale = enforcedLanguage();
-    const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : QLocale::system().uiLanguages(QLocale::TagSeparator::Underscore).first());
-    qCInfo(lcApplication) << "selected application language:" << lang;
-
     auto *translator = new QTranslator(this);
     auto *qtTranslator = new QTranslator(this);
     auto *qtkeychainTranslator = new QTranslator(this);
@@ -1040,19 +1019,36 @@ void Application::setupTranslations()
         qCWarning(lcApplication()) << trPath << "folder containing translations is missing. Impossible to load translations";
         return;
     }
-    const QString trFile = QLatin1String("client_") + lang;
-    qCDebug(lcApplication()) << "trying to load" << lang << "in" << trFile << "from" << trPath;
-    if (translator->load(trFile, trPath) || lang.startsWith(QLatin1String("en"))) {
+
+    qCInfo(lcApplication) << "System UI languages are:" << QLocale::system().uiLanguages();
+    auto choosenLanguage = enforcedLanguage();
+    if (choosenLanguage.isEmpty()) {
+        for(const auto &localeToTest : QLocale::system().uiLanguages(QLocale::TagSeparator::Underscore)){
+            const auto trFile = QString{QLatin1String{"client_"} + localeToTest};
+            qCDebug(lcApplication()) << "trying to load" << localeToTest << "in" << trFile << "from" << trPath;
+            if (translator->load(trFile, trPath)) {
+                choosenLanguage = localeToTest;
+                break;
+            }
+        }
+    } else {
+        const QString trFile = QLatin1String("client_") + choosenLanguage;
+        qCDebug(lcApplication()) << "trying to load" << choosenLanguage << "in" << trFile << "from" << trPath;
+        static_cast<void>(translator->load(trFile, trPath));
+    }
+
+    qCInfo(lcApplication) << "selected application language:" << choosenLanguage;
+    if (!translator->isEmpty() || choosenLanguage.startsWith(QLatin1String("en"))) {
         // Permissive approach: Qt and keychain translations
         // may be missing, but Qt translations must be there in order
         // for us to accept the language. Otherwise, we try with the next.
         // "en" is an exception as it is the default language and may not
         // have a translation file provided.
-        qCInfo(lcApplication) << "Using" << lang << "translation";
-        setProperty("ui_lang", lang);
+        qCInfo(lcApplication) << "Using" << choosenLanguage << "translation";
+        setProperty("ui_lang", choosenLanguage);
         const QString qtTrPath = QLibraryInfo::path(QLibraryInfo::TranslationsPath);
-        const QString qtTrFile = QLatin1String("qt_") + lang;
-        const QString qtBaseTrFile = QLatin1String("qtbase_") + lang;
+        const QString qtTrFile = QLatin1String("qt_") + choosenLanguage;
+        const QString qtBaseTrFile = QLatin1String("qtbase_") + choosenLanguage;
         if (!qtTranslator->load(qtTrFile, qtTrPath)) {
             if (!qtTranslator->load(qtTrFile, trPath)) {
                 if (!qtTranslator->load(qtBaseTrFile, qtTrPath)) {
@@ -1062,7 +1058,7 @@ void Application::setupTranslations()
                 }
             }
         }
-        const QString qtkeychainTrFile = QLatin1String("qtkeychain_") + lang;
+        const QString qtkeychainTrFile = QLatin1String("qtkeychain_") + choosenLanguage;
         if (!qtkeychainTranslator->load(qtkeychainTrFile, qtTrPath)) {
             if (!qtkeychainTranslator->load(qtkeychainTrFile, trPath)) {
                 qCDebug(lcApplication()) << "impossible to load QtKeychain translation catalog" << qtkeychainTrFile;
