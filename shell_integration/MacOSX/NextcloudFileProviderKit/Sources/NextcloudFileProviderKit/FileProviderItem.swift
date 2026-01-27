@@ -9,46 +9,74 @@ import UniformTypeIdentifiers
 ///
 /// To enable thread-safety, this is a dedicated type and cannot be based on the data model entities.
 ///
-public final class FileProviderItem: NSObject, Sendable {
-    private let storedCapabilities: NSFileProviderItemCapabilities
-    private let storedChildItemCount: NSNumber?
-    private let storedContentModificationDate: Date?
+public final class FileProviderItem: NSObject, Sendable, NSFileProviderItem {
+    ///
+    /// The server-side unique identifier for the item.
+    ///
+    public let ocID: String?
+
+    // MARK: - Stored NSFileProviderItem Properties
+
+    public let capabilities: NSFileProviderItemCapabilities
+    public let childItemCount: NSNumber?
+    public let contentModificationDate: Date?
+
+    ///
+    /// Value storing property for ``contentPolicy``.
+    ///
     private let storedContentPolicy: Int
-    private let storedContentType: UTType
-    private let storedCreationDate: Date?
-    private let storedDocumentSize: NSNumber?
-    private let storedDownloadingError: (any Error)?
-    private let storedFilename: String
-    private let storedFileSystemFlags: NSFileProviderFileSystemFlags
-    private let storedIsDownloaded: Bool
-    private let storedIsDownloading: Bool
-    private let storedIsMostRecentVersionDownloaded: Bool
-    private let storedIsShared: Bool
-    private let storedIsSharedByCurrentUser: Bool
-    private let storedIsUploaded: Bool
-    private let storedIsUploading: Bool
-    private let storedItemIdentifier: NSFileProviderItemIdentifier
+
+    ///
+    /// Because availability attributes cannot be applied to stored properties, this has to be implemented through a computed property based on a stored property with a scalar type.
+    ///
+    /// - Returns: `.inherited` as the default, if no other value is specified or available.
+    ///
+    @available(macOS 13.0, *)
+    public var contentPolicy: NSFileProviderContentPolicy {
+        guard let storedContentPolicy = NSFileProviderContentPolicy(rawValue: storedContentPolicy) else {
+            return .inherited
+        }
+
+        return storedContentPolicy
+    }
+
+    public let contentType: UTType
+    public let creationDate: Date?
+    public let documentSize: NSNumber?
+    public let downloadingError: (any Error)?
+    public let filename: String
+    public let fileSystemFlags: NSFileProviderFileSystemFlags
+    public let isDownloaded: Bool
+    public let isDownloading: Bool
+    public let isMostRecentVersionDownloaded: Bool
+    public let isShared: Bool
+    public let isSharedByCurrentUser: Bool
+    public let isUploaded: Bool
+    public let isUploading: Bool
+    public let itemIdentifier: NSFileProviderItemIdentifier
 
     ///
     /// `nonisolated(unsafe)` is necessary because some parts of the file provider framework have not been updated with full concurrency annotations yet.
     /// It is safe to use here, though, because it is a `let` defined in the initializer.
     ///
-    private nonisolated(unsafe) let storedItemVersion: NSFileProviderItemVersion
-    private let storedLastUsedDate: Date?
-    private let storedMostRecentEditorNameComponents: PersonNameComponents?
-    private let storedOwnerNameComponents: PersonNameComponents?
-    private let storedParentItemIdentifier: NSFileProviderItemIdentifier
-    private let storedUploadingError: (any Error)?
+    public nonisolated(unsafe) let itemVersion: NSFileProviderItemVersion
+    public let lastUsedDate: Date?
+    public let mostRecentEditorNameComponents: PersonNameComponents?
+    public let ownerNameComponents: PersonNameComponents?
+    public let parentItemIdentifier: NSFileProviderItemIdentifier
+    public let uploadingError: (any Error)?
 
     ///
     /// `nonisolated(unsafe)` is necessary because some parts of the file provider framework have not been updated with full concurrency annotations yet.
     /// It is safe to use here, though, because it is a `let` defined in the initializer.
     ///
-    private nonisolated(unsafe) let storedUserInfo: [AnyHashable : Any]?
+    public nonisolated(unsafe) let storedUserInfo: [AnyHashable : Any]?
+
+    // MARK: - Initializers
 
     ///
     /// - Parameters:
-    ///     - contentPolicy: The raw value of a case in `NSFileProviderContentPolicy`.
+    ///     - contentPolicy: The raw value of a case in `NSFileProviderContentPolicy`. This type erasure is necessary due to macOS 13 compatibility.
     ///
     public init(
         capabilities: NSFileProviderItemCapabilities,
@@ -72,147 +100,39 @@ public final class FileProviderItem: NSObject, Sendable {
         itemVersion: NSFileProviderItemVersion,
         lastUsedDate: Date?,
         mostRecentEditorNameComponents: PersonNameComponents?,
+        ocID: String?,
         ownerNameComponents: PersonNameComponents?,
         parentItemIdentifier: NSFileProviderItemIdentifier,
         uploadingError: (any Error)?,
         userInfo: [AnyHashable : Any]?
     ) {
-        self.storedCapabilities = capabilities
-        self.storedChildItemCount = childItemCount
-        self.storedContentModificationDate = contentModificationDate
+        self.capabilities = capabilities
+        self.childItemCount = childItemCount
+        self.contentModificationDate = contentModificationDate
         self.storedContentPolicy = contentPolicy
-        self.storedContentType = contentType
-        self.storedCreationDate = creationDate
-        self.storedDocumentSize = documentSize
-        self.storedDownloadingError = downloadingError
-        self.storedFilename = filename
-        self.storedFileSystemFlags = fileSystemFlags
-        self.storedIsDownloaded = isDownloaded
-        self.storedIsDownloading = isDownloading
-        self.storedIsMostRecentVersionDownloaded = isMostRecentVersionDownloaded
-        self.storedIsShared = isShared
-        self.storedIsSharedByCurrentUser = isSharedByCurrentUser
-        self.storedIsUploaded = isUploaded
-        self.storedIsUploading = isUploading
-        self.storedItemIdentifier = itemIdentifier
-        self.storedItemVersion = itemVersion
-        self.storedLastUsedDate = lastUsedDate
-        self.storedMostRecentEditorNameComponents = mostRecentEditorNameComponents
-        self.storedOwnerNameComponents = ownerNameComponents
-        self.storedParentItemIdentifier = parentItemIdentifier
-        self.storedUploadingError = uploadingError
+        self.contentType = contentType
+        self.creationDate = creationDate
+        self.documentSize = documentSize
+        self.downloadingError = downloadingError
+        self.filename = filename
+        self.fileSystemFlags = fileSystemFlags
+        self.isDownloaded = isDownloaded
+        self.isDownloading = isDownloading
+        self.isMostRecentVersionDownloaded = isMostRecentVersionDownloaded
+        self.isShared = isShared
+        self.isSharedByCurrentUser = isSharedByCurrentUser
+        self.isUploaded = isUploaded
+        self.isUploading = isUploading
+        self.itemIdentifier = itemIdentifier
+        self.itemVersion = itemVersion
+        self.lastUsedDate = lastUsedDate
+        self.mostRecentEditorNameComponents = mostRecentEditorNameComponents
+        self.ocID = ocID
+        self.ownerNameComponents = ownerNameComponents
+        self.parentItemIdentifier = parentItemIdentifier
+        self.uploadingError = uploadingError
         self.storedUserInfo = userInfo
 
         super.init()
-    }
-}
-
-extension FileProviderItem: NSFileProviderItem {
-    public var capabilities: NSFileProviderItemCapabilities {
-        storedCapabilities
-    }
-
-    public var childItemCount: NSNumber? {
-        storedChildItemCount
-    }
-
-    public var contentModificationDate: Date? {
-        storedContentModificationDate
-    }
-
-    ///
-    /// - Returns: `.inherited` as the default, if no other value is specified or available.
-    ///
-    @available(macOS 13.0, *)
-    public var contentPolicy: NSFileProviderContentPolicy {
-        guard let storedContentPolicy = NSFileProviderContentPolicy(rawValue: storedContentPolicy) else {
-            return .inherited
-        }
-
-        return storedContentPolicy
-    }
-
-    public var contentType: UTType {
-        storedContentType
-    }
-
-    public var creationDate: Date? {
-        storedCreationDate
-    }
-
-    public var documentSize: NSNumber? {
-        storedDocumentSize
-    }
-
-    public var downloadingError: (any Error)? {
-        storedDownloadingError
-    }
-
-    public var filename: String {
-        storedFilename
-    }
-
-    public var fileSystemFlags: NSFileProviderFileSystemFlags {
-        storedFileSystemFlags
-    }
-
-    public var isDownloaded: Bool {
-        storedIsDownloaded
-    }
-
-    public var isDownloading: Bool {
-        storedIsDownloading
-    }
-
-    public var isMostRecentVersionDownloaded: Bool {
-        storedIsMostRecentVersionDownloaded
-    }
-
-    public var isShared: Bool {
-        storedIsShared
-    }
-
-    public var isSharedByCurrentUser: Bool {
-        storedIsSharedByCurrentUser
-    }
-
-    public var isUploaded: Bool {
-        storedIsUploaded
-    }
-
-    public var isUploading: Bool {
-        storedIsUploading
-    }
-
-    public var itemIdentifier: NSFileProviderItemIdentifier {
-        storedItemIdentifier
-    }
-
-    public var itemVersion: NSFileProviderItemVersion {
-        storedItemVersion
-    }
-
-    public var lastUsedDate: Date? {
-        storedLastUsedDate
-    }
-
-    public var mostRecentEditorNameComponents: PersonNameComponents? {
-        storedMostRecentEditorNameComponents
-    }
-
-    public var ownerNameComponents: PersonNameComponents? {
-        storedOwnerNameComponents
-    }
-
-    public var parentItemIdentifier: NSFileProviderItemIdentifier {
-        storedParentItemIdentifier
-    }
-
-    public var uploadingError: (any Error)? {
-        storedUploadingError
-    }
-
-    public var userInfo: [AnyHashable : Any]? {
-        storedUserInfo
     }
 }

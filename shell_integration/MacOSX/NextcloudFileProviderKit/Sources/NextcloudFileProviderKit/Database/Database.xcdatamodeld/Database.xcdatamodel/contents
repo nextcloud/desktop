@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24512" systemVersion="25C56" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="DatabaseItem" representedClassName="DatabaseItem" syncable="YES" codeGenerationType="class">
-        <attribute name="capabilities" attributeType="String"/>
+        <attribute name="allowsAddingSubItems" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="allowsContentEnumerating" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="allowsDeleting" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="allowsEvicting" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="allowsExcludingFromSync" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="allowsReading" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="allowsRenaming" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="allowsReparenting" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="allowsTrashing" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="allowsWriting" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="contentModificationDate" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="contentPolicy" attributeType="Integer 64" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="contentType" attributeType="String"/>
@@ -11,6 +20,7 @@
         <attribute name="filename" attributeType="String"/>
         <attribute name="isDownloaded" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isDownloading" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isLockFileOfLocalOrigin" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isMostRecentVersionDownloaded" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isShared" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isSharedByCurrentUser" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
@@ -19,13 +29,27 @@
         <attribute name="itemIdentifier" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="itemVersion" attributeType="String"/>
         <attribute name="lastUsedDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="mostRecentEditorNameComponents" optional="YES" attributeType="Binary"/>
+        <attribute name="mostRecentEditorNameComponents" optional="YES" attributeType="String"/>
         <attribute name="ocID" attributeType="String"/>
-        <attribute name="ownerNameComponents" optional="YES" attributeType="Binary"/>
-        <attribute name="parentItemIdentifier" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="ownerNameComponents" optional="YES" attributeType="String"/>
+        <attribute name="parentItemIdentifier" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="uploadingError" optional="YES" attributeType="String"/>
+        <relationship name="lock" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Lock" inverseName="item" inverseEntity="Lock"/>
         <fetchIndex name="byItemIdentifier">
             <fetchIndexElement property="itemIdentifier" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="Lock" representedClassName="Lock" syncable="YES" codeGenerationType="class">
+        <attribute name="displayName" optional="YES" attributeType="String"/>
+        <attribute name="editor" optional="YES" attributeType="String"/>
+        <attribute name="owner" optional="YES" attributeType="String"/>
+        <attribute name="time" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="timeOut" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="token" optional="YES" attributeType="String"/>
+        <attribute name="type" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DatabaseItem" inverseName="lock" inverseEntity="DatabaseItem"/>
+        <fetchIndex name="byItem">
+            <fetchIndexElement property="item" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
     <entity name="MappedIdentifier" representedClassName="MappedIdentifier" syncable="YES" codeGenerationType="class">
@@ -36,5 +60,4 @@
         </fetchIndex>
     </entity>
     <entity name="RemoteFileChunk" representedClassName="RemoteFileChunk" syncable="YES" codeGenerationType="class"/>
-    <fetchRequest name="MappedIdentifierFetchRequest" entity="MappedIdentifier" predicateString="itemIdentifier == &quot;&quot;" fetchLimit="1" resultType="2"/>
 </model>

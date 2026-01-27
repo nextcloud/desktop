@@ -7,18 +7,22 @@ import Testing
 
 @Suite("Database Tests")
 struct DatabaseManagingTests {
-    @Test("Retrieval by File Provider Item Identifier")
-    func getItemByIdentifier() async throws {
+    @Test("Database Item Insert and Fetch")
+    func insertAndFetchItem() async throws {
         let database = Database(log: FileProviderLogMock())
         try await database.insertItem()
-        let item = database.getItem(by: <#T##NSFileProviderItemIdentifier#>)
         <#code#>
     }
 
-    @Test("Insertion")
-    func insertItem() async throws {
+    @Test("Root Container Mapping")
+    func mapRootContainer() async throws {
         let database = Database(log: FileProviderLogMock())
-        try await database.insertItem()
+        <#code#>
+    }
+
+    @Test("Trash Container Mapping")
+    func mapTrashContainer() async throws {
+        let database = Database(log: FileProviderLogMock())
         <#code#>
     }
 }
