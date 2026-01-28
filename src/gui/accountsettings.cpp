@@ -222,15 +222,9 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
                                                                            QQuickWidget::SizeViewToRootObject);
     fpSettingsLayout->setContentsMargins(0, 0, 0, 0);
     fpSettingsLayout->setSpacing(0);
-
-    // Ensure the QQuickWidget resizes to the container, not just the root QML object
-    // If settingsViewWidget returns a QQuickWidget, change the ResizeMode:
-    if (auto *quickWidget = qobject_cast<QQuickWidget*>(fpSettingsWidget)) {
-        quickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView); // Forces QML to fill the widget
-    }
     
     fpSettingsWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    fpSettingsLayout->addWidget(fpSettingsWidget);
+    fpSettingsLayout->addWidget(fpSettingsWidget, 1);
     fileProviderPanelContents->setLayout(fpSettingsLayout);
 #else
     _ui->fileProviderPanel->setVisible(false);
