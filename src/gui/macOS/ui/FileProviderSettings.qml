@@ -52,20 +52,5 @@ Page {
                 onClicked: root.controller.setVfsEnabledForAccount(root.accountUserIdAtHost, checked)
             }
         }
-
-        RowLayout {
-            Layout.fillWidth: true
-
-            EnforcedPlainTextLabel {
-                Layout.fillWidth: true
-                text: qsTr("Allow deletion of items in Trash")
-                elide: Text.ElideRight
-            }
-
-            Switch {
-                checked: root.controller.trashDeletionEnabledForAccount(root.accountUserIdAtHost)
-                onClicked: root.controller.setTrashDeletionEnabledForAccount(root.accountUserIdAtHost, checked)
-            }
-        }
     }
 }
