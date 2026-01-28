@@ -20,6 +20,11 @@ class QNetworkReply;
 
 namespace OCC {
 
+inline constexpr auto updateAvailableKey = "Updater/updateAvailable";
+inline constexpr auto updateTargetVersionKey = "Updater/updateTargetVersion";
+inline constexpr auto updateTargetVersionStringKey = "Updater/updateTargetVersionString";
+inline constexpr auto autoUpdateAttemptedKey = "Updater/autoUpdateAttempted";
+
 /**
  * @brief Schedule update checks every couple of hours if the client runs.
  * @ingroup gui
@@ -112,8 +117,7 @@ signals:
     void requestRestart();
 
 public slots:
-    // FIXME Maybe this should be in the NSISUpdater which should have been called WindowsUpdater
-    void slotStartInstaller();
+    virtual void slotStartInstaller();
 
 protected slots:
     void backgroundCheckForUpdate() override;
@@ -147,6 +151,7 @@ class NSISUpdater : public OCUpdater
 public:
     explicit NSISUpdater(const QUrl &url);
     bool handleStartup() override;
+    void slotStartInstaller() override;
 private slots:
     void slotDownloadFinished();
     void slotWriteFile();
