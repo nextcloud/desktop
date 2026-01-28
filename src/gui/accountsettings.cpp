@@ -180,9 +180,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->gridLayout->setRowStretch(1, 0);
     _ui->gridLayout->setRowStretch(2, 0);
     _ui->gridLayout->setRowStretch(3, 1);
-    connect(_ui->encryptionMessage, &KMessageWidget::showAnimationFinished, this, [this] {
-        applyEncryptionMessageButtonStyle();
-    });
     
     _model->setAccountState(_accountState);
     _model->setParent(this);
@@ -1715,19 +1712,6 @@ void AccountSettings::applyEncryptionMessageButtonStyle()
         button->setAutoRaise(false);
         button->setToolButtonStyle(Qt::ToolButtonTextOnly);
         button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    }
-}
-
-void AccountSettings::applyEncryptionMessageFrameStyle()
-{
-    auto *contentWidget = _ui->encryptionMessage->findChild<QFrame *>(QStringLiteral("contentWidget"));
-    if (!contentWidget) {
-        return;
-    }
-    const QString overrideStyle = QStringLiteral("QFrame { border: 0px; margin: 0px; }");
-    const QString styleSheet = contentWidget->styleSheet();
-    if (!styleSheet.contains(overrideStyle)) {
-        contentWidget->setStyleSheet(styleSheet + overrideStyle);
     }
 }
 
