@@ -231,8 +231,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowInExplorerNavigationPane);
 
-    connect(_ui->showCloudProvidersCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleCloudProviders);
-
     // Rename 'Explorer' appropriately on non-Windows
 #ifdef Q_OS_MACOS
     QString txt = _ui->showInExplorerNavigationPaneCheckBox->text();
@@ -281,11 +279,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 #else
     // Hide on non-Windows
     _ui->showInExplorerNavigationPaneCheckBox->setVisible(false);
-#endif
-
-    // Hide CloudProviders checkbox on non-Linux platforms
-#ifndef Q_OS_LINUX
-    _ui->showCloudProvidersCheckBox->setVisible(false);
 #endif
 
     /* Set the left contents margin of the layout to zero to make the checkboxes
@@ -342,7 +335,6 @@ void GeneralSettings::loadMiscSettings()
     _ui->quotaWarningNotificationsCheckBox->setEnabled(cfgFile.optionalServerNotifications());
     _ui->quotaWarningNotificationsCheckBox->setChecked(cfgFile.showQuotaWarningNotifications());
     _ui->showInExplorerNavigationPaneCheckBox->setChecked(cfgFile.showInExplorerNavigationPane());
-    _ui->showCloudProvidersCheckBox->setChecked(cfgFile.showCloudProvidersInFileManager());
     _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
     _ui->moveFilesToTrashCheckBox->setChecked(cfgFile.moveToTrash());
@@ -654,12 +646,6 @@ void GeneralSettings::slotShowInExplorerNavigationPane(bool checked)
     // Now update the registry with the change.
     FolderMan::instance()->navigationPaneHelper().setShowInExplorerNavigationPane(checked);
 #endif
-}
-
-void GeneralSettings::slotToggleCloudProviders(bool checked)
-{
-    ConfigFile cfgFile;
-    cfgFile.setShowCloudProvidersInFileManager(checked);
 }
 
 void GeneralSettings::slotIgnoreFilesEditor()
