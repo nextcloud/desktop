@@ -54,7 +54,6 @@
 #include <QVariant>
 #include <QJsonDocument>
 #include <QToolTip>
-#include <QToolButton>
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "macOS/fileprovider.h"
@@ -1702,17 +1701,6 @@ void AccountSettings::customizeStyle()
 
     const auto color = palette().highlight().color();
     _ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));
-    applyEncryptionMessageButtonStyle();
-}
-
-void AccountSettings::applyEncryptionMessageButtonStyle()
-{
-    const auto buttons = _ui->encryptionMessage->findChildren<QToolButton *>();
-    for (auto *button : buttons) {
-        button->setAutoRaise(false);
-        button->setToolButtonStyle(Qt::ToolButtonTextOnly);
-        button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    }
 }
 
 void AccountSettings::setupE2eEncryption()
@@ -1778,7 +1766,6 @@ QAction *AccountSettings::addActionToEncryptionMessage(const QString &actionTitl
         action->setProperty(e2eUiActionIdKey, actionId);
     }
     _ui->encryptionMessage->addAction(action);
-    applyEncryptionMessageButtonStyle();
     return action;
 }
 
