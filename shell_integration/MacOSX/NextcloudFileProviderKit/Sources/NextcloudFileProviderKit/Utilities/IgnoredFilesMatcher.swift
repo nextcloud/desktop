@@ -4,6 +4,7 @@
 import Foundation
 
 public class IgnoredFilesMatcher {
+    private let logger: FileProviderLogger
     private let regexes: [NSRegularExpression]
 
     private static func patternToRegex(_ pattern: String, wildcardsMatchSlash: Bool) -> String {
@@ -42,7 +43,10 @@ public class IgnoredFilesMatcher {
         return hasSlash ? "^\(regex)$" : "(^|/)" + regex + "$"
     }
 
-    public init(ignoreList: [String], wildcardsMatchSlash: Bool = false) {
+    public init(ignoreList: [String], wildcardsMatchSlash: Bool = false, log: any FileProviderLogging) {
+        logger = FileProviderLogger(category: "IgnoredFilesMatcher", log: log)
+        logger.debug("Initializing with ignore list:\n\n\(ignoreList.map { "- \"\($0)\"" }.joined(separator: "\n"))")
+
         regexes = ignoreList
             .map { Self.patternToRegex($0, wildcardsMatchSlash: wildcardsMatchSlash) }
             .compactMap { try? NSRegularExpression(pattern: $0, options: [.caseInsensitive]) }

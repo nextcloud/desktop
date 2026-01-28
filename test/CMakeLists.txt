@@ -30,11 +30,16 @@ set_target_properties(testutils PROPERTIES FOLDER Tests)
 nextcloud_add_test(NextcloudPropagator)
 if(Qt${QT_VERSION_MAJOR}HttpServer_FOUND)
     target_compile_definitions(NextcloudPropagatorTest PRIVATE HAVE_QHTTPSERVER=1)
-    target_link_libraries(NextcloudPropagatorTest PRIVATE Qt6::HttpServer)
+    target_link_libraries(NextcloudPropagatorTest PRIVATE Qt::HttpServer)
 endif()
 
 IF(BUILD_UPDATER)
     nextcloud_add_test(Updater)
+
+    if(Qt${QT_VERSION_MAJOR}HttpServer_FOUND)
+        target_compile_definitions(UpdaterTest PRIVATE HAVE_QHTTPSERVER=1)
+        target_link_libraries(UpdaterTest PRIVATE Qt::HttpServer)
+    endif()
 endif()
 
 nextcloud_add_test(NetrcParser)

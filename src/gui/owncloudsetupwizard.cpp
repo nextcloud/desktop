@@ -656,8 +656,8 @@ void OwncloudSetupWizard::slotCreateRemoteFolderFinished(QNetworkReply *reply)
         _remoteFolder.clear();
         success = false;
     } else {
-        _ocWizard->appendToConfigurationLog(tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(Utility::escape(_remoteFolder)).arg(error));
-        _ocWizard->displayError(tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(Utility::escape(_remoteFolder)).arg(error), false);
+        _ocWizard->appendToConfigurationLog(tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(Utility::escape(_remoteFolder)).arg(QString::number(error)));
+        _ocWizard->displayError(tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(Utility::escape(_remoteFolder)).arg(QString::number(error)), false);
         _remoteFolder.clear();
         success = false;
     }

@@ -82,7 +82,7 @@ QByteArray PropagateUploadFileNG::destinationHeader() const
     const auto davUrl = Utility::trailingSlashPath(propagator()->account()->davUrl().toString());
     const auto remotePath = Utility::noLeadingSlashPath(propagator()->fullRemotePath(_fileToUpload._file));
     const auto destination = QString(davUrl + remotePath);
-    return destination.toUtf8();
+    return QUrl::toPercentEncoding(destination, "/");
 }
 
 void PropagateUploadFileNG::doStartUpload()

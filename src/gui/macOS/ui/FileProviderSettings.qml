@@ -39,25 +39,11 @@ Page {
             right: parent.right
         }
 
-        EnforcedPlainTextLabel {
-            Layout.fillWidth: true
-            text: qsTr("General settings")
-            font.bold: true
-            font.pointSize: Style.subheaderFontPtSize
-            elide: Text.ElideRight
-        }
-
         CheckBox {
             id: vfsEnabledCheckBox
             text: qsTr("Enable virtual files")
             checked: root.controller.vfsEnabledForAccount(root.accountUserIdAtHost)
             onClicked: root.controller.setVfsEnabledForAccount(root.accountUserIdAtHost, checked)
-        }
-        
-        CheckBox {
-            text: qsTr("Allow deletion of items in Trash")
-            checked: root.controller.trashDeletionEnabledForAccount(root.accountUserIdAtHost)
-            onClicked: root.controller.setTrashDeletionEnabledForAccount(root.accountUserIdAtHost, checked)
         }
     }
 }

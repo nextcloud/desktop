@@ -38,16 +38,9 @@ public:
     void migrateToAppSandbox();
 
     [[nodiscard]] Q_INVOKABLE bool vfsEnabledForAccount(const QString &userIdAtHost) const;
-    [[nodiscard]] Q_INVOKABLE bool trashDeletionEnabledForAccount(const QString &userIdAtHost) const;
-    [[nodiscard]] Q_INVOKABLE bool trashDeletionSetForAccount(const QString &userIdAtHost) const;
 
 public slots:
     void setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled, const bool showInformationDialog = true);
-    void setTrashDeletionEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);
-
-signals:
-    void trashDeletionEnabledForAccountChanged(const QString &userIdAtHost);
-    void trashDeletionSetForAccountChanged(const QString &userIdAtHost);
 
 private:
     explicit FileProviderSettingsController(QObject *parent = nullptr);

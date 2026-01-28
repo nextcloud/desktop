@@ -19,6 +19,7 @@
 #include "systray.h"
 #include "openfilemanager.h"
 #include "filesystem.h"
+#include "common/utility.h"
 
 #include <QtCore>
 #include <QAbstractListModel>
@@ -196,7 +197,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 
     const auto displayLocation = [&]() {
         const auto displayPath = QFileInfo(getDisplayPath()).path();
-        return displayPath == "." || displayPath == "/" ? QString() : displayPath;
+        return displayPath == "." || displayPath == "/" ? QString() : Utility::escape(displayPath);
     };
 
     const auto generatePreviewMap = [](const PreviewData &preview) {

@@ -648,6 +648,9 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->_serverVersion = settings.value(QLatin1String(serverVersionC)).toString();
     acc->_serverColor = settings.value(QLatin1String(serverColorC)).value<QColor>();
     acc->_serverTextColor = settings.value(QLatin1String(serverTextColorC)).value<QColor>();
+    acc->_serverHasValidSubscription = settings.value(QLatin1String(serverHasValidSubscriptionC), false).value<bool>();
+    acc->_enterpriseUpdateChannel = UpdateChannel::fromString(
+        settings.value(QLatin1String(serverDesktopEnterpriseUpdateChannelC), QVariant::fromValue(UpdateChannel::Invalid.toString())).toString());
     acc->_skipE2eeMetadataChecksumValidation = settings.value(QLatin1String(skipE2eeMetadataChecksumValidationC), {}).toBool();
     acc->_davUser = settings.value(QLatin1String(davUserC)).toString();
 #ifdef BUILD_FILE_PROVIDER_MODULE

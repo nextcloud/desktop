@@ -2,7 +2,7 @@
   - SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
   - SPDX-License-Identifier: GPL-2.0-or-later
 -->
-# Mac Crafter
+# mac-crafter
 
 mac-crafter is a tool to easily build a fully functional Nextcloud Desktop Client for macOS.
 It automates cloning, configuring, crafting, codesigning, packaging, and even disk image creation of the client.
@@ -57,6 +57,12 @@ Additional preparation is necessary, though.
 5. Define the "PATH" environment variable. You can copy and paste the output of `echo "$PATH"` from a terminal. Otherwise the executable will not inherit your shell environment paths as necessary for Homebrew to work.
 6. Navigate to the "Options" tab.
 7. Enable and define a custom working directory. The root of this Swift package, to be specific. 
+
+## Troubleshooting
+
+mac-crafter has its own simple logging facility which writes to standard output in a terminal environment, the unified logging system of macOS and a log file simultaneously.
+You can stream the log messages in the Console app of macOS by searching for the "mac-crafter" process and "com.nextcloud.mac-crafter" subsystem.
+Alternatively, you can follow the latest log file created in `~/Library/Logs/mac-crafter`.
 
 ## License
 
