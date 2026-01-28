@@ -37,7 +37,7 @@ public:
 
     // The URL that was tried
     void setUrl(const QUrl &);
-    void setHTTPOnly(const bool);
+    void setHTTPOnly(bool);
 
 public slots:
     void returnNoTLS();
