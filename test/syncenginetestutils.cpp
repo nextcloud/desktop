@@ -23,6 +23,8 @@
 #include <memory>
 #include <filesystem>
 
+using namespace Qt::StringLiterals;
+
 PathComponents::PathComponents(const char *path)
     : PathComponents { QString::fromUtf8(path) }
 {
@@ -66,7 +68,9 @@ void DiskFileModifier::remove(const QString &relativePath)
 void DiskFileModifier::insert(const QString &relativePath, qint64 size, char contentChar)
 {
     QFile file { _rootDir.filePath(relativePath) };
-    QVERIFY(!file.exists());
+    if (!file.exists()) {
+        QVERIFY(!file.exists());
+    }
     file.open(QFile::WriteOnly);
     QByteArray buf(1024, contentChar);
     for (int x = 0; x < size / buf.size(); ++x) {
@@ -317,7 +321,9 @@ FileInfo *FileInfo::create(const QString &relativePath, qint64 size, char conten
 {
     const PathComponents pathComponents { relativePath };
     FileInfo *parent = findInvalidatingEtags(pathComponents.parentDirComponents());
-    Q_ASSERT(parent);
+    if (!parent) {
+        return nullptr;
+    }
     FileInfo &child = parent->children[pathComponents.fileName()] = FileInfo { pathComponents.fileName(), size };
     child.parentPath = parent->path();
     child.contentChar = contentChar;
@@ -533,6 +539,9 @@ FileInfo *FakePutReply::perform(FileInfo &remoteRootFileInfo, const QNetworkRequ
     } else {
         // Assume that the file is filled with the same character
         fileInfo = remoteRootFileInfo.create(fileName, putPayload.size(), putPayload.isEmpty() ? ' ' : putPayload.at(0));
+        if (!fileInfo) {
+            return fileInfo;
+        }
     }
     fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("X-OC-Mtime").toLongLong());
     remoteRootFileInfo.find(fileName, /*invalidateEtags=*/FileInfo::EtagsAction::Invalidate);
@@ -541,6 +550,13 @@ FileInfo *FakePutReply::perform(FileInfo &remoteRootFileInfo, const QNetworkRequ
 
 void FakePutReply::respond()
 {
+    if (!fileInfo) {
+        setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 412);
+        emit metaDataChanged();
+        emit finished();
+        return;
+    }
+
     emit uploadProgress(fileInfo->size, fileInfo->size);
     setRawHeader("OC-ETag", fileInfo->etag);
     setRawHeader("ETag", fileInfo->etag);
@@ -1251,6 +1267,7 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInf
     _journalDb = std::make_unique<OCC::SyncJournalDb>(localPath() + QStringLiteral(".sync_test.db"));
     _syncEngine = std::make_unique<OCC::SyncEngine>(_account, localPath(), OCC::SyncOptions{}, remotePath, _journalDb.get());
     // Ignore temporary files from the download. (This is in the default exclude list, but we don't load it)
+    _syncEngine->excludedFiles().addManualExclude(u".~lock.*#"_s);
     _syncEngine->excludedFiles().addManualExclude(QStringLiteral("]*.~*"));
 
     // handle aboutToRemoveAllFiles with a timeout in case our test does not handle it
