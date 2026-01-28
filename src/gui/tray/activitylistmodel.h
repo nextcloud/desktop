@@ -120,6 +120,7 @@ public slots:
     void slotTriggerDefaultAction(const int activityIndex);
     void slotTriggerAction(const int activityIndex, const int actionIndex);
     void slotTriggerDismiss(const int activityIndex);
+    void slotTriggerShowInFileManager(const int activityIndex);
 
     void addNotificationToActivityList(const OCC::Activity &activity);
     void addErrorToActivityList(const OCC::Activity &activity, const OCC::ActivityListModel::ErrorType type);
