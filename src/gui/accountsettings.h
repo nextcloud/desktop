@@ -121,7 +121,6 @@ private slots:
     void showConnectionLabel(const QString &message, QStringList errors = QStringList());
     void openIgnoredFilesDialog(const QString & absFolderPath);
     void customizeStyle();
-    void applyEncryptionMessageButtonStyle();
 
     void setupE2eEncryption();
     void forgetE2eEncryption();
