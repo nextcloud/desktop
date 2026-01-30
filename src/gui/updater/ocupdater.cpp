@@ -316,7 +316,7 @@ void NSISUpdater::wipeUpdateData()
         }
     }
     // Also try to remove the msi log file (created when running msiexec)
-    QString msiLogFileName = cfg.configPath() + msiLogFileNameC;
+    const auto msiLogFileName = QString{cfg.configPath() + msiLogFileNameC};
     if (QFile::remove(msiLogFileName)) {
         qCInfo(lcUpdater) << "Removed msi log file:" << msiLogFileName;
     } else {
