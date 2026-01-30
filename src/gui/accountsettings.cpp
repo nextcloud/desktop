@@ -54,6 +54,8 @@
 #include <QVariant>
 #include <QJsonDocument>
 #include <QToolTip>
+#include <QToolButton>
+#include <QStyle>
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "macOS/fileprovider.h"
@@ -298,9 +300,13 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     if (_accountState->isConnected()) {
         setupE2eEncryption();
     } else {
-        _ui->encryptionMessage->setText(tr("End-to-end encryption has not been initialized on this account."));
+        _ui->encryptionMessageLabel->setText(tr("End-to-end encryption has not been initialized on this account."));
     }
-    _ui->encryptionMessage->setCloseButtonVisible(false);
+    _ui->encryptionMessageLabel->setTextFormat(Qt::RichText);
+    _ui->encryptionMessageLabel->setTextInteractionFlags(Qt::TextBrowserInteraction);
+    _ui->encryptionMessageLabel->setOpenExternalLinks(true);
+    _ui->encryptionMessageButtonsLayout->addStretch();
+    setEncryptionMessageIcon({});
 
     _ui->connectLabel->setText(tr("No account configured."));
 
@@ -336,10 +342,8 @@ void AccountSettings::slotE2eEncryptionMnemonicReady()
         });
     }
 
-    _ui->encryptionMessage->setMessageType(KMessageWidget::Positive);
-    _ui->encryptionMessage->setText(tr("Encryption is set-up. Remember to <b>Encrypt</b> a folder to end-to-end encrypt any new files added to it."));
-    _ui->encryptionMessage->setWordWrap(true);
-    _ui->encryptionMessage->setIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/lock.svg")));
+    _ui->encryptionMessageLabel->setText(tr("Encryption is set-up. Remember to <b>Encrypt</b> a folder to end-to-end encrypt any new files added to it."));
+    setEncryptionMessageIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/lock.svg")));
     _ui->encryptionMessage->show();
 }
 
@@ -1169,6 +1173,7 @@ void AccountSettings::migrateCertificateForAccount(const AccountPtr &account)
     for (const auto action : allActions) {
         _ui->encryptionMessage->removeAction(action);
     }
+    updateEncryptionMessageActions();
 
     account->e2e()->migrateCertificate();
     slotE2eEncryptionGenerateKeys();
@@ -1714,9 +1719,9 @@ void AccountSettings::setupE2eEncryption()
 
         connect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, [this] {
             if (!_accountState->account()->e2e()->getPublicKey().isNull()) {
-                _ui->encryptionMessage->setText(tr("End-to-end encryption has been initialized on this account with another device."
-                                                   "<br>"
-                                                   "Enter the unique mnemonic to have the encrypted folders synchronize on this device as well."));
+                _ui->encryptionMessageLabel->setText(tr("End-to-end encryption has been initialized on this account with another device."
+                                                        "<br>"
+                                                        "Enter the unique mnemonic to have the encrypted folders synchronize on this device as well."));
             }
         });
         _accountState->account()->setE2eEncryptionKeysGenerationAllowed(false);
@@ -1730,8 +1735,9 @@ void AccountSettings::forgetE2eEncryption()
     for (const auto action : allActions) {
         _ui->encryptionMessage->removeAction(action);
     }
-    _ui->encryptionMessage->setText({});
-    _ui->encryptionMessage->setIcon({});
+    updateEncryptionMessageActions();
+    _ui->encryptionMessageLabel->setText({});
+    setEncryptionMessageIcon({});
     setupE2eEncryptionMessage();
     checkClientSideEncryptionState();
 
@@ -1749,6 +1755,7 @@ void AccountSettings::removeActionFromEncryptionMessage(const QString &actionId)
     if (foundEnableEncryptionActionIt != std::cend(_ui->encryptionMessage->actions())) {
         _ui->encryptionMessage->removeAction(*foundEnableEncryptionActionIt);
         (*foundEnableEncryptionActionIt)->deleteLater();
+        updateEncryptionMessageActions();
     }
 }
 
@@ -1766,19 +1773,63 @@ QAction *AccountSettings::addActionToEncryptionMessage(const QString &actionTitl
         action->setProperty(e2eUiActionIdKey, actionId);
     }
     _ui->encryptionMessage->addAction(action);
+    updateEncryptionMessageActions();
     return action;
 }
 
 void AccountSettings::setupE2eEncryptionMessage()
 {
-    _ui->encryptionMessage->setMessageType(KMessageWidget::Information);
-    _ui->encryptionMessage->setText(tr("This account supports end-to-end encryption, but it needs to be set up first."));
-    _ui->encryptionMessage->setWordWrap(true);
-    _ui->encryptionMessage->setIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/info.svg")));
+    _ui->encryptionMessageLabel->setText(tr("This account supports end-to-end encryption, but it needs to be set up first."));
+    setEncryptionMessageIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/info.svg")));
     _ui->encryptionMessage->hide();
 
     auto *const actionSetupE2e = addActionToEncryptionMessage(tr("Set up encryption"), e2EeUiActionSetupEncryptionId);
     connect(actionSetupE2e, &QAction::triggered, this, &AccountSettings::slotE2eEncryptionGenerateKeys);
+}
+
+void AccountSettings::setEncryptionMessageIcon(const QIcon &icon)
+{
+    if (icon.isNull()) {
+        _ui->encryptionMessageIcon->clear();
+        _ui->encryptionMessageIcon->hide();
+        return;
+    }
+
+    const int iconSize = style()->pixelMetric(QStyle::PM_SmallIconSize, nullptr, this);
+    _ui->encryptionMessageIcon->setPixmap(icon.pixmap(iconSize, iconSize));
+    _ui->encryptionMessageIcon->show();
+}
+
+void AccountSettings::updateEncryptionMessageActions()
+{
+    for (auto buttonIt = _encryptionMessageButtons.begin(); buttonIt != _encryptionMessageButtons.end(); ++buttonIt) {
+        _ui->encryptionMessageButtonsLayout->removeWidget(buttonIt.value());
+        buttonIt.value()->deleteLater();
+    }
+    _encryptionMessageButtons.clear();
+
+    const auto actions = _ui->encryptionMessage->actions();
+    auto *layout = _ui->encryptionMessageButtonsLayout;
+    int stretchIndex = -1;
+    for (int i = 0; i < layout->count(); ++i) {
+        if (layout->itemAt(i)->spacerItem()) {
+            stretchIndex = i;
+            break;
+        }
+    }
+    if (stretchIndex == -1) {
+        layout->addStretch();
+        stretchIndex = layout->count() - 1;
+    }
+
+    for (QAction *action : actions) {
+        auto *button = new QToolButton(_ui->encryptionMessage);
+        button->setDefaultAction(action);
+        button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+        layout->insertWidget(stretchIndex, button);
+        ++stretchIndex;
+        _encryptionMessageButtons.insert(action, button);
+    }
 }
 
 } // namespace OCC

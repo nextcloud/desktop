@@ -156,7 +156,73 @@
        </layout>
       </item>
       <item>
-       <widget class="KMessageWidget" name="encryptionMessage" native="true"/>
+       <widget class="QWidget" name="encryptionMessage" native="true">
+        <layout class="QVBoxLayout" name="encryptionMessageLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="encryptionMessageHeaderLayout">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="encryptionMessageIcon">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignHCenter|Qt::AlignTop</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="encryptionMessageLabel">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="encryptionMessageButtonsLayout"/>
+         </item>
+        </layout>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -455,12 +521,6 @@
    <class>OCC::FolderStatusView</class>
    <extends>QTreeView</extends>
    <header>folderstatusview.h</header>
-  </customwidget>
-  <customwidget>
-   <class>KMessageWidget</class>
-   <extends>QWidget</extends>
-   <header>kmessagewidget.h</header>
-   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

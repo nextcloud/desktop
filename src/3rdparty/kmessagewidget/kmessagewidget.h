@@ -153,6 +153,7 @@ public:
      */
     [[nodiscard]] MessageType messageType() const;
 
+
     /**
      * Add @p action to the message widget.
      * For each action a button is added to the message widget in the
@@ -170,6 +171,7 @@ public:
      * @see KMessageWidget::MessageType, addAction(), setMessageType()
      */
     void removeAction(QAction *action);
+
 
     /**
      * Returns the preferred size of the message widget.
