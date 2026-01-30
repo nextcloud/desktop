@@ -524,7 +524,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     }
 
     func testCreateDoesNotPropagateIgnoredFile() async throws {
-        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.tmp", "/build/"])
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.tmp", "/build/"], log: FileProviderLogMock())
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
         // We'll create a file that matches the ignored pattern

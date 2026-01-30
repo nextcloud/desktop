@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		530429982DD44235004BB598 /* FileProviderExtension+CustomActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530429972DD44226004BB598 /* FileProviderExtension+CustomActions.swift */; };
 		531522822B8E01C6002E31BE /* ShareTableItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 531522812B8E01C6002E31BE /* ShareTableItemView.xib */; };
-		5350E4E92B0C534A00F276CB /* ClientCommunicationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5350E4E82B0C534A00F276CB /* ClientCommunicationService.swift */; };
 		5352B36C29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5352B36B29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift */; };
 		53651E442BBC0CA300ECAC29 /* SuggestionsTextFieldKit in Frameworks */ = {isa = PBXBuildFile; productRef = 53651E432BBC0CA300ECAC29 /* SuggestionsTextFieldKit */; };
 		53651E462BBC0D9500ECAC29 /* ShareeSuggestionsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53651E452BBC0D9500ECAC29 /* ShareeSuggestionsDataSource.swift */; };
@@ -39,7 +38,7 @@
 		539158AC27BE71A900816F56 /* FinderSyncSocketLineProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 539158AB27BE71A900816F56 /* FinderSyncSocketLineProcessor.m */; };
 		53B979812B84C81F002DA742 /* DocumentActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B979802B84C81F002DA742 /* DocumentActionViewController.swift */; };
 		53D666612B70C9A70042C03D /* FileProviderDomainDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D666602B70C9A70042C03D /* FileProviderDomainDefaults.swift */; };
-		53ED473029C9CE0B00795DB1 /* FileProviderExtension+ClientInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53ED472F29C9CE0B00795DB1 /* FileProviderExtension+ClientInterface.swift */; };
+		53ED473029C9CE0B00795DB1 /* FileProviderExtension+NSFileProviderServicing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53ED472F29C9CE0B00795DB1 /* FileProviderExtension+NSFileProviderServicing.swift */; };
 		53FE14502B8E0658006C4193 /* ShareTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FE144F2B8E0658006C4193 /* ShareTableViewDataSource.swift */; };
 		53FE14592B8E3F6C006C4193 /* ShareTableItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FE14582B8E3F6C006C4193 /* ShareTableItemView.swift */; };
 		53FE145B2B8F1305006C4193 /* NKShare+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FE145A2B8F1305006C4193 /* NKShare+Extensions.swift */; };
@@ -54,6 +53,10 @@
 		AA7F17E72E7038370000E928 /* NSError+FileProviderErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7F17E62E7038340000E928 /* NSError+FileProviderErrorCode.swift */; };
 		AA9987862E72B6EF00B2C428 /* NextcloudKit+clearAccountErrorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9987852E72B6DB00B2C428 /* NextcloudKit+clearAccountErrorState.swift */; };
 		AAA69D932E3BB09900BBD44D /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = AAA69D922E3BB09900BBD44D /* Localizable.xcstrings */; };
+		AAA6F1792F1E608000FFB2BA /* FileProviderExtension+ChangeNotificationInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA6F1782F1E607B00FFB2BA /* FileProviderExtension+ChangeNotificationInterface.swift */; };
+		AAA6F17D2F1E647D00FFB2BA /* FileProviderExtension+NSFileProviderServiceSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA6F17C2F1E647800FFB2BA /* FileProviderExtension+NSFileProviderServiceSource.swift */; };
+		AAA6F17F2F1E64F500FFB2BA /* FileProviderExtension+NSXPCListenerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA6F17E2F1E64F100FFB2BA /* FileProviderExtension+NSXPCListenerDelegate.swift */; };
+		AAA6F1812F1E653300FFB2BA /* FileProviderExtension+ClientCommunicationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA6F1802F1E652E00FFB2BA /* FileProviderExtension+ClientCommunicationProtocol.swift */; };
 		AAC00D2A2E37B29D006010FE /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = AAC00D292E37B29D006010FE /* Localizable.xcstrings */; };
 		AAF19A682E8D5B4E005FE5B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAF19A672E8D5B4E005FE5B0 /* Assets.xcassets */; };
 		AAF19A7A2E8D5B63005FE5B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAF19A792E8D5B63005FE5B0 /* Assets.xcassets */; };
@@ -165,7 +168,6 @@
 		530429972DD44226004BB598 /* FileProviderExtension+CustomActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderExtension+CustomActions.swift"; sourceTree = "<group>"; };
 		531522812B8E01C6002E31BE /* ShareTableItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShareTableItemView.xib; sourceTree = "<group>"; };
 		5350E4E72B0C514400F276CB /* ClientCommunicationProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClientCommunicationProtocol.h; sourceTree = "<group>"; };
-		5350E4E82B0C534A00F276CB /* ClientCommunicationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCommunicationService.swift; sourceTree = "<group>"; };
 		5350E4EA2B0C9CE100F276CB /* FileProviderExt-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FileProviderExt-Bridging-Header.h"; sourceTree = "<group>"; };
 		5352B36B29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderExtension+Thumbnailing.swift"; sourceTree = "<group>"; };
 		53651E452BBC0D9500ECAC29 /* ShareeSuggestionsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareeSuggestionsDataSource.swift; sourceTree = "<group>"; };
@@ -194,7 +196,7 @@
 		53B979802B84C81F002DA742 /* DocumentActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentActionViewController.swift; sourceTree = "<group>"; };
 		53B979852B84C81F002DA742 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		53D666602B70C9A70042C03D /* FileProviderDomainDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderDomainDefaults.swift; sourceTree = "<group>"; };
-		53ED472F29C9CE0B00795DB1 /* FileProviderExtension+ClientInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderExtension+ClientInterface.swift"; sourceTree = "<group>"; };
+		53ED472F29C9CE0B00795DB1 /* FileProviderExtension+NSFileProviderServicing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderExtension+NSFileProviderServicing.swift"; sourceTree = "<group>"; };
 		53FE144F2B8E0658006C4193 /* ShareTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTableViewDataSource.swift; sourceTree = "<group>"; };
 		53FE14582B8E3F6C006C4193 /* ShareTableItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTableItemView.swift; sourceTree = "<group>"; };
 		53FE145A2B8F1305006C4193 /* NKShare+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NKShare+Extensions.swift"; sourceTree = "<group>"; };
@@ -211,6 +213,11 @@
 		AA826BEE2E8EAA7500CE49C4 /* Build.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Build.xcconfig; sourceTree = "<group>"; };
 		AA9987852E72B6DB00B2C428 /* NextcloudKit+clearAccountErrorState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NextcloudKit+clearAccountErrorState.swift"; sourceTree = "<group>"; };
 		AAA69D922E3BB09900BBD44D /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		AAA6F1782F1E607B00FFB2BA /* FileProviderExtension+ChangeNotificationInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderExtension+ChangeNotificationInterface.swift"; sourceTree = "<group>"; };
+		AAA6F17C2F1E647800FFB2BA /* FileProviderExtension+NSFileProviderServiceSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderExtension+NSFileProviderServiceSource.swift"; sourceTree = "<group>"; };
+		AAA6F17E2F1E64F100FFB2BA /* FileProviderExtension+NSXPCListenerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderExtension+NSXPCListenerDelegate.swift"; sourceTree = "<group>"; };
+		AAA6F1802F1E652E00FFB2BA /* FileProviderExtension+ClientCommunicationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderExtension+ClientCommunicationProtocol.swift"; sourceTree = "<group>"; };
+		AAAF76222F1A83A900BD0F0D /* AppProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppProtocol.h; sourceTree = "<group>"; };
 		AAC00D292E37B29D006010FE /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		AAF19A672E8D5B4E005FE5B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AAF19A792E8D5B63005FE5B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -277,8 +284,8 @@
 		5350E4C72B0C368B00F276CB /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				AAAF76222F1A83A900BD0F0D /* AppProtocol.h */,
 				5350E4E72B0C514400F276CB /* ClientCommunicationProtocol.h */,
-				5350E4E82B0C534A00F276CB /* ClientCommunicationService.swift */,
 				537630962B860D920026BFAB /* FPUIExtensionService.swift */,
 				537630942B860D560026BFAB /* FPUIExtensionServiceSource.swift */,
 			);
@@ -342,7 +349,11 @@
 				5350E4C72B0C368B00F276CB /* Services */,
 				53D666602B70C9A70042C03D /* FileProviderDomainDefaults.swift */,
 				538E396C27F4765000FA63D5 /* FileProviderExtension.swift */,
-				53ED472F29C9CE0B00795DB1 /* FileProviderExtension+ClientInterface.swift */,
+				AAA6F17C2F1E647800FFB2BA /* FileProviderExtension+NSFileProviderServiceSource.swift */,
+				AAA6F1802F1E652E00FFB2BA /* FileProviderExtension+ClientCommunicationProtocol.swift */,
+				AAA6F1782F1E607B00FFB2BA /* FileProviderExtension+ChangeNotificationInterface.swift */,
+				AAA6F17E2F1E64F100FFB2BA /* FileProviderExtension+NSXPCListenerDelegate.swift */,
+				53ED472F29C9CE0B00795DB1 /* FileProviderExtension+NSFileProviderServicing.swift */,
 				530429972DD44226004BB598 /* FileProviderExtension+CustomActions.swift */,
 				5352B36B29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift */,
 				536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */,
@@ -857,7 +868,9 @@
 			files = (
 				AA9987862E72B6EF00B2C428 /* NextcloudKit+clearAccountErrorState.swift in Sources */,
 				53D666612B70C9A70042C03D /* FileProviderDomainDefaults.swift in Sources */,
-				53ED473029C9CE0B00795DB1 /* FileProviderExtension+ClientInterface.swift in Sources */,
+				AAA6F17D2F1E647D00FFB2BA /* FileProviderExtension+NSFileProviderServiceSource.swift in Sources */,
+				53ED473029C9CE0B00795DB1 /* FileProviderExtension+NSFileProviderServicing.swift in Sources */,
+				AAA6F1792F1E608000FFB2BA /* FileProviderExtension+ChangeNotificationInterface.swift in Sources */,
 				538E396D27F4765000FA63D5 /* FileProviderExtension.swift in Sources */,
 				AA7F17E72E7038370000E928 /* NSError+FileProviderErrorCode.swift in Sources */,
 				536EFBF7295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift in Sources */,
@@ -865,7 +878,8 @@
 				537630972B860D920026BFAB /* FPUIExtensionService.swift in Sources */,
 				537630952B860D560026BFAB /* FPUIExtensionServiceSource.swift in Sources */,
 				530429982DD44235004BB598 /* FileProviderExtension+CustomActions.swift in Sources */,
-				5350E4E92B0C534A00F276CB /* ClientCommunicationService.swift in Sources */,
+				AAA6F1812F1E653300FFB2BA /* FileProviderExtension+ClientCommunicationProtocol.swift in Sources */,
+				AAA6F17F2F1E64F500FFB2BA /* FileProviderExtension+NSXPCListenerDelegate.swift in Sources */,
 				5352B36C29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
