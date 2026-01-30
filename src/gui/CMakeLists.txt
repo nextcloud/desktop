@@ -549,6 +549,7 @@ target_link_libraries(nextcloudCore
   Qt::QuickControls2
   Qt::QuickWidgets
   KF6::Archive
+  KDAB::kdsingleapplication
   )
 
 if(KF6GuiAddons_FOUND)

@@ -14,6 +14,7 @@
 #include "folderman.h"
 #include "theme.h"
 
+#include <QShowEvent>
 #include <QNetworkProxy>
 #include <QString>
 #include <QList>

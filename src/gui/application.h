@@ -7,22 +7,19 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
+#include "owncloudgui.h"
+#include "progressdispatcher.h"
+#include "clientproxy.h"
+#include "folderman.h"
+
+#include <KDSingleApplication>
+
 #include <QApplication>
 #include <QPointer>
 #include <QQueue>
 #include <QTimer>
 #include <QElapsedTimer>
 #include <QNetworkInformation>
-
-#include "qtsingleapplication.h"
-
-#include "syncresult.h"
-#include "logbrowser.h"
-#include "owncloudgui.h"
-#include "connectionvalidator.h"
-#include "progressdispatcher.h"
-#include "clientproxy.h"
-#include "folderman.h"
 
 class QMessageBox;
 class QSystemTrayIcon;
@@ -41,7 +38,7 @@ class SslErrorDialog;
  * @brief The Application class
  * @ingroup gui
  */
-class Application : public SharedTools::QtSingleApplication
+class Application : public QApplication
 {
     Q_OBJECT
 public:
@@ -55,6 +52,10 @@ public:
     [[nodiscard]] bool backgroundMode() const;
     bool versionOnly(); // only display the version?
     void showVersion();
+
+    [[nodiscard]] bool isRunning() const;
+
+    bool sendMessage(const QString &message);
 
     void showMainDialog();
 
@@ -87,7 +88,7 @@ signals:
     void systemPaletteChanged();
 
 protected slots:
-    void slotParseMessage(const QString &, QObject *);
+    void slotParseMessage(const QByteArray &msg);
     void slotCheckConnection();
     void slotCleanup();
     void slotAccountStateAdded(OCC::AccountState *accountState);
@@ -111,6 +112,8 @@ private:
     bool configVersionMigration();
 
     QPointer<ownCloudGui> _gui;
+
+    KDSingleApplication _singleApp;
 
     Theme *_theme;
 
