@@ -38,6 +38,31 @@ AbstractButton {
             Layout.preferredWidth: Style.accountAvatarSize
 
             Rectangle {
+                id: syncStatusIndicatorBackground
+                visible: !model.syncStatusOk
+                width: syncStatusIndicator.sourceSize.width + Style.trayFolderStatusIndicatorSizeOffset
+                height: width
+                color: "white"
+                anchors.top: accountAvatar.top
+                anchors.left: accountAvatar.left
+                radius: width * Style.trayFolderStatusIndicatorRadiusFactor
+            }
+
+            Image {
+                id: syncStatusIndicator
+                visible: !model.syncStatusOk
+                source: model.syncStatusIcon
+                cache: false
+                x: syncStatusIndicatorBackground.x + Style.trayFolderStatusIndicatorSizeOffset / 2
+                y: syncStatusIndicatorBackground.y + Style.trayFolderStatusIndicatorSizeOffset / 2
+                sourceSize.width: Style.accountAvatarStateIndicatorSize
+                sourceSize.height: Style.accountAvatarStateIndicatorSize
+
+                Accessible.role: Accessible.Indicator
+                Accessible.name: qsTr("Account sync status requires attention")
+            }
+
+            Rectangle {
                 id: accountStatusIndicatorBackground
                 visible: model.isConnected && model.serverHasUserStatus
                 width: accountStatusIndicator.sourceSize.width + Style.trayFolderStatusIndicatorSizeOffset
