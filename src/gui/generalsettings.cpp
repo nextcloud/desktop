@@ -445,7 +445,7 @@ void GeneralSettings::slotUpdateInfo()
                 currentChannel = config.currentUpdateChannel();
             }
             status.append(QStringLiteral("<br/>%1")
-                              .arg(tr("Connected to an enterprise system. Update channel cannot be changed.<br/>(current: %1)")
+                              .arg(tr("Connected to an enterprise system. Update channel (%1) cannot be changed.")
                                        .arg(currentChannel)));
         }
         Theme::replaceLinkColorStringBackgroundAware(status);
@@ -467,14 +467,12 @@ void GeneralSettings::slotUpdateInfo()
         if (config.serverHasValidSubscription()) {
             const auto currentChannel = config.currentUpdateChannel();
             if (Qt::mightBeRichText(status)) {
-                status.append(QStringLiteral("<br/>"))
-                    .append(tr("Connected to an enterprise system. Update channel cannot be changed.<br/>(current: %1)")
-                                .arg(currentChannel));
+                status.append(QStringLiteral("<br/>"));
             } else {
-                status.append(QStringLiteral("\n"))
-                    .append(tr("Connected to an enterprise system. Update channel cannot be changed.\n(current: %1)")
-                                .arg(currentChannel));
+                status.append(QStringLiteral("\n"));
             }
+            status.append(tr("Connected to an enterprise system. Update channel (%1) cannot be changed.")
+                        .arg(currentChannel));
         }
         _ui->updateStateLabel->setText(status);
         _ui->restartButton->setVisible(false);
