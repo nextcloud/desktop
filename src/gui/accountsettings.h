@@ -27,6 +27,8 @@ class QModelIndex;
 class QNetworkReply;
 class QListWidgetItem;
 class QLabel;
+class QToolButton;
+class QIcon;
 
 namespace OCC {
 
@@ -132,6 +134,8 @@ private:
     QAction *addActionToEncryptionMessage(const QString &actionTitle, const QString &actionId);
 
     void setupE2eEncryptionMessage();
+    void setEncryptionMessageIcon(const QIcon &icon);
+    void updateEncryptionMessageActions();
 
     /// Returns the alias of the selected folder, empty string if none
     [[nodiscard]] QString selectedFolderAlias() const;
@@ -149,6 +153,7 @@ private:
     bool _menuShown = false;
 
     QHash<QString, QMetaObject::Connection> _folderConnections;
+    QHash<QAction *, QToolButton *> _encryptionMessageButtons;
 };
 
 } // namespace OCC
