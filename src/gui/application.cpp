@@ -6,9 +6,6 @@
 
 #include "application.h"
 
-#include <iostream>
-#include <random>
-
 #include "account.h"
 #include "accountmanager.h"
 #include "accountsetupcommandlinemanager.h"
@@ -23,11 +20,8 @@
 #include "folderman.h"
 #include "logger.h"
 #include "pushnotifications.h"
-#include "shellextensionsserver.h"
 #include "socketapi/socketapi.h"
-#include "sslerrordialog.h"
 #include "theme.h"
-#include "updatechannel.h"
 
 #if defined(BUILD_UPDATER)
 #include "updater/ocupdater.h"
@@ -42,6 +36,7 @@
 
 #if defined(Q_OS_WIN)
 #include <windows.h>
+#include "shellextensionsserver.h"
 #elif defined(Q_OS_MACOS)
 #include "macOS/fileprovider.h"
 #endif
@@ -56,6 +51,11 @@
 #include <QVersionNumber>
 #include <QRandomGenerator>
 #include <QHttp2Configuration>
+#include <QPushButton>
+#include <QAbstractButton>
+#include <QFileOpenEvent>
+
+#include <iostream>
 
 class QSocket;
 
@@ -216,7 +216,7 @@ ownCloudGui *Application::gui() const
 }
 
 Application::Application(int &argc, char **argv)
-    : SharedTools::QtSingleApplication(Theme::instance()->appName(), argc, argv)
+    : QApplication{argc, argv}
     , _gui(nullptr)
     , _theme(Theme::instance())
 {
@@ -317,7 +317,7 @@ Application::Application(int &argc, char **argv)
         return;
     }
 
-    if (isRunning()) {
+    if (!_singleApp.isPrimaryInstance()) {
         return;
     }
 
@@ -386,7 +386,7 @@ Application::Application(int &argc, char **argv)
     _shellExtensionsServer.reset(new ShellExtensionsServer);
 #endif
 
-    connect(this, &SharedTools::QtSingleApplication::messageReceived, this, &Application::slotParseMessage);
+    connect(&_singleApp, &KDSingleApplication::messageReceived, this, &Application::slotParseMessage);
 
     // create accounts and folders from a legacy desktop client or from the current config file
     setupAccountsAndFolders();
@@ -753,11 +753,12 @@ void Application::setupLogging()
     qCInfo(lcApplication) << "Arguments:" << qApp->arguments();
 }
 
-void Application::slotParseMessage(const QString &msg, QObject *)
+void Application::slotParseMessage(const QByteArray &message)
 {
+    const auto msg = QString::fromLatin1(message);
     if (msg.startsWith(QLatin1String("MSG_PARSEOPTIONS:"))) {
         const int lengthOfMsgPrefix = 17;
-        QStringList options = msg.mid(lengthOfMsgPrefix).split(QLatin1Char('|'));
+        const auto options = msg.mid(lengthOfMsgPrefix).split(QLatin1Char{'|'});
         _showLogWindow = false;
         parseOptions(options);
         setupLogging();
@@ -962,6 +963,16 @@ void Application::showVersion()
     displayHelpText(Theme::instance()->versionSwitchOutput());
 }
 
+bool Application::isRunning() const
+{
+    return !_singleApp.isPrimaryInstance();
+}
+
+bool Application::sendMessage(const QString &message)
+{
+    return _singleApp.sendMessage(message.toLatin1());
+}
+
 void Application::showHint(std::string errorHint)
 {
     static QString binName = QFileInfo(QCoreApplication::applicationFilePath()).fileName();
@@ -1164,7 +1175,7 @@ bool Application::event(QEvent *event)
         qCInfo(lcApplication) << "application palette changed";
         emit systemPaletteChanged();
     }
-    return SharedTools::QtSingleApplication::event(event);
+    return QGuiApplication::event(event);
 }
 
 } // namespace OCC
