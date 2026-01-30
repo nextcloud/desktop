@@ -23,6 +23,7 @@
 #include "tray/unifiedsearchresultslistmodel.h"
 #include "tray/talkreply.h"
 #include "userstatusconnector.h"
+#include "common/utility.h"
 
 #include <QtCore>
 #include <QDesktopServices>
@@ -1572,7 +1573,7 @@ void UserModel::removeAccount(const int id)
                            tr("Confirm Account Removal"),
                            tr("<p>Do you really want to remove the connection to the account <i>%1</i>?</p>"
                               "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
-                               .arg(_users[id]->name()),
+                               .arg(Utility::escape(_users[id]->name())),
                            QMessageBox::NoButton);
     const auto * const yesButton = messageBox.addButton(tr("Remove connection"), QMessageBox::YesRole);
     messageBox.addButton(tr("Cancel"), QMessageBox::NoRole);

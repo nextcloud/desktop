@@ -92,5 +92,10 @@
     </array>
     <key>NCFPKAppGroupIdentifier</key>
     <string>@DEVELOPMENT_TEAM@.@APPLICATION_REV_DOMAIN@</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

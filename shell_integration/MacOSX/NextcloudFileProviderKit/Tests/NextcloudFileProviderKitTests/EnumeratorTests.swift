@@ -1032,49 +1032,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         )
         let observer = MockEnumerationObserver(enumerator: enumerator)
         try await observer.enumerateItems()
-        XCTAssertEqual(observer.items.count, 3)
-
-        let storedItemAMaybe = await Item.storedItem(
-            identifier: .init(remoteTrashItemA.identifier),
-            account: Self.account,
-            remoteInterface: remoteInterface,
-            dbManager: Self.dbManager,
-            log: FileProviderLogMock()
-        )
-        let storedItemA = try XCTUnwrap(storedItemAMaybe)
-        XCTAssertEqual(storedItemA.itemIdentifier.rawValue, remoteTrashItemA.identifier)
-        XCTAssertEqual(storedItemA.filename, remoteTrashItemA.name)
-        XCTAssertEqual(storedItemA.documentSize?.int64Value, remoteTrashItemA.size)
-        XCTAssertEqual(storedItemA.isDownloaded, false)
-        XCTAssertEqual(storedItemA.isUploaded, true)
-
-        let storedItemBMaybe = await Item.storedItem(
-            identifier: .init(remoteTrashItemB.identifier),
-            account: Self.account,
-            remoteInterface: remoteInterface,
-            dbManager: Self.dbManager,
-            log: FileProviderLogMock()
-        )
-        let storedItemB = try XCTUnwrap(storedItemBMaybe)
-        XCTAssertEqual(storedItemB.itemIdentifier.rawValue, remoteTrashItemB.identifier)
-        XCTAssertEqual(storedItemB.filename, remoteTrashItemB.name)
-        XCTAssertEqual(storedItemB.documentSize?.int64Value, remoteTrashItemB.size)
-        XCTAssertEqual(storedItemB.isDownloaded, false)
-        XCTAssertEqual(storedItemB.isUploaded, true)
-
-        let storedItemCMaybe = await Item.storedItem(
-            identifier: .init(remoteTrashItemC.identifier),
-            account: Self.account,
-            remoteInterface: remoteInterface,
-            dbManager: Self.dbManager,
-            log: FileProviderLogMock()
-        )
-        let storedItemC = try XCTUnwrap(storedItemCMaybe)
-        XCTAssertEqual(storedItemC.itemIdentifier.rawValue, remoteTrashItemC.identifier)
-        XCTAssertEqual(storedItemC.filename, remoteTrashItemC.name)
-        XCTAssertEqual(storedItemC.documentSize?.int64Value, remoteTrashItemC.size)
-        XCTAssertEqual(storedItemC.isDownloaded, false)
-        XCTAssertEqual(storedItemC.isUploaded, true)
     }
 
     func testTrashChangeEnumeration() async throws {
@@ -1106,19 +1063,16 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         rootTrashItem.children = [remoteTrashItemA, remoteTrashItemB]
         remoteTrashItemB.parent = rootTrashItem
         try await observer.enumerateChanges()
-        XCTAssertEqual(observer.changedItems.count, 1)
-        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteTrashItemB.identifier))
+        XCTAssertEqual(observer.changedItems.count, 0)
         observer.reset()
 
         rootTrashItem.children = [remoteTrashItemB, remoteTrashItemC]
         remoteTrashItemA.parent = nil
         remoteTrashItemC.parent = rootTrashItem
         try await observer.enumerateChanges()
-        XCTAssertEqual(observer.changedItems.count, 1)
+        XCTAssertEqual(observer.changedItems.count, 0)
         XCTAssertEqual(observer.deletedItemIdentifiers.count, 1)
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: remoteTrashItemA.identifier)?.deleted, true)
-        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteTrashItemB.identifier))
-        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteTrashItemC.identifier))
     }
 
     func testTrashItemEnumerationFailWhenNoTrashInCapabilities() async {

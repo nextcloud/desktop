@@ -59,11 +59,11 @@ QString FormatWarningsWizardPage::formatWarnings(const QStringList &warnings) co
 {
     QString formattedWarning;
     if (warnings.count() == 1) {
-        formattedWarning = warnings.first();
+        formattedWarning = Utility::escape(warnings.first());
     } else if (warnings.count() > 1) {
         formattedWarning = "<ul>";
         for (const auto &warning : warnings) {
-            formattedWarning += QString::fromLatin1("<li>%1</li>").arg(warning);
+            formattedWarning += QString::fromLatin1("<li>%1</li>").arg(Utility::escape(warning));
         }
         formattedWarning += "</ul>";
     }
@@ -325,7 +325,7 @@ void FolderWizardRemotePath::recursiveInsert(QTreeWidgetItem *parent, QStringLis
         item->setIcon(0, folderIcon);
         item->setText(0, folderName);
         item->setData(0, Qt::UserRole, folderPath);
-        item->setToolTip(0, folderPath);
+        item->setToolTip(0, Utility::escape(folderPath));
         item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
     }
 
