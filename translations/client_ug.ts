@@ -303,11 +303,6 @@
         <translation>مەۋھۇم ھۆججەت تەڭشىكى</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
-        <source>General settings</source>
-        <translation>ئادەتتىكى تەڭشەكلەر</translation>
-    </message>
-    <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
         <source>Enable virtual files</source>
         <translation>مەۋھۇم ھۆججەتلەرنى قوزغىتىڭ</translation>
@@ -318,9 +313,14 @@
         <translation>ئەخلەت ساندۇقىدىكى نەرسىلەرنى ئۆچۈرۈشكە رۇخسەت قىلىش</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Reset virtual files environment</source>
         <translation>مەۋھۇم ھۆججەت مۇھىتىنى قايتا تەڭشەش</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
+        <source>General settings</source>
+        <translation>ئادەتتىكى تەڭشەكلەر</translation>
     </message>
 </context>
 <context>
@@ -1008,17 +1008,17 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="477"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="478"/>
         <source>For more activities please open the Activity app.</source>
         <translation>تېخىمۇ كۆپ پائالىيەتلەر ئۈچۈن پائالىيەت دېتالىنى ئېچىڭ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="497"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="498"/>
         <source>Fetching activities …</source>
         <translation>Fetching activities…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="604"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="605"/>
         <source>Network error occurred: client will retry syncing.</source>
         <translation>تور خاتالىقى يۈز بەردى: خېرىدار ماسقەدەملەشنى قايتا سىنايدۇ.</translation>
     </message>
@@ -1111,34 +1111,34 @@ This action will abort any currently running synchronization.</source>
         <translation>داۋاملاشتۇر</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="526"/>
+        <location filename="../src/gui/application.cpp" line="522"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation> %1 ھېسابات</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="527"/>
+        <location filename="../src/gui/application.cpp" line="523"/>
         <source>1 account</source>
         <translation>1 ھېسابات</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="529"/>
+        <location filename="../src/gui/application.cpp" line="525"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation> %1 ھۆججەت قىسقۇچ</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="530"/>
+        <location filename="../src/gui/application.cpp" line="526"/>
         <source>1 folder</source>
         <translation>1 ھۆججەت قىسقۇچ</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="532"/>
+        <location filename="../src/gui/application.cpp" line="528"/>
         <source>Legacy import</source>
         <translation>مىراس ئىمپورت</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="533"/>
+        <location filename="../src/gui/application.cpp" line="529"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1146,12 +1146,12 @@ This action will abort any currently running synchronization.</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="616"/>
+        <location filename="../src/gui/application.cpp" line="612"/>
         <source>Error accessing the configuration file</source>
         <translation>سەپلىمە ھۆججىتىگە كىرىشتە خاتالىق</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="617"/>
+        <location filename="../src/gui/application.cpp" line="613"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation> %1 دىكى سەپلىمە ھۆججىتىنى زىيارەت قىلغاندا خاتالىق كۆرۈلدى. ھۆججەتنى سىستېما ھېساباتىڭىز ئارقىلىق زىيارەت قىلىشقا كاپالەتلىك قىلىڭ.</translation>
     </message>
@@ -2867,7 +2867,7 @@ For advanced users: this issue might be related to multiple sync database files 
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="285"/>
-        <location filename="../src/gui/generalsettings.cpp" line="661"/>
+        <location filename="../src/gui/generalsettings.cpp" line="664"/>
         <source>Create Debug Archive</source>
         <translation>خاتالىق ئارخىپى قۇرۇش</translation>
     </message>
@@ -2917,57 +2917,57 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>&amp; قايتا قوزغىتىش &amp;&amp; يېڭىلاش</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="213"/>
+        <location filename="../src/gui/generalsettings.cpp" line="216"/>
         <source>Server notifications that require attention.</source>
         <translation>دىققەت قىلىشنى تەلەپ قىلىدىغان مۇلازىمېتىر ئۇقتۇرۇشى.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="217"/>
+        <location filename="../src/gui/generalsettings.cpp" line="220"/>
         <source>Show chat notification dialogs.</source>
         <translation>پاراڭلىشىش ئۇقتۇرۇش سۆزلەشكۈلىرىنى كۆرسىتىش.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="221"/>
+        <location filename="../src/gui/generalsettings.cpp" line="224"/>
         <source>Show call notification dialogs.</source>
         <translation>چاقىرىش ئۇقتۇرۇشى سۆزلىشىش.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="224"/>
+        <location filename="../src/gui/generalsettings.cpp" line="227"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation>كۋوتا ئىشلىتىش مىقدارى %80 تىن ئاشقاندا ئۇقتۇرۇش كۆرسىتىلىدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="238"/>
+        <location filename="../src/gui/generalsettings.cpp" line="241"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>ئاپتوماتىك قوزغىتىشنى چەكلىيەلمەيسىز ، چۈنكى سىستېما بويىچە ئاپتوماتىك قوزغىتىش ئىقتىدارى قوزغىتىلغان.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="373"/>
+        <location filename="../src/gui/generalsettings.cpp" line="376"/>
         <source>Restore to &amp;%1</source>
         <translation>&amp;%1 غا ئەسلىگە كەلتۈرۈش</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="449"/>
+        <location filename="../src/gui/generalsettings.cpp" line="452"/>
         <source>stable</source>
         <translation>مۇقىم</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="453"/>
+        <location filename="../src/gui/generalsettings.cpp" line="456"/>
         <source>beta</source>
         <translation>beta</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="457"/>
+        <location filename="../src/gui/generalsettings.cpp" line="460"/>
         <source>daily</source>
         <translation>ھەر كۈنى</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="461"/>
+        <location filename="../src/gui/generalsettings.cpp" line="464"/>
         <source>enterprise</source>
         <translation>كارخانا</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="499"/>
+        <location filename="../src/gui/generalsettings.cpp" line="502"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -2979,7 +2979,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 دەرىجىسىنى تۆۋەنلىتىش دەرھال مۇمكىن ئەمەس: سىناقتىن مۇقىم ھالەتكە ئۆزگەرتىش يېڭى مۇقىم نەشرىنى ساقلاشنى كۆرسىتىدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="504"/>
+        <location filename="../src/gui/generalsettings.cpp" line="507"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -2989,12 +2989,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 دەرىجىسىنى تۆۋەنلىتىش دەرھال مۇمكىن ئەمەس: مۇقىملىقتىن كارخانىغا ئۆزگەرتىش يېڭى كارخانا نۇسخىسىنى ساقلاشنى كۆرسىتىدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="511"/>
+        <location filename="../src/gui/generalsettings.cpp" line="514"/>
         <source>Changing update channel?</source>
         <translation>يېڭىلاش قانىلىنى ئۆزگەرتەمسىز؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="512"/>
+        <location filename="../src/gui/generalsettings.cpp" line="515"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -3004,17 +3004,17 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="518"/>
+        <location filename="../src/gui/generalsettings.cpp" line="521"/>
         <source>Change update channel</source>
         <translation>يېڭىلاش قانىلىنى ئۆزگەرتىڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="519"/>
+        <location filename="../src/gui/generalsettings.cpp" line="522"/>
         <source>Cancel</source>
         <translation>بىكار قىلىش</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="663"/>
+        <location filename="../src/gui/generalsettings.cpp" line="666"/>
         <source>Zip Archives</source>
         <translation>Zip ئارخىپى</translation>
     </message>
@@ -3029,12 +3029,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>تاللانغان ئورۇنغا كىرگىلى بولمىدى. قايتا سىناڭ ياكى باشقا ئورۇننى تاللاڭ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="673"/>
+        <location filename="../src/gui/generalsettings.cpp" line="676"/>
         <source>Debug Archive Created</source>
         <translation>ئارخىپ ئارخىپى قۇرۇلدى</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="674"/>
+        <location filename="../src/gui/generalsettings.cpp" line="677"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation>ئورتاقلىشىشتىن بۇرۇن مەخپىي دەپ قارالغان ئۇچۇرلارنى تەھرىرلەڭ! %1 دە خاتالىق ئارخىپى قۇرۇلدى</translation>
     </message>
@@ -5502,6 +5502,12 @@ Server replied with error: %2</source>
         <translation>%1 ئۈستەل يۈزى خېرىدار نۇسخىسى %2 (%3)</translation>
     </message>
     <message>
+        <location filename="../src/libsync/theme.cpp" line="449"/>
+        <source>%1 Desktop Client Version %2 (%3 running on %4)</source>
+        <comment>%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the platform name (wayland, x11, …)</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/theme.cpp" line="634"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt; &lt;small&gt; مەۋھۇم ھۆججەت قىستۇرمىسىنى ئىشلىتىش: %1 &lt;/small&gt; &lt;/p&gt;</translation>
@@ -5592,38 +5598,38 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="111"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="112"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
         <translation>باشتىن-ئاخىرىغىچە بولغان گۇۋاھنامىنى يېڭىسىغا يۆتكەش كېرەك</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="113"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="114"/>
         <source>Trigger the migration</source>
         <translation>كۆچۈشنى قوزغىتىش</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/tray/usermodel.cpp" line="176"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
         <source>%n notification(s)</source>
         <translation><numerusform>%n ئۇقتۇرۇش</numerusform><numerusform>%n ئۇقتۇرۇشلار</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="656"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="657"/>
         <source>Retry all uploads</source>
         <translation>بارلىق يۈكلەرنى قايتا سىناڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="707"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="869"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="708"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="870"/>
         <source>Resolve conflict</source>
         <translation>توقۇنۇشنى ھەل قىلىڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="859"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="860"/>
         <source>Rename file</source>
         <translation>ھۆججەتنىڭ نامىنى ئۆزگەرتىش</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1001"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1002"/>
         <source>Public Share Link</source>
         <translation>ئاممىۋى ئورتاقلىشىش ئۇلىنىشى</translation>
     </message>
@@ -5638,24 +5644,24 @@ Server replied with error: %2</source>
         <translation>توركۆرگۈدە Nextcloud پاراڭنى ئېچىڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1086"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
         <source>Open %1 Assistant in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>تور كۆرگۈچتە %1 ياردەمچىسىنى ئېچىڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1088"/>
         <source>Open %1 Talk in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>تور كۆرگۈچتە %1 Talk نى ئېچىڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1210"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1211"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation>كۋوتا يېڭىلاندى؛ ئومۇمىي بوشلۇقنىڭ %1 پىرسەنتى ئىشلىتىلدى.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1230"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1231"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation>كۋوتا ئاگاھلاندۇرۇشى - %1 ياكى ئۇنىڭدىن كۆپ ساقلىغۇچ ئىشلىتىلىۋاتىدۇ</translation>
     </message>
@@ -5663,32 +5669,32 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1538"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1539"/>
         <source>Confirm Account Removal</source>
         <translation>ھېسابات ئۆچۈرۈشنى جەزملەشتۈرۈڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1539"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1540"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt; ھېساباتقا ئۇلىنىشنى &lt;i&gt; %1 &lt;/i&gt; ئۆچۈرمەكچىمۇ؟ &lt;/p&gt; &lt;p&gt; &lt;b&gt; ئەسكەرتىش: &lt;/b&gt; بۇ &lt;b&gt; ئەمەس &lt;/b&gt; بولىدۇ. ھەرقانداق ھۆججەتنى ئۆچۈرۈڭ. &lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1543"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1544"/>
         <source>Remove connection</source>
         <translation>ئۇلىنىشنى ئۆچۈرۈڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1544"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1545"/>
         <source>Cancel</source>
         <translation>بىكار قىلىش</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1628"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1629"/>
         <source>Leave share</source>
         <translation>ئورتاقلىشىشنى قالدۇرۇڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1628"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1629"/>
         <source>Remove account</source>
         <translation>ھېساباتنى ئۆچۈرۈڭ</translation>
     </message>
@@ -6284,27 +6290,27 @@ Server replied with error: %2</source>
         <translation>خاتالىقنى توغىرلاش ئارخىپىنى تاللانغان ئورۇنغا يۆتكىيەلمىدى!</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="788"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="789"/>
         <source>You renamed %1</source>
         <translation>سىز %1 گە ئۆزگەرتتىڭىز</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="790"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="791"/>
         <source>You deleted %1</source>
         <translation> %1 نى ئۆچۈردىڭىز</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="792"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="793"/>
         <source>You created %1</source>
         <translation>سىز %1 نى قۇردىڭىز</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="794"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="795"/>
         <source>You changed %1</source>
         <translation> %1 نى ئۆزگەرتتىڭىز</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="818"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="819"/>
         <source>Synced %1</source>
         <translation>ماس قەدەمدە%1</translation>
     </message>

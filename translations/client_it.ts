@@ -303,11 +303,6 @@
         <translation>Impostazioni dei file virtuali</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
-        <source>General settings</source>
-        <translation>Impostazioni generali</translation>
-    </message>
-    <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
         <source>Enable virtual files</source>
         <translation>Abilita i file virtuali</translation>
@@ -318,9 +313,14 @@
         <translation>Consenti l&apos;eliminazione degli elementi nel Cestino</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Reset virtual files environment</source>
         <translation>Reimposta l&apos;ambiente dei file virtuali</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
+        <source>General settings</source>
+        <translation>Impostazioni generali</translation>
     </message>
 </context>
 <context>
@@ -441,7 +441,7 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="227"/>
         <source>Public Share Link</source>
-        <translation>Link di condivisione pubblico</translation>
+        <translation>Collegamento di condivisione pubblico</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="1071"/>
@@ -1009,17 +1009,17 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="477"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="478"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Per altre attività, apri l&apos;applicazione Attività.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="497"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="498"/>
         <source>Fetching activities …</source>
         <translation>Recupero attività …</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="604"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="605"/>
         <source>Network error occurred: client will retry syncing.</source>
         <translation>Errore di rete: il client ritenterà la sincronizzazione.</translation>
     </message>
@@ -1112,34 +1112,34 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
         <translation>Continua</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="526"/>
+        <location filename="../src/gui/application.cpp" line="522"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 account</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="527"/>
+        <location filename="../src/gui/application.cpp" line="523"/>
         <source>1 account</source>
         <translation>1 account</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="529"/>
+        <location filename="../src/gui/application.cpp" line="525"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 cartelle</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="530"/>
+        <location filename="../src/gui/application.cpp" line="526"/>
         <source>1 folder</source>
         <translation>1 cartella</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="532"/>
+        <location filename="../src/gui/application.cpp" line="528"/>
         <source>Legacy import</source>
         <translation>Importazione obsoleta</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="533"/>
+        <location filename="../src/gui/application.cpp" line="529"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1147,12 +1147,12 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="616"/>
+        <location filename="../src/gui/application.cpp" line="612"/>
         <source>Error accessing the configuration file</source>
         <translation>Errore accedendo al file di configurazione</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="617"/>
+        <location filename="../src/gui/application.cpp" line="613"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Si è verificato un errore durante l&apos;accesso al file di configurazione su %1. Assicurati che il file sia accessibile dal tuo account di sistema.</translation>
     </message>
@@ -1904,7 +1904,7 @@ Questo può essere un problema delle le tue librerie OpenSSL.</translation>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="190"/>
         <source>Error parsing or decrypting metadata.</source>
-        <translation>Errore nel parsing o nella decrittazione dei metadati.</translation>
+        <translation>Errore durante l&apos;elaborazione o decifratura dei metadati.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="332"/>
@@ -2479,7 +2479,7 @@ Per utenti avanzati: questo problema potrebbe essere correlato a più file di da
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="169"/>
         <source>Could not decrypt!</source>
-        <translation>Impossibile decriptare!</translation>
+        <translation>Impossibile decifrare!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="171"/>
@@ -2870,7 +2870,7 @@ Per utenti avanzati: questo problema potrebbe essere correlato a più file di da
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="285"/>
-        <location filename="../src/gui/generalsettings.cpp" line="661"/>
+        <location filename="../src/gui/generalsettings.cpp" line="664"/>
         <source>Create Debug Archive</source>
         <translation>Crea archivio di debug</translation>
     </message>
@@ -2920,57 +2920,57 @@ Per utenti avanzati: questo problema potrebbe essere correlato a più file di da
         <translation>&amp;Riavvia e aggiorna</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="213"/>
+        <location filename="../src/gui/generalsettings.cpp" line="216"/>
         <source>Server notifications that require attention.</source>
         <translation>Notifiche del server che richiedono attenzione.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="217"/>
+        <location filename="../src/gui/generalsettings.cpp" line="220"/>
         <source>Show chat notification dialogs.</source>
         <translation>Mostra la finestra di dialogo di notifica della chat.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="221"/>
+        <location filename="../src/gui/generalsettings.cpp" line="224"/>
         <source>Show call notification dialogs.</source>
         <translation>Mostra finestre di notifica chiamata.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="224"/>
+        <location filename="../src/gui/generalsettings.cpp" line="227"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation>Mostra una notifica quando l&apos;utilizzo della quota supera l&apos;80%.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="238"/>
+        <location filename="../src/gui/generalsettings.cpp" line="241"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Non puoi disabilitare l&apos;avvio automatico poiché è abilitato l&apos;avvio automatico a livello di sistema.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="373"/>
+        <location filename="../src/gui/generalsettings.cpp" line="376"/>
         <source>Restore to &amp;%1</source>
         <translation>Ripristinare a &amp;%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="449"/>
+        <location filename="../src/gui/generalsettings.cpp" line="452"/>
         <source>stable</source>
         <translation>stabile</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="453"/>
+        <location filename="../src/gui/generalsettings.cpp" line="456"/>
         <source>beta</source>
         <translation>beta</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="457"/>
+        <location filename="../src/gui/generalsettings.cpp" line="460"/>
         <source>daily</source>
         <translation>giornaliero</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="461"/>
+        <location filename="../src/gui/generalsettings.cpp" line="464"/>
         <source>enterprise</source>
         <translation>enterprise</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="499"/>
+        <location filename="../src/gui/generalsettings.cpp" line="502"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -2982,7 +2982,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 Non è possibile effettuare il downgrade delle versioni immediatamente: passare da beta a stabile significa attendere la nuova versione stabile.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="504"/>
+        <location filename="../src/gui/generalsettings.cpp" line="507"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -2992,12 +2992,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 Il downgrade delle versioni non è possibile immediatamente: passare da stabile a enterprise significa attendere la nuova versione enterprise.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="511"/>
+        <location filename="../src/gui/generalsettings.cpp" line="514"/>
         <source>Changing update channel?</source>
         <translation>Vuoi cambiare canale di aggiornamento?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="512"/>
+        <location filename="../src/gui/generalsettings.cpp" line="515"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -3007,17 +3007,17 @@ Il downgrade delle versioni non è possibile immediatamente: passare da stabile 
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="518"/>
+        <location filename="../src/gui/generalsettings.cpp" line="521"/>
         <source>Change update channel</source>
         <translation>Cambia il canale di aggiornamento</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="519"/>
+        <location filename="../src/gui/generalsettings.cpp" line="522"/>
         <source>Cancel</source>
         <translation>Annulla</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="663"/>
+        <location filename="../src/gui/generalsettings.cpp" line="666"/>
         <source>Zip Archives</source>
         <translation>Archivi zip</translation>
     </message>
@@ -3032,12 +3032,12 @@ Il downgrade delle versioni non è possibile immediatamente: passare da stabile 
         <translation>Impossibile accedere alla posizione selezionata. Riprova o scegli una posizione diversa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="673"/>
+        <location filename="../src/gui/generalsettings.cpp" line="676"/>
         <source>Debug Archive Created</source>
         <translation>Archivio di debug creato</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="674"/>
+        <location filename="../src/gui/generalsettings.cpp" line="677"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation>Redigi le informazioni considerate sensibili prima di condividerle! Archivio di debug creato al %1</translation>
     </message>
@@ -4908,7 +4908,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1102"/>
         <source>Copy private link to clipboard</source>
-        <translation>Copia link privato negli appunti</translation>
+        <translation>Copia collegamento privato negli appunti</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="520"/>
@@ -5475,7 +5475,7 @@ Il server ha risposto con errore: %2</translation>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="137"/>
         <source>Link copied to clipboard.</source>
-        <translation>Link copiato negli appunti.</translation>
+        <translation>Collegamento copiato negli appunti.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="178"/>
@@ -5485,7 +5485,7 @@ Il server ha risposto con errore: %2</translation>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="180"/>
         <source>Copy Link</source>
-        <translation>Copia link</translation>
+        <translation>Copia collegamento</translation>
     </message>
 </context>
 <context>
@@ -5495,6 +5495,12 @@ Il server ha risposto con errore: %2</translation>
         <source>%1 Desktop Client Version %2 (%3)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name.</comment>
         <translation>%1 Versione Client Desktop %2 (%3)</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="449"/>
+        <source>%1 Desktop Client Version %2 (%3 running on %4)</source>
+        <comment>%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the platform name (wayland, x11, …)</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="634"/>
@@ -5587,40 +5593,40 @@ Il server ha risposto con errore: %2</translation>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="111"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="112"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
         <translation>Il certificato end-to-end deve essere migrato a uno nuovo</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="113"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="114"/>
         <source>Trigger the migration</source>
         <translation>Avviare la migrazione</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/tray/usermodel.cpp" line="176"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
         <source>%n notification(s)</source>
         <translation><numerusform>%n notifica</numerusform><numerusform>%n notifiche</numerusform><numerusform>%n notifiche</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="656"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="657"/>
         <source>Retry all uploads</source>
         <translation>Riprova tutti i caricamenti</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="707"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="869"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="708"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="870"/>
         <source>Resolve conflict</source>
         <translation>Risolvi il conflitto</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="859"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="860"/>
         <source>Rename file</source>
         <translation>Rinominare il file</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1001"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1002"/>
         <source>Public Share Link</source>
-        <translation>Link di condivisione pubblico</translation>
+        <translation>Collegamento di condivisione pubblico</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1079"/>
@@ -5633,24 +5639,24 @@ Il server ha risposto con errore: %2</translation>
         <translation>Apri Nextcloud Talk nel browser</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1086"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
         <source>Open %1 Assistant in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>Apri %1 Assistant nel browser</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1088"/>
         <source>Open %1 Talk in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>Apri %1 Talk nel browser</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1210"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1211"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation>La quota è aggiornata; %1 percento dello spazio totale è utilizzato.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1230"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1231"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation>Avviso di quota - %1 percento o più di spazio di archiviazione in uso</translation>
     </message>
@@ -5658,32 +5664,32 @@ Il server ha risposto con errore: %2</translation>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1538"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1539"/>
         <source>Confirm Account Removal</source>
         <translation>Conferma rimozione account</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1539"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1540"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vuoi davvero rimuovere la connessione all&apos;account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; ciò &lt;b&gt;non&lt;/b&gt; eliminerà alcun file.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1543"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1544"/>
         <source>Remove connection</source>
         <translation>Rimuovi connessione</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1544"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1545"/>
         <source>Cancel</source>
         <translation>Annulla</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1628"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1629"/>
         <source>Leave share</source>
         <translation>Lascia condivisione</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1628"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1629"/>
         <source>Remove account</source>
         <translation>Rimuovi account</translation>
     </message>
@@ -6279,27 +6285,27 @@ Il server ha risposto con errore: %2</translation>
         <translation>Impossibile spostare l&apos;archivio di debug nella posizione selezionata!</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="788"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="789"/>
         <source>You renamed %1</source>
         <translation>Hai rinominato %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="790"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="791"/>
         <source>You deleted %1</source>
         <translation>Hai eliminato %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="792"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="793"/>
         <source>You created %1</source>
         <translation>Hai creato %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="794"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="795"/>
         <source>You changed %1</source>
         <translation>Hai modificato %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="818"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="819"/>
         <source>Synced %1</source>
         <translation>%1 sincronizzato</translation>
     </message>
@@ -6572,7 +6578,7 @@ Il server ha risposto con errore: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="772"/>
         <source>Share link copied!</source>
-        <translation>Collegamento del link di condivisione copiato!</translation>
+        <translation>Collegamento del collegamento di condivisione copiato!</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="772"/>
@@ -7128,7 +7134,7 @@ Il server ha risposto con errore: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="75"/>
         <source>Deleting</source>
-        <translation>Cancellazione</translation>
+        <translation>Eliminazione</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="78"/>

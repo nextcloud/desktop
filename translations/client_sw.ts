@@ -303,11 +303,6 @@
         <translation>Mipangilio ya faili pepe</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
-        <source>General settings</source>
-        <translation>Mipangilio ya jumla</translation>
-    </message>
-    <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
         <source>Enable virtual files</source>
         <translation>Washa faili ya kweli</translation>
@@ -318,9 +313,14 @@
         <translation>Ruhusu ufutaji wa vipengee kwenye chombo cha takataka</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Reset virtual files environment</source>
         <translation>Weka upya mazingira ya faili ya kweli</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
+        <source>General settings</source>
+        <translation>Mipangilio ya jumla</translation>
     </message>
 </context>
 <context>
@@ -1009,17 +1009,17 @@ Kitendo hiki kitakomesha ulandanishi wowote unaoendeshwa kwa sasa.</translation>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="477"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="478"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Kwa shughuli zaidi tafadhali fungua programu ya Shughuli.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="497"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="498"/>
         <source>Fetching activities …</source>
         <translation>Inatafuta shughuli...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="604"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="605"/>
         <source>Network error occurred: client will retry syncing.</source>
         <translation>Hitilafu ya mtandao imetokea: mteja atajaribu tena kusawazisha.</translation>
     </message>
@@ -1112,34 +1112,34 @@ Kitendo hiki kitakomesha ulandanishi wowote unaoendeshwa kwa sasa.</translation>
         <translation>Endelea</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="526"/>
+        <location filename="../src/gui/application.cpp" line="522"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 akaunti</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="527"/>
+        <location filename="../src/gui/application.cpp" line="523"/>
         <source>1 account</source>
         <translation>1 akaunti</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="529"/>
+        <location filename="../src/gui/application.cpp" line="525"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 folda</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="530"/>
+        <location filename="../src/gui/application.cpp" line="526"/>
         <source>1 folder</source>
         <translation>1 folda </translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="532"/>
+        <location filename="../src/gui/application.cpp" line="528"/>
         <source>Legacy import</source>
         <translation>Uagizaji wa urithi</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="533"/>
+        <location filename="../src/gui/application.cpp" line="529"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1147,12 +1147,12 @@ Kitendo hiki kitakomesha ulandanishi wowote unaoendeshwa kwa sasa.</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="616"/>
+        <location filename="../src/gui/application.cpp" line="612"/>
         <source>Error accessing the configuration file</source>
         <translation>Hitilafu katika kufikia faili ya usanidi</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="617"/>
+        <location filename="../src/gui/application.cpp" line="613"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Kulikuwa na hitilafu wakati wa kufikia faili ya usanidi katika %1. Tafadhali hakikisha kuwa faili inaweza kufikiwa na akaunti yako ya mfumo.</translation>
     </message>
@@ -2868,7 +2868,7 @@ Kwa watumiaji wa hali ya juu: suala hili linaweza kuhusishwa na faili nyingi za 
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="285"/>
-        <location filename="../src/gui/generalsettings.cpp" line="661"/>
+        <location filename="../src/gui/generalsettings.cpp" line="664"/>
         <source>Create Debug Archive</source>
         <translation>Unda Kumbukumbu ya Utatuzi</translation>
     </message>
@@ -2918,57 +2918,57 @@ Kwa watumiaji wa hali ya juu: suala hili linaweza kuhusishwa na faili nyingi za 
         <translation>&amp;Anzisha upya &amp;&amp;Sasisha</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="213"/>
+        <location filename="../src/gui/generalsettings.cpp" line="216"/>
         <source>Server notifications that require attention.</source>
         <translation>Arifa za seva zinazohitaji kuzingatiwa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="217"/>
+        <location filename="../src/gui/generalsettings.cpp" line="220"/>
         <source>Show chat notification dialogs.</source>
         <translation>Onyesha mazungumzo ya arifa za gumzo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="221"/>
+        <location filename="../src/gui/generalsettings.cpp" line="224"/>
         <source>Show call notification dialogs.</source>
         <translation>Onyesha vidadisi vya arifa za simu</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="224"/>
+        <location filename="../src/gui/generalsettings.cpp" line="227"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation>Onyesha arifa wakati matumizi ya kiwango yanapozidi 80%.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="238"/>
+        <location filename="../src/gui/generalsettings.cpp" line="241"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Huwezi kulemaza kuwasha otomatiki kwa sababu kuwasha kiotomatiki kwa mfumo mzima kumewashwa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="373"/>
+        <location filename="../src/gui/generalsettings.cpp" line="376"/>
         <source>Restore to &amp;%1</source>
         <translation>Rejesha hadi &amp;%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="449"/>
+        <location filename="../src/gui/generalsettings.cpp" line="452"/>
         <source>stable</source>
         <translation>imara</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="453"/>
+        <location filename="../src/gui/generalsettings.cpp" line="456"/>
         <source>beta</source>
         <translation>beta</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="457"/>
+        <location filename="../src/gui/generalsettings.cpp" line="460"/>
         <source>daily</source>
         <translation>kila siku</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="461"/>
+        <location filename="../src/gui/generalsettings.cpp" line="464"/>
         <source>enterprise</source>
         <translation>biashara</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="499"/>
+        <location filename="../src/gui/generalsettings.cpp" line="502"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -2980,7 +2980,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 Kupunguza matoleo hakuwezekani mara moja: kubadilisha kutoka kwa beta hadi thabiti inamaanisha kungojea toleo jipya dhabiti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="504"/>
+        <location filename="../src/gui/generalsettings.cpp" line="507"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -2990,12 +2990,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 Matoleo ya kushusha hadhi hayawezekani mara moja: kubadilisha kutoka imara hadi biashara inamaanisha kusubiri toleo jipya la biashara.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="511"/>
+        <location filename="../src/gui/generalsettings.cpp" line="514"/>
         <source>Changing update channel?</source>
         <translation>Je, unabadilisha kituo cha sasisho?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="512"/>
+        <location filename="../src/gui/generalsettings.cpp" line="515"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -3005,17 +3005,17 @@ Matoleo ya kushusha hadhi hayawezekani mara moja: kubadilisha kutoka imara hadi 
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="518"/>
+        <location filename="../src/gui/generalsettings.cpp" line="521"/>
         <source>Change update channel</source>
         <translation>Badilisha kituo cha sasisho</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="519"/>
+        <location filename="../src/gui/generalsettings.cpp" line="522"/>
         <source>Cancel</source>
         <translation>Ghairi</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="663"/>
+        <location filename="../src/gui/generalsettings.cpp" line="666"/>
         <source>Zip Archives</source>
         <translation>Hifadhi ya Zip</translation>
     </message>
@@ -3030,12 +3030,12 @@ Matoleo ya kushusha hadhi hayawezekani mara moja: kubadilisha kutoka imara hadi 
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="673"/>
+        <location filename="../src/gui/generalsettings.cpp" line="676"/>
         <source>Debug Archive Created</source>
         <translation>Kumbukumbu ya Utatuzi Imeundwa</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="674"/>
+        <location filename="../src/gui/generalsettings.cpp" line="677"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation>Rekebisha maelezo yanayochukuliwa kuwa nyeti kabla ya kushiriki! Kumbukumbu ya utatuzi imeundwa kwa %1</translation>
     </message>
@@ -5503,6 +5503,12 @@ Seva ilijibu kwa hitilafu: %2</translation>
         <translation>%1Toleo la Mteja wa Eneo-kazi  %2 (%3)</translation>
     </message>
     <message>
+        <location filename="../src/libsync/theme.cpp" line="449"/>
+        <source>%1 Desktop Client Version %2 (%3 running on %4)</source>
+        <comment>%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the platform name (wayland, x11, …)</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/theme.cpp" line="634"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Kutumia programu-jalizi ya faili pepe: %1&lt;/small&gt;&lt;/p&gt;</translation>
@@ -5593,38 +5599,38 @@ Seva ilijibu kwa hitilafu: %2</translation>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="111"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="112"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
         <translation>Cheti cha mwisho hadi mwisho kinahitaji kuhamishwa hadi mpya</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="113"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="114"/>
         <source>Trigger the migration</source>
         <translation>Anzisha uhamiaji</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/tray/usermodel.cpp" line="176"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
         <source>%n notification(s)</source>
         <translation><numerusform>%n notification</numerusform><numerusform>%n arifa</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="656"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="657"/>
         <source>Retry all uploads</source>
         <translation>Jaribu tena vipakizi vyote</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="707"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="869"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="708"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="870"/>
         <source>Resolve conflict</source>
         <translation>Tatua mzozo</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="859"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="860"/>
         <source>Rename file</source>
         <translation>Badilisha jina la faili</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1001"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1002"/>
         <source>Public Share Link</source>
         <translation>Kiungo cha Kushiriki kwa Umma</translation>
     </message>
@@ -5639,24 +5645,24 @@ Seva ilijibu kwa hitilafu: %2</translation>
         <translation>Fungua Nextcloud Talk katika kivinjari</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1086"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
         <source>Open %1 Assistant in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>Fungua Mratibu %1 kwenye kivinjari</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1088"/>
         <source>Open %1 Talk in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>Fungua %1 Talk katika kivinjari </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1210"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1211"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation>Kiasi kimeboreshwa; asilimia %1 ya nafasi yote imetumika.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1230"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1231"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation>Onyo la Kiwango - asilimia %1 au zaidi ya hifadhi inatumika</translation>
     </message>
@@ -5664,32 +5670,32 @@ Seva ilijibu kwa hitilafu: %2</translation>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1538"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1539"/>
         <source>Confirm Account Removal</source>
         <translation>Thibitisha Uondoaji wa Akaunti</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1539"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1540"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Je, kweli unataka kuondoa muunganisho kwenye akaunti &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Kumbuka:&lt;/b&gt; Hii &lt;b&gt;not&lt;/b&gt; itafuta faili zozote.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1543"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1544"/>
         <source>Remove connection</source>
         <translation>Ondoa muunganisho</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1544"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1545"/>
         <source>Cancel</source>
         <translation>Ghairi</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1628"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1629"/>
         <source>Leave share</source>
         <translation>Acha kushiriki</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1628"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1629"/>
         <source>Remove account</source>
         <translation>Ondoa akaunti</translation>
     </message>
@@ -6285,27 +6291,27 @@ Seva ilijibu kwa hitilafu: %2</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="788"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="789"/>
         <source>You renamed %1</source>
         <translation>Ulibadilisha jina la %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="790"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="791"/>
         <source>You deleted %1</source>
         <translation>Ulifuta %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="792"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="793"/>
         <source>You created %1</source>
         <translation>Uliunda %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="794"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="795"/>
         <source>You changed %1</source>
         <translation>Ulibadilisha %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="818"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="819"/>
         <source>Synced %1</source>
         <translation>Imesawazishwa %1</translation>
     </message>

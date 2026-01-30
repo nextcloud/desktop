@@ -303,11 +303,6 @@
         <translation>虛擬檔案設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
-        <source>General settings</source>
-        <translation>一般設定</translation>
-    </message>
-    <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
         <source>Enable virtual files</source>
         <translation>啟用虛擬檔案</translation>
@@ -318,9 +313,14 @@
         <translation>允許刪除回收桶中的項目</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Reset virtual files environment</source>
         <translation>重設虛擬檔案環境</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
+        <source>General settings</source>
+        <translation>一般設定</translation>
     </message>
 </context>
 <context>
@@ -1010,17 +1010,17 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="477"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="478"/>
         <source>For more activities please open the Activity app.</source>
         <translation>請開啟活動狀態應用程式以檢視更多活動。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="497"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="498"/>
         <source>Fetching activities …</source>
         <translation>正在擷取活動紀錄…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="604"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="605"/>
         <source>Network error occurred: client will retry syncing.</source>
         <translation>遇到網路錯誤：客戶端將會重試同步。</translation>
     </message>
@@ -1113,34 +1113,34 @@ This action will abort any currently running synchronization.</source>
         <translation>繼續</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="526"/>
+        <location filename="../src/gui/application.cpp" line="522"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 個帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="527"/>
+        <location filename="../src/gui/application.cpp" line="523"/>
         <source>1 account</source>
         <translation>1 個帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="529"/>
+        <location filename="../src/gui/application.cpp" line="525"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 個資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="530"/>
+        <location filename="../src/gui/application.cpp" line="526"/>
         <source>1 folder</source>
         <translation>1 個資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="532"/>
+        <location filename="../src/gui/application.cpp" line="528"/>
         <source>Legacy import</source>
         <translation>舊版匯入</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="533"/>
+        <location filename="../src/gui/application.cpp" line="529"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1148,12 +1148,12 @@ This action will abort any currently running synchronization.</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="616"/>
+        <location filename="../src/gui/application.cpp" line="612"/>
         <source>Error accessing the configuration file</source>
         <translation>存取組態設定檔時發生錯誤</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="617"/>
+        <location filename="../src/gui/application.cpp" line="613"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>存取位於 %1 的組態設定檔時發生錯誤。請確保您的系統帳號可以存取該檔案。</translation>
     </message>
@@ -2869,7 +2869,7 @@ For advanced users: this issue might be related to multiple sync database files 
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="285"/>
-        <location filename="../src/gui/generalsettings.cpp" line="661"/>
+        <location filename="../src/gui/generalsettings.cpp" line="664"/>
         <source>Create Debug Archive</source>
         <translation>建立除錯封存檔</translation>
     </message>
@@ -2919,57 +2919,57 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>重新啟動並更新(&amp;R)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="213"/>
+        <location filename="../src/gui/generalsettings.cpp" line="216"/>
         <source>Server notifications that require attention.</source>
         <translation>需要注意的伺服器通知。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="217"/>
+        <location filename="../src/gui/generalsettings.cpp" line="220"/>
         <source>Show chat notification dialogs.</source>
         <translation>顯示聊天通知對話方塊</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="221"/>
+        <location filename="../src/gui/generalsettings.cpp" line="224"/>
         <source>Show call notification dialogs.</source>
         <translation>顯示來電通知對話窗。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="224"/>
+        <location filename="../src/gui/generalsettings.cpp" line="227"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation>當配額使用量超過 80% 時顯示通知</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="238"/>
+        <location filename="../src/gui/generalsettings.cpp" line="241"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>您無法停用自動啟動，因為已啟用系統層級的自動啟動。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="373"/>
+        <location filename="../src/gui/generalsettings.cpp" line="376"/>
         <source>Restore to &amp;%1</source>
         <translation>還原至 &amp;%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="449"/>
+        <location filename="../src/gui/generalsettings.cpp" line="452"/>
         <source>stable</source>
         <translation>穩定版</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="453"/>
+        <location filename="../src/gui/generalsettings.cpp" line="456"/>
         <source>beta</source>
         <translation>測試版</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="457"/>
+        <location filename="../src/gui/generalsettings.cpp" line="460"/>
         <source>daily</source>
         <translation>每日</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="461"/>
+        <location filename="../src/gui/generalsettings.cpp" line="464"/>
         <source>enterprise</source>
         <translation>企業版</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="499"/>
+        <location filename="../src/gui/generalsettings.cpp" line="502"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -2981,7 +2981,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 無法立即降級版本：從測試版變更為穩定版必須等待新的穩定版本才能更新。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="504"/>
+        <location filename="../src/gui/generalsettings.cpp" line="507"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -2991,12 +2991,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 無法立即降級版本：從穩定版變更為企業版必須等待新的企業版本才能更新。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="511"/>
+        <location filename="../src/gui/generalsettings.cpp" line="514"/>
         <source>Changing update channel?</source>
         <translation>變更更新頻道？</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="512"/>
+        <location filename="../src/gui/generalsettings.cpp" line="515"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -3006,17 +3006,17 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="518"/>
+        <location filename="../src/gui/generalsettings.cpp" line="521"/>
         <source>Change update channel</source>
         <translation>變更更新頻道</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="519"/>
+        <location filename="../src/gui/generalsettings.cpp" line="522"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="663"/>
+        <location filename="../src/gui/generalsettings.cpp" line="666"/>
         <source>Zip Archives</source>
         <translation>ZIP 封存檔</translation>
     </message>
@@ -3031,12 +3031,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>無法存取選定的位置。請再試一次或選擇其他位置。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="673"/>
+        <location filename="../src/gui/generalsettings.cpp" line="676"/>
         <source>Debug Archive Created</source>
         <translation>已建立除錯封存檔</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="674"/>
+        <location filename="../src/gui/generalsettings.cpp" line="677"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation>請在分享前刪除敏感資訊！已於 %1 建立除錯封存檔</translation>
     </message>
@@ -5504,6 +5504,12 @@ Server replied with error: %2</source>
         <translation>%1 桌面客戶端版本 %2 (%3)</translation>
     </message>
     <message>
+        <location filename="../src/libsync/theme.cpp" line="449"/>
+        <source>%1 Desktop Client Version %2 (%3 running on %4)</source>
+        <comment>%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the platform name (wayland, x11, …)</comment>
+        <translation>%1 桌面客戶端版本 %2（%3 執行於 %4）</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/theme.cpp" line="634"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;正在使用虛擬檔案插入式元件：%1&lt;/small&gt;&lt;/p&gt;</translation>
@@ -5594,38 +5600,38 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="111"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="112"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
         <translation>端到端加密憑證需要遷移至新憑證</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="113"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="114"/>
         <source>Trigger the migration</source>
         <translation>觸發遷移</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/tray/usermodel.cpp" line="176"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
         <source>%n notification(s)</source>
         <translation><numerusform>%n 個通知</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="656"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="657"/>
         <source>Retry all uploads</source>
         <translation>重試所有上傳</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="707"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="869"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="708"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="870"/>
         <source>Resolve conflict</source>
         <translation>解決衝突</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="859"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="860"/>
         <source>Rename file</source>
         <translation>重新命名檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1001"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1002"/>
         <source>Public Share Link</source>
         <translation>公開分享連結</translation>
     </message>
@@ -5640,24 +5646,24 @@ Server replied with error: %2</source>
         <translation>在瀏覽器中開啟 Nextcloud Talk</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1086"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
         <source>Open %1 Assistant in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>在瀏覽器中開啟 %1 小幫手</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1088"/>
         <source>Open %1 Talk in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>在瀏覽器中開啟 %1 Talk</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1210"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1211"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation>已更新配額；已使用總空間的百分之 %1。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1230"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1231"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation>配額警告，已使用百分之 %1 或更多的儲存空間</translation>
     </message>
@@ -5665,32 +5671,32 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1538"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1539"/>
         <source>Confirm Account Removal</source>
         <translation>確認移除帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1539"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1540"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;您真的想要移除帳號 &lt;i&gt;%1&lt;/i&gt; 的連線嗎？&lt;/p&gt;&lt;p&gt;&lt;b&gt;請注意：&lt;/b&gt;這&lt;b&gt;不會&lt;/b&gt;刪除任何檔案。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1543"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1544"/>
         <source>Remove connection</source>
         <translation>移除連線</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1544"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1545"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1628"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1629"/>
         <source>Leave share</source>
         <translation>離開分享</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1628"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1629"/>
         <source>Remove account</source>
         <translation>移除帳號</translation>
     </message>
@@ -6286,27 +6292,27 @@ Server replied with error: %2</source>
         <translation>無法將除錯用的封存檔移動到選定的位置！</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="788"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="789"/>
         <source>You renamed %1</source>
         <translation>您已重新命名 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="790"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="791"/>
         <source>You deleted %1</source>
         <translation>您已刪除 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="792"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="793"/>
         <source>You created %1</source>
         <translation>您已建立 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="794"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="795"/>
         <source>You changed %1</source>
         <translation>您已變更 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="818"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="819"/>
         <source>Synced %1</source>
         <translation>已同步 %1</translation>
     </message>

@@ -303,11 +303,6 @@
         <translation>Inställningar virtuella filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
-        <source>General settings</source>
-        <translation>Allmänna inställningar</translation>
-    </message>
-    <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
         <source>Enable virtual files</source>
         <translation>Aktivera virtuella filer</translation>
@@ -318,9 +313,14 @@
         <translation>Tillåt borttagning av objekt i papperskorgen</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Reset virtual files environment</source>
         <translation>Återställ miljön för virtuella filer</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
+        <source>General settings</source>
+        <translation>Allmänna inställningar</translation>
     </message>
 </context>
 <context>
@@ -1009,17 +1009,17 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="477"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="478"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Öppna Aktivitetsappen för fler aktiviteter.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="497"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="498"/>
         <source>Fetching activities …</source>
         <translation>Hämtar aktiviteter ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="604"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="605"/>
         <source>Network error occurred: client will retry syncing.</source>
         <translation>Nätverksfel inträffade: klienten kommer att försöka synkronisera igen.</translation>
     </message>
@@ -1112,34 +1112,34 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
         <translation>Fortsätt</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="526"/>
+        <location filename="../src/gui/application.cpp" line="522"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 konton</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="527"/>
+        <location filename="../src/gui/application.cpp" line="523"/>
         <source>1 account</source>
         <translation>1 konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="529"/>
+        <location filename="../src/gui/application.cpp" line="525"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 mappar</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="530"/>
+        <location filename="../src/gui/application.cpp" line="526"/>
         <source>1 folder</source>
         <translation>1 mapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="532"/>
+        <location filename="../src/gui/application.cpp" line="528"/>
         <source>Legacy import</source>
         <translation>Legacyimport</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="533"/>
+        <location filename="../src/gui/application.cpp" line="529"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1147,12 +1147,12 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="616"/>
+        <location filename="../src/gui/application.cpp" line="612"/>
         <source>Error accessing the configuration file</source>
         <translation>Kunde inte komma åt konfigurationsfilen</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="617"/>
+        <location filename="../src/gui/application.cpp" line="613"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Ett fel uppstod vid läsning av konfigurationsfilen vid %1. Kontrollera att filen kan nås av ditt datorkonto.</translation>
     </message>
@@ -2868,7 +2868,7 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="285"/>
-        <location filename="../src/gui/generalsettings.cpp" line="661"/>
+        <location filename="../src/gui/generalsettings.cpp" line="664"/>
         <source>Create Debug Archive</source>
         <translation>Skapa felsökningsarkiv</translation>
     </message>
@@ -2918,57 +2918,57 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
         <translation>&amp;Starta om &amp;&amp; Uppdatera</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="213"/>
+        <location filename="../src/gui/generalsettings.cpp" line="216"/>
         <source>Server notifications that require attention.</source>
         <translation>Serveraviseringar som kräver uppmärksamhet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="217"/>
+        <location filename="../src/gui/generalsettings.cpp" line="220"/>
         <source>Show chat notification dialogs.</source>
         <translation>Visa dialogrutor för chattaviseringar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="221"/>
+        <location filename="../src/gui/generalsettings.cpp" line="224"/>
         <source>Show call notification dialogs.</source>
         <translation>Visa dialogrutor för samtalsmeddelanden.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="224"/>
+        <location filename="../src/gui/generalsettings.cpp" line="227"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation>Visa avisering när kvotanvändningen överstiger 80%.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="238"/>
+        <location filename="../src/gui/generalsettings.cpp" line="241"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Du kan inte deaktivera autostart eftersom autostart är aktiverat på systemnivå.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="373"/>
+        <location filename="../src/gui/generalsettings.cpp" line="376"/>
         <source>Restore to &amp;%1</source>
         <translation>Återställ till &amp;%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="449"/>
+        <location filename="../src/gui/generalsettings.cpp" line="452"/>
         <source>stable</source>
         <translation>stabil</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="453"/>
+        <location filename="../src/gui/generalsettings.cpp" line="456"/>
         <source>beta</source>
         <translation>beta</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="457"/>
+        <location filename="../src/gui/generalsettings.cpp" line="460"/>
         <source>daily</source>
         <translation>dagligen</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="461"/>
+        <location filename="../src/gui/generalsettings.cpp" line="464"/>
         <source>enterprise</source>
         <translation>enterprise</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="499"/>
+        <location filename="../src/gui/generalsettings.cpp" line="502"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -2980,7 +2980,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 Nedgradering av versioner är inte möjligt omedelbart: att byta från beta till stabil innebär att vänta på den nya stabila versionen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="504"/>
+        <location filename="../src/gui/generalsettings.cpp" line="507"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -2990,12 +2990,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil till enterprise innebär att man väntar på den nya enterprise-versionen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="511"/>
+        <location filename="../src/gui/generalsettings.cpp" line="514"/>
         <source>Changing update channel?</source>
         <translation>Ändra uppdateringskanal?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="512"/>
+        <location filename="../src/gui/generalsettings.cpp" line="515"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -3005,17 +3005,17 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="518"/>
+        <location filename="../src/gui/generalsettings.cpp" line="521"/>
         <source>Change update channel</source>
         <translation>Ändra uppdateringskanal</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="519"/>
+        <location filename="../src/gui/generalsettings.cpp" line="522"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="663"/>
+        <location filename="../src/gui/generalsettings.cpp" line="666"/>
         <source>Zip Archives</source>
         <translation>Zip-arkiv</translation>
     </message>
@@ -3030,12 +3030,12 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="673"/>
+        <location filename="../src/gui/generalsettings.cpp" line="676"/>
         <source>Debug Archive Created</source>
         <translation>Felsökningsarkiv skapat</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="674"/>
+        <location filename="../src/gui/generalsettings.cpp" line="677"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation>Redigera information som anses känslig innan du delar! Felsökningsarkiv skapat på %1</translation>
     </message>
@@ -5503,6 +5503,12 @@ Servern svarade med fel: %2</translation>
         <translation>%1 Version av skrivbordsklient %2 (%3)</translation>
     </message>
     <message>
+        <location filename="../src/libsync/theme.cpp" line="449"/>
+        <source>%1 Desktop Client Version %2 (%3 running on %4)</source>
+        <comment>%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the platform name (wayland, x11, …)</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/theme.cpp" line="634"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Använder plugin för virtuella filer: %1&lt;/small&gt;&lt;/p&gt;</translation>
@@ -5593,38 +5599,38 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="111"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="112"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
         <translation>End-to-end-certifikatet måste migreras till ett nytt</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="113"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="114"/>
         <source>Trigger the migration</source>
         <translation>Initiera migreringen</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/tray/usermodel.cpp" line="176"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
         <source>%n notification(s)</source>
         <translation><numerusform>%n avisering</numerusform><numerusform>%n aviseringar</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="656"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="657"/>
         <source>Retry all uploads</source>
         <translation>Försök ladda upp igen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="707"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="869"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="708"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="870"/>
         <source>Resolve conflict</source>
         <translation>Lös konflikt</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="859"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="860"/>
         <source>Rename file</source>
         <translation>Byt namn på fil</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1001"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1002"/>
         <source>Public Share Link</source>
         <translation>Offentlig delningslänk</translation>
     </message>
@@ -5639,24 +5645,24 @@ Servern svarade med fel: %2</translation>
         <translation>Öppna Nextcloud Talk i webbläsaren</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1086"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
         <source>Open %1 Assistant in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>Öppna %1 Assistant i webbläsaren</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1088"/>
         <source>Open %1 Talk in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>Öppna %1 Talk i webbläsaren</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1210"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1211"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation>Kvoten har uppdaterats; %1 procent av det totala utrymmet är använt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1230"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1231"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation>Kvotvarning - %1 procent eller mer av lagringsutrymmet används</translation>
     </message>
@@ -5664,32 +5670,32 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1538"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1539"/>
         <source>Confirm Account Removal</source>
         <translation>Bekräfta radering an kontot</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1539"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1540"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vill du verkligen ta bort anslutningen till konto &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;OBS:&lt;/b&gt; Detta kommer &lt;b&gt;inte&lt;/b&gt; radera några filer.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1543"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1544"/>
         <source>Remove connection</source>
         <translation>Ta bort anslutning</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1544"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1545"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1628"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1629"/>
         <source>Leave share</source>
         <translation>Lämna delning</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1628"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1629"/>
         <source>Remove account</source>
         <translation>Ta bort konto</translation>
     </message>
@@ -6285,27 +6291,27 @@ Servern svarade med fel: %2</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="788"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="789"/>
         <source>You renamed %1</source>
         <translation>Du döpte om %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="790"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="791"/>
         <source>You deleted %1</source>
         <translation>Du raderade %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="792"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="793"/>
         <source>You created %1</source>
         <translation>Du skapade %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="794"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="795"/>
         <source>You changed %1</source>
         <translation>Du ändrade %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="818"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="819"/>
         <source>Synced %1</source>
         <translation>Synkroniserade %1</translation>
     </message>

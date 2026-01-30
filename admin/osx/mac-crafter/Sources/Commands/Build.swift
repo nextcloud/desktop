@@ -123,7 +123,9 @@ struct Build: AsyncParsableCommand {
     mutating func run() async throws {
         let stopwatch = Stopwatch()
 
-        print("Ensuring build dependencies are met...")
+        // MARK: Dependencies
+
+        Log.info("Ensuring build dependencies are met...")
         stopwatch.record("Build Dependencies")
 
         if codeSignIdentity != nil {
@@ -142,7 +144,9 @@ struct Build: AsyncParsableCommand {
         try await installIfMissing("inkscape", "brew install inkscape")
         try await installIfMissing("python3", "brew install pyenv && pyenv install 3.12.4")
         
-        print("Build dependencies are installed.")
+        Log.info("Build dependencies are installed.")
+
+        // MARK: KDE Craft
 
         let fm = FileManager.default
         let buildURL = URL(fileURLWithPath: buildPath).standardized
@@ -157,15 +161,15 @@ struct Build: AsyncParsableCommand {
             stopwatch.record("KDE Craft Setup")
 
             if fm.fileExists(atPath: craftMasterDir.path) {
-                print("KDE Craft is already cloned.")
+                Log.info("KDE Craft is already cloned.")
             } else {
-                print("Cloning KDE Craft...")
+                Log.info("Cloning KDE Craft...")
                 guard await shell("\(gitCloneCommand) \(craftMasterGitUrl) \(craftMasterDir.path)") == 0 else {
                     throw MacCrafterError.gitError("The referenced CraftMaster repository could not be cloned from \(craftMasterGitUrl) to \(craftMasterDir.path)")
                 }
             }
             
-            print("Configuring required KDE Craft blueprint repositories...")
+            Log.info("Configuring required KDE Craft blueprint repositories...")
             stopwatch.record("Craft Blueprints Configuration")
 
             guard await shell("\(craftCommand) --add-blueprint-repository '\(kdeBlueprintsGitUrl)|\(kdeBlueprintsGitRef)|'") == 0 else {
@@ -176,21 +180,21 @@ struct Build: AsyncParsableCommand {
                 throw MacCrafterError.craftError("Error adding Nextcloud Client blueprint repository.")
             }
             
-            print("Crafting KDE Craft...")
+            Log.info("Crafting KDE Craft...")
             stopwatch.record("Craft Crafting")
 
             guard await shell("\(craftCommand) craft") == 0 else {
                 throw MacCrafterError.craftError("Error crafting KDE Craft.")
             }
             
-            print("Crafting Nextcloud Desktop Client dependencies...")
+            Log.info("Crafting Nextcloud Desktop Client dependencies...")
             stopwatch.record("Nextcloud Client Dependencies Crafting")
 
             guard await shell("\(craftCommand) --install-deps \(craftBlueprintName)") == 0 else {
                 throw MacCrafterError.craftError("Error installing dependencies.")
             }
         } else {
-            print("Skipping KDE Craft configuration because it is already and no reconfiguration was requested.")
+            Log.info("Skipping KDE Craft configuration because it is already configured and no reconfiguration was requested.")
         }
 
         var craftOptions = [
@@ -212,9 +216,9 @@ struct Build: AsyncParsableCommand {
         }
         
         if disableAutoUpdater == false {
-            print("Configuring Sparkle auto-updater.")
+            Log.info("Configuring Sparkle auto-updater.")
             
-            stopwatch.record("Sparke Configuration")
+            stopwatch.record("Sparkle Configuration")
 
             let downloadedArchive = try await downloadSparkle()
             let fm = FileManager.default
@@ -233,16 +237,18 @@ struct Build: AsyncParsableCommand {
             .appendingPathComponent("build")
             .appendingPathComponent(craftBlueprintName)
 
-        print("Crafting \(appName) Desktop Client...")
+        // MARK: Client Crafting
+
+        Log.info("Crafting \(appName) Desktop Client...")
         stopwatch.record("Desktop Client Crafting")
 
         if fullRebuild {
             if fm.fileExists(atPath: clientBuildURL.path) {
-                print("Removing existing client build directory at: \(clientBuildURL.path)")
+                Log.info("Removing existing client build directory at: \(clientBuildURL.path)")
 
                 do {
                     try fm.removeItem(atPath: clientBuildURL.path)
-                } catch let error {
+                } catch {
                     throw MacCrafterError.craftError("Failed to remove existing build directory at: \(clientBuildURL.path)")
                 }
             }
@@ -258,11 +264,11 @@ struct Build: AsyncParsableCommand {
                 .appendingPathComponent("MacOSX")
 
             if fm.fileExists(atPath: shellIntegrationURL.path) {
-                print("Removing existing shell integration build artifacts...")
+                Log.info("Removing existing shell integration build artifacts...")
                 do {
                     try fm.removeItem(atPath: shellIntegrationURL.path)
                 } catch let error {
-                    print("ERROR: Error removing shell integration build directory: \(error)")
+                    Log.error("Failed to remove shell integration build directory: \(error)")
                     throw MacCrafterError.craftError("Failed to remove existing shell integration build directory!")
                 }
             }
@@ -276,13 +282,15 @@ struct Build: AsyncParsableCommand {
             // Troubleshooting: This can happen because a CraftMaster repository was cloned which does not contain the commit defined in craftmaster.ini of this project due to use of customized forks.
             throw MacCrafterError.craftError("Error crafting Nextcloud Desktop Client.")
         }
-        
+
+        // MARK: Signing
+
         let clientAppURL = clientBuildURL
             .appendingPathComponent("image-\(buildType)-master")
             .appendingPathComponent("\(appName).app")
 
         if let codeSignIdentity {
-            print("Signing Nextcloud Desktop Client libraries and frameworks...")
+            Log.info("Signing Nextcloud Desktop Client libraries and frameworks...")
             stopwatch.record("Code Signing")
 
             let appEntitlements = clientBuildURL
@@ -307,16 +315,16 @@ struct Build: AsyncParsableCommand {
 
             for file in entitlements.values {
                 if FileManager.default.fileExists(atPath: file.path) {
-                    print("Using entitlement manifest: \(file.path)")
+                    Log.info("Using entitlement manifest: \(file.path)")
                 } else {
-                    print("ERROR: Entitlement manifest does not exist: \(file.path)")
+                    Log.error("Entitlement manifest does not exist: \(file.path)")
                 }
             }
 
             try await Signer.signMainBundle(at: clientAppURL, codeSignIdentity: codeSignIdentity, entitlements: entitlements)
         }
         
-        print("Placing Nextcloud Desktop Client in \(productPath)...")
+        Log.info("Placing Nextcloud Desktop Client in \(productPath)...")
 
         if !fm.fileExists(atPath: productPath) {
             try fm.createDirectory(atPath: productPath, withIntermediateDirectories: true, attributes: nil)
@@ -327,6 +335,8 @@ struct Build: AsyncParsableCommand {
         }
 
         try fm.copyItem(atPath: clientAppURL.path, toPath: "\(productPath)/\(appName).app")
+
+        // MARK: Packaging
 
         if package {
             stopwatch.record("Packaging App Bundle")
@@ -345,7 +355,7 @@ struct Build: AsyncParsableCommand {
             )
         }
         
-        print("Done!")
-        print(stopwatch.report())
+        Log.info("Done!")
+        Log.info(stopwatch.report())
     }
 }

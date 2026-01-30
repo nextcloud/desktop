@@ -434,7 +434,7 @@ void EditLocallyJob::openFile()
     // if the VFS is enabled - we just always call it from a separate thread.
     auto futureResult = QtConcurrent::run([localFilePathUrl, this]() {
         if (!QDesktopServices::openUrl(localFilePathUrl)) {
-            emit callShowError(tr("Could not open %1").arg(_fileName), tr("Please try again."));
+            emit callShowError(tr("Could not open %1").arg(Utility::escape(_fileName)), tr("Please try again."));
         }
 
         Systray::instance()->destroyEditFileLocallyLoadingDialog();

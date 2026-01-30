@@ -28,12 +28,12 @@ jobs:
     timeout-minutes: 60
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 1
 
       - name: Setup Xcode
-        uses: maxim-lobanov/setup-xcode@v1
+        uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
         with:
           xcode-version: latest-stable
       
@@ -41,7 +41,7 @@ jobs:
         run: swift --version
       
       - name: Set up Python ${{ inputs.PYTHON_VERSION }}
-        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: ${{ inputs.PYTHON_VERSION }}
 
@@ -50,7 +50,7 @@ jobs:
           brew install homebrew/cask/inkscape
 
       - name: Restore cached Craft directories
-        uses: actions/cache/restore@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+        uses: actions/cache/restore@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
         with:
           path: |
             ${{ inputs.CRAFT_MASTER_LOCATION }}
@@ -63,7 +63,7 @@ jobs:
           python "${{ inputs.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ inputs.CRAFT_MASTER_CONFIG }}" --target ${{ inputs.CRAFT_TARGET }} -c --options nextcloud-client.srcDir=${{ github.workspace }} --options nextcloud-client.buildFileProviderModule=${{ inputs.buildFileProviderModule }} nextcloud-client
 
       - name: Cache Craft directories containing the built client
-        uses: actions/cache/save@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+        uses: actions/cache/save@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
         with:
           path: |
             ${{ inputs.CRAFT_MASTER_LOCATION }}
@@ -79,7 +79,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Restore cached Craft directories containing the built client
-        uses: actions/cache/restore@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+        uses: actions/cache/restore@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
         with:
           path: |
             ${{ inputs.CRAFT_MASTER_LOCATION }}

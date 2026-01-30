@@ -10,9 +10,9 @@ struct Codesign: AsyncParsableCommand {
     static let configuration = CommandConfiguration(abstract: "Codesigning script for the client.")
     
     @Argument(help: "Path to the Nextcloud desktop client app bundle.")
-    var appBundlePath = "\(FileManager.default.currentDirectoryPath)/product/Nextcloud.app"
-    
-    @Option(name: [.short, .long], help: "Code signing identity for desktop client and libs.")
+    var appBundlePath: String
+
+    @Argument(help: "Code signing identity for desktop client and libs.")
     var codeSignIdentity: String
 
     @Argument(help: "Location of the entitlements manifest for the app.")

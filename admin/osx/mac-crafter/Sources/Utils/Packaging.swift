@@ -24,7 +24,7 @@ fileprivate func buildPackage(appName: String, buildWorkPath: String, productPat
         throw PackagingError.projectNameSettingError("Could not set project name in pkgproj!")
     }
     guard await shell("packagesbuild -v --build-folder \(productPath) -F \(productPath) \(pkgprojPath)") == 0 else {
-        throw PackagingError.packageBuildError("Error building pkg file!")
+        throw PackagingError.packageBuildError("Error building package file!")
     }
     return "\(productPath)/\(packageFile)"
 }
@@ -32,7 +32,7 @@ fileprivate func buildPackage(appName: String, buildWorkPath: String, productPat
 fileprivate func signPackage(packagePath: String, packageSigningId: String) async throws {
     let packagePathNew = "\(packagePath).new"
     guard await shell("productsign --timestamp --sign '\(packageSigningId)' \(packagePath) \(packagePathNew)") == 0 else {
-        throw PackagingError.packageSigningError("Could not sign pkg file!")
+        throw PackagingError.packageSigningError("Could not sign package file!")
     }
     let fm = FileManager.default
     try fm.removeItem(atPath: packagePath)
@@ -76,7 +76,7 @@ func packageAppBundle(
     appleTeamId: String?,
     sparklePackageSignKey: String?
 ) async throws {
-    print("Creating pkg file for client…")
+    Log.info("Creating package file for client…")
     let buildWorkPath = "\(buildPath)/\(craftTarget)/build/\(craftBlueprintName)/work/build"
     let packagePath = try await buildPackage(
         appName: appName,
@@ -85,11 +85,11 @@ func packageAppBundle(
     )
 
     if let packageSigningId {
-        print("Signing pkg with \(packageSigningId)…")
+        Log.info("Signing package with \(packageSigningId)…")
         try await signPackage(packagePath: packagePath, packageSigningId: packageSigningId)
 
         if let appleId, let applePassword, let appleTeamId {
-            print("Notarising pkg with Apple ID \(appleId)…")
+            Log.info("Notarising package with Apple ID \(appleId)…")
             try await notarisePackage(
                 packagePath: packagePath,
                 appleId: appleId,
@@ -99,12 +99,12 @@ func packageAppBundle(
         }
     }
 
-    print("Creating Sparkle TBZ file…")
+    Log.info("Creating Sparkle TBZ file…")
     let sparklePackagePath =
         try await buildSparklePackage(packagePath: packagePath, buildPath: buildPath)
 
     if let sparklePackageSignKey {
-        print("Signing Sparkle TBZ file…")
+        Log.info("Signing Sparkle TBZ file…")
         try await signSparklePackage(
             sparkleTbzPath: sparklePackagePath,
             buildPath: buildPath,
@@ -124,7 +124,7 @@ func createDmgForAppBundle(
     appleTeamId: String?,
     sparklePackageSignKey: String?
 ) async throws {
-    print("Creating disk image for the client…")
+    Log.info("Creating disk image for the client…")
 
     let dmgFilePath = URL(fileURLWithPath: productPath)
         .appendingPathComponent(appName)
@@ -136,11 +136,11 @@ func createDmgForAppBundle(
     }
 
     if let packageSigningId {
-        print("Signing DMG with \(packageSigningId)…")
+        Log.info("Signing disk image with \(packageSigningId)…")
         await Signer.sign(at: URL(fileURLWithPath: dmgFilePath), with: packageSigningId, entitlements: nil)
 
         if let appleId, let applePassword, let appleTeamId {
-            print("Notarising DMG with Apple ID \(appleId)…")
+            Log.info("Notarising disk image with Apple ID \(appleId)…")
             
             try await notarisePackage(
                 packagePath: dmgFilePath,
@@ -151,11 +151,11 @@ func createDmgForAppBundle(
         }
     }
 
-    print("Creating Sparkle TBZ file…")
+    Log.info("Creating Sparkle TBZ file…")
     let sparklePackagePath = try await buildSparklePackage(packagePath: dmgFilePath, buildPath: buildPath)
 
     if let sparklePackageSignKey {
-        print("Signing Sparkle TBZ file…")
+        Log.info("Signing Sparkle TBZ file…")
 
         try await signSparklePackage(
             sparkleTbzPath: sparklePackagePath,

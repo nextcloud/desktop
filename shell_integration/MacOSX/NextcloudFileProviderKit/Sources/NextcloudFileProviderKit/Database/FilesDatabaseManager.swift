@@ -136,34 +136,42 @@ public final class FilesDatabaseManager: Sendable {
     /// - Returns: Metadata related to the item found by the parameters.
     ///
     public func itemMetadata(account: String, locatedAtRemoteUrl rawRemoteURL: String) -> SendableItemMetadata? {
-        guard let remoteURLComponents = URLComponents(string: rawRemoteURL) else {
+        guard var urlComponents = URLComponents(string: rawRemoteURL) else {
+            logger.error("Failed to create URL components from raw remote URL.", [.account: account, .url: rawRemoteURL])
             return nil
         }
 
-        guard let remoteURL = remoteURLComponents.url else {
+        // Clear everything which is not part of the path to be able to derive a prefix which is then removed from the original raw remote URL.
+        urlComponents.fragment = nil
+        urlComponents.query = nil
+        urlComponents.path = ""
+
+        guard let baseURL = urlComponents.url else {
+            logger.error("Failed to derive base URL from components.", [.account: account, .url: rawRemoteURL])
             return nil
         }
+
+        guard let basePrefix = baseURL.absoluteString.removingPercentEncoding else {
+            logger.error("Failed to derive absolute string from base URL.", [.account: account, .url: rawRemoteURL])
+            return nil
+        }
+
+        let index = rawRemoteURL.index(rawRemoteURL.startIndex, offsetBy: basePrefix.count)
+        let rawRemotePath = rawRemoteURL.suffix(from: index)
+        let pathComponents = rawRemotePath.split(separator: "/")
 
         // Get the file name but also take the possible fragment into consideration which is not part of a URL path but a file name.
-        var fileName = remoteURL.lastPathComponent
-
-        if let fragment = remoteURL.fragment {
-            fileName = "\(fileName)#\(fragment)"
-        }
-
-        // Derive the parent address by removing the last path component and discarding the fragment which may actually be part of the file name and not a URL fragment.
-        var parentURLComponents = remoteURLComponents
-        parentURLComponents.path = remoteURL.deletingLastPathComponent().path
-        parentURLComponents.fragment = nil
-
-        guard var rawParentURL = parentURLComponents.url?.absoluteString.removingPercentEncoding else {
+        // Hence a .lastPathComponent does not work and the path must be split by its slashes.
+        guard let fileNameSubstring = pathComponents.last else {
             return nil
         }
 
-        // Remove any trailing slash.
-        if rawParentURL.hasSuffix("/") {
-            rawParentURL.removeLast()
-        }
+        let fileName = String(fileNameSubstring)
+
+        // Derive the parent address by removing the last path component and discarding the fragment which may actually be part of the file name and not a URL fragment.
+        let parentPathComponents = pathComponents.dropLast()
+        let parentPath = "/\(parentPathComponents.joined(separator: "/"))"
+        let rawParentURL = baseURL.absoluteString + parentPath
 
         if let metadata = itemMetadatas.where({
             $0.account == account && $0.serverUrl == rawParentURL && $0.fileName == fileName
@@ -430,10 +438,10 @@ public final class FilesDatabaseManager: Sendable {
         do {
             try database.write {
                 database.add(RealmItemMetadata(value: metadata), update: .all)
-                logger.debug("Added item metadata.", [.item: metadata.ocId, .name: metadata.name, .url: metadata.serverUrl])
+                logger.debug("Added item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl])
             }
         } catch {
-            logger.error("Failed to add item metadata.", [.item: metadata.ocId, .name: metadata.name, .url: metadata.serverUrl, .error: error])
+            logger.error("Failed to add item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl, .error: error])
         }
     }
 

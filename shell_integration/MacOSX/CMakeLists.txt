@@ -28,7 +28,9 @@ if(APPLE)
         add_custom_target( mac_fileproviderplugin ALL
             xcodebuild ARCHS=${CMAKE_OSX_ARCHITECTURES} ONLY_ACTIVE_ARCH=NO
             -project ${CMAKE_SOURCE_DIR}/shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj
-            -target FileProviderExt -configuration ${XCODE_TARGET_CONFIGURATION} "SYMROOT=${CMAKE_CURRENT_BINARY_DIR}"
+            -target FileProviderExt 
+            -configuration ${XCODE_TARGET_CONFIGURATION}
+            "SYMROOT=${CMAKE_CURRENT_BINARY_DIR}"
             "OC_APPLICATION_EXECUTABLE_NAME=${APPLICATION_EXECUTABLE}"
             "OC_APPLICATION_VENDOR=${APPLICATION_VENDOR}"
             "OC_APPLICATION_NAME=${APPLICATION_NAME}"
@@ -54,6 +56,13 @@ if(APPLE)
     endif()
 
     if (BUILD_OWNCLOUD_OSX_BUNDLE)
+        # Set debug entitlements conditionally based on build type
+        if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+            set(DEBUG_ENTITLEMENTS "\t<key>com.apple.security.get-task-allow</key>\n\t<true/>")
+        else()
+            set(DEBUG_ENTITLEMENTS "")
+        endif()
+        
         set(OSX_PLUGINS_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/${XCODE_TARGET_CONFIGURATION})
         set(OSX_PLUGINS_INSTALL_DIR ${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns)
 
