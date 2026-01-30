@@ -319,6 +319,70 @@ private slots:
             QCOMPARE(activity._icon, iconExpected);
         }
     }
+
+    void testRichParametersWithDashKeyeee()
+    {
+        QJsonParseError parseError;
+        const auto activityJsonDocument = QJsonDocument::fromJson(
+            // MOC struggles with multiline raw strings (R"()"), so this will have to do ...
+            "{"
+            "  \"activity_id\": 20891,"
+            "  \"app\": \"tables\","
+            "  \"type\": \"tables\","
+            "  \"user\": \"Testuser\","
+            "  \"subject\": \"You have updated cell How to do on row #42 in table Welcome to Nextcloud Tables!\","
+            "  \"subject_rich\": ["
+            "    \"You have updated cell {col-20} on row {row} in table {table}\","
+            "    {"
+            "      \"user\": {"
+            "        \"type\": \"user\","
+            "        \"id\": \"jyrki\","
+            "        \"name\": \"Jyrki\""
+            "      },"
+            "      \"table\": {"
+            "        \"type\": \"highlight\","
+            "        \"id\": \"5\","
+            "        \"name\": \"Welcome to Nextcloud Tables!\","
+            "        \"link\": \"https://nextcloud.local/apps/tables/#/table/5\""
+            "      },"
+            "      \"row\": {"
+            "        \"type\": \"highlight\","
+            "        \"id\": \"42\","
+            "        \"name\": \"#42\","
+            "        \"link\": \"https://nextcloud.local/apps/tables/#/table/5/row/42\""
+            "      },"
+            "      \"col-20\": {"
+            "        \"type\": \"highlight\","
+            "        \"id\": \"20\","
+            "        \"name\": \"How to do\""
+            "      }"
+            "    }"
+            "  ],"
+            "  \"message\": \"\","
+            "  \"message_rich\": ["
+            "    \"\","
+            "    []"
+            "  ],"
+            "  \"object_type\": \"tables_row\","
+            "  \"object_id\": 42,"
+            "  \"object_name\": \"#42\","
+            "  \"objects\": {"
+            "    \"42\": \"#42\""
+            "  },"
+            "  \"link\": \"https://nextcloud.local/apps/tables/#/table/5/row/42\","
+            "  \"icon\": \"https://nextcloud.local/apps/files/img/change.svg\","
+            "  \"datetime\": \"2026-01-30T08:47:02+00:00\","
+            "  \"previews\": []"
+            "}"_ba, &parseError);
+
+        QCOMPARE(parseError.error, QJsonParseError::NoError);
+        QVERIFY(activityJsonDocument.isObject());
+        const auto activityJsonObject = activityJsonDocument.object();
+
+        OCC::Activity activity = OCC::Activity::fromActivityJson(activityJsonObject, account);
+        // GitHub #9327: the placeholder `{col-20}` was not replaced before.
+        QCOMPARE(activity._subjectDisplay, "You have updated cell How to do on row #42 in table Welcome to Nextcloud Tables!"_L1);
+    }
 };
 
 QTEST_MAIN(TestActivityData)
