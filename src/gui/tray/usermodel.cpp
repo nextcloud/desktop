@@ -23,6 +23,7 @@
 #include "tray/unifiedsearchresultslistmodel.h"
 #include "tray/talkreply.h"
 #include "userstatusconnector.h"
+#include "ocsassistantconnector.h"
 
 #include <QtCore>
 #include <QDesktopServices>
@@ -40,6 +41,73 @@
 namespace {
 constexpr qint64 expiredActivitiesCheckIntervalMsecs = 1000 * 60;
 constexpr qint64 activityDefaultExpirationTimeMsecs = 1000 * 60 * 10;
+constexpr qint64 assistantPollIntervalMsecs = 2000;
+constexpr int assistantSuccessMinStatusCode = 200;
+constexpr int assistantSuccessMaxStatusCode = 300;
+
+QString assistantTaskTypeIdFromResponse(const QJsonDocument &json)
+{
+    const auto types = json.object().value("ocs"_L1).toObject().value("data"_L1).toObject().value("types"_L1).toArray();
+    QString fallbackId;
+    for (const auto &entry : types) {
+        const auto typeObject = entry.toObject();
+        const auto typeId = typeObject.value("id"_L1).toString();
+        if (typeId.isEmpty()) {
+            continue;
+        }
+        if (typeObject.value("appId"_L1).toString() == "assistant"_L1) {
+            return typeId;
+        }
+        if (fallbackId.isEmpty()) {
+            fallbackId = typeId;
+        }
+    }
+    return fallbackId;
+}
+
+qint64 assistantTaskIdFromSchedule(const QJsonDocument &json)
+{
+    const auto task = json.object().value("ocs"_L1).toObject().value("data"_L1).toObject().value("task"_L1).toObject();
+    return static_cast<qint64>(task.value("id"_L1).toDouble(-1));
+}
+
+QString assistantOutputFromTask(const QJsonObject &task)
+{
+    const auto outputValue = task.value("output"_L1);
+    if (outputValue.isString()) {
+        return outputValue.toString();
+    }
+
+    if (outputValue.isObject()) {
+        const auto outputObject = outputValue.toObject();
+        const auto nestedOutput = outputObject.value("output"_L1);
+        if (nestedOutput.isString()) {
+            return nestedOutput.toString();
+        }
+        if (nestedOutput.isObject()) {
+            const auto nestedObject = nestedOutput.toObject();
+            const auto textValue = nestedObject.value("text"_L1);
+            if (textValue.isString()) {
+                return textValue.toString();
+            }
+            const auto answerValue = nestedObject.value("answer"_L1);
+            if (answerValue.isString()) {
+                return answerValue.toString();
+            }
+        }
+
+        const auto textValue = outputObject.value("text"_L1);
+        if (textValue.isString()) {
+            return textValue.toString();
+        }
+        const auto answerValue = outputObject.value("answer"_L1);
+        if (answerValue.isString()) {
+            return answerValue.toString();
+        }
+    }
+
+    return QString();
+}
 }
 
 namespace OCC {
@@ -96,6 +164,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::headerColorChanged);
     connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::headerTextColorChanged);
     connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::accentColorChanged);
+    connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::assistantStateChanged);
 
     connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::slotAccountCapabilitiesChangedRefreshGroupFolders);
 
@@ -121,6 +190,10 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
             showDesktopNotification(certificateNeedMigration);
         }
     });
+
+    _assistantPollTimer.setInterval(assistantPollIntervalMsecs);
+    _assistantPollTimer.setSingleShot(false);
+    connect(&_assistantPollTimer, &QTimer::timeout, this, &User::slotAssistantPoll);
 }
 
 void User::checkNotifiedNotifications()
@@ -1102,6 +1175,26 @@ bool User::isNcAssistantEnabled() const
     return _account->account()->capabilities().ncAssistantEnabled();
 }
 
+QString User::assistantQuestion() const
+{
+    return _assistantQuestion;
+}
+
+QString User::assistantResponse() const
+{
+    return _assistantResponse;
+}
+
+QString User::assistantError() const
+{
+    return _assistantError;
+}
+
+bool User::assistantRequestInProgress() const
+{
+    return _assistantRequestInProgress;
+}
+
 QColor User::headerColor() const
 {
     return _account->account()->headerColor();
@@ -1156,6 +1249,176 @@ void User::slotSendReplyMessage(const int activityIndex, const QString &token, c
     connect(talkReply, &TalkReply::replyMessageSent, this, [&, activityIndex](const QString &message) {
         _activityModel->setReplyMessageSent(activityIndex, message);
     });
+}
+
+void User::submitAssistantQuestion(const QString &question)
+{
+    const auto trimmedQuestion = question.trimmed();
+    if (trimmedQuestion.isEmpty()) {
+        return;
+    }
+
+    if (!isNcAssistantEnabled()) {
+        _assistantError = tr("Assistant is not available for this account.");
+        emit assistantErrorChanged();
+        return;
+    }
+
+    if (!_assistantConnector) {
+        _assistantConnector = new OcsAssistantConnector(_account->account(), this);
+        connect(_assistantConnector, &OcsAssistantConnector::taskTypesFetched, this, &User::slotAssistantTaskTypesFetched);
+        connect(_assistantConnector, &OcsAssistantConnector::tasksFetched, this, &User::slotAssistantTasksFetched);
+        connect(_assistantConnector, &OcsAssistantConnector::taskScheduled, this, &User::slotAssistantTaskScheduled);
+        connect(_assistantConnector, &OcsAssistantConnector::taskDeleted, this, &User::slotAssistantTaskDeleted);
+        connect(_assistantConnector, &OcsAssistantConnector::requestError, this, &User::slotAssistantRequestError);
+    }
+
+    _assistantQuestion = trimmedQuestion;
+    emit assistantQuestionChanged();
+
+    _assistantError.clear();
+    emit assistantErrorChanged();
+
+    _assistantResponse = tr("Sending your request…");
+    emit assistantResponseChanged();
+
+    _assistantRequestInProgress = true;
+    emit assistantRequestInProgressChanged();
+
+    _assistantPollAttempts = 0;
+    _assistantTaskId = -1;
+
+    if (_assistantTaskType.isEmpty()) {
+        _assistantConnector->fetchTaskTypes();
+        return;
+    }
+
+    _assistantConnector->scheduleTask(_assistantQuestion, _assistantTaskType);
+}
+
+void User::clearAssistantResponse()
+{
+    if (_assistantResponse.isEmpty() && _assistantError.isEmpty() && _assistantQuestion.isEmpty()) {
+        return;
+    }
+    _assistantQuestion.clear();
+    _assistantResponse.clear();
+    _assistantError.clear();
+    emit assistantQuestionChanged();
+    emit assistantResponseChanged();
+    emit assistantErrorChanged();
+}
+
+void User::slotAssistantPoll()
+{
+    if (!_assistantConnector || _assistantTaskType.isEmpty()) {
+        _assistantPollTimer.stop();
+        return;
+    }
+
+    if (_assistantPollAttempts >= _assistantMaxPollAttempts) {
+        _assistantPollTimer.stop();
+        _assistantRequestInProgress = false;
+        emit assistantRequestInProgressChanged();
+        if (_assistantResponse.isEmpty()) {
+            _assistantResponse = tr("No response yet. Please try again later.");
+            emit assistantResponseChanged();
+        }
+        return;
+    }
+
+    ++_assistantPollAttempts;
+    _assistantConnector->fetchTasks(_assistantTaskType);
+}
+
+void User::slotAssistantTaskTypesFetched(const QJsonDocument &json, int statusCode)
+{
+    if (statusCode < assistantSuccessMinStatusCode || statusCode >= assistantSuccessMaxStatusCode) {
+        slotAssistantRequestError(QStringLiteral("taskTypes"), statusCode);
+        return;
+    }
+
+    _assistantTaskType = assistantTaskTypeIdFromResponse(json);
+    if (_assistantTaskType.isEmpty()) {
+        _assistantError = tr("No supported assistant task types were returned.");
+        emit assistantErrorChanged();
+        _assistantRequestInProgress = false;
+        emit assistantRequestInProgressChanged();
+        return;
+    }
+
+    _assistantConnector->scheduleTask(_assistantQuestion, _assistantTaskType);
+}
+
+void User::slotAssistantTasksFetched(const QJsonDocument &json, int statusCode)
+{
+    if (statusCode < assistantSuccessMinStatusCode || statusCode >= assistantSuccessMaxStatusCode) {
+        slotAssistantRequestError(QStringLiteral("tasks"), statusCode);
+        return;
+    }
+
+    const auto tasks = json.object().value("ocs"_L1).toObject().value("data"_L1).toObject().value("tasks"_L1).toArray();
+    QString output;
+    for (const auto &entry : tasks) {
+        const auto taskObject = entry.toObject();
+        const auto taskId = static_cast<qint64>(taskObject.value("id"_L1).toDouble(-1));
+        if (_assistantTaskId > 0 && taskId != _assistantTaskId) {
+            continue;
+        }
+        output = assistantOutputFromTask(taskObject);
+        if (!output.isEmpty()) {
+            break;
+        }
+    }
+
+    if (output.isEmpty()) {
+        if (!_assistantPollTimer.isActive()) {
+            _assistantPollAttempts = 0;
+            _assistantPollTimer.start();
+        }
+        return;
+    }
+
+    _assistantPollTimer.stop();
+    _assistantResponse = output;
+    emit assistantResponseChanged();
+    _assistantRequestInProgress = false;
+    emit assistantRequestInProgressChanged();
+}
+
+void User::slotAssistantTaskScheduled(const QJsonDocument &json, int statusCode)
+{
+    if (statusCode < assistantSuccessMinStatusCode || statusCode >= assistantSuccessMaxStatusCode) {
+        slotAssistantRequestError(QStringLiteral("schedule"), statusCode);
+        return;
+    }
+
+    _assistantTaskId = assistantTaskIdFromSchedule(json);
+    _assistantResponse = tr("Waiting for the assistant response…");
+    emit assistantResponseChanged();
+
+    _assistantPollAttempts = 0;
+    if (!_assistantPollTimer.isActive()) {
+        _assistantPollTimer.start();
+    }
+}
+
+void User::slotAssistantTaskDeleted(int statusCode)
+{
+    if (statusCode >= assistantSuccessMinStatusCode && statusCode < assistantSuccessMaxStatusCode) {
+        return;
+    }
+    slotAssistantRequestError(QStringLiteral("deleteTask"), statusCode);
+}
+
+void User::slotAssistantRequestError(const QString &context, int statusCode)
+{
+    _assistantPollTimer.stop();
+    _assistantRequestInProgress = false;
+    emit assistantRequestInProgressChanged();
+    _assistantError = tr("Assistant request failed (%1).").arg(statusCode);
+    emit assistantErrorChanged();
+    qCWarning(lcActivity) << "Assistant request error:" << context << statusCode;
 }
 
 void User::forceSyncNow() const
@@ -1903,4 +2166,3 @@ QHash<int, QByteArray> UserAppsModel::roleNames() const
     return roles;
 }
 }
-
