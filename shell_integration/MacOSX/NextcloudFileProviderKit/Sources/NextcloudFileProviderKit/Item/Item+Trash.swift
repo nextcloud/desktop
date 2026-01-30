@@ -23,16 +23,14 @@ extension Item {
         }
 
         let ocId = modifiedItem.itemIdentifier.rawValue
+
         guard let dirtyMetadata = dbManager.itemMetadata(ocId: ocId) else {
-            logger.error(
-                """
-                Could not correctly process trashing results, dirty metadata not found.
-                \(modifiedItem.filename) \(ocId)
-                """
-            )
+            logger.error("Could not correctly process trashing results, dirty metadata not found.", [.item: ocId, .name: modifiedItem.filename])
             return (modifiedItem, NSFileProviderError(.cannotSynchronize))
         }
+
         let dirtyChildren = dbManager.childItems(directoryMetadata: dirtyMetadata)
+
         let dirtyItem = await Item(
             metadata: dirtyMetadata,
             parentItemIdentifier: .trashContainer,
@@ -124,23 +122,21 @@ extension Item {
 
         // Update state of child files
         childFiles.removeFirst() // This is the target path, already scanned
+
         for file in childFiles {
             var metadata = file.toItemMetadata()
+
             guard let original = dirtyChildren
                 .filter({ $0.ocId == metadata.ocId || $0.fileId == metadata.fileId })
                 .first
             else {
-                logger.info(
-                    """
-                    Skipping post-trash child item metadata: \(metadata.fileName)
-                        Could not find matching existing item in database, cannot do ocId correction
-                    """
-                )
+                logger.info("Skipping post-trash child item metadata. Could not find matching existing item in database, cannot do ocId correction.", [.name: metadata.fileName])
                 continue
             }
+
             metadata.ocId = original.ocId // Give original id back
             dbManager.addItemMetadata(metadata)
-            logger.info("Note: that was a post-trash child item metadata")
+            logger.info("The previous addition was a post-trash child item metadata.")
         }
 
         return (postDeleteItem, nil)
@@ -159,6 +155,7 @@ extension Item {
 
         func finaliseRestore(target: NKFile) async -> (Item, Error?) {
             let restoredItemMetadata = target.toItemMetadata()
+
             guard let parentItemIdentifier = await dbManager.parentItemIdentifierWithRemoteFallback(
                 fromMetadata: restoredItemMetadata,
                 remoteInterface: remoteInterface,
@@ -175,6 +172,7 @@ extension Item {
                     newFileName: restoredItemMetadata.fileName
                 )
             }
+
             dbManager.addItemMetadata(restoredItemMetadata)
 
             return await (Item(
@@ -194,29 +192,23 @@ extension Item {
             options: .init(),
             taskHandler: { _ in }
         )
+
         guard restoreError == .success else {
-            logger.error(
-                """
-                Could not restore item \(modifiedItem.filename) from trash
-                    Received error: \(restoreError.errorDescription)
-                """
-            )
+            logger.error("Could not restore item from trash.", [.name: modifiedItem.filename, .error: restoreError.errorDescription])
             return (modifiedItem, restoreError.fileProviderError)
         }
+
         guard modifiedItem.metadata.trashbinOriginalLocation != "" else {
-            logger.error(
-                """
-                Could not scan restored item \(modifiedItem.filename).
-                The trashed file's original location is invalid.
-                """
-            )
+            logger.error("Could not scan restored item. The trashed file's original location is invalid.", [.name: modifiedItem.filename])
+
             if #available(macOS 11.3, *) {
                 return (modifiedItem, NSFileProviderError(.unsyncedEdits))
             }
+
             return (modifiedItem, NSFileProviderError(.cannotSynchronize))
         }
-        let originalLocation =
-            account.davFilesUrl + "/" + modifiedItem.metadata.trashbinOriginalLocation
+
+        let originalLocation = account.davFilesUrl + "/" + modifiedItem.metadata.trashbinOriginalLocation
 
         let (_, files, _, enumerateError) = await modifiedItem.remoteInterface.enumerate(
             remotePath: originalLocation,
@@ -228,6 +220,7 @@ extension Item {
             options: .init(),
             taskHandler: { _ in }
         )
+
         guard enumerateError == .success, !files.isEmpty, let target = files.first else {
             logger.error(
                 """
@@ -236,33 +229,25 @@ extension Item {
                 Files: \(files.count)
                 """
             )
+
             if #available(macOS 11.3, *) {
                 return (modifiedItem, NSFileProviderError(.unsyncedEdits))
             }
+
             return (modifiedItem, enumerateError.fileProviderError)
         }
 
         guard target.ocId == modifiedItem.itemIdentifier.rawValue else {
-            logger.info(
-                """
-                Restored item \(originalLocation)
-                does not match \(modifiedItem.filename)
-                (it is likely that when restoring from the trash, there was another identical item).
-                """
-            )
+            logger.info("Restored item at location does not match name (it is likely that when restoring from the trash, there was another identical item).", [.name: modifiedItem.filename, .url: originalLocation])
 
             guard let finalSlashIndex = originalLocation.lastIndex(of: "/") else {
                 return (modifiedItem, NSFileProviderError(.cannotSynchronize))
             }
+
             var parentDirectoryRemotePath = originalLocation
             parentDirectoryRemotePath.removeSubrange(finalSlashIndex ..< originalLocation.endIndex)
 
-            logger.info(
-                """
-                Scanning parent folder at \(parentDirectoryRemotePath) for current
-                state of item restored from trash.
-                """
-            )
+            logger.info("Scanning parent folder at \(parentDirectoryRemotePath) for current state of item restored from trash.")
 
             let (_, files, _, folderScanError) = await modifiedItem.remoteInterface.enumerate(
                 remotePath: parentDirectoryRemotePath,

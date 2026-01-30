@@ -303,11 +303,6 @@
         <translation>Impostazioni dei file virtuali</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
-        <source>General settings</source>
-        <translation>Impostazioni generali</translation>
-    </message>
-    <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
         <source>Enable virtual files</source>
         <translation>Abilita i file virtuali</translation>
@@ -321,6 +316,11 @@
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Reset virtual files environment</source>
         <translation>Reimposta l&apos;ambiente dei file virtuali</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
+        <source>General settings</source>
+        <translation>Impostazioni generali</translation>
     </message>
 </context>
 <context>
@@ -441,7 +441,7 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="227"/>
         <source>Public Share Link</source>
-        <translation>Link di condivisione pubblico</translation>
+        <translation>Collegamento di condivisione pubblico</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="1071"/>
@@ -1904,7 +1904,7 @@ Questo può essere un problema delle le tue librerie OpenSSL.</translation>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="190"/>
         <source>Error parsing or decrypting metadata.</source>
-        <translation>Errore nel parsing o nella decrittazione dei metadati.</translation>
+        <translation>Errore durante l&apos;elaborazione o decifratura dei metadati.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="332"/>
@@ -2479,7 +2479,7 @@ Per utenti avanzati: questo problema potrebbe essere correlato a più file di da
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="169"/>
         <source>Could not decrypt!</source>
-        <translation>Impossibile decriptare!</translation>
+        <translation>Impossibile decifrare!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="171"/>
@@ -4908,7 +4908,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1102"/>
         <source>Copy private link to clipboard</source>
-        <translation>Copia link privato negli appunti</translation>
+        <translation>Copia collegamento privato negli appunti</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="520"/>
@@ -5475,7 +5475,7 @@ Il server ha risposto con errore: %2</translation>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="137"/>
         <source>Link copied to clipboard.</source>
-        <translation>Link copiato negli appunti.</translation>
+        <translation>Collegamento copiato negli appunti.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="178"/>
@@ -5485,7 +5485,7 @@ Il server ha risposto con errore: %2</translation>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="180"/>
         <source>Copy Link</source>
-        <translation>Copia link</translation>
+        <translation>Copia collegamento</translation>
     </message>
 </context>
 <context>
@@ -5495,6 +5495,12 @@ Il server ha risposto con errore: %2</translation>
         <source>%1 Desktop Client Version %2 (%3)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name.</comment>
         <translation>%1 Versione Client Desktop %2 (%3)</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="449"/>
+        <source>%1 Desktop Client Version %2 (%3 running on %4)</source>
+        <comment>%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the platform name (wayland, x11, …)</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="634"/>
@@ -5620,7 +5626,7 @@ Il server ha risposto con errore: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1002"/>
         <source>Public Share Link</source>
-        <translation>Link di condivisione pubblico</translation>
+        <translation>Collegamento di condivisione pubblico</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1079"/>
@@ -6572,7 +6578,7 @@ Il server ha risposto con errore: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="772"/>
         <source>Share link copied!</source>
-        <translation>Collegamento del link di condivisione copiato!</translation>
+        <translation>Collegamento del collegamento di condivisione copiato!</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="772"/>
@@ -7128,7 +7134,7 @@ Il server ha risposto con errore: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="75"/>
         <source>Deleting</source>
-        <translation>Cancellazione</translation>
+        <translation>Eliminazione</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="78"/>

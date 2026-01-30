@@ -14,7 +14,7 @@
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "gui/macOS/fileprovider.h"
-#include "gui/macOS/fileprovidersocketserver.h"
+#include "gui/macOS/fileproviderservice.h"
 #include "gui/macOS/fileprovidersettingscontroller.h"
 #endif
 
@@ -49,7 +49,7 @@ SyncStatusSummary::SyncStatusSummary(QObject *parent)
     connect(folderMan, &FolderMan::folderListChanged, this, &SyncStatusSummary::onFolderListChanged);
     connect(folderMan, &FolderMan::folderSyncStateChange, this, &SyncStatusSummary::onFolderSyncStateChanged);
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    connect(Mac::FileProvider::instance()->socketServer(), &Mac::FileProviderSocketServer::syncStateChanged, this, &SyncStatusSummary::onFileProviderDomainSyncStateChanged);
+    connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::syncStateChanged, this, &SyncStatusSummary::onFileProviderDomainSyncStateChanged);
 #endif
 }
 
@@ -439,7 +439,7 @@ void SyncStatusSummary::initSyncState()
         const auto userIdAtHostWithPort = account->userIdAtHostWithPort();
 
         if (Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(userIdAtHostWithPort)) {
-            const auto lastKnownSyncState = Mac::FileProvider::instance()->socketServer()->latestReceivedSyncStatusForAccount(account);
+            const auto lastKnownSyncState = Mac::FileProvider::instance()->service()->latestReceivedSyncStatusForAccount(account);
             onFileProviderDomainSyncStateChanged(account, lastKnownSyncState);
             syncStateFallbackNeeded = false;
         }

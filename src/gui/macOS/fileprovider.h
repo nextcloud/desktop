@@ -8,6 +8,7 @@
 #include <QObject>
 
 #include "fileproviderdomainmanager.h"
+#include "fileproviderservice.h"
 #include "fileprovidersocketserver.h"
 #include "fileproviderxpc.h"
 
@@ -32,11 +33,13 @@ public:
     [[nodiscard]] FileProviderXPC *xpc() const;
     [[nodiscard]] FileProviderDomainManager *domainManager() const;
     [[nodiscard]] FileProviderSocketServer *socketServer() const;
+    [[nodiscard]] FileProviderService *service() const;
 
 private:
     std::unique_ptr<FileProviderDomainManager> _domainManager;
     std::unique_ptr<FileProviderSocketServer> _socketServer;
     std::unique_ptr<FileProviderXPC> _xpc;
+    std::unique_ptr<FileProviderService> _service;
 
     static FileProvider *_instance;
     explicit FileProvider(QObject * const parent = nullptr);

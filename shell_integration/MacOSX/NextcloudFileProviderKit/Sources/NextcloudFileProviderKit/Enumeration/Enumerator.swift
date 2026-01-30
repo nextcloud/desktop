@@ -75,22 +75,8 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
 
     public func enumerateItems(for observer: NSFileProviderEnumerationObserver, startingAt page: NSFileProviderPage) {
         logger.info("Received enumerate items request for enumerator with user", [.account: account.ncKitAccount, .url: serverUrl])
-
-        /*
-         - inspect the page to determine whether this is an initial or a follow-up request (TODO)
-
-         If this is an enumerator for a directory, the root container or all directories:
-         - perform a server request to fetch directory contents
-         If this is an enumerator for the working set:
-         - perform a server request to update your local database
-         - fetch the working set from your local database
-
-         - inform the observer about the items returned by the server (possibly multiple times)
-         - inform the observer that you are finished with this page
-         */
-
         if enumeratedItemIdentifier == .trashContainer {
-            logger.info("Enumerating trash.", [.account: account.ncKitAccount, .url: serverUrl])
+            logger.info("Enumerating items in trash.", [.account: account.ncKitAccount, .url: serverUrl])
 
             Task { [weak self] in
                 guard let self else {
@@ -111,40 +97,10 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                     return
                 }
 
-                let domain = domain
-                let enumeratedItemIdentifier = enumeratedItemIdentifier
-
-                let (_, trashedItems, _, trashReadError) = await remoteInterface.listingTrashAsync(
-                    filename: nil,
-                    showHiddenFiles: true,
-                    account: account.ncKitAccount,
-                    options: .init(),
-                    taskHandler: { task in
-                        if let domain {
-                            NSFileProviderManager(for: domain)?.register(
-                                task,
-                                forItemWithIdentifier: enumeratedItemIdentifier,
-                                completionHandler: { _ in }
-                            )
-                        }
-                    }
-                )
-
-                guard trashReadError == .success else {
-                    let error = trashReadError.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: enumeratedItemIdentifier) ?? NSFileProviderError(.cannotSynchronize)
-                    observer.finishEnumeratingWithError(error)
-                    return
-                }
-
-                Self.completeEnumerationObserver(
-                    observer,
-                    account: account,
-                    remoteInterface: remoteInterface,
-                    dbManager: dbManager,
-                    numPage: 1,
-                    trashItems: trashedItems ?? [],
-                    log: logger.log
-                )
+                // We only want to list items deleted on the local device.
+                // That cannot happen before the initial content enumeration for a file provider domain because the latter does not exist yet.
+                // Hence the initial trash content enumeration can be finished with an empty set.
+                observer.finishEnumerating(upTo: Self.fileProviderPageforNumPage(1))
             }
 
             return
@@ -334,9 +290,8 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                     observer,
                     anchor: anchor,
                     account: account,
-                    remoteInterface: remoteInterface,
                     dbManager: dbManager,
-                    trashItems: trashedItems ?? [],
+                    remoteTrashItems: trashedItems ?? [],
                     log: logger.log
                 )
             }
