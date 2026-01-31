@@ -2948,6 +2948,12 @@ Untuk pengguna tingkat lanjut: masalah ini mungkin terkait dengan beberapa file 
         <translation>Pulihkan ke &amp;%1</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.cpp" line="448"/>
+        <location filename="../src/gui/generalsettings.cpp" line="474"/>
+        <source>Connected to an enterprise system. Update channel (%1) cannot be changed.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.cpp" line="452"/>
         <source>stable</source>
         <translation>stabil</translation>
@@ -3020,12 +3026,12 @@ Penurunan versi tidak dapat dilakukan secara langsung: berpindah dari stabil ke 
         <translation>Arsip Zip</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="715"/>
+        <location filename="../src/gui/generalsettings.cpp" line="735"/>
         <source>Failed to Access File</source>
         <translation>Gagal Mengakses File</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="716"/>
+        <location filename="../src/gui/generalsettings.cpp" line="736"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
         <translation>Tidak dapat mengakses lokasi yang dipilih. Silakan coba lagi atau pilih lokasi lain.</translation>
     </message>
