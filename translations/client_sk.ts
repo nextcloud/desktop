@@ -2948,6 +2948,12 @@ Pre pokročilých užívateľov: tento problém môže súvisieť s viacerými s
         <translation>Obnoviť na &amp;%1</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.cpp" line="448"/>
+        <location filename="../src/gui/generalsettings.cpp" line="474"/>
+        <source>Connected to an enterprise system. Update channel (%1) cannot be changed.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.cpp" line="452"/>
         <source>stable</source>
         <translation>stabilné</translation>
@@ -3020,12 +3026,12 @@ Prechod na nižšiu verziu nie je možný okamžite: zmena zo stabilnej na podni
         <translation>Zip archívy</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="715"/>
+        <location filename="../src/gui/generalsettings.cpp" line="735"/>
         <source>Failed to Access File</source>
         <translation>Nepodarilo sa získať prístup k súboru</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="716"/>
+        <location filename="../src/gui/generalsettings.cpp" line="736"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
         <translation>Nepodarilo sa získať prístup k vybranému miestu. Skúste to znova alebo vyberte iné umiestnenie.</translation>
     </message>
