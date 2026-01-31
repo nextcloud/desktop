@@ -190,7 +190,7 @@ void FileActionsModel::parseEndpoints()
         return;
     }
 
-    const auto contextMenuList = _accountState->account()->capabilities().contextMenuByMimeType(_mimeType);
+    const auto contextMenuList = _accountState->account()->capabilities().fileActionsByMimeType(_mimeType);
     if (contextMenuList.isEmpty()) {
         qCWarning(lcFileActions) << "contextMenuByMimeType is empty, nothing was returned by capabilities"
                                  << _localPath;
@@ -262,7 +262,7 @@ void FileActionsModel::createRequest(const int row)
                                 this);
     connect(job, &JsonApiJob::jsonReceived,
             this, &FileActionsModel::processRequest);
-    for (const auto &param : _fileActions.at(row).params) {
+    for (const auto &param : std::as_const(_fileActions.at(row).params)) {
         QUrlQuery query;
         query.addQueryItem(param.name, param.value);
         job->addQueryParams(query);
