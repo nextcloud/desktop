@@ -31,7 +31,13 @@ QVariant FileActionsModel::data(const QModelIndex &index, int role) const
     case FileActionMethodRole:
         return _fileActions.at(row).method; // GET
     case FileActionParamsRole:
-        return QVariant::fromValue<QList<QueryItem>>(_fileActions.at(row).params);
+        return QVariant::fromValue<QueryList>(_fileActions.at(row).params);
+    case FileActionResponseLabelRole:
+        return _response.label;
+    case FileActionResponseUrlRole:
+        return _response.url;
+    default:
+        return QVariant();
     }
 
     return {};
@@ -54,6 +60,8 @@ QHash<int, QByteArray> FileActionsModel::roleNames() const
     roles[FileActionUrlRole] = "url";
     roles[FileActionMethodRole] = "method";
     roles[FileActionParamsRole] = "params";
+    roles[FileActionResponseLabelRole] = "responseLabel";
+    roles[FileActionResponseUrlRole] = "responseUrl";
 
     return roles;
 }
@@ -82,7 +90,6 @@ QString FileActionsModel::localPath() const
 {
     return _localPath;
 }
-
 
 void FileActionsModel::setLocalPath(const QString &localPath)
 {
@@ -168,33 +175,41 @@ void FileActionsModel::setResponse(const Response &response)
 void FileActionsModel::parseEndpoints()
 {
     if (!_accountState->isConnected()) {
-        qCWarning(lcFileActions) << "The account is not connected" << _accountUrl;
-        setResponse({ tr("Your account is offline %1.", "account url").arg(_accountUrl), _accountUrl });
+        qCWarning(lcFileActions) << "The account is not connected"
+                                 << _accountUrl;
+        setResponse({ tr("Your account is offline %1.", "account url").arg(_accountUrl),
+                     _accountUrl });
         return;
     }
 
     if (_fileId.isEmpty()) {
-        qCWarning(lcFileActions) << "The file id is empty, not initialized" << _localPath;
-        setResponse({ tr("The file id is empty for %1.", "file name").arg(_localPath), _accountUrl });
+        qCWarning(lcFileActions) << "The file id is empty, not initialized"
+                                 << _localPath;
+        setResponse({ tr("The file id is empty for %1.", "file name").arg(_localPath),
+                     _accountUrl });
         return;
     }
 
     if (!_mimeType.isValid()) {
-        qCWarning(lcFileActions) << "The mime type found for the file is not valid" << _localPath;
-        setResponse({ tr("The file type for %1 is not valid.", "file name").arg(_localPath), _accountUrl });
+        qCWarning(lcFileActions) << "The mime type found for the file is not valid"
+                                 << _localPath;
+        setResponse({ tr("The file type for %1 is not valid.", "file name").arg(_localPath),
+                     _accountUrl });
         return;
     }
 
-    const auto contextMenuList = _accountState->account()->capabilities().contextMenuByMimeType(_mimeType);
-    //const QList<QVariantMap> contextMenuList;
+    const auto contextMenuList = _accountState->account()->capabilities().fileActionsByMimeType(_mimeType);
     if (contextMenuList.isEmpty()) {
-        qCWarning(lcFileActions) << "contextMenuByMimeType is empty, nothing was returned by capabilities" << _localPath;
-        setResponse({ tr("No file actions were returned by the server for %1 files.", "file mymetype").arg(_mimeType.filterString()), _accountUrl });
+        qCWarning(lcFileActions) << "contextMenuByMimeType is empty, nothing was returned by capabilities"
+                                 << _localPath;
+        setResponse({ tr("No file actions were returned by the server for %1 files.", "file mymetype")
+                         .arg(_mimeType.filterString()),
+                     _accountUrl });
         return;
     }
 
     for (const auto &contextMenu : contextMenuList) {
-        ParamsList queryParams;
+        QueryList queryList;
         const auto paramsMap = contextMenu.value("params").toMap();
         for (auto param = paramsMap.cbegin(), end = paramsMap.cend(); param != end; ++param) {
             const auto name = param.key();
@@ -208,7 +223,7 @@ void FileActionsModel::parseEndpoints()
             }
 
             if (!value.isEmpty()) {
-                queryParams.append( QueryItem{ name, value } );
+                queryList.append( QueryItem{ name, value } );
             }
         }
 
@@ -216,10 +231,12 @@ void FileActionsModel::parseEndpoints()
                              contextMenu.value("name").toString(),
                              contextMenu.value("url").toString(),
                              contextMenu.value("method").toString(),
-                             queryParams });
+                             queryList });
     }
 
-    qCDebug(lcFileActions) << "File" << _localPath << "has" << _fileActions.size() << "actions available.";
+    qCDebug(lcFileActions) << "File" << _localPath << "has"
+                           << _fileActions.size()
+                           << "actions available.";
     Q_EMIT fileActionModelChanged();
 }
 
@@ -242,7 +259,8 @@ QString FileActionsModel::parseIcon(const QString &icon) const
 void FileActionsModel::createRequest(const int row)
 {
     if (!_accountState) {
-        qCWarning(lcFileActions) << "No account state for" << _localPath;
+        qCWarning(lcFileActions) << "No account state for"
+                                 << _localPath;
         return;
     }
 
@@ -252,7 +270,7 @@ void FileActionsModel::createRequest(const int row)
                                 this);
     connect(job, &JsonApiJob::jsonReceived,
             this, &FileActionsModel::processRequest);
-    for (const auto &param : _fileActions.at(row).params) {
+    for (const auto &param : std::as_const(_fileActions.at(row).params)) {
         QUrlQuery query;
         query.addQueryItem(param.name, param.value);
         job->addQueryParams(query);

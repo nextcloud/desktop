@@ -33,7 +33,7 @@
 #include "tray/sortedactivitylistmodel.h"
 #include "tray/syncstatussummary.h"
 #include "tray/unifiedsearchresultslistmodel.h"
-#include "declarativeui/fileactionsmodel.h"
+#include "integration/fileactionsmodel.h"
 #include "filesystem.h"
 
 #ifdef WITH_LIBCLOUDPROVIDERS
