@@ -65,7 +65,8 @@ private:
 
 - (BOOL)backgroundUpdateChecksAllowed
 {
-    const BOOL allowUpdateCheck = OCC::ConfigFile().skipUpdateCheck() ? NO : YES;
+    const OCC::ConfigFile config;
+    const BOOL allowUpdateCheck = (!config.skipUpdateCheck() && config.autoUpdateCheck()) ? YES : NO;
     qCInfo(OCC::lcUpdater) << "Updater may check for updates:" << (allowUpdateCheck ? "YES" : "NO");
     return allowUpdateCheck;
 }
@@ -288,7 +289,8 @@ void SparkleUpdater::checkForUpdate()
 
 void SparkleUpdater::backgroundCheckForUpdate()
 {
-    if (autoUpdaterAllowed() && !ConfigFile().skipUpdateCheck()) {
+    const ConfigFile config;
+    if (autoUpdaterAllowed() && config.autoUpdateCheck()) {
         qCInfo(OCC::lcUpdater) << "launching background check";
         [_interface->updaterController.updater checkForUpdatesInBackground];
     } else {
