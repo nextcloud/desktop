@@ -462,6 +462,28 @@ void FileProviderDomainManager::signalEnumeratorChanged(const Account * const ac
     d->signalEnumerator(domain);
 }
 
+void FileProviderDomainManager::slotHandleFileIdsChanged(const OCC::Account * const account, const QList<qint64> &fileIds)
+{
+    if (!d || !account || fileIds.isEmpty()) {
+        return;
+    }
+
+    qCInfo(lcMacFileProviderDomainManager) << "Received file ID changes for account"
+                                            << account->displayName()
+                                            << "File count:" << fileIds.size();
+
+    NSFileProviderDomain * const domain = domainForAccount(account);
+
+    if (!domain) {
+        qCWarning(lcMacFileProviderDomainManager) << "No domain found for account"
+                                                   << account->displayName();
+        return;
+    }
+
+    // Signal the enumerator to refresh for these specific file changes
+    d->signalEnumerator(domain);
+}
+
 void FileProviderDomainManager::removeDomainByAccount(const AccountState * const accountState)
 {
     if (!d) {

@@ -533,7 +533,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .workingSet,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(account: Self.account), // Not needed and no remote calls should be made
+            remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
         )
@@ -546,8 +546,13 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         XCTAssertNil(observer.error, "Enumeration should complete without error.")
 
         // Check for updated items
-        XCTAssertEqual(observer.changedItems.count, 1, "There should be one updated item.")
-        XCTAssertEqual(observer.changedItems.first?.itemIdentifier.rawValue, updatedItem.ocId, "The correct item should be reported as updated.")
+        XCTAssertEqual(observer.changedItems.count, 2, "One item changed and the other did not but still its metadata was updated in the database.")
+
+        let firstChangedItem = observer.changedItems[0]
+        let secondChangedItem = observer.changedItems[1]
+
+        XCTAssertEqual(firstChangedItem.itemIdentifier.rawValue, oldItem.ocId, "The item unchanged on the server should be reported as updated locally nonetheless.")
+        XCTAssertEqual(secondChangedItem.itemIdentifier.rawValue, updatedItem.ocId, "The item which actually changed on the server should be reported as updated.")
 
         // Check for deleted items
         XCTAssertEqual(observer.deletedItemIdentifiers.count, 1, "There should be one deleted item.")
