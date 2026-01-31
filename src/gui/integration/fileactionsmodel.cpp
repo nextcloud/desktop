@@ -31,7 +31,11 @@ QVariant FileActionsModel::data(const QModelIndex &index, int role) const
     case FileActionMethodRole:
         return _fileActions.at(row).method; // GET
     case FileActionParamsRole:
-        return QVariant::fromValue<ParamsList>(_fileActions.at(row).params);
+        return QVariant::fromValue<QueryList>(_fileActions.at(row).params);
+    case FileActionResponseLabelRole:
+        return _response.label;
+    case FileActionResponseUrlRole:
+        return _response.url;
     }
 
     return {};
@@ -54,6 +58,8 @@ QHash<int, QByteArray> FileActionsModel::roleNames() const
     roles[FileActionUrlRole] = "url";
     roles[FileActionMethodRole] = "method";
     roles[FileActionParamsRole] = "params";
+    roles[FileActionResponseLabelRole] = "responseLabel";
+    roles[FileActionResponseUrlRole] = "responseUrl";
 
     return roles;
 }
@@ -201,7 +207,7 @@ void FileActionsModel::parseEndpoints()
     }
 
     for (const auto &contextMenu : contextMenuList) {
-        ParamsList queryParams;
+        QueryList queryList;
         const auto paramsMap = contextMenu.value("params").toMap();
         for (auto param = paramsMap.cbegin(), end = paramsMap.cend(); param != end; ++param) {
             const auto name = param.key();
@@ -215,7 +221,7 @@ void FileActionsModel::parseEndpoints()
             }
 
             if (!value.isEmpty()) {
-                queryParams.append( QueryItem{ name, value } );
+                queryList.append( QueryItem{ name, value } );
             }
         }
 
@@ -223,7 +229,7 @@ void FileActionsModel::parseEndpoints()
                              contextMenu.value("name").toString(),
                              contextMenu.value("url").toString(),
                              contextMenu.value("method").toString(),
-                             queryParams });
+                             queryList });
     }
 
     qCDebug(lcFileActions) << "File" << _localPath << "has"
