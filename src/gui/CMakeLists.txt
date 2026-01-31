@@ -258,12 +258,12 @@ set(client_SRCS
     wizard/linklabel.cpp
     wizard/wizardproxysettingsdialog.h
     wizard/wizardproxysettingsdialog.cpp
-    declarativeui/declarativeuimodel.h
-    declarativeui/declarativeuimodel.cpp
-    declarativeui/declarativeui.h
-    declarativeui/declarativeui.cpp
-    declarativeui/fileactionsmodel.h
-    declarativeui/fileactionsmodel.cpp
+    integration/declarativeuimodel.h
+    integration/declarativeuimodel.cpp
+    integration/declarativeui.h
+    integration/declarativeui.cpp
+    integration/fileactionsmodel.h
+    integration/fileactionsmodel.cpp
     )
 
 if (NOT DISABLE_ACCOUNT_MIGRATION)
