@@ -258,10 +258,6 @@ set(client_SRCS
     wizard/linklabel.cpp
     wizard/wizardproxysettingsdialog.h
     wizard/wizardproxysettingsdialog.cpp
-    integration/declarativeuimodel.h
-    integration/declarativeuimodel.cpp
-    integration/declarativeui.h
-    integration/declarativeui.cpp
     integration/fileactionsmodel.h
     integration/fileactionsmodel.cpp
     )

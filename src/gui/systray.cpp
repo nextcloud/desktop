@@ -16,7 +16,6 @@
 #include "configfile.h"
 #include "accessmanager.h"
 #include "callstatechecker.h"
-#include "integration/declarativeui.h"
 
 #include <QCursor>
 #include <QGuiApplication>
