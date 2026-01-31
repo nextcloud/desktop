@@ -676,7 +676,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     if (uploadLimitSetting == Account::AccountNetworkTransferLimitSetting::AutoLimit) {
         qCInfo(lcAccountManager) << "Upload limit setting was set to deprecated auto limit, falling back to unlimited";
         uploadLimitSetting = Account::AccountNetworkTransferLimitSetting::NoLimit;
-        settings.setValue(networkUploadLimitSettingC, QVariant::fromValue(uploadLimitSetting));
+        settings.setValue(networkUploadLimitSettingC, static_cast<int>(uploadLimitSetting));
     }
     acc->setUploadLimitSetting(uploadLimitSetting);
 
@@ -687,7 +687,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     if (downloadLimitSetting == Account::AccountNetworkTransferLimitSetting::AutoLimit) {
         qCInfo(lcAccountManager) << "Download limit setting was set to deprecated auto limit, falling back to unlimited";
         downloadLimitSetting = Account::AccountNetworkTransferLimitSetting::NoLimit;
-        settings.setValue(networkDownloadLimitSettingC, QVariant::fromValue(downloadLimitSetting));
+        settings.setValue(networkDownloadLimitSettingC, static_cast<int>(downloadLimitSetting));
     }
     acc->setDownloadLimitSetting(downloadLimitSetting);
     acc->setUploadLimit(settings.value(networkUploadLimitC).toInt());
