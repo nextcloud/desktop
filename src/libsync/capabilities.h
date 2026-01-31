@@ -175,8 +175,8 @@ public:
     [[nodiscard]] bool serverHasValidSubscription() const;
     [[nodiscard]] QString desktopEnterpriseChannel() const;
 
-    [[nodiscard]] bool serverHasDeclarativeUi() const;
-    [[nodiscard]] QList<QVariantMap> contextMenuByMimeType(const QMimeType fileMimeType) const;
+    [[nodiscard]] bool serverHasClientIntegration() const;
+    [[nodiscard]] QList<QVariantMap> fileActionsByMimeType(const QMimeType fileMimeType) const;
 
     // Direct Editing
     void addDirectEditor(DirectEditor* directEditor);

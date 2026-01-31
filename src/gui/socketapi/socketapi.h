@@ -65,7 +65,6 @@ signals:
     void shareCommandReceived(const QString &localPath);
     void fileActivityCommandReceived(const QString &localPath);
     void fileActionsCommandReceived(const QString &localPath);
-    void declarativeUiCommandReceived(const QString &localPath);
 
 private slots:
     void slotNewConnection();
@@ -110,7 +109,6 @@ private:
     void processFileActivityRequest(const QString &localFile);
     void processEncryptRequest(const QString &localFile);
     void processFileActionsRequest(const QString &localFile);
-    void processDeclarativeUiRequest(const QString &localFile);
 
     Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString &argument, OCC::SocketListener *listener);
     Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString &argument, OCC::SocketListener *listener);

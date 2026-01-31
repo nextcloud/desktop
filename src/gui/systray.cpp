@@ -16,7 +16,6 @@
 #include "configfile.h"
 #include "accessmanager.h"
 #include "callstatechecker.h"
-#include "declarativeui/declarativeui.h"
 
 #include <QCursor>
 #include <QGuiApplication>
@@ -455,7 +454,7 @@ void Systray::createFileActionsDialog(const QString &localPath)
         return;
     }
 
-    QQmlComponent fileActionsQml(trayEngine(), QStringLiteral("qrc:/qml/src/gui/declarativeui/FileActionsWindow.qml"));
+    QQmlComponent fileActionsQml(trayEngine(), QStringLiteral("qrc:/qml/src/gui/integration/FileActionsWindow.qml"));
     if (fileActionsQml.isError()) {
         qCWarning(lcSystray) << fileActionsQml.errorString();
         qCWarning(lcSystray) << fileActionsQml.errors();

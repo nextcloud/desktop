@@ -34,7 +34,9 @@ public:
         FileActionNameRole,
         FileActionUrlRole,
         FileActionMethodRole,
-        FileActionParamsRole
+        FileActionParamsRole,
+        FileActionResponseLabelRole,
+        FileActionResponseUrlRole
     };
     Q_ENUM(DataRole)
 
@@ -47,7 +49,16 @@ public:
         QString name;
         QByteArray value;
     };
-    using ParamsList = QList<QueryItem>;
+    using QueryList = QList<QueryItem>;
+
+    struct FileAction {
+        QString icon;
+        QString name;
+        QString url;
+        QString method;
+        QueryList params;
+    };
+    using ActionList = QList<FileAction>;
 
     [[nodiscard]] AccountState *accountState() const;
     void setAccountState(AccountState *accountState);
@@ -84,14 +95,7 @@ public slots:
 
 private:
     Response _response;
-    struct FileAction {
-        QString icon;
-        QString name;
-        QString url;
-        QString method;
-        ParamsList params;
-    };
-    QList<FileAction> _fileActions;
+    ActionList _fileActions;
     AccountState *_accountState;
     QString _localPath;
     QByteArray _fileId;
@@ -107,5 +111,5 @@ private:
 };
 }
 
-Q_DECLARE_METATYPE(OCC::FileActionsModel::ParamsList)
-Q_DECLARE_METATYPE(OCC::FileActionsModel::QueryItem)
+Q_DECLARE_METATYPE(OCC::FileActionsModel::QueryList)
+Q_DECLARE_METATYPE(OCC::FileActionsModel::ActionList)

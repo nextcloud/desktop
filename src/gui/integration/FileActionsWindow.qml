@@ -160,8 +160,6 @@ ApplicationWindow {
 
                     Image {
                         source: "image://svgimage-custom-color/backup.svg/" + palette.windowText
-                        // Layout.preferredWidth: Style.accountAvatarStateIndicatorSize
-                        // Layout.preferredHeight: Style.accountAvatarStateIndicatorSize
                         Layout.minimumWidth: Style.accountAvatarStateIndicatorSize
                         Layout.minimumHeight: Style.accountAvatarStateIndicatorSize
                         fillMode: Image.PreserveAspectFit
