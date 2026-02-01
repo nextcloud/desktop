@@ -277,11 +277,6 @@ void parseOptions(const QStringList &app_args, CmdOptions *options)
  */
 void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
 {
-    SqlDatabase db;
-    if (!db.openOrCreateReadWrite(journal->databaseFilePath())) {
-        return;
-    }
-
     bool ok = false;
 
     const auto selectiveSyncList = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
