@@ -439,7 +439,7 @@ QStringList Capabilities::forbiddenFilenameExtensions() const
 
 bool Capabilities::serverHasClientIntegration() const
 {
-    return _capabilities[QStringLiteral("client_integration")].toMap().isEmpty();
+    return !_capabilities[QStringLiteral("client_integration")].toMap().isEmpty();
 }
 
 QList<QVariantMap> Capabilities::fileActionsByMimeType(const QMimeType fileMimeType) const
