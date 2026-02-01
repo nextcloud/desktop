@@ -1182,7 +1182,16 @@ void SocketApi::sendFileActionsContextMenuOptions(const FileData &fileData, Sock
 {
     const auto record = fileData.journalRecord();
     const auto isOnTheServer = record.isValid();
-    const auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
+    auto serverHasIntegration = false;
+    if (const auto folder = fileData.folder;folder) {
+        if (const auto accountState = folder->accountState();
+            accountState && accountState->account()) {
+            serverHasIntegration = accountState->account()->serverHasIntegration();
+        }
+    }
+
+    const auto flagString = isOnTheServer && serverHasIntegration ? QLatin1String("::")
+                                                                  : QLatin1String(":d:");
     listener->sendMessage(QLatin1String("MENU_ITEM:FILE_ACTIONS") + flagString + tr("File actions"));
 }
 
