@@ -2951,7 +2951,7 @@ Para usuarios avanzados: este problema pode estar relacionado con varios ficheir
         <location filename="../src/gui/generalsettings.cpp" line="448"/>
         <location filename="../src/gui/generalsettings.cpp" line="474"/>
         <source>Connected to an enterprise system. Update channel (%1) cannot be changed.</source>
-        <translation type="unfinished"/>
+        <translation>Conectado a un sistema empresarial. Non é posíbel cambiar a canle de actualización (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="452"/>
