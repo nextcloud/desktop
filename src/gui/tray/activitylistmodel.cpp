@@ -83,6 +83,7 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[TalkNotificationUserAvatarRole] = "userAvatar";
     roles[ActivityIndexRole] = "activityIndex";
     roles[ActivityRole] = "activity";
+    roles[ActivityIntegrationRole] = "serverHasIntegration";
 
     return roles;
 }
@@ -377,6 +378,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return index.row();
     case ActivityRole:
         return QVariant::fromValue(a);
+    case ActivityIntegrationRole:
+        return ast->account()->serverHasIntegration();
     }
 
     return {};
