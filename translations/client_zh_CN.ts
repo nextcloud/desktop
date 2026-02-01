@@ -2948,7 +2948,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/generalsettings.cpp" line="448"/>
         <location filename="../src/gui/generalsettings.cpp" line="474"/>
         <source>Connected to an enterprise system. Update channel (%1) cannot be changed.</source>
-        <translation type="unfinished"/>
+        <translation>已连接到企业系统。无法更改更新通道（%1）。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="452"/>
