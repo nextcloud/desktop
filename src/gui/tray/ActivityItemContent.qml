@@ -200,6 +200,7 @@ RowLayout {
                         }
 
                         MenuItem {
+                            visible: model.serverHasIntegration
                             height: visible ? implicitHeight : 0
                             text: qsTr("File actions")
                             font.pixelSize: Style.topLinePixelSize
