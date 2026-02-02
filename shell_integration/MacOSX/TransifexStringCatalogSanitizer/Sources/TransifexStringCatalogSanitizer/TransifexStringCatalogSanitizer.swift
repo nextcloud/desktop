@@ -51,6 +51,12 @@ struct TransifexStringCatalogSanitizer: ParsableCommand {
                 continue
             }
 
+            if extractionState == "stale" {
+                print("\t❌ This is removed because it has been marked as stale.")
+                strings[key] = nil
+                continue
+            }
+
             guard var localizations = string["localizations"] as? [String: Any] else {
                 throw TransifexStringCatalogSanitizerError.missingLocalizations(key)
             }
