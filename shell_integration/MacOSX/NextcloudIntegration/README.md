@@ -14,7 +14,7 @@ To pull updated localizations from Transifex into the Xcode project manually, fo
 
 The dedicated [`.tx/config`](.tx/config) file is used.
 
-## Pull Translations
+## Pulling Translations
 
 Run this in the "NextcloudIntegration" project folder of your repository clone:
 
@@ -22,12 +22,22 @@ Run this in the "NextcloudIntegration" project folder of your repository clone:
 tx pull --force --all --mode=reviewed --minimum-perc=50
 ```
 
+Do not commit the changes string catalogs, they need to be processed first.
+
 ### Sanitize Translations
 
 Transifex returns empty strings for keys with untranslated localizations.
-To remove them, we use the Swift command-line utility [TransifexStringCatalogSanitizer](../../../admin/osx/TransifexStringCatalogSanitizer/).
+To remove them, we use the Swift command-line utility [TransifexStringCatalogSanitizer](../TransifexStringCatalogSanitizer/).
 See its dedicated README for usage instructions.
 Use it for all updated Xcode string catalogs.
+
+### Summary
+
+```sh
+tx pull --force --all --mode=reviewed --minimum-perc=50
+swift run --package-path=../TransifexStringCatalogSanitizer TransifexStringCatalogSanitizer ./FileProviderExt/Localizable.xcstrings
+swift run --package-path=../TransifexStringCatalogSanitizer TransifexStringCatalogSanitizer ./FileProviderUIExt/Localizable.xcstrings
+```
 
 ## Nextcloud Developer Build
 
