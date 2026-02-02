@@ -43,7 +43,14 @@ struct TransifexStringCatalogSanitizer: ParsableCommand {
             guard var string = strings[key] as? [String: Any] else {
                 throw TransifexStringCatalogSanitizerError.missingString(key)
             }
-            
+
+            let extractionState = string["extractionState"] as? String
+
+            if extractionState == nil && string["localizations"] == nil {
+                print("\t🆕 This appears to be new because neither extraction state nor localization objects found.")
+                continue
+            }
+
             guard var localizations = string["localizations"] as? [String: Any] else {
                 throw TransifexStringCatalogSanitizerError.missingLocalizations(key)
             }
