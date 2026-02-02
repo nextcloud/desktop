@@ -10,7 +10,12 @@ struct TransifexStringCatalogSanitizer: ParsableCommand {
     var input: String
     
     mutating func run() throws {
-        let url = URL(fileURLWithPath: input)
+        let url = URL(fileURLWithPath: input).standardized
+
+        guard FileManager.default.fileExists(atPath: url.path) else {
+            throw TransifexStringCatalogSanitizerError.missingFile(url.path)
+        }
+
         let data = try Data(contentsOf: url)
         
         guard var root = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
@@ -36,11 +41,11 @@ struct TransifexStringCatalogSanitizer: ParsableCommand {
             print("💬 \"\(key)\"")
             
             guard var string = strings[key] as? [String: Any] else {
-                throw TransifexStringCatalogSanitizerError.missingString
+                throw TransifexStringCatalogSanitizerError.missingString(key)
             }
             
             guard var localizations = string["localizations"] as? [String: Any] else {
-                throw TransifexStringCatalogSanitizerError.missingLocalizations
+                throw TransifexStringCatalogSanitizerError.missingLocalizations(key)
             }
             
             try sanitizeLocalizations(&localizations)
@@ -56,11 +61,11 @@ struct TransifexStringCatalogSanitizer: ParsableCommand {
         
         for localeCode in localizations.keys.sorted() {
             guard let localization = localizations[localeCode] as? [String: Any] else {
-                throw TransifexStringCatalogSanitizerError.missingLocalization
+                throw TransifexStringCatalogSanitizerError.missingLocalization(localeCode)
             }
             
             guard let stringUnit = localization["stringUnit"] as? [String: Any] else {
-                throw TransifexStringCatalogSanitizerError.missingStringUnit
+                throw TransifexStringCatalogSanitizerError.missingStringUnit(localeCode)
             }
             
             guard let value = stringUnit["value"] as? String else {
