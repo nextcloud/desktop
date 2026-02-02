@@ -7,6 +7,8 @@
 #include "networkjobs.h"
 #include "account.h"
 #include "folderman.h"
+#include "common/utility.h"
+#include "tray/activitydata.h"
 
 namespace OCC {
 
@@ -132,8 +134,7 @@ void FileActionsModel::setupFileProperties()
     const auto mimeType = mimeDb.mimeTypeForFile(_localPath, mimeMatchMode);
     _mimeType = mimeType;
 
-    // TODO: display an icon for each mimeType
-    _fileIcon = "";
+    _fileIcon = _accountUrl + Activity::relativeServerFileTypeIconPath(_mimeType);
 }
 
 QMimeType FileActionsModel::mimeType() const
