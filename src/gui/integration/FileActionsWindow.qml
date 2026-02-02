@@ -71,9 +71,9 @@ ApplicationWindow {
                 spacing: Style.standardSpacing
 
                 Image {
-                    source: "image://svgimage-custom-color/file-open.svg/" + palette.windowText
-                    Layout.maximumWidth: Style.minimumActivityItemHeight
-                    Layout.maximumHeight: Style.minimumActivityItemHeight
+                    source: fileActionModel.fileIcon + palette.windowText
+                    Layout.preferredWidth: Style.minimumActivityItemHeight
+                    Layout.preferredHeight: Style.minimumActivityItemHeight
                     Layout.alignment: Qt.AlignVCenter
                     Layout.margins: Style.extraSmallSpacing
                 }
@@ -160,11 +160,10 @@ ApplicationWindow {
 
                     Image {
                         source: "image://svgimage-custom-color/backup.svg/" + palette.windowText
-                        Layout.minimumWidth: Style.accountAvatarStateIndicatorSize
-                        Layout.minimumHeight: Style.accountAvatarStateIndicatorSize
-                        fillMode: Image.PreserveAspectFit
-                        Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                        Layout.leftMargin: Style.standardSpacing
+                        Layout.preferredWidth: Style.minimumActivityItemHeight
+                        Layout.preferredHeight: Style.minimumActivityItemHeight
+                        Layout.alignment: Qt.AlignLeft
+                        Layout.bottomMargin: Style.standardSpacing
                     }
 
                     Text {
@@ -177,7 +176,6 @@ ApplicationWindow {
                         wrapMode: Text.WordWrap
                         Layout.fillWidth: true
                         bottomPadding: Style.standardSpacing
-                        Layout.alignment: Qt.AlignVCenter
                     }
                 }
 
@@ -218,15 +216,17 @@ ApplicationWindow {
                     anchors.topMargin: Style.standardSpacing
                     anchors.rightMargin: Style.standardSpacing
                     anchors.bottomMargin: Style.standardSpacing
-                    anchors.leftMargin: Style.smallSpacing
+                    anchors.leftMargin: Style.extraSmallSpacing
                     spacing: Style.standardSpacing
                     Layout.fillWidth: true
 
                     Image {
                         source: fileAction.icon + palette.windowText
-                        width: Style.activityListButtonIconSize
-                        height: Style.activityListButtonIconSize
+                        width: Style.minimumActivityItemHeight
+                        height: Style.minimumActivityItemHeight
                         fillMode: Image.PreserveAspectFit
+                        Layout.preferredWidth: Style.minimumActivityItemHeight
+                        Layout.preferredHeight: Style.minimumActivityItemHeight
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
