@@ -39,6 +39,19 @@ swift run --package-path=../TransifexStringCatalogSanitizer TransifexStringCatal
 swift run --package-path=../TransifexStringCatalogSanitizer TransifexStringCatalogSanitizer ./FileProviderUIExt/Localizable.xcstrings
 ```
 
+## Pushing Translations
+
+**Follow this section carefully to the end before performing any steps of it.**
+The way Transifex handles Xcode string catalogs poses a high risk of accidentally deleting already available and finished translations on Transifex because pushing an Xcode string catalog overwrites the online state with the catalog as it is.
+This means that changes on Transifex must be integrated locally first to avoid data loss, before the then updated local Xcode string catalog can be pushed to Transifex.
+
+1. Perform the steps in the previous section about pulling translations.
+2. Build the extensions in Xcode. This causes the compiler to update the string catalogs based on the current source code by automatically recognizing localizable texts. As of writing, the "desktopclient" scheme is a good choice because it builds both file provider extensions as dependencies.
+3. Run the `TransifexStringCatalogSanitizer` over both string catalogs as in the previous section.
+4. Inspect the changes in the string catalogs in a Git diff or whatever tool you use for that task. Verify the plausibility of each change.
+5. Run `tx push` in the "NextcloudIntegration" directory.
+6. Check Transifex to have received the new keys and deleted the obsolete ones.
+
 ## Nextcloud Developer Build
 
 There is a special target in the Xcode project which integrates the `mac-crafter` command-line tool as an external build system in form of a scheme.
