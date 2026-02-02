@@ -560,6 +560,7 @@ void AccountSettings::openIgnoredFilesDialog(const QString & absFolderPath)
     layout->addWidget(buttonBox);
 
     const auto dialog = new QDialog();
+    dialog->setWindowTitle(tr("Ignored Files Editor"));
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     dialog->setLayout(layout);
 
