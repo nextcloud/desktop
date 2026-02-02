@@ -181,7 +181,6 @@ int IgnoreListTableWidget::addPattern(const QString &pattern, const bool deletab
 
     if (readOnly) {
         patternItem->setFlags(patternItem->flags() ^ Qt::ItemIsEnabled);
-        patternItem->setToolTip(readOnlyTooltip);
         deletableItem->setFlags(deletableItem->flags() ^ Qt::ItemIsEnabled);
     }
 
