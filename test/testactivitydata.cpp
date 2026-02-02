@@ -6,15 +6,13 @@
 #include "gui/tray/activitydata.h"
 #include "account.h"
 #include "accountstate.h"
-#include "configfile.h"
 #include "syncenginetestutils.h"
-#include "syncfileitem.h"
-#include "folder.h"
-#include "folderman.h"
 #include "testhelper.h"
 
 #include <QTest>
 #include <QHash>
+
+using namespace Qt::StringLiterals;
 
 namespace {
     constexpr auto events = 3;
@@ -35,55 +33,55 @@ public:
 
     void createFilesActivityJsonData(QString fileFormat, QString mimeType)
     {
-        const auto objectType = QStringLiteral("files");
-        const auto subject = QStringLiteral("You created path/test.").append(fileFormat);
-        const auto path = QStringLiteral("path/test.").append(fileFormat);
-        const auto fileName = QStringLiteral("test.").append(fileFormat);
-        const auto activityType = QStringLiteral("file");
+        const auto objectType = u"files"_s;
+        const auto subject = u"You created path/test."_s.append(fileFormat);
+        const auto path = u"path/test."_s.append(fileFormat);
+        const auto fileName = u"test."_s.append(fileFormat);
+        const auto activityType = u"file"_s;
         const auto activityId = 90000;
         const auto message = QString();
-        const auto objectName = QStringLiteral("test.%1").arg(fileFormat);
-        const auto link = account->url().toString().append(QStringLiteral("/f/%1").arg(activityId));
+        const auto objectName = u"test.%1"_s.arg(fileFormat);
+        const auto link = account->url().toString().append(u"/f/%1"_s.arg(activityId));
         const auto datetime = QDateTime::currentDateTime().toString(Qt::ISODate);
-        const auto icon = account->url().toString().append(QStringLiteral("/apps/files/img/add-color.svg"));
+        const auto icon = account->url().toString().append(u"/apps/files/img/add-color.svg"_s);
 
         const QJsonObject richStringData({
             {typeC, activityType},
             {idC, activityId},
             {linkC,  link},
             {nameC, fileName},
-            {QStringLiteral("path"), objectName}
+            {u"path"_s, objectName}
         });
 
-        const auto subjectRichString = QStringLiteral("You created {file1}");
-        const auto subjectRichObj = QJsonObject({{QStringLiteral("file1"), richStringData}});
+        const auto subjectRichString = u"You created {file1}"_s;
+        const auto subjectRichObj = QJsonObject({{u"file1"_s, richStringData}});
         const auto subjectRichData = QJsonArray({subjectRichString, subjectRichObj});
 
-        const auto previewUrl = account->url().toString().append(QStringLiteral("/index.php/core/preview.png?file=/")).append(path);
+        const auto previewUrl = account->url().toString().append(u"/index.php/core/preview.png?file=/"_s).append(path);
 
         // Text file previews should be replaced by mimetype icon
         const QJsonObject previewData({
             {linkC, link},
-            {QStringLiteral("mimeType"), mimeType},
-            {QStringLiteral("fileId"), activityId},
-            {QStringLiteral("filename"), fileName},
-            {QStringLiteral("view"), QStringLiteral("files")},
-            {QStringLiteral("source"), previewUrl},
-            {QStringLiteral("isMimeTypeIcon"), false},
+            {u"mimeType"_s, mimeType},
+            {u"fileId"_s, activityId},
+            {u"filename"_s, fileName},
+            {u"view"_s, u"files"_s},
+            {u"source"_s, previewUrl},
+            {u"isMimeTypeIcon"_s, false},
         });
 
         QJsonObject testData({
-            {QStringLiteral("object_type"), objectType},
-            {QStringLiteral("activity_id"), activityId},
+            {u"object_type"_s, objectType},
+            {u"activity_id"_s, activityId},
             {typeC, activityType},
-            {QStringLiteral("subject"), subject},
-            {QStringLiteral("message"), message},
-            {QStringLiteral("object_name"), objectName},
+            {u"subject"_s, subject},
+            {u"message"_s, message},
+            {u"object_name"_s, objectName},
             {linkC, link},
-            {QStringLiteral("datetime"), datetime},
-            {QStringLiteral("icon"), icon},
-            {QStringLiteral("subject_rich"), subjectRichData},
-            {QStringLiteral("previews"), QJsonArray({previewData})},
+            {u"datetime"_s, datetime},
+            {u"icon"_s, icon},
+            {u"subject_rich"_s, subjectRichData},
+            {u"previews"_s, QJsonArray({previewData})},
         });
 
         QTest::addRow("data") << testData << fileFormat << mimeType << objectType << subject << path << fileName << activityType << activityId << message << objectName << link << datetime << icon << subjectRichString << subjectRichData << previewUrl;
@@ -92,14 +90,14 @@ public:
     void createCalendarActivityJsonData(QString name, QString event, QString calendar)
     {
         const auto objectType = calendarC;
-        const auto subject = QStringLiteral("%1 updated event %2 in calendar %3").arg(name, event, calendar);
-        const auto activityType = QStringLiteral("calendar_event");
+        const auto subject = u"%1 updated event %2 in calendar %3"_s.arg(name, event, calendar);
+        const auto activityType = u"calendar_event"_s;
         const auto activityId = 10000;
         const auto datetime = QDateTime::currentDateTime().toString(Qt::ISODate);
-        const auto icon = account->url().toString().append(QStringLiteral("/core/img/places/calendar.svg"));
-        const auto eventLink = QStringLiteral("/apps/calendar/dayGridMonth/now/edit/sidebar/A12bcD12AbcDEFgH456/next");
+        const auto icon = account->url().toString().append(u"/core/img/places/calendar.svg"_s);
+        const auto eventLink = u"/apps/calendar/dayGridMonth/now/edit/sidebar/A12bcD12AbcDEFgH456/next"_s;
 
-        const auto subjectRichString = QStringLiteral("{actor} updated event {event} in calendar {calendar}");
+        const auto subjectRichString = u"{actor} updated event {event} in calendar {calendar}"_s;
         const QJsonArray subjectRichData({
             subjectRichString,
             {{
@@ -110,14 +108,14 @@ public:
                     {nameC, calendar},
                 }}},
                 {eventC, {{
-                    {typeC, QStringLiteral("calendar-event")},
-                    {idC, QStringLiteral("12AA3456-A1B2-A1B2-A1B2-AB12C34567D8")},
+                    {typeC, u"calendar-event"_s},
+                    {idC, u"12AA3456-A1B2-A1B2-A1B2-AB12C34567D8"_s},
                     {linkC, account->url().toString().append(eventLink)},
                     {nameC, event},
                 }}},
-                {QStringLiteral("actor"), {{
-                    {typeC, QStringLiteral("user")},
-                    {idC, QStringLiteral("username")},
+                {u"actor"_s, {{
+                    {typeC, u"user"_s},
+                    {idC, u"username"_s},
                     {linkC,  QString()},
                     {nameC, name},
                 }}},
@@ -125,14 +123,14 @@ public:
         });
 
         QJsonObject testData({
-            {QStringLiteral("object_type"), objectType},
-            {QStringLiteral("subject"), subject},
+            {u"object_type"_s, objectType},
+            {u"subject"_s, subject},
             {typeC, activityType},
-            {QStringLiteral("activity_id"), activityId},
-            {QStringLiteral("object_name"), QString()},
-            {QStringLiteral("datetime"), datetime},
-            {QStringLiteral("icon"), icon},
-            {QStringLiteral("subject_rich"), subjectRichData},
+            {u"activity_id"_s, activityId},
+            {u"object_name"_s, QString()},
+            {u"datetime"_s, datetime},
+            {u"icon"_s, icon},
+            {u"subject_rich"_s, subjectRichData},
         });
 
         QTest::addRow("data") << testData << QString() << QString() << objectType << subject << QString() << QString() << activityType << activityId << QString() << QString() << QString() << datetime << icon << subjectRichString << subjectRichData << QString();
@@ -144,14 +142,14 @@ public:
     void createCalendarEventMergedActivityJsonData(QString name, QString event, QString calendar, int mergedEvent)
     {
         const auto objectType = calendarC;
-        const auto subject = QStringLiteral("%1 updated event %2 in calendar %3").arg(name, event, calendar);
-        const auto activityType = QStringLiteral("calendar_event");
+        const auto subject = u"%1 updated event %2 in calendar %3"_s.arg(name, event, calendar);
+        const auto activityType = u"calendar_event"_s;
         const auto activityId = 10000;
         const auto datetime = QDateTime::currentDateTime().toString(Qt::ISODate);
-        const auto icon = account->url().toString().append(QStringLiteral("/core/img/places/calendar.svg"));
-        const auto eventLink = QStringLiteral("/apps/calendar/dayGridMonth/now/edit/sidebar/A12bcD12AbcDEFgH456/next");
+        const auto icon = account->url().toString().append(u"/core/img/places/calendar.svg"_s);
+        const auto eventLink = u"/apps/calendar/dayGridMonth/now/edit/sidebar/A12bcD12AbcDEFgH456/next"_s;
 
-        const auto subjectRichString = QStringLiteral("{actor} updated event {event%1} in calendar {calendar}").arg(mergedEvent);
+        const auto subjectRichString = u"{actor} updated event {event%1} in calendar {calendar}"_s.arg(mergedEvent);
         const QJsonArray subjectRichData({
             subjectRichString,
             {{
@@ -161,15 +159,15 @@ public:
                   {linkC,  QString()},
                   {nameC, calendar},
               }}},
-              {QStringLiteral("event%1").arg(mergedEvent), {{
-                  {typeC, QStringLiteral("calendar-event")},
-                  {idC, QStringLiteral("12AA3456-A1B2-A1B2-A1B2-AB12C34567D8")},
+              {u"event%1"_s.arg(mergedEvent), {{
+                  {typeC, u"calendar-event"_s},
+                  {idC, u"12AA3456-A1B2-A1B2-A1B2-AB12C34567D8"_s},
                   {linkC, account->url().toString().append(eventLink)},
                 {nameC, event},
               }}},
-              {QStringLiteral("actor"), {{
-                  {typeC, QStringLiteral("user")},
-                  {idC, QStringLiteral("username")},
+              {u"actor"_s, {{
+                  {typeC, u"user"_s},
+                  {idC, u"username"_s},
                   {linkC,  QString()},
                   {nameC, name},
               }}},
@@ -177,14 +175,14 @@ public:
         });
 
         QJsonObject testData({
-            {QStringLiteral("object_type"), objectType},
-            {QStringLiteral("subject"), subject},
+            {u"object_type"_s, objectType},
+            {u"subject"_s, subject},
             {typeC, activityType},
-            {QStringLiteral("activity_id"), activityId},
-            {QStringLiteral("object_name"), QString()},
-            {QStringLiteral("datetime"), datetime},
-            {QStringLiteral("icon"), icon},
-            {QStringLiteral("subject_rich"), subjectRichData},
+            {u"activity_id"_s, activityId},
+            {u"object_name"_s, QString()},
+            {u"datetime"_s, datetime},
+            {u"icon"_s, icon},
+            {u"subject_rich"_s, subjectRichData},
         });
 
         QTest::addRow("data") << testData << QString() << QString() << objectType << subject << QString() << QString() << activityType << activityId << QString() << QString() << QString() << datetime << icon << subjectRichString << subjectRichData << QString();
@@ -228,14 +226,14 @@ private slots:
         QTest::addColumn<QJsonArray>("subjectRichDataExpected");
         QTest::addColumn<QString>("previewUrlExpected");
 
-        createFilesActivityJsonData(QStringLiteral("jpg"), QStringLiteral("image/jpg"));
-        createFilesActivityJsonData(QStringLiteral("txt"), QStringLiteral("text/plain"));
-        createFilesActivityJsonData(QStringLiteral("pdf"), QStringLiteral("application/pdf"));
-        createCalendarActivityJsonData(account->displayName(), QStringLiteral("Event 1"), QStringLiteral("Calendar 1"));
-        createCalendarActivityJsonData(account->displayName(), QStringLiteral("Event 2"), QStringLiteral("Calendar 2"));
+        createFilesActivityJsonData(u"jpg"_s, u"image/jpg"_s);
+        createFilesActivityJsonData(u"txt"_s, u"text/plain"_s);
+        createFilesActivityJsonData(u"pdf"_s, u"application/pdf"_s);
+        createCalendarActivityJsonData(account->displayName(), u"Event 1"_s, u"Calendar 1"_s);
+        createCalendarActivityJsonData(account->displayName(), u"Event 2"_s, u"Calendar 2"_s);
 
         for (int i = 1; i <= events; i++) {
-            createCalendarEventMergedActivityJsonData(account->displayName(), QStringLiteral("Event"), QStringLiteral("Calendar"), i);
+            createCalendarEventMergedActivityJsonData(account->displayName(), u"Event"_s, u"Calendar"_s, i);
         }
     }
 
@@ -277,7 +275,7 @@ private slots:
             QCOMPARE(activity._link, linkExpected);
 
             QCOMPARE(richParams.count(), 1);
-            QCOMPARE(activity._subjectDisplay, QStringLiteral("You created ").append(fileNameExpected));
+            QCOMPARE(activity._subjectDisplay, u"You created "_s.append(fileNameExpected));
 
             const auto previews = activity._previews;
 
@@ -315,11 +313,75 @@ private slots:
             }
 
             QCOMPARE(activity._link, eventLink);
-            QCOMPARE(activity._subjectDisplay, QStringLiteral("%1 updated event %2 in calendar %3").arg(account->displayName(),
-                                                                                                        eventName,
-                                                                                                        richParams[calendarC].value<OCC::Activity::RichSubjectParameter>().name));
+            QCOMPARE(activity._subjectDisplay, u"%1 updated event %2 in calendar %3"_s.arg(account->displayName(),
+                                                                                           eventName,
+                                                                                           richParams[calendarC].value<OCC::Activity::RichSubjectParameter>().name));
             QCOMPARE(activity._icon, iconExpected);
         }
+    }
+
+    void testRichParametersWithDashKeyeee()
+    {
+        QJsonParseError parseError;
+        const auto activityJsonDocument = QJsonDocument::fromJson(
+            // MOC struggles with multiline raw strings (R"()"), so this will have to do ...
+            "{"
+            "  \"activity_id\": 20891,"
+            "  \"app\": \"tables\","
+            "  \"type\": \"tables\","
+            "  \"user\": \"Testuser\","
+            "  \"subject\": \"You have updated cell How to do on row #42 in table Welcome to Nextcloud Tables!\","
+            "  \"subject_rich\": ["
+            "    \"You have updated cell {col-20} on row {row} in table {table}\","
+            "    {"
+            "      \"user\": {"
+            "        \"type\": \"user\","
+            "        \"id\": \"jyrki\","
+            "        \"name\": \"Jyrki\""
+            "      },"
+            "      \"table\": {"
+            "        \"type\": \"highlight\","
+            "        \"id\": \"5\","
+            "        \"name\": \"Welcome to Nextcloud Tables!\","
+            "        \"link\": \"https://nextcloud.local/apps/tables/#/table/5\""
+            "      },"
+            "      \"row\": {"
+            "        \"type\": \"highlight\","
+            "        \"id\": \"42\","
+            "        \"name\": \"#42\","
+            "        \"link\": \"https://nextcloud.local/apps/tables/#/table/5/row/42\""
+            "      },"
+            "      \"col-20\": {"
+            "        \"type\": \"highlight\","
+            "        \"id\": \"20\","
+            "        \"name\": \"How to do\""
+            "      }"
+            "    }"
+            "  ],"
+            "  \"message\": \"\","
+            "  \"message_rich\": ["
+            "    \"\","
+            "    []"
+            "  ],"
+            "  \"object_type\": \"tables_row\","
+            "  \"object_id\": 42,"
+            "  \"object_name\": \"#42\","
+            "  \"objects\": {"
+            "    \"42\": \"#42\""
+            "  },"
+            "  \"link\": \"https://nextcloud.local/apps/tables/#/table/5/row/42\","
+            "  \"icon\": \"https://nextcloud.local/apps/files/img/change.svg\","
+            "  \"datetime\": \"2026-01-30T08:47:02+00:00\","
+            "  \"previews\": []"
+            "}"_ba, &parseError);
+
+        QCOMPARE(parseError.error, QJsonParseError::NoError);
+        QVERIFY(activityJsonDocument.isObject());
+        const auto activityJsonObject = activityJsonDocument.object();
+
+        OCC::Activity activity = OCC::Activity::fromActivityJson(activityJsonObject, account);
+        // GitHub #9327: the placeholder `{col-20}` was not replaced before.
+        QCOMPARE(activity._subjectDisplay, "You have updated cell How to do on row #42 in table Welcome to Nextcloud Tables!"_L1);
     }
 };
 
