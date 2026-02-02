@@ -170,6 +170,12 @@
             "value" : "Cancelar"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atsisakyti"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -314,7 +320,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kreis teilen (%@)"
+            "value" : "Kreis-Freigabe (%@)"
           }
         },
         "de_DE" : {
@@ -373,7 +379,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kreisförmiges Freigabesymbol"
+            "value" : "Kreis-Freigabesymbol"
           }
         },
         "de_DE" : {
@@ -466,6 +472,12 @@
             "value" : "Pechar"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Užverti"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -517,7 +529,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Connexion au serveur, verrouillage du fichier ..."
+            "value" : "Connexion au serveur, verrouillage du fichier..."
           }
         },
         "gl" : {
@@ -669,7 +681,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Die Kennung für den Artikel konnte nicht abgerufen werden. Es können keine Anteile erworben werden."
+            "value" : "Die Kennung für das Element konnte nicht abgerufen werden. Es können keine Freigaben erstellt werden."
           }
         },
         "de_DE" : {
@@ -761,6 +773,12 @@
             "value" : "Non foi posíbel bloquear un elemento descoñecido…"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nepavyko užrakinti nežinomo elemento…"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -787,7 +805,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Daten konnten nicht neu geladen werden: %@, werde es erneut versuchen."
+            "value" : "Daten konnten nicht neu geladen werden: %@, ein neuer Versuch folgt."
           }
         },
         "de_DE" : {
@@ -880,6 +898,12 @@
             "value" : "Crear unha nova compartición"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sukurti naują viešinį"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -936,6 +960,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eliminar"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ištrinti"
           }
         },
         "pt_BR" : {
@@ -1024,7 +1054,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Abbrechen"
+            "value" : "Verwerfen"
           }
         },
         "de_DE" : {
@@ -1261,7 +1291,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Symbol zum Teilen per E-Mail"
+            "value" : "E-Mail-Freigabesymbol"
           }
         },
         "de_DE" : {
@@ -1321,13 +1351,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ein neues Passwort eingeben"
+            "value" : "Neues Passwort eingeben"
           }
         },
         "de_DE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ein neues Passwort eingeben"
+            "value" : "Neues Passwort eingeben"
           }
         },
         "en" : {
@@ -1498,7 +1528,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fehler beim Abrufen der Server-Eigenschaften: %@"
+            "value" : "Fehler beim Abrufen der Server-Funktionen: %@"
           }
         },
         "de_DE" : {
@@ -1677,7 +1707,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Federated-Cloud-Feigabe"
+            "value" : "Federated-Cloud-Freigabe"
           }
         },
         "de_DE" : {
@@ -1736,7 +1766,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Federated-Cloud--Freigabe (%@)"
+            "value" : "Federated-Cloud-Freigabe (%@)"
           }
         },
         "de_DE" : {
@@ -1795,7 +1825,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Symbol für Federated-Cloud-Freigabe"
+            "value" : "Federated-Cloud-Freigabesymbol"
           }
         },
         "de_DE" : {
@@ -1888,6 +1918,12 @@
             "value" : "Ficheiro «%@» bloqueado!"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failas „%@“ užrakintas!"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1913,7 +1949,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Datei \"%@\" entsperrt"
+            "value" : "Datei \"%@\" entsperrt!"
           }
         },
         "de_DE" : {
@@ -1946,6 +1982,12 @@
             "value" : "Ficheiro «%@» desbloqueado!"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failas „%@“ atrakintas!"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1970,6 +2012,12 @@
       "comment" : "Context menu item label",
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frigør plads"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1988,10 +2036,28 @@
             "value" : "Free up space"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Libérer de l'espace"
+          }
+        },
         "gl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Liberar espazo"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liberar espaço"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yer aç"
           }
         },
         "zh_HK" : {
@@ -2133,7 +2199,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Symbol für die Gruppenfreigabe"
+            "value" : "Gruppen-Freigabesymbol"
           }
         },
         "de_DE" : {
@@ -2446,10 +2512,34 @@
             "value" : "Lock file"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verrouiller le fichier"
+          }
+        },
         "gl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bloquear ficheiro"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Užrakinti failą"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trancar arquivo"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dosyayı kilitle"
           }
         },
         "zh_HK" : {
@@ -2497,6 +2587,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bloqueando o ficheiro «%@»…"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Užrakinamas failas „%@“…"
           }
         },
         "pt_BR" : {
@@ -2584,7 +2680,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Keine Artikel-URL, Daten können nicht neu geladen werden!"
+            "value" : "Keine Element-URL, Daten können nicht neu geladen werden!"
           }
         },
         "de_DE" : {
@@ -2769,7 +2865,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Symbol für \"Öffentlicher Link wurde kopiert\""
+            "value" : "Symbol für kopierten öffentlichen Link"
           }
         },
         "de_DE" : {
@@ -2829,13 +2925,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Öffentliche Link-Freigabe"
+            "value" : "Öffentliche Linkfreigabe"
           }
         },
         "de_DE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Öffentliche Link-Freigabe"
+            "value" : "Öffentliche Linkfreigabe"
           }
         },
         "en" : {
@@ -2888,7 +2984,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Symbol zum Teilen öffentlicher Links"
+            "value" : "Freigabesymbol für öffentlichen Link"
           }
         },
         "de_DE" : {
@@ -2979,6 +3075,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gardar"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Įrašyti"
           }
         },
         "pt_BR" : {
@@ -3247,7 +3349,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Freigabe für Talk-Unterhaltungen"
+            "value" : "Talk-Unterhaltungs-Freigabe"
           }
         },
         "de_DE" : {
@@ -3365,7 +3467,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Symbol für die Talk-Unterhaltung-Freigabe"
+            "value" : "Talk-Unterhaltungs-Freigabesymbol"
           }
         },
         "de_DE" : {
@@ -3575,6 +3677,12 @@
             "value" : "Non é posíbel recuperar os metadatos do ficheiro…"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nepavyko gauti failo metaduomenų…"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3635,6 +3743,12 @@
             "value" : "Usuario descoñecido"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nežinomas elementas"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3662,7 +3776,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unbekanntes Bearbeitungsdatum"
+            "value" : "Unbekanntes Änderungsdatum"
           }
         },
         "de_DE" : {
@@ -3820,6 +3934,12 @@
             "value" : "Tamaño descoñecido"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nežinomas dydis"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3880,6 +4000,12 @@
             "value" : "Desbloquear ficheiro"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atrakinti failą"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3907,13 +4033,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Entsperre Datei \"%@“…"
+            "value" : "Entsperre Datei \"%@“ …"
           }
         },
         "de_DE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Entsperre Datei \"%@\"…"
+            "value" : "Entsperre Datei \"%@\" …"
           }
         },
         "en" : {
@@ -3931,13 +4057,19 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Déverrouillage du fichier \"%@\" ..."
+            "value" : "Déverrouillage du fichier \"%@\"..."
           }
         },
         "gl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Desbloqueando o ficheiro «%@»…"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atrakinamas failas „%@“…"
           }
         },
         "pt_BR" : {
@@ -3967,13 +4099,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nutzer-Freigabe"
+            "value" : "Benutzer-Freigabe"
           }
         },
         "de_DE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nutzer-Freigabe"
+            "value" : "Benutzer-Freigabe"
           }
         },
         "en" : {
@@ -4091,7 +4223,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Symbol für die Nutzer-Freigabe"
+            "value" : "Benutzer-Freigabesymbol"
           }
         },
         "de_DE" : {
