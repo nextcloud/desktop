@@ -488,10 +488,6 @@
          </spacer>
         </item>
        </layout>
-       <zorder>autoUploadLimitRadioButton</zorder>
-       <zorder>uploadLimitRadioButton</zorder>
-       <zorder>noUploadLimitRadioButton</zorder>
-       <zorder>verticalSpacer_3</zorder>
       </widget>
      </item>
     </layout>
