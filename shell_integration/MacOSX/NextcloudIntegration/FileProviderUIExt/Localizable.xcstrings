@@ -3926,7 +3926,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Entsperre Datei \"%@“ …"
+            "value" : "Entsperre Datei \"%@\" …"
           }
         },
         "de_DE" : {
