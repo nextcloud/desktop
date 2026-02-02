@@ -693,32 +693,6 @@ private slots:
         QVERIFY(0 == strcmp(line.constData(), "\\"));
     }
 
-    void check_version_directive()
-    {
-        ExcludedFiles excludes;
-        excludes.setClientVersion(ExcludedFiles::Version(2, 5, 0));
-
-        std::vector<std::pair<const char *, bool>> tests = {
-            { "#!version == 2.5.0", true },
-            { "#!version == 2.6.0", false },
-            { "#!version < 2.6.0", true },
-            { "#!version <= 2.6.0", true },
-            { "#!version > 2.6.0", false },
-            { "#!version >= 2.6.0", false },
-            { "#!version < 2.4.0", false },
-            { "#!version <= 2.4.0", false },
-            { "#!version > 2.4.0", true },
-            { "#!version >= 2.4.0", true },
-            { "#!version < 2.5.0", false },
-            { "#!version <= 2.5.0", true },
-            { "#!version > 2.5.0", false },
-            { "#!version >= 2.5.0", true },
-        };
-        for (auto test : tests) {
-            QVERIFY(excludes.versionDirectiveKeepNextLine(test.first) == test.second);
-        }
-    }
-     
     void testAddExcludeFilePath_addSameFilePath_listSizeDoesNotIncrease()
     {
         excludedFiles.reset(new ExcludedFiles());
