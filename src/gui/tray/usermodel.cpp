@@ -69,7 +69,6 @@ bool isSyncStatusError(const OCC::SyncResult::Status status)
     case OCC::SyncResult::Error:
     case OCC::SyncResult::SetupError:
     case OCC::SyncResult::Problem:
-    case OCC::SyncResult::Undefined:
         return true;
     case OCC::SyncResult::Success:
     case OCC::SyncResult::SyncPrepare:
@@ -77,6 +76,7 @@ bool isSyncStatusError(const OCC::SyncResult::Status status)
     case OCC::SyncResult::NotYetStarted:
     case OCC::SyncResult::Paused:
     case OCC::SyncResult::SyncAbortRequested:
+    case OCC::SyncResult::Undefined:
         return false;
     }
     return false;

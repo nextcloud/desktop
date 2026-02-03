@@ -337,7 +337,12 @@ ApplicationWindow {
                                     .arg(UserModel.firstSyncErrorUser.name)
                                     .arg(UserModel.firstSyncErrorUser.server);
                             }
-                            return qsTr("%1 on %2 and %n other account(s)", "", remaining)
+                            if (remaining === 1) {
+                                return qsTr("%1 on %2 and one other account")
+                                    .arg(UserModel.firstSyncErrorUser.name)
+                                    .arg(UserModel.firstSyncErrorUser.server);
+                            }
+                            return qsTr("%1 on %2 and %n other accounts", "", remaining)
                                 .arg(UserModel.firstSyncErrorUser.name)
                                 .arg(UserModel.firstSyncErrorUser.server);
                         }
