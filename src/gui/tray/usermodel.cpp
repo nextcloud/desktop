@@ -50,6 +50,7 @@ using namespace Qt::StringLiterals;
 #define NOTIFICATION_REQUEST_FREE_PERIOD 15000
 
 namespace {
+
 constexpr qint64 expiredActivitiesCheckIntervalMsecs = 1000 * 60;
 constexpr qint64 activityDefaultExpirationTimeMsecs = 1000 * 60 * 10;
 constexpr qint64 assistantPollIntervalMsecs = 2000;
@@ -58,22 +59,20 @@ constexpr int assistantSuccessMaxStatusCode = 300;
 
 QString assistantTaskTypeIdFromResponse(const QJsonDocument &json)
 {
-    const auto types = json.object().value("ocs"_L1).toObject().value("data"_L1).toObject().value("types"_L1).toArray();
-    QString fallbackId;
-    for (const auto &entry : types) {
-        const auto typeObject = entry.toObject();
-        const auto typeId = typeObject.value("id"_L1).toString();
+    const auto types = json.object().value("ocs"_L1).toObject().value("data"_L1).toObject().value("types"_L1).toObject();
+    auto resultTypeId = QString{};
+    for (const auto &typeId : types.keys()) {
+        const auto typeObject = types[typeId].toObject();
         if (typeId.isEmpty()) {
             continue;
         }
-        if (typeObject.value("appId"_L1).toString() == "assistant"_L1) {
-            return typeId;
-        }
-        if (fallbackId.isEmpty()) {
-            fallbackId = typeId;
+        if (typeId == "core:text2text"_L1) {
+            qCDebug(lcActivity) << typeObject << typeId << types[typeId].toObject();
+            resultTypeId = typeId;
+            break;
         }
     }
-    return fallbackId;
+    return resultTypeId;
 }
 
 qint64 assistantTaskIdFromSchedule(const QJsonDocument &json)
