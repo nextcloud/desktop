@@ -1233,7 +1233,7 @@ void Folder::setDirtyNetworkLimits()
 
     ConfigFile cfg;
 
-    int downloadLimit = -75; // 75%
+    int downloadLimit = 0;
     const auto useDownLimit = static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(account->downloadLimitSetting());
     if (useDownLimit >= 1) {
         downloadLimit = account->downloadLimit() * 1000;
@@ -1241,7 +1241,7 @@ void Folder::setDirtyNetworkLimits()
         downloadLimit = 0;
     }
 
-    int uploadLimit = -75; // 75%
+    int uploadLimit = 0;
     const auto useUpLimit = static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(account->uploadLimitSetting());
     if (useUpLimit >= 1) {
         uploadLimit = account->uploadLimit() * 1000;
