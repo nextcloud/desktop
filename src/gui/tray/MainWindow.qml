@@ -283,51 +283,64 @@ ApplicationWindow {
             id: trayWindowSyncWarning
 
             readonly property color warningIconColor: Qt.rgba(0.95, 0.73, 0.2, 1)
+            readonly property int warningIconSize: Style.trayListItemIconSize * 0.6
+            readonly property int warningWhiteSpace: Style.trayListItemIconSize - warningIconSize
 
             anchors.top: trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
-            anchors.topMargin: Style.trayHorizontalMargin
 
             visible: UserModel.hasSyncErrors
             padding: 0
-            background: Rectangle {
-                color: "transparent"
-            }
+            background: null
 
             Accessible.name: syncWarningText.text
+            Accessible.role: Accessible.Button
 
             contentItem: RowLayout {
                 anchors.fill: parent
-                spacing: Style.smallSpacing
+                spacing: Style.trayHorizontalMargin
 
                 Image {
                     Layout.alignment: Qt.AlignVCenter
-                    Layout.preferredWidth: Style.smallIconSize
-                    Layout.preferredHeight: Style.smallIconSize
+                    Layout.preferredWidth: trayWindowSyncWarning.warningIconSize
+                    Layout.preferredHeight: trayWindowSyncWarning.warningIconSize
+                    Layout.topMargin: Style.trayHorizontalMargin
+                    Layout.rightMargin: trayWindowSyncWarning.warningWhiteSpace * (0.5 + Style.thumbnailImageSizeReduction)
+                    Layout.bottomMargin: Style.trayHorizontalMargin
+                    Layout.leftMargin: Style.trayHorizontalMargin + (trayWindowSyncWarning.warningWhiteSpace * (0.5 - Style.thumbnailImageSizeReduction))
                     source: "image://svgimage-custom-color/state-warning.svg/" + trayWindowSyncWarning.warningIconColor
                     fillMode: Image.PreserveAspectFit
                 }
 
-                EnforcedPlainTextLabel {
-                    id: syncWarningText
-
+                ColumnLayout {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignVCenter
-                    wrapMode: Text.WordWrap
-                    text: {
-                        if (!UserModel.firstSyncErrorUser) {
-                            return "";
-                        }
-                        const remaining = UserModel.syncErrorUserCount - 1;
-                        if (remaining <= 0) {
-                            return qsTr("%1 on %2")
+                    Layout.topMargin: 8
+                    Layout.rightMargin: Style.trayHorizontalMargin
+                    Layout.bottomMargin: 8
+
+                    EnforcedPlainTextLabel {
+                        id: syncWarningText
+
+                        Layout.fillWidth: true
+                        font.pixelSize: Style.topLinePixelSize
+                        font.bold: true
+                        wrapMode: Text.WordWrap
+                        text: {
+                            if (!UserModel.firstSyncErrorUser) {
+                                return "";
+                            }
+                            const remaining = UserModel.syncErrorUserCount - 1;
+                            if (remaining <= 0) {
+                                return qsTr("%1 on %2")
+                                    .arg(UserModel.firstSyncErrorUser.name)
+                                    .arg(UserModel.firstSyncErrorUser.server);
+                            }
+                            return qsTr("%1 on %2 and %n other account(s)", "", remaining)
                                 .arg(UserModel.firstSyncErrorUser.name)
                                 .arg(UserModel.firstSyncErrorUser.server);
                         }
-                        return qsTr("%1 on %2 and %n other account(s)", "", remaining)
-                            .arg(UserModel.firstSyncErrorUser.name)
-                            .arg(UserModel.firstSyncErrorUser.server);
                     }
                 }
             }
@@ -469,7 +482,9 @@ ApplicationWindow {
             accentColor: Style.accentColor
             visible: !trayWindowMainItem.isUnifiedSearchActive
 
-            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
+            anchors.top: trayWindowSyncWarning.visible
+                         ? trayWindowSyncWarning.bottom
+                         : trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
         }
