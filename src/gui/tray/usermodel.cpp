@@ -43,6 +43,8 @@
 #include <QDateTime>
 #include <theme.h>
 
+using namespace Qt::StringLiterals;
+
 // time span in milliseconds which has to be between two
 // refreshes of the notifications
 #define NOTIFICATION_REQUEST_FREE_PERIOD 15000
