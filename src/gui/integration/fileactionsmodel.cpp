@@ -304,7 +304,6 @@ void FileActionsModel::processRequest(const QJsonDocument &json, int statusCode)
         return;
     }
 
-    const auto orientation = root.value(QStringLiteral("orientation")).toString();
     const auto rows = root.value(QStringLiteral("rows")).toArray();
     if (rows.empty()) {
         setResponse({ successMessage, remoteFolderPath });
