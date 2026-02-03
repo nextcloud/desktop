@@ -279,10 +279,72 @@ ApplicationWindow {
             Keys.onEscapePressed: activateSearchFocus = false
         }
 
+        Button {
+            id: trayWindowSyncWarning
+
+            readonly property color warningIconColor: Qt.rgba(0.95, 0.73, 0.2, 1)
+
+            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.topMargin: Style.trayHorizontalMargin
+
+            visible: UserModel.hasSyncErrors
+            padding: 0
+            background: Rectangle {
+                color: "transparent"
+            }
+
+            Accessible.name: syncWarningText.text
+
+            contentItem: RowLayout {
+                anchors.fill: parent
+                spacing: Style.smallSpacing
+
+                Image {
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.preferredWidth: Style.smallIconSize
+                    Layout.preferredHeight: Style.smallIconSize
+                    source: "image://svgimage-custom-color/state-warning.svg/" + trayWindowSyncWarning.warningIconColor
+                    fillMode: Image.PreserveAspectFit
+                }
+
+                EnforcedPlainTextLabel {
+                    id: syncWarningText
+
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignVCenter
+                    wrapMode: Text.WordWrap
+                    text: {
+                        if (!UserModel.firstSyncErrorUser) {
+                            return "";
+                        }
+                        const remaining = UserModel.syncErrorUserCount - 1;
+                        if (remaining <= 0) {
+                            return qsTr("%1 on %2")
+                                .arg(UserModel.firstSyncErrorUser.name)
+                                .arg(UserModel.firstSyncErrorUser.server);
+                        }
+                        return qsTr("%1 on %2 and %n other account(s)", "", remaining)
+                            .arg(UserModel.firstSyncErrorUser.name)
+                            .arg(UserModel.firstSyncErrorUser.server);
+                    }
+                }
+            }
+
+            onClicked: {
+                if (UserModel.firstSyncErrorUserId >= 0) {
+                    UserModel.currentUserId = UserModel.firstSyncErrorUserId
+                }
+            }
+        }
+
         Rectangle {
             id: bottomUnifiedSearchInputSeparator
 
-            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
+            anchors.top: trayWindowSyncWarning.visible
+                         ? trayWindowSyncWarning.bottom
+                         : trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.topMargin: Style.trayHorizontalMargin
