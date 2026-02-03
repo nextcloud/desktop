@@ -2957,7 +2957,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="452"/>
         <source>stable</source>
-        <translation>安定板</translation>
+        <translation>安定版</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="456"/>
