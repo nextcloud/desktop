@@ -442,7 +442,7 @@ bool Capabilities::serverHasClientIntegration() const
     return !_capabilities[QStringLiteral("client_integration")].toMap().isEmpty();
 }
 
-QList<QVariantMap> Capabilities::fileActionsByMimeType(const QMimeType fileMimeType) const
+QList<QVariantMap> Capabilities::fileActionsByMimeType(const QMimeType &fileMimeType) const
 {
     const auto fileActionsMap = _capabilities.value("client_integration").toMap();
     QVariantList contextMenuMapList;
