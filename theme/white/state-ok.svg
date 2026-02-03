@@ -1,1 +1,42 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16"><defs><path id="a" d="M0,0 L16,0 L16,16 L0,16 L0,0 Z"/></defs><g fill="none" fill-rule="evenodd"><use xlink:href="#a" fill="#FFF"/><polygon fill="#FFF" fill-rule="nonzero" points="6.483 11.55 3.25 8.333 4.1 7.467 6.483 9.85 11.9 4.45 12.75 5.3"/></g></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="16"
+   height="16"
+   viewBox="0 0 16 16"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="state-ok.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="true"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="85.9375"
+     inkscape:cx="7.9941818"
+     inkscape:cy="8"
+     inkscape:window-width="2954"
+     inkscape:window-height="1612"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <g
+     fill="none"
+     fill-rule="evenodd"
+     id="g1">
+    <polygon
+       fill="#FFF"
+       fill-rule="nonzero"
+       points="6.483 11.55 3.25 8.333 4.1 7.467 6.483 9.85 11.9 4.45 12.75 5.3"
+       id="polygon1" />
+  </g>
+</svg>

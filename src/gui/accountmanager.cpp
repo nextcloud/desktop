@@ -669,16 +669,27 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     }
     acc->setCredentials(CredentialsFactory::create(authType));
 
-    acc->setUploadLimitSetting(
-        settings.value(
-            networkUploadLimitSettingC,
-            QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::NoLimit)
-        ).value<Account::AccountNetworkTransferLimitSetting>());
-    acc->setDownloadLimitSetting(
-        settings.value(
-            networkDownloadLimitSettingC,
-            QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::NoLimit)
-        ).value<Account::AccountNetworkTransferLimitSetting>());
+    auto uploadLimitSetting = settings.value(
+        networkUploadLimitSettingC,
+        QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::NoLimit)
+    ).value<Account::AccountNetworkTransferLimitSetting>();
+    if (uploadLimitSetting == Account::AccountNetworkTransferLimitSetting::AutoLimit) {
+        qCInfo(lcAccountManager) << "Upload limit setting was set to deprecated auto limit, falling back to unlimited";
+        uploadLimitSetting = Account::AccountNetworkTransferLimitSetting::NoLimit;
+        settings.setValue(networkUploadLimitSettingC, static_cast<int>(uploadLimitSetting));
+    }
+    acc->setUploadLimitSetting(uploadLimitSetting);
+
+    auto downloadLimitSetting = settings.value(
+        networkDownloadLimitSettingC,
+        QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::NoLimit)
+    ).value<Account::AccountNetworkTransferLimitSetting>();
+    if (downloadLimitSetting == Account::AccountNetworkTransferLimitSetting::AutoLimit) {
+        qCInfo(lcAccountManager) << "Download limit setting was set to deprecated auto limit, falling back to unlimited";
+        downloadLimitSetting = Account::AccountNetworkTransferLimitSetting::NoLimit;
+        settings.setValue(networkDownloadLimitSettingC, static_cast<int>(downloadLimitSetting));
+    }
+    acc->setDownloadLimitSetting(downloadLimitSetting);
     acc->setUploadLimit(settings.value(networkUploadLimitC).toInt());
     acc->setDownloadLimit(settings.value(networkDownloadLimitC).toInt());
 

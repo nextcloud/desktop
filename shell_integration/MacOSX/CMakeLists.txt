@@ -56,6 +56,13 @@ if(APPLE)
     endif()
 
     if (BUILD_OWNCLOUD_OSX_BUNDLE)
+        # Set debug entitlements conditionally based on build type
+        if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+            set(DEBUG_ENTITLEMENTS "\t<key>com.apple.security.get-task-allow</key>\n\t<true/>")
+        else()
+            set(DEBUG_ENTITLEMENTS "")
+        endif()
+        
         set(OSX_PLUGINS_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/${XCODE_TARGET_CONFIGURATION})
         set(OSX_PLUGINS_INSTALL_DIR ${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns)
 

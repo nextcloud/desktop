@@ -96,8 +96,9 @@ OCC::Activity Activity::fromActivityJson(const QJsonObject &json, const AccountP
     if(richSubjectData.size() > 1) {
         activity._subjectRich = richSubjectData[0].toString();
         auto parameters = richSubjectData[1].toObject();
-        const QRegularExpression subjectRichParameterRe(QStringLiteral("({[a-zA-Z0-9]*})"));
-        const QRegularExpression subjectRichParameterBracesRe(QStringLiteral("[{}]"));
+        // keep the contents inside the {braces} in sync with server's \OCP\RichObjectStrings\IValidator::PLACEHOLDER_REGEX
+        const QRegularExpression subjectRichParameterRe(uR"#(({[A-Za-z][A-Za-z0-9\-_.]+}))#"_s);
+        const QRegularExpression subjectRichParameterBracesRe(u"[{}]"_s);
 
         for (auto i = parameters.begin(); i != parameters.end(); ++i) {
             const auto parameterJsonObject = i.value().toObject();

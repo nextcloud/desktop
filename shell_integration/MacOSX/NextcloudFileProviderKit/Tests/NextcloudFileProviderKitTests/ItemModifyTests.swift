@@ -1324,7 +1324,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testModifyDoesNotPropagateIgnoredFile() async throws {
-        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.bak", "/logs/"])
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.bak", "/logs/"], log: FileProviderLogMock())
         let metadata = SendableItemMetadata(
             ocId: "ignored-modify-id",
             fileName: "error.bak",
@@ -1355,7 +1355,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
 
     func testModifyCreatesFileThatWasPreviouslyIgnoredWithContentsUrlProvided() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
-        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["/logs/"])
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["/logs/"], log: FileProviderLogMock())
 
         let tempFileName = UUID().uuidString
         let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent(tempFileName)

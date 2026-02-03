@@ -63,6 +63,7 @@
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "macOS/fileprovider.h"
 #include "macOS/fileproviderdomainmanager.h"
+#include "macOS/fileproviderservice.h"
 #include "macOS/fileprovidersettingscontroller.h"
 #endif
 
@@ -114,7 +115,7 @@ ownCloudGui::ownCloudGui(Application *parent)
 
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    connect(Mac::FileProvider::instance()->socketServer(), &Mac::FileProviderSocketServer::syncStateChanged, this, &ownCloudGui::slotComputeOverallSyncStatus);
+    connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::syncStateChanged, this, &ownCloudGui::slotComputeOverallSyncStatus);
 #endif
 
     connect(Logger::instance(), &Logger::guiLog, this, &ownCloudGui::slotShowTrayMessage);
@@ -327,7 +328,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
         if (!fileProvider->xpc()->fileProviderDomainReachable(accountFpId)) {
             problemFileProviderAccounts.append(accountTooltipLabel);
         } else {
-            switch (fileProvider->socketServer()->latestReceivedSyncStatusForAccount(accountState->account())) {
+            switch (fileProvider->service()->latestReceivedSyncStatusForAccount(accountState->account())) {
             case SyncResult::Undefined:
             case SyncResult::NotYetStarted:
                 idleFileProviderAccounts.append(accountTooltipLabel);

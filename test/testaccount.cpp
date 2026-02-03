@@ -89,9 +89,9 @@ private slots:
         setLimitSettings(LimitSetting::ManualLimit);
         verifyLimitSettings(LimitSetting::ManualLimit);
 
-        // changing it to AutoLimit should succeed
+        // changing it to AutoLimit should fall back to NoLimit
         setLimitSettings(LimitSetting::AutoLimit);
-        verifyLimitSettings(LimitSetting::AutoLimit);
+        verifyLimitSettings(LimitSetting::NoLimit);
 
         // changing it to LegacyGlobalLimit (-2) should fall back to NoLimit
         setLimitSettings(LimitSetting::LegacyGlobalLimit);

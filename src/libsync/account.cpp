@@ -1475,6 +1475,10 @@ void Account::setUploadLimitSetting(const AccountNetworkTransferLimitSetting set
         qCInfo(lcAccount) << "Upload limit setting was requested to be set to the legacy global limit, falling back to unlimited";
         targetSetting = AccountNetworkTransferLimitSetting::NoLimit;
     }
+    if (setting == AccountNetworkTransferLimitSetting::AutoLimit) {
+        qCInfo(lcAccount) << "Upload limit setting was requested to be set to the deprecated auto limit, falling back to unlimited";
+        targetSetting = AccountNetworkTransferLimitSetting::NoLimit;
+    }
 
     _uploadLimitSetting = targetSetting;
     emit uploadLimitSettingChanged();
@@ -1495,6 +1499,10 @@ void Account::setDownloadLimitSetting(const AccountNetworkTransferLimitSetting s
 
     if (setting == AccountNetworkTransferLimitSetting::LegacyGlobalLimit) {
         qCInfo(lcAccount) << "Download limit setting was requested to be set to the legacy global limit, falling back to unlimited";
+        targetSetting = AccountNetworkTransferLimitSetting::NoLimit;
+    }
+    if (setting == AccountNetworkTransferLimitSetting::AutoLimit) {
+        qCInfo(lcAccount) << "Download limit setting was requested to be set to the deprecated auto limit, falling back to unlimited";
         targetSetting = AccountNetworkTransferLimitSetting::NoLimit;
     }
 

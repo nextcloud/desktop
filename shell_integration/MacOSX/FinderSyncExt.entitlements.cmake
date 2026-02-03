@@ -8,5 +8,6 @@
 	<array>
 		<string>@DEVELOPMENT_TEAM@.@APPLICATION_REV_DOMAIN@</string>
 	</array>
+@DEBUG_ENTITLEMENTS@
 </dict>
 </plist>

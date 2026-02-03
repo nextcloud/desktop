@@ -12,5 +12,6 @@
 	<true/>
 	<key>com.apple.security.network.server</key>
 	<true/>
+@DEBUG_ENTITLEMENTS@
 </dict>
 </plist>

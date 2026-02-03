@@ -304,7 +304,7 @@
         <property name="verticalSpacing">
          <number>6</number>
         </property>
-        <item row="3" column="0">
+        <item row="1" column="0">
          <widget class="QRadioButton" name="downloadLimitRadioButton">
           <property name="text">
            <string>Limit to</string>
@@ -321,17 +321,7 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0" colspan="2">
-         <widget class="QRadioButton" name="autoDownloadLimitRadioButton">
-          <property name="toolTip">
-           <string>Limit to 3/4 of estimated bandwidth</string>
-          </property>
-          <property name="text">
-           <string>Limit automatically</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
+        <item row="2" column="0">
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
            <widget class="QSpinBox" name="downloadSpinBox">
@@ -391,7 +381,7 @@
         <property name="verticalSpacing">
          <number>6</number>
         </property>
-        <item row="3" column="0">
+        <item row="2" column="0">
          <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,0">
           <item>
            <widget class="QSpinBox" name="uploadSpinBox">
@@ -424,20 +414,10 @@
           </item>
          </layout>
         </item>
-        <item row="2" column="0">
+        <item row="1" column="0">
          <widget class="QRadioButton" name="uploadLimitRadioButton">
           <property name="text">
            <string>Limit to</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0" colspan="2">
-         <widget class="QRadioButton" name="autoUploadLimitRadioButton">
-          <property name="toolTip">
-           <string>Limit to 3/4 of estimated bandwidth</string>
-          </property>
-          <property name="text">
-           <string>Limit automatically</string>
           </property>
          </widget>
         </item>

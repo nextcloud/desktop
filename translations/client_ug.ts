@@ -303,11 +303,6 @@
         <translation>مەۋھۇم ھۆججەت تەڭشىكى</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
-        <source>General settings</source>
-        <translation>ئادەتتىكى تەڭشەكلەر</translation>
-    </message>
-    <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
         <source>Enable virtual files</source>
         <translation>مەۋھۇم ھۆججەتلەرنى قوزغىتىڭ</translation>
@@ -321,6 +316,11 @@
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Reset virtual files environment</source>
         <translation>مەۋھۇم ھۆججەت مۇھىتىنى قايتا تەڭشەش</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
+        <source>General settings</source>
+        <translation>ئادەتتىكى تەڭشەكلەر</translation>
     </message>
 </context>
 <context>
@@ -2947,6 +2947,12 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>&amp;%1 غا ئەسلىگە كەلتۈرۈش</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.cpp" line="448"/>
+        <location filename="../src/gui/generalsettings.cpp" line="474"/>
+        <source>Connected to an enterprise system. Update channel (%1) cannot be changed.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.cpp" line="452"/>
         <source>stable</source>
         <translation>مۇقىم</translation>
@@ -3019,12 +3025,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>Zip ئارخىپى</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="715"/>
+        <location filename="../src/gui/generalsettings.cpp" line="735"/>
         <source>Failed to Access File</source>
         <translation>ھۆججەتكە كىرىش مەغلۇپ بولدى</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="716"/>
+        <location filename="../src/gui/generalsettings.cpp" line="736"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
         <translation>تاللانغان ئورۇنغا كىرگىلى بولمىدى. قايتا سىناڭ ياكى باشقا ئورۇننى تاللاڭ.</translation>
     </message>
@@ -5500,6 +5506,12 @@ Server replied with error: %2</source>
         <source>%1 Desktop Client Version %2 (%3)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name.</comment>
         <translation>%1 ئۈستەل يۈزى خېرىدار نۇسخىسى %2 (%3)</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="449"/>
+        <source>%1 Desktop Client Version %2 (%3 running on %4)</source>
+        <comment>%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the platform name (wayland, x11, …)</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="634"/>
