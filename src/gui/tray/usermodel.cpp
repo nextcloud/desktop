@@ -35,6 +35,8 @@
 #include <QPushButton>
 #include <QDateTime>
 
+using namespace Qt::StringLiterals;
+
 // time span in milliseconds which has to be between two
 // refreshes of the notifications
 #define NOTIFICATION_REQUEST_FREE_PERIOD 15000
