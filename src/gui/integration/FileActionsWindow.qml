@@ -25,7 +25,6 @@ ApplicationWindow {
     property var accountState: ({})
     property string localPath: ""
     property string shortLocalPath: ""
-    property var response: ({})
 
     readonly property int windowRadius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
 
