@@ -176,7 +176,7 @@ public:
     [[nodiscard]] QString desktopEnterpriseChannel() const;
 
     [[nodiscard]] bool serverHasClientIntegration() const;
-    [[nodiscard]] QList<QVariantMap> fileActionsByMimeType(const QMimeType fileMimeType) const;
+    [[nodiscard]] QList<QVariantMap> fileActionsByMimeType(const QMimeType &fileMimeType) const;
 
     // Direct Editing
     void addDirectEditor(DirectEditor* directEditor);
