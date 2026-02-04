@@ -409,7 +409,7 @@ ApplicationWindow {
                         Label {
                             Layout.fillWidth: true
                             text: modelData.role === "assistant" ? qsTr("Assistant") : qsTr("You")
-                            color: palette.mid
+                            color: palette.windowText
                             font.bold: true
                         }
 
@@ -664,3 +664,4 @@ ApplicationWindow {
         }
     } // Item trayWindowMainItem
 }
+
