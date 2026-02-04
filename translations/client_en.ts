@@ -3434,13 +3434,13 @@ Note that using any logging command line options will override this setting.</so
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="320"/>
-        <location filename="../src/gui/networksettings.ui" line="453"/>
+        <location filename="../src/gui/networksettings.ui" line="443"/>
         <source>Limit to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="368"/>
-        <location filename="../src/gui/networksettings.ui" line="444"/>
+        <location filename="../src/gui/networksettings.ui" line="358"/>
+        <location filename="../src/gui/networksettings.ui" line="434"/>
         <source>KBytes/s</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3461,25 +3461,13 @@ Note that using any logging command line options will override this setting.</so
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="327"/>
-        <location filename="../src/gui/networksettings.ui" line="470"/>
+        <location filename="../src/gui/networksettings.ui" line="450"/>
         <source>No limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="337"/>
-        <location filename="../src/gui/networksettings.ui" line="460"/>
-        <source>Limit to 3/4 of estimated bandwidth</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/networksettings.ui" line="399"/>
+        <location filename="../src/gui/networksettings.ui" line="389"/>
         <source>Upload Bandwidth</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/networksettings.ui" line="340"/>
-        <location filename="../src/gui/networksettings.ui" line="463"/>
-        <source>Limit automatically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -3486,6 +3486,18 @@ Càstia chi s&apos;impreu de cale si siat optzione de sa riga de cumandu de regi
         <translation>Lìmita a</translation>
     </message>
     <message>
+        <location filename="../src/gui/networksettings.ui" line="337"/>
+        <location filename="../src/gui/networksettings.ui" line="460"/>
+        <source>Limit to 3/4 of estimated bandwidth</source>
+        <translation>Lìmita a su tres bator de sa banda istimada</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/networksettings.ui" line="340"/>
+        <location filename="../src/gui/networksettings.ui" line="463"/>
+        <source>Limit automatically</source>
+        <translation>Lìmita in automàticu</translation>
+    </message>
+    <message>
         <location filename="../src/gui/networksettings.ui" line="368"/>
         <location filename="../src/gui/networksettings.ui" line="444"/>
         <source>KBytes/s</source>
@@ -3513,21 +3525,9 @@ Càstia chi s&apos;impreu de cale si siat optzione de sa riga de cumandu de regi
         <translation>Perunu lìmite</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="337"/>
-        <location filename="../src/gui/networksettings.ui" line="460"/>
-        <source>Limit to 3/4 of estimated bandwidth</source>
-        <translation>Lìmita a su tres bator de sa banda istimada</translation>
-    </message>
-    <message>
         <location filename="../src/gui/networksettings.ui" line="399"/>
         <source>Upload Bandwidth</source>
         <translation>Carriga·nche sa banda de intrada</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/networksettings.ui" line="340"/>
-        <location filename="../src/gui/networksettings.ui" line="463"/>
-        <source>Limit automatically</source>
-        <translation>Lìmita in automàticu</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="36"/>
