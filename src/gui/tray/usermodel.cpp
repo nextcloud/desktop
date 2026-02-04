@@ -55,18 +55,23 @@ QString assistantTaskTypeIdFromResponse(const QJsonDocument &json)
 {
     const auto types = json.object().value("ocs"_L1).toObject().value("data"_L1).toObject().value("types"_L1).toObject();
     auto resultTypeId = QString{};
+    auto fallbackTypeId = QString{};
     for (const auto &typeId : types.keys()) {
         const auto typeObject = types[typeId].toObject();
         if (typeId.isEmpty()) {
             continue;
         }
-        if (typeId == "core:text2text"_L1) {
+        if (typeId == "core:text2text:chat"_L1) {
             qCDebug(lcActivity) << typeObject << typeId << types[typeId].toObject();
             resultTypeId = typeId;
             break;
         }
+        if (typeId == "core:text2text"_L1) {
+            qCDebug(lcActivity) << typeObject << typeId << types[typeId].toObject();
+            fallbackTypeId = typeId;
+        }
     }
-    return resultTypeId;
+    return resultTypeId.isEmpty() ? fallbackTypeId : resultTypeId;
 }
 
 qint64 assistantTaskIdFromSchedule(const QJsonDocument &json)
@@ -1192,6 +1197,11 @@ QString User::assistantError() const
     return _assistantError;
 }
 
+QVariantList User::assistantMessages() const
+{
+    return _assistantMessages;
+}
+
 bool User::assistantRequestInProgress() const
 {
     return _assistantRequestInProgress;
@@ -1266,6 +1276,12 @@ void User::submitAssistantQuestion(const QString &question)
         return;
     }
 
+    if (_assistantRequestInProgress) {
+        _assistantError = tr("Assistant is already processing a request.");
+        emit assistantErrorChanged();
+        return;
+    }
+
     if (!_assistantConnector) {
         _assistantConnector = new OcsAssistantConnector(_account->account(), this);
         connect(_assistantConnector, &OcsAssistantConnector::taskTypesFetched, this, &User::slotAssistantTaskTypesFetched);
@@ -1273,6 +1289,19 @@ void User::submitAssistantQuestion(const QString &question)
         connect(_assistantConnector, &OcsAssistantConnector::taskScheduled, this, &User::slotAssistantTaskScheduled);
         connect(_assistantConnector, &OcsAssistantConnector::taskDeleted, this, &User::slotAssistantTaskDeleted);
         connect(_assistantConnector, &OcsAssistantConnector::requestError, this, &User::slotAssistantRequestError);
+    }
+
+    QStringList history;
+    history.reserve(_assistantMessages.size());
+    for (int index = _assistantMessages.size() - 1; index >= 0; --index) {
+        const auto entry = _assistantMessages.at(index).toMap();
+        const auto role = entry.value(QStringLiteral("role")).toString();
+        const auto text = entry.value(QStringLiteral("text")).toString();
+        if (text.isEmpty()) {
+            continue;
+        }
+        const auto historyRole = (role == QLatin1String("assistant")) ? QStringLiteral("Assistant") : QStringLiteral("User");
+        history.append(QStringLiteral("%1: %2").arg(historyRole, text));
     }
 
     _assistantQuestion = trimmedQuestion;
@@ -1283,6 +1312,12 @@ void User::submitAssistantQuestion(const QString &question)
 
     _assistantResponse = tr("Sending your request…");
     emit assistantResponseChanged();
+
+    _assistantMessages.prepend(QVariantMap{
+        {QStringLiteral("role"), QStringLiteral("user")},
+        {QStringLiteral("text"), _assistantQuestion},
+    });
+    emit assistantMessagesChanged();
 
     _assistantRequestInProgress = true;
     emit assistantRequestInProgressChanged();
@@ -1295,20 +1330,22 @@ void User::submitAssistantQuestion(const QString &question)
         return;
     }
 
-    _assistantConnector->scheduleTask(_assistantQuestion, _assistantTaskType);
+    _assistantConnector->scheduleTask(_assistantQuestion, _assistantTaskType, history);
 }
 
 void User::clearAssistantResponse()
 {
-    if (_assistantResponse.isEmpty() && _assistantError.isEmpty() && _assistantQuestion.isEmpty()) {
+    if (_assistantResponse.isEmpty() && _assistantError.isEmpty() && _assistantQuestion.isEmpty() && _assistantMessages.isEmpty()) {
         return;
     }
     _assistantQuestion.clear();
     _assistantResponse.clear();
     _assistantError.clear();
+    _assistantMessages.clear();
     emit assistantQuestionChanged();
     emit assistantResponseChanged();
     emit assistantErrorChanged();
+    emit assistantMessagesChanged();
 }
 
 void User::slotAssistantPoll()
@@ -1349,7 +1386,19 @@ void User::slotAssistantTaskTypesFetched(const QJsonDocument &json, int statusCo
         return;
     }
 
-    _assistantConnector->scheduleTask(_assistantQuestion, _assistantTaskType);
+    QStringList history;
+    history.reserve(_assistantMessages.size());
+    for (int index = _assistantMessages.size() - 1; index >= 1; --index) {
+        const auto entry = _assistantMessages.at(index).toMap();
+        const auto role = entry.value(QStringLiteral("role")).toString();
+        const auto text = entry.value(QStringLiteral("text")).toString();
+        if (text.isEmpty()) {
+            continue;
+        }
+        const auto historyRole = (role == QLatin1String("assistant")) ? QStringLiteral("Assistant") : QStringLiteral("User");
+        history.append(QStringLiteral("%1: %2").arg(historyRole, text));
+    }
+    _assistantConnector->scheduleTask(_assistantQuestion, _assistantTaskType, history);
 }
 
 void User::slotAssistantTasksFetched(const QJsonDocument &json, int statusCode)
@@ -1361,6 +1410,7 @@ void User::slotAssistantTasksFetched(const QJsonDocument &json, int statusCode)
 
     const auto tasks = json.object().value("ocs"_L1).toObject().value("data"_L1).toObject().value("tasks"_L1).toArray();
     QString output;
+    qint64 taskIdToDelete = -1;
     for (const auto &entry : tasks) {
         const auto taskObject = entry.toObject();
         const auto taskId = static_cast<qint64>(taskObject.value("id"_L1).toDouble(-1));
@@ -1369,6 +1419,7 @@ void User::slotAssistantTasksFetched(const QJsonDocument &json, int statusCode)
         }
         output = assistantOutputFromTask(taskObject);
         if (!output.isEmpty()) {
+            taskIdToDelete = taskId;
             break;
         }
     }
@@ -1384,8 +1435,18 @@ void User::slotAssistantTasksFetched(const QJsonDocument &json, int statusCode)
     _assistantPollTimer.stop();
     _assistantResponse = output;
     emit assistantResponseChanged();
+    _assistantMessages.prepend(QVariantMap{
+        {QStringLiteral("role"), QStringLiteral("assistant")},
+        {QStringLiteral("text"), _assistantResponse},
+    });
+    emit assistantMessagesChanged();
+    _assistantResponse.clear();
+    emit assistantResponseChanged();
     _assistantRequestInProgress = false;
     emit assistantRequestInProgressChanged();
+    if (taskIdToDelete > 0) {
+        _assistantConnector->deleteTask(taskIdToDelete);
+    }
 }
 
 void User::slotAssistantTaskScheduled(const QJsonDocument &json, int statusCode)
