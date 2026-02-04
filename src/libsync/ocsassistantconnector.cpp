@@ -23,6 +23,12 @@ namespace {
 Q_LOGGING_CATEGORY(lcOcsAssistantConnector, "nextcloud.sync.ocsassistantconnector", QtInfoMsg)
 
 const auto basePath = u"/ocs/v2.php/taskprocessing"_s;
+const auto assistantSystemPrompt = QStringLiteral(
+    "This is a conversation in a specific language between the user and you, Nextcloud Assistant. "
+    "You are a kind, polite and helpful AI that helps the user to the best of its abilities. "
+    "If you do not understand something, you will ask for clarification. Detect the language "
+    "that the user is using. Make sure to use the same language in your response. Do not mention "
+    "the language explicitly.");
 
 int statusCodeFromJson(const QString &jsonStr, int fallback)
 {
@@ -152,6 +158,7 @@ void OcsAssistantConnector::scheduleTask(const QString &input, const QString &ta
 
     QUrlQuery body;
     body.addQueryItem(QStringLiteral("input[input]"), input);
+    body.addQueryItem(QStringLiteral("input[system_prompt]"), assistantSystemPrompt);
     for (int index = 0; index < history.size(); ++index) {
         body.addQueryItem(QStringLiteral("input[history][%1][input]").arg(index), history.at(index));
     }
