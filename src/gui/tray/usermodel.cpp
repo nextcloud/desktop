@@ -1478,8 +1478,12 @@ void User::submitAssistantQuestion(const QString &question)
         if (text.isEmpty()) {
             continue;
         }
-        const auto historyRole = (role == QLatin1String("assistant")) ? QStringLiteral("Assistant") : QStringLiteral("User");
-        history.append(QStringLiteral("%1: %2").arg(historyRole, text));
+        const auto historyRole = (role == QLatin1String("assistant")) ? QStringLiteral("assistant") : QStringLiteral("human");
+        const QJsonObject historyEntry{
+            {QStringLiteral("role"), historyRole},
+            {QStringLiteral("content"), text},
+        };
+        history.append(QString::fromUtf8(QJsonDocument(historyEntry).toJson(QJsonDocument::Compact)));
     }
 
     _assistantQuestion = trimmedQuestion;
@@ -1573,8 +1577,12 @@ void User::slotAssistantTaskTypesFetched(const QJsonDocument &json, int statusCo
         if (text.isEmpty()) {
             continue;
         }
-        const auto historyRole = (role == QLatin1String("assistant")) ? QStringLiteral("Assistant") : QStringLiteral("User");
-        history.append(QStringLiteral("%1: %2").arg(historyRole, text));
+        const auto historyRole = (role == QLatin1String("assistant")) ? QStringLiteral("assistant") : QStringLiteral("human");
+        const QJsonObject historyEntry{
+            {QStringLiteral("role"), historyRole},
+            {QStringLiteral("content"), text},
+        };
+        history.append(QString::fromUtf8(QJsonDocument(historyEntry).toJson(QJsonDocument::Compact)));
     }
     _assistantConnector->scheduleTask(_assistantQuestion, _assistantTaskType, history);
 }
