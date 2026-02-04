@@ -194,7 +194,7 @@
                <number>0</number>
               </property>
               <property name="bottomMargin">
-               <number>0</number>
+               <number>9</number>
               </property>
               <item>
                <widget class="QLineEdit" name="userLineEdit">
@@ -299,7 +299,7 @@
          <number>9</number>
         </property>
         <property name="bottomMargin">
-         <number>0</number>
+         <number>9</number>
         </property>
         <property name="verticalSpacing">
          <number>6</number>
@@ -376,7 +376,7 @@
          <number>9</number>
         </property>
         <property name="bottomMargin">
-         <number>0</number>
+         <number>9</number>
         </property>
         <property name="verticalSpacing">
          <number>6</number>
