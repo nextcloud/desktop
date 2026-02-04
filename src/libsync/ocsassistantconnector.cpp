@@ -160,10 +160,10 @@ void OcsAssistantConnector::scheduleTask(const QString &input, const QString &ta
     body.addQueryItem(QStringLiteral("input[input]"), input);
     body.addQueryItem(QStringLiteral("input[system_prompt]"), assistantSystemPrompt);
     if (history.isEmpty()) {
-        body.addQueryItem(QStringLiteral("input[history]"), QString());
+        body.addQueryItem(QStringLiteral("input[history]"), QStringLiteral("[]"));
     } else {
         for (int index = 0; index < history.size(); ++index) {
-            body.addQueryItem(QStringLiteral("input[history][%1][input]").arg(index), history.at(index));
+            body.addQueryItem(QStringLiteral("input[history][%1]").arg(index), history.at(index));
         }
     }
     body.addQueryItem(QStringLiteral("type"), taskType);
