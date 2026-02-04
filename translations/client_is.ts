@@ -3488,6 +3488,18 @@ niðurhals. Uppsetta útgáfan er %3.&lt;/p&gt;</translation>
         <translation>Takmarka við</translation>
     </message>
     <message>
+        <location filename="../src/gui/networksettings.ui" line="337"/>
+        <location filename="../src/gui/networksettings.ui" line="460"/>
+        <source>Limit to 3/4 of estimated bandwidth</source>
+        <translation>Takmarka við 3/4 af áætlaðri bandbreidd</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/networksettings.ui" line="340"/>
+        <location filename="../src/gui/networksettings.ui" line="463"/>
+        <source>Limit automatically</source>
+        <translation>Takmarka sjálfvirkt</translation>
+    </message>
+    <message>
         <location filename="../src/gui/networksettings.ui" line="368"/>
         <location filename="../src/gui/networksettings.ui" line="444"/>
         <source>KBytes/s</source>
@@ -3515,21 +3527,9 @@ niðurhals. Uppsetta útgáfan er %3.&lt;/p&gt;</translation>
         <translation>Engin mörk</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="337"/>
-        <location filename="../src/gui/networksettings.ui" line="460"/>
-        <source>Limit to 3/4 of estimated bandwidth</source>
-        <translation>Takmarka við 3/4 af áætlaðri bandbreidd</translation>
-    </message>
-    <message>
         <location filename="../src/gui/networksettings.ui" line="399"/>
         <source>Upload Bandwidth</source>
         <translation>Bandbreidd innsendinga</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/networksettings.ui" line="340"/>
-        <location filename="../src/gui/networksettings.ui" line="463"/>
-        <source>Limit automatically</source>
-        <translation>Takmarka sjálfvirkt</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="36"/>
