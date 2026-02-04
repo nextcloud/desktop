@@ -364,7 +364,6 @@ ApplicationWindow {
             anchors.topMargin: Style.trayHorizontalMargin
             anchors.leftMargin: Style.trayHorizontalMargin
             anchors.rightMargin: Style.trayHorizontalMargin
-            implicitHeight: assistantPromptLoader.item ? assistantPromptLoader.item.implicitHeight : 0
             height: trayWindowMainItem.isAssistantActive ? trayWindowMainItem.height - y : implicitHeight
             clip: trayWindowMainItem.isAssistantActive
 
