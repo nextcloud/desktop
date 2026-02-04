@@ -54,7 +54,7 @@
 #include <QVariant>
 #include <QJsonDocument>
 #include <QToolTip>
-#include <QToolButton>
+#include <QPushButton>
 #include <QStyle>
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
@@ -1823,9 +1823,18 @@ void AccountSettings::updateEncryptionMessageActions()
     }
 
     for (QAction *action : actions) {
-        auto *button = new QToolButton(_ui->encryptionMessage);
-        button->setDefaultAction(action);
-        button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+        auto *button = new QPushButton(_ui->encryptionMessage);
+        button->setText(action->text());
+        button->setIcon(action->icon());
+        button->setEnabled(action->isEnabled());
+        button->setVisible(action->isVisible());
+        connect(button, &QPushButton::clicked, action, &QAction::trigger);
+        connect(action, &QAction::changed, button, [button, action]() {
+            button->setText(action->text());
+            button->setIcon(action->icon());
+            button->setEnabled(action->isEnabled());
+            button->setVisible(action->isVisible());
+        });
         layout->insertWidget(stretchIndex, button);
         ++stretchIndex;
         _encryptionMessageButtons.insert(action, button);
