@@ -135,7 +135,8 @@ void OcsAssistantConnector::fetchTasks(const QString &taskType)
     _tasksJob->start();
 }
 
-void OcsAssistantConnector::scheduleTask(const QString &input, const QString &taskType, const QString &appId, const QString &customId)
+void OcsAssistantConnector::scheduleTask(const QString &input, const QString &taskType, const QStringList &history,
+    const QString &appId, const QString &customId)
 {
     if (_scheduleJob) {
         qCDebug(lcOcsAssistantConnector) << "Schedule job already running.";
@@ -151,6 +152,9 @@ void OcsAssistantConnector::scheduleTask(const QString &input, const QString &ta
 
     QUrlQuery body;
     body.addQueryItem(QStringLiteral("input[input]"), input);
+    for (int index = 0; index < history.size(); ++index) {
+        body.addQueryItem(QStringLiteral("input[history][%1][input]").arg(index), history.at(index));
+    }
     body.addQueryItem(QStringLiteral("type"), taskType);
     body.addQueryItem(QStringLiteral("appId"), appId);
     body.addQueryItem(QStringLiteral("customId"), customId);

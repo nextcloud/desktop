@@ -26,7 +26,7 @@ public:
 
     void fetchTaskTypes();
     void fetchTasks(const QString &taskType);
-    void scheduleTask(const QString &input, const QString &taskType,
+    void scheduleTask(const QString &input, const QString &taskType, const QStringList &history,
         const QString &appId = QStringLiteral("assistant"),
         const QString &customId = QString());
     void deleteTask(qint64 taskId);

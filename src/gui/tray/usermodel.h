@@ -83,6 +83,7 @@ class User : public QObject
     Q_PROPERTY(QString assistantQuestion READ assistantQuestion NOTIFY assistantQuestionChanged)
     Q_PROPERTY(QString assistantResponse READ assistantResponse NOTIFY assistantResponseChanged)
     Q_PROPERTY(QString assistantError READ assistantError NOTIFY assistantErrorChanged)
+    Q_PROPERTY(QVariantList assistantMessages READ assistantMessages NOTIFY assistantMessagesChanged)
     Q_PROPERTY(bool assistantRequestInProgress READ assistantRequestInProgress NOTIFY assistantRequestInProgressChanged)
 
 public:
@@ -133,6 +134,7 @@ public:
     [[nodiscard]] QString assistantQuestion() const;
     [[nodiscard]] QString assistantResponse() const;
     [[nodiscard]] QString assistantError() const;
+    [[nodiscard]] QVariantList assistantMessages() const;
     [[nodiscard]] bool assistantRequestInProgress() const;
 
     Q_INVOKABLE void submitAssistantQuestion(const QString &question);
@@ -156,6 +158,7 @@ signals:
     void assistantQuestionChanged();
     void assistantResponseChanged();
     void assistantErrorChanged();
+    void assistantMessagesChanged();
     void assistantRequestInProgressChanged();
 
 public slots:
@@ -253,12 +256,13 @@ private:
     QPointer<OcsAssistantConnector> _assistantConnector;
     QTimer _assistantPollTimer;
     int _assistantPollAttempts = 0;
-    int _assistantMaxPollAttempts = 10;
+    int _assistantMaxPollAttempts = 60;
     qint64 _assistantTaskId = -1;
     QString _assistantTaskType;
     QString _assistantQuestion;
     QString _assistantResponse;
     QString _assistantError;
+    QVariantList _assistantMessages;
     bool _assistantRequestInProgress = false;
 
     QUrl _syncStatusIcon;
