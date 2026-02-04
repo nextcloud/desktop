@@ -80,6 +80,21 @@ qint64 assistantTaskIdFromSchedule(const QJsonDocument &json)
     return static_cast<qint64>(task.value("id"_L1).toDouble(-1));
 }
 
+bool assistantTaskStillRunning(const QJsonObject &task)
+{
+    auto result = true;
+
+    if (!task.contains(u"status"_s)) {
+        return result;
+    }
+    if (task.value(u"status"_s).toString() == u"STATUS_FAILED"_s || task.value(u"status"_s).toString() == u"STATUS_SUCCESSFUL"_s) {
+        result = false;
+    }
+    qCDebug(lcActivity) << task.value(u"status"_s).toString();
+
+    return result;
+}
+
 QString assistantOutputFromTask(const QJsonObject &task)
 {
     const auto outputValue = task.value("output"_L1);
@@ -1417,8 +1432,8 @@ void User::slotAssistantTasksFetched(const QJsonDocument &json, int statusCode)
     }
 
     const auto tasks = json.object().value("ocs"_L1).toObject().value("data"_L1).toObject().value("tasks"_L1).toArray();
-    QString output;
-    qint64 taskIdToDelete = -1;
+    auto output = QString{};
+    auto taskIdToDelete = qint64{-1};
     for (const auto &entry : tasks) {
         const auto taskObject = entry.toObject();
         const auto taskId = static_cast<qint64>(taskObject.value("id"_L1).toDouble(-1));
@@ -1426,13 +1441,13 @@ void User::slotAssistantTasksFetched(const QJsonDocument &json, int statusCode)
             continue;
         }
         output = assistantOutputFromTask(taskObject);
-        if (!output.isEmpty()) {
+        if (!assistantTaskStillRunning(taskObject)) {
             taskIdToDelete = taskId;
             break;
         }
     }
 
-    if (output.isEmpty()) {
+    if (taskIdToDelete == -1) {
         if (!_assistantPollTimer.isActive()) {
             _assistantPollAttempts = 0;
             _assistantPollTimer.start();

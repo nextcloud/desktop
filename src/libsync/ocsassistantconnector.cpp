@@ -160,7 +160,7 @@ void OcsAssistantConnector::scheduleTask(const QString &input, const QString &ta
     body.addQueryItem(QStringLiteral("input[input]"), input);
     body.addQueryItem(QStringLiteral("input[system_prompt]"), assistantSystemPrompt);
     if (history.isEmpty()) {
-        body.addQueryItem(QStringLiteral("input[history]"), QStringLiteral("[]"));
+        body.addQueryItem(QStringLiteral("input[history][1]"), u"[\"{\\\"role\\\": \\\"human\\\", \\\"content\\\": \\\"%1\\\"}\"]"_s.arg(input));
     } else {
         for (int index = 0; index < history.size(); ++index) {
             body.addQueryItem(QStringLiteral("input[history][%1]").arg(index), history.at(index));
