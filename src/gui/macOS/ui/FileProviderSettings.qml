@@ -35,6 +35,8 @@ Page {
     ColumnLayout {
         id: rootColumn
 
+        anchors.left: parent.left
+        anchors.right: parent.right
         spacing: Style.standardSpacing
 
         RowLayout {
@@ -48,6 +50,7 @@ Page {
 
             Switch {
                 id: vfsEnabledCheckBox
+                Layout.alignment: Qt.AlignRight
                 checked: root.controller.vfsEnabledForAccount(root.accountUserIdAtHost)
                 onClicked: root.controller.setVfsEnabledForAccount(root.accountUserIdAtHost, checked)
             }
