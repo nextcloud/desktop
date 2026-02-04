@@ -9,7 +9,7 @@ jobs:
   build:
     name: Linux Appimage Package
     runs-on: ubuntu-latest
-    container: ghcr.io/nextcloud/continuous-integration-client-appimage-qt6:client-appimage-el8-6.9.3-2
+    container: ghcr.io/nextcloud/continuous-integration-client-appimage-qt6:client-appimage-el8-6.10.1-1
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
