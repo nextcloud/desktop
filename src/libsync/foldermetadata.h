@@ -132,6 +132,7 @@ public:
     [[nodiscard]] bool isVersion2AndUp() const;
 
     [[nodiscard]] quint64 newCounter() const;
+    [[nodiscard]] quint64 counter() const;
 
     [[nodiscard]] QByteArray metadataSignature() const;
 
