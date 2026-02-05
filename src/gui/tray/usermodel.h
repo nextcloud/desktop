@@ -161,6 +161,7 @@ public slots:
 private slots:
     void slotPushNotificationsReady();
     void slotDisconnectPushNotifications();
+    void slotReceivedPushFileChanges(Account *account, const QList<qint64> &fileIds);
     void slotReceivedPushNotification(OCC::Account *account);
     void slotReceivedPushActivity(OCC::Account *account);
     void slotCheckExpiredActivities();

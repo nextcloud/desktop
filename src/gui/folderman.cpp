@@ -23,6 +23,9 @@
 
 #ifdef Q_OS_MACOS
 #include <CoreServices/CoreServices.h>
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "macOS/fileprovider.h"
+#endif
 #endif
 
 #include <QMessageBox>
@@ -1042,6 +1045,61 @@ void FolderMan::slotEtagPollTimerTimeout()
     qCInfo(lcFolderMan) << "Number of folders that don't use push notifications:" << foldersToRun.size();
 
     runEtagJobsIfPossible(foldersToRun);
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    // Signal the File Provider working set about remote changes
+    // This must be independent of sync folder configuration since File Provider
+    // can operate without traditional sync folders
+    qCInfo(lcFolderMan) << "Checking root folder ETags for file provider domains.";
+    const auto accounts = AccountManager::instance()->accounts();
+
+    for (const auto &accountState : accounts) {
+        const auto account = accountState->account();
+
+        // Skip accounts that don't have a File Provider domain
+        if (!Mac::FileProvider::instance()->domainManager()->domainForAccount(account.data())) {
+            qCDebug(lcFolderMan) << "Account" << account->displayName() << "has no file provider domain, skipping.";
+            continue;
+        }
+
+        // Skip accounts that use push notifications - they get real-time updates
+        if (pushNotificationsFilesReady(account)) {
+            qCDebug(lcFolderMan) << "Account" << account->displayName() << "uses push notifications, skipping ETag check";
+            continue;
+        }
+
+        // For accounts using polling, check the root folder ETag
+        qCInfo(lcFolderMan) << "Fetching root ETag for file provider domain of account:" << account->displayName();
+
+        auto *etagJob = new RequestEtagJob(account, QStringLiteral("/"), this);
+        etagJob->setTimeout(60 * 1000);
+
+        connect(etagJob, &RequestEtagJob::etagRetrieved, this,
+            [this, account](const QByteArray &etag, const QDateTime &) {
+                qCDebug(lcFolderMan) << "Root ETag retrieved for account" << account->displayName() << ":" << etag;
+
+                // Check if ETag has changed
+                const auto lastEtag = account->lastRootETag();
+
+                if (lastEtag != etag) {
+                    qCInfo(lcFolderMan) << "Root ETag changed for" << account->displayName()
+                                        << "from" << lastEtag << "to" << etag
+                                        << ", signaling file provider domain.";
+
+                    // Store new ETag in the account
+                    account->setLastRootETag(etag);
+
+                    // Signal File Provider about remote changes
+                    Mac::FileProvider::instance()->domainManager()->signalEnumeratorChanged(account.data());
+                } else {
+                    qCDebug(lcFolderMan) << "Root ETag unchanged for account" 
+                                         << account->displayName();
+                }
+            });
+
+        etagJob->start();
+    }
+#endif
 }
 
 void FolderMan::runEtagJobsIfPossible(const QList<Folder *> &folderMap)

@@ -62,11 +62,19 @@ public:
 
     NSFileProviderDomain *domainForAccount(const OCC::Account *account) const;
 
+    void signalEnumeratorChanged(const OCC::Account * const account);
+
+public slots:
+    /**
+     * @brief Handle file ID changes from push notifications
+     * @param account The account for which file IDs changed
+     * @param fileIds List of file IDs that have changed
+     */
+    void slotHandleFileIdsChanged(const OCC::Account *account, const QList<qint64> &fileIds);
+
 private slots:
     void disconnectFileProviderDomainForAccount(const OCC::AccountState * const accountState, const QString &reason);
     void reconnectFileProviderDomainForAccount(const OCC::AccountState * const accountState);
-
-    void signalEnumeratorChanged(const OCC::Account * const account);
     void slotAccountStateChanged(const OCC::AccountState * const accountState);
 
 private:
