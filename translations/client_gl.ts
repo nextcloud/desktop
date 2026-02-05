@@ -255,7 +255,7 @@
     <message>
         <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="88"/>
         <source>Discovering the certificates stored on your USB token</source>
-        <translation>Descubrindo os certificados almacenados no testemuño USB</translation>
+        <translation>Achando os certificados almacenados no testemuño USB</translation>
     </message>
 </context>
 <context>
