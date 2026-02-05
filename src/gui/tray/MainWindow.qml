@@ -476,15 +476,18 @@ ApplicationWindow {
                                 border.color: palette.mid
 
                                 Layout.maximumWidth: assistantConversationList.width * 0.8
+                                Layout.preferredWidth: Math.min(assistantConversationList.width * 0.8, messageText.implicitWidth + (Style.smallSpacing * 2))
                                 implicitHeight: messageText.implicitHeight + (Style.smallSpacing * 2)
 
-                                Text {
+                               Text {
                                     id: messageText
 
-                                    anchors.fill: parent
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+                                    anchors.top: parent.top
                                     anchors.margins: Style.smallSpacing
                                     text: modelData.text
-                                    wrapMode: Text.Wrap
+                                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                                     color: palette.windowText
                                     textFormat: Text.MarkdownText
                                 }
@@ -739,6 +742,7 @@ ApplicationWindow {
         }
     } // Item trayWindowMainItem
 }
+
 
 
 
