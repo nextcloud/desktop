@@ -79,16 +79,6 @@ class AccountSettings;
 
 Q_LOGGING_CATEGORY(lcAccountSettings, "nextcloud.gui.account.settings", QtInfoMsg)
 
-static const char progressBarStyleC[] =
-    "QProgressBar {"
-    "border: 1px solid grey;"
-    "border-radius: 5px;"
-    "text-align: center;"
-    "}"
-    "QProgressBar::chunk {"
-    "background-color: %1; width: 1px;"
-    "}";
-
 void showEnableE2eeWithVirtualFilesWarningDialog(std::function<void(void)> onAccept)
 {
     const auto messageBox = new QMessageBox;
@@ -290,11 +280,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
     connect(FolderMan::instance(), &FolderMan::folderListChanged, _model, &FolderStatusModel::resetFolders);
     connect(this, &AccountSettings::folderChanged, _model, &FolderStatusModel::resetFolders);
-
-
-    // quotaProgressBar style now set in customizeStyle()
-    /*QColor color = palette().highlight().color();
-     _ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));*/
 
     // Connect E2E stuff
     if (_accountState->isConnected()) {
@@ -1285,31 +1270,20 @@ void AccountSettings::slotOpenOC()
 void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
 {
     if (total > 0) {
-        _ui->quotaProgressBar->setVisible(true);
-        _ui->quotaProgressBar->setEnabled(true);
-        // workaround the label only accepting ints (which may be only 32 bit wide)
-        const auto percent = used / (double)total * 100;
-        const auto percentInt = qMin(qRound(percent), 100);
-        _ui->quotaProgressBar->setValue(percentInt);
         const auto usedStr = Utility::octetsToString(used);
         const auto totalStr = Utility::octetsToString(total);
-        const auto percentStr = Utility::compactFormatDouble(percent, 1);
-        const auto toolTip = tr("%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.").arg(usedStr, totalStr, percentStr);
-        _ui->quotaInfoLabel->setText(tr("%1 of %2 in use").arg(usedStr, totalStr));
-        _ui->quotaInfoLabel->setToolTip(toolTip);
-        _ui->quotaProgressBar->setToolTip(toolTip);
+        _spaceUsageText = tr("%1 of %2 in use").arg(usedStr, totalStr);
     } else {
-        _ui->quotaProgressBar->setVisible(false);
-        _ui->quotaInfoLabel->setToolTip({});
-
         /* -1 means not computed; -2 means unknown; -3 means unlimited  (#owncloud/client/issues/3940)*/
         if (total == 0 || total == -1) {
-            _ui->quotaInfoLabel->setText(tr("Currently there is no storage usage information available."));
+            _spaceUsageText.clear();
         } else {
             const auto usedStr = Utility::octetsToString(used);
-            _ui->quotaInfoLabel->setText(tr("%1 in use").arg(usedStr));
+            _spaceUsageText = tr("%1 in use").arg(usedStr);
         }
     }
+
+    slotAccountStateChanged();
 }
 
 void AccountSettings::slotAccountStateChanged()
@@ -1343,7 +1317,11 @@ void AccountSettings::slotAccountStateChanged()
             if (account->serverVersionUnsupported()) {
                 errors << tr("The server version %1 is unsupported! Proceed at your own risk.").arg(account->serverVersion());
             }
-            showConnectionLabel(tr("Connected to %1.").arg(serverWithUser), errors);
+            auto statusMessage = tr("Connected to %1.").arg(serverWithUser);
+            if (!_spaceUsageText.isEmpty()) {
+                statusMessage = tr("Connected to %1 (%2).").arg(serverWithUser, _spaceUsageText);
+            }
+            showConnectionLabel(statusMessage, errors);
             break;
         }
         case AccountState::ServiceUnavailable:
@@ -1703,9 +1681,6 @@ void AccountSettings::customizeStyle()
     auto msg = _ui->connectLabel->text();
     Theme::replaceLinkColorStringBackgroundAware(msg);
     _ui->connectLabel->setText(msg);
-
-    const auto color = palette().highlight().color();
-    _ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));
 }
 
 void AccountSettings::setupE2eEncryption()
