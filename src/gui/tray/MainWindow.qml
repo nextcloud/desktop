@@ -263,8 +263,6 @@ ApplicationWindow {
             id: trayWindowSyncWarning
 
             readonly property color warningIconColor: Qt.rgba(0.95, 0.73, 0.2, 1)
-            readonly property int warningIconSize: Style.trayListItemIconSize * 0.6
-            readonly property int warningWhiteSpace: Style.trayListItemIconSize - warningIconSize
 
             anchors.top: trayWindowHeader.bottom
             anchors.left: trayWindowMainItem.left
@@ -274,6 +272,8 @@ ApplicationWindow {
             anchors.rightMargin: Style.trayHorizontalMargin
 
             visible: UserModel.hasSyncErrors
+                     && !(UserModel.syncErrorUserCount === 1
+                          && UserModel.firstSyncErrorUserId === UserModel.currentUserId)
             padding: 0
             background: Rectangle {
                 radius: Style.slightlyRoundedButtonRadius
@@ -293,26 +293,15 @@ ApplicationWindow {
 
             contentItem: RowLayout {
                 anchors.fill: parent
-                spacing: Style.trayHorizontalMargin
-
-                Image {
-                    Layout.alignment: Qt.AlignVCenter
-                    Layout.preferredWidth: trayWindowSyncWarning.warningIconSize
-                    Layout.preferredHeight: trayWindowSyncWarning.warningIconSize
-                    Layout.topMargin: Style.trayHorizontalMargin
-                    Layout.rightMargin: trayWindowSyncWarning.warningWhiteSpace * (0.5 + Style.thumbnailImageSizeReduction)
-                    Layout.bottomMargin: Style.trayHorizontalMargin
-                    Layout.leftMargin: Style.trayHorizontalMargin + (trayWindowSyncWarning.warningWhiteSpace * (0.5 - Style.thumbnailImageSizeReduction))
-                    source: "image://svgimage-custom-color/state-warning.svg/" + trayWindowSyncWarning.warningIconColor
-                    fillMode: Image.PreserveAspectFit
-                }
+                spacing: 0
 
                 ColumnLayout {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignVCenter
-                    Layout.topMargin: 8
+                    Layout.topMargin: 4
+                    Layout.leftMargin: Style.trayHorizontalMargin
                     Layout.rightMargin: Style.trayHorizontalMargin
-                    Layout.bottomMargin: 8
+                    Layout.bottomMargin: 4
 
                     EnforcedPlainTextLabel {
                         id: syncWarningText
@@ -321,24 +310,12 @@ ApplicationWindow {
                         font.pixelSize: Style.topLinePixelSize
                         font.bold: true
                         wrapMode: Text.WordWrap
+                        horizontalAlignment: Text.AlignHCenter
                         text: {
-                            if (!UserModel.firstSyncErrorUser) {
-                                return "";
+                            if (UserModel.syncErrorUserCount <= 1) {
+                                return qsTr("Issue with account %1").arg(UserModel.firstSyncErrorUser ? UserModel.firstSyncErrorUser.name : "");
                             }
-                            const remaining = UserModel.syncErrorUserCount - 1;
-                            if (remaining <= 0) {
-                                return qsTr("%1 on %2")
-                                    .arg(UserModel.firstSyncErrorUser.name)
-                                    .arg(UserModel.firstSyncErrorUser.server);
-                            }
-                            if (remaining === 1) {
-                                return qsTr("%1 on %2 and one other account")
-                                    .arg(UserModel.firstSyncErrorUser.name)
-                                    .arg(UserModel.firstSyncErrorUser.server);
-                            }
-                            return qsTr("%1 on %2 and %n other accounts", "", remaining)
-                                .arg(UserModel.firstSyncErrorUser.name)
-                                .arg(UserModel.firstSyncErrorUser.server);
+                            return qsTr("Issues with several accounts");
                         }
                     }
                 }
