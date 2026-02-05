@@ -1532,7 +1532,27 @@ void User::submitAssistantQuestion(const QString &question)
 
 void User::clearAssistantResponse()
 {
-    if (_assistantResponse.isEmpty() && _assistantError.isEmpty() && _assistantQuestion.isEmpty() && _assistantMessages.isEmpty()) {
+    const auto hadAssistantData = !_assistantResponse.isEmpty()
+        || !_assistantError.isEmpty()
+        || !_assistantQuestion.isEmpty()
+        || !_assistantMessages.isEmpty();
+
+    if (_assistantPollTimer.isActive()) {
+        _assistantPollTimer.stop();
+    }
+
+    const auto taskIdToDelete = _assistantTaskId;
+    _assistantTaskId = -1;
+
+    if (_assistantRequestInProgress) {
+        _assistantRequestInProgress = false;
+        emit assistantRequestInProgressChanged();
+    }
+
+    if (!hadAssistantData) {
+        if (_assistantConnector && taskIdToDelete > 0) {
+            _assistantConnector->deleteTask(taskIdToDelete);
+        }
         return;
     }
     _assistantQuestion.clear();
@@ -1543,6 +1563,9 @@ void User::clearAssistantResponse()
     emit assistantResponseChanged();
     emit assistantErrorChanged();
     emit assistantMessagesChanged();
+    if (_assistantConnector && taskIdToDelete > 0) {
+        _assistantConnector->deleteTask(taskIdToDelete);
+    }
 }
 
 void User::slotAssistantPoll()
