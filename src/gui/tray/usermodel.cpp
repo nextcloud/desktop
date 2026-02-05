@@ -17,6 +17,7 @@
 #include "notificationconfirmjob.h"
 #include "logger.h"
 #include "guiutility.h"
+#include "syncresult.h"
 #include "syncfileitem.h"
 #include "systray.h"
 #include "tray/activitylistmodel.h"
@@ -33,6 +34,7 @@
 #include <QPainter>
 #include <QPushButton>
 #include <QDateTime>
+#include <theme.h>
 
 // time span in milliseconds which has to be between two
 // refreshes of the notifications
@@ -41,6 +43,82 @@
 namespace {
 constexpr qint64 expiredActivitiesCheckIntervalMsecs = 1000 * 60;
 constexpr qint64 activityDefaultExpirationTimeMsecs = 1000 * 60 * 10;
+
+struct SyncStatusInfo {
+    QUrl icon;
+    bool ok = true;
+};
+
+OCC::SyncResult::Status determineSyncStatus(const OCC::SyncResult &syncResult)
+{
+    const auto status = syncResult.status();
+
+    if (status == OCC::SyncResult::Success || status == OCC::SyncResult::Problem) {
+        if (syncResult.hasUnresolvedConflicts()) {
+            return OCC::SyncResult::Problem;
+        }
+        return OCC::SyncResult::Success;
+    } else if (status == OCC::SyncResult::SyncPrepare || status == OCC::SyncResult::Undefined) {
+        return OCC::SyncResult::SyncRunning;
+    }
+    return status;
+}
+
+SyncStatusInfo syncStatusForAccount(const OCC::AccountStatePtr &accountState)
+{
+    if (!accountState || !accountState->isConnected()) {
+        return {OCC::Theme::instance()->offline(), false};
+    }
+
+    bool hasError = false;
+    bool hasWarning = false;
+    bool hasPaused = false;
+    bool hasSyncing = false;
+    for (const auto &folder : OCC::FolderMan::instance()->map()) {
+        if (!folder || folder->accountState() != accountState.data()) {
+            continue;
+        }
+
+        const auto state = determineSyncStatus(folder->syncResult());
+
+        switch (state) {
+        case OCC::SyncResult::Error:
+        case OCC::SyncResult::SetupError:
+            hasError = true;
+            break;
+        case OCC::SyncResult::Problem:
+        case OCC::SyncResult::Undefined:
+            hasWarning = true;
+            break;
+        case OCC::SyncResult::Paused:
+        case OCC::SyncResult::SyncAbortRequested:
+            hasPaused = true;
+            break;
+        case OCC::SyncResult::SyncRunning:
+        case OCC::SyncResult::NotYetStarted:
+            hasSyncing = true;
+            break;
+        case OCC::SyncResult::Success:
+        case OCC::SyncResult::SyncPrepare:
+            break;
+        }
+    }
+
+    if (hasError) {
+        return {OCC::Theme::instance()->error(), false};
+    }
+    if (hasWarning) {
+        return {OCC::Theme::instance()->warning(), false};
+    }
+    if (hasPaused) {
+        return {OCC::Theme::instance()->pause(), false};
+    }
+    if (hasSyncing) {
+        return {OCC::Theme::instance()->sync(), false};
+    }
+
+    return {OCC::Theme::instance()->ok(), true};
+}
 }
 
 namespace OCC {
@@ -122,6 +200,18 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
             showDesktopNotification(certificateNeedMigration);
         }
     });
+
+    const auto folderMan = FolderMan::instance();
+    connect(folderMan, &FolderMan::folderSyncStateChange, this, [this](const Folder *folder) {
+        if (!folder || folder->accountState() == _account.data()) {
+            updateSyncStatus();
+        }
+    });
+    connect(folderMan, &FolderMan::folderListChanged, this, [this](const Folder::Map &) {
+        updateSyncStatus();
+    });
+    connect(_account.data(), &AccountState::isConnectedChanged, this, &User::updateSyncStatus);
+    updateSyncStatus();
 }
 
 void User::checkNotifiedNotifications()
@@ -1041,6 +1131,28 @@ QString User::statusEmoji() const
     return _account->account()->userStatusConnector()->userStatus().icon();
 }
 
+QUrl User::syncStatusIcon() const
+{
+    return _syncStatusIcon;
+}
+
+bool User::syncStatusOk() const
+{
+    return _syncStatusOk;
+}
+
+void User::updateSyncStatus()
+{
+    const auto info = syncStatusForAccount(_account);
+    if (_syncStatusIcon == info.icon && _syncStatusOk == info.ok) {
+        return;
+    }
+
+    _syncStatusIcon = info.icon;
+    _syncStatusOk = info.ok;
+    emit syncStatusChanged();
+}
+
 bool User::serverHasUserStatus() const
 {
     return _account->account()->capabilities().userStatus();
@@ -1445,6 +1557,11 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
             emit dataChanged(index(row, 0), index(row, 0), { UserModel::IsConnectedRole });
         });
 
+        connect(u, &User::syncStatusChanged, this, [this, row] {
+            emit dataChanged(index(row, 0), index(row, 0), { UserModel::SyncStatusIconRole,
+                                                            UserModel::SyncStatusOkRole });
+        });
+
         _users << u;
         if (isCurrent || (_currentUserId < 0 && !_init)) {
             setCurrentUserId(_users.size() - 1);
@@ -1662,6 +1779,12 @@ QVariant UserModel::data(const QModelIndex &index, int role) const
     case RemoveAccountTextRole:
         result = _users[index.row()]->isPublicShareLink() ? tr("Leave share") : tr("Remove account");
         break;
+    case SyncStatusIconRole:
+        result = _users[index.row()]->syncStatusIcon();
+        break;
+    case SyncStatusOkRole:
+        result = _users[index.row()]->syncStatusOk();
+        break;
     }
 
     return result;
@@ -1684,6 +1807,8 @@ QHash<int, QByteArray> UserModel::roleNames() const
     roles[IdRole] = "id";
     roles[CanLogoutRole] = "canLogout";
     roles[RemoveAccountTextRole] = "removeAccountText";
+    roles[SyncStatusIconRole] = "syncStatusIcon";
+    roles[SyncStatusOkRole] = "syncStatusOk";
     return roles;
 }
 
@@ -1904,4 +2029,3 @@ QHash<int, QByteArray> UserAppsModel::roleNames() const
     return roles;
 }
 }
-

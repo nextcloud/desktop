@@ -143,6 +143,35 @@ AbstractButton {
             Layout.fillWidth: true
         }
 
+        Item {
+            id: syncStatusColumn
+            Layout.preferredWidth: Style.headerButtonIconSize
+            Layout.fillHeight: true
+
+            Rectangle {
+                id: syncStatusIndicatorBackground
+                anchors.centerIn: parent
+                visible: !model.syncStatusOk
+                width: syncStatusIndicator.sourceSize.width + Style.trayFolderStatusIndicatorSizeOffset
+                height: width
+                color: "white"
+                radius: width * Style.trayFolderStatusIndicatorRadiusFactor
+            }
+
+            Image {
+                id: syncStatusIndicator
+                visible: !model.syncStatusOk
+                source: model.syncStatusIcon
+                cache: false
+                anchors.centerIn: syncStatusIndicatorBackground
+                sourceSize.width: Style.accountAvatarStateIndicatorSize
+                sourceSize.height: Style.accountAvatarStateIndicatorSize
+
+                Accessible.role: Accessible.Indicator
+                Accessible.name: qsTr("Account sync status requires attention")
+            }
+        }
+
         Button {
             id: userMoreButton
             Layout.preferredWidth: Style.headerButtonIconSize
