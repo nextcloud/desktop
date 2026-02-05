@@ -172,6 +172,9 @@ public:
     [[nodiscard]] bool showInExplorerNavigationPane() const;
     void setShowInExplorerNavigationPane(bool show);
 
+    [[nodiscard]] bool showCloudProvidersInFileManager() const;
+    void setShowCloudProvidersInFileManager(bool show);
+
     [[nodiscard]] int timeout() const;
     [[nodiscard]] qint64 chunkSize() const;
     [[nodiscard]] qint64 maxChunkSize() const;
@@ -300,6 +303,7 @@ public:
     static constexpr char showQuotaWarningNotificationsC[] = "showQuotaWarningNotifications";
     static constexpr char showChatNotificationsC[] = "showChatNotifications";
     static constexpr char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
+    static constexpr char showCloudProvidersInFileManagerC[] = "showCloudProvidersInFileManager";
     static constexpr char confirmExternalStorageC[] = "confirmExternalStorage";
     static constexpr char useNewBigFolderSizeLimitC[] = "useNewBigFolderSizeLimit";
     static constexpr char newBigFolderSizeLimitC[] = "newBigFolderSizeLimit";
