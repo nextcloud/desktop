@@ -53,7 +53,8 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         } else {
             logger.debug("Providing enumerator for item with identifier.", [.item: enumeratedItemIdentifier])
             enumeratedItemMetadata = dbManager.itemMetadata(
-                enumeratedItemIdentifier)
+                enumeratedItemIdentifier
+            )
 
             if let enumeratedItemMetadata {
                 serverUrl = enumeratedItemMetadata.serverUrl + "/" + enumeratedItemMetadata.fileName

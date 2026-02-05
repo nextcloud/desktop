@@ -571,11 +571,11 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     public var pagination: Bool
     public var expectedEnumerationPaginationTokens: [String: String] = [:]
     public var forceNextPageOnLastContentPage: Bool = false
-    
-    // Track the number of read operations performed
+
+    /// Track the number of read operations performed
     public var readOperationCount: Int = 0
 
-    // Handler to track enumerate calls
+    /// Handler to track enumerate calls
     public var enumerateCallHandler: ((String, EnumerateDepth, Bool, [String], Data?, Account, NKRequestOptions, @escaping (URLSessionTask) -> Void) -> Void)?
 
     public init(
@@ -1069,7 +1069,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     ) async -> (account: String, files: [NKFile], data: AFDataResponse<Data>?, error: NKError) {
         // Increment read operation counter
         readOperationCount += 1
-        
+
         var remotePath = remotePath
 
         if remotePath.last == "." {

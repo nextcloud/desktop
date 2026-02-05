@@ -345,7 +345,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // --- Scenario B: Follow-up Paginated Request (isFollowUpPaginatedRequest == true) ---
 
         // 4. Act: Call readServerUrl for the second page using the received page token.
-        let followUpPage = NSFileProviderPage(initialNextPage!.token!.data(using: .utf8)!)
+        let followUpPage = try NSFileProviderPage(XCTUnwrap(initialNextPage?.token?.data(using: .utf8)))
 
         let (followUpMetadatas, _, _, _, finalNextPage, followUpError) = await Enumerator.readServerUrl(
             remoteFolder.remotePath,
@@ -377,7 +377,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         )
     }
 
-    func testHandlePagedReadResults() throws {
+    func testHandlePagedReadResults() {
         // 1. Arrange
         let dbManager = Self.dbManager
         let db = dbManager.ncDatabase()
@@ -485,7 +485,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         // Create a sync anchor from our date.
         let formatter = ISO8601DateFormatter()
-        let anchor = NSFileProviderSyncAnchor(formatter.string(from: anchorDate).data(using: .utf8)!)
+        let anchor = try NSFileProviderSyncAnchor(XCTUnwrap(formatter.string(from: anchorDate).data(using: .utf8)))
 
         // Setup remote interface with the items we're testing
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
@@ -574,7 +574,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // 1. Setup: Create a directory hierarchy with a parent and child directory
         let db = Self.dbManager.ncDatabase()
         debugPrint(db)
-        
+
         // Create a child directory within remoteFolder
         let remoteChildFolder = MockRemoteItem(
             identifier: "childFolder",
@@ -590,33 +590,33 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         remoteChildFolder.parent = remoteFolder
         remoteFolder.children.append(remoteChildFolder)
-        
+
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
-        
+
         // Add parent folder to database with a specific ETag and mark as visited
         var parentFolderMetadata = remoteFolder.toItemMetadata(account: Self.account)
         parentFolderMetadata.visitedDirectory = true
         parentFolderMetadata.etag = remoteFolder.versionIdentifier // Current ETag matches server
         Self.dbManager.addItemMetadata(parentFolderMetadata)
-        
+
         // Add child folder to database and mark as visited (materialized)
         var childFolderMetadata = remoteChildFolder.toItemMetadata(account: Self.account)
         childFolderMetadata.visitedDirectory = true
         childFolderMetadata.etag = remoteChildFolder.versionIdentifier
         Self.dbManager.addItemMetadata(childFolderMetadata)
-        
+
         // Create a sync anchor from before now
         let anchorDate = Date().addingTimeInterval(-300) // 5 minutes ago
         let formatter = ISO8601DateFormatter()
-        let anchor = NSFileProviderSyncAnchor(formatter.string(from: anchorDate).data(using: .utf8)!)
-        
+        let anchor = try NSFileProviderSyncAnchor(XCTUnwrap(formatter.string(from: anchorDate).data(using: .utf8)))
+
         // Update sync times to be after the anchor (so they would be checked)
         let now = Date()
         parentFolderMetadata.syncTime = now
         childFolderMetadata.syncTime = now
         Self.dbManager.addItemMetadata(parentFolderMetadata)
         Self.dbManager.addItemMetadata(childFolderMetadata)
-        
+
         // 2. Act: Enumerate changes for the working set
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .workingSet,
@@ -627,24 +627,24 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         )
 
         let observer = MockChangeObserver(enumerator: enumerator)
-        
+
         // Track how many times the remote interface is queried for each directory
         let initialReadCount = remoteInterface.readOperationCount
-        
+
         try await observer.enumerateChanges(from: anchor)
-        
+
         // 3. Assert: Verify optimization behavior
         XCTAssertNil(observer.error, "Enumeration should complete without error.")
-        
+
         // Since the parent folder's ETag hasn't changed, the child folder should NOT
         // trigger a separate server request. The enumerator should recognize that
         // an unchanged parent ETag means no descendants have changed.
-        
+
         // The parent folder should be checked (1 read), but the child should not
         // trigger an additional read since parent ETag is unchanged
         let finalReadCount = remoteInterface.readOperationCount
         let additionalReads = finalReadCount - initialReadCount
-        
+
         // We expect reads for materialized directories, but child should be skipped
         // because parent ETag is unchanged
         XCTAssertLessThanOrEqual(
@@ -652,7 +652,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             1,
             "Child directory should not be enumerated when parent ETag is unchanged"
         )
-        
+
         // Verify that no changes were reported for either folder since nothing changed
         XCTAssertEqual(
             observer.changedItems.count,
@@ -664,7 +664,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             0,
             "No items should be reported as deleted"
         )
-        
+
         // Verify the metadata in the database remains correct
         let finalParentMetadata = try XCTUnwrap(
             Self.dbManager.itemMetadata(ocId: remoteFolder.identifier)
@@ -674,7 +674,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             remoteFolder.versionIdentifier,
             "Parent folder ETag should remain unchanged"
         )
-        
+
         let finalChildMetadata = try XCTUnwrap(
             Self.dbManager.itemMetadata(ocId: remoteChildFolder.identifier)
         )
@@ -1107,9 +1107,9 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(storedItemC.fileSystemFlags.contains(.userWritable))
     }
 
-    // File Provider system will panic if we give it an NSFileProviderItem with an empty filename.
-    // Test that we have a fallback to avoid this, even if something catastrophic happens in the
-    // server and the file has no filename
+    /// File Provider system will panic if we give it an NSFileProviderItem with an empty filename.
+    /// Test that we have a fallback to avoid this, even if something catastrophic happens in the
+    /// server and the file has no filename
     func testEnsureNoEmptyItemNameEnumeration() async throws {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db) // Avoid build-time warning about unused variable, ensure compiler won't free
@@ -1326,8 +1326,8 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         )
     }
 
-    // Tests situation where we are enumerating files and we can no longer find the parent item
-    // in the database. So we need to simulate a situation where this takes place.
+    /// Tests situation where we are enumerating files and we can no longer find the parent item
+    /// in the database. So we need to simulate a situation where this takes place.
     func testCorrectEnumerateFileWithMissingParentInDb() async throws {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db)
