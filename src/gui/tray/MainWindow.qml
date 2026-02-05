@@ -262,6 +262,9 @@ ApplicationWindow {
             onFeaturedAppButtonClicked: {
                 if (UserModel.currentUser.isAssistantEnabled) {
                     trayWindowMainItem.showAssistantPanel = !trayWindowMainItem.showAssistantPanel
+                    if (trayWindowMainItem.showAssistantPanel) {
+                        assistantQuestionInput.forceActiveFocus()
+                    }
                 } else {
                     UserModel.openCurrentAccountFeaturedApp()
                 }
@@ -270,6 +273,7 @@ ApplicationWindow {
 
         UnifiedSearchInputContainer {
             id: trayWindowUnifiedSearchInputContainer
+            visible: !trayWindowMainItem.showAssistantPanel
 
             property bool activateSearchFocus: activeFocus
 
@@ -287,6 +291,56 @@ ApplicationWindow {
             onClearText: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = "" }
             onActiveFocusChanged: activateSearchFocus = activeFocus && focusReason !== Qt.TabFocusReason && focusReason !== Qt.BacktabFocusReason
             Keys.onEscapePressed: activateSearchFocus = false
+        }
+
+        RowLayout {
+            id: assistantInputContainer
+            visible: trayWindowMainItem.showAssistantPanel
+
+            function submitQuestion() {
+                const question = assistantQuestionInput.text.trim()
+                if (question.length === 0) {
+                    return
+                }
+
+                UserModel.currentUser.submitAssistantQuestion(question)
+                assistantQuestionInput.text = ""
+            }
+
+            anchors.top: trayWindowHeader.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.topMargin: Style.trayHorizontalMargin
+            anchors.leftMargin: Style.trayHorizontalMargin
+            anchors.rightMargin: Style.trayHorizontalMargin
+            spacing: Style.extraSmallSpacing
+
+            TextField {
+                id: assistantQuestionInput
+                Layout.fillWidth: true
+                Layout.preferredHeight: Math.round(trayWindowUnifiedSearchInputContainer.height * 0.8)
+                placeholderText: qsTr("Ask Assistant…")
+                enabled: UserModel.currentUser.isConnected && !UserModel.currentUser.assistantRequestInProgress
+                onAccepted: assistantInputContainer.submitQuestion()
+            }
+
+            Button {
+                id: assistantResetButton
+                Layout.preferredHeight: assistantQuestionInput.height
+                Layout.preferredWidth: assistantQuestionInput.height
+                icon.source: "image://svgimage-custom-color/reply.svg/" + palette.windowText
+                display: AbstractButton.IconOnly
+
+                onClicked: {
+                    UserModel.currentUser.clearAssistantResponse()
+                    assistantQuestionInput.text = ""
+                    assistantQuestionInput.forceActiveFocus()
+                }
+
+                Accessible.role: Accessible.Button
+                Accessible.name: qsTr("Start a new assistant chat")
+                Accessible.onPressAction: assistantResetButton.clicked()
+            }
         }
 
         Connections {
@@ -395,14 +449,14 @@ ApplicationWindow {
         Rectangle {
             id: bottomUnifiedSearchInputSeparator
 
-            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
+            anchors.top: trayWindowMainItem.showAssistantPanel ? assistantInputContainer.bottom : trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.topMargin: Style.trayHorizontalMargin
 
             height: 1
             color: palette.dark
-            visible: trayWindowMainItem.isUnifiedSearchActive
+            visible: trayWindowMainItem.isUnifiedSearchActive || trayWindowMainItem.showAssistantPanel
         }
 
         ErrorBox {
@@ -520,7 +574,7 @@ ApplicationWindow {
             accentColor: Style.accentColor
             visible: !trayWindowMainItem.isUnifiedSearchActive
 
-            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
+            anchors.top: trayWindowMainItem.showAssistantPanel ? assistantInputContainer.bottom : trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
         }
@@ -613,6 +667,7 @@ ApplicationWindow {
         }
     } // Item trayWindowMainItem
 }
+
 
 
 
