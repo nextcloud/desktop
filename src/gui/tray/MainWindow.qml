@@ -259,10 +259,12 @@ ApplicationWindow {
             height: Style.trayWindowHeaderHeight
         }
 
-        UnifiedSearchInputContainer {
-            id: trayWindowUnifiedSearchInputContainer
+        Button {
+            id: trayWindowSyncWarning
 
-            property bool activateSearchFocus: activeFocus
+            readonly property color warningIconColor: Qt.rgba(0.95, 0.73, 0.2, 1)
+            readonly property int warningIconSize: Style.trayListItemIconSize * 0.6
+            readonly property int warningWhiteSpace: Style.trayListItemIconSize - warningIconSize
 
             anchors.top: trayWindowHeader.bottom
             anchors.left: trayWindowMainItem.left
@@ -271,29 +273,20 @@ ApplicationWindow {
             anchors.leftMargin: Style.trayHorizontalMargin
             anchors.rightMargin: Style.trayHorizontalMargin
 
-            text: UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
-            readOnly: !UserModel.currentUser.isConnected || UserModel.currentUser.unifiedSearchResultsListModel.currentFetchMoreInProgressProviderId
-            isSearchInProgress: UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress
-            onTextEdited: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = trayWindowUnifiedSearchInputContainer.text }
-            onClearText: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = "" }
-            onActiveFocusChanged: activateSearchFocus = activeFocus && focusReason !== Qt.TabFocusReason && focusReason !== Qt.BacktabFocusReason
-            Keys.onEscapePressed: activateSearchFocus = false
-        }
-
-        Button {
-            id: trayWindowSyncWarning
-
-            readonly property color warningIconColor: Qt.rgba(0.95, 0.73, 0.2, 1)
-            readonly property int warningIconSize: Style.trayListItemIconSize * 0.6
-            readonly property int warningWhiteSpace: Style.trayListItemIconSize - warningIconSize
-
-            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
-            anchors.left: trayWindowMainItem.left
-            anchors.right: trayWindowMainItem.right
-
             visible: UserModel.hasSyncErrors
             padding: 0
-            background: null
+            background: Rectangle {
+                radius: Style.slightlyRoundedButtonRadius
+                color: Qt.rgba(trayWindowSyncWarning.warningIconColor.r,
+                               trayWindowSyncWarning.warningIconColor.g,
+                               trayWindowSyncWarning.warningIconColor.b,
+                               0.2)
+                border.width: Style.normalBorderWidth
+                border.color: Qt.rgba(trayWindowSyncWarning.warningIconColor.r,
+                                      trayWindowSyncWarning.warningIconColor.g,
+                                      trayWindowSyncWarning.warningIconColor.b,
+                                      0.6)
+            }
 
             Accessible.name: syncWarningText.text
             Accessible.role: Accessible.Button
@@ -358,12 +351,33 @@ ApplicationWindow {
             }
         }
 
-        Rectangle {
-            id: bottomUnifiedSearchInputSeparator
+        UnifiedSearchInputContainer {
+            id: trayWindowUnifiedSearchInputContainer
+
+            property bool activateSearchFocus: activeFocus
 
             anchors.top: trayWindowSyncWarning.visible
                          ? trayWindowSyncWarning.bottom
-                         : trayWindowUnifiedSearchInputContainer.bottom
+                         : trayWindowHeader.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.topMargin: Style.trayHorizontalMargin
+            anchors.leftMargin: Style.trayHorizontalMargin
+            anchors.rightMargin: Style.trayHorizontalMargin
+
+            text: UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
+            readOnly: !UserModel.currentUser.isConnected || UserModel.currentUser.unifiedSearchResultsListModel.currentFetchMoreInProgressProviderId
+            isSearchInProgress: UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress
+            onTextEdited: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = trayWindowUnifiedSearchInputContainer.text }
+            onClearText: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = "" }
+            onActiveFocusChanged: activateSearchFocus = activeFocus && focusReason !== Qt.TabFocusReason && focusReason !== Qt.BacktabFocusReason
+            Keys.onEscapePressed: activateSearchFocus = false
+        }
+
+        Rectangle {
+            id: bottomUnifiedSearchInputSeparator
+
+            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.topMargin: Style.trayHorizontalMargin
@@ -488,9 +502,7 @@ ApplicationWindow {
             accentColor: Style.accentColor
             visible: !trayWindowMainItem.isUnifiedSearchActive
 
-            anchors.top: trayWindowSyncWarning.visible
-                         ? trayWindowSyncWarning.bottom
-                         : trayWindowUnifiedSearchInputContainer.bottom
+            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
         }
