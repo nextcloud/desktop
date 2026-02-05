@@ -234,9 +234,8 @@ ApplicationWindow {
                                              || unifiedSearchResultsErrorLabel.visible
                                              || unifiedSearchResultsListView.visible
                                              || trayWindowUnifiedSearchInputContainer.activateSearchFocus
+        property bool showAssistantPanel: false
         property bool isAssistantActive: assistantPromptLoader.active
-                                         && assistantPromptLoader.item
-                                         && assistantPromptLoader.item.isAssistantActive
 
         anchors.fill: parent
         anchors.margins: Style.trayWindowBorderWidth
@@ -260,6 +259,14 @@ ApplicationWindow {
             anchors.left: parent.left
             anchors.right: parent.right
             height: Style.trayWindowHeaderHeight
+
+            onFeaturedAppButtonClicked: {
+                if (UserModel.currentUser.isAssistantEnabled) {
+                    trayWindowMainItem.showAssistantPanel = !trayWindowMainItem.showAssistantPanel
+                } else {
+                    UserModel.openCurrentAccountFeaturedApp()
+                }
+            }
         }
 
         Button {
@@ -354,11 +361,22 @@ ApplicationWindow {
             Keys.onEscapePressed: activateSearchFocus = false
         }
 
+        Connections {
+            target: UserModel.currentUser
+            function onAssistantStateChanged() {
+                if (!UserModel.currentUser.isAssistantEnabled) {
+                    trayWindowMainItem.showAssistantPanel = false
+                }
+            }
+        }
+
         Loader {
             id: assistantPromptLoader
 
-            active: UserModel.currentUser.isAssistantEnabled && !trayWindowMainItem.isUnifiedSearchActive
-            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
+            active: UserModel.currentUser.isAssistantEnabled
+                    && trayWindowMainItem.showAssistantPanel
+                    && !trayWindowMainItem.isUnifiedSearchActive
+            anchors.top: syncStatus.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
             anchors.topMargin: Style.trayHorizontalMargin
@@ -371,31 +389,10 @@ ApplicationWindow {
                 id: assistantPrompt
                 spacing: Style.smallSpacing
 
-                property bool isAssistantActive: assistantQuestionInput.activeFocus
-                                                 || assistantConversationList.count > 0
-                                                 || assistantStatusLabel.visible
-                                                 || assistantErrorLabel.visible
-
-                function submitQuestion() {
-                    if (assistantQuestionInput.text.trim().length === 0) {
-                        return;
-                    }
-                    UserModel.currentUser.submitAssistantQuestion(assistantQuestionInput.text)
-                    assistantQuestionInput.text = ""
-                }
-
-                TextField {
-                    id: assistantQuestionInput
-                    Layout.fillWidth: true
-                    placeholderText: qsTr("Ask Assistant…")
-                    enabled: UserModel.currentUser.isConnected && !UserModel.currentUser.assistantRequestInProgress
-                    onAccepted: assistantPrompt.submitQuestion()
-                }
-
                 ListView {
                     id: assistantConversationList
                     Layout.fillWidth: true
-                    Layout.fillHeight: assistantPrompt.isAssistantActive
+                    Layout.fillHeight: true
                     clip: true
                     spacing: Style.smallSpacing
                     visible: count > 0
@@ -593,9 +590,9 @@ ApplicationWindow {
             id: syncStatus
 
             accentColor: Style.accentColor
-            visible: !trayWindowMainItem.isUnifiedSearchActive && !trayWindowMainItem.isAssistantActive
+            visible: !trayWindowMainItem.isUnifiedSearchActive
 
-            anchors.top: assistantPromptLoader.active ? assistantPromptLoader.bottom : trayWindowUnifiedSearchInputContainer.bottom
+            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
         }
@@ -607,7 +604,7 @@ ApplicationWindow {
             anchors.bottom: syncStatus.bottom
             height: 1
             color: palette.dark
-            visible: !trayWindowMainItem.isUnifiedSearchActive && !trayWindowMainItem.isAssistantActive
+            visible: !trayWindowMainItem.isUnifiedSearchActive
         }
 
         Loader {
@@ -688,5 +685,6 @@ ApplicationWindow {
         }
     } // Item trayWindowMainItem
 }
+
 
 
