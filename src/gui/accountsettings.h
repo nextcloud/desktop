@@ -27,7 +27,7 @@ class QModelIndex;
 class QNetworkReply;
 class QListWidgetItem;
 class QLabel;
-class QToolButton;
+class QPushButton;
 class QIcon;
 
 namespace OCC {
@@ -153,7 +153,7 @@ private:
     bool _menuShown = false;
 
     QHash<QString, QMetaObject::Connection> _folderConnections;
-    QHash<QAction *, QToolButton *> _encryptionMessageButtons;
+    QHash<QAction *, QPushButton *> _encryptionMessageButtons;
 };
 
 } // namespace OCC
