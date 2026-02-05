@@ -19,7 +19,7 @@ The dedicated [`.tx/config`](.tx/config) file is used.
 Run this in the "NextcloudIntegration" project folder of your repository clone:
 
 ```sh
-tx pull --force --all --mode=reviewed --minimum-perc=50
+tx pull --force --all --mode=translator
 ```
 
 Do not commit the changes string catalogs, they need to be processed first.
@@ -34,7 +34,7 @@ Use it for all updated Xcode string catalogs.
 ### Summary
 
 ```sh
-tx pull --force --all --mode=reviewed --minimum-perc=50
+tx pull --force --all --mode=translator
 swift run --package-path=../TransifexStringCatalogSanitizer TransifexStringCatalogSanitizer ./FileProviderExt/Localizable.xcstrings
 swift run --package-path=../TransifexStringCatalogSanitizer TransifexStringCatalogSanitizer ./FileProviderUIExt/Localizable.xcstrings
 ```
