@@ -93,6 +93,7 @@ ApplicationWindow {
                 trayWindowHeader.currentAccountHeaderButton.accountMenu.close();
                 trayWindowHeader.appsMenu.close();
                 trayWindowHeader.openLocalFolderButton.closeMenu()
+                UserModel.refreshSyncErrorUsers()
             }
         }
 

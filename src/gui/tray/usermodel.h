@@ -286,6 +286,7 @@ public slots:
     void openCurrentAccountServer();
     void openCurrentAccountFolderFromTrayInfo(const QString &fullRemotePath);
     void openCurrentAccountFeaturedApp();
+    Q_INVOKABLE void refreshSyncErrorUsers();
     void setCurrentUserId(const int id);
     void login(const int id);
     void logout(const int id);

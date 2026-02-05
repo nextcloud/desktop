@@ -1590,6 +1590,10 @@ void UserModel::openCurrentAccountFeaturedApp()
     }
 }
 
+void UserModel::refreshSyncErrorUsers()
+{
+    updateSyncErrorUsers();
+}
 
 void UserModel::setCurrentUserId(const int id)
 {
