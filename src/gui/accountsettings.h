@@ -54,7 +54,13 @@ class AccountSettings : public QWidget
 public:
     explicit AccountSettings(AccountState *accountState, QWidget *parent = nullptr);
     ~AccountSettings() override;
-    [[nodiscard]] QSize sizeHint() const override { return ownCloudGui::settingsDialogSize(); }
+    [[nodiscard]] QSize sizeHint() const override
+    {
+        return {
+            ownCloudGui::settingsDialogSize().width(),
+            QWidget::sizeHint().height()
+        };
+    }
     bool canEncryptOrDecrypt(const FolderStatusModel::SubFolderInfo* folderInfo);
     [[nodiscard]] OCC::AccountState *accountsState() const { return _accountState; }
 
