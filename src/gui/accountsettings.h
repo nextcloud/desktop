@@ -154,6 +154,8 @@ private:
 
     QHash<QString, QMetaObject::Connection> _folderConnections;
     QHash<QAction *, QPushButton *> _encryptionMessageButtons;
+
+    QString _spaceUsageText;
 };
 
 } // namespace OCC
