@@ -2069,13 +2069,6 @@ void UserModel::openCurrentAccountFeaturedApp()
         return;
     }
 
-    if (currentUser()->isNcAssistantEnabled()) {
-        auto serverUrl = currentUser()->server(false);
-        const auto assistanceUrl = serverUrl.append("/apps/assistant/");
-        QDesktopServices::openUrl(QUrl::fromUserInput(assistanceUrl));
-        return;
-    }
-
     if (const auto talkApp = currentUser()->talkApp()) {
         Utility::openBrowser(talkApp->url());
     }
