@@ -330,23 +330,47 @@ ApplicationWindow {
 
                     model: UserModel.currentUser.assistantMessages
 
-                    delegate: ColumnLayout {
+                    delegate: Item {
                         width: assistantConversationList.width
-                        spacing: Style.extraSmallSpacing
+                        implicitHeight: messageRow.implicitHeight
 
-                        Label {
-                            Layout.fillWidth: true
-                            text: modelData.role === "assistant" ? qsTr("Assistant") : qsTr("You")
-                            color: palette.windowText
-                            font.bold: true
-                        }
+                        readonly property bool isAssistantMessage: modelData.role === "assistant"
 
-                        Text {
-                            Layout.fillWidth: true
-                            text: modelData.text
-                            wrapMode: Text.Wrap
-                            color: palette.windowText
-                            textFormat: Text.MarkdownText
+                        RowLayout {
+                            id: messageRow
+
+                            width: parent.width
+                            spacing: Style.smallSpacing
+
+                            Item {
+                                Layout.fillWidth: true
+                                visible: !isAssistantMessage
+                            }
+
+                            Rectangle {
+                                radius: Style.smallSpacing
+                                color: isAssistantMessage ? palette.base : palette.alternateBase
+                                border.color: palette.mid
+
+                                Layout.maximumWidth: assistantConversationList.width * 0.8
+                                implicitHeight: messageText.implicitHeight + (Style.smallSpacing * 2)
+
+                                Text {
+                                    id: messageText
+
+                                    anchors.fill: parent
+                                    anchors.margins: Style.smallSpacing
+                                    text: modelData.text
+                                    wrapMode: Text.Wrap
+                                    color: palette.windowText
+                                    textFormat: Text.MarkdownText
+                                }
+                            }
+
+                            Item {
+                                Layout.fillWidth: true
+                                visible: isAssistantMessage
+                            }
                         }
                     }
                 }
@@ -592,4 +616,5 @@ ApplicationWindow {
         }
     } // Item trayWindowMainItem
 }
+
 
