@@ -23,8 +23,113 @@
 #include <QDialogButtonBox>
 #include <QPushButton>
 #include <QStyle>
+#include <QApplication>
+#include <QTimer>
 
 namespace OCC {
+namespace {
+void raiseAppImageDialog(QWidget *widget);
+
+QWidget *appImageDialogParent()
+{
+    if (auto *active = QApplication::activeWindow()) {
+        return active;
+    }
+
+    if (auto *focus = QApplication::focusWidget()) {
+        return focus->window();
+    }
+
+    return nullptr;
+}
+
+bool attachAndOpenAppImageDialog(QDialog *dialog, const bool removeContextHelpButton, const bool requireParent)
+{
+    if (!dialog || dialog->isVisible()) {
+        return dialog != nullptr;
+    }
+
+    auto *parent = appImageDialogParent();
+    if (requireParent && !parent) {
+        return false;
+    }
+
+    if (parent) {
+        dialog->setParent(parent, dialog->windowFlags());
+        dialog->setWindowModality(Qt::WindowModal);
+    } else {
+        dialog->setWindowModality(Qt::ApplicationModal);
+    }
+
+    auto flags = dialog->windowFlags() | Qt::WindowStaysOnTopHint;
+    if (removeContextHelpButton) {
+        flags &= ~Qt::WindowContextHelpButtonHint;
+    }
+    dialog->setWindowFlags(flags);
+    dialog->open();
+    raiseAppImageDialog(dialog);
+    return true;
+}
+
+void presentAppImageDialog(QDialog *dialog, const bool removeContextHelpButton)
+{
+    if (!dialog) {
+        return;
+    }
+
+    if (attachAndOpenAppImageDialog(dialog, removeContextHelpButton, true)) {
+        return;
+    }
+
+    auto *timer = new QTimer(dialog);
+    timer->setInterval(150);
+    timer->setSingleShot(false);
+    QObject::connect(timer, &QTimer::timeout, dialog, [dialog, removeContextHelpButton, timer]() {
+        if (!dialog) {
+            timer->stop();
+            timer->deleteLater();
+            return;
+        }
+
+        if (attachAndOpenAppImageDialog(dialog, removeContextHelpButton, true)) {
+            timer->stop();
+            timer->deleteLater();
+        }
+    });
+    timer->start();
+
+    QTimer::singleShot(2000, dialog, [dialog, removeContextHelpButton, timer]() {
+        if (!dialog || dialog->isVisible()) {
+            return;
+        }
+
+        attachAndOpenAppImageDialog(dialog, removeContextHelpButton, false);
+        if (timer) {
+            timer->stop();
+            timer->deleteLater();
+        }
+    });
+
+    QObject::connect(qApp, &QApplication::focusChanged, dialog, [dialog]() {
+        if (!dialog || !dialog->isVisible()) {
+            return;
+        }
+
+        raiseAppImageDialog(dialog);
+    });
+}
+
+void raiseAppImageDialog(QWidget *widget)
+{
+    if (!widget) {
+        return;
+    }
+
+    widget->showNormal();
+    widget->raise();
+    widget->activateWindow();
+}
+} // namespace
 
 using namespace Qt::StringLiterals;
 
@@ -204,7 +309,6 @@ void AppImageUpdater::showUpdateErrorDialog(const QString &targetVersion)
 {
     auto *msgBox = new QDialog;
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
-    msgBox->setWindowFlags(msgBox->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     const auto infoIcon = msgBox->style()->standardIcon(QStyle::SP_MessageBoxInformation);
     const auto iconSize = msgBox->style()->pixelMetric(QStyle::PM_MessageBoxIconSize);
@@ -249,7 +353,7 @@ void AppImageUpdater::showUpdateErrorDialog(const QString &targetVersion)
 
     layout->addWidget(bb);
 
-    msgBox->open();
+    presentAppImageDialog(msgBox, true);
 }
 
 bool AppImageUpdater::handleStartup()

@@ -20,6 +20,109 @@
 #include <cstdio>
 
 namespace OCC {
+namespace {
+void raiseUpdaterDialog(QWidget *widget);
+
+QWidget *updaterDialogParent()
+{
+    if (auto *active = QApplication::activeWindow()) {
+        return active;
+    }
+
+    if (auto *focus = QApplication::focusWidget()) {
+        return focus->window();
+    }
+
+    return nullptr;
+}
+
+bool attachAndOpenUpdaterDialog(QDialog *dialog, const bool removeContextHelpButton, const bool requireParent)
+{
+    if (!dialog || dialog->isVisible()) {
+        return dialog != nullptr;
+    }
+
+    auto *parent = updaterDialogParent();
+    if (requireParent && !parent) {
+        return false;
+    }
+
+    if (parent) {
+        dialog->setParent(parent, dialog->windowFlags());
+        dialog->setWindowModality(Qt::WindowModal);
+    } else {
+        dialog->setWindowModality(Qt::ApplicationModal);
+    }
+
+    auto flags = dialog->windowFlags() | Qt::WindowStaysOnTopHint;
+    if (removeContextHelpButton) {
+        flags &= ~Qt::WindowContextHelpButtonHint;
+    }
+    dialog->setWindowFlags(flags);
+    dialog->open();
+    raiseUpdaterDialog(dialog);
+    return true;
+}
+
+void presentUpdaterDialog(QDialog *dialog, const bool removeContextHelpButton)
+{
+    if (!dialog) {
+        return;
+    }
+
+    if (attachAndOpenUpdaterDialog(dialog, removeContextHelpButton, true)) {
+        return;
+    }
+
+    auto *timer = new QTimer(dialog);
+    timer->setInterval(150);
+    timer->setSingleShot(false);
+    QObject::connect(timer, &QTimer::timeout, dialog, [dialog, removeContextHelpButton, timer]() {
+        if (!dialog) {
+            timer->stop();
+            timer->deleteLater();
+            return;
+        }
+
+        if (attachAndOpenUpdaterDialog(dialog, removeContextHelpButton, true)) {
+            timer->stop();
+            timer->deleteLater();
+        }
+    });
+    timer->start();
+
+    QTimer::singleShot(2000, dialog, [dialog, removeContextHelpButton, timer]() {
+        if (!dialog || dialog->isVisible()) {
+            return;
+        }
+
+        attachAndOpenUpdaterDialog(dialog, removeContextHelpButton, false);
+        if (timer) {
+            timer->stop();
+            timer->deleteLater();
+        }
+    });
+
+    QObject::connect(qApp, &QApplication::focusChanged, dialog, [dialog]() {
+        if (!dialog || !dialog->isVisible()) {
+            return;
+        }
+
+        raiseUpdaterDialog(dialog);
+    });
+}
+
+void raiseUpdaterDialog(QWidget *widget)
+{
+    if (!widget) {
+        return;
+    }
+
+    widget->showNormal();
+    widget->raise();
+    widget->activateWindow();
+}
+} // namespace
 
 UpdaterScheduler::UpdaterScheduler(QObject *parent)
     : QObject(parent)
@@ -104,7 +207,7 @@ bool OCUpdater::performUpdate()
                 slotStartInstaller();
             }
         });
-        messageBoxStartInstaller->open();
+        presentUpdaterDialog(messageBoxStartInstaller, false);
     }
     return false;
 }
@@ -359,7 +462,6 @@ void NSISUpdater::showNoUrlDialog(const UpdateInfo &info)
     // if the version tag is set, there is a newer version.
     auto *msgBox = new QDialog;
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
-    msgBox->setWindowFlags(msgBox->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     QIcon infoIcon = msgBox->style()->standardIcon(QStyle::SP_MessageBoxInformation);
     int iconSize = msgBox->style()->pixelMetric(QStyle::PM_MessageBoxIconSize);
@@ -399,14 +501,13 @@ void NSISUpdater::showNoUrlDialog(const UpdateInfo &info)
 
     layout->addWidget(bb);
 
-    msgBox->open();
+    presentUpdaterDialog(msgBox, true);
 }
 
 void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)
 {
     auto msgBox = new QDialog;
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
-    msgBox->setWindowFlags(msgBox->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     QIcon infoIcon = msgBox->style()->standardIcon(QStyle::SP_MessageBoxInformation);
     int iconSize = msgBox->style()->pixelMetric(QStyle::PM_MessageBoxIconSize);
@@ -454,7 +555,7 @@ void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)
 
     layout->addWidget(bb);
 
-    msgBox->open();
+    presentUpdaterDialog(msgBox, true);
 }
 
 bool NSISUpdater::handleStartup()
