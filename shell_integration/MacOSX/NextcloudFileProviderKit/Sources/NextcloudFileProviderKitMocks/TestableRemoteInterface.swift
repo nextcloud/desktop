@@ -69,11 +69,10 @@ public struct TestableRemoteInterface: RemoteInterface, @unchecked Sendable {
         chunkUploadCompleteHandler _: @escaping (RemoteFileChunk) -> Void
     ) async -> (
         account: String,
-        fileChunks: [RemoteFileChunk]?,
         file: NKFile?,
         nkError: NKError
     ) {
-        ("", nil, nil, .invalidResponseError)
+        ("", nil, .invalidResponseError)
     }
 
     public func move(

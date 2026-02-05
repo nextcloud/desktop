@@ -222,15 +222,11 @@ final class MockRemoteInterfaceTests: XCTestCase {
             chunkUploadCompleteHandler: { uploadedChunks.append($0) }
         )
 
-        let resultChunks = try XCTUnwrap(result.fileChunks)
         let expectedChunkCount = Int(ceil(Double(data.count) / Double(chunkSize)))
 
         XCTAssertEqual(result.nkError, .success)
-        XCTAssertEqual(resultChunks.count, expectedChunkCount)
         XCTAssertNotNil(result.file)
         XCTAssertEqual(result.file?.size, Int64(data.count))
-
-        XCTAssertEqual(uploadedChunks.count, resultChunks.count)
 
         let firstUploadedChunk = try XCTUnwrap(uploadedChunks.first)
         let firstUploadedChunkNameInt = try XCTUnwrap(Int(firstUploadedChunk.fileName))
@@ -293,15 +289,9 @@ final class MockRemoteInterfaceTests: XCTestCase {
             chunkUploadCompleteHandler: { uploadedChunks.append($0) }
         )
 
-        let resultChunks = try XCTUnwrap(result.fileChunks)
-        let expectedChunkCount = Int(ceil(Double(data.count) / Double(chunkSize)))
-
         XCTAssertEqual(result.nkError, .success)
-        XCTAssertEqual(resultChunks.count, expectedChunkCount)
         XCTAssertNotNil(result.file)
         XCTAssertEqual(result.file?.size, Int64(data.count))
-
-        XCTAssertEqual(uploadedChunks.count, resultChunks.count - previousUploadedChunks.count)
 
         let firstUploadedChunk = try XCTUnwrap(uploadedChunks.first)
         let firstUploadedChunkNameInt = try XCTUnwrap(Int(firstUploadedChunk.fileName))

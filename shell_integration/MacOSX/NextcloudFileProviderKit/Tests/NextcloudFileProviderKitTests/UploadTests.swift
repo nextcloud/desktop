@@ -36,7 +36,6 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         )
 
         XCTAssertEqual(result.remoteError, .success)
-        XCTAssertNil(result.chunks)
         XCTAssertEqual(result.size, Int64(data.count))
         XCTAssertNotNil(result.ocId)
         XCTAssertNotNil(result.etag)
@@ -63,16 +62,12 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock(),
             chunkUploadCompleteHandler: { uploadedChunks.append($0) }
         )
-        let resultChunks = try XCTUnwrap(result.chunks)
         let expectedChunkCount = Int(ceil(Double(data.count) / Double(chunkSize)))
 
         XCTAssertEqual(result.remoteError, .success)
-        XCTAssertEqual(resultChunks.count, expectedChunkCount)
         XCTAssertEqual(result.size, Int64(data.count))
         XCTAssertNotNil(result.ocId)
         XCTAssertNotNil(result.etag)
-
-        XCTAssertEqual(uploadedChunks.count, resultChunks.count)
 
         let firstUploadedChunk = try XCTUnwrap(uploadedChunks.first)
         let firstUploadedChunkNameInt = try XCTUnwrap(Int(firstUploadedChunk.fileName))
@@ -134,16 +129,12 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock(),
             chunkUploadCompleteHandler: { uploadedChunks.append($0) }
         )
-        let resultChunks = try XCTUnwrap(result.chunks)
         let expectedChunkCount = Int(ceil(Double(data.count) / Double(chunkSize)))
 
         XCTAssertEqual(result.remoteError, .success)
-        XCTAssertEqual(resultChunks.count, expectedChunkCount)
         XCTAssertEqual(result.size, Int64(data.count))
         XCTAssertNotNil(result.ocId)
         XCTAssertNotNil(result.etag)
-
-        XCTAssertEqual(uploadedChunks.count, resultChunks.count - previousUploadedChunks.count)
 
         let firstUploadedChunk = try XCTUnwrap(uploadedChunks.first)
         let firstUploadedChunkNameInt = try XCTUnwrap(Int(firstUploadedChunk.fileName))
@@ -234,15 +225,12 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock(),
             chunkUploadCompleteHandler: { uploadedChunks.append($0) }
         )
-        let resultChunks = try XCTUnwrap(result.chunks)
 
         XCTAssertEqual(result.remoteError, .success)
-        XCTAssertEqual(resultChunks.count, 2)
         XCTAssertEqual(result.size, Int64(data.count))
         XCTAssertNotNil(result.ocId)
         XCTAssertNotNil(result.etag)
 
-        XCTAssertEqual(uploadedChunks.count, resultChunks.count)
         XCTAssertEqual(uploadedChunks.first?.size, 4)
         XCTAssertEqual(uploadedChunks.last?.size, 4)
     }
@@ -314,15 +302,12 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock(),
             chunkUploadCompleteHandler: { uploadedChunks.append($0) }
         )
-        let resultChunks = try XCTUnwrap(result.chunks)
 
         XCTAssertEqual(result.remoteError, .success)
-        XCTAssertEqual(resultChunks.count, 2)
         XCTAssertEqual(result.size, Int64(data.count))
         XCTAssertNotNil(result.ocId)
         XCTAssertNotNil(result.etag)
 
-        XCTAssertEqual(uploadedChunks.count, resultChunks.count)
         XCTAssertEqual(uploadedChunks.first?.size, Int64(defaultFileChunkSize))
         XCTAssertEqual(uploadedChunks.last?.size, 1)
     }

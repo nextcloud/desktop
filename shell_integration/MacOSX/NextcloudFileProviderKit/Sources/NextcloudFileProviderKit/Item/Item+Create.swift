@@ -124,7 +124,7 @@ public extension Item {
         let logger = FileProviderLogger(category: "Item", log: log)
         let chunkUploadId =
             itemTemplate.itemIdentifier.rawValue.replacingOccurrences(of: "/", with: "")
-        let (ocId, _, etag, date, size, error) = await upload(
+        let (ocId, etag, date, size, error) = await upload(
             fileLocatedAt: localPath,
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
@@ -338,7 +338,7 @@ public extension Item {
                     Handling child bundle or package file at: \(childUrlPath)
                     """
                 )
-                let (_, _, _, _, _, error) = await upload(
+                let (_, _, _, _, error) = await upload(
                     fileLocatedAt: childUrlPath,
                     toRemotePath: childRemoteUrl,
                     usingRemoteInterface: remoteInterface,

@@ -1,13 +1,13 @@
 {
-  "originHash" : "8ed0de7f57594dcc5e2c6f77ae68f568f8272187d12257ccf4aa50e70e374323",
+  "originHash" : "61feeb4866ca418188987b3ae0c9a2032cac13e1662ac72932283925957aa395",
   "pins" : [
     {
       "identity" : "alamofire",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Alamofire/Alamofire",
       "state" : {
-        "revision" : "513364f870f6bfc468f9d2ff0a95caccc10044c5",
-        "version" : "5.10.2"
+        "revision" : "3f99050e75bbc6fe71fc323adabb039756680016",
+        "version" : "5.11.1"
       }
     },
     {
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/nextcloud/NextcloudKit",
       "state" : {
-        "revision" : "8ac6f9e08d112b51a9b7a7189fa144009a6f382d",
-        "version" : "7.2.3"
+        "revision" : "9e7b197f48bdbf24616c49e1f7484b5a405905f6",
+        "version" : "7.2.4"
       }
     },
     {

@@ -128,7 +128,7 @@ public extension Item {
 
         let options = NKRequestOptions(customHeader: headers, queue: .global(qos: .utility))
 
-        let (_, _, etag, date, size, error) = await upload(
+        let (_, etag, date, size, error) = await upload(
             fileLocatedAt: newContents.path,
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
@@ -401,7 +401,7 @@ public extension Item {
                     Handling child bundle or package file at: \(childUrlPath)
                     """
                 )
-                let (_, _, _, _, _, error) = await upload(
+                let (_, _, _, _, error) = await upload(
                     fileLocatedAt: childUrlPath,
                     toRemotePath: childRemoteUrl,
                     usingRemoteInterface: remoteInterface,
