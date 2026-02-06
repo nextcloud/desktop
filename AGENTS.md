@@ -56,3 +56,12 @@ The following details are important when working on the desktop client on macOS.
 - The macOS extensions bundled with the main app are built in the Xcode project in `./shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj`. The build system later copies the built extension bundles into the main app bundle on its own. The Xcode project does not build the main app.
 - The main app manages file provider domains and the communication with them via XPC in source code files located in `./src/gui/macOS` and usually are written in Objective-C++ (implementation files with `.mm` extension, sometimes having a `_mac` suffix in their name while their corresponding header files do not). The PIMPL pattern is an established convention here.
 - When writing code in Swift, respect strict concurrency rules and Swift 6 compatibility.
+
+### Tests
+
+- When implementing new test suites, prefer Swift Testing over XCTest for implementation.
+- When implementing test cases using Swift Testing, do not prefix test method names with "test".
+- Take the mock implementations in the `NextcloudFileProviderKitMocks` module of the `NextcloudFileProviderKit` package into consideration avoid generating own mocks if an already existing and matching mock can be found there.
+- If there the implementation of mock types is inevitable, implement them in dedicated source code files and in a generic way, so they can be reused across all tests in a test target.
+- If the implementation of an existing mock type does not fulfill requirements introduced by new tests, prefer the update of the existing type before implementing a mostly redundant alternative type.
+- Do not test for logging by subjects under test.

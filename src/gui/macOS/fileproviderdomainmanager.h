@@ -64,6 +64,13 @@ public:
 
     void signalEnumeratorChanged(const OCC::Account * const account);
 
+    /**
+     * @brief Get the user-visible URL for a file provider domain's root container.
+     * @param domainIdentifier The identifier of the file provider domain.
+     * @return The user-visible URL of the domain's root container, or an empty QString if not found.
+     */
+    [[nodiscard]] QString userVisibleUrlForDomainIdentifier(const QString &domainIdentifier) const;
+
 public slots:
     /**
      * @brief Handle file ID changes from push notifications

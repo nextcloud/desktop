@@ -5,9 +5,12 @@
 
 #include "fileprovidersettingscontroller.h"
 
+#include <QDesktopServices>
+#include <QDir>
 #include <QFileDialog>
 #include <QList>
 #include <QQmlApplicationEngine>
+#include <QUrl>
 
 #include "gui/accountmanager.h"
 #include "gui/systray.h"
@@ -20,6 +23,7 @@
 // Objective-C imports
 #import <Foundation/Foundation.h>
 #import <FileProvider/FileProvider.h>
+#import <AppKit/AppKit.h>
 // End of Objective-C imports
 
 namespace {
@@ -110,6 +114,25 @@ public:
             auto const identifier = Mac::FileProvider::instance()->domainManager()->addDomainForAccount(accountState.data());
             accountManager->setFileProviderDomainIdentifier(userIdAtHost, identifier);
         } else {
+            // Check if the extension has dirty user data before removing the domain.
+            const auto xpc = Mac::FileProvider::instance()->xpc();
+
+            if (xpc && xpc->fileProviderDomainHasDirtyUserData(existingDomainId)) {
+                qCWarning(lcFileProviderSettingsController) << "File provider domain" << existingDomainId << "has dirty user data. User will be informed.";
+                QMessageBox::warning(nullptr, tr("Unsynchronized Content"), tr("Some of your locally changed items were not uploaded yet but will be preserved."));
+                
+                // Get the user-visible URL of the file provider domain root container
+                const auto userVisibleUrl = Mac::FileProvider::instance()->domainManager()->userVisibleUrlForDomainIdentifier(existingDomainId);
+                
+                if (!userVisibleUrl.isEmpty()) {
+                    NSURL *url = [NSURL fileURLWithPath:userVisibleUrl.toNSString() isDirectory:YES];
+                    qCDebug(lcFileProviderSettingsController) << "Opening directory in file viewer:" << url.path;
+                    [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:@[url]];
+                } else {
+                    qCWarning(lcFileProviderSettingsController) << "Could not get user-visible URL for domain" << existingDomainId;
+                }
+            }
+
             Mac::FileProvider::instance()->domainManager()->removeDomainByAccount(accountState.data());
             accountManager->setFileProviderDomainIdentifier(userIdAtHost, "");
         }
