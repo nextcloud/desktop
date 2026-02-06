@@ -398,9 +398,14 @@ ApplicationWindow {
 
             Button {
                 id: assistantResetButton
+                Layout.alignment: Qt.AlignVCenter
                 Layout.preferredHeight: assistantQuestionInput.height
                 Layout.preferredWidth: assistantQuestionInput.height
+                Layout.maximumWidth: assistantQuestionInput.height
+                padding: 0
                 icon.source: "image://svgimage-custom-color/reply.svg/" + palette.windowText
+                icon.width: Math.round(assistantQuestionInput.height * 0.5)
+                icon.height: Math.round(assistantQuestionInput.height * 0.5)
                 display: AbstractButton.IconOnly
 
                 onClicked: {
@@ -443,56 +448,61 @@ ApplicationWindow {
                 id: assistantPrompt
                 spacing: Style.smallSpacing
 
-                ListView {
-                    id: assistantConversationList
+                ScrollView {
+                    id: assistantConversationScrollView
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    clip: true
-                    spacing: Style.smallSpacing
-                    visible: count > 0
-                    boundsBehavior: Flickable.StopAtBounds
+                    visible: assistantConversationList.count > 0
+                    contentWidth: availableWidth
+                    rightPadding: ScrollBar.vertical.width
 
-                    ScrollBar.vertical: ScrollBar {
-                        policy: ScrollBar.AsNeeded
-                    }
+                    ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+                    ScrollBar.vertical.policy: ScrollBar.AsNeeded
+                    ScrollBar.vertical.width: Math.max(ScrollBar.vertical.implicitWidth, Style.minimumScrollBarWidth)
 
-                    model: UserModel.currentUser.assistantMessages
+                    ListView {
+                        id: assistantConversationList
+                        clip: true
+                        spacing: Style.smallSpacing
+                        boundsBehavior: Flickable.StopAtBounds
 
-                    onCountChanged: {
-                        if (count > 0) {
-                            positionViewAtEnd()
+                        model: UserModel.currentUser.assistantMessages
+
+                        onCountChanged: {
+                            if (count > 0) {
+                                positionViewAtEnd()
+                            }
                         }
-                    }
 
-                    delegate: Item {
-                        width: assistantConversationList.width
-                        implicitHeight: messageBubble.implicitHeight
+                        delegate: Item {
+                            width: assistantConversationList.width
+                            implicitHeight: messageBubble.implicitHeight
 
-                        readonly property bool isAssistantMessage: modelData.role === "assistant"
+                            readonly property bool isAssistantMessage: modelData.role === "assistant"
 
-                        Rectangle {
-                            id: messageBubble
+                            Rectangle {
+                                id: messageBubble
 
-                            anchors.left: isAssistantMessage ? parent.left : undefined
-                            anchors.right: isAssistantMessage ? undefined : parent.right
+                                anchors.left: isAssistantMessage ? parent.left : undefined
+                                anchors.right: isAssistantMessage ? undefined : parent.right
 
-                            radius: Style.smallSpacing
-                            color: isAssistantMessage ? palette.alternateBase : palette.base
-                            border.color: palette.mid
-                            width: Math.min(assistantConversationList.width * 0.8, messageText.implicitWidth + (Style.smallSpacing * 2))
-                            implicitHeight: messageText.implicitHeight + (Style.smallSpacing * 2)
+                                radius: Style.smallSpacing
+                                color: isAssistantMessage ? palette.alternateBase : palette.base
+                                width: Math.min(assistantConversationList.width * 0.8, messageText.implicitWidth + (Style.smallSpacing * 2))
+                                implicitHeight: messageText.implicitHeight + (Style.smallSpacing * 2)
 
-                            Text {
-                                id: messageText
+                                Text {
+                                    id: messageText
 
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                anchors.top: parent.top
-                                anchors.margins: Style.smallSpacing
-                                text: modelData.text
-                                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                                color: palette.windowText
-                                textFormat: Text.MarkdownText
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+                                    anchors.top: parent.top
+                                    anchors.margins: Style.smallSpacing
+                                    text: modelData.text
+                                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                                    color: palette.windowText
+                                    textFormat: Text.MarkdownText
+                                }
                             }
                         }
                     }
@@ -739,6 +749,7 @@ ApplicationWindow {
         }
     } // Item trayWindowMainItem
 }
+
 
 
 
