@@ -1193,6 +1193,17 @@ void Account::setFileProviderDomainIdentifier(const QString &identifier)
     _fileProviderDomainIdentifier = identifier;
     Q_EMIT wantsAccountSaved(sharedFromThis());
 }
+
+QByteArray Account::lastRootETag() const
+{
+    return _lastRootETag;
+}
+
+void Account::setLastRootETag(const QByteArray &etag)
+{
+    _lastRootETag = etag;
+}
+
 #endif
 
 void Account::setAskUserForMnemonic(const bool ask)

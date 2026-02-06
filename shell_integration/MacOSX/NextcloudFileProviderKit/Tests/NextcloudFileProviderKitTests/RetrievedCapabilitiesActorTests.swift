@@ -127,7 +127,7 @@ struct RetrievedCapabilitiesActorTests {
 
         var firstFulfillment = await awaiter1Complete.isFulfilled
         var secondFulfillment = await awaiter2Complete.isFulfilled
-        #expect(await firstFulfillment == false && secondFulfillment == false, "Both awaiters should be suspended.")
+        #expect(firstFulfillment == false && secondFulfillment == false, "Both awaiters should be suspended.")
 
         await actor.setOngoingFetch(forAccount: account1, ongoing: false)
 
@@ -162,7 +162,7 @@ struct RetrievedCapabilitiesActorTests {
 
         let firstFulfillment = await acc1AwaiterDone.isFulfilled
         let secondFulfillment = await acc2AwaiterDone.isFulfilled
-        #expect(await firstFulfillment == false && secondFulfillment == false, "Both awaiters initially suspended.")
+        #expect(firstFulfillment == false && secondFulfillment == false, "Both awaiters initially suspended.")
 
         // Complete fetch for account1 ONLY
         await actor.setOngoingFetch(forAccount: account1, ongoing: false)
