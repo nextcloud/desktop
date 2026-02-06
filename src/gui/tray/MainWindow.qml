@@ -502,7 +502,7 @@ ApplicationWindow {
                     }
                 }
 
-                Label {
+                EnforcedPlainTextLabel {
                     id: assistantStatusLabel
                     Layout.fillWidth: true
                     visible: UserModel.currentUser.assistantResponse.length > 0
@@ -511,7 +511,7 @@ ApplicationWindow {
                     color: palette.windowText
                 }
 
-                Label {
+                EnforcedPlainTextLabel {
                     id: assistantErrorLabel
                     Layout.fillWidth: true
                     visible: UserModel.currentUser.assistantError.length > 0
@@ -743,6 +743,7 @@ ApplicationWindow {
         }
     } // Item trayWindowMainItem
 }
+
 
 
 
