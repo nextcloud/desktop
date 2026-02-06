@@ -41,12 +41,18 @@ QSize FolderStatusView::sizeHint() const
     }
 
     const int rowCount = model()->rowCount();
-    const int rowSizeHint = rowCount > 0 ? sizeHintForRow(0) : -1;
     const int fallbackRowHeight = fontMetrics().height() + 8;
-    const int rowHeight = rowSizeHint > 0 ? rowSizeHint : fallbackRowHeight;
-    const int visibleRows = qMax(1, rowCount);
-    int height = rowHeight * visibleRows;
+    int height = 0;
 
+    for (int row = 0; row < rowCount; ++row) {
+        const int rowSizeHint = sizeHintForRow(row);
+        height += rowSizeHint > 0 ? rowSizeHint : fallbackRowHeight;
+    }
+
+    if (height == 0) {
+        height = fallbackRowHeight;
+    }
+    
     height += frameWidth() * 2;
     if (horizontalScrollBar()->isVisible()) {
         height += horizontalScrollBar()->sizeHint().height();
