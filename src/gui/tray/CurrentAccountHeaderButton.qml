@@ -56,7 +56,8 @@ Button {
 
         property real widestMenuItemWidth: 0
         property real maximumWidthAllowed: trayWindowHeader.width - (root.x + 4)
-        width: Math.min( widestMenuItemWidth + leftPadding + rightPadding, maximumWidthAllowed )
+        property real extraMenuWidth: Style.userLineSpacing
+        width: Math.min(widestMenuItemWidth + leftPadding + rightPadding + extraMenuWidth, maximumWidthAllowed)
         height: Math.min(implicitHeight, maxMenuHeight)
         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
