@@ -1190,20 +1190,17 @@ bool User::serverHasTalk() const
 
 bool User::isFeaturedAppEnabled() const
 {
-    return isNcAssistantEnabled() || serverHasTalk();
+    return isNcAssistantEnabled();
 }
 
 QString User::featuredAppIcon() const
 {
-    return isNcAssistantEnabled() ? "image://svgimage-custom-color/nc-assistant-app.svg"
-                                  : "image://svgimage-custom-color/talk-app.svg";
+    return "image://svgimage-custom-color/nc-assistant-app.svg";
 }
 
 QString User::featuredAppAccessibleName() const
 {
-    return isNcAssistantEnabled() ?
-        tr("Open %1 Assistant in browser", "The placeholder will be the application name. Please keep it").arg(APPLICATION_NAME) :
-        tr("Open %1 Talk in browser", "The placeholder will be the application name. Please keep it").arg(APPLICATION_NAME);
+    return tr("Open %1 Assistant", "The placeholder will be the application name. Please keep it").arg(APPLICATION_NAME);
 }
 
 AccountApp *User::talkApp() const
