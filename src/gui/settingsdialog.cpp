@@ -39,6 +39,28 @@
 #include <QTimer>
 
 namespace {
+class CurrentPageSizeStackedWidget : public QStackedWidget
+{
+public:
+    using QStackedWidget::QStackedWidget;
+
+    [[nodiscard]] QSize sizeHint() const override
+    {
+        if (const auto *widget = currentWidget()) {
+            return widget->sizeHint();
+        }
+        return QStackedWidget::sizeHint();
+    }
+
+    [[nodiscard]] QSize minimumSizeHint() const override
+    {
+        if (const auto *widget = currentWidget()) {
+            return widget->minimumSizeHint();
+        }
+        return QStackedWidget::minimumSizeHint();
+    }
+};
+
 const QString TOOLBAR_CSS()
 {
     return QStringLiteral("QToolBar { background: transparent; margin: 0; padding: 0; border: none; spacing: 0; } "
@@ -84,6 +106,12 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     ConfigFile cfg;
 
     _ui->setupUi(this);
+    auto *dynamicStack = new CurrentPageSizeStackedWidget(this);
+    dynamicStack->setObjectName(_ui->stack->objectName());
+    _ui->mainLayout->replaceWidget(_ui->stack, dynamicStack);
+    _ui->stack->deleteLater();
+    _ui->stack = dynamicStack;
+
     _ui->mainLayout->setContentsMargins(8, 8, 8, 8);
     _ui->mainLayout->setSpacing(0);
     _toolBar = new QToolBar;
@@ -255,9 +283,6 @@ void SettingsDialog::changeEvent(QEvent *e)
 void SettingsDialog::slotSwitchPage(QAction *action)
 {
     _ui->stack->setCurrentWidget(_actionGroupWidgets.value(action));
-    if (const auto *currentPage = _ui->stack->currentWidget()) {
-        _ui->stack->setMinimumHeight(currentPage->sizeHint().height());
-    }
     _ui->stack->updateGeometry();
     if (auto *contentContainer = _ui->stack->parentWidget()) {
         contentContainer->updateGeometry();
