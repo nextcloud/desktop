@@ -363,7 +363,7 @@ ApplicationWindow {
             active: UserModel.currentUser.isAssistantEnabled
                     && trayWindowMainItem.showAssistantPanel
                     && !trayWindowMainItem.isUnifiedSearchActive
-            anchors.top: syncStatus.bottom
+            anchors.top: trayWindowMainItem.showAssistantPanel ? assistantInputContainer.bottom : syncStatus.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
             anchors.topMargin: Style.trayHorizontalMargin
@@ -576,7 +576,7 @@ ApplicationWindow {
             id: syncStatus
 
             accentColor: Style.accentColor
-            visible: !trayWindowMainItem.isUnifiedSearchActive
+            visible: !trayWindowMainItem.isUnifiedSearchActive && !trayWindowMainItem.showAssistantPanel
 
             anchors.top: trayWindowMainItem.showAssistantPanel ? assistantInputContainer.bottom : trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowMainItem.left
@@ -590,7 +590,7 @@ ApplicationWindow {
             anchors.bottom: syncStatus.bottom
             height: 1
             color: palette.dark
-            visible: !trayWindowMainItem.isUnifiedSearchActive
+            visible: !trayWindowMainItem.isUnifiedSearchActive && !trayWindowMainItem.showAssistantPanel
         }
 
         Loader {
@@ -671,6 +671,7 @@ ApplicationWindow {
         }
     } // Item trayWindowMainItem
 }
+
 
 
 
