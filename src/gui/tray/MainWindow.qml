@@ -468,12 +468,6 @@ ApplicationWindow {
 
                         model: UserModel.currentUser.assistantMessages
 
-                        onCountChanged: {
-                            if (count > 0) {
-                                positionViewAtEnd()
-                            }
-                        }
-
                         delegate: Item {
                             width: assistantConversationList.width
                             implicitHeight: messageBubble.implicitHeight
@@ -749,6 +743,7 @@ ApplicationWindow {
         }
     } // Item trayWindowMainItem
 }
+
 
 
 
