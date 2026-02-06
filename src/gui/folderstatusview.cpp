@@ -6,6 +6,9 @@
 #include "folderstatusview.h"
 #include "folderstatusdelegate.h"
 
+#include <QScrollBar>
+#include <QtGlobal>
+
 namespace OCC {
 
 FolderStatusView::FolderStatusView(QWidget *parent) : QTreeView(parent)
@@ -28,6 +31,34 @@ QRect FolderStatusView::visualRect(const QModelIndex &index) const
         return FolderStatusDelegate::addButtonRect(rect, layoutDirection());
     }
     return rect;
+}
+
+QSize FolderStatusView::sizeHint() const
+{
+    const auto baseHint = QTreeView::sizeHint();
+    if (!model()) {
+        return baseHint;
+    }
+
+    const int rowCount = model()->rowCount();
+    const int fallbackRowHeight = fontMetrics().height() + 8;
+    int height = 0;
+
+    for (int row = 0; row < rowCount; ++row) {
+        const int rowSizeHint = sizeHintForRow(row);
+        height += rowSizeHint > 0 ? rowSizeHint : fallbackRowHeight;
+    }
+
+    if (height == 0) {
+        height = fallbackRowHeight;
+    }
+    
+    height += frameWidth() * 2;
+    if (horizontalScrollBar()->isVisible()) {
+        height += horizontalScrollBar()->sizeHint().height();
+    }
+
+    return {baseHint.width(), height};
 }
 
 } // namespace OCC

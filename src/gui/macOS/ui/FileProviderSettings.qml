@@ -23,27 +23,37 @@ Page {
     title: qsTr("Virtual files settings")
 
     background: Rectangle {
-        color: palette.base
+        color: palette.alternateBase
         border.width: root.showBorder ? Style.normalBorderWidth : 0
-        border.color: root.palette.dark
+        border.color: palette.mid
     }
 
     padding: Style.standardSpacing
+    // 1. Tell the Page how tall it actually is
+    implicitHeight: rootColumn.implicitHeight + topPadding + bottomPadding
 
     ColumnLayout {
         id: rootColumn
 
-        anchors {
-            top: parent.top
-            left: parent.left
-            right: parent.right
-        }
+        anchors.left: parent.left
+        anchors.right: parent.right
+        spacing: Style.standardSpacing
 
-        CheckBox {
-            id: vfsEnabledCheckBox
-            text: qsTr("Enable virtual files")
-            checked: root.controller.vfsEnabledForAccount(root.accountUserIdAtHost)
-            onClicked: root.controller.setVfsEnabledForAccount(root.accountUserIdAtHost, checked)
+        RowLayout {
+            Layout.fillWidth: true
+
+            EnforcedPlainTextLabel {
+                Layout.fillWidth: true
+                text: qsTr("Enable virtual files")
+                elide: Text.ElideRight
+            }
+
+            Switch {
+                id: vfsEnabledCheckBox
+                Layout.alignment: Qt.AlignRight
+                checked: root.controller.vfsEnabledForAccount(root.accountUserIdAtHost)
+                onClicked: root.controller.setVfsEnabledForAccount(root.accountUserIdAtHost, checked)
+            }
         }
     }
 }
