@@ -450,52 +450,49 @@ ApplicationWindow {
                     clip: true
                     spacing: Style.smallSpacing
                     visible: count > 0
+                    boundsBehavior: Flickable.StopAtBounds
+
+                    ScrollBar.vertical: ScrollBar {
+                        policy: ScrollBar.AsNeeded
+                    }
 
                     model: UserModel.currentUser.assistantMessages
 
+                    onCountChanged: {
+                        if (count > 0) {
+                            positionViewAtEnd()
+                        }
+                    }
+
                     delegate: Item {
                         width: assistantConversationList.width
-                        implicitHeight: messageRow.implicitHeight
+                        implicitHeight: messageBubble.implicitHeight
 
                         readonly property bool isAssistantMessage: modelData.role === "assistant"
 
-                        RowLayout {
-                            id: messageRow
+                        Rectangle {
+                            id: messageBubble
 
-                            width: parent.width
-                            spacing: Style.smallSpacing
+                            anchors.left: isAssistantMessage ? parent.left : undefined
+                            anchors.right: isAssistantMessage ? undefined : parent.right
 
-                            Item {
-                                Layout.fillWidth: true
-                                visible: !isAssistantMessage
-                            }
+                            radius: Style.smallSpacing
+                            color: isAssistantMessage ? palette.alternateBase : palette.base
+                            border.color: palette.mid
+                            width: Math.min(assistantConversationList.width * 0.8, messageText.implicitWidth + (Style.smallSpacing * 2))
+                            implicitHeight: messageText.implicitHeight + (Style.smallSpacing * 2)
 
-                            Rectangle {
-                                radius: Style.smallSpacing
-                                color: isAssistantMessage ? palette.base : palette.alternateBase
-                                border.color: palette.mid
+                            Text {
+                                id: messageText
 
-                                Layout.maximumWidth: assistantConversationList.width * 0.8
-                                Layout.preferredWidth: Math.min(assistantConversationList.width * 0.8, messageText.implicitWidth + (Style.smallSpacing * 2))
-                                implicitHeight: messageText.implicitHeight + (Style.smallSpacing * 2)
-
-                               Text {
-                                    id: messageText
-
-                                    anchors.left: parent.left
-                                    anchors.right: parent.right
-                                    anchors.top: parent.top
-                                    anchors.margins: Style.smallSpacing
-                                    text: modelData.text
-                                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                                    color: palette.windowText
-                                    textFormat: Text.MarkdownText
-                                }
-                            }
-
-                            Item {
-                                Layout.fillWidth: true
-                                visible: isAssistantMessage
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                anchors.top: parent.top
+                                anchors.margins: Style.smallSpacing
+                                text: modelData.text
+                                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                                color: palette.windowText
+                                textFormat: Text.MarkdownText
                             }
                         }
                     }
@@ -742,6 +739,7 @@ ApplicationWindow {
         }
     } // Item trayWindowMainItem
 }
+
 
 
 
