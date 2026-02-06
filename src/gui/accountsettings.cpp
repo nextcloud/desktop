@@ -32,7 +32,7 @@
 #include "filesystem.h"
 #include "encryptfolderjob.h"
 #include "syncresult.h"
-#include "ignorelisttablewidget.h"
+#include "ignorelisteditor.h"
 #include "wizard/owncloudwizard.h"
 #include "networksettings.h"
 #include "ui_mnemonicdialog.h"
@@ -551,26 +551,10 @@ void AccountSettings::openIgnoredFilesDialog(const QString & absFolderPath)
     Q_ASSERT(QFileInfo(absFolderPath).isAbsolute());
 
     const QString ignoreFile{absFolderPath + ".sync-exclude.lst"};
-    const auto layout = new QVBoxLayout();
-    const auto ignoreListWidget = new IgnoreListTableWidget(this);
-    ignoreListWidget->readIgnoreFile(ignoreFile);
-    layout->addWidget(ignoreListWidget);
 
-    const auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
-    layout->addWidget(buttonBox);
-
-    const auto dialog = new QDialog();
-    dialog->setLayout(layout);
-
-    connect(buttonBox, &QDialogButtonBox::clicked, [=](QAbstractButton * button) {
-        if (buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
-            ignoreListWidget->slotWriteIgnoreFile(ignoreFile);
-        }
-        dialog->close();
-    });
-    connect(buttonBox, &QDialogButtonBox::rejected, dialog, &QDialog::close);
-
-    dialog->open();
+    auto ignoreListEditor = new IgnoreListEditor(ignoreFile, this);
+    ignoreListEditor->setAttribute(Qt::WA_DeleteOnClose);
+    ignoreListEditor->open();
 }
 
 void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index, const QPoint& pos)
