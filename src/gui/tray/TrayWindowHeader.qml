@@ -73,10 +73,10 @@ Rectangle {
             id: trayWindowFeaturedAppButton
 
             Layout.alignment: Qt.AlignRight
-            Layout.preferredWidth:  Style.trayWindowHeaderHeight
+            Layout.preferredWidth: Style.trayWindowHeaderHeight
             Layout.fillHeight: true
 
-            visible: UserModel.currentUser.isFeaturedAppEnabled
+            visible: UserModel.currentUser.isNcAssistantEnabled
             icon.source: UserModel.currentUser.featuredAppIcon + "/" + palette.windowText
             onClicked: root.featuredAppButtonClicked()
 
