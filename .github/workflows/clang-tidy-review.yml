@@ -28,6 +28,7 @@ jobs:
     - name: Run clang-tidy-pr-comments action
       uses: platisd/clang-tidy-pr-comments@28cfb84edafa771c044bde7e4a2a3fae57463818 # v1.6.1 # >1.4.3 switches to composite method w/ a forced python version and breaks things: https://github.com/actions/setup-python/issues/871
       with:
+        python_path: "/usr/bin/python3"
         # The GitHub token (or a personal access token)
         github_token: ${{ secrets.GITHUB_TOKEN }}
         # The path to the clang-tidy fixes generated previously
