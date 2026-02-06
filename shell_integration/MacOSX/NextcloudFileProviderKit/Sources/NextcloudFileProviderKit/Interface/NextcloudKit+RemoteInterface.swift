@@ -84,24 +84,19 @@ extension NextcloudKit: RemoteInterface {
         modificationDate: Date? = nil,
         account: Account,
         options: NKRequestOptions = .init(),
-        currentNumChunksUpdateHandler: @escaping (_ num: Int) -> Void = { _ in },
-        chunkCounter: @escaping (_ counter: Int) -> Void = { _ in },
+        currentNumChunksUpdateHandler _: @escaping (_ num: Int) -> Void = { _ in },
+        chunkCounter _: @escaping (_ counter: Int) -> Void = { _ in },
         log: any FileProviderLogging,
         chunkUploadStartHandler: @escaping (_ filesChunk: [RemoteFileChunk]) -> Void = { _ in },
-        requestHandler: @escaping (_ request: UploadRequest) -> Void = { _ in },
+        requestHandler _: @escaping (_ request: UploadRequest) -> Void = { _ in },
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in },
         progressHandler: @escaping (Progress) -> Void = { _ in },
         chunkUploadCompleteHandler: @escaping (_ fileChunk: RemoteFileChunk) -> Void = { _ in }
-    ) async -> (
-        account: String,
-        fileChunks: [RemoteFileChunk]?,
-        file: NKFile?,
-        nkError: NKError
-    ) {
+    ) async -> (account: String, file: NKFile?, nkError: NKError) {
         let logger = FileProviderLogger(category: "NextcloudKit+RemoteInterface", log: log)
 
         guard let remoteUrl = URL(string: remotePath) else {
-            return ("", nil, nil, .urlError)
+            return ("", nil, .urlError)
         }
         let localUrl = URL(fileURLWithPath: localPath)
 
@@ -116,7 +111,7 @@ extension NextcloudKit: RemoteInterface {
                 Could not create temporary directory for chunked files: \(error)
                 """
             )
-            return ("", nil, nil, .urlError)
+            return ("", nil, .urlError)
         }
 
         var directory = localUrl.deletingLastPathComponent().path
@@ -134,7 +129,7 @@ extension NextcloudKit: RemoteInterface {
             logger.error(
                 "NCKit ext: Could not get server url from \(remotePath)"
             )
-            return ("", nil, nil, .urlError)
+            return ("", nil, .urlError)
         }
         let fileChunks = remainingChunks.toNcKitChunks()
 
@@ -154,8 +149,8 @@ extension NextcloudKit: RemoteInterface {
             """
         )
 
-        return await withCheckedContinuation { continuation in
-            uploadChunk(
+        do {
+            let (account, file) = try await uploadChunkAsync(
                 directory: directory,
                 fileChunksOutputDirectory: fileChunksOutputDirectory,
                 fileName: fileName,
@@ -168,34 +163,27 @@ extension NextcloudKit: RemoteInterface {
                 chunkSize: chunkSize,
                 account: account.ncKitAccount,
                 options: options,
-                numChunks: currentNumChunksUpdateHandler,
-                counterChunk: chunkCounter,
-                start: { processedChunks in
-                    let chunks = RemoteFileChunk.fromNcKitChunks(
-                        processedChunks, remoteChunkStoreFolderName: remoteChunkStoreFolderName
-                    )
+                uploadStart: { processedChunks in
+                    let chunks = RemoteFileChunk.fromNcKitChunks(processedChunks, remoteChunkStoreFolderName: remoteChunkStoreFolderName)
                     chunkUploadStartHandler(chunks)
                 },
-                requestHandler: requestHandler,
-                taskHandler: taskHandler,
-                progressHandler: { totalBytesExpected, totalBytes, _ in
+                uploadTaskHandler: taskHandler,
+                uploadProgressHandler: { totalBytesExpected, totalBytes, _ in
                     let currentProgress = Progress(totalUnitCount: totalBytesExpected)
                     currentProgress.completedUnitCount = totalBytes
                     progressHandler(currentProgress)
                 },
                 uploaded: { uploadedChunk in
-                    let chunk = RemoteFileChunk(
-                        ncKitChunk: uploadedChunk,
-                        remoteChunkStoreFolderName: remoteChunkStoreFolderName
-                    )
+                    let chunk = RemoteFileChunk(ncKitChunk: uploadedChunk, remoteChunkStoreFolderName: remoteChunkStoreFolderName)
                     chunkUploadCompleteHandler(chunk)
                 }
-            ) { account, receivedChunks, file, error in
-                let chunks = RemoteFileChunk.fromNcKitChunks(
-                    receivedChunks ?? [], remoteChunkStoreFolderName: remoteChunkStoreFolderName
-                )
-                continuation.resume(returning: (account, chunks, file, error))
-            }
+            )
+
+            return (account, file, .success)
+        } catch let nkError as NKError {
+            return (account.ncKitAccount, nil, nkError)
+        } catch {
+            return (account.ncKitAccount, nil, NKError.urlError)
         }
     }
 

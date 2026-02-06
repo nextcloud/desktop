@@ -4,7 +4,7 @@
 @preconcurrency import FileProvider
 
 extension Item {
-    // Creates a file that was previously unuploaded (e.g. a previously ignored/lock file) on server
+    /// Creates a file that was previously unuploaded (e.g. a previously ignored/lock file) on server
     func createUnuploaded(
         itemTarget: NSFileProviderItem,
         baseVersion _: NSFileProviderItemVersion = NSFileProviderItemVersion(),
@@ -59,7 +59,7 @@ extension Item {
         )
     }
 
-    // Just modifies metadata
+    /// Just modifies metadata
     func modifyUnuploaded(
         itemTarget: NSFileProviderItem,
         baseVersion _: NSFileProviderItemVersion = NSFileProviderItemVersion(),

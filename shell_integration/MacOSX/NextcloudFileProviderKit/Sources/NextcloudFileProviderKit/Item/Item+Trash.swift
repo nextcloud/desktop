@@ -5,7 +5,7 @@
 import NextcloudKit
 
 extension Item {
-    // Note: When handling trashing, the server handles filename conflicts for us
+    /// Note: When handling trashing, the server handles filename conflicts for us
     static func trash(
         _ modifiedItem: Item,
         account: Account,
@@ -142,7 +142,7 @@ extension Item {
         return (postDeleteItem, nil)
     }
 
-    // Note: When restoring from the trash, the server handles filename conflicts for us
+    /// Note: When restoring from the trash, the server handles filename conflicts for us
     static func restoreFromTrash(
         _ modifiedItem: Item,
         account: Account,

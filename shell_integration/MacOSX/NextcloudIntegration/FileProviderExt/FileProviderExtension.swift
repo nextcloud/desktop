@@ -43,7 +43,6 @@ import OSLog
 
     var ncAccount: Account?
     var dbManager: FilesDatabaseManager?
-    var changeObserver: RemoteChangeObserver?
     var ignoredFiles: IgnoredFilesMatcher?
     lazy var ncKitBackground = NKBackground(nkCommonInstance: ncKit.nkCommonInstance)
 
@@ -674,24 +673,7 @@ import OSLog
                 ncAccount = account
                 dbManager = FilesDatabaseManager(account: account, fileProviderDomainIdentifier: domain.identifier, log: log)
 
-                if let changeObserver {
-                    changeObserver.invalidate()
-                }
-
-                if let dbManager {
-                    changeObserver = RemoteChangeObserver(
-                        account: account,
-                        remoteInterface: ncKit,
-                        changeNotificationInterface: self,
-                        domain: domain,
-                        dbManager: dbManager,
-                        log: log
-                    )
-                } else {
-                    logger.error("Invalid db manager, cannot start RCO")
-                }
-
-                ncKit.setup(groupIdentifier: Bundle.main.bundleIdentifier!, delegate: changeObserver)
+                ncKit.setup(groupIdentifier: Bundle.main.bundleIdentifier!)
                 completionHandler?(nil)
                 signalEnumeratorAfterAccountSetup()
             }

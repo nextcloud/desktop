@@ -29,9 +29,9 @@ extension Enumerator {
         return (metadatas, nil)
     }
 
-    // With paginated requests, you do not have a way to know what has changed remotely when
-    // handling the result of an individual PROPFIND request. When handling a paginated read this
-    // therefore only returns the acquired metadatas.
+    /// With paginated requests, you do not have a way to know what has changed remotely when
+    /// handling the result of an individual PROPFIND request. When handling a paginated read this
+    /// therefore only returns the acquired metadatas.
     static func handleDepth1ReadFileOrFolder(
         serverUrl: String,
         account: Account,
@@ -92,19 +92,19 @@ extension Enumerator {
         )
     }
 
-    // READ THIS CAREFULLY.
-    //
-    // This method supports paginated and non-paginated reads. Handled by the pageSettings argument.
-    // Paginated reads is used by enumerateItems, non-paginated reads is used by enumerateChanges.
-    //
-    // Paginated reads WILL NOT HANDLE REMOVAL OF REMOTELY DELETED ITEMS FROM THE LOCAL DATABASE.
-    // Paginated reads WILL ONLY REPORT THE FILES DISCOVERED REMOTELY.
-    // This means that if you decide to use this method to implement change enumeration, you will
-    // have to collect the full results of all the pages before proceeding with discovering what
-    // has changed relative to the state of the local database -- manually!
-    //
-    // Non-paginated reads will update the database with all of the discovered files and folders
-    // that have been found to be created, updated, and deleted. No extra work required.
+    /// READ THIS CAREFULLY.
+    ///
+    /// This method supports paginated and non-paginated reads. Handled by the pageSettings argument.
+    /// Paginated reads is used by enumerateItems, non-paginated reads is used by enumerateChanges.
+    ///
+    /// Paginated reads WILL NOT HANDLE REMOVAL OF REMOTELY DELETED ITEMS FROM THE LOCAL DATABASE.
+    /// Paginated reads WILL ONLY REPORT THE FILES DISCOVERED REMOTELY.
+    /// This means that if you decide to use this method to implement change enumeration, you will
+    /// have to collect the full results of all the pages before proceeding with discovering what
+    /// has changed relative to the state of the local database -- manually!
+    ///
+    /// Non-paginated reads will update the database with all of the discovered files and folders
+    /// that have been found to be created, updated, and deleted. No extra work required.
     static func readServerUrl(
         _ serverUrl: String,
         pageSettings: (page: NSFileProviderPage?, index: Int, size: Int)? = nil,

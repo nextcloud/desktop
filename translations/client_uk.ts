@@ -341,7 +341,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
         <source>Browser Authentication</source>
-        <translation>Авторизація у бравзері</translation>
+        <translation>Автентифікація у бравзері</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="47"/>
@@ -934,7 +934,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="133"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation>Запит на авторизацію на сервері переспрямовано до &quot;%1&quot;. Посилання є недійсним, сервер не налаштовано належним чином.</translation>
+        <translation>Запит на автентифікацію на сервері переспрямовано до &quot;%1&quot;. Посилання недійсне, сервер не налаштовано належним чином.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="143"/>
@@ -944,7 +944,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="151"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation>Отримано недійсну відповідь під час надсилання запиту на авторизацію WebDAV</translation>
+        <translation>Отримано недійсну відповідь під час надсилання запиту на автентифікацію WebDAV</translation>
     </message>
 </context>
 <context>
@@ -1028,7 +1028,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
         <source>SSL client certificate authentication</source>
-        <translation>Авторизація за допомогою сертифікату SSL користувача</translation>
+        <translation>Автентифікація за допомогою сертифікату SSL користувача</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
@@ -1161,7 +1161,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="22"/>
         <source>Authentication Required</source>
-        <translation>Потрібна авторизація</translation>
+        <translation>Потрібна автентифікація</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="24"/>
@@ -1651,7 +1651,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="165"/>
         <source>Authentication error: Either username or password are wrong.</source>
-        <translation>Помилка авторизації: неправильно введено ім&apos;я користувача або пароль.</translation>
+        <translation>Помилка автентифікації: неправильно введено ім&apos;я користувача або пароль.</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="214"/>
@@ -2685,7 +2685,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="257"/>
         <source>Authentication failed accessing %1</source>
-        <translation>Помилка авторизації при доступі до %1</translation>
+        <translation>Помилка автентифікації при доступі до %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="259"/>
@@ -3837,12 +3837,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="457"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation>Авторизований запит до сервера переспрямовано на &quot;%1&quot;. Або URL неправильний, або помилка у конфігурації сервера.</translation>
+        <translation>Автентифікований запит до сервера переспрямовано на &quot;%1&quot;. Або URL неправильний, або помилка у конфігурації сервера.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="480"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation>Отримано неправильну відповідь на запит авторизації WebDAV.</translation>
+        <translation>Отримано неправильну відповідь на запит автентифікації з боку WebDAV.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="534"/>
@@ -4708,7 +4708,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="20"/>
         <source>Proxy authentication required</source>
-        <translation>Потрібна авторизація на проксі-сервері.</translation>
+        <translation>Потрібна автентифікація на проксі-сервері.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
@@ -6186,7 +6186,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="142"/>
         <source>Proxy server requires authentication</source>
-        <translation>Сервер проксі вимагає авторизації</translation>
+        <translation>Сервер проксі вимагає автентифікації</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="205"/>

@@ -32,9 +32,9 @@ SPDX-License-Identifier = "GPL-2.0-or-later"
 [[annotations]]
 path = [
     "admin/osx/container-migration.plist.cmake",
-    "admin/osx/TransifexStringCatalogSanitizer/Package.swift",
-    "admin/osx/TransifexStringCatalogSanitizer/Package.resolved",
-    "admin/osx/TransifexStringCatalogSanitizer/README.md",
+    "shell_integration/MacOSX/TransifexStringCatalogSanitizer/Package.swift",
+    "shell_integration/MacOSX/TransifexStringCatalogSanitizer/Package.resolved",
+    "shell_integration/MacOSX/TransifexStringCatalogSanitizer/README.md",
 ]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2025 Nextcloud GmbH and Nextcloud contributors"

@@ -233,9 +233,11 @@ void PushNotifications::handleNotifyFileId(const QString &message)
     }
 
     if (fileIds.empty()) {
+        qCDebug(lcPushNotifications) << "Cancelling file IDs changed signal emission due to empty list of file IDs.";
         return;
     }
 
+    qCDebug(lcPushNotifications) << "Emitting signal of changed file IDs.";
     emit fileIdsChanged(_account, fileIds);
 }
 

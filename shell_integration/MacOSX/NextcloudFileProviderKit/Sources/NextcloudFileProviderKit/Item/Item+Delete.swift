@@ -86,11 +86,11 @@ public extension Item {
         }
     }
 
-    // NOTE: the trashing metadata modification procedure here is rough. You SHOULD run a rescan of
-    // the trash in order to ensure you are getting a correct picture of the item's current remote
-    // state! This is important particularly for receiving the correct trash bin filename in case of
-    // there being a previous item in the trash with the same name, prompting the server to rename
-    // the newly-trashed target item
+    /// NOTE: the trashing metadata modification procedure here is rough. You SHOULD run a rescan of
+    /// the trash in order to ensure you are getting a correct picture of the item's current remote
+    /// state! This is important particularly for receiving the correct trash bin filename in case of
+    /// there being a previous item in the trash with the same name, prompting the server to rename
+    /// the newly-trashed target item
     private func handleMetadataTrashModification() -> Error? {
         let ocId = metadata.ocId
 

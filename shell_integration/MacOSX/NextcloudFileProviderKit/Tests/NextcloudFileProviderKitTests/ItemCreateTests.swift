@@ -269,7 +269,8 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             </array>
             </plist>
             """
-            .utf8).write(to: keynoteBuildVersionPlistPath)
+            .utf8
+        ).write(to: keynoteBuildVersionPlistPath)
         let keynotePropertiesPlistPath = keynoteMetadataDir.appendingPathComponent("Properties.plist")
         try Data(
             """
@@ -296,7 +297,8 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             </dict>
             </plist>
             """
-            .utf8).write(to: keynotePropertiesPlistPath)
+            .utf8
+        ).write(to: keynotePropertiesPlistPath)
 
         let bundleItemTemplate = Item(
             metadata: bundleItemMetadata,
@@ -523,7 +525,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(dbItem.uploaded)
     }
 
-    func testCreateDoesNotPropagateIgnoredFile() async throws {
+    func testCreateDoesNotPropagateIgnoredFile() async {
         let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.tmp", "/build/"], log: FileProviderLogMock())
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
@@ -559,7 +561,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: metadata.ocId))
     }
 
-    func testCreateLockFileTriggersRemoteLockInsteadOfUpload() async throws {
+    func testCreateLockFileTriggersRemoteLockInsteadOfUpload() async {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
         // Setup remote folder and file

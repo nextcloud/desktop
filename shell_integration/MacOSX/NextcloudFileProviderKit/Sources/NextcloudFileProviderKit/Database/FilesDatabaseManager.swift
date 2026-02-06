@@ -35,7 +35,9 @@ public final class FilesDatabaseManager: Sendable {
     let logger: FileProviderLogger
     let account: Account
 
-    var itemMetadatas: Results<RealmItemMetadata> { ncDatabase().objects(RealmItemMetadata.self) }
+    var itemMetadatas: Results<RealmItemMetadata> {
+        ncDatabase().objects(RealmItemMetadata.self)
+    }
 
     ///
     /// Convenience initializer which defines a default configuration for Realm.
@@ -278,8 +280,8 @@ public final class FilesDatabaseManager: Sendable {
         return (returningNewMetadatas, returningUpdatedMetadatas, directoriesNeedingRename)
     }
 
-    // ONLY HANDLES UPDATES FOR IMMEDIATE CHILDREN
-    // (in case of directory renames/moves, the changes are recursed down)
+    /// ONLY HANDLES UPDATES FOR IMMEDIATE CHILDREN
+    /// (in case of directory renames/moves, the changes are recursed down)
     public func depth1ReadUpdateItemMetadatas(
         account: String,
         serverUrl: String,
@@ -389,8 +391,8 @@ public final class FilesDatabaseManager: Sendable {
         }
     }
 
-    // If setting a downloading or uploading status, also modified the relevant boolean properties
-    // of the item metadata object
+    /// If setting a downloading or uploading status, also modified the relevant boolean properties
+    /// of the item metadata object
     public func setStatusForItemMetadata(
         _ metadata: SendableItemMetadata, status: Status
     ) -> SendableItemMetadata? {

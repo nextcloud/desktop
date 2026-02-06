@@ -45,7 +45,7 @@ extension RandomAccessCollection {
     }
 
     /// Performs an asynchronous `compactMap` operation on the collection in concurrent chunks.
-    func concurrentChunkedCompactMap<T>(into size: Int = defaultChunkSize, transform: @escaping @Sendable (Element) throws -> T?) async throws -> [T] where T: Sendable, Element: Sendable {
+    func concurrentChunkedCompactMap<T: Sendable>(into size: Int = defaultChunkSize, transform: @escaping @Sendable (Element) throws -> T?) async throws -> [T] where Element: Sendable {
         try await withThrowingTaskGroup(of: [T].self) { group in
             var results = [T]()
             // Reserving capacity is still a good optimization, though we can't know the exact final count.
