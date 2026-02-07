@@ -321,7 +321,9 @@ void PropagateUploadFileNG::finishUpload()
     const auto fileSize = _fileToUpload._size;
     headers[QByteArrayLiteral("OC-Total-Length")] = QByteArray::number(fileSize);
     if (_item->_lockOwnerType == SyncFileItem::LockOwnerType::TokenLock &&
-        _item->_locked == SyncFileItem::LockStatus::LockedItem) {
+        _item->_locked == SyncFileItem::LockStatus::LockedItem &&
+        _item->_instruction != CSYNC_INSTRUCTION_NEW &&
+        _item->_instruction != CSYNC_INSTRUCTION_TYPE_CHANGE) {
         headers[QByteArrayLiteral("If")] = (QLatin1String("<") + propagator()->account()->davUrl().toString() + _fileToUpload._file + "> (<opaquelocktoken:" + _item->_lockToken.toUtf8() + ">)").toUtf8();
     }
 
