@@ -748,6 +748,7 @@ void Account::setCapabilities(const QVariantMap &caps)
     updateServerColors();
     updateServerSubcription();
     updateDesktopEnterpriseChannel();
+    updateServerHasIntegration();
 
     emit capabilitiesChanged();
 
@@ -1549,6 +1550,16 @@ void Account::setDownloadLimit(const unsigned int limit)
 
     _downloadLimit = limit;
     emit downloadLimitChanged();
+}
+
+bool Account::serverHasIntegration() const
+{
+    return _serverHasIntegration;
+}
+
+void Account::updateServerHasIntegration()
+{
+    _serverHasIntegration = capabilities().serverHasClientIntegration();
 }
 
 } // namespace OCC
