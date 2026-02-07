@@ -233,6 +233,8 @@ ApplicationWindow {
                                              || unifiedSearchResultsErrorLabel.visible
                                              || unifiedSearchResultsListView.visible
                                              || trayWindowUnifiedSearchInputContainer.activateSearchFocus
+        property bool showAssistantPanel: false
+        property bool isAssistantActive: assistantPromptLoader.active
 
         anchors.fill: parent
         anchors.margins: Style.trayWindowBorderWidth
@@ -256,10 +258,22 @@ ApplicationWindow {
             anchors.left: parent.left
             anchors.right: parent.right
             height: Style.trayWindowHeaderHeight
+
+            onFeaturedAppButtonClicked: {
+                if (UserModel.currentUser.isAssistantEnabled) {
+                    trayWindowMainItem.showAssistantPanel = !trayWindowMainItem.showAssistantPanel
+                    if (trayWindowMainItem.showAssistantPanel) {
+                        assistantQuestionInput.forceActiveFocus()
+                    }
+                } else {
+                    UserModel.openCurrentAccountFeaturedApp()
+                }
+            }
         }
 
         UnifiedSearchInputContainer {
             id: trayWindowUnifiedSearchInputContainer
+            visible: !trayWindowMainItem.showAssistantPanel
 
             property bool activateSearchFocus: activeFocus
 
@@ -279,17 +293,174 @@ ApplicationWindow {
             Keys.onEscapePressed: activateSearchFocus = false
         }
 
+        RowLayout {
+            id: assistantInputContainer
+            visible: trayWindowMainItem.showAssistantPanel
+
+            function submitQuestion() {
+                const question = assistantQuestionInput.text.trim()
+                if (question.length === 0) {
+                    return
+                }
+
+                UserModel.currentUser.submitAssistantQuestion(question)
+                assistantQuestionInput.text = ""
+            }
+
+            anchors.top: trayWindowHeader.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.topMargin: Style.trayHorizontalMargin
+            anchors.leftMargin: Style.trayHorizontalMargin
+            anchors.rightMargin: Style.trayHorizontalMargin
+            spacing: Style.extraSmallSpacing
+
+            TextField {
+                id: assistantQuestionInput
+                Layout.fillWidth: true
+                Layout.preferredHeight: Math.round(trayWindowUnifiedSearchInputContainer.height * 0.8)
+                placeholderText: qsTr("Ask Assistant…")
+                enabled: UserModel.currentUser.isConnected && !UserModel.currentUser.assistantRequestInProgress
+                onAccepted: assistantInputContainer.submitQuestion()
+            }
+
+            Button {
+                id: assistantResetButton
+                Layout.alignment: Qt.AlignVCenter
+                Layout.preferredHeight: assistantQuestionInput.height
+                Layout.preferredWidth: assistantQuestionInput.height
+                Layout.maximumWidth: assistantQuestionInput.height
+                padding: 0
+                icon.source: "image://svgimage-custom-color/reply.svg/" + palette.windowText
+                icon.width: Math.round(assistantQuestionInput.height * 0.5)
+                icon.height: Math.round(assistantQuestionInput.height * 0.5)
+                display: AbstractButton.IconOnly
+
+                onClicked: {
+                    UserModel.currentUser.clearAssistantResponse()
+                    assistantQuestionInput.text = ""
+                    assistantQuestionInput.forceActiveFocus()
+                }
+
+                Accessible.role: Accessible.Button
+                Accessible.name: qsTr("Start a new assistant chat")
+                Accessible.onPressAction: assistantResetButton.clicked()
+            }
+        }
+
+        Connections {
+            target: UserModel.currentUser
+            function onAssistantStateChanged() {
+                if (!UserModel.currentUser.isAssistantEnabled) {
+                    trayWindowMainItem.showAssistantPanel = false
+                }
+            }
+        }
+
+        Loader {
+            id: assistantPromptLoader
+
+            active: UserModel.currentUser.isAssistantEnabled
+                    && trayWindowMainItem.showAssistantPanel
+                    && !trayWindowMainItem.isUnifiedSearchActive
+            anchors.top: trayWindowMainItem.showAssistantPanel ? assistantInputContainer.bottom : syncStatus.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.topMargin: Style.trayHorizontalMargin
+            anchors.leftMargin: Style.trayHorizontalMargin
+            anchors.rightMargin: Style.trayHorizontalMargin
+            height: trayWindowMainItem.isAssistantActive ? trayWindowMainItem.height - y : implicitHeight
+            clip: trayWindowMainItem.isAssistantActive
+
+            sourceComponent: ColumnLayout {
+                id: assistantPrompt
+                spacing: Style.smallSpacing
+
+                ScrollView {
+                    id: assistantConversationScrollView
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    visible: assistantConversationList.count > 0
+                    contentWidth: availableWidth
+                    rightPadding: ScrollBar.vertical.width
+
+                    ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+                    ScrollBar.vertical.policy: ScrollBar.AsNeeded
+                    ScrollBar.vertical.width: Math.max(ScrollBar.vertical.implicitWidth, Style.minimumScrollBarWidth)
+
+                    ListView {
+                        id: assistantConversationList
+                        clip: true
+                        spacing: Style.smallSpacing
+                        boundsBehavior: Flickable.StopAtBounds
+
+                        model: UserModel.currentUser.assistantMessages
+
+                        delegate: Item {
+                            width: assistantConversationList.width
+                            implicitHeight: messageBubble.implicitHeight
+
+                            readonly property bool isAssistantMessage: modelData.role === "assistant"
+
+                            Rectangle {
+                                id: messageBubble
+
+                                anchors.left: isAssistantMessage ? parent.left : undefined
+                                anchors.right: isAssistantMessage ? undefined : parent.right
+
+                                radius: Style.smallSpacing
+                                color: isAssistantMessage ? palette.alternateBase : palette.base
+                                width: Math.min(assistantConversationList.width * 0.8, messageText.implicitWidth + (Style.smallSpacing * 2))
+                                implicitHeight: messageText.implicitHeight + (Style.smallSpacing * 2)
+
+                                Text {
+                                    id: messageText
+
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+                                    anchors.top: parent.top
+                                    anchors.margins: Style.smallSpacing
+                                    text: modelData.text
+                                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                                    color: palette.windowText
+                                    textFormat: Text.MarkdownText
+                                }
+                            }
+                        }
+                    }
+                }
+
+                EnforcedPlainTextLabel {
+                    id: assistantStatusLabel
+                    Layout.fillWidth: true
+                    visible: UserModel.currentUser.assistantResponse.length > 0
+                    text: UserModel.currentUser.assistantResponse
+                    wrapMode: Text.Wrap
+                    color: palette.windowText
+                }
+
+                EnforcedPlainTextLabel {
+                    id: assistantErrorLabel
+                    Layout.fillWidth: true
+                    visible: UserModel.currentUser.assistantError.length > 0
+                    text: UserModel.currentUser.assistantError
+                    wrapMode: Text.Wrap
+                    color: palette.highlight
+                }
+            }
+        }
+
         Rectangle {
             id: bottomUnifiedSearchInputSeparator
 
-            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
+            anchors.top: trayWindowMainItem.showAssistantPanel ? assistantInputContainer.bottom : trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.topMargin: Style.trayHorizontalMargin
 
             height: 1
             color: palette.dark
-            visible: trayWindowMainItem.isUnifiedSearchActive
+            visible: trayWindowMainItem.isUnifiedSearchActive || trayWindowMainItem.showAssistantPanel
         }
 
         ErrorBox {
@@ -405,9 +576,9 @@ ApplicationWindow {
             id: syncStatus
 
             accentColor: Style.accentColor
-            visible: !trayWindowMainItem.isUnifiedSearchActive
+            visible: !trayWindowMainItem.isUnifiedSearchActive && !trayWindowMainItem.showAssistantPanel
 
-            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
+            anchors.top: trayWindowMainItem.showAssistantPanel ? assistantInputContainer.bottom : trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
         }
@@ -419,7 +590,7 @@ ApplicationWindow {
             anchors.bottom: syncStatus.bottom
             height: 1
             color: palette.dark
-            visible: !trayWindowMainItem.isUnifiedSearchActive
+            visible: !trayWindowMainItem.isUnifiedSearchActive && !trayWindowMainItem.showAssistantPanel
         }
 
         Loader {
@@ -477,7 +648,7 @@ ApplicationWindow {
 
         ActivityList {
             id: activityList
-            visible: !trayWindowMainItem.isUnifiedSearchActive
+            visible: !trayWindowMainItem.isUnifiedSearchActive && !trayWindowMainItem.isAssistantActive
             anchors.top: syncStatus.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
@@ -500,3 +671,13 @@ ApplicationWindow {
         }
     } // Item trayWindowMainItem
 }
+
+
+
+
+
+
+
+
+
+
