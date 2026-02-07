@@ -1009,9 +1009,9 @@ QString enforcedLanguage()
 
 void Application::setupTranslations()
 {
-    auto *translator = new QTranslator(this);
-    auto *qtTranslator = new QTranslator(this);
-    auto *qtkeychainTranslator = new QTranslator(this);
+    auto translator = std::make_unique<QTranslator>();
+    auto qtTranslator = std::make_unique<QTranslator>();
+    auto qtkeychainTranslator = std::make_unique<QTranslator>();
 
     const auto trPath = applicationTrPath();
     const auto trFolder = QDir{trPath};
@@ -1064,12 +1064,20 @@ void Application::setupTranslations()
                 qCDebug(lcApplication()) << "impossible to load QtKeychain translation catalog" << qtkeychainTrFile;
             }
         }
-        if (!translator->isEmpty())
-            installTranslator(translator);
-        if (!qtTranslator->isEmpty())
-            installTranslator(qtTranslator);
-        if (!qtkeychainTranslator->isEmpty())
-            installTranslator(qtkeychainTranslator);
+        if (!translator->isEmpty()) {
+            translator->setParent(this);
+            installTranslator(translator.release());
+        }
+
+        if (!qtTranslator->isEmpty()) {
+            qtTranslator->setParent(this);
+            installTranslator(qtTranslator.release());
+        }
+
+        if (!qtkeychainTranslator->isEmpty()) {
+            qtkeychainTranslator->setParent(this);
+            installTranslator(qtkeychainTranslator.release());
+        }
     } else {
         qCWarning(lcApplication()) << "translation catalog failed to load";
         const auto folderContent = trFolder.entryList();
