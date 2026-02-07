@@ -5522,45 +5522,45 @@ Server replied with error: %2</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="681"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="701"/>
         <source>Retry all uploads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="732"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="894"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="752"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="914"/>
         <source>Resolve conflict</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="884"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="904"/>
         <source>Rename file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1026"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1046"/>
         <source>Public Share Link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1111"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1131"/>
         <source>Open %1 Assistant in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1112"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1132"/>
         <source>Open %1 Talk in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1235"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1255"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1255"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1275"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5568,32 +5568,32 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1597"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1617"/>
         <source>Confirm Account Removal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1598"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1618"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1602"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1622"/>
         <source>Remove connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1603"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1623"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1687"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1707"/>
         <source>Leave share</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1687"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1707"/>
         <source>Remove account</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6198,27 +6198,27 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="813"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="833"/>
         <source>You renamed %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="815"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="835"/>
         <source>You deleted %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="817"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="837"/>
         <source>You created %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="819"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="839"/>
         <source>You changed %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="843"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="863"/>
         <source>Synced %1</source>
         <translation type="unfinished"></translation>
     </message>

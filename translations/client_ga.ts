@@ -693,7 +693,7 @@ Fan leis an sioncronú nua, ansin é a chriptiú.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="705"/>
         <source>Remove folder sync connection</source>
-        <translation>Remove folder sync connection</translation>
+        <translation>Bain nasc sioncrónaithe fillteán</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="718"/>
