@@ -369,6 +369,12 @@ ApplicationWindow {
             id: assistantInputContainer
             visible: trayWindowMainItem.showAssistantPanel
 
+            function resetAssistantConversation() {
+                UserModel.currentUser.clearAssistantResponse()
+                assistantQuestionInput.text = ""
+                assistantQuestionInput.forceActiveFocus()
+            }
+
             function submitQuestion() {
                 const question = assistantQuestionInput.text.trim()
                 if (question.length === 0) {
@@ -390,6 +396,7 @@ ApplicationWindow {
             TextField {
                 id: assistantQuestionInput
                 Layout.fillWidth: true
+                Layout.minimumWidth: 0
                 Layout.preferredHeight: Math.round(trayWindowUnifiedSearchInputContainer.height * 0.8)
                 placeholderText: qsTr("Ask Assistant…")
                 enabled: UserModel.currentUser.isConnected && !UserModel.currentUser.assistantRequestInProgress
@@ -407,16 +414,13 @@ ApplicationWindow {
                 icon.width: Math.round(assistantQuestionInput.height * 0.5)
                 icon.height: Math.round(assistantQuestionInput.height * 0.5)
                 display: AbstractButton.IconOnly
+                focusPolicy: Qt.StrongFocus
 
-                onClicked: {
-                    UserModel.currentUser.clearAssistantResponse()
-                    assistantQuestionInput.text = ""
-                    assistantQuestionInput.forceActiveFocus()
-                }
+                onPressed: assistantInputContainer.resetAssistantConversation()
 
                 Accessible.role: Accessible.Button
                 Accessible.name: qsTr("Start a new assistant chat")
-                Accessible.onPressAction: assistantResetButton.clicked()
+                Accessible.onPressAction: assistantInputContainer.resetAssistantConversation()
             }
         }
 
@@ -454,7 +458,8 @@ ApplicationWindow {
                     Layout.fillHeight: true
                     visible: assistantConversationList.count > 0
                     contentWidth: availableWidth
-                    rightPadding: ScrollBar.vertical.width
+                    leftPadding: 0
+                    rightPadding: 0
 
                     ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
                     ScrollBar.vertical.policy: ScrollBar.AsNeeded
@@ -469,7 +474,7 @@ ApplicationWindow {
                         model: UserModel.currentUser.assistantMessages
 
                         delegate: Item {
-                            width: assistantConversationList.width
+                            width: assistantConversationList.width - assistantConversationScrollView.effectiveScrollBarWidth
                             implicitHeight: messageBubble.implicitHeight
 
                             readonly property bool isAssistantMessage: modelData.role === "assistant"
@@ -744,6 +749,7 @@ ApplicationWindow {
         }
     } // Item trayWindowMainItem
 }
+
 
 
 
