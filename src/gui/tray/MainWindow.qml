@@ -416,7 +416,7 @@ ApplicationWindow {
                 display: AbstractButton.IconOnly
                 focusPolicy: Qt.StrongFocus
 
-                onPressed: assistantInputContainer.resetAssistantConversation()
+                onClicked: assistantInputContainer.resetAssistantConversation()
 
                 Accessible.role: Accessible.Button
                 Accessible.name: qsTr("Start a new assistant chat")
@@ -474,7 +474,7 @@ ApplicationWindow {
                         model: UserModel.currentUser.assistantMessages
 
                         delegate: Item {
-                            width: assistantConversationList.width - assistantConversationScrollView.effectiveScrollBarWidth
+                            width: assistantConversationScrollView.availableWidth
                             implicitHeight: messageBubble.implicitHeight
 
                             readonly property bool isAssistantMessage: modelData.role === "assistant"
@@ -749,6 +749,7 @@ ApplicationWindow {
         }
     } // Item trayWindowMainItem
 }
+
 
 
 
