@@ -424,6 +424,7 @@ ApplicationWindow {
                                     wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                                     color: palette.windowText
                                     textFormat: Text.MarkdownText
+                                    selectByMouse: true
                                 }
                             }
                         }
@@ -671,6 +672,7 @@ ApplicationWindow {
         }
     } // Item trayWindowMainItem
 }
+
 
 
 
