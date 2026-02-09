@@ -104,7 +104,7 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
 public:
     enum class AccountNetworkTransferLimitSetting {
         LegacyGlobalLimit = -2, // Until 3.17.0 a value of -2 was interpreted as "Use global network settings", it's now used to fall back to "No limit".  See also GH#8743
-        AutoLimit = -1, // Value under 0 is interpreted as auto in general
+        AutoLimit = -1, // Deprecated: auto limit removed, treated as "No limit" for migration
         NoLimit,
         ManualLimit,
     };
@@ -428,6 +428,14 @@ public:
 #ifdef BUILD_FILE_PROVIDER_MODULE
     [[nodiscard]] QString fileProviderDomainIdentifier() const;
     void setFileProviderDomainIdentifier(const QString &identifier);
+
+    /**
+     * Runtime-only property for tracking the last fetched root folder ETag.
+     * Used for detecting remote changes without persisting the value.
+     * This is primarily used for File Provider domain signaling on macOS.
+     */
+    [[nodiscard]] QByteArray lastRootETag() const;
+    void setLastRootETag(const QByteArray &etag);
 #endif
 
 public slots:
@@ -593,6 +601,7 @@ private:
     QByteArray _encryptionCertificateFingerprint;
 #ifdef BUILD_FILE_PROVIDER_MODULE
     QString _fileProviderDomainIdentifier;
+    QByteArray _lastRootETag; // Runtime-only, not persisted
 #endif
 
     /* IMPORTANT - remove later - FIXME MS@2019-12-07 -->

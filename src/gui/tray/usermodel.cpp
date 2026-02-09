@@ -344,7 +344,7 @@ void User::setNotificationRefreshInterval(std::chrono::milliseconds interval)
 
 void User::slotPushNotificationsReady()
 {
-    qCInfo(lcActivity) << "Push notifications are ready";
+    qCInfo(lcActivity) << "Push notifications are ready.";
 
     if (_notificationCheckTimer.isActive()) {
         // as we are now able to use push notifications - let's stop the polling timer
@@ -358,11 +358,49 @@ void User::slotDisconnectPushNotifications()
 {
     disconnect(_account->account()->pushNotifications(), &PushNotifications::notificationsChanged, this, &User::slotReceivedPushNotification);
     disconnect(_account->account()->pushNotifications(), &PushNotifications::activitiesChanged, this, &User::slotReceivedPushActivity);
+    disconnect(_account->account()->pushNotifications(), &PushNotifications::filesChanged, this, &User::slotReceivedPushFilesChanges);
+    disconnect(_account->account()->pushNotifications(), &PushNotifications::fileIdsChanged, this, &User::slotReceivedPushFileIdsChanges);
 
     disconnect(_account->account().data(), &Account::pushNotificationsDisabled, this, &User::slotDisconnectPushNotifications);
 
     // connection to WebSocket may have dropped or an error occurred, so we need to bring back the polling until we have re-established the connection
     setNotificationRefreshInterval(ConfigFile().notificationRefreshInterval());
+}
+
+void User::slotReceivedPushFilesChanges(Account *account)
+{
+    if (account->id() != _account->account()->id()) {
+        return;
+    }
+
+    qCInfo(lcActivity) << "Received push notification for file changes.";
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    // Forward to the File Provider Domain Manager
+    const auto fileProvider = Mac::FileProvider::instance();
+
+    if (fileProvider && fileProvider->domainManager()) {
+        fileProvider->domainManager()->slotHandleFileIdsChanged(account, {});
+    }
+#endif
+}
+
+void User::slotReceivedPushFileIdsChanges(Account *account, const QList<qint64> &fileIds)
+{
+    if (account->id() != _account->account()->id()) {
+        return;
+    }
+
+    qCInfo(lcActivity) << "Received push notification for file id changes, file count:" << fileIds.size();
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    // Forward to the File Provider Domain Manager
+    const auto fileProvider = Mac::FileProvider::instance();
+
+    if (fileProvider && fileProvider->domainManager()) {
+        fileProvider->domainManager()->slotHandleFileIdsChanged(account, fileIds);
+    }
+#endif
 }
 
 void User::slotReceivedPushNotification(Account *account)
@@ -436,6 +474,8 @@ void User::connectPushNotifications() const
 
     connect(_account->account()->pushNotifications(), &PushNotifications::notificationsChanged, this, &User::slotReceivedPushNotification, Qt::UniqueConnection);
     connect(_account->account()->pushNotifications(), &PushNotifications::activitiesChanged, this, &User::slotReceivedPushActivity, Qt::UniqueConnection);
+    connect(_account->account()->pushNotifications(), &PushNotifications::filesChanged, this, &User::slotReceivedPushFilesChanges, Qt::UniqueConnection);
+    connect(_account->account()->pushNotifications(), &PushNotifications::fileIdsChanged, this, &User::slotReceivedPushFileIdsChanges, Qt::UniqueConnection);
 }
 
 bool User::checkPushNotificationsAreReady() const

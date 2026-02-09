@@ -115,7 +115,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         targetItemMetadata.fileNameView = "item-renamed.txt" // Renamed
         targetItemMetadata.serverUrl = Self.account.davFilesUrl + "/folder" // Move
         targetItemMetadata.date = .init()
-        targetItemMetadata.size = Int64(newContents!.count)
+        targetItemMetadata.size = try Int64(XCTUnwrap(newContents?.count))
 
         let item = Item(
             metadata: itemMetadata,
@@ -146,7 +146,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(modifiedItem.filename, targetItem.filename)
         XCTAssertEqual(modifiedItem.parentItemIdentifier, targetItem.parentItemIdentifier)
         XCTAssertEqual(modifiedItem.contentModificationDate, targetItem.contentModificationDate)
-        XCTAssertEqual(modifiedItem.documentSize?.intValue, newContents!.count)
+        XCTAssertEqual(modifiedItem.documentSize?.intValue, newContents?.count)
 
         XCTAssertFalse(remoteFolder.children.isEmpty)
         XCTAssertEqual(remoteItem.data, newContents)
@@ -506,7 +506,8 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             </array>
             </plist>
             """
-            .utf8).write(to: keynoteBuildVersionPlistPath)
+            .utf8
+        ).write(to: keynoteBuildVersionPlistPath)
         let keynotePropertiesPlistPath =
             keynoteMetadataDir.appendingPathComponent("Properties.plist")
         try Data(
@@ -534,7 +535,8 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             </dict>
             </plist>
             """
-            .utf8).write(to: keynotePropertiesPlistPath)
+            .utf8
+        ).write(to: keynotePropertiesPlistPath)
 
         var targetBundleMetadata = remoteKeynoteBundle.toItemMetadata(account: Self.account)
         targetBundleMetadata.etag = "this-is-a-new-etag"
@@ -1043,7 +1045,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(modifiedUntrashedItem.documentSize?.int64Value, targetItemMetadata.size)
 
         XCTAssertEqual(remoteTrashItem.name, targetItem.filename)
-        XCTAssertEqual(remoteTrashItem.data!, newContents)
+        XCTAssertEqual(remoteTrashItem.data, newContents)
     }
 
     func testMoveFileOutOfTrashWithExistingIdenticallyNamedFile() async throws {
@@ -1323,7 +1325,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertNil(dbItem.chunkUploadId)
     }
 
-    func testModifyDoesNotPropagateIgnoredFile() async throws {
+    func testModifyDoesNotPropagateIgnoredFile() async {
         let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.bak", "/logs/"], log: FileProviderLogMock())
         let metadata = SendableItemMetadata(
             ocId: "ignored-modify-id",
@@ -1532,7 +1534,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotEqual(modifiedItem?.metadata.classFile, "lock")
     }
 
-    func testMoveToTrashFailsWhenNoTrashInCapabilities() async throws {
+    func testMoveToTrashFailsWhenNoTrashInCapabilities() async {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         XCTAssert(remoteInterface.capabilities.contains(##""undelete": true,"##))
         remoteInterface.capabilities =

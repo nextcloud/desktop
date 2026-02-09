@@ -79,10 +79,8 @@ NetworkSettings::NetworkSettings(const AccountPtr &account, QWidget *parent)
 
     connect(_ui->uploadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->noUploadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
-    connect(_ui->autoUploadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->downloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->noDownloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
-    connect(_ui->autoDownloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->downloadSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->uploadSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &NetworkSettings::saveBWLimitSettings);
 }
@@ -148,19 +146,15 @@ void NetworkSettings::loadBWLimitSettings()
 
     if (useDownloadLimit >= 1) {
         _ui->downloadLimitRadioButton->setChecked(true);
-    } else if (useDownloadLimit == 0) {
-        _ui->noDownloadLimitRadioButton->setChecked(true);
     } else {
-        _ui->autoDownloadLimitRadioButton->setChecked(true);
+        _ui->noDownloadLimitRadioButton->setChecked(true);
     }
     _ui->downloadSpinBox->setValue(downloadLimit);
 
     if (useUploadLimit >= 1) {
         _ui->uploadLimitRadioButton->setChecked(true);
-    } else if (useUploadLimit == 0) {
-        _ui->noUploadLimitRadioButton->setChecked(true);
     } else {
-        _ui->autoUploadLimitRadioButton->setChecked(true);
+        _ui->noUploadLimitRadioButton->setChecked(true);
     }
     _ui->uploadSpinBox->setValue(uploadLimit);
 }
@@ -210,8 +204,6 @@ void NetworkSettings::saveBWLimitSettings()
         useDownloadLimit = 1;
     } else if (_ui->noDownloadLimitRadioButton->isChecked()) {
         useDownloadLimit = 0;
-    } else if (_ui->autoDownloadLimitRadioButton->isChecked()) {
-        useDownloadLimit = -1;
     } else if (_account) {
         useDownloadLimit = -2;
     }
@@ -220,8 +212,6 @@ void NetworkSettings::saveBWLimitSettings()
         useUploadLimit = 1;
     } else if (_ui->noUploadLimitRadioButton->isChecked()) {
         useUploadLimit = 0;
-    } else if (_ui->autoUploadLimitRadioButton->isChecked()) {
-        useUploadLimit = -1;
     } else if (_account) {
         useUploadLimit = -2;
     }

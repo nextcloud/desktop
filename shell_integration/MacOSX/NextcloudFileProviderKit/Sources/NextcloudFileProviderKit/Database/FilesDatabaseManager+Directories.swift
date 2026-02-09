@@ -40,7 +40,7 @@ public extension FilesDatabaseManager {
         return nil
     }
 
-    // Deletes all metadatas related to the info of the directory provided
+    /// Deletes all metadatas related to the info of the directory provided
     func deleteDirectoryAndSubdirectoriesMetadata(
         ocId: String
     ) -> [SendableItemMetadata]? {
@@ -126,7 +126,8 @@ public extension FilesDatabaseManager {
                         """
                         Moved childItem at: \(oldServerUrl)
                                         to: \(movedServerUrl)
-                        """)
+                        """
+                    )
                 }
             }
         } catch {

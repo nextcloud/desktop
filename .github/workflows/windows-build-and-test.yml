@@ -38,7 +38,7 @@ jobs:
           
       - name: Cache Install OpenCppCoverage
         id: cache-install-opencppcoverage
-        uses: actions/cache@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         with:
           path: C:\Program Files\OpenCppCoverage
           key: ${{ runner.os }}-cache-install-opencppcoverage
@@ -51,7 +51,7 @@ jobs:
 
       #- name: Cache Install inkscape
       #  id: cache-install-inkscape
-      #  uses: actions/cache@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
+      #  uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
       #  with:
       #    path: C:\Program Files\inkscape
       #    key: ${{ runner.os }}-cache-install-inkscape

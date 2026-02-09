@@ -37,8 +37,8 @@ public class MockChangeObserver: NSObject, NSFileProviderChangeObserver {
             ISO8601DateFormatter()
                 .string(from: Date(timeIntervalSince1970: 1))
                 .data(using: .utf8)!
-        )
-    ) async throws {
+        )) async throws
+    {
         enumerator.enumerateChanges?(for: self, from: anchor)
         while !isComplete {
             try await Task.sleep(nanoseconds: 1_000_000)
