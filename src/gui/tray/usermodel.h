@@ -12,6 +12,7 @@
 #include <QStringList>
 #include <QQuickImageProvider>
 #include <QHash>
+#include <QVector>
 
 #include "accountfwd.h"
 #include "accountmanager.h"
@@ -222,6 +223,10 @@ class UserModel : public QAbstractListModel
     Q_OBJECT
     Q_PROPERTY(User* currentUser READ currentUser NOTIFY currentUserChanged)
     Q_PROPERTY(int currentUserId READ currentUserId WRITE setCurrentUserId NOTIFY currentUserChanged)
+    Q_PROPERTY(bool hasSyncErrors READ hasSyncErrors NOTIFY syncErrorUsersChanged)
+    Q_PROPERTY(int syncErrorUserCount READ syncErrorUserCount NOTIFY syncErrorUsersChanged)
+    Q_PROPERTY(int firstSyncErrorUserId READ firstSyncErrorUserId NOTIFY syncErrorUsersChanged)
+    Q_PROPERTY(User* firstSyncErrorUser READ firstSyncErrorUser NOTIFY syncErrorUsersChanged)
 public:
 
     static UserModel *instance();
@@ -244,6 +249,10 @@ public:
     [[nodiscard]] int currentUserId() const;
 
     Q_INVOKABLE bool isUserConnected(const int id);
+    [[nodiscard]] bool hasSyncErrors() const;
+    [[nodiscard]] int syncErrorUserCount() const;
+    [[nodiscard]] int firstSyncErrorUserId() const;
+    [[nodiscard]] User *firstSyncErrorUser() const;
 
     Q_INVOKABLE std::shared_ptr<OCC::UserStatusConnector> userStatusConnector(int id);
 
@@ -271,6 +280,7 @@ public:
 signals:
     void addAccount();
     void currentUserChanged();
+    void syncErrorUsersChanged();
 
 public slots:
     void fetchCurrentActivityModel();
@@ -278,6 +288,7 @@ public slots:
     void openCurrentAccountServer();
     void openCurrentAccountFolderFromTrayInfo(const QString &fullRemotePath);
     void openCurrentAccountFeaturedApp();
+    Q_INVOKABLE void refreshSyncErrorUsers();
     void setCurrentUserId(const int id);
     void login(const int id);
     void logout(const int id);
@@ -292,6 +303,10 @@ private:
     QList<User*> _users;
     int _currentUserId = -1;
     bool _init = true;
+    QVector<int> _syncErrorUserIds;
+
+    void updateSyncErrorUsers();
+    [[nodiscard]] bool userHasSyncErrors(const User *user) const;
 
     void buildUserList();
     void addAccsToUserList();

@@ -93,6 +93,7 @@ ApplicationWindow {
                 trayWindowHeader.currentAccountHeaderButton.accountMenu.close();
                 trayWindowHeader.appsMenu.close();
                 trayWindowHeader.openLocalFolderButton.closeMenu()
+                UserModel.refreshSyncErrorUsers()
             }
         }
 
@@ -258,12 +259,83 @@ ApplicationWindow {
             height: Style.trayWindowHeaderHeight
         }
 
+        Button {
+            id: trayWindowSyncWarning
+
+            readonly property color warningIconColor: Style.errorBoxBackgroundColor
+
+            anchors.top: trayWindowHeader.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.topMargin: Style.trayHorizontalMargin
+            anchors.leftMargin: Style.trayHorizontalMargin
+            anchors.rightMargin: Style.trayHorizontalMargin
+
+            visible: UserModel.hasSyncErrors
+                     && !(UserModel.syncErrorUserCount === 1
+                          && UserModel.firstSyncErrorUserId === UserModel.currentUserId)
+            padding: 0
+            background: Rectangle {
+                radius: Style.slightlyRoundedButtonRadius
+                color: Qt.rgba(trayWindowSyncWarning.warningIconColor.r,
+                               trayWindowSyncWarning.warningIconColor.g,
+                               trayWindowSyncWarning.warningIconColor.b,
+                               0.2)
+                border.width: Style.normalBorderWidth
+                border.color: Qt.rgba(trayWindowSyncWarning.warningIconColor.r,
+                                      trayWindowSyncWarning.warningIconColor.g,
+                                      trayWindowSyncWarning.warningIconColor.b,
+                                      0.6)
+            }
+
+            Accessible.name: syncWarningText.text
+            Accessible.role: Accessible.Button
+
+            contentItem: RowLayout {
+                anchors.fill: parent
+                spacing: 0
+
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.topMargin: 4
+                    Layout.leftMargin: Style.trayHorizontalMargin
+                    Layout.rightMargin: Style.trayHorizontalMargin
+                    Layout.bottomMargin: 4
+
+                    EnforcedPlainTextLabel {
+                        id: syncWarningText
+
+                        Layout.fillWidth: true
+                        font.pixelSize: Style.topLinePixelSize
+                        font.bold: true
+                        wrapMode: Text.WordWrap
+                        horizontalAlignment: Text.AlignHCenter
+                        text: {
+                            if (UserModel.syncErrorUserCount <= 1) {
+                                return qsTr("Issue with account %1").arg(UserModel.firstSyncErrorUser ? UserModel.firstSyncErrorUser.name : "");
+                            }
+                            return qsTr("Issues with several accounts");
+                        }
+                    }
+                }
+            }
+
+            onClicked: {
+                if (UserModel.firstSyncErrorUserId >= 0) {
+                    UserModel.currentUserId = UserModel.firstSyncErrorUserId
+                }
+            }
+        }
+
         UnifiedSearchInputContainer {
             id: trayWindowUnifiedSearchInputContainer
 
             property bool activateSearchFocus: activeFocus
 
-            anchors.top: trayWindowHeader.bottom
+            anchors.top: trayWindowSyncWarning.visible
+                         ? trayWindowSyncWarning.bottom
+                         : trayWindowHeader.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
             anchors.topMargin: Style.trayHorizontalMargin
