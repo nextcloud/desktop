@@ -17,6 +17,8 @@
 #include "caseclashfilenamedialog.h"
 #include "activitydata.h"
 #include "systray.h"
+#include "openfilemanager.h"
+#include "filesystem.h"
 #include "common/utility.h"
 
 #include <QtCore>
@@ -861,6 +863,20 @@ void ActivityListModel::slotTriggerDismiss(const int activityIndex)
     const auto activity = _finalList[activityIndex];
 
     emit sendNotificationRequest(activity._accName, Utility::concatUrlPath(accountState()->account()->url(), "ocs/v2.php/apps/notifications/api/v2/notifications/" + QString::number(activity._id)).toString(), deleteVerb, activityIndex);
+}
+
+void ActivityListModel::slotTriggerShowInFileManager(const int activityIndex)
+{
+    if (activityIndex < 0 || activityIndex >= _finalList.size()) {
+        qCWarning(lcActivity) << "Couldn't trigger show in file manager at index" << activityIndex << "/ final list size:" << _finalList.size();
+        return;
+    }
+
+    const auto modelIndex = index(activityIndex);
+    const auto path = data(modelIndex, PathRole).toString();
+    if (FileSystem::fileExists(path)) {
+        showInFileManager(path);
+    }
 }
 
 AccountState *ActivityListModel::accountState() const

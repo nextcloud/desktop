@@ -26,6 +26,7 @@ ScrollView {
     }
 
     signal openFile(string filePath)
+    signal showInFileManager(int index)
     signal activityItemClicked(int index)
 
     contentWidth: availableWidth
@@ -50,6 +51,14 @@ ScrollView {
 
     ListView {
         id: activityList
+
+        function openFileOrLink(index) {
+            if (model.isCurrentUserFileActivity && model.openablePath) {
+                openFile("file://" + model.openablePath);
+            } else {
+                activityItemClicked(index);
+            }
+        }
 
         Accessible.role: Accessible.List
         Accessible.name: qsTr("Activity list")
@@ -117,11 +126,25 @@ ScrollView {
 
                 forceActiveFocus();
             }
-            onClicked: {
-                if (model.isCurrentUserFileActivity && model.openablePath) {
-                    openFile("file://" + model.openablePath);
-                } else {
-                    activityItemClicked(model.activityIndex)
+
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.LeftButton | Qt.RightButton
+                onClicked: (mouse)=> {
+                    switch (mouse.button) {
+                    case Qt.LeftButton:
+                        activityList.openFileOrLink(activityList.currentIndex)
+                        break;
+                    case Qt.RightButton:
+                        // We only want to allow the context menu for actual files
+                        if (model.showFileDetails) {
+                            contextMenu.x = mouse.x;
+                            contextMenu.y = mouse.y;
+                            contextMenu.selectedItem = activityList.currentIndex
+                            contextMenu.open();
+                        }
+                        break;
+                    }
                 }
             }
         }
@@ -146,6 +169,26 @@ ScrollView {
             onClicked: controlRoot.scrollToTop()
 
             visible: !controlRoot.atYBeginning && controlRoot.contentHeight > controlRoot.height
+        }
+
+        Menu {
+            id: contextMenu
+            property int selectedItem
+
+            MenuItem {
+                text: qsTr("Open local file")
+                onTriggered: {
+                    activityList.currentIndex = contextMenu.selectedItem
+                    activityList.openFileOrLink(contextMenu.selectedItem);
+                }
+            }
+            MenuItem {
+                text: qsTr("Show in file manager")
+                onTriggered: {
+                    activityList.currentIndex = contextMenu.selectedItem
+                    showInFileManager(contextMenu.selectedItem);
+                }
+            }
         }
 
         Column {
