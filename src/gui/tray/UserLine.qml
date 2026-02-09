@@ -42,7 +42,9 @@ AbstractButton {
                 visible: model.isConnected && model.serverHasUserStatus
                 width: accountStatusIndicator.sourceSize.width + Style.trayFolderStatusIndicatorSizeOffset
                 height: width
-                color: "white"
+                color: ((userLine.parent.highlighted || userLine.parent.down) && Qt.platform.os !== "windows")
+                    ? Style.colorWithoutTransparency(userLine.parent.palette.highlight)
+                    : Style.colorWithoutTransparency(userLine.parent.palette.base)
                 anchors.bottom: accountAvatar.bottom
                 anchors.right: accountAvatar.right
                 radius: width * Style.trayFolderStatusIndicatorRadiusFactor
@@ -53,8 +55,7 @@ AbstractButton {
                 visible: model.isConnected && model.serverHasUserStatus
                 source: model.statusIcon
                 cache: false
-                x: accountStatusIndicatorBackground.x + Style.trayFolderStatusIndicatorSizeOffset / 2
-                y: accountStatusIndicatorBackground.y + Style.trayFolderStatusIndicatorSizeOffset / 2
+                anchors.centerIn: accountStatusIndicatorBackground
                 sourceSize.width: Style.accountAvatarStateIndicatorSize
                 sourceSize.height: Style.accountAvatarStateIndicatorSize
 
@@ -148,24 +149,14 @@ AbstractButton {
             Layout.preferredWidth: Style.headerButtonIconSize
             Layout.fillHeight: true
 
-            Rectangle {
-                id: syncStatusIndicatorBackground
-                anchors.centerIn: parent
-                visible: !model.syncStatusOk
-                width: syncStatusIndicator.sourceSize.width + Style.trayFolderStatusIndicatorSizeOffset
-                height: width
-                color: "white"
-                radius: width * Style.trayFolderStatusIndicatorRadiusFactor
-            }
-
             Image {
                 id: syncStatusIndicator
                 visible: !model.syncStatusOk
                 source: model.syncStatusIcon
                 cache: false
-                anchors.centerIn: syncStatusIndicatorBackground
-                sourceSize.width: Style.accountAvatarStateIndicatorSize
-                sourceSize.height: Style.accountAvatarStateIndicatorSize
+                anchors.centerIn: parent
+                sourceSize.width: syncStatusColumn.width
+                sourceSize.height: syncStatusColumn.width
 
                 Accessible.role: Accessible.Indicator
                 Accessible.name: qsTr("Account sync status requires attention")
@@ -264,4 +255,5 @@ AbstractButton {
         }
     }
 }   // MenuItem userLine
+
 
