@@ -1483,8 +1483,8 @@ void User::submitAssistantQuestion(const QString &question)
 
     QStringList history;
     history.reserve(_assistantMessages.size());
-    for (int index = _assistantMessages.size() - 1; index >= 0; --index) {
-        const auto entry = _assistantMessages.at(index).toMap();
+    for (const auto &message : std::as_const(_assistantMessages)) {
+        const auto entry = message.toMap();
         const auto role = entry.value(QStringLiteral("role")).toString();
         const auto text = entry.value(QStringLiteral("text")).toString();
         if (text.isEmpty()) {
@@ -1507,7 +1507,7 @@ void User::submitAssistantQuestion(const QString &question)
     _assistantResponse = tr("Sending your request…");
     emit assistantResponseChanged();
 
-    _assistantMessages.prepend(QVariantMap{
+    _assistantMessages.append(QVariantMap{
         {QStringLiteral("role"), QStringLiteral("user")},
         {QStringLiteral("text"), _assistantQuestion},
     });
@@ -1605,8 +1605,8 @@ void User::slotAssistantTaskTypesFetched(const QJsonDocument &json, int statusCo
 
     QStringList history;
     history.reserve(_assistantMessages.size());
-    for (int index = _assistantMessages.size() - 1; index >= 1; --index) {
-        const auto entry = _assistantMessages.at(index).toMap();
+    for (const auto &message : std::as_const(_assistantMessages)) {
+        const auto entry = message.toMap();
         const auto role = entry.value(QStringLiteral("role")).toString();
         const auto text = entry.value(QStringLiteral("text")).toString();
         if (text.isEmpty()) {
@@ -1656,7 +1656,7 @@ void User::slotAssistantTasksFetched(const QJsonDocument &json, int statusCode)
     _assistantPollTimer.stop();
     _assistantResponse = output;
     emit assistantResponseChanged();
-    _assistantMessages.prepend(QVariantMap{
+    _assistantMessages.append(QVariantMap{
         {QStringLiteral("role"), QStringLiteral("assistant")},
         {QStringLiteral("text"), _assistantResponse},
     });

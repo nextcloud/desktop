@@ -238,7 +238,6 @@ ApplicationWindow {
         property bool isAssistantActive: assistantPromptLoader.active
 
         anchors.fill: parent
-        anchors.margins: Style.trayWindowBorderWidth
         clip: true
 
         radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
@@ -385,22 +384,27 @@ ApplicationWindow {
                 assistantQuestionInput.text = ""
             }
 
-            anchors.top: trayWindowHeader.bottom
+            anchors.bottom: trayWindowMainItem.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
             anchors.topMargin: Style.trayHorizontalMargin
-            anchors.leftMargin: Style.trayHorizontalMargin
-            anchors.rightMargin: Style.trayHorizontalMargin
+            anchors.bottomMargin: Style.trayHorizontalMargin
             spacing: Style.extraSmallSpacing
 
             TextField {
                 id: assistantQuestionInput
                 Layout.fillWidth: true
                 Layout.minimumWidth: 0
-                Layout.preferredHeight: Math.round(trayWindowUnifiedSearchInputContainer.height * 0.8)
+                Layout.fillHeight: true
                 placeholderText: qsTr("Ask Assistant…")
                 enabled: UserModel.currentUser.isConnected && !UserModel.currentUser.assistantRequestInProgress
                 onAccepted: assistantInputContainer.submitQuestion()
+
+                Layout.leftMargin: Style.trayHorizontalMargin
+                leftPadding: 8
+                rightPadding: 8
+                topPadding: 10
+                bottomPadding: 10
             }
 
             Button {
@@ -409,6 +413,7 @@ ApplicationWindow {
                 Layout.preferredHeight: assistantQuestionInput.height
                 Layout.preferredWidth: assistantQuestionInput.height
                 Layout.maximumWidth: assistantQuestionInput.height
+                Layout.rightMargin: Style.trayHorizontalMargin
                 padding: 0
                 icon.source: "image://svgimage-custom-color/reply.svg/" + palette.windowText
                 icon.width: Math.round(assistantQuestionInput.height * 0.5)
@@ -439,14 +444,13 @@ ApplicationWindow {
             active: UserModel.currentUser.isAssistantEnabled
                     && trayWindowMainItem.showAssistantPanel
                     && !trayWindowMainItem.isUnifiedSearchActive
-            anchors.top: trayWindowMainItem.showAssistantPanel ? assistantInputContainer.bottom : syncStatus.bottom
+            visible: trayWindowMainItem.showAssistantPanel
+            anchors.top: trayWindowHeader.bottom
+            anchors.bottom: assistantInputContainer.top
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
             anchors.topMargin: Style.trayHorizontalMargin
-            anchors.leftMargin: Style.trayHorizontalMargin
-            anchors.rightMargin: Style.trayHorizontalMargin
-            height: trayWindowMainItem.isAssistantActive ? trayWindowMainItem.height - y : implicitHeight
-            clip: trayWindowMainItem.isAssistantActive
+            clip: true
 
             sourceComponent: ColumnLayout {
                 id: assistantPrompt
@@ -463,18 +467,21 @@ ApplicationWindow {
 
                     ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
                     ScrollBar.vertical.policy: ScrollBar.AsNeeded
-                    ScrollBar.vertical.width: Math.max(ScrollBar.vertical.implicitWidth, Style.minimumScrollBarWidth)
 
                     ListView {
                         id: assistantConversationList
                         clip: true
-                        spacing: Style.smallSpacing
+                        spacing: Style.standardSpacing
                         boundsBehavior: Flickable.StopAtBounds
+
+                        leftMargin: Style.trayHorizontalMargin
+                        rightMargin: Style.trayHorizontalMargin
 
                         model: UserModel.currentUser.assistantMessages
 
                         delegate: Item {
-                            width: assistantConversationScrollView.availableWidth
+                            id: messageDelegate
+                            width: assistantConversationList.width - ( assistantConversationList.leftMargin + assistantConversationList.rightMargin )
                             implicitHeight: messageBubble.implicitHeight
 
                             readonly property bool isAssistantMessage: modelData.role === "assistant"
@@ -484,10 +491,12 @@ ApplicationWindow {
 
                                 anchors.left: isAssistantMessage ? parent.left : undefined
                                 anchors.right: isAssistantMessage ? undefined : parent.right
+                                anchors.leftMargin: Style.trayHorizontalMargin
+                                anchors.rightMargin: Style.trayHorizontalMargin
 
                                 radius: Style.smallSpacing
-                                color: isAssistantMessage ? palette.alternateBase : palette.base
-                                width: Math.min(assistantConversationList.width * 0.8, messageText.implicitWidth + (Style.smallSpacing * 2))
+                                color: isAssistantMessage ? palette.alternateBase : palette.highlight
+                                width: Math.min(messageDelegate.width * 0.8, messageText.implicitWidth + (Style.smallSpacing * 2))
                                 implicitHeight: messageText.implicitHeight + (Style.smallSpacing * 2)
 
                                 TextEdit {
@@ -499,12 +508,16 @@ ApplicationWindow {
                                     anchors.margins: Style.smallSpacing
                                     text: modelData.text
                                     wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                                    color: palette.windowText
+                                    color: isAssistantMessage ? palette.windowText : palette.highlightedText
                                     textFormat: Text.MarkdownText
                                     readOnly: true
                                     selectByMouse: true
                                 }
                             }
+                        }
+
+                        onCountChanged: {
+                            assistantConversationList.positionViewAtEnd()
                         }
                     }
                 }
@@ -512,7 +525,11 @@ ApplicationWindow {
                 EnforcedPlainTextLabel {
                     id: assistantStatusLabel
                     Layout.fillWidth: true
-                    visible: UserModel.currentUser.assistantResponse.length > 0
+                    Layout.leftMargin: Style.trayHorizontalMargin
+                    Layout.rightMargin: Style.trayHorizontalMargin
+                    Layout.bottomMargin: Style.trayHorizontalMargin
+                    Layout.topMargin: Style.trayHorizontalMargin
+                    visible: true
                     text: UserModel.currentUser.assistantResponse
                     wrapMode: Text.Wrap
                     color: palette.windowText
@@ -521,6 +538,10 @@ ApplicationWindow {
                 EnforcedPlainTextLabel {
                     id: assistantErrorLabel
                     Layout.fillWidth: true
+                    Layout.leftMargin: Style.trayHorizontalMargin
+                    Layout.rightMargin: Style.trayHorizontalMargin
+                    Layout.bottomMargin: Style.trayHorizontalMargin
+                    Layout.topMargin: Style.trayHorizontalMargin
                     visible: UserModel.currentUser.assistantError.length > 0
                     text: UserModel.currentUser.assistantError
                     wrapMode: Text.Wrap
