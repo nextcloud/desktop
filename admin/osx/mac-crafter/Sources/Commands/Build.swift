@@ -283,11 +283,68 @@ struct Build: AsyncParsableCommand {
             throw MacCrafterError.craftError("Error crafting Nextcloud Desktop Client.")
         }
 
-        // MARK: Signing
+        // MARK: Debug Symbols
 
         let clientAppURL = clientBuildURL
             .appendingPathComponent("image-\(buildType)-master")
             .appendingPathComponent("\(appName).app")
+
+        // When building in dev mode, copy the dSYM bundles for the app extensions from the
+        // xcodebuild SYMROOT into Contents/PlugIns/ of the product app bundle alongside their
+        // respective .appex bundles.
+        //
+        // Background: KDE Craft's __internalPostInstallHandleSymbols() deliberately moves every
+        // .dSYM bundle out of the main image directory and into a separate -dbg image directory
+        // before packaging. This means dSYMs never reach the product app via the normal CMake
+        // install() path. Reading directly from the xcodebuild SYMROOT bypasses that filtering.
+        //
+        // With the dSYMs inside the app bundle under /Applications, Spotlight indexes them and
+        // Xcode can find them automatically via UUID lookup when attaching to the extension process,
+        // which allows breakpoints in extension source files to be resolved correctly.
+
+        if dev {
+            Log.info("Copying extension dSYM bundles into product app bundle for debugging...")
+
+            // XCODE_TARGET_CONFIGURATION in CMakeLists.txt is always "Debug" when NEXTCLOUD_DEV=ON,
+            // regardless of the CMake build type passed to Craft.
+            let xcodeTargetConfiguration = "Debug"
+
+            let shellIntegrationBuildDir = clientBuildURL
+                .appendingPathComponent("work")
+                .appendingPathComponent("build")
+                .appendingPathComponent("shell_integration")
+                .appendingPathComponent("MacOSX")
+                .appendingPathComponent(xcodeTargetConfiguration)
+
+            let plugInsDir = clientAppURL
+                .appendingPathComponent("Contents")
+                .appendingPathComponent("PlugIns")
+
+            guard fm.fileExists(atPath: shellIntegrationBuildDir.path) else {
+                Log.info("Shell integration build directory not found, skipping dSYM copy: \(shellIntegrationBuildDir.path)")
+                return
+            }
+
+            let entries = try fm.contentsOfDirectory(at: shellIntegrationBuildDir, includingPropertiesForKeys: [.isDirectoryKey])
+            let dSYMBundles = entries.filter { $0.pathExtension.lowercased() == "dsym" }
+
+            for dSYM in dSYMBundles {
+                let destination = plugInsDir.appendingPathComponent(dSYM.lastPathComponent)
+
+                if fm.fileExists(atPath: destination.path) {
+                    try fm.removeItem(at: destination)
+                }
+
+                try fm.copyItem(at: dSYM, to: destination)
+                Log.info("Copied \(dSYM.path) to \(destination.path)")
+            }
+
+            if dSYMBundles.isEmpty {
+                Log.info("No dSYM bundles found in \(shellIntegrationBuildDir.path)")
+            }
+        }
+
+        // MARK: Signing
 
         if let codeSignIdentity {
             Log.info("Signing Nextcloud Desktop Client libraries and frameworks...")
