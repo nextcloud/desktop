@@ -1069,7 +1069,7 @@ Kitendo hiki kitakomesha ulandanishi wowote unaoendeshwa kwa sasa.</translation>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="44"/>
         <source>Could not access the selected certificate file.</source>
-        <translation type="unfinished"/>
+        <translation>Haikuweza kufikia faili ya cheti iliyochaguliwa.</translation>
     </message>
 </context>
 <context>
@@ -1972,7 +1972,7 @@ Hili linaweza kuwa tatizo na maktaba zako za OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="259"/>
         <source>The server is temporarily unavailable because it is in maintenance mode. Please try again once maintenance has finished.</source>
-        <translation type="unfinished"/>
+        <translation>Seva haipatikani kwa muda kwa sababu iko katika hali ya matengenezo. Tafadhali jaribu tena mara tu matengenezo yatakapokamilika.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="262"/>
@@ -1983,7 +1983,7 @@ Hili linaweza kuwa tatizo na maktaba zako za OpenSSL.</translation>
         <location filename="../src/gui/creds/flow2auth.cpp" line="263"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="271"/>
         <source>An unexpected error occurred when trying to access the server. Please try to access it again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Hitilafu isiyotarajiwa ilitokea wakati wa kujaribu kufikia seva. Tafadhali jaribu kuipata tena baadaye au wasiliana na msimamizi wa seva yako ikiwa suala litaendelea.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="265"/>
@@ -1998,12 +1998,12 @@ Hili linaweza kuwa tatizo na maktaba zako za OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="276"/>
         <source>We couldn&apos;t parse the server response. Please try connecting again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Hatukuweza kuchanganua jibu la seva. Tafadhali jaribu kuunganisha tena baadaye au wasiliana na msimamizi wa seva yako ikiwa tatizo litaendelea.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="280"/>
         <source>The server did not reply with the expected data. Please try connecting again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Seva haikujibu na data iliyotarajiwa. Tafadhali jaribu kuunganisha tena baadaye au wasiliana na msimamizi wa seva yako ikiwa tatizo litaendelea.</translation>
     </message>
 </context>
 <context>
@@ -2951,7 +2951,7 @@ Kwa watumiaji wa hali ya juu: suala hili linaweza kuhusishwa na faili nyingi za 
         <location filename="../src/gui/generalsettings.cpp" line="448"/>
         <location filename="../src/gui/generalsettings.cpp" line="474"/>
         <source>Connected to an enterprise system. Update channel (%1) cannot be changed.</source>
-        <translation type="unfinished"/>
+        <translation>Imeunganishwa na mfumo wa biashara. Sasisho la kituo (%1) haliwezi kubadilishwa.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="452"/>
@@ -3028,12 +3028,12 @@ Matoleo ya kushusha hadhi hayawezekani mara moja: kubadilisha kutoka imara hadi 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="735"/>
         <source>Failed to Access File</source>
-        <translation type="unfinished"/>
+        <translation>Imeshindwa Kufikia Faili</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="736"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
-        <translation type="unfinished"/>
+        <translation>Haikuweza kufikia eneo lililochaguliwa. Tafadhali jaribu tena au uchague eneo tofauti.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="676"/>
@@ -4786,7 +4786,7 @@ Hii ni hali mpya ya majaribio. Ukiamua kuitumia, tafadhali ripoti masuala yoyote
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="177"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Tawanya</translation>
     </message>
 </context>
 <context>
@@ -5512,7 +5512,7 @@ Seva ilijibu kwa hitilafu: %2</translation>
         <location filename="../src/libsync/theme.cpp" line="449"/>
         <source>%1 Desktop Client Version %2 (%3 running on %4)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the platform name (wayland, x11, …)</comment>
-        <translation type="unfinished"/>
+        <translation>Toleo la %1 la Mteja wa Eneo-kazi la %2 (%3 inaendelea %4)</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="634"/>
@@ -6284,17 +6284,17 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="198"/>
         <source>Could not create debug archive in temporary location!</source>
-        <translation type="unfinished"/>
+        <translation>Haikuweza kuunda kumbukumbu ya utatuzi katika eneo la muda!</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="212"/>
         <source>Could not remove existing file at destination!</source>
-        <translation type="unfinished"/>
+        <translation>Haikuweza kuondoa faili iliyopo kwenye eneo lengwa!</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="226"/>
         <source>Could not move debug archive to selected location!</source>
-        <translation type="unfinished"/>
+        <translation>Haikuweza kuhamisha kumbukumbu ya utatuzi hadi eneo lililochaguliwa!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="789"/>
@@ -6434,7 +6434,7 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="550"/>
         <source>The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.</source>
-        <translation type="unfinished"/>
+        <translation>Seva ina shughuli nyingi sasa hivi. Tafadhali jaribu kuunganisha tena baada ya dakika chache au wasiliana na msimamizi wa seva yako ikiwa ni dharura.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="553"/>
