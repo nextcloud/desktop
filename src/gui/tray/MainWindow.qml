@@ -262,7 +262,7 @@ ApplicationWindow {
         Button {
             id: trayWindowSyncWarning
 
-            readonly property color warningIconColor: Qt.rgba(0.95, 0.73, 0.2, 1)
+            readonly property color warningIconColor: Style.errorBoxBackgroundColor
 
             anchors.top: trayWindowHeader.bottom
             anchors.left: trayWindowMainItem.left
