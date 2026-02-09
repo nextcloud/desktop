@@ -30,7 +30,7 @@ else
 fi
 
 swift run mac-crafter \
-    --build-path="$SOURCE_ROOT/DerivedData" \
+    --build-path="$DESKTOP_CLIENT_PROJECT_ROOT/.mac-crafter" \
     --product-path="/Applications" \
     --build-type="Debug" \
     --dev \
