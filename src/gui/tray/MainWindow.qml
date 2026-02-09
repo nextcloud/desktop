@@ -418,7 +418,7 @@ ApplicationWindow {
                                 width: Math.min(assistantConversationList.width * 0.8, messageText.implicitWidth + (Style.smallSpacing * 2))
                                 implicitHeight: messageText.implicitHeight + (Style.smallSpacing * 2)
 
-                                Text {
+                                TextEdit {
                                     id: messageText
 
                                     anchors.left: parent.left
@@ -429,6 +429,7 @@ ApplicationWindow {
                                     wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                                     color: palette.windowText
                                     textFormat: Text.MarkdownText
+                                    readOnly: true
                                     selectByMouse: true
                                 }
                             }
