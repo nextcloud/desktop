@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:admin/osx/mac-crafter">
+   </FileRef>
+   <FileRef
+      location = "group:shell_integration/MacOSX/NextcloudFileProviderKit">
+   </FileRef>
+   <FileRef
+      location = "group:shell_integration/MacOSX/TransifexStringCatalogSanitizer">
+   </FileRef>
+</Workspace>

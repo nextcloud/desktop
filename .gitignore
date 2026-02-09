@@ -201,3 +201,6 @@ DerivedData
 
 # Swift Package Manager Build Artifacts
 .swiftpm_codeql_detected_source_root
+
+# Relative derived data of Xcode workspace
+Xcode
