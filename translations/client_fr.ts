@@ -408,6 +408,16 @@
         <translation>Contenu principal</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="316"/>
+        <source>Issue with account %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="318"/>
+        <source>Issues with several accounts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
         <source>Unified search results list</source>
         <translation>Liste des résultats de la recherche unifiée</translation>
@@ -5633,11 +5643,6 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Renommer le fichier</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1002"/>
-        <source>Public Share Link</source>
-        <translation>Lien de partage public</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1079"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>Ouvrir l&apos;assistant Nextcloud dans le navigateur</translation>
@@ -5646,6 +5651,11 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="1079"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Ouvrir Nextcloud Discussion dans le navigateur</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1002"/>
+        <source>Public Share Link</source>
+        <translation>Lien de partage public</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>

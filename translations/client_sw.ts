@@ -408,6 +408,16 @@
         <translation>Maudhui kuu</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="316"/>
+        <source>Issue with account %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="318"/>
+        <source>Issues with several accounts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
         <source>Unified search results list</source>
         <translation>Orodha ya matokeo ya utafutaji iliyounganishwa</translation>
@@ -5636,11 +5646,6 @@ Seva ilijibu kwa hitilafu: %2</translation>
         <translation>Badilisha jina la faili</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1002"/>
-        <source>Public Share Link</source>
-        <translation>Kiungo cha Kushiriki kwa Umma</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1079"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>Fungua Msaidizi wa Nextcloud kwenye kivinjari</translation>
@@ -5649,6 +5654,11 @@ Seva ilijibu kwa hitilafu: %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="1079"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Fungua Nextcloud Talk katika kivinjari</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1002"/>
+        <source>Public Share Link</source>
+        <translation>Kiungo cha Kushiriki kwa Umma</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>

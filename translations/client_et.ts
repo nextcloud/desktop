@@ -408,6 +408,16 @@
         <translation>Põhisisu</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="316"/>
+        <source>Issue with account %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="318"/>
+        <source>Issues with several accounts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
         <source>Unified search results list</source>
         <translation>Ühendatud otsingutulemuste loend</translation>
@@ -5635,11 +5645,6 @@ Veateade serveri päringuvastuses: %2</translation>
         <translation>Muuda failinime</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1002"/>
-        <source>Public Share Link</source>
-        <translation>Avaliku jagamise link</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1079"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>Ava Nextcloud Assistant veebibrauseris</translation>
@@ -5648,6 +5653,11 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="1079"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Ava Nextcloud Talk veebibrauseris</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1002"/>
+        <source>Public Share Link</source>
+        <translation>Avaliku jagamise link</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>

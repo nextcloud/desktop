@@ -408,6 +408,16 @@
         <translation>Glavna vsebina</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="316"/>
+        <source>Issue with account %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="318"/>
+        <source>Issues with several accounts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
         <source>Unified search results list</source>
         <translation>Poenoten seznam zadetkov iskanja</translation>
@@ -5617,11 +5627,6 @@ Server replied with error: %2</source>
         <translation>Preimenuj datoteko</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1002"/>
-        <source>Public Share Link</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1079"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation type="unfinished"/>
@@ -5629,6 +5634,11 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1079"/>
         <source>Open Nextcloud Talk in browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1002"/>
+        <source>Public Share Link</source>
         <translation type="unfinished"/>
     </message>
     <message>
