@@ -319,6 +319,16 @@ ApplicationWindow {
             anchors.bottomMargin: Style.trayHorizontalMargin
             spacing: Style.extraSmallSpacing
 
+            NativeDialogs.MessageDialog {
+                id: assistantResetConfirmationDialog
+
+                title: Systray.windowTitle
+                text: qsTr("Start new chat? This will clear the existing conversation")
+                buttons: NativeDialogs.MessageDialog.Ok | NativeDialogs.MessageDialog.Cancel
+
+                onAccepted: assistantInputContainer.resetAssistantConversation()
+            }
+
             TextField {
                 id: assistantQuestionInput
                 Layout.fillWidth: true
@@ -336,6 +346,27 @@ ApplicationWindow {
             }
 
             Button {
+                id: assistantSendButton
+                Layout.alignment: Qt.AlignVCenter
+                Layout.preferredHeight: assistantQuestionInput.height
+                Layout.preferredWidth: assistantQuestionInput.height
+                Layout.maximumWidth: assistantQuestionInput.height
+                padding: 0
+                enabled: assistantQuestionInput.enabled && assistantQuestionInput.text.trim().length > 0
+                icon.source: "image://svgimage-custom-color/send.svg/" + palette.windowText
+                icon.width: Math.round(assistantQuestionInput.height * 0.5)
+                icon.height: Math.round(assistantQuestionInput.height * 0.5)
+                display: AbstractButton.IconOnly
+                focusPolicy: Qt.StrongFocus
+
+                onClicked: assistantInputContainer.submitQuestion()
+
+                Accessible.role: Accessible.Button
+                Accessible.name: qsTr("Send assistant question")
+                Accessible.onPressAction: assistantInputContainer.submitQuestion()
+            }
+
+            Button {
                 id: assistantResetButton
                 Layout.alignment: Qt.AlignVCenter
                 Layout.preferredHeight: assistantQuestionInput.height
@@ -343,17 +374,17 @@ ApplicationWindow {
                 Layout.maximumWidth: assistantQuestionInput.height
                 Layout.rightMargin: Style.trayHorizontalMargin
                 padding: 0
-                icon.source: "image://svgimage-custom-color/reply.svg/" + palette.windowText
+                icon.source: "image://svgimage-custom-color/add.svg/" + palette.windowText
                 icon.width: Math.round(assistantQuestionInput.height * 0.5)
                 icon.height: Math.round(assistantQuestionInput.height * 0.5)
                 display: AbstractButton.IconOnly
                 focusPolicy: Qt.StrongFocus
 
-                onClicked: assistantInputContainer.resetAssistantConversation()
+                onClicked: assistantResetConfirmationDialog.open()
 
                 Accessible.role: Accessible.Button
                 Accessible.name: qsTr("Start a new assistant chat")
-                Accessible.onPressAction: assistantInputContainer.resetAssistantConversation()
+                Accessible.onPressAction: assistantResetConfirmationDialog.open()
             }
         }
 
@@ -699,6 +730,7 @@ ApplicationWindow {
         }
     } // Item trayWindowMainItem
 }
+
 
 
 
