@@ -37,6 +37,8 @@ SPDX-FileCopyrightText: <YEAR> Nextcloud GmbH and Nextcloud contributors
 SPDX-License-Identifier: GPL-2.0-or-later
 ```
 
+Avoid creating source files that implement multiple types; instead, place each type in its own dedicated source file.
+
 ## Commit and Pull Request Guidelines
 
 - **Commits**: Follow Conventional Commits format. Use `feat: ...`, `fix: ...`, or `refactor: ...` as appropriate in the commit message prefix.
