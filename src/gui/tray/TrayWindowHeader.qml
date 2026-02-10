@@ -76,7 +76,7 @@ Rectangle {
             Layout.preferredWidth: Style.trayWindowHeaderHeight
             Layout.fillHeight: true
 
-            visible: UserModel.currentUser.isNcAssistantEnabled
+            visible: UserModel.currentUser.isAssistantEnabled
             icon.source: UserModel.currentUser.featuredAppIcon + "/" + palette.windowText
             onClicked: root.featuredAppButtonClicked()
 
