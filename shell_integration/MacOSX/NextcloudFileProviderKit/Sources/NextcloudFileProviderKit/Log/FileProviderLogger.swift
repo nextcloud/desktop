@@ -37,12 +37,15 @@ public struct FileProviderLogger: Sendable {
     /// Dispatch a task to write a message with the level `OSLogType.debug`.
     ///
     /// - Parameters:
-    ///     - message: The main text message of the entry in the logs.
-    ///     - details: Additional contextual data.
+    ///     - message: A human-readable message, preferably generic and without interpolations. The `details` argument is for arguments.
+    ///     - details: Structured and contextual details about a message.
+    ///     - file: Implementations should have `#filePath` as the default value for this.
+    ///     - function: Implementations should have `#function` as the default value for this.
+    ///     - line: Implementations should have `#line` as the default value for this.
     ///
-    public func debug(_ message: String, _ details: [FileProviderLogDetailKey: (any Sendable)?] = [:]) {
+    public func debug(_ message: String, _ details: [FileProviderLogDetailKey: (any Sendable)?] = [:], file: StaticString = #filePath, function: StaticString = #function, line: UInt = #line) {
         Task {
-            await log.write(category: category, level: .debug, message: message, details: details)
+            await log.write(category: category, level: .debug, message: message, details: details, file: file, function: function, line: line)
         }
     }
 
@@ -50,12 +53,15 @@ public struct FileProviderLogger: Sendable {
     /// Dispatch a task to write a message with the level `OSLogType.info`.
     ///
     /// - Parameters:
-    ///     - message: The main text message of the entry in the logs.
-    ///     - details: Additional contextual data.
+    ///     - message: A human-readable message, preferably generic and without interpolations. The `details` argument is for arguments.
+    ///     - details: Structured and contextual details about a message.
+    ///     - file: Implementations should have `#filePath` as the default value for this.
+    ///     - function: Implementations should have `#function` as the default value for this.
+    ///     - line: Implementations should have `#line` as the default value for this.
     ///
-    public func info(_ message: String, _ details: [FileProviderLogDetailKey: (any Sendable)?] = [:]) {
+    public func info(_ message: String, _ details: [FileProviderLogDetailKey: (any Sendable)?] = [:], file: StaticString = #filePath, function: StaticString = #function, line: UInt = #line) {
         Task {
-            await log.write(category: category, level: .info, message: message, details: details)
+            await log.write(category: category, level: .info, message: message, details: details, file: file, function: function, line: line)
         }
     }
 
@@ -63,12 +69,15 @@ public struct FileProviderLogger: Sendable {
     /// Dispatch a task to write a message with the level `OSLogType.error`.
     ///
     /// - Parameters:
-    ///     - message: The main text message of the entry in the logs.
-    ///     - details: Additional contextual data.
+    ///     - message: A human-readable message, preferably generic and without interpolations. The `details` argument is for arguments.
+    ///     - details: Structured and contextual details about a message.
+    ///     - file: Implementations should have `#filePath` as the default value for this.
+    ///     - function: Implementations should have `#function` as the default value for this.
+    ///     - line: Implementations should have `#line` as the default value for this.
     ///
-    public func error(_ message: String, _ details: [FileProviderLogDetailKey: (any Sendable)?] = [:]) {
+    public func error(_ message: String, _ details: [FileProviderLogDetailKey: (any Sendable)?] = [:], file: StaticString = #filePath, function: StaticString = #function, line: UInt = #line) {
         Task {
-            await log.write(category: category, level: .error, message: message, details: details)
+            await log.write(category: category, level: .error, message: message, details: details, file: file, function: function, line: line)
         }
     }
 
@@ -76,12 +85,15 @@ public struct FileProviderLogger: Sendable {
     /// Dispatch a task to write a message with the level `OSLogType.fault`.
     ///
     /// - Parameters:
-    ///     - message: The main text message of the entry in the logs.
-    ///     - details: Additional contextual data.
+    ///     - message: A human-readable message, preferably generic and without interpolations. The `details` argument is for arguments.
+    ///     - details: Structured and contextual details about a message.
+    ///     - file: Implementations should have `#filePath` as the default value for this.
+    ///     - function: Implementations should have `#function` as the default value for this.
+    ///     - line: Implementations should have `#line` as the default value for this.
     ///
-    public func fault(_ message: String, _ details: [FileProviderLogDetailKey: (any Sendable)?] = [:]) {
+    public func fault(_ message: String, _ details: [FileProviderLogDetailKey: (any Sendable)?] = [:], file: StaticString = #filePath, function: StaticString = #function, line: UInt = #line) {
         Task {
-            await log.write(category: category, level: .fault, message: message, details: details)
+            await log.write(category: category, level: .fault, message: message, details: details, file: file, function: function, line: line)
         }
     }
 }
