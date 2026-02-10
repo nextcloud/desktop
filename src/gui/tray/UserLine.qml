@@ -42,9 +42,12 @@ AbstractButton {
                 visible: model.isConnected && model.serverHasUserStatus
                 width: accountStatusIndicator.sourceSize.width + Style.trayFolderStatusIndicatorSizeOffset
                 height: width
-                color: ((userLine.parent.highlighted || userLine.parent.down) && Qt.platform.os !== "windows")
-                    ? Style.colorWithoutTransparency(userLine.parent.palette.highlight)
-                    : Style.colorWithoutTransparency(userLine.parent.palette.base)
+                readonly property bool isHighlighted: userLine.parent && (userLine.parent.highlighted || userLine.parent.down)
+                readonly property color menuBaseColor: Style.colorWithoutTransparency(
+                    userLine.parent && userLine.parent.palette ? userLine.parent.palette.base : userLine.palette.base)
+                readonly property color menuHighlightColor: Style.colorWithoutTransparency(
+                    userLine.parent && userLine.parent.palette ? userLine.parent.palette.highlight : userLine.palette.highlight)
+                color: (isHighlighted && Qt.platform.os !== "windows") ? menuHighlightColor : menuBaseColor
                 anchors.bottom: accountAvatar.bottom
                 anchors.right: accountAvatar.right
                 radius: width * Style.trayFolderStatusIndicatorRadiusFactor
@@ -155,8 +158,8 @@ AbstractButton {
                 source: model.syncStatusIcon
                 cache: false
                 anchors.centerIn: parent
-                sourceSize.width: syncStatusColumn.width
-                sourceSize.height: syncStatusColumn.width
+                sourceSize.width: Style.accountAvatarStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset
+                sourceSize.height: Style.accountAvatarStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset
 
                 Accessible.role: Accessible.Indicator
                 Accessible.name: qsTr("Account sync status requires attention")
@@ -255,5 +258,6 @@ AbstractButton {
         }
     }
 }   // MenuItem userLine
+
 
 
