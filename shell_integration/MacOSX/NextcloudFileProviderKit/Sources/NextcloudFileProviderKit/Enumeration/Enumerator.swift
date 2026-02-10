@@ -148,6 +148,8 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
             // Check server version to determine if pagination should be enabled.
             // Pagination was fixed in Nextcloud 31 (server bug: https://github.com/nextcloud/server/issues/53674)
             // For older servers, we fall back to non-paginated requests.
+            // Note: currentCapabilities uses RetrievedCapabilitiesActor which caches capabilities
+            // for 30 minutes, so this call is efficient and doesn't make a network request on every enumeration.
             let (_, capabilities, _, _) = await remoteInterface.currentCapabilities(
                 account: account,
                 options: .init(),
