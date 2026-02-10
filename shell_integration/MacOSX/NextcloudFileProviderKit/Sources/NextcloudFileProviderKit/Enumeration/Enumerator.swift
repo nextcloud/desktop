@@ -130,20 +130,43 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
             // Do not pass in the NSFileProviderPage default pages, these are not valid Nextcloud
             // pagination tokens
             var pageTotal: Int? = nil
+            var pageIndex = 0
+            var parsedPage: NSFileProviderPage? = nil
 
             if page != NSFileProviderPage.initialPageSortedByName as NSFileProviderPage, page != NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage {
                 if let enumPageResponse = try? JSONDecoder().decode(EnumeratorPageResponse.self, from: page.rawValue) {
                     if let total = enumPageResponse.total {
                         pageTotal = total
                     }
+                    pageIndex = enumPageResponse.index
+                    parsedPage = page
                 } else {
                     logger.error("Could not parse page")
                 }
             }
 
+            // Check server version to determine if pagination should be enabled.
+            // Pagination was fixed in Nextcloud 31 (server bug: https://github.com/nextcloud/server/issues/53674)
+            // For older servers, we fall back to non-paginated requests.
+            let (_, capabilities, _, _) = await remoteInterface.currentCapabilities(
+                account: account,
+                options: .init(),
+                taskHandler: { _ in }
+            )
+            
+            let serverMajorVersion = capabilities?.version.major ?? 0
+            let supportsPagination = serverMajorVersion >= 31
+            
+            // Enable pagination by passing page settings if server supports it
+            let pageSettings: (page: NSFileProviderPage?, index: Int, size: Int)? = supportsPagination ? (
+                page: parsedPage,
+                index: pageIndex,
+                size: pageItemCount
+            ) : nil
+
             let readResult = await Self.readServerUrl(
                 serverUrl,
-                pageSettings: nil,
+                pageSettings: pageSettings,
                 account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
@@ -180,7 +203,8 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                 nextPage = nil
             }
 
-            nextPage = nil
+            // Note: Removed unconditional `nextPage = nil` that was disabling pagination
+            // This enables proper pagination for large folders (1500+ files) when server supports it
 
             logger.info(
                 """
