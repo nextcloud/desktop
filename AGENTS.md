@@ -78,3 +78,6 @@ The following details are important when working on the desktop client on macOS.
 - If there the implementation of mock types is inevitable, implement them in dedicated source code files and in a generic way, so they can be reused across all tests in a test target.
 - If the implementation of an existing mock type does not fulfill the requirements introduced by new tests, prefer updating the existing type before implementing a mostly redundant alternative type.
 - Do not test for logging by subjects under test.
+- If there are changes in the Swift package located in `./shell_integration/MacOSX/NextcloudFileProviderKit`, then verify it still builds and runs tests successfully by running `swift test` in that directory. In case of build errors, try to fix them.
+- If there are changes in the directory located in `./shell_integration/MacOSX/NextcloudIntegration`, then verify it still builds and runs tests successfully by running `xcodebuild build -scheme desktopclient` in that directory. In case of build errors, try to fix them.
+- If there are changes in `./src`, then verify the main product still builds successfully by running `xcodebuild build -target NextcloudDev` in the directory `./shell_integration/MacOSX/NextcloudIntegration`. In case of build errors, try to fix them.
