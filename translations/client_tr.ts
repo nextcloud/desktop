@@ -303,6 +303,11 @@
         <translation>Sanal dosyalar ayarları</translation>
     </message>
     <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
+        <source>General settings</source>
+        <translation>Genel ayarlar</translation>
+    </message>
+    <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
         <source>Enable virtual files</source>
         <translation>Sanal dosyalar kullanılsın</translation>
@@ -316,11 +321,6 @@
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Reset virtual files environment</source>
         <translation>Sanal dosyalar ortamını sıfırla</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
-        <source>General settings</source>
-        <translation>Genel ayarlar</translation>
     </message>
 </context>
 <context>
