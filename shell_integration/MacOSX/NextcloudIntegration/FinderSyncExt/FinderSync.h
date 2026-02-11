@@ -6,14 +6,13 @@
 
 #import <Cocoa/Cocoa.h>
 #import <FinderSync/FinderSync.h>
-#import <NCDesktopClientSocketKit/LocalSocketClient.h>
 
 #import "SyncClient.h"
-#import "FinderSyncSocketLineProcessor.h"
+
+@class FinderSyncXPCManager;
 
 @interface FinderSync : FIFinderSync <SyncClientDelegate>
 
-@property FinderSyncSocketLineProcessor *lineProcessor;
-@property LocalSocketClient *localSocketClient;
+@property FinderSyncXPCManager *xpcManager;
 
 @end

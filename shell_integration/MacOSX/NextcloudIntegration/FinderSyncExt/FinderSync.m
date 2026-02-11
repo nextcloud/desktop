@@ -5,6 +5,7 @@
  */
 
 #import "FinderSync.h"
+#import "FinderSyncXPCManager.h"
 #import <os/log.h>
 
 @interface FinderSync()
@@ -40,8 +41,6 @@ static os_log_t getFinderSyncLogger(void) {
         os_log_debug(_log, "Initializing...");
         FIFinderSyncController *syncController = [FIFinderSyncController defaultController];
         NSBundle *extBundle = [NSBundle bundleForClass:[self class]];
-        // This was added to the bundle's Info.plist to get it from the build system
-        NSString *groupIdentifier = [extBundle objectForInfoDictionaryKey:@"NCApplicationGroupIdentifier"];
 
         NSImage *ok = [extBundle imageForResource:@"ok.icns"];
         NSImage *ok_swm = [extBundle imageForResource:@"ok_swm.icns"];
@@ -60,27 +59,11 @@ static os_log_t getFinderSyncLogger(void) {
         [syncController setBadgeImage:warning label:@"Ignored" forBadgeIdentifier:@"IGNORE+SWM"];
         [syncController setBadgeImage:error label:@"Error" forBadgeIdentifier:@"ERROR+SWM"];
 
-        NSURL *container = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:groupIdentifier];
-        NSURL *socketPath = [container URLByAppendingPathComponent:@"s" isDirectory:NO];
-
-        os_log_debug(_log, "Socket path: %{public}@", socketPath.path);
-
-        if (socketPath.path && [[NSFileManager defaultManager] fileExistsAtPath:socketPath.path]) {
-            os_log_debug(_log, "Socket path determined and exists: %{public}@", socketPath.path);
-            self.lineProcessor = [[FinderSyncSocketLineProcessor alloc] initWithDelegate:self];
-            self.localSocketClient = [[LocalSocketClient alloc] initWithSocketPath:socketPath.path
-                                                                     lineProcessor:self.lineProcessor];
-            [self.localSocketClient start];
-            [self.localSocketClient askOnSocket:@"" query:@"GET_STRINGS"];
-        } else {
-            if (socketPath.path) {
-                os_log_error(_log, "Socket path determined but file does not exist: %{public}@", socketPath.path);
-            } else {
-                os_log_error(_log, "No socket path available. Not initiating local socket client.");
-            }
-
-            self.localSocketClient = nil;
-        }
+        // Initialize XPC manager instead of socket client
+        NSLog(@"Initializing FinderSync XPC manager");
+        self.xpcManager = [[FinderSyncXPCManager alloc] initWithDelegate:self];
+        [self.xpcManager start];
+        [self.xpcManager askOnSocket:@"" query:@"GET_STRINGS"];
 
         _registeredDirectories = NSMutableSet.set;
         _strings = NSMutableDictionary.dictionary;
@@ -103,7 +86,7 @@ static os_log_t getFinderSyncLogger(void) {
 	}
 
 	NSString* normalizedPath = [[url path] decomposedStringWithCanonicalMapping];
-	[self.localSocketClient askForIcon:normalizedPath isDirectory:isDir];
+	[self.xpcManager askForIcon:normalizedPath isDirectory:isDir];
 	os_log_debug(_log, "Badge identifier request completed for: %{public}@", normalizedPath);
 }
 
@@ -137,11 +120,12 @@ static os_log_t getFinderSyncLogger(void) {
 - (NSMenu *)menuForMenuKind:(FIMenuKind)whichMenu
 {
     os_log_debug(_log, "Building menu for menu kind: %lu", (unsigned long)whichMenu);
-    if(![self.localSocketClient isConnected]) {
-        os_log_error(_log, "Local socket client not connected, cannot build menu");
+
+    if(![self.xpcManager isConnected]) {
+        os_log_error(_log, "Not connected, cannot build menu.");
         return nil;
     }
-    
+
 	FIFinderSyncController *syncController = [FIFinderSyncController defaultController];
 	NSMutableSet *rootPaths = [[NSMutableSet alloc] init];
 	[syncController.directoryURLs enumerateObjectsUsingBlock: ^(id obj, BOOL *stop) {
@@ -162,9 +146,9 @@ static os_log_t getFinderSyncLogger(void) {
 	os_log_debug(_log, "Root directories check: onlyRootsSelected = %d", onlyRootsSelected);
 
 	NSString *paths = [self selectedPathsSeparatedByRecordSeparator];
-	[self.localSocketClient askOnSocket:paths query:@"GET_MENU_ITEMS"];
-    
-    // Since the LocalSocketClient communicates asynchronously. wait here until the menu
+	[self.xpcManager askOnSocket:paths query:@"GET_MENU_ITEMS"];
+
+    // Since the XPC communication is asynchronous, wait here until the menu
     // is delivered by another thread
     [self waitForMenuToArrive];
 
@@ -205,8 +189,9 @@ static os_log_t getFinderSyncLogger(void) {
 	NSString *command = [[_menuItems objectAtIndex:idx] valueForKey:@"command"];
 	NSString *paths = [self selectedPathsSeparatedByRecordSeparator];
 	os_log_debug(_log, "Executing command: %{public}@", command);
-	[self.localSocketClient askOnSocket:paths query:command];
+	[self.xpcManager askOnSocket:paths query:command];
 	os_log_debug(_log, "Command execution completed");
+
 }
 
 #pragma mark - SyncClientProxyDelegate implementation

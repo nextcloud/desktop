@@ -27,6 +27,10 @@ class SocketListener;
 class DirectEditor;
 class SocketApiJob;
 
+namespace Mac {
+    class FinderSyncService;
+}
+
 Q_DECLARE_LOGGING_CATEGORY(lcSocketApi)
 
 #ifdef Q_OS_MACOS
@@ -50,6 +54,9 @@ class SocketApi : public QObject
         RootEncryptedFolder,
         NonRootEncryptedFolder
     };
+
+    // Allow FinderSyncService to access FileData for XPC communication
+    friend class Mac::FinderSyncService;
 
 public:
     explicit SocketApi(QObject *parent = nullptr);

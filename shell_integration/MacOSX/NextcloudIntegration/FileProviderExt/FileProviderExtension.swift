@@ -2,7 +2,6 @@
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
-import NCDesktopClientSocketKit
 import NextcloudKit
 import NextcloudFileProviderKit
 import OSLog
@@ -54,18 +53,6 @@ import OSLog
     var ignoredFiles: IgnoredFilesMatcher?
     lazy var ncKitBackground = NKBackground(nkCommonInstance: ncKit.nkCommonInstance)
 
-    lazy var socketClient: LocalSocketClient? = {
-        guard let containerUrl = FileManager.default.applicationGroupContainer() else {
-            logger.fault("Won't start socket client, no container URL available!")
-            return nil;
-        }
-
-        let socketPath = containerUrl.appendingPathComponent("fps", conformingTo: .archive)
-        let lineProcessor = FileProviderSocketLineProcessor(delegate: self, log: log)
-
-        return LocalSocketClient(socketPath: socketPath.path, lineProcessor: lineProcessor)
-    }()
-
     var syncActions = Set<UUID>()
     var errorActions = Set<UUID>()
     var actionsLock = NSLock()
@@ -110,7 +97,6 @@ import OSLog
         self.keychain = Keychain(log: log)
 
         super.init()
-        socketClient?.start()
     }
 
     func invalidate() {
@@ -522,13 +508,6 @@ import OSLog
         }
 
         manager.signalEnumerator(for: .workingSet, completionHandler: completionHandler)
-    }
-
-    @objc func sendFileProviderDomainIdentifier() {
-        let command = "FILE_PROVIDER_DOMAIN_IDENTIFIER_REQUEST_REPLY"
-        let argument = domain.identifier.rawValue
-        let message = command + ":" + argument + "\n"
-        socketClient?.sendMessage(message)
     }
 
     private func signalEnumeratorAfterAccountSetup() {
