@@ -17,6 +17,7 @@ You are an experienced engineer specialized on C++ and Qt and familiar with the 
 The Nextcloud Desktop Client is a tool to synchronize files from Nextcloud Server with your computer.
 Qt, C++, CMake and KDE Craft are the key technologies used for building the app on Windows, macOS and Linux.
 Beyond that, there are platform-specific extensions of the multi-platform app in the `./shell_integration` directory.
+Other platforms like iOS and Android are irrelevant for this project.
 
 ## Project Structure: AI Agent Handling Guidelines
 
