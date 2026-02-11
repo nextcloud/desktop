@@ -64,6 +64,10 @@
 #ifdef Q_OS_MACOS
 #include <CoreFoundation/CoreFoundation.h>
 #include "common/utility_mac_sandbox.h"
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "macOS/findersyncxpc.h"
+#include "application.h"
+#endif
 #endif
 
 #ifdef HAVE_KGUIADDONS
@@ -243,10 +247,15 @@ void SocketListener::sendMessage(const QString &message, bool doWait) const
 SocketApi::SocketApi(QObject *parent)
     : QObject(parent)
 {
-    QString socketPath;
-
     qRegisterMetaType<SocketListener *>("SocketListener*");
     qRegisterMetaType<QSharedPointer<SocketApiJob>>("QSharedPointer<SocketApiJob>");
+
+#if defined(Q_OS_MACOS)
+    // On macOS, shell extensions communicate via XPC (FinderSyncXPC / FinderSyncService).
+    // No local socket listener is needed.
+    qCInfo(lcSocketApi) << "macOS XPC mode: skipping local socket listener";
+#else
+    QString socketPath;
 
     if (Utility::isWindows()) {
         socketPath = QLatin1String(R"(\\.\pipe\)")
@@ -303,6 +312,7 @@ SocketApi::SocketApi(QObject *parent)
     }
 
     connect(&_localServer, &QLocalServer::newConnection, this, &SocketApi::slotNewConnection);
+#endif
 
     // folder watcher
     connect(FolderMan::instance(), &FolderMan::folderSyncStateChange, this, &SocketApi::slotUpdateFolderView);
@@ -311,10 +321,12 @@ SocketApi::SocketApi(QObject *parent)
 SocketApi::~SocketApi()
 {
     qCDebug(lcSocketApi) << "dtor";
+#if !defined(Q_OS_MACOS) || !defined(BUILD_FILE_PROVIDER_MODULE)
     _localServer.close();
     // All remaining sockets will be destroyed with _localServer, their parent
     ASSERT(_listeners.isEmpty() || _listeners.first()->socket->parent() == &_localServer)
     _listeners.clear();
+#endif
 }
 
 void SocketApi::slotNewConnection()
@@ -637,6 +649,16 @@ void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileSt
     for (const auto &listener : std::as_const(_listeners)) {
         listener->sendMessageIfDirectoryMonitored(msg, directoryHash);
     }
+
+#if defined(Q_OS_MACOS)
+    // Also broadcast to FinderSync via XPC
+    if (auto app = qobject_cast<Application*>(qApp)) {
+        if (auto finderSyncXPC = app->finderSyncXPC()) {
+            const QString statusString = fileStatus.toSocketAPIString();
+            finderSyncXPC->setStatusResult(statusString, systemPath);
+        }
+    }
+#endif
 }
 
 void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString &argument, SocketListener *listener)

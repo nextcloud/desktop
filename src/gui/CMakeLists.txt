@@ -294,12 +294,21 @@ IF( APPLE )
 
     list(APPEND client_SRCS systray_mac_usernotifications.mm)
 
+    # FinderSync XPC is independent of File Provider — always built on macOS
+    list(APPEND client_SRCS
+        macOS/FinderSyncProtocol.h
+        macOS/FinderSyncAppProtocol.h
+        macOS/findersyncxpc.h
+        macOS/findersyncxpc_mac.mm
+        macOS/findersyncservice.h
+        macOS/findersyncservice.mm)
+
     if (BUILD_FILE_PROVIDER_MODULE)
         list(APPEND client_SRCS
-            # Symlinks to files in shell_integration/MacOSX/NextcloudIntegration/
+            # XPC Protocol files from shell_integration/MacOSX/NextcloudIntegration/
             macOS/AppProtocol.h
             macOS/ClientCommunicationProtocol.h
-            # End of symlink files
+            # End of XPC protocol files
             macOS/fileprovider.h
             macOS/fileprovider_mac.mm
             macOS/fileproviderdomainmanager.h
@@ -314,11 +323,6 @@ IF( APPLE )
             macOS/fileproviderservice.mm
             macOS/fileprovidersettingscontroller.h
             macOS/fileprovidersettingscontroller_mac.mm
-            macOS/fileprovidersocketcontroller.h
-            macOS/fileprovidersocketcontroller.cpp
-            macOS/fileprovidersocketserver.h
-            macOS/fileprovidersocketserver.cpp
-            macOS/fileprovidersocketserver_mac.mm
             macOS/fileproviderutils.h
             macOS/fileproviderutils_mac.mm
             macOS/fileproviderxpc.h

@@ -57,7 +57,9 @@ public:
     {
     }
 
-    void sendMessage(const QString &message, bool doWait = false) const;
+    virtual ~SocketListener() = default;
+
+    virtual void sendMessage(const QString &message, bool doWait = false) const;
     void sendWarning(const QString &message, bool doWait = false) const
     {
         sendMessage(QStringLiteral("WARNING:") + message, doWait);
