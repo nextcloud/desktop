@@ -44,7 +44,8 @@ AbstractButton {
                 width: accountStatusIndicator.sourceSize.width + Style.trayFolderStatusIndicatorSizeOffset
                 height: width
                 readonly property bool isHighlighted: userLine.parent && (userLine.parent.highlighted || userLine.parent.down)
-                readonly property color menuBaseColor: Style.colorWithoutTransparency(userLine.parentBackgroundColor)
+                readonly property color menuBaseColor: Style.colorWithoutTransparency(
+                    userLine.parent && userLine.parent.palette ? userLine.parent.palette.window : userLine.parentBackgroundColor)
                 readonly property color menuHighlightColor: Style.colorWithoutTransparency(
                     userLine.parent && userLine.parent.palette ? userLine.parent.palette.highlight : userLine.palette.highlight)
                 color: (isHighlighted && Qt.platform.os !== "windows") ? menuHighlightColor : menuBaseColor
@@ -258,6 +259,7 @@ AbstractButton {
         }
     }
 }   // MenuItem userLine
+
 
 
 
