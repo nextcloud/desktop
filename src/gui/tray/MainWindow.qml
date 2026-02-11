@@ -391,14 +391,23 @@ ApplicationWindow {
             anchors.bottomMargin: Style.trayHorizontalMargin
             spacing: Style.extraSmallSpacing
 
-            NativeDialogs.MessageDialog {
+            Dialog {
                 id: assistantResetConfirmationDialog
 
+                modal: true
+                focus: true
                 title: Systray.windowTitle
-                text: qsTr("Start new chat? This will clear the existing conversation")
-                buttons: NativeDialogs.MessageDialog.Ok | NativeDialogs.MessageDialog.Cancel
+                x: (trayWindow.width - width) / 2
+                y: (trayWindow.height - height) / 2
+                standardButtons: Dialog.Ok | Dialog.Cancel
 
                 onAccepted: assistantInputContainer.resetAssistantConversation()
+
+                Label {
+                    width: parent.width
+                    text: qsTr("Start new chat? This will clear the existing conversation")
+                    wrapMode: Text.WordWrap
+                }
             }
 
             TextField {
@@ -802,6 +811,7 @@ ApplicationWindow {
         }
     } // Item trayWindowMainItem
 }
+
 
 
 
