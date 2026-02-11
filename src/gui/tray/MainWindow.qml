@@ -364,6 +364,87 @@ ApplicationWindow {
             Keys.onEscapePressed: activateSearchFocus = false
         }
 
+        Dialog {
+            id: assistantResetConfirmationDialogWrapper
+            modal: true
+            focus: true
+            x: (trayWindow.width - width) / 2
+            y: (trayWindow.height - height) / 2
+            header: Item {}
+            footer: Item {}
+            onOpened: assistantResetConfirmationDialog.open()
+
+            background: Rectangle {
+                border.width: 1
+                border.color: "#808080"
+                radius: 10
+                antialiasing: true
+
+                layer.enabled: true
+                layer.smooth: true
+                layer.effect: DropShadow {
+                    horizontalOffset: 4
+                    verticalOffset: 4
+                    radius: 10
+                    samples: 16
+                    color: "#80000000"
+                }
+            }
+            contentItem: Rectangle {
+                id: assistantResetConfirmationDialogContentRect
+                property int margin: 6
+
+                implicitWidth: assistantResetConfirmationDialog.implicitWidth + 2 * margin
+                implicitHeight: assistantResetConfirmationDialog.implicitHeight + 2 * margin
+                width: implicitWidth
+                height: implicitHeight
+
+                Dialog {
+                    id: assistantResetConfirmationDialog
+
+                    modal: false
+                    focus: true
+                    title: qsTr("Start new conversation?")
+                    x: assistantResetConfirmationDialogContentRect.margin
+                    y: assistantResetConfirmationDialogContentRect.margin
+
+                    footer: Row {
+                        spacing: 6
+                        layoutDirection: Qt.RightToLeft
+                        Button {
+                            text: qsTr("New conversation")
+                            onClicked: assistantResetConfirmationDialog.accept()
+                        }
+                        Button {
+                            text: qsTr("Cancel")
+                            onClicked: assistantResetConfirmationDialog.reject()
+                        }
+                    }
+
+                    onAccepted: {
+                        assistantResetConfirmationDialogWrapper.close()
+                        assistantInputContainer.resetAssistantConversation()
+                    }
+
+                    onRejected: {
+                        assistantResetConfirmationDialogWrapper.close()
+                    }
+
+                    onDiscarded: {
+                        assistantResetConfirmationDialogWrapper.close()
+                    }
+
+                    Label {
+                        id: assistantResetConfirmationDialogLabel
+                        width: parent.width
+                        anchors.centerIn: parent
+                        text: qsTr("This will clear the existing conversation")
+                        wrapMode: Text.WordWrap
+                    }
+                }
+            }
+        }
+
         RowLayout {
             id: assistantInputContainer
             visible: trayWindowMainItem.showAssistantPanel
@@ -390,25 +471,6 @@ ApplicationWindow {
             anchors.topMargin: Style.trayHorizontalMargin
             anchors.bottomMargin: Style.trayHorizontalMargin
             spacing: Style.extraSmallSpacing
-
-            Dialog {
-                id: assistantResetConfirmationDialog
-
-                modal: true
-                focus: true
-                title: Systray.windowTitle
-                x: (trayWindow.width - width) / 2
-                y: (trayWindow.height - height) / 2
-                standardButtons: Dialog.Ok | Dialog.Cancel
-
-                onAccepted: assistantInputContainer.resetAssistantConversation()
-
-                Label {
-                    width: parent.width
-                    text: qsTr("Start new chat? This will clear the existing conversation")
-                    wrapMode: Text.WordWrap
-                }
-            }
 
             TextField {
                 id: assistantQuestionInput
@@ -461,11 +523,11 @@ ApplicationWindow {
                 display: AbstractButton.IconOnly
                 focusPolicy: Qt.StrongFocus
 
-                onClicked: assistantResetConfirmationDialog.open()
+                onClicked: assistantResetConfirmationDialogWrapper.open()
 
                 Accessible.role: Accessible.Button
                 Accessible.name: qsTr("Start a new assistant chat")
-                Accessible.onPressAction: assistantResetConfirmationDialog.open()
+                Accessible.onPressAction: assistantResetConfirmationDialogWrapper.open()
             }
         }
 
