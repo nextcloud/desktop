@@ -64,6 +64,10 @@
 #ifdef Q_OS_MACOS
 #include <CoreFoundation/CoreFoundation.h>
 #include "common/utility_mac_sandbox.h"
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "macOS/findersyncxpc.h"
+#include "application.h"
+#endif
 #endif
 
 #ifdef HAVE_KGUIADDONS
@@ -623,6 +627,16 @@ void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileSt
     for (const auto &listener : std::as_const(_listeners)) {
         listener->sendMessageIfDirectoryMonitored(msg, directoryHash);
     }
+
+#if defined(Q_OS_MACOS) && defined(BUILD_FILE_PROVIDER_MODULE)
+    // Also broadcast to FinderSync via XPC
+    if (auto app = qobject_cast<Application*>(qApp)) {
+        if (auto finderSyncXPC = app->finderSyncXPC()) {
+            const QString statusString = fileStatus.toSocketAPIString();
+            finderSyncXPC->setStatusResult(statusString, systemPath);
+        }
+    }
+#endif
 }
 
 void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString &argument, SocketListener *listener)

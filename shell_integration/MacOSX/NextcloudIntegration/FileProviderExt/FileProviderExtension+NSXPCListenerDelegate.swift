@@ -29,6 +29,9 @@ extension FileProviderExtension: NSXPCListenerDelegate {
         if let appService = remoteObjectProxy as? AppProtocol {
             logger.info("Succeeded to cast remote object proxy, adopting it!")
             self.app = appService
+
+            // Initial status report as soon as the app service is available.
+            updatedSyncStateReporting(oldActions: Set<UUID>())
         } else {
             logger.error("Failed to cast remote object proxy to AppProtocol!")
             self.app = nil

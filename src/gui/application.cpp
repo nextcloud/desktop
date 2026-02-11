@@ -39,6 +39,8 @@
 #include "shellextensionsserver.h"
 #elif defined(Q_OS_MACOS)
 #include "macOS/fileprovider.h"
+#include "macOS/findersyncxpc.h"
+#include "macOS/findersyncservice.h"
 #endif
 
 #include <QLocale>
@@ -214,6 +216,13 @@ ownCloudGui *Application::gui() const
 {
     return _gui;
 }
+
+#if defined(Q_OS_MACOS) && defined(BUILD_FILE_PROVIDER_MODULE)
+Mac::FinderSyncXPC *Application::finderSyncXPC() const
+{
+    return _finderSyncXPC.get();
+}
+#endif
 
 Application::Application(int &argc, char **argv)
     : QApplication{argc, argv}
@@ -469,6 +478,16 @@ Application::Application(int &argc, char **argv)
 
 #if defined(BUILD_FILE_PROVIDER_MODULE)
     Mac::FileProvider::instance();
+    Mac::FileProvider::instance()->configureXPC();
+
+    // Initialize FinderSync XPC
+    _finderSyncService = std::make_unique<Mac::FinderSyncService>(this);
+    _finderSyncService->setSocketApi(FolderMan::instance()->socketApi());
+
+    _finderSyncXPC = std::make_unique<Mac::FinderSyncXPC>(this);
+    _finderSyncXPC->startListener(_finderSyncService.get());
+
+    qCInfo(lcApplication) << "FinderSync XPC initialized";
 #endif
 }
 

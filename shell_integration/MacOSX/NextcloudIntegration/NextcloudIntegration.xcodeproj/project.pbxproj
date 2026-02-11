@@ -12,7 +12,6 @@
 		5352B36C29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5352B36B29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift */; };
 		53651E442BBC0CA300ECAC29 /* SuggestionsTextFieldKit in Frameworks */ = {isa = PBXBuildFile; productRef = 53651E432BBC0CA300ECAC29 /* SuggestionsTextFieldKit */; };
 		53651E462BBC0D9500ECAC29 /* ShareeSuggestionsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53651E452BBC0D9500ECAC29 /* ShareeSuggestionsDataSource.swift */; };
-		536EFBF7295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */; };
 		5374FD442B95EE1400C78D54 /* ShareController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5374FD432B95EE1400C78D54 /* ShareController.swift */; };
 		537630912B85F4980026BFAB /* ShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 537630902B85F4980026BFAB /* ShareViewController.xib */; };
 		537630932B85F4B00026BFAB /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537630922B85F4B00026BFAB /* ShareViewController.swift */; };
@@ -35,7 +34,6 @@
 		53903D312956173F00D0B308 /* NCDesktopClientSocketKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 53903D0C2956164F00D0B308 /* NCDesktopClientSocketKit.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		53903D352956184400D0B308 /* LocalSocketClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 539158B127BE891500816F56 /* LocalSocketClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		53903D37295618A400D0B308 /* LineProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 53903D36295618A400D0B308 /* LineProcessor.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		539158AC27BE71A900816F56 /* FinderSyncSocketLineProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 539158AB27BE71A900816F56 /* FinderSyncSocketLineProcessor.m */; };
 		53B979812B84C81F002DA742 /* DocumentActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B979802B84C81F002DA742 /* DocumentActionViewController.swift */; };
 		53D666612B70C9A70042C03D /* FileProviderDomainDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D666602B70C9A70042C03D /* FileProviderDomainDefaults.swift */; };
 		53ED473029C9CE0B00795DB1 /* FileProviderExtension+NSFileProviderServicing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53ED472F29C9CE0B00795DB1 /* FileProviderExtension+NSFileProviderServicing.swift */; };
@@ -57,6 +55,7 @@
 		AAA6F17D2F1E647D00FFB2BA /* FileProviderExtension+NSFileProviderServiceSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA6F17C2F1E647800FFB2BA /* FileProviderExtension+NSFileProviderServiceSource.swift */; };
 		AAA6F17F2F1E64F500FFB2BA /* FileProviderExtension+NSXPCListenerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA6F17E2F1E64F100FFB2BA /* FileProviderExtension+NSXPCListenerDelegate.swift */; };
 		AAA6F1812F1E653300FFB2BA /* FileProviderExtension+ClientCommunicationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA6F1802F1E652E00FFB2BA /* FileProviderExtension+ClientCommunicationProtocol.swift */; };
+		AABBD8972F3CB64800662E00 /* FinderSyncXPCManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AABBD8962F3CB64800662E00 /* FinderSyncXPCManager.m */; };
 		AAC00D2A2E37B29D006010FE /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = AAC00D292E37B29D006010FE /* Localizable.xcstrings */; };
 		AAF19A682E8D5B4E005FE5B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAF19A672E8D5B4E005FE5B0 /* Assets.xcassets */; };
 		AAF19A7A2E8D5B63005FE5B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAF19A792E8D5B63005FE5B0 /* Assets.xcassets */; };
@@ -171,7 +170,6 @@
 		5350E4EA2B0C9CE100F276CB /* FileProviderExt-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FileProviderExt-Bridging-Header.h"; sourceTree = "<group>"; };
 		5352B36B29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderExtension+Thumbnailing.swift"; sourceTree = "<group>"; };
 		53651E452BBC0D9500ECAC29 /* ShareeSuggestionsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareeSuggestionsDataSource.swift; sourceTree = "<group>"; };
-		536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderSocketLineProcessor.swift; sourceTree = "<group>"; };
 		5374FD432B95EE1400C78D54 /* ShareController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareController.swift; sourceTree = "<group>"; };
 		537630902B85F4980026BFAB /* ShareViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareViewController.xib; sourceTree = "<group>"; };
 		537630922B85F4B00026BFAB /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
@@ -187,9 +185,7 @@
 		53903D0C2956164F00D0B308 /* NCDesktopClientSocketKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NCDesktopClientSocketKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		53903D0E2956164F00D0B308 /* NCDesktopClientSocketKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NCDesktopClientSocketKit.h; sourceTree = "<group>"; };
 		53903D36295618A400D0B308 /* LineProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LineProcessor.h; sourceTree = "<group>"; };
-		539158A927BE606500816F56 /* FinderSyncSocketLineProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FinderSyncSocketLineProcessor.h; sourceTree = "<group>"; };
 		539158AA27BE67CC00816F56 /* SyncClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SyncClient.h; sourceTree = "<group>"; };
-		539158AB27BE71A900816F56 /* FinderSyncSocketLineProcessor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FinderSyncSocketLineProcessor.m; sourceTree = "<group>"; };
 		539158B127BE891500816F56 /* LocalSocketClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalSocketClient.h; sourceTree = "<group>"; };
 		539158B227BEC98A00816F56 /* LocalSocketClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocalSocketClient.m; sourceTree = "<group>"; };
 		53B9797E2B84C81F002DA742 /* FileProviderUIExt.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FileProviderUIExt.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -218,6 +214,10 @@
 		AAA6F17E2F1E64F100FFB2BA /* FileProviderExtension+NSXPCListenerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderExtension+NSXPCListenerDelegate.swift"; sourceTree = "<group>"; };
 		AAA6F1802F1E652E00FFB2BA /* FileProviderExtension+ClientCommunicationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderExtension+ClientCommunicationProtocol.swift"; sourceTree = "<group>"; };
 		AAAF76222F1A83A900BD0F0D /* AppProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppProtocol.h; sourceTree = "<group>"; };
+		AABBD8952F3CB64800662E00 /* FinderSyncXPCManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FinderSyncXPCManager.h; sourceTree = "<group>"; };
+		AABBD8962F3CB64800662E00 /* FinderSyncXPCManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FinderSyncXPCManager.m; sourceTree = "<group>"; };
+		AABBD8982F3CB65800662E00 /* FinderSyncAppProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FinderSyncAppProtocol.h; sourceTree = "<group>"; };
+		AABBD8992F3CB65800662E00 /* FinderSyncProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FinderSyncProtocol.h; sourceTree = "<group>"; };
 		AAC00D292E37B29D006010FE /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		AAF19A672E8D5B4E005FE5B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AAF19A792E8D5B63005FE5B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -356,7 +356,6 @@
 				53ED472F29C9CE0B00795DB1 /* FileProviderExtension+NSFileProviderServicing.swift */,
 				530429972DD44226004BB598 /* FileProviderExtension+CustomActions.swift */,
 				5352B36B29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift */,
-				536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */,
 				AA02B2AA2E7048C600C72B34 /* Keychain.swift */,
 				538E397227F4765000FA63D5 /* Info.plist */,
 				5350E4EA2B0C9CE100F276CB /* FileProviderExt-Bridging-Header.h */,
@@ -412,6 +411,15 @@
 			path = Authentication;
 			sourceTree = "<group>";
 		};
+		AABBD89A2F3CB65800662E00 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				AABBD8982F3CB65800662E00 /* FinderSyncAppProtocol.h */,
+				AABBD8992F3CB65800662E00 /* FinderSyncProtocol.h */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		C2B573941B1CD88000303B36 = {
 			isa = PBXGroup;
 			children = (
@@ -460,12 +468,13 @@
 		C2B573D81B1CD9CE00303B36 /* FinderSyncExt */ = {
 			isa = PBXGroup;
 			children = (
-				539158AA27BE67CC00816F56 /* SyncClient.h */,
 				C2B573DC1B1CD9CE00303B36 /* FinderSync.h */,
 				C2B573DD1B1CD9CE00303B36 /* FinderSync.m */,
-				539158A927BE606500816F56 /* FinderSyncSocketLineProcessor.h */,
-				539158AB27BE71A900816F56 /* FinderSyncSocketLineProcessor.m */,
+				AABBD8952F3CB64800662E00 /* FinderSyncXPCManager.h */,
+				AABBD8962F3CB64800662E00 /* FinderSyncXPCManager.m */,
+				AABBD89A2F3CB65800662E00 /* Services */,
 				C2B573D91B1CD9CE00303B36 /* Supporting Files */,
+				539158AA27BE67CC00816F56 /* SyncClient.h */,
 			);
 			path = FinderSyncExt;
 			sourceTree = "<group>";
@@ -873,7 +882,6 @@
 				AAA6F1792F1E608000FFB2BA /* FileProviderExtension+ChangeNotificationInterface.swift in Sources */,
 				538E396D27F4765000FA63D5 /* FileProviderExtension.swift in Sources */,
 				AA7F17E72E7038370000E928 /* NSError+FileProviderErrorCode.swift in Sources */,
-				536EFBF7295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift in Sources */,
 				AA02B2AB2E7048C800C72B34 /* Keychain.swift in Sources */,
 				537630972B860D920026BFAB /* FPUIExtensionService.swift in Sources */,
 				537630952B860D560026BFAB /* FPUIExtensionServiceSource.swift in Sources */,
@@ -925,7 +933,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				539158AC27BE71A900816F56 /* FinderSyncSocketLineProcessor.m in Sources */,
+				AABBD8972F3CB64800662E00 /* FinderSyncXPCManager.m in Sources */,
 				C2B573DE1B1CD9CE00303B36 /* FinderSync.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
