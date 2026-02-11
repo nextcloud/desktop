@@ -5,6 +5,7 @@
  */
 
 #import "FinderSync.h"
+#import "FinderSyncXPCManager.h"
 
 @interface FinderSync()
 {
@@ -25,8 +26,6 @@
     if (self) {
         FIFinderSyncController *syncController = [FIFinderSyncController defaultController];
         NSBundle *extBundle = [NSBundle bundleForClass:[self class]];
-        // This was added to the bundle's Info.plist to get it from the build system
-        NSString *socketApiPrefix = [extBundle objectForInfoDictionaryKey:@"SocketApiPrefix"];
 
         NSImage *ok = [extBundle imageForResource:@"ok.icns"];
         NSImage *ok_swm = [extBundle imageForResource:@"ok_swm.icns"];
@@ -45,23 +44,11 @@
         [syncController setBadgeImage:warning label:@"Ignored" forBadgeIdentifier:@"IGNORE+SWM"];
         [syncController setBadgeImage:error label:@"Error" forBadgeIdentifier:@"ERROR+SWM"];
 
-        NSURL *container = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:socketApiPrefix];
-        NSURL *library = [container URLByAppendingPathComponent:@"Library" isDirectory:true];
-        NSURL *applicationSupport = [library URLByAppendingPathComponent:@"Application Support" isDirectory:true];
-        NSURL *socketPath = [applicationSupport URLByAppendingPathComponent:@"s" isDirectory:NO];
-
-        NSLog(@"Socket path: %@", socketPath.path);
-
-        if (socketPath.path) {
-            self.lineProcessor = [[FinderSyncSocketLineProcessor alloc] initWithDelegate:self];
-            self.localSocketClient = [[LocalSocketClient alloc] initWithSocketPath:socketPath.path
-                                                                     lineProcessor:self.lineProcessor];
-            [self.localSocketClient start];
-            [self.localSocketClient askOnSocket:@"" query:@"GET_STRINGS"];
-        } else {
-            NSLog(@"No socket path. Not initiating local socket client.");
-            self.localSocketClient = nil;
-        }
+        // Initialize XPC manager instead of socket client
+        NSLog(@"Initializing FinderSync XPC manager");
+        self.xpcManager = [[FinderSyncXPCManager alloc] initWithDelegate:self];
+        [self.xpcManager start];
+        [self.xpcManager askOnSocket:@"" query:@"GET_STRINGS"];
 
         _registeredDirectories = NSMutableSet.set;
         _strings = NSMutableDictionary.dictionary;
@@ -82,7 +69,7 @@
 	}
 
 	NSString* normalizedPath = [[url path] decomposedStringWithCanonicalMapping];
-	[self.localSocketClient askForIcon:normalizedPath isDirectory:isDir];
+	[self.xpcManager askForIcon:normalizedPath isDirectory:isDir];
 }
 
 #pragma mark - Menu and toolbar item support
@@ -110,10 +97,10 @@
 
 - (NSMenu *)menuForMenuKind:(FIMenuKind)whichMenu
 {
-    if(![self.localSocketClient isConnected]) {
+    if(![self.xpcManager isConnected]) {
         return nil;
     }
-    
+
 	FIFinderSyncController *syncController = [FIFinderSyncController defaultController];
 	NSMutableSet *rootPaths = [[NSMutableSet alloc] init];
 	[syncController.directoryURLs enumerateObjectsUsingBlock: ^(id obj, BOOL *stop) {
@@ -133,9 +120,9 @@
 	}];
 
 	NSString *paths = [self selectedPathsSeparatedByRecordSeparator];
-	[self.localSocketClient askOnSocket:paths query:@"GET_MENU_ITEMS"];
-    
-    // Since the LocalSocketClient communicates asynchronously. wait here until the menu
+	[self.xpcManager askOnSocket:paths query:@"GET_MENU_ITEMS"];
+
+    // Since the XPC communication is asynchronous, wait here until the menu
     // is delivered by another thread
     [self waitForMenuToArrive];
 
@@ -171,7 +158,7 @@
 	long idx = [(NSMenuItem*)sender tag];
 	NSString *command = [[_menuItems objectAtIndex:idx] valueForKey:@"command"];
 	NSString *paths = [self selectedPathsSeparatedByRecordSeparator];
-	[self.localSocketClient askOnSocket:paths query:command];
+	[self.xpcManager askOnSocket:paths query:command];
 }
 
 #pragma mark - SyncClientProxyDelegate implementation

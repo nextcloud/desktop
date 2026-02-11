@@ -156,7 +156,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                 taskHandler: { _ in }
             )
             
-            let serverMajorVersion = capabilities?.version.major ?? 0
+            let serverMajorVersion = capabilities?.major ?? 0
             let supportsPagination = serverMajorVersion >= 31
             
             // Enable pagination by passing page settings if server supports it

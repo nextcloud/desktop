@@ -298,6 +298,8 @@ IF( APPLE )
             # Symlinks to files in shell_integration/MacOSX/NextcloudIntegration/
             macOS/AppProtocol.h
             macOS/ClientCommunicationProtocol.h
+            macOS/FinderSyncProtocol.h
+            macOS/FinderSyncAppProtocol.h
             # End of symlink files
             macOS/fileprovider.h
             macOS/fileprovider_mac.mm
@@ -313,17 +315,16 @@ IF( APPLE )
             macOS/fileproviderservice.mm
             macOS/fileprovidersettingscontroller.h
             macOS/fileprovidersettingscontroller_mac.mm
-            macOS/fileprovidersocketcontroller.h
-            macOS/fileprovidersocketcontroller.cpp
-            macOS/fileprovidersocketserver.h
-            macOS/fileprovidersocketserver.cpp
-            macOS/fileprovidersocketserver_mac.mm
             macOS/fileproviderutils.h
             macOS/fileproviderutils_mac.mm
             macOS/fileproviderxpc.h
             macOS/fileproviderxpc_mac.mm
             macOS/fileproviderxpc_mac_utils.h
             macOS/fileproviderxpc_mac_utils.mm
+            macOS/findersyncxpc.h
+            macOS/findersyncxpc_mac.mm
+            macOS/findersyncservice.h
+            macOS/findersyncservice.mm
             macOS/progressobserver.h
             macOS/progressobserver.m)
     endif()
