@@ -145,8 +145,10 @@ bool isSyncStatusError(const OCC::SyncResult::Status status)
     return false;
 }
 
+} // namespace
+
 namespace OCC {
-    
+
 TrayFolderInfo::TrayFolderInfo(const QString &name, const QString &parentPath, const QString &fullPath, FolderType folderType)
     : _name(name)
     , _parentPath(parentPath)
