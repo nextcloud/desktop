@@ -5,6 +5,7 @@
 import Foundation
 import NextcloudCapabilitiesKit
 import NextcloudKit
+import UniformTypeIdentifiers
 
 public extension Item {
     ///
@@ -190,11 +191,17 @@ public extension Item {
             )
         }
 
+        let contentType: String = if itemTemplate.contentType == .aliasFile {
+            UTType.aliasFile.identifier
+        } else {
+            itemTemplate.contentType?.preferredMIMEType ?? ""
+        }
+
         let newMetadata = SendableItemMetadata(
             ocId: ocId,
             account: account.ncKitAccount,
             classFile: "", // Placeholder as not set in original code
-            contentType: itemTemplate.contentType?.preferredMIMEType ?? "",
+            contentType: contentType,
             creationDate: Date(), // Default as not set in original code
             date: date ?? Date(),
             directory: false,
