@@ -7,6 +7,7 @@ import NextcloudFileProviderKitMocks
 import NextcloudKit
 import RealmSwift
 import TestInterface
+import UniformTypeIdentifiers
 import XCTest
 
 final class ItemFetchTests: NextcloudFileProviderKitTestCase {
@@ -70,6 +71,51 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(fetchedItem.itemIdentifier, item.itemIdentifier)
         XCTAssertEqual(fetchedItem.filename, item.filename)
         XCTAssertEqual(fetchedItem.creationDate, item.creationDate)
+    }
+
+    func testFetchAliasFileContentsDetectsAliasType() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.injectMock(Self.account)
+
+        // Construct minimal data starting with the Apple Bookmark magic "book" (0x62 0x6F 0x6F 0x6B)
+        var aliasData = Data([0x62, 0x6F, 0x6F, 0x6B])
+        aliasData.append(contentsOf: [UInt8](repeating: 0, count: 60))
+
+        let remoteItem = MockRemoteItem(
+            identifier: "aliasItem",
+            versionIdentifier: "0",
+            name: "My Alias", // no extension, no MIME type — as the server would present it
+            remotePath: Self.account.davFilesUrl + "/My Alias",
+            data: aliasData,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children = [remoteItem]
+        remoteItem.parent = rootItem
+
+        // contentType is empty — as it arrives from the server with no MIME type
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        XCTAssertTrue(itemMetadata.contentType.isEmpty)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (_, fetchedItemMaybe, error) = await item.fetchContents(dbManager: Self.dbManager)
+        XCTAssertNil(error)
+        let fetchedItem = try XCTUnwrap(fetchedItemMaybe)
+
+        XCTAssertEqual(fetchedItem.contentType, UTType.aliasFile)
+
+        let storedMetadata = Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)
+        XCTAssertEqual(storedMetadata?.contentType, UTType.aliasFile.identifier)
     }
 
     func testFetchDirectoryContents() async throws {
