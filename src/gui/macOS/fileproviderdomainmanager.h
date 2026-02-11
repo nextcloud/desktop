@@ -48,13 +48,15 @@ public:
 
     /**
      * @brief Remove a file provider domain independent from an account.
+     * @return The path to the location where preserved dirty user data is stored, or an empty QString if none.
      */
-    void removeDomain(NSFileProviderDomain *domain);
+    QString removeDomain(NSFileProviderDomain *domain);
 
     /**
      * @brief Remove the file provider domain for the given account.
+     * @return The path to the location where preserved dirty user data is stored, or an empty QString if none.
      */
-    void removeDomainByAccount(const OCC::AccountState * const accountState);
+    QString removeDomainByAccount(const OCC::AccountState * const accountState);
 
     void start();
 
@@ -62,11 +64,26 @@ public:
 
     NSFileProviderDomain *domainForAccount(const OCC::Account *account) const;
 
+    void signalEnumeratorChanged(const OCC::Account * const account);
+
+    /**
+     * @brief Get the user-visible URL for a file provider domain's root container.
+     * @param domainIdentifier The identifier of the file provider domain.
+     * @return The user-visible URL of the domain's root container, or an empty QString if not found.
+     */
+    [[nodiscard]] QString userVisibleUrlForDomainIdentifier(const QString &domainIdentifier) const;
+
+public slots:
+    /**
+     * @brief Handle file ID changes from push notifications
+     * @param account The account for which file IDs changed
+     * @param fileIds List of file IDs that have changed
+     */
+    void slotHandleFileIdsChanged(const OCC::Account *account, const QList<qint64> &fileIds);
+
 private slots:
     void disconnectFileProviderDomainForAccount(const OCC::AccountState * const accountState, const QString &reason);
     void reconnectFileProviderDomainForAccount(const OCC::AccountState * const accountState);
-
-    void signalEnumeratorChanged(const OCC::Account * const account);
     void slotAccountStateChanged(const OCC::AccountState * const accountState);
 
 private:

@@ -11,7 +11,7 @@ extension [SendableItemMetadata] {
         let logger = FileProviderLogger(category: "toFileProviderItems", log: log)
         let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account)
 
-        let result: [Item] = try await concurrentChunkedCompactMap { (itemMetadata: SendableItemMetadata) -> Item? in
+        return try await concurrentChunkedCompactMap { (itemMetadata: SendableItemMetadata) -> Item? in
             guard !itemMetadata.e2eEncrypted else {
                 logger.info("Skipping encrypted metadata in enumeration.", [.item: itemMetadata.ocId, .name: itemMetadata.fileName])
                 return nil
@@ -42,7 +42,5 @@ extension [SendableItemMetadata] {
 
             return item
         }
-
-        return result
     }
 }

@@ -30,6 +30,10 @@
 #include "settingsdialog.h"
 #include "vfsdownloaderrordialog.h"
 
+#ifdef Q_OS_MACOS
+#include "common/utility_mac_sandbox.h"
+#endif
+
 #include <QTimer>
 #include <QUrl>
 #include <QDir>
@@ -164,7 +168,18 @@ Folder::~Folder()
 
     // Reset then engine first as it will abort and try to access members of the Folder
     _engine.reset();
+
+    // macOS sandbox: _securityScopedAccess is declared as the first member,
+    // so it is destroyed last by C++ reverse-declaration-order destruction.
+    // This ensures sandbox access outlives all filesystem-accessing members.
 }
+
+#ifdef Q_OS_MACOS
+void Folder::setSecurityScopedAccess(std::unique_ptr<Utility::MacSandboxPersistentAccess> access)
+{
+    _securityScopedAccess = std::move(access);
+}
+#endif
 
 bool Folder::checkLocalPath()
 {
@@ -1233,7 +1248,7 @@ void Folder::setDirtyNetworkLimits()
 
     ConfigFile cfg;
 
-    int downloadLimit = -75; // 75%
+    int downloadLimit = 0;
     const auto useDownLimit = static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(account->downloadLimitSetting());
     if (useDownLimit >= 1) {
         downloadLimit = account->downloadLimit() * 1000;
@@ -1241,7 +1256,7 @@ void Folder::setDirtyNetworkLimits()
         downloadLimit = 0;
     }
 
-    int uploadLimit = -75; // 75%
+    int uploadLimit = 0;
     const auto useUpLimit = static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(account->uploadLimitSetting());
     if (useUpLimit >= 1) {
         uploadLimit = account->uploadLimit() * 1000;
@@ -1861,6 +1876,12 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
         settings.setValue(QLatin1String("navigationPaneClsid"), folder.navigationPaneClsid);
     else
         settings.remove(QLatin1String("navigationPaneClsid"));
+
+    // macOS sandbox: persist security-scoped bookmark data
+    if (!folder.securityScopedBookmarkData.isEmpty())
+        settings.setValue(QLatin1String("securityScopedBookmarkData"), folder.securityScopedBookmarkData);
+    else
+        settings.remove(QLatin1String("securityScopedBookmarkData"));
 }
 
 bool FolderDefinition::load(QSettings &settings, const QString &alias,
@@ -1888,6 +1909,9 @@ bool FolderDefinition::load(QSettings &settings, const QString &alias,
             folder->upgradeVfsMode = true; // maybe winvfs is available?
         }
     }
+
+    // macOS sandbox: load security-scoped bookmark data
+    folder->securityScopedBookmarkData = settings.value(QLatin1String("securityScopedBookmarkData")).toByteArray();
 
     // Old settings can contain paths with native separators. In the rest of the
     // code we assume /, so clean it up now.

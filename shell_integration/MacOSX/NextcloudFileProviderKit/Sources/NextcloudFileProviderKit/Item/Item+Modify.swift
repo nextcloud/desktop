@@ -128,7 +128,7 @@ public extension Item {
 
         let options = NKRequestOptions(customHeader: headers, queue: .global(qos: .utility))
 
-        let (_, _, etag, date, size, error) = await upload(
+        let (_, etag, date, size, error) = await upload(
             fileLocatedAt: newContents.path,
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
@@ -401,7 +401,7 @@ public extension Item {
                     Handling child bundle or package file at: \(childUrlPath)
                     """
                 )
-                let (_, _, _, _, _, error) = await upload(
+                let (_, _, _, _, error) = await upload(
                     fileLocatedAt: childUrlPath,
                     toRemotePath: childRemoteUrl,
                     usingRemoteInterface: remoteInterface,
@@ -656,13 +656,13 @@ public extension Item {
 
             return (modifiedItem, nil)
         } else if changedFields.contains(.parentItemIdentifier) && newParentItemIdentifier == .trashContainer {
-            let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(
-                account: account, options: .init(), taskHandler: { _ in }
-            )
+            let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(account: account, options: .init(), taskHandler: { _ in })
+
             guard let capabilities, error == .success else {
                 logger.error("Could not acquire capabilities during item move to trash, won't proceed.", [.item: modifiedItem, .error: error])
                 return (nil, error.fileProviderError)
             }
+
             guard capabilities.files?.undelete == true else {
                 logger.error("Cannot delete item as server does not support trashing.", [.item: modifiedItem])
                 return (nil, NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError))
@@ -672,15 +672,8 @@ public extension Item {
             // Rename the item if necessary before doing the trashing procedures
             if changedFields.contains(.filename) {
                 let currentParentItemRemotePath = modifiedItem.metadata.serverUrl
-                let preTrashingRenamedRemotePath =
-                    currentParentItemRemotePath + "/" + itemTarget.filename
-                let (renameModifiedItem, renameError) = await modifiedItem.move(
-                    newFileName: itemTarget.filename,
-                    newRemotePath: preTrashingRenamedRemotePath,
-                    newParentItemIdentifier: modifiedItem.parentItemIdentifier,
-                    newParentItemRemotePath: currentParentItemRemotePath,
-                    dbManager: dbManager
-                )
+                let preTrashingRenamedRemotePath = currentParentItemRemotePath + "/" + itemTarget.filename
+                let (renameModifiedItem, renameError) = await modifiedItem.move(newFileName: itemTarget.filename, newRemotePath: preTrashingRenamedRemotePath, newParentItemIdentifier: modifiedItem.parentItemIdentifier, newParentItemRemotePath: currentParentItemRemotePath, dbManager: dbManager)
 
                 guard renameError == nil, let renameModifiedItem else {
                     logger.error("Could not rename pre-trash item.", [.item: modifiedItem.itemIdentifier, .error: error])
@@ -690,10 +683,12 @@ public extension Item {
                 modifiedItem = renameModifiedItem
             }
 
-            let (trashedItem, trashingError) = await Self.trash(
-                modifiedItem, account: account, dbManager: dbManager, domain: domain, log: logger.log
-            )
-            guard trashingError == nil else { return (modifiedItem, trashingError) }
+            let (trashedItem, trashingError) = await Self.trash(modifiedItem, account: account, dbManager: dbManager, domain: domain, log: logger.log)
+
+            guard trashingError == nil else {
+                return (modifiedItem, trashingError)
+            }
+
             modifiedItem = trashedItem
         } else if changedFields.contains(.filename) || changedFields.contains(.parentItemIdentifier) {
             // Recover the item first

@@ -12,6 +12,7 @@
 #include <pushnotifications.h>
 #include "userstatusselectormodel.h"
 #include "syncengine.h"
+#include "syncresult.h"
 #include "ocsjob.h"
 #include "configfile.h"
 #include "notificationconfirmjob.h"
@@ -25,6 +26,11 @@
 #include "tray/talkreply.h"
 #include "userstatusconnector.h"
 #include "common/utility.h"
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "gui/macOS/fileprovider.h"
+#include "gui/macOS/fileproviderservice.h"
+#endif
 
 #include <QtCore>
 #include <QDesktopServices>
@@ -119,6 +125,24 @@ SyncStatusInfo syncStatusForAccount(const OCC::AccountStatePtr &accountState)
 
     return {OCC::Theme::instance()->ok(), true};
 }
+  
+bool isSyncStatusError(const OCC::SyncResult::Status status)
+{
+    switch (status) {
+    case OCC::SyncResult::Error:
+    case OCC::SyncResult::SetupError:
+    case OCC::SyncResult::Problem:
+        return true;
+    case OCC::SyncResult::Success:
+    case OCC::SyncResult::SyncPrepare:
+    case OCC::SyncResult::SyncRunning:
+    case OCC::SyncResult::NotYetStarted:
+    case OCC::SyncResult::Paused:
+    case OCC::SyncResult::SyncAbortRequested:
+    case OCC::SyncResult::Undefined:
+        return false;
+    }
+    return false;
 }
 
 namespace OCC {
@@ -394,7 +418,7 @@ void User::setNotificationRefreshInterval(std::chrono::milliseconds interval)
 
 void User::slotPushNotificationsReady()
 {
-    qCInfo(lcActivity) << "Push notifications are ready";
+    qCInfo(lcActivity) << "Push notifications are ready.";
 
     if (_notificationCheckTimer.isActive()) {
         // as we are now able to use push notifications - let's stop the polling timer
@@ -408,11 +432,49 @@ void User::slotDisconnectPushNotifications()
 {
     disconnect(_account->account()->pushNotifications(), &PushNotifications::notificationsChanged, this, &User::slotReceivedPushNotification);
     disconnect(_account->account()->pushNotifications(), &PushNotifications::activitiesChanged, this, &User::slotReceivedPushActivity);
+    disconnect(_account->account()->pushNotifications(), &PushNotifications::filesChanged, this, &User::slotReceivedPushFilesChanges);
+    disconnect(_account->account()->pushNotifications(), &PushNotifications::fileIdsChanged, this, &User::slotReceivedPushFileIdsChanges);
 
     disconnect(_account->account().data(), &Account::pushNotificationsDisabled, this, &User::slotDisconnectPushNotifications);
 
     // connection to WebSocket may have dropped or an error occurred, so we need to bring back the polling until we have re-established the connection
     setNotificationRefreshInterval(ConfigFile().notificationRefreshInterval());
+}
+
+void User::slotReceivedPushFilesChanges(Account *account)
+{
+    if (account->id() != _account->account()->id()) {
+        return;
+    }
+
+    qCInfo(lcActivity) << "Received push notification for file changes.";
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    // Forward to the File Provider Domain Manager
+    const auto fileProvider = Mac::FileProvider::instance();
+
+    if (fileProvider && fileProvider->domainManager()) {
+        fileProvider->domainManager()->slotHandleFileIdsChanged(account, {});
+    }
+#endif
+}
+
+void User::slotReceivedPushFileIdsChanges(Account *account, const QList<qint64> &fileIds)
+{
+    if (account->id() != _account->account()->id()) {
+        return;
+    }
+
+    qCInfo(lcActivity) << "Received push notification for file id changes, file count:" << fileIds.size();
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    // Forward to the File Provider Domain Manager
+    const auto fileProvider = Mac::FileProvider::instance();
+
+    if (fileProvider && fileProvider->domainManager()) {
+        fileProvider->domainManager()->slotHandleFileIdsChanged(account, fileIds);
+    }
+#endif
 }
 
 void User::slotReceivedPushNotification(Account *account)
@@ -486,6 +548,8 @@ void User::connectPushNotifications() const
 
     connect(_account->account()->pushNotifications(), &PushNotifications::notificationsChanged, this, &User::slotReceivedPushNotification, Qt::UniqueConnection);
     connect(_account->account()->pushNotifications(), &PushNotifications::activitiesChanged, this, &User::slotReceivedPushActivity, Qt::UniqueConnection);
+    connect(_account->account()->pushNotifications(), &PushNotifications::filesChanged, this, &User::slotReceivedPushFilesChanges, Qt::UniqueConnection);
+    connect(_account->account()->pushNotifications(), &PushNotifications::fileIdsChanged, this, &User::slotReceivedPushFileIdsChanges, Qt::UniqueConnection);
 }
 
 bool User::checkPushNotificationsAreReady() const
@@ -1434,6 +1498,13 @@ UserModel::UserModel(QObject *parent)
         setInitialUser();
     }
 
+    const auto folderMan = FolderMan::instance();
+    connect(folderMan, &FolderMan::folderListChanged, this, &UserModel::updateSyncErrorUsers);
+    connect(folderMan, &FolderMan::folderSyncStateChange, this, &UserModel::updateSyncErrorUsers);
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::syncStateChanged, this, &UserModel::updateSyncErrorUsers);
+#endif
+
     connect(AccountManager::instance(), &AccountManager::accountAdded,
         this, &UserModel::addAccsToUserList);
     connect(AccountManager::instance(), &AccountManager::accountListInitialized,
@@ -1501,6 +1572,31 @@ bool UserModel::isUserConnected(const int id)
     return _users[id]->isConnected();
 }
 
+bool UserModel::hasSyncErrors() const
+{
+    return !_syncErrorUserIds.isEmpty();
+}
+
+int UserModel::syncErrorUserCount() const
+{
+    return _syncErrorUserIds.size();
+}
+
+int UserModel::firstSyncErrorUserId() const
+{
+    return _syncErrorUserIds.isEmpty() ? -1 : _syncErrorUserIds.first();
+}
+
+User *UserModel::firstSyncErrorUser() const
+{
+    const auto index = firstSyncErrorUserId();
+    if (index < 0 || index >= _users.size()) {
+        return nullptr;
+    }
+
+    return _users.at(index);
+}
+
 QImage UserModel::avatarById(const int id) const
 {
     const auto foundUserByIdIter = std::find_if(std::cbegin(_users), std::cend(_users), [&id](const OCC::User* const user) {
@@ -1556,6 +1652,7 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
         connect(u, &User::accountStateChanged, this, [this, row] {
             emit dataChanged(index(row, 0), index(row, 0), { UserModel::IsConnectedRole });
         });
+        connect(u, &User::accountStateChanged, this, &UserModel::updateSyncErrorUsers);
 
         connect(u, &User::syncStatusChanged, this, [this, row] {
             emit dataChanged(index(row, 0), index(row, 0), { UserModel::SyncStatusIconRole,
@@ -1572,6 +1669,8 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
         u->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
         emit currentUserChanged();
     }
+
+    updateSyncErrorUsers();
 }
 
 int UserModel::currentUserIndex()
@@ -1632,6 +1731,10 @@ void UserModel::openCurrentAccountFeaturedApp()
     }
 }
 
+void UserModel::refreshSyncErrorUsers()
+{
+    updateSyncErrorUsers();
+}
 
 void UserModel::setCurrentUserId(const int id)
 {
@@ -1715,6 +1818,8 @@ void UserModel::removeAccount(const int id)
     } else if (currentUserId() == id) {
         setCurrentUserId(id < _users.size() ? id : id - 1);
     }
+
+    updateSyncErrorUsers();
 }
 
 std::shared_ptr<OCC::UserStatusConnector> UserModel::userStatusConnector(int id)
@@ -1871,6 +1976,55 @@ int UserModel::findUserIdForAccount(AccountState *account) const
 
     const auto id = std::distance(std::cbegin(_users), it);
     return id;
+}
+
+bool UserModel::userHasSyncErrors(const User *user) const
+{
+    if (!user) {
+        return false;
+    }
+
+    const auto accountState = user->accountState();
+    if (!accountState || !accountState->isConnected()) {
+        return false;
+    }
+
+    for (const auto folder : FolderMan::instance()->map().values()) {
+        if (folder->accountState() != accountState.data()) {
+            continue;
+        }
+        const auto status = determineSyncStatus(folder->syncResult());
+        if (isSyncStatusError(status)) {
+            return true;
+        }
+    }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    const auto fileProviderStatus = Mac::FileProvider::instance()->service()->latestReceivedSyncStatusForAccount(accountState->account());
+    if (isSyncStatusError(fileProviderStatus)) {
+        return true;
+    }
+#endif
+
+    return false;
+}
+
+void UserModel::updateSyncErrorUsers()
+{
+    QVector<int> newSyncErrorUserIds;
+    newSyncErrorUserIds.reserve(_users.size());
+    for (int i = 0; i < _users.size(); ++i) {
+        if (userHasSyncErrors(_users.at(i))) {
+            newSyncErrorUserIds.push_back(i);
+        }
+    }
+
+    if (newSyncErrorUserIds == _syncErrorUserIds) {
+        return;
+    }
+
+    _syncErrorUserIds = newSyncErrorUserIds;
+    emit syncErrorUsersChanged();
 }
 /*-------------------------------------------------------------------------------------*/
 

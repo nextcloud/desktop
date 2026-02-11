@@ -9,97 +9,46 @@
 
 #import <Foundation/Foundation.h>
 
-Q_LOGGING_CATEGORY(lcMacSandbox, "nextcloud.common.mac.sandbox", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcMacSandboxUtility, "nextcloud.common.mac.sandbox.utility", QtInfoMsg)
 
 namespace OCC {
 namespace Utility {
 
-class MacSandboxSecurityScopedAccess::Impl
+// --- Free functions ---
+
+QByteArray createSecurityScopedBookmarkData(const QString &localPath)
 {
-public:
-    explicit Impl(const QUrl &url)
-        : _url(url)
-        , _nsUrl(nullptr)
-        , _hasAccess(false)
-    {
-        if (!url.isValid() || url.isEmpty()) {
-            qCWarning(lcMacSandbox) << "Invalid or empty URL provided";
-            return;
-        }
-
-        // Convert QUrl to NSURL
-        const QString localPath = url.toLocalFile();
-        if (localPath.isEmpty()) {
-            qCWarning(lcMacSandbox) << "URL does not represent a local file:" << url;
-            return;
-        }
-
-        @autoreleasepool {
-            _nsUrl = [[NSURL fileURLWithPath:localPath.toNSString()] retain];
-            
-            if (!_nsUrl) {
-                qCWarning(lcMacSandbox) << "Failed to create NSURL from path:" << localPath;
-                return;
-            }
-
-            // Start accessing the security-scoped resource
-            _hasAccess = [_nsUrl startAccessingSecurityScopedResource];
-            
-            if (_hasAccess) {
-                qCDebug(lcMacSandbox) << "Successfully started accessing security-scoped resource:" << localPath;
-            } else {
-                qCWarning(lcMacSandbox) << "Failed to start accessing security-scoped resource:" << localPath;
-            }
-        }
+    if (localPath.isEmpty()) {
+        qCWarning(lcMacSandboxUtility) << "Empty path provided for bookmark creation";
+        return {};
     }
 
-    ~Impl()
-    {
-        @autoreleasepool {
-            if (_hasAccess && _nsUrl) {
-                [_nsUrl stopAccessingSecurityScopedResource];
-                qCDebug(lcMacSandbox) << "Stopped accessing security-scoped resource";
-                _hasAccess = false;
-            }
-            
-            if (_nsUrl) {
-                [_nsUrl release];
-                _nsUrl = nullptr;
-            }
+    @autoreleasepool {
+        NSURL *url = [NSURL fileURLWithPath:localPath.toNSString()];
+        if (!url) {
+            qCWarning(lcMacSandboxUtility) << "Failed to create NSURL from path:" << localPath;
+            return {};
         }
+
+        NSError *error = nil;
+        NSData *bookmarkData = [url bookmarkDataWithOptions:NSURLBookmarkCreationWithSecurityScope
+                             includingResourceValuesForKeys:nil
+                                              relativeToURL:nil
+                                                      error:&error];
+
+        if (error || !bookmarkData) {
+            qCWarning(lcMacSandboxUtility) << "Failed to create bookmark data for path:" << localPath
+                                    << (error ? QString::fromNSString([error localizedDescription]) : QStringLiteral("(unknown error)"));
+            return {};
+        }
+
+        QByteArray result(reinterpret_cast<const char *>([bookmarkData bytes]),
+                          static_cast<int>([bookmarkData length]));
+
+        qCInfo(lcMacSandboxUtility) << "Successfully created security-scoped bookmark data for:" << localPath
+                             << "(" << result.size() << "bytes)";
+        return result;
     }
-
-    // Non-copyable
-    Impl(const Impl&) = delete;
-    Impl& operator=(const Impl&) = delete;
-
-    [[nodiscard]] bool hasAccess() const { return _hasAccess; }
-
-private:
-    QUrl _url;
-    NSURL *_nsUrl;
-    bool _hasAccess;
-};
-
-MacSandboxSecurityScopedAccess::MacSandboxSecurityScopedAccess(const QUrl &url)
-    : _impl(std::make_unique<Impl>(url))
-{
-}
-
-MacSandboxSecurityScopedAccess::~MacSandboxSecurityScopedAccess() = default;
-
-MacSandboxSecurityScopedAccess::MacSandboxSecurityScopedAccess(MacSandboxSecurityScopedAccess&&) noexcept = default;
-
-MacSandboxSecurityScopedAccess& MacSandboxSecurityScopedAccess::operator=(MacSandboxSecurityScopedAccess&&) noexcept = default;
-
-std::unique_ptr<MacSandboxSecurityScopedAccess> MacSandboxSecurityScopedAccess::create(const QUrl &url)
-{
-    return std::unique_ptr<MacSandboxSecurityScopedAccess>(new MacSandboxSecurityScopedAccess(url));
-}
-
-bool MacSandboxSecurityScopedAccess::isValid() const
-{
-    return _impl && _impl->hasAccess();
 }
 
 QString getRealHomeDirectory()

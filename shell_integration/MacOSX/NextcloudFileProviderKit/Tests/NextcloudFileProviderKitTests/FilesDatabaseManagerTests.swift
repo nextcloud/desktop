@@ -110,7 +110,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(result3.updatedMetadatas?.first?.downloaded, true)
     }
 
-    func testUpdateRenamesDirectoryAndPropagatesToChildren() throws {
+    func testUpdateRenamesDirectoryAndPropagatesToChildren() {
         let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
 
         var rootMetadata = SendableItemMetadata(ocId: "root", fileName: "", account: Self.account)
@@ -195,7 +195,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(inDb.etag, transit.etag)
     }
 
-    func testTransitItemIsDeleted() throws {
+    func testTransitItemIsDeleted() {
         let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
 
         // Simulate existing item in transit
@@ -473,7 +473,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(survivingItem, "An item should survive.")
         XCTAssertEqual(survivingItem?.ocId, "ocid-local-456", "The surviving item should be the unuploaded one.")
         XCTAssertEqual(survivingItem?.fileName, "NewLocalFile.txt", "Filename should match the unuploaded item.")
-        XCTAssertFalse(survivingItem!.uploaded, "The surviving item must be the one marked uploaded = false.")
+        XCTAssertFalse(try XCTUnwrap(survivingItem?.uploaded), "The surviving item must be the one marked uploaded = false.")
 
         // Check other return values are empty as expected
         XCTAssertTrue(results.newMetadatas?.isEmpty ?? true, "No new items should have been created.")
@@ -596,7 +596,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         )
     }
 
-    func testErrorOnDirectoryMetadataNotFound() throws {
+    func testErrorOnDirectoryMetadataNotFound() {
         let nonExistentServerUrl = "https://cloud.example.com/nonexistent"
         let directoryMetadata = Self.dbManager.itemMetadata(
             account: "TestAccount", locatedAtRemoteUrl: nonExistentServerUrl
@@ -794,6 +794,44 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let account = "TestAccount"
         let filename = "super duper new file"
         let parentUrl = "https://cloud.example.com/files/my great and incredible dir/dir-2"
+        let fullUrl = parentUrl + "/" + filename
+
+        let deepNestedDirectoryMetadata = RealmItemMetadata()
+        deepNestedDirectoryMetadata.ocId = filename
+        deepNestedDirectoryMetadata.account = account
+        deepNestedDirectoryMetadata.serverUrl = parentUrl
+        deepNestedDirectoryMetadata.fileName = filename
+        deepNestedDirectoryMetadata.directory = true
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write { realm.add(deepNestedDirectoryMetadata) }
+
+        XCTAssertNotNil(Self.dbManager.itemMetadata(account: account, locatedAtRemoteUrl: fullUrl))
+    }
+
+    func testFindingItemBasedOnRemotePathInDirectoryWithHashtagInName() throws {
+        let account = "TestAccount"
+        let filename = "super duper new file"
+        let parentUrl = "https://cloud.example.com/files/my great and # dir/dir-2"
+        let fullUrl = parentUrl + "/" + filename
+
+        let deepNestedDirectoryMetadata = RealmItemMetadata()
+        deepNestedDirectoryMetadata.ocId = filename
+        deepNestedDirectoryMetadata.account = account
+        deepNestedDirectoryMetadata.serverUrl = parentUrl
+        deepNestedDirectoryMetadata.fileName = filename
+        deepNestedDirectoryMetadata.directory = true
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write { realm.add(deepNestedDirectoryMetadata) }
+
+        XCTAssertNotNil(Self.dbManager.itemMetadata(account: account, locatedAtRemoteUrl: fullUrl))
+    }
+
+    func testFindingItemBasedOnRemotePathInDirectoryWithQuestionMarkInName() throws {
+        let account = "TestAccount"
+        let filename = "super duper new file"
+        let parentUrl = "https://cloud.example.com/files/my great and incredible dir ?/dir-2"
         let fullUrl = parentUrl + "/" + filename
 
         let deepNestedDirectoryMetadata = RealmItemMetadata()
@@ -1086,7 +1124,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(unwrappedParentIdentifier.rawValue, remoteFolder.identifier)
     }
 
-    func testMaterialisedFiles() async throws {
+    func testMaterialisedFiles() throws {
         let itemA = RealmItemMetadata()
         let itemB = RealmItemMetadata()
         let itemC = RealmItemMetadata()
