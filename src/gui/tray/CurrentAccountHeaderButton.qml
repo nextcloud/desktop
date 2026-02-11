@@ -76,7 +76,7 @@ Button {
                 UserLine {
                     id: instantiatedUserLine
                     width: Math.min(accountMenu.widestMenuItemWidth, accountMenu.maximumWidthAllowed)
-                    parentBackgroundColor: Style.colorWithoutTransparency(accountMenu.palette.base)
+                    parentBackgroundColor: Style.colorWithoutTransparency(accountMenu.palette.window)
 
                     Component.onCompleted: {
                         instantiatedUserLine.updateMenuWidth()
