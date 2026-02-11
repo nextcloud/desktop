@@ -303,6 +303,11 @@
         <translation>Virtual files settings</translation>
     </message>
     <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
+        <source>General settings</source>
+        <translation>General settings</translation>
+    </message>
+    <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
         <source>Enable virtual files</source>
         <translation>Enable virtual files</translation>
@@ -316,11 +321,6 @@
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Reset virtual files environment</source>
         <translation>Reset virtual files environment</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
-        <source>General settings</source>
-        <translation>General settings</translation>
     </message>
 </context>
 <context>
@@ -410,12 +410,12 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="316"/>
         <source>Issue with account %1</source>
-        <translation type="unfinished"/>
+        <translation>Issue with account %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="318"/>
         <source>Issues with several accounts</source>
-        <translation type="unfinished"/>
+        <translation>Issues with several accounts</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="382"/>

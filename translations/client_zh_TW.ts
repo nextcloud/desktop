@@ -303,6 +303,11 @@
         <translation>虛擬檔案設定</translation>
     </message>
     <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
+        <source>General settings</source>
+        <translation>一般設定</translation>
+    </message>
+    <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
         <source>Enable virtual files</source>
         <translation>啟用虛擬檔案</translation>
@@ -316,11 +321,6 @@
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Reset virtual files environment</source>
         <translation>重設虛擬檔案環境</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
-        <source>General settings</source>
-        <translation>一般設定</translation>
     </message>
 </context>
 <context>
@@ -410,12 +410,12 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="316"/>
         <source>Issue with account %1</source>
-        <translation type="unfinished"/>
+        <translation>帳號 %1 的問題</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="318"/>
         <source>Issues with several accounts</source>
-        <translation type="unfinished"/>
+        <translation>多個帳號的問題</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
