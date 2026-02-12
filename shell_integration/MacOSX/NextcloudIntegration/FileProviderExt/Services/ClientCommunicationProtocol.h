@@ -15,6 +15,11 @@
  */
 - (void)getFileProviderDomainIdentifierWithCompletionHandler:(void(^)(NSString *extensionAccountId, NSError *error))completionHandler;
 
+/**
+ * @brief Ask the file provider extension whether it has dirty user data.
+ */
+- (void)hasDirtyUserDataWithCompletionHandler:(void(^)(BOOL hasDirtyUserData))completionHandler;
+
 - (void)configureAccountWithUser:(NSString *)user
                           userId:(NSString *)userId
                        serverUrl:(NSString *)serverUrl
