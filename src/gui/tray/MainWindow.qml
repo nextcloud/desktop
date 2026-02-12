@@ -368,7 +368,6 @@ ApplicationWindow {
             id: assistantResetConfirmationDialogWrapper
             modal: true
             focus: true
-            dim: false
             x: (trayWindow.width - width) / 2
             y: (trayWindow.height - height) / 2
             header: Item {}
@@ -376,6 +375,7 @@ ApplicationWindow {
             onOpened: assistantResetConfirmationDialog.open()
 
             background: Rectangle {
+                color: palette.base
                 border.width: 1
                 border.color: "#808080"
                 radius: 10
@@ -399,6 +399,8 @@ ApplicationWindow {
                 implicitHeight: assistantResetConfirmationDialog.implicitHeight + 2 * margin
                 width: implicitWidth
                 height: implicitHeight
+                border.color: "transparent"
+                color: "transparent"
 
                 Dialog {
                     id: assistantResetConfirmationDialog
@@ -408,6 +410,11 @@ ApplicationWindow {
                     title: qsTr("Start new conversation?")
                     x: assistantResetConfirmationDialogContentRect.margin
                     y: assistantResetConfirmationDialogContentRect.margin
+
+                    background: Rectangle {
+                        border.color: "transparent"
+                        color: "transparent"
+                    }
 
                     footer: Row {
                         spacing: 6
