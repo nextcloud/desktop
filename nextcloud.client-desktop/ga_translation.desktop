@@ -25,4 +25,4 @@ Icon=@APPLICATION_EXECUTABLE@
 Name[ga]=@APPLICATION_NAME@ Deasc
 Comment[ga]=@APPLICATION_NAME@ cliant sioncrónaithe deisce
 GenericName[ga]=Sioncronú Fillteán
-Icon[ga]=@APPLICATION_ICON_NAME@
+Icon[ga]=@AINM_DEILBHÍN_AN_FHEIDHMCHLÁIR@

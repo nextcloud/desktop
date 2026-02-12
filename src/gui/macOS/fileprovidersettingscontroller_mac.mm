@@ -5,9 +5,12 @@
 
 #include "fileprovidersettingscontroller.h"
 
-#include <QFileDialog>
+#include <QDesktopServices>
+#include <QDir>
 #include <QList>
 #include <QQmlApplicationEngine>
+#include <QUrl>
+#include <QMessageBox>
 
 #include "gui/accountmanager.h"
 #include "gui/systray.h"
@@ -20,6 +23,7 @@
 // Objective-C imports
 #import <Foundation/Foundation.h>
 #import <FileProvider/FileProvider.h>
+#import <AppKit/AppKit.h>
 // End of Objective-C imports
 
 namespace {
@@ -110,7 +114,34 @@ public:
             auto const identifier = Mac::FileProvider::instance()->domainManager()->addDomainForAccount(accountState.data());
             accountManager->setFileProviderDomainIdentifier(userIdAtHost, identifier);
         } else {
-            Mac::FileProvider::instance()->domainManager()->removeDomainByAccount(accountState.data());
+            // Check if the extension has dirty user data before removing the domain.
+            const auto xpc = Mac::FileProvider::instance()->xpc();
+
+            if (xpc && xpc->fileProviderDomainHasDirtyUserData(existingDomainId)) {
+                qCWarning(lcFileProviderSettingsController) << "File provider domain" << existingDomainId << "has dirty user data.";
+
+                // Remove the domain and get the URL where preserved user data is located
+                const auto preservedDataUrl = Mac::FileProvider::instance()->domainManager()->removeDomainByAccount(accountState.data());
+
+                if (!preservedDataUrl.isEmpty()) {
+                    // UI operations must be dispatched to main queue
+                    // Copy the URL to ensure it's valid in the block
+                    const QString capturedUrl = preservedDataUrl;
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        QMessageBox::warning(nullptr,
+                                           q->tr("Unsynchronized Content"),
+                                           q->tr("Some of your locally changed items were not uploaded yet but will be preserved."));
+                        NSURL *url = [NSURL fileURLWithPath:capturedUrl.toNSString() isDirectory:YES];
+                        qCDebug(lcFileProviderSettingsController) << "Opening directory in file viewer:" << url.path;
+                        [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:@[url]];
+                    });
+                } else {
+                    qCWarning(lcFileProviderSettingsController) << "Could not get preserved data URL for domain" << existingDomainId;
+                }
+            } else {
+                Mac::FileProvider::instance()->domainManager()->removeDomainByAccount(accountState.data());
+            }
+
             accountManager->setFileProviderDomainIdentifier(userIdAtHost, "");
         }
 
@@ -307,15 +338,39 @@ bool FileProviderSettingsController::vfsEnabledForAccount(const QString &userIdA
 
 void FileProviderSettingsController::setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled, const bool showInformationDialog)
 {
-    const auto enabledAccountsAction = d->setVfsEnabledForAccount(userIdAtHost, setEnabled);
-
-    if (enabledAccountsAction == MacImplementation::VfsAccountsAction::VfsAccountsEnabledChanged) {
-        if (setEnabled && showInformationDialog) {
-            QMessageBox::information(nullptr, tr("Virtual files enabled"),
-                                     tr("Virtual files have been enabled for this account.\n\n"
-                                        "Your files are now accessible in Finder under the \"Locations\" section."));
-        }
+    // Prevent multiple concurrent operations
+    if (_isOperationInProgress) {
+        qCWarning(lcFileProviderSettingsController) << "Operation already in progress, ignoring request";
+        return;
     }
+
+    setOperationInProgress(true, setEnabled ? tr("Setting up…") : tr("Cleaning up…"));
+
+    // Capture necessary data for the background operation
+    // We need to copy the QString to ensure it's valid in the block
+    const QString capturedUserIdAtHost = userIdAtHost;
+    auto *controller = this;
+
+    // Dispatch to background queue
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        const auto enabledAccountsAction = controller->d->setVfsEnabledForAccount(capturedUserIdAtHost, setEnabled);
+
+        // Dispatch back to main queue for UI updates and signal emissions
+        dispatch_async(dispatch_get_main_queue(), ^{
+            controller->setOperationInProgress(false, QString());
+
+            if (enabledAccountsAction == MacImplementation::VfsAccountsAction::VfsAccountsEnabledChanged) {
+                emit controller->vfsEnabledForAccountChanged(capturedUserIdAtHost);
+
+                if (setEnabled && showInformationDialog) {
+                    QMessageBox::information(nullptr,
+                                             controller->tr("Virtual files enabled"),
+                                             controller->tr("Virtual files have been enabled for this account.\n\n"
+                                                            "Your files are now accessible in Finder under the \"Locations\" section."));
+                }
+            }
+        });
+    });
 }
 
 QString FileProviderSettingsController::fileProviderDomainIdentifierForAccount(const QString &userIdAtHost) const
@@ -335,6 +390,28 @@ QString FileProviderSettingsController::fileProviderDomainIdentifierForAccount(c
     }
 
     return account->fileProviderDomainIdentifier();
+}
+
+bool FileProviderSettingsController::isOperationInProgress() const
+{
+    return _isOperationInProgress;
+}
+
+QString FileProviderSettingsController::operationMessage() const
+{
+    return _operationMessage;
+}
+
+void FileProviderSettingsController::setOperationInProgress(bool inProgress, const QString &message)
+{
+    if (_isOperationInProgress != inProgress) {
+        _isOperationInProgress = inProgress;
+        emit operationInProgressChanged();
+    }
+    if (_operationMessage != message) {
+        _operationMessage = message;
+        emit operationMessageChanged();
+    }
 }
 
 } // namespace Mac

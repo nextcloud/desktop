@@ -303,6 +303,11 @@
         <translation>Socruithe comhaid fíorúil</translation>
     </message>
     <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
+        <source>General settings</source>
+        <translation>Socruithe Ginearálta</translation>
+    </message>
+    <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
         <source>Enable virtual files</source>
         <translation>Cumasaigh comhaid fhíorúla</translation>
@@ -316,11 +321,6 @@
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Reset virtual files environment</source>
         <translation>Athshocraigh timpeallacht comhad fíorúil</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
-        <source>General settings</source>
-        <translation>Socruithe Ginearálta</translation>
     </message>
 </context>
 <context>
@@ -406,6 +406,16 @@
         <location filename="../src/gui/tray/MainWindow.qml" line="245"/>
         <source>Main content</source>
         <translation>Príomhábhar</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="316"/>
+        <source>Issue with account %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="318"/>
+        <source>Issues with several accounts</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
@@ -693,7 +703,7 @@ Fan leis an sioncronú nua, ansin é a chriptiú.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="705"/>
         <source>Remove folder sync connection</source>
-        <translation>Remove folder sync connection</translation>
+        <translation>Bain nasc sioncrónaithe fillteán</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="718"/>
@@ -5636,11 +5646,6 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Athainmnigh an comhad</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1002"/>
-        <source>Public Share Link</source>
-        <translation>Nasc Comhroinnte Poiblí</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1079"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>Oscail Nextcloud Assistant sa bhrabhsálaí</translation>
@@ -5649,6 +5654,11 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="1079"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Oscail Nextcloud Talk sa bhrabhsálaí</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1002"/>
+        <source>Public Share Link</source>
+        <translation>Nasc Comhroinnte Poiblí</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
