@@ -410,12 +410,12 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="316"/>
         <source>Issue with account %1</source>
-        <translation type="unfinished"/>
+        <translation>Tatizo kwenye akaunti %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="318"/>
         <source>Issues with several accounts</source>
-        <translation type="unfinished"/>
+        <translation>Masuala kwenye akaunti kadhaa</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
