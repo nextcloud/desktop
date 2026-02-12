@@ -59,6 +59,23 @@ public:
         }
         return QStackedWidget::minimumSizeHint();
     }
+
+    [[nodiscard]] bool hasHeightForWidth() const override
+    {
+        if (const auto *widget = currentWidget()) {
+            return widget->hasHeightForWidth();
+        }
+        return QStackedWidget::hasHeightForWidth();
+    }
+
+    [[nodiscard]] int heightForWidth(int width) const override
+    {
+        if (const auto *widget = currentWidget()) {
+            return widget->hasHeightForWidth() ? widget->heightForWidth(width) : widget->sizeHint().height();
+        }
+        return QStackedWidget::heightForWidth(width);
+    }
+
 };
 
 const QString TOOLBAR_CSS()
@@ -155,7 +172,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     auto *contentLayout = new QVBoxLayout(contentContainer);
     contentLayout->setContentsMargins(0, 0, 0, 0);
     contentLayout->setSpacing(0);
-    _ui->stack->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    _ui->stack->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
     contentLayout->addWidget(_ui->stack);
     contentLayout->addStretch(1);
     contentScroll->setWidget(contentContainer);
