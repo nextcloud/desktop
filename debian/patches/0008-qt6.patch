@@ -49,10 +49,10 @@ index f584246eb7..efa56ae181 100644
  find_package(Qt${QT_MAJOR_VERSION}Core ${REQUIRED_QT_VERSION} CONFIG QUIET)
  set_package_properties(Qt${QT_MAJOR_VERSION}Core PROPERTIES
 diff --git a/src/common/common.cmake b/src/common/common.cmake
-index f0ba1e2726..391d402e00 100644
+index 564b6c69b5..d0b7f235c9 100644
 --- a/src/common/common.cmake
 +++ b/src/common/common.cmake
-@@ -41,3 +41,5 @@ elseif(UNIX AND NOT APPLE)
+@@ -45,3 +45,5 @@ elseif(UNIX AND NOT APPLE)
  endif()
  
  configure_file(${CMAKE_CURRENT_LIST_DIR}/vfspluginmetadata.json.in ${CMAKE_CURRENT_BINARY_DIR}/vfspluginmetadata.json)
@@ -67,10 +67,10 @@ index 0000000000..ccded5d62e
 +#include "qtcompat.h"
 diff --git a/src/common/qtcompat.h b/src/common/qtcompat.h
 new file mode 100644
-index 0000000000..af75196ca3
+index 0000000000..0d43628b6e
 --- /dev/null
 +++ b/src/common/qtcompat.h
-@@ -0,0 +1,337 @@
+@@ -0,0 +1,341 @@
 +
 +#pragma once
 +
@@ -97,12 +97,16 @@ index 0000000000..af75196ca3
 +//-----------------------------------------------------------------------------
 +//-----------------------------------------------------------------------------
 +
-+inline QString systemLocaleName()
++inline QStringList QLocale_uiLanguages()
 +{
 +#if QT_VERSION>=QT_VERSION_CHECK(6, 8, 0)
-+    return QLocale::system().uiLanguages(QLocale::TagSeparator::Underscore).first();
++    return QLocale::system().uiLanguages(QLocale::TagSeparator::Underscore);
 +#else
-+    return QLocale::system().name();
++    auto languages = QLocale::system().uiLanguages();
++    for (auto& language: languages) {
++        language.replace(QLatin1Char('-'), QLatin1Char('_'));
++    }
++    return languages;
 +#endif
 +}
 +
@@ -455,7 +459,7 @@ index b92cfa08e4..38f3d462ec 100644
              continue;
          }
 diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
-index 66a73d7e91..80471a4059 100644
+index 0b9097cb15..668bf7737e 100644
 --- a/src/gui/CMakeLists.txt
 +++ b/src/gui/CMakeLists.txt
 @@ -3,7 +3,7 @@
@@ -467,7 +471,7 @@ index 66a73d7e91..80471a4059 100644
  find_package(KF6GuiAddons)
  
  if(CMAKE_BUILD_TYPE MATCHES Debug)
-@@ -545,9 +545,16 @@ target_link_libraries(nextcloudCore
+@@ -548,9 +548,16 @@ target_link_libraries(nextcloudCore
    Qt::Quick
    Qt::QuickControls2
    Qt::QuickWidgets
@@ -485,7 +489,7 @@ index 66a73d7e91..80471a4059 100644
  if(KF6GuiAddons_FOUND)
    target_link_libraries(nextcloudCore
      PUBLIC
-@@ -755,3 +762,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
+@@ -758,3 +765,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
  endif()
  
  configure_file(configgui.h.in ${CMAKE_CURRENT_BINARY_DIR}/configgui.h)
@@ -533,7 +537,7 @@ index d139565a56..41e2924fce 100644
  #include <QSettings>
  #include <QTimer>
 diff --git a/src/gui/application.cpp b/src/gui/application.cpp
-index 1454d93040..c70755f28a 100644
+index 214cda6c0c..5abaacefb9 100644
 --- a/src/gui/application.cpp
 +++ b/src/gui/application.cpp
 @@ -37,6 +37,7 @@
@@ -544,15 +548,15 @@ index 1454d93040..c70755f28a 100644
  
  #include "config.h"
  
-@@ -1027,7 +1028,7 @@ void Application::setupTranslations()
- {
+@@ -1023,7 +1024,7 @@ void Application::setupTranslations()
      qCInfo(lcApplication) << "System UI languages are:" << QLocale::system().uiLanguages();
-     const auto enforcedLocale = enforcedLanguage();
--    const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : QLocale::system().uiLanguages(QLocale::TagSeparator::Underscore).first());
-+    const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : systemLocaleName());
-     qCInfo(lcApplication) << "selected application language:" << lang;
- 
-     auto *translator = new QTranslator(this);
+     auto choosenLanguage = enforcedLanguage();
+     if (choosenLanguage.isEmpty()) {
+-        for(const auto &localeToTest : QLocale::system().uiLanguages(QLocale::TagSeparator::Underscore)){
++        for(const auto &localeToTest : QLocale_uiLanguages()){
+             const auto trFile = QString{QLatin1String{"client_"} + localeToTest};
+             qCDebug(lcApplication()) << "trying to load" << localeToTest << "in" << trFile << "from" << trPath;
+             if (translator->load(trFile, trPath)) {
 diff --git a/src/gui/filedetails/FileDetailsPage.qml b/src/gui/filedetails/FileDetailsPage.qml
 index c061eff726..2a0751b07c 100644
 --- a/src/gui/filedetails/FileDetailsPage.qml
@@ -577,7 +581,7 @@ index c061eff726..2a0751b07c 100644
                  }
              }
 diff --git a/src/gui/folderman.cpp b/src/gui/folderman.cpp
-index 54eb15e53b..db258f0fe8 100644
+index ec68cf6435..f81d1bcd25 100644
 --- a/src/gui/folderman.cpp
 +++ b/src/gui/folderman.cpp
 @@ -16,6 +16,7 @@
@@ -622,7 +626,7 @@ index 767f3c9bef..ba26c2c5ca 100644
          });
          _virtualFilesCheckBox->setChecked(bestAvailableVfsMode() == Vfs::WindowsCfApi);
 diff --git a/src/gui/generalsettings.cpp b/src/gui/generalsettings.cpp
-index d123ba0f2c..53682350ec 100644
+index f79a809884..50b88597bb 100644
 --- a/src/gui/generalsettings.cpp
 +++ b/src/gui/generalsettings.cpp
 @@ -44,6 +44,7 @@
@@ -653,7 +657,7 @@ index d123ba0f2c..53682350ec 100644
  
      // accountAdded means the wizard was finished and the wizard might change some options.
      connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
-@@ -690,6 +696,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
+@@ -710,6 +716,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
      }
  }
  
@@ -661,7 +665,7 @@ index d123ba0f2c..53682350ec 100644
  void GeneralSettings::slotCreateDebugArchive()
  {
      const auto destination = QFileDialog::getSaveFileUrl(
-@@ -727,6 +734,7 @@ void GeneralSettings::slotCreateDebugArchive()
+@@ -747,6 +754,7 @@ void GeneralSettings::slotCreateDebugArchive()
          );
      }
  }
@@ -927,7 +931,7 @@ index 6c998598fb..5866e1615a 100644
  
      Rectangle {
 diff --git a/src/gui/tray/activitydata.cpp b/src/gui/tray/activitydata.cpp
-index dfdc39b91c..2c6954c568 100644
+index c17b8db4ab..7284fb0fe4 100644
 --- a/src/gui/tray/activitydata.cpp
 +++ b/src/gui/tray/activitydata.cpp
 @@ -8,6 +8,7 @@
@@ -1061,7 +1065,7 @@ index 514983390f..1cf4ba1833 100644
                  }
  
 diff --git a/src/libsync/account.cpp b/src/libsync/account.cpp
-index 8ad4997646..52a92242e7 100644
+index d2d513ce53..2b6bb4e06e 100644
 --- a/src/libsync/account.cpp
 +++ b/src/libsync/account.cpp
 @@ -24,6 +24,7 @@
@@ -1072,7 +1076,7 @@ index 8ad4997646..52a92242e7 100644
  #include "clientsideencryption.h"
  #include "ocsuserstatusconnector.h"
  
-@@ -1272,7 +1273,8 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
+@@ -1283,7 +1284,8 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
                                            serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
                                            newEntry);
  
@@ -1415,7 +1419,7 @@ index a70088034e..4943ccd79c 100644
  #include <networkjobs.h>
  
 diff --git a/src/libsync/pushnotifications.cpp b/src/libsync/pushnotifications.cpp
-index d6d7a6731f..4bfba5257e 100644
+index 74729921fe..fbf9fb6bc5 100644
 --- a/src/libsync/pushnotifications.cpp
 +++ b/src/libsync/pushnotifications.cpp
 @@ -3,6 +3,7 @@
@@ -1475,7 +1479,7 @@ index d5aa8776a1..baf79a8e2e 100644
  #include "filesystem.h"
  
 diff --git a/src/libsync/theme.cpp b/src/libsync/theme.cpp
-index 81342a629e..c0507f205c 100644
+index ebbc04989a..4c6184e542 100644
 --- a/src/libsync/theme.cpp
 +++ b/src/libsync/theme.cpp
 @@ -9,6 +9,7 @@
@@ -1556,7 +1560,7 @@ index bf4120cb06..50b05a346c 100644
          if (fileInfo.isShared) {
              if (fileInfo.downloadForbidden) {
 diff --git a/test/testaccount.cpp b/test/testaccount.cpp
-index e76b158775..4431aee63a 100644
+index e216250cc5..58399de2d3 100644
 --- a/test/testaccount.cpp
 +++ b/test/testaccount.cpp
 @@ -12,6 +12,7 @@
