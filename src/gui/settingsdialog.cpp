@@ -163,6 +163,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     auto *contentScroll = new QScrollArea(shellContainer);
     contentScroll->setObjectName(QLatin1String("settings_content_scroll"));
     contentScroll->setWidgetResizable(true);
+    contentScroll->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     contentScroll->setFrameShape(QFrame::NoFrame);
     contentScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     contentScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -174,6 +175,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     contentLayout->setSpacing(0);
     _ui->stack->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
     contentLayout->addWidget(_ui->stack);
+    contentLayout->setAlignment(_ui->stack, Qt::AlignTop);
     contentLayout->addStretch(1);
     contentScroll->setWidget(contentContainer);
     shellLayout->addWidget(navigationScroll);
@@ -303,7 +305,6 @@ void SettingsDialog::slotSwitchPage(QAction *action)
     _ui->stack->updateGeometry();
     if (auto *contentContainer = _ui->stack->parentWidget()) {
         contentContainer->updateGeometry();
-        contentContainer->adjustSize();
     }
 }
 
