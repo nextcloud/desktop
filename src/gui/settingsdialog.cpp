@@ -37,6 +37,7 @@
 #include <QScrollArea>
 #include <QSizePolicy>
 #include <QTimer>
+#include <QtGlobal>
 
 namespace {
 class CurrentPageSizeStackedWidget : public QStackedWidget
@@ -120,6 +121,11 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     , _ui(new Ui::SettingsDialog)
     , _gui(gui)
 {
+#if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+    setWindowFlag(Qt::ExpandedClientAreaHint, true);
+    setWindowFlag(Qt::NoTitleBarBackgroundHint, true);
+#endif
+
     ConfigFile cfg;
 
     _ui->setupUi(this);
