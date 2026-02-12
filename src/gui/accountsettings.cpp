@@ -170,7 +170,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->gridLayout->setRowStretch(0, 0);
     _ui->gridLayout->setRowStretch(1, 0);
     _ui->gridLayout->setRowStretch(2, 0);
-    _ui->gridLayout->setRowStretch(3, 1);
+    _ui->gridLayout->setRowStretch(3, 0);
+    _ui->gridLayout->setRowStretch(4, 1);
     
     _model->setAccountState(_accountState);
     _model->setParent(this);
