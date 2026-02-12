@@ -368,6 +368,7 @@ ApplicationWindow {
             id: assistantResetConfirmationDialogWrapper
             modal: true
             focus: true
+            dim: false
             x: (trayWindow.width - width) / 2
             y: (trayWindow.height - height) / 2
             header: Item {}
