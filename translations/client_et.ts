@@ -410,12 +410,12 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="316"/>
         <source>Issue with account %1</source>
-        <translation type="unfinished"/>
+        <translation>Probleem kasutajakontoga „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="318"/>
         <source>Issues with several accounts</source>
-        <translation type="unfinished"/>
+        <translation>Probleem mitme kasutajakontoga</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
