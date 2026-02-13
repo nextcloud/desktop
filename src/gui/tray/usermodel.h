@@ -68,6 +68,8 @@ class User : public QObject
     Q_PROPERTY(QString featuredAppIcon READ featuredAppIcon NOTIFY featuredAppChanged)
     Q_PROPERTY(QString featuredAppAccessibleName READ featuredAppAccessibleName NOTIFY featuredAppChanged)
     Q_PROPERTY(QString avatar READ avatarUrl NOTIFY avatarChanged)
+    Q_PROPERTY(QUrl syncStatusIcon READ syncStatusIcon NOTIFY syncStatusChanged)
+    Q_PROPERTY(bool syncStatusOk READ syncStatusOk NOTIFY syncStatusChanged)
     Q_PROPERTY(bool isConnected READ isConnected NOTIFY accountStateChanged)
     Q_PROPERTY(bool needsToSignTermsOfService READ needsToSignTermsOfService NOTIFY accountStateChanged)
     Q_PROPERTY(UnifiedSearchResultsListModel* unifiedSearchResultsListModel READ getUnifiedSearchResultsListModel CONSTANT)
@@ -113,6 +115,8 @@ public:
     [[nodiscard]] QString statusMessage() const;
     [[nodiscard]] QUrl statusIcon() const;
     [[nodiscard]] QString statusEmoji() const;
+    [[nodiscard]] QUrl syncStatusIcon() const;
+    [[nodiscard]] bool syncStatusOk() const;
     void processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr &item);
     [[nodiscard]] const QVariantList &groupFolders() const;
     [[nodiscard]] bool canLogout() const;
@@ -129,6 +133,7 @@ signals:
     void headerColorChanged();
     void headerTextColorChanged();
     void accentColorChanged();
+    void syncStatusChanged();
     void sendReplyMessage(const int activityIndex, const QString &conversationToken, const QString &message, const QString &replyTo);
     void groupFoldersChanged();
 
@@ -183,6 +188,7 @@ private:
 
     bool isActivityOfCurrentAccount(const Folder *folder) const;
     [[nodiscard]] bool isUnsolvableConflict(const SyncFileItemPtr &item) const;
+    void updateSyncStatus();
 
     bool notificationAlreadyShown(const qint64 notificationId);
     bool canShowNotification(const qint64 notificationId);
@@ -216,6 +222,8 @@ private:
     // used for quota warnings
     int _lastQuotaPercent = 0;
     Activity _lastQuotaActivity;
+    QUrl _syncStatusIcon;
+    bool _syncStatusOk = true;
 };
 
 class UserModel : public QAbstractListModel
@@ -273,6 +281,8 @@ public:
         IdRole,
         CanLogoutRole,
         RemoveAccountTextRole,
+        SyncStatusIconRole,
+        SyncStatusOkRole,
     };
 
     [[nodiscard]] AccountAppList appList() const;
