@@ -9,14 +9,14 @@ on:
 jobs:
   clang-tidy:
     runs-on: ubuntu-latest
-    container: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.8.1-2
+    container: ghcr.io/nextcloud/continuous-integration-client-qt6:client-forky-6.9.2-3
     steps:
     - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
           fetch-depth: 2
     - name: Prepare compile_commands.json
       run: |
-        cmake -G Ninja -B build -DCMAKE_PREFIX_PATH=/opt/qt -DQT_MAJOR_VERSION=6 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DOPENSSL_ROOT_DIR=/usr/local/lib64
+        cmake -G Ninja -B build -DQT_MAJOR_VERSION=6 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1
         cd build && ninja
     - name: Create results directory
       run: |
@@ -24,10 +24,11 @@ jobs:
     - name: Analyze
       run: |
         /usr/bin/git config --global --add safe.directory "$GITHUB_WORKSPACE"
-        /usr/bin/git diff -U0 HEAD^ | clang-tidy-diff-15.py -checks='-*,modernize-use-auto,modernize-use-using,modernize-use-nodiscard,modernize-use-nullptr,modernize-use-override,cppcoreguidelines-pro-type-static-cast-downcast' -p1 -path build -export-fixes clang-tidy-result/fixes.yml
+        /usr/bin/git diff -U0 HEAD^ | clang-tidy-diff-21.py -checks='-*,modernize-use-auto,modernize-use-using,modernize-use-nodiscard,modernize-use-nullptr,modernize-use-override,cppcoreguidelines-pro-type-static-cast-downcast' -p1 -path build -export-fixes clang-tidy-result/fixes.yml
     - name: Run clang-tidy-pr-comments action
       uses: platisd/clang-tidy-pr-comments@28cfb84edafa771c044bde7e4a2a3fae57463818 # v1.6.1 # >1.4.3 switches to composite method w/ a forced python version and breaks things: https://github.com/actions/setup-python/issues/871
       with:
+        python_path: "/usr/bin/python3"
         # The GitHub token (or a personal access token)
         github_token: ${{ secrets.GITHUB_TOKEN }}
         # The path to the clang-tidy fixes generated previously
