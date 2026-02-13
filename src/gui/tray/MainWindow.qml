@@ -416,6 +416,12 @@ ApplicationWindow {
                         color: "transparent"
                     }
 
+                    header: Label {
+                            id: titleLabel
+                            text: assistantResetConfirmationDialog.title
+                            font.weight: Font.Bold
+                        }
+
                     footer: Row {
                         spacing: 6
                         layoutDirection: Qt.RightToLeft
@@ -448,6 +454,8 @@ ApplicationWindow {
                         anchors.centerIn: parent
                         text: qsTr("This will clear the existing conversation")
                         wrapMode: Text.WordWrap
+                        bottomPadding: 10
+                        topPadding: 10
                     }
                 }
             }
