@@ -1584,6 +1584,18 @@ index b43723f630..93568774f0 100644
  using namespace OCC;
  
  class TestAccountSettings : public QObject
+diff --git a/test/testactivitydata.cpp b/test/testactivitydata.cpp
+index 3a3f8ad923..0cb3f0cd01 100644
+--- a/test/testactivitydata.cpp
++++ b/test/testactivitydata.cpp
+@@ -8,6 +8,7 @@
+ #include "accountstate.h"
+ #include "syncenginetestutils.h"
+ #include "testhelper.h"
++#include "common/qtcompat.h"
+ 
+ #include <QTest>
+ #include <QHash>
 diff --git a/test/testdatefieldbackend.cpp b/test/testdatefieldbackend.cpp
 index 850e9c919c..fc0371170e 100644
 --- a/test/testdatefieldbackend.cpp
