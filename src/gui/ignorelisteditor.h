@@ -27,18 +27,30 @@ class IgnoreListEditor : public QDialog
     Q_OBJECT
 
 public:
+    enum IgnoreListType {
+        Global,
+        Folder,
+    };
+
     IgnoreListEditor(QWidget *parent = nullptr);
+    IgnoreListEditor(const QString &ignoreFile, QWidget *parent = nullptr);
+
     ~IgnoreListEditor() override;
 
-    bool ignoreHiddenFiles();
+    [[nodiscard]] bool ignoreHiddenFiles() const;
 
 private slots:
+    void slotSaveIgnoreList();
     void slotRestoreDefaults(QAbstractButton *button);
 
 private:
-    void setupTableReadOnlyItems();
-    QString readOnlyTooltip;
     Ui::IgnoreListEditor *ui;
+    QString _ignoreFile;
+
+    IgnoreListType _ignoreListType;
+
+    void setupUi();
+    void setupTableReadOnlyItems();
 };
 
 } // namespace OCC
