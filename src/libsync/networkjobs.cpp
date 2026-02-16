@@ -62,6 +62,32 @@ constexpr auto propfindFileTagsContainerElementTagName = "tags";
 constexpr auto propfindSystemFileTagElementTagName = "system-tag";
 constexpr auto propfindSystemFileTagsContainerElementTagName = "system-tags";
 
+static bool wwwAuthenticateContainsScheme(const QByteArray &wwwAuthenticateHeader, const QByteArray &scheme)
+{
+    const auto expectedScheme = scheme.toLower();
+    for (QByteArray challengePart : wwwAuthenticateHeader.split(',')) {
+        challengePart = challengePart.trimmed();
+        if (challengePart.isEmpty()) {
+            continue;
+        }
+
+        auto schemeEnd = challengePart.size();
+        for (auto i = 0; i < challengePart.size(); ++i) {
+            const auto ch = challengePart.at(i);
+            if (ch == ' ' || ch == '\t') {
+                schemeEnd = i;
+                break;
+            }
+        }
+
+        if (challengePart.left(schemeEnd).toLower() == expectedScheme) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 RequestEtagJob::RequestEtagJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
 {
@@ -1206,8 +1232,10 @@ void DetermineAuthTypeJob::start()
     connect(get, &SimpleNetworkJob::finishedSignal, this, [this, get]() {
         const auto reply = get->reply();
         const auto wwwAuthenticateHeader = reply->rawHeader("WWW-Authenticate");
+        const auto hasSupportedAuthChallenge = wwwAuthenticateContainsScheme(wwwAuthenticateHeader, "basic")
+            || wwwAuthenticateContainsScheme(wwwAuthenticateHeader, "bearer");
         if (reply->error() == QNetworkReply::AuthenticationRequiredError
-            && (wwwAuthenticateHeader.startsWith("Basic") || wwwAuthenticateHeader.startsWith("Bearer"))) {
+            && hasSupportedAuthChallenge) {
             _resultGet = Basic;
         } else {
             _resultGet = LoginFlowV2;
@@ -1219,12 +1247,14 @@ void DetermineAuthTypeJob::start()
         checkAllDone();
     });
     connect(propfind, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
-        auto authChallenge = reply->rawHeader("WWW-Authenticate").toLower();
+        const auto authChallenge = reply->rawHeader("WWW-Authenticate");
+        const auto hasSupportedAuthChallenge = wwwAuthenticateContainsScheme(authChallenge, "basic")
+            || wwwAuthenticateContainsScheme(authChallenge, "bearer");
 
         if (authChallenge.isEmpty()) {
             qCWarning(lcDetermineAuthTypeJob) << "Did not receive WWW-Authenticate reply to auth-test PROPFIND";
-        } else {
-            qCWarning(lcDetermineAuthTypeJob) << "Unknown WWW-Authenticate reply to auth-test PROPFIND:" << authChallenge;
+        } else if (!hasSupportedAuthChallenge) {
+            qCWarning(lcDetermineAuthTypeJob) << "Unknown WWW-Authenticate reply to auth-test PROPFIND:" << authChallenge.toLower();
         }
         _resultPropfind = Basic;
         _propfindDone = true;
