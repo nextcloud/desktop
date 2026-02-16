@@ -150,6 +150,7 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
     item->_size = rec._fileSize;
     item->_remotePerm = rec._remotePerm;
     item->_serverHasIgnoredFiles = rec._serverHasIgnoredFiles;
+    item->_hasDescendantInSelectiveSync = rec._hasDescendantInSelectiveSync;
     item->_checksumHeader = rec._checksumHeader;
     item->_encryptedFileName = rec.e2eMangledName();
     item->_e2eEncryptionStatus = EncryptionStatusEnums::fromDbEncryptionStatus(rec._e2eEncryptionStatus);

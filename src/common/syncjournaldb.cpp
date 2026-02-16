@@ -45,7 +45,8 @@ Q_LOGGING_CATEGORY(lcDb, "nextcloud.sync.database", QtInfoMsg)
         "SELECT path, inode, modtime, type, md5, fileid, remotePerm, filesize," \
         "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum, e2eMangledName, isE2eEncrypted, e2eCertificateFingerprint, " \
         "  lock, lockOwnerDisplayName, lockOwnerId, lockType, lockOwnerEditor, lockTime, lockTimeout, lockToken, isShared, lastShareStateFetchedTimestmap, " \
-        "  sharedByMe, isLivePhoto, livePhotoFile, quotaBytesUsed, quotaBytesAvailable" \
+        "  sharedByMe, isLivePhoto, livePhotoFile, quotaBytesUsed, quotaBytesAvailable," \
+        " EXISTS (SELECT * from selectivesync where selectivesync.path LIKE metadata.path || \"/%\") AS hasDescendantInSelectiveSync " \
         " FROM metadata" \
         "  LEFT JOIN checksumtype as contentchecksumtype ON metadata.contentChecksumTypeId == contentchecksumtype.id"
 
@@ -78,6 +79,7 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._livePhotoFile = query.stringValue(25);
     rec._folderQuota.bytesUsed = query.int64Value(26);
     rec._folderQuota.bytesAvailable = query.int64Value(27);
+    rec._hasDescendantInSelectiveSync = query.int64Value(28);
 }
 
 static QByteArray defaultJournalMode(const QString &dbPath)

@@ -272,6 +272,7 @@ public:
     Status _status BITFIELD(4);
     bool _isRestoration BITFIELD(1); // The original operation was forbidden, and this is a restoration
     bool _isSelectiveSync BITFIELD(1); // The file is removed or ignored because it is in the selective sync list
+    bool _hasDescendantInSelectiveSync; // True if the object contains a folder that is deselected for sync.
     EncryptionStatus _e2eEncryptionStatus = EncryptionStatus::NotEncrypted; // The file is E2EE or the content of the directory should be E2EE
     EncryptionStatus _e2eEncryptionServerCapability = EncryptionStatus::NotEncrypted;
     EncryptionStatus _e2eEncryptionStatusRemote = EncryptionStatus::NotEncrypted;

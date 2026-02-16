@@ -25,6 +25,7 @@
 #include <common/constants.h>
 #include "csync_exclude.h"
 #include "csync.h"
+#include "propagatorjobs.h"
 
 namespace
 {
@@ -1293,10 +1294,26 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         } else if (!serverModified) {
             // Removed locally: also remove on the server.
             if (!dbEntry._serverHasIgnoredFiles) {
-#if !defined QT_NO_DEBUG
-                qCInfo(lcDisco) << "File" << item->_file << "was deleted locally. Going to delete it on the server.";
-#endif
-                item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+                if (!item->_hasDescendantInSelectiveSync) {
+                    #if !defined QT_NO_DEBUG
+                        qCInfo(lcDisco) << "File" << item->_file << "was deleted locally. Going to delete it on the server.";
+                    #endif
+                    item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+                } else {
+                    #if !defined QT_NO_DEBUG
+                        qCInfo(lcDisco) << "Adding folder " << item->_file << " to blacklist to remove it locally."; // was deleted locally. But contains selectiveSyncChilds, so unseen data is on the server.
+                    #endif
+                    item->_instruction = CSYNC_INSTRUCTION_NONE;
+                    if (!_discoveryData->_statedb->SyncJournalDb::deleteFileRecord(item->_file, false)){
+                        return;
+                    };
+                    if (!PropagateLocalRemove::removePathFromSelectiveSync(_discoveryData->_statedb, item->_file)) {
+                        return;
+                    }
+                    if (!PropagateLocalRemove::addPathToSelectiveSync(_discoveryData->_statedb, item->_file)) {
+                        return;
+                    }
+                }
                 item->_direction = SyncFileItem::Up;
             }
         }

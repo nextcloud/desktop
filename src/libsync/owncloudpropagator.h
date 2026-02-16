@@ -205,6 +205,9 @@ public:
     }
     ~PropagateItemJob() override;
 
+    static bool removePathFromSelectiveSync(SyncJournalDb *journal, const QString &folder);
+    static bool addPathToSelectiveSync(SyncJournalDb *journal, const QString &folder);
+
     bool scheduleSelfOrChild() override
     {
         if (_state != NotYetStarted) {
