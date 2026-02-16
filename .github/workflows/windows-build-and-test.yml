@@ -31,8 +31,8 @@ jobs:
               if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
           }
           
-          craft --add-blueprint-repository "https://github.com/nextcloud/craft-blueprints-kde.git|stable-4.0|"
-          craft --add-blueprint-repository "https://github.com/nextcloud/desktop-client-blueprints.git|stable-4.0|"
+          craft --add-blueprint-repository "https://github.com/nextcloud/craft-blueprints-kde.git|master|"
+          craft --add-blueprint-repository "https://github.com/nextcloud/desktop-client-blueprints.git|master|"
           craft craft
           craft --install-deps nextcloud-client
           
