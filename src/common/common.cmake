@@ -20,6 +20,7 @@ set(common_SOURCES
     ${CMAKE_CURRENT_LIST_DIR}/plugin.cpp
     ${CMAKE_CURRENT_LIST_DIR}/syncfilestatus.cpp
     ${CMAKE_CURRENT_LIST_DIR}/syncitemenums.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/pathsanitizer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/remoteinfo.h
     ${CMAKE_CURRENT_LIST_DIR}/folderquota.h
 )

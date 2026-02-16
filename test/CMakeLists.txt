@@ -59,6 +59,7 @@ if (NOT APPLE)
 endif()
 
 nextcloud_add_test(Utility)
+nextcloud_add_test(PathSanitizer)
 
 if (NOT APPLE)
     nextcloud_add_test(SyncEngine)

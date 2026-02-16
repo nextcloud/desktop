@@ -58,6 +58,12 @@ public:
     Result &operator=(Result &&other)
     {
         if (&other != this) {
+            // Destroy the currently held value before constructing the new one
+            if (_isError) {
+                _error.~Error();
+            } else {
+                _result.~T();
+            }
             _isError = other._isError;
             if (_isError) {
                 new (&_error) Error(std::move(other._error));
@@ -71,6 +77,12 @@ public:
     Result &operator=(const Result &other)
     {
         if (&other != this) {
+            // Destroy the currently held value before constructing the new one
+            if (_isError) {
+                _error.~Error();
+            } else {
+                _result.~T();
+            }
             _isError = other._isError;
             if (_isError) {
                 new (&_error) Error(other._error);
