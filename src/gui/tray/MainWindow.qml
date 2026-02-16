@@ -401,6 +401,7 @@ ApplicationWindow {
                 height: implicitHeight
                 border.color: "transparent"
                 color: "transparent"
+                // color: "#ff0000"
 
                 Dialog {
                     id: assistantResetConfirmationDialog
@@ -419,6 +420,7 @@ ApplicationWindow {
                     header: Label {
                             id: titleLabel
                             text: assistantResetConfirmationDialog.title
+                            leftPadding: 0
                             font.weight: Font.Bold
                         }
 
@@ -448,14 +450,17 @@ ApplicationWindow {
                         assistantResetConfirmationDialogWrapper.close()
                     }
 
-                    Label {
+                    contentItem: Label {
                         id: assistantResetConfirmationDialogLabel
-                        width: parent.width
-                        anchors.centerIn: parent
-                        text: qsTr("This will clear the existing conversation")
+                        anchors.fill: parent
+                        text: qsTr("This will clear the existing conversation.")
                         wrapMode: Text.WordWrap
                         bottomPadding: 10
                         topPadding: 10
+                        leftPadding: 0
+                        rightPadding: 0
+                        horizontalAlignment: Text.AlignLeft
+                        verticalAlignment: Text.AlignVCenter
                     }
                 }
             }
