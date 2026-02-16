@@ -18,10 +18,16 @@ public extension FileManager {
             return nil
         }
 
-        guard let appGroupIdentifier = extensionDictionary["NSExtensionFileProviderDocumentGroup"] as? String else {
-            return nil
+        if let fileProviderGroupIdentifier = extensionDictionary["NSExtensionFileProviderDocumentGroup"] as? String,
+            !fileProviderGroupIdentifier.isEmpty {
+            return containerURL(forSecurityApplicationGroupIdentifier: fileProviderGroupIdentifier)
         }
 
-        return containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier)
+        if let mainAppGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "SocketApiprefix") as? String,
+            !mainAppGroupIdentifier.isEmpty {
+            return containerURL(forSecurityApplicationGroupIdentifier: mainAppGroupIdentifier)
+        }
+
+        return nil
     }
 }

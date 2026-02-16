@@ -21,6 +21,8 @@
 	<string>$(OC_APPLICATION_NAME) File Provider UI Extension</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(OC_APPLICATION_REV_DOMAIN).$(PRODUCT_NAME)</string>
+    <key>SocketApiPrefix</key>
+    <string>$(DEVELOPMENT_TEAM).$(OC_APPLICATION_REV_DOMAIN)</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionFileProviderActions</key>
@@ -57,6 +59,14 @@
 				<key>NSExtensionFileProviderActionName</key>
 				<string>Free up space</string>
 			</dict>
+            <dict>
+                <key>NSExtensionFileProviderActionActivationRule</key>
+                <string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo != nil ).@count &gt; 0</string>
+                <key>NSExtensionFileProviderActionIdentifier</key>
+                <string>com.nextcloud.desktopclient.FileProviderUIExt.FileActionsAction</string>
+                <key>NSExtensionFileProviderActionName</key>
+                <string>File Actions</string>
+            </dict>
 		</array>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.fileprovider-actionsui</string>

@@ -2,6 +2,9 @@
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProviderUI
+import FileProvider
+import NCDesktopClientSocketKit
+import NextcloudKit
 import NextcloudFileProviderKit
 import OSLog
 
@@ -29,6 +32,9 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
     var logger: FileProviderLogger!
 
     var serviceResolver: ServiceResolver!
+    
+    var socketClient: LocalSocketClient?
+    lazy var lineProcessor: LineProcessor = NoOpLineProcessor()
 
     // MARK: - Lifecycle
 
@@ -44,6 +50,27 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
         if serviceResolver == nil, let log {
             serviceResolver = ServiceResolver(log: log)
         }
+        
+        setupSocketClientForSocketApi()
+    }
+    
+    private func setupSocketClientForSocketApi() {
+        guard let socketApiPrefix = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix") as? String, !socketApiPrefix.isEmpty else {
+            logger?.error("No SocketApiPrefix found")
+            return
+        }
+        
+        guard let containerUrl = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: socketApiPrefix) else {
+            logger?.error("No containerURL available")
+            return
+        }
+
+        let socketPath = containerUrl.appendingPathComponent("s", isDirectory: true)
+        let processor = NoOpLineProcessor()
+// FIXME
+//        self.socketClient = LocalSocketClient(socketPath: socketPath.path, lineProcessor: processor)
+//        self.socketClient?.start()
+//        self.logger?.debug("Socket client started successfully")
     }
 
     func prepare(childViewController: NSViewController) {
@@ -73,6 +100,8 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
             case "com.nextcloud.desktopclient.FileProviderUIExt.EvictAction":
                 evict(itemsWithIdentifiers: itemIdentifiers, inDomain: domain);
                 extensionContext.completeRequest();
+            case "com.nextcloud.desktopclient.FileProviderUIExt.FileActionsAction":
+                showFileActions(itemsWithIdentifiers: itemIdentifiers, inDomain: domain);
             default:
                 return
         }
@@ -129,4 +158,38 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
 
         semaphore.wait()
     }
+    
+    func showFileActions(itemsWithIdentifiers identifiers: [NSFileProviderItemIdentifier], inDomain domain: NSFileProviderDomain) {
+        guard let firstIdentifier = identifiers.first else {
+            logger?.error("No item identifiers provided.")
+            extensionContext.completeRequest()
+            return
+        }
+
+        Task {
+            do {
+                guard let manager = NSFileProviderManager(for: domain) else {
+                    logger?.error("Could not get file provider domain manager.")
+                    await MainActor.run { extensionContext.completeRequest() }
+                    return
+                }
+                let itemURL = try await manager.getUserVisibleURL(for: firstIdentifier)
+                let localPath = itemURL.path
+                let command = "FILE_ACTIONS:\(localPath)\n"
+// FIXME
+//                self.socketClient?.sendMessage(command)
+//                self.logger?.debug("FILE_ACTIONS sent for: \(localPath)")
+                await MainActor.run { extensionContext.completeRequest() }
+            } catch {
+                logger?.error("Error: \(error.localizedDescription)")
+                await MainActor.run { extensionContext.completeRequest() }
+            }
+        }
+    }
 }
+
+private final class NoOpLineProcessor: NSObject, LineProcessor {
+    func process(_ line: String) {
+    }
+}
+
