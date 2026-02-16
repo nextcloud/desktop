@@ -34,13 +34,13 @@ struct Build: AsyncParsableCommand {
     var kdeBlueprintsGitUrl = "https://github.com/nextcloud/craft-blueprints-kde.git"
     
     @Option(name: [.long], help: "KDE Craft blueprints git ref/branch")
-    var kdeBlueprintsGitRef = "next"
+    var kdeBlueprintsGitRef = "master"
     
     @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprints Git URL.")
     var clientBlueprintsGitUrl = "https://github.com/nextcloud/desktop-client-blueprints.git"
     
     @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprints Git ref/branch.")
-    var clientBlueprintsGitRef = "next"
+    var clientBlueprintsGitRef = "master"
     
     @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprint name.")
     var craftBlueprintName = "nextcloud-client"
