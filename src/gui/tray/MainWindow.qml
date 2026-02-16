@@ -894,18 +894,3 @@ ApplicationWindow {
         }
     } // Item trayWindowMainItem
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
