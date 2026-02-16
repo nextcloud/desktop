@@ -30,8 +30,8 @@ AccessManager::AccessManager(QObject *parent)
     setCookieJar(new CookieJar);
 
     // Enable HSTS (HTTP Strict Transport Security) for all connections
-    enableStrictTransportSecurityStore(true);
-    setStrictTransportSecurityEnabled(true);
+    // enableStrictTransportSecurityStore(true);
+    // setStrictTransportSecurityEnabled(true);
 
     connect(this, &QNetworkAccessManager::authenticationRequired, this, [](QNetworkReply *reply, QAuthenticator *authenticator) {
         Q_UNUSED(reply)
