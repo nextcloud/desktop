@@ -20,6 +20,12 @@
  */
 - (void)reportSyncStatus:(NSString *)status forDomainIdentifier:(NSString *)domainIdentifier;
 
+/**
+ * @brief Request the main app to open the file actions dialog for the given local file path.
+ * @param localPath The local file system path.
+ */
+- (void)openFileActionsForLocalPath:(NSString *)localPath;
+
 @end
 
 #endif /* AppProtocol_h */

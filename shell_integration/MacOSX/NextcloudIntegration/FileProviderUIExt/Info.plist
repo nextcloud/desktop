@@ -49,6 +49,15 @@
 				<key>NSExtensionFileProviderActionName</key>
 				<string>Share options</string>
 			</dict>
+
+			<dict>
+				<key>NSExtensionFileProviderActionActivationRule</key>
+				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayFileActions == true ).@count &gt; 0</string>
+				<key>NSExtensionFileProviderActionIdentifier</key>
+				<string>com.nextcloud.desktopclient.FileProviderUIExt.FileActionsAction</string>
+				<key>NSExtensionFileProviderActionName</key>
+				<string>File actions</string>
+			</dict>
 			<dict>
 				<key>NSExtensionFileProviderActionActivationRule</key>
 				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.downloaded == true ).@count &gt; 0</string>

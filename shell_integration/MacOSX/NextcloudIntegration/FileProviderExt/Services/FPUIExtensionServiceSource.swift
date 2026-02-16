@@ -93,4 +93,9 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
         let completePath = item.serverUrl + "/" + item.fileName
         return completePath.replacingOccurrences(of: baseUrl, with: "") as NSString
     }
+
+    func openFileActions(forLocalPath localPath: NSString) async {
+        logger.info("Forwarding request to open file actions for path \(localPath)")
+        fpExtension.app?.openFileActions(forLocalPath: localPath as String)
+    }
 }

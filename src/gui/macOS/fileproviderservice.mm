@@ -12,6 +12,9 @@
 #include <QReadLocker>
 #include <QWriteLocker>
 #include <QMetaObject>
+#include <QProcess>
+#include <QDir>
+#include <QCoreApplication>
 
 #include "accountmanager.h"
 
@@ -80,6 +83,33 @@ Q_LOGGING_CATEGORY(lcMacFileProviderService, "nextcloud.gui.macfileproviderservi
     QMetaObject::invokeMethod(_service, "syncStateChanged", Qt::QueuedConnection,
                               Q_ARG(OCC::AccountPtr, account),
                               Q_ARG(OCC::SyncResult::Status, syncState));
+}
+
+- (void)openFileActionsForLocalPath:(NSString *)localPath
+{
+    const auto localPathString = QString::fromNSString(localPath);
+
+    qCDebug(OCC::lcMacFileProviderService)
+        << "Received request from file provider extension to open file actions for local path:"
+        << localPathString;
+
+    if (localPathString.isEmpty()) {
+        qCWarning(OCC::lcMacFileProviderService)
+            << "Ignoring request to open file actions because path is empty.";
+        return;
+    }
+
+    const auto binaryPath = QCoreApplication::applicationFilePath();
+    const QStringList arguments {
+        QStringLiteral("--open-file-actions"),
+        QDir::toNativeSeparators(localPathString)
+    };
+
+    if (!QProcess::startDetached(binaryPath, arguments)) {
+        qCWarning(OCC::lcMacFileProviderService)
+            << "Failed to spawn app process for file actions dialog for path"
+            << localPathString;
+    }
 }
 
 @end

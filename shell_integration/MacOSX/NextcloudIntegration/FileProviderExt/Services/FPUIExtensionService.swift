@@ -36,4 +36,7 @@ let fpUiExtensionServiceName = NSFileProviderServiceName("com.nextcloud.desktopc
     /// Get a server URL for the given local file provider item.
     ///
     func itemServerPath(identifier: NSFileProviderItemIdentifier) async -> NSString?
+
+    /// Ask the main app to open file actions for a local path.
+    func openFileActions(forLocalPath localPath: NSString) async
 }

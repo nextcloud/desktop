@@ -92,7 +92,8 @@ namespace {
 #if !DISABLE_ACCOUNT_MIGRATION
         "  --forcelegacyconfigimport  : forcefully import account configurations from legacy clients (if available).\n"
 #endif
-        "  --reverse            : use a reverse layout direction.\n";
+        "  --reverse            : use a reverse layout direction.\n"
+        "  --open-file-actions <path> : open the file actions dialog for the given local path.\n";
 
     QString applicationTrPath()
     {
@@ -464,6 +465,7 @@ Application::Application(int &argc, char **argv)
     _gui->createTray();
 
     handleEditLocallyFromOptions();
+    handleFileActionsFromOptions();
 
     if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
         AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
@@ -772,6 +774,7 @@ void Application::slotParseMessage(const QString &msg, QObject *)
         }
 
         handleEditLocallyFromOptions();
+        handleFileActionsFromOptions();
 
         if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
             AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
@@ -866,6 +869,12 @@ void Application::parseOptions(const QStringList &options)
                 const auto errorParsingLocalFileEditingUrl = QStringLiteral("The supplied url for local file editing '%1' is invalid!").arg(option);
                 qCInfo(lcApplication) << errorParsingLocalFileEditingUrl;
                 showHint(errorParsingLocalFileEditingUrl.toStdString());
+            }
+        } else if (option == QLatin1String("--open-file-actions")) {
+            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+                _fileActionsPath = QDir::fromNativeSeparators(it.next());
+            } else {
+                showHint("Path for file actions dialog not specified");
             }
         } else if (option == QStringLiteral("--overrideserverurl")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
@@ -996,6 +1005,22 @@ void Application::handleEditLocallyFromOptions()
 
     EditLocallyManager::instance()->handleRequest(_editFileLocallyUrl);
     _editFileLocallyUrl.clear();
+}
+
+void Application::handleFileActionsFromOptions()
+{
+    if (_fileActionsPath.isEmpty()) {
+        return;
+    }
+
+    if (_gui.isNull()) {
+        qCWarning(lcApplication) << "Cannot open file actions dialog without GUI.";
+        _fileActionsPath.clear();
+        return;
+    }
+
+    _gui->slotShowFileActionsDialog(_fileActionsPath);
+    _fileActionsPath.clear();
 }
 
 QString enforcedLanguage()

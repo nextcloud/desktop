@@ -73,6 +73,9 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
             case "com.nextcloud.desktopclient.FileProviderUIExt.EvictAction":
                 evict(itemsWithIdentifiers: itemIdentifiers, inDomain: domain);
                 extensionContext.completeRequest();
+            case "com.nextcloud.desktopclient.FileProviderUIExt.FileActionsAction":
+                openFileActions(itemIdentifiers: itemIdentifiers)
+                extensionContext.completeRequest()
             default:
                 return
         }
@@ -92,6 +95,38 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
 
     override public func loadView() {
         self.view = NSView()
+    }
+
+    // MARK: - File actions
+
+    func openFileActions(itemIdentifiers: [NSFileProviderItemIdentifier]) {
+        guard let itemIdentifier = itemIdentifiers.first else {
+            logger?.error("File actions action called without item identifier.")
+            return
+        }
+
+        Task {
+            do {
+                guard let manager = NSFileProviderManager(for: domain) else {
+                    logger?.error("Could not initialize file provider manager.")
+                    return
+                }
+
+                let itemURL = try await manager.getUserVisibleURL(for: itemIdentifier)
+                let localPath = itemURL.path
+
+                guard !localPath.isEmpty else {
+                    logger?.error("Got empty local path for file actions item.")
+                    return
+                }
+
+                let connection = try await serviceResolver.getService(at: itemURL)
+                await connection.openFileActions(forLocalPath: localPath as NSString)
+                logger?.info("Requested opening file actions for item path: \(localPath)")
+            } catch {
+                logger?.error("Could not open file actions.", [.error: error])
+            }
+        }
     }
 
     // MARK: - Eviction
