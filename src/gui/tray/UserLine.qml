@@ -18,6 +18,7 @@ AbstractButton {
     signal showUserStatusSelector(int id)
     signal showUserStatusMessageSelector(int id)
 
+    property color parentBackgroundColor: userLine.palette.base
 
     Accessible.role: Accessible.MenuItem
     Accessible.name: qsTr("Switch to account") + " " + model.name
@@ -42,7 +43,12 @@ AbstractButton {
                 visible: model.isConnected && model.serverHasUserStatus
                 width: accountStatusIndicator.sourceSize.width + Style.trayFolderStatusIndicatorSizeOffset
                 height: width
-                color: "white"
+                readonly property bool isHighlighted: userLine.parent && (userLine.parent.highlighted || userLine.parent.down)
+                readonly property color menuBaseColor: Style.colorWithoutTransparency(
+                    userLine.parent && userLine.parent.palette ? userLine.parent.palette.base : userLine.parentBackgroundColor)
+                readonly property color menuHighlightColor: Style.colorWithoutTransparency(
+                    userLine.parent && userLine.parent.palette ? userLine.parent.palette.highlight : userLine.palette.highlight)
+                color: (isHighlighted && Qt.platform.os !== "windows") ? menuHighlightColor : menuBaseColor
                 anchors.bottom: accountAvatar.bottom
                 anchors.right: accountAvatar.right
                 radius: width * Style.trayFolderStatusIndicatorRadiusFactor
@@ -53,8 +59,7 @@ AbstractButton {
                 visible: model.isConnected && model.serverHasUserStatus
                 source: model.statusIcon
                 cache: false
-                x: accountStatusIndicatorBackground.x + Style.trayFolderStatusIndicatorSizeOffset / 2
-                y: accountStatusIndicatorBackground.y + Style.trayFolderStatusIndicatorSizeOffset / 2
+                anchors.centerIn: accountStatusIndicatorBackground
                 sourceSize.width: Style.accountAvatarStateIndicatorSize
                 sourceSize.height: Style.accountAvatarStateIndicatorSize
 
@@ -141,6 +146,25 @@ AbstractButton {
 
         Item { // Spacer
             Layout.fillWidth: true
+        }
+
+        Item {
+            id: syncStatusColumn
+            Layout.preferredWidth: Style.headerButtonIconSize
+            Layout.fillHeight: true
+
+            Image {
+                id: syncStatusIndicator
+                visible: !model.syncStatusOk
+                source: model.syncStatusIcon
+                cache: false
+                anchors.centerIn: parent
+                sourceSize.width: Style.accountAvatarStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset
+                sourceSize.height: Style.accountAvatarStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset
+
+                Accessible.role: Accessible.Indicator
+                Accessible.name: qsTr("Account sync status requires attention")
+            }
         }
 
         Button {
@@ -235,4 +259,9 @@ AbstractButton {
         }
     }
 }   // MenuItem userLine
+
+
+
+
+
 
