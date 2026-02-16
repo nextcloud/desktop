@@ -410,12 +410,12 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="316"/>
         <source>Issue with account %1</source>
-        <translation type="unfinished"/>
+        <translation>Problém s účtom %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="318"/>
         <source>Issues with several accounts</source>
-        <translation type="unfinished"/>
+        <translation>Problémy s viacerými účtami</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
@@ -2961,7 +2961,7 @@ Pre pokročilých užívateľov: tento problém môže súvisieť s viacerými s
         <location filename="../src/gui/generalsettings.cpp" line="448"/>
         <location filename="../src/gui/generalsettings.cpp" line="474"/>
         <source>Connected to an enterprise system. Update channel (%1) cannot be changed.</source>
-        <translation type="unfinished"/>
+        <translation>Pripojené k podnikovému systému. Kanál na aktualizáciu (%1) nie je možné zmeniť.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="452"/>
@@ -5522,7 +5522,7 @@ Server odpovedal chybou: %2</translation>
         <location filename="../src/libsync/theme.cpp" line="449"/>
         <source>%1 Desktop Client Version %2 (%3 running on %4)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the platform name (wayland, x11, …)</comment>
-        <translation type="unfinished"/>
+        <translation>%1 Verzia desktopového klienta %2 (%3 beží na %4)</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="634"/>
