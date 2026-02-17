@@ -6851,6 +6851,11 @@ Seva ilijibu kwa hitilafu: %2</translation>
         <translation>Hali ya sasa ya akaunti ni usisumbue</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="166"/>
+        <source>Account sync status requires attention</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="153"/>
         <source>Account actions</source>
         <translation>Matendo ya akaunti</translation>

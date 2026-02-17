@@ -6851,6 +6851,11 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Níl aon chur isteach ar stádas an chuntais reatha</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="166"/>
+        <source>Account sync status requires attention</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="153"/>
         <source>Account actions</source>
         <translation>Gníomhartha cuntais</translation>
