@@ -180,53 +180,53 @@
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="41"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="160"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="162"/>
         <source>Resume sync for all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="41"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="160"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="162"/>
         <source>Pause sync for all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="141"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="143"/>
         <source>Add account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="145"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="147"/>
         <source>Add new account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="179"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="181"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="203"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="205"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="244"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="246"/>
         <source>Current account avatar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="274"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="275"/>
         <source>Current account status is online</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="274"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="275"/>
         <source>Current account status is do not disturb</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="349"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="350"/>
         <source>Account switcher and settings menu</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3481,27 +3481,27 @@ Note that using any logging command line options will override this setting.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.cpp" line="36"/>
+        <location filename="../src/gui/networksettings.cpp" line="37"/>
         <source>Hostname of proxy server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.cpp" line="37"/>
+        <location filename="../src/gui/networksettings.cpp" line="38"/>
         <source>Username for proxy server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.cpp" line="38"/>
+        <location filename="../src/gui/networksettings.cpp" line="39"/>
         <source>Password for proxy server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.cpp" line="40"/>
+        <location filename="../src/gui/networksettings.cpp" line="41"/>
         <source>HTTP(S) proxy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.cpp" line="41"/>
+        <location filename="../src/gui/networksettings.cpp" line="42"/>
         <source>SOCKS5 proxy</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5514,17 +5514,17 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="152"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="216"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="154"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="218"/>
         <source>Trigger the migration</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/tray/usermodel.cpp" line="217"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="293"/>
         <source>%n notification(s)</source>
         <translation>
             <numerusform>%n notification</numerusform>
@@ -5532,45 +5532,45 @@ Server replied with error: %2</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="737"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="813"/>
         <source>Retry all uploads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="788"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="950"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="864"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1026"/>
         <source>Resolve conflict</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="940"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1016"/>
         <source>Rename file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1082"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1158"/>
         <source>Public Share Link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1167"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1265"/>
         <source>Open %1 Assistant in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1168"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1266"/>
         <source>Open %1 Talk in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1291"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1389"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1311"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1409"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5578,32 +5578,32 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1692"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1795"/>
         <source>Confirm Account Removal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1693"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1796"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1697"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1800"/>
         <source>Remove connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1698"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1801"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1784"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1887"/>
         <source>Leave share</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1784"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1887"/>
         <source>Remove account</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6208,27 +6208,27 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="869"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="945"/>
         <source>You renamed %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="871"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="947"/>
         <source>You deleted %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="873"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="949"/>
         <source>You created %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="875"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="951"/>
         <source>You changed %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="899"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="975"/>
         <source>Synced %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6725,42 +6725,47 @@ Server replied with error: %2</source>
 <context>
     <name>UserLine</name>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="23"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="24"/>
         <source>Switch to account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="62"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="67"/>
         <source>Current account status is online</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="62"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="67"/>
         <source>Current account status is do not disturb</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="153"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="166"/>
+        <source>Account sync status requires attention</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="177"/>
         <source>Account actions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="173"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="197"/>
         <source>Set status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="187"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="211"/>
         <source>Status message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="201"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="225"/>
         <source>Log out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="201"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="225"/>
         <source>Log in</source>
         <translation type="unfinished"></translation>
     </message>
