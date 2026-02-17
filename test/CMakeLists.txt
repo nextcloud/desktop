@@ -153,6 +153,7 @@ nextcloud_add_benchmark(LargeSync)
 nextcloud_add_test(Account)
 nextcloud_add_test(Folder)
 nextcloud_add_test(FolderMan)
+nextcloud_add_test(E2EFolderManager)
 nextcloud_add_test(RemoteWipe)
 
 if(NOT BUILD_FILE_PROVIDER_MODULE)
