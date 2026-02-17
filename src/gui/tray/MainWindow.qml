@@ -286,6 +286,7 @@ ApplicationWindow {
             visible: UserModel.hasSyncErrors
                      && !(UserModel.syncErrorUserCount === 1
                           && UserModel.firstSyncErrorUserId === UserModel.currentUserId)
+                     && !trayWindowMainItem.isAssistantActive
             padding: 0
             background: Rectangle {
                 radius: Style.slightlyRoundedButtonRadius
