@@ -6851,6 +6851,11 @@ Servidor respondeu com erro: %2</translation>
         <translation>O status da conta atual é não perturbe</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="166"/>
+        <source>Account sync status requires attention</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="153"/>
         <source>Account actions</source>
         <translation>Ações da conta</translation>

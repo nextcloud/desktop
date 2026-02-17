@@ -6851,6 +6851,11 @@ Serwer odpowiedział błędem: %2</translation>
         <translation>Aktualny status konta to &quot;Nie przeszkadzać&quot;</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="166"/>
+        <source>Account sync status requires attention</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="153"/>
         <source>Account actions</source>
         <translation>Czynności na koncie</translation>

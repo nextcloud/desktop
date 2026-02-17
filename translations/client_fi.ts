@@ -6816,6 +6816,11 @@ Server replied with error: %2</source>
         <translation>Nykyinen tilin tila on &quot;Älä häiritse&quot;</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="166"/>
+        <source>Account sync status requires attention</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="153"/>
         <source>Account actions</source>
         <translation>Tilin toiminnot</translation>
