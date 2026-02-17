@@ -375,7 +375,10 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
         }
         setNextButtonAsDefault();
     } else {
-        setButtonLayout({QWizard::BackButton, QWizard::Stretch, QWizard::NextButton});
+        // Some pages (for example HTTP credentials on file-provider builds) can
+        // become the final page. Include both buttons so Qt can show the right
+        // one depending on the page state.
+        setButtonLayout({QWizard::BackButton, QWizard::Stretch, QWizard::NextButton, QWizard::FinishButton});
         setNextButtonAsDefault();
     }
 
