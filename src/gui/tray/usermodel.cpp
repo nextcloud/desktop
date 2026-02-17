@@ -68,12 +68,12 @@ QString assistantTaskTypeIdFromResponse(const QJsonDocument &json)
             continue;
         }
         if (typeId == "core:text2text:chat"_L1) {
-            qCDebug(lcActivity) << typeObject << typeId << types[typeId].toObject();
+            qCDebug(OCC::lcActivity) << typeObject << typeId << types[typeId].toObject();
             resultTypeId = typeId;
             break;
         }
         if (typeId == "core:text2text"_L1) {
-            qCDebug(lcActivity) << typeObject << typeId << types[typeId].toObject();
+            qCDebug(OCC::lcActivity) << typeObject << typeId << types[typeId].toObject();
             fallbackTypeId = typeId;
         }
     }
@@ -96,7 +96,7 @@ bool assistantTaskStillRunning(const QJsonObject &task)
     if (task.value(u"status"_s).toString() == u"STATUS_FAILED"_s || task.value(u"status"_s).toString() == u"STATUS_SUCCESSFUL"_s) {
         result = false;
     }
-    qCDebug(lcActivity) << task.value(u"status"_s).toString();
+    qCDebug(OCC::lcActivity) << task.value(u"status"_s).toString();
 
     return result;
 }
