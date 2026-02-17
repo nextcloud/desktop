@@ -567,7 +567,6 @@ ApplicationWindow {
 
             active: UserModel.currentUser.isAssistantEnabled
                     && trayWindowMainItem.showAssistantPanel
-                    && !trayWindowMainItem.isUnifiedSearchActive
             visible: trayWindowMainItem.showAssistantPanel
             anchors.top: trayWindowHeader.bottom
             anchors.bottom: assistantInputContainer.top
