@@ -30,6 +30,7 @@ extension Item {
         }
 
         let dirtyChildren = dbManager.childItems(directoryMetadata: dirtyMetadata)
+        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: modifiedItem.remoteInterface, candidate: dirtyMetadata.contentType)
 
         let dirtyItem = await Item(
             metadata: dirtyMetadata,
@@ -37,6 +38,7 @@ extension Item {
             account: account,
             remoteInterface: modifiedItem.remoteInterface,
             dbManager: dbManager,
+            displayFileActions: displayFileActions,
             remoteSupportsTrash: modifiedItem.remoteInterface.supportsTrash(account: account),
             log: log
         )
@@ -86,6 +88,7 @@ extension Item {
             account: account,
             remoteInterface: modifiedItem.remoteInterface,
             dbManager: dbManager,
+            displayFileActions: displayFileActions,
             remoteSupportsTrash: modifiedItem.remoteInterface.supportsTrash(account: account),
             log: log
         )
@@ -169,6 +172,7 @@ extension Item {
             }
 
             dbManager.addItemMetadata(restoredItemMetadata)
+            let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: restoredItemMetadata.contentType)
 
             return await (Item(
                 metadata: restoredItemMetadata,
@@ -176,6 +180,7 @@ extension Item {
                 account: account,
                 remoteInterface: modifiedItem.remoteInterface,
                 dbManager: dbManager,
+                displayFileActions: displayFileActions,
                 remoteSupportsTrash: modifiedItem.remoteInterface.supportsTrash(account: account),
                 log: log
             ), nil)

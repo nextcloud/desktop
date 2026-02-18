@@ -63,6 +63,7 @@ extension Item {
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
             log: log
         )
