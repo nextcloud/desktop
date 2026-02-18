@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/nextcloud/NextcloudCapabilitiesKit.git",
       "state" : {
-        "revision" : "296f28db1bb02c51f215e7ac34430885f5046058",
-        "version" : "2.4.6"
+        "revision" : "e7cc7d2214ff565e08cffd8495465634d2c6998c",
+        "version" : "2.5.0"
       }
     },
     {

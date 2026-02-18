@@ -41,6 +41,14 @@
 				<key>NSExtensionFileProviderActionName</key>
 				<string>Allow automatic freeing up space</string>
 			</dict>
+            <dict>
+                <key>NSExtensionFileProviderActionActivationRule</key>
+                <string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayFileActions == true ).@count &gt; 0</string>
+                <key>NSExtensionFileProviderActionIdentifier</key>
+                <string>com.nextcloud.desktopclient.FileProviderExt.FileActionsAction</string>
+                <key>NSExtensionFileProviderActionName</key>
+                <string>File actions</string>
+            </dict>
 		</array>
 		<key>NSExtensionFileProviderDocumentGroup</key>
 		<string>$(DEVELOPMENT_TEAM).$(OC_APPLICATION_REV_DOMAIN)</string>
