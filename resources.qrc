@@ -61,5 +61,6 @@
         <file>src/gui/ConflictItemFileInfo.qml</file>
         <file>src/gui/macOS/ui/FileProviderSettings.qml</file>
         <file>src/gui/macOS/ui/FileProviderFileDelegate.qml</file>
+        <file>src/gui/integration/FileActionsWindow.qml</file>
     </qresource>
 </RCC>

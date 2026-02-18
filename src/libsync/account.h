@@ -438,6 +438,8 @@ public:
     void setLastRootETag(const QByteArray &etag);
 #endif
 
+    [[nodiscard]] bool serverHasIntegration() const;
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -508,6 +510,7 @@ signals:
     void userCertificateNeedsMigrationChanged();
 
     void rootFolderQuotaChanged(const int64_t &usedBytes, const int64_t &availableBytes);
+
 protected Q_SLOTS:
     void slotCredentialsFetched();
     void slotCredentialsAsked();
@@ -603,6 +606,9 @@ private:
     QString _fileProviderDomainIdentifier;
     QByteArray _lastRootETag; // Runtime-only, not persisted
 #endif
+
+    void updateServerHasIntegration();
+    bool _serverHasIntegration;
 
     /* IMPORTANT - remove later - FIXME MS@2019-12-07 -->
      * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!

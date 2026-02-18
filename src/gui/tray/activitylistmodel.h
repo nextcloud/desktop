@@ -74,6 +74,7 @@ public:
         TalkNotificationUserAvatarRole,
         ActivityIndexRole,
         ActivityRole,
+        ActivityIntegrationRole
     };
     Q_ENUM(DataRole)
 

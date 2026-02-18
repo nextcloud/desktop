@@ -175,6 +175,9 @@ public:
     [[nodiscard]] bool serverHasValidSubscription() const;
     [[nodiscard]] QString desktopEnterpriseChannel() const;
 
+    [[nodiscard]] bool serverHasClientIntegration() const;
+    [[nodiscard]] QList<QVariantMap> fileActionsByMimeType(const QMimeType &fileMimeType) const;
+
     // Direct Editing
     void addDirectEditor(DirectEditor* directEditor);
     DirectEditor* getDirectEditorForMimetype(const QMimeType &mimeType);
@@ -184,7 +187,6 @@ private:
     [[nodiscard]] QMap<QString, QVariant> serverThemingMap() const;
 
     QVariantMap _capabilities;
-
     QList<DirectEditor*> _directEditors;
 };
 
