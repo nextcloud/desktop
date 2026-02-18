@@ -779,7 +779,8 @@ bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions p
     fileHandle.reset(CreateFileW(rawPath, desiredAccess, shareMode, nullptr, creationDisposition, flagsAndAttributes, nullptr));
 
     if (fileHandle.get() == INVALID_HANDLE_VALUE) {
-        qCWarning(lcFileSystem).nospace() << "CreateFileW failed, path=" << path << " errorMessage=" << Utility::formatWinError(GetLastError());
+        const auto lastError = GetLastError();
+        qCWarning(lcFileSystem).nospace() << "CreateFileW failed, path=" << path << " errorMessage=" << Utility::formatWinError(lastError);
         return false;
     }
 
@@ -800,7 +801,8 @@ bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions p
     {
         PSID sidUnmanaged = nullptr;
         if (!ConvertStringSidToSidW(L"S-1-5-32-545", &sidUnmanaged)) {
-            qCWarning(lcFileSystem).nospace() << "ConvertStringSidToSidW failed, path=" << path << " errorMessage=" << Utility::formatWinError(GetLastError());
+            const auto lastError = GetLastError();
+            qCWarning(lcFileSystem).nospace() << "ConvertStringSidToSidW failed, path=" << path << " errorMessage=" << Utility::formatWinError(lastError);
             return false;
         }
         sid.reset(sidUnmanaged);
@@ -808,7 +810,8 @@ bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions p
 
     ACL_SIZE_INFORMATION aclSize;
     if (!GetAclInformation(resultDacl, &aclSize, sizeof(aclSize), AclSizeInformation)) {
-        qCWarning(lcFileSystem).nospace() << "GetAclInformation failed, path=" << path << " errorMessage=" << Utility::formatWinError(GetLastError());
+        const auto lastError = GetLastError();
+        qCWarning(lcFileSystem).nospace() << "GetAclInformation failed, path=" << path << " errorMessage=" << Utility::formatWinError(lastError);
         return false;
     }
 
@@ -818,7 +821,8 @@ bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions p
     qCDebug(lcFileSystem) << "allocated a new DACL object of size" << newAclSize;
 
     if (!InitializeAcl(newDacl.get(), newAclSize, ACL_REVISION)) {
-        qCWarning(lcFileSystem).nospace() << "InitializeAcl failed, path=" << path << " errorMessage=" << Utility::formatWinError(GetLastError());
+        const auto lastError = GetLastError();
+        qCWarning(lcFileSystem).nospace() << "InitializeAcl failed, path=" << path << " errorMessage=" << Utility::formatWinError(lastError);
         return false;
     }
 
@@ -826,7 +830,8 @@ bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions p
         // the access denied ACE needs to appear at the start of the ACL
         if (!AddAccessDeniedAceEx(newDacl.get(), ACL_REVISION, NO_PROPAGATE_INHERIT_ACE,
                                   FILE_DELETE_CHILD | DELETE | FILE_WRITE_DATA | FILE_WRITE_EA | FILE_APPEND_DATA, sid.get())) {
-            qCWarning(lcFileSystem).nospace() << "AddAccessDeniedAceEx failed, path=" << path << " errorMessage=" << Utility::formatWinError(GetLastError());
+            const auto lastError = GetLastError();
+            qCWarning(lcFileSystem).nospace() << "AddAccessDeniedAceEx failed, path=" << path << " errorMessage=" << Utility::formatWinError(lastError);
             return false;
         }
         newAceIndex++;
@@ -835,7 +840,8 @@ bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions p
     for (int currentAceIndex = 0; currentAceIndex < aclSize.AceCount; ++currentAceIndex) {
         void *currentAce = nullptr;
         if (!GetAce(resultDacl, currentAceIndex, &currentAce)) {
-            qCWarning(lcFileSystem).nospace() << "GetAce failed, path=" << path << " errorMessage=" << Utility::formatWinError(GetLastError());
+            const auto lastError = GetLastError();
+            qCWarning(lcFileSystem).nospace() << "GetAce failed, path=" << path << " errorMessage=" << Utility::formatWinError(lastError);
             return false;
         }
 
@@ -854,9 +860,10 @@ bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions p
         }
 
         if (!AddAce(newDacl.get(), ACL_REVISION, newAceIndex, currentAce, currentAceHeader->AceSize)) {
+            const auto lastError = GetLastError();
             qCWarning(lcFileSystem).nospace() << "AddAce failed,"
                 << " path=" << path
-                << " errorMessage=" << Utility::formatWinError(GetLastError())
+                << " errorMessage=" << Utility::formatWinError(lastError)
                 << " newAclSize=" << newAclSize
                 << " newAceIndex=" << newAceIndex;
             return false;
