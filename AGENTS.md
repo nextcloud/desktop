@@ -69,6 +69,7 @@ The following details are important when working on the desktop client on macOS.
 - The PIMPL pattern is an established convention in the Objective-C++ source code files under `src/gui/macOS`.
 - To abstract macOS and Objective-C specific APIs, prefer to use Qt and C++ types in public identifiers declared in headers. Use and prefer Objective-C or native macOS features only internally in implementations. This rule applies only to the code in `src/gui/macOS`, though.
 - When writing code in Swift, respect strict concurrency rules and Swift 6 compatibility.
+- Manage memory explicitly and manually when writing or updating code located under `./src`. For example, do not use features like `__weak` from automatic reference counting in Objective-C because ARC is not used in this project.
 
 ### Tests
 

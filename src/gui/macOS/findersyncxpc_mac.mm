@@ -46,22 +46,20 @@ Q_LOGGING_CATEGORY(lcFinderSyncXPC, "nextcloud.gui.macos.findersync.xpc", QtInfo
     newConnection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(FinderSyncProtocol)];
 
     // Set up interruption and invalidation handlers
-    // Use __weak to safely capture the connection - it will be zeroed if connection is deallocated
-    __weak NSXPCConnection *weakConnection = newConnection;
+    // Use __block for MRC - the connection won't be deallocated while blocks are alive
+    __block NSXPCConnection *blockConnection = newConnection;
     newConnection.interruptionHandler = ^{
         qCWarning(OCC::Mac::lcFinderSyncXPC) << "FinderSync XPC connection interrupted";
-        NSXPCConnection *strongConnection = weakConnection;
-        if (strongConnection) {
-            [strongConnection invalidate];
+        if (blockConnection) {
+            [blockConnection invalidate];
         }
     };
 
     newConnection.invalidationHandler = ^{
         qCInfo(OCC::Mac::lcFinderSyncXPC) << "FinderSync XPC connection invalidated";
-        NSXPCConnection *strongConnection = weakConnection;
-        if (_finderSyncXPC && strongConnection) {
+        if (_finderSyncXPC && blockConnection) {
             // Clean up the connection from our tracking
-            _finderSyncXPC->removeExtensionProxy((void *)CFBridgingRetain(strongConnection));
+            _finderSyncXPC->removeExtensionProxy((void *)CFBridgingRetain(blockConnection));
         }
     };
 

@@ -301,10 +301,10 @@ public:
     {
     }
 
-    void sendMessage(const QString &message, bool = false) const override
+    void sendMessage(const QString &message, bool = false)
     {
         // Cast away const to store messages (this is a mock for testing)
-        const_cast<MockSocketListener*>(this)->messages.append(message);
+        messages.append(message);
     }
 };
 } // anonymous namespace
@@ -389,3 +389,5 @@ QList<QMap<QString, QString>> FinderSyncService::getMenuItems(const QStringList 
 } // namespace Mac
 
 } // namespace OCC
+
+
