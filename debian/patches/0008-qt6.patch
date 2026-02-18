@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 9f98f44e04..2c46ef8ea3 100644
+index cc3d951dee..0ecc953798 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -31,7 +31,7 @@ set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
@@ -459,7 +459,7 @@ index b92cfa08e4..38f3d462ec 100644
              continue;
          }
 diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
-index 0b9097cb15..668bf7737e 100644
+index 40f11aeb96..c24b090653 100644
 --- a/src/gui/CMakeLists.txt
 +++ b/src/gui/CMakeLists.txt
 @@ -3,7 +3,7 @@
@@ -471,11 +471,12 @@ index 0b9097cb15..668bf7737e 100644
  find_package(KF6GuiAddons)
  
  if(CMAKE_BUILD_TYPE MATCHES Debug)
-@@ -548,9 +548,16 @@ target_link_libraries(nextcloudCore
+@@ -534,10 +534,17 @@ target_link_libraries(nextcloudCore
    Qt::Quick
    Qt::QuickControls2
    Qt::QuickWidgets
 -  KF6::Archive
+   KDAB::kdsingleapplication
    )
  
 +if(KF6Archive_FOUND)
@@ -489,7 +490,7 @@ index 0b9097cb15..668bf7737e 100644
  if(KF6GuiAddons_FOUND)
    target_link_libraries(nextcloudCore
      PUBLIC
-@@ -758,3 +765,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
+@@ -743,3 +750,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
  endif()
  
  configure_file(configgui.h.in ${CMAKE_CURRENT_BINARY_DIR}/configgui.h)
@@ -537,10 +538,10 @@ index d139565a56..41e2924fce 100644
  #include <QSettings>
  #include <QTimer>
 diff --git a/src/gui/application.cpp b/src/gui/application.cpp
-index 214cda6c0c..5abaacefb9 100644
+index db3ad8a3ec..bc85dc1c5d 100644
 --- a/src/gui/application.cpp
 +++ b/src/gui/application.cpp
-@@ -37,6 +37,7 @@
+@@ -31,6 +31,7 @@
  #include "version.h"
  #include "csync_exclude.h"
  #include "common/vfs.h"
@@ -548,7 +549,7 @@ index 214cda6c0c..5abaacefb9 100644
  
  #include "config.h"
  
-@@ -1023,7 +1024,7 @@ void Application::setupTranslations()
+@@ -1037,7 +1038,7 @@ void Application::setupTranslations()
      qCInfo(lcApplication) << "System UI languages are:" << QLocale::system().uiLanguages();
      auto choosenLanguage = enforcedLanguage();
      if (choosenLanguage.isEmpty()) {
@@ -721,7 +722,7 @@ index 8f7314d96e..d9ad7ef190 100644
  #include <QUrl>
  #include <QJsonDocument>
 diff --git a/src/gui/socketapi/socketapi.cpp b/src/gui/socketapi/socketapi.cpp
-index 58efdddaa7..57c7c5d7bb 100644
+index c2d2120944..574c413f65 100644
 --- a/src/gui/socketapi/socketapi.cpp
 +++ b/src/gui/socketapi/socketapi.cpp
 @@ -18,6 +18,7 @@
@@ -777,7 +778,7 @@ index 6af9ec3c16..4195dd305b 100644
  
      // TODO: the current style does not support customization of this control
 diff --git a/src/gui/tray/ActivityItemContent.qml b/src/gui/tray/ActivityItemContent.qml
-index 2260ed8e6e..9232fdc56e 100644
+index f1b09c765e..011dd07278 100644
 --- a/src/gui/tray/ActivityItemContent.qml
 +++ b/src/gui/tray/ActivityItemContent.qml
 @@ -14,7 +14,7 @@ import com.nextcloud.desktopclient
@@ -808,7 +809,7 @@ index 2260ed8e6e..9232fdc56e 100644
                      }
  
                      display: Button.IconOnly
-@@ -201,9 +209,17 @@ RowLayout {
+@@ -223,9 +231,17 @@ RowLayout {
                      display: Button.IconOnly
  
                      ToolTip {
@@ -931,7 +932,7 @@ index 6c998598fb..5866e1615a 100644
  
      Rectangle {
 diff --git a/src/gui/tray/activitydata.cpp b/src/gui/tray/activitydata.cpp
-index c17b8db4ab..7284fb0fe4 100644
+index aeaad62a3a..f85170046e 100644
 --- a/src/gui/tray/activitydata.cpp
 +++ b/src/gui/tray/activitydata.cpp
 @@ -8,6 +8,7 @@
@@ -943,7 +944,7 @@ index c17b8db4ab..7284fb0fe4 100644
  using namespace Qt::StringLiterals;
  
 diff --git a/src/gui/tray/activitylistmodel.cpp b/src/gui/tray/activitylistmodel.cpp
-index 45f319b5e1..26485d9e65 100644
+index 20ece0431a..96469c8ce6 100644
 --- a/src/gui/tray/activitylistmodel.cpp
 +++ b/src/gui/tray/activitylistmodel.cpp
 @@ -18,6 +18,7 @@
@@ -1003,7 +1004,7 @@ index b65a604b72..b15ac6c1e2 100644
  #include <QTimer>
  #include <QJsonDocument>
 diff --git a/src/libsync/CMakeLists.txt b/src/libsync/CMakeLists.txt
-index 5829eabdcf..329d5e34e8 100644
+index 10429efe18..90dec2633a 100644
 --- a/src/libsync/CMakeLists.txt
 +++ b/src/libsync/CMakeLists.txt
 @@ -2,7 +2,7 @@
@@ -1015,7 +1016,7 @@ index 5829eabdcf..329d5e34e8 100644
  include(DefinePlatformDefaults)
  
  set(CMAKE_AUTOMOC TRUE)
-@@ -164,6 +164,8 @@ set(libsync_SRCS
+@@ -166,6 +166,8 @@ set(libsync_SRCS
      creds/keychainchunk.cpp
      caseclashconflictsolver.h
      caseclashconflictsolver.cpp
@@ -1024,7 +1025,7 @@ index 5829eabdcf..329d5e34e8 100644
  )
  
  if (WIN32)
-@@ -230,10 +232,15 @@ target_link_libraries(nextcloudsync
+@@ -232,10 +234,15 @@ target_link_libraries(nextcloudsync
    Qt::Gui
    Qt::Svg
    Qt::Widgets
@@ -1065,7 +1066,7 @@ index 514983390f..1cf4ba1833 100644
                  }
  
 diff --git a/src/libsync/account.cpp b/src/libsync/account.cpp
-index d2d513ce53..2b6bb4e06e 100644
+index 0a7ad51ea8..030b6bd54d 100644
 --- a/src/libsync/account.cpp
 +++ b/src/libsync/account.cpp
 @@ -24,6 +24,7 @@
@@ -1076,7 +1077,7 @@ index d2d513ce53..2b6bb4e06e 100644
  #include "clientsideencryption.h"
  #include "ocsuserstatusconnector.h"
  
-@@ -1283,7 +1284,8 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
+@@ -1284,7 +1285,8 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
                                            serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
                                            newEntry);
  
@@ -1386,7 +1387,7 @@ index 0000000000..ba7eb44067
 +
 +QByteArray unGzipData(const QByteArray& inputData);
 diff --git a/src/libsync/networkjobs.cpp b/src/libsync/networkjobs.cpp
-index 2b994774f9..57c0f11fd1 100644
+index 4d3b5403e2..8af4c7d366 100644
 --- a/src/libsync/networkjobs.cpp
 +++ b/src/libsync/networkjobs.cpp
 @@ -10,6 +10,7 @@
