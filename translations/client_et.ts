@@ -20,6 +20,16 @@
         <translation>Ava faili üksikasjad</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="196"/>
+        <source>File details</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
+        <source>File actions</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
         <source>Dismiss</source>
         <translation>Jäta vahele</translation>
@@ -267,6 +277,14 @@
     </message>
 </context>
 <context>
+    <name>FileActionsWindow</name>
+    <message>
+        <location filename="../src/gui/integration/FileActionsWindow.qml" line="31"/>
+        <source>File actions for %1</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>FileDetailsPage</name>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="218"/>
@@ -420,37 +438,37 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="412"/>
         <source>Start new conversation?</source>
-        <translation type="unfinished"/>
+        <translation>Kas alustad uut vestlust?</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="432"/>
         <source>New conversation</source>
-        <translation type="unfinished"/>
+        <translation>Uus vestlus</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="436"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Katkesta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="457"/>
         <source>This will clear the existing conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Sellega olemasolev vestlus eemaldatakse</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="502"/>
         <source>Ask Assistant…</source>
-        <translation type="unfinished"/>
+        <translation>Küsi Abiliselt…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="530"/>
         <source>Send assistant question</source>
-        <translation type="unfinished"/>
+        <translation>Saada Abilisele küsimus</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="551"/>
         <source>Start a new assistant chat</source>
-        <translation type="unfinished"/>
+        <translation>Alusta uut vestlust Abilisega</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
@@ -1955,6 +1973,45 @@ See võib olla seotud kasutatavate OpenSSl-i teekidega.</translation>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="332"/>
         <source>Failed to upload metadata</source>
         <translation>Ei õnnestunud üles laadida metaandmeid</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::FileActionsModel</name>
+    <message>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="181"/>
+        <source>Your account is offline %1.</source>
+        <comment>account url</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="189"/>
+        <source>The file id is empty for %1.</source>
+        <comment>file name</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="197"/>
+        <source>The file type for %1 is not valid.</source>
+        <comment>file name</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="206"/>
+        <source>No file actions were returned by the server for %1 files.</source>
+        <comment>file mymetype</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="289"/>
+        <source>%1 did not succeed, please try again later. If you need help, contact your server administrator.</source>
+        <comment>file action error message</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="301"/>
+        <source>%1 done.</source>
+        <comment>file action success message</comment>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -5006,6 +5063,12 @@ Veateade serveri päringuvastuses: %2</translation>
         <translation>Vali uus asukoht…</translation>
     </message>
     <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1132"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1195"/>
+        <source>File actions</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1100"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1316"/>
         <source>Activity</source>
@@ -5710,42 +5773,42 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="1357"/>
         <source>Open %1 Assistant</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation type="unfinished"/>
+        <translation>Ava %1i Abiline</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1464"/>
         <source>Assistant is not available for this account.</source>
-        <translation type="unfinished"/>
+        <translation>Abiline pole selle kasutajakonto jaoks saadaval</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1470"/>
         <source>Assistant is already processing a request.</source>
-        <translation type="unfinished"/>
+        <translation>Abiline juba töötleb ühte ülesannet.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1507"/>
         <source>Sending your request…</source>
-        <translation type="unfinished"/>
+        <translation>Saadan sinu päringut…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1580"/>
         <source>No response yet. Please try again later.</source>
-        <translation type="unfinished"/>
+        <translation>Vastust veel pole. Palun proovi hiljem uuesti.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1599"/>
         <source>No supported assistant task types were returned.</source>
-        <translation type="unfinished"/>
+        <translation>Vastuses polnud ühtegi ülesande tüüpi, mida Abiline saaks täita.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1681"/>
         <source>Waiting for the assistant response…</source>
-        <translation type="unfinished"/>
+        <translation>Ootan Abilise vastust…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1703"/>
         <source>Assistant request failed (%1).</source>
-        <translation type="unfinished"/>
+        <translation>Abilisele päringu saatmine ei toiminud (%1).</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1211"/>
