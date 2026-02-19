@@ -42,20 +42,22 @@ bool hasConfiguredSyncSource(const OCC::AccountStatePtr &accountState)
     if (!accountState) {
         return false;
     }
-
-    for (const auto &folder : OCC::FolderMan::instance()->map()) {
-        if (folder && folder->accountState() == accountState.data()) {
-            return true;
-        }
-    }
-
-#ifdef BUILD_FILE_PROVIDER_MODULE
+    
+ #ifdef BUILD_FILE_PROVIDER_MODULE
     const auto account = accountState->account();
     const auto userIdAtHostWithPort = account->userIdAtHostWithPort();
     if (OCC::Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(userIdAtHostWithPort)) {
         return true;
     }
 #endif
+
+    for (const auto &folder : OCC::FolderMan::instance()->map()) {
+        if (folder->accountState() == accountState.data()) {
+            continue;
+        }
+        
+        return true;
+    }
 
     return false;
 }
