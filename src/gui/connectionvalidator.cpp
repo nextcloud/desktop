@@ -291,7 +291,7 @@ bool ConnectionValidator::setAndCheckServerVersion(const QString &version)
     qCInfo(lcConnectionValidator) << _account->url() << "has server version" << version;
     _account->setServerVersion(version);
 
-    // The check is not required anymore as we need to be able to connecto to different servers from different suppliers
+    // The check is not required anymore as we need to be able to connect to different servers from different suppliers
     // Do not remove it as it might be useful later if e.g. a branding parameter could be relevant
     // Check usages of Account::serverVersionUnsupported() for details.
     if (_account->serverVersionInt()
