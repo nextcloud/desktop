@@ -52,7 +52,7 @@ bool hasConfiguredSyncSource(const OCC::AccountStatePtr &accountState)
 #endif
 
     for (const auto &folder : OCC::FolderMan::instance()->map()) {
-        if (folder->accountState() == accountState.data()) {
+        if (folder->accountState() != accountState.data()) {
             continue;
         }
         
