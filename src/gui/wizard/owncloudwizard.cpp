@@ -370,16 +370,18 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
     } else if (id == WizardCommon::Page_HttpCreds) {
         // This page can be either an intermediate or final page depending on
         // whether virtual files are enabled by default in the current build.
-        // Keep both buttons available so Qt can display the right one.
-        setButtonLayout({QWizard::BackButton, QWizard::Stretch, QWizard::NextButton, QWizard::FinishButton});
-        setNextButtonAsDefault();
-    } else if (id == WizardCommon::Page_ServerSetup) {
-        if constexpr (Theme::doNotUseProxy()) {
-            setButtonLayout({QWizard::BackButton, QWizard::Stretch, QWizard::NextButton});
+        // Use an explicit per-case layout so one actionable button is always
+        // visible and not left to style-specific handling.
+        const auto isFinalPage = _httpCredsPage->nextId() == -1;
+        if (isFinalPage) {
+            setButtonLayout({QWizard::BackButton, QWizard::Stretch, QWizard::FinishButton});
+            if (auto finishButton = qobject_cast<QPushButton *>(button(QWizard::FinishButton))) {
+                finishButton->setDefault(true);
+            }
         } else {
-            setButtonLayout({QWizard::BackButton, QWizard::Stretch, QWizard::CustomButton3, QWizard::NextButton});
+            setButtonLayout({QWizard::BackButton, QWizard::Stretch, QWizard::NextButton});
+            setNextButtonAsDefault();
         }
-        setNextButtonAsDefault();
     } else {
         // Some pages can become the final page. Include both buttons so Qt can
         // show the right one depending on the page state.
