@@ -144,6 +144,18 @@
        </sizepolicy>
      </property>
      <layout class="QVBoxLayout" name="fileProviderPanelLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QLabel" name="fileProviderPanelTitle">
         <property name="text">
@@ -170,6 +182,18 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <layout class="QVBoxLayout" name="syncFoldersPanelLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QLabel" name="syncFoldersPanelTitle">
         <property name="text">
@@ -401,6 +425,18 @@
          <enum>QFrame::NoFrame</enum>
         </property>
        <layout class="QVBoxLayout" name="connectionSettingsPanelLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
          <item>
           <widget class="QLabel" name="connectionSettingsPanelTitle">
            <property name="text">
