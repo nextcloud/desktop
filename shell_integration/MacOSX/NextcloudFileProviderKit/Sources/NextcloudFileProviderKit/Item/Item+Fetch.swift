@@ -117,12 +117,9 @@ public extension Item {
 
             if let domain, let localUrl = await localUrlForContents(domain: domain) {
                 return (localUrl, self, nil)
-            } else if #available(macOS 13.0, *) {
-                logger.error("Could not get local contents URL for lock file, erroring.")
-                return (nil, self, NSFileProviderError(.excludedFromSync))
             } else {
-                logger.error("Could not get local contents URL for lock file, nilling.")
-                return (nil, self, nil)
+                logger.error("Could not get local content URL for lock file.")
+                return (nil, self, NSFileProviderError(.excludedFromSync))
             }
         }
 

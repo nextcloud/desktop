@@ -24,16 +24,10 @@ public extension Item {
             }
         }
 
-        if #available(macOS 13.0, iOS 16.0, visionOS 1.0, *) {
-            if keepDownloaded, !isDownloaded {
-                try await manager.requestDownloadForItem(withIdentifier: itemIdentifier)
-            } else {
-                try await manager.requestModification(
-                    of: [.lastUsedDate], forItemWithIdentifier: itemIdentifier
-                )
-            }
+        if keepDownloaded, !isDownloaded {
+            try await manager.requestDownloadForItem(withIdentifier: itemIdentifier)
         } else {
-            try await manager.signalEnumerator(for: .workingSet)
+            try await manager.requestModification(of: [.lastUsedDate], forItemWithIdentifier: itemIdentifier)
         }
     }
 }

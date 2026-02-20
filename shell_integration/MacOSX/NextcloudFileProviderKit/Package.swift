@@ -7,7 +7,7 @@ let package = Package(
     name: "NextcloudFileProviderKit",
     platforms: [
         .iOS(.v16),
-        .macOS(.v12),
+        .macOS(.v13),
         .visionOS(.v1)
     ],
     products: [
