@@ -22,12 +22,12 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="196"/>
         <source>File details</source>
-        <translation type="unfinished"/>
+        <translation>Dateidetails</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
         <source>File actions</source>
-        <translation type="unfinished"/>
+        <translation>Dateiaktionen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
@@ -281,7 +281,7 @@
     <message>
         <location filename="../src/gui/integration/FileActionsWindow.qml" line="31"/>
         <source>File actions for %1</source>
-        <translation type="unfinished"/>
+        <translation>Dateiaktionen für %1</translation>
     </message>
 </context>
 <context>
@@ -1981,37 +1981,37 @@ Dies kann ein Problem mit Ihren OpenSSL-Bibliotheken sein.</translation>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="181"/>
         <source>Your account is offline %1.</source>
         <comment>account url</comment>
-        <translation type="unfinished"/>
+        <translation>Ihr Konto ist offline %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="189"/>
         <source>The file id is empty for %1.</source>
         <comment>file name</comment>
-        <translation type="unfinished"/>
+        <translation>Die Datei-Id für %1 ist leer.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="197"/>
         <source>The file type for %1 is not valid.</source>
         <comment>file name</comment>
-        <translation type="unfinished"/>
+        <translation>Der Dateityp für %1 ist ungültig.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="206"/>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mymetype</comment>
-        <translation type="unfinished"/>
+        <translation>Für %1 Dateien wurden vom Server keine Dateiaktionen zurückgegeben.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="289"/>
         <source>%1 did not succeed, please try again later. If you need help, contact your server administrator.</source>
         <comment>file action error message</comment>
-        <translation type="unfinished"/>
+        <translation>%1 hat nicht geklappt. Bitte später noch einmal versuchen. Für Hilfe, bitte an die Serveradministration wenden.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="301"/>
         <source>%1 done.</source>
         <comment>file action success message</comment>
-        <translation type="unfinished"/>
+        <translation>%1 erledigt.</translation>
     </message>
 </context>
 <context>
@@ -5066,7 +5066,7 @@ Server antwortete mit Fehler: %2</translation>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1132"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1195"/>
         <source>File actions</source>
-        <translation type="unfinished"/>
+        <translation>Dateiaktionen</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1100"/>
