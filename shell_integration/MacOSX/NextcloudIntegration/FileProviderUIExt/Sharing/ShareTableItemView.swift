@@ -52,9 +52,7 @@ class ShareTableItemView: NSTableCellView {
             accessibilityDescription: String(localized: "Public link has been copied icon")
         )
         var config = NSImage.SymbolConfiguration(scale: .medium)
-        if #available(macOS 12.0, *) {
-            config = config.applying(.init(hierarchicalColor: .systemGreen))
-        }
+        config = config.applying(.init(hierarchicalColor: .systemGreen))
         copiedButtonImage = copiedButtonImage?.withSymbolConfiguration(config)
         copyLinkButton.image = copiedButtonImage
         tempButtonTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
