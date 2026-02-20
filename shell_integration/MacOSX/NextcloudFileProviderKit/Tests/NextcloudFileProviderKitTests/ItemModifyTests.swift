@@ -1346,11 +1346,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             ignoredFiles: ignoredMatcher,
             dbManager: Self.dbManager
         )
-        if #available(macOS 13.0, *) {
-            XCTAssertEqual(error as? NSFileProviderError, NSFileProviderError(.excludedFromSync))
-        } else {
-            XCTAssertNil(error)
-        }
+        XCTAssertEqual(error as? NSFileProviderError, NSFileProviderError(.excludedFromSync))
         XCTAssertNotNil(resultItem)
         XCTAssertEqual(resultItem?.metadata.fileName, "error.bak")
     }
