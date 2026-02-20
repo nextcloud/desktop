@@ -432,7 +432,7 @@ void SyncStatusSummary::setSyncStateToConnectedState()
         setSyncStatusString(tr("Offline"));
         setSyncIcon(Theme::instance()->folderOffline());
     } else if (!hasConfiguredSyncSource(_accountState)) {
-        setSyncStatusString(tr("Sync paused"));
+        setSyncStatusString(tr("No synchronisation configured"));
         setSyncIcon(Theme::instance()->pause());
     } else {
         setSyncStatusString(tr("All synced!"));
