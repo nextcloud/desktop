@@ -20,13 +20,109 @@
 #include <cstdio>
 
 namespace OCC {
-
 namespace {
-const auto updateAvailableC = QStringLiteral("Updater/updateAvailable");
-const auto updateTargetVersionC = QStringLiteral("Updater/updateTargetVersion");
-const auto updateTargetVersionStringC = QStringLiteral("Updater/updateTargetVersionString");
-const auto autoUpdateAttemptedC = QStringLiteral("Updater/autoUpdateAttempted");
+void raiseUpdaterDialog(QWidget *widget);
+
+QWidget *updaterDialogParent()
+{
+    if (auto *active = QApplication::activeWindow()) {
+        return active;
+    }
+
+    if (auto *focus = QApplication::focusWidget()) {
+        return focus->window();
+    }
+
+    return nullptr;
 }
+
+bool attachAndOpenUpdaterDialog(QDialog *dialog, const bool removeContextHelpButton, const bool requireParent)
+{
+    if (!dialog || dialog->isVisible()) {
+        return dialog != nullptr;
+    }
+
+    auto *parent = updaterDialogParent();
+    if (requireParent && !parent) {
+        return false;
+    }
+
+    if (parent) {
+        dialog->setParent(parent, dialog->windowFlags());
+        dialog->setWindowModality(Qt::WindowModal);
+    } else {
+        dialog->setWindowModality(Qt::ApplicationModal);
+    }
+
+    auto flags = dialog->windowFlags() | Qt::WindowStaysOnTopHint;
+    if (removeContextHelpButton) {
+        flags &= ~Qt::WindowContextHelpButtonHint;
+    }
+    dialog->setWindowFlags(flags);
+    dialog->open();
+    raiseUpdaterDialog(dialog);
+    return true;
+}
+
+void presentUpdaterDialog(QDialog *dialog, const bool removeContextHelpButton)
+{
+    if (!dialog) {
+        return;
+    }
+
+    if (attachAndOpenUpdaterDialog(dialog, removeContextHelpButton, true)) {
+        return;
+    }
+
+    auto *timer = new QTimer(dialog);
+    timer->setInterval(150);
+    timer->setSingleShot(false);
+    QObject::connect(timer, &QTimer::timeout, dialog, [dialog, removeContextHelpButton, timer]() {
+        if (!dialog) {
+            timer->stop();
+            timer->deleteLater();
+            return;
+        }
+
+        if (attachAndOpenUpdaterDialog(dialog, removeContextHelpButton, true)) {
+            timer->stop();
+            timer->deleteLater();
+        }
+    });
+    timer->start();
+
+    QTimer::singleShot(2000, dialog, [dialog, removeContextHelpButton, timer]() {
+        if (!dialog || dialog->isVisible()) {
+            return;
+        }
+
+        attachAndOpenUpdaterDialog(dialog, removeContextHelpButton, false);
+        if (timer) {
+            timer->stop();
+            timer->deleteLater();
+        }
+    });
+
+    QObject::connect(qApp, &QApplication::focusChanged, dialog, [dialog]() {
+        if (!dialog || !dialog->isVisible()) {
+            return;
+        }
+
+        raiseUpdaterDialog(dialog);
+    });
+}
+
+void raiseUpdaterDialog(QWidget *widget)
+{
+    if (!widget) {
+        return;
+    }
+
+    widget->showNormal();
+    widget->raise();
+    widget->activateWindow();
+}
+} // namespace
 
 UpdaterScheduler::UpdaterScheduler(QObject *parent)
     : QObject(parent)
@@ -92,7 +188,7 @@ bool OCUpdater::performUpdate()
 {
     ConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
-    QString updateFile = settings.value(updateAvailableC).toString();
+    QString updateFile = settings.value(updateAvailableKey).toString();
     if (!updateFile.isEmpty() && QFile(updateFile).exists()
         && !updateSucceeded() /* Someone might have run the updater manually between restarts */) {
         const auto messageBoxStartInstaller = new QMessageBox(QMessageBox::Information,
@@ -111,7 +207,7 @@ bool OCUpdater::performUpdate()
                 slotStartInstaller();
             }
         });
-        messageBoxStartInstaller->open();
+        presentUpdaterDialog(messageBoxStartInstaller, false);
     }
     return false;
 }
@@ -200,37 +296,7 @@ void OCUpdater::setDownloadState(DownloadState state)
 
 void OCUpdater::slotStartInstaller()
 {
-    ConfigFile cfg;
-    QSettings settings(cfg.configFile(), QSettings::IniFormat);
-    QString updateFile = settings.value(updateAvailableC).toString();
-    settings.setValue(autoUpdateAttemptedC, true);
-    settings.sync();
-    qCInfo(lcUpdater) << "Running updater" << updateFile;
-
-    if(updateFile.endsWith(".exe")) {
-        QProcess::startDetached(updateFile, QStringList() << "/S"
-                                                          << "/launch");
-    } else if(updateFile.endsWith(".msi")) {
-        // When MSIs are installed without gui they cannot launch applications
-        // as they lack the user context. That is why we need to run the client
-        // manually here. We wrap the msiexec and client invocation in a powershell
-        // script because owncloud.exe will be shut down for installation.
-        // | Out-Null forces powershell to wait for msiexec to finish.
-        auto preparePathForPowershell = [](QString path) {
-            path.replace("'", "''");
-
-            return QDir::toNativeSeparators(path);
-        };
-
-        QString msiLogFile = cfg.configPath() + "msi.log";
-        QString command = QStringLiteral("&{msiexec /i '%1' /L*V '%2'| Out-Null ; &'%3'}")
-             .arg(preparePathForPowershell(updateFile))
-             .arg(preparePathForPowershell(msiLogFile))
-             .arg(preparePathForPowershell(QCoreApplication::applicationFilePath()));
-
-        QProcess::startDetached("powershell.exe", QStringList{"-Command", command});
-    }
-    qApp->quit();
+    qCWarning(lcUpdater) << "slotStartInstaller called on non-NSIS updater";
 }
 
 void OCUpdater::checkForUpdate()
@@ -253,7 +319,7 @@ bool OCUpdater::updateSucceeded() const
     ConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
 
-    qint64 targetVersionInt = Helper::stringVersionToInt(settings.value(updateTargetVersionC).toString());
+    qint64 targetVersionInt = Helper::stringVersionToInt(settings.value(updateTargetVersionKey).toString());
     qint64 currentVersion = Helper::currentVersionToInt();
     return currentVersion >= targetVersionInt;
 }
@@ -306,13 +372,13 @@ void NSISUpdater::wipeUpdateData()
 {
     ConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
-    QString updateFileName = settings.value(updateAvailableC).toString();
+    QString updateFileName = settings.value(updateAvailableKey).toString();
     if (!updateFileName.isEmpty())
         QFile::remove(updateFileName);
-    settings.remove(updateAvailableC);
-    settings.remove(updateTargetVersionC);
-    settings.remove(updateTargetVersionStringC);
-    settings.remove(autoUpdateAttemptedC);
+    settings.remove(updateAvailableKey);
+    settings.remove(updateTargetVersionKey);
+    settings.remove(updateTargetVersionStringKey);
+    settings.remove(autoUpdateAttemptedKey);
 }
 
 void NSISUpdater::slotDownloadFinished()
@@ -331,7 +397,7 @@ void NSISUpdater::slotDownloadFinished()
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
 
     // remove previously downloaded but not used installer
-    QFile oldTargetFile(settings.value(updateAvailableC).toString());
+    QFile oldTargetFile(settings.value(updateAvailableKey).toString());
     if (oldTargetFile.exists()) {
         oldTargetFile.remove();
     }
@@ -339,9 +405,9 @@ void NSISUpdater::slotDownloadFinished()
     QFile::copy(_file->fileName(), _targetFile);
     setDownloadState(DownloadComplete);
     qCInfo(lcUpdater) << "Downloaded" << url.toString() << "to" << _targetFile;
-    settings.setValue(updateTargetVersionC, updateInfo().version());
-    settings.setValue(updateTargetVersionStringC, updateInfo().versionString());
-    settings.setValue(updateAvailableC, _targetFile);
+    settings.setValue(updateTargetVersionKey, updateInfo().version());
+    settings.setValue(updateTargetVersionStringKey, updateInfo().versionString());
+    settings.setValue(updateAvailableKey, _targetFile);
 }
 
 void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
@@ -396,7 +462,6 @@ void NSISUpdater::showNoUrlDialog(const UpdateInfo &info)
     // if the version tag is set, there is a newer version.
     auto *msgBox = new QDialog;
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
-    msgBox->setWindowFlags(msgBox->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     QIcon infoIcon = msgBox->style()->standardIcon(QStyle::SP_MessageBoxInformation);
     int iconSize = msgBox->style()->pixelMetric(QStyle::PM_MessageBoxIconSize);
@@ -436,14 +501,13 @@ void NSISUpdater::showNoUrlDialog(const UpdateInfo &info)
 
     layout->addWidget(bb);
 
-    msgBox->open();
+    presentUpdaterDialog(msgBox, true);
 }
 
 void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)
 {
     auto msgBox = new QDialog;
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
-    msgBox->setWindowFlags(msgBox->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     QIcon infoIcon = msgBox->style()->standardIcon(QStyle::SP_MessageBoxInformation);
     int iconSize = msgBox->style()->pixelMetric(QStyle::PM_MessageBoxIconSize);
@@ -491,7 +555,7 @@ void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)
 
     layout->addWidget(bb);
 
-    msgBox->open();
+    presentUpdaterDialog(msgBox, true);
 }
 
 bool NSISUpdater::handleStartup()
@@ -505,12 +569,12 @@ bool NSISUpdater::handleStartup()
         return false;
     }
 
-    QString updateFileName = settings.value(updateAvailableC).toString();
+    QString updateFileName = settings.value(updateAvailableKey).toString();
     // has the previous run downloaded an update?
     if (!updateFileName.isEmpty() && QFile(updateFileName).exists()) {
         qCInfo(lcUpdater) << "An updater file is available";
         // did it try to execute the update?
-        if (settings.value(autoUpdateAttemptedC, false).toBool()) {
+        if (settings.value(autoUpdateAttemptedKey, false).toBool()) {
             if (updateSucceeded()) {
                 // success: clean up
                 qCInfo(lcUpdater) << "The requested update attempt has succeeded"
@@ -520,8 +584,8 @@ bool NSISUpdater::handleStartup()
             } else {
                 // auto update failed. Ask user what to do
                 qCInfo(lcUpdater) << "The requested update attempt has failed"
-                        << settings.value(updateTargetVersionC).toString();
-                showUpdateErrorDialog(settings.value(updateTargetVersionStringC).toString());
+                        << settings.value(updateTargetVersionKey).toString();
+                showUpdateErrorDialog(settings.value(updateTargetVersionStringKey).toString());
                 return false;
             }
         } else {
@@ -530,6 +594,41 @@ bool NSISUpdater::handleStartup()
         }
     }
     return false;
+}
+
+void NSISUpdater::slotStartInstaller()
+{
+    ConfigFile cfg;
+    QSettings settings(cfg.configFile(), QSettings::IniFormat);
+    QString updateFile = settings.value(updateAvailableKey).toString();
+    settings.setValue(autoUpdateAttemptedKey, true);
+    settings.sync();
+    qCInfo(lcUpdater) << "Running updater" << updateFile;
+
+    if (updateFile.endsWith(".exe")) {
+        QProcess::startDetached(updateFile, QStringList() << "/S"
+                                                          << "/launch");
+    } else if (updateFile.endsWith(".msi")) {
+        // When MSIs are installed without gui they cannot launch applications
+        // as they lack the user context. That is why we need to run the client
+        // manually here. We wrap the msiexec and client invocation in a powershell
+        // script because owncloud.exe will be shut down for installation.
+        // | Out-Null forces powershell to wait for msiexec to finish.
+        auto preparePathForPowershell = [](QString path) {
+            path.replace("'", "''");
+
+            return QDir::toNativeSeparators(path);
+        };
+
+        QString msiLogFile = cfg.configPath() + "msi.log";
+        QString command = QStringLiteral("&{msiexec /i '%1' /L*V '%2'| Out-Null ; &'%3'}")
+             .arg(preparePathForPowershell(updateFile))
+             .arg(preparePathForPowershell(msiLogFile))
+             .arg(preparePathForPowershell(QCoreApplication::applicationFilePath()));
+
+        QProcess::startDetached("powershell.exe", QStringList{"-Command", command});
+    }
+    qApp->quit();
 }
 
 ////////////////////////////////////////////////////////////////////////
