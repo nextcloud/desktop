@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index cc3d951dee..0ecc953798 100644
+index bc21539e9b..f6554fb424 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -31,7 +31,7 @@ set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
@@ -991,6 +991,18 @@ index 424bc4c191..c478caa092 100644
  
  #include <algorithm>
  
+diff --git a/src/gui/tray/usermodel.cpp b/src/gui/tray/usermodel.cpp
+index 6b418ca555..639906f1e2 100644
+--- a/src/gui/tray/usermodel.cpp
++++ b/src/gui/tray/usermodel.cpp
+@@ -27,6 +27,7 @@
+ #include "userstatusconnector.h"
+ #include "common/utility.h"
+ #include "ocsassistantconnector.h"
++#include "common/qtcompat.h"
+ 
+ #ifdef BUILD_FILE_PROVIDER_MODULE
+ #include "gui/macOS/fileprovider.h"
 diff --git a/src/gui/userinfo.cpp b/src/gui/userinfo.cpp
 index b65a604b72..b15ac6c1e2 100644
 --- a/src/gui/userinfo.cpp
@@ -1407,6 +1419,18 @@ index 4d3b5403e2..8af4c7d366 100644
              qCWarning(lcPropfindJob) << "XML parser error: " << res.errorMessage << res.errorLine << res.errorColumn;
              emit finishedWithError(reply());
  
+diff --git a/src/libsync/ocsassistantconnector.cpp b/src/libsync/ocsassistantconnector.cpp
+index d15483e4a5..98661733c6 100644
+--- a/src/libsync/ocsassistantconnector.cpp
++++ b/src/libsync/ocsassistantconnector.cpp
+@@ -7,6 +7,7 @@
+ 
+ #include "account.h"
+ #include "networkjobs.h"
++#include "common/qtcompat.h"
+ 
+ #include <QJsonDocument>
+ #include <QLoggingCategory>
 diff --git a/src/libsync/ocsuserstatusconnector.cpp b/src/libsync/ocsuserstatusconnector.cpp
 index a70088034e..4943ccd79c 100644
 --- a/src/libsync/ocsuserstatusconnector.cpp
