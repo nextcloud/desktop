@@ -36,6 +36,31 @@ OCC::SyncResult::Status determineSyncStatus(const OCC::SyncResult &syncResult)
     }
     return status;
 }
+
+bool hasConfiguredSyncSource(const OCC::AccountStatePtr &accountState)
+{
+    if (!accountState) {
+        return false;
+    }
+    
+ #ifdef BUILD_FILE_PROVIDER_MODULE
+    const auto account = accountState->account();
+    const auto userIdAtHostWithPort = account->userIdAtHostWithPort();
+    if (OCC::Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(userIdAtHostWithPort)) {
+        return true;
+    }
+#endif
+
+    for (const auto &folder : OCC::FolderMan::instance()->map()) {
+        if (folder->accountState() != accountState.data()) {
+            continue;
+        }
+        
+        return true;
+    }
+
+    return false;
+}
 }
 
 namespace OCC {
@@ -406,6 +431,9 @@ void SyncStatusSummary::setSyncStateToConnectedState()
     if (_accountState && !_accountState->isConnected()) {
         setSyncStatusString(tr("Offline"));
         setSyncIcon(Theme::instance()->folderOffline());
+    } else if (!hasConfiguredSyncSource(_accountState)) {
+        setSyncStatusString(tr("No synchronisation configured"));
+        setSyncIcon(Theme::instance()->pause());
     } else {
         setSyncStatusString(tr("All synced!"));
         setSyncIcon(Theme::instance()->syncStatusOk());
@@ -429,6 +457,10 @@ void SyncStatusSummary::initSyncState()
 {
     auto syncStateFallbackNeeded = true;
     for (const auto &folder : FolderMan::instance()->map()) {
+        if (!folder || folder->accountState() != _accountState.data()) {
+            continue;
+        }
+
         onFolderSyncStateChanged(folder);
         syncStateFallbackNeeded = false;
     }
