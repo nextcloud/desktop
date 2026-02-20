@@ -183,10 +183,13 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
         " background: palette(alternate-base); }"));
     _ui->syncFoldersPanelContents->setAutoFillBackground(true);
     _ui->syncFoldersPanelContents->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->syncFoldersPanelContents->setContentsMargins(0, 0, 0, 0);
     _ui->fileProviderPanelContents->setAutoFillBackground(true);
     _ui->fileProviderPanelContents->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->fileProviderPanelContents->setContentsMargins(0, 0, 0, 0);
     _ui->connectionSettingsPanelContents->setAutoFillBackground(true);
     _ui->connectionSettingsPanelContents->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->connectionSettingsPanelContents->setContentsMargins(0, 0, 0, 0);
     
     // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
     connect(this, &AccountSettings::styleChanged, delegate, &FolderStatusDelegate::slotStyleChanged);
@@ -213,6 +216,9 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     fpSettingsLayout->setSpacing(0);
     
     fpSettingsWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    if (const auto fpSettingsWidgetLayout = fpSettingsWidget->layout()) {
+        fpSettingsWidgetLayout->setContentsMargins(0, 0, 0, 0);
+    }
     fpSettingsLayout->addWidget(fpSettingsWidget, 1);
     fileProviderPanelContents->setLayout(fpSettingsLayout);
 #else
@@ -222,6 +228,9 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     const auto connectionSettingsPanelContents = _ui->connectionSettingsPanelContents;
     const auto connectionSettingsLayout = new QVBoxLayout(connectionSettingsPanelContents);
     const auto networkSettings = new NetworkSettings(_accountState->account(), connectionSettingsPanelContents);
+    if (const auto networkSettingsLayout = networkSettings->layout()) {
+        networkSettingsLayout->setContentsMargins(0, 0, 0, 0);
+    }
     connectionSettingsLayout->setContentsMargins(0, 0, 0, 0);
     connectionSettingsLayout->setSpacing(0);
     connectionSettingsLayout->addWidget(networkSettings, 1);
