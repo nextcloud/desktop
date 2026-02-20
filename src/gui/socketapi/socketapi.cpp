@@ -615,6 +615,12 @@ void SocketApi::processLeaveShareRequest(const QString &localFile, SocketListene
     FolderMan::instance()->leaveShare(QDir::fromNativeSeparators(localFile));
 }
 
+void SocketApi::processFileActionsRequest(const QString &localFile)
+{
+    const auto fileData = FileData::get(localFile);
+    emit fileActionsCommandReceived(fileData.localPath);
+}
+
 void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus)
 {
     QString msg = buildMessage(QLatin1String("STATUS"), systemPath, fileStatus.toSocketAPIString());
@@ -721,6 +727,13 @@ void SocketApi::command_EDIT(const QString &localFile, SocketListener *listener)
             Utility::openBrowser(url);
     });
     job->start();
+}
+
+void SocketApi::command_FILE_ACTIONS(const QString &localFile, SocketListener *listener)
+{
+    Q_UNUSED(listener);
+
+    processFileActionsRequest(localFile);
 }
 
 // don't pull the share manager into socketapi unittests
@@ -1114,8 +1127,9 @@ void OCC::SocketApi::openPrivateLink(const QString &link)
 
 void SocketApi::command_GET_STRINGS(const QString &argument, SocketListener *listener)
 {
-    static std::array<std::pair<const char *, QString>, 6> strings { {
+    static std::array<std::pair<const char *, QString>, 7> strings { {
         { "SHARE_MENU_TITLE", tr("Share options") },
+        { "FILE_ACTIONS_MENU_TITLE", tr("File actions") },
         { "FILE_ACTIVITY_MENU_TITLE", tr("Activity") },
         { "CONTEXT_MENU_TITLE", Theme::instance()->appNameGUI() },
         { "COPY_PRIVATE_LINK_MENU_TITLE", tr("Copy private link to clipboard") },
@@ -1162,6 +1176,23 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
     // Disabled: only providing email option for private links would look odd,
     // and the copy option is more general.
     //listener->sendMessage(QLatin1String("MENU_ITEM:EMAIL_PRIVATE_LINK") + flagString + tr("Send private link by email …"));
+}
+
+void SocketApi::sendFileActionsContextMenuOptions(const FileData &fileData, SocketListener *listener)
+{
+    const auto record = fileData.journalRecord();
+    const auto isOnTheServer = record.isValid();
+    auto serverHasIntegration = false;
+    if (const auto folder = fileData.folder;folder) {
+        if (const auto accountState = folder->accountState();
+            accountState && accountState->account()) {
+            serverHasIntegration = accountState->account()->serverHasIntegration();
+        }
+    }
+
+    const auto flagString = isOnTheServer && serverHasIntegration ? QLatin1String("::")
+                                                                  : QLatin1String(":d:");
+    listener->sendMessage(QLatin1String("MENU_ITEM:FILE_ACTIONS") + flagString + tr("File actions"));
 }
 
 void SocketApi::sendEncryptFolderCommandMenuEntries(const QFileInfo &fileInfo,
@@ -1348,6 +1379,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         const auto itemEncryptionFlag = isE2eEncryptedPath ? SharingContextItemEncryptedFlag::EncryptedItem : SharingContextItemEncryptedFlag::NotEncryptedItem;
         const auto rootE2eeFolderFlag = isE2eEncryptedRootFolder ? SharingContextItemRootEncryptedFolderFlag::RootEncryptedFolder : SharingContextItemRootEncryptedFolderFlag::NonRootEncryptedFolder;
         sendSharingContextMenuOptions(fileData, listener, itemEncryptionFlag, rootE2eeFolderFlag);
+        sendFileActionsContextMenuOptions(fileData, listener);
 
         // Conflict files get conflict resolution actions
         bool isConflict = Utility::isConflictFile(fileData.folderRelativePath);

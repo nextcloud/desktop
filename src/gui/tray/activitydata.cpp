@@ -177,50 +177,75 @@ OCC::Activity Activity::fromActivityJson(const QJsonObject &json, const AccountP
 
 QString Activity::relativeServerFileTypeIconPath(const QMimeType &mimeType)
 {
-    if(mimeType.isValid() && mimeType.inherits("text/plain")) {
-        return QStringLiteral("/index.php/apps/theming/img/core/filetypes/text.svg");
-    } else if (mimeType.isValid() && mimeType.name().startsWith("image")) {
-        return QStringLiteral("/index.php/apps/theming/img/core/filetypes/image.svg");
-    } else if (mimeType.isValid() && mimeType.name().startsWith("audio")) {
-        return QStringLiteral("/index.php/apps/theming/img/core/filetypes/audio.svg");
-    } else if (mimeType.isValid() && mimeType.name().startsWith("video")) {
-        return QStringLiteral("/index.php/apps/theming/img/core/filetypes/video.svg");
-    } else if (mimeType.isValid() && (mimeType.inherits("application/vnd.oasis.opendocument.text") ||
-                                      mimeType.inherits("application/msword") ||
-                                      mimeType.inherits("application/vnd.openxmlformats-officedocument.wordprocessingml.document") ||
-                                      mimeType.inherits("application/vnd.openxmlformats-officedocument.wordprocessingml.template")||
-                                      mimeType.inherits("application/vnd.ms-word.document.macroEnabled.12") ||
-                                      mimeType.inherits("application/vnd.ms-word.template.macroEnabled.12") ||
-                                      mimeType.inherits("application/vnd.apple.pages"))) {
-        return QStringLiteral("/index.php/apps/theming/img/core/filetypes/x-office-document.svg");
-    } else if (mimeType.isValid() && mimeType.inherits("application/vnd.oasis.opendocument.graphics")) {
-        return QStringLiteral("/index.php/apps/theming/img/core/filetypes/x-office-drawing.svg");
-    } else if (mimeType.isValid() && (mimeType.inherits("application/vnd.oasis.opendocument.presentation") ||
-                                      mimeType.inherits("application/vnd.ms-powerpoint") ||
-                                      mimeType.inherits("application/vnd.openxmlformats-officedocument.presentationml.presentation") ||
-                                      mimeType.inherits("application/vnd.openxmlformats-officedocument.presentationml.template") ||
-                                      mimeType.inherits("application/vnd.openxmlformats-officedocument.presentationml.slideshow") ||
-                                      mimeType.inherits("application/vnd.ms-powerpoint.addin.macroEnabled.12") ||
-                                      mimeType.inherits("application/vnd.ms-powerpoint.presentation.macroEnabled.12") ||
-                                      mimeType.inherits("application/vnd.ms-powerpoint.template.macroEnabled.12") ||
-                                      mimeType.inherits("application/vnd.ms-powerpoint.slideshow.macroEnabled.12") ||
-                                      mimeType.inherits("application/vnd.apple.keynote"))) {
-        return QStringLiteral("/index.php/apps/theming/img/core/filetypes/x-office-presentation.svg");
-    } else if (mimeType.isValid() && (mimeType.inherits("application/vnd.oasis.opendocument.spreadsheet") ||
-                                      mimeType.inherits("application/vnd.ms-excel") ||
-                                      mimeType.inherits("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") ||
-                                      mimeType.inherits("application/vnd.openxmlformats-officedocument.spreadsheetml.template") ||
-                                      mimeType.inherits("application/vnd.ms-excel.sheet.macroEnabled.12") ||
-                                      mimeType.inherits("application/vnd.ms-excel.template.macroEnabled.12") ||
-                                      mimeType.inherits("application/vnd.ms-excel.addin.macroEnabled.12") ||
-                                      mimeType.inherits("application/vnd.ms-excel.sheet.binary.macroEnabled.12") ||
-                                      mimeType.inherits("application/vnd.apple.numbers"))) {
-        return QStringLiteral("/index.php/apps/theming/img/core/filetypes/x-office-document.svg");
-    } else if (mimeType.isValid() && mimeType.inherits("application/pdf")) {
-        return QStringLiteral("/index.php/apps/theming/img/core/filetypes/application-pdf.svg");
-    } else {
-        return QStringLiteral("/index.php/apps/theming/img/core/filetypes/file.svg");
+    const auto iconPath = QStringLiteral("/index.php/apps/theming/img/core/filetypes/");
+    const auto defaultIcon = iconPath + QStringLiteral("file.svg");
+    if (!mimeType.isValid()) {
+        return defaultIcon;
     }
+
+    if (mimeType.inherits("text/plain")) {
+        return iconPath + QStringLiteral("text.svg");
+    }
+
+    if (mimeType.name().startsWith("image")) {
+        return iconPath + QStringLiteral("image.svg");
+    }
+
+    if (mimeType.name().startsWith("audio")) {
+        return iconPath + QStringLiteral("audio.svg");
+    }
+
+    if (mimeType.name().startsWith("video")) {
+        return iconPath + QStringLiteral("video.svg");
+    }
+
+    const auto isDocument = mimeType.inherits("application/vnd.oasis.opendocument.text") ||
+        mimeType.inherits("application/msword") ||
+        mimeType.inherits("application/vnd.openxmlformats-officedocument.wordprocessingml.document") ||
+        mimeType.inherits("application/vnd.openxmlformats-officedocument.wordprocessingml.template") ||
+        mimeType.inherits("application/vnd.ms-word.document.macroEnabled.12")||
+        mimeType.inherits("application/vnd.ms-word.template.macroEnabled.12") ||
+        mimeType.inherits("application/vnd.apple.pages");
+    if (isDocument) {
+        return iconPath + QStringLiteral("x-office-document.svg");
+    }
+
+    if (mimeType.inherits("application/vnd.oasis.opendocument.graphics")) {
+        return iconPath + QStringLiteral("x-office-drawing.svg");
+    }
+
+    const auto isPresentation = mimeType.inherits("application/vnd.oasis.opendocument.presentation") ||
+        mimeType.inherits("application/vnd.ms-powerpoint") ||
+        mimeType.inherits("application/vnd.openxmlformats-officedocument.presentationml.presentation") ||
+        mimeType.inherits("application/vnd.openxmlformats-officedocument.presentationml.template") ||
+        mimeType.inherits("application/vnd.openxmlformats-officedocument.presentationml.slideshow") ||
+        mimeType.inherits("application/vnd.ms-powerpoint.addin.macroEnabled.12") ||
+        mimeType.inherits("application/vnd.ms-powerpoint.presentation.macroEnabled.12") ||
+        mimeType.inherits("application/vnd.ms-powerpoint.template.macroEnabled.12") ||
+        mimeType.inherits("application/vnd.ms-powerpoint.slideshow.macroEnabled.12") ||
+        mimeType.inherits("application/vnd.apple.keynote");
+    if (isPresentation) {
+        return iconPath + QStringLiteral("x-office-presentation.svg");
+    }
+
+    const auto isSpreadsheet = mimeType.inherits("application/vnd.oasis.opendocument.spreadsheet") ||
+        mimeType.inherits("application/vnd.ms-excel") ||
+        mimeType.inherits("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") ||
+        mimeType.inherits("application/vnd.openxmlformats-officedocument.spreadsheetml.template") ||
+        mimeType.inherits("application/vnd.ms-excel.sheet.macroEnabled.12") ||
+        mimeType.inherits("application/vnd.ms-excel.template.macroEnabled.12") ||
+        mimeType.inherits("application/vnd.ms-excel.addin.macroEnabled.12") ||
+        mimeType.inherits("application/vnd.ms-excel.sheet.binary.macroEnabled.12") ||
+        mimeType.inherits("application/vnd.apple.numbers");
+    if (isSpreadsheet) {
+        return iconPath + QStringLiteral("x-office-document.svg");
+    }
+
+    if (mimeType.inherits("application/pdf")) {
+        return iconPath + QStringLiteral("application-pdf.svg");
+    }
+
+    return defaultIcon;
 }
 
 }

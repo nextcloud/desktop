@@ -67,10 +67,6 @@ extension Item {
             log: log
         )
 
-        if #available(macOS 13.0, *) {
-            return (item, NSFileProviderError(.excludedFromSync))
-        } else {
-            return (item, nil)
-        }
+        return (item, NSFileProviderError(.excludedFromSync))
     }
 }

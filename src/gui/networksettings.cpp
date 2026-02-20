@@ -14,6 +14,7 @@
 #include "folderman.h"
 #include "theme.h"
 
+#include <QShowEvent>
 #include <QNetworkProxy>
 #include <QString>
 #include <QList>
@@ -36,7 +37,7 @@ NetworkSettings::NetworkSettings(const AccountPtr &account, QWidget *parent)
     _ui->downloadBox->setBackgroundRole(QPalette::AlternateBase);
     _ui->uploadBox->setAutoFillBackground(true);
     _ui->uploadBox->setBackgroundRole(QPalette::AlternateBase);
-    
+
     _ui->manualSettings->setVisible(_ui->manualProxyRadioButton->isChecked());
 
     _ui->proxyGroupBox->setVisible(!Theme::instance()->doNotUseProxy());

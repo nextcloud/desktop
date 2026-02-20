@@ -58,15 +58,8 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             }
         }
 
-        // .allowsEvicting deprecated on macOS 13.0+, use contentPolicy instead
-        if #unavailable(macOS 13.0), !metadata.keepDownloaded {
-            capabilities.insert(.allowsEvicting)
-        }
-        #if os(macOS)
-            if #available(macOS 11.3, *) {
-                capabilities.insert(.allowsExcludingFromSync)
-            }
-        #endif
+        capabilities.insert(.allowsExcludingFromSync)
+
         return capabilities
     }
 
@@ -200,13 +193,11 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             // Note that only files, not folders, should be lockable/unlockable
             userInfoDict["locked"] = metadata.lock
         }
-        if #available(macOS 13.0, iOS 16.0, visionOS 1.0, *) {
-            userInfoDict["displayKeepDownloaded"] = !metadata.keepDownloaded
-            userInfoDict["displayAllowAutoEvicting"] = metadata.keepDownloaded
-            userInfoDict["displayEvict"] = metadata.downloaded && !metadata.keepDownloaded
-        } else {
-            userInfoDict["displayEvict"] = metadata.downloaded
-        }
+
+        userInfoDict["displayKeepDownloaded"] = !metadata.keepDownloaded
+        userInfoDict["displayAllowAutoEvicting"] = metadata.keepDownloaded
+        userInfoDict["displayEvict"] = metadata.downloaded && !metadata.keepDownloaded
+
         // https://docs.nextcloud.com/server/latest/developer_manual/client_apis/WebDAV/basic.html
         if metadata.permissions.uppercased().contains("R"), // Shareable
            ![.rootContainer, .trashContainer].contains(itemIdentifier)
@@ -228,8 +219,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
     }
 
     public var keepDownloaded: Bool {
-        guard #available(macOS 13.0, iOS 16.0, visionOS 1.0, *) else { return false }
-        return metadata.keepDownloaded
+        metadata.keepDownloaded
     }
 
     ///

@@ -302,16 +302,8 @@ import OSLog
             if error == nil {
                 removeSyncAction(actionId)
             } else {
-                // Do not consider the exclusion of a file a synchronization error resulting in a misleading status report because exclusion is expected.
-                // Though, the exclusion error code is only available starting with macOS 13, hence this logic reads a bit more cumbersome.
-
-                if #available(macOS 13.0, *) {
-                    if let fileProviderError = error as? NSFileProviderError, fileProviderError.code == .excludedFromSync {
-                        removeSyncAction(actionId)
-                    } else {
-                        insertErrorAction(actionId)
-                        signalEnumerator(completionHandler: { _ in })
-                    }
+                if let fileProviderError = error as? NSFileProviderError, fileProviderError.code == .excludedFromSync {
+                    removeSyncAction(actionId)
                 } else {
                     insertErrorAction(actionId)
                     signalEnumerator(completionHandler: { _ in })

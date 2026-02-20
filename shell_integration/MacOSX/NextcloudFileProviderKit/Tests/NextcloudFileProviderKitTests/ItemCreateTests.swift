@@ -718,12 +718,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
 
         XCTAssertNil(createdItem)
         let unwrappedError = try XCTUnwrap(error) as? NSFileProviderError
-        let expectedError = if #available(macOS 13.0, *) {
-            NSFileProviderError(.excludedFromSync)
-        } else {
-            NSFileProviderError(.cannotSynchronize)
-        }
-        XCTAssertEqual(unwrappedError, expectedError)
+        XCTAssertEqual(unwrappedError, NSFileProviderError(.excludedFromSync))
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: lockFileMetadata.ocId))
         XCTAssertFalse(targetRemote.locked)
     }

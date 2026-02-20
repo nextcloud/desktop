@@ -83,6 +83,7 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[TalkNotificationUserAvatarRole] = "userAvatar";
     roles[ActivityIndexRole] = "activityIndex";
     roles[ActivityRole] = "activity";
+    roles[ActivityIntegrationRole] = "serverHasIntegration";
 
     return roles;
 }
@@ -140,19 +141,21 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 {
     Q_ASSERT(checkIndex(index, QAbstractItemModel::CheckIndexOption::IndexIsValid | QAbstractItemModel::CheckIndexOption::ParentIsInvalid));
 
-    const auto a = _finalList.at(index.row());
-    AccountStatePtr ast = AccountManager::instance()->account(a._accName);
-    if (!ast && _accountState != ast.data())
+    const auto activity = _finalList.at(index.row());
+    const auto accountState = AccountManager::instance()->account(activity._accName);
+    if (!accountState && _accountState != accountState.data()) {
         return QVariant();
-
+    }
     const auto getFilePath = [&]() {
-        const auto fileName = a._fileAction == QStringLiteral("file_renamed") ? a._renamedFile : a._file;
+        const auto fileName = activity._fileAction == QStringLiteral("file_renamed") ? activity._renamedFile
+                                                                                     : activity._file;
         if (!fileName.isEmpty()) {
-            const auto folder = FolderMan::instance()->folder(a._folder);
+            const auto folder = FolderMan::instance()->folder(activity._folder);
 
-            const QString relPath = folder ? folder->remotePathTrailingSlash() + fileName : fileName;
+            const QString relPath = folder ? folder->remotePathTrailingSlash() + fileName
+                                           : fileName;
 
-            const auto localFiles = FolderMan::instance()->findFileInLocalFolders(relPath, ast->account());
+            const auto localFiles = FolderMan::instance()->findFileInLocalFolders(relPath, accountState->account());
 
             if (localFiles.isEmpty()) {
                 return QString();
@@ -171,16 +174,17 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 
             return localFiles.constFirst();
         }
+
         return QString();
     };
 
-    const auto getDisplayPath = [&a, &ast]() {
-        if (!a._file.isEmpty()) {
-            const auto folder = FolderMan::instance()->folder(a._folder);
+    const auto getDisplayPath = [&activity, &accountState]() {
+        if (!activity._file.isEmpty()) {
+            const auto folder = FolderMan::instance()->folder(activity._folder);
 
-            QString relPath = folder ? folder->remotePathTrailingSlash() + a._file : a._file;
+            QString relPath = folder ? folder->remotePathTrailingSlash() + activity._file : activity._file;
 
-            const auto localFiles = FolderMan::instance()->findFileInLocalFolders(relPath, ast->account());
+            const auto localFiles = FolderMan::instance()->findFileInLocalFolders(relPath, accountState->account());
 
             if (localFiles.count() > 0) {
                 if (relPath.startsWith('/') || relPath.startsWith('\\')) {
@@ -221,44 +225,47 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 
     const auto generateIconPath = [&]() {
         auto colorIconPath = QStringLiteral("image://svgimage-custom-color/%1");
-        if (a._type == Activity::NotificationType && !a._talkNotificationData.userAvatar.isEmpty()) {
+        if (activity._type == Activity::NotificationType && !activity._talkNotificationData.userAvatar.isEmpty()) {
             return QStringLiteral("image://svgimage-custom-color/talk-bordered.svg");
-        } else if (a._type == Activity::SyncResultType) {
+        } else if (activity._type == Activity::SyncResultType) {
             return colorIconPath.arg("error.svg");
-        } else if (a._type == Activity::SyncFileItemType) {
-            if (a._syncFileItemStatus == SyncFileItem::NormalError
-                || a._syncFileItemStatus == SyncFileItem::FatalError
-                || a._syncFileItemStatus == SyncFileItem::DetailError
-                || a._syncFileItemStatus == SyncFileItem::BlacklistedError) {
+        } else if (activity._type == Activity::SyncFileItemType) {
+            if (activity._syncFileItemStatus == SyncFileItem::NormalError
+                || activity._syncFileItemStatus == SyncFileItem::FatalError
+                || activity._syncFileItemStatus == SyncFileItem::DetailError
+                || activity._syncFileItemStatus == SyncFileItem::BlacklistedError) {
                 return colorIconPath.arg("error.svg");
-            } else if (a._syncFileItemStatus == SyncFileItem::SoftError
-                || a._syncFileItemStatus == SyncFileItem::Conflict
-                || a._syncFileItemStatus == SyncFileItem::Restoration
-                || a._syncFileItemStatus == SyncFileItem::FileLocked
-                || a._syncFileItemStatus == SyncFileItem::FileNameInvalid
-                || a._syncFileItemStatus == SyncFileItem::FileNameInvalidOnServer
-                || a._syncFileItemStatus == SyncFileItem::FileNameClash) {
+            } else if (activity._syncFileItemStatus == SyncFileItem::SoftError
+                || activity._syncFileItemStatus == SyncFileItem::Conflict
+                || activity._syncFileItemStatus == SyncFileItem::Restoration
+                || activity._syncFileItemStatus == SyncFileItem::FileLocked
+                || activity._syncFileItemStatus == SyncFileItem::FileNameInvalid
+                || activity._syncFileItemStatus == SyncFileItem::FileNameInvalidOnServer
+                || activity._syncFileItemStatus == SyncFileItem::FileNameClash) {
                 return colorIconPath.arg("warning.svg");
-            } else if (a._syncFileItemStatus == SyncFileItem::FileIgnored) {
+            } else if (activity._syncFileItemStatus == SyncFileItem::FileIgnored) {
                 return colorIconPath.arg("info.svg");
             } else {
                 // File sync successful
-                if (a._fileAction == "file_created") {
-                    return a._previews.empty() ? colorIconPath.arg("add.svg") : colorIconPath.arg("add-bordered.svg");
-                } else if (a._fileAction == "file_deleted") {
-                    return a._previews.empty() ? colorIconPath.arg("delete.svg") : colorIconPath.arg("delete-bordered.svg");
+                if (activity._fileAction == "file_created") {
+                    return activity._previews.empty() ? colorIconPath.arg("add.svg")
+                                                      : colorIconPath.arg("add-bordered.svg");
+                } else if (activity._fileAction == "file_deleted") {
+                    return activity._previews.empty() ? colorIconPath.arg("delete.svg")
+                                                      : colorIconPath.arg("delete-bordered.svg");
                 } else {
-                    return a._previews.empty() ? colorIconPath.arg("change.svg") : colorIconPath.arg("change-bordered.svg");
+                    return activity._previews.empty() ? colorIconPath.arg("change.svg")
+                                                      : colorIconPath.arg("change-bordered.svg");
                 }
             }
         } else {
             // We have an activity
-            if (a._icon.isEmpty()) {
+            if (activity._icon.isEmpty()) {
                 return colorIconPath.arg("activity.svg");
             }
 
             // using tray-image-provider here as it can read from URLs
-            return QStringLiteral("image://tray-image-provider/%1").arg(a._icon);
+            return QStringLiteral("image://tray-image-provider/%1").arg(activity._icon);
         }
     };
 
@@ -273,30 +280,30 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return displayLocation();
     case ActionsLinksRole: {
         QList<QVariant> customList;
-        for (const auto &activityLink : std::as_const(a._links)) {
+        for (const auto &activityLink : std::as_const(activity._links)) {
             customList << QVariant::fromValue(activityLink);
         }
         return customList;
     }
 
     case ActionsLinksContextMenuRole: {
-        return ActivityListModel::convertLinksToMenuEntries(a);
+        return ActivityListModel::convertLinksToMenuEntries(activity);
     }
 
     case ActionsLinksForActionButtonsRole: {
-        return ActivityListModel::convertLinksToActionButtons(a);
+        return ActivityListModel::convertLinksToActionButtons(activity);
     }
 
     case IconRole:
         return generateIconPath();
     case ObjectTypeRole:
-        return a._objectType;
+        return activity._objectType;
     case ObjectIdRole:
-        return a._objectId;
+        return activity._objectId;
     case ObjectNameRole:
-        return a._objectName;
+        return activity._objectName;
     case ActionRole: {
-        switch (a._type) {
+        switch (activity._type) {
         case Activity::ActivityType:
         case Activity::DummyFetchingActivityType:
         case Activity::DummyMoreActivitiesAvailableType:
@@ -312,71 +319,73 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         break;
     }
     case ActionTextRole:
-        if(a._subjectDisplay.isEmpty()) {
-            return a._subject;
+        if(activity._subjectDisplay.isEmpty()) {
+            return activity._subject;
         }
 
-        return a._subjectDisplay;
+        return activity._subjectDisplay;
     case ActionTextColorRole:
-        return a._id == -1 ? QLatin1String("#808080") : QLatin1String("#222");   // FIXME: This is a temporary workaround for _showMoreActivitiesAvailableEntry
+        return activity._id == -1 ? QLatin1String("#808080") : QLatin1String("#222");   // FIXME: This is a temporary workaround for _showMoreActivitiesAvailableEntry
     case MessageRole:
-        return a._message;
+        return activity._message;
     case LinkRole: {
-        if (a._link.isEmpty()) {
+        if (activity._link.isEmpty()) {
             return "";
         } else {
-            return a._link.toString();
+            return activity._link.toString();
         }
     }
     case AccountRole:
-        return a._accName;
+        return activity._accName;
     case PointInTimeRole:
         //return a._id == -1 ? "" : QString("%1 - %2").arg(Utility::timeAgoInWords(a._dateTime.toLocalTime()), a._dateTime.toLocalTime().toString(Qt::DefaultLocaleShortDate));
-        return a._id == -1 ? "" : Utility::timeAgoInWords(a._dateTime.toLocalTime());
+        return activity._id == -1 ? "" : Utility::timeAgoInWords(activity._dateTime.toLocalTime());
     case AccountConnectedRole:
-        return (ast && ast->isConnected());
+        return (accountState && accountState->isConnected());
     case DisplayActions:
         return _displayActions;
     case ShowFileDetailsRole:
         return _displayActions &&
-                a._objectType == QStringLiteral("files") &&
-                a._fileAction != "file_deleted" &&
-                a._syncFileItemStatus != SyncFileItem::FileIgnored &&
+                activity._objectType == QStringLiteral("files") &&
+                activity._fileAction != "file_deleted" &&
+                activity._syncFileItemStatus != SyncFileItem::FileIgnored &&
                 !data(index, OpenablePathRole).toString().isEmpty();
     case DismissableRole:
         // Do not allow dismissal of things requiring user input regarding syncing
-        return !a._links.isEmpty() &&
-                a._syncFileItemStatus != SyncFileItem::FileNameClash &&
-                a._syncFileItemStatus != SyncFileItem::Conflict &&
-                a._syncFileItemStatus != SyncFileItem::FileNameInvalid &&
-                a._syncFileItemStatus != SyncFileItem::FileNameInvalidOnServer;
+        return !activity._links.isEmpty() &&
+                activity._syncFileItemStatus != SyncFileItem::FileNameClash &&
+                activity._syncFileItemStatus != SyncFileItem::Conflict &&
+                activity._syncFileItemStatus != SyncFileItem::FileNameInvalid &&
+                activity._syncFileItemStatus != SyncFileItem::FileNameInvalidOnServer;
     case IsCurrentUserFileActivityRole:
-        return a._isCurrentUserFileActivity;
+        return activity._isCurrentUserFileActivity;
     case ThumbnailRole: {
-        if ((a._type == Activity::NotificationType || a._type == Activity::OpenSettingsNotificationType) &&
-            !a._talkNotificationData.userAvatar.isEmpty()) {
-            return generateAvatarThumbnailMap(a._talkNotificationData.userAvatar);
+        if ((activity._type == Activity::NotificationType || activity._type == Activity::OpenSettingsNotificationType) &&
+            !activity._talkNotificationData.userAvatar.isEmpty()) {
+            return generateAvatarThumbnailMap(activity._talkNotificationData.userAvatar);
         }
 
-        if(a._previews.empty()) {
+        if(activity._previews.empty()) {
             return {};
         }
 
-        const auto preview = a._previews[0];
+        const auto preview = activity._previews[0];
         return(generatePreviewMap(preview));
     }
     case TalkNotificationConversationTokenRole:
-        return a._talkNotificationData.conversationToken;
+        return activity._talkNotificationData.conversationToken;
     case TalkNotificationMessageIdRole:
-        return a._talkNotificationData.messageId;
+        return activity._talkNotificationData.messageId;
     case TalkNotificationMessageSentRole:
-        return replyMessageSent(a);
+        return replyMessageSent(activity);
     case TalkNotificationUserAvatarRole:
-        return a._talkNotificationData.userAvatar;
+        return activity._talkNotificationData.userAvatar;
     case ActivityIndexRole:
         return index.row();
     case ActivityRole:
-        return QVariant::fromValue(a);
+        return QVariant::fromValue(activity);
+    case ActivityIntegrationRole:
+        return accountState->account()->serverHasIntegration();
     }
 
     return {};

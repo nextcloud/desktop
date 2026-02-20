@@ -16,6 +16,8 @@ import com.nextcloud.desktopclient
 Rectangle {
     id: root
 
+    signal featuredAppButtonClicked
+
     readonly property alias currentAccountHeaderButton: currentAccountHeaderButton
     readonly property alias openLocalFolderButton: openLocalFolderButton
     readonly property alias appsMenu: appsMenu
@@ -71,12 +73,12 @@ Rectangle {
             id: trayWindowFeaturedAppButton
 
             Layout.alignment: Qt.AlignRight
-            Layout.preferredWidth:  Style.trayWindowHeaderHeight
+            Layout.preferredWidth: Style.trayWindowHeaderHeight
             Layout.fillHeight: true
 
-            visible: UserModel.currentUser.isFeaturedAppEnabled
+            visible: UserModel.currentUser.isAssistantEnabled
             icon.source: UserModel.currentUser.featuredAppIcon + "/" + palette.windowText
-            onClicked: UserModel.openCurrentAccountFeaturedApp()
+            onClicked: root.featuredAppButtonClicked()
 
             Accessible.role: Accessible.Button
             Accessible.name: UserModel.currentUser.featuredAppAccessibleName
