@@ -91,6 +91,22 @@ AbstractButton {
                         : userLine.parent.palette.text)
             }
 
+            EnforcedPlainTextLabel {
+                id: accountServer
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+                verticalAlignment: Text.AlignTop
+                text: server
+                elide: Text.ElideRight
+                font.pixelSize: Style.subLinePixelSize
+
+                color: !userLine.parent.enabled
+                    ? userLine.parent.palette.mid
+                    : ((userLine.parent.highlighted || userLine.parent.down) && Qt.platform.os !== "windows"
+                        ? userLine.parent.palette.highlightedText
+                        : userLine.parent.palette.text)
+            }
+
             RowLayout {
                 id: statusLayout
                 Layout.fillWidth: true
@@ -125,22 +141,6 @@ AbstractButton {
                             ? userLine.parent.palette.highlightedText
                             : userLine.parent.palette.text)
                 }
-            }
-
-            EnforcedPlainTextLabel {
-                id: accountServer
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-                verticalAlignment: Text.AlignTop
-                text: server
-                elide: Text.ElideRight
-                font.pixelSize: Style.subLinePixelSize
-
-                color: !userLine.parent.enabled
-                    ? userLine.parent.palette.mid
-                    : ((userLine.parent.highlighted || userLine.parent.down) && Qt.platform.os !== "windows"
-                        ? userLine.parent.palette.highlightedText
-                        : userLine.parent.palette.text)
             }
         }
 
@@ -259,9 +259,3 @@ AbstractButton {
         }
     }
 }   // MenuItem userLine
-
-
-
-
-
-
