@@ -1987,7 +1987,7 @@ This can be an issue with your OpenSSL libraries.</source>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="189"/>
-        <source>The file id is empty for %1.</source>
+        <source>The file ID is empty for %1.</source>
         <comment>file name</comment>
         <translation type="unfinished"/>
     </message>
@@ -5499,6 +5499,11 @@ les- og skrifheimildir í staðværu samstillingarmöppunni á tölvunni.</trans
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="307"/>
         <source>Syncing file %1 of %2</source>
         <translation>Samstilli skrá %1 af %2</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="435"/>
+        <source>No synchronisation configured</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
