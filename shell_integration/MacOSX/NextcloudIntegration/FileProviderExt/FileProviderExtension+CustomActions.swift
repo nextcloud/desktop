@@ -83,7 +83,7 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                         }
                     }
 
-                    for try await result in group {
+                    for try await _ in group {
                         progress.completedUnitCount = 1
                     }
                 }
