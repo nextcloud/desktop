@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:README.md">
+   </FileRef>
+   <FileRef
+      location = "group:AGENTS.md">
+   </FileRef>
+   <FileRef
+      location = "group:CONTRIBUTING.md">
+   </FileRef>
+   <FileRef
+      location = "group:CMakeLists.txt">
+   </FileRef>
+   <FileRef
+      location = "group:craftmaster.ini">
+   </FileRef>
+   <FileRef
+      location = "group:REUSE.toml">
+   </FileRef>
+   <FileRef
+      location = "group:cmake">
+   </FileRef>
+   <FileRef
+      location = "group:doc">
+   </FileRef>
+   <FileRef
+      location = "group:admin/osx/mac-crafter">
+   </FileRef>
+   <Group
+      location = "group:shell_integration"
+      name = "shell_integration">
+      <FileRef
+         location = "group:CMakeLists.txt">
+      </FileRef>
+      <Group
+         location = "group:MacOSX"
+         name = "MacOSX">
+         <FileRef
+            location = "group:CMakeLists.txt">
+         </FileRef>
+         <FileRef
+            location = "group:FileProviderExt.entitlements.cmake">
+         </FileRef>
+         <FileRef
+            location = "group:FileProviderExt.entitlements.cmake.license">
+         </FileRef>
+         <FileRef
+            location = "group:FileProviderUIExt.entitlements.cmake">
+         </FileRef>
+         <FileRef
+            location = "group:FileProviderUIExt.entitlements.cmake.license">
+         </FileRef>
+         <FileRef
+            location = "group:FinderSyncExt.entitlements.cmake">
+         </FileRef>
+         <FileRef
+            location = "group:FinderSyncExt.entitlements.cmake.license">
+         </FileRef>
+         <FileRef
+            location = "group:NextcloudFileProviderKit">
+         </FileRef>
+         <FileRef
+            location = "group:NextcloudIntegration/NextcloudIntegration.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:TransifexStringCatalogSanitizer">
+         </FileRef>
+      </Group>
+   </Group>
+   <FileRef
+      location = "group:src">
+   </FileRef>
+   <FileRef
+      location = "group:test">
+   </FileRef>
+   <FileRef
+      location = "group:translations">
+   </FileRef>
+</Workspace>

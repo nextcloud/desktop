@@ -92,7 +92,6 @@ dlldata.c
 # macOS specific
 xcuserdata/
 **/.DS_Store
-**/Carthage/
 
 # Visual C++ cache files
 ipch/
@@ -196,8 +195,11 @@ convert.exe
 theme.qrc
 *.AppImage
 
-# Xcode Build Artifacts
-DerivedData
-
 # Swift Package Manager Build Artifacts
 .swiftpm_codeql_detected_source_root
+
+# Relative derived data of Xcode workspace
+.xcode
+
+# Mac-Crafter build directory
+.mac-crafter
