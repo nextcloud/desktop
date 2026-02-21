@@ -11,11 +11,19 @@ import OSLog
 /// The file provider replicated extension implementation.
 ///
 @objc final class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, @unchecked Sendable {
+    ///
+    /// The file provider domain managed by this file provider extension implementation.
+    ///
     let domain: NSFileProviderDomain
 
     let keychain: Keychain
     let log: any FileProviderLogging
     let logger: FileProviderLogger
+
+    ///
+    /// The file provider manager for the domain managed by this extension implementation.
+    ///
+    let manager: NSFileProviderManager?
 
     // MARK: XPC
 
@@ -81,6 +89,7 @@ import OSLog
         // application extension process, call `FileProviderExtension.init(domain:)` to instantiate
         // the extension for that domain, and call methods on the instance.
         self.domain = domain
+        self.manager = NSFileProviderManager(for: domain)
 
         // Set up logging.
         self.log = FileProviderLog(fileProviderDomainIdentifier: domain.identifier)
@@ -514,13 +523,13 @@ import OSLog
             return
         }
 
-        guard let fpManager = NSFileProviderManager(for: domain) else {
+        guard let manager = manager else {
             logger.error("Could not get file provider manager for domain: \(self.domain.displayName)")
             completionHandler()
             return
         }
 
-        let materialisedEnumerator = fpManager.enumeratorForMaterializedItems()
+        let materialisedEnumerator = manager.enumeratorForMaterializedItems()
         let materialisedObserver = MaterializedEnumerationObserver(account: ncAccount, dbManager: dbManager, log: log) { _, _ in
             completionHandler()
         }
@@ -532,12 +541,12 @@ import OSLog
     // MARK: - Helper functions
 
     func signalEnumerator(completionHandler: @escaping (_ error: Error?) -> Void) {
-        guard let fpManager = NSFileProviderManager(for: domain) else {
+        guard let manager = manager else {
             logger.error("Could not get file provider manager for domain, could not signal enumerator. This might lead to future conflicts.")
             return
         }
 
-        fpManager.signalEnumerator(for: .workingSet, completionHandler: completionHandler)
+        manager.signalEnumerator(for: .workingSet, completionHandler: completionHandler)
     }
 
     @objc func sendFileProviderDomainIdentifier() {
@@ -548,14 +557,14 @@ import OSLog
     }
 
     private func signalEnumeratorAfterAccountSetup() {
-        guard let fpManager = NSFileProviderManager(for: domain) else {
+        guard let manager = manager else {
             logger.error("Could not get file provider manager for domain \(self.domain.displayName), cannot notify after account setup")
             return
         }
 
         assert(ncAccount != nil)
 
-        fpManager.signalErrorResolved(NSFileProviderError(.notAuthenticated)) { error in
+        manager.signalErrorResolved(NSFileProviderError(.notAuthenticated)) { error in
             if error != nil {
                 self.logger.error("Error resolving not authenticated, received error: \(error!.localizedDescription)")
             }

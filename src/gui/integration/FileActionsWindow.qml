@@ -25,6 +25,8 @@ ApplicationWindow {
     property var accountState: ({})
     property string localPath: ""
     property string shortLocalPath: ""
+    property string fileId: ""
+    property string remoteItemPath: ""
 
     readonly property int windowRadius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
 
@@ -34,6 +36,8 @@ ApplicationWindow {
         id: fileActionModel
         accountState: root.accountState
         localPath: root.localPath
+        fileId: root.fileId
+        remoteItemPath: root.remoteItemPath
     }
 
     background: Rectangle {

@@ -116,12 +116,15 @@ extension Item {
             modifiedMetadata.date = newModificationDate
         }
 
+        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: modifiedMetadata.contentType)
+
         return await Item(
             metadata: modifiedMetadata,
             parentItemIdentifier: modifiedParentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
+            displayFileActions: displayFileActions,
             remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
             log: logger.log
         )
