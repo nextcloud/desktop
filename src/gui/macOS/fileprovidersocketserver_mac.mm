@@ -16,7 +16,7 @@ namespace Mac
 
 QString fileProviderSocketPath()
 {
-    NSString *appGroupId = [NSString stringWithFormat:@"%@.%@", @DEVELOPMENT_TEAM, @APPLICATION_REV_DOMAIN];
+    NSString *appGroupId = [NSString stringWithFormat:@"%@.%@", @"@DEVELOPMENT_TEAM@", @APPLICATION_REV_DOMAIN];
     NSURL *container = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroupId];
     NSURL *socket = [container URLByAppendingPathComponent:@"fps" isDirectory:false];
 
