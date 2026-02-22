@@ -118,6 +118,7 @@ ApplicationWindow {
         maskSource: Rectangle {
             width: trayWindow.width
             height: trayWindow.height
+            color: colorWithoutTransparency(palette.window)
             radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
         }
     }
