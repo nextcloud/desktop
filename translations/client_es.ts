@@ -279,7 +279,7 @@
 <context>
     <name>FileActionsWindow</name>
     <message>
-        <location filename="../src/gui/integration/FileActionsWindow.qml" line="31"/>
+        <location filename="../src/gui/integration/FileActionsWindow.qml" line="33"/>
         <source>File actions for %1</source>
         <translation type="unfinished"/>
     </message>
@@ -1978,37 +1978,37 @@ Esto podría ser un problema con tu librería OpenSSL</translation>
 <context>
     <name>OCC::FileActionsModel</name>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="181"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="241"/>
         <source>Your account is offline %1.</source>
         <comment>account url</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="189"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="250"/>
         <source>The file ID is empty for %1.</source>
         <comment>file name</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="197"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="258"/>
         <source>The file type for %1 is not valid.</source>
         <comment>file name</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="206"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="268"/>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mymetype</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="289"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="354"/>
         <source>%1 did not succeed, please try again later. If you need help, contact your server administrator.</source>
         <comment>file action error message</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="301"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="365"/>
         <source>%1 done.</source>
         <comment>file action success message</comment>
         <translation type="unfinished"/>
