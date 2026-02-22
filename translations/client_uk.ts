@@ -22,12 +22,12 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="196"/>
         <source>File details</source>
-        <translation type="unfinished"/>
+        <translation>Деталі файлу</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
         <source>File actions</source>
-        <translation type="unfinished"/>
+        <translation>Дії з файлом</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
@@ -279,9 +279,9 @@
 <context>
     <name>FileActionsWindow</name>
     <message>
-        <location filename="../src/gui/integration/FileActionsWindow.qml" line="31"/>
+        <location filename="../src/gui/integration/FileActionsWindow.qml" line="33"/>
         <source>File actions for %1</source>
-        <translation type="unfinished"/>
+        <translation>Дії з файлом для %1</translation>
     </message>
 </context>
 <context>
@@ -1977,40 +1977,40 @@ This can be an issue with your OpenSSL libraries.</source>
 <context>
     <name>OCC::FileActionsModel</name>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="181"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="241"/>
         <source>Your account is offline %1.</source>
         <comment>account url</comment>
-        <translation type="unfinished"/>
+        <translation>Ваш обліковий запис поза мережею %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="189"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="250"/>
         <source>The file ID is empty for %1.</source>
         <comment>file name</comment>
-        <translation type="unfinished"/>
+        <translation>Ідентифікатор файлу %1 порожній.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="197"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="258"/>
         <source>The file type for %1 is not valid.</source>
         <comment>file name</comment>
-        <translation type="unfinished"/>
+        <translation>Недійсний тип файлу %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="206"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="268"/>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mymetype</comment>
-        <translation type="unfinished"/>
+        <translation>Сервер не зміг застосувати дії до файлів %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="289"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="354"/>
         <source>%1 did not succeed, please try again later. If you need help, contact your server administrator.</source>
         <comment>file action error message</comment>
-        <translation type="unfinished"/>
+        <translation>%1 не вдалося, спробуйте пізніше. У разі потреби у допомозі, сконтактуйте з адміністратором сервера.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="301"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="365"/>
         <source>%1 done.</source>
         <comment>file action success message</comment>
-        <translation type="unfinished"/>
+        <translation>%1 виконано.</translation>
     </message>
 </context>
 <context>
@@ -5064,7 +5064,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1132"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1195"/>
         <source>File actions</source>
-        <translation type="unfinished"/>
+        <translation>Дії з файлами</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1100"/>
@@ -5518,7 +5518,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="435"/>
         <source>No synchronisation configured</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізацію не налаштовано</translation>
     </message>
 </context>
 <context>
