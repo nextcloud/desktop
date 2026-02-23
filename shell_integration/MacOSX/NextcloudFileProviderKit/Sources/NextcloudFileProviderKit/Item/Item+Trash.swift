@@ -73,12 +73,7 @@ extension Item {
         )
         else {
             logger.error("Did not find trashed item in trash, asking for a rescan.", [.item: modifiedItem])
-
-            if #available(macOS 11.3, *) {
-                return (dirtyItem, NSFileProviderError(.unsyncedEdits))
-            } else {
-                return (dirtyItem, NSFileProviderError(.syncAnchorExpired))
-            }
+            return (dirtyItem, NSFileProviderError(.unsyncedEdits))
         }
 
         var postDeleteMetadata = targetItemNKTrash.toItemMetadata(account: account)
@@ -200,12 +195,7 @@ extension Item {
 
         guard modifiedItem.metadata.trashbinOriginalLocation != "" else {
             logger.error("Could not scan restored item. The trashed file's original location is invalid.", [.name: modifiedItem.filename])
-
-            if #available(macOS 11.3, *) {
-                return (modifiedItem, NSFileProviderError(.unsyncedEdits))
-            }
-
-            return (modifiedItem, NSFileProviderError(.cannotSynchronize))
+            return (modifiedItem, NSFileProviderError(.unsyncedEdits))
         }
 
         let originalLocation = account.davFilesUrl + "/" + modifiedItem.metadata.trashbinOriginalLocation
@@ -230,11 +220,7 @@ extension Item {
                 """
             )
 
-            if #available(macOS 11.3, *) {
-                return (modifiedItem, NSFileProviderError(.unsyncedEdits))
-            }
-
-            return (modifiedItem, enumerateError.fileProviderError)
+            return (modifiedItem, NSFileProviderError(.unsyncedEdits))
         }
 
         guard target.ocId == modifiedItem.itemIdentifier.rawValue else {

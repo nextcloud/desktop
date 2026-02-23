@@ -7,7 +7,7 @@ cmake_policy(SET CMP0071 NEW) # Enable use of QtQuick compiler/generated code
 project(client)
 
 if(APPLE)
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "12.0" CACHE STRING "Minimum OSX deployment version")
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "13.0" CACHE STRING "Minimum OSX deployment version")
 endif()
 
 set(CMAKE_CXX_STANDARD 20)
