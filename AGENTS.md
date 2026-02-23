@@ -23,9 +23,12 @@ Other platforms like iOS and Android are irrelevant for this project.
 
 | Directory       | Description                                         | Agent Action         |
 |-----------------|-----------------------------------------------------|----------------------|
+| `./admin`       | Platform-specific build, packaging, and distribution tooling (macOS, Windows, Linux, Nix) | Ignore unless packaging or installer logic must be updated |
 | `./admin/osx/mac-crafter` | Build tool for macOS | Ignore unless the build process must be updated |
 | `./shell_integration/MacOSX/NextcloudIntegration` | Xcode project for macOS app extensions | Look here first for changes in context of the file provider extension |
-| `./translations` | Translation files from Transifex.                   | Do not modify        |
+| `./translations` | Translation files from Transifex.                   | Do not modify |
+| `.mac-crafter` | Build artifacts and derived data. | Ignore |
+| `.xcode` | Build artifacts and derived data. | Ignore |
 
 ## General Guidance
 
