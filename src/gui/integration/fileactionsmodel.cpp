@@ -267,7 +267,7 @@ void FileActionsModel::parseEndpoints()
                                  << _localPath;
 
         //: TRANSLATOR Placeholder contains file MIME type
-        setResponse({ tr("No file actions were returned by the server for %1 files.", "file mimetype")
+        setResponse({ tr("No file actions were returned by the server for %1 files.", "file mimetype, e.g text/plain files")
                          .arg(_mimeType.filterString()),
                      _accountUrl });
         resetActions({});
