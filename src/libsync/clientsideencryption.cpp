@@ -1193,7 +1193,8 @@ void ClientSideEncryption::initializeHardwareTokenEncryption(QWidget *settingsDi
                                                tr("Enter Certificate USB Token PIN:"),
                                                QLineEdit::Password,
                                                {},
-                                               &ok);
+                                               &ok,
+                                               Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
                 if (!ok || newPin.isEmpty()) {
                     qCWarning(lcCse()) << "an USER pin is required";
 
