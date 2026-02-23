@@ -77,7 +77,7 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
     // add 'Content-Length: 0' header (see https://github.com/nextcloud/desktop/issues/1473)
     QNetworkRequest request;
     request.setHeader(QNetworkRequest::ContentLengthHeader, "0");
-    request.setHeader(QNetworkRequest::UserAgentHeader, Utility::friendlyUserAgentString());
+    request.setHeader(QNetworkRequest::UserAgentHeader, Utility::userAgentString());
 
     auto job = _account->sendRequest("POST", loginV2url, request);
     job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));

@@ -39,11 +39,36 @@ Page {
             right: parent.right
         }
 
+        spacing: Style.standardSpacing
+
         CheckBox {
             id: vfsEnabledCheckBox
             text: qsTr("Enable virtual files")
             checked: root.controller.vfsEnabledForAccount(root.accountUserIdAtHost)
+            enabled: !root.controller.isOperationInProgress
             onClicked: root.controller.setVfsEnabledForAccount(root.accountUserIdAtHost, checked)
+        }
+
+        RowLayout {
+            spacing: Style.standardSpacing
+            visible: root.controller.isOperationInProgress
+
+            Item {
+                Layout.preferredWidth: Style.standardSpacing
+                Layout.preferredHeight: 1
+            }
+
+            NCBusyIndicator {
+                id: operationIndicator
+                running: root.controller.isOperationInProgress
+                Layout.preferredWidth: Style.trayListItemIconSize * 0.6
+                Layout.preferredHeight: Style.trayListItemIconSize * 0.6
+            }
+
+            EnforcedPlainTextLabel {
+                text: root.controller.operationMessage
+                Layout.leftMargin: Style.standardSpacing / 2
+            }
         }
     }
 }

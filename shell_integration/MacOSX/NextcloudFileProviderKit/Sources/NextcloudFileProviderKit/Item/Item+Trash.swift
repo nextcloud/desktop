@@ -30,6 +30,7 @@ extension Item {
         }
 
         let dirtyChildren = dbManager.childItems(directoryMetadata: dirtyMetadata)
+        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: modifiedItem.remoteInterface, candidate: dirtyMetadata.contentType)
 
         let dirtyItem = await Item(
             metadata: dirtyMetadata,
@@ -37,6 +38,7 @@ extension Item {
             account: account,
             remoteInterface: modifiedItem.remoteInterface,
             dbManager: dbManager,
+            displayFileActions: displayFileActions,
             remoteSupportsTrash: modifiedItem.remoteInterface.supportsTrash(account: account),
             log: log
         )
@@ -73,12 +75,7 @@ extension Item {
         )
         else {
             logger.error("Did not find trashed item in trash, asking for a rescan.", [.item: modifiedItem])
-
-            if #available(macOS 11.3, *) {
-                return (dirtyItem, NSFileProviderError(.unsyncedEdits))
-            } else {
-                return (dirtyItem, NSFileProviderError(.syncAnchorExpired))
-            }
+            return (dirtyItem, NSFileProviderError(.unsyncedEdits))
         }
 
         var postDeleteMetadata = targetItemNKTrash.toItemMetadata(account: account)
@@ -91,6 +88,7 @@ extension Item {
             account: account,
             remoteInterface: modifiedItem.remoteInterface,
             dbManager: dbManager,
+            displayFileActions: displayFileActions,
             remoteSupportsTrash: modifiedItem.remoteInterface.supportsTrash(account: account),
             log: log
         )
@@ -174,6 +172,7 @@ extension Item {
             }
 
             dbManager.addItemMetadata(restoredItemMetadata)
+            let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: restoredItemMetadata.contentType)
 
             return await (Item(
                 metadata: restoredItemMetadata,
@@ -181,6 +180,7 @@ extension Item {
                 account: account,
                 remoteInterface: modifiedItem.remoteInterface,
                 dbManager: dbManager,
+                displayFileActions: displayFileActions,
                 remoteSupportsTrash: modifiedItem.remoteInterface.supportsTrash(account: account),
                 log: log
             ), nil)
@@ -200,12 +200,7 @@ extension Item {
 
         guard modifiedItem.metadata.trashbinOriginalLocation != "" else {
             logger.error("Could not scan restored item. The trashed file's original location is invalid.", [.name: modifiedItem.filename])
-
-            if #available(macOS 11.3, *) {
-                return (modifiedItem, NSFileProviderError(.unsyncedEdits))
-            }
-
-            return (modifiedItem, NSFileProviderError(.cannotSynchronize))
+            return (modifiedItem, NSFileProviderError(.unsyncedEdits))
         }
 
         let originalLocation = account.davFilesUrl + "/" + modifiedItem.metadata.trashbinOriginalLocation
@@ -230,11 +225,7 @@ extension Item {
                 """
             )
 
-            if #available(macOS 11.3, *) {
-                return (modifiedItem, NSFileProviderError(.unsyncedEdits))
-            }
-
-            return (modifiedItem, enumerateError.fileProviderError)
+            return (modifiedItem, NSFileProviderError(.unsyncedEdits))
         }
 
         guard target.ocId == modifiedItem.itemIdentifier.rawValue else {

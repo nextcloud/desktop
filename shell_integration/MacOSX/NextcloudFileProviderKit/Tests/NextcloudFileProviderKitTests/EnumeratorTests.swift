@@ -1742,4 +1742,148 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(workingSetIds2.contains(notVisitedFolder.ocId),
                       "Newly visited folder should now be in working set")
     }
+
+    // MARK: - Pagination Tests (Server Version Detection)
+
+    /// Test that pagination is enabled when server is Nextcloud 31 or newer
+    func testPaginationEnabledForNC31Plus() async throws {
+        let db = Self.dbManager.ncDatabase()
+        debugPrint(db)
+
+        // Setup a folder with many children to trigger pagination
+        remoteFolder.children = []
+        for i in 0 ..< 25 {
+            let childItem = MockRemoteItem(
+                identifier: "paginatedChild\(i)",
+                name: "file_\(i).pdf",
+                remotePath: Self.account.davFilesUrl + "/folder/file_\(i).pdf",
+                data: Data(repeating: UInt8(i % 256), count: 100),
+                account: Self.account.ncKitAccount,
+                username: Self.account.username,
+                userId: Self.account.id,
+                serverUrl: Self.account.serverUrl
+            )
+            childItem.parent = remoteFolder
+            remoteFolder.children.append(childItem)
+        }
+
+        // Create remote interface with pagination enabled and NC31+ capabilities
+        let remoteInterface = MockRemoteInterface(
+            account: Self.account, rootItem: rootItem, pagination: true
+        )
+        // Override capabilities to simulate NC31+
+        remoteInterface.capabilities = ##"""
+        {
+          "ocs": {
+            "data": {
+              "version": {
+                "major": 31,
+                "minor": 0,
+                "micro": 0,
+                "string": "31.0.0"
+              }
+            }
+          }
+        }
+        """##
+
+        Self.dbManager.addItemMetadata(remoteFolder.toItemMetadata(account: Self.account))
+
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            pageSize: 5, // Small page size to force multiple pages
+            log: FileProviderLogMock()
+        )
+        let observer = MockEnumerationObserver(enumerator: enumerator)
+        try await observer.enumerateItems()
+
+        // With pagination enabled, all items should be enumerated
+        XCTAssertEqual(
+            observer.items.count,
+            26, // folder + 25 children
+            "Pagination should enumerate all items for NC31+"
+        )
+
+        // Verify all items are in database
+        for i in 0 ..< 25 {
+            XCTAssertNotNil(
+                Self.dbManager.itemMetadata(ocId: "paginatedChild\(i)"),
+                "Child item paginatedChild\(i) should be in DB with pagination enabled"
+            )
+        }
+    }
+
+    /// Test that pagination is disabled when server is older than Nextcloud 31
+    func testPaginationDisabledForOldServers() async throws {
+        let db = Self.dbManager.ncDatabase()
+        debugPrint(db)
+
+        // Setup a folder with children
+        remoteFolder.children = []
+        for i in 0 ..< 10 {
+            let childItem = MockRemoteItem(
+                identifier: "oldServerChild\(i)",
+                name: "file_\(i).txt",
+                remotePath: Self.account.davFilesUrl + "/folder/file_\(i).txt",
+                data: Data(repeating: UInt8(i % 256), count: 50),
+                account: Self.account.ncKitAccount,
+                username: Self.account.username,
+                userId: Self.account.id,
+                serverUrl: Self.account.serverUrl
+            )
+            childItem.parent = remoteFolder
+            remoteFolder.children.append(childItem)
+        }
+
+        // Create remote interface with pagination NOT enabled (simulates old server)
+        let remoteInterface = MockRemoteInterface(
+            account: Self.account, rootItem: rootItem, pagination: false
+        )
+        // Override capabilities to simulate NC30
+        remoteInterface.capabilities = ##"""
+        {
+          "ocs": {
+            "data": {
+              "version": {
+                "major": 30,
+                "minor": 0,
+                "micro": 5,
+                "string": "30.0.5"
+              }
+            }
+          }
+        }
+        """##
+
+        Self.dbManager.addItemMetadata(remoteFolder.toItemMetadata(account: Self.account))
+
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            pageSize: 5, // Page size doesn't matter when pagination is disabled
+            log: FileProviderLogMock()
+        )
+        let observer = MockEnumerationObserver(enumerator: enumerator)
+        try await observer.enumerateItems()
+
+        // With pagination disabled, all items should still be enumerated (in single request)
+        XCTAssertEqual(
+            observer.items.count,
+            11, // folder + 10 children
+            "Non-paginated enumeration should work for older servers"
+        )
+
+        // Verify all items are in database
+        for i in 0 ..< 10 {
+            XCTAssertNotNil(
+                Self.dbManager.itemMetadata(ocId: "oldServerChild\(i)"),
+                "Child item oldServerChild\(i) should be in DB even without pagination"
+            )
+        }
+    }
 }

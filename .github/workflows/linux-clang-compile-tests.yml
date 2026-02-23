@@ -8,7 +8,7 @@ jobs:
   build:
     name: Linux Clang compilation and tests
     runs-on: ubuntu-latest
-    container: ghcr.io/nextcloud/continuous-integration-client-qt6:client-forky-6.9.2-1
+    container: ghcr.io/nextcloud/continuous-integration-client-qt6:client-forky-6.9.2-3
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:

@@ -74,26 +74,14 @@ extension Item {
 
         guard await assertRequiredCapabilities(domain: domain, itemIdentifier: itemTemplate.itemIdentifier, account: account, remoteInterface: remoteInterface, logger: logger) else {
             logger.debug("Excluding lock file from synchronizing due to lack of server-side locking capability.", [.item: itemTemplate.itemIdentifier, .name: itemTemplate.filename])
-
-            let error = if #available(macOS 13.0, *) {
-                NSFileProviderError(.excludedFromSync)
-            } else {
-                NSFileProviderError(.cannotSynchronize)
-            }
-
-            return (nil, error)
+            return (nil, NSFileProviderError(.excludedFromSync))
         }
 
         logger.info("Item to create is a lock file. Will attempt to lock the associated file on the server.", [.name: itemTemplate.filename])
 
         guard let targetFileName = originalFileName(fromLockFileName: itemTemplate.filename, dbManager: dbManager) else {
             logger.error("Will not lock the target file because it could not be determined based on the lock file name.", [.name: itemTemplate.filename])
-
-            if #available(macOS 13.0, *) {
-                return (nil, NSFileProviderError(.excludedFromSync))
-            } else {
-                return (nil, NSFileProviderError(.cannotSynchronize))
-            }
+            return (nil, NSFileProviderError(.excludedFromSync))
         }
 
         logger.debug("Derived target file name for lock file.", [.name: targetFileName])
@@ -184,6 +172,7 @@ extension Item {
                 account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
+                displayFileActions: false,
                 remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
                 log: log
             ),

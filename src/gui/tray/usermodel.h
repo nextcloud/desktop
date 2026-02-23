@@ -9,9 +9,13 @@
 #include <QAbstractListModel>
 #include <QImage>
 #include <QDateTime>
+#include <QJsonDocument>
 #include <QStringList>
 #include <QQuickImageProvider>
 #include <QHash>
+#include <QPointer>
+#include <QTimer>
+#include <QVector>
 
 #include "accountfwd.h"
 #include "accountmanager.h"
@@ -25,6 +29,7 @@
 
 namespace OCC {
 class UnifiedSearchResultsListModel;
+class OcsAssistantConnector;
 
 
 class TrayFolderInfo
@@ -67,11 +72,19 @@ class User : public QObject
     Q_PROPERTY(QString featuredAppIcon READ featuredAppIcon NOTIFY featuredAppChanged)
     Q_PROPERTY(QString featuredAppAccessibleName READ featuredAppAccessibleName NOTIFY featuredAppChanged)
     Q_PROPERTY(QString avatar READ avatarUrl NOTIFY avatarChanged)
+    Q_PROPERTY(QUrl syncStatusIcon READ syncStatusIcon NOTIFY syncStatusChanged)
+    Q_PROPERTY(bool syncStatusOk READ syncStatusOk NOTIFY syncStatusChanged)
     Q_PROPERTY(bool isConnected READ isConnected NOTIFY accountStateChanged)
     Q_PROPERTY(bool needsToSignTermsOfService READ needsToSignTermsOfService NOTIFY accountStateChanged)
     Q_PROPERTY(UnifiedSearchResultsListModel* unifiedSearchResultsListModel READ getUnifiedSearchResultsListModel CONSTANT)
     Q_PROPERTY(QVariantList groupFolders READ groupFolders NOTIFY groupFoldersChanged)
     Q_PROPERTY(bool canLogout READ canLogout CONSTANT)
+    Q_PROPERTY(bool isAssistantEnabled READ isNcAssistantEnabled NOTIFY assistantStateChanged)
+    Q_PROPERTY(QString assistantQuestion READ assistantQuestion NOTIFY assistantQuestionChanged)
+    Q_PROPERTY(QString assistantResponse READ assistantResponse NOTIFY assistantResponseChanged)
+    Q_PROPERTY(QString assistantError READ assistantError NOTIFY assistantErrorChanged)
+    Q_PROPERTY(QVariantList assistantMessages READ assistantMessages NOTIFY assistantMessagesChanged)
+    Q_PROPERTY(bool assistantRequestInProgress READ assistantRequestInProgress NOTIFY assistantRequestInProgressChanged)
 
 public:
     User(AccountStatePtr &account, const bool &isCurrent = false, QObject *parent = nullptr);
@@ -112,10 +125,20 @@ public:
     [[nodiscard]] QString statusMessage() const;
     [[nodiscard]] QUrl statusIcon() const;
     [[nodiscard]] QString statusEmoji() const;
+    [[nodiscard]] QUrl syncStatusIcon() const;
+    [[nodiscard]] bool syncStatusOk() const;
     void processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr &item);
     [[nodiscard]] const QVariantList &groupFolders() const;
     [[nodiscard]] bool canLogout() const;
     [[nodiscard]] bool isPublicShareLink() const;
+    [[nodiscard]] QString assistantQuestion() const;
+    [[nodiscard]] QString assistantResponse() const;
+    [[nodiscard]] QString assistantError() const;
+    [[nodiscard]] QVariantList assistantMessages() const;
+    [[nodiscard]] bool assistantRequestInProgress() const;
+
+    Q_INVOKABLE void submitAssistantQuestion(const QString &question);
+    Q_INVOKABLE void clearAssistantResponse();
 
 signals:
     void nameChanged();
@@ -128,8 +151,15 @@ signals:
     void headerColorChanged();
     void headerTextColorChanged();
     void accentColorChanged();
+    void syncStatusChanged();
     void sendReplyMessage(const int activityIndex, const QString &conversationToken, const QString &message, const QString &replyTo);
     void groupFoldersChanged();
+    void assistantStateChanged();
+    void assistantQuestionChanged();
+    void assistantResponseChanged();
+    void assistantErrorChanged();
+    void assistantMessagesChanged();
+    void assistantRequestInProgressChanged();
 
 public slots:
     void slotItemCompleted(const QString &folder, const OCC::SyncFileItemPtr &item);
@@ -161,12 +191,19 @@ public slots:
 private slots:
     void slotPushNotificationsReady();
     void slotDisconnectPushNotifications();
-    void slotReceivedPushFileChanges(Account *account, const QList<qint64> &fileIds);
+    void slotReceivedPushFilesChanges(Account *account);
+    void slotReceivedPushFileIdsChanges(Account *account, const QList<qint64> &fileIds);
     void slotReceivedPushNotification(OCC::Account *account);
     void slotReceivedPushActivity(OCC::Account *account);
     void slotCheckExpiredActivities();
     void slotGroupFoldersFetched(QNetworkReply *reply);
     void slotQuotaChanged(const int64_t &usedBytes, const int64_t &availableBytes);
+    void slotAssistantPoll();
+    void slotAssistantTaskTypesFetched(const QJsonDocument &json, int statusCode);
+    void slotAssistantTasksFetched(const QJsonDocument &json, int statusCode);
+    void slotAssistantTaskScheduled(const QJsonDocument &json, int statusCode);
+    void slotAssistantTaskDeleted(int statusCode);
+    void slotAssistantRequestError(const QString &context, int statusCode);
     void checkNotifiedNotifications();
     void showDesktopNotification(const QString &title, const QString &message, const qint64 notificationId);
     void showDesktopNotification(const OCC::Activity &activity);
@@ -181,6 +218,7 @@ private:
 
     bool isActivityOfCurrentAccount(const Folder *folder) const;
     [[nodiscard]] bool isUnsolvableConflict(const SyncFileItemPtr &item) const;
+    void updateSyncStatus();
 
     bool notificationAlreadyShown(const qint64 notificationId);
     bool canShowNotification(const qint64 notificationId);
@@ -214,6 +252,21 @@ private:
     // used for quota warnings
     int _lastQuotaPercent = 0;
     Activity _lastQuotaActivity;
+
+    QPointer<OcsAssistantConnector> _assistantConnector;
+    QTimer _assistantPollTimer;
+    int _assistantPollAttempts = 0;
+    int _assistantMaxPollAttempts = 60;
+    qint64 _assistantTaskId = -1;
+    QString _assistantTaskType;
+    QString _assistantQuestion;
+    QString _assistantResponse;
+    QString _assistantError;
+    QVariantList _assistantMessages;
+    bool _assistantRequestInProgress = false;
+
+    QUrl _syncStatusIcon;
+    bool _syncStatusOk = true;
 };
 
 class UserModel : public QAbstractListModel
@@ -221,6 +274,10 @@ class UserModel : public QAbstractListModel
     Q_OBJECT
     Q_PROPERTY(User* currentUser READ currentUser NOTIFY currentUserChanged)
     Q_PROPERTY(int currentUserId READ currentUserId WRITE setCurrentUserId NOTIFY currentUserChanged)
+    Q_PROPERTY(bool hasSyncErrors READ hasSyncErrors NOTIFY syncErrorUsersChanged)
+    Q_PROPERTY(int syncErrorUserCount READ syncErrorUserCount NOTIFY syncErrorUsersChanged)
+    Q_PROPERTY(int firstSyncErrorUserId READ firstSyncErrorUserId NOTIFY syncErrorUsersChanged)
+    Q_PROPERTY(User* firstSyncErrorUser READ firstSyncErrorUser NOTIFY syncErrorUsersChanged)
 public:
 
     static UserModel *instance();
@@ -243,6 +300,10 @@ public:
     [[nodiscard]] int currentUserId() const;
 
     Q_INVOKABLE bool isUserConnected(const int id);
+    [[nodiscard]] bool hasSyncErrors() const;
+    [[nodiscard]] int syncErrorUserCount() const;
+    [[nodiscard]] int firstSyncErrorUserId() const;
+    [[nodiscard]] User *firstSyncErrorUser() const;
 
     Q_INVOKABLE std::shared_ptr<OCC::UserStatusConnector> userStatusConnector(int id);
 
@@ -263,6 +324,8 @@ public:
         IdRole,
         CanLogoutRole,
         RemoveAccountTextRole,
+        SyncStatusIconRole,
+        SyncStatusOkRole,
     };
 
     [[nodiscard]] AccountAppList appList() const;
@@ -270,6 +333,7 @@ public:
 signals:
     void addAccount();
     void currentUserChanged();
+    void syncErrorUsersChanged();
 
 public slots:
     void fetchCurrentActivityModel();
@@ -277,6 +341,7 @@ public slots:
     void openCurrentAccountServer();
     void openCurrentAccountFolderFromTrayInfo(const QString &fullRemotePath);
     void openCurrentAccountFeaturedApp();
+    Q_INVOKABLE void refreshSyncErrorUsers();
     void setCurrentUserId(const int id);
     void login(const int id);
     void logout(const int id);
@@ -291,6 +356,10 @@ private:
     QList<User*> _users;
     int _currentUserId = -1;
     bool _init = true;
+    QVector<int> _syncErrorUserIds;
+
+    void updateSyncErrorUsers();
+    [[nodiscard]] bool userHasSyncErrors(const User *user) const;
 
     void buildUserList();
     void addAccsToUserList();

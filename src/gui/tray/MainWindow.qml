@@ -93,6 +93,7 @@ ApplicationWindow {
                 trayWindowHeader.currentAccountHeaderButton.accountMenu.close();
                 trayWindowHeader.appsMenu.close();
                 trayWindowHeader.openLocalFolderButton.closeMenu()
+                UserModel.refreshSyncErrorUsers()
             }
         }
 
@@ -233,9 +234,10 @@ ApplicationWindow {
                                              || unifiedSearchResultsErrorLabel.visible
                                              || unifiedSearchResultsListView.visible
                                              || trayWindowUnifiedSearchInputContainer.activateSearchFocus
+        property bool showAssistantPanel: false
+        property bool isAssistantActive: assistantPromptLoader.active
 
         anchors.fill: parent
-        anchors.margins: Style.trayWindowBorderWidth
         clip: true
 
         radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
@@ -256,14 +258,98 @@ ApplicationWindow {
             anchors.left: parent.left
             anchors.right: parent.right
             height: Style.trayWindowHeaderHeight
+
+            onFeaturedAppButtonClicked: {
+                if (UserModel.currentUser.isAssistantEnabled) {
+                    trayWindowMainItem.showAssistantPanel = !trayWindowMainItem.showAssistantPanel
+                    if (trayWindowMainItem.showAssistantPanel) {
+                        assistantQuestionInput.forceActiveFocus()
+                    }
+                } else {
+                    UserModel.openCurrentAccountFeaturedApp()
+                }
+            }
+        }
+
+        Button {
+            id: trayWindowSyncWarning
+
+            readonly property color warningIconColor: Style.errorBoxBackgroundColor
+
+            anchors.top: trayWindowHeader.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.topMargin: Style.trayHorizontalMargin
+            anchors.leftMargin: Style.trayHorizontalMargin
+            anchors.rightMargin: Style.trayHorizontalMargin
+
+            visible: UserModel.hasSyncErrors
+                     && !(UserModel.syncErrorUserCount === 1
+                          && UserModel.firstSyncErrorUserId === UserModel.currentUserId)
+                     && !trayWindowMainItem.isAssistantActive
+            padding: 0
+            background: Rectangle {
+                radius: Style.slightlyRoundedButtonRadius
+                color: Qt.rgba(trayWindowSyncWarning.warningIconColor.r,
+                               trayWindowSyncWarning.warningIconColor.g,
+                               trayWindowSyncWarning.warningIconColor.b,
+                               0.2)
+                border.width: Style.normalBorderWidth
+                border.color: Qt.rgba(trayWindowSyncWarning.warningIconColor.r,
+                                      trayWindowSyncWarning.warningIconColor.g,
+                                      trayWindowSyncWarning.warningIconColor.b,
+                                      0.6)
+            }
+
+            Accessible.name: syncWarningText.text
+            Accessible.role: Accessible.Button
+
+            contentItem: RowLayout {
+                anchors.fill: parent
+                spacing: 0
+
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.topMargin: 4
+                    Layout.leftMargin: Style.trayHorizontalMargin
+                    Layout.rightMargin: Style.trayHorizontalMargin
+                    Layout.bottomMargin: 4
+
+                    EnforcedPlainTextLabel {
+                        id: syncWarningText
+
+                        Layout.fillWidth: true
+                        font.pixelSize: Style.topLinePixelSize
+                        font.bold: true
+                        wrapMode: Text.WordWrap
+                        horizontalAlignment: Text.AlignHCenter
+                        text: {
+                            if (UserModel.syncErrorUserCount <= 1) {
+                                return qsTr("Issue with account %1").arg(UserModel.firstSyncErrorUser ? UserModel.firstSyncErrorUser.name : "");
+                            }
+                            return qsTr("Issues with several accounts");
+                        }
+                    }
+                }
+            }
+
+            onClicked: {
+                if (UserModel.firstSyncErrorUserId >= 0) {
+                    UserModel.currentUserId = UserModel.firstSyncErrorUserId
+                }
+            }
         }
 
         UnifiedSearchInputContainer {
             id: trayWindowUnifiedSearchInputContainer
+            visible: !trayWindowMainItem.showAssistantPanel
 
             property bool activateSearchFocus: activeFocus
 
-            anchors.top: trayWindowHeader.bottom
+            anchors.top: trayWindowSyncWarning.visible
+                         ? trayWindowSyncWarning.bottom
+                         : trayWindowHeader.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
             anchors.topMargin: Style.trayHorizontalMargin
@@ -279,17 +365,325 @@ ApplicationWindow {
             Keys.onEscapePressed: activateSearchFocus = false
         }
 
+        Dialog {
+            id: assistantResetConfirmationDialogWrapper
+            modal: true
+            focus: true
+            x: (trayWindow.width - width) / 2
+            y: (trayWindow.height - height) / 2
+            header: Item {}
+            footer: Item {}
+            onOpened: assistantResetConfirmationDialog.open()
+
+            background: Rectangle {
+                color: palette.base
+                border.width: 1
+                border.color: "#808080"
+                radius: 10
+                antialiasing: true
+
+                layer.enabled: true
+                layer.smooth: true
+                layer.effect: DropShadow {
+                    horizontalOffset: 4
+                    verticalOffset: 4
+                    radius: 10
+                    samples: 16
+                    color: "#80000000"
+                }
+            }
+            contentItem: Rectangle {
+                id: assistantResetConfirmationDialogContentRect
+                property int margin: 6
+
+                implicitWidth: assistantResetConfirmationDialog.implicitWidth + 2 * margin
+                implicitHeight: assistantResetConfirmationDialog.implicitHeight + 2 * margin
+                width: implicitWidth
+                height: implicitHeight
+                border.color: "transparent"
+                color: "transparent"
+                // color: "#ff0000"
+
+                Dialog {
+                    id: assistantResetConfirmationDialog
+
+                    modal: false
+                    focus: true
+                    title: qsTr("Start new conversation?")
+                    x: assistantResetConfirmationDialogContentRect.margin
+                    y: assistantResetConfirmationDialogContentRect.margin
+
+                    background: Rectangle {
+                        border.color: "transparent"
+                        color: "transparent"
+                    }
+
+                    header: Label {
+                            id: titleLabel
+                            text: assistantResetConfirmationDialog.title
+                            leftPadding: 0
+                            font.weight: Font.Bold
+                        }
+
+                    footer: Row {
+                        spacing: 6
+                        layoutDirection: Qt.RightToLeft
+                        Button {
+                            text: qsTr("New conversation")
+                            onClicked: assistantResetConfirmationDialog.accept()
+                        }
+                        Button {
+                            text: qsTr("Cancel")
+                            onClicked: assistantResetConfirmationDialog.reject()
+                        }
+                    }
+
+                    onAccepted: {
+                        assistantResetConfirmationDialogWrapper.close()
+                        assistantInputContainer.resetAssistantConversation()
+                    }
+
+                    onRejected: {
+                        assistantResetConfirmationDialogWrapper.close()
+                    }
+
+                    onDiscarded: {
+                        assistantResetConfirmationDialogWrapper.close()
+                    }
+
+                    contentItem: Label {
+                        id: assistantResetConfirmationDialogLabel
+                        anchors.fill: parent
+                        text: qsTr("This will clear the existing conversation.")
+                        wrapMode: Text.WordWrap
+                        bottomPadding: 10
+                        topPadding: 10
+                        leftPadding: 0
+                        rightPadding: 0
+                        horizontalAlignment: Text.AlignLeft
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                }
+            }
+        }
+
+        RowLayout {
+            id: assistantInputContainer
+            visible: trayWindowMainItem.showAssistantPanel
+
+            function resetAssistantConversation() {
+                UserModel.currentUser.clearAssistantResponse()
+                assistantQuestionInput.text = ""
+                assistantQuestionInput.forceActiveFocus()
+            }
+
+            function submitQuestion() {
+                const question = assistantQuestionInput.text.trim()
+                if (question.length === 0) {
+                    return
+                }
+
+                UserModel.currentUser.submitAssistantQuestion(question)
+                assistantQuestionInput.text = ""
+            }
+
+            anchors.bottom: trayWindowMainItem.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.topMargin: Style.trayHorizontalMargin
+            anchors.bottomMargin: Style.trayHorizontalMargin
+            spacing: Style.extraSmallSpacing
+
+            TextField {
+                id: assistantQuestionInput
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                Layout.fillHeight: true
+                placeholderText: qsTr("Ask Assistant…")
+                enabled: UserModel.currentUser.isConnected && !UserModel.currentUser.assistantRequestInProgress
+                onAccepted: assistantInputContainer.submitQuestion()
+
+                Layout.leftMargin: Style.trayHorizontalMargin
+                leftPadding: 8
+                rightPadding: 8
+                topPadding: 10
+                bottomPadding: 10
+            }
+
+            Button {
+                id: assistantSendButton
+                Layout.alignment: Qt.AlignVCenter
+                Layout.preferredHeight: assistantQuestionInput.height
+                Layout.preferredWidth: assistantQuestionInput.height
+                Layout.maximumWidth: assistantQuestionInput.height
+                padding: 0
+                enabled: assistantQuestionInput.enabled && assistantQuestionInput.text.trim().length > 0
+                icon.source: "image://svgimage-custom-color/send.svg/" + palette.windowText
+                icon.width: Math.round(assistantQuestionInput.height * 0.5)
+                icon.height: Math.round(assistantQuestionInput.height * 0.5)
+                display: AbstractButton.IconOnly
+                focusPolicy: Qt.StrongFocus
+
+                onClicked: assistantInputContainer.submitQuestion()
+
+                Accessible.role: Accessible.Button
+                Accessible.name: qsTr("Send assistant question")
+                Accessible.onPressAction: assistantInputContainer.submitQuestion()
+            }
+
+            Button {
+                id: assistantResetButton
+                Layout.alignment: Qt.AlignVCenter
+                Layout.preferredHeight: assistantQuestionInput.height
+                Layout.preferredWidth: assistantQuestionInput.height
+                Layout.maximumWidth: assistantQuestionInput.height
+                Layout.rightMargin: Style.trayHorizontalMargin
+                padding: 0
+                icon.source: "image://svgimage-custom-color/add.svg/" + palette.windowText
+                icon.width: Math.round(assistantQuestionInput.height * 0.5)
+                icon.height: Math.round(assistantQuestionInput.height * 0.5)
+                display: AbstractButton.IconOnly
+                focusPolicy: Qt.StrongFocus
+
+                onClicked: assistantResetConfirmationDialogWrapper.open()
+
+                Accessible.role: Accessible.Button
+                Accessible.name: qsTr("Start a new assistant chat")
+                Accessible.onPressAction: assistantResetConfirmationDialogWrapper.open()
+            }
+        }
+
+        Connections {
+            target: UserModel.currentUser
+            function onAssistantStateChanged() {
+                if (!UserModel.currentUser.isAssistantEnabled) {
+                    trayWindowMainItem.showAssistantPanel = false
+                }
+            }
+        }
+
+        Loader {
+            id: assistantPromptLoader
+
+            active: UserModel.currentUser.isAssistantEnabled
+                    && trayWindowMainItem.showAssistantPanel
+            visible: trayWindowMainItem.showAssistantPanel
+            anchors.top: trayWindowHeader.bottom
+            anchors.bottom: assistantInputContainer.top
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.topMargin: Style.trayHorizontalMargin
+            clip: true
+
+            sourceComponent: ColumnLayout {
+                id: assistantPrompt
+                spacing: Style.smallSpacing
+
+                ScrollView {
+                    id: assistantConversationScrollView
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    visible: assistantConversationList.count > 0
+                    contentWidth: availableWidth
+                    leftPadding: 0
+                    rightPadding: 0
+
+                    ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+                    ScrollBar.vertical.policy: ScrollBar.AsNeeded
+
+                    ListView {
+                        id: assistantConversationList
+                        clip: true
+                        spacing: Style.standardSpacing
+                        boundsBehavior: Flickable.StopAtBounds
+
+                        leftMargin: Style.trayHorizontalMargin
+                        rightMargin: Style.trayHorizontalMargin
+
+                        model: UserModel.currentUser.assistantMessages
+
+                        delegate: Item {
+                            id: messageDelegate
+                            width: assistantConversationList.width - ( assistantConversationList.leftMargin + assistantConversationList.rightMargin )
+                            implicitHeight: messageBubble.implicitHeight
+
+                            readonly property bool isAssistantMessage: modelData.role === "assistant"
+
+                            Rectangle {
+                                id: messageBubble
+
+                                anchors.left: isAssistantMessage ? parent.left : undefined
+                                anchors.right: isAssistantMessage ? undefined : parent.right
+                                anchors.leftMargin: Style.trayHorizontalMargin
+                                anchors.rightMargin: Style.trayHorizontalMargin
+
+                                radius: Style.smallSpacing
+                                color: isAssistantMessage ? palette.alternateBase : palette.highlight
+                                width: Math.min(messageDelegate.width * 0.8, messageText.implicitWidth + (Style.smallSpacing * 2))
+                                implicitHeight: messageText.implicitHeight + (Style.smallSpacing * 2)
+
+                                TextEdit {
+                                    id: messageText
+
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+                                    anchors.top: parent.top
+                                    anchors.margins: Style.smallSpacing
+                                    text: modelData.text
+                                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                                    color: isAssistantMessage ? palette.windowText : palette.highlightedText
+                                    textFormat: Text.MarkdownText
+                                    readOnly: true
+                                    selectByMouse: true
+                                }
+                            }
+                        }
+
+                        onCountChanged: {
+                            assistantConversationList.positionViewAtEnd()
+                        }
+                    }
+                }
+
+                EnforcedPlainTextLabel {
+                    id: assistantStatusLabel
+                    Layout.fillWidth: true
+                    Layout.leftMargin: Style.trayHorizontalMargin
+                    Layout.rightMargin: Style.trayHorizontalMargin
+                    Layout.bottomMargin: Style.trayHorizontalMargin
+                    Layout.topMargin: Style.trayHorizontalMargin
+                    visible: true
+                    text: UserModel.currentUser.assistantResponse
+                    wrapMode: Text.Wrap
+                    color: palette.windowText
+                }
+
+                EnforcedPlainTextLabel {
+                    id: assistantErrorLabel
+                    Layout.fillWidth: true
+                    Layout.leftMargin: Style.trayHorizontalMargin
+                    Layout.rightMargin: Style.trayHorizontalMargin
+                    Layout.bottomMargin: Style.trayHorizontalMargin
+                    Layout.topMargin: Style.trayHorizontalMargin
+                    visible: UserModel.currentUser.assistantError.length > 0
+                    text: UserModel.currentUser.assistantError
+                    wrapMode: Text.Wrap
+                    color: palette.highlight
+                }
+            }
+        }
+
         Rectangle {
             id: bottomUnifiedSearchInputSeparator
 
-            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
+            anchors.top: trayWindowMainItem.showAssistantPanel ? assistantInputContainer.bottom : trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.topMargin: Style.trayHorizontalMargin
 
             height: 1
             color: palette.dark
-            visible: trayWindowMainItem.isUnifiedSearchActive
+            visible: trayWindowMainItem.isUnifiedSearchActive || trayWindowMainItem.showAssistantPanel
         }
 
         ErrorBox {
@@ -405,9 +799,9 @@ ApplicationWindow {
             id: syncStatus
 
             accentColor: Style.accentColor
-            visible: !trayWindowMainItem.isUnifiedSearchActive
+            visible: !trayWindowMainItem.isUnifiedSearchActive && !trayWindowMainItem.showAssistantPanel
 
-            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
+            anchors.top: trayWindowMainItem.showAssistantPanel ? assistantInputContainer.bottom : trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
         }
@@ -419,7 +813,7 @@ ApplicationWindow {
             anchors.bottom: syncStatus.bottom
             height: 1
             color: palette.dark
-            visible: !trayWindowMainItem.isUnifiedSearchActive
+            visible: !trayWindowMainItem.isUnifiedSearchActive && !trayWindowMainItem.showAssistantPanel
         }
 
         Loader {
@@ -477,7 +871,7 @@ ApplicationWindow {
 
         ActivityList {
             id: activityList
-            visible: !trayWindowMainItem.isUnifiedSearchActive
+            visible: !trayWindowMainItem.isUnifiedSearchActive && !trayWindowMainItem.isAssistantActive
             anchors.top: syncStatus.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right

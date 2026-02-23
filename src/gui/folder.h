@@ -13,6 +13,7 @@
 #include "networkjobs.h"
 #include "syncoptions.h"
 
+#include <QByteArray>
 #include <QObject>
 #include <QStringList>
 #include <QUuid>
@@ -33,6 +34,12 @@ class AccountState;
 class SyncRunFileLog;
 class FolderWatcher;
 class LocalDiscoveryTracker;
+
+#ifdef Q_OS_MACOS
+namespace Utility {
+class MacSandboxPersistentAccess;
+}
+#endif
 
 /**
  * @brief The FolderDefinition class
@@ -60,6 +67,11 @@ public:
 
     /// Whether the vfs mode shall silently be updated if possible
     bool upgradeVfsMode = false;
+
+    /// macOS app-scoped security-scoped bookmark data for the local sync folder.
+    /// Persisted to settings so that a sandboxed app can regain access to the
+    /// user-selected folder after an app restart.
+    QByteArray securityScopedBookmarkData;
 
     /// Saves the folder definition into the current settings group.
     static void save(QSettings &settings, const FolderDefinition &folder);
@@ -288,6 +300,20 @@ public:
      */
     void registerFolderWatcher();
 
+#ifdef Q_OS_MACOS
+    /**
+     * @brief Takes ownership of a persistent security-scoped access handle.
+     *
+     * On macOS, sandboxed apps must resolve bookmark data and call
+     * startAccessingSecurityScopedResource() before accessing the local sync
+     * folder. This method stores the resulting handle so that access is
+     * maintained for the folder's entire lifetime.
+     *
+     * @param access The persistent access handle
+     */
+    void setSecurityScopedAccess(std::unique_ptr<Utility::MacSandboxPersistentAccess> access);
+#endif
+
     /** virtual files of some kind are enabled
      *
      * This is independent of whether new files will be virtual. It's possible to have this enabled
@@ -508,6 +534,16 @@ private:
 
     static void postExistingFolderNowBigNotification(const QString &folderPath);
     void postExistingFolderNowBigActivity(const QString &folderPath) const;
+
+#ifdef Q_OS_MACOS
+    /**
+     * macOS sandbox: Holds the persistent security-scoped resource access
+     * for the local sync folder path. Must outlive all filesystem access to
+     * the folder. Declared first so it is destroyed last (C++ destroys
+     * members in reverse declaration order).
+     */
+    std::unique_ptr<Utility::MacSandboxPersistentAccess> _securityScopedAccess;
+#endif
 
     AccountStatePtr _accountState;
     FolderDefinition _definition;

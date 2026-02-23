@@ -14,20 +14,43 @@ To pull updated localizations from Transifex into the Xcode project manually, fo
 
 The dedicated [`.tx/config`](.tx/config) file is used.
 
-## Pull Translations
+## Pulling Translations
 
 Run this in the "NextcloudIntegration" project folder of your repository clone:
 
 ```sh
-tx pull --force --all --mode=reviewed --minimum-perc=50
+tx pull --force --all --mode=translator
 ```
+
+Do not commit the changes string catalogs, they need to be processed first.
 
 ### Sanitize Translations
 
 Transifex returns empty strings for keys with untranslated localizations.
-To remove them, we use the Swift command-line utility [TransifexStringCatalogSanitizer](../../../admin/osx/TransifexStringCatalogSanitizer/).
+To remove them, we use the Swift command-line utility [TransifexStringCatalogSanitizer](../TransifexStringCatalogSanitizer/).
 See its dedicated README for usage instructions.
 Use it for all updated Xcode string catalogs.
+
+### Summary
+
+```sh
+tx pull --force --all --mode=translator
+swift run --package-path=../TransifexStringCatalogSanitizer TransifexStringCatalogSanitizer ./FileProviderExt/Localizable.xcstrings
+swift run --package-path=../TransifexStringCatalogSanitizer TransifexStringCatalogSanitizer ./FileProviderUIExt/Localizable.xcstrings
+```
+
+## Pushing Translations
+
+**Follow this section carefully to the end before performing any steps of it.**
+The way Transifex handles Xcode string catalogs poses a high risk of accidentally deleting already available and finished translations on Transifex because pushing an Xcode string catalog overwrites the online state with the catalog as it is.
+This means that changes on Transifex must be integrated locally first to avoid data loss, before the then updated local Xcode string catalog can be pushed to Transifex.
+
+1. Perform the steps in the previous section about pulling translations.
+2. Build the extensions in Xcode. This causes the compiler to update the string catalogs based on the current source code by automatically recognizing localizable texts. As of writing, the "desktopclient" scheme is a good choice because it builds both file provider extensions as dependencies.
+3. Run the `TransifexStringCatalogSanitizer` over both string catalogs as in the previous section.
+4. Inspect the changes in the string catalogs in a Git diff or whatever tool you use for that task. Verify the plausibility of each change.
+5. Run `tx push` in the "NextcloudIntegration" directory.
+6. Check Transifex to have received the new keys and deleted the obsolete ones.
 
 ## Nextcloud Developer Build
 

@@ -81,6 +81,14 @@ struct RemoteInterfaceExtensionTests {
                     "message": "OK"
                 },
                 "data": {
+                    "version": {
+                        "major": 31,
+                        "minor": 0,
+                        "micro": 9,
+                        "string": "31.0.9",
+                        "edition": "",
+                        "extendedSupport": false
+                    },
                     "capabilities": {
                         "files": {
                             "undelete": false
@@ -187,6 +195,14 @@ struct RemoteInterfaceExtensionTests {
                     "message": "OK"
                 },
                 "data": {
+                    "version": {
+                        "major": 31,
+                        "minor": 0,
+                        "micro": 9,
+                        "string": "31.0.9",
+                        "edition": "",
+                        "extendedSupport": false
+                    },
                     "capabilities": {
                         "files": {
                             "undelete": false
@@ -242,6 +258,14 @@ struct RemoteInterfaceExtensionTests {
                     "message": "OK"
                 },
                 "data": {
+                    "version": {
+                        "major": 31,
+                        "minor": 0,
+                        "micro": 9,
+                        "string": "31.0.9",
+                        "edition": "",
+                        "extendedSupport": false
+                    },
                     "capabilities": {
                         "core": {
                             "pollinterval": 60

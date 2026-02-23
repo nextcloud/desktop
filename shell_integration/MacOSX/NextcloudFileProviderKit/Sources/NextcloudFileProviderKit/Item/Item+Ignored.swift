@@ -63,14 +63,11 @@ extension Item {
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
             log: log
         )
 
-        if #available(macOS 13.0, *) {
-            return (item, NSFileProviderError(.excludedFromSync))
-        } else {
-            return (item, nil)
-        }
+        return (item, NSFileProviderError(.excludedFromSync))
     }
 }

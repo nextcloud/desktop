@@ -37,17 +37,28 @@ QVector<Utility::ProcessInfosForOpenFile> Utility::queryProcessInfosKeepingFileO
 
 void Utility::setupFavLink(const QString &folder)
 {
-    // Nautilus: add to ~/.gtk-bookmarks
+    // Nautilus: add to ~/.config/gtk-3.0/bookmarks
     QFile gtkBookmarks(QDir::homePath() + QLatin1String("/.config/gtk-3.0/bookmarks"));
-    QByteArray folderUrl = "file://" + folder.toUtf8();
-    if (gtkBookmarks.open(QFile::ReadWrite)) {
-        QByteArray places = gtkBookmarks.readAll();
-        if (!places.contains(folderUrl)) {
-            places += folderUrl;
-            gtkBookmarks.reset();
-            gtkBookmarks.write(places + '\n');
-        }
+    const auto folderUrl = QUrl::fromLocalFile(folder).toEncoded();
+    if (!gtkBookmarks.open(QFile::ReadWrite)) {
+        qCWarning(lcUtility).nospace() << "failed to set up fav link"
+            << " folder=" << folder
+            << " error=" << gtkBookmarks.error()
+            << " errorString=" << gtkBookmarks.errorString();
+        return;
     }
+
+    auto places = gtkBookmarks.readAll();
+    if (places.contains(folderUrl)) {
+        qCDebug(lcUtility).nospace() << "fav link already exists"
+            << " folder=" << folder
+            << " folderUrl=" << folderUrl;
+        return;
+    }
+
+    places += folderUrl;
+    gtkBookmarks.reset();
+    gtkBookmarks.write(places + '\n');
 }
 
 void Utility::removeFavLink(const QString &folder)

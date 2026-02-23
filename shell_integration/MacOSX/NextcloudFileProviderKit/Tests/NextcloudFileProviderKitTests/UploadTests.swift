@@ -129,7 +129,6 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock(),
             chunkUploadCompleteHandler: { uploadedChunks.append($0) }
         )
-        let expectedChunkCount = Int(ceil(Double(data.count) / Double(chunkSize)))
 
         XCTAssertEqual(result.remoteError, .success)
         XCTAssertEqual(result.size, Int64(data.count))

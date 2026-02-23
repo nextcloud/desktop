@@ -153,18 +153,18 @@ public actor FileProviderLog: FileProviderLogging {
         let newFile = logsDirectory.appendingPathComponent(name, isDirectory: false)
 
         if fileManager.createFile(atPath: newFile.path, contents: nil) == false {
-            logger.error("Failed to create new log file at: \"\(newFile.path)\".")
+            logger.error("Failed to create new log file at: \"\(newFile.path, privacy: .public)\".")
             return
         } else {
-            logger.debug("Created new log file at: \"\(newFile.path)\".")
+            logger.debug("Created new log file at: \"\(newFile.path, privacy: .public)\".")
         }
 
         do {
             file = newFile
             handle = try FileHandle(forWritingTo: newFile)
-            logger.debug("Opened new log file for writing at: \"\(newFile.path)\".")
+            logger.debug("Opened new log file for writing at: \"\(newFile.path, privacy: .public)\".")
         } catch {
-            logger.error("Failed to open new log file at \"\(newFile.path)\" for writing: \(error.localizedDescription, privacy: .public)")
+            logger.error("Failed to open new log file at \"\(newFile.path, privacy: .public)\" for writing: \(error.localizedDescription, privacy: .public)")
         }
 
         // Clean up old log files (older than 24 hours)
@@ -212,9 +212,9 @@ public actor FileProviderLog: FileProviderLogging {
         }
     }
 
-    private func writeToUnifiedLoggingSystem(level: OSLogType, message: String, details: [FileProviderLogDetailKey: (any Sendable)?]) {
+    private func writeToUnifiedLoggingSystem(level: OSLogType, message: String, details: [FileProviderLogDetailKey: (any Sendable)?], file: StaticString, function: StaticString, line: UInt) {
         if details.isEmpty {
-            logger.log(level: level, "\(message, privacy: .public)")
+            logger.log(level: level, "\(message, privacy: .public)\n\n\(file, privacy: .public):\(line, privacy: .public) \(function, privacy: .public)")
             return
         }
 
@@ -249,13 +249,13 @@ public actor FileProviderLog: FileProviderLogging {
             return "- \(key.rawValue): \(valueDescription)"
         }
 
-        logger.log(level: level, "\(message, privacy: .public)\n\n\(detailDescriptions.joined(separator: "\n"), privacy: .public)")
+        logger.log(level: level, "\(message, privacy: .public)\n\n\(detailDescriptions.joined(separator: "\n"), privacy: .public)\n\n\(file, privacy: .public):\(line, privacy: .public) \(function, privacy: .public)")
     }
 
-    public func write(category: String, level: OSLogType, message: String, details: [FileProviderLogDetailKey: (any Sendable)?]) {
+    public func write(category: String, level: OSLogType, message: String, details: [FileProviderLogDetailKey: (any Sendable)?], file: StaticString, function: StaticString, line: UInt) {
         #if DEBUG
 
-            writeToUnifiedLoggingSystem(level: level, message: message, details: details)
+            writeToUnifiedLoggingSystem(level: level, message: message, details: details, file: file, function: function, line: line)
 
         #else
 
@@ -288,7 +288,7 @@ public actor FileProviderLog: FileProviderLogging {
 
         let date = Date()
         let formattedDate = messageDateFormatter.string(from: date)
-        let entry = FileProviderLogMessage(category: category, date: formattedDate, details: details, level: levelDescription, message: message)
+        let entry = FileProviderLogMessage(category: category, date: formattedDate, details: details, level: levelDescription, message: message, file: file, function: function, line: line)
 
         do {
             let object = try encoder.encode(entry)

@@ -1,0 +1,43 @@
+# SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+name: Auto-label bug reports
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  add-os-label:
+    if: contains(github.event.issue.title, '[Bug]')
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Extract OS and apply label
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        with:
+          script: |
+            const body = context.payload.issue.body || '';
+            const normalizedBody = body.replace(/\r\n?/g, '\n');
+            let label = '';
+            
+            if (/### Operating system\s*\n+macOS\b/.test(normalizedBody)) {
+              label = 'os: :apple: macOS';
+            } else if (/### Operating system\s*\n+Windows\b/.test(normalizedBody)) {
+              label = 'os: :door: Windows';
+            } else if (/### Operating system\s*\n+Linux\b/.test(normalizedBody)) {
+              label = 'os: :penguin: Linux';
+            }
+            
+            if (label) {
+              try {
+                await github.rest.issues.addLabels({
+                  issue_number: context.issue.number,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  labels: [label]
+                });
+              } catch (error) {
+                core.setFailed(`Failed to add label "${label}": ${error.message || error}`);
+              }
+            }
