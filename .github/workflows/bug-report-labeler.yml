@@ -22,11 +22,11 @@ jobs:
             let label = '';
             
             if (/### Operating system\s*\n+macOS\b/.test(normalizedBody)) {
-              label = 'os: 🍎 macOS';
+              label = 'os: :apple: macOS';
             } else if (/### Operating system\s*\n+Windows\b/.test(normalizedBody)) {
-              label = 'os: 🚪 Windows';
+              label = 'os: :door: Windows';
             } else if (/### Operating system\s*\n+Linux\b/.test(normalizedBody)) {
-              label = 'os: 🐧 Linux';
+              label = 'os: :penguin: Linux';
             }
             
             if (label) {
