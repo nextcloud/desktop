@@ -265,8 +265,9 @@ void FileActionsModel::parseEndpoints()
     if (contextMenuList.isEmpty()) {
         qCWarning(lcFileActions) << "contextMenuByMimeType is empty, nothing was returned by capabilities"
                                  << _localPath;
+
         //: TRANSLATOR Placeholder contains file MIME type
-        setResponse({ tr("No file actions were returned by the server for %1 files.", "file mymetype")
+        setResponse({ tr("No file actions were returned by the server for %1 files.", "file mimetype")
                          .arg(_mimeType.filterString()),
                      _accountUrl });
         resetActions({});
