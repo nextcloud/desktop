@@ -1990,7 +1990,7 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="250"/>
         <source>The file ID is empty for %1.</source>
         <comment>file name</comment>
-        <translation type="unfinished"/>
+        <translation>%1 的檔案 ID 為空。</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="258"/>
@@ -5523,7 +5523,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="435"/>
         <source>No synchronisation configured</source>
-        <translation type="unfinished"/>
+        <translation>沒有同步配置</translation>
     </message>
 </context>
 <context>
