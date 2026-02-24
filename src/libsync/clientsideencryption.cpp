@@ -62,6 +62,7 @@ QDebug operator<<(QDebug out, const std::string& str)
 }
 
 using namespace QKeychain;
+using namespace Qt::StringLiterals;
 
 namespace OCC
 {
@@ -639,9 +640,9 @@ std::optional<QByteArray> decryptStringAsymmetric(const CertificateInformation &
     }
 
     if (encryptionEngine.useTokenBasedEncryption()) {
-        qCDebug(lcCseDecryption()) << "use certificate on hardware token";
+        qCDebug(lcCseDecryption()) << "use certificate on hardware token" << selectedCertificate.sha256Fingerprint();
     } else {
-        qCDebug(lcCseDecryption()) << "use certificate on software storage";
+        qCDebug(lcCseDecryption()) << "use certificate on software storage" << selectedCertificate.sha256Fingerprint();
     }
 
     auto decryptBase64Result = QByteArray{};
