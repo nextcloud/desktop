@@ -1278,7 +1278,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             }
         } else if (noServerEntry) {
             // Not locally, not on the server. The entry is stale!
-            qCInfo(lcDisco) << "Stale DB entry";
+            qCInfo(lcDisco).nospace() << "Stale DB entry (missing local/server entries)"
+                << " path=" << path._original
+                << " db_etag=" << dbEntry._etag
+                << " db_inode=" << dbEntry._inode;
             if (!_discoveryData->_statedb->deleteFileRecord(path._original, true)) {
                 emit _discoveryData->fatalError(tr("Error while deleting file record %1 from the database").arg(path._original), ErrorCategory::GenericError);
                 qCWarning(lcDisco) << "Failed to delete a file record from the local DB" << path._original;
