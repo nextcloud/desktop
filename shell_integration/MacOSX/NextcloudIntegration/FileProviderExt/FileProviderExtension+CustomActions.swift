@@ -117,8 +117,8 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                         }
                     }
 
-                    for try await result in group {
-                        progress.completedUnitCount = 1
+                    for try await _ in group {
+                        progress.completedUnitCount += 1
                     }
                 }
                 logger.info("All items successfully processed for keepDownloaded=\(keepDownloaded)")
