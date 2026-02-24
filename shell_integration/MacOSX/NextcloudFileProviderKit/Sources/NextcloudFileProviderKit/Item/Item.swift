@@ -20,6 +20,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
     public let account: Account
     public let remoteInterface: RemoteInterface
 
+    private let displayFileActions: Bool
     private let remoteSupportsTrash: Bool
 
     public var itemIdentifier: NSFileProviderItemIdentifier {
@@ -188,6 +189,8 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
 
     public var userInfo: [AnyHashable: Any]? {
         var userInfoDict = [AnyHashable: Any]()
+        userInfoDict["displayFileActions"] = displayFileActions
+
         if metadata.lock {
             // Can be used to display lock/unlock context menu entries for FPUIActions
             // Note that only files, not folders, should be lockable/unlockable
@@ -199,11 +202,10 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         userInfoDict["displayEvict"] = metadata.downloaded && !metadata.keepDownloaded
 
         // https://docs.nextcloud.com/server/latest/developer_manual/client_apis/WebDAV/basic.html
-        if metadata.permissions.uppercased().contains("R"), // Shareable
-           ![.rootContainer, .trashContainer].contains(itemIdentifier)
-        {
+        if metadata.permissions.uppercased().contains("R") /* Shareable */, ![.rootContainer, .trashContainer].contains(itemIdentifier) {
             userInfoDict["displayShare"] = true
         }
+
         return userInfoDict
     }
 
@@ -265,6 +267,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: remoteSupportsTrash,
             log: log
         )
@@ -308,6 +311,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: remoteSupportsTrash,
             log: log
         )
@@ -321,6 +325,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
+        displayFileActions: Bool,
         remoteSupportsTrash: Bool,
         log: any FileProviderLogging
     ) {
@@ -330,6 +335,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         logger = FileProviderLogger(category: "Item", log: log)
         self.remoteInterface = remoteInterface
         self.dbManager = dbManager
+        self.displayFileActions = displayFileActions
         self.remoteSupportsTrash = remoteSupportsTrash
         super.init()
     }
@@ -382,12 +388,17 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             return nil
         }
 
+        // Display File Actions
+
+        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: metadata.contentType)
+
         return Item(
             metadata: metadata,
             parentItemIdentifier: parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
+            displayFileActions: displayFileActions,
             remoteSupportsTrash: remoteSupportsTrash,
             log: log
         )

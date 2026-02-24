@@ -95,12 +95,15 @@ public extension Item {
         directory.downloaded = true
         dbManager.addItemMetadata(directory)
 
+        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: directory.contentType)
+
         let fpItem = await Item(
             metadata: directory,
             parentItemIdentifier: parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
+            displayFileActions: displayFileActions,
             remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
             log: log
         )
@@ -218,12 +221,15 @@ public extension Item {
 
         dbManager.addItemMetadata(newMetadata)
 
+        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: newMetadata.contentType)
+
         let fpItem = await Item(
             metadata: newMetadata,
             parentItemIdentifier: itemTemplate.parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
+            displayFileActions: displayFileActions,
             remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
             log: log
         )
@@ -422,12 +428,15 @@ public extension Item {
 
         progress.completedUnitCount += 1
 
+        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: bundleRootMetadata.contentType)
+
         return await Item(
             metadata: bundleRootMetadata,
             parentItemIdentifier: rootItem.parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
+            displayFileActions: displayFileActions,
             remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
             log: log
         )
@@ -597,12 +606,15 @@ public extension Item {
                     )
                 }
 
+                let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: itemMetadata.contentType)
+
                 item = await Item(
                     metadata: itemMetadata,
                     parentItemIdentifier: parentItemIdentifier,
                     account: account,
                     remoteInterface: remoteInterface,
                     dbManager: dbManager,
+                    displayFileActions: displayFileActions,
                     remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
                     log: log
                 )

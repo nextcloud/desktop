@@ -117,6 +117,7 @@ ownCloudGui::ownCloudGui(Application *parent)
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
     connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::syncStateChanged, this, &ownCloudGui::slotComputeOverallSyncStatus);
+    connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::showFileActionsDialog, _tray.data(), &Systray::slotShowFileProviderFileActionsDialog);
 #endif
 
     connect(Logger::instance(), &Logger::guiLog, this, &ownCloudGui::slotShowTrayMessage);

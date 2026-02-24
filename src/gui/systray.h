@@ -148,6 +148,12 @@ public slots:
     void createFileActivityDialog(const QString &localPath);
     void showFileActionsDialog(const QString &localPath);
 
+    #ifdef BUILD_FILE_PROVIDER_MODULE
+
+    void slotShowFileProviderFileActionsDialog(const QString &fileId, const QString &localPath, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier);
+
+    #endif
+
     void presentShareViewInTray(const QString &localPath);
     void presentFileActionsViewInSystray(const QString &localPath);
 
@@ -168,6 +174,18 @@ private:
     void setupContextMenu();
     void createFileDetailsDialog(const QString &localPath);
     void createFileActionsDialog(const QString &localPath);
+
+    #ifdef BUILD_FILE_PROVIDER_MODULE
+
+    void createFileProviderFileActionsDialog(const QString &fileId, const QString &localPath, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier);
+
+    #endif
+
+    /**
+     * @param fileId This is optional and null by default. Only when there are no synchronization folders configured (for example when only a file provider is used) is this value required.
+     * @param remoteItemPath The server-side path of the item. Used as a fallback to determine the success response URL when no sync folder is configured.
+     */
+    void createFileActionsDialogWithAccountState(const QString &localPath, AccountState *accountState, const QString &fileId = {}, const QString &remoteItemPath = {});
 
     [[nodiscard]] QScreen *currentScreen() const;
     [[nodiscard]] QRect currentScreenRect() const;

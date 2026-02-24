@@ -12,6 +12,40 @@ extension FileProviderExtension: NSFileProviderCustomAction {
         completionHandler: @escaping ((any Error)?) -> Void
     ) -> Progress {
         switch actionIdentifier.rawValue {
+        case "com.nextcloud.desktopclient.FileProviderExt.FileActionsAction":
+            guard let itemIdentifier = itemIdentifiers.first else {
+                logger.error("Failed to get first item identifier for file actions action.")
+                completionHandler(NSFileProviderError(.noSuchItem))
+                return Progress()
+            }
+
+            guard let dbManager else {
+                logger.error("Cannot fetch metadata for item file actions due to database manager not being available.", [.item: itemIdentifier])
+                completionHandler(NSFileProviderError(.cannotSynchronize))
+                return Progress()
+            }
+
+            Task {
+                guard let userVisibleURL = try await manager?.getUserVisibleURL(for: itemIdentifier) else {
+                    logger.error("Failed to get user-visible URL for item.", [.item: itemIdentifier])
+                    completionHandler(NSFileProviderError(.noSuchItem))
+                    return
+                }
+
+                guard let metadata = dbManager.itemMetadata(itemIdentifier) else {
+                    logger.error("Failed to get metadata for item.", [.item: itemIdentifier])
+                    completionHandler(NSFileProviderError(.cannotSynchronize))
+                    return
+                }
+
+                let path = userVisibleURL.path
+                let domainIdentifier = domain.identifier.rawValue
+                logger.info("Telling main app to present file actions.", [.item: path, .domain: domainIdentifier])
+                app?.presentFileActions(metadata.ocId, path: path, remoteItemPath: metadata.path, withDomainIdentifier: domainIdentifier)
+                completionHandler(nil)
+            }
+
+            return Progress()
         case "com.nextcloud.desktopclient.FileProviderExt.KeepDownloadedAction":
             return performKeepDownloadedAction(
                 keepDownloaded: true,
@@ -30,7 +64,7 @@ extension FileProviderExtension: NSFileProviderCustomAction {
             return Progress()
         }
     }
-    
+
     private func performKeepDownloadedAction(
         keepDownloaded: Bool,
         onItemsWithIdentifiers itemIdentifiers: [NSFileProviderItemIdentifier],
