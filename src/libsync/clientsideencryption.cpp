@@ -1035,11 +1035,7 @@ bool ClientSideEncryption::userCertificateNeedsMigration() const
 
 QByteArray ClientSideEncryption::certificateSha256Fingerprint() const
 {
-    if (useTokenBasedEncryption()) {
-        return _encryptionCertificate.sha256Fingerprint();
-    }
-
-    return {};
+    return _encryptionCertificate.sha256Fingerprint();
 }
 
 void ClientSideEncryption::setAccount(const AccountPtr &account)
