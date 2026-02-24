@@ -10,11 +10,13 @@
 static os_log_t getFinderSyncSocketLineProcessorLogger(void) {
     static dispatch_once_t onceToken;
     static os_log_t logger = NULL;
+
     dispatch_once(&onceToken, ^{
         NSBundle *bundle = [NSBundle bundleForClass:[FinderSyncSocketLineProcessor class]];
         NSString *subsystem = bundle.bundleIdentifier ?: @"FinderSyncExt";
         logger = os_log_create(subsystem.UTF8String, "FinderSyncSocketLineProcessor");
     });
+
     return logger;
 }
 
@@ -31,11 +33,13 @@ static os_log_t getFinderSyncSocketLineProcessorLogger(void) {
     os_log_t logger = getFinderSyncSocketLineProcessorLogger();
     os_log_debug(logger, "Initializing FinderSyncSocketLineProcessor with delegate");
     self = [super init];
+
     if (self) {
         _log = logger;
         self.delegate = delegate;
         os_log_debug(logger, "FinderSyncSocketLineProcessor initialization completed");
     }
+
     return self;
 }
 
@@ -53,32 +57,48 @@ static os_log_t getFinderSyncSocketLineProcessorLogger(void) {
         NSString *path = [pathSplit componentsJoinedByString:@":"];
         os_log_debug(_log, "STATUS command: result=%{public}@, path=%{public}@", result, path);
         
+        __weak typeof(self) weakSelf = self;
+
         dispatch_async(dispatch_get_main_queue(), ^{
-            os_log_debug(_log, "Setting result %{public}@ for path %{public}@", result, path);
+            __strong typeof(self) self = weakSelf;
+            if (!self) { return; }
+            os_log_debug(self->_log, "Setting result %{public}@ for path %{public}@", result, path);
             [self.delegate setResult:result forPath:path];
         });
     } else if([command isEqualToString:@"UPDATE_VIEW"]) {
         NSString *path = [split objectAtIndex:1];
         os_log_debug(_log, "UPDATE_VIEW command: path=%{public}@", path);
         
+        __weak typeof(self) weakSelf = self;
+
         dispatch_async(dispatch_get_main_queue(), ^{
-            os_log_debug(_log, "Re-fetching filename cache for path %{public}@", path);
+            __strong typeof(self) self = weakSelf;
+            if (!self) { return; }
+            os_log_debug(self->_log, "Re-fetching filename cache for path %{public}@", path);
             [self.delegate reFetchFileNameCacheForPath:path];
         });
     } else if([command isEqualToString:@"REGISTER_PATH"]) {
         NSString *path = [split objectAtIndex:1];
         os_log_debug(_log, "REGISTER_PATH command: path=%{public}@", path);
         
+        __weak typeof(self) weakSelf = self;
+
         dispatch_async(dispatch_get_main_queue(), ^{
-            os_log_debug(_log, "Registering path %{public}@", path);
+            __strong typeof(self) self = weakSelf;
+            if (!self) { return; }
+            os_log_debug(self->_log, "Registering path %{public}@", path);
             [self.delegate registerPath:path];
         });
     } else if([command isEqualToString:@"UNREGISTER_PATH"]) {
         NSString *path = [split objectAtIndex:1];
         os_log_debug(_log, "UNREGISTER_PATH command: path=%{public}@", path);
         
+        __weak typeof(self) weakSelf = self;
+
         dispatch_async(dispatch_get_main_queue(), ^{
-            os_log_debug(_log, "Unregistering path %{public}@", path);
+            __strong typeof(self) self = weakSelf;
+            if (!self) { return; }
+            os_log_debug(self->_log, "Unregistering path %{public}@", path);
             [self.delegate unregisterPath:path];
         });
     } else if([command isEqualToString:@"GET_STRINGS"]) {
@@ -90,15 +110,23 @@ static os_log_t getFinderSyncSocketLineProcessorLogger(void) {
         NSString *value = [split objectAtIndex:2];
         os_log_debug(_log, "STRING command: key=%{public}@, value=%{public}@", key, value);
         
+        __weak typeof(self) weakSelf = self;
+
         dispatch_async(dispatch_get_main_queue(), ^{
-            os_log_debug(_log, "Setting string %{public}@ to value %{public}@", key, value);
+            __strong typeof(self) self = weakSelf;
+            if (!self) { return; }
+            os_log_debug(self->_log, "Setting string %{public}@ to value %{public}@", key, value);
             [self.delegate setString:key value:value];
         });
     } else if([command isEqualToString:@"GET_MENU_ITEMS"]) {
         os_log_debug(_log, "GET_MENU_ITEMS command: subcommand=%{public}@", [split objectAtIndex:1] ?: @"(no subcommand)");
         if([[split objectAtIndex:1] isEqualToString:@"BEGIN"]) {
+            __weak typeof(self) weakSelf = self;
+
             dispatch_async(dispatch_get_main_queue(), ^{
-                os_log_debug(_log, "Resetting menu items");
+                __strong typeof(self) self = weakSelf;
+                if (!self) { return; }
+                os_log_debug(self->_log, "Resetting menu items");
                 [self.delegate resetMenuItems];
             });
         } else {
@@ -109,14 +137,20 @@ static os_log_t getFinderSyncSocketLineProcessorLogger(void) {
         NSDictionary *item = @{@"command": [split objectAtIndex:1], @"flags": [split objectAtIndex:2], @"text": [split objectAtIndex:3]};
         os_log_debug(_log, "MENU_ITEM command: command=%{public}@, flags=%{public}@, text=%{public}@", [split objectAtIndex:1], [split objectAtIndex:2], [split objectAtIndex:3]);
         
+        __weak typeof(self) weakSelf = self;
+
         dispatch_async(dispatch_get_main_queue(), ^{
-            os_log_debug(_log, "Adding menu item with command %{public}@, flags %{public}@, and text %{public}@", [split objectAtIndex:1], [split objectAtIndex:2], [split objectAtIndex:3]);
+            __strong typeof(self) self = weakSelf;
+            if (!self) { return; }
+            os_log_debug(self->_log, "Adding menu item with command %{public}@, flags %{public}@, and text %{public}@", [split objectAtIndex:1], [split objectAtIndex:2], [split objectAtIndex:3]);
             [self.delegate addMenuItem:item];
         });
     } else {
         os_log_error(_log, "Unknown command: %{public}@", command);
     }
+
     os_log_debug(_log, "Line processing completed");
 }
 
 @end
+
