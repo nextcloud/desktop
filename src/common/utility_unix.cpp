@@ -18,6 +18,17 @@
 
 namespace OCC {
 
+QString Utility::appImagePath()
+{
+    return qEnvironmentVariable("APPIMAGE");
+}
+
+bool Utility::isRunningInAppImage()
+{
+    const auto currentAppImagePath = appImagePath();
+    return !currentAppImagePath.isEmpty() && QFile::exists(currentAppImagePath);
+}
+
 QVector<Utility::ProcessInfosForOpenFile> Utility::queryProcessInfosKeepingFileOpen(const QString &filePath)
 {
     Q_UNUSED(filePath)
@@ -110,9 +121,9 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName,
         }
         // When running inside an AppImage, we need to set the path to the
         // AppImage instead of the path to the executable
-        const QString appImagePath = qEnvironmentVariable("APPIMAGE");
-        const bool runningInsideAppImage = !appImagePath.isNull() && QFile::exists(appImagePath);
-        const QString executablePath = runningInsideAppImage ? appImagePath : QCoreApplication::applicationFilePath();
+        const auto currentAppImagePath = appImagePath();
+        const auto runningInsideAppImage = isRunningInAppImage();
+        const auto executablePath = runningInsideAppImage ? currentAppImagePath : QCoreApplication::applicationFilePath();
 
         QTextStream ts(&iniFile);
         ts << QLatin1String("[Desktop Entry]\n")
@@ -145,10 +156,7 @@ QString Utility::getCurrentUserName()
 
 void Utility::registerUriHandlerForLocalEditing()
 {
-    const auto appImagePath = qEnvironmentVariable("APPIMAGE");
-    const auto runningInsideAppImage = !appImagePath.isNull() && QFile::exists(appImagePath);
-
-    if (!runningInsideAppImage) {
+    if (!isRunningInAppImage()) {
         // only register x-scheme-handler if running inside appImage
         return;
     }

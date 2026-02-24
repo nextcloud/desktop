@@ -287,6 +287,13 @@ IF(BUILD_UPDATER)
         updater/updater.h
         updater/updater.cpp
     )
+    # Linux AppImage updater
+    if(UNIX AND NOT APPLE)
+        list(APPEND updater_SRCS
+            updater/appimageupdater.h
+            updater/appimageupdater.cpp
+        )
+    endif()
 endif()
 
 IF( APPLE )

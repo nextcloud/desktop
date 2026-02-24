@@ -11,6 +11,9 @@
 #include "updater/updater.h"
 #include "updater/sparkleupdater.h"
 #include "updater/ocupdater.h"
+#ifdef Q_OS_LINUX
+#include "updater/appimageupdater.h"
+#endif
 
 #include "theme.h"
 #include "common/utility.h"
@@ -132,6 +135,12 @@ Updater *Updater::create()
 #elif defined(Q_OS_WIN32)
     // Also for MSI
     return new NSISUpdater(url);
+#elif defined(Q_OS_LINUX)
+    // Use AppImageUpdater when running as AppImage, otherwise fall back to passive notifier
+    if (AppImageUpdater::isRunningAppImage()) {
+        return new AppImageUpdater(url);
+    }
+    return new PassiveUpdateNotifier(url);
 #else
     // the best we can do is notify about updates
     return new PassiveUpdateNotifier(url);

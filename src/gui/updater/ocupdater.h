@@ -8,6 +8,7 @@
 #define OCUPDATER_H
 
 #include <QObject>
+#include <QString>
 #include <QUrl>
 #include <QTemporaryFile>
 #include <QTimer>
@@ -19,6 +20,13 @@ class QNetworkAccessManager;
 class QNetworkReply;
 
 namespace OCC {
+
+using namespace Qt::StringLiterals;
+
+constexpr auto updateAvailableKey = "Updater/updateAvailable"_L1;
+constexpr auto updateTargetVersionKey = "Updater/updateTargetVersion"_L1;
+constexpr auto updateTargetVersionStringKey = "Updater/updateTargetVersionString"_L1;
+constexpr auto autoUpdateAttemptedKey = "Updater/autoUpdateAttempted"_L1;
 
 /**
  * @brief Schedule update checks every couple of hours if the client runs.
@@ -112,8 +120,7 @@ signals:
     void requestRestart();
 
 public slots:
-    // FIXME Maybe this should be in the NSISUpdater which should have been called WindowsUpdater
-    void slotStartInstaller();
+    virtual void slotStartInstaller();
 
 protected slots:
     void backgroundCheckForUpdate() override;
@@ -147,6 +154,7 @@ class NSISUpdater : public OCUpdater
 public:
     explicit NSISUpdater(const QUrl &url);
     bool handleStartup() override;
+    void slotStartInstaller() override;
 private slots:
     void slotDownloadFinished();
     void slotWriteFile();

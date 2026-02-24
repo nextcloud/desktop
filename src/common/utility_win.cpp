@@ -34,6 +34,16 @@ static const char runPathC[] = R"(HKEY_CURRENT_USER\Software\Microsoft\Windows\C
 
 namespace OCC {
 
+QString Utility::appImagePath()
+{
+    return {};
+}
+
+bool Utility::isRunningInAppImage()
+{
+    return false;
+}
+
 QVector<Utility::ProcessInfosForOpenFile> Utility::queryProcessInfosKeepingFileOpen(const QString &filePath)
 {
     QVector<ProcessInfosForOpenFile> results;
