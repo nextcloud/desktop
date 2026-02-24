@@ -706,6 +706,13 @@ if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
     get_target_property (QT_QMAKE_EXECUTABLE Qt::qmake IMPORTED_LOCATION)
     get_filename_component(QT_BIN_DIR "${QT_QMAKE_EXECUTABLE}" DIRECTORY)
     find_program(MACDEPLOYQT_EXECUTABLE macdeployqt HINTS "${QT_BIN_DIR}")
+    get_filename_component(MACDEPLOYQT_DIR "${MACDEPLOYQT_EXECUTABLE}" DIRECTORY)
+
+    execute_process(
+        COMMAND "${QT_QMAKE_EXECUTABLE}" -query QT_INSTALL_LIBS
+        OUTPUT_VARIABLE MACDEPLOYQT_LIB_DIR
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
 
     set(cmd_NAME ${APPLICATION_EXECUTABLE}cmd)
 
@@ -721,6 +728,7 @@ if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
         -qmldir=${CMAKE_SOURCE_DIR}/src/gui
         -always-overwrite
         -executable="$<TARGET_FILE_DIR:nextcloud>/${cmd_NAME}"
+        -libpath=${MACDEPLOYQT_LIB_DIR}
         ${NO_STRIP}
         COMMAND "${CMAKE_COMMAND}"
         -E rm -rf "${BIN_OUTPUT_DIRECTORY}/${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns/bearer"
