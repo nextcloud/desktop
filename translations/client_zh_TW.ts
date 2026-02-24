@@ -22,12 +22,12 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="196"/>
         <source>File details</source>
-        <translation type="unfinished"/>
+        <translation>檔案詳細資訊</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
         <source>File actions</source>
-        <translation type="unfinished"/>
+        <translation>檔案動作</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
@@ -281,7 +281,7 @@
     <message>
         <location filename="../src/gui/integration/FileActionsWindow.qml" line="33"/>
         <source>File actions for %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 的檔案動作</translation>
     </message>
 </context>
 <context>
@@ -438,37 +438,37 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="412"/>
         <source>Start new conversation?</source>
-        <translation type="unfinished"/>
+        <translation>開始新對話？</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="432"/>
         <source>New conversation</source>
-        <translation type="unfinished"/>
+        <translation>新對話</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="436"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="457"/>
         <source>This will clear the existing conversation.</source>
-        <translation type="unfinished"/>
+        <translation>這將會清除既有的對話。</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="502"/>
         <source>Ask Assistant…</source>
-        <translation type="unfinished"/>
+        <translation>詢問小幫手……</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="530"/>
         <source>Send assistant question</source>
-        <translation type="unfinished"/>
+        <translation>傳送小幫手問題</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="551"/>
         <source>Start a new assistant chat</source>
-        <translation type="unfinished"/>
+        <translation>開始新小幫手聊天</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
@@ -1982,37 +1982,37 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="241"/>
         <source>Your account is offline %1.</source>
         <comment>account url</comment>
-        <translation type="unfinished"/>
+        <translation>您的帳號目前離線 %1。</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="250"/>
         <source>The file ID is empty for %1.</source>
         <comment>file name</comment>
-        <translation type="unfinished"/>
+        <translation>%1 的檔案 ID 為空。</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="258"/>
         <source>The file type for %1 is not valid.</source>
         <comment>file name</comment>
-        <translation type="unfinished"/>
+        <translation>%1 的檔案類型無效。</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="268"/>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mymetype</comment>
-        <translation type="unfinished"/>
+        <translation>伺服器未為 %1 個檔案回傳任何檔案動作。</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="354"/>
         <source>%1 did not succeed, please try again later. If you need help, contact your server administrator.</source>
         <comment>file action error message</comment>
-        <translation type="unfinished"/>
+        <translation>%1 不成功，請稍後再試。若您需要協助，請聯絡您的伺服器管理員。</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="365"/>
         <source>%1 done.</source>
         <comment>file action success message</comment>
-        <translation type="unfinished"/>
+        <translation>%1 已完成。</translation>
     </message>
 </context>
 <context>
@@ -5068,7 +5068,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1132"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1195"/>
         <source>File actions</source>
-        <translation type="unfinished"/>
+        <translation>檔案動作</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1100"/>
@@ -5522,7 +5522,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="435"/>
         <source>No synchronisation configured</source>
-        <translation type="unfinished"/>
+        <translation>未設定同步</translation>
     </message>
 </context>
 <context>
@@ -5780,42 +5780,42 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/usermodel.cpp" line="1357"/>
         <source>Open %1 Assistant</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation type="unfinished"/>
+        <translation>開啟 %1 小幫手</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1464"/>
         <source>Assistant is not available for this account.</source>
-        <translation type="unfinished"/>
+        <translation>此帳號無法使用小幫手。</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1470"/>
         <source>Assistant is already processing a request.</source>
-        <translation type="unfinished"/>
+        <translation>小幫手正在處理請求。</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1507"/>
         <source>Sending your request…</source>
-        <translation type="unfinished"/>
+        <translation>正在傳送您的請求……</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1580"/>
         <source>No response yet. Please try again later.</source>
-        <translation type="unfinished"/>
+        <translation>尚無回應。請稍後再試。</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1599"/>
         <source>No supported assistant task types were returned.</source>
-        <translation type="unfinished"/>
+        <translation>未回傳任何支援的小幫手任務。</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1681"/>
         <source>Waiting for the assistant response…</source>
-        <translation type="unfinished"/>
+        <translation>正在等待小幫手回應……</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1703"/>
         <source>Assistant request failed (%1).</source>
-        <translation type="unfinished"/>
+        <translation>小幫手請求失敗 (%1)。</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1211"/>
@@ -6998,7 +6998,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="166"/>
         <source>Account sync status requires attention</source>
-        <translation type="unfinished"/>
+        <translation>帳號同步狀態需要處理</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="153"/>
