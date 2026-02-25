@@ -153,9 +153,7 @@ void FolderWizardLocalPath::slotChooseLocalFolder()
         sf,
         QFileDialog::ShowDirsOnly);
     if (!dir.isEmpty()) {
-        // set the last directory component name as alias
-        const QString pathWithAppName = dir + QLatin1Char('/') + Theme::instance()->appName();
-        _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(pathWithAppName));
+        _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(dir));
         _initialFolderSelection = false;
     } else {
         // If this was the initial folder selection and the user canceled,
