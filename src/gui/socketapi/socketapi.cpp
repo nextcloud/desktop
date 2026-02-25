@@ -253,24 +253,6 @@ SocketApi::SocketApi(QObject *parent)
     } else if (Utility::isMac()) {
 #ifdef Q_OS_MACOS
         socketPath = socketApiSocketPath();
-        CFURLRef url = (CFURLRef)CFAutorelease((CFURLRef)CFBundleCopyBundleURL(CFBundleGetMainBundle()));
-        QString bundlePath = QUrl::fromCFURL(url).path();
-
-        auto _system = [](const QString &cmd, const QStringList &args) {
-            QProcess process;
-            process.setProcessChannelMode(QProcess::MergedChannels);
-            process.start(cmd, args);
-            if (!process.waitForFinished()) {
-                qCWarning(lcSocketApi) << "Failed to load shell extension:" << cmd << args.join(" ") << process.errorString();
-            } else {
-                qCInfo(lcSocketApi) << (process.exitCode() != 0 ? "Failed to load" : "Loaded") << "shell extension:" << cmd << args.join(" ") << process.readAll();
-            }
-        };
-        // Add it again. This was needed for Mojave to trigger a load.
-        _system(QStringLiteral("pluginkit"), { QStringLiteral("-a"), QStringLiteral("%1Contents/PlugIns/FinderSyncExt.appex/").arg(bundlePath) });
-        // Tell Finder to use the Extension (checking it from System Preferences -> Extensions)
-        _system(QStringLiteral("pluginkit"), { QStringLiteral("-e"), QStringLiteral("use"), QStringLiteral("-i"), QStringLiteral(APPLICATION_REV_DOMAIN ".FinderSyncExt") });
-
 #endif
     } else if (Utility::isLinux() || Utility::isBSD()) {
         QString runtimeDir;
@@ -295,6 +277,7 @@ SocketApi::SocketApi(QObject *parent)
             }
         }
     }
+
     if (!_localServer.listen(socketPath)) {
         qCWarning(lcSocketApi) << "can't start server" 
                                << socketPath
