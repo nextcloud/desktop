@@ -1996,19 +1996,20 @@ Toto může být způsobeno problémem s OpenSSL knihovnami.</translation>
         <translation>Typ souboru pro %1 není platný.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="268"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="269"/>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mymetype</comment>
+        <extracomment>TRANSLATOR Placeholder contains file MIME type</extracomment>
         <translation>Pro %1 souborů nebyly serverem vráceny žádné akce.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="354"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="355"/>
         <source>%1 did not succeed, please try again later. If you need help, contact your server administrator.</source>
         <comment>file action error message</comment>
         <translation>%1 se nezdařilo – zkuste to znovu později. Pokud potřebujete pomoc, obraťte se na správce vámi využívaného serveru.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="365"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="366"/>
         <source>%1 done.</source>
         <comment>file action success message</comment>
         <translation>%1 hotovo.</translation>

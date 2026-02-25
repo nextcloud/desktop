@@ -1996,19 +1996,20 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>%1 のファイル形式が無効です。</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="268"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="269"/>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mymetype</comment>
+        <extracomment>TRANSLATOR Placeholder contains file MIME type</extracomment>
         <translation>サーバーから %1 個のファイルに対するファイル操作が返されませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="354"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="355"/>
         <source>%1 did not succeed, please try again later. If you need help, contact your server administrator.</source>
         <comment>file action error message</comment>
         <translation>%1 は成功しませんでした。後ほど再度お試しください。サポートが必要な場合は、サーバー管理者にお問い合わせください</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="365"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="366"/>
         <source>%1 done.</source>
         <comment>file action success message</comment>
         <translation>%1完了。</translation>

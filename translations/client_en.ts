@@ -1484,22 +1484,22 @@ This action will abort any currently running synchronization.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1210"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1211"/>
         <source>Invalid PIN. Login failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1211"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1212"/>
         <source>Login to the token failed after providing the user PIN. It may be invalid or wrong. Please try again!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="2275"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="2276"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="2283"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="2284"/>
         <source>Enter E2E passphrase</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1930,19 +1930,20 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="268"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="269"/>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mymetype</comment>
+        <extracomment>TRANSLATOR Placeholder contains file MIME type</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="354"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="355"/>
         <source>%1 did not succeed, please try again later. If you need help, contact your server administrator.</source>
         <comment>file action error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="365"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="366"/>
         <source>%1 done.</source>
         <comment>file action success message</comment>
         <translation type="unfinished"></translation>
@@ -4227,48 +4228,48 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1283"/>
+        <location filename="../src/libsync/discovery.cpp" line="1286"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1570"/>
-        <location filename="../src/libsync/discovery.cpp" line="2041"/>
+        <location filename="../src/libsync/discovery.cpp" line="1573"/>
+        <location filename="../src/libsync/discovery.cpp" line="2044"/>
         <source>Moved to invalid target, restoring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1898"/>
+        <location filename="../src/libsync/discovery.cpp" line="1901"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1965"/>
+        <location filename="../src/libsync/discovery.cpp" line="1968"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1999"/>
+        <location filename="../src/libsync/discovery.cpp" line="2002"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2005"/>
+        <location filename="../src/libsync/discovery.cpp" line="2008"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2019"/>
+        <location filename="../src/libsync/discovery.cpp" line="2022"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2055"/>
+        <location filename="../src/libsync/discovery.cpp" line="2058"/>
         <source>Not allowed to remove, restoring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2226"/>
+        <location filename="../src/libsync/discovery.cpp" line="2229"/>
         <source>Error while reading the database</source>
         <translation type="unfinished"></translation>
     </message>

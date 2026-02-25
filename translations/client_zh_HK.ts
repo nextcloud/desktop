@@ -1999,19 +1999,20 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>%1 的檔案類型無效。</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="268"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="269"/>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mymetype</comment>
+        <extracomment>TRANSLATOR Placeholder contains file MIME type</extracomment>
         <translation>伺服器未為 %1 個檔案返回任何檔案操作。</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="354"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="355"/>
         <source>%1 did not succeed, please try again later. If you need help, contact your server administrator.</source>
         <comment>file action error message</comment>
         <translation>%1 未能成功，請稍後再試。如需協助，請聯絡你的伺服器管理員。</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="365"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="366"/>
         <source>%1 done.</source>
         <comment>file action success message</comment>
         <translation>%1 已完成。</translation>
