@@ -120,6 +120,8 @@ public:
     // removes a user from this folder and removes and generates a new metadata key
     [[nodiscard]] bool removeUser(const QString &userId);
 
+    [[nodiscard]] bool updateUser(const QString &userId, const QSslCertificate &certificate, CertificateType certificateType);
+
     [[nodiscard]] const QByteArray metadataKeyForEncryption() const;
     [[nodiscard]] const QByteArray metadataKeyForDecryption() const;
     [[nodiscard]] const QSet<QByteArray> &keyChecksums() const;
