@@ -591,9 +591,9 @@ std::optional<QByteArray> encryptStringAsymmetric(const CertificateInformation &
     }
 
     if (encryptionEngine.useTokenBasedEncryption()) {
-        qCDebug(lcCseEncryption()) << "use certificate on hardware token";
+        qCDebug(lcCseDecryption()) << "use certificate on hardware token" << selectedCertificate.sha256Fingerprint();
     } else {
-        qCDebug(lcCseEncryption()) << "use certificate on software storage";
+        qCDebug(lcCseDecryption()) << "use certificate on software storage" << selectedCertificate.sha256Fingerprint();
     }
 
     auto encryptedBase64Result = QByteArray{};

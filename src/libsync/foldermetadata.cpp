@@ -654,7 +654,12 @@ QByteArray FolderMetadata::encryptedMetadata()
     QJsonArray folderUsers;
     if (_isRootEncryptedFolder) {
         for (auto it = _folderUsers.constBegin(), end = _folderUsers.constEnd(); it != end; ++it) {
-            const auto folderUser = it.value();
+            auto folderUser = it.value();
+
+            if (folderUser.userId == _account->davUser()) {
+                folderUser.certificatePem = _account->e2e()->getCertificate().toPem();
+                updateUsersEncryptedMetadataKey();
+            }
 
             const QJsonObject folderUserJson{{usersUserIdKey, folderUser.userId},
                                              {usersCertificateKey, QJsonValue::fromVariant(folderUser.certificatePem)},
