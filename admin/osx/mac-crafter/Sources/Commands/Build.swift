@@ -91,6 +91,9 @@ struct Build: AsyncParsableCommand {
     @Flag(help: "Build File Provider Module.")
     var buildFileProviderModule = false
     
+    @Flag(help: "Build without QtWebEngine.")
+    var withoutWebEngine = false
+
     @Flag(help: "Build without Sparkle auto-updater.")
     var disableAutoUpdater = false
     
@@ -202,7 +205,8 @@ struct Build: AsyncParsableCommand {
             "\(craftBlueprintName).osxArchs=\(arch)",
             "\(craftBlueprintName).buildTests=\(buildTests ? "True" : "False")",
             "\(craftBlueprintName).buildMacOSBundle=\(disableAppBundle ? "False" : "True")",
-            "\(craftBlueprintName).buildFileProviderModule=\(buildFileProviderModule ? "True" : "False")"
+            "\(craftBlueprintName).buildFileProviderModule=\(buildFileProviderModule ? "True" : "False")",
+            "\(craftBlueprintName).buildWithWebEngine=\(withoutWebEngine ? "False" : "True")"
         ]
         
         if let overrideServerUrl {
