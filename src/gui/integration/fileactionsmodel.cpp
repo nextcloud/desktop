@@ -165,7 +165,10 @@ void FileActionsModel::setupFileProperties()
             return;
         }
 
-        _fileId = fileRecord._fileId;
+        if (!fileRecord._fileId.isEmpty()) {
+            qCDebug(lcFileActions) << "Setting fileId from DB:" << fileRecord._fileId;
+            _fileId = fileRecord._fileId;
+        }
 
         // Decide match mode based on whether this is a virtual file
         mimeMatchMode = fileRecord.isVirtualFile() ? QMimeDatabase::MatchExtension
