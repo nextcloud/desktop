@@ -4,6 +4,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import <os/log.h>
 
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -23,116 +24,128 @@
     dispatch_source_t _writeSource;
     NSMutableData* _inBuffer;
     NSMutableData* _outBuffer;
+    os_log_t _log;
 }
 @end
+
+static os_log_t getLocalSocketClientLogger(void) {
+    static dispatch_once_t onceToken;
+    static os_log_t logger = NULL;
+    dispatch_once(&onceToken, ^{
+        NSBundle *bundle = [NSBundle bundleForClass:[LocalSocketClient class]];
+        NSString *subsystem = bundle.bundleIdentifier ?: @"NCDesktopClientSocketKit";
+        logger = os_log_create(subsystem.UTF8String, "LocalSocketClient");
+    });
+    return logger;
+}
 
 @implementation LocalSocketClient
 
 - (instancetype)initWithSocketPath:(NSString*)socketPath
                      lineProcessor:(id<LineProcessor>)lineProcessor
 {
-    NSLog(@"Initiating local socket client pointing to %@", socketPath);
     self = [super init];
-    
+
     if(self) {
+        _log = getLocalSocketClientLogger();
+        os_log_debug(_log, "Initiating local socket client pointing to %{public}@", socketPath);
+
         _socketPath = socketPath;
         _lineProcessor = lineProcessor;
-        
+
         _sock = -1;
         _localSocketQueue = dispatch_queue_create("localSocketQueue", DISPATCH_QUEUE_SERIAL);
-        
+
         _inBuffer = [NSMutableData data];
         _outBuffer = [NSMutableData data];
     }
-        
+
     return self;
 }
 
 - (BOOL)isConnected
 {
-    NSLog(@"Checking is connected: %@", _sock != -1 ? @"YES" : @"NO");
+    os_log_debug(_log, "Checking is connected: %{public}@", _sock != -1 ? @"YES" : @"NO");
     return _sock != -1;
 }
 
 - (void)start
 {
     if([self isConnected]) {
-        NSLog(@"Socket client already connected. Not starting.");
+        os_log_debug(_log, "Socket client already connected. Not starting.");
         return;
     }
-    
+
     struct sockaddr_un localSocketAddr;
     unsigned long socketPathByteCount = [_socketPath lengthOfBytesUsingEncoding:NSUTF8StringEncoding]; // add 1 for the NUL terminator char
     int maxByteCount = sizeof(localSocketAddr.sun_path);
-    
+
     if(socketPathByteCount > maxByteCount) {
-        // LOG THAT THE SOCKET PATH IS TOO LONG HERE
-        NSLog(@"Socket path '%@' is too long: maximum socket path length is %i, this path is of length %lu", _socketPath, maxByteCount, socketPathByteCount);
+        os_log_error(_log, "Socket path '%{public}@' is too long: maximum socket path length is %i, this path is of length %lu", _socketPath, maxByteCount, socketPathByteCount);
         return;
     }
-    
-    NSLog(@"Opening local socket...");
-    
-    // LOG THAT THE SOCKET IS BEING OPENED HERE
+
+    os_log_debug(_log, "Opening local socket...");
+
     _sock = socket(AF_LOCAL, SOCK_STREAM, 0);
-    
+
     if(_sock == -1) {
-        NSLog(@"Cannot open socket: '%@'", [self strErr]);
+        os_log_error(_log, "Cannot open socket: '%{public}@'", [self strErr]);
         [self restart];
         return;
     }
-    
-    NSLog(@"Local socket opened. Connecting to '%@' ...", _socketPath);
-    
+
+    os_log_debug(_log, "Local socket opened. Connecting to '%{public}@' ...", _socketPath);
+
     localSocketAddr.sun_family = AF_LOCAL & 0xff;
-    
+
     const char* pathBytes = [_socketPath UTF8String];
     strcpy(localSocketAddr.sun_path, pathBytes);
-    
+
     int connectionStatus = connect(_sock, (struct sockaddr*)&localSocketAddr, sizeof(localSocketAddr));
-    
+
     if(connectionStatus == -1) {
-        NSLog(@"Could not connect to '%@': '%@'", _socketPath, [self strErr]);
+        os_log_error(_log, "Could not connect to '%{public}@': '%{public}@'", _socketPath, [self strErr]);
         [self restart];
         return;
     }
-    
+
     int flags = fcntl(_sock, F_GETFL, 0);
-    
+
     if(fcntl(_sock, F_SETFL, flags | O_NONBLOCK) == -1) {
-        NSLog(@"Could not set socket to non-blocking mode: '%@'", [self strErr]);
+        os_log_error(_log, "Could not set socket to non-blocking mode: '%{public}@'", [self strErr]);
         [self restart];
         return;
     }
-    
-    NSLog(@"Connected to socket. Setting up dispatch sources...");
-    
+
+    os_log_debug(_log, "Connected to socket. Setting up dispatch sources...");
+
     _readSource = dispatch_source_create(DISPATCH_SOURCE_TYPE_READ, _sock, 0, _localSocketQueue);
     dispatch_source_set_event_handler(_readSource, ^(void){ [self readFromSocket]; });
     dispatch_source_set_cancel_handler(_readSource, ^(void){
         self->_readSource = nil;
         [self closeConnection];
     });
-    
+
     _writeSource = dispatch_source_create(DISPATCH_SOURCE_TYPE_WRITE, _sock, 0, _localSocketQueue);
     dispatch_source_set_event_handler(_writeSource, ^(void){ [self writeToSocket]; });
     dispatch_source_set_cancel_handler(_writeSource, ^(void){
         self->_writeSource = nil;
         [self closeConnection];
     });
-    
+
     // These dispatch sources are suspended upon creation.
     // We resume the writeSource when we actually have something to write, suspending it again once our outBuffer is empty.
     // We start the readSource now.
-    
-    NSLog(@"Starting to read from socket");
-    
+
+    os_log_debug(_log, "Starting to read from socket");
+
     dispatch_resume(_readSource);
 }
 
 - (void)restart
 {
-    NSLog(@"Restarting connection to socket.");
+    os_log_debug(_log, "Restarting connection to socket.");
     [self closeConnection];
     dispatch_async(dispatch_get_main_queue(), ^(void){
         [NSTimer scheduledTimerWithTimeInterval:5 repeats:NO block:^(NSTimer* timer) {
@@ -143,8 +156,8 @@
 
 - (void)closeConnection
 {
-    NSLog(@"Closing connection.");
-    
+    os_log_debug(_log, "Closing connection.");
+
     if(_readSource) {
         // Since dispatch_source_cancel works asynchronously, if we deallocate the dispatch source here then we can
         // cause a crash. So instead we strongly hold a reference to the read source and deallocate it asynchronously
@@ -157,7 +170,7 @@
         // The readSource is still alive due to the other reference and will be deallocated by the cancel handler
         _readSource = nil;
     }
-    
+
     if(_writeSource) {
         // Same deal with the write source
         __block dispatch_source_t previousWriteSource = _writeSource;
@@ -170,7 +183,7 @@
 
     [_inBuffer setLength:0];
     [_outBuffer setLength: 0];
-    
+
     if(_sock != -1) {
         close(_sock);
         _sock = -1;
@@ -182,11 +195,11 @@
     int err = errno;
     const char *errStr = strerror(err);
     NSString *errorStr = [NSString stringWithUTF8String:errStr];
-    
+
     if([errorStr length] == 0) {
         return errorStr;
     } else {
-        return [NSString stringWithFormat:@"Unknown error code: %i", err];
+        return [NSString stringWithFormat:@"Unknown error code: %i", err];
     }
 }
 
@@ -201,11 +214,11 @@
 
         [self->_outBuffer appendData:[message dataUsingEncoding:NSUTF8StringEncoding]];
 
-        NSLog(@"Writing to out buffer: '%@'", message);
-        NSLog(@"Out buffer now %li bytes", [self->_outBuffer length]);
+        os_log_debug(self->_log, "Writing to out buffer: '%{public}@'", message);
+        os_log_debug(self->_log, "Out buffer now %li bytes", [self->_outBuffer length]);
 
         if(writeSourceIsSuspended) {
-            NSLog(@"Resuming write dispatch source.");
+            os_log_debug(self->_log, "Resuming write dispatch source.");
             dispatch_resume(self->_writeSource);
         }
     });
@@ -222,42 +235,42 @@
     if(![self isConnected]) {
         return;
     }
-    
+
     if([_outBuffer length] == 0) {
-        NSLog(@"Empty out buffer, suspending write dispatch source.");
+        os_log_debug(_log, "Empty out buffer, suspending write dispatch source.");
         dispatch_suspend(_writeSource);
         return;
     }
-    
-    NSLog(@"About to write %li bytes from outbuffer to socket.", [_outBuffer length]);
-    
+
+    os_log_debug(_log, "About to write %li bytes from outbuffer to socket.", [_outBuffer length]);
+
     long bytesWritten = write(_sock, [_outBuffer bytes], [_outBuffer length]);
     char lineWritten[[_outBuffer length]];
     memcpy(lineWritten, [_outBuffer bytes], [_outBuffer length]);
-    NSLog(@"Wrote %li bytes to socket. Line written was: '%@'", bytesWritten, [NSString stringWithUTF8String:lineWritten]);
-    
+    os_log_debug(_log, "Wrote %li bytes to socket. Line written was: '%{public}@'", bytesWritten, [NSString stringWithUTF8String:lineWritten]);
+
     if(bytesWritten == 0) {
-        // 0 means we reached "end of file" and thus the socket was closed. So let's restart it
-        NSLog(@"Socket was closed. Restarting...");
+        // 0 means we reached "end of file" and thus the socket was closed. So let's restart it
+        os_log_debug(_log, "Socket was closed. Restarting...");
         [self restart];
     } else if(bytesWritten == -1) {
         int err = errno; // Make copy before it gets nuked by something else
-        
+
         if(err == EAGAIN || err == EWOULDBLOCK)  {
             // No free space in the OS' buffer, nothing to do here
-            NSLog(@"No free space in OS buffer. Ending write.");
+            os_log_debug(_log, "No free space in OS buffer. Ending write.");
             return;
         } else {
-            NSLog(@"Error writing to local socket: '%@'", [self strErr]);
+            os_log_error(_log, "Error writing to local socket: '%{public}@'", [self strErr]);
             [self restart];
         }
     } else if(bytesWritten > 0) {
         [_outBuffer replaceBytesInRange:NSMakeRange(0, bytesWritten) withBytes:NULL length:0];
-        
-        NSLog(@"Out buffer cleared. Now count is %li bytes.", [_outBuffer length]);
-        
+
+        os_log_debug(_log, "Out buffer cleared. Now count is %li bytes.", [_outBuffer length]);
+
         if([_outBuffer length] == 0) {
-            NSLog(@"Out buffer has been emptied, suspending write dispatch source.");
+            os_log_debug(_log, "Out buffer has been emptied, suspending write dispatch source.");
             dispatch_suspend(_writeSource);
         }
     }
@@ -265,15 +278,15 @@
 
 - (void)askForIcon:(NSString*)path isDirectory:(BOOL)isDirectory;
 {
-    NSLog(@"Asking for icon.");
-    
+    os_log_debug(_log, "Asking for icon.");
+
     NSString *verb;
     if(isDirectory) {
         verb = @"RETRIEVE_FOLDER_STATUS";
     } else {
         verb = @"RETRIEVE_FILE_STATUS";
     }
-    
+
     [self askOnSocket:path query:verb];
 }
 
@@ -282,29 +295,29 @@
     if(![self isConnected]) {
         return;
     }
-    
-    NSLog(@"Reading from socket.");
-    
+
+    os_log_debug(_log, "Reading from socket.");
+
     int bufferLength = BUF_SIZE / 2;
     char buffer[bufferLength];
-    
+
     while(true) {
         long bytesRead = read(_sock, buffer, bufferLength);
-        
-        NSLog(@"Read %li bytes from socket.", bytesRead);
-        
+
+        os_log_debug(_log, "Read %li bytes from socket.", bytesRead);
+
         if(bytesRead == 0) {
-            // 0 means we reached "end of file" and thus the socket was closed. So let's restart it
-            NSLog(@"Socket was closed. Restarting...");
+            // 0 means we reached "end of file" and thus the socket was closed. So let's restart it
+            os_log_debug(_log, "Socket was closed. Restarting...");
             [self restart];
             return;
         } else if(bytesRead == -1) {
             int err = errno;
             if(err == EAGAIN) {
-                NSLog(@"No error and no data. Stopping.");
+                os_log_debug(_log, "No error and no data. Stopping.");
                 return; // No error, no data, so let's stop
             } else {
-                NSLog(@"Error reading from local socket: '%@'", [self strErr]);
+                os_log_error(_log, "Error reading from local socket: '%{public}@'", [self strErr]);
                 [self closeConnection];
                 return;
             }
@@ -317,7 +330,7 @@
 
 - (void)processInBuffer
 {
-    NSLog(@"Processing in buffer. In buffer length %li", _inBuffer.length);
+    os_log_debug(_log, "Processing in buffer. In buffer length %li", _inBuffer.length);
 
     static const UInt8 separator[] = {0xa}; // Byte value for "\n"
     static const char terminator[] = {0};
@@ -334,7 +347,7 @@
 
         // Add NULL terminator, so we can use C string methods
         if (firstSeparatorIndex.location == NSNotFound) {
-            NSLog(@"No separator found. Creating new buffer with space for null terminator.");
+            os_log_debug(_log, "No separator found. Creating new buffer with space for null terminator.");
 
             [_inBuffer appendBytes:terminator length:1];
             nullTerminatorIndex = inBufferLength;
@@ -352,7 +365,7 @@
         [_lineProcessor process:newLine];
     }
 
-    NSLog(@"Finished processing inBuffer");
+    os_log_debug(_log, "Finished processing inBuffer");
 }
-    
+
 @end
