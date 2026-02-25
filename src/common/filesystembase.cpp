@@ -814,15 +814,45 @@ bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions p
         qCWarning(lcFileSystem).nospace() << "GetAclInformation failed, path=" << path << " errorMessage=" << Utility::formatWinError(lastError);
         return false;
     }
+    qCDebug(lcFileSystem).nospace() << "retrieved ACL size information"
+        << " aclSize.AceCount=" << aclSize.AceCount
+        << " aclSize.AclBytesInUse=" << aclSize.AclBytesInUse
+        << " aclSize.AclBytesFree=" << aclSize.AclBytesFree;
 
-    const auto newAclSize = aclSize.AclBytesInUse + sizeof(ACCESS_DENIED_ACE) + GetLengthSid(sid.get());
+    auto newAclSize = aclSize.AclBytesInUse;
+    if (permissions == FileSystem::FolderPermissions::ReadOnly) {
+        // When marking a folder as read-only also allocate the size of the `ACCESS_DENIED_ACE` excluding the `SidStart`
+        // (`DWORD`) member, + the SID the ACE uses
+        // https://learn.microsoft.com/en-us/windows/win32/api/securitybaseapi/nf-securitybaseapi-initializeacl#remarks
+        //
+        // Changing the ACL to read-write will remove all previously defined `ACCESS_DENIED_ACE`s, reducing the ACL size.
+        // There is no need to allocate more than what is already present.
+
+        if (const auto accessDeniedAceSize = sizeof(ACCESS_DENIED_ACE) - sizeof(DWORD) + GetLengthSid(sid.get());
+            newAclSize + accessDeniedAceSize < 65532) {
+            // Apparently the maximum size of an ACL is 65532 bytes (quite close to u16_max).  Any value above that
+            // causes the `InitialiceAcl()` function to fail with "WindowsError 57: The parameter is incorrect".
+            //
+            // Client versions < 4.0.2 had a bug where a new access denied ACE was always prepended when a folder was marked
+            // as read-only.  This worked fine until the ACL was reaching that size limit ...
+            //
+            // Since 4.0.2 the client skips these duplicate access denied ACE entries.  This however only works if the ACL
+            // wasn't already too big.  In that case let's assume that the ACL has grown to that size due to this bug -- the
+            // current ACL is already large enough to hold the single access denied ACE.
+            newAclSize += accessDeniedAceSize;
+        }
+    }
     std::unique_ptr<ACL> newDacl{reinterpret_cast<PACL>(new char[newAclSize])};
     int newAceIndex = 0;
     qCDebug(lcFileSystem) << "allocated a new DACL object of size" << newAclSize;
 
     if (!InitializeAcl(newDacl.get(), newAclSize, ACL_REVISION)) {
         const auto lastError = GetLastError();
-        qCWarning(lcFileSystem).nospace() << "InitializeAcl failed, path=" << path << " errorMessage=" << Utility::formatWinError(lastError);
+        qCWarning(lcFileSystem).nospace() << "InitializeAcl failed,"
+            << " path=" << path
+            << " aclSize.AclBytesInUse=" << aclSize.AclBytesInUse
+            << " newAclSize=" << newAclSize
+            << " errorMessage=" << Utility::formatWinError(lastError);
         return false;
     }
 
