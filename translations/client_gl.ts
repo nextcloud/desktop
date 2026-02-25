@@ -1996,19 +1996,20 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
         <translation>O tipo de ficheiro para %1 non é válido.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="268"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="269"/>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mymetype</comment>
+        <extracomment>TRANSLATOR Placeholder contains file MIME type</extracomment>
         <translation>O servidor non devolveu ningunha acción de ficheiro para %1 ficheiros.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="354"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="355"/>
         <source>%1 did not succeed, please try again later. If you need help, contact your server administrator.</source>
         <comment>file action error message</comment>
         <translation>%1 non foi satisfactorio, ténteo de novo máis tarde. Se precisa axuda, contacte co administrador do seu servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="365"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="366"/>
         <source>%1 done.</source>
         <comment>file action success message</comment>
         <translation>%1 feito.</translation>
