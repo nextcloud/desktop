@@ -371,7 +371,8 @@ QList<QByteArray> LsColJob::defaultProperties(FolderType isRootPath, AccountPtr 
               << "http://nextcloud.org/ns:lock-timeout"
               << "http://nextcloud.org/ns:lock-token";
     }
-    props << "http://nextcloud.org/ns:is-mount-root";
+    props << "http://nextcloud.org/ns:is-mount-root"
+          << "http://nextcloud.org/ns:request-upload";
 
     return props;
 }
@@ -471,6 +472,9 @@ void LsColJob::propertyMapToRemoteInfo(const QMap<QString, QString> &map, Remote
         if (property == "metadata-files-live-photo"_L1) {
             result.livePhotoFile = value;
             result.isLivePhoto = true;
+        }
+        if (property == "request-upload"_L1) {
+            result.requestUpload = (value == "1"_L1);
         }
     }
 
