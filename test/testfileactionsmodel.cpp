@@ -243,7 +243,11 @@ private slots:
         _model.setLocalPath(_fakeFolder->localPath() + fileName);
         QCOMPARE(fileChangedSpy.count(), 1);
         QCOMPARE(_model.localPath(), _fakeFolder->localPath() + fileName);
+#ifndef Q_OS_LINUX
         QCOMPARE(_model.mimeType().name(), QStringLiteral("text/x-vcard"));
+#else
+        QCOMPARE(_model.mimeType().name(), QStringLiteral("text/vcard"));
+#endif
         QVERIFY(!_model.fileIcon().isEmpty());
         // get file actions from capabilities
         QCOMPARE(_model.rowCount(), 5);
