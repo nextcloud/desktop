@@ -432,9 +432,6 @@
          </widget>
         </item>
        </layout>
-       <zorder>autoUploadLimitRadioButton</zorder>
-       <zorder>uploadLimitRadioButton</zorder>
-       <zorder>noUploadLimitRadioButton</zorder>
       </widget>
      </item>
     </layout>
