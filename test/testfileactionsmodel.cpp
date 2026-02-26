@@ -15,7 +15,7 @@
 using namespace OCC;
 
 namespace {
-static QByteArray client_integration = R"(
+static const QByteArray client_integration = R"(
 {
     "client_integration": {
         "analytics": {
