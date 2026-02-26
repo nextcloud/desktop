@@ -609,7 +609,7 @@
 				C2B573D31B1CD9CE00303B36 /* Sources */,
 				C2B573D41B1CD9CE00303B36 /* Frameworks */,
 				C2B573D51B1CD9CE00303B36 /* Resources */,
-				5B3335471CA058E200E11A45 /* ShellScript */,
+				5B3335471CA058E200E11A45 /* Copy Brand Icon */,
 				53903D2F2956173000D0B308 /* Embed Frameworks */,
 			);
 			buildRules = (
@@ -843,18 +843,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		5B3335471CA058E200E11A45 /* ShellScript */ = {
+		5B3335471CA058E200E11A45 /* Copy Brand Icon */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Copy Brand Icon";
 			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/FinderSyncExt.appex/Contents/Resources/app.icns",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ ${OC_OEM_SHARE_ICNS} ]]; then\n  cp ${OC_OEM_SHARE_ICNS} ${BUILT_PRODUCTS_DIR}/FinderSyncExt.appex/Contents/Resources/app.icns\nfi";
+			shellScript = "if [[ ${OC_OEM_SHARE_ICNS} ]]; then\n  cp ${OC_OEM_SHARE_ICNS} ${BUILT_PRODUCTS_DIR}/FinderSyncExt.appex/Contents/Resources/app.icns\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

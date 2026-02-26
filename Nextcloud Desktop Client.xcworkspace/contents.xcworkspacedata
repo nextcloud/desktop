@@ -11,6 +11,9 @@
       location = "group:CONTRIBUTING.md">
    </FileRef>
    <FileRef
+      location = "group:NEXTCLOUD.cmake">
+   </FileRef>
+   <FileRef
       location = "group:CMakeLists.txt">
    </FileRef>
    <FileRef
