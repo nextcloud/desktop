@@ -9,6 +9,78 @@
 #include "logger.h"
 
 #include <QStandardPaths>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonParseError>
+
+static const QByteArray client_integration = R"(
+{
+    "client_integration": {
+        "analytics": {
+            "version": 0.1,
+            "context-menu": [
+                {
+                    "name": "Visualize data in Analytics",
+                    "url": "/ocs/v2.php/apps/analytics/createFromDataFile",
+                    "method": "POST",
+                    "mimetype_filters": "text/csv",
+                    "params": {
+                        "fileId": "{fileId}"
+                    },
+                    "icon": "/apps/analytics/img/app.svg"
+                },
+                {
+                    "name": "Visualize data in Analytics",
+                    "url": "/ocs/v2.php/apps/analytics/createFromDataFile",
+                    "method": "POST",
+                    "mimetype_filters": "",
+                    "params": {
+                        "fileId": "{fileId}"
+                    },
+                    "icon": "/apps/analytics/img/app.svg"
+                }
+            ]
+        },
+        "assistant": {
+            "version": 0.1,
+            "context-menu": [
+                {
+                    "name": "Summarize using AI",
+                    "url": "/ocs/v2.php/apps/assistant/api/v1/file-action/{fileId}/core:text2text:summary",
+                    "method": "POST",
+                    "mimetype_filters": "text/, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.oasis.opendocument.text, application/pdf",
+                    "icon": "/apps/assistant/img/client_integration/summarize.svg"
+                },
+                {
+                    "name": "Transcribe audio using AI",
+                    "url": "/ocs/v2.php/apps/assistant/api/v1/file-action/{fileId}/core:audio2text",
+                    "method": "POST",
+                    "mimetype_filters": "audio/",
+                    "icon": "/apps/assistant/img/client_integration/speech_to_text.svg"
+                },
+                {
+                    "name": "Text-To-Speech using AI",
+                    "url": "/ocs/v2.php/apps/assistant/api/v1/file-action/{fileId}/core:text2speech",
+                    "method": "POST",
+                    "mimetype_filters": "text/, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.oasis.opendocument.text, application/pdf",
+                    "icon": "/apps/assistant/img/client_integration/text_to_speech.svg"
+                }
+            ]
+        },
+        "contacts": {
+            "version": 0.1,
+            "context-menu": [
+                {
+                    "name": "Import contacts",
+                    "url": "/ocs/v2.php/apps/contacts/api/v1/import/{fileId}",
+                    "method": "POST",
+                    "mimetype_filters": "text/vcard"
+                }
+            ]
+        }
+    }
+}
+)";
 
 class TestCapabilities : public QObject
 {
@@ -370,6 +442,31 @@ private slots:
         const auto enterpriseChannel = capabilities.desktopEnterpriseChannel();
 
         QCOMPARE(enterpriseChannel, defaultChannel);
+    }
+
+    void testServerHasClientIntegration_returnTrue()
+    {
+        const auto &capabilities = OCC::Capabilities(QJsonDocument::fromJson(client_integration).object().toVariantMap());
+        const auto hasClientIntegration = capabilities.serverHasClientIntegration();
+        QCOMPARE(hasClientIntegration, true);
+    }
+
+    void testFileActionsByMimeType_returnContextMenu()
+    {
+        const auto &capabilities = OCC::Capabilities(QJsonDocument::fromJson(client_integration).object().toVariantMap());
+        QMimeDatabase mimeDb;
+        auto contextMenu = capabilities.fileActionsByMimeType(mimeDb.mimeTypeForFile("audio.mp4",
+                                                                                     QMimeDatabase::MatchExtension));
+        QCOMPARE(contextMenu.size(), 4);
+        contextMenu = capabilities.fileActionsByMimeType(mimeDb.mimeTypeForFile("spreadsheet.csv",
+                                                                                QMimeDatabase::MatchExtension));
+        QCOMPARE(contextMenu.size(), 5);
+        contextMenu = capabilities.fileActionsByMimeType(mimeDb.mimeTypeForFile("contact.vcf",
+                                                                                QMimeDatabase::MatchExtension));
+        QCOMPARE(contextMenu.size(), 5);
+        contextMenu = capabilities.fileActionsByMimeType(mimeDb.mimeTypeForFile("document.odt",
+                                                                                QMimeDatabase::MatchExtension));
+        QCOMPARE(contextMenu.size(), 6);
     }
 };
 

@@ -1242,6 +1242,7 @@ void FakeQNAM::setServerVersion(const QString &version)
 FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo, const QString &remotePath, const bool performInitialSync)
     : _tempDirLocalPath(QFileInfo(_tempDir.path()).canonicalFilePath())
     , _localModifier(_tempDirLocalPath)
+    , _accountState(nullptr)
 {
     // Needs to be done once
     OCC::SyncEngine::minimumFileAgeForUpload = std::chrono::milliseconds(0);
@@ -1258,6 +1259,7 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInf
 
     _fakeQnam = new FakeQNAM(fileTemplate);
     _account = OCC::Account::create();
+    _accountState = new FakeAccountState(_account);
     _account->setUrl(QUrl(QStringLiteral("http://admin:admin@localhost/owncloud")));
     _account->setCredentials(new FakeCredentials { _fakeQnam });
     _account->setDavDisplayName(QStringLiteral("fakename"));
