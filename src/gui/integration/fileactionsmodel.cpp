@@ -247,7 +247,7 @@ void FileActionsModel::parseEndpoints()
     if (_fileId.isEmpty()) {
         qCWarning(lcFileActions) << "The file id is empty, not initialized"
                                  << _localPath;
-        setResponse({ tr("The file id is empty for %1.", "file name").arg(_localPath),
+        setResponse({ tr("The file ID is empty for %1.", "file name").arg(_localPath),
                      _accountUrl });
         return;
     }
