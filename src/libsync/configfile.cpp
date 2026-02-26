@@ -234,6 +234,19 @@ void ConfigFile::setShowInExplorerNavigationPane(bool show)
     settings.sync();
 }
 
+bool ConfigFile::showCloudProvidersInFileManager() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(showCloudProvidersInFileManagerC, true).toBool();
+}
+
+void ConfigFile::setShowCloudProvidersInFileManager(bool show)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(showCloudProvidersInFileManagerC, show);
+    settings.sync();
+}
+
 int ConfigFile::timeout() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);

@@ -402,7 +402,20 @@ Application::Application(int &argc, char **argv)
     }
 
 #if WITH_LIBCLOUDPROVIDERS
-    _gui->setupCloudProviders();
+    // Configuration: showCloudProvidersInFileManager (default: true)
+    // This setting controls whether Nextcloud folders are exposed via the freedesktop
+    // CloudProviders D-Bus interface to file managers (Nautilus, etc.).
+    //
+    // Note: This is a config-file-only setting, not exposed in the UI, as it addresses
+    // a niche use case.
+    //
+    // Future: This global setting should be deprecated once file managers implement
+    // per-entry visibility controls for CloudProviders mount points. When that happens,
+    // users will be able to selectively hide individual cloud provider entries directly
+    // in their file manager preferences.
+    if (ConfigFile().showCloudProvidersInFileManager()) {
+        _gui->setupCloudProviders();
+    }
 #endif
 
     if (_theme->doNotUseProxy()) {
