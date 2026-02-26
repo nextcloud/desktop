@@ -21,7 +21,6 @@
 
 #include "common/utility.h"
 #include "common/filesystembase.h"
-#include "../version.h"
 
 #include <QString>
 #include <QFileInfo>
@@ -220,7 +219,6 @@ using namespace OCC;
 
 ExcludedFiles::ExcludedFiles(const QString &localPath)
     : _localPath(localPath)
-    , _clientVersion(MIRALL_VERSION_MAJOR, MIRALL_VERSION_MINOR, MIRALL_VERSION_PATCH)
 {
     Q_ASSERT(_localPath.endsWith(QStringLiteral("/")));
     // Windows used to use PathMatchSpec which allows *foo to match abc/deffoo.
@@ -283,22 +281,14 @@ void ExcludedFiles::setWildcardsMatchSlash(bool onoff)
     prepare();
 }
 
-void ExcludedFiles::setClientVersion(ExcludedFiles::Version version)
-{
-    _clientVersion = version;
-}
-
 void ExcludedFiles::loadExcludeFilePatterns(const QString &basePath, QFile &file)
 {
     QStringList patterns;
     while (!file.atEnd()) {
         QByteArray line = file.readLine().trimmed();
-        if (line.startsWith("#!version")) {
-            if (!versionDirectiveKeepNextLine(line))
-                file.readLine();
-        }
-        if (line.isEmpty() || line.startsWith('#'))
+        if (line.isEmpty() || line.startsWith('#')) {
             continue;
+        }
         const auto patternStr = QString::fromUtf8(line);
         if (QStringView{patternStr}.trimmed() == QLatin1StringView("*")) {
             continue;
@@ -309,7 +299,7 @@ void ExcludedFiles::loadExcludeFilePatterns(const QString &basePath, QFile &file
     _allExcludes[basePath].append(patterns);
 
     // nothing to prepare if the user decided to not exclude anything
-    if (!_allExcludes.value(basePath).isEmpty()){
+    if (!_allExcludes.value(basePath).isEmpty()) {
         prepare(basePath);
     }
 }
@@ -358,32 +348,6 @@ bool ExcludedFiles::reloadExcludeFiles()
     }
 
     return success;
-}
-
-bool ExcludedFiles::versionDirectiveKeepNextLine(const QByteArray &directive) const
-{
-    if (!directive.startsWith("#!version"))
-        return true;
-    QByteArrayList args = directive.split(' ');
-    if (args.size() != 3)
-        return true;
-    QByteArray op = args[1];
-    QByteArrayList argVersions = args[2].split('.');
-    if (argVersions.size() != 3)
-        return true;
-
-    auto argVersion = std::make_tuple(argVersions[0].toInt(), argVersions[1].toInt(), argVersions[2].toInt());
-    if (op == "<=")
-        return _clientVersion <= argVersion;
-    if (op == "<")
-        return _clientVersion < argVersion;
-    if (op == ">")
-        return _clientVersion > argVersion;
-    if (op == ">=")
-        return _clientVersion >= argVersion;
-    if (op == "==")
-        return _clientVersion == argVersion;
-    return true;
 }
 
 bool ExcludedFiles::isExcluded(
@@ -470,8 +434,9 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
             continue;
         }
 
-        if (!m.hasMatch())
-            return CSYNC_NOT_EXCLUDED;
+        if (!m.hasMatch()) {
+            continue;
+        }
         if (m.capturedStart(QStringLiteral("exclude")) != -1) {
             return CSYNC_FILE_EXCLUDE_LIST;
         } else if (m.capturedStart(QStringLiteral("excluderemove")) != -1) {
@@ -494,12 +459,13 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
             continue;
         }
 
-        if (m.hasMatch()) {
-            if (m.capturedStart(QStringLiteral("exclude")) != -1) {
-                return CSYNC_FILE_EXCLUDE_LIST;
-            } else if (m.capturedStart(QStringLiteral("excluderemove")) != -1) {
-                return CSYNC_FILE_EXCLUDE_AND_REMOVE;
-            }
+        if (!m.hasMatch()) {
+            continue;
+        }
+        if (m.capturedStart(QStringLiteral("exclude")) != -1) {
+            return CSYNC_FILE_EXCLUDE_LIST;
+        } else if (m.capturedStart(QStringLiteral("excluderemove")) != -1) {
+            return CSYNC_FILE_EXCLUDE_AND_REMOVE;
         }
     }
     return CSYNC_NOT_EXCLUDED;
@@ -533,12 +499,13 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::fullPatternMatch(const QString &p, ItemType fi
             continue;
         }
 
-        if (m.hasMatch()) {
-            if (m.capturedStart(QStringLiteral("exclude")) != -1) {
-                return CSYNC_FILE_EXCLUDE_LIST;
-            } else if (m.capturedStart(QStringLiteral("excluderemove")) != -1) {
-                return CSYNC_FILE_EXCLUDE_AND_REMOVE;
-            }
+        if (!m.hasMatch()) {
+            continue;
+        }
+        if (m.capturedStart(QStringLiteral("exclude")) != -1) {
+            return CSYNC_FILE_EXCLUDE_LIST;
+        } else if (m.capturedStart(QStringLiteral("excluderemove")) != -1) {
+            return CSYNC_FILE_EXCLUDE_AND_REMOVE;
         }
     }
 

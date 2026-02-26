@@ -59,8 +59,6 @@ class OCSYNC_EXPORT ExcludedFiles : public QObject
 {
     Q_OBJECT
 public:
-    using Version = std::tuple<int, int, int>;
-
     explicit ExcludedFiles(const QString &localPath = QStringLiteral("/"));
     ~ExcludedFiles() override;
 
@@ -111,11 +109,6 @@ public:
     void setWildcardsMatchSlash(bool onoff);
 
     /**
-     * Sets the client version, only used for testing.
-     */
-    void setClientVersion(Version version);
-
-    /**
      * @brief Check if the given path should be excluded in a traversal situation.
      *
      * It does only part of the work that full() does because it's assumed
@@ -148,23 +141,6 @@ public slots:
     void loadExcludeFilePatterns(const QString &basePath, QFile &file);
 
 private:
-    /**
-     * Returns true if the version directive indicates the next line
-     * should be skipped.
-     *
-     * A version directive has the form "#!version <op> <version>"
-     * where <op> can be <, <=, ==, >, >= and <version> can be any version
-     * like 2.5.0.
-     *
-     * Example:
-     *
-     * #!version < 2.5.0
-     * myexclude
-     *
-     * Would enable the "myexclude" pattern only for versions before 2.5.0.
-     */
-    [[nodiscard]] bool versionDirectiveKeepNextLine(const QByteArray &directive) const;
-
     /**
      * @brief Match the exclude pattern against the full path.
      *
@@ -256,12 +232,6 @@ private:
      * it continues to be enabled there.
      */
     bool _wildcardsMatchSlash = false;
-
-    /**
-     * The client version. Used to evaluate version-dependent excludes,
-     * see versionDirectiveKeepNextLine().
-     */
-    Version _clientVersion;
 
     friend class TestExcludedFiles;
 };
