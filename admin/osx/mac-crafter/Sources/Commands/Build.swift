@@ -303,18 +303,32 @@ struct Build: AsyncParsableCommand {
         // which allows breakpoints in extension source files to be resolved correctly.
 
         if dev {
-            Log.info("Copying extension dSYM bundles into product app bundle for debugging...")
+            let dSYM = clientBuildURL
+                .appendingPathComponent("image-\(buildType)-master-dbg")
+                .appendingPathComponent("\(appName).app.dSYM")
 
-            // XCODE_TARGET_CONFIGURATION in CMakeLists.txt is always "Debug" when NEXTCLOUD_DEV=ON,
-            // regardless of the CMake build type passed to Craft.
-            let xcodeTargetConfiguration = "Debug"
+            let binaryLocation = clientAppURL
+                .appendingPathComponent("Contents")
+                .appendingPathComponent("MacOS")
+                .appendingPathComponent("\(appName).app.dSYM")
+
+            Log.info("Copying main dSYM bundle at \"\(dSYM.path)\" into product app bundle \"\(binaryLocation.path)\" for debugging...")
+
+            if fm.fileExists(atPath: binaryLocation.path) {
+                Log.info("Removing already existing main dSYM bundle at \"\(binaryLocation.path)\"...")
+                try fm.removeItem(at: binaryLocation)
+            }
+
+            try fm.copyItem(at: dSYM, to: binaryLocation)
+
+            Log.info("Copying extension dSYM bundles into product app bundle for debugging...")
 
             let shellIntegrationBuildDir = clientBuildURL
                 .appendingPathComponent("work")
                 .appendingPathComponent("build")
                 .appendingPathComponent("shell_integration")
                 .appendingPathComponent("MacOSX")
-                .appendingPathComponent(xcodeTargetConfiguration)
+                .appendingPathComponent(buildType)
 
             let plugInsDir = clientAppURL
                 .appendingPathComponent("Contents")
@@ -332,6 +346,7 @@ struct Build: AsyncParsableCommand {
                 let destination = plugInsDir.appendingPathComponent(dSYM.lastPathComponent)
 
                 if fm.fileExists(atPath: destination.path) {
+                    Log.info("Removing already existing extension dSYM bundle at \"\(destination.path)\"...")
                     try fm.removeItem(at: destination)
                 }
 
