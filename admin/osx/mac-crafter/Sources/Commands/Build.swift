@@ -317,6 +317,12 @@ struct Build: AsyncParsableCommand {
                 .appendingPathComponent("\(appName).app.dSYM")
 
             Log.info("Copying main dSYM bundle at \"\(dSYM.path)\" into product app bundle \"\(binaryLocation.path)\" for debugging...")
+
+            if fm.fileExists(atPath: binaryLocation.path) {
+                Log.info("Removing already existing main dSYM bundle at \"\(binaryLocation.path)\"...")
+                try fm.removeItem(at: binaryLocation)
+            }
+
             try fm.copyItem(at: dSYM, to: binaryLocation)
 
             Log.info("Copying extension dSYM bundles into product app bundle for debugging...")
@@ -344,6 +350,7 @@ struct Build: AsyncParsableCommand {
                 let destination = plugInsDir.appendingPathComponent(dSYM.lastPathComponent)
 
                 if fm.fileExists(atPath: destination.path) {
+                    Log.info("Removing already existing extension dSYM bundle at \"\(destination.path)\"...")
                     try fm.removeItem(at: destination)
                 }
 

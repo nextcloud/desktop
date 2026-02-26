@@ -77,10 +77,10 @@ static os_log_t getLocalSocketClientLogger(void) {
     }
 
     struct sockaddr_un localSocketAddr;
-    unsigned long socketPathByteCount = [_socketPath lengthOfBytesUsingEncoding:NSUTF8StringEncoding]; // add 1 for the NUL terminator char
+    unsigned long socketPathByteCount = [_socketPath lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
     int maxByteCount = sizeof(localSocketAddr.sun_path);
 
-    if(socketPathByteCount > maxByteCount) {
+    if(socketPathByteCount >= maxByteCount) {
         os_log_error(_log, "Socket path '%{public}@' is too long: maximum socket path length is %i, this path is of length %lu", _socketPath, maxByteCount, socketPathByteCount);
         return;
     }
@@ -196,7 +196,7 @@ static os_log_t getLocalSocketClientLogger(void) {
     const char *errStr = strerror(err);
     NSString *errorStr = [NSString stringWithUTF8String:errStr];
 
-    if([errorStr length] == 0) {
+    if([errorStr length] > 0) {
         return errorStr;
     } else {
         return [NSString stringWithFormat:@"Unknown error code: %i", err];
@@ -245,9 +245,15 @@ static os_log_t getLocalSocketClientLogger(void) {
     os_log_debug(_log, "About to write %li bytes from outbuffer to socket.", [_outBuffer length]);
 
     long bytesWritten = write(_sock, [_outBuffer bytes], [_outBuffer length]);
-    char lineWritten[[_outBuffer length]];
-    memcpy(lineWritten, [_outBuffer bytes], [_outBuffer length]);
-    os_log_debug(_log, "Wrote %li bytes to socket. Line written was: '%{public}@'", bytesWritten, [NSString stringWithUTF8String:lineWritten]);
+    
+    if(bytesWritten > 0) {
+        NSString *lineWritten = [[NSString alloc] initWithBytes:[_outBuffer bytes] 
+                                                          length:bytesWritten 
+                                                        encoding:NSUTF8StringEncoding];
+        os_log_debug(_log, "Wrote %li bytes to socket. Line written was: '%{public}@'", bytesWritten, lineWritten ?: @"<invalid UTF-8>");
+    } else {
+        os_log_debug(_log, "Wrote %li bytes to socket.", bytesWritten);
+    }
 
     if(bytesWritten == 0) {
         // 0 means we reached "end of file" and thus the socket was closed. So let's restart it
