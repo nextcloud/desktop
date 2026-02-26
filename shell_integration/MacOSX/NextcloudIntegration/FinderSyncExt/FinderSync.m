@@ -61,9 +61,7 @@ static os_log_t getFinderSyncLogger(void) {
         [syncController setBadgeImage:error label:@"Error" forBadgeIdentifier:@"ERROR+SWM"];
 
         NSURL *container = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:groupIdentifier];
-        NSURL *library = [container URLByAppendingPathComponent:@"Library" isDirectory:true];
-        NSURL *applicationSupport = [library URLByAppendingPathComponent:@"Application Support" isDirectory:true];
-        NSURL *socketPath = [applicationSupport URLByAppendingPathComponent:@"s" isDirectory:NO];
+        NSURL *socketPath = [container URLByAppendingPathComponent:@"s" isDirectory:NO];
 
         os_log_debug(_log, "Socket path: %{public}@", socketPath.path);
 

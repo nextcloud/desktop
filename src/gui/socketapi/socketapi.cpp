@@ -251,9 +251,10 @@ SocketApi::SocketApi(QObject *parent)
         // See issue #2388
         // + Theme::instance()->appName();
     } else if (Utility::isMac()) {
-#ifdef Q_OS_MACOS
-        socketPath = socketApiSocketPath();
-#endif
+    #ifdef Q_OS_MACOS
+        socketPath = socketApiSocketUrl().toLocalFile();
+        qCDebug(lcSocketApi) << "macOS socket path:" << socketPath;
+    #endif
     } else if (Utility::isLinux() || Utility::isBSD()) {
         QString runtimeDir;
         runtimeDir = QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation);
@@ -278,15 +279,20 @@ SocketApi::SocketApi(QObject *parent)
         }
     }
 
-    if (!_localServer.listen(socketPath)) {
-        qCWarning(lcSocketApi) << "can't start server" 
-                               << socketPath
-                               << "Error:"
-                               << _localServer.errorString()
-                               << "Error code:" 
-                               << _localServer.serverError();
+    const bool result = _localServer.listen(socketPath);
+    qCDebug(lcSocketApi) << "Full server name:" << _localServer.fullServerName();
+
+    if (result) {
+        qCInfo(lcSocketApi) << "Listen started.";
+
+        if (!QFile::exists(socketPath)) { // verify the socket actually exists
+            qCWarning(lcSocketApi) << "Socket file doesn't exist despite listen() success! Server is listening:"
+                                   << _localServer.isListening()
+                                   << "Full name:"
+                                   << _localServer.fullServerName();
+        }
     } else {
-        qCInfo(lcSocketApi) << "server started, listening at " << socketPath;
+        qCWarning(lcSocketApi) << "Listen failed:" << _localServer.errorString();
     }
 
     connect(&_localServer, &QLocalServer::newConnection, this, &SocketApi::slotNewConnection);
