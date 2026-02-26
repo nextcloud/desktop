@@ -89,8 +89,6 @@ const QString TOOLBAR_CSS()
                           "QToolBar QToolButton:checked { background: palette(highlight); color: palette(highlighted-text);}");
 }
 
-}
-
 const float buttonSizeRatio = 1.618f; // golden ratio
 
 
