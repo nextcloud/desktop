@@ -116,24 +116,71 @@ QByteArray FileActionsModel::fileId() const
     return _fileId;
 }
 
-void FileActionsModel::setupFileProperties()
+void FileActionsModel::setFileId(const QByteArray &fileId)
 {
-    const auto folderForPath = FolderMan::instance()->folderForPath(_localPath);
-    _filePath = _localPath.mid(folderForPath->cleanPath().length() + 1);
-    SyncJournalFileRecord fileRecord;
-    if (!folderForPath->journalDb()->getFileRecord(_filePath, &fileRecord)) {
-        qCWarning(lcFileActions) << "Invalid file record for path:" << _localPath;
+    if (fileId == _fileId) {
         return;
     }
 
-    _fileId = fileRecord._fileId;
+    _fileId = fileId;
 
-    const auto mimeMatchMode = fileRecord.isVirtualFile() ? QMimeDatabase::MatchExtension
-                                                          : QMimeDatabase::MatchDefault;
+    if (_accountState && !_localPath.isEmpty()) {
+        parseEndpoints();
+    }
+    
+    Q_EMIT fileChanged();
+}
+
+QString FileActionsModel::remoteItemPath() const
+{
+    return _remoteItemPath;
+}
+
+void FileActionsModel::setRemoteItemPath(const QString &remoteItemPath)
+{
+    if (remoteItemPath == _remoteItemPath) {
+        return;
+    }
+    _remoteItemPath = remoteItemPath;
+    Q_EMIT fileChanged();
+}
+
+void FileActionsModel::setupFileProperties()
+{
+    qCDebug(lcFileActions) << "Setting up file properties for:" << _localPath;
+
+    const auto folderForPath = FolderMan::instance()->folderForPath(_localPath);
+
+    // Declare once so it's available after the if-else clause.
+    QMimeDatabase::MatchMode mimeMatchMode;
+
+    if (folderForPath) { // Synchronization folders
+        qCDebug(lcFileActions) << "Found synchronization folder for" << _localPath;
+        _filePath = _localPath.mid(folderForPath->cleanPath().length() + 1);
+
+        SyncJournalFileRecord fileRecord;
+
+        if (!folderForPath->journalDb()->getFileRecord(_filePath, &fileRecord)) {
+            qCWarning(lcFileActions) << "Invalid file record for path:" << _localPath;
+            return;
+        }
+
+        _fileId = fileRecord._fileId;
+
+        // Decide match mode based on whether this is a virtual file
+        mimeMatchMode = fileRecord.isVirtualFile() ? QMimeDatabase::MatchExtension
+                                                   : QMimeDatabase::MatchDefault;
+    } else { // Virtual file systems
+        qCDebug(lcFileActions) << "Did not find synchronization folder for" << _localPath;
+        // In this case, _fileId should already be initialized with a value from the calling code.
+        _filePath = _localPath;
+        // When we don't have a sync folder, use extension matching
+        mimeMatchMode = QMimeDatabase::MatchExtension;
+    }
+
     QMimeDatabase mimeDb;
     const auto mimeType = mimeDb.mimeTypeForFile(_localPath, mimeMatchMode);
     _mimeType = mimeType;
-
     _fileIcon = _accountUrl + Activity::relativeServerFileTypeIconPath(_mimeType);
 }
 
@@ -175,18 +222,32 @@ void FileActionsModel::setResponse(const Response &response)
 
 void FileActionsModel::parseEndpoints()
 {
+    auto resetActions = [this](const ActionList &actions) {
+        beginResetModel();
+        _fileActions = actions;
+        endResetModel();
+        Q_EMIT fileActionModelChanged();
+    };
+
+    if (!_accountState) {
+        qCWarning(lcFileActions) << "No account state available for" << _localPath;
+        resetActions({});
+        return;
+    }
+
     if (!_accountState->isConnected()) {
         qCWarning(lcFileActions) << "The account is not connected"
                                  << _accountUrl;
         setResponse({ tr("Your account is offline %1.", "account url").arg(_accountUrl),
                      _accountUrl });
+        resetActions({});
         return;
     }
 
     if (_fileId.isEmpty()) {
         qCWarning(lcFileActions) << "The file id is empty, not initialized"
                                  << _localPath;
-        setResponse({ tr("The file id is empty for %1.", "file name").arg(_localPath),
+        setResponse({ tr("The file ID is empty for %1.", "file name").arg(_localPath),
                      _accountUrl });
         return;
     }
@@ -196,6 +257,7 @@ void FileActionsModel::parseEndpoints()
                                  << _localPath;
         setResponse({ tr("The file type for %1 is not valid.", "file name").arg(_localPath),
                      _accountUrl });
+        resetActions({});
         return;
     }
 
@@ -203,12 +265,15 @@ void FileActionsModel::parseEndpoints()
     if (contextMenuList.isEmpty()) {
         qCWarning(lcFileActions) << "contextMenuByMimeType is empty, nothing was returned by capabilities"
                                  << _localPath;
+        //: TRANSLATOR Placeholder contains file MIME type
         setResponse({ tr("No file actions were returned by the server for %1 files.", "file mymetype")
                          .arg(_mimeType.filterString()),
                      _accountUrl });
+        resetActions({});
         return;
     }
 
+    ActionList actions;
     for (const auto &contextMenu : contextMenuList) {
         QueryList queryList;
         const auto paramsMap = contextMenu.value("params").toMap();
@@ -228,17 +293,18 @@ void FileActionsModel::parseEndpoints()
             }
         }
 
-        _fileActions.append({ parseIcon(contextMenu.value("icon").toString()),
-                             contextMenu.value("name").toString(),
-                             contextMenu.value("url").toString(),
-                             contextMenu.value("method").toString(),
-                             queryList });
+        actions.append({ parseIcon(contextMenu.value("icon").toString()),
+                        contextMenu.value("name").toString(),
+                        contextMenu.value("url").toString(),
+                        contextMenu.value("method").toString(),
+                        queryList });
     }
 
+    resetActions(actions);
+
     qCDebug(lcFileActions) << "File" << _localPath << "has"
-                           << _fileActions.size()
+                           << actions.size()
                            << "actions available.";
-    Q_EMIT fileActionModelChanged();
 }
 
 QString FileActionsModel::parseUrl(const QString &url) const
@@ -297,14 +363,25 @@ void FileActionsModel::processRequest(const QJsonDocument &json, int statusCode)
 
     const auto root = json.object().value(QStringLiteral("root")).toObject();
     const auto folderForPath = FolderMan::instance()->folderForPath(_localPath);
-    const auto remoteFolderPath = _accountUrl + folderForPath->remotePath();
     const auto successMessage = tr("%1 done.", "file action success message").arg(fileAction);
+
+    QString remoteFolderPath;
+    if (folderForPath) {
+        remoteFolderPath = _accountUrl + folderForPath->remotePath();
+    } else if (!_remoteItemPath.isEmpty()) {
+        remoteFolderPath = _accountUrl + _remoteItemPath;
+    } else {
+        qCWarning(lcFileActions) << "Failed to find folder for path and no remote item path available:" << _localPath;
+        return;
+    }
+
     if (root.empty()) {
         setResponse({ successMessage, remoteFolderPath });
         return;
     }
 
     const auto rows = root.value(QStringLiteral("rows")).toArray();
+
     if (rows.empty()) {
         setResponse({ successMessage, remoteFolderPath });
         return;
@@ -313,6 +390,7 @@ void FileActionsModel::processRequest(const QJsonDocument &json, int statusCode)
     for (const auto &rowValue : rows) {
         const auto row = rowValue.toObject();
         const auto children = row.value("children").toArray();
+
         for (const auto &childValue : children) {
             const auto child = childValue.toObject();
             setResponse({ child.value(QStringLiteral("element")).toString(),
@@ -322,3 +400,4 @@ void FileActionsModel::processRequest(const QJsonDocument &json, int statusCode)
 }
 
 } // namespace OCC
+

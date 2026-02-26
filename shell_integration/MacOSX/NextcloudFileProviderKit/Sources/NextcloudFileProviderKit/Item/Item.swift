@@ -20,6 +20,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
     public let account: Account
     public let remoteInterface: RemoteInterface
 
+    private let displayFileActions: Bool
     private let remoteSupportsTrash: Bool
 
     public var itemIdentifier: NSFileProviderItemIdentifier {
@@ -58,15 +59,8 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             }
         }
 
-        // .allowsEvicting deprecated on macOS 13.0+, use contentPolicy instead
-        if #unavailable(macOS 13.0), !metadata.keepDownloaded {
-            capabilities.insert(.allowsEvicting)
-        }
-        #if os(macOS)
-            if #available(macOS 11.3, *) {
-                capabilities.insert(.allowsExcludingFromSync)
-            }
-        #endif
+        capabilities.insert(.allowsExcludingFromSync)
+
         return capabilities
     }
 
@@ -195,24 +189,23 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
 
     public var userInfo: [AnyHashable: Any]? {
         var userInfoDict = [AnyHashable: Any]()
+        userInfoDict["displayFileActions"] = displayFileActions
+
         if metadata.lock {
             // Can be used to display lock/unlock context menu entries for FPUIActions
             // Note that only files, not folders, should be lockable/unlockable
             userInfoDict["locked"] = metadata.lock
         }
-        if #available(macOS 13.0, iOS 16.0, visionOS 1.0, *) {
-            userInfoDict["displayKeepDownloaded"] = !metadata.keepDownloaded
-            userInfoDict["displayAllowAutoEvicting"] = metadata.keepDownloaded
-            userInfoDict["displayEvict"] = metadata.downloaded && !metadata.keepDownloaded
-        } else {
-            userInfoDict["displayEvict"] = metadata.downloaded
-        }
+
+        userInfoDict["displayKeepDownloaded"] = !metadata.keepDownloaded
+        userInfoDict["displayAllowAutoEvicting"] = metadata.keepDownloaded
+        userInfoDict["displayEvict"] = metadata.downloaded && !metadata.keepDownloaded
+
         // https://docs.nextcloud.com/server/latest/developer_manual/client_apis/WebDAV/basic.html
-        if metadata.permissions.uppercased().contains("R"), // Shareable
-           ![.rootContainer, .trashContainer].contains(itemIdentifier)
-        {
+        if metadata.permissions.uppercased().contains("R") /* Shareable */, ![.rootContainer, .trashContainer].contains(itemIdentifier) {
             userInfoDict["displayShare"] = true
         }
+
         return userInfoDict
     }
 
@@ -228,8 +221,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
     }
 
     public var keepDownloaded: Bool {
-        guard #available(macOS 13.0, iOS 16.0, visionOS 1.0, *) else { return false }
-        return metadata.keepDownloaded
+        metadata.keepDownloaded
     }
 
     ///
@@ -275,6 +267,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: remoteSupportsTrash,
             log: log
         )
@@ -318,6 +311,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: remoteSupportsTrash,
             log: log
         )
@@ -331,6 +325,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
+        displayFileActions: Bool,
         remoteSupportsTrash: Bool,
         log: any FileProviderLogging
     ) {
@@ -340,6 +335,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         logger = FileProviderLogger(category: "Item", log: log)
         self.remoteInterface = remoteInterface
         self.dbManager = dbManager
+        self.displayFileActions = displayFileActions
         self.remoteSupportsTrash = remoteSupportsTrash
         super.init()
     }
@@ -392,12 +388,17 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             return nil
         }
 
+        // Display File Actions
+
+        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: metadata.contentType)
+
         return Item(
             metadata: metadata,
             parentItemIdentifier: parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
+            displayFileActions: displayFileActions,
             remoteSupportsTrash: remoteSupportsTrash,
             log: log
         )

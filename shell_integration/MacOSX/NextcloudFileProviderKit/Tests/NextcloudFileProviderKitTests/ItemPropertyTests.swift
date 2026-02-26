@@ -365,6 +365,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: remoteSupportsTrash,
             log: FileProviderLogMock()
         )
@@ -426,6 +427,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
         )
@@ -452,6 +454,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
         )
@@ -475,6 +478,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
         )
@@ -495,6 +499,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
         )
@@ -514,6 +519,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
         )
@@ -534,6 +540,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
         )
@@ -549,6 +556,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: false,
             log: FileProviderLogMock()
         )
@@ -568,6 +576,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
         )
@@ -586,6 +595,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
         )
@@ -607,6 +617,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
         )
@@ -625,6 +636,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
         )
@@ -643,6 +655,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
         )
@@ -666,6 +679,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
         )
@@ -684,6 +698,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
         )
@@ -705,6 +720,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
         )
@@ -723,6 +739,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
         )
@@ -741,6 +758,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
         )
@@ -761,6 +779,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
         )
@@ -776,11 +795,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
 
         // Excluding from sync is macOS-specific and always added if available
         var platformExpected = expected
-        #if os(macOS)
-            if #available(macOS 11.3, *) {
-                platformExpected.insert(.allowsExcludingFromSync)
-            }
-        #endif
+        platformExpected.insert(.allowsExcludingFromSync)
 
         XCTAssertEqual(item.capabilities, platformExpected)
     }
@@ -797,6 +812,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
         )
@@ -811,11 +827,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         ]
 
         var platformExpected = expected
-        #if os(macOS)
-            if #available(macOS 11.3, *) {
-                platformExpected.insert(.allowsExcludingFromSync)
-            }
-        #endif
+        platformExpected.insert(.allowsExcludingFromSync)
 
         XCTAssertEqual(item.capabilities, platformExpected)
     }
@@ -830,6 +842,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
         )
@@ -837,38 +850,32 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         // Trashing and Excluding from Sync might still be allowed as they don't depend on the
         // permission string
         var expected: NSFileProviderItemCapabilities = [.allowsTrashing]
-
-        #if os(macOS)
-            if #available(macOS 11.3, *) {
-                expected.insert(.allowsExcludingFromSync)
-            }
-        #endif
+        expected.insert(.allowsExcludingFromSync)
 
         XCTAssertEqual(item.capabilities, expected)
     }
 
     #if os(macOS)
         func testCapabilitiesMacOSExclusion() {
-            if #available(macOS 11.3, *) {
-                var metadata = SendableItemMetadata(
-                    ocId: "macos-exclusion", fileName: "file.txt", account: Self.account
-                )
-                metadata.permissions = ""
-                let item = Item(
-                    metadata: metadata,
-                    parentItemIdentifier: .rootContainer,
-                    account: Self.account,
-                    remoteInterface: MockRemoteInterface(account: Self.account),
-                    dbManager: Self.dbManager,
-                    remoteSupportsTrash: true,
-                    log: FileProviderLogMock()
-                )
+            var metadata = SendableItemMetadata(
+                ocId: "macos-exclusion", fileName: "file.txt", account: Self.account
+            )
+            metadata.permissions = ""
+            let item = Item(
+                metadata: metadata,
+                parentItemIdentifier: .rootContainer,
+                account: Self.account,
+                remoteInterface: MockRemoteInterface(account: Self.account),
+                dbManager: Self.dbManager,
+                displayFileActions: false,
+                remoteSupportsTrash: true,
+                log: FileProviderLogMock()
+            )
 
-                XCTAssertTrue(
-                    item.capabilities.contains(.allowsExcludingFromSync),
-                    "Should allow excluding from sync on supported macOS versions."
-                )
-            }
+            XCTAssertTrue(
+                item.capabilities.contains(.allowsExcludingFromSync),
+                "Should allow excluding from sync on supported macOS versions."
+            )
         }
     #endif
 

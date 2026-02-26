@@ -279,7 +279,7 @@
 <context>
     <name>FileActionsWindow</name>
     <message>
-        <location filename="../src/gui/integration/FileActionsWindow.qml" line="31"/>
+        <location filename="../src/gui/integration/FileActionsWindow.qml" line="33"/>
         <source>File actions for %1</source>
         <translation>Ações de arquivo para %1</translation>
     </message>
@@ -1978,37 +1978,38 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
 <context>
     <name>OCC::FileActionsModel</name>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="181"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="241"/>
         <source>Your account is offline %1.</source>
         <comment>account url</comment>
         <translation>Sua conta está off-line %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="189"/>
-        <source>The file id is empty for %1.</source>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="250"/>
+        <source>The file ID is empty for %1.</source>
         <comment>file name</comment>
-        <translation>O ID do arquivo é vazio para %1.</translation>
+        <translation>O ID de arquivo é vazio para %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="197"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="258"/>
         <source>The file type for %1 is not valid.</source>
         <comment>file name</comment>
         <translation>O tipo de arquivo para %1 não é válido.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="206"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="269"/>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mymetype</comment>
+        <extracomment>TRANSLATOR Placeholder contains file MIME type</extracomment>
         <translation>O servidor não retornou nenhuma ação de arquivo para %1 arquivos.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="289"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="355"/>
         <source>%1 did not succeed, please try again later. If you need help, contact your server administrator.</source>
         <comment>file action error message</comment>
         <translation>%1 não foi bem-sucedido. Tente novamente mais tarde. Se precisar de ajuda, entre em contato com o administrador do servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="301"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="366"/>
         <source>%1 done.</source>
         <comment>file action success message</comment>
         <translation>%1 concluído.</translation>
@@ -5517,6 +5518,11 @@ Servidor respondeu com erro: %2</translation>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="307"/>
         <source>Syncing file %1 of %2</source>
         <translation>Sincronizando arquivo %1 de %2</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="435"/>
+        <source>No synchronisation configured</source>
+        <translation>Nenhuma sincronização configurada</translation>
     </message>
 </context>
 <context>

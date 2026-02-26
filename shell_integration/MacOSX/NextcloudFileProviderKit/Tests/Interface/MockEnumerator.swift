@@ -20,9 +20,7 @@ public class MockEnumerator: NSObject, NSFileProviderEnumerator {
         self.remoteInterface = remoteInterface
     }
 
-    public func enumerateItems(
-        for observer: any NSFileProviderEnumerationObserver, startingAt _: NSFileProviderPage
-    ) {
+    public func enumerateItems(for observer: any NSFileProviderEnumerationObserver, startingAt _: NSFileProviderPage) {
         let remoteSupportsTrash = remoteInterface.directMockCapabilities()?.files?.undelete ?? false
         var items: [Item] = []
         for item in enumeratorItems {
@@ -36,6 +34,7 @@ public class MockEnumerator: NSObject, NSFileProviderEnumerator {
                 account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
+                displayFileActions: false,
                 remoteSupportsTrash: remoteSupportsTrash,
                 log: FileProviderLogMock()
             )

@@ -22,12 +22,12 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="196"/>
         <source>File details</source>
-        <translation type="unfinished"/>
+        <translation>Faili üksikasjad</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
         <source>File actions</source>
-        <translation type="unfinished"/>
+        <translation>Tegevused failidega</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
@@ -279,9 +279,9 @@
 <context>
     <name>FileActionsWindow</name>
     <message>
-        <location filename="../src/gui/integration/FileActionsWindow.qml" line="31"/>
+        <location filename="../src/gui/integration/FileActionsWindow.qml" line="33"/>
         <source>File actions for %1</source>
-        <translation type="unfinished"/>
+        <translation>Tegevused failidega: %1</translation>
     </message>
 </context>
 <context>
@@ -1978,40 +1978,41 @@ See võib olla seotud kasutatavate OpenSSl-i teekidega.</translation>
 <context>
     <name>OCC::FileActionsModel</name>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="181"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="241"/>
         <source>Your account is offline %1.</source>
         <comment>account url</comment>
-        <translation type="unfinished"/>
+        <translation>Sinu kasutajakonto pole võrgus: %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="189"/>
-        <source>The file id is empty for %1.</source>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="250"/>
+        <source>The file ID is empty for %1.</source>
         <comment>file name</comment>
-        <translation type="unfinished"/>
+        <translation>„%1“ puhul on failitunnus tühi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="197"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="258"/>
         <source>The file type for %1 is not valid.</source>
         <comment>file name</comment>
-        <translation type="unfinished"/>
+        <translation>Failitüüp %1 jaoks pole korrektne.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="206"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="269"/>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mymetype</comment>
-        <translation type="unfinished"/>
+        <extracomment>TRANSLATOR Placeholder contains file MIME type</extracomment>
+        <translation>„%1“ faili jaoks ei andnud server ühtegi failtoimingut.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="289"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="355"/>
         <source>%1 did not succeed, please try again later. If you need help, contact your server administrator.</source>
         <comment>file action error message</comment>
-        <translation type="unfinished"/>
+        <translation>„%1“ ei õnnestunud, palun proovi hiljem uuesti. Vajadusel aitab sinu serveri haldaja.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="301"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="366"/>
         <source>%1 done.</source>
         <comment>file action success message</comment>
-        <translation type="unfinished"/>
+        <translation>Tehtud: %1.</translation>
     </message>
 </context>
 <context>
@@ -3292,7 +3293,7 @@ Kui objekti puhul on kustutamine lubatud, siis nad kustutatakse olukorras, kus n
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it contains characters which are not allowed on this system.</source>
-        <translation>Faili sünkroniseerimine polnud võimalik, sest failinimes leidub tähemärke, mis siin arvutis/seadmed pole lubatud.</translation>
+        <translation>Faili sünkroonimine polnud võimalik, sest failinimes leidub tähemärke, mis siin arvutis/seadmes pole lubatud.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="39"/>
@@ -3357,7 +3358,7 @@ Kui objekti puhul on kustutamine lubatud, siis nad kustutatakse olukorras, kus n
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="161"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation>Sul puuduvad õigused selle failinime muutmiseks. Palun autorit, et ta teeks seda.</translation>
+        <translation>Sul puuduvad õigused selle failinime muutmiseks. Palu autorit, et ta teeks seda.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="166"/>
@@ -3695,7 +3696,7 @@ Palun arvesta, et käsurealt lisatud logimistingimused on alati primaarsed nende
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="100"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process. Your computer may reboot to complete the installation.</source>
-        <translation>Järgnevaga on %1 uuendus paigaldamise. Paigaldusrakendus võib sult töö käigus küsida täiendavaid õigusi. Paigaldamise lõpetamiseks võib arvuti taaskäivitamine olla vajalik.</translation>
+        <translation>Järgnevaga on %1 uuendus paigaldamisel. Paigaldusrakendus võib sult töö käigus küsida täiendavaid õigusi. Paigaldamise lõpetamiseks võib olla vajalik arvuti taaskäivitamine.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="144"/>
@@ -3720,7 +3721,7 @@ Palun arvesta, et käsurealt lisatud logimistingimused on alati primaarsed nende
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
         <source>New %1 is available. Please open &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; to download the update.</source>
-        <translation>Uus %1 on saadaval. Palun ava &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; ja laadi uuendis alla.</translation>
+        <translation>Uus %1 on saadaval. Palun ava &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; ja laadi uuendus alla.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="159"/>
@@ -5066,7 +5067,7 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1132"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1195"/>
         <source>File actions</source>
-        <translation type="unfinished"/>
+        <translation>Tegevused failidega</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1100"/>
@@ -5465,7 +5466,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="188"/>
         <source>Some files couldn&apos;t be synced!</source>
-        <translation>Mõnede failide sünkroniseerimine ei õnnestunud!</translation>
+        <translation>Mõnede failide sünkroonimine ei õnnestunud!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="189"/>
@@ -5490,7 +5491,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="215"/>
         <source>Some files could not be synced!</source>
-        <translation>Mõnede failide sünkroniseerimine ei õnnestunud!</translation>
+        <translation>Mõnede failide sünkroonimine ei õnnestunud!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="216"/>
@@ -5500,7 +5501,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="285"/>
         <source>Syncing</source>
-        <translation>Sünkroniseerin</translation>
+        <translation>Sünkroonin</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="298"/>
@@ -5515,7 +5516,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="307"/>
         <source>Syncing file %1 of %2</source>
-        <translation>Sünkroniseerin faile: %1 / %2</translation>
+        <translation>Sünkroonin faile: %1 / %2</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="435"/>
+        <source>No synchronisation configured</source>
+        <translation>Mitte mingit sünkroonimist pole seadistatud</translation>
     </message>
 </context>
 <context>

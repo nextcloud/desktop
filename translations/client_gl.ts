@@ -22,12 +22,12 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="196"/>
         <source>File details</source>
-        <translation type="unfinished"/>
+        <translation>Detalles do ficheiro</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
         <source>File actions</source>
-        <translation type="unfinished"/>
+        <translation>Accións de ficheiro</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
@@ -279,9 +279,9 @@
 <context>
     <name>FileActionsWindow</name>
     <message>
-        <location filename="../src/gui/integration/FileActionsWindow.qml" line="31"/>
+        <location filename="../src/gui/integration/FileActionsWindow.qml" line="33"/>
         <source>File actions for %1</source>
-        <translation type="unfinished"/>
+        <translation>Accións de ficheiro para %1</translation>
     </message>
 </context>
 <context>
@@ -453,22 +453,22 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="457"/>
         <source>This will clear the existing conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Isto limpará a conversa existente.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="502"/>
         <source>Ask Assistant…</source>
-        <translation type="unfinished"/>
+        <translation>Pregúntelle ao asistente…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="530"/>
         <source>Send assistant question</source>
-        <translation type="unfinished"/>
+        <translation>Enviar pregunta ao asistente</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="551"/>
         <source>Start a new assistant chat</source>
-        <translation type="unfinished"/>
+        <translation>Iniciar unha nova parola co asistente</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
@@ -1978,40 +1978,41 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
 <context>
     <name>OCC::FileActionsModel</name>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="181"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="241"/>
         <source>Your account is offline %1.</source>
         <comment>account url</comment>
-        <translation type="unfinished"/>
+        <translation>A súa conta está desconectada %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="189"/>
-        <source>The file id is empty for %1.</source>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="250"/>
+        <source>The file ID is empty for %1.</source>
         <comment>file name</comment>
-        <translation type="unfinished"/>
+        <translation>O ID do ficheiro está baleiro para %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="197"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="258"/>
         <source>The file type for %1 is not valid.</source>
         <comment>file name</comment>
-        <translation type="unfinished"/>
+        <translation>O tipo de ficheiro para %1 non é válido.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="206"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="269"/>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mymetype</comment>
-        <translation type="unfinished"/>
+        <extracomment>TRANSLATOR Placeholder contains file MIME type</extracomment>
+        <translation>O servidor non devolveu ningunha acción de ficheiro para %1 ficheiros.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="289"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="355"/>
         <source>%1 did not succeed, please try again later. If you need help, contact your server administrator.</source>
         <comment>file action error message</comment>
-        <translation type="unfinished"/>
+        <translation>%1 non foi satisfactorio, ténteo de novo máis tarde. Se precisa axuda, contacte co administrador do seu servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="301"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="366"/>
         <source>%1 done.</source>
         <comment>file action success message</comment>
-        <translation type="unfinished"/>
+        <translation>%1 feito.</translation>
     </message>
 </context>
 <context>
@@ -5066,7 +5067,7 @@ O servidor respondeu co erro: %2</translation>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1132"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1195"/>
         <source>File actions</source>
-        <translation type="unfinished"/>
+        <translation>Accións de ficheiro</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1100"/>
@@ -5517,6 +5518,11 @@ O servidor respondeu co erro: %2</translation>
         <source>Syncing file %1 of %2</source>
         <translation>Sincronizando o ficheiro %1 de %2</translation>
     </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="435"/>
+        <source>No synchronisation configured</source>
+        <translation>A sincronización non está configurada</translation>
+    </message>
 </context>
 <context>
     <name>OCC::Systray</name>
@@ -5773,17 +5779,17 @@ O servidor respondeu co erro: %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="1357"/>
         <source>Open %1 Assistant</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation type="unfinished"/>
+        <translation>Abrir o asistente %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1464"/>
         <source>Assistant is not available for this account.</source>
-        <translation type="unfinished"/>
+        <translation>O asistente non está dispoñíbel para esta conta.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1470"/>
         <source>Assistant is already processing a request.</source>
-        <translation type="unfinished"/>
+        <translation>O asistente xa está procesando unha solicitude.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1507"/>
@@ -5798,7 +5804,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1599"/>
         <source>No supported assistant task types were returned.</source>
-        <translation type="unfinished"/>
+        <translation>Non se devolveron tipos de tarefas de asistente compatíbeis.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1681"/>
@@ -5808,7 +5814,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1703"/>
         <source>Assistant request failed (%1).</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un fallo na solicitude de asistente (%1).</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1211"/>

@@ -30,6 +30,31 @@ Q_LOGGING_CATEGORY(lcMacFileProviderService, "nextcloud.gui.macfileproviderservi
 
 @implementation FileProviderServiceDelegate
 
+- (void)presentFileActions:(NSString *)fileId path:(NSString *)path remoteItemPath:(NSString *)remoteItemPath withDomainIdentifier:(NSString *)domainIdentifier
+{
+    qCDebug(OCC::lcMacFileProviderService) << "Should present file actions for item with fileId:"
+                                           << fileId
+                                           << "and path:"
+                                           << path
+                                           << "remote item path:"
+                                           << remoteItemPath
+                                           << "domain identifier:"
+                                           << domainIdentifier;
+
+    const auto qFileId = QString::fromNSString(fileId);
+    const auto localPath = QString::fromNSString(path);
+    const auto qRemoteItemPath = QString::fromNSString(remoteItemPath);
+    const auto domainId = QString::fromNSString(domainIdentifier);
+    
+    // Use QMetaObject::invokeMethod to emit the signal on the correct thread
+    // since this callback may be called on an XPC dispatch queue (non-main thread)
+    QMetaObject::invokeMethod(_service, "showFileActionsDialog", Qt::QueuedConnection,
+                              Q_ARG(QString, qFileId),
+                              Q_ARG(QString, localPath),
+                              Q_ARG(QString, qRemoteItemPath),
+                              Q_ARG(QString, domainId));
+}
+
 - (void)reportSyncStatus:(NSString *)status forDomainIdentifier:(NSString *)domainIdentifier
 {
     const auto statusString = QString::fromNSString(status);

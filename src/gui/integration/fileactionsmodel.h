@@ -19,6 +19,8 @@ class FileActionsModel : public QAbstractListModel {
 
     Q_PROPERTY(AccountState* accountState READ accountState WRITE setAccountState NOTIFY accountStateChanged)
     Q_PROPERTY(QString localPath READ localPath WRITE setLocalPath NOTIFY fileChanged)
+    Q_PROPERTY(QByteArray fileId READ fileId WRITE setFileId NOTIFY fileChanged)
+    Q_PROPERTY(QString remoteItemPath READ remoteItemPath WRITE setRemoteItemPath NOTIFY fileChanged)
     Q_PROPERTY(QString fileIcon READ fileIcon NOTIFY fileChanged)
     Q_PROPERTY(QString responseLabel READ responseLabel WRITE setResponseLabel NOTIFY responseChanged)
     Q_PROPERTY(QString responseUrl READ responseUrl WRITE setResponseUrl NOTIFY responseChanged)
@@ -67,6 +69,11 @@ public:
     void setLocalPath(const QString &localPath);
 
     [[nodiscard]] QByteArray fileId() const;
+    void setFileId(const QByteArray &fileId);
+
+    [[nodiscard]] QString remoteItemPath() const;
+    void setRemoteItemPath(const QString &remoteItemPath);
+
     [[nodiscard]] QMimeType mimeType() const;
     [[nodiscard]] QString fileIcon() const;
     void setupFileProperties();
@@ -99,6 +106,7 @@ private:
     AccountState *_accountState;
     QString _localPath;
     QByteArray _fileId;
+    QString _remoteItemPath;
     QMimeType _mimeType;
     QString _filePath;
     QString _accountUrl;
