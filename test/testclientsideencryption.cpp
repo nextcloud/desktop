@@ -15,6 +15,7 @@
 #include <common/constants.h>
 
 #include "clientsideencryption.h"
+#include "account.h"
 #include "logger.h"
 
 using namespace OCC;
