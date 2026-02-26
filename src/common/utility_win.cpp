@@ -572,7 +572,8 @@ QString Utility::getCurrentUserName()
     DWORD len = sizeof(username) / sizeof(TCHAR);
     
     if (!GetUserName(username, &len)) {
-        qCWarning(lcUtility) << "Could not retrieve Windows user name." << formatWinError(GetLastError());
+        const auto lastError = GetLastError();
+        qCWarning(lcUtility).nospace() << "Could not retrieve Windows user name. errorMessage=" << formatWinError(lastError);
     }
 
     return QString::fromWCharArray(username);
