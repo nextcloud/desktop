@@ -181,7 +181,8 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
 
     if (_folderUsers.contains(_account->davUser())) {
         const auto currentFolderUser = _folderUsers.value(_account->davUser());
-        _metadataKeyForEncryption = QByteArray::fromBase64(decryptDataWithPrivateKey(currentFolderUser.encryptedMetadataKey));
+        const auto currentUserCertificate = QSslCertificate{currentFolderUser.certificatePem};
+        _metadataKeyForEncryption = QByteArray::fromBase64(decryptDataWithPrivateKey(currentFolderUser.encryptedMetadataKey, currentUserCertificate.digest(QCryptographicHash::Sha256).toBase64()));
         _metadataKeyForDecryption = _metadataKeyForEncryption;
     }
 
@@ -279,7 +280,7 @@ void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
     const auto metadataKeyFromJson = fullMetaDataObj[metadataKeyKey].toString().toLocal8Bit();
     if (!metadataKeyFromJson.isEmpty()) {
         // parse version 1.1 and 1.2 (both must have a single "metadataKey"), not "metadataKeys" as 1.0
-        const auto decryptedMetadataKeyBase64 = decryptDataWithPrivateKey(metadataKeyFromJson);
+        const auto decryptedMetadataKeyBase64 = decryptDataWithPrivateKey(metadataKeyFromJson, _account->e2e()->certificateSha256Fingerprint());
         if (!decryptedMetadataKeyBase64.isEmpty()) {
             // fromBase64() multiple times just to stick with the old wrong way
             _metadataKeyForDecryption = QByteArray::fromBase64(QByteArray::fromBase64(decryptedMetadataKeyBase64));
@@ -302,7 +303,7 @@ void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
         if (!lastMetadataKeyFromJson.isEmpty()) {
             const auto lastMetadataKeyValueFromJson = metadataKeys.value(lastMetadataKeyFromJson).toString().toLocal8Bit();
             if (!lastMetadataKeyValueFromJson.isEmpty()) {
-                const auto lastMetadataKeyValueFromJsonBase64 = decryptDataWithPrivateKey(lastMetadataKeyValueFromJson);
+                const auto lastMetadataKeyValueFromJsonBase64 = decryptDataWithPrivateKey(lastMetadataKeyValueFromJson, _account->e2e()->certificateSha256Fingerprint());
                 if (!lastMetadataKeyValueFromJsonBase64.isEmpty()) {
                     _metadataKeyForDecryption = QByteArray::fromBase64(QByteArray::fromBase64(lastMetadataKeyValueFromJsonBase64));
                 }
@@ -440,9 +441,10 @@ QByteArray FolderMetadata::encryptDataWithPublicKey(const QByteArray &binaryData
     return {};
 }
 
-QByteArray FolderMetadata::decryptDataWithPrivateKey(const QByteArray &base64Data) const
+QByteArray FolderMetadata::decryptDataWithPrivateKey(const QByteArray &base64Data,
+                                                     const QByteArray &base64CertificateSha256Hash) const
 {
-    const auto decryptBase64Result = EncryptionHelper::decryptStringAsymmetric(_account->e2e()->getCertificateInformation(), _account->e2e()->paddingMode(), *_account->e2e(), base64Data);
+    const auto decryptBase64Result = EncryptionHelper::decryptStringAsymmetric(_account->e2e()->getCertificateInformationByFingerprint(base64CertificateSha256Hash), _account->e2e()->paddingMode(), *_account->e2e(), base64Data);
     if (!decryptBase64Result) {
         qCWarning(lcCseMetadata()) << "ERROR. Could not decrypt the metadata key";
         _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
@@ -652,7 +654,12 @@ QByteArray FolderMetadata::encryptedMetadata()
     QJsonArray folderUsers;
     if (_isRootEncryptedFolder) {
         for (auto it = _folderUsers.constBegin(), end = _folderUsers.constEnd(); it != end; ++it) {
-            const auto folderUser = it.value();
+            auto folderUser = it.value();
+
+            if (folderUser.userId == _account->davUser()) {
+                folderUser.certificatePem = _account->e2e()->getCertificate().toPem();
+                updateUsersEncryptedMetadataKey();
+            }
 
             const QJsonObject folderUserJson{{usersUserIdKey, folderUser.userId},
                                              {usersCertificateKey, QJsonValue::fromVariant(folderUser.certificatePem)},
@@ -792,7 +799,7 @@ bool FolderMetadata::parseFileDropPart(const QJsonDocument &doc)
             if (userParsedId == _account->davUser()) {
                 const auto fileDropEntryUser = UserWithFileDropEntryAccess{
                     userParsedId,
-                    QByteArray::fromBase64(decryptDataWithPrivateKey(userParsed.value(usersEncryptedFiledropKey).toByteArray()))
+                    QByteArray::fromBase64(decryptDataWithPrivateKey(userParsed.value(usersEncryptedFiledropKey).toByteArray(), _account->e2e()->certificateSha256Fingerprint()))
                 };
                 if (!fileDropEntryUser.isValid()) {
                     qCWarning(lcCseMetadata()) << "Could not parse filedrop data. encryptedFiledropKey decryption failed";

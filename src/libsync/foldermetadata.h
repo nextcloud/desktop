@@ -120,6 +120,8 @@ public:
     // removes a user from this folder and removes and generates a new metadata key
     [[nodiscard]] bool removeUser(const QString &userId);
 
+    [[nodiscard]] bool updateUser(const QString &userId, const QSslCertificate &certificate, CertificateType certificateType);
+
     [[nodiscard]] const QByteArray metadataKeyForEncryption() const;
     [[nodiscard]] const QByteArray metadataKeyForDecryption() const;
     [[nodiscard]] const QSet<QByteArray> &keyChecksums() const;
@@ -149,7 +151,8 @@ private:
 
     [[nodiscard]] QByteArray encryptDataWithPublicKey(const QByteArray &data,
                                                       const CertificateInformation &shareUserCertificate) const;
-    [[nodiscard]] QByteArray decryptDataWithPrivateKey(const QByteArray &data) const;
+    [[nodiscard]] QByteArray decryptDataWithPrivateKey(const QByteArray &data,
+                                                       const QByteArray &base64CertificateSha256Hash) const;
 
     [[nodiscard]] QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
     [[nodiscard]] QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
