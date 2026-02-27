@@ -56,6 +56,7 @@ Page {
                 Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                 checked: root.controller.vfsEnabledForAccount(root.accountUserIdAtHost)
                 onClicked: root.controller.setVfsEnabledForAccount(root.accountUserIdAtHost, checked)
+            }
         }
     }
 }
