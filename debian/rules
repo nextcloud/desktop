@@ -10,7 +10,8 @@ override_dh_auto_configure:
 	dh_auto_configure -- \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DQUICK_COMPILER=ON \
-		-DUNIT_TESTING=ON \
+		-DBUILD_TESTING=OFF \
+		-DUNIT_TESTING=OFF \
 		-DEXTERNAL_VERSION=$(DEB_VERSION) \
 		-DPLUGIN_INSTALL_DIR=/usr/lib/$(DEB_HOST_GNU_TYPE)/qt6/plugins \
 		-DBUILD_UPDATER=OFF
