@@ -283,7 +283,7 @@ void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
         const auto decryptedMetadataKeyBase64 = decryptDataWithPrivateKey(metadataKeyFromJson, _account->e2e()->certificateSha256Fingerprint());
         if (!decryptedMetadataKeyBase64.isEmpty()) {
             // fromBase64() multiple times just to stick with the old wrong way
-            _metadataKeyForDecryption = QByteArray::fromBase64(QByteArray::fromBase64(decryptedMetadataKeyBase64));
+            _metadataKeyForDecryption = QByteArray::fromBase64(QByteArray::fromBase64(QByteArray::fromBase64(decryptedMetadataKeyBase64)));
         }
     }
 
