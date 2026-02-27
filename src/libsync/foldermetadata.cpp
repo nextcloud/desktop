@@ -77,6 +77,7 @@ FolderMetadata::FolderMetadata(AccountPtr account,
     , _metadataKeyForEncryption(rootEncryptedFolderInfo.keyForEncryption)
     , _metadataKeyForDecryption(rootEncryptedFolderInfo.keyForDecryption)
     , _keyChecksums(rootEncryptedFolderInfo.keyChecksums)
+    , _counter(rootEncryptedFolderInfo.counter)
     , _initialSignature(signature)
 {
     Q_ASSERT(!_remoteFolderRoot.isEmpty());
@@ -214,17 +215,32 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
 
     const auto cipherTextDocument = QJsonDocument::fromJson(cipherTextDecrypted);
 
+    const auto previousKeyChecksums = _keyChecksums;
     const auto keyCheckSums = cipherTextDocument[keyChecksumsKey].toArray();
-    if (!keyCheckSums.isEmpty()) {
-        _keyChecksums.clear();
-    }
-    for (auto it = keyCheckSums.constBegin(); it != keyCheckSums.constEnd(); ++it) {
-        const auto keyChecksum = it->toVariant().toString().toUtf8();
-        if (!keyChecksum.isEmpty()) {
-            //TODO: check that no hash has been removed from the keyChecksums
-            // How do we check that?
-            _keyChecksums.insert(keyChecksum);
+    if (keyCheckSums.isEmpty()) {
+        if (_isRootEncryptedFolder && !previousKeyChecksums.isEmpty()) {
+            qCWarning(lcCseMetadata()) << "Missing keyChecksums in metadata.";
+            _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
+            return;
         }
+    } else {
+        QSet<QByteArray> parsedKeyChecksums;
+        for (auto it = keyCheckSums.constBegin(); it != keyCheckSums.constEnd(); ++it) {
+            const auto keyChecksum = it->toVariant().toString().toUtf8();
+            if (!keyChecksum.isEmpty()) {
+                parsedKeyChecksums.insert(keyChecksum);
+            }
+        }
+        if (_isRootEncryptedFolder && !previousKeyChecksums.isEmpty()) {
+            for (auto it = previousKeyChecksums.constBegin(); it != previousKeyChecksums.constEnd(); ++it) {
+                if (!parsedKeyChecksums.contains(*it)) {
+                    qCWarning(lcCseMetadata()) << "Detected removal of metadata key checksums.";
+                    _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
+                    return;
+                }
+            }
+        }
+        _keyChecksums = parsedKeyChecksums;
     }
 
     if (!verifyMetadataKey(metadataKeyForDecryption())) {
@@ -239,10 +255,13 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
 
     const auto counterVariantFromJson = cipherTextObj.value(counterKey).toVariant();
     if (counterVariantFromJson.isValid() && counterVariantFromJson.canConvert<quint64>()) {
-        // TODO: We need to check counter: new counter must be greater than locally stored counter
-        // What does that mean? We store the counter in metadata, should we now store it in local database as we do for all file records in SyncJournal?
-        // What if metadata was not updated for a while? The counter will then not be greater than locally stored (in SyncJournal DB?)
-        _counter = counterVariantFromJson.value<quint64>();
+        const auto counterFromJson = counterVariantFromJson.value<quint64>();
+        if (_counter > 0 && counterFromJson < _counter) {
+            qCWarning(lcCseMetadata()) << "Detected metadata counter rollback.";
+            _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
+            return;
+        }
+        _counter = counterFromJson;
     }
 
     for (auto it = files.constBegin(), end = files.constEnd(); it != end; ++it) {
@@ -840,6 +859,11 @@ QByteArray FolderMetadata::initialMetadata() const
 quint64 FolderMetadata::newCounter() const
 {
     return _counter + 1;
+}
+
+quint64 FolderMetadata::counter() const
+{
+    return _counter;
 }
 
 EncryptionStatusEnums::ItemEncryptionStatus FolderMetadata::fromMedataVersionToItemEncryptionStatus(const MetadataVersion metadataVersion)
