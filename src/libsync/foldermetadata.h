@@ -143,6 +143,8 @@ public:
 
     void updateSelfCertificate();
 
+    static MetadataVersion setupVersionFromExistingMetadata(const QByteArray &metadata);
+
 public slots:
     void addEncryptedFile(const OCC::FolderMetadata::EncryptedFile &f);
     void removeEncryptedFile(const OCC::FolderMetadata::EncryptedFile &f);
@@ -187,8 +189,6 @@ private slots:
 
     void setupExistingMetadata(const QByteArray &metadata);
     void setupExistingMetadataLegacy(const QByteArray &metadata);
-
-    void setupVersionFromExistingMetadata(const QByteArray &metadata);
 
     void startFetchRootE2eeFolderMetadata(const QString &path);
     void slotRootE2eeFolderMetadataReceived(int statusCode, const QString &message);
