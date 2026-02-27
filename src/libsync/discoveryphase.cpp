@@ -651,7 +651,7 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
         }
     }
 
-    if (job->signature().isEmpty()) {
+    if (_account->capabilities().clientSideEncryptionVersion() >= 2.0 && job->signature().isEmpty()) {
         qCDebug(lcDiscovery) << "Initial signature is empty.";
         _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
         emit finished(HttpError{0, tr("Encrypted metadata setup error: initial signature from server is empty.")});
