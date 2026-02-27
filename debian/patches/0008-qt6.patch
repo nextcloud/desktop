@@ -36,7 +36,7 @@ index bc21539e9b..f6554fb424 100644
  
  # this option removes Http authentication, keychain, shibboleth etc and is intended for
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index f584246eb7..efa56ae181 100644
+index c19ede88ce..ee3db931ba 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
 @@ -3,7 +3,7 @@
@@ -459,7 +459,7 @@ index b92cfa08e4..38f3d462ec 100644
              continue;
          }
 diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
-index 40f11aeb96..c24b090653 100644
+index 6671075de5..0e1b2b10e5 100644
 --- a/src/gui/CMakeLists.txt
 +++ b/src/gui/CMakeLists.txt
 @@ -3,7 +3,7 @@
@@ -490,7 +490,7 @@ index 40f11aeb96..c24b090653 100644
  if(KF6GuiAddons_FOUND)
    target_link_libraries(nextcloudCore
      PUBLIC
-@@ -743,3 +750,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
+@@ -757,3 +764,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
  endif()
  
  configure_file(configgui.h.in ${CMAKE_CURRENT_BINARY_DIR}/configgui.h)
@@ -606,7 +606,7 @@ index 42a27bf6e6..4271780812 100644
  #include "folderstatusdelegate.h"
  #include <account.h>
 diff --git a/src/gui/folderwizard.cpp b/src/gui/folderwizard.cpp
-index 767f3c9bef..ba26c2c5ca 100644
+index 4af65b37ce..ba3fc2982a 100644
 --- a/src/gui/folderwizard.cpp
 +++ b/src/gui/folderwizard.cpp
 @@ -15,6 +15,7 @@
@@ -617,7 +617,7 @@ index 767f3c9bef..ba26c2c5ca 100644
  
  #ifdef Q_OS_MACOS
  #include "common/utility_mac_sandbox.h"
-@@ -586,7 +587,7 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
+@@ -584,7 +585,7 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
      if (!Theme::instance()->disableVirtualFilesSyncFolder() && Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() != Vfs::Off) {
          _virtualFilesCheckBox = new QCheckBox(tr("Use virtual files instead of downloading content immediately %1").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
          connect(_virtualFilesCheckBox, &QCheckBox::clicked, this, &FolderWizardSelectiveSync::virtualFilesCheckboxClicked);
@@ -722,7 +722,7 @@ index 8f7314d96e..d9ad7ef190 100644
  #include <QUrl>
  #include <QJsonDocument>
 diff --git a/src/gui/socketapi/socketapi.cpp b/src/gui/socketapi/socketapi.cpp
-index c2d2120944..574c413f65 100644
+index fb32cd7589..18af6f08c0 100644
 --- a/src/gui/socketapi/socketapi.cpp
 +++ b/src/gui/socketapi/socketapi.cpp
 @@ -18,6 +18,7 @@
@@ -1100,10 +1100,15 @@ index 0a7ad51ea8..030b6bd54d 100644
  
      promise->start();
 diff --git a/src/libsync/clientsideencryption.cpp b/src/libsync/clientsideencryption.cpp
-index 174b81727f..494ff3620a 100644
+index 9a1d37f5d9..0abc302cd1 100644
 --- a/src/libsync/clientsideencryption.cpp
 +++ b/src/libsync/clientsideencryption.cpp
-@@ -18,7 +18,7 @@
+@@ -14,11 +14,12 @@
+ #include "common/utility.h"
+ #include "common/constants.h"
+ #include <common/checksums.h>
++#include <common/qtcompat.h>
+ #include "wordlist.h"
  
  #include <qt6keychain/keychain.h>
  
@@ -1112,7 +1117,7 @@ index 174b81727f..494ff3620a 100644
  
  #include <QDebug>
  #include <QLoggingCategory>
-@@ -2750,26 +2750,12 @@ bool EncryptionHelper::dataDecryption(const QByteArray &key, const QByteArray &i
+@@ -2750,26 +2751,12 @@ bool EncryptionHelper::dataDecryption(const QByteArray &key, const QByteArray &i
  
  QByteArray EncryptionHelper::gzipThenEncryptData(const QByteArray &key, const QByteArray &inputData, const QByteArray &iv, QByteArray &returnTag)
  {
@@ -1142,7 +1147,7 @@ index 174b81727f..494ff3620a 100644
      return outputData;
  }
  
-@@ -2781,23 +2767,7 @@ QByteArray EncryptionHelper::decryptThenUnGzipData(const QByteArray &key, const
+@@ -2781,23 +2768,7 @@ QByteArray EncryptionHelper::decryptThenUnGzipData(const QByteArray &key, const
          return {};
      }
  
@@ -1168,7 +1173,7 @@ index 174b81727f..494ff3620a 100644
      return decryptedAndUnGzipped;
  }
 diff --git a/src/libsync/discovery.cpp b/src/libsync/discovery.cpp
-index c6f320c682..0862945a11 100644
+index 7bc5c5023c..5cafadd38a 100644
 --- a/src/libsync/discovery.cpp
 +++ b/src/libsync/discovery.cpp
 @@ -23,6 +23,7 @@
@@ -1192,7 +1197,7 @@ index 3fce7fff06..dfe8072772 100644
  #include <csync_exclude.h>
  #include "vio/csync_vio_local.h"
 diff --git a/src/libsync/filesystem.cpp b/src/libsync/filesystem.cpp
-index c6190c9952..d3314f9fa7 100644
+index 3e65aed6b4..1b114de614 100644
 --- a/src/libsync/filesystem.cpp
 +++ b/src/libsync/filesystem.cpp
 @@ -7,6 +7,7 @@
@@ -1504,7 +1509,7 @@ index d5aa8776a1..baf79a8e2e 100644
  #include "filesystem.h"
  
 diff --git a/src/libsync/theme.cpp b/src/libsync/theme.cpp
-index ebbc04989a..4c6184e542 100644
+index 8b6cd5e88f..5a648e1491 100644
 --- a/src/libsync/theme.cpp
 +++ b/src/libsync/theme.cpp
 @@ -9,6 +9,7 @@
@@ -1532,7 +1537,7 @@ index ebbc04989a..4c6184e542 100644
  }
  
  QColor Theme::getBackgroundAwareLinkColor(const QColor &backgroundColor)
-@@ -1028,7 +1027,7 @@ QColor Theme::defaultColor()
+@@ -1035,7 +1034,7 @@ QColor Theme::defaultColor()
  void Theme::connectToPaletteSignal() const
  {
      if (const auto ptr = qobject_cast<QGuiApplication*>(qApp)) {
@@ -1541,7 +1546,7 @@ index ebbc04989a..4c6184e542 100644
      }
  }
  
-@@ -1071,19 +1070,6 @@ QVariantMap Theme::systemPalette() const
+@@ -1078,19 +1077,6 @@ QVariantMap Theme::systemPalette() const
  bool Theme::darkMode() const
  {
      connectToPaletteSignal();
@@ -1561,7 +1566,7 @@ index ebbc04989a..4c6184e542 100644
  
  #ifdef Q_OS_WIN
      static const auto darkModeSubkey = QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
-@@ -1094,7 +1080,8 @@ bool Theme::darkMode() const
+@@ -1101,7 +1087,8 @@ bool Theme::darkMode() const
          }
      }
  #endif
@@ -1572,10 +1577,10 @@ index ebbc04989a..4c6184e542 100644
  
  bool Theme::displayLegacyImportDialog() const
 diff --git a/test/syncenginetestutils.cpp b/test/syncenginetestutils.cpp
-index bf4120cb06..50b05a346c 100644
+index 0d369026d7..66f63fcc2c 100644
 --- a/test/syncenginetestutils.cpp
 +++ b/test/syncenginetestutils.cpp
-@@ -423,7 +423,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
+@@ -429,7 +429,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
          xml.writeTextElement(davUri, QStringLiteral("getcontentlength"), QString::number(fileInfo.size));
          xml.writeTextElement(davUri, QStringLiteral("getetag"), QStringLiteral("\"%1\"").arg(QString::fromLatin1(fileInfo.etag)));
          xml.writeTextElement(ocUri, QStringLiteral("quota-available-bytes"), fileInfo.folderQuota.bytesAvailableString());
@@ -1634,7 +1639,7 @@ index 850e9c919c..fc0371170e 100644
  using namespace OCC;
  
 diff --git a/test/testfilesystem.cpp b/test/testfilesystem.cpp
-index 912e28312d..ed77a043d2 100644
+index d3e5dc20b8..f734de9307 100644
 --- a/test/testfilesystem.cpp
 +++ b/test/testfilesystem.cpp
 @@ -12,6 +12,7 @@
