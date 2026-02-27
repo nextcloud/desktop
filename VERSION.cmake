@@ -7,10 +7,10 @@
 # ------------------------------------
 set(MIRALL_VERSION_MAJOR 32)
 set(MIRALL_VERSION_MINOR 0)
-set(MIRALL_VERSION_PATCH 81)
+set(MIRALL_VERSION_PATCH 82)
 set(MIRALL_VERSION_YEAR  2026)
 set(MIRALL_SOVERSION     0)
-set(MIRALL_PREVERSION_HUMAN "33.0.0 rc1")  # For preversions where PATCH>=50. Use version + alpha, rc1, rc2, etc.
+set(MIRALL_PREVERSION_HUMAN "33.0.0 rc2")  # For preversions where PATCH>=50. Use version + alpha, rc1, rc2, etc.
 set(NCEXT_BUILD_NUM 47)
 set(NCEXT_VERSION 3,0,0,${NCEXT_BUILD_NUM})
 
