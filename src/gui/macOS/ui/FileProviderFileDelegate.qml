@@ -32,6 +32,8 @@ Item {
 
         anchors.fill: parent
 
+        spacing: Style.standardSpacing
+
         Image {
             id: fileIconImage
             Layout.fillHeight: true

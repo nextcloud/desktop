@@ -964,17 +964,24 @@ QIcon Theme::createColorAwareIcon(const QString &name, const QPalette &palette)
 
     inverted.invertPixels(QImage::InvertRgb);
 
+    const auto defaultPixmap = Theme::isDarkColor(palette.color(QPalette::Base))
+        ? QPixmap::fromImage(inverted)
+        : QPixmap::fromImage(img);
+    const auto highlightedPixmap = Theme::isDarkColor(palette.color(QPalette::HighlightedText))
+        ? QPixmap::fromImage(img)
+        : QPixmap::fromImage(inverted);
+
     QIcon icon;
-    if (Theme::isDarkColor(palette.color(QPalette::Base))) {
-        icon.addPixmap(QPixmap::fromImage(inverted));
-    } else {
-        icon.addPixmap(QPixmap::fromImage(img));
-    }
-    if (Theme::isDarkColor(palette.color(QPalette::HighlightedText))) {
-        icon.addPixmap(QPixmap::fromImage(img), QIcon::Normal, QIcon::On);
-    } else {
-        icon.addPixmap(QPixmap::fromImage(inverted), QIcon::Normal, QIcon::On);
-    }
+    icon.addPixmap(defaultPixmap, QIcon::Normal, QIcon::Off);
+    icon.addPixmap(defaultPixmap, QIcon::Active, QIcon::Off);
+    icon.addPixmap(defaultPixmap, QIcon::Selected, QIcon::Off);
+
+    icon.addPixmap(highlightedPixmap, QIcon::Normal, QIcon::On);
+    icon.addPixmap(highlightedPixmap, QIcon::Active, QIcon::On);
+    icon.addPixmap(highlightedPixmap, QIcon::Selected, QIcon::On);
+
+    icon.addPixmap(defaultPixmap, QIcon::Disabled, QIcon::Off);
+    icon.addPixmap(highlightedPixmap, QIcon::Disabled, QIcon::On);
     return icon;
 }
 

@@ -238,6 +238,7 @@ ApplicationWindow {
         property bool isAssistantActive: assistantPromptLoader.active
 
         anchors.fill: parent
+        anchors.margins: Style.trayWindowBorderWidth
         clip: true
 
         radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
