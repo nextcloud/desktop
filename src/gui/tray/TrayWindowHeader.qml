@@ -119,7 +119,7 @@ Rectangle {
                         // HACK: we do not have a way to adjust the text and icon spacing.
                         text: "  " + model.appName
                         font.pixelSize: Style.topLinePixelSize
-                        icon.source: model.appIconUrl
+                        icon.source: "image://tray-image-provider/" + model.appIconUrl
                         icon.color: palette.windowText
                         onTriggered: UserAppsModel.openAppUrl(appUrl)
                         Accessible.role: Accessible.MenuItem
