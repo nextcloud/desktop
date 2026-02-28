@@ -10,6 +10,8 @@
 #include "common/utility.h"
 #include "tray/activitydata.h"
 
+#include <optional>
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFileActions, "nextcloud.gui.fileactions", QtInfoMsg)
@@ -365,7 +367,12 @@ void FileActionsModel::processRequest(const QJsonDocument &json, int statusCode)
         return;
     }
 
-    const auto root = json.object().value(QStringLiteral("root")).toObject();
+    const auto jsonObject = json.object();
+    const auto ocsData = jsonObject.value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject();
+    const auto root = jsonObject.value(QStringLiteral("root")).toObject().isEmpty()
+        ? ocsData.value(QStringLiteral("root")).toObject()
+        : jsonObject.value(QStringLiteral("root")).toObject();
+    const auto tooltip = ocsData.value(QStringLiteral("tooltip")).toString();
     const auto folderForPath = FolderMan::instance()->folderForPath(_localPath);
     const auto successMessage = tr("%1 done.", "file action success message").arg(fileAction);
 
@@ -380,7 +387,7 @@ void FileActionsModel::processRequest(const QJsonDocument &json, int statusCode)
     }
 
     if (root.empty()) {
-        setResponse({ successMessage, remoteFolderPath });
+        setResponse({ tooltip.isEmpty() ? successMessage : tooltip, remoteFolderPath });
         return;
     }
 
@@ -391,17 +398,50 @@ void FileActionsModel::processRequest(const QJsonDocument &json, int statusCode)
         return;
     }
 
+    auto setGenericResponse = [this, &tooltip, &successMessage, &remoteFolderPath] {
+        setResponse({ tooltip.isEmpty() ? successMessage : tooltip, remoteFolderPath });
+    };
+
+    auto parseChildResponse = [this](const QJsonObject &child) -> std::optional<Response> {
+        const auto element = child.value(QStringLiteral("element")).toString();
+        const auto text = child.value(QStringLiteral("text")).toString();
+        const auto urlValue = child.value(QStringLiteral("url")).toString();
+
+        if (element.isEmpty() || text.isEmpty() || urlValue.isEmpty()) {
+            return std::nullopt;
+        }
+
+        if (element == QStringLiteral("URL")) {
+            const auto childUrl = QUrl::fromUserInput(urlValue);
+            const auto responseUrl = childUrl.isRelative()
+                ? _accountUrl + urlValue
+                : childUrl.toString();
+            return Response{ text, responseUrl };
+        }
+
+        qCWarning(lcFileActions) << "Unsupported file action response element" << element
+                                 << "for" << _localPath;
+        return std::nullopt;
+    };
+
     for (const auto &rowValue : rows) {
         const auto row = rowValue.toObject();
-        const auto children = row.value("children").toArray();
+        const auto children = row.value(QStringLiteral("children")).toArray();
 
         for (const auto &childValue : children) {
             const auto child = childValue.toObject();
-            setResponse({ child.value(QStringLiteral("element")).toString(),
-                         _accountUrl + child.value(QStringLiteral("url")).toString() });
+            const auto parsedResponse = parseChildResponse(child);
+            if (!parsedResponse.has_value()) {
+                setGenericResponse();
+                return;
+            }
+
+            setResponse(parsedResponse.value());
+            return;
         }
     }
+
+    setGenericResponse();
 }
 
 } // namespace OCC
-
