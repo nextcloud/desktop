@@ -290,30 +290,28 @@ void FileActionsModel::parseEndpoints()
         QueryList queryList;
         const auto paramsMap = contextMenu.value("params").toMap();
         for (auto param = paramsMap.cbegin(), end = paramsMap.cend(); param != end; ++param) {
-            const auto name = param.key();
-            QByteArray value;
-            if (name == fileIdC) {
-                value = _fileId;
+            const auto paramName = param.key();
+            QByteArray paramValue;
+            if (paramName == fileIdC) {
+                paramValue = _fileId;
             }
 
-            if (param.key() == filePathC) {
-                value = _filePath.toUtf8();
+            if (paramName == filePathC) {
+                paramValue = _filePath.toUtf8();
             }
 
-            if (!value.isEmpty()) {
-                queryList.append( QueryItem{ name, value } );
+            if (!paramValue.isEmpty()) {
+                queryList.append( QueryItem{ paramName, paramValue } );
             }
         }
-
         actions.append({ parseIcon(contextMenu.value("icon").toString()),
                         contextMenu.value("name").toString(),
-                        contextMenu.value("url").toString(),
+                        parseUrl(contextMenu.value("url").toString()),
                         contextMenu.value("method").toString(),
                         queryList });
     }
 
     resetActions(actions);
-
     qCDebug(lcFileActions) << "File" << _localPath << "has"
                            << actions.size()
                            << "actions available.";
@@ -343,9 +341,8 @@ void FileActionsModel::createRequest(const int row)
         return;
     }
 
-    const auto requesturl = parseUrl(_fileActions.at(row).url);
     auto job = new JsonApiJob(_accountState->account(),
-                                requesturl,
+                                _fileActions.at(row).url,
                                 this);
     connect(job, &JsonApiJob::jsonReceived,
             this, &FileActionsModel::processRequest);
