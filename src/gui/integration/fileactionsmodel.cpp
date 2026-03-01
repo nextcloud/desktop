@@ -157,17 +157,17 @@ void FileActionsModel::setupFileProperties()
 {
     qCDebug(lcFileActions) << "Setting up file properties for:" << _localPath;
 
+    // When we don't have a sync folder, use extension matching
+    QMimeDatabase::MatchMode mimeMatchMode = QMimeDatabase::MatchExtension;
+    // In case there is no sync folder, _fileId should already be initialized with a value from the calling code.
+    _filePath = _localPath;
+
     const auto folderForPath = FolderMan::instance()->folderForPath(_localPath);
-
-    // Declare once so it's available after the if-else clause.
-    QMimeDatabase::MatchMode mimeMatchMode;
-
-    if (folderForPath) { // Synchronization folders
+    if (folderForPath) {
         qCDebug(lcFileActions) << "Found synchronization folder for" << _localPath;
+
         _filePath = _localPath.mid(folderForPath->cleanPath().length() + 1);
-
         SyncJournalFileRecord fileRecord;
-
         if (!folderForPath->journalDb()->getFileRecord(_filePath, &fileRecord)) {
             qCWarning(lcFileActions) << "Invalid file record for path:" << _localPath;
             return;
@@ -178,15 +178,10 @@ void FileActionsModel::setupFileProperties()
             _fileId = fileRecord._fileId;
         }
 
-        // Decide match mode based on whether this is a virtual file
-        mimeMatchMode = fileRecord.isVirtualFile() ? QMimeDatabase::MatchExtension
-                                                   : QMimeDatabase::MatchDefault;
-    } else { // Virtual file systems
-        qCDebug(lcFileActions) << "Did not find synchronization folder for" << _localPath;
-        // In this case, _fileId should already be initialized with a value from the calling code.
-        _filePath = _localPath;
-        // When we don't have a sync folder, use extension matching
-        mimeMatchMode = QMimeDatabase::MatchExtension;
+        // Change match mode based on whether this is a virtual file
+        if (!fileRecord.isVirtualFile()) {
+            mimeMatchMode = QMimeDatabase::MatchDefault;
+        }
     }
 
     QMimeDatabase mimeDb;
