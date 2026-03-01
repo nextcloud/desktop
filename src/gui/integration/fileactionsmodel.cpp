@@ -374,7 +374,7 @@ void FileActionsModel::processRequest(const QJsonDocument &json, int statusCode)
         : jsonObject.value(QStringLiteral("root")).toObject();
     const auto tooltip = ocsData.value(QStringLiteral("tooltip")).toString();
     const auto folderForPath = FolderMan::instance()->folderForPath(_localPath);
-    const auto successMessage = tr("%1 done.", "file action success message").arg(fileAction);
+    const auto successMessage = tooltip.isEmpty() ? tr("%1 done.", "file action success message").arg(fileAction) : tooltip;
 
     QString remoteFolderPath;
     if (folderForPath) {
@@ -386,21 +386,21 @@ void FileActionsModel::processRequest(const QJsonDocument &json, int statusCode)
         return;
     }
 
+    auto setGenericResponse = [this, &successMessage, &remoteFolderPath] {
+        setResponse({ successMessage, remoteFolderPath });
+    };
+
     if (root.empty()) {
-        setResponse({ tooltip.isEmpty() ? successMessage : tooltip, remoteFolderPath });
+        setGenericResponse();
         return;
     }
 
     const auto rows = root.value(QStringLiteral("rows")).toArray();
 
     if (rows.empty()) {
-        setResponse({ successMessage, remoteFolderPath });
+        setGenericResponse();
         return;
     }
-
-    auto setGenericResponse = [this, &tooltip, &successMessage, &remoteFolderPath] {
-        setResponse({ tooltip.isEmpty() ? successMessage : tooltip, remoteFolderPath });
-    };
 
     auto parseChildResponse = [this](const QJsonObject &child) -> std::optional<Response> {
         const auto element = child.value(QStringLiteral("element")).toString();
@@ -427,17 +427,12 @@ void FileActionsModel::processRequest(const QJsonDocument &json, int statusCode)
     for (const auto &rowValue : rows) {
         const auto row = rowValue.toObject();
         const auto children = row.value(QStringLiteral("children")).toArray();
-
         for (const auto &childValue : children) {
-            const auto child = childValue.toObject();
-            const auto parsedResponse = parseChildResponse(child);
-            if (!parsedResponse.has_value()) {
-                setGenericResponse();
+            if (const auto parsedResponse = parseChildResponse(childValue.toObject());
+                parsedResponse.has_value()) {
+                setResponse(parsedResponse.value());
                 return;
             }
-
-            setResponse(parsedResponse.value());
-            return;
         }
     }
 
