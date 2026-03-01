@@ -328,7 +328,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
         <source>Virtual files appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. Virtual files and classic sync can not be used at the same time.</source>
-        <translation type="unfinished"/>
+        <translation>Віртуальні файли з&apos;являтимуться як регулярні файли, але вони не використовують сховище даних. Вміст завантажуватиметься автоматично під час відкриття файлів. Віртуальні файли та класичну синхронізацію неможливо використовувати одночасно. </translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
@@ -563,12 +563,12 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="155"/>
         <source>Virtual files</source>
-        <translation type="unfinished"/>
+        <translation>Віртуальні файли</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="186"/>
         <source>Classic sync</source>
-        <translation type="unfinished"/>
+        <translation>Класична синхронізація</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="85"/>
@@ -878,7 +878,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1332"/>
         <source>Connected to %1 (%2).</source>
-        <translation type="unfinished"/>
+        <translation>З&apos;єднано з %1 (%2).</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1537"/>
@@ -2019,7 +2019,7 @@ This can be an issue with your OpenSSL libraries.</source>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mimetype, e.g text/plain files</comment>
         <extracomment>TRANSLATOR Placeholder contains file MIME type</extracomment>
-        <translation type="unfinished"/>
+        <translation>Сервер не повернув жодної дії для %1 файлів.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="359"/>
@@ -2941,7 +2941,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="46"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>Загальні налаштування</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
