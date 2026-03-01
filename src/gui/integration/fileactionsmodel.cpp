@@ -121,6 +121,12 @@ QByteArray FileActionsModel::fileId() const
 void FileActionsModel::setFileId(const QByteArray &fileId)
 {
     if (fileId == _fileId) {
+        qCDebug(lcFileActions) << "New file id is equal to current _fileId:" << _fileId;
+        return;
+    }
+
+    if (fileId.isEmpty()) {
+        qCDebug(lcFileActions) << "New file id is empty, keeping current _fileId.";
         return;
     }
 
