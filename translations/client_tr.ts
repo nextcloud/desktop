@@ -328,7 +328,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
         <source>Virtual files appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. Virtual files and classic sync can not be used at the same time.</source>
-        <translation type="unfinished"/>
+        <translation>Sanal dosyalar normal dosyalar gibi görünür, ancak yerel depolama alanı kullanmaz. Dosyayı açtığınızda içeriği otomatik olarak indirilir. Sanal dosyalar ile klasik eşitleme aynı anda kullanılamaz.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>

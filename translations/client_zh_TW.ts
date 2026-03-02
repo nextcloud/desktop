@@ -328,7 +328,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
         <source>Virtual files appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. Virtual files and classic sync can not be used at the same time.</source>
-        <translation type="unfinished"/>
+        <translation>虛擬檔案看似普通檔案，但不會佔用本機儲存空間。開啟檔案時內容會自動下載。虛擬檔案與經典同步功能無法同時使用。</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
@@ -563,12 +563,12 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="155"/>
         <source>Virtual files</source>
-        <translation type="unfinished"/>
+        <translation>虛擬檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="186"/>
         <source>Classic sync</source>
-        <translation type="unfinished"/>
+        <translation>經典同步</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="85"/>
@@ -880,7 +880,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1332"/>
         <source>Connected to %1 (%2).</source>
-        <translation type="unfinished"/>
+        <translation>連線至 %1 (%2)。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1537"/>
@@ -2021,7 +2021,7 @@ This can be an issue with your OpenSSL libraries.</source>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mimetype, e.g text/plain files</comment>
         <extracomment>TRANSLATOR Placeholder contains file MIME type</extracomment>
-        <translation type="unfinished"/>
+        <translation>伺服器未為 %1 個檔案回傳任何檔案動作。</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="359"/>
@@ -2943,7 +2943,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="46"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>一般設定</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
