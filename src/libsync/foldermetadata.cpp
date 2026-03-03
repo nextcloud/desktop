@@ -839,6 +839,15 @@ QByteArray FolderMetadata::initialMetadata() const
     return _initialMetadata;
 }
 
+void FolderMetadata::updateSelfCertificate()
+{
+    for (auto &oneFolderUser : _folderUsers) {
+        if (oneFolderUser.userId == _account->davUser()) {
+            oneFolderUser.certificatePem = _account->e2e()->getCertificate().toPem();
+        }
+    }
+}
+
 quint64 FolderMetadata::newCounter() const
 {
     return _counter + 1;
