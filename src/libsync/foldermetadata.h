@@ -141,6 +141,8 @@ public:
 
     [[nodiscard]] QByteArray initialMetadata() const;
 
+    void updateSelfCertificate();
+
 public slots:
     void addEncryptedFile(const FolderMetadata::EncryptedFile &f);
     void removeEncryptedFile(const FolderMetadata::EncryptedFile &f);
