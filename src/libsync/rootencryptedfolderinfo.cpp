@@ -18,8 +18,8 @@ RootEncryptedFolderInfo::RootEncryptedFolderInfo(const QString &remotePath,
                                                                  const QSet<QByteArray> &checksums,
                                                                  const quint64 counter)
     : path(remotePath)
-    , keyForEncryption(encryptionKey)
-    , keyForDecryption(decryptionKey)
+    , binaryKeyForEncryption(encryptionKey)
+    , binaryKeyForDecryption(decryptionKey)
     , keyChecksums(checksums)
     , counter(counter)
 {
@@ -40,6 +40,6 @@ QString RootEncryptedFolderInfo::createRootPath(const QString &currentPath, cons
 
 bool RootEncryptedFolderInfo::keysSet() const
 {
-    return !keyForEncryption.isEmpty() && !keyForDecryption.isEmpty() && !keyChecksums.isEmpty();
+    return !binaryKeyForEncryption.isEmpty() && !binaryKeyForDecryption.isEmpty() && !keyChecksums.isEmpty();
 }
 }

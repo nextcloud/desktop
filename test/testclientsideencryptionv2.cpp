@@ -215,7 +215,7 @@ private slots:
         QCOMPARE(metadataSetupExistingCompleteSpy.count(), 1);
 
         QVERIFY(metadataFromJson->metadataSignature().isEmpty());
-        QVERIFY(metadataFromJson->metadataKeyForDecryption().isEmpty());
+        QVERIFY(metadataFromJson->binaryMetadataKeyForDecryption().isEmpty());
         QVERIFY(!metadataFromJson->isValid());
     }
 

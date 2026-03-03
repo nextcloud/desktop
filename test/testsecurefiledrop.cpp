@@ -123,7 +123,7 @@ private slots:
 
             QByteArray authenticationTag;
             const auto initializationVector = EncryptionHelper::generateRandom(16);
-            const auto cipherTextEncrypted = EncryptionHelper::gzipThenEncryptData(metadata->_metadataKeyForEncryption,
+            const auto cipherTextEncrypted = EncryptionHelper::gzipThenEncryptData(metadata->_binaryMetadataKeyForEncryption,
                                                                                    fakeFileDropMetadata.toJson(QJsonDocument::JsonFormat::Compact),
                                                                                    initializationVector,
                                                                                    authenticationTag);
