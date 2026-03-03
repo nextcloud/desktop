@@ -586,14 +586,14 @@ std::optional<QByteArray> encryptStringAsymmetric(const CertificateInformation &
                                                   const QByteArray &binaryData)
 {
     if (!encryptionEngine.isInitialized()) {
-        qCWarning(lcCseDecryption()) << "end-to-end encryption is disabled";
+        qCWarning(lcCseEncryption()) << "end-to-end encryption is disabled";
         return {};
     }
 
     if (encryptionEngine.useTokenBasedEncryption()) {
-        qCDebug(lcCseDecryption()) << "use certificate on hardware token" << selectedCertificate.sha256Fingerprint();
+        qCDebug(lcCseEncryption()) << "use certificate on hardware token" << selectedCertificate.sha256Fingerprint();
     } else {
-        qCDebug(lcCseDecryption()) << "use certificate on software storage" << selectedCertificate.sha256Fingerprint();
+        qCDebug(lcCseEncryption()) << "use certificate on software storage" << selectedCertificate.sha256Fingerprint();
     }
 
     auto encryptedBase64Result = QByteArray{};
@@ -612,7 +612,7 @@ std::optional<QByteArray> encryptStringAsymmetric(const CertificateInformation &
             encryptedBase64Result = *encryptionResult;
             break;
         } else if (encryptionResult.error() == ClientSideEncryption::EncryptionErrorType::RetryOnError) {
-            qCInfo(lcCseDecryption()) << "retry encryption after error";
+            qCInfo(lcCseEncryption()) << "retry encryption after error";
             needHardwareTokenEncryptionInit = true;
             continue;
         } else {
