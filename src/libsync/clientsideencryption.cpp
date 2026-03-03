@@ -1364,9 +1364,9 @@ void ClientSideEncryption::fetchPublicKeyFromKeyChain()
 bool ClientSideEncryption::checkEncryptionIsWorking(const CertificateInformation &currentCertificate)
 {
     qCInfo(lcCse) << "check encryption is working before enabling end-to-end encryption feature";
-    QByteArray data = EncryptionHelper::generateRandom(64);
+    const auto binaryData = EncryptionHelper::generateRandom(64);
 
-    auto encryptedData = EncryptionHelper::encryptStringAsymmetric(currentCertificate, paddingMode(), *this, data);
+    auto encryptedData = EncryptionHelper::encryptStringAsymmetric(currentCertificate, paddingMode(), *this, binaryData);
     if (!encryptedData) {
         qCWarning(lcCse()) << "encryption error";
         return false;
@@ -1384,7 +1384,7 @@ bool ClientSideEncryption::checkEncryptionIsWorking(const CertificateInformation
 
     QByteArray decryptResult = QByteArray::fromBase64(*decryptionResult);
 
-    if (data != decryptResult) {
+    if (binaryData != decryptResult) {
         qCInfo(lcCse()) << "recovered data does not match the initial data after encryption and decryption of it";
         return false;
     }
