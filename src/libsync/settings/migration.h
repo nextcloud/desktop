@@ -45,6 +45,18 @@ public:
     [[nodiscard]] QVersionNumber currentVersion() const;
     [[nodiscard]] QVersionNumber configVersion() const;
 
+    /**
+     * => Application::configVersionMigration: check existing config
+     *  => no upgrade/downgrade/migration: Migration::Phase::Done
+     *  => need to set config file: Migration::Phase::SetupConfigFile
+     * => Application::setupAccountsAndFolders: Migration::Phase::SetupUsers
+     *   => Application::restoreLegacyAccount
+     *     => AccountManager::restore
+     *       => AccountManager::restoreFromLegacySettings:
+     *         => Migration::legacyData: find legacy config and read its settings using
+     *     => FolderMan::setupFolders: Migration::Phase::SetupFolders
+     * => AccountState::slotCredentialsFetched: Migration::Phase::Done
+     */
     [[nodiscard]] Phase phase() const;
     void setPhase(const Phase phase);
 
