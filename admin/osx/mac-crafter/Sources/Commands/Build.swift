@@ -160,6 +160,29 @@ struct Build: AsyncParsableCommand {
         let craftTarget = archToCraftTarget(arch)
         let craftCommand = "python3 \(craftMasterPy.path) --config \(craftMasterIni.path) --target \(craftTarget) -c"
 
+        // Construct craft options before dependency installation so that options
+        // affecting the dependency tree (e.g. buildWithWebEngine) are respected
+        // by --install-deps. Options that don't affect dependency resolution
+        // (e.g. sparkleLibPath) are appended later before the build command.
+        var craftOptions = [
+            "\(craftBlueprintName).srcDir=\(repoRootURL.path)",
+            "\(craftBlueprintName).osxArchs=\(arch)",
+            "\(craftBlueprintName).buildTests=\(buildTests ? "True" : "False")",
+            "\(craftBlueprintName).buildMacOSBundle=\(disableAppBundle ? "False" : "True")",
+            "\(craftBlueprintName).buildFileProviderModule=\(buildFileProviderModule ? "True" : "False")",
+            "\(craftBlueprintName).buildWithWebEngine=\(withoutWebEngine ? "False" : "True")"
+        ]
+
+        if let overrideServerUrl {
+            craftOptions.append("\(craftBlueprintName).overrideServerUrl=\(overrideServerUrl)")
+            craftOptions.append("\(craftBlueprintName).forceOverrideServerUrl=\(forceOverrideServerUrl ? "True" : "False")")
+        }
+
+        if dev {
+            appName += "Dev"
+            craftOptions.append("\(craftBlueprintName).devMode=True")
+        }
+
         if !fm.fileExists(atPath: craftMasterDir.path) || reconfigureCraft {
             stopwatch.record("KDE Craft Setup")
 
@@ -193,32 +216,14 @@ struct Build: AsyncParsableCommand {
             Log.info("Crafting Nextcloud Desktop Client dependencies...")
             stopwatch.record("Nextcloud Client Dependencies Crafting")
 
-            guard await shell("\(craftCommand) --install-deps \(craftBlueprintName)") == 0 else {
+            let installDepsOptions = craftOptions.map({ "--options \"\($0)\"" }).joined(separator: " ")
+            guard await shell("\(craftCommand) \(installDepsOptions) --install-deps \(craftBlueprintName)") == 0 else {
                 throw MacCrafterError.craftError("Error installing dependencies.")
             }
         } else {
             Log.info("Skipping KDE Craft configuration because it is already configured and no reconfiguration was requested.")
         }
 
-        var craftOptions = [
-            "\(craftBlueprintName).srcDir=\(repoRootURL.path)",
-            "\(craftBlueprintName).osxArchs=\(arch)",
-            "\(craftBlueprintName).buildTests=\(buildTests ? "True" : "False")",
-            "\(craftBlueprintName).buildMacOSBundle=\(disableAppBundle ? "False" : "True")",
-            "\(craftBlueprintName).buildFileProviderModule=\(buildFileProviderModule ? "True" : "False")",
-            "\(craftBlueprintName).buildWithWebEngine=\(withoutWebEngine ? "False" : "True")"
-        ]
-        
-        if let overrideServerUrl {
-            craftOptions.append("\(craftBlueprintName).overrideServerUrl=\(overrideServerUrl)")
-            craftOptions.append("\(craftBlueprintName).forceOverrideServerUrl=\(forceOverrideServerUrl ? "True" : "False")")
-        }
-        
-        if dev {
-            appName += "Dev"
-            craftOptions.append("\(craftBlueprintName).devMode=True")
-        }
-        
         if disableAutoUpdater == false {
             Log.info("Configuring Sparkle auto-updater.")
             
