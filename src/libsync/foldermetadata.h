@@ -124,8 +124,8 @@ public:
 
     [[nodiscard]] bool updateUser(const QString &userId, const QSslCertificate &certificate, CertificateType certificateType);
 
-    [[nodiscard]] const QByteArray metadataKeyForEncryption() const;
-    [[nodiscard]] const QByteArray metadataKeyForDecryption() const;
+    [[nodiscard]] const QByteArray binaryMetadataKeyForEncryption() const;
+    [[nodiscard]] const QByteArray binaryMetadataKeyForDecryption() const;
     [[nodiscard]] const QSet<QByteArray> &keyChecksums() const;
 
     [[nodiscard]] QByteArray encryptedMetadata();
@@ -208,9 +208,9 @@ private:
 
     bool _isRootEncryptedFolder = false;
     // always contains the last generated metadata key (non-encrypted and non-base64)
-    QByteArray _metadataKeyForEncryption;
+    QByteArray _binaryMetadataKeyForEncryption;
     // used for storing initial metadataKey to use for decryption, especially in nested folders when changing the metadataKey and re-encrypting nested dirs
-    QByteArray _metadataKeyForDecryption;
+    QByteArray _binaryMetadataKeyForDecryption;
     QByteArray _metadataNonce;
     // metadatakey checksums for validation during setting up from existing metadata
     QSet<QByteArray> _keyChecksums;
