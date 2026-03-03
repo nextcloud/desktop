@@ -190,8 +190,8 @@ Migration::LegacyData Migration::legacyData() const
                 ConfigFile configFile;
                 const auto legacyVersion = oCSettings->value(ConfigFile::clientVersionC, {}).toString();
                 configFile.setClientPreviousVersionString(legacyVersion);
-                qCInfo(lcMigration) << "Migrating from" << legacyVersion;
-                qCInfo(lcMigration) << "Copy settings" << oCSettings->allKeys().join(", ");
+                qCInfo(lcMigration) << "Migrating from legacy version" << legacyVersion;
+                qCDebug(lcMigration) << "Copy settings" << oCSettings->allKeys().join(", ");
                 Migration migration;
                 migration.setDiscoveredLegacyConfigPath(configFileInfo.canonicalPath());
                 legacyData.reset(oCSettings.get());

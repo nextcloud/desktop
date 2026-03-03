@@ -54,6 +54,7 @@ public:
     [[nodiscard]] UpgradeType upgradeType() const;
     void setUpgradeType(const UpgradeType type);
 
+    /// Returns QSettings from a legacy config file
     [[nodiscard]] LegacyData legacyData() const;
     void setLegacyData(const LegacyData legacyData);
 
