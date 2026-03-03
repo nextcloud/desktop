@@ -499,8 +499,9 @@ void AccountManager::migrateNetworkSettings(const AccountPtr &account, const QSe
 
     // Override user settings with global settings if user is set to use global settings
     ConfigFile configFile;
+    Migration migration;
     auto accountProxySetting = settings.value(networkProxySettingC).toInt();
-    if (accountProxySetting == 0 && configFile.isMigrationInProgress()) {
+    if (accountProxySetting == 0 && migration.isInProgress()) {
         accountProxyType = static_cast<QNetworkProxy::ProxyType>(configFile.proxyType());
         accountProxyHost = configFile.proxyHostName();
         accountProxyPort = configFile.proxyPort();
