@@ -1851,7 +1851,12 @@ QAction *AccountSettings::addActionToEncryptionMessage(const QString &actionTitl
 
 void AccountSettings::setupE2eEncryptionMessage()
 {
-    _ui->encryptionMessageLabel->setText(tr("This account supports end-to-end encryption, but it needs to be set up first."));
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    const auto encryptionMessage = tr("This account supports end-to-end encryption, but it needs to be set up first.") + QStringLiteral(" ") + tr("The virtual files integration does not support end-to-end encryption yet.");
+#else
+    const auto encryptionMessage = tr("This account supports end-to-end encryption, but it needs to be set up first.");
+#endif
+    _ui->encryptionMessageLabel->setText(encryptionMessage);
     setEncryptionMessageIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/info.svg")));
     _ui->encryptionMessage->hide();
 
