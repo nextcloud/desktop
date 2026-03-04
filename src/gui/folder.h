@@ -312,6 +312,30 @@ public:
      * @param access The persistent access handle
      */
     void setSecurityScopedAccess(std::unique_ptr<Utility::MacSandboxPersistentAccess> access);
+
+    /**
+     * Whether this folder needs the user to re-approve access for macOS sandbox.
+     *
+     * True when the folder was loaded from settings without valid security-scoped
+     * bookmark data (e.g. after upgrading from a pre-sandbox client version).
+     * The folder is paused until the user re-selects it via a file dialog.
+     */
+    [[nodiscard]] bool needsSandboxBookmark() const;
+
+    /**
+     * Mark this folder as needing (or no longer needing) sandbox bookmark approval.
+     * When set to true, the folder is paused to prevent sync errors.
+     */
+    void setNeedsSandboxBookmark(bool needs);
+
+    /**
+     * Apply a newly acquired security-scoped bookmark after user re-approval.
+     *
+     * Stores the bookmark data, sets the persistent access handle, clears the
+     * needsSandboxBookmark flag, un-pauses the folder, and persists to settings.
+     */
+    void applySandboxBookmark(const QByteArray &bookmarkData,
+                              std::unique_ptr<Utility::MacSandboxPersistentAccess> access);
 #endif
 
     /** virtual files of some kind are enabled
@@ -604,6 +628,13 @@ private:
     bool _hasSwitchedToVfs = false;
 
     bool _silenceErrorsUntilNextSync = false;
+
+#ifdef Q_OS_MACOS
+    /** Whether this folder needs the user to re-approve access for macOS sandbox.
+     * Runtime-only flag, not persisted to settings.
+     */
+    bool _needsSandboxBookmark = false;
+#endif
 
     /**
      * Watches this folder's local directory for changes.

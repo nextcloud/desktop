@@ -56,9 +56,16 @@
 #include <QToolTip>
 #include <QPushButton>
 #include <QStyle>
+#include <QFileDialog>
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "macOS/fileprovider.h"
+#endif
+
+#ifdef Q_OS_MACOS
+#include "common/utility_mac_sandbox.h"
+#include "common/macsandboxsecurityscopedaccess.h"
+#include "common/macsandboxpersistentaccess.h"
 #endif
 
 #include "account.h"
@@ -791,6 +798,14 @@ void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
             return;
         }
         if (FolderStatusDelegate::errorsListRect(treeView->visualRect(indx)).contains(pos)) {
+#ifdef Q_OS_MACOS
+            const auto alias = _model->data(indx, FolderStatusDelegate::FolderAliasRole).toString();
+            auto *folder = FolderMan::instance()->folder(alias);
+            if (folder && folder->needsSandboxBookmark()) {
+                slotFixSandboxBookmark(folder);
+                return;
+            }
+#endif
             emit showIssuesList(_accountState);
             return;
         }
@@ -928,6 +943,71 @@ void AccountSettings::slotOpenCurrentFolder()
         emit openFolderAlias(alias);
     }
 }
+
+#ifdef Q_OS_MACOS
+void AccountSettings::slotFixSandboxBookmark(Folder *folder)
+{
+    if (!folder || !folder->needsSandboxBookmark()) {
+        return;
+    }
+
+    const auto expectedPath = FolderDefinition::prepareLocalPath(folder->path());
+
+    // Use URL-based variant to preserve security-scoped bookmark from NSOpenPanel
+    const auto selectedUrl = QFileDialog::getExistingDirectoryUrl(
+        this,
+        tr("Grant access to sync folder"),
+        QUrl::fromLocalFile(expectedPath),
+        QFileDialog::ShowDirsOnly);
+
+    if (selectedUrl.isEmpty()) {
+        return;
+    }
+
+    // Acquire temporary security-scoped access from the dialog-returned URL
+    auto tempAccess = Utility::MacSandboxSecurityScopedAccess::create(selectedUrl);
+    if (!tempAccess || !tempAccess->isValid()) {
+        QMessageBox::warning(this,
+            tr("Access Error"),
+            tr("Could not acquire access to the selected folder. Please try again."));
+        return;
+    }
+
+    // Validate that the selected path matches the folder's configured local path
+    const auto selectedPath = FolderDefinition::prepareLocalPath(selectedUrl.toLocalFile());
+    if (selectedPath != expectedPath) {
+        QMessageBox::warning(this,
+            tr("Wrong Folder"),
+            tr("Please select the original sync folder: %1")
+                .arg(QDir::toNativeSeparators(expectedPath)));
+        return;
+    }
+
+    // Create the persistent security-scoped bookmark
+    const auto bookmarkData = Utility::createSecurityScopedBookmarkData(selectedPath);
+    if (bookmarkData.isEmpty()) {
+        QMessageBox::warning(this,
+            tr("Bookmark Error"),
+            tr("Could not create a security bookmark for the folder. Please try again."));
+        return;
+    }
+
+    // Resolve the bookmark to get a persistent access handle
+    auto persistentAccess = Utility::MacSandboxPersistentAccess::createFromBookmarkData(bookmarkData);
+    if (!persistentAccess || !persistentAccess->isValid()) {
+        QMessageBox::warning(this,
+            tr("Bookmark Error"),
+            tr("Could not resolve the security bookmark. Please try again."));
+        return;
+    }
+
+    // Apply the bookmark: stores data, sets access, un-pauses, and saves settings
+    folder->applySandboxBookmark(bookmarkData, std::move(persistentAccess));
+
+    FolderMan::instance()->scheduleFolder(folder);
+    _model->slotUpdateFolderState(folder);
+}
+#endif
 
 void AccountSettings::slotOpenCurrentLocalSubFolder()
 {
@@ -1212,6 +1292,13 @@ void AccountSettings::slotEnableCurrentFolder(bool terminate)
         if (!folder) {
             return;
         }
+
+#ifdef Q_OS_MACOS
+        if (folder->needsSandboxBookmark()) {
+            slotFixSandboxBookmark(folder);
+            return;
+        }
+#endif
         currentlyPaused = folder->syncPaused();
         if (!currentlyPaused && !terminate) {
             // check if a sync is still running and if so, ask if we should terminate.

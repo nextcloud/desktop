@@ -17,6 +17,7 @@
 #include "lockwatcher.h"
 #include "common/asserts.h"
 #include "gui/systray.h"
+#include "logger.h"
 #include <pushnotifications.h>
 #include <syncengine.h>
 #include "updatee2eefolderusersmetadatajob.h"
@@ -329,6 +330,8 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
 #ifdef Q_OS_MACOS
                 if (securityScopedAccess) {
                     folder->setSecurityScopedAccess(std::move(securityScopedAccess));
+                } else {
+                    folder->setNeedsSandboxBookmark(true);
                 }
 #endif
                 folder->saveToSettings();
@@ -366,6 +369,8 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
 #ifdef Q_OS_MACOS
                 if (securityScopedAccess) {
                     folder->setSecurityScopedAccess(std::move(securityScopedAccess));
+                } else {
+                    folder->setNeedsSandboxBookmark(true);
                 }
                 if (bookmarkRefreshed) {
                     folder->saveToSettings();
@@ -387,12 +392,36 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 if (foldersWithPlaceholders)
                     folder->setSaveInFoldersWithPlaceholders();
 
-                scheduleFolder(folder);
+#ifdef Q_OS_MACOS
+                if (!folder->needsSandboxBookmark()) {
+#endif
+                    scheduleFolder(folder);
+#ifdef Q_OS_MACOS
+                }
+#endif
                 emit folderSyncStateChange(folder);
             }
         }
         settings.endGroup();
     }
+
+#ifdef Q_OS_MACOS
+    int sandboxFolderCount = 0;
+    for (const auto *folder : map()) {
+        if (folder->needsSandboxBookmark()) {
+            ++sandboxFolderCount;
+        }
+    }
+    if (sandboxFolderCount > 0) {
+        const auto message = sandboxFolderCount == 1
+            ? tr("A sync folder requires access re-approval after the app update. Please open settings to grant access.")
+            : tr("%n sync folders require access re-approval after the app update. Please open settings to grant access.", "", sandboxFolderCount);
+        // Defer to ensure the tray/systray is initialized before posting
+        QTimer::singleShot(0, this, [message]() {
+            Logger::instance()->postGuiLog(Theme::instance()->appNameGUI(), message);
+        });
+    }
+#endif
 }
 
 int FolderMan::setupFoldersMigration()
