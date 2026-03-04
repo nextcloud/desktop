@@ -982,7 +982,7 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
 
         // If the file is locked, we want to retry this sync when it
         // becomes available again.
-        if (FileSystem::isFileLocked(fn)) {
+        if (FileSystem::isFileLocked(fn, FileSystem::LockMode::SharedRead)) {
             emit seenLockedFile(fn);
         }
 
@@ -1056,7 +1056,7 @@ OCC::Optional<QString> OwncloudPropagator::createCaseClashConflict(const SyncFil
 
         // If the file is locked, we want to retry this sync when it
         // becomes available again.
-        if (FileSystem::isFileLocked(filename)) {
+        if (FileSystem::isFileLocked(filename, FileSystem::LockMode::SharedRead)) {
             emit seenLockedFile(filename);
         }
 

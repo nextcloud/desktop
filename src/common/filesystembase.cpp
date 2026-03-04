@@ -671,32 +671,70 @@ bool FileSystem::moveToTrash(const QString &fileName, QString *errorString)
     return true;
 }
 
-bool FileSystem::isFileLocked(const QString &fileName)
+namespace {
+
+/**
+ * This function creates a file handle with the desired LockMode
+ */
+#if defined Q_OS_WIN
+Utility::Handle lockFile(const QString &fileName, FileSystem::LockMode mode)
 {
-#ifdef Q_OS_WIN
+    const QString fName = FileSystem::longWinPath(fileName);
+    int shareMode = 0;
+    int accessMode = GENERIC_READ | GENERIC_WRITE;
+    switch (mode) {
+    case FileSystem::LockMode::Exclusive:
+        shareMode = 0;
+        break;
+    case FileSystem::LockMode::Shared:
+        shareMode = FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE;
+        break;
+    case FileSystem::LockMode::SharedRead:
+        shareMode = FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE;
+        accessMode = GENERIC_READ;
+        break;
+    }
     // Check if file exists
-    const QString fName = longWinPath(fileName);
     DWORD attr = GetFileAttributesW(reinterpret_cast<const wchar_t *>(fName.utf16()));
     if (attr != INVALID_FILE_ATTRIBUTES) {
         // Try to open the file with as much access as possible..
-        HANDLE win_h = CreateFileW(
-            reinterpret_cast<const wchar_t *>(fName.utf16()),
-            GENERIC_READ | GENERIC_WRITE,
-            FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
-            nullptr, OPEN_EXISTING,
-            FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS,
-            nullptr);
+        auto out = Utility::Handle{CreateFileW(reinterpret_cast<const wchar_t *>(fName.utf16()), accessMode, shareMode, nullptr, OPEN_EXISTING,
+                                               FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS, nullptr)};
 
-        if (win_h == INVALID_HANDLE_VALUE) {
-            /* could not be opened, so locked? */
-            /* 32 == ERROR_SHARING_VIOLATION */
+        if (out) {
+            LARGE_INTEGER start;
+            start.QuadPart = 0;
+            LARGE_INTEGER end;
+            end.QuadPart = -1;
+            if (LockFile(out.handle(), start.LowPart, start.HighPart, end.LowPart, end.HighPart)) {
+                return out;
+            } else {
+                return {};
+            }
+        }
+        return out;
+    }
+    return {};
+}
+#endif
+
+}
+
+bool FileSystem::isFileLocked(const QString &fileName, LockMode mode)
+{
+#ifdef Q_OS_WIN
+    const auto handle = lockFile(fileName, mode);
+    if (!handle) {
+        const auto error = GetLastError();
+        if (error == ERROR_SHARING_VIOLATION || error == ERROR_LOCK_VIOLATION) {
             return true;
-        } else {
-            CloseHandle(win_h);
+        } else if (error != ERROR_FILE_NOT_FOUND && error != ERROR_PATH_NOT_FOUND) {
+            qCWarning(lcFileSystem()) << Q_FUNC_INFO << Utility::formatWinError(error);
         }
     }
 #else
     Q_UNUSED(fileName);
+    Q_UNUSED(mode);
 #endif
     return false;
 }
