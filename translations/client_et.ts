@@ -328,7 +328,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
         <source>Virtual files appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. Virtual files and classic sync can not be used at the same time.</source>
-        <translation type="unfinished"/>
+        <translation>Virtuaalsed failid näevad välja tavaliste failidena, kuid nad ei kasuta  kohalikku andmeruumi. Faili tegelik sisu laaditakse alla vaid siis, kui faili klõpsad või avad. Virtuaalseid faile ja klassikalist sünkroonimist ei saa kasutada samaaegselt.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
@@ -563,12 +563,12 @@ Kas peaksin selle kasutajakonto importima?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="155"/>
         <source>Virtual files</source>
-        <translation type="unfinished"/>
+        <translation>Virtuaalsed failid</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="186"/>
         <source>Classic sync</source>
-        <translation type="unfinished"/>
+        <translation>Klassikaline sünkroonimine</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="85"/>
@@ -879,7 +879,7 @@ Samuti katkevad kõik hetkel toimivad sünkroniseerimised.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1332"/>
         <source>Connected to %1 (%2).</source>
-        <translation type="unfinished"/>
+        <translation>Ühendatud serveriga %1 (%2).</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1537"/>
@@ -2020,7 +2020,7 @@ See võib olla seotud kasutatavate OpenSSl-i teekidega.</translation>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mimetype, e.g text/plain files</comment>
         <extracomment>TRANSLATOR Placeholder contains file MIME type</extracomment>
-        <translation type="unfinished"/>
+        <translation>„%1“ faili jaoks ei andnud server ühtegi failtoimingut.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="359"/>
@@ -2942,7 +2942,7 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
     <message>
         <location filename="../src/gui/generalsettings.ui" line="46"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>Üldised seadistused</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
@@ -7309,7 +7309,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
         <source>Updated end-to-end encryption metadata</source>
-        <translation>Uuendame läbiva krüptimise metateavet</translation>
+        <translation>Uuendasime läbiva krüptimise metateavet</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="57"/>
