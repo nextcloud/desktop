@@ -250,6 +250,11 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             // the error message might contain new lines, the delegate only expect multiple single line values
             errors.append(legacyError.error().split(QLatin1Char('\n')));
         }
+#ifdef Q_OS_MACOS
+        if (folder->needsSandboxBookmark()) {
+            errors.prepend(tr("This folder requires access re-approval. Click here to grant access."));
+        }
+#endif
         return errors;
     }
     case FolderStatusDelegate::FolderInfoMsg:

@@ -82,6 +82,9 @@ public slots:
 protected slots:
     void slotAddFolder();
     void slotEnableCurrentFolder(bool terminate = false);
+#ifdef Q_OS_MACOS
+    void slotFixSandboxBookmark(OCC::Folder *folder);
+#endif
     void slotScheduleCurrentFolder();
     void slotScheduleCurrentFolderForceRemoteDiscovery();
     void slotForceSyncCurrentFolder();
