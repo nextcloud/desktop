@@ -359,7 +359,7 @@ void PropagateUploadFileNG::startNextChunk()
 
         // If the file is currently locked, we want to retry the sync
         // when it becomes available again.
-        if (FileSystem::isFileLocked(fileName)) {
+        if (FileSystem::isFileLocked(fileName, FileSystem::LockMode::SharedRead)) {
             emit propagator()->seenLockedFile(fileName);
         }
         // Soft error because this is likely caused by the user modifying his files while syncing
