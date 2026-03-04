@@ -74,8 +74,9 @@ void PropagateRemoteMove::start()
 
     QString origin = propagator()->adjustRenamedPath(_item->_file);
     qCInfo(lcPropagateRemoteMove) << origin << _item->_renameTarget;
+    _originIsSameAsTarget = origin == _item->_renameTarget;
 
-    if (origin == _item->_renameTarget) {
+    if (_originIsSameAsTarget) {
         // The parent has been renamed already so there is nothing more to do.
 
         if (!_item->_encryptedFileName.isEmpty()) {
@@ -260,7 +261,7 @@ void PropagateRemoteMove::finalize()
 
     const auto targetFile = propagator()->fullLocalPath(_item->_renameTarget);
 
-    if (FileSystem::fileExists(targetFile)) {
+    if (!_originIsSameAsTarget && FileSystem::fileExists(targetFile)) {
         // Delete old db data.
         if (!propagator()->_journal->deleteFileRecord(_item->_originalFile)) {
             qCWarning(lcPropagateRemoteMove) << "could not delete file from local DB" << _item->_originalFile;

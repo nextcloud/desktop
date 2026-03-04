@@ -59,5 +59,8 @@ public:
 private slots:
     void slotMoveJobFinished();
     void finalize();
+
+private:
+    bool _originIsSameAsTarget = false;
 };
 }
