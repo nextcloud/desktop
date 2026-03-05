@@ -675,7 +675,8 @@ void ProcessDirectoryJob::postProcessServerNew(const SyncFileItemPtr &item,
         if (!localEntry.isValid() &&
             opts._vfs->mode() == Vfs::WindowsCfApi &&
             _pinState != PinState::AlwaysLocal &&
-            !FileSystem::isExcludeFile(item->_file)) {
+            !FileSystem::isExcludeFile(item->_file) &&
+            !item->isEncrypted()) {
             item->_type = ItemTypeVirtualDirectory;
         }
 
