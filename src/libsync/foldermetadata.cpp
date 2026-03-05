@@ -604,6 +604,16 @@ QByteArray FolderMetadata::encryptedMetadata()
         return {};
     }
 
+    if (_isRootEncryptedFolder) {
+        for (auto &folderUser : _folderUsers) {
+            if (folderUser.userId == _account->davUser()) {
+                folderUser.certificatePem = _account->e2e()->getCertificate().toPem();
+            }
+        }
+
+        updateUsersEncryptedMetadataKey();
+    }
+
     QJsonObject files, folders;
     for (auto it = _files.constBegin(), end = _files.constEnd(); it != end; ++it) {
         const auto file = convertFileToJsonObject(&(*it));
@@ -655,14 +665,7 @@ QByteArray FolderMetadata::encryptedMetadata()
 
     QJsonArray folderUsers;
     if (_isRootEncryptedFolder) {
-        for (auto it = _folderUsers.constBegin(), end = _folderUsers.constEnd(); it != end; ++it) {
-            auto folderUser = it.value();
-
-            if (folderUser.userId == _account->davUser()) {
-                folderUser.certificatePem = _account->e2e()->getCertificate().toPem();
-                updateUsersEncryptedMetadataKey();
-            }
-
+        for (const auto &folderUser : _folderUsers) {
             const QJsonObject folderUserJson{{usersUserIdKey, folderUser.userId},
                                              {usersCertificateKey, QJsonValue::fromVariant(folderUser.certificatePem)},
                                              {usersEncryptedMetadataKey, QJsonValue::fromVariant(folderUser.encryptedMetadataKey)}};
