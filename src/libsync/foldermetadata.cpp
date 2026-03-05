@@ -410,6 +410,8 @@ void FolderMetadata::setupVersionFromExistingMetadata(const QByteArray &metadata
         _existingMetadataVersion = MetadataVersion::Version1_2;
     } else if (versionStringFromMetadata == QStringLiteral("2.0") || versionStringFromMetadata == QStringLiteral("2")) {
         _existingMetadataVersion = MetadataVersion::Version2_0;
+    } else if (versionStringFromMetadata == QStringLiteral("2.1")) {
+        _existingMetadataVersion = MetadataVersion::Version2_1;
     } else if (versionStringFromMetadata == QStringLiteral("1.0")
         || versionStringFromMetadata == QStringLiteral("1.1")) {
         // We used to have an intermediate 1.1 after applying a security-vulnerability fix for metadata keys.
@@ -845,6 +847,7 @@ quint64 FolderMetadata::newCounter() const
 EncryptionStatusEnums::ItemEncryptionStatus FolderMetadata::fromMedataVersionToItemEncryptionStatus(const MetadataVersion metadataVersion)
 {
     switch (metadataVersion) {
+    case FolderMetadata::MetadataVersion::Version2_1:
     case FolderMetadata::MetadataVersion::Version2_0:
         return SyncFileItem::EncryptionStatus::EncryptedMigratedV2_0;
     case FolderMetadata::MetadataVersion::Version1_2:
