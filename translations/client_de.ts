@@ -806,43 +806,43 @@ Warten Sie auf die neue Synchronisierung und verschlüsseln Sie sie dann.</trans
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="959"/>
         <source>Grant access to sync folder</source>
-        <translation type="unfinished"/>
+        <translation>Zugriff auf Synchronisierungsordner gewähren</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="971"/>
         <source>Access Error</source>
-        <translation type="unfinished"/>
+        <translation>Zugriffsfehler</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="972"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Der Zugriff auf den ausgewählten Ordner konnte nicht hergestellt werden. Bitte nochmals versuchen.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="980"/>
         <source>Wrong Folder</source>
-        <translation type="unfinished"/>
+        <translation>Falscher Ordner</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="981"/>
         <source>Please select the original sync folder: %1</source>
-        <translation type="unfinished"/>
+        <translation>Bitte den ursprünglichen Synchronisierungsordner auswählen: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="990"/>
         <location filename="../src/gui/accountsettings.cpp" line="999"/>
         <source>Bookmark Error</source>
-        <translation type="unfinished"/>
+        <translation>Lesezeichenfehler</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="991"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Es konnte kein Sicherheits-Lesezeichen für den Ordner erstellt werden. Bitte erneut versuchen.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1000"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Das Sicherheits-Lesezeichen konnte nicht aufgelöst werden. Bitte erneut versuchen.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1000"/>
@@ -945,7 +945,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1855"/>
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
-        <translation type="unfinished"/>
+        <translation>Die Integration für virtuelle Dateien unterstützt keine Ende-zu-Ende-Verschlüsselung.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1757"/>
@@ -2490,12 +2490,12 @@ Alternativ können Sie auch alle gelöschten Dateien wiederherstellen, indem Sie
     <message>
         <location filename="../src/gui/folderman.cpp" line="417"/>
         <source>A sync folder requires access re-approval after the app update. Please open settings to grant access.</source>
-        <translation type="unfinished"/>
+        <translation>Nach dem App-Update muss der Zugriff auf den Synchronisierungsordner erneut genehmigt werden. Öffnen Sie bitte die Einstellungen, um den Zugriff zu gewähren.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderman.cpp" line="418"/>
         <source>%n sync folders require access re-approval after the app update. Please open settings to grant access.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Nach dem App-Update muss der Zugriff auf %n Synchronisierungsordner erneut genehmigt werden. Öffnen Sie bitte die Einstellungen, um den Zugriff zu gewähren.</numerusform><numerusform>Nach dem App-Update muss der Zugriff auf %n Synchronisierungsordner erneut genehmigt werden. Öffnen Sie bitte die Einstellungen, um den Zugriff zu gewähren.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1801"/>
@@ -2672,7 +2672,7 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
         <source>This folder requires access re-approval. Click here to grant access.</source>
-        <translation type="unfinished"/>
+        <translation>Der Zugriff auf diesen Synchronisierungsordner muss erneut genehmigt werden. Hier klicken, um den Zugriff zu gewähren.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
