@@ -806,43 +806,43 @@ Aguarde a nova sincronização e criptografe-a.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="959"/>
         <source>Grant access to sync folder</source>
-        <translation type="unfinished"/>
+        <translation>Conceder acesso à pasta de sincronização</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="971"/>
         <source>Access Error</source>
-        <translation type="unfinished"/>
+        <translation>Erro de acesso</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="972"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível obter acesso à pasta selecionada. Tente novamente.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="980"/>
         <source>Wrong Folder</source>
-        <translation type="unfinished"/>
+        <translation>Pasta errada</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="981"/>
         <source>Please select the original sync folder: %1</source>
-        <translation type="unfinished"/>
+        <translation>Por favor, selecione a pasta de sincronização original: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="990"/>
         <location filename="../src/gui/accountsettings.cpp" line="999"/>
         <source>Bookmark Error</source>
-        <translation type="unfinished"/>
+        <translation>Erro de marcador</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="991"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível criar um marcador de segurança para a pasta. Tente novamente.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1000"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível resolver o marcador de segurança. Tente novamente.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1000"/>
@@ -945,7 +945,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1855"/>
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
-        <translation type="unfinished"/>
+        <translation>A integração de arquivos virtuais ainda não suporta criptografia de ponta-a-ponta.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1757"/>
@@ -2490,12 +2490,12 @@ Como alternativa, você pode restaurar todos os arquivos excluídos baixando-os 
     <message>
         <location filename="../src/gui/folderman.cpp" line="417"/>
         <source>A sync folder requires access re-approval after the app update. Please open settings to grant access.</source>
-        <translation type="unfinished"/>
+        <translation>Uma pasta sincronizada requer uma nova aprovação de acesso após a atualização do aplicativo. Abra as configurações para conceder acesso.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderman.cpp" line="418"/>
         <source>%n sync folders require access re-approval after the app update. Please open settings to grant access.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n pasta sincronizada requer nova aprovação de acesso após a atualização do aplicativo. Abra as configurações para conceder acesso.</numerusform><numerusform>%n de pastas sincronizadas requerem nova aprovação de acesso após a atualização do aplicativo. Abra as configurações para conceder acesso.</numerusform><numerusform>%n pastas sincronizadas requerem nova aprovação de acesso após a atualização do aplicativo. Abra as configurações para conceder acesso.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1801"/>
@@ -2672,7 +2672,7 @@ Para usuários avançados: este problema pode estar relacionado a vários arquiv
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
         <source>This folder requires access re-approval. Click here to grant access.</source>
-        <translation type="unfinished"/>
+        <translation>Esta pasta requer uma nova aprovação de acesso. Clique aqui para conceder acesso.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
