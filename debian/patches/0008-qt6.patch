@@ -582,7 +582,7 @@ index c061eff726..2a0751b07c 100644
                  }
              }
 diff --git a/src/gui/folderman.cpp b/src/gui/folderman.cpp
-index ec68cf6435..f81d1bcd25 100644
+index dd6cc4579d..419f855e7f 100644
 --- a/src/gui/folderman.cpp
 +++ b/src/gui/folderman.cpp
 @@ -16,6 +16,7 @@
@@ -591,10 +591,10 @@ index ec68cf6435..f81d1bcd25 100644
  #include "common/asserts.h"
 +#include "common/qtcompat.h"
  #include "gui/systray.h"
+ #include "logger.h"
  #include <pushnotifications.h>
- #include <syncengine.h>
 diff --git a/src/gui/folderstatusmodel.cpp b/src/gui/folderstatusmodel.cpp
-index 42a27bf6e6..4271780812 100644
+index bca6a200d9..469d7d8449 100644
 --- a/src/gui/folderstatusmodel.cpp
 +++ b/src/gui/folderstatusmodel.cpp
 @@ -8,6 +8,7 @@
