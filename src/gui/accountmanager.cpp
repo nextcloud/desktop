@@ -46,7 +46,6 @@ constexpr auto serverVersionC = "serverVersion";
 constexpr auto serverColorC = "serverColor";
 constexpr auto serverTextColorC = "serverTextColor";
 constexpr auto skipE2eeMetadataChecksumValidationC = "skipE2eeMetadataChecksumValidation";
-constexpr auto networkProxySettingC = "networkProxySetting";
 constexpr auto networkProxyTypeC = "networkProxyType";
 constexpr auto networkProxyHostNameC = "networkProxyHostName";
 constexpr auto networkProxyPortC = "networkProxyPort";
@@ -543,10 +542,10 @@ void AccountManager::migrateNetworkSettings(const AccountPtr &account, const QSe
     auto accountProxyNeedsAuth = settings.value(networkProxyNeedsAuthC).toBool();
     auto accountProxyUser = settings.value(networkProxyUserC).toString();
 
-    // Override user settings with global settings if user is set to use global settings
+    // Override user settings with global (QNetworkProxy::DefaultProxy) settings 
+    // if user is set to use global settings
     ConfigFile configFile;
-    auto accountProxySetting = settings.value(networkProxySettingC).toInt();
-    if (accountProxySetting == 0 && configFile.isMigrationInProgress()) {
+    if (accountProxyType == QNetworkProxy::DefaultProxy && configFile.isMigrationInProgress()) {
         accountProxyType = static_cast<QNetworkProxy::ProxyType>(configFile.proxyType());
         accountProxyHost = configFile.proxyHostName();
         accountProxyPort = configFile.proxyPort();
