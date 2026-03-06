@@ -276,7 +276,7 @@ public:
       * modified too recently, and this delay ensures the modification is
       * far enough in the past.
       *
-      * The delay doesn't reset with subsequent calls.
+      * The delay resets with subsequent calls.
       */
     void scheduleThisFolderSoon();
 
