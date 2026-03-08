@@ -806,43 +806,43 @@ Eşitlemenin tamamlanmasını bekleyip klasörü şifreleyin</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="959"/>
         <source>Grant access to sync folder</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme klasörüne erişme izni ver</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="971"/>
         <source>Access Error</source>
-        <translation type="unfinished"/>
+        <translation>Erişim sorunu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="972"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Seçilmiş klasöre erişilemedi. Lütfen yeniden deneyin.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="980"/>
         <source>Wrong Folder</source>
-        <translation type="unfinished"/>
+        <translation>Klasör yanlış</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="981"/>
         <source>Please select the original sync folder: %1</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen özgün eşitleme klasörünü seçin: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="990"/>
         <location filename="../src/gui/accountsettings.cpp" line="999"/>
         <source>Bookmark Error</source>
-        <translation type="unfinished"/>
+        <translation>Yer imi sorunu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="991"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Klasör için bir güvenlik yer imi oluşturulamadı. Lütfen yeniden deneyin.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1000"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Güvenlik yer imi çözümlenemedi. Lütfen yeniden deneyin.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1000"/>
@@ -945,7 +945,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1855"/>
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
-        <translation type="unfinished"/>
+        <translation>Sanal dosyalar bütünleştirmesi henüz uçtan uca eşitlemeyi desteklemiyor.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1757"/>
@@ -2488,12 +2488,12 @@ Bir yanlışlık varsa, silinen tüm dosyaları sunucudan indirerek geri yükley
     <message>
         <location filename="../src/gui/folderman.cpp" line="417"/>
         <source>A sync folder requires access re-approval after the app update. Please open settings to grant access.</source>
-        <translation type="unfinished"/>
+        <translation>Uygulama güncellemesinden sonra eşitleme klasörü için yeniden erişme izni verilmelidir. Erişme izni vermek için lütfen ayarları açın.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderman.cpp" line="418"/>
         <source>%n sync folders require access re-approval after the app update. Please open settings to grant access.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Uygulama güncellendikten sonra %n eşitleme klasörüne yeniden erişme izni verilmelidir. Erişme izni vermek için lütfen ayarları açın.</numerusform><numerusform>Uygulama güncellendikten sonra %n eşitleme klasörüne yeniden erişme izni verilmelidir. Erişme izni vermek için lütfen ayarları açın.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1801"/>
@@ -2670,7 +2670,7 @@ Uzman kullanıcılar için: Bu sorun, bir klasörde bulunan birden fazla eşitle
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
         <source>This folder requires access re-approval. Click here to grant access.</source>
-        <translation type="unfinished"/>
+        <translation>Bu klasöre yeniden erişme izni verilmesi gerekiyor. Erişme izni vermek için buraya tıklayın.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
