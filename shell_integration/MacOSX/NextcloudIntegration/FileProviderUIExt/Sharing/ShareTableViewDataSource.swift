@@ -59,7 +59,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 account: account.ncKitAccount,
                 urlBase: account.serverUrl,
                 user: account.username,
-                userId: account.username,
+                userId: account.id,
                 password: account.password,
                 userAgent: userAgent,
                 groupIdentifier: ""
