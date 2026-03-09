@@ -196,7 +196,7 @@ extension Enumerator {
                 metadata.downloaded = existing?.downloaded == true
                 metadata.keepDownloaded = existing?.keepDownloaded == true
                 dbManager.addItemMetadata(metadata)
-                return ([metadata], newItems, updatedItems, nil, nextPage, nil)
+                return ([metadata], newItems, updatedItems, [], nextPage, nil)
             }
         }
 
@@ -211,7 +211,7 @@ extension Enumerator {
             metadata.keepDownloaded = existing?.keepDownloaded == true
             dbManager.addItemMetadata(metadata)
 
-            return ([metadata], newMetadatas, updatedMetadatas, nil, nextPage, nil)
+            return ([metadata], newMetadatas, updatedMetadatas, [], nextPage, nil)
         } else if depth == .targetAndDirectChildren {
             let (allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError) = await handleDepth1ReadFileOrFolder(
                 serverUrl: serverUrl,

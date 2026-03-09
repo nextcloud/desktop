@@ -384,8 +384,8 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                         account: account,
                         remoteInterface: remoteInterface,
                         dbManager: dbManager,
-                        newMetadatas: nil,
-                        updatedMetadatas: nil,
+                        newMetadatas: [],
+                        updatedMetadatas: [],
                         deletedMetadatas: [itemMetadata]
                     )
                     return
@@ -615,52 +615,66 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         deletedMetadatas: [SendableItemMetadata]?,
         handleInvalidParent: Bool = true
     ) {
-        guard newMetadatas != nil || updatedMetadatas != nil || deletedMetadatas != nil else {
-            logger.error("Received invalid newMetadatas, updatedMetadatas or deletedMetadatas. Finished enumeration of changes with error.")
+        logger.info("Completing change observation...")
 
-            observer.finishEnumeratingWithError(NSError.fileProviderErrorForNonExistentItem(withIdentifier: enumeratedItemIdentifier))
-
+        guard let newMetadatas else {
+            let error = NSError.fileProviderErrorForNonExistentItem(withIdentifier: enumeratedItemIdentifier)
+            logger.error("Received no new metadata objects. Finishing enumeration of changes with error.", [.error: error])
+            observer.finishEnumeratingWithError(error)
             return
         }
 
-        // Observer does not care about new vs updated, so join
-        var allUpdatedMetadatas: [SendableItemMetadata] = []
-        var allDeletedMetadatas: [SendableItemMetadata] = []
-
-        if let newMetadatas {
-            allUpdatedMetadatas += newMetadatas
+        guard let updatedMetadatas else {
+            let error = NSError.fileProviderErrorForNonExistentItem(withIdentifier: enumeratedItemIdentifier)
+            logger.error("Received no updated metadata objects. Finishing enumeration of changes with error.", [.error: error])
+            observer.finishEnumeratingWithError(error)
+            return
         }
 
-        if let updatedMetadatas {
-            allUpdatedMetadatas += updatedMetadatas
+        guard let deletedMetadatas else {
+            let error = NSError.fileProviderErrorForNonExistentItem(withIdentifier: enumeratedItemIdentifier)
+            logger.error("Received no deleted metadata objects. Finishing enumeration of changes with error.", [.error: error])
+            observer.finishEnumeratingWithError(error)
+            return
         }
 
-        if let deletedMetadatas {
-            allDeletedMetadatas = deletedMetadatas
+        for metadata in newMetadatas {
+            logger.debug("Got added metadata.", [.item: metadata.ocId, .name: metadata.fileName])
         }
 
-        let allFpItemDeletionsIdentifiers = Array(allDeletedMetadatas.map { NSFileProviderItemIdentifier($0.ocId) })
-
-        if !allFpItemDeletionsIdentifiers.isEmpty {
-            observer.didDeleteItems(withIdentifiers: allFpItemDeletionsIdentifiers)
+        for metadata in updatedMetadatas {
+            logger.debug("Got updated metadata.", [.item: metadata.ocId, .name: metadata.fileName])
         }
 
-        Task { [allUpdatedMetadatas, allDeletedMetadatas] in
+        for metadata in deletedMetadatas {
+            logger.debug("Got deleted metadata.", [.item: metadata.ocId, .name: metadata.fileName])
+        }
+
+        // The file provider framework does not differentiate between newly added and updated items, hence the collections are merged.
+        let newAndUpdatedMetadatas: [SendableItemMetadata] = newMetadatas + updatedMetadatas
+
+        let deletedFileProviderItemIdentifiers = Array(deletedMetadatas.map {
+            NSFileProviderItemIdentifier($0.ocId)
+        })
+
+        if deletedFileProviderItemIdentifiers.isEmpty == false {
+            observer.didDeleteItems(withIdentifiers: deletedFileProviderItemIdentifiers)
+        }
+
+        Task { [newAndUpdatedMetadatas, deletedMetadatas] in
             do {
-                let updatedItems = try await allUpdatedMetadatas.toFileProviderItems(account: account, remoteInterface: remoteInterface, dbManager: dbManager, log: self.logger.log)
+                let updatedItems = try await newAndUpdatedMetadatas.toFileProviderItems(account: account, remoteInterface: remoteInterface, dbManager: dbManager, log: self.logger.log)
 
                 Task { @MainActor in
                     if !updatedItems.isEmpty {
                         observer.didUpdate(updatedItems)
                     }
 
-                    logger.info("Processed \(updatedItems.count) new or updated metadatas. \(allDeletedMetadatas.count) deleted metadatas.")
-
                     observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
                 }
             } catch let error as NSError { // This error can only mean a missing parent item identifier
                 guard handleInvalidParent else {
-                    logger.info("Not handling invalid parent in change enumeration.")
+                    logger.error("Not handling invalid parent in change enumeration!")
                     observer.finishEnumeratingWithError(error)
                     return
                 }
@@ -674,8 +688,10 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                         remoteInterface: remoteInterface,
                         dbManager: dbManager
                     )
+
                     var modifiedNewMetadatas = newMetadatas
-                    modifiedNewMetadatas?.append(metadata)
+                    modifiedNewMetadatas.append(metadata)
+
                     completeChangesObserver(
                         observer,
                         anchor: anchor,
@@ -692,6 +708,8 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                     observer.finishEnumeratingWithError(error)
                 }
             }
+
+            logger.info("Completed change observation.")
         }
     }
 
