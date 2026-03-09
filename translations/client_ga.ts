@@ -806,43 +806,43 @@ Fan leis an sioncronú nua, ansin é a chriptiú.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="959"/>
         <source>Grant access to sync folder</source>
-        <translation type="unfinished"/>
+        <translation>Deonaigh rochtain ar fhillteán sioncrónaithe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="971"/>
         <source>Access Error</source>
-        <translation type="unfinished"/>
+        <translation>Earráid Rochtana</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="972"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir rochtain a fháil ar an bhfillteán roghnaithe. Déan iarracht arís.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="980"/>
         <source>Wrong Folder</source>
-        <translation type="unfinished"/>
+        <translation>Fillteán Mícheart</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="981"/>
         <source>Please select the original sync folder: %1</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh an fillteán sioncrónaithe bunaidh le do thoil: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="990"/>
         <location filename="../src/gui/accountsettings.cpp" line="999"/>
         <source>Bookmark Error</source>
-        <translation type="unfinished"/>
+        <translation>Earráid Leabharmharcanna</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="991"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir leabharmharc slándála a chruthú don fhillteán. Déan iarracht arís.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1000"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir an leabharmharc slándála a réiteach. Déan iarracht arís.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1000"/>
@@ -945,7 +945,7 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1855"/>
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
-        <translation type="unfinished"/>
+        <translation>Ní thacaíonn an comhtháthú comhad fíorúil le criptiú ó cheann ceann go ceann go fóill.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1757"/>
@@ -2490,12 +2490,12 @@ De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n
     <message>
         <location filename="../src/gui/folderman.cpp" line="417"/>
         <source>A sync folder requires access re-approval after the app update. Please open settings to grant access.</source>
-        <translation type="unfinished"/>
+        <translation>Éilíonn fillteán sioncrónaithe athcheadú rochtana tar éis nuashonrú an aip. Oscail socruithe le rochtain a dheonú.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderman.cpp" line="418"/>
         <source>%n sync folders require access re-approval after the app update. Please open settings to grant access.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Éilíonn %n fillteán sioncrónaithe athcheadú rochtana tar éis nuashonrú an aip. Oscail socruithe le rochtain a dheonú.</numerusform><numerusform>Éilíonn %n fillteáin sioncrónaithe athcheadú rochtana tar éis nuashonrú an aip. Oscail socruithe le rochtain a dheonú.</numerusform><numerusform>Éilíonn %n fillteáin sioncrónaithe athcheadú rochtana tar éis nuashonrú an aip. Oscail socruithe le rochtain a dheonú.</numerusform><numerusform>Éilíonn %n fillteáin sioncrónaithe athcheadú rochtana tar éis nuashonrú an aip. Oscail socruithe le rochtain a dheonú.</numerusform><numerusform>Éilíonn %n fillteáin sioncrónaithe athcheadú rochtana tar éis nuashonrú an aip. Oscail socruithe le rochtain a dheonú.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1801"/>
@@ -2672,7 +2672,7 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
         <source>This folder requires access re-approval. Click here to grant access.</source>
-        <translation type="unfinished"/>
+        <translation>Éilíonn an fillteán seo athcheadú rochtana. Cliceáil anseo chun rochtain a dheonú.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
