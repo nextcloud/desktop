@@ -250,6 +250,11 @@ ApplicationWindow {
         MouseArea {
             anchors.fill: parent
             onClicked: forceActiveFocus()
+            onPressed: (mouse) => {
+                if (mouse.button === Qt.RightButton) {
+                    trayContextMenu.popup()
+                }
+            }
         }
 
         TrayWindowHeader {
@@ -891,6 +896,19 @@ ApplicationWindow {
                         newActivitiesButtonLoader.active = true;
                     }
                 }
+            }
+        }
+
+        Menu {
+            id: trayContextMenu
+
+            MenuItem {
+                text: qsTr("Open Nextcloud Folder")
+                onClicked: console.log("Open Nextcloud Folder clicked") // Placeholder
+            }
+            MenuItem {
+                text: qsTr("Open Nextcloud in File Explorer")
+                onClicked: console.log("Open Nextcloud in File Explorer clicked") // Placeholder
             }
         }
     } // Item trayWindowMainItem
