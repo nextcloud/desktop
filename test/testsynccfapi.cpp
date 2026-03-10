@@ -819,7 +819,6 @@ private slots:
         fakeFolder.remoteModifier().appendByte("C/c2");
         // expect: no dehydration, conflict
 
-        QVERIFY(!fakeFolder.syncOnce());
         QVERIFY(fakeFolder.syncOnce());
 
         auto isDehydrated = [&](const QString &path) {
@@ -1086,7 +1085,6 @@ private slots:
         // state isn't preserved.
         QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename"), PinState::Unspecified);
         fakeFolder.remoteModifier().remove("onlinerenamed2/file1rename");
-        QVERIFY(!fakeFolder.syncOnce());
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!vfs->pinState("onlinerenamed2/file1rename"));
         fakeFolder.remoteModifier().insert("onlinerenamed2/file1rename", 1024 * 1024);
@@ -1274,7 +1272,6 @@ private slots:
         fakeFolder.remoteModifier().extraDavProperties = "<oc:data-fingerprint>initial_finger_print</oc:data-fingerprint>";
 
         fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
-        QVERIFY(!fakeFolder.syncOnce());
         QVERIFY(fakeFolder.syncOnce());
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());

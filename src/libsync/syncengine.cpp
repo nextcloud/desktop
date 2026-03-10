@@ -1143,15 +1143,13 @@ bool SyncEngine::shouldRestartSync() const
         return false;
     }
 
-    auto hasDeletionInstructions = false;
     for (const auto &syncItem : _syncItems) {
-        // If there's at least one remove instruction: bail out, we might have lost a rename.
-        hasDeletionInstructions = syncItem->_instruction == CSYNC_INSTRUCTION_REMOVE;
-        if (hasDeletionInstructions) {
-            break;
+        // If there's at least one remove instruction to be propagated to the remote: bail out, we might have lost a local rename.
+        if (syncItem->_instruction == CSYNC_INSTRUCTION_REMOVE && syncItem->_direction == SyncFileItem::Up) {
+            return true;
         }
     }
-    return hasDeletionInstructions;
+    return false;
 }
 
 bool SyncEngine::handleMassDeletion()
