@@ -25,6 +25,8 @@
 #include <cmath>
 #include <cstring>
 
+using namespace Qt::StringLiterals;
+
 namespace OCC {
 
 constexpr auto relativeUploadsPath = "remote.php/dav/uploads/";
@@ -80,9 +82,9 @@ QUrl PropagateUploadFileNG::chunkUrl(const int chunk) const
 QByteArray PropagateUploadFileNG::destinationHeader() const
 {
     const auto davUrl = Utility::trailingSlashPath(propagator()->account()->davUrl().toString());
-    const auto remotePath = Utility::noLeadingSlashPath(propagator()->fullRemotePath(_fileToUpload._file));
+    const auto remotePath = QUrl::toPercentEncoding(Utility::noLeadingSlashPath(propagator()->fullRemotePath(_fileToUpload._file)), "/"_ba);
     const auto destination = QString(davUrl + remotePath);
-    return QUrl::toPercentEncoding(destination, "/");
+    return destination.toUtf8();
 }
 
 void PropagateUploadFileNG::doStartUpload()
