@@ -36,14 +36,6 @@ class OWNCLOUDSYNC_EXPORT FolderMetadata : public QObject
         QByteArray encryptedMetadataKey;
     };
 
-    // based on api-version and "version" key in metadata JSON
-    enum MetadataVersion {
-        VersionUndefined = -1,
-        Version1,
-        Version1_2,
-        Version2_0,
-    };
-
     struct UserWithFileDropEntryAccess {
         QString userId;
         QByteArray decryptedFiledropKey;
@@ -89,6 +81,16 @@ public:
         HardwareCertificate,
     };
     Q_ENUM(CertificateType)
+
+    // based on api-version and "version" key in metadata JSON
+    enum class MetadataVersion {
+        VersionUndefined = -1,
+        Version1,
+        Version1_2,
+        Version2_0,
+        Version2_1,
+    };
+    Q_ENUM(MetadataVersion)
 
     FolderMetadata(AccountPtr account, const QString &remoteFolderRoot, FolderType folderType = FolderType::Nested);
     /*
