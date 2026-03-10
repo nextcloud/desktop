@@ -199,8 +199,8 @@ void UpdateE2eeFolderUsersMetadataJob::scheduleSubJobs()
         if (record.isDirectory()) {
             const auto folderMetadata = _encryptedFolderMetadataHandler->folderMetadata();
             const auto subJob = new UpdateE2eeFolderUsersMetadataJob(_account, _journalDb, _syncFolderRemotePath, UpdateE2eeFolderUsersMetadataJob::ReEncrypt, Utility::trailingSlashPath(_syncFolderRemotePath) + QString::fromUtf8(record._e2eMangledName));
-            subJob->setMetadataKeyForEncryption(folderMetadata->metadataKeyForEncryption());
-            subJob->setMetadataKeyForDecryption(folderMetadata->metadataKeyForDecryption());
+            subJob->setMetadataKeyForEncryption(folderMetadata->binaryMetadataKeyForEncryption());
+            subJob->setMetadataKeyForDecryption(folderMetadata->binaryMetadataKeyForDecryption());
             subJob->setKeyChecksums(folderMetadata->keyChecksums());
             subJob->setParent(this);
             subJob->setFolderToken(_encryptedFolderMetadataHandler->folderToken());
