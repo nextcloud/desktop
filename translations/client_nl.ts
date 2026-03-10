@@ -808,7 +808,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="971"/>
         <source>Access Error</source>
-        <translation type="unfinished"/>
+        <translation>Toegangsfout</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="972"/>
