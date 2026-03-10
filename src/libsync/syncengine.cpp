@@ -835,6 +835,17 @@ void SyncEngine::slotDiscoveryFinished()
     _progressInfo->_status = ProgressInfo::Reconcile;
     emit transmissionProgress(*_progressInfo);
 
+    if (shouldRestartSync()) {
+        // Fail the sync once and try again next time.
+        qCInfo(lcEngine) << "Restarting sync as discovery results might be incomplete.";
+        _anotherSyncNeeded = DelayedFollowUp;
+        _restartedSyncAfterDiscovery = true;
+        finalize(false);
+        return;
+    } else {
+        _restartedSyncAfterDiscovery = false;
+    }
+
     if (handleMassDeletion()) {
         return;
     }
@@ -1108,6 +1119,37 @@ void SyncEngine::finishSync()
     _propagator->start(std::move(_syncItems));
 
     qCInfo(lcEngine) << "#### Post-Reconcile end #################################################### " << _stopWatch.addLapTime(QStringLiteral("Post-Reconcile Finished")) << "ms";
+}
+
+bool SyncEngine::shouldRestartSync() const
+{
+    // On Windows with cfapi enabled it's possible that the discovery phase didn't detect all changed files.
+    //
+    // There is a disconnect between file system events reported and what the low-level file system APIs
+    // return -- it's possible that a folder did not yet contain the changed files on the file system even
+    // though these files were already reported by the folder watcher.  This sometimes happens when moving a
+    // directory from one place to another; in that case the rename would not be caught during the discovery
+    // phase, resulting in a remote delete operation of the folder at the original path.
+    //
+    // It's better to restart the sync a bit later to ensure we didn't miss anything.
+
+    if (_restartedSyncAfterDiscovery) {
+        // This is the second attempt: assume the discovery result is complete.
+        return false;
+    }
+
+    if (const auto vfs = _syncOptions._vfs; vfs && vfs->mode() != Vfs::WindowsCfApi) {
+        // Not using cfapi -- no issue there.
+        return false;
+    }
+
+    for (const auto &syncItem : _syncItems) {
+        // If there's at least one remove instruction to be propagated to the remote: bail out, we might have lost a local rename.
+        if (syncItem->_instruction == CSYNC_INSTRUCTION_REMOVE && syncItem->_direction == SyncFileItem::Up) {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool SyncEngine::handleMassDeletion()

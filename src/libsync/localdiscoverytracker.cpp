@@ -12,7 +12,7 @@
 
 using namespace OCC;
 
-Q_LOGGING_CATEGORY(lcLocalDiscoveryTracker, "sync.localdiscoverytracker", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcLocalDiscoveryTracker, "nextcloud.sync.localdiscoverytracker", QtInfoMsg)
 
 LocalDiscoveryTracker::LocalDiscoveryTracker() = default;
 

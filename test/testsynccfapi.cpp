@@ -266,6 +266,7 @@ private slots:
         if (!doLocalDiscovery)
             fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, { "A" });
         fakeFolder.localModifier().remove("A/a1");
+        QVERIFY(!fakeFolder.syncOnce());
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
         QVERIFY(!fakeFolder.currentRemoteState().find("A/a1"));
@@ -302,6 +303,7 @@ private slots:
 
         // Remote remove is propagated
         fakeFolder.remoteModifier().remove("A/a1m");
+        QVERIFY(!fakeFolder.syncOnce());
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!QFileInfo(fakeFolder.localPath() + "A/a1m").exists());
         QVERIFY(!fakeFolder.currentRemoteState().find("A/a1m"));
@@ -324,6 +326,7 @@ private slots:
         QVERIFY(fakeFolder.syncEngine().journal()->deleteFileRecord("A/a3"));
         fakeFolder.remoteModifier().remove("A/a3");
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
+        QVERIFY(!fakeFolder.syncOnce());
         QVERIFY(fakeFolder.syncOnce());
         CFVERIFY_VIRTUAL(fakeFolder, "A/a2");
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a2").size(), 32);
@@ -498,6 +501,7 @@ private slots:
         fakeFolder.localModifier().remove("A/a6");
         fakeFolder.localModifier().insert("A/a6");
 
+        QVERIFY(!fakeFolder.syncOnce());
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_SYNC));
         QCOMPARE(completeSpy.findItem("A/a1")->_type, ItemTypeVirtualFileDownload);
@@ -1512,6 +1516,7 @@ private slots:
         fakeFolder.localModifier().insert("directory/file4");
         fakeFolder.localModifier().insert("directory/subdir/fileTxt4.txt");
 
+        QVERIFY(!fakeFolder.syncOnce());
         QVERIFY(fakeFolder.syncOnce());
         const auto directoryItem = fakeFolder.remoteModifier().find("directory");
         QCOMPARE(directoryItem, nullptr);
