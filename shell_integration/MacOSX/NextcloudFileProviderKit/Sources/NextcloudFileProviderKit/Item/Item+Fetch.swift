@@ -4,6 +4,7 @@
 @preconcurrency import FileProvider
 import Foundation
 import NextcloudKit
+import UniformTypeIdentifiers
 
 public extension Item {
     private func fetchDirectoryContents(
@@ -198,6 +199,18 @@ public extension Item {
         }
 
         logger.debug("Acquired contents of item.", [.item: ocId, .name: updatedMetadata.fileName])
+
+        if !isDirectory, updatedMetadata.contentType != UTType.aliasFile.identifier {
+            if let fileHandle = try? FileHandle(forReadingFrom: localPath) {
+                let magic = fileHandle.readData(ofLength: 4)
+                try? fileHandle.close()
+                // Apple Bookmark/Alias format magic bytes: "book" (0x62 0x6F 0x6F 0x6B)
+                if magic == Data([0x62, 0x6F, 0x6F, 0x6B]) {
+                    logger.debug("Detected macOS alias file by magic number.", [.name: updatedMetadata.fileName])
+                    updatedMetadata.contentType = UTType.aliasFile.identifier
+                }
+            }
+        }
 
         updatedMetadata.status = Status.normal.rawValue
         updatedMetadata.downloaded = true
