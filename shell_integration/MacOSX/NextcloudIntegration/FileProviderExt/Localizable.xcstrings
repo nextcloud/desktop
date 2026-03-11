@@ -2,6 +2,7 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Allow automatic freeing up space" : {
+      "comment" : "Context menu item label.",
       "extractionState" : "manual",
       "localizations" : {
         "cs_CZ" : {
@@ -52,10 +53,34 @@
             "value" : "Autoriser la libération automatique de l'espace"
           }
         },
+        "ga" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ceadaigh spás a shaoradh go huathoibríoch"
+          }
+        },
         "gl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Permitir a liberación automática de espazo"
+          }
+        },
+        "hu_HU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatikus helyfelszabadítás engedélyezése"
+          }
+        },
+        "ja_JP" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自動的な空き容量の解放を許可する"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatisch ruimte vrijmaken toestaan"
           }
         },
         "pt_BR" : {
@@ -64,13 +89,31 @@
             "value" : "Permitir liberação automática de espaço"
           }
         },
+        "sw" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ruhusu kuweka nafasi kiotomatiki"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yer açmak için dosyalar otomatik olarak silinsin"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дозволити автоматичне очищення місця"
+          }
+        },
         "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "允許自動釋放空間"
+          }
+        },
+        "zh_TW" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "允許自動釋放空間"
@@ -79,6 +122,7 @@
       }
     },
     "Always keep downloaded" : {
+      "comment" : "Context menu item label.",
       "extractionState" : "manual",
       "localizations" : {
         "cs_CZ" : {
@@ -129,10 +173,34 @@
             "value" : "Toujours conserver en local"
           }
         },
+        "ga" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coinnigh íoslódáilte i gcónaí"
+          }
+        },
         "gl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Manter sempre descargado"
+          }
+        },
+        "hu_HU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letöltve tartás mindig"
+          }
+        },
+        "ja_JP" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ダウンロードしたものは常に保持してください"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altijd gedownload houden"
           }
         },
         "pt_BR" : {
@@ -141,16 +209,34 @@
             "value" : "Sempre manter baixados"
           }
         },
+        "sw" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Endelea kupakuliwa kila wakati"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Her zaman indirilmiş tutulsun"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Завжди тримати завантажене"
+          }
+        },
         "zh_HK" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "一律保留已下載的下載"
+          }
+        },
+        "zh_TW" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一律保留已下載的檔案"
           }
         }
       }
@@ -189,10 +275,22 @@
             "value" : "Authentication failed due to invalid credentials."
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La autenticación falló debido a credenciales no válidas."
+          }
+        },
         "et_EE" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Autentimine ei õnnestunud vigase kasutajanime või salasõna tõttu"
+          }
+        },
+        "ga" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Theip ar an bhfíordheimhniú mar gheall ar dhintiúir neamhbhailí."
           }
         },
         "gl" : {
@@ -201,16 +299,70 @@
             "value" : "Produciuse un fallo de autenticación por mor dunhas credenciais non válidas."
           }
         },
+        "hu_HU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A hitelesítés az érvénytelen hitelesítési adatok miatt sikertelen."
+          }
+        },
+        "ja_JP" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "認証情報が無効なため、認証に失敗しました。"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Authenticatie mislukt door ongeldige inloggegevens."
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "A autenticação falhou devido a credenciais inválidas."
           }
         },
+        "sw" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uthibitishaji umeshindwa kwa sababu ya vitambulisho batili."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bilgiler geçersiz olduğundan kimlik doğrulanamadı."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не вдалося увіти через недійсний пароль або лоґін."
+          }
+        },
         "zh_HK" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "由於身份驗證無效，驗證失敗。"
+          }
+        },
+        "zh_TW" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "因為憑證無效，因此驗證失敗。"
+          }
+        }
+      }
+    },
+    "File actions" : {
+      "comment" : "Context menu item label.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File actions"
           }
         }
       }
@@ -249,10 +401,22 @@
             "value" : "The account information is not available."
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La información de la cuenta no está disponible."
+          }
+        },
         "et_EE" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kasutajakonto teave pole saadaval"
+          }
+        },
+        "ga" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Níl an fhaisnéis chuntais ar fáil."
           }
         },
         "gl" : {
@@ -261,16 +425,58 @@
             "value" : "A información da conta non está dispoñíbel"
           }
         },
+        "hu_HU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A fiókinformációk nem érhetőek el."
+          }
+        },
+        "ja_JP" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アカウント情報は利用できません。"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De account informatie is niet beschikbaar."
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "As informações da conta não estão disponíveis."
           }
         },
+        "sw" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taarifa ya akaunti haipatikani."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hesap bilgileri bulunamadı."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Інформація про обліковий запис відсутня."
+          }
+        },
         "zh_HK" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "無法取得帳戶資訊。"
+          }
+        },
+        "zh_TW" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無法取得帳號資訊。"
           }
         }
       }
@@ -309,10 +515,22 @@
             "value" : "There was a network connection error."
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hubo un error de conexión de red."
+          }
+        },
         "et_EE" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tekkis võrguühenduse viga."
+          }
+        },
+        "ga" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tharla earráid nasc líonra."
           }
         },
         "gl" : {
@@ -321,16 +539,58 @@
             "value" : "Produciuse un erro de conexión de rede."
           }
         },
+        "hu_HU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hálózati kapcsolati hiba történt."
+          }
+        },
+        "ja_JP" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ネットワーク接続エラーが発生しました。"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er was een netwerk verbinding probleem."
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ocorreu um erro na conexão de rede."
           }
         },
+        "sw" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kulikuwa na hitilafu ya muunganisho wa mtandao."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bir ağ bağlantısı sorunu çıktı."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Помилка з'єднання з мережею."
+          }
+        },
         "zh_HK" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "網絡連接錯誤。"
+          }
+        },
+        "zh_TW" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "網路連線錯誤。"
           }
         }
       }
