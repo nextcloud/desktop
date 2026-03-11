@@ -30,8 +30,8 @@ Page {
 
     leftPadding: 0
     rightPadding: 0
-    topPadding: Style.standardSpacing
-    bottomPadding: Style.standardSpacing
+    topPadding: 12 // Style.standardSpacing is 10, the QtWidgets layout uses 12.  set it here as well to avoid a rough cutoff
+    bottomPadding: 12
     // 1. Tell the Page how tall it actually is
     implicitHeight: rootColumn.implicitHeight + topPadding + bottomPadding
 
