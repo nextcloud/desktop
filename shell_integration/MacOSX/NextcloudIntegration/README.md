@@ -22,6 +22,8 @@ Run this in the "NextcloudIntegration" project folder of your repository clone:
 tx pull --force --all --mode=translator
 ```
 
+The `translator` mode is important here and for later, so unreviewed strings are included and not accidentally deleted.
+See [the official Transifex documentation on Xcode string catalogs and download modes](https://help.transifex.com/en/articles/9459174-xcode-strings-catalogs-xcstrings#h_786f60d73b).
 Do not commit the changes string catalogs, they need to be processed first.
 
 ### Sanitize Translations
