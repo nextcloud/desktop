@@ -710,7 +710,7 @@ index d70dd35817..585a86502e 100644
      }
      return true;
 diff --git a/src/gui/sharemanager.cpp b/src/gui/sharemanager.cpp
-index 8f7314d96e..d9ad7ef190 100644
+index e4287d8f17..0fc17178be 100644
 --- a/src/gui/sharemanager.cpp
 +++ b/src/gui/sharemanager.cpp
 @@ -11,6 +11,7 @@
@@ -722,7 +722,7 @@ index 8f7314d96e..d9ad7ef190 100644
  #include <QUrl>
  #include <QJsonDocument>
 diff --git a/src/gui/socketapi/socketapi.cpp b/src/gui/socketapi/socketapi.cpp
-index fb32cd7589..18af6f08c0 100644
+index 4c16f4c31d..1678b52103 100644
 --- a/src/gui/socketapi/socketapi.cpp
 +++ b/src/gui/socketapi/socketapi.cpp
 @@ -18,6 +18,7 @@
@@ -1100,7 +1100,7 @@ index 0a7ad51ea8..030b6bd54d 100644
  
      promise->start();
 diff --git a/src/libsync/clientsideencryption.cpp b/src/libsync/clientsideencryption.cpp
-index 9a1d37f5d9..0abc302cd1 100644
+index 693c1bcee1..ef16ee34be 100644
 --- a/src/libsync/clientsideencryption.cpp
 +++ b/src/libsync/clientsideencryption.cpp
 @@ -14,11 +14,12 @@
@@ -1173,7 +1173,7 @@ index 9a1d37f5d9..0abc302cd1 100644
      return decryptedAndUnGzipped;
  }
 diff --git a/src/libsync/discovery.cpp b/src/libsync/discovery.cpp
-index 7bc5c5023c..5cafadd38a 100644
+index 0ba5089880..811bb2ff40 100644
 --- a/src/libsync/discovery.cpp
 +++ b/src/libsync/discovery.cpp
 @@ -23,6 +23,7 @@
@@ -1185,7 +1185,7 @@ index 7bc5c5023c..5cafadd38a 100644
  #include "csync.h"
  
 diff --git a/src/libsync/discoveryphase.cpp b/src/libsync/discoveryphase.cpp
-index 3fce7fff06..dfe8072772 100644
+index b95683590e..97bbc837be 100644
 --- a/src/libsync/discoveryphase.cpp
 +++ b/src/libsync/discoveryphase.cpp
 @@ -17,6 +17,7 @@
@@ -1448,6 +1448,18 @@ index a70088034e..4943ccd79c 100644
  
  #include <networkjobs.h>
  
+diff --git a/src/libsync/propagateuploadng.cpp b/src/libsync/propagateuploadng.cpp
+index 261b6e5dd3..ff33970a81 100644
+--- a/src/libsync/propagateuploadng.cpp
++++ b/src/libsync/propagateuploadng.cpp
+@@ -18,6 +18,7 @@
+ #include "propagateremotemove.h"
+ #include "deletejob.h"
+ #include "common/asserts.h"
++#include "common/qtcompat.h"
+ 
+ #include <QNetworkAccessManager>
+ #include <QFileInfo>
 diff --git a/src/libsync/pushnotifications.cpp b/src/libsync/pushnotifications.cpp
 index 74729921fe..fbf9fb6bc5 100644
 --- a/src/libsync/pushnotifications.cpp
