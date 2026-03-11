@@ -16,21 +16,21 @@ namespace OCC
 Q_LOGGING_CATEGORY(lcUpdateE2eeFolderUsersMetadataJob, "nextcloud.gui.updatee2eefolderusersmetadatajob", QtInfoMsg)
 
 UpdateE2eeFolderUsersMetadataJob::UpdateE2eeFolderUsersMetadataJob(const AccountPtr &account,
-                                                       SyncJournalDb *journalDb,
-                                                       const QString &syncFolderRemotePath,
-                                                       const Operation operation,
-                                                       const QString &fullRemotePath,
-                                                       const QString &folderUserId,
-                                                       const QSslCertificate &certificate,
-                                                       QObject *parent)
-    : QObject(parent)
-    , _account(account)
-    , _journalDb(journalDb)
-    , _syncFolderRemotePath(Utility::noLeadingSlashPath(Utility::noTrailingSlashPath(syncFolderRemotePath)))
-    , _operation(operation)
-    , _fullRemotePath(Utility::noLeadingSlashPath(fullRemotePath))
-    , _folderUserId(folderUserId)
-    , _folderUserCertificate(certificate)
+                                                                   SyncJournalDb *journalDb,
+                                                                   const QString &syncFolderRemotePath,
+                                                                   const Operation operation,
+                                                                   const QString &fullRemotePath,
+                                                                   const QString &folderUserId,
+                                                                   const QSslCertificate &certificate,
+                                                                   QObject *parent)
+    : QObject{parent}
+    , _account{account}
+    , _journalDb{journalDb}
+    , _syncFolderRemotePath{Utility::noLeadingSlashPath(Utility::noTrailingSlashPath(syncFolderRemotePath))}
+    , _operation{operation}
+    , _fullRemotePath{Utility::noLeadingSlashPath(fullRemotePath)}
+    , _folderUserId{folderUserId}
+    , _folderUserCertificate{certificate}
 {
     Q_ASSERT(_syncFolderRemotePath == QStringLiteral("/") || _fullRemotePath.startsWith(_syncFolderRemotePath));
     SyncJournalFileRecord rec;
