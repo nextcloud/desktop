@@ -82,13 +82,12 @@ public:
 
 };
 
-const QString TOOLBAR_CSS()
-{
-    return QStringLiteral("QToolBar { background: transparent; margin: 0; padding: 0; border: none; spacing: 0; } "
-                          "QToolBar QToolButton { background: transparent; border: none; margin: 0; padding: 8px 12px; font-size: 14px; border-radius: 8px; } "
-                          "QToolBar QToolBarExtension { padding:0; } "
-                          "QToolBar QToolButton:checked { background: palette(highlight); color: palette(highlighted-text);}");
-}
+constexpr auto TOOLBAR_CSS = QLatin1String(
+    "QToolBar { background: transparent; margin: 0; padding: 0; border: none; spacing: 0; } "
+    "QToolBar QToolButton { background: transparent; border: none; margin: 0; padding: 8px 12px; font-size: 14px; border-radius: 8px; } "
+    "QToolBar QToolBarExtension { padding: 0; } "
+    "QToolBar QToolButton:checked { background: palette(highlight); color: palette(highlighted-text); }"
+);
 
 const float buttonSizeRatio = 1.618f; // golden ratio
 
@@ -429,7 +428,7 @@ void SettingsDialog::customizeStyle()
     }
 
     const QScopedValueRollback<bool> updatingStyle(_updatingStyle, true);
-    _toolBar->setStyleSheet(TOOLBAR_CSS());
+    _toolBar->setStyleSheet(TOOLBAR_CSS);
 
     setStyleSheet(QStringLiteral(
         "#Settings { background: palette(window); border-radius: 0; }"
