@@ -434,11 +434,10 @@ void SettingsDialog::customizeStyle()
         "#Settings { background: palette(window); border-radius: 0; }"
 
         /* Navigation */
-        "#settings_navigation_scroll { background: palette(alternate-base); border-radius: 12px; padding: 4px; }"
-        "#settings_navigation { background: palette(alternate-base); border-radius: 12px; padding: 4px; }"
+        "#settings_navigation, #settings_navigation_scroll { background: palette(alternate-base); border-radius: 12px; padding: 4px; }"
 
         /* Content area */
-        "#settings_content_scroll { border-radius: 12px; }"
+        "#settings_content, #settings_content_scroll { background: palette(window); border-radius: 12px; }"
 
         /* Panels */
         "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
@@ -550,7 +549,7 @@ void SettingsDialog::setupUi()
     navigationScroll->setWidget(navigationContainer);
 
     _stack = new CurrentPageSizeStackedWidget(this);
-    _stack->setObjectName(u"stack"_s);
+    _stack->setObjectName(u"settings_content"_s);
 
     auto *contentScroll = new QScrollArea(this);
     contentScroll->setObjectName("settings_content_scroll"_L1);
