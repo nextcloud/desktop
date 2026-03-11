@@ -439,9 +439,7 @@ void SettingsDialog::customizeStyle()
         "#settings_navigation { background: palette(alternate-base); border-radius: 12px; padding: 4px; }"
 
         /* Content area */
-        "#settings_content_scroll { background: transparent; border-radius: 12px; }"
-        "#settings_content_scroll > QWidget { background: transparent; }"
-        "#settings_content { background: transparent; }"
+        "#settings_content_scroll { border-radius: 12px; }"
 
         /* Panels */
         "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
