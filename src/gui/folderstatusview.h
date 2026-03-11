@@ -23,7 +23,6 @@ public:
 
     [[nodiscard]] QModelIndex indexAt(const QPoint &point) const override;
     [[nodiscard]] QRect visualRect(const QModelIndex &index) const override;
-    [[nodiscard]] QSize sizeHint() const override;
 };
 
 } // namespace OCC
