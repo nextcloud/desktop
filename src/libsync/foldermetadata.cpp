@@ -80,7 +80,7 @@ FolderMetadata::FolderMetadata(AccountPtr account,
     , _initialSignature(signature)
 {
     Q_ASSERT(!_remoteFolderRoot.isEmpty());
-    setupVersionFromExistingMetadata(metadata);
+    _existingMetadataVersion = setupVersionFromExistingMetadata(metadata);
 
     const auto doc = QJsonDocument::fromJson(metadata);
     qCDebug(lcCseMetadata()) << doc.toJson(QJsonDocument::Compact);
@@ -378,8 +378,9 @@ void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
     _isMetadataValid = true;
 }
 
-void FolderMetadata::setupVersionFromExistingMetadata(const QByteArray &metadata)
+FolderMetadata::MetadataVersion FolderMetadata::setupVersionFromExistingMetadata(const QByteArray &metadata)
 {
+    auto resultVersion = FolderMetadata::MetadataVersion{};
     const auto &doc = QJsonDocument::fromJson(metadata);
     const auto &metaDataStr = metadataStringFromOCsDocument(doc);
     const auto &metaDataDoc = QJsonDocument::fromJson(metaDataStr.toLocal8Bit()).object();
@@ -407,17 +408,19 @@ void FolderMetadata::setupVersionFromExistingMetadata(const QByteArray &metadata
     }
 
     if (versionStringFromMetadata == QStringLiteral("1.2")) {
-        _existingMetadataVersion = MetadataVersion::Version1_2;
+        resultVersion = MetadataVersion::Version1_2;
     } else if (versionStringFromMetadata == QStringLiteral("2.0") || versionStringFromMetadata == QStringLiteral("2")) {
-        _existingMetadataVersion = MetadataVersion::Version2_0;
+        resultVersion = MetadataVersion::Version2_0;
     } else if (versionStringFromMetadata == QStringLiteral("2.1")) {
-        _existingMetadataVersion = MetadataVersion::Version2_1;
+        resultVersion = MetadataVersion::Version2_1;
     } else if (versionStringFromMetadata == QStringLiteral("1.0")
         || versionStringFromMetadata == QStringLiteral("1.1")) {
         // We used to have an intermediate 1.1 after applying a security-vulnerability fix for metadata keys.
         // It should be treated as MetadataVersion::Version1, as we don't want to change logic related to 1.2, since 1.1 is an edge case.
-        _existingMetadataVersion = MetadataVersion::Version1;
+        resultVersion = MetadataVersion::Version1;
     }
+
+    return resultVersion;
 }
 
 void FolderMetadata::emitSetupComplete()
