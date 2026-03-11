@@ -152,7 +152,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _ui->setupUi(this);
     auto *dynamicStack = new CurrentPageSizeStackedWidget(this);
     dynamicStack->setObjectName(_ui->stack->objectName());
-    _ui->mainLayout->replaceWidget(_ui->stack, dynamicStack);
+    _ui->mainLayout->removeWidget(_ui->stack);
     _ui->stack->deleteLater();
     _ui->stack = dynamicStack;
 
@@ -195,16 +195,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     contentScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     contentScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     contentScroll->viewport()->setAutoFillBackground(false);
-    auto *contentContainer = new QWidget(contentScroll);
-    contentContainer->setObjectName(QLatin1String("settings_content"));
-    auto *contentLayout = new QVBoxLayout(contentContainer);
-    contentLayout->setContentsMargins(0, 0, 0, 0);
-    contentLayout->setSpacing(0);
-    _ui->stack->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-    contentLayout->addWidget(_ui->stack);
-    contentLayout->setAlignment(_ui->stack, Qt::AlignTop);
-    contentLayout->addStretch(1);
-    contentScroll->setWidget(contentContainer);
+    contentScroll->setWidget(_ui->stack);
     shellLayout->addWidget(navigationScroll);
     shellLayout->addWidget(contentScroll);
     shellLayout->setStretch(0, 0);
