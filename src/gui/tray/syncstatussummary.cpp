@@ -274,7 +274,9 @@ void SyncStatusSummary::onFileProviderDomainSyncStateChanged(const AccountPtr &a
     case SyncResult::SetupError:
     case SyncResult::Problem:
     case SyncResult::Undefined:
-        _fileProviderDomainsWithErrors.insert(account->userIdAtHostWithPort());
+        _fileProviderDomainsWithErrors.erase(account->userIdAtHostWithPort());
+        state = SyncResult::Success;
+        break;
     case SyncResult::SyncRunning:
     case SyncResult::NotYetStarted:
     case SyncResult::Paused:
