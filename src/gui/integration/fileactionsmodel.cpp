@@ -10,6 +10,8 @@
 #include "common/utility.h"
 #include "tray/activitydata.h"
 
+#include <optional>
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFileActions, "nextcloud.gui.fileactions", QtInfoMsg)
@@ -119,6 +121,12 @@ QByteArray FileActionsModel::fileId() const
 void FileActionsModel::setFileId(const QByteArray &fileId)
 {
     if (fileId == _fileId) {
+        qCDebug(lcFileActions) << "New file id is equal to current _fileId:" << _fileId;
+        return;
+    }
+
+    if (fileId.isEmpty()) {
+        qCDebug(lcFileActions) << "New file id is empty, keeping current _fileId.";
         return;
     }
 
@@ -149,17 +157,17 @@ void FileActionsModel::setupFileProperties()
 {
     qCDebug(lcFileActions) << "Setting up file properties for:" << _localPath;
 
+    // When we don't have a sync folder, use extension matching
+    QMimeDatabase::MatchMode mimeMatchMode = QMimeDatabase::MatchExtension;
+    // In case there is no sync folder, _fileId should already be initialized with a value from the calling code.
+    _filePath = _localPath;
+
     const auto folderForPath = FolderMan::instance()->folderForPath(_localPath);
-
-    // Declare once so it's available after the if-else clause.
-    QMimeDatabase::MatchMode mimeMatchMode;
-
-    if (folderForPath) { // Synchronization folders
+    if (folderForPath) {
         qCDebug(lcFileActions) << "Found synchronization folder for" << _localPath;
+
         _filePath = _localPath.mid(folderForPath->cleanPath().length() + 1);
-
         SyncJournalFileRecord fileRecord;
-
         if (!folderForPath->journalDb()->getFileRecord(_filePath, &fileRecord)) {
             qCWarning(lcFileActions) << "Invalid file record for path:" << _localPath;
             return;
@@ -170,15 +178,10 @@ void FileActionsModel::setupFileProperties()
             _fileId = fileRecord._fileId;
         }
 
-        // Decide match mode based on whether this is a virtual file
-        mimeMatchMode = fileRecord.isVirtualFile() ? QMimeDatabase::MatchExtension
-                                                   : QMimeDatabase::MatchDefault;
-    } else { // Virtual file systems
-        qCDebug(lcFileActions) << "Did not find synchronization folder for" << _localPath;
-        // In this case, _fileId should already be initialized with a value from the calling code.
-        _filePath = _localPath;
-        // When we don't have a sync folder, use extension matching
-        mimeMatchMode = QMimeDatabase::MatchExtension;
+        // Change match mode based on whether this is a virtual file
+        if (!fileRecord.isVirtualFile()) {
+            mimeMatchMode = QMimeDatabase::MatchDefault;
+        }
     }
 
     QMimeDatabase mimeDb;
@@ -282,30 +285,28 @@ void FileActionsModel::parseEndpoints()
         QueryList queryList;
         const auto paramsMap = contextMenu.value("params").toMap();
         for (auto param = paramsMap.cbegin(), end = paramsMap.cend(); param != end; ++param) {
-            const auto name = param.key();
-            QByteArray value;
-            if (name == fileIdC) {
-                value = _fileId;
+            const auto paramName = param.key();
+            QByteArray paramValue;
+            if (paramName == fileIdC) {
+                paramValue = _fileId;
             }
 
-            if (param.key() == filePathC) {
-                value = _filePath.toUtf8();
+            if (paramName == filePathC) {
+                paramValue = _filePath.toUtf8();
             }
 
-            if (!value.isEmpty()) {
-                queryList.append( QueryItem{ name, value } );
+            if (!paramValue.isEmpty()) {
+                queryList.append( QueryItem{ paramName, paramValue } );
             }
         }
-
         actions.append({ parseIcon(contextMenu.value("icon").toString()),
                         contextMenu.value("name").toString(),
-                        contextMenu.value("url").toString(),
+                        parseUrl(contextMenu.value("url").toString()),
                         contextMenu.value("method").toString(),
                         queryList });
     }
 
     resetActions(actions);
-
     qCDebug(lcFileActions) << "File" << _localPath << "has"
                            << actions.size()
                            << "actions available.";
@@ -335,9 +336,8 @@ void FileActionsModel::createRequest(const int row)
         return;
     }
 
-    const auto requesturl = parseUrl(_fileActions.at(row).url);
     auto job = new JsonApiJob(_accountState->account(),
-                                requesturl,
+                                _fileActions.at(row).url,
                                 this);
     connect(job, &JsonApiJob::jsonReceived,
             this, &FileActionsModel::processRequest);
@@ -365,9 +365,14 @@ void FileActionsModel::processRequest(const QJsonDocument &json, int statusCode)
         return;
     }
 
-    const auto root = json.object().value(QStringLiteral("root")).toObject();
+    const auto jsonObject = json.object();
+    const auto ocsData = jsonObject.value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject();
+    const auto root = jsonObject.value(QStringLiteral("root")).toObject().isEmpty()
+        ? ocsData.value(QStringLiteral("root")).toObject()
+        : jsonObject.value(QStringLiteral("root")).toObject();
+    const auto tooltip = ocsData.value(QStringLiteral("tooltip")).toString();
     const auto folderForPath = FolderMan::instance()->folderForPath(_localPath);
-    const auto successMessage = tr("%1 done.", "file action success message").arg(fileAction);
+    const auto successMessage = tooltip.isEmpty() ? tr("%1 done.", "file action success message").arg(fileAction) : tooltip;
 
     QString remoteFolderPath;
     if (folderForPath) {
@@ -379,29 +384,57 @@ void FileActionsModel::processRequest(const QJsonDocument &json, int statusCode)
         return;
     }
 
-    if (root.empty()) {
+    auto setGenericResponse = [this, &successMessage, &remoteFolderPath] {
         setResponse({ successMessage, remoteFolderPath });
+    };
+
+    if (root.empty()) {
+        setGenericResponse();
         return;
     }
 
     const auto rows = root.value(QStringLiteral("rows")).toArray();
 
     if (rows.empty()) {
-        setResponse({ successMessage, remoteFolderPath });
+        setGenericResponse();
         return;
     }
 
+    auto parseChildResponse = [this](const QJsonObject &child) -> std::optional<Response> {
+        const auto element = child.value(QStringLiteral("element")).toString();
+        const auto text = child.value(QStringLiteral("text")).toString();
+        const auto urlValue = child.value(QStringLiteral("url")).toString();
+
+        if (element.isEmpty() || text.isEmpty() || urlValue.isEmpty()) {
+            return std::nullopt;
+        }
+
+        if (element == QStringLiteral("URL")) {
+            const auto childUrl = QUrl::fromUserInput(urlValue);
+            const auto responseUrl = childUrl.isRelative()
+                ? _accountUrl + urlValue
+                : childUrl.toString();
+            return Response{ text, responseUrl };
+        }
+
+        qCWarning(lcFileActions) << "Unsupported file action response element" << element
+                                 << "for" << _localPath;
+        return std::nullopt;
+    };
+
     for (const auto &rowValue : rows) {
         const auto row = rowValue.toObject();
-        const auto children = row.value("children").toArray();
-
+        const auto children = row.value(QStringLiteral("children")).toArray();
         for (const auto &childValue : children) {
-            const auto child = childValue.toObject();
-            setResponse({ child.value(QStringLiteral("element")).toString(),
-                         _accountUrl + child.value(QStringLiteral("url")).toString() });
+            if (const auto parsedResponse = parseChildResponse(childValue.toObject());
+                parsedResponse.has_value()) {
+                setResponse(parsedResponse.value());
+                return;
+            }
         }
     }
+
+    setGenericResponse();
 }
 
 } // namespace OCC
-
