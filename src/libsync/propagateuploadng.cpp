@@ -354,12 +354,12 @@ void PropagateUploadFileNG::startNextChunk()
 
     const auto fileName = _fileToUpload._path;
     auto device = std::make_unique<UploadDevice>(fileName, _sent, _currentChunkSize, &propagator()->_bandwidthManager);
-    if (!device->open(QIODevice::ReadOnly)) {
+    if (auto isLocked = FileSystem::isFileLocked(fileName, FileSystem::LockMode::SharedRead); isLocked || !device->open(QIODevice::ReadOnly)) {
         qCWarning(lcPropagateUploadNG) << "Could not prepare upload device: " << device->errorString();
 
         // If the file is currently locked, we want to retry the sync
         // when it becomes available again.
-        if (FileSystem::isFileLocked(fileName)) {
+        if (isLocked) {
             emit propagator()->seenLockedFile(fileName);
         }
         // Soft error because this is likely caused by the user modifying his files while syncing

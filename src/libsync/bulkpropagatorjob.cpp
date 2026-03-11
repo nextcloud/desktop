@@ -241,7 +241,7 @@ void BulkPropagatorJob::triggerUpload()
 
             // If the file is currently locked, we want to retry the sync
             // when it becomes available again.
-            if (FileSystem::isFileLocked(singleFile._localPath)) {
+            if (FileSystem::isFileLocked(singleFile._localPath, FileSystem::LockMode::SharedRead)) {
                 emit propagator()->seenLockedFile(singleFile._localPath);
             }
 
