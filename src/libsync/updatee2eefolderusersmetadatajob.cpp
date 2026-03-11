@@ -21,6 +21,7 @@ UpdateE2eeFolderUsersMetadataJob::UpdateE2eeFolderUsersMetadataJob(const Account
                                                                    const Operation operation,
                                                                    const QString &fullRemotePath,
                                                                    const QString &folderUserId,
+                                                                   const QString &folderUserDisplayName,
                                                                    const QSslCertificate &certificate,
                                                                    QObject *parent)
     : QObject{parent}
@@ -30,6 +31,7 @@ UpdateE2eeFolderUsersMetadataJob::UpdateE2eeFolderUsersMetadataJob(const Account
     , _operation{operation}
     , _fullRemotePath{Utility::noLeadingSlashPath(fullRemotePath)}
     , _folderUserId{folderUserId}
+    , _folderUserDisplayName{folderUserDisplayName}
     , _folderUserCertificate{certificate}
 {
     Q_ASSERT(_syncFolderRemotePath == QStringLiteral("/") || _fullRemotePath.startsWith(_syncFolderRemotePath));
@@ -78,7 +80,7 @@ void UpdateE2eeFolderUsersMetadataJob::start(const bool keepLock)
 void UpdateE2eeFolderUsersMetadataJob::slotStartE2eeMetadataJobs()
 {
     if (_operation == Operation::Add && _folderUserCertificate.isNull()) {
-        emit finished(404, tr("Could not fetch public key for user %1").arg(_folderUserId));
+        emit finished(404, tr("Could not fetch public key for user %1").arg(_folderUserDisplayName));
         return;
     }
 
@@ -106,7 +108,7 @@ void UpdateE2eeFolderUsersMetadataJob::slotFetchMetadataJobFinished(int statusCo
     }
 
     if (!_encryptedFolderMetadataHandler->folderMetadata() || !_encryptedFolderMetadataHandler->folderMetadata()->isValid()) {
-        emit finished(403, tr("Could not add or remove user %1 to access folder %2").arg(_folderUserId).arg(_fullRemotePath));
+        emit finished(403, tr("Could not add or remove user %1 to access folder %2").arg(_folderUserDisplayName).arg(_fullRemotePath));
         return;
     }
     startUpdate();
