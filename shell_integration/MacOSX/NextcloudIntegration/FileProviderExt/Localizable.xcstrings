@@ -2,6 +2,7 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Allow automatic freeing up space" : {
+      "comment" : "Context menu item label.",
       "extractionState" : "manual",
       "localizations" : {
         "cs_CZ" : {
@@ -121,6 +122,7 @@
       }
     },
     "Always keep downloaded" : {
+      "comment" : "Context menu item label.",
       "extractionState" : "manual",
       "localizations" : {
         "cs_CZ" : {
@@ -349,6 +351,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "因為憑證無效，因此驗證失敗。"
+          }
+        }
+      }
+    },
+    "File actions" : {
+      "comment" : "Context menu item label.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File actions"
           }
         }
       }
