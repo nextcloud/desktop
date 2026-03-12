@@ -163,13 +163,7 @@ ApplicationWindow {
                         width: parent.width
                     }
 
-                    MouseArea {
-                        id: fileActionMouseArea
-                        anchors.fill: parent
-                        anchors.margins: Style.standardSpacing
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: fileActionModel.createRequest(index)
-                    }
+                    onClicked: fileActionModel.createRequest(index)
                 }
             }
 
