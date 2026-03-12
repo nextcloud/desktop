@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string notr="true">Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -26,24 +26,24 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <item row="0" column="0">
+   <item>
     <widget class="QFrame" name="accountStatusPanel">
      <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
+      <enum>QFrame::Shape::NoFrame</enum>
      </property>
      <layout class="QVBoxLayout" name="accountStatusLayout">
-     <property name="leftMargin">
+      <property name="leftMargin">
        <number>0</number>
-     </property>
-     <property name="topMargin">
+      </property>
+      <property name="topMargin">
        <number>0</number>
-     </property>
-     <property name="rightMargin">
+      </property>
+      <property name="rightMargin">
        <number>0</number>
-     </property>
-     <property name="bottomMargin">
+      </property>
+      <property name="bottomMargin">
        <number>0</number>
-     </property>
+      </property>
       <item>
        <widget class="QWidget" name="accountStatus" native="true">
         <layout class="QGridLayout" name="gridLayout_2">
@@ -72,7 +72,7 @@
             <string>Connected with &lt;server&gt; as &lt;user&gt;</string>
            </property>
            <property name="textFormat">
-            <enum>Qt::RichText</enum>
+            <enum>Qt::TextFormat::RichText</enum>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -102,7 +102,7 @@
               <string/>
              </property>
              <property name="alignment">
-              <set>Qt::AlignHCenter|Qt::AlignTop</set>
+              <set>Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop</set>
              </property>
             </widget>
            </item>
@@ -133,17 +133,21 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
     <widget class="QFrame" name="fileProviderPanel">
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Maximum"> <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
+      <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
      </property>
      <layout class="QVBoxLayout" name="fileProviderPanelLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+      </property>
       <item>
        <widget class="QLabel" name="fileProviderPanelTitle">
         <property name="font">
@@ -158,25 +162,40 @@
       </item>
       <item>
        <widget class="QWidget" name="fileProviderPanelContents" native="true">
-         <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-           </sizepolicy>
-         </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item>
     <widget class="QFrame" name="syncFoldersPanel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
+      <enum>QFrame::Shape::NoFrame</enum>
      </property>
      <layout class="QVBoxLayout" name="syncFoldersPanelLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+      </property>
       <item>
        <widget class="QLabel" name="syncFoldersPanelTitle">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="font">
          <font>
           <bold>true</bold>
@@ -190,7 +209,7 @@
       <item>
        <widget class="QWidget" name="syncFoldersPanelContents" native="true">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -211,16 +230,13 @@
          <item>
           <widget class="OCC::FolderStatusView" name="_folderList">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <property name="sizeAdjustPolicy">
-            <enum>QAbstractScrollArea::AdjustToContents</enum>
-           </property>
            <property name="contextMenuPolicy">
-            <enum>Qt::CustomContextMenu</enum>
+            <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
            </property>
            <property name="autoFillBackground">
             <bool>false</bool>
@@ -228,8 +244,11 @@
            <property name="frameShape">
             <enum>QFrame::Shape::NoFrame</enum>
            </property>
+           <property name="sizeAdjustPolicy">
+            <enum>QAbstractScrollArea::SizeAdjustPolicy::AdjustToContents</enum>
+           </property>
            <property name="editTriggers">
-            <set>QAbstractItemView::NoEditTriggers</set>
+            <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
            </property>
            <property name="animated">
             <bool>true</bool>
@@ -253,7 +272,7 @@
                  <string>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</string>
                 </property>
                 <property name="textFormat">
-                 <enum>Qt::RichText</enum>
+                 <enum>Qt::TextFormat::RichText</enum>
                 </property>
                 <property name="wordWrap">
                  <bool>true</bool>
@@ -345,7 +364,7 @@
               <item>
                <spacer name="horizontalSpacer">
                 <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
+                 <enum>Qt::Orientation::Horizontal</enum>
                 </property>
                 <property name="sizeHint" stdset="0">
                  <size>
@@ -387,57 +406,58 @@
      </layout>
     </widget>
    </item>
-   <item row="3" column="0">
-    <widget class="QFrame" name="accountTabsPanel">
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
+   <item>
+    <widget class="QFrame" name="connectionSettingsPanel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <layout class="QVBoxLayout" name="accountTabsLayout">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <layout class="QVBoxLayout" name="connectionSettingsPanelLayout">
       <item>
-       <widget class="QFrame" name="connectionSettingsPanel">
-        <property name="frameShape">
-         <enum>QFrame::NoFrame</enum>
+       <widget class="QLabel" name="connectionSettingsPanelTitle">
+        <property name="font">
+         <font>
+          <bold>true</bold>
+         </font>
         </property>
-       <layout class="QVBoxLayout" name="connectionSettingsPanelLayout">
-         <item>
-          <widget class="QLabel" name="connectionSettingsPanelTitle">
-           <property name="font">
-            <font>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Connection settings</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QWidget" name="connectionSettingsPanelContents" native="true">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <property name="text">
+         <string>Connection settings</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="connectionSettingsPanelContents" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
        </widget>
       </item>
      </layout>
     </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Policy::MinimumExpanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

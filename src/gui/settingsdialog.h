@@ -16,14 +16,11 @@
 class QAction;
 class QActionGroup;
 class QToolBar;
+class QStackedWidget;
 class QStandardItemModel;
 class QResizeEvent;
 
 namespace OCC {
-
-namespace Ui {
-    class SettingsDialog;
-}
 
 class AccountState;
 class AccountSettings;
@@ -76,8 +73,6 @@ private:
     QAction *createColorAwareAction(const QString &iconName, const QString &fileName);
     QAction *createActionWithIcon(const QIcon &icon, const QString &text, const QString &iconPath = QString());
 
-    Ui::SettingsDialog *const _ui;
-
     QActionGroup *_actionGroup;
     // Maps the actions from the action group to the corresponding widgets
     QHash<QAction *, QWidget *> _actionGroupWidgets;
@@ -87,6 +82,7 @@ private:
     QHash<const Account *, QAction *> _actionForAccount;
 
     QToolBar *_toolBar;
+    QStackedWidget *_stack = nullptr;
 
 #if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
     QWidget *_windowDragHandle = nullptr;
@@ -95,6 +91,8 @@ private:
     ownCloudGui *_gui;
     bool _styleUpdatePending = false;
     bool _updatingStyle = false;
+
+    void setupUi();
 };
 }
 
