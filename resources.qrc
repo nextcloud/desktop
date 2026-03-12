@@ -1,7 +1,5 @@
 <RCC>
     <qresource prefix="/qml">
-        <file>theme/Style/Style.qml</file>
-        <file>theme/Style/qmldir</file>
         <file>src/gui/macOS/ui/FileProviderSettings.qml</file>
         <file>src/gui/macOS/ui/FileProviderFileDelegate.qml</file>
         <file>src/gui/integration/FileActionsWindow.qml</file>

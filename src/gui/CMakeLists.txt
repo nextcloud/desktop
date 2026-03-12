@@ -150,8 +150,6 @@ set(client_SRCS
     syncrunfilelog.cpp
     systray.h
     systray.cpp
-    types.h
-    types.cpp
     userinfo.h
     userinfo.cpp
     vfsdownloaderrordialog.h
@@ -186,6 +184,8 @@ set(client_SRCS
     syncconflictsmodel.cpp
     creds/credentialsfactory.h
     creds/credentialsfactory.cpp
+    types.h
+    types.cpp
     creds/httpcredentialsgui.h
     creds/httpcredentialsgui.cpp
     creds/flow2auth.h
@@ -491,6 +491,9 @@ endif()
 
 add_library(nextcloudCore STATIC)
 
+set_source_files_properties(Style.qml
+    PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
+
 ecm_add_qml_module(nextcloudCore
     URI com.nextcloud.desktopclient
     GENERATE_PLUGIN_SOURCE
@@ -505,6 +508,7 @@ ecm_add_qml_module(nextcloudCore
         UserStatusSetStatusView.qml
         PredefinedStatusButton.qml
         ErrorBox.qml
+	Style.qml
     SOURCES
         ${final_src}
 )
