@@ -992,6 +992,7 @@ void Folder::removeFromSettings() const
     settings->endGroup();
     settings->beginGroup(QLatin1String("FoldersWithPlaceholders"));
     settings->remove(FolderMan::escapeAlias(_definition.alias));
+    settings->endGroup();
 }
 
 bool Folder::pathIsIgnored(const QString &path) const
