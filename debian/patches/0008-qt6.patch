@@ -459,7 +459,7 @@ index b92cfa08e4..38f3d462ec 100644
              continue;
          }
 diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
-index 6671075de5..0e1b2b10e5 100644
+index a13ff91782..36398e0153 100644
 --- a/src/gui/CMakeLists.txt
 +++ b/src/gui/CMakeLists.txt
 @@ -3,7 +3,7 @@
@@ -471,7 +471,7 @@ index 6671075de5..0e1b2b10e5 100644
  find_package(KF6GuiAddons)
  
  if(CMAKE_BUILD_TYPE MATCHES Debug)
-@@ -534,10 +534,17 @@ target_link_libraries(nextcloudCore
+@@ -533,10 +533,17 @@ target_link_libraries(nextcloudCore
    Qt::Quick
    Qt::QuickControls2
    Qt::QuickWidgets
@@ -490,7 +490,7 @@ index 6671075de5..0e1b2b10e5 100644
  if(KF6GuiAddons_FOUND)
    target_link_libraries(nextcloudCore
      PUBLIC
-@@ -757,3 +764,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
+@@ -756,3 +763,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
  endif()
  
  configure_file(configgui.h.in ${CMAKE_CURRENT_BINARY_DIR}/configgui.h)
@@ -525,6 +525,18 @@ index f49410d6ea..db71b8e12d 100644
                  }
  
                  onClicked: {
+diff --git a/src/gui/accountsettings.cpp b/src/gui/accountsettings.cpp
+index e4ac04e8d6..2341a3fc38 100644
+--- a/src/gui/accountsettings.cpp
++++ b/src/gui/accountsettings.cpp
+@@ -10,6 +10,7 @@
+ #include "common/syncjournalfilerecord.h"
+ #include "qmessagebox.h"
+ #include "ui_accountsettings.h"
++#include "common/qtcompat.h"
+ 
+ #include "theme.h"
+ #include "foldercreationdialog.h"
 diff --git a/src/gui/accountstate.cpp b/src/gui/accountstate.cpp
 index d139565a56..41e2924fce 100644
 --- a/src/gui/accountstate.cpp
@@ -709,6 +721,18 @@ index d70dd35817..585a86502e 100644
          return false;
      }
      return true;
+diff --git a/src/gui/settingsdialog.cpp b/src/gui/settingsdialog.cpp
+index 0895c49c97..9298856952 100644
+--- a/src/gui/settingsdialog.cpp
++++ b/src/gui/settingsdialog.cpp
+@@ -15,6 +15,7 @@
+ #include "progressdispatcher.h"
+ #include "owncloudgui.h"
+ #include "accountmanager.h"
++#include "common/qtcompat.h"
+ 
+ #include <QLabel>
+ #include <QStandardItemModel>
 diff --git a/src/gui/sharemanager.cpp b/src/gui/sharemanager.cpp
 index e4287d8f17..0fc17178be 100644
 --- a/src/gui/sharemanager.cpp
