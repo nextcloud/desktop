@@ -5,7 +5,6 @@
  */
 
 #include "settingsdialog.h"
-#include "ui_settingsdialog.h"
 
 #include "folderman.h"
 #include "theme.h"
@@ -40,6 +39,8 @@
 #include <QMouseEvent>
 #include <QWindow>
 #include <QtGlobal>
+
+using namespace Qt::StringLiterals;
 
 namespace {
 class CurrentPageSizeStackedWidget : public QStackedWidget
@@ -81,13 +82,12 @@ public:
 
 };
 
-const QString TOOLBAR_CSS()
-{
-    return QStringLiteral("QToolBar { background: transparent; margin: 0; padding: 0; border: none; spacing: 0; } "
-                          "QToolBar QToolButton { background: transparent; border: none; margin: 0; padding: 8px 12px; font-size: 14px; border-radius: 8px; } "
-                          "QToolBar QToolBarExtension { padding:0; } "
-                          "QToolBar QToolButton:checked { background: palette(highlight); color: palette(highlighted-text);}");
-}
+constexpr auto TOOLBAR_CSS = QLatin1String(
+    "QToolBar { background: transparent; margin: 0; padding: 0; border: none; spacing: 0; } "
+    "QToolBar QToolButton { background: transparent; border: none; margin: 0; padding: 8px 12px; font-size: 14px; border-radius: 8px; } "
+    "QToolBar QToolBarExtension { padding: 0; } "
+    "QToolBar QToolButton:checked { background: palette(highlight); color: palette(highlighted-text); }"
+);
 
 const float buttonSizeRatio = 1.618f; // golden ratio
 
@@ -139,7 +139,6 @@ protected:
 
 SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     : QDialog(parent)
-    , _ui(new Ui::SettingsDialog)
     , _gui(gui)
 {
 #if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
@@ -149,76 +148,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     ConfigFile cfg;
 
-    _ui->setupUi(this);
-    auto *dynamicStack = new CurrentPageSizeStackedWidget(this);
-    dynamicStack->setObjectName(_ui->stack->objectName());
-    _ui->mainLayout->replaceWidget(_ui->stack, dynamicStack);
-    _ui->stack->deleteLater();
-    _ui->stack = dynamicStack;
-
-    _ui->mainLayout->setContentsMargins(8, 8, 8, 8);
-    _ui->mainLayout->setSpacing(0);
-    _toolBar = new QToolBar;
-    _toolBar->setIconSize(QSize(32, 32));
-    _toolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-    _toolBar->setOrientation(Qt::Vertical);
-    _toolBar->setMovable(false);
-    _toolBar->setMinimumWidth(220);
-    auto *shellContainer = new QWidget(this);
-    shellContainer->setObjectName(QLatin1String("settings_shell"));
-    auto *shellLayout = new QHBoxLayout(shellContainer);
-    shellLayout->setContentsMargins(0, 0, 0, 0);
-    shellLayout->setSpacing(12);
-    auto *navigationContainer = new QWidget(this);
-    navigationContainer->setObjectName(QLatin1String("settings_navigation"));
-    navigationContainer->setAttribute(Qt::WA_StyledBackground);
-    auto *navigationLayout = new QVBoxLayout(navigationContainer);
-    navigationLayout->setContentsMargins(0, 0, 0, 0);
-    navigationLayout->setSpacing(0);
-    navigationLayout->addWidget(_toolBar);
-    navigationLayout->addStretch(1);
-    auto *navigationScroll = new QScrollArea(shellContainer);
-    navigationScroll->setObjectName(QLatin1String("settings_navigation_scroll"));
-    navigationScroll->setWidgetResizable(true);
-    navigationScroll->setFrameShape(QFrame::NoFrame);
-    navigationScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    navigationScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    navigationScroll->setWidget(navigationContainer);
-    navigationScroll->viewport()->setObjectName("settings_navigation_viewport");
-    navigationScroll->viewport()->setAutoFillBackground(false);
-    navigationScroll->viewport()->setStyleSheet("background: transparent;");
-    auto *contentScroll = new QScrollArea(shellContainer);
-    contentScroll->setObjectName(QLatin1String("settings_content_scroll"));
-    contentScroll->setWidgetResizable(true);
-    contentScroll->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-    contentScroll->setFrameShape(QFrame::NoFrame);
-    contentScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    contentScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    contentScroll->viewport()->setAutoFillBackground(false);
-    auto *contentContainer = new QWidget(contentScroll);
-    contentContainer->setObjectName(QLatin1String("settings_content"));
-    auto *contentLayout = new QVBoxLayout(contentContainer);
-    contentLayout->setContentsMargins(0, 0, 0, 0);
-    contentLayout->setSpacing(0);
-    _ui->stack->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-    contentLayout->addWidget(_ui->stack);
-    contentLayout->setAlignment(_ui->stack, Qt::AlignTop);
-    contentLayout->addStretch(1);
-    contentScroll->setWidget(contentContainer);
-    shellLayout->addWidget(navigationScroll);
-    shellLayout->addWidget(contentScroll);
-    shellLayout->setStretch(0, 0);
-    shellLayout->setStretch(1, 1);
-    _ui->mainLayout->removeWidget(_ui->stack);
-    _ui->mainLayout->insertWidget(0, shellContainer);
-
-#if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
-    _windowDragHandle = new WindowDragHandle(this);
-    _windowDragHandle->setObjectName(QLatin1String("settings_window_drag_handle"));
-    _windowDragHandle->setFixedHeight(28);
-    _windowDragHandle->setGeometry(0, 0, width(), _windowDragHandle->height());
-    _windowDragHandle->raise();
-#endif
+    setupUi();
 
     // People perceive this as a Window, so also make Ctrl+W work
     auto *closeWindowAction = new QAction(this);
@@ -249,8 +179,8 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _toolBar->addWidget(accountSpacer);
     _toolBar->addSeparator();
     auto *generalSettings = new GeneralSettings;
-    _ui->stack->addWidget(generalSettings);
-    _ui->stack->setStyleSheet(QStringLiteral("QStackedWidget { background: transparent; }"));
+    _stack->addWidget(generalSettings);
+    _stack->setStyleSheet(QStringLiteral("QStackedWidget { background: transparent; }"));
 
     // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
     connect(this, &SettingsDialog::styleChanged, generalSettings, &GeneralSettings::slotStyleChanged);
@@ -291,12 +221,11 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
 SettingsDialog::~SettingsDialog()
 {
-    delete _ui;
 }
 
 QWidget* SettingsDialog::currentPage()
 {
-    return _ui->stack->currentWidget();
+    return _stack->currentWidget();
 }
 
 // close event is not being called here
@@ -350,9 +279,9 @@ void SettingsDialog::changeEvent(QEvent *e)
 
 void SettingsDialog::slotSwitchPage(QAction *action)
 {
-    _ui->stack->setCurrentWidget(_actionGroupWidgets.value(action));
-    _ui->stack->updateGeometry();
-    if (auto *contentContainer = _ui->stack->parentWidget()) {
+    _stack->setCurrentWidget(_actionGroupWidgets.value(action));
+    _stack->updateGeometry();
+    if (auto *contentContainer = _stack->parentWidget()) {
         contentContainer->updateGeometry();
     }
 }
@@ -392,7 +321,7 @@ void SettingsDialog::accountAdded(AccountState *s)
     QString objectName = QLatin1String("accountSettings_");
     objectName += s->account()->displayName();
     accountSettings->setObjectName(objectName);
-    _ui->stack->insertWidget(0 , accountSettings);
+    _stack->insertWidget(0 , accountSettings);
 
     _actionGroup->addAction(accountAction);
     _actionGroupWidgets.insert(accountAction, accountSettings);
@@ -469,7 +398,7 @@ void SettingsDialog::accountRemoved(AccountState *s)
         if (as->accountsState() == s) {
             _toolBar->removeAction(it.key());
 
-            if (_ui->stack->currentWidget() == it.value()) {
+            if (_stack->currentWidget() == it.value()) {
                 showFirstPage();
             }
 
@@ -499,25 +428,20 @@ void SettingsDialog::customizeStyle()
     }
 
     const QScopedValueRollback<bool> updatingStyle(_updatingStyle, true);
-    _toolBar->setStyleSheet(TOOLBAR_CSS());
+    _toolBar->setStyleSheet(TOOLBAR_CSS);
 
     setStyleSheet(QStringLiteral(
-        "#Settings { background: palette(window); }"
-        "#settings_shell { background: transparent; border-radius: 0; }"
+        "#Settings { background: palette(window); border-radius: 0; }"
 
         /* Navigation */
-        "#settings_navigation_scroll { background: palette(alternate-base); border-radius: 12px; padding: 4px; }"
-        "#settings_navigation_viewport { background: transparent; }"
-        "#settings_navigation { background: palette(alternate-base); border-radius: 12px; padding: 4px; }"
+        "#settings_navigation, #settings_navigation_scroll { background: palette(alternate-base); border-radius: 12px; padding: 4px; }"
 
         /* Content area */
-        "#settings_content_scroll { background: transparent; border-radius: 12px; }"
-        "#settings_content_scroll > QWidget { background: transparent; }"
-        "#settings_content { background: transparent; }"
+        "#settings_content, #settings_content_scroll { background: palette(window); border-radius: 12px; }"
 
         /* Panels */
         "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
-        "#accountStatusPanel, #accountTabsPanel, #fileProviderPanel, #syncFoldersPanel {"
+        "#accountStatusPanel, #connectionSettingsPanel, #fileProviderPanel, #syncFoldersPanel {"
         " background: palette(alternate-base);"
         " border-radius: 10px;"
         " margin: 0px;"
@@ -584,6 +508,71 @@ QAction *SettingsDialog::createColorAwareAction(const QString &iconPath, const Q
     // all buttons must have the same size in order to keep a good layout
     QIcon coloredIcon = Theme::createColorAwareIcon(iconPath, palette());
     return createActionWithIcon(coloredIcon, text, iconPath);
+}
+
+void SettingsDialog::setupUi()
+{
+    setWindowTitle(tr("Settings"));
+    setGeometry(0, 0, 950, 500);
+
+    auto *mainLayout = new QHBoxLayout(this);
+    mainLayout->setContentsMargins(12, 12, 12, 12);
+    mainLayout->setSpacing(12);
+    setLayout(mainLayout);
+
+    _toolBar = new QToolBar;
+    _toolBar->setIconSize(QSize(32, 32));
+    _toolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    _toolBar->setOrientation(Qt::Vertical);
+    _toolBar->setMovable(false);
+    _toolBar->setMinimumWidth(220);
+    _toolBar->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
+
+    auto *navigationContainer = new QWidget(this);
+    navigationContainer->setObjectName("settings_navigation"_L1);
+    navigationContainer->setAttribute(Qt::WA_StyledBackground);
+
+    auto *navigationLayout = new QVBoxLayout(navigationContainer);
+    navigationLayout->setContentsMargins(0, 0, 0, 0);
+    navigationLayout->setSpacing(0);
+    navigationLayout->addWidget(_toolBar);
+    navigationLayout->addStretch(1);
+
+    auto *navigationScroll = new QScrollArea(this);
+    navigationScroll->setObjectName("settings_navigation_scroll"_L1);
+    navigationScroll->setWidgetResizable(true);
+    navigationScroll->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+    navigationScroll->setFrameShape(QFrame::NoFrame);
+    navigationScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    navigationScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    navigationScroll->viewport()->setAutoFillBackground(false);
+    navigationScroll->setWidget(navigationContainer);
+
+    _stack = new CurrentPageSizeStackedWidget(this);
+    _stack->setObjectName(u"settings_content"_s);
+
+    auto *contentScroll = new QScrollArea(this);
+    contentScroll->setObjectName("settings_content_scroll"_L1);
+    contentScroll->setWidgetResizable(true);
+    contentScroll->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+    contentScroll->setFrameShape(QFrame::NoFrame);
+    contentScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    contentScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    contentScroll->viewport()->setAutoFillBackground(false);
+    contentScroll->setWidget(_stack);
+
+    mainLayout->addWidget(navigationScroll);
+    mainLayout->addWidget(contentScroll);
+    mainLayout->setStretch(0, 0);
+    mainLayout->setStretch(1, 1);
+
+#if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+    _windowDragHandle = new WindowDragHandle(this);
+    _windowDragHandle->setObjectName(QLatin1String("settings_window_drag_handle"));
+    _windowDragHandle->setFixedHeight(28);
+    _windowDragHandle->setGeometry(0, 0, width(), _windowDragHandle->height());
+    _windowDragHandle->raise();
+#endif
 }
 
 } // namespace OCC
