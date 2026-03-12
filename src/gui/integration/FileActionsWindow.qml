@@ -227,7 +227,10 @@ ApplicationWindow {
                     id: responseArea
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: Qt.openUrlExternally(fileActionModel.responseUrl)
+                    onClicked: {
+                        Qt.openUrlExternally(fileActionModel.responseUrl)
+                        root.close()
+                    }
                 }
             }
         }
