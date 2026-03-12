@@ -8,7 +8,7 @@
 #define ACTIVITYLISTMODEL_H
 
 #include <QtCore>
-#include <qqmlregistration.h>
+#include <qqmlintegration.h>
 
 #include "activitydata.h"
 #include "accountstate.h"

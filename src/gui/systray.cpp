@@ -120,7 +120,7 @@ void Systray::create()
 	qWarning() << "has error" << trayWindowComponent.isError();
 
         if(trayWindowComponent.isError()) {
-            qCWarning(lcSystray) << trayWindowComponent.errorString();
+            qWarning() << trayWindowComponent.errorString();
         } else {
             _trayWindow.reset(qobject_cast<QQuickWindow*>(trayWindowComponent.create()));
         }

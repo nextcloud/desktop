@@ -28,7 +28,7 @@ add_library(nextcloudTray STATIC
     usermodel.h
 )
 
-target_link_libraries(nextcloudTray PRIVATE nextcloudCore)
+target_link_libraries(nextcloudTray PRIVATE nextcloudCore Qt::QmlIntegration)
 
 qt_add_qml_module(nextcloudTray
     URI com.nextcloud.desktopclient.tray

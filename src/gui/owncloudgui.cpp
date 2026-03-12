@@ -21,15 +21,6 @@
 #include "settingsdialog.h"
 #include "syncconflictsmodel.h"
 #include "syncengine.h"
-#include "filedetails/datefieldbackend.h"
-#include "filedetails/filedetails.h"
-#include "filedetails/shareemodel.h"
-#include "filedetails/sharemodel.h"
-#include "filedetails/sortedsharemodel.h"
-#include "tray/sortedactivitylistmodel.h"
-#include "tray/syncstatussummary.h"
-#include "tray/unifiedsearchresultslistmodel.h"
-#include "integration/fileactionsmodel.h"
 #include "filesystem.h"
 
 #ifdef WITH_LIBCLOUDPROVIDERS
