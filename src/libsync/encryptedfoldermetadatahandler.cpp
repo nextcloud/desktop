@@ -281,6 +281,7 @@ void EncryptedFolderMetadataHandler::startUploadMetadata()
         return;
     }
 
+    folderMetadata()->updateSelfCertificate();
     const auto encryptedMetadata = folderMetadata()->encryptedMetadata();
     if (_isNewMetadataCreated) {
         const auto job = new StoreMetaDataApiJob(_account, _folderId, _folderToken, encryptedMetadata, folderMetadata()->metadataSignature());
