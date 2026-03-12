@@ -150,6 +150,8 @@ set(client_SRCS
     syncrunfilelog.cpp
     systray.h
     systray.cpp
+    types.h
+    types.cpp
     userinfo.h
     userinfo.cpp
     vfsdownloaderrordialog.h
@@ -487,13 +489,14 @@ if(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/usr/local/lib")
 endif()
 
-add_library(nextcloudCore STATIC ${final_src})
+add_library(nextcloudCore STATIC)
 
-qt_add_qml_module(nextcloudCore
+ecm_add_qml_module(nextcloudCore
     URI com.nextcloud.desktopclient
+    GENERATE_PLUGIN_SOURCE
     IMPORTS
     	com.nextcloud.desktopclient.tray
-	com.nextcloud.desktopclient.filedetails
+        com.nextcloud.desktopclient.filedetails
     QML_FILES 
         UserStatusMessageView.qml
         UserStatusSelectorPage.qml
@@ -502,6 +505,8 @@ qt_add_qml_module(nextcloudCore
         UserStatusSetStatusView.qml
         PredefinedStatusButton.qml
         ErrorBox.qml
+    SOURCES
+        ${final_src}
 )
 
 target_link_libraries(nextcloudCore PUBLIC

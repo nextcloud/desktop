@@ -35,6 +35,7 @@
 #include <QQmlExtensionPlugin>
 
 Q_IMPORT_QML_PLUGIN(com_nextcloud_desktopclient_trayPlugin)
+Q_IMPORT_QML_PLUGIN(com_nextcloud_desktopclient_filedetailsPlugin)
 
 using namespace OCC;
 

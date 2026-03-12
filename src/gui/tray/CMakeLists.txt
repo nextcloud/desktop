@@ -2,36 +2,11 @@
 # SPDX-FileContributor: Carl Schwan <carl.schwan@nextcloud.com>
 # SPDX-License-Identifier: BSD-3-Clause
 
-add_library(nextcloudTray STATIC
-    activitydata.cpp
-    activitydata.h
-    activitylistmodel.cpp
-    activitylistmodel.h
-    asyncimageresponse.cpp
-    fileactivitylistmodel.cpp
-    fileactivitylistmodel.h
-    notificationhandler.cpp
-    notificationhandler.h
-    sortedactivitylistmodel.cpp
-    sortedactivitylistmodel.h
-    svgimageprovider.cpp
-    svgimageprovider.h
-    syncstatussummary.cpp
-    syncstatussummary.h
-    talkreply.cpp
-    trayimageprovider.cpp
-    unifiedsearchresult.cpp
-    unifiedsearchresult.h
-    unifiedsearchresultslistmodel.cpp
-    unifiedsearchresultslistmodel.h
-    usermodel.cpp
-    usermodel.h
-)
+add_library(nextcloudTray STATIC)
 
-target_link_libraries(nextcloudTray PRIVATE nextcloudCore Qt::QmlIntegration)
-
-qt_add_qml_module(nextcloudTray
+ecm_add_qml_module(nextcloudTray
     URI com.nextcloud.desktopclient.tray
+    GENERATE_PLUGIN_SOURCE
     QML_FILES 
         MainWindow.qml
         UserLine.qml
@@ -66,4 +41,30 @@ qt_add_qml_module(nextcloudTray
         ListItemLineAndSubline.qml
         TrayFoldersMenuButton.qml
         TrayFolderListItem.qml
+    SOURCES
+        activitydata.cpp
+        activitydata.h
+        activitylistmodel.cpp
+        activitylistmodel.h
+        asyncimageresponse.cpp
+        fileactivitylistmodel.cpp
+        fileactivitylistmodel.h
+        notificationhandler.cpp
+        notificationhandler.h
+        sortedactivitylistmodel.cpp
+        sortedactivitylistmodel.h
+        svgimageprovider.cpp
+        svgimageprovider.h
+        syncstatussummary.cpp
+        syncstatussummary.h
+        talkreply.cpp
+        trayimageprovider.cpp
+        unifiedsearchresult.cpp
+        unifiedsearchresult.h
+        unifiedsearchresultslistmodel.cpp
+        unifiedsearchresultslistmodel.h
+        usermodel.cpp
+        usermodel.h
 )
+
+target_link_libraries(nextcloudTray PRIVATE nextcloudCore Qt::QmlIntegration)

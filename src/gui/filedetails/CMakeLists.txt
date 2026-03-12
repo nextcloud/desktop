@@ -4,8 +4,9 @@
 
 add_library(nextcloudFileDetails STATIC)
 
-qt_add_qml_module(nextcloudFileDetails
+ecm_add_qml_module(nextcloudFileDetails
     URI com.nextcloud.desktopclient.filedetails
+    GENERATE_PLUGIN_SOURCE
     QML_FILES 
         FileActivityView.qml
         FileDetailsPage.qml

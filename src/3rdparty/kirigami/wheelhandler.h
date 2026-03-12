@@ -169,6 +169,7 @@ public:
 class WheelHandler : public QObject
 {
     Q_OBJECT
+    QML_NAMED_ELEMENT(WheelHandler)
 
     /**
      * @brief This property holds the Qt Quick Flickable that the WheelHandler will control.
