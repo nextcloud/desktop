@@ -59,7 +59,7 @@ int FileActionsModel::rowCount(const QModelIndex &parent) const
 QHash<int, QByteArray> FileActionsModel::roleNames() const
 {
     auto roles = QAbstractListModel::roleNames();
-    roles[FileActionIconRole] = "icon";
+    roles[FileActionIconRole] = "actionIcon";
     roles[FileActionNameRole] = "name";
     roles[FileActionUrlRole] = "url";
     roles[FileActionMethodRole] = "method";
@@ -325,7 +325,7 @@ QString FileActionsModel::parseIcon(const QString &icon) const
         return QStringLiteral("image://svgimage-custom-color/convert_to_text.svg/");
     }
 
-    return _accountUrl + icon;
+    return QStringLiteral("image://tray-image-provider/") + _accountUrl + icon;
 }
 
 void FileActionsModel::createRequest(const int row)
