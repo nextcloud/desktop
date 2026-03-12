@@ -2044,25 +2044,25 @@ Det kan vara problem med dina OpenSSL-bibliotek.</translation>
 <context>
     <name>OCC::FileActionsModel</name>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="244"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="247"/>
         <source>Your account is offline %1.</source>
         <comment>account url</comment>
         <translation>Ditt konto är offline %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="253"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="256"/>
         <source>The file ID is empty for %1.</source>
         <comment>file name</comment>
         <translation>Filidentiteten är tomt för %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="261"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="264"/>
         <source>The file type for %1 is not valid.</source>
         <comment>file name</comment>
         <translation>Filtypen för %1är ogiltig.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="273"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="276"/>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mimetype, e.g text/plain files</comment>
         <extracomment>TRANSLATOR Placeholder contains file MIME type</extracomment>
@@ -2075,7 +2075,7 @@ Det kan vara problem med dina OpenSSL-bibliotek.</translation>
         <translation>%1 lyckades inte, försök igen senare. Om du behöver hjälp, kontakta din serveradministratör.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="370"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="375"/>
         <source>%1 done.</source>
         <comment>file action success message</comment>
         <translation>%1 klar.</translation>
@@ -5606,7 +5606,7 @@ Servern svarade med fel: %2</translation>
         <translation>Synkroniserar fil %1 av %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="435"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="437"/>
         <source>No synchronisation configured</source>
         <translation>Ingen synkronisering konfigurerad</translation>
     </message>

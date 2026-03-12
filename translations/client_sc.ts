@@ -2040,25 +2040,25 @@ Custu podet èssere un&apos;errore de is librerias tuas OpenSSL.</translation>
 <context>
     <name>OCC::FileActionsModel</name>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="244"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="247"/>
         <source>Your account is offline %1.</source>
         <comment>account url</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="253"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="256"/>
         <source>The file ID is empty for %1.</source>
         <comment>file name</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="261"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="264"/>
         <source>The file type for %1 is not valid.</source>
         <comment>file name</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="273"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="276"/>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mimetype, e.g text/plain files</comment>
         <extracomment>TRANSLATOR Placeholder contains file MIME type</extracomment>
@@ -2071,7 +2071,7 @@ Custu podet èssere un&apos;errore de is librerias tuas OpenSSL.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="370"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="375"/>
         <source>%1 done.</source>
         <comment>file action success message</comment>
         <translation type="unfinished"/>
@@ -5584,7 +5584,7 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="435"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="437"/>
         <source>No synchronisation configured</source>
         <translation type="unfinished"/>
     </message>
