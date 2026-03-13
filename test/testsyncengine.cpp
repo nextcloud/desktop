@@ -23,6 +23,8 @@
 
 #include <filesystem>
 
+#define DVSUFFIX APPLICATION_DOTVIRTUALFILE_SUFFIX
+
 using namespace OCC;
 
 namespace {
@@ -2460,6 +2462,98 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         const auto directoryItem = fakeFolder.remoteModifier().find("directory");
         QCOMPARE(directoryItem, nullptr);
+    }
+    // Test that when the server sets request-upload property, the client re-uploads the file
+    void testRequestUploadProperty() {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        ItemCompletedSpy completeSpy(fakeFolder);
+        
+        // Create a file on both local and remote
+        fakeFolder.localModifier().insert("A/file.txt", 100, 'A');
+        fakeFolder.syncOnce();
+        QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/file.txt"));
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        
+        completeSpy.clear();
+        
+        // Now simulate the server requesting a re-upload by setting the request-upload property
+        auto remoteFile = fakeFolder.remoteModifier().find("A/file.txt");
+        QVERIFY(remoteFile);
+        remoteFile->extraDavProperties = "<nc:request-upload xmlns:nc=\"http://nextcloud.org/ns\">1</nc:request-upload>";
+        
+        // Sync again - the file should be uploaded even though nothing changed locally
+        fakeFolder.syncOnce();
+        QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/file.txt"));
+        
+        // Verify the file was uploaded (check that it appeared in completed items)
+        auto item = completeSpy.findItem("A/file.txt");
+        QVERIFY(item);
+        QCOMPARE(item->_direction, SyncFileItem::Up);
+        QCOMPARE(item->_instruction, CSYNC_INSTRUCTION_SYNC);
+    }
+    
+    // Test that request-upload is ignored for directories
+    void testRequestUploadPropertyIgnoredForDirectories() {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        ItemCompletedSpy completeSpy(fakeFolder);
+        
+        // Create a directory
+        fakeFolder.localModifier().mkdir("TestDir");
+        fakeFolder.syncOnce();
+        QVERIFY(itemDidCompleteSuccessfully(completeSpy, "TestDir"));
+        
+        completeSpy.clear();
+        
+        // Set request-upload on the directory
+        auto remoteDir = fakeFolder.remoteModifier().find("TestDir");
+        QVERIFY(remoteDir);
+        remoteDir->extraDavProperties = "<nc:request-upload xmlns:nc=\"http://nextcloud.org/ns\">1</nc:request-upload>";
+        
+        // Sync again - nothing should happen for the directory
+        fakeFolder.syncOnce();
+        
+        // The directory should not be in the completed items (or should only have metadata update)
+        auto item = completeSpy.findItem("TestDir");
+        if (item) {
+            QVERIFY(item->_direction != SyncFileItem::Up || item->_instruction != CSYNC_INSTRUCTION_SYNC);
+        }
+    }
+    
+    // Test that request-upload works for virtual files
+    void testRequestUploadPropertyWithVirtualFiles() {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+        
+        auto vfs = QSharedPointer<Vfs>(createVfsFromPlugin(Vfs::WithSuffix).release());
+        QVERIFY(vfs);
+        fakeFolder.switchToVfs(vfs);
+        
+        ItemCompletedSpy completeSpy(fakeFolder);
+        
+        // Create a file on remote that becomes a virtual file locally
+        fakeFolder.remoteModifier().insert("A/virtual.txt", 100, 'V');
+        fakeFolder.syncOnce();
+        QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/virtual.txt"));
+        
+        // Verify it's a virtual file
+        QVERIFY(fakeFolder.currentLocalState().find("A/virtual.txt" DVSUFFIX));
+        
+        completeSpy.clear();
+        
+        // Set request-upload property
+        auto remoteFile = fakeFolder.remoteModifier().find("A/virtual.txt");
+        QVERIFY(remoteFile);
+        remoteFile->extraDavProperties = "<nc:request-upload xmlns:nc=\"http://nextcloud.org/ns\">1</nc:request-upload>";
+        
+        // Sync - should not upload since we don't have the actual file data locally
+        fakeFolder.syncOnce();
+        
+        // Virtual file should not be uploaded
+        auto item = completeSpy.findItem("A/virtual.txt");
+        if (item) {
+            // If the item is processed, it should not be an upload
+            QVERIFY(item->_direction != SyncFileItem::Up || item->_instruction != CSYNC_INSTRUCTION_SYNC);
+        }
     }
 };
 
