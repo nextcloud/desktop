@@ -7,25 +7,26 @@
 
 [![REUSE status](https://api.reuse.software/badge/github.com/nextcloud/desktop)](https://api.reuse.software/info/github.com/nextcloud/desktop)
 
-The Nextcloud Desktop Client is a tool to synchronize files from Nextcloud Server with your computer.
+The Nextcloud Desktop Client is an app to synchronize files from Nextcloud Server with your computer.
 
 <p align="center">
     <img src="doc/images/main_dialog_christine.png" alt="Desktop Client on Windows" width="450">
 </p>
 
-## Releases 🚀
-For the latest stable recommended version, please refer to the [download page https://nextcloud.com/install/#install-clients](https://nextcloud.com/install/#install-clients)
+## Downloads 🚀
+For the latest stable and recommended version, please refer to [the official download page](https://nextcloud.com/install/#install-clients).
 
-## Contributing to the desktop client 🫴
+## Contributing 🫴
 :v: Please read the [Code of Conduct](https://nextcloud.com/community/code-of-conduct/). This document offers some guidance to ensure Nextcloud participants can cooperate effectively in a positive and inspiring atmosphere and to explain how together we can strengthen and support each other.
 
 ## Join the team 👪
 There are many ways to contribute, of which development is only one! Find out [how to get involved](https://nextcloud.com/contribute/), including as a translator, designer, tester, helping others, and much more! 😍
 
 ## Help testing 🔬
-Download and install the client:<br>
-[🔽 All releases](https://github.com/nextcloud-releases/desktop/releases)<br>
-[🔽 Daily master builds](https://download.nextcloud.com/desktop/daily)
+Download and install the client:
+
+- [All releases](https://github.com/nextcloud-releases/desktop/releases)<br>
+- [Daily builds](https://download.nextcloud.com/desktop/daily)
 
 ## Reporting issues 🐛
 If you find any bugs or have any suggestion for improvement, please
@@ -100,11 +101,12 @@ This simple test server already suffices in the most cases. For more advanced se
 
 ## Get in touch 💬
 * [📋 Forum](https://help.nextcloud.com)
-* [👥 Facebook](https://www.facebook.com/nextclouders)
-* [🐣 Twitter](https://twitter.com/Nextclouders)
 * [🐘 Mastodon](https://mastodon.xyz/@nextcloud)
+* [🔗 LinkedIn](https://www.linkedin.com/company/nextcloud-gmbh/)
+* [🦋 Bluesky](https://bsky.app/profile/nextcloud.bsky.social)
+* [👥 Facebook](https://www.facebook.com/nextclouders)
 
-You can also [get support for Nextcloud](https://nextcloud.com/support)!
+You can also [get professional support for Nextcloud and the desktop client](https://nextcloud.com/support)!
 
 ## License 📜
 
