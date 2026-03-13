@@ -37,7 +37,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         domain: NSFileProviderDomain? = nil,
         pageSize: Int = 1000,
         log: any FileProviderLogging
-    ) {
+    ) throws {
         self.enumeratedItemIdentifier = enumeratedItemIdentifier
         self.remoteInterface = remoteInterface
         self.account = account
@@ -51,17 +51,15 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
             serverUrl = account.davFilesUrl
             enumeratedItemMetadata = nil
         } else {
-            logger.debug("Providing enumerator for item with identifier.", [.item: enumeratedItemIdentifier])
-            enumeratedItemMetadata = dbManager.itemMetadata(
-                enumeratedItemIdentifier
-            )
+            enumeratedItemMetadata = dbManager.itemMetadata(enumeratedItemIdentifier)
 
-            if let enumeratedItemMetadata {
-                serverUrl = enumeratedItemMetadata.serverUrl + "/" + enumeratedItemMetadata.fileName
-            } else {
-                serverUrl = ""
-                logger.error("Could not find itemMetadata for file with identifier.", [.item: enumeratedItemIdentifier])
+            guard let enumeratedItemMetadata, enumeratedItemMetadata.deleted == false else {
+                logger.error("Could not find item with identifier.", [.item: enumeratedItemIdentifier])
+                throw NSFileProviderError(.noSuchItem)
             }
+
+            logger.debug("Providing enumerator for item with identifier.", [.item: enumeratedItemIdentifier, .name: enumeratedItemMetadata.fileName])
+            serverUrl = enumeratedItemMetadata.serverUrl + "/" + enumeratedItemMetadata.fileName
         }
 
         logger.info("Set up enumerator.", [.account: self.account.ncKitAccount, .url: serverUrl])
@@ -69,7 +67,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     }
 
     public func invalidate() {
-        logger.debug("Enumerator is being invalidated.", [.item: enumeratedItemIdentifier])
+        logger.debug("Enumerator is being invalidated.", [.item: enumeratedItemIdentifier, .name: enumeratedItemMetadata?.fileName])
     }
 
     // MARK: - Protocol methods
@@ -112,6 +110,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
             let ncKitAccount = account.ncKitAccount
             // Visited folders and downloaded files
             let materialisedItems = dbManager.materialisedItemMetadatas(account: ncKitAccount)
+                .filter { !$0.deleted }
             completeEnumerationObserver(observer, nextPage: nil, itemMetadatas: materialisedItems)
             return
         }
@@ -248,7 +247,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
 
             Task {
                 await checkMaterializedItemsOnServer()
-                let pendingLocalChanges = dbManager.pendingWorkingSetChanges(account: account, since: date)
+                let pendingLocalChanges = dbManager.pendingWorkingSetChanges(since: date)
 
                 completeChangesObserver(
                     observer,
@@ -434,6 +433,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         // This way we ensure we visit parent folders before their children.
         let materializedItems = dbManager
             .materialisedItemMetadatas(account: account.ncKitAccount)
+            .filter { !$0.deleted }
             .sorted { $0.remotePath().count < $1.remotePath().count }
 
         var allNewMetadatas = [SendableItemMetadata]()
@@ -639,15 +639,15 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         }
 
         for metadata in newMetadatas {
-            logger.debug("Got added metadata.", [.item: metadata.ocId, .name: metadata.fileName])
+            logger.debug("Got added metadata to report.", [.item: metadata.ocId, .name: metadata.fileName])
         }
 
         for metadata in updatedMetadatas {
-            logger.debug("Got updated metadata.", [.item: metadata.ocId, .name: metadata.fileName])
+            logger.debug("Got updated metadata to report.", [.item: metadata.ocId, .name: metadata.fileName])
         }
 
         for metadata in deletedMetadatas {
-            logger.debug("Got deleted metadata.", [.item: metadata.ocId, .name: metadata.fileName])
+            logger.debug("Got deleted metadata to report.", [.item: metadata.ocId, .name: metadata.fileName])
         }
 
         // The file provider framework does not differentiate between newly added and updated items, hence the collections are merged.
@@ -671,6 +671,10 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                     }
 
                     observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
+
+                    for metadata in deletedMetadatas {
+                        dbManager.removeItemMetadata(ocId: metadata.ocId)
+                    }
                 }
             } catch let error as NSError { // This error can only mean a missing parent item identifier
                 guard handleInvalidParent else {

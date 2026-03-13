@@ -129,7 +129,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         debugPrint(db) // Avoid build-time warning about unused variable, ensure compiler won't free
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .rootContainer,
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -209,7 +209,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         notVisitedDir.visitedDirectory = false
         Self.dbManager.addItemMetadata(notVisitedDir)
 
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
@@ -262,7 +262,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         notVisitedDir.visitedDirectory = false
         Self.dbManager.addItemMetadata(notVisitedDir)
 
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
@@ -533,7 +533,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         nonMaterialisedItem.syncTime = now
         Self.dbManager.addItemMetadata(nonMaterialisedItem)
 
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -618,7 +618,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         Self.dbManager.addItemMetadata(childFolderMetadata)
 
         // 2. Act: Enumerate changes for the working set
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -697,7 +697,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         Self.dbManager.addItemMetadata(folderMetadata)
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
 
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -754,7 +754,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteItemA.identifier))
 
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(remoteItemA.identifier),
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -787,7 +787,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // Check download state is not just always true
         Self.dbManager.addItemMetadata(remoteItemB.toItemMetadata(account: Self.account))
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteItemB.identifier))
-        let enumerator2 = Enumerator(
+        let enumerator2 = try Enumerator(
             enumeratedItemIdentifier: .init(remoteItemB.identifier),
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -834,7 +834,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteItemA.identifier))
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteItemB.identifier))
 
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -863,13 +863,10 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         let dbItemAMetadata = try XCTUnwrap(
             Self.dbManager.itemMetadata(ocId: remoteItemA.identifier)
         )
-        let dbItemBMetadata = try XCTUnwrap(
-            Self.dbManager.itemMetadata(ocId: remoteItemB.identifier)
-        )
         let dbItemCMetadata = try XCTUnwrap(
             Self.dbManager.itemMetadata(ocId: remoteItemC.identifier)
         )
-        XCTAssertTrue(dbItemBMetadata.deleted)
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: remoteItemB.identifier))
         XCTAssertEqual(dbFolderMetadata.etag, remoteFolder.versionIdentifier)
         XCTAssertTrue(dbFolderMetadata.downloaded)
         XCTAssertEqual(dbItemAMetadata.etag, remoteItemA.versionIdentifier)
@@ -952,7 +949,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteItemA.identifier))
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteItemB.identifier))
 
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .rootContainer,
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -1041,7 +1038,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         Self.dbManager.addItemMetadata(folderMetadata)
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
 
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -1119,7 +1116,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         remoteItemA.parent = remoteInterface.rootItem
         rootItem.children = [remoteItemA]
 
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .rootContainer,
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -1154,7 +1151,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db) // Avoid build-time warning about unused variable, ensure compiler won't free
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .trashContainer,
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -1179,7 +1176,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         )
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteTrashItemA.identifier))
 
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .trashContainer,
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -1206,7 +1203,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: remoteTrashItemA.identifier)?.deleted, true)
     }
 
-    func testTrashItemEnumerationFailWhenNoTrashInCapabilities() async {
+    func testTrashItemEnumerationFailWhenNoTrashInCapabilities() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         XCTAssert(remoteInterface.capabilities.contains(##""undelete": true,"##))
         remoteInterface.capabilities =
@@ -1214,7 +1211,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db) // Avoid build-time warning about unused variable, ensure compiler won't free
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .trashContainer,
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -1248,7 +1245,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         remoteFolder.versionIdentifier = "NEW"
         remoteItemA.versionIdentifier = "NEW_ETAG"
 
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -1267,7 +1264,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(updatedMetadata.downloaded, "Downloaded state should be preserved")
     }
 
-    func testTrashChangeEnumerationFailWhenNoTrashInCapabilities() async {
+    func testTrashChangeEnumerationFailWhenNoTrashInCapabilities() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         XCTAssert(remoteInterface.capabilities.contains(##""undelete": true,"##))
         remoteInterface.capabilities =
@@ -1275,7 +1272,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db) // Avoid build-time warning about unused variable, ensure compiler won't free
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .trashContainer,
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -1311,7 +1308,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         rootItem.children.append(remoteLockFileItem)
         remoteLockFileItem.parent = rootItem
 
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .rootContainer,
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -1340,7 +1337,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteItemA.identifier))
 
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(remoteItemA.identifier),
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -1410,7 +1407,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         Self.dbManager.addItemMetadata(folderMetadata)
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
 
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -1449,7 +1446,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, pagination: true)
 
         // 2. Create enumerator for the empty folder with a specific pageSize.
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: NSFileProviderItemIdentifier(remoteFolder.identifier),
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -1516,7 +1513,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, pagination: true)
 
         // 2. Create enumerator with pageSize > number of children.
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: NSFileProviderItemIdentifier(remoteFolder.identifier),
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -1585,7 +1582,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(initialMetadata.etag, "OLD_ETAG")
 
         // 2. Act: Enumerate the folder, which will trigger an update
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -1626,7 +1623,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         XCTAssertFalse(initialMetadata.visitedDirectory, "Folder should initially not be marked as visited")
 
         // 2. Act: Enumerate the folder (depth-1 read)
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -1676,7 +1673,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         Self.dbManager.addItemMetadata(notVisitedFolder)
 
         // 2. Act: Enumerate working set
-        let workingSetEnumerator = Enumerator(
+        let workingSetEnumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -1709,7 +1706,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         rootItem.children.append(notVisitedRemoteFolder)
         notVisitedRemoteFolder.parent = rootItem
 
-        let folderEnumerator = Enumerator(
+        let folderEnumerator = try Enumerator(
             enumeratedItemIdentifier: .init(notVisitedFolder.ocId),
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -1725,7 +1722,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
                       "Folder should now be marked as visited after enumeration")
 
         // 6. Act: Enumerate working set again
-        let workingSetEnumerator2 = Enumerator(
+        let workingSetEnumerator2 = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -1789,7 +1786,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         Self.dbManager.addItemMetadata(remoteFolder.toItemMetadata(account: Self.account))
 
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -1860,7 +1857,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         Self.dbManager.addItemMetadata(remoteFolder.toItemMetadata(account: Self.account))
 
-        let enumerator = Enumerator(
+        let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
             account: Self.account,
             remoteInterface: remoteInterface,
