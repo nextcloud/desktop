@@ -9,16 +9,17 @@
  */
 #pragma once
 
+#include "abstractnetworkjob.h"
 #include "account.h"
 #include "common/result.h"
-#include "creds/abstractcredentials.h"
-#include "logger.h"
-#include "filesystem.h"
-#include "syncengine.h"
 #include "common/syncjournaldb.h"
 #include "common/syncjournalfilerecord.h"
 #include "common/vfs.h"
+#include "creds/abstractcredentials.h"
 #include "csync_exclude.h"
+#include "filesystem.h"
+#include "logger.h"
+#include "syncengine.h"
 #include "testhelper.h"
 
 #include <QDir>
@@ -518,13 +519,22 @@ template <class OriginalReply>
 class DelayedReply : public OriginalReply
 {
 public:
-    template <typename... Args>
-    explicit DelayedReply(quint64 delayMS, Args &&... args)
+    template<typename... Args>
+    explicit DelayedReply(qint64 delayMS, Args &&...args)
         : OriginalReply(std::forward<Args>(args)...)
         , _delayMs(delayMS)
     {
+        if (OCC::AbstractNetworkJob::httpTimeout && OCC::AbstractNetworkJob::httpTimeout < delayMS) {
+            QMetaObject::invokeMethod(
+                this,
+                [this]() {
+                    OriginalReply::setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 0);
+                    Q_EMIT OriginalReply::errorOccurred(QNetworkReply::NetworkError::TimeoutError);
+                },
+                Qt::QueuedConnection);
+        }
     }
-    quint64 _delayMs;
+    qint64 _delayMs;
 
     void respond() override
     {

@@ -2259,9 +2259,9 @@ class TestUnifiedSharing : public QObject
         connect(job, &UnifiedSharingRequest::jobFinished, this, [&](const QJsonDocument &, int) {
             jobFinished = true;
         });
-        connect(job, &UnifiedSharingRequest::networkError, this, [&, job](QNetworkReply *) {
+        connect(job, &UnifiedSharingRequest::networkError, this, [&](QNetworkReply *reply) {
             networkError = true;
-            timedOut = job->timedOut();
+            timedOut = {reply->error() == QNetworkReply::TimeoutError};
         });
 
         job->start();

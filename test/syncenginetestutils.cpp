@@ -1132,6 +1132,13 @@ FakeHangingReply::FakeHangingReply(QNetworkAccessManager::Operation op, const QN
     setUrl(request.url());
     setOperation(op);
     open(QIODevice::ReadOnly);
+    QMetaObject::invokeMethod(
+        this,
+        [this]() {
+            setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 0);
+            Q_EMIT errorOccurred(QNetworkReply::NetworkError::TimeoutError);
+        },
+        Qt::QueuedConnection);
 }
 
 void FakeHangingReply::abort()
