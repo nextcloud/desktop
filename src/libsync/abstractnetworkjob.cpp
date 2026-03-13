@@ -38,7 +38,7 @@ Q_LOGGING_CATEGORY(lcNetworkJob, "nextcloud.sync.networkjob", QtInfoMsg)
 
 // If not set, it is overwritten by the Application constructor with the value from the config
 int AbstractNetworkJob::httpTimeout = qEnvironmentVariableIntValue("OWNCLOUD_TIMEOUT");
-bool AbstractNetworkJob::enableTimeout = false;
+bool AbstractNetworkJob::enableTimeout = true;
 
 AbstractNetworkJob::AbstractNetworkJob(const AccountPtr &account, const QString &path, QObject *parent)
     : QObject(parent)
@@ -48,19 +48,6 @@ AbstractNetworkJob::AbstractNetworkJob(const AccountPtr &account, const QString 
 {
     // Since we hold a QSharedPointer to the account, this makes no sense. (issue #6893)
     ASSERT(account != parent);
-
-    _timer.setSingleShot(true);
-    _timer.setInterval((httpTimeout ? httpTimeout : 300) * 1000); // default to 5 minutes.
-    connect(&_timer, &QTimer::timeout, this, &AbstractNetworkJob::slotTimeout);
-
-    connect(this, &AbstractNetworkJob::networkActivity, this, &AbstractNetworkJob::resetTimeout);
-
-    // Network activity on the propagator jobs (GET/PUT) keeps all requests alive.
-    // This is a workaround for OC instances which only support one
-    // parallel up and download
-    if (_account) {
-        connect(_account.data(), &Account::propagatorNetworkActivity, this, &AbstractNetworkJob::resetTimeout);
-    }
 }
 
 void AbstractNetworkJob::setReply(QNetworkReply *reply)
@@ -75,14 +62,7 @@ void AbstractNetworkJob::setReply(QNetworkReply *reply)
 
 void AbstractNetworkJob::setTimeout(qint64 msec)
 {
-    _timer.start(msec);
-}
-
-void AbstractNetworkJob::resetTimeout()
-{
-    qint64 interval = _timer.interval();
-    _timer.stop();
-    _timer.start(interval);
+    _timeoutDuration = msec;
 }
 
 void AbstractNetworkJob::setIgnoreCredentialFailure(bool ignore)
@@ -112,17 +92,15 @@ void AbstractNetworkJob::setupConnections(QNetworkReply *reply)
     connect(reply, &QNetworkReply::redirected, this, [reply, this] (const QUrl &url) { emit redirected(reply, url, 0);});
 }
 
-QNetworkReply *AbstractNetworkJob::addTimer(QNetworkReply *reply)
-{
-    reply->setProperty("timer", QVariant::fromValue(&_timer));
-    return reply;
-}
-
 QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb,
                                                const QUrl &url,
                                                QNetworkRequest req,
                                                QIODevice *requestBody)
 {
+    if (AbstractNetworkJob::enableTimeout) {
+        req.setTransferTimeout(_timeoutDuration);
+    }
+
     auto reply = _account->sendRawRequest(verb, url, req, requestBody);
     _requestBody = requestBody;
     if (_requestBody) {
@@ -137,6 +115,10 @@ QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb,
                                                QNetworkRequest req,
                                                const QByteArray &requestBody)
 {
+    if (AbstractNetworkJob::enableTimeout) {
+        req.setTransferTimeout(_timeoutDuration);
+    }
+
     auto reply = _account->sendRawRequest(verb, url, req, requestBody);
     _requestBody = nullptr;
     adoptRequest(reply);
@@ -148,6 +130,10 @@ QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb,
                                                QNetworkRequest req,
                                                QHttpMultiPart *requestBody)
 {
+    if (AbstractNetworkJob::enableTimeout) {
+        req.setTransferTimeout(_timeoutDuration);
+    }
+
     auto reply = _account->sendRawRequest(verb, url, req, requestBody);
     _requestBody = nullptr;
     adoptRequest(reply);
@@ -156,8 +142,6 @@ QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb,
 
 void AbstractNetworkJob::adoptRequest(QNetworkReply *reply)
 {
-    addTimer(reply);
-    setReply(reply);
     setupConnections(reply);
     newReplyHook(reply);
 }
@@ -172,9 +156,21 @@ QUrl AbstractNetworkJob::makeDavUrl(const QString &relativePath) const
     return Utility::concatUrlPath(_account->davUrl(), relativePath);
 }
 
+void AbstractNetworkJob::onTimedOut()
+{
+    if (reply()) {
+        reply()->abort();
+    } else {
+        deleteLater();
+    }
+}
+
 void AbstractNetworkJob::slotFinished()
 {
-    _timer.stop();
+    if (_reply->error() == QNetworkReply::TimeoutError) {
+        qCWarning(lcNetworkJob) << "TimeoutError"  << errorString();
+        onTimedOut();
+    }
 
     if (_reply->error() == QNetworkReply::SslHandshakeFailedError) {
         qCWarning(lcNetworkJob) << "SslHandshakeFailedError: " << errorString() << " : can be caused by a webserver wanting SSL client certificates";
@@ -195,7 +191,6 @@ void AbstractNetworkJob::slotFinished()
             qCInfo(lcNetworkJob) << "HTTP2 resending" << _reply->request().url();
             _http2ResendCount++;
 
-            resetTimeout();
             if (_requestBody) {
                 if(!_requestBody->isOpen())
                    _requestBody->open(QIODevice::ReadOnly);
@@ -265,7 +260,6 @@ void AbstractNetworkJob::slotFinished()
 
                 // Create the redirected request and send it
                 qCInfo(lcNetworkJob) << "Redirecting" << verb << requestedUrl << redirectUrl;
-                resetTimeout();
                 if (_requestBody) {
                     if(!_requestBody->isOpen()) {
                         // Avoid the QIODevice::seek (QBuffer): The device is not open warning message
@@ -321,10 +315,6 @@ QByteArray AbstractNetworkJob::requestId()
 
 QString AbstractNetworkJob::errorString() const
 {
-    if (_timedout) {
-        return tr("The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administrator.");
-    }
-
     if (!reply()) {
         return tr("An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.");
     }
@@ -373,34 +363,11 @@ AbstractNetworkJob::~AbstractNetworkJob()
 
 void AbstractNetworkJob::start()
 {
-    _timer.start();
-
     const QUrl url = account()->url();
     const QString displayUrl = QStringLiteral("%1://%2%3").arg(url.scheme()).arg(url.host()).arg(url.path());
 
     QString parentMetaObjectName = parent() ? parent()->metaObject()->className() : "";
     qCInfo(lcNetworkJob) << metaObject()->className() << "created for" << displayUrl << "+" << path() << parentMetaObjectName;
-}
-
-void AbstractNetworkJob::slotTimeout()
-{
-    // TODO: workaround, find cause of https://github.com/nextcloud/desktop/issues/7184
-    if (!AbstractNetworkJob::enableTimeout) {
-        return;
-    }
-
-    _timedout = true;
-    qCWarning(lcNetworkJob) << "Network job timeout" << (reply() ? reply()->request().url() : path());
-    onTimedOut();
-}
-
-void AbstractNetworkJob::onTimedOut()
-{
-    if (reply()) {
-        reply()->abort();
-    } else {
-        deleteLater();
-    }
 }
 
 QString AbstractNetworkJob::replyStatusString() {
@@ -579,7 +546,6 @@ void AbstractNetworkJob::retry()
     QUrl requestedUrl = req.url();
     QByteArray verb = HttpLogger::requestVerb(*_reply);
     qCInfo(lcNetworkJob) << "Restarting" << verb << requestedUrl;
-    resetTimeout();
     if (_requestBody) {
         _requestBody->seek(0);
     }
