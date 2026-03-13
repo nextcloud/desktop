@@ -16,6 +16,8 @@ OBS_PROJECT=home:ivaradi
 OBS_PROJECT_ALPHA=home:ivaradi:alpha
 OBS_PROJECT_BETA=home:ivaradi:beta
 OBS_PACKAGE=nextcloud-desktop
+DRONE_TARGET_BRANCH=$GITHUB_BASE_REF
+DRONE_COMMIT=$1
 
 if test "${DRONE_TARGET_BRANCH}" = "stable-2.6"; then
     UBUNTU_DISTRIBUTIONS="bionic focal jammy kinetic"
