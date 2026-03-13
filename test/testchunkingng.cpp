@@ -598,6 +598,7 @@ private Q_SLOTS:
     }
     void connectionDroppedBeforeEtagRecieved()
     {
+        QSKIP("cannot test Qt timeout handling while we override it");
         QFETCH(bool, chunking);
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ { "chunking", "1.0" } } }, { "checksums", QVariantMap{ { "supportedTypes", QStringList() << "SHA1" } } } });

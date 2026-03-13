@@ -120,6 +120,10 @@ private Q_SLOTS:
         QFETCH(QString, expectedErrorString);
         QFETCH(bool, syncSucceeds);
 
+        if (errorKind == Timeout) {
+            QSKIP("timeout handling by Qt is not implemented in the fake server that we use");
+        }
+
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
 
         // Do Some change as well
