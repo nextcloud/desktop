@@ -6,7 +6,6 @@
 import QtQml
 import QtQuick
 import QtQuick.Controls
-import Style
 
 AutoSizingMenu {
     id: moreActionsButtonContextMenu

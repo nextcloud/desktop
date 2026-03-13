@@ -4,11 +4,11 @@ pragma Singleton
 
 import QtQuick
 
-import com.nextcloud.desktopclient
+import com.nextcloud.desktopclient.tray
 
 QtObject {
     readonly property int pixelSize: fontMetrics.font.pixelSize
-    readonly property bool darkMode: Theme.darkMode
+    readonly property bool darkMode: Theme ? Theme.darkMode : false
 
     // Colors
     readonly property color ncBlue: Theme.wizardHeaderBackgroundColor
@@ -17,7 +17,7 @@ QtObject {
 
     readonly property color currentUserHeaderColor: UserModel.currentUser ? UserModel.currentUser.headerColor : ncBlue
     readonly property color currentUserHeaderTextColor: UserModel.currentUser ? UserModel.currentUser.headerTextColor : ncHeaderTextColor
-    readonly property color adjustedCurrentUserHeaderColor: Theme.darkMode ? Qt.lighter(currentUserHeaderColor, 2)
+    readonly property color adjustedCurrentUserHeaderColor: Theme?.darkMode ? Qt.lighter(currentUserHeaderColor, 2)
                                                                            : Qt.darker(currentUserHeaderColor, 1.5)
 
     // ErrorBox colors
@@ -85,8 +85,8 @@ QtObject {
     property int slightlyRoundedButtonRadius: 5
     property double hoverOpacity: 0.7
 
-    property url stateOnlineImageSource: Theme.stateOnlineImageSource
-    property url stateOfflineImageSource: Theme.stateOfflineImageSource
+    property url stateOnlineImageSource: Theme?.stateOnlineImageSource
+    property url stateOfflineImageSource: Theme?.stateOfflineImageSource
 
     property int accountAvatarSize: (trayWindowHeaderHeight - 16)
     property int accountAvatarStateIndicatorSize: 16

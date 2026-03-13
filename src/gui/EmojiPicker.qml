@@ -7,8 +7,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import Style
-import com.nextcloud.desktopclient 1.0 as NC
+import com.nextcloud.desktopclient as NC
 import "./tray"
 
 ColumnLayout {

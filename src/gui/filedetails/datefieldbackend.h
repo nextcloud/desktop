@@ -7,6 +7,7 @@
 
 #include <QDate>
 #include <QObject>
+#include <qqmlregistration.h>
 
 class TestDateFieldBackend;
 
@@ -18,6 +19,7 @@ namespace Quick
 class DateFieldBackend : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
 
     Q_PROPERTY(QDate date READ date WRITE setDate NOTIFY dateChanged)
     Q_PROPERTY(qint64 dateMsecs READ dateMsecs WRITE setDateMsecs NOTIFY dateMsecsChanged)

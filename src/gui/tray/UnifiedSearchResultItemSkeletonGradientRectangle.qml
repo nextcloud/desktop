@@ -8,12 +8,11 @@ import QtQuick
 import QtQuick.Layouts
 import Qt5Compat.GraphicalEffects
 
-import Style
 
 Rectangle {
     id: root
 
-    property color progressGradientColor: Style.darkMode ? Qt.lighter(palette.light, 1.2) : Qt.darker(palette.light, 1.1)
+    property color progressGradientColor: Theme.darkMode ? Qt.lighter(palette.light, 1.2) : Qt.darker(palette.light, 1.1)
     property int animationStartX: -width
     property int animationEndX: width
 

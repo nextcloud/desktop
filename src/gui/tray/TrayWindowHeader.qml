@@ -10,7 +10,6 @@ import QtQuick.Layouts
 import "../"
 import "../filedetails/"
 
-import Style
 import com.nextcloud.desktopclient
 
 Rectangle {

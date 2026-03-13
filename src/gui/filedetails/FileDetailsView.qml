@@ -8,7 +8,6 @@ import QtQuick.Layouts
 import QtQuick.Controls
 
 import com.nextcloud.desktopclient
-import Style
 
 StackView {
     id: root

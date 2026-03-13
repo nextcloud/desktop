@@ -7,7 +7,6 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import Style
 
 import com.nextcloud.desktopclient as NC
 
@@ -17,7 +16,7 @@ RowLayout {
     property alias model: syncStatus
     property color accentColor: Style.ncBlue
 
-    spacing: Style.trayHorizontalMargin
+    spacing: NC.Style.trayHorizontalMargin
 
     NC.SyncStatusSummary {
         id: syncStatus
@@ -25,17 +24,17 @@ RowLayout {
 
     NCBusyIndicator {
         id: syncIcon
-        property int size: Style.trayListItemIconSize * 0.6
-        property int whiteSpace: (Style.trayListItemIconSize - size)
+        property int size: NC.Style.trayListItemIconSize * 0.6
+        property int whiteSpace: (NC.Style.trayListItemIconSize - size)
 
         Layout.preferredWidth: size
         Layout.preferredHeight: size
 
         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-        Layout.topMargin: Style.trayHorizontalMargin
-        Layout.rightMargin: whiteSpace * (0.5 + Style.thumbnailImageSizeReduction)
-        Layout.bottomMargin: Style.trayHorizontalMargin
-        Layout.leftMargin: Style.trayHorizontalMargin + (whiteSpace * (0.5 - Style.thumbnailImageSizeReduction))
+        Layout.topMargin: NC.Style.trayHorizontalMargin
+        Layout.rightMargin: whiteSpace * (0.5 + NC.Style.thumbnailImageSizeReduction)
+        Layout.bottomMargin: NC.Style.trayHorizontalMargin
+        Layout.leftMargin: NC.Style.trayHorizontalMargin + (whiteSpace * (0.5 - NC.Style.thumbnailImageSizeReduction))
 
         padding: 0
 
@@ -48,7 +47,7 @@ RowLayout {
 
         Layout.alignment: Qt.AlignVCenter
         Layout.topMargin: 8
-        Layout.rightMargin: Style.trayHorizontalMargin
+        Layout.rightMargin: NC.Style.trayHorizontalMargin
         Layout.bottomMargin: 8
         Layout.fillWidth: true
         Layout.fillHeight: true
@@ -60,14 +59,14 @@ RowLayout {
 
             text: syncStatus.syncStatusString
             verticalAlignment: Text.AlignVCenter
-            font.pixelSize: Style.topLinePixelSize
+            font.pixelSize: NC.Style.topLinePixelSize
             font.bold: true
             wrapMode: Text.Wrap
         }
 
         Loader {
             Layout.fillWidth: true
-            Layout.preferredHeight: Style.progressBarPreferredHeight
+            Layout.preferredHeight: NC.Style.progressBarPreferredHeight
 
             active: syncStatus.syncing && syncStatus.totalFiles > 0
             visible: active
@@ -86,7 +85,7 @@ RowLayout {
 
             text: syncStatus.syncStatusDetailString
             visible: syncStatus.syncStatusDetailString !== ""
-            font.pixelSize: Style.subLinePixelSize
+            font.pixelSize: NC.Style.subLinePixelSize
             wrapMode: Text.Wrap
         }
     }
@@ -94,11 +93,11 @@ RowLayout {
     Button {
         id: syncNowButton
 
-        Layout.rightMargin: Style.trayHorizontalMargin
+        Layout.rightMargin: NC.Style.trayHorizontalMargin
 
         text: qsTr("Sync now")
 
-        padding: Style.smallSpacing
+        padding: NC.Style.smallSpacing
 
         visible: !activityModel.hasSyncConflicts &&
                  !syncStatus.syncing &&
@@ -113,7 +112,7 @@ RowLayout {
     }
 
     Button {
-        Layout.rightMargin: Style.trayHorizontalMargin
+        Layout.rightMargin: NC.Style.trayHorizontalMargin
 
         text: qsTr("Resolve conflicts")
 
@@ -126,7 +125,7 @@ RowLayout {
     }
 
     Button {
-        Layout.rightMargin: Style.trayHorizontalMargin
+        Layout.rightMargin: NC.Style.trayHorizontalMargin
 
         text: qsTr("Open browser")
 
