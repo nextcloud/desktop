@@ -408,7 +408,7 @@ Application::Application(int &argc, char **argv)
 
     // The timeout is initialized with an environment variable, if not, override with the value from the config
     if (!AbstractNetworkJob::httpTimeout) {
-        AbstractNetworkJob::httpTimeout = cfg.timeout();
+        AbstractNetworkJob::httpTimeout = cfg.timeout() * 1000;
     }
 
     // Check vfs plugins
