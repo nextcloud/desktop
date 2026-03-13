@@ -1127,52 +1127,37 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     func testMaterialisedFiles() throws {
         let itemA = RealmItemMetadata()
         let itemB = RealmItemMetadata()
-        let itemC = RealmItemMetadata()
         let folderA = RealmItemMetadata()
         let folderB = RealmItemMetadata()
-        let folderC = RealmItemMetadata()
         let notFolderA = RealmItemMetadata()
-        let notFolderB = RealmItemMetadata()
 
         folderA.directory = true
         folderB.directory = true
-        folderC.directory = true
 
         itemA.ocId = "itemA"
         itemB.ocId = "itemB"
-        itemC.ocId = "itemC"
         folderA.ocId = "folderA"
         folderB.ocId = "folderB"
-        folderC.ocId = "folderC"
         notFolderA.ocId = "notFolderA"
-        notFolderB.ocId = "notFolderB"
 
         itemA.account = Self.account.ncKitAccount
         itemB.account = Self.account.ncKitAccount
-        itemC.account = "another account"
         folderA.account = Self.account.ncKitAccount
         folderB.account = Self.account.ncKitAccount
-        folderC.account = "another account"
         notFolderA.account = Self.account.ncKitAccount
-        notFolderB.account = "another account"
 
         itemA.downloaded = true
         itemB.downloaded = false
-        itemC.downloaded = true
         folderA.visitedDirectory = true
         folderB.visitedDirectory = false
-        folderC.visitedDirectory = true
         notFolderA.visitedDirectory = true
-        notFolderB.visitedDirectory = true
 
         let realm = Self.dbManager.ncDatabase()
         try realm.write {
             realm.add(itemA)
             realm.add(itemB)
-            realm.add(itemC)
             realm.add(folderA)
             realm.add(folderB)
-            realm.add(folderC)
         }
 
         // Test with addItemMetadata too
@@ -1363,9 +1348,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         Self.dbManager.addItemMetadata(nonMatChildRecent)
 
         // 2. Act
-        let result = Self.dbManager.pendingWorkingSetChanges(
-            account: Self.account, since: anchorDate
-        )
+        let result = Self.dbManager.pendingWorkingSetChanges(since: anchorDate)
 
         // 3. Assert - Updated items
         let updatedIds = Set(result.updated.map(\.ocId))

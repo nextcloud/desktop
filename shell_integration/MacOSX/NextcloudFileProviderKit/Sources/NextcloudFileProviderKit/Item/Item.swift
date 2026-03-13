@@ -340,13 +340,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         super.init()
     }
 
-    public static func storedItem(
-        identifier: NSFileProviderItemIdentifier,
-        account: Account,
-        remoteInterface: RemoteInterface,
-        dbManager: FilesDatabaseManager,
-        log: any FileProviderLogging
-    ) async -> Item? {
+    public static func storedItem(identifier: NSFileProviderItemIdentifier, account: Account, remoteInterface: RemoteInterface, dbManager: FilesDatabaseManager, log: any FileProviderLogging) async -> Item? {
         // resolve the given identifier to a record in the model
 
         let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account)
