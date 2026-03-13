@@ -36,6 +36,7 @@
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcPutJob, "nextcloud.sync.networkjob.put", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcUploadDevice, "nextcloud.sync.uploaddevice", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPollJob, "nextcloud.sync.networkjob.poll", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPropagateUpload, "nextcloud.sync.propagator.upload", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPropagateUploadV1, "nextcloud.sync.propagator.upload.v1", QtInfoMsg)
@@ -549,6 +550,7 @@ qint64 UploadDevice::readData(char *data, qint64 maxlen)
         setErrorString({});
         return c;
     } else if (c < 0) {
+        qCWarning(lcUploadDevice) << _file.errorString() << c;
         setErrorString(_file.errorString());
         return -1;
     }

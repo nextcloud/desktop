@@ -35,6 +35,8 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcFileSystem)
  * @brief This file contains file system helper
  */
 namespace FileSystem {
+    OCSYNC_EXPORT Q_NAMESPACE;
+
     enum class FolderPermissions {
         ReadOnly,
         ReadWrite,
@@ -178,10 +180,17 @@ namespace FileSystem {
     bool OCSYNC_EXPORT setAclPermission(const QString &path, FileSystem::FolderPermissions permissions);
 #endif
 
+    enum class LockMode {
+        Shared,
+        Exclusive,
+        SharedRead,
+    };
+    Q_ENUM_NS(LockMode);
+
     /**
      * Returns true when a file is locked. (Windows only)
      */
-    bool OCSYNC_EXPORT isFileLocked(const QString &fileName);
+    bool OCSYNC_EXPORT isFileLocked(const QString &fileName, LockMode mode);
 
     /**
      * Returns whether the file is a shortcut file (ends with .lnk)
