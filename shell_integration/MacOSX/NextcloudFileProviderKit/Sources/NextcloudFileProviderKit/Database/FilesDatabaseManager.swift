@@ -447,18 +447,50 @@ public final class FilesDatabaseManager: Sendable {
         }
     }
 
+    ///
+    /// Mark an item as deleted.
+    ///
+    /// This is a soft delete and does not actually delete data for which there is ``removeItemMetadata(ocId:)``.
+    ///
+    /// - Parameters:
+    ///     - ocId: The unique identifier of the item.
+    ///
     @discardableResult public func deleteItemMetadata(ocId: String) -> Bool {
         do {
             let results = itemMetadatas.where { $0.ocId == ocId }
             let database = ncDatabase()
+
             try database.write {
-                logger.debug("Deleting item metadata. \(ocId)")
                 results.forEach { $0.deleted = true }
+                logger.debug("Marked item as deleted.", [.item: ocId])
             }
+
             return true
         } catch {
-            logger.error("Could not delete item metadata with ocId \(ocId).", [.error: error])
+            logger.error("Could not mark item as deleted.", [.item: ocId, .error: error])
             return false
+        }
+    }
+
+    ///
+    /// Hard delete an item.
+    ///
+    /// Unlike ``deleteItemMetadata(ocId:)``, this actually deletes a data record.
+    ///
+    /// - Parameters:
+    ///     - ocId: The unique identifier of the item.
+    ///
+    public func removeItemMetadata(ocId: String) {
+        do {
+            let database = ncDatabase()
+            let results = itemMetadatas.where { $0.ocId == ocId }
+
+            try database.write {
+                database.delete(results)
+                logger.debug("Removed item metadata from database.", [.item: ocId])
+            }
+        } catch {
+            logger.error("Could not remove item metadata.", [.item: ocId, .error: error])
         }
     }
 
@@ -538,13 +570,12 @@ public final class FilesDatabaseManager: Sendable {
         return NSFileProviderItemIdentifier(parentMetadata.ocId)
     }
 
-    private func managedMaterialisedItemMetadatas(account: String) -> Results<RealmItemMetadata> {
+    private func managedMaterialisedItemMetadatas() -> Results<RealmItemMetadata> {
         itemMetadatas.where { candidate in
-            let belongsToAccount = candidate.account == account
             let isVisitedDirectory = candidate.directory && candidate.visitedDirectory
             let isDownloadedFile = candidate.directory == false && candidate.downloaded
 
-            return belongsToAccount && (isVisitedDirectory || isDownloadedFile)
+            return isVisitedDirectory || isDownloadedFile
         }
     }
 
@@ -556,67 +587,97 @@ public final class FilesDatabaseManager: Sendable {
     ///
     /// - Returns: An array of sendable metadata objects.
     ///
-    public func materialisedItemMetadatas(account: String) -> [SendableItemMetadata] {
-        managedMaterialisedItemMetadatas(account: account).toUnmanagedResults()
+    public func materialisedItemMetadatas(account _: String) -> [SendableItemMetadata] {
+        managedMaterialisedItemMetadatas().toUnmanagedResults()
     }
 
-    public func pendingWorkingSetChanges(account: Account, since date: Date) -> (updated: [SendableItemMetadata], deleted: [SendableItemMetadata]) {
-        let accId = account.ncKitAccount
-        let pending = managedMaterialisedItemMetadatas(account: accId).where { $0.syncTime > date }
-        var updated = pending.where { !$0.deleted }.toUnmanagedResults()
-        var deleted = pending.where { $0.deleted }.toUnmanagedResults()
-        var handledUpdateOcIds = Set(updated.map(\.ocId))
+    ///
+    /// Look up the not yet synchronized changes and deletions in the materialized items since the last given synchronization time.
+    ///
+    /// - Parameters:
+    ///     - date: All items with a synchronization time later than this are considered.
+    ///
+    /// - Returns: Locally changed items in the working set grouped by "updated" and "deleted".
+    ///
+    public func pendingWorkingSetChanges(since date: Date) -> (updated: [SendableItemMetadata], deleted: [SendableItemMetadata]) {
+        logger.debug("Gathering pending working set changes...")
+        let pendingChanges = managedMaterialisedItemMetadatas().where { $0.syncTime > date }
+        var updatedItems = pendingChanges.where { !$0.deleted }.toUnmanagedResults()
+        var deletedItems = pendingChanges.where { $0.deleted }.toUnmanagedResults()
 
-        updated
-            .map { $0.remotePath() }
+        for item in updatedItems {
+            logger.debug("Found updated item.", [.item: item.ocId, .name: item.fileName])
+        }
+
+        for item in deletedItems {
+            logger.debug("Found deleted item.", [.item: item.ocId, .name: item.fileName])
+        }
+
+        var updatedItemIdentifiers = Set(updatedItems.map(\.ocId))
+        var deletedItemIdentifiers = Set(deletedItems.map(\.ocId))
+
+        updatedItems // Look for changed children
+            .filter {
+                $0.directory // files do not have any children to look for
+            }
+            .map {
+                $0.remotePath()
+            }
             .forEach { serverUrl in
-                logger.debug("Checking updated item...", [.url: serverUrl])
-
                 itemMetadatas
-                    .where { $0.serverUrl == serverUrl && $0.syncTime > date }
-                    .forEach { metadata in
-                        guard !handledUpdateOcIds.contains(metadata.ocId) else {
-                            return
-                        }
+                    .where {
+                        $0.serverUrl == serverUrl && $0.syncTime > date
+                    }
+                    .forEach { child in
+                        let sendableMetadata = SendableItemMetadata(value: child)
 
-                        handledUpdateOcIds.insert(metadata.ocId)
-                        let sendableMetadata = SendableItemMetadata(value: metadata)
+                        if child.deleted {
+                            guard deletedItemIdentifiers.contains(child.ocId) == false else {
+                                return
+                            }
 
-                        if metadata.deleted {
-                            deleted.append(sendableMetadata)
-                            logger.debug("Appended deleted item to working set changes.", [.item: metadata.ocId, .url: serverUrl])
+                            deletedItemIdentifiers.insert(child.ocId)
+                            deletedItems.append(sendableMetadata)
+                            logger.debug("Appended deleted item to working set changes.", [.item: child.ocId, .url: serverUrl])
                         } else {
-                            updated.append(sendableMetadata)
-                            logger.debug("Appended updated item to working set changes.", [.item: metadata.ocId, .url: serverUrl])
+                            guard updatedItemIdentifiers.contains(child.ocId) == false else {
+                                return
+                            }
+
+                            updatedItemIdentifiers.insert(child.ocId)
+                            updatedItems.append(sendableMetadata)
+                            logger.debug("Appended updated item to working set changes.", [.item: child.ocId, .url: serverUrl])
                         }
                     }
             }
 
-        let handledDeleteOcIds = Set(deleted.map(\.ocId))
-
-        deleted
-            .map { $0.remotePath() }
+        deletedItems // Look for deleted children recursively
+            .filter {
+                $0.directory // files do not have any children to look for
+            }
+            .map {
+                $0.remotePath()
+            }
             .forEach { serverUrl in
-                logger.debug("Verifying deleted item...", [.url: serverUrl])
-
                 itemMetadatas.where {
                     $0.serverUrl.starts(with: serverUrl) && $0.syncTime > date
-                }.forEach { metadata in
-                    guard metadata.isLockFileOfLocalOrigin == false else {
-                        logger.info("Excluding item from deletion because it is a lock file from local origin.", [.item: metadata.ocId])
+                }.forEach { child in
+                    guard child.isLockFileOfLocalOrigin == false else {
+                        logger.info("Excluding item from deletion because it is a lock file from local origin.", [.item: child.ocId, .name: child.fileName])
                         return
                     }
 
-                    guard !handledDeleteOcIds.contains(metadata.ocId) else {
+                    guard !deletedItemIdentifiers.contains(child.ocId) else {
                         return
                     }
 
-                    deleted.append(SendableItemMetadata(value: metadata))
-                    logger.debug("Appended deleted item to working set changes.", [.item: metadata.ocId, .url: serverUrl])
+                    deletedItemIdentifiers.insert(child.ocId)
+                    deletedItems.append(SendableItemMetadata(value: child))
+                    logger.debug("Appended deleted item to working set changes.", [.item: child.ocId, .url: serverUrl])
                 }
             }
 
-        return (updated, deleted)
+        return (updatedItems, deletedItems)
     }
 
     public func itemsMetadataByFileNameSuffix(suffix: String) -> [SendableItemMetadata] {
