@@ -2487,13 +2487,8 @@ Como alternativa, você pode restaurar todos os arquivos excluídos baixando-os 
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Um antigo log de dados de sincronização &quot;%1&quot; foi encontrado, mas não pôde ser removido. Certifique-se de que nenhum aplicativo o esteja usando no momento. </translation>
     </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="417"/>
-        <source>A sync folder requires access re-approval after the app update. Please open settings to grant access.</source>
-        <translation>Uma pasta sincronizada requer uma nova aprovação de acesso após a atualização do aplicativo. Abra as configurações para conceder acesso.</translation>
-    </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderman.cpp" line="418"/>
+        <location filename="../src/gui/folderman.cpp" line="416"/>
         <source>%n sync folders require access re-approval after the app update. Please open settings to grant access.</source>
         <translation><numerusform>%n pasta sincronizada requer nova aprovação de acesso após a atualização do aplicativo. Abra as configurações para conceder acesso.</numerusform><numerusform>%n de pastas sincronizadas requerem nova aprovação de acesso após a atualização do aplicativo. Abra as configurações para conceder acesso.</numerusform><numerusform>%n pastas sincronizadas requerem nova aprovação de acesso após a atualização do aplicativo. Abra as configurações para conceder acesso.</numerusform></translation>
     </message>

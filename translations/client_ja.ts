@@ -328,7 +328,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
         <source>Virtual files appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. Virtual files and classic sync can not be used at the same time.</source>
-        <translation type="unfinished"/>
+        <translation>仮想ファイルは通常のファイルのように表示されますが、ローカルストレージの容量を使用しません。ファイルを開くと内容が自動的にダウンロードされます。仮想ファイルと従来の同期機能は同時に使用できません。</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
@@ -806,43 +806,43 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="954"/>
         <source>Grant access to sync folder</source>
-        <translation type="unfinished"/>
+        <translation>同期フォルダーへのアクセスを許可する</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="966"/>
         <source>Access Error</source>
-        <translation type="unfinished"/>
+        <translation>アクセスエラー</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="967"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>選択したフォルダーへのアクセスを取得できませんでした。もう一度お試しください。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="975"/>
         <source>Wrong Folder</source>
-        <translation type="unfinished"/>
+        <translation>間違ったフォルダー</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="976"/>
         <source>Please select the original sync folder: %1</source>
-        <translation type="unfinished"/>
+        <translation>元の同期フォルダを選択してください: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="985"/>
         <location filename="../src/gui/accountsettings.cpp" line="994"/>
         <source>Bookmark Error</source>
-        <translation type="unfinished"/>
+        <translation>ブックマークエラー</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="986"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>フォルダーのセキュリティブックマークを作成できませんでした。もう一度お試しください。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="995"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>セキュリティブックマークを解決できませんでした。もう一度お試しください。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1000"/>
@@ -945,7 +945,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1850"/>
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
-        <translation type="unfinished"/>
+        <translation>仮想ファイル統合は、現時点ではEnd-to-End 暗号化をサポートしていません。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1757"/>
@@ -2487,15 +2487,10 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>古い同期ジャーナル  &quot;%1&quot; が見つかりましたが、削除できませんでした。それを現在使用しているアプリケーションが存在しないか確認してください。</translation>
     </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="417"/>
-        <source>A sync folder requires access re-approval after the app update. Please open settings to grant access.</source>
-        <translation type="unfinished"/>
-    </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderman.cpp" line="418"/>
+        <location filename="../src/gui/folderman.cpp" line="416"/>
         <source>%n sync folders require access re-approval after the app update. Please open settings to grant access.</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n同期フォルダーはアプリ更新後にアクセス再承認が必要です。設定を開いてアクセスを許可してください。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1801"/>
@@ -2672,7 +2667,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
         <source>This folder requires access re-approval. Click here to grant access.</source>
-        <translation type="unfinished"/>
+        <translation>このフォルダーにはアクセス権の再承認が必要です。アクセスを許可するにはここをクリックしてください。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>

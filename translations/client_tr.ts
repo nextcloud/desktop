@@ -2485,13 +2485,8 @@ Bir yanlışlık varsa, silinen tüm dosyaları sunucudan indirerek geri yükley
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Eski bir &quot;%1&quot; eşitleme günlüğü bulundu ancak kaldırılamadı. Günlüğün Başka bir uygulama tarafından kullanılmadığından emin olun.</translation>
     </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="417"/>
-        <source>A sync folder requires access re-approval after the app update. Please open settings to grant access.</source>
-        <translation>Uygulama güncellemesinden sonra eşitleme klasörü için yeniden erişme izni verilmelidir. Erişme izni vermek için lütfen ayarları açın.</translation>
-    </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderman.cpp" line="418"/>
+        <location filename="../src/gui/folderman.cpp" line="416"/>
         <source>%n sync folders require access re-approval after the app update. Please open settings to grant access.</source>
         <translation><numerusform>Uygulama güncellendikten sonra %n eşitleme klasörüne yeniden erişme izni verilmelidir. Erişme izni vermek için lütfen ayarları açın.</numerusform><numerusform>Uygulama güncellendikten sonra %n eşitleme klasörüne yeniden erişme izni verilmelidir. Erişme izni vermek için lütfen ayarları açın.</numerusform></translation>
     </message>

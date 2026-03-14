@@ -2487,13 +2487,8 @@ Alternativamente, puede restaurar todos los archivos borrados descargándolos de
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Se ha encontrado un registro de sincronización antiguo &quot;%1&quot;, que no se ha podido eliminar. Por favor, asegúrese de que ninguna aplicación lo está utilizando en este momento.</translation>
     </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="417"/>
-        <source>A sync folder requires access re-approval after the app update. Please open settings to grant access.</source>
-        <translation>Una carpeta de sincronización requiere volver a autorizar el acceso después de actualizar la aplicación. Abra la configuración para conceder el acceso.</translation>
-    </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderman.cpp" line="418"/>
+        <location filename="../src/gui/folderman.cpp" line="416"/>
         <source>%n sync folders require access re-approval after the app update. Please open settings to grant access.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
