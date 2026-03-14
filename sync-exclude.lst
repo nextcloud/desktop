@@ -51,3 +51,6 @@ My Saved Places.
 
 
 *.sb-*
+
+# exclude nodejs installed package folder
+node_modules
