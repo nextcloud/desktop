@@ -129,7 +129,42 @@ ApplicationWindow {
                 spacing: Style.trayHorizontalMargin
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                delegate: fileActionsDelegate
+                delegate: ItemDelegate {
+                    id: fileActionsDelegate
+
+                    required property string name
+                    required property int index
+                    required property string actionIcon
+
+                    Layout.fillWidth: true
+                    height: implicitHeight
+                    width: parent.width
+                    implicitHeight: Style.activityListButtonHeight
+                    padding: Style.standardSpacing
+
+                    text: name
+                    font.pixelSize: Style.defaultFontPtSize
+                    Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+                    icon {
+                        source: actionIcon
+                        color: palette.windowText
+                        width: Style.minimumActivityItemHeight
+                        height: Style.minimumActivityItemHeight
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
+                    }
+
+                    background: Rectangle {
+                        color: "transparent"
+                        radius: root.windowRadius
+                        border.width: fileActionsDelegate.hovered ? Style.trayWindowBorderWidth : 0
+                        border.color: palette.dark
+                        anchors.margins: Style.standardSpacing
+                        height: parent.height
+                        width: parent.width
+                    }
+
+                    onClicked: fileActionModel.createRequest(index)
+                }
             }
 
             Button {
@@ -186,78 +221,10 @@ ApplicationWindow {
                     id: responseArea
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: Qt.openUrlExternally(fileActionModel.responseUrl)
-                }
-            }
-        }
-    }
-
-    Component {
-        id: fileActionsDelegate
-
-        RowLayout {
-            id: fileAction
-            Layout.fillWidth: true
-            height: implicitHeight
-            width: parent.width
-
-            required property string name
-            required property int index
-            required property string icon
-
-            Button {
-                id: fileActionButton
-                flat: true
-                Layout.fillWidth: true
-                implicitHeight: Style.activityListButtonHeight
-
-                padding: Style.standardSpacing
-
-                contentItem: Row {
-                    id: fileActionsContent
-                    anchors.fill: parent
-                    anchors.topMargin: Style.standardSpacing
-                    anchors.rightMargin: Style.standardSpacing
-                    anchors.bottomMargin: Style.standardSpacing
-                    anchors.leftMargin: Style.extraSmallSpacing
-                    spacing: Style.standardSpacing
-                    Layout.fillWidth: true
-
-                    Image {
-                        source: fileAction.icon + palette.windowText
-                        width: Style.minimumActivityItemHeight
-                        height: Style.minimumActivityItemHeight
-                        fillMode: Image.PreserveAspectFit
-                        Layout.preferredWidth: Style.minimumActivityItemHeight
-                        Layout.preferredHeight: Style.minimumActivityItemHeight
-                        anchors.verticalCenter: parent.verticalCenter
+                    onClicked: {
+                        Qt.openUrlExternally(fileActionModel.responseUrl)
+                        root.close()
                     }
-
-                    EnforcedPlainTextLabel {
-                        text: fileAction.name
-                        color: palette.text
-                        font.pixelSize: Style.defaultFontPtSize
-                        verticalAlignment: Text.AlignVCenter
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-                }
-
-                background: Rectangle {
-                    color: "transparent"
-                    radius: root.windowRadius
-                    border.width: fileActionButton.hovered ? Style.trayWindowBorderWidth : 0
-                    border.color: palette.dark
-                    anchors.margins: Style.standardSpacing
-                    height: parent.height
-                    width: parent.width
-                }
-
-                MouseArea {
-                    id: fileActionMouseArea
-                    anchors.fill: parent
-                    anchors.margins: Style.standardSpacing
-                    cursorShape: Qt.PointingHandCursor
-                    onClicked: fileActionModel.createRequest(fileAction.index)
                 }
             }
         }

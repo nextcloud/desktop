@@ -561,12 +561,12 @@ Kas peaksin selle kasutajakonto importima?</translation>
 <context>
     <name>OCC::AccountSettings</name>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="155"/>
+        <location filename="../src/gui/accountsettings.ui" line="159"/>
         <source>Virtual files</source>
         <translation>Virtuaalsed failid</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="186"/>
+        <location filename="../src/gui/accountsettings.ui" line="205"/>
         <source>Classic sync</source>
         <translation>Klassikaline sünkroonimine</translation>
     </message>
@@ -804,45 +804,45 @@ Oota kuni sünkroniseerimine lõppeb ja seejärel krüpti.</translation>
         <translation>Eemalda kausta sünkroniseerimine</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="959"/>
+        <location filename="../src/gui/accountsettings.cpp" line="954"/>
         <source>Grant access to sync folder</source>
-        <translation type="unfinished"/>
+        <translation>Luba ligipääs sünkrooonimiskaustale</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="971"/>
+        <location filename="../src/gui/accountsettings.cpp" line="966"/>
         <source>Access Error</source>
-        <translation type="unfinished"/>
+        <translation>Ligipääsuviga</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="972"/>
+        <location filename="../src/gui/accountsettings.cpp" line="967"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Valitud kaustale ligipääsu tagamine ei õnnestunud. Palun proovi uuesti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="980"/>
+        <location filename="../src/gui/accountsettings.cpp" line="975"/>
         <source>Wrong Folder</source>
-        <translation type="unfinished"/>
+        <translation>Vale kaust</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="981"/>
+        <location filename="../src/gui/accountsettings.cpp" line="976"/>
         <source>Please select the original sync folder: %1</source>
-        <translation type="unfinished"/>
+        <translation>Palun vali algne sünkroonimiskaust: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="990"/>
-        <location filename="../src/gui/accountsettings.cpp" line="999"/>
+        <location filename="../src/gui/accountsettings.cpp" line="985"/>
+        <location filename="../src/gui/accountsettings.cpp" line="994"/>
         <source>Bookmark Error</source>
-        <translation type="unfinished"/>
+        <translation>Järjehoidjaga seotud viga</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="991"/>
+        <location filename="../src/gui/accountsettings.cpp" line="986"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Kaustale turvajärjehoidja lisamine ei õnnestunud. Palun proovi uuesti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1000"/>
+        <location filename="../src/gui/accountsettings.cpp" line="995"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Kaustale turvajärjehoidja tuvastamine ei õnnestunud. Palun proovi uuesti.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1000"/>
@@ -918,7 +918,7 @@ Samuti katkevad kõik hetkel toimivad sünkroniseerimised.</translation>
         <translation>%1 kasutusel</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1419"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1414"/>
         <source>Connected to %1 (%2).</source>
         <translation>Ühendatud serveriga %1 (%2).</translation>
     </message>
@@ -943,9 +943,9 @@ Samuti katkevad kõik hetkel toimivad sünkroniseerimised.</translation>
         <translation>See kasutajakonto võimaldab läbiva krüptimise kasutamist, aga ta peab olema esmalt seadistatud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1855"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1850"/>
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
-        <translation type="unfinished"/>
+        <translation>Virtuaalsete failide lõiming veel ei toeta läbivat krüptimist.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1757"/>
@@ -2044,25 +2044,25 @@ See võib olla seotud kasutatavate OpenSSl-i teekidega.</translation>
 <context>
     <name>OCC::FileActionsModel</name>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="244"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="247"/>
         <source>Your account is offline %1.</source>
         <comment>account url</comment>
         <translation>Sinu kasutajakonto pole võrgus: %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="253"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="256"/>
         <source>The file ID is empty for %1.</source>
         <comment>file name</comment>
         <translation>„%1“ puhul on failitunnus tühi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="261"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="264"/>
         <source>The file type for %1 is not valid.</source>
         <comment>file name</comment>
         <translation>Failitüüp %1 jaoks pole korrektne.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="273"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="276"/>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mimetype, e.g text/plain files</comment>
         <extracomment>TRANSLATOR Placeholder contains file MIME type</extracomment>
@@ -2075,7 +2075,7 @@ See võib olla seotud kasutatavate OpenSSl-i teekidega.</translation>
         <translation>„%1“ ei õnnestunud, palun proovi hiljem uuesti. Vajadusel aitab sinu serveri haldaja.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="370"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="375"/>
         <source>%1 done.</source>
         <comment>file action success message</comment>
         <translation>Tehtud: %1.</translation>
@@ -2487,15 +2487,10 @@ Alternatiivina saad nad taasta serverist uuesti allalaadides.</translation>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Tuvastasin vana sünkroniseerimislogi „%1“, kuid selle eemaldamine ei õnnestunud. Palun veendu, et seda ei kasutaks ükski rakendus.</translation>
     </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="417"/>
-        <source>A sync folder requires access re-approval after the app update. Please open settings to grant access.</source>
-        <translation type="unfinished"/>
-    </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderman.cpp" line="418"/>
+        <location filename="../src/gui/folderman.cpp" line="416"/>
         <source>%n sync folders require access re-approval after the app update. Please open settings to grant access.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Peale rakenduse uuendamist vajab %n sünkroonimiskaust korduskinnitamist. Ligipääsu tagamiseks palun ava seadistuste vaade.</numerusform><numerusform>Peale rakenduse uuendamist vajavad %n sünkroonimiskausta korduskinnitamist. Ligipääsu tagamiseks palun ava seadistuste vaade.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1801"/>
@@ -2672,7 +2667,7 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
         <source>This folder requires access re-approval. Click here to grant access.</source>
-        <translation type="unfinished"/>
+        <translation>See kaust vajab korduskinnitamist. Ligipääsu tagamiseks palun klõpsi siin.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
@@ -4237,7 +4232,7 @@ Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun
     <message>
         <location filename="../src/libsync/discovery.cpp" line="383"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation>Sümbollingid ei ole sünkroniseerimisel toetatud.</translation>
+        <translation>Sümbollingid ei ole sünkroonimisel toetatud.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="392"/>
@@ -5605,7 +5600,7 @@ Veateade serveri päringuvastuses: %2</translation>
         <translation>Sünkroonin faile: %1 / %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="435"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="437"/>
         <source>No synchronisation configured</source>
         <translation>Mitte mingit sünkroonimist pole seadistatud</translation>
     </message>
@@ -7512,7 +7507,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="84"/>
         <source>Available online only</source>
-        <translation>Saadaval vaid võrgus</translation>
+        <translation>Saadaval vaid võrguühenduse toimimisel</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="91"/>

@@ -561,12 +561,12 @@ Ska kontot importeras?</translation>
 <context>
     <name>OCC::AccountSettings</name>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="155"/>
+        <location filename="../src/gui/accountsettings.ui" line="159"/>
         <source>Virtual files</source>
         <translation>Virtuella filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="186"/>
+        <location filename="../src/gui/accountsettings.ui" line="205"/>
         <source>Classic sync</source>
         <translation>Klassisk synkronisering</translation>
     </message>
@@ -804,43 +804,43 @@ Vänta på en ny synk och kryptera den sedan.</translation>
         <translation>Ta bort synkroniseringskoppling för mapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="959"/>
+        <location filename="../src/gui/accountsettings.cpp" line="954"/>
         <source>Grant access to sync folder</source>
         <translation>Bevilja åtkomst till synkroniseringsmappen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="971"/>
+        <location filename="../src/gui/accountsettings.cpp" line="966"/>
         <source>Access Error</source>
         <translation>Åtkomstfel</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="972"/>
+        <location filename="../src/gui/accountsettings.cpp" line="967"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
         <translation>Det gick inte att få åtkomst till den valda mappen. Vänligen försök igen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="980"/>
+        <location filename="../src/gui/accountsettings.cpp" line="975"/>
         <source>Wrong Folder</source>
         <translation>Fel mapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="981"/>
+        <location filename="../src/gui/accountsettings.cpp" line="976"/>
         <source>Please select the original sync folder: %1</source>
         <translation>Välj den ursprungliga synkroniseringsmappen: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="990"/>
-        <location filename="../src/gui/accountsettings.cpp" line="999"/>
+        <location filename="../src/gui/accountsettings.cpp" line="985"/>
+        <location filename="../src/gui/accountsettings.cpp" line="994"/>
         <source>Bookmark Error</source>
         <translation>Bokmärkesfel</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="991"/>
+        <location filename="../src/gui/accountsettings.cpp" line="986"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
         <translation>Det gick inte att skapa ett säkerhetsbokmärke för mappen. Vänligen försök igen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1000"/>
+        <location filename="../src/gui/accountsettings.cpp" line="995"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
         <translation>Det gick inte att hantera säkerhetsbokmärket. Vänligen försök igen.</translation>
     </message>
@@ -918,7 +918,7 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
         <translation>%1 används</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1419"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1414"/>
         <source>Connected to %1 (%2).</source>
         <translation>Ansluten till %1 (%2).</translation>
     </message>
@@ -943,7 +943,7 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
         <translation>Det här kontot stöder end-to-end-kryptering, men det måste konfigureras först.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1855"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1850"/>
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
         <translation>Integrationen av virtuella filer stöder ännu inte end-to-end-kryptering.</translation>
     </message>
@@ -2044,25 +2044,25 @@ Det kan vara problem med dina OpenSSL-bibliotek.</translation>
 <context>
     <name>OCC::FileActionsModel</name>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="244"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="247"/>
         <source>Your account is offline %1.</source>
         <comment>account url</comment>
         <translation>Ditt konto är offline %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="253"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="256"/>
         <source>The file ID is empty for %1.</source>
         <comment>file name</comment>
         <translation>Filidentiteten är tomt för %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="261"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="264"/>
         <source>The file type for %1 is not valid.</source>
         <comment>file name</comment>
         <translation>Filtypen för %1är ogiltig.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="273"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="276"/>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mimetype, e.g text/plain files</comment>
         <extracomment>TRANSLATOR Placeholder contains file MIME type</extracomment>
@@ -2075,7 +2075,7 @@ Det kan vara problem med dina OpenSSL-bibliotek.</translation>
         <translation>%1 lyckades inte, försök igen senare. Om du behöver hjälp, kontakta din serveradministratör.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="370"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="375"/>
         <source>%1 done.</source>
         <comment>file action success message</comment>
         <translation>%1 klar.</translation>
@@ -2487,13 +2487,8 @@ Alternativt kan du återställa alla raderade filer genom att ladda ner dem frå
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>En gammal synkroniseringsjournal &quot;%1&quot; hittades, men kunde inte tas bort. Kontrollera att inget program använder den för närvarande.</translation>
     </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="417"/>
-        <source>A sync folder requires access re-approval after the app update. Please open settings to grant access.</source>
-        <translation>En synkroniseringsmapp kräver ny åtkomstgodkännande efter appuppdateringen. Öppna inställningarna för att bevilja åtkomst.</translation>
-    </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderman.cpp" line="418"/>
+        <location filename="../src/gui/folderman.cpp" line="416"/>
         <source>%n sync folders require access re-approval after the app update. Please open settings to grant access.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
@@ -5606,7 +5601,7 @@ Servern svarade med fel: %2</translation>
         <translation>Synkroniserar fil %1 av %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="435"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="437"/>
         <source>No synchronisation configured</source>
         <translation>Ingen synkronisering konfigurerad</translation>
     </message>

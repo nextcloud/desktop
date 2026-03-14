@@ -58,6 +58,8 @@
 #include <QStyle>
 #include <QFileDialog>
 
+using namespace Qt::StringLiterals;
+
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "macOS/fileprovider.h"
 #endif
@@ -174,20 +176,13 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     , _userInfo(accountState, false, true)
 {
     _ui->setupUi(this);
-    _ui->gridLayout->setRowStretch(0, 0);
-    _ui->gridLayout->setRowStretch(1, 0);
-    _ui->gridLayout->setRowStretch(2, 0);
-    _ui->gridLayout->setRowStretch(3, 0);
-    _ui->gridLayout->setRowStretch(4, 1);
 
     _model->setAccountState(_accountState);
     _model->setParent(this);
     const auto delegate = new FolderStatusDelegate;
     delegate->setParent(this);
 
-    _ui->accountTabsPanel->setStyleSheet(QStringLiteral(
-        "QWidget#syncFoldersPanelContents, QWidget#connectionSettingsPanelContents, QWidget#fileProviderPanelContents {"
-        " background: palette(alternate-base); }"));
+    setStyleSheet("QWidget#syncFoldersPanelContents, QWidget#connectionSettingsPanelContents, QWidget#fileProviderPanelContents { background: palette(alternate-base); }"_L1);
     _ui->syncFoldersPanelContents->setAutoFillBackground(true);
     _ui->syncFoldersPanelContents->setAttribute(Qt::WA_StyledBackground, true);
     _ui->syncFoldersPanelContents->setContentsMargins(0, 0, 0, 0);

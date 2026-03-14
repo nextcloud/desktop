@@ -169,19 +169,11 @@ import OSLog
         let progress = Progress()
         Task {
             progress.totalUnitCount = 1
-            if let item = await Item.storedItem(
-                identifier: identifier,
-                account: ncAccount,
-                remoteInterface: ncKit,
-                dbManager: dbManager,
-                log: log
-            ) {
+            if let item = await Item.storedItem(identifier: identifier, account: ncAccount, remoteInterface: ncKit, dbManager: dbManager, log: log), item.metadata.deleted == false {
                 progress.completedUnitCount = 1
                 completionHandler(item, nil)
             } else {
-                completionHandler(
-                    nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
-                )
+                completionHandler(nil, NSFileProviderError(.noSuchItem))
             }
         }
         return progress
@@ -483,7 +475,7 @@ import OSLog
             throw NSFileProviderError(.cannotSynchronize)
         }
 
-        return Enumerator(
+        return try Enumerator(
             enumeratedItemIdentifier: containerItemIdentifier,
             account: ncAccount,
             remoteInterface: ncKit,

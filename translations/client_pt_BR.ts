@@ -561,12 +561,12 @@ A conta deve ser importada?</translation>
 <context>
     <name>OCC::AccountSettings</name>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="155"/>
+        <location filename="../src/gui/accountsettings.ui" line="159"/>
         <source>Virtual files</source>
         <translation>Arquivos virtuais</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="186"/>
+        <location filename="../src/gui/accountsettings.ui" line="205"/>
         <source>Classic sync</source>
         <translation>Sincronização clássica</translation>
     </message>
@@ -804,43 +804,43 @@ Aguarde a nova sincronização e criptografe-a.</translation>
         <translation>Remover conexão de sincronização de pasta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="959"/>
+        <location filename="../src/gui/accountsettings.cpp" line="954"/>
         <source>Grant access to sync folder</source>
         <translation>Conceder acesso à pasta de sincronização</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="971"/>
+        <location filename="../src/gui/accountsettings.cpp" line="966"/>
         <source>Access Error</source>
         <translation>Erro de acesso</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="972"/>
+        <location filename="../src/gui/accountsettings.cpp" line="967"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
         <translation>Não foi possível obter acesso à pasta selecionada. Tente novamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="980"/>
+        <location filename="../src/gui/accountsettings.cpp" line="975"/>
         <source>Wrong Folder</source>
         <translation>Pasta errada</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="981"/>
+        <location filename="../src/gui/accountsettings.cpp" line="976"/>
         <source>Please select the original sync folder: %1</source>
         <translation>Por favor, selecione a pasta de sincronização original: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="990"/>
-        <location filename="../src/gui/accountsettings.cpp" line="999"/>
+        <location filename="../src/gui/accountsettings.cpp" line="985"/>
+        <location filename="../src/gui/accountsettings.cpp" line="994"/>
         <source>Bookmark Error</source>
         <translation>Erro de marcador</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="991"/>
+        <location filename="../src/gui/accountsettings.cpp" line="986"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
         <translation>Não foi possível criar um marcador de segurança para a pasta. Tente novamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1000"/>
+        <location filename="../src/gui/accountsettings.cpp" line="995"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
         <translation>Não foi possível resolver o marcador de segurança. Tente novamente.</translation>
     </message>
@@ -918,7 +918,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <translation>%1 em uso</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1419"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1414"/>
         <source>Connected to %1 (%2).</source>
         <translation>Conectado a %1 (%2).</translation>
     </message>
@@ -943,7 +943,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <translation>Esta conta oferece suporte à criptografia de ponta-a-ponta, mas ela precisa ser configurada primeiro.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1855"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1850"/>
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
         <translation>A integração de arquivos virtuais ainda não suporta criptografia de ponta-a-ponta.</translation>
     </message>
@@ -2044,25 +2044,25 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
 <context>
     <name>OCC::FileActionsModel</name>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="244"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="247"/>
         <source>Your account is offline %1.</source>
         <comment>account url</comment>
         <translation>Sua conta está off-line %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="253"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="256"/>
         <source>The file ID is empty for %1.</source>
         <comment>file name</comment>
         <translation>O ID de arquivo é vazio para %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="261"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="264"/>
         <source>The file type for %1 is not valid.</source>
         <comment>file name</comment>
         <translation>O tipo de arquivo para %1 não é válido.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="273"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="276"/>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mimetype, e.g text/plain files</comment>
         <extracomment>TRANSLATOR Placeholder contains file MIME type</extracomment>
@@ -2075,7 +2075,7 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
         <translation>%1 não foi bem-sucedido. Tente novamente mais tarde. Se precisar de ajuda, entre em contato com a administração do servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="370"/>
+        <location filename="../src/gui/integration/fileactionsmodel.cpp" line="375"/>
         <source>%1 done.</source>
         <comment>file action success message</comment>
         <translation>%1 concluído.</translation>
@@ -2487,13 +2487,8 @@ Como alternativa, você pode restaurar todos os arquivos excluídos baixando-os 
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Um antigo log de dados de sincronização &quot;%1&quot; foi encontrado, mas não pôde ser removido. Certifique-se de que nenhum aplicativo o esteja usando no momento. </translation>
     </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="417"/>
-        <source>A sync folder requires access re-approval after the app update. Please open settings to grant access.</source>
-        <translation>Uma pasta sincronizada requer uma nova aprovação de acesso após a atualização do aplicativo. Abra as configurações para conceder acesso.</translation>
-    </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderman.cpp" line="418"/>
+        <location filename="../src/gui/folderman.cpp" line="416"/>
         <source>%n sync folders require access re-approval after the app update. Please open settings to grant access.</source>
         <translation><numerusform>%n pasta sincronizada requer nova aprovação de acesso após a atualização do aplicativo. Abra as configurações para conceder acesso.</numerusform><numerusform>%n de pastas sincronizadas requerem nova aprovação de acesso após a atualização do aplicativo. Abra as configurações para conceder acesso.</numerusform><numerusform>%n pastas sincronizadas requerem nova aprovação de acesso após a atualização do aplicativo. Abra as configurações para conceder acesso.</numerusform></translation>
     </message>
@@ -5606,7 +5601,7 @@ Servidor respondeu com erro: %2</translation>
         <translation>Sincronizando arquivo %1 de %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="435"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="437"/>
         <source>No synchronisation configured</source>
         <translation>Nenhuma sincronização configurada</translation>
     </message>
