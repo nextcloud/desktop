@@ -102,7 +102,6 @@ void PollJob::start()
     QUrl finalUrl = QUrl::fromUserInput(accountUrl.scheme() + QLatin1String("://") + accountUrl.authority()
         + (path().startsWith('/') ? QLatin1String("") : QLatin1String("/")) + path());
     sendRequest("GET", finalUrl);
-    connect(reply(), &QNetworkReply::downloadProgress, this, &AbstractNetworkJob::resetTimeout, Qt::UniqueConnection);
     AbstractNetworkJob::start();
 }
 
