@@ -370,14 +370,17 @@ void ProgressInfo::recomputeCompletedSize()
 
 ProgressInfo::Estimates ProgressInfo::Progress::estimates() const
 {
-    Estimates est{};
-    est.estimatedBandwidth = _progressPerSec;
-    if (_progressPerSec != 0) {
-        est.estimatedEta = qRound64(static_cast<double>(_total - _completed) / _progressPerSec) * 1000;
+    Estimates estimation{};
+    estimation.estimatedBandwidth = _progressPerSec;
+    if (const auto progress = _total - _completed;
+        _progressPerSec != 0 && progress > _progressPerSec) {
+        const auto progressinDouble = static_cast<double>(progress);
+        const auto estimatedEta =  progressinDouble / _progressPerSec;
+        estimation.estimatedEta = qRound64(estimatedEta) * 1000;
     } else {
-        est.estimatedEta = 0; // looks better than qint64 max
+        estimation.estimatedEta = 0; // looks better than qint64 max
     }
-    return est;
+    return estimation;
 }
 
 qint64 ProgressInfo::Progress::completed() const
