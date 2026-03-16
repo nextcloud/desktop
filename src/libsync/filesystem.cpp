@@ -312,7 +312,13 @@ bool FileSystem::removeRecursively(const QString &path,
         auto folderDeleteError = QString{};
 
         try {
-            if (!std::filesystem::remove(std::filesystem::path{fileInfo.filePath().toStdWString()})) {
+#ifdef Q_OS_WIN
+            // std::filesystem::remove does not handle paths greater than MAX_PATH, but it seems to be fine with the prefixed UNC paths ...
+            const auto fspath = std::filesystem::path{FileSystem::longWinPath(fileInfo.filePath()).toStdWString()};
+#else
+            const auto fspath = std::filesystem::path{fileInfo.filePath().toStdWString()};
+#endif
+            if (!std::filesystem::remove(fspath)) {
                 qCWarning(lcFileSystem()) << "File is already deleted" << fileInfo.filePath();
             }
         }
