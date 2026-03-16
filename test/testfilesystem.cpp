@@ -320,6 +320,28 @@ private Q_SLOTS:
         QCOMPARE_EQ(aclSizeAfterReadWrite.AclBytesInUse, aclSizeInitial.AclBytesInUse);
     }
 #endif
+
+    void testRecursiveDeletionLongPaths()
+    {
+        QTemporaryDir tempDir;
+        QDir tempQDir{tempDir.path()};
+
+        const auto makeLongPathSegment = [](const QString &base) -> QString {
+            QString baseSegment = base + " ";
+            return baseSegment + QString("0").repeated(200 - baseSegment.size());
+        };
+
+        tempQDir.mkpath("Folder 1 - short name but long single subfolder/" + makeLongPathSegment("Subfolder without accentued characters - padding"));
+        tempQDir.mkpath(makeLongPathSegment("Folder 2 - directly a very long name"));
+        auto folder3Path = u"Folder 3 - short name but long multiples subfolder"_s;
+        for (auto i = 0; i < 5; i++) {
+            folder3Path.append("/subfolder %1 - total length 40 characters"_L1.arg(QString::number(i + 1)));
+        }
+        tempQDir.mkpath(folder3Path);
+        tempQDir.mkpath("Folder 4 - short name");
+
+        QVERIFY(FileSystem::removeRecursively(tempDir.path()));
+    }
 };
 
 QTEST_GUILESS_MAIN(TestFileSystem)
