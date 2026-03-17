@@ -2490,7 +2490,7 @@ Alternativ können Sie auch alle gelöschten Dateien wiederherstellen, indem Sie
     <message numerus="yes">
         <location filename="../src/gui/folderman.cpp" line="416"/>
         <source>%n sync folders require access re-approval after the app update. Please open settings to grant access.</source>
-        <translation><numerusform>Nach dem App-Update muss der Zugriff auf %n Synchronisierungsordner erneut genehmigt werden. Öffnen Sie bitte die Einstellungen, um den Zugriff zu gewähren.</numerusform><numerusform>Nach dem App-Update muss der Zugriff auf %n Synchronisierungsordner erneut genehmigt werden. Bitte die Einstellungen öffnen, um den Zugriff zu gewähren.</numerusform></translation>
+        <translation><numerusform>Nach dem App-Update muss der Zugriff auf %n Synchronisierungsordner erneut genehmigt werden. Bitte die Einstellungen öffnen, um den Zugriff zu gewähren.</numerusform><numerusform>Nach dem App-Update muss der Zugriff auf %n Synchronisierungsordner erneut genehmigt werden. Bitte die Einstellungen öffnen, um den Zugriff zu gewähren.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1801"/>
