@@ -79,6 +79,18 @@ public:
     {
         return _value & (1 << static_cast<int>(p));
     }
+
+    /// Returns true if the local folder needs to be read/writeable for the current remote permissions set
+    [[nodiscard]] bool hasPermissionsForReadWrite() const
+    {
+        return hasPermission(CanWrite) ||
+            hasPermission(CanDelete) ||
+            hasPermission(CanRename) ||
+            hasPermission(CanMove) ||
+            hasPermission(CanAddFile) ||
+            hasPermission(CanAddSubDirectories);
+    }
+
     void setPermission(Permissions p)
     {
         _value |= (1 << static_cast<int>(p)) | notNullMask;
