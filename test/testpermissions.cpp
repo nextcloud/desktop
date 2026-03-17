@@ -1002,6 +1002,7 @@ private slots:
     {
         const auto remotePerm = QString::fromLocal8Bit(QTest::currentDataTag());
         QFETCH(bool, isReadOnly);
+        auto remotePermChange = isReadOnly ? (remotePerm + "W") : u"G"_s;
 
         FakeFolder fakeFolder{FileInfo{}};
 
@@ -1020,6 +1021,13 @@ private slots:
         QCOMPARE_EQ(isFolderReadOnly(u"root"_s), isReadOnly);
         QCOMPARE_EQ(isFolderReadOnly(u"root/subdir"_s), isReadOnly);
         QCOMPARE_EQ(isFolderReadOnly(u"root/subdir/subsubdir"_s), isReadOnly);
+
+        qInfo() << "remote update with" << remotePermChange;
+        setAllPerm(rootFolder, RemotePermissions::fromServerString(remotePermChange));
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE_EQ(isFolderReadOnly(u"root"_s), !isReadOnly);
+        QCOMPARE_EQ(isFolderReadOnly(u"root/subdir"_s), !isReadOnly);
+        QCOMPARE_EQ(isFolderReadOnly(u"root/subdir/subsubdir"_s), !isReadOnly);
     }
 };
 
