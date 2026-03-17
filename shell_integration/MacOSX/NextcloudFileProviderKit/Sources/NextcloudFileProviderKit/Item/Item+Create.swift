@@ -5,6 +5,7 @@
 import Foundation
 import NextcloudCapabilitiesKit
 import NextcloudKit
+import UniformTypeIdentifiers
 
 public extension Item {
     ///
@@ -95,12 +96,15 @@ public extension Item {
         directory.downloaded = true
         dbManager.addItemMetadata(directory)
 
+        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: directory.contentType)
+
         let fpItem = await Item(
             metadata: directory,
             parentItemIdentifier: parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
+            displayFileActions: displayFileActions,
             remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
             log: log
         )
@@ -124,7 +128,7 @@ public extension Item {
         let logger = FileProviderLogger(category: "Item", log: log)
         let chunkUploadId =
             itemTemplate.itemIdentifier.rawValue.replacingOccurrences(of: "/", with: "")
-        let (ocId, _, etag, date, size, error) = await upload(
+        let (ocId, etag, date, size, error) = await upload(
             fileLocatedAt: localPath,
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
@@ -187,11 +191,17 @@ public extension Item {
             )
         }
 
+        let contentType: String = if itemTemplate.contentType == .aliasFile {
+            UTType.aliasFile.identifier
+        } else {
+            itemTemplate.contentType?.preferredMIMEType ?? ""
+        }
+
         let newMetadata = SendableItemMetadata(
             ocId: ocId,
             account: account.ncKitAccount,
             classFile: "", // Placeholder as not set in original code
-            contentType: itemTemplate.contentType?.preferredMIMEType ?? "",
+            contentType: contentType,
             creationDate: Date(), // Default as not set in original code
             date: date ?? Date(),
             directory: false,
@@ -218,12 +228,15 @@ public extension Item {
 
         dbManager.addItemMetadata(newMetadata)
 
+        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: newMetadata.contentType)
+
         let fpItem = await Item(
             metadata: newMetadata,
             parentItemIdentifier: itemTemplate.parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
+            displayFileActions: displayFileActions,
             remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
             log: log
         )
@@ -338,7 +351,7 @@ public extension Item {
                     Handling child bundle or package file at: \(childUrlPath)
                     """
                 )
-                let (_, _, _, _, _, error) = await upload(
+                let (_, _, _, _, error) = await upload(
                     fileLocatedAt: childUrlPath,
                     toRemotePath: childRemoteUrl,
                     usingRemoteInterface: remoteInterface,
@@ -422,12 +435,15 @@ public extension Item {
 
         progress.completedUnitCount += 1
 
+        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: bundleRootMetadata.contentType)
+
         return await Item(
             metadata: bundleRootMetadata,
             parentItemIdentifier: rootItem.parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
+            displayFileActions: displayFileActions,
             remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
             log: log
         )
@@ -597,12 +613,15 @@ public extension Item {
                     )
                 }
 
+                let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: itemMetadata.contentType)
+
                 item = await Item(
                     metadata: itemMetadata,
                     parentItemIdentifier: parentItemIdentifier,
                     account: account,
                     remoteInterface: remoteInterface,
                     dbManager: dbManager,
+                    displayFileActions: displayFileActions,
                     remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
                     log: log
                 )

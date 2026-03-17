@@ -190,6 +190,31 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
     return response;
 }
 
+bool FileProviderXPC::fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier) const
+{
+    qCInfo(lcFileProviderXPC) << "Checking for dirty user data in file provider domain" << fileProviderDomainIdentifier;
+
+    const auto service = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(fileProviderDomainIdentifier);
+
+    if (service == nil) {
+        qCWarning(lcFileProviderXPC) << "Could not get service for file provider domain" << fileProviderDomainIdentifier;
+        return false;
+    }
+
+    __block auto hasDirtyUserData = false;
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
+    [service hasDirtyUserDataWithCompletionHandler:^(BOOL dirty) {
+        hasDirtyUserData = dirty;
+        dispatch_semaphore_signal(semaphore);
+    }];
+
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    qCInfo(lcFileProviderXPC) << "File provider domain" << fileProviderDomainIdentifier << (hasDirtyUserData ? "has" : "does not have") << "dirty user data";
+
+    return hasDirtyUserData;
+}
+
 void FileProviderXPC::setIgnoreList() const
 {
     ExcludedFiles ignoreList;

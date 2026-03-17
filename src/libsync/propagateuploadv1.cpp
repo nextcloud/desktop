@@ -95,7 +95,9 @@ void PropagateUploadFileV1::startNextChunk()
     QString path = _fileToUpload._file;
 
     if (_item->_lockOwnerType == SyncFileItem::LockOwnerType::TokenLock &&
-        _item->_locked == SyncFileItem::LockStatus::LockedItem) {
+        _item->_locked == SyncFileItem::LockStatus::LockedItem &&
+        _item->_instruction != CSYNC_INSTRUCTION_NEW &&
+        _item->_instruction != CSYNC_INSTRUCTION_TYPE_CHANGE) {
         headers[QByteArrayLiteral("If")] = (QLatin1String("<") + propagator()->account()->davUrl().toString() + _fileToUpload._file + "> (<opaquelocktoken:" + _item->_lockToken.toUtf8() + ">)").toUtf8();
     }
 
@@ -134,12 +136,12 @@ void PropagateUploadFileV1::startNextChunk()
     const QString fileName = _fileToUpload._path;
     auto device = std::make_unique<UploadDevice>(
             fileName, chunkStart, currentChunkSize, &propagator()->_bandwidthManager);
-    if (!device->open(QIODevice::ReadOnly)) {
+    if (auto isLocked = FileSystem::isFileLocked(fileName, FileSystem::LockMode::SharedRead); isLocked || !device->open(QIODevice::ReadOnly)) {
         qCWarning(lcPropagateUploadV1) << "Could not prepare upload device: " << device->errorString();
 
         // If the file is currently locked, we want to retry the sync
         // when it becomes available again.
-        if (FileSystem::isFileLocked(fileName)) {
+        if (isLocked) {
             emit propagator()->seenLockedFile(fileName);
         }
         // Soft error because this is likely caused by the user modifying his files while syncing

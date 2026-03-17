@@ -418,7 +418,7 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderStat
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.ChangeTime);
 
     qCInfo(lcCfApiWrapper) << "updatePlaceholderState" << path << modtime;
-    const auto updateFlags = item.isDirectory() ? CF_UPDATE_FLAG_MARK_IN_SYNC | CF_UPDATE_FLAG_ENABLE_ON_DEMAND_POPULATION : CF_UPDATE_FLAG_MARK_IN_SYNC;
+    const auto updateFlags = item.isDirectory() && !item.isEncrypted() ? CF_UPDATE_FLAG_MARK_IN_SYNC | CF_UPDATE_FLAG_ENABLE_ON_DEMAND_POPULATION : CF_UPDATE_FLAG_MARK_IN_SYNC;
 
     const auto result = CfUpdatePlaceholder(OCC::CfApiWrapper::handleForPath(path).get(), updateType == CfApiUpdateMetadataType::AllMetadata ? &metadata : nullptr,
                                               fileId.data(), static_cast<DWORD>(fileId.size()),

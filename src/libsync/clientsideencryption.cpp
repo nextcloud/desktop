@@ -62,6 +62,7 @@ QDebug operator<<(QDebug out, const std::string& str)
 }
 
 using namespace QKeychain;
+using namespace Qt::StringLiterals;
 
 namespace OCC
 {
@@ -339,7 +340,7 @@ QByteArray encryptPrivateKey(
     }
 
     /* Initialise key and IV */
-    if(!EVP_EncryptInit_ex(ctx, nullptr, nullptr, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
+    if(!EVP_EncryptInit_ex(ctx, nullptr, nullptr, reinterpret_cast<const unsigned char*>(key.constData()), reinterpret_cast<const unsigned char*>(iv.constData()))) {
         qCInfo(lcCse()) << "Error initialising key and iv" << handleErrors();
     }
 
@@ -351,7 +352,7 @@ QByteArray encryptPrivateKey(
 
     // Do the actual encryption
     int len = 0;
-    if(!EVP_EncryptUpdate(ctx, unsignedData(ctext), &len, (unsigned char *)privateKeyB64.constData(), privateKeyB64.size())) {
+    if(!EVP_EncryptUpdate(ctx, unsignedData(ctext), &len, reinterpret_cast<const unsigned char*>(privateKeyB64.constData()), privateKeyB64.size())) {
         qCInfo(lcCse()) << "Error encrypting" << handleErrors();
     }
 
@@ -429,7 +430,7 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
     }
 
     /* Initialise key and IV */
-    if(!EVP_DecryptInit_ex(ctx, nullptr, nullptr, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
+    if(!EVP_DecryptInit_ex(ctx, nullptr, nullptr, reinterpret_cast<const unsigned char*>(key.constData()), reinterpret_cast<const unsigned char*>(iv.constData()))) {
         qCInfo(lcCse()) << "Error initialising key and iv";
         return QByteArray();
     }
@@ -440,13 +441,13 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
     /* Provide the message to be decrypted, and obtain the plaintext output.
      * EVP_DecryptUpdate can be called multiple times if necessary
      */
-    if(!EVP_DecryptUpdate(ctx, unsignedData(ptext), &plen, (unsigned char *)cipherTXT.constData(), cipherTXT.size())) {
+    if(!EVP_DecryptUpdate(ctx, unsignedData(ptext), &plen, reinterpret_cast<const unsigned char*>(cipherTXT.constData()), cipherTXT.size())) {
         qCInfo(lcCse()) << "Could not decrypt";
         return QByteArray();
     }
 
     /* Set expected e2EeTag value. Works in OpenSSL 1.0.1d and later */
-    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, e2EeTag.size(), (unsigned char *)e2EeTag.constData())) {
+    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, e2EeTag.size(), const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(e2EeTag.constData())))) {
         qCInfo(lcCse()) << "Could not set e2EeTag";
         return QByteArray();
     }
@@ -519,7 +520,7 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     }
 
     /* Initialise key and IV */
-    if(!EVP_DecryptInit_ex(ctx, nullptr, nullptr, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
+    if(!EVP_DecryptInit_ex(ctx, nullptr, nullptr, reinterpret_cast<const unsigned char*>(key.constData()), reinterpret_cast<const unsigned char*>(iv.constData()))) {
         qCInfo(lcCse()) << "Error initialising key and iv";
         return QByteArray();
     }
@@ -530,13 +531,13 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     /* Provide the message to be decrypted, and obtain the plaintext output.
      * EVP_DecryptUpdate can be called multiple times if necessary
      */
-    if(!EVP_DecryptUpdate(ctx, unsignedData(ptext), &plen, (unsigned char *)cipherTXT.constData(), cipherTXT.size())) {
+    if(!EVP_DecryptUpdate(ctx, unsignedData(ptext), &plen, reinterpret_cast<const unsigned char*>(cipherTXT.constData()), cipherTXT.size())) {
         qCInfo(lcCse()) << "Could not decrypt";
         return QByteArray();
     }
 
     /* Set expected e2EeTag value. Works in OpenSSL 1.0.1d and later */
-    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, e2EeTag.size(), (unsigned char *)e2EeTag.constData())) {
+    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, e2EeTag.size(), const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(e2EeTag.constData())))) {
         qCInfo(lcCse()) << "Could not set e2EeTag";
         return QByteArray();
     }
@@ -585,14 +586,14 @@ std::optional<QByteArray> encryptStringAsymmetric(const CertificateInformation &
                                                   const QByteArray &binaryData)
 {
     if (!encryptionEngine.isInitialized()) {
-        qCWarning(lcCseDecryption()) << "end-to-end encryption is disabled";
+        qCWarning(lcCseEncryption()) << "end-to-end encryption is disabled";
         return {};
     }
 
     if (encryptionEngine.useTokenBasedEncryption()) {
-        qCDebug(lcCseEncryption()) << "use certificate on hardware token";
+        qCDebug(lcCseEncryption()) << "use certificate on hardware token" << selectedCertificate.sha256Fingerprint();
     } else {
-        qCDebug(lcCseEncryption()) << "use certificate on software storage";
+        qCDebug(lcCseEncryption()) << "use certificate on software storage" << selectedCertificate.sha256Fingerprint();
     }
 
     auto encryptedBase64Result = QByteArray{};
@@ -611,7 +612,7 @@ std::optional<QByteArray> encryptStringAsymmetric(const CertificateInformation &
             encryptedBase64Result = *encryptionResult;
             break;
         } else if (encryptionResult.error() == ClientSideEncryption::EncryptionErrorType::RetryOnError) {
-            qCInfo(lcCseDecryption()) << "retry encryption after error";
+            qCInfo(lcCseEncryption()) << "retry encryption after error";
             needHardwareTokenEncryptionInit = true;
             continue;
         } else {
@@ -639,9 +640,9 @@ std::optional<QByteArray> decryptStringAsymmetric(const CertificateInformation &
     }
 
     if (encryptionEngine.useTokenBasedEncryption()) {
-        qCDebug(lcCseDecryption()) << "use certificate on hardware token";
+        qCDebug(lcCseDecryption()) << "use certificate on hardware token" << selectedCertificate.sha256Fingerprint();
     } else {
-        qCDebug(lcCseDecryption()) << "use certificate on software storage";
+        qCDebug(lcCseDecryption()) << "use certificate on software storage" << selectedCertificate.sha256Fingerprint();
     }
 
     auto decryptBase64Result = QByteArray{};
@@ -705,7 +706,7 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     }
 
     /* Initialise key and IV */
-    if(!EVP_EncryptInit_ex(ctx, nullptr, nullptr, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
+    if(!EVP_EncryptInit_ex(ctx, nullptr, nullptr, reinterpret_cast<const unsigned char*>(key.constData()), reinterpret_cast<const unsigned char*>(iv.constData()))) {
         qCInfo(lcCse()) << "Error initialising key and iv" << handleErrors();
         return {};
     }
@@ -718,7 +719,7 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
 
     // Do the actual encryption
     int len = 0;
-    if(!EVP_EncryptUpdate(ctx, unsignedData(ctext), &len, (unsigned char *)dataB64.constData(), dataB64.size())) {
+    if(!EVP_EncryptUpdate(ctx, unsignedData(ctext), &len, reinterpret_cast<const unsigned char*>(dataB64.constData()), dataB64.size())) {
         qCInfo(lcCse()) << "Error encrypting" << handleErrors();
         return {};
     }
@@ -791,7 +792,7 @@ OCC::Result<QByteArray, OCC::ClientSideEncryption::EncryptionErrorType> decryptS
     }
 
     size_t outlen = 0;
-    err = EVP_PKEY_decrypt(ctx, nullptr, &outlen,  (unsigned char *)binaryData.constData(), binaryData.size());
+    err = EVP_PKEY_decrypt(ctx, nullptr, &outlen,  reinterpret_cast<const unsigned char*>(binaryData.constData()), binaryData.size());
     if (err <= 0) {
         qCInfo(lcCseDecryption()) << "Could not determine the buffer length" << handleErrors();
         return {OCC::ClientSideEncryption::EncryptionErrorType::FatalError};
@@ -799,7 +800,7 @@ OCC::Result<QByteArray, OCC::ClientSideEncryption::EncryptionErrorType> decryptS
 
     QByteArray out(static_cast<int>(outlen), '\0');
 
-    if (EVP_PKEY_decrypt(ctx, unsignedData(out), &outlen, (unsigned char *)binaryData.constData(), binaryData.size()) <= 0) {
+    if (EVP_PKEY_decrypt(ctx, unsignedData(out), &outlen, reinterpret_cast<const unsigned char*>(binaryData.constData()), binaryData.size()) <= 0) {
         const auto error = handleErrors();
         if (ClientSideEncryption::checkEncryptionErrorForHardwareTokenResetState(error)) {
             return {OCC::ClientSideEncryption::EncryptionErrorType::RetryOnError};
@@ -845,7 +846,7 @@ OCC::Result<QByteArray, ClientSideEncryption::EncryptionErrorType> encryptString
     }
 
     size_t outLen = 0;
-    if (EVP_PKEY_encrypt(ctx, nullptr, &outLen, (unsigned char *)binaryData.constData(), binaryData.size()) != 1) {
+    if (EVP_PKEY_encrypt(ctx, nullptr, &outLen, reinterpret_cast<const unsigned char*>(binaryData.constData()), binaryData.size()) != 1) {
         const auto error = handleErrors();
         if (ClientSideEncryption::checkEncryptionErrorForHardwareTokenResetState(error)) {
             encryptionEngine.initializeHardwareTokenEncryption(nullptr);
@@ -856,7 +857,7 @@ OCC::Result<QByteArray, ClientSideEncryption::EncryptionErrorType> encryptString
     }
 
     QByteArray out(static_cast<int>(outLen), '\0');
-    if (EVP_PKEY_encrypt(ctx, unsignedData(out), &outLen, (unsigned char *)binaryData.constData(), binaryData.size()) != 1) {
+    if (EVP_PKEY_encrypt(ctx, unsignedData(out), &outLen, reinterpret_cast<const unsigned char*>(binaryData.constData()), binaryData.size()) != 1) {
         const auto error = handleErrors();
         if (ClientSideEncryption::checkEncryptionErrorForHardwareTokenResetState(error)) {
             encryptionEngine.initializeHardwareTokenEncryption(nullptr);
@@ -1034,11 +1035,7 @@ bool ClientSideEncryption::userCertificateNeedsMigration() const
 
 QByteArray ClientSideEncryption::certificateSha256Fingerprint() const
 {
-    if (useTokenBasedEncryption()) {
-        return _encryptionCertificate.sha256Fingerprint();
-    }
-
-    return {};
+    return _encryptionCertificate.sha256Fingerprint();
 }
 
 void ClientSideEncryption::setAccount(const AccountPtr &account)
@@ -1193,7 +1190,8 @@ void ClientSideEncryption::initializeHardwareTokenEncryption(QWidget *settingsDi
                                                tr("Enter Certificate USB Token PIN:"),
                                                QLineEdit::Password,
                                                {},
-                                               &ok);
+                                               &ok,
+                                               Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
                 if (!ok || newPin.isEmpty()) {
                     qCWarning(lcCse()) << "an USER pin is required";
 
@@ -1274,32 +1272,34 @@ void ClientSideEncryption::initializeHardwareTokenEncryption(QWidget *settingsDi
                 return;
             }
 
-            qCDebug(lcCse) << "checking the type of the key associated to the certificate";
-            qCDebug(lcCse) << "key type" << Qt::hex << PKCS11_get_key_type(certificateKey);
+            qCDebug(lcCse) << "checking the type of the key associated to the certificate" << sslCertificate.digest(QCryptographicHash::Sha256).toBase64();
+            qCDebug(lcCse) << "key type" << Qt::hex << PKCS11_get_key_type(certificateKey) << certificateKey;
 
-            _otherCertificates.emplace_back(certificateKey, std::move(sslCertificate));
+            auto newCertificateInformation = CertificateInformation{currentCertificate, std::move(sslCertificate)};
+
+            if (newCertificateInformation.isSelfSigned()) {
+                qCDebug(lcCse()) << "newly found certificate is self signed: goint to ignore it";
+                continue;
+            }
+
+            const auto &sslErrors = newCertificateInformation.verify();
+            for (const auto &sslError : sslErrors) {
+                qCInfo(lcCse()) << "certificate validation error" << sslError;
+            }
+
+            _otherCertificates.push_back(std::move(newCertificateInformation));
         }
     }
 
     for (const auto &oneCertificateInformation : _otherCertificates) {
-        if (oneCertificateInformation.isSelfSigned()) {
-            qCDebug(lcCse()) << "newly found certificate is self signed: goint to ignore it";
-            continue;
-        }
-
         if (!_usbTokenInformation.sha256Fingerprint().isEmpty() && oneCertificateInformation.sha256Fingerprint() != _usbTokenInformation.sha256Fingerprint()) {
             qCDebug(lcCse()) << "skipping certificate from" << "with fingerprint" << oneCertificateInformation.sha256Fingerprint() << "different from" << _usbTokenInformation.sha256Fingerprint();
             continue;
         }
 
-        const auto &sslErrors = oneCertificateInformation.verify();
-        for (const auto &sslError : sslErrors) {
-            qCInfo(lcCse()) << "certificate validation error" << sslError;
-        }
-
         setEncryptionCertificate(oneCertificateInformation);
 
-        if (canEncrypt() && !checkEncryptionIsWorking()) {
+        if (oneCertificateInformation.canEncrypt() && !checkEncryptionIsWorking(oneCertificateInformation)) {
             qCWarning(lcCse()) << "encryption is not properly setup";
 
             failedToInitialize();
@@ -1361,35 +1361,35 @@ void ClientSideEncryption::fetchPublicKeyFromKeyChain()
     job->start();
 }
 
-bool ClientSideEncryption::checkEncryptionIsWorking()
+bool ClientSideEncryption::checkEncryptionIsWorking(const CertificateInformation &currentCertificate)
 {
     qCInfo(lcCse) << "check encryption is working before enabling end-to-end encryption feature";
-    QByteArray data = EncryptionHelper::generateRandom(64);
+    const auto binaryData = EncryptionHelper::generateRandom(64);
 
-    auto encryptedData = EncryptionHelper::encryptStringAsymmetric(getCertificateInformation(), paddingMode(), *this, data);
+    auto encryptedData = EncryptionHelper::encryptStringAsymmetric(currentCertificate, paddingMode(), *this, binaryData);
     if (!encryptedData) {
         qCWarning(lcCse()) << "encryption error";
         return false;
     }
 
-    qCDebug(lcCse) << "encryption is working with" << getCertificateInformation().sha256Fingerprint();
+    qCDebug(lcCse) << "encryption is working with" << currentCertificate.sha256Fingerprint();
 
-    const auto decryptionResult = EncryptionHelper::decryptStringAsymmetric(getCertificateInformation(), paddingMode(), *this, *encryptedData);
+    const auto decryptionResult = EncryptionHelper::decryptStringAsymmetric(currentCertificate, paddingMode(), *this, *encryptedData);
     if (!decryptionResult) {
         qCWarning(lcCse()) << "encryption error";
         return false;
     }
 
-    qCDebug(lcCse) << "decryption is working with" << getCertificateInformation().sha256Fingerprint();
+    qCDebug(lcCse) << "decryption is working with" << currentCertificate.sha256Fingerprint();
 
     QByteArray decryptResult = QByteArray::fromBase64(*decryptionResult);
 
-    if (data != decryptResult) {
+    if (binaryData != decryptResult) {
         qCInfo(lcCse()) << "recovered data does not match the initial data after encryption and decryption of it";
         return false;
     }
 
-    qCInfo(lcCse) << "end-to-end encryption is working with" << getCertificateInformation().sha256Fingerprint();
+    qCInfo(lcCse) << "end-to-end encryption is working with" << currentCertificate.sha256Fingerprint();
 
     return true;
 }
@@ -2316,7 +2316,7 @@ void ClientSideEncryption::decryptPrivateKey(const QByteArray &key) {
                 }
             }
 
-            if (!getPrivateKey().isNull() && checkEncryptionIsWorking()) {
+            if (!getPrivateKey().isNull() && checkEncryptionIsWorking(_encryptionCertificate)) {
                 writePrivateKey();
                 writeCertificate();
                 writeMnemonic([] () {});
@@ -2455,7 +2455,7 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
             return false;
         }
 
-        if(!EVP_EncryptUpdate(ctx, unsignedData(out), &len, (unsigned char *)data.constData(), data.size())) {
+        if(!EVP_EncryptUpdate(ctx, unsignedData(out), &len, reinterpret_cast<const unsigned char*>(data.constData()), data.size())) {
             qCInfo(lcCse()) << "Could not encrypt";
             return false;
         }
@@ -2539,7 +2539,7 @@ bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
             return false;
         }
 
-        if(!EVP_DecryptUpdate(ctx, unsignedData(out), &len, (unsigned char *)data.constData(), data.size())) {
+        if(!EVP_DecryptUpdate(ctx, unsignedData(out), &len, reinterpret_cast<const unsigned char*>(data.constData()), data.size())) {
             qCInfo(lcCse()) << "Could not decrypt";
             return false;
         }
@@ -2550,7 +2550,7 @@ bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
     const QByteArray e2EeTag = input->read(OCC::Constants::e2EeTagSize);
 
     /* Set expected e2EeTag value. Works in OpenSSL 1.0.1d and later */
-    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, e2EeTag.size(), (unsigned char *)e2EeTag.constData())) {
+    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, e2EeTag.size(), const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(e2EeTag.constData())))) {
         qCInfo(lcCse()) << "Could not set expected e2EeTag";
         return false;
     }
@@ -2626,7 +2626,7 @@ bool EncryptionHelper::dataEncryption(const QByteArray &key, const QByteArray &i
             return false;
         }
 
-        if (!EVP_EncryptUpdate(ctx, unsignedData(out), &len, (unsigned char *)data.constData(), data.size())) {
+        if (!EVP_EncryptUpdate(ctx, unsignedData(out), &len, reinterpret_cast<const unsigned char*>(data.constData()), data.size())) {
             qCInfo(lcCse()) << "Could not encrypt";
             return false;
         }
@@ -2721,7 +2721,7 @@ bool EncryptionHelper::dataDecryption(const QByteArray &key, const QByteArray &i
             return false;
         }
 
-        if (!EVP_DecryptUpdate(ctx, unsignedData(out), &len, (unsigned char *)data.constData(), data.size())) {
+        if (!EVP_DecryptUpdate(ctx, unsignedData(out), &len, reinterpret_cast<const unsigned char*>(data.constData()), data.size())) {
             qCWarning(lcCse()) << "Could not decrypt";
             return false;
         }
@@ -2732,7 +2732,7 @@ bool EncryptionHelper::dataDecryption(const QByteArray &key, const QByteArray &i
     const QByteArray e2EeTag = inputBuffer.read(OCC::Constants::e2EeTagSize);
 
     /* Set expected e2EeTag value. Works in OpenSSL 1.0.1d and later */
-    if (!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, e2EeTag.size(), (unsigned char *)e2EeTag.constData())) {
+    if (!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, e2EeTag.size(), const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(e2EeTag.constData())))) {
         qCWarning(lcCse()) << "Could not set expected e2EeTag";
         return false;
     }
@@ -3032,9 +3032,9 @@ CertificateInformation::CertificateInformation()
     checkEncryptionCertificate();
 }
 
-CertificateInformation::CertificateInformation(PKCS11_KEY *hardwarePrivateKey,
+CertificateInformation::CertificateInformation(PKCS11_CERT *hardwareCertificate,
                                                QSslCertificate &&certificate)
-    : _hardwarePrivateKey{hardwarePrivateKey}
+    : _hardwareCertificate{hardwareCertificate}
     , _certificate{std::move(certificate)}
     , _certificateType{CertificateType::HardwareCertificate}
 {
@@ -3044,7 +3044,7 @@ CertificateInformation::CertificateInformation(PKCS11_KEY *hardwarePrivateKey,
 CertificateInformation::CertificateInformation(CertificateType certificateType,
                                                const QByteArray &privateKey,
                                                QSslCertificate &&certificate)
-    : _hardwarePrivateKey()
+    : _hardwareCertificate()
     , _privateKeyData()
     , _certificate(std::move(certificate))
     , _certificateType{certificateType}
@@ -3071,7 +3071,7 @@ bool CertificateInformation::operator==(const CertificateInformation &other) con
 
 void CertificateInformation::clear()
 {
-    _hardwarePrivateKey = nullptr;
+    _hardwareCertificate = nullptr;
     _privateKeyData.clear();
     _certificate.clear();
     _certificateExpired = true;
@@ -3139,13 +3139,13 @@ PKey CertificateInformation::getEvpPublicKey() const
 
 PKCS11_KEY *CertificateInformation::getPkcs11PrivateKey() const
 {
-    return canDecrypt() ? _hardwarePrivateKey : nullptr;
+    return canDecrypt() && _hardwareCertificate ? PKCS11_find_key(_hardwareCertificate) : nullptr;
 }
 
 PKey CertificateInformation::getEvpPrivateKey() const
 {
-    if (_hardwarePrivateKey) {
-        return PKey::readHardwarePrivateKey(_hardwarePrivateKey);
+    if (_hardwareCertificate) {
+        return PKey::readHardwarePrivateKey(PKCS11_find_key(_hardwareCertificate));
     } else {
         const auto privateKeyPem = _privateKeyData;
         Q_ASSERT(!privateKeyPem.isEmpty());
@@ -3166,23 +3166,23 @@ const QSslCertificate &CertificateInformation::getCertificate() const
 
 bool CertificateInformation::canEncrypt() const
 {
-    return (_hardwarePrivateKey || !_certificate.isNull()) && !_certificateExpired && !_certificateNotYetValid && !_certificateRevoked && !_certificateInvalid;
+    return (_hardwareCertificate || !_certificate.isNull()) && !_certificateExpired && !_certificateNotYetValid && !_certificateRevoked && !_certificateInvalid;
 }
 
 bool CertificateInformation::canDecrypt() const
 {
-    return _hardwarePrivateKey || !_privateKeyData.isEmpty();
+    return _hardwareCertificate || !_privateKeyData.isEmpty();
 }
 
 bool CertificateInformation::userCertificateNeedsMigration() const
 {
-    return _hardwarePrivateKey &&
+    return _hardwareCertificate &&
         (_certificateExpired || _certificateNotYetValid || _certificateRevoked || _certificateInvalid);
 }
 
 bool CertificateInformation::sensitiveDataRemaining() const
 {
-    return _hardwarePrivateKey && !_privateKeyData.isEmpty() && !_certificate.isNull();
+    return _hardwareCertificate && !_privateKeyData.isEmpty() && !_certificate.isNull();
 }
 
 QByteArray CertificateInformation::sha256Fingerprint() const

@@ -6,6 +6,9 @@
 #include "folderstatusview.h"
 #include "folderstatusdelegate.h"
 
+#include <QScrollBar>
+#include <QtGlobal>
+
 namespace OCC {
 
 FolderStatusView::FolderStatusView(QWidget *parent) : QTreeView(parent)

@@ -157,11 +157,7 @@ public extension ItemMetadata {
         guard hasPreview else {
             return nil
         }
-        guard #available(macOS 13.0, iOS 16.0, visionOS 1.0, *) else {
-            return URL(
-                string: "\(urlBase.urlEncoded ?? "")/index.php/core/preview?fileId=\(fileId)&x=\(size.width)&y=\(size.height)&a=true"
-            )
-        }
+
         return URL(string: urlBase.urlEncoded ?? "")?
             .appending(components: "index.php", "core", "preview")
             .appending(queryItems: [

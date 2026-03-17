@@ -30,7 +30,7 @@ jobs:
 
       - name: Discover cached Craft directories
         id: cache-craft-restore
-        uses: actions/cache/restore@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
+        uses: actions/cache/restore@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         with:
           path: |
             ${{ env.CRAFT_MASTER_LOCATION }}
@@ -66,8 +66,8 @@ jobs:
       - name: Add required blueprint repositories
         if: steps.cache-craft-restore.outputs.cache-hit != 'true'
         run: |
-          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c --add-blueprint-repository "https://github.com/nextcloud/craft-blueprints-kde.git|next|"
-          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c --add-blueprint-repository "https://github.com/nextcloud/desktop-client-blueprints.git|next|"
+          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c --add-blueprint-repository "https://github.com/nextcloud/craft-blueprints-kde.git|master|"
+          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c --add-blueprint-repository "https://github.com/nextcloud/desktop-client-blueprints.git|master|"
 
       - name: Setup Craft
         if: steps.cache-craft-restore.outputs.cache-hit != 'true'
@@ -81,7 +81,7 @@ jobs:
 
       - name: Cache Craft directories
         if: steps.cache-craft-restore.outputs.cache-hit != 'true'
-        uses: actions/cache/save@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
+        uses: actions/cache/save@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         with:
           path: |
             ${{ env.CRAFT_MASTER_LOCATION }}

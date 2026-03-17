@@ -572,7 +572,8 @@ QString Utility::getCurrentUserName()
     DWORD len = sizeof(username) / sizeof(TCHAR);
     
     if (!GetUserName(username, &len)) {
-        qCWarning(lcUtility) << "Could not retrieve Windows user name." << formatWinError(GetLastError());
+        const auto lastError = GetLastError();
+        qCWarning(lcUtility).nospace() << "Could not retrieve Windows user name. errorMessage=" << formatWinError(lastError);
     }
 
     return QString::fromWCharArray(username);
@@ -606,6 +607,31 @@ void Utility::LocalFreeDeleter::operator()(void *p) const
     }
 
     ::LocalFree(reinterpret_cast<HLOCAL>(p));
+}
+
+Utility::Handle::Handle(HANDLE h, std::function<void(HANDLE)> &&close)
+    : _handle(h)
+    , _close(std::move(close))
+{
+}
+
+Utility::Handle::Handle(HANDLE h)
+    : _handle(h)
+    , _close(&CloseHandle)
+{
+}
+
+Utility::Handle::~Handle()
+{
+    close();
+}
+
+void Utility::Handle::close()
+{
+    if (_handle != INVALID_HANDLE_VALUE) {
+        _close(_handle);
+        _handle = INVALID_HANDLE_VALUE;
+    }
 }
 
 } // namespace OCC

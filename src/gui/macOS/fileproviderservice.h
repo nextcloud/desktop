@@ -59,6 +59,15 @@ signals:
      */
     void syncStateChanged(const AccountPtr &account, SyncResult::Status state);
 
+    /**
+     * @brief Emitted when a file provider extension requests to show the file actions dialog.
+     * @param fileId The ocId as provided by the server for item identification independent from path.
+     * @param localFile The local file path for which to show actions.
+     * @param remoteItemPath The server-side path of the item, used as a fallback when no sync folder is configured.
+     * @param fileProviderDomainIdentifier The file provider domain identifier (optional, empty if not provided).
+     */
+    void showFileActionsDialog(const QString &fileId, const QString &localFile, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier);
+
 private:
     class MacImplementation;
     std::unique_ptr<MacImplementation> d;

@@ -34,13 +34,13 @@ struct Build: AsyncParsableCommand {
     var kdeBlueprintsGitUrl = "https://github.com/nextcloud/craft-blueprints-kde.git"
     
     @Option(name: [.long], help: "KDE Craft blueprints git ref/branch")
-    var kdeBlueprintsGitRef = "next"
+    var kdeBlueprintsGitRef = "master"
     
     @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprints Git URL.")
     var clientBlueprintsGitUrl = "https://github.com/nextcloud/desktop-client-blueprints.git"
     
     @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprints Git ref/branch.")
-    var clientBlueprintsGitRef = "next"
+    var clientBlueprintsGitRef = "master"
     
     @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprint name.")
     var craftBlueprintName = "nextcloud-client"
@@ -91,6 +91,9 @@ struct Build: AsyncParsableCommand {
     @Flag(help: "Build File Provider Module.")
     var buildFileProviderModule = false
     
+    @Flag(help: "Build without QtWebEngine.")
+    var withoutWebEngine = false
+
     @Flag(help: "Build without Sparkle auto-updater.")
     var disableAutoUpdater = false
     
@@ -202,7 +205,8 @@ struct Build: AsyncParsableCommand {
             "\(craftBlueprintName).osxArchs=\(arch)",
             "\(craftBlueprintName).buildTests=\(buildTests ? "True" : "False")",
             "\(craftBlueprintName).buildMacOSBundle=\(disableAppBundle ? "False" : "True")",
-            "\(craftBlueprintName).buildFileProviderModule=\(buildFileProviderModule ? "True" : "False")"
+            "\(craftBlueprintName).buildFileProviderModule=\(buildFileProviderModule ? "True" : "False")",
+            "\(craftBlueprintName).buildWithWebEngine=\(withoutWebEngine ? "False" : "True")"
         ]
         
         if let overrideServerUrl {
@@ -283,11 +287,83 @@ struct Build: AsyncParsableCommand {
             throw MacCrafterError.craftError("Error crafting Nextcloud Desktop Client.")
         }
 
-        // MARK: Signing
+        // MARK: Debug Symbols
 
         let clientAppURL = clientBuildURL
             .appendingPathComponent("image-\(buildType)-master")
             .appendingPathComponent("\(appName).app")
+
+        // When building in dev mode, copy the dSYM bundles for the app extensions from the
+        // xcodebuild SYMROOT into Contents/PlugIns/ of the product app bundle alongside their
+        // respective .appex bundles.
+        //
+        // Background: KDE Craft's __internalPostInstallHandleSymbols() deliberately moves every
+        // .dSYM bundle out of the main image directory and into a separate -dbg image directory
+        // before packaging. This means dSYMs never reach the product app via the normal CMake
+        // install() path. Reading directly from the xcodebuild SYMROOT bypasses that filtering.
+        //
+        // With the dSYMs inside the app bundle under /Applications, Spotlight indexes them and
+        // Xcode can find them automatically via UUID lookup when attaching to the extension process,
+        // which allows breakpoints in extension source files to be resolved correctly.
+
+        if dev {
+            let dSYM = clientBuildURL
+                .appendingPathComponent("image-\(buildType)-master-dbg")
+                .appendingPathComponent("\(appName).app.dSYM")
+
+            let binaryLocation = clientAppURL
+                .appendingPathComponent("Contents")
+                .appendingPathComponent("MacOS")
+                .appendingPathComponent("\(appName).app.dSYM")
+
+            Log.info("Copying main dSYM bundle at \"\(dSYM.path)\" into product app bundle \"\(binaryLocation.path)\" for debugging...")
+
+            if fm.fileExists(atPath: binaryLocation.path) {
+                Log.info("Removing already existing main dSYM bundle at \"\(binaryLocation.path)\"...")
+                try fm.removeItem(at: binaryLocation)
+            }
+
+            try fm.copyItem(at: dSYM, to: binaryLocation)
+
+            Log.info("Copying extension dSYM bundles into product app bundle for debugging...")
+
+            let shellIntegrationBuildDir = clientBuildURL
+                .appendingPathComponent("work")
+                .appendingPathComponent("build")
+                .appendingPathComponent("shell_integration")
+                .appendingPathComponent("MacOSX")
+                .appendingPathComponent(buildType)
+
+            let plugInsDir = clientAppURL
+                .appendingPathComponent("Contents")
+                .appendingPathComponent("PlugIns")
+
+            guard fm.fileExists(atPath: shellIntegrationBuildDir.path) else {
+                Log.info("Shell integration build directory not found, skipping dSYM copy: \(shellIntegrationBuildDir.path)")
+                return
+            }
+
+            let entries = try fm.contentsOfDirectory(at: shellIntegrationBuildDir, includingPropertiesForKeys: [.isDirectoryKey])
+            let dSYMBundles = entries.filter { $0.pathExtension.lowercased() == "dsym" }
+
+            for dSYM in dSYMBundles {
+                let destination = plugInsDir.appendingPathComponent(dSYM.lastPathComponent)
+
+                if fm.fileExists(atPath: destination.path) {
+                    Log.info("Removing already existing extension dSYM bundle at \"\(destination.path)\"...")
+                    try fm.removeItem(at: destination)
+                }
+
+                try fm.copyItem(at: dSYM, to: destination)
+                Log.info("Copied \(dSYM.path) to \(destination.path)")
+            }
+
+            if dSYMBundles.isEmpty {
+                Log.info("No dSYM bundles found in \(shellIntegrationBuildDir.path)")
+            }
+        }
+
+        // MARK: Signing
 
         if let codeSignIdentity {
             Log.info("Signing Nextcloud Desktop Client libraries and frameworks...")

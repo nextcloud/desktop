@@ -50,6 +50,8 @@ QtObject {
     property int trayHorizontalMargin: 10
     property int trayModalWidth: 380
     property int trayModalHeight: 490
+    property int filesActionsWidth: 380
+    property int filesActionsHeight: 350
     property int trayListItemIconSize: accountAvatarSize
     property int trayDrawerMargin: trayWindowHeaderHeight
     property real thumbnailImageSizeReduction: 0.2  // We reserve some space within the thumbnail "item", here about 20%.

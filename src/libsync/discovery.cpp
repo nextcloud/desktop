@@ -675,7 +675,8 @@ void ProcessDirectoryJob::postProcessServerNew(const SyncFileItemPtr &item,
         if (!localEntry.isValid() &&
             opts._vfs->mode() == Vfs::WindowsCfApi &&
             _pinState != PinState::AlwaysLocal &&
-            !FileSystem::isExcludeFile(item->_file)) {
+            !FileSystem::isExcludeFile(item->_file) &&
+            !item->isEncrypted()) {
             item->_type = ItemTypeVirtualDirectory;
         }
 
@@ -1278,7 +1279,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             }
         } else if (noServerEntry) {
             // Not locally, not on the server. The entry is stale!
-            qCInfo(lcDisco) << "Stale DB entry";
+            qCInfo(lcDisco).nospace() << "Stale DB entry (missing local/server entries)"
+                << " path=" << path._original
+                << " db_etag=" << dbEntry._etag
+                << " db_inode=" << dbEntry._inode;
             if (!_discoveryData->_statedb->deleteFileRecord(path._original, true)) {
                 emit _discoveryData->fatalError(tr("Error while deleting file record %1 from the database").arg(path._original), ErrorCategory::GenericError);
                 qCWarning(lcDisco) << "Failed to delete a file record from the local DB" << path._original;
@@ -2284,7 +2288,7 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
                 const auto alreadyDownloaded = _discoveryData->_statedb->getFileRecord(_dirItem->_file, &record) && record.isValid();
                 // we need to make sure we first download all e2ee files/folders before migrating
                 _dirItem->_isEncryptedMetadataNeedUpdate = alreadyDownloaded && serverJob->encryptedMetadataNeedUpdate();
-                _dirItem->_e2eEncryptionStatus = SyncFileItem::EncryptionStatus::EncryptedMigratedV2_0;
+                _dirItem->_e2eEncryptionStatus = serverJob->currentEncryptionStatus();
                 _dirItem->_e2eEncryptionStatusRemote = serverJob->currentEncryptionStatus();
                 _dirItem->_e2eEncryptionServerCapability = serverJob->requiredEncryptionStatus();
                 qCDebug(lcDisco()) << _dirItem->_e2eEncryptionStatus << _dirItem->_e2eEncryptionServerCapability;

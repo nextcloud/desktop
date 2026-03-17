@@ -115,7 +115,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: remoteItem.identifier))
     }
 
-    func testDeleteWithTrashing() async {
+    func testDeleteWithTrashing() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let itemIdentifier = "file"
         let remoteItem = MockRemoteItem(
@@ -154,14 +154,14 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(postTrashingMetadata)
         XCTAssertEqual(postTrashingMetadata?.serverUrl, Self.account.trashUrl)
         XCTAssertEqual(
-            Self.dbManager.parentItemIdentifierFromMetadata(postTrashingMetadata!), .trashContainer
+            try Self.dbManager.parentItemIdentifierFromMetadata(XCTUnwrap(postTrashingMetadata)), .trashContainer
         )
         XCTAssertEqual(postTrashingMetadata?.isTrashed, true)
         XCTAssertEqual(postTrashingMetadata?.trashbinFileName, "file") // Remember we need to sync
         XCTAssertEqual(postTrashingMetadata?.trashbinOriginalLocation, "file")
     }
 
-    func testDeleteDoesNotPropagateIgnoredFile() async throws {
+    func testDeleteDoesNotPropagateIgnoredFile() async {
         let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.log", "/tmp/"], log: FileProviderLogMock())
         let metadata = SendableItemMetadata(
             ocId: "ignored-file-id",
@@ -187,7 +187,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: metadata.ocId)?.deleted, true)
     }
 
-    func testDeleteLockFileUnlocksTargetFile() async throws {
+    func testDeleteLockFileUnlocksTargetFile() async {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
         // Setup remote folder and file
@@ -263,7 +263,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         )
     }
 
-    func testDeleteLockFileWithoutCapabilitiesDoesNothing() async throws {
+    func testDeleteLockFileWithoutCapabilitiesDoesNothing() async {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         XCTAssert(remoteInterface.capabilities.contains(##""locking": "1.0","##))
         remoteInterface.capabilities =
@@ -337,7 +337,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         )
     }
 
-    func testFailOnNonRecursiveNonEmptyDirDelete() async throws {
+    func testFailOnNonRecursiveNonEmptyDirDelete() async {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let remoteFolder = MockRemoteItem(
             identifier: "folder",

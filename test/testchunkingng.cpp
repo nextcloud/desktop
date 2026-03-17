@@ -151,6 +151,7 @@ private slots:
         QVERIFY(destinationHeader.contains("SQ-0.5%25BF-150"));
         QVERIFY(destinationHeader.contains("/A/SQ-0.5%25BF-150/"));
         QVERIFY(!destinationHeader.contains("%2F"));
+        QVERIFY(destinationHeader.startsWith("http://"));
     }
 
     // Test resuming when there's a confusing chunk added
