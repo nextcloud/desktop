@@ -1507,8 +1507,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
             || _item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA) {
 
             if (!_item->_remotePerm.isNull() &&
-                !_item->_remotePerm.hasPermission(RemotePermissions::CanAddFile) &&
-                !_item->_remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories)) {
+                !_item->_remotePerm.hasPermissionsForReadWrite()) {
                 try {
                     if (const auto fileName = propagator()->fullLocalPath(_item->_file); FileSystem::fileExists(fileName)) {
                         FileSystem::setFolderPermissions(fileName, FileSystem::FolderPermissions::ReadOnly);
