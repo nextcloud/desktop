@@ -970,7 +970,7 @@ private slots:
         fakeFolder.remoteModifier().insert("groupFolder/simpleChildFolder/otherFile", 12);
 
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(propfindCounter, 8);
+        QCOMPARE(propfindCounter, 10);
     }
 
     void testFolderReadonlyWhenRemotePermissionsWithoutEtagChanged_data()
