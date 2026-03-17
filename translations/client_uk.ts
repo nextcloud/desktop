@@ -805,43 +805,43 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="954"/>
         <source>Grant access to sync folder</source>
-        <translation type="unfinished"/>
+        <translation>Надати доступ для синхронізації каталогу</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="966"/>
         <source>Access Error</source>
-        <translation type="unfinished"/>
+        <translation>Помилка з доступом</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="967"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося отримати доступ до вибраного каталогу. Спробуйте ще раз.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="975"/>
         <source>Wrong Folder</source>
-        <translation type="unfinished"/>
+        <translation>Недійсний каталог</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="976"/>
         <source>Please select the original sync folder: %1</source>
-        <translation type="unfinished"/>
+        <translation>Виберіть оригінальний каталог синхронізації: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="985"/>
         <location filename="../src/gui/accountsettings.cpp" line="994"/>
         <source>Bookmark Error</source>
-        <translation type="unfinished"/>
+        <translation>Помилка із закладками</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="986"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо створити безпечну закладку для цього каталогу. Спробуйте ще раз.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="995"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо визначити безпечну закладку. Спробуйте ще раз.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1000"/>
@@ -944,7 +944,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1850"/>
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
-        <translation type="unfinished"/>
+        <translation>Інтеграція віртуальних файлів не підтримує наскрізне шифрування.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1757"/>
@@ -2489,7 +2489,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message numerus="yes">
         <location filename="../src/gui/folderman.cpp" line="416"/>
         <source>%n sync folders require access re-approval after the app update. Please open settings to grant access.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Потрібно повторно підтвердити доступ для %n безпечний каталог після оновлення застосунку. Відкрийте налаштування для надання доступу.</numerusform><numerusform>Потрібно повторно підтвердити доступ для %n безпечних каталоги після оновлення застосунку. Відкрийте налаштування для надання доступу.</numerusform><numerusform>Потрібно повторно підтвердити доступ для %n безпечних каталогів після оновлення застосунку. Відкрийте налаштування для надання доступу.</numerusform><numerusform>Потрібно повторно підтвердити доступ для %n безпечних каталогів після оновлення застосунку. Відкрийте налаштування для надання доступу.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1801"/>
@@ -2666,7 +2666,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
         <source>This folder requires access re-approval. Click here to grant access.</source>
-        <translation type="unfinished"/>
+        <translation>Для цього каталогу потрібно повторно підтвердити доступ. Клацніть тут, щоб надати доступ.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
