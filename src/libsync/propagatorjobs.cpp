@@ -266,8 +266,7 @@ void PropagateLocalMkdir::startLocalMkdir()
     }
 
     if (!_item->_remotePerm.isNull() &&
-        !_item->_remotePerm.hasPermission(RemotePermissions::CanAddFile) &&
-        !_item->_remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories)) {
+        !_item->_remotePerm.hasPermissionsForReadWrite()) {
         try {
             FileSystem::setFolderPermissions(newDirStr, FileSystem::FolderPermissions::ReadOnly);
         }
