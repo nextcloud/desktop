@@ -61,6 +61,18 @@ Button {
         height: Math.min(implicitHeight, maxMenuHeight)
         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
+        contentItem: ListView {
+            clip: true
+            implicitHeight: contentHeight
+            model: accountMenu.contentModel
+            currentIndex: accountMenu.currentIndex
+            boundsBehavior: Flickable.StopAtBounds
+
+            ScrollBar.vertical: ScrollBar {
+                policy: ScrollBar.AsNeeded
+            }
+        }
+
         onClosed: {
             // HACK: reload account Instantiator immediately by resetting it - could be done better I guess
             // see also onVisibleChanged above
