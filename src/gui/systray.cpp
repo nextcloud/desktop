@@ -115,10 +115,12 @@ void Systray::create()
             _trayEngine->rootContext()->setContextProperty("activityModel", &_fakeActivityModel);
         }
 
-        QQmlComponent trayWindowComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/tray/MainWindow.qml"));
+        QQmlComponent trayWindowComponent(trayEngine(), "com.nextcloud.desktopclient.tray", "MainWindow");
+
+	qWarning() << "has error" << trayWindowComponent.isError();
 
         if(trayWindowComponent.isError()) {
-            qCWarning(lcSystray) << trayWindowComponent.errorString();
+            qWarning() << trayWindowComponent.errorString();
         } else {
             _trayWindow.reset(qobject_cast<QQuickWindow*>(trayWindowComponent.create()));
         }

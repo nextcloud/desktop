@@ -6,7 +6,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Basic as BasicControls
-import Style
 
 BasicControls.ProgressBar {
     id: control

@@ -7,6 +7,7 @@
 
 #include <QAbstractListModel>
 #include <QTimer>
+#include <qqmlregistration.h>
 
 #include "accountstate.h"
 #include "sharee.h"
@@ -19,6 +20,7 @@ namespace OCC {
 class ShareeModel : public QAbstractListModel
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_PROPERTY(AccountState* accountState READ accountState WRITE setAccountState NOTIFY accountStateChanged)
     Q_PROPERTY(bool shareItemIsFolder READ shareItemIsFolder WRITE setShareItemIsFolder NOTIFY shareItemIsFolderChanged)
     Q_PROPERTY(QString searchString READ searchString WRITE setSearchString NOTIFY searchStringChanged)
