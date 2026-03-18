@@ -1708,9 +1708,8 @@ void Folder::slotCapabilitiesChanged()
 
 void Folder::scheduleThisFolderSoon()
 {
-    if (!_scheduleSelfTimer.isActive()) {
-        _scheduleSelfTimer.start();
-    }
+    // always restart self-scheduling timer, there might still be file changes incoming
+    _scheduleSelfTimer.start();
 }
 
 void Folder::acceptInvalidFileName(const QString &filePath)
