@@ -44,30 +44,27 @@ private slots:
 
     void testSingletonInstance()
     {
-        // GIVEN
+
         auto *manager1 = E2EFolderManager::instance();
         auto *manager2 = E2EFolderManager::instance();
 
-        // THEN - should return the same instance
         QVERIFY(manager1 != nullptr);
         QCOMPARE(manager1, manager2);
     }
 
     void testInitializeWithNoAccounts()
     {
-        // GIVEN - no accounts
+
         QCOMPARE(AccountManager::instance()->accounts().size(), 0);
 
-        // WHEN - instance is created (init happens in constructor)
         auto *manager = E2EFolderManager::instance();
 
-        // THEN - should not crash
         QVERIFY(manager != nullptr);
     }
 
     void testInitializeWithExistingAccount()
     {
-        // GIVEN - an account with E2E
+
         auto account = Account::create();
         account->setCredentials(new FakeCredentials{new FakeQNAM({})});
         account->setUrl(QUrl("http://example.com"));
@@ -75,21 +72,18 @@ private slots:
         [[maybe_unused]] auto accountState = new AccountState(account);
         AccountManager::instance()->addAccount(account);
 
-        // WHEN - E2EFolderManager is instantiated it should connect to the account
         auto *manager = E2EFolderManager::instance();
 
-        // THEN - should connect to the account
         QVERIFY(manager != nullptr);
         QCOMPARE(AccountManager::instance()->accounts().size(), 1);
     }
 
     void testAccountAddedSignal()
     {
-        // GIVEN - initialized manager (constructor connects to accountAdded signal)
+
         auto *manager = E2EFolderManager::instance();
         QVERIFY(manager != nullptr);
 
-        // WHEN - adding a new account
         auto account = Account::create();
         account->setCredentials(new FakeCredentials{new FakeQNAM({})});
         account->setUrl(QUrl("http://example.com"));
@@ -100,7 +94,6 @@ private slots:
         QSignalSpy accountAddedSpy(AccountManager::instance(), &AccountManager::accountAdded);
         AccountManager::instance()->addAccount(account);
 
-        // THEN - accountAdded signal was emitted (E2EFolderManager should have handled it)
         QCOMPARE(accountAddedSpy.count(), 1);
         QCOMPARE(AccountManager::instance()->accounts().size(), 1);
     }
@@ -140,12 +133,11 @@ private slots:
 
     void testNoRestorationWhenE2ENotInitialized()
     {
-        // GIVEN - account without initialized E2E
+
         auto account = Account::create();
         account->setCredentials(new FakeCredentials{new FakeQNAM({})});
         account->setUrl(QUrl("http://example.com"));
 
-        // THEN - E2E should not be initialized
         QVERIFY(account->e2e());
         QVERIFY(!account->e2e()->isInitialized());
         QCOMPARE(account->e2e()->initializationState(),
@@ -154,7 +146,7 @@ private slots:
 
     void testMultipleAccountsHandling()
     {
-        // GIVEN - multiple accounts
+
         auto account1 = Account::create();
         account1->setCredentials(new FakeCredentials{new FakeQNAM({})});
         account1->setUrl(QUrl("http://example1.com"));
@@ -169,10 +161,8 @@ private slots:
         AccountManager::instance()->addAccount(account1);
         AccountManager::instance()->addAccount(account2);
 
-        // WHEN - E2EFolderManager is instantiated it connects to all accounts
         auto *manager = E2EFolderManager::instance();
 
-        // THEN - should handle both accounts
         QVERIFY(manager != nullptr);
         QCOMPARE(AccountManager::instance()->accounts().size(), 2);
     }
@@ -258,7 +248,7 @@ private slots:
 
     void testScenario1_FoldersRestoreAfterRestart()
     {
-        // Scenario 1: Client Restart (Primary Bug Fix)
+
         // Verify E2E folders marked for restoration are processed when E2E initializes
         QTemporaryDir dir;
         ConfigFile::setConfDir(dir.path());
@@ -304,7 +294,7 @@ private slots:
 
     void testScenario5_MultipleFoldersTrackedForRestoration()
     {
-        // Scenario 5: Multiple E2E Folders
+
         // Verify multiple E2E folders can be tracked and restored
         QTemporaryDir dir;
         QString dbPath = dir.path() + "/.sync_test.db";
@@ -346,7 +336,7 @@ private slots:
 
     void testScenario6_UserBlacklistPreserved()
     {
-        // Scenario 6: User-Blacklisted E2E Folder
+
         // Verify user-blacklisted folders are NOT added to restoration list
         QTemporaryDir dir;
         QString dbPath = dir.path() + "/.sync_test.db";

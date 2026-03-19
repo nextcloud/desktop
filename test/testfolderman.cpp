@@ -665,8 +665,6 @@ private slots:
 
     void testScenario1_RestartSimulation()
     {
-        // TESTING_SCENARIOS.md - Scenario 1: Client Restart (Primary Bug Fix)
-        // Simulates the complete cycle: blacklist during startup -> E2E init -> restore
         QTemporaryDir dir;
         QString dbPath = dir.path() + "/.sync_test.db";
         SyncJournalDb db(dbPath);
@@ -722,8 +720,6 @@ private slots:
 
     void testScenario4_FreshSetupNoBlacklist()
     {
-        // TESTING_SCENARIOS.md - Scenario 4: Fresh Account with E2E Folder
-        // Verify that on fresh setup, E2E folders don't get blacklisted
         QTemporaryDir dir;
         QString dbPath = dir.path() + "/.sync_test.db";
         SyncJournalDb db(dbPath);
