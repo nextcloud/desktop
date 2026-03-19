@@ -806,43 +806,43 @@ Pričekajte novu sinkronizaciju, a zatim je šifrirajte.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="954"/>
         <source>Grant access to sync folder</source>
-        <translation type="unfinished"/>
+        <translation>Dozvoli pristup sinkronizacijskoj mapi</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="966"/>
         <source>Access Error</source>
-        <translation type="unfinished"/>
+        <translation>Pogreška pristupa</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="967"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Nije moguće pristupiti odabranoj mapi. Pokušajte ponovno.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="975"/>
         <source>Wrong Folder</source>
-        <translation type="unfinished"/>
+        <translation>Pogrešna mapa</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="976"/>
         <source>Please select the original sync folder: %1</source>
-        <translation type="unfinished"/>
+        <translation>Odaberite izvornu mapu za sinkronizaciju: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="985"/>
         <location filename="../src/gui/accountsettings.cpp" line="994"/>
         <source>Bookmark Error</source>
-        <translation type="unfinished"/>
+        <translation>Pogrešna knjižna oznaka</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="986"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Nije moguće stvoriti sigurnosnu oznaku za mapu. Pokušajte ponovno.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="995"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Nije moguće razriješiti sigurnosnu oznaku. Pokušajte ponovno.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1000"/>
@@ -945,7 +945,7 @@ Ova će radnja prekinuti bilo koju trenutačnu sinkronizaciju.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1850"/>
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
-        <translation type="unfinished"/>
+        <translation>Integracija virtualnih datoteka još ne podržava cjelovitu enkripciju.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1757"/>
@@ -2490,7 +2490,7 @@ Alternativno, možete vratiti sve izbrisane datoteke tako da ih ponovno preuzmet
     <message numerus="yes">
         <location filename="../src/gui/folderman.cpp" line="416"/>
         <source>%n sync folders require access re-approval after the app update. Please open settings to grant access.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n mapa za sinkronizaciju zahtijeva ponovno odobrenje pristupa nakon ažuriranja aplikacije. Otvorite postavke kako biste odobrili pristup.</numerusform><numerusform>%n mape za sinkronizaciju zahtijeva ponovno odobrenje pristupa nakon ažuriranja aplikacije. Otvorite postavke kako biste odobrili pristup.</numerusform><numerusform>%n mapa za sinkronizaciju zahtijeva ponovno odobrenje pristupa nakon ažuriranja aplikacije. Otvorite postavke kako biste odobrili pristup.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1801"/>
@@ -2667,7 +2667,7 @@ Za napredne korisnike: problem može biti povezan s više datoteka baze sinkroni
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
         <source>This folder requires access re-approval. Click here to grant access.</source>
-        <translation type="unfinished"/>
+        <translation>Ova mapa zahtijeva ponovno odobrenje pristupa. Kliknite ovdje za odobravanje pristupa.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
