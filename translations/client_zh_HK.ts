@@ -962,7 +962,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1323"/>
         <source>Server %1 is temporarily unavailable.</source>
-        <translation>伺服器 ％1 暫時無法使用。</translation>
+        <translation>伺服器 %1 暫時無法使用。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1326"/>
@@ -6288,7 +6288,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="546"/>
         <source>%1 (%2, %3)</source>
-        <translation>％1（％2，％3）</translation>
+        <translation>%1（%2，%3）</translation>
     </message>
 </context>
 <context>
