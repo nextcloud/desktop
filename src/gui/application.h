@@ -34,6 +34,13 @@ class Folder;
 class ShellExtensionsServer;
 class SslErrorDialog;
 
+#if defined(Q_OS_MACOS) && defined(BUILD_FILE_PROVIDER_MODULE)
+namespace Mac {
+class FinderSyncXPC;
+class FinderSyncService;
+}
+#endif
+
 /**
  * @brief The Application class
  * @ingroup gui
@@ -60,6 +67,10 @@ public:
     void showMainDialog();
 
     [[nodiscard]] ownCloudGui *gui() const;
+
+#if defined(Q_OS_MACOS) && defined(BUILD_FILE_PROVIDER_MODULE)
+    [[nodiscard]] Mac::FinderSyncXPC *finderSyncXPC() const;
+#endif
 
     bool event(QEvent *event) override;
 
@@ -146,6 +157,10 @@ private:
     QScopedPointer<FolderMan> _folderManager;
 #if defined(Q_OS_WIN)
     QScopedPointer<ShellExtensionsServer> _shellExtensionsServer;
+#endif
+#if defined(Q_OS_MACOS) && defined(BUILD_FILE_PROVIDER_MODULE)
+    std::unique_ptr<Mac::FinderSyncXPC> _finderSyncXPC;
+    std::unique_ptr<Mac::FinderSyncService> _finderSyncService;
 #endif
 };
 
