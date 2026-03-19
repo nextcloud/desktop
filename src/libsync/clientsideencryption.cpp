@@ -1817,7 +1817,6 @@ void ClientSideEncryption::forgetSensitiveData()
     _otherCertificates.clear();
     _context.clear();
     
-    // Reset initialization state so E2E can be re-initialized
     _initializationState = InitializationState::NotStarted;
     emit initializationStateChanged(_initializationState);
     

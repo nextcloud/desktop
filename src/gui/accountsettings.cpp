@@ -1497,10 +1497,10 @@ void AccountSettings::slotSelectiveSyncChanged(const QModelIndex &topLeft,
 
 void AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync()
 {
-    qCInfo(lcAccountSettings) << "E2E restoration triggered";
+    qCDebug(lcAccountSettings) << "E2E restoration triggered";
     
     if (!_accountState->account()->e2e()->isInitialized()) {
-        qCInfo(lcAccountSettings) << "E2E not initialized, skipping restoration";
+        qCDebug(lcAccountSettings) << "E2E not initialized, skipping restoration";
         return;
     }
 
@@ -1516,25 +1516,23 @@ void AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync()
             continue;
         }
         
-        qCInfo(lcAccountSettings) << "Found E2E folders to restore:" << foldersToRemoveFromBlacklist;
+        qCDebug(lcAccountSettings) << "Found E2E folders to restore:" << foldersToRemoveFromBlacklist;
         
         auto blackList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
-        qCInfo(lcAccountSettings) << "Current blacklist:" << blackList;
+        qCDebug(lcAccountSettings) << "Current blacklist:" << blackList;
         
-        // Remove E2E folders from blacklist
         for (const auto &pathToRemoveFromBlackList : foldersToRemoveFromBlacklist) {
             blackList.removeAll(pathToRemoveFromBlackList);
         }
         
-        qCInfo(lcAccountSettings) << "New blacklist after removal:" << blackList;
+        qCDebug(lcAccountSettings) << "New blacklist after removal:" << blackList;
         
-        // Always update even if blacklist becomes empty - we need to trigger restoration
         if (folder->isSyncRunning()) {
-            qCInfo(lcAccountSettings) << "Folder is syncing, will terminate and update blacklist";
+            qCDebug(lcAccountSettings) << "Folder is syncing, will terminate and update blacklist";
             folderTerminateSyncAndUpdateBlackList(blackList, folder, foldersToRemoveFromBlacklist);
             return;
         }
-        qCInfo(lcAccountSettings) << "Updating blacklist and scheduling sync";
+        qCDebug(lcAccountSettings) << "Updating blacklist and scheduling sync";
         updateBlackListAndScheduleFolderSync(blackList, folder, foldersToRemoveFromBlacklist);
     }
 }
@@ -1693,7 +1691,6 @@ void AccountSettings::setupE2eEncryption()
     if (_accountState->account()->e2e()->isInitialized()) {
         slotE2eEncryptionMnemonicReady();
     } else {
-        // Connect signal to restore E2E folders when initialization completes
         connect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, &AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync);
         setupE2eEncryptionMessage();
 
@@ -1724,16 +1721,11 @@ void AccountSettings::forgetE2eEncryption()
     if (!account->e2e()->isInitialized()) {
         FolderMan::instance()->removeE2eFiles(account);
         
-        // Clear E2E restoration tracking list for all folders
         for (const auto folder : FolderMan::instance()->map()) {
             if (folder->accountState()->account() == account) {
                 folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, {});
             }
         }
-        
-        // Reset E2E initialization state to allow re-setup
-        account->setE2eEncryptionKeysGenerationAllowed(false);
-        account->setAskUserForMnemonic(false);
     }
 }
 

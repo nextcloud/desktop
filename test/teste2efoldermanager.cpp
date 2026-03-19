@@ -1,11 +1,11 @@
-// SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+// SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include <QtTest>
 #include <QTemporaryDir>
 #include <QSignalSpy>
 
-#include "e2efoldermanager.h"
+#include "e2eefoldermanager.h"
 #include "account.h"
 #include "accountstate.h"
 #include "accountmanager.h"
@@ -58,9 +58,8 @@ private slots:
         // GIVEN - no accounts
         QCOMPARE(AccountManager::instance()->accounts().size(), 0);
 
-        // WHEN
+        // WHEN - instance is created (init happens in constructor)
         auto *manager = E2EFolderManager::instance();
-        manager->initialize();
 
         // THEN - should not crash
         QVERIFY(manager != nullptr);
@@ -72,13 +71,12 @@ private slots:
         auto account = Account::create();
         account->setCredentials(new FakeCredentials{new FakeQNAM({})});
         account->setUrl(QUrl("http://example.com"));
-        
+
         [[maybe_unused]] auto accountState = new AccountState(account);
         AccountManager::instance()->addAccount(account);
 
-        // WHEN
+        // WHEN - E2EFolderManager is instantiated it should connect to the account
         auto *manager = E2EFolderManager::instance();
-        manager->initialize();
 
         // THEN - should connect to the account
         QVERIFY(manager != nullptr);
@@ -87,19 +85,23 @@ private slots:
 
     void testAccountAddedSignal()
     {
-        // GIVEN - initialized manager
+        // GIVEN - initialized manager (constructor connects to accountAdded signal)
         auto *manager = E2EFolderManager::instance();
-        manager->initialize();
+        QVERIFY(manager != nullptr);
 
         // WHEN - adding a new account
         auto account = Account::create();
         account->setCredentials(new FakeCredentials{new FakeQNAM({})});
         account->setUrl(QUrl("http://example.com"));
-        
+
         [[maybe_unused]] auto accountState = new AccountState(account);
+
+        // Spy on the accountAdded signal to verify E2EFolderManager reacts to it
+        QSignalSpy accountAddedSpy(AccountManager::instance(), &AccountManager::accountAdded);
         AccountManager::instance()->addAccount(account);
 
-        // THEN - manager should handle the new account
+        // THEN - accountAdded signal was emitted (E2EFolderManager should have handled it)
+        QCOMPARE(accountAddedSpy.count(), 1);
         QCOMPARE(AccountManager::instance()->accounts().size(), 1);
     }
 
@@ -112,7 +114,7 @@ private slots:
         auto account = Account::create();
         account->setCredentials(new FakeCredentials{new FakeQNAM({})});
         account->setUrl(QUrl("http://example.com"));
-        
+
         const QVariantMap capabilities {
             {QStringLiteral("end-to-end-encryption"), QVariantMap {
                 {QStringLiteral("enabled"), true},
@@ -124,14 +126,12 @@ private slots:
         auto accountState = new AccountState(account);
         AccountManager::instance()->addAccount(account);
 
-        // Initialize the E2EFolderManager
+        // E2EFolderManager is initialized via constructor when instance() is called
         auto *manager = E2EFolderManager::instance();
-        manager->initialize();
-
-        // Verify the manager is connected to the account's E2E signals
         QVERIFY(manager != nullptr);
+
         QVERIFY(account->e2e());
-        
+
         // Verify E2E is not yet initialized
         QVERIFY(!account->e2e()->isInitialized());
         QCOMPARE(account->e2e()->initializationState(),
@@ -148,7 +148,7 @@ private slots:
         // THEN - E2E should not be initialized
         QVERIFY(account->e2e());
         QVERIFY(!account->e2e()->isInitialized());
-        QCOMPARE(account->e2e()->initializationState(), 
+        QCOMPARE(account->e2e()->initializationState(),
                  ClientSideEncryption::InitializationState::NotStarted);
     }
 
@@ -158,22 +158,22 @@ private slots:
         auto account1 = Account::create();
         account1->setCredentials(new FakeCredentials{new FakeQNAM({})});
         account1->setUrl(QUrl("http://example1.com"));
-        
+
         auto account2 = Account::create();
         account2->setCredentials(new FakeCredentials{new FakeQNAM({})});
         account2->setUrl(QUrl("http://example2.com"));
 
         [[maybe_unused]] auto accountState1 = new AccountState(account1);
         [[maybe_unused]] auto accountState2 = new AccountState(account2);
-        
+
         AccountManager::instance()->addAccount(account1);
         AccountManager::instance()->addAccount(account2);
 
-        // WHEN
+        // WHEN - E2EFolderManager is instantiated it connects to all accounts
         auto *manager = E2EFolderManager::instance();
-        manager->initialize();
 
         // THEN - should handle both accounts
+        QVERIFY(manager != nullptr);
         QCOMPARE(AccountManager::instance()->accounts().size(), 2);
     }
 
@@ -200,9 +200,8 @@ private slots:
         auto accountState = new AccountState(account);
         AccountManager::instance()->addAccount(account);
 
-        // Initialize manager and verify it connects to account
+        // E2EFolderManager connects to account's E2E signals in its constructor
         auto *manager = E2EFolderManager::instance();
-        manager->initialize();
 
         QVERIFY(manager != nullptr);
         QCOMPARE(AccountManager::instance()->accounts().size(), 1);
@@ -217,7 +216,7 @@ private slots:
         auto account1 = Account::create();
         account1->setCredentials(new FakeCredentials{new FakeQNAM({})});
         account1->setUrl(QUrl("http://example1.com"));
-        
+
         const QVariantMap capabilities1 {
             {QStringLiteral("end-to-end-encryption"), QVariantMap {
                 {QStringLiteral("enabled"), true},
@@ -229,7 +228,7 @@ private slots:
         auto account2 = Account::create();
         account2->setCredentials(new FakeCredentials{new FakeQNAM({})});
         account2->setUrl(QUrl("http://example2.com"));
-        
+
         const QVariantMap capabilities2 {
             {QStringLiteral("end-to-end-encryption"), QVariantMap {
                 {QStringLiteral("enabled"), true},
@@ -240,18 +239,17 @@ private slots:
 
         [[maybe_unused]] auto accountState1 = new AccountState(account1);
         [[maybe_unused]] auto accountState2 = new AccountState(account2);
-        
+
         AccountManager::instance()->addAccount(account1);
         AccountManager::instance()->addAccount(account2);
 
-        // Initialize manager with multiple accounts
+        // E2EFolderManager connects to all accounts' E2E signals in its constructor
         auto *manager = E2EFolderManager::instance();
-        manager->initialize();
 
         // Verify manager handles both accounts
         QVERIFY(manager != nullptr);
         QCOMPARE(AccountManager::instance()->accounts().size(), 2);
-        
+
         // Verify each account has its own E2E instance
         QVERIFY(account1->e2e());
         QVERIFY(account2->e2e());
@@ -260,7 +258,7 @@ private slots:
 
     void testScenario1_FoldersRestoreAfterRestart()
     {
-        // TESTING_SCENARIOS.md - Scenario 1: Client Restart (Primary Bug Fix)
+        // Scenario 1: Client Restart (Primary Bug Fix)
         // Verify E2E folders marked for restoration are processed when E2E initializes
         QTemporaryDir dir;
         ConfigFile::setConfDir(dir.path());
@@ -285,7 +283,7 @@ private slots:
         QTemporaryDir syncDir;
         QString dbPath = syncDir.path() + "/.sync_test.db";
         SyncJournalDb db(dbPath);
-        
+
         QStringList e2eFoldersToRestore = {"/encrypted1/", "/encrypted2/"};
         db.setSelectiveSyncList(
             SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist,
@@ -298,18 +296,15 @@ private slots:
         QVERIFY(ok);
         QCOMPARE(restorationList.size(), 2);
 
-        // Initialize manager - this should trigger restoration when E2E initializes
+        // E2EFolderManager is ready to restore folders when E2E signal fires
         auto *manager = E2EFolderManager::instance();
-        manager->initialize();
-
-        // Manager should be ready to restore folders when E2E signal fires
         QVERIFY(manager != nullptr);
         QVERIFY(account->e2e());
     }
 
     void testScenario5_MultipleFoldersTrackedForRestoration()
     {
-        // TESTING_SCENARIOS.md - Scenario 5: Multiple E2E Folders
+        // Scenario 5: Multiple E2E Folders
         // Verify multiple E2E folders can be tracked and restored
         QTemporaryDir dir;
         QString dbPath = dir.path() + "/.sync_test.db";
@@ -322,7 +317,7 @@ private slots:
             "/Work/Confidential/",
             "/Personal/Secrets/"
         };
-        
+
         db.setSelectiveSyncList(
             SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist,
             multipleFolders);
@@ -333,7 +328,7 @@ private slots:
             SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, &ok);
         QVERIFY(ok);
         QCOMPARE(restorationList.size(), 4);
-        
+
         for (const auto &folder : multipleFolders) {
             QVERIFY(restorationList.contains(folder));
         }
@@ -342,7 +337,7 @@ private slots:
         db.setSelectiveSyncList(
             SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist,
             {});
-        
+
         restorationList = db.getSelectiveSyncList(
             SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, &ok);
         QVERIFY(ok);
@@ -351,7 +346,7 @@ private slots:
 
     void testScenario6_UserBlacklistPreserved()
     {
-        // TESTING_SCENARIOS.md - Scenario 6: User-Blacklisted E2E Folder
+        // Scenario 6: User-Blacklisted E2E Folder
         // Verify user-blacklisted folders are NOT added to restoration list
         QTemporaryDir dir;
         QString dbPath = dir.path() + "/.sync_test.db";

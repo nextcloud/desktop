@@ -157,7 +157,9 @@ void FolderWatcher::startNotificationTestWhenReady()
         FileSystem::setModTime(path, mtime + 1);
     } else {
         QFile f(path);
-        [[maybe_unused]] bool opened = f.open(QIODevice::WriteOnly | QIODevice::Append);
+        if (!f.open(QIODevice::WriteOnly | QIODevice::Append)) {
+            qCWarning(lcFolderWatcher()) << "Failed to open test notification file for writing:" << path << f.errorString();
+        }
     }
     FileSystem::setFileHidden(path, true);
 
