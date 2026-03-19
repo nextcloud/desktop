@@ -7,7 +7,9 @@
 
 #include "accountstate.h"
 #include "filedetails.h"
+#include "filesystem.h"
 #include "folderman.h"
+#include "openfilemanager.h"
 
 namespace OCC {
 
@@ -89,6 +91,13 @@ void FileDetails::setLocalPath(const QString &localPath)
     updateFileTagModel();
 
     Q_EMIT fileChanged();
+}
+
+void FileDetails::showInFileManager() const
+{
+    if (FileSystem::fileExists(_localPath)) {
+        OCC::showInFileManager(_localPath);
+    }
 }
 
 QString FileDetails::name() const

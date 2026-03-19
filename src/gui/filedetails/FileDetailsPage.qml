@@ -229,6 +229,14 @@ Page {
                 onClicked: swipeView.currentIndex = shareViewLoader.swipeIndex
                 visible: root.fileDetails.sharingAvailable
             }
+
+            NCTabButton {
+                width: visible ? implicitWidth : 0
+                height: visible ? implicitHeight : 0
+                svgCustomColorSource: "image://svgimage-custom-color/files.svg"
+                text: qsTr("Show in file manager")
+                onClicked: root.fileDetails.showInFileManager()
+            }
         }
     }
 
