@@ -961,7 +961,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1323"/>
         <source>Server %1 is temporarily unavailable.</source>
-        <translation>伺服器 ％1 暫時無法使用。</translation>
+        <translation>伺服器 %1 暫時無法使用。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1326"/>
@@ -1297,7 +1297,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="24"/>
         <source>Enter username and password for &quot;%1&quot; at %2.</source>
-        <translation>請輸入「％1」於 %2 的使用者名稱與密碼。</translation>
+        <translation>請輸入「%1」於 %2 的使用者名稱與密碼。</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="29"/>
@@ -1930,7 +1930,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="521"/>
         <source>File %1 already locked.</source>
-        <translation>檔案 ％1 已鎖定。</translation>
+        <translation>檔案 %1 已鎖定。</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="522"/>
@@ -6121,7 +6121,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="172"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation>您已在 ％2 登出您的帳號 %1。請再次登入。</translation>
+        <translation>您已在 %2 登出您的帳號 %1。請再次登入。</translation>
     </message>
 </context>
 <context>
@@ -6247,17 +6247,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="454"/>
         <source>macOS VFS for %1: Sync is running.</source>
-        <translation>％1 的 macOS VFS：正在同步。</translation>
+        <translation>%1 的 macOS VFS：正在同步。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="457"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
-        <translation>％1 的 macOS VFS：上次同步成功。</translation>
+        <translation>%1 的 macOS VFS：上次同步成功。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="460"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
-        <translation>％1 的 macOS VFS：遇到問題。</translation>
+        <translation>%1 的 macOS VFS：遇到問題。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="526"/>
