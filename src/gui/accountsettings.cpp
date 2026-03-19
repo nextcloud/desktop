@@ -1495,48 +1495,6 @@ void AccountSettings::slotSelectiveSyncChanged(const QModelIndex &topLeft,
     }
 }
 
-void AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync()
-{
-    qCDebug(lcAccountSettings) << "E2E restoration triggered";
-    
-    if (!_accountState->account()->e2e()->isInitialized()) {
-        qCDebug(lcAccountSettings) << "E2E not initialized, skipping restoration";
-        return;
-    }
-
-    disconnect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, &AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync);
-
-    for (const auto folder : FolderMan::instance()->map()) {
-        if (folder->accountState() != _accountState) {
-            continue;
-        }
-        bool ok = false;
-        const auto foldersToRemoveFromBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, &ok);
-        if (foldersToRemoveFromBlacklist.isEmpty()) {
-            continue;
-        }
-        
-        qCDebug(lcAccountSettings) << "Found E2E folders to restore:" << foldersToRemoveFromBlacklist;
-        
-        auto blackList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
-        qCDebug(lcAccountSettings) << "Current blacklist:" << blackList;
-        
-        for (const auto &pathToRemoveFromBlackList : foldersToRemoveFromBlacklist) {
-            blackList.removeAll(pathToRemoveFromBlackList);
-        }
-        
-        qCDebug(lcAccountSettings) << "New blacklist after removal:" << blackList;
-        
-        if (folder->isSyncRunning()) {
-            qCDebug(lcAccountSettings) << "Folder is syncing, will terminate and update blacklist";
-            folderTerminateSyncAndUpdateBlackList(blackList, folder, foldersToRemoveFromBlacklist);
-            return;
-        }
-        qCDebug(lcAccountSettings) << "Updating blacklist and scheduling sync";
-        updateBlackListAndScheduleFolderSync(blackList, folder, foldersToRemoveFromBlacklist);
-    }
-}
-
 void AccountSettings::slotE2eEncryptionCertificateNeedMigration()
 {
     const auto actionMigrateCertificate = addActionToEncryptionMessage(tr("Migrate certificate to a new one"), e2EeUiActionMigrateCertificateId);
@@ -1691,7 +1649,6 @@ void AccountSettings::setupE2eEncryption()
     if (_accountState->account()->e2e()->isInitialized()) {
         slotE2eEncryptionMnemonicReady();
     } else {
-        connect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, &AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync);
         setupE2eEncryptionMessage();
 
         connect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, [this] {
@@ -1701,7 +1658,6 @@ void AccountSettings::setupE2eEncryption()
                                                    "Enter the unique mnemonic to have the encrypted folders synchronize on this device as well."));
             }
         });
-        _accountState->account()->setE2eEncryptionKeysGenerationAllowed(false);
         _accountState->account()->e2e()->initialize(this);
     }
 }

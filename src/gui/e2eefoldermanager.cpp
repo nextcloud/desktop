@@ -89,7 +89,7 @@ void E2EFolderManager::restoreE2eFoldersForAccount(const AccountPtr &account)
         return;
     }
 
-    qCInfo(lcE2eFolderManager) << "Restoring E2E folders for account:" << account->displayName();
+    qCDebug(lcE2eFolderManager) << "Restoring E2E folders for account:" << account->displayName();
 
     auto *folderMan = FolderMan::instance();
     const auto folders = folderMan->map();
@@ -108,7 +108,7 @@ void E2EFolderManager::restoreE2eFoldersForAccount(const AccountPtr &account)
             continue;
         }
 
-        qCInfo(lcE2eFolderManager) << "Found E2E folders to restore for" << folder->alias()
+        qCDebug(lcE2eFolderManager) << "Found E2E folders to restore for" << folder->alias()
                                    << ":" << foldersToRemoveFromBlacklist;
 
         auto blackList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
@@ -130,7 +130,7 @@ void E2EFolderManager::restoreE2eFoldersForAccount(const AccountPtr &account)
     }
 
     if (foldersProcessed > 0) {
-        qCInfo(lcE2eFolderManager) << "Restored E2E folders for" << foldersProcessed << "sync folders";
+        qCDebug(lcE2eFolderManager) << "Restored E2E folders for" << foldersProcessed << "sync folders";
     } else {
         qCDebug(lcE2eFolderManager) << "No E2E folders needed restoration";
     }

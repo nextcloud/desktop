@@ -222,7 +222,7 @@ void ProcessDirectoryJob::process()
         const auto isHidden = e.localEntry.isHidden || (!f.first.isEmpty() && f.first[0] == '.' && f.first != QLatin1String(".sys.admin#recall#"));
 
         const auto isE2eEncryptedFolder = e.serverEntry.isValid() && e.serverEntry.isE2eEncrypted();
-        const auto hasE2eCapability = _discoveryData->_account->e2e() != nullptr;
+        const auto hasE2eCapability = _discoveryData->_account->capabilities().clientSideEncryptionAvailable();
 
         auto isEncryptedFolderButE2eIsNotSetup = false;
         auto shouldDeferE2eFolder = false;
@@ -243,11 +243,13 @@ void ProcessDirectoryJob::process()
         if (shouldDeferE2eFolder) {
             qCDebug(lcDisco) << "E2E encrypted folder found but E2E still initializing, deferring:" << path._server;
             checkAndUpdateSelectiveSyncListsForE2eeFolders(path._server + "/", E2eeFolderRestorationMode::TrackForRestoration);
+            continue;
         }
 
         if (isEncryptedFolderButE2eIsNotSetup) {
             qCDebug(lcDisco) << "Found E2E encrypted folder but E2E setup failed or unavailable:" << path._server;
             checkAndUpdateSelectiveSyncListsForE2eeFolders(path._server + "/", E2eeFolderRestorationMode::DoNotTrackForRestoration);
+            continue;
         }
 
         const auto isBlacklisted = _queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original) || isEncryptedFolderButE2eIsNotSetup;

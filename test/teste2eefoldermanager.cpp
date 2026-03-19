@@ -123,7 +123,7 @@ private slots:
         };
         account->setCapabilities(capabilities);
 
-        auto accountState = new AccountState(account);
+        [[maybe_unused]] auto accountState = new AccountState(account);
         AccountManager::instance()->addAccount(account);
 
         // E2EFolderManager is initialized via constructor when instance() is called
@@ -197,7 +197,7 @@ private slots:
         };
         account->setCapabilities(capabilities);
 
-        auto accountState = new AccountState(account);
+        [[maybe_unused]] auto accountState = new AccountState(account);
         AccountManager::instance()->addAccount(account);
 
         // E2EFolderManager connects to account's E2E signals in its constructor
@@ -275,7 +275,7 @@ private slots:
         };
         account->setCapabilities(capabilities);
 
-        auto accountState = new AccountState(account);
+        [[maybe_unused]] auto accountState = new AccountState(account);
         AccountManager::instance()->addAccount(account);
 
         // Simulate folders blacklisted during startup (before E2E initialized)
@@ -377,4 +377,4 @@ private slots:
 };
 
 QTEST_GUILESS_MAIN(TestE2EFolderManager)
-#include "teste2efoldermanager.moc"
+#include "teste2eefoldermanager.moc"
