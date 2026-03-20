@@ -1097,6 +1097,7 @@ void ClientSideEncryption::initialize(QWidget *settingsDialog)
                 Q_EMIT finishedDiscoveryEncryptionUsbToken();
             });
         } else {
+            setInitializationState(InitializationState::Failed);
             emit initializationFinished();
         }
     } else {
