@@ -1,0 +1,24 @@
+# SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: GPL-2.0-or-later
+name: Debian build
+on:
+  pull_request:
+    branches: [ master, stable-* ]
+
+jobs:
+  build:
+    name: Debian build
+    runs-on: ubuntu-latest
+    container: ghcr.io/nextcloud/continuous-integration-client-debian:client-debian-3
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 1
+
+      - name: build
+        id: build-debian
+        env:
+          DEBIAN_SECRET_KEY: ${{ secrets.DEBIAN_SECRET_KEY }}
+          DEBIAN_SECRET_IV:  ${{ secrets.DEBIAN_SECRET_IV }}
+        run: |
+          /bin/bash -c "./admin/linux/debian/drone-build.sh ${{ github.event.pull_request.head.sha }}" || echo "[WARNING] Debian build failed but this is a non-blocking CI event"
