@@ -250,14 +250,10 @@ private slots:
 
     void testScenario1_FoldersRestoreAfterRestart()
     {
-        // Verify E2E folders marked for restoration are processed when E2E initializes
-        QTemporaryDir dir;
-        ConfigFile::setConfDir(dir.path());
-
-        auto account = Account::create();
-        account->setCredentials(new FakeCredentials{new FakeQNAM({})});
-        account->setUrl(QUrl("http://example.com"));
-
+        // Set up FakeFolder for a realistic sync environment
+        FakeFolder fakeFolder{FileInfo{}};
+        auto account = fakeFolder.account();
+        
         const QVariantMap capabilities {
             {QStringLiteral("end-to-end-encryption"), QVariantMap {
                 {QStringLiteral("enabled"), true},
@@ -266,16 +262,15 @@ private slots:
         };
         account->setCapabilities(capabilities);
 
+        // Add the FakeFolder's account to the AccountManager to be tracked
         auto accountState = new AccountState(account);
         accountState->setParent(this);
         AccountManager::instance()->addAccount(account);
 
         // Simulate folders blacklisted during startup (before E2E initialized)
-        // This mimics what happens when client restarts and E2E isn't ready yet
-        QTemporaryDir syncDir;
-        QString dbPath = syncDir.path() + "/.sync_test.db";
-        SyncJournalDb db(dbPath);
-
+        // Access via the real Journal DB wrapper
+        auto &db = fakeFolder.syncJournal();
+        
         QStringList e2eFoldersToRestore = {"/encrypted1/", "/encrypted2/"};
         db.setSelectiveSyncList(
             SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist,
@@ -297,9 +292,8 @@ private slots:
     void testScenario5_MultipleFoldersTrackedForRestoration()
     {
         // Verify multiple E2E folders can be tracked and restored
-        QTemporaryDir dir;
-        QString dbPath = dir.path() + "/.sync_test.db";
-        SyncJournalDb db(dbPath);
+        FakeFolder fakeFolder{FileInfo{}};
+        auto &db = fakeFolder.syncJournal();
 
         // Simulate multiple E2E folders being blacklisted during startup
         QStringList multipleFolders = {
@@ -338,9 +332,8 @@ private slots:
     void testScenario6_UserBlacklistPreserved()
     {
         // Verify user-blacklisted folders are NOT added to restoration list
-        QTemporaryDir dir;
-        QString dbPath = dir.path() + "/.sync_test.db";
-        SyncJournalDb db(dbPath);
+        FakeFolder fakeFolder{FileInfo{}};
+        auto &db = fakeFolder.syncJournal();
 
         // User manually blacklists an E2E folder via selective sync
         QStringList userBlacklist = {"/User/Excluded/"};
