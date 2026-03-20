@@ -109,6 +109,10 @@ bool ConflictSolver::deleteLocalVersion()
         return false;
     }
 
+    const auto fileInfo = QFileInfo{_localVersionFilename};
+    const auto parentFolderPath = fileInfo.dir().absolutePath();
+    const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
+
     if (FileSystem::isDir(_localVersionFilename)) {
         return FileSystem::removeRecursively(_localVersionFilename);
     } else {
