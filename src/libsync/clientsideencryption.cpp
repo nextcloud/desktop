@@ -899,9 +899,14 @@ bool ClientSideEncryption::isInitialized() const
     return useTokenBasedEncryption() || !getMnemonic().isEmpty();
 }
 
-bool ClientSideEncryption::isInitializing() const
+void ClientSideEncryption::setInitializationState(InitializationState state)
 {
-    return _initializationState == InitializationState::Initializing;
+    if (_initializationState == state) {
+        return;
+    }
+
+    _initializationState = state;
+    emit initializationStateChanged(_initializationState);
 }
 
 ClientSideEncryption::InitializationState ClientSideEncryption::initializationState() const
@@ -1067,13 +1072,11 @@ void ClientSideEncryption::initialize(QWidget *settingsDialog)
         return;
     }
     
-    _initializationState = InitializationState::Initializing;
-    emit initializationStateChanged(_initializationState);
+    setInitializationState(InitializationState::Initializing);
     
     if (!_account->capabilities().clientSideEncryptionAvailable()) {
         qCInfo(lcCse()) << "No Client side encryption available on server.";
-        _initializationState = InitializationState::Failed;
-        emit initializationStateChanged(_initializationState);
+        setInitializationState(InitializationState::Failed);
         emit initializationFinished();
         return;
     }
@@ -1817,8 +1820,7 @@ void ClientSideEncryption::forgetSensitiveData()
     _otherCertificates.clear();
     _context.clear();
     
-    _initializationState = InitializationState::NotStarted;
-    emit initializationStateChanged(_initializationState);
+    setInitializationState(InitializationState::NotStarted);
     
     Q_EMIT canDecryptChanged();
     Q_EMIT canEncryptChanged();
@@ -1926,8 +1928,7 @@ bool ClientSideEncryption::sensitiveDataRemaining() const
 void ClientSideEncryption::failedToInitialize()
 {
     forgetSensitiveData();
-    _initializationState = InitializationState::Failed;
-    emit initializationStateChanged(_initializationState);
+    setInitializationState(InitializationState::Failed);
     Q_EMIT initializationFinished();
 }
 
@@ -2137,8 +2138,7 @@ void ClientSideEncryption::sendPublicKey()
         case 200:
         case 409:
             saveCertificateIdentification();
-            _initializationState = InitializationState::Initialized;
-            emit initializationStateChanged(_initializationState);
+            setInitializationState(InitializationState::Initialized);
             emit initializationFinished();
 
             break;
@@ -2219,9 +2219,8 @@ void ClientSideEncryption::checkServerHasSavedKeys()
 
     const auto privateKeyOnServerIsValid = [this] () {
         qCInfo(lcCse) << "Private key on server is valid, setting state to Initialized";
-        _initializationState = InitializationState::Initialized;
+        setInitializationState(InitializationState::Initialized);
         qCInfo(lcCse) << "State set to:" << static_cast<int>(_initializationState);
-        emit initializationStateChanged(_initializationState);
         qCInfo(lcCse) << "Emitting initializationFinished signal";
         Q_EMIT initializationFinished();
     };

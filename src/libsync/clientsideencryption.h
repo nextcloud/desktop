@@ -260,8 +260,6 @@ public:
 
     [[nodiscard]] bool isInitialized() const;
 
-    [[nodiscard]] bool isInitializing() const;
-
     [[nodiscard]] InitializationState initializationState() const;
 
     [[nodiscard]] bool tokenIsSetup() const;
@@ -406,6 +404,8 @@ private:
     [[nodiscard]] bool sensitiveDataRemaining() const;
 
     [[nodiscard]] bool checkEncryptionIsWorking();
+
+    void setInitializationState(InitializationState state);
 
     void failedToInitialize();
 
