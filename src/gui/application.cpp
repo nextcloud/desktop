@@ -15,6 +15,7 @@
 #include "configfile.h"
 #include "connectionvalidator.h"
 #include "creds/abstractcredentials.h"
+#include "e2eefoldermanager.h"
 #include "editlocallymanager.h"
 #include "folder.h"
 #include "folderman.h"
@@ -507,6 +508,8 @@ void Application::setupAccountsAndFolders()
     configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupFolders);
     const auto foldersListSize = FolderMan::instance()->setupFolders();
     FolderMan::instance()->setSyncEnabled(true);
+
+    E2EFolderManager::instance();
 
     const auto prettyNamesList = [](const QList<AccountStatePtr> &accounts) {
         QStringList list;

@@ -1594,41 +1594,6 @@ void AccountSettings::slotSelectiveSyncChanged(const QModelIndex &topLeft,
     }
 }
 
-void AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync()
-{
-    if (!_accountState->account()->e2e()->isInitialized()) {
-        return;
-    }
-
-    disconnect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, &AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync);
-
-    for (const auto folder : FolderMan::instance()->map()) {
-        if (folder->accountState() != _accountState) {
-            continue;
-        }
-        bool ok = false;
-        const auto foldersToRemoveFromBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, &ok);
-        if (foldersToRemoveFromBlacklist.isEmpty()) {
-            continue;
-        }
-        auto blackList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
-        const auto blackListSize = blackList.size();
-        if (blackListSize == 0) {
-            continue;
-        }
-        for (const auto &pathToRemoveFromBlackList : foldersToRemoveFromBlacklist) {
-            blackList.removeAll(pathToRemoveFromBlackList);
-        }
-        if (blackList.size() != blackListSize) {
-            if (folder->isSyncRunning()) {
-                folderTerminateSyncAndUpdateBlackList(blackList, folder, foldersToRemoveFromBlacklist);
-                return;
-            }
-            updateBlackListAndScheduleFolderSync(blackList, folder, foldersToRemoveFromBlacklist);
-        }
-    }
-}
-
 void AccountSettings::slotE2eEncryptionCertificateNeedMigration()
 {
     const auto actionMigrateCertificate = addActionToEncryptionMessage(tr("Migrate certificate to a new one"), e2EeUiActionMigrateCertificateId);
@@ -1777,8 +1742,6 @@ void AccountSettings::customizeStyle()
 
 void AccountSettings::setupE2eEncryption()
 {
-    connect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, &AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync);
-
     if (_accountState->account()->e2e()->isInitialized()) {
         slotE2eEncryptionMnemonicReady();
     } else {
@@ -1791,7 +1754,6 @@ void AccountSettings::setupE2eEncryption()
                                                         "Enter the unique mnemonic to have the encrypted folders synchronize on this device as well."));
             }
         });
-        _accountState->account()->setE2eEncryptionKeysGenerationAllowed(false);
         _accountState->account()->e2e()->initialize(this);
     }
 }
@@ -1811,6 +1773,12 @@ void AccountSettings::forgetE2eEncryption()
     const auto account = _accountState->account();
     if (!account->e2e()->isInitialized()) {
         FolderMan::instance()->removeE2eFiles(account);
+        
+        for (const auto folder : FolderMan::instance()->map()) {
+            if (folder->accountState()->account() == account) {
+                folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, {});
+            }
+        }
     }
 }
 

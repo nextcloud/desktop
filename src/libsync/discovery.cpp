@@ -221,14 +221,38 @@ void ProcessDirectoryJob::process()
         // Recall file shall not be ignored (#4420)
         const auto isHidden = e.localEntry.isHidden || (!f.first.isEmpty() && f.first[0] == '.' && f.first != QLatin1String(".sys.admin#recall#"));
 
-        const auto isEncryptedFolderButE2eIsNotSetup = e.serverEntry.isValid() && e.serverEntry.isE2eEncrypted() &&
-            _discoveryData->_account->e2e() && !_discoveryData->_account->e2e()->isInitialized();
+        const auto isE2eEncryptedFolder = e.serverEntry.isValid() && e.serverEntry.isE2eEncrypted();
+        const auto hasE2eCapability = _discoveryData->_account->capabilities().clientSideEncryptionAvailable();
 
-        if (isEncryptedFolderButE2eIsNotSetup) {
-            checkAndUpdateSelectiveSyncListsForE2eeFolders(path._server + "/");
+        auto isEncryptedFolderButE2eIsNotSetup = false;
+        auto shouldDeferE2eFolder = false;
+
+        if (isE2eEncryptedFolder && hasE2eCapability) {
+            const auto e2eState = _discoveryData->_account->e2e()->initializationState();
+
+            if (e2eState == OCC::ClientSideEncryption::InitializationState::NotStarted ||
+                e2eState == OCC::ClientSideEncryption::InitializationState::Initializing) {
+                shouldDeferE2eFolder = true;
+            } else if (e2eState == OCC::ClientSideEncryption::InitializationState::Failed) {
+                isEncryptedFolderButE2eIsNotSetup = true;
+            }
+        } else if (isE2eEncryptedFolder && !hasE2eCapability) {
+            isEncryptedFolderButE2eIsNotSetup = true;
         }
 
-        const auto isBlacklisted = _queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original) || isEncryptedFolderButE2eIsNotSetup;
+        if (shouldDeferE2eFolder) {
+            qCDebug(lcDisco) << "E2E encrypted folder found but E2E still initializing, deferring:" << path._server;
+            checkAndUpdateSelectiveSyncListsForE2eeFolders(path._server + "/", E2eeFolderRestorationMode::TrackForRestoration);
+            continue;
+        }
+
+        if (isEncryptedFolderButE2eIsNotSetup) {
+            qCDebug(lcDisco) << "Found E2E encrypted folder but E2E setup failed or unavailable:" << path._server;
+            checkAndUpdateSelectiveSyncListsForE2eeFolders(path._server + "/", E2eeFolderRestorationMode::DoNotTrackForRestoration);
+            continue;
+        }
+
+        const auto isBlacklisted = _queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original);
 
         const auto willBeExcluded = handleExcluded(path._target, e, entries, isHidden, isBlacklisted);
 
@@ -529,7 +553,7 @@ bool ProcessDirectoryJob::canRemoveCaseClashConflictedCopy(const QString &path, 
     return false;
 }
 
-void ProcessDirectoryJob::checkAndUpdateSelectiveSyncListsForE2eeFolders(const QString &path)
+void ProcessDirectoryJob::checkAndUpdateSelectiveSyncListsForE2eeFolders(const QString &path, E2eeFolderRestorationMode restorationMode)
 {
     bool ok = false;
 
@@ -537,18 +561,28 @@ void ProcessDirectoryJob::checkAndUpdateSelectiveSyncListsForE2eeFolders(const Q
 
     const auto blackListList = _discoveryData->_statedb->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
     auto blackListSet = QSet<QString>{blackListList.begin(), blackListList.end()};
+
+    if (blackListSet.contains(pathWithTrailingSlash)) {
+        qCDebug(lcDisco) << "E2E folder already blacklisted, skipping:" << pathWithTrailingSlash;
+        return;
+    }
+
     blackListSet.insert(pathWithTrailingSlash);
     auto blackList = blackListSet.values();
     blackList.sort();
     _discoveryData->_statedb->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
 
-    const auto toRemoveFromBlacklistList = _discoveryData->_statedb->getSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, &ok);
-    auto toRemoveFromBlacklistSet = QSet<QString>{toRemoveFromBlacklistList.begin(), toRemoveFromBlacklistList.end()};
-    toRemoveFromBlacklistSet.insert(pathWithTrailingSlash);
-    // record it into a separate list to automatically remove from blacklist once the e2EE gets set up
-    auto toRemoveFromBlacklist = toRemoveFromBlacklistSet.values();
-    toRemoveFromBlacklist.sort();
-    _discoveryData->_statedb->setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, toRemoveFromBlacklist);
+    if (restorationMode == E2eeFolderRestorationMode::TrackForRestoration) {
+        qCDebug(lcDisco) << "Blacklisting E2E folder until initialization:" << pathWithTrailingSlash;
+        const auto toRemoveFromBlacklistList = _discoveryData->_statedb->getSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, &ok);
+        auto toRemoveFromBlacklistSet = QSet<QString>{toRemoveFromBlacklistList.begin(), toRemoveFromBlacklistList.end()};
+        toRemoveFromBlacklistSet.insert(pathWithTrailingSlash);
+        auto toRemoveFromBlacklist = toRemoveFromBlacklistSet.values();
+        toRemoveFromBlacklist.sort();
+        _discoveryData->_statedb->setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, toRemoveFromBlacklist);
+    } else {
+        qCDebug(lcDisco) << "Blacklisting E2E folder (E2E failed or unavailable):" << pathWithTrailingSlash;
+    }
 }
 
 void ProcessDirectoryJob::processFile(PathTuple path,

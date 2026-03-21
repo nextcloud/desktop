@@ -113,8 +113,7 @@ void FolderWatcher::performSetPermissionsTest(const QString &path)
 
     if (!QFile::exists(path)) {
         QFile f(path);
-        f.open(QIODevice::WriteOnly);
-        if (!f.isOpen()) {
+        if (!f.open(QIODevice::WriteOnly)) {
             qCWarning(lcFolderWatcher()) << "Failed to create test file: " << path;
             return;
         }
@@ -158,7 +157,9 @@ void FolderWatcher::startNotificationTestWhenReady()
         FileSystem::setModTime(path, mtime + 1);
     } else {
         QFile f(path);
-        f.open(QIODevice::WriteOnly | QIODevice::Append);
+        if (!f.open(QIODevice::WriteOnly | QIODevice::Append)) {
+            qCWarning(lcFolderWatcher()) << "Failed to open test notification file for writing:" << path << f.errorString();
+        }
     }
     FileSystem::setFileHidden(path, true);
 
