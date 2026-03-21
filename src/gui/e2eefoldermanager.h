@@ -4,10 +4,13 @@
 #pragma once
 
 #include <QObject>
+#include <QMap>
 #include "account.h"
 #include "accountmanager.h"
 
 namespace OCC {
+
+class Folder;
 
 /**
  * @brief Stateless bridge between E2E encryption and folder management
@@ -36,7 +39,9 @@ private:
 
     void connectE2eSignals(const AccountPtr &account);
     void restoreE2eFoldersForAccount(const AccountPtr &account);
+    void folderTerminateSyncAndUpdateBlackList(const QStringList &blackList, OCC::Folder *folder, const QStringList &foldersToRemoveFromBlacklist);
 
+    QMap<QString, QMetaObject::Connection> _folderConnections;
     static E2EFolderManager *_instance;
 };
 

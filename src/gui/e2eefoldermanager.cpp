@@ -113,20 +113,30 @@ void E2EFolderManager::restoreE2eFoldersForAccount(const AccountPtr &account)
 
         auto blackList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
         qCDebug(lcE2eFolderManager) << "Current blacklist:" << blackList;
+        const auto blackListSize = blackList.size();
 
         for (const auto &pathToRemoveFromBlackList : foldersToRemoveFromBlacklist) {
             blackList.removeAll(pathToRemoveFromBlackList);
         }
 
-        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
-        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, {});
+        if (blackList.size() != blackListSize) {
+            if (folder->isSyncRunning()) {
+                qCDebug(lcE2eFolderManager) << "Folder is syncing, terminating to prevent E2E folder deletion";
+                folderTerminateSyncAndUpdateBlackList(blackList, folder, foldersToRemoveFromBlacklist);
+                ++foldersProcessed;
+                continue;
+            }
 
-        for (const auto &pathToRemoteDiscover : foldersToRemoveFromBlacklist) {
-            folder->journalDb()->schedulePathForRemoteDiscovery(pathToRemoteDiscover);
+            folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
+            folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, {});
+
+            for (const auto &pathToRemoteDiscover : foldersToRemoveFromBlacklist) {
+                folder->journalDb()->schedulePathForRemoteDiscovery(pathToRemoteDiscover);
+            }
+
+            folderMan->scheduleFolder(folder);
+            ++foldersProcessed;
         }
-
-        folderMan->scheduleFolder(folder);
-        ++foldersProcessed;
     }
 
     if (foldersProcessed > 0) {
@@ -134,6 +144,33 @@ void E2EFolderManager::restoreE2eFoldersForAccount(const AccountPtr &account)
     } else {
         qCDebug(lcE2eFolderManager) << "No E2E folders needed restoration";
     }
+}
+
+void E2EFolderManager::folderTerminateSyncAndUpdateBlackList(const QStringList &blackList, OCC::Folder *folder, const QStringList &foldersToRemoveFromBlacklist)
+{
+    if (_folderConnections.contains(folder->alias())) {
+        qCWarning(lcE2eFolderManager) << "Folder " << folder->alias() << "is already terminating the sync.";
+        return;
+    }
+    // in case sync is already running - terminate it and start a new one
+    const QMetaObject::Connection syncTerminatedConnection = connect(folder, &Folder::syncFinished, this, [this, blackList, folder, foldersToRemoveFromBlacklist]() {
+        const auto foundConnectionIt = _folderConnections.find(folder->alias());
+        if (foundConnectionIt != _folderConnections.end()) {
+            disconnect(*foundConnectionIt);
+            _folderConnections.erase(foundConnectionIt);
+        }
+        
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, {});
+
+        for (const auto &pathToRemoteDiscover : foldersToRemoveFromBlacklist) {
+            folder->journalDb()->schedulePathForRemoteDiscovery(pathToRemoteDiscover);
+        }
+
+        FolderMan::instance()->scheduleFolder(folder);
+    });
+    _folderConnections.insert(folder->alias(), syncTerminatedConnection);
+    folder->slotTerminateSync();
 }
 
 } // namespace OCC
