@@ -1678,14 +1678,14 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
 <context>
     <name>OCC::ConflictSolver</name>
     <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="152"/>
-        <location filename="../src/gui/conflictsolver.cpp" line="176"/>
+        <location filename="../src/gui/conflictsolver.cpp" line="156"/>
+        <location filename="../src/gui/conflictsolver.cpp" line="180"/>
         <source>Error</source>
         <translation>Earráid</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="152"/>
-        <location filename="../src/gui/conflictsolver.cpp" line="176"/>
+        <location filename="../src/gui/conflictsolver.cpp" line="156"/>
+        <location filename="../src/gui/conflictsolver.cpp" line="180"/>
         <source>Moving file failed:
 
 %1</source>
@@ -1694,17 +1694,17 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="194"/>
+        <location filename="../src/gui/conflictsolver.cpp" line="198"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
         <translation>Ar mhaith leat eolaire &lt;i&gt;%1&lt;/i&gt; agus a bhfuil ann go léir a scriosadh go buan?</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="195"/>
+        <location filename="../src/gui/conflictsolver.cpp" line="199"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
         <translation>Ar mhaith leat an comhad  &lt;i&gt;%1&lt;/i&gt; a scriosadh go buan?</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="196"/>
+        <location filename="../src/gui/conflictsolver.cpp" line="200"/>
         <source>Confirm deletion</source>
         <translation>Deimhnigh scriosadh</translation>
     </message>

@@ -1675,14 +1675,14 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
 <context>
     <name>OCC::ConflictSolver</name>
     <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="152"/>
-        <location filename="../src/gui/conflictsolver.cpp" line="176"/>
+        <location filename="../src/gui/conflictsolver.cpp" line="156"/>
+        <location filename="../src/gui/conflictsolver.cpp" line="180"/>
         <source>Error</source>
         <translation>Fout</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="152"/>
-        <location filename="../src/gui/conflictsolver.cpp" line="176"/>
+        <location filename="../src/gui/conflictsolver.cpp" line="156"/>
+        <location filename="../src/gui/conflictsolver.cpp" line="180"/>
         <source>Moving file failed:
 
 %1</source>
@@ -1691,17 +1691,17 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="194"/>
+        <location filename="../src/gui/conflictsolver.cpp" line="198"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
         <translation>Wil je de map &lt;i&gt;%1&lt;/i&gt;met gehele inhoud permanent verwijderen?</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="195"/>
+        <location filename="../src/gui/conflictsolver.cpp" line="199"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
         <translation>Wil je het bestand &lt;i&gt;%1&lt;/i&gt;permanent verwijderen?</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="196"/>
+        <location filename="../src/gui/conflictsolver.cpp" line="200"/>
         <source>Confirm deletion</source>
         <translation>Bevestig verwijderen</translation>
     </message>
