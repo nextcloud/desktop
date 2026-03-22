@@ -323,7 +323,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
         <source>Virtual files appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. Virtual files and classic sync can not be used at the same time.</source>
-        <translation type="unfinished"/>
+        <translation>Virtuální soubory vypadají jako ty lokální, ale nevyužívají lokální prostor na úložišti. Stahování obsahu se děje automaticky když otevřete soubor. Virtuální soubory a klasickou synchronizaci není možné používat souběžně.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
@@ -548,12 +548,12 @@ Chcete ho naimportovat?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="159"/>
         <source>Virtual files</source>
-        <translation type="unfinished"/>
+        <translation>Virtuální soubory</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="205"/>
         <source>Classic sync</source>
-        <translation type="unfinished"/>
+        <translation>Klasická synchronizace</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="85"/>
@@ -791,43 +791,43 @@ Počkejte na příští synchronizaci a pak složku zašifrujte.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="954"/>
         <source>Grant access to sync folder</source>
-        <translation type="unfinished"/>
+        <translation>Udělit přístup k synchronizační složce</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="966"/>
         <source>Access Error</source>
-        <translation type="unfinished"/>
+        <translation>Chyba přístupu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="967"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>K vybrané složce nebylo možné získat přístup. Prosím zkuste to znovu.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="975"/>
         <source>Wrong Folder</source>
-        <translation type="unfinished"/>
+        <translation>Nesprávná složka</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="976"/>
         <source>Please select the original sync folder: %1</source>
-        <translation type="unfinished"/>
+        <translation>Vyberte původní synchronizační složku: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="985"/>
         <location filename="../src/gui/accountsettings.cpp" line="994"/>
         <source>Bookmark Error</source>
-        <translation type="unfinished"/>
+        <translation>Chyba záložky</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="986"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Nebylo možné vytvořit záložku zabezpečení pro tuto složku. Zkuste to znovu.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="995"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Nebylo možné přeložit záložku zabezpečení. Zkuste to znovu.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1000"/>
@@ -905,7 +905,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1414"/>
         <source>Connected to %1 (%2).</source>
-        <translation type="unfinished"/>
+        <translation>Připojeno k %1 (%2).</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1537"/>
@@ -930,7 +930,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1850"/>
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
-        <translation type="unfinished"/>
+        <translation>Integrace virtuálních souborů zatím ještě nepodporuje šifrování mezi koncovými body.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1757"/>
@@ -2020,7 +2020,7 @@ Toto může být způsobeno problémem s OpenSSL knihovnami.</translation>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mimetype, e.g text/plain files</comment>
         <extracomment>TRANSLATOR Placeholder contains file MIME type</extracomment>
-        <translation type="unfinished"/>
+        <translation>Pro %1 souborů nebyly serverem vráceny žádné akce.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="359"/>
@@ -2423,7 +2423,7 @@ Případně je možné veškeré smazané soubory obnovit jejich stažením si z
     <message numerus="yes">
         <location filename="../src/gui/folderman.cpp" line="416"/>
         <source>%n sync folders require access re-approval after the app update. Please open settings to grant access.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Po aktualizaci aplikace vyžaduje %n synchronizační složka znovuschválení přístupu. Otevřete nastavení a udělte ho.</numerusform><numerusform>Po aktualizaci aplikace vyžadují %n synchronizační složky znovuschválení přístupu. Otevřete nastavení a udělte ho.</numerusform><numerusform>Po aktualizaci aplikace vyžaduje %n synchronizačních složek znovuschválení přístupu. Otevřete nastavení a udělte ho.</numerusform><numerusform>Po aktualizaci aplikace vyžadují %n synchronizační složky znovuschválení přístupu. Otevřete nastavení a udělte ho.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1801"/>
@@ -2600,7 +2600,7 @@ Pro pokročilé uživatele: tento problém může souviset s vícero databázov�
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
         <source>This folder requires access re-approval. Click here to grant access.</source>
-        <translation type="unfinished"/>
+        <translation>Tato složka vyžaduje znovuschválení přístupu. Přístup udělíte kliknutím sem.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
@@ -2931,7 +2931,7 @@ Pro pokročilé uživatele: tento problém může souviset s vícero databázov�
     <message>
         <location filename="../src/gui/generalsettings.ui" line="46"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>Obecná nastavení</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
