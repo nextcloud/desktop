@@ -293,39 +293,43 @@ struct Build: AsyncParsableCommand {
             .appendingPathComponent("image-\(buildType)-master")
             .appendingPathComponent("\(appName).app")
 
-        // When building in dev mode, copy the dSYM bundles for the app extensions from the
-        // xcodebuild SYMROOT into Contents/PlugIns/ of the product app bundle alongside their
-        // respective .appex bundles.
+        // When building in dev mode, copy dSYM bundles into the build directory
+        // so that Xcode/LLDB can resolve breakpoints via Spotlight UUID lookup.
         //
-        // Background: KDE Craft's __internalPostInstallHandleSymbols() deliberately moves every
-        // .dSYM bundle out of the main image directory and into a separate -dbg image directory
-        // before packaging. This means dSYMs never reach the product app via the normal CMake
-        // install() path. Reading directly from the xcodebuild SYMROOT bypasses that filtering.
+        // Background: KDE Craft's __internalPostInstallHandleSymbols() moves
+        // every .dSYM bundle out of the main image directory into a separate
+        // -dbg image directory whose contents have epoch (1970) timestamps and a
+        // double-nested DWARF structure — both of which prevent Spotlight from
+        // indexing them.  Copying and flattening the bundles into the build
+        // directory (which Spotlight does index) makes them discoverable.
         //
-        // With the dSYMs inside the app bundle under /Applications, Spotlight indexes them and
-        // Xcode can find them automatically via UUID lookup when attaching to the extension process,
-        // which allows breakpoints in extension source files to be resolved correctly.
+        // Placing the dSYMs in the build directory keeps /Applications clean and
+        // lets the entire build tree be discarded in one step.
 
         if dev {
             let dSYM = clientBuildURL
                 .appendingPathComponent("image-\(buildType)-master-dbg")
                 .appendingPathComponent("\(appName).app.dSYM")
 
-            let binaryLocation = clientAppURL
-                .appendingPathComponent("Contents")
-                .appendingPathComponent("MacOS")
-                .appendingPathComponent("\(appName).app.dSYM")
+            let dSYMDestination = buildURL.appendingPathComponent("\(appName).app.dSYM")
 
-            Log.info("Copying main dSYM bundle at \"\(dSYM.path)\" into product app bundle \"\(binaryLocation.path)\" for debugging...")
+            Log.info("Copying main dSYM bundle to \"\(dSYMDestination.path)\"...")
 
-            if fm.fileExists(atPath: binaryLocation.path) {
-                Log.info("Removing already existing main dSYM bundle at \"\(binaryLocation.path)\"...")
-                try fm.removeItem(at: binaryLocation)
+            if fm.fileExists(atPath: dSYMDestination.path) {
+                Log.info("Removing already existing main dSYM bundle at \"\(dSYMDestination.path)\"...")
+                try fm.removeItem(at: dSYMDestination)
             }
 
-            try fm.copyItem(at: dSYM, to: binaryLocation)
+            try fm.copyItem(at: dSYM, to: dSYMDestination)
 
-            Log.info("Copying extension dSYM bundles into product app bundle for debugging...")
+            // KDE Craft's __internalPostInstallHandleSymbols() packs each
+            // library's complete .dSYM bundle as a subdirectory under
+            // Contents/Resources/DWARF/ instead of placing the bare DWARF binary
+            // there.  Flatten it back to the standard layout so that Spotlight
+            // can extract UUIDs and LLDB can resolve breakpoints.
+            try flattenDSYMBundle(at: dSYMDestination)
+
+            Log.info("Copying extension dSYM bundles to \"\(buildURL.path)\"...")
 
             let shellIntegrationBuildDir = clientBuildURL
                 .appendingPathComponent("work")
@@ -334,12 +338,8 @@ struct Build: AsyncParsableCommand {
                 .appendingPathComponent("MacOSX")
                 .appendingPathComponent(buildType)
 
-            let plugInsDir = clientAppURL
-                .appendingPathComponent("Contents")
-                .appendingPathComponent("PlugIns")
-
             guard fm.fileExists(atPath: shellIntegrationBuildDir.path) else {
-                Log.info("Shell integration build directory not found, skipping dSYM copy: \(shellIntegrationBuildDir.path)")
+                Log.info("Shell integration build directory not found, skipping extension dSYM copy: \(shellIntegrationBuildDir.path)")
                 return
             }
 
@@ -347,7 +347,7 @@ struct Build: AsyncParsableCommand {
             let dSYMBundles = entries.filter { $0.pathExtension.lowercased() == "dsym" }
 
             for dSYM in dSYMBundles {
-                let destination = plugInsDir.appendingPathComponent(dSYM.lastPathComponent)
+                let destination = buildURL.appendingPathComponent(dSYM.lastPathComponent)
 
                 if fm.fileExists(atPath: destination.path) {
                     Log.info("Removing already existing extension dSYM bundle at \"\(destination.path)\"...")
@@ -433,5 +433,94 @@ struct Build: AsyncParsableCommand {
         
         Log.info("Done!")
         Log.info(stopwatch.report())
+    }
+
+    /// Flatten a dSYM bundle whose `Contents/Resources/DWARF/` entries are
+    /// nested dSYM bundles (directories) instead of bare Mach-O DWARF files.
+    ///
+    /// KDE Craft's symbol handling can produce this layout:
+    /// ```
+    /// Foo.app.dSYM/Contents/Resources/DWARF/Foo/Contents/Resources/DWARF/Foo   ← actual DWARF binary
+    /// Foo.app.dSYM/Contents/Resources/DWARF/libBar.dylib/Contents/…/libBar.dylib
+    /// ```
+    /// This function rewrites it to the standard layout expected by Spotlight
+    /// and LLDB:
+    /// ```
+    /// Foo.app.dSYM/Contents/Info.plist
+    /// Foo.app.dSYM/Contents/Resources/DWARF/Foo          ← bare binary
+    /// Foo.app.dSYM/Contents/Resources/DWARF/libBar.dylib ← bare binary
+    /// ```
+    private func flattenDSYMBundle(at bundle: URL) throws {
+        let fm = FileManager.default
+
+        let dwarfDir = bundle
+            .appendingPathComponent("Contents")
+            .appendingPathComponent("Resources")
+            .appendingPathComponent("DWARF")
+
+        guard fm.fileExists(atPath: dwarfDir.path) else {
+            return
+        }
+
+        let entries = try fm.contentsOfDirectory(at: dwarfDir, includingPropertiesForKeys: [.isDirectoryKey])
+
+        // Determine the main binary name from the dSYM bundle name (e.g.
+        // "NextcloudDev.app.dSYM" → "NextcloudDev").
+        var dSYMName = bundle.deletingPathExtension().lastPathComponent  // strip .dSYM
+
+        if dSYMName.hasSuffix(".app") {
+            dSYMName = String(dSYMName.dropLast(4))  // strip .app
+        }
+
+        var promotedInfoPlist = false
+
+        for entry in entries {
+            let values = try entry.resourceValues(forKeys: [.isDirectoryKey])
+            guard values.isDirectory == true else {
+                continue
+            }
+
+            // Look for the inner DWARF binary.
+            let innerDWARF = entry
+                .appendingPathComponent("Contents")
+                .appendingPathComponent("Resources")
+                .appendingPathComponent("DWARF")
+                .appendingPathComponent(entry.lastPathComponent)
+
+            guard fm.fileExists(atPath: innerDWARF.path) else {
+                Log.info("Skipping unexpected directory in DWARF/: \(entry.lastPathComponent)")
+                continue
+            }
+
+            // Promote the inner Info.plist to the top-level bundle for the
+            // main binary so that Spotlight can index the dSYM by UUID.
+            if !promotedInfoPlist && entry.lastPathComponent == dSYMName {
+                let innerPlist = entry
+                    .appendingPathComponent("Contents")
+                    .appendingPathComponent("Info.plist")
+
+                let outerPlist = bundle
+                    .appendingPathComponent("Contents")
+                    .appendingPathComponent("Info.plist")
+
+                if fm.fileExists(atPath: innerPlist.path) {
+                    if fm.fileExists(atPath: outerPlist.path) {
+                        try fm.removeItem(at: outerPlist)
+                    }
+                    
+                    try fm.copyItem(at: innerPlist, to: outerPlist)
+                    promotedInfoPlist = true
+                    Log.info("Promoted Info.plist from inner dSYM to top-level bundle.")
+                }
+            }
+
+            // Replace the nested directory with the bare DWARF binary.
+            let flatTarget = dwarfDir.appendingPathComponent(entry.lastPathComponent + ".tmp")
+            try fm.copyItem(at: innerDWARF, to: flatTarget)
+            try fm.removeItem(at: entry)
+            try fm.moveItem(at: flatTarget, to: entry)
+
+            Log.info("Flattened DWARF entry: \(entry.lastPathComponent)")
+        }
     }
 }
