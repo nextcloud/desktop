@@ -2476,6 +2476,91 @@ QStringList SyncJournalDb::removeSelectiveSyncLists(SelectiveSyncListType type, 
     return blackList;
 }
 
+bool SyncJournalDb::hasSelectiveSyncDescendants(const QString &path)
+{
+    QMutexLocker locker(&_mutex);
+
+    if (!checkConnect()) {
+        return false;
+    }
+
+    // Build the query to check if there are any selective sync blacklist entries
+    // that are descendants of the given path
+    QString pathPrefix = path;
+    if (!pathPrefix.endsWith(QLatin1Char('/'))) {
+        pathPrefix += QLatin1Char('/');
+    }
+
+    const QString sql = QStringLiteral("SELECT 1 FROM selectivesync WHERE path LIKE ? ESCAPE '\\' AND type == ? LIMIT 1");
+    // const QString sql = QStringLiteral("SELECT 1 FROM selectivesync WHERE path LIKE ? LIMIT 1");
+    SqlQuery query(_db);
+    query.prepare(sql.toUtf8());
+
+    // Escape special LIKE characters
+    QString escapedPath = pathPrefix;
+    escapedPath.replace(QLatin1String("\\"), QLatin1String("\\\\"));
+    escapedPath.replace(QLatin1String("%"), QLatin1String("\\%"));
+    escapedPath.replace(QLatin1String("_"), QLatin1String("\\_"));
+    escapedPath.replace(QLatin1String("["), QLatin1String("\\["));
+
+    query.bindValue(1, QString(escapedPath + QLatin1Char('%')));
+    query.bindValue(2, static_cast<int>(SelectiveSyncBlackList));
+
+    if (!query.exec()) {
+        qCWarning(lcDb) << "Error checking selective sync descendants for" << path << ":" << query.error();
+        return false;
+    }
+    auto result = query.next();
+    return result.ok && result.hasData;
+}
+
+QStringList SyncJournalDb::getSyncedDescendants(const QString &path)
+{
+    QMutexLocker locker(&_mutex);
+    QStringList result;
+
+    if (!checkConnect()) {
+        return result;
+    }
+
+    // Get all files from the metadata that are descendants of the given path
+    // These are the files that were synced and need to be deleted
+    QString pathPrefix = path;
+    if (!pathPrefix.endsWith(QLatin1Char('/'))) {
+        pathPrefix += QLatin1Char('/');
+    }
+
+    const QString sql = QStringLiteral("SELECT path FROM metadata WHERE path LIKE ? ESCAPE '\\' ORDER BY path DESC");
+    SqlQuery query(_db);
+    query.prepare(sql.toUtf8());
+
+    // Escape special LIKE characters
+    QString escapedPath = pathPrefix;
+    escapedPath.replace(QLatin1String("\\"), QLatin1String("\\\\"));
+    escapedPath.replace(QLatin1String("%"), QLatin1String("\\%"));
+    escapedPath.replace(QLatin1String("_"), QLatin1String("\\_"));
+    escapedPath.replace(QLatin1String("["), QLatin1String("\\["));
+
+    QString likePath = QString(escapedPath + QLatin1Char('%'));
+    query.bindValue(1, likePath);
+
+    if (!query.exec()) {
+        qCWarning(lcDb) << "Error getting synced descendants for" << path << ":" << query.error();
+        return result;
+    }
+
+    while (query.next().hasData) {
+        QString filePath = query.stringValue(0);
+        // Exclude the exact path itself
+        if (filePath != path) {
+            // todo: only append folders that are fullySynced and files that are direct descendant
+            result.append(filePath);
+        }
+    }
+
+    return result;
+}
+
 void SyncJournalDb::avoidRenamesOnNextSync(const QByteArray &path)
 {
     QMutexLocker locker(&_mutex);

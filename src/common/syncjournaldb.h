@@ -180,6 +180,26 @@ public:
     QStringList removeSelectiveSyncLists(SelectiveSyncListType type, const QString &path);
 
     /**
+     * @brief Check if a path has descendants that are in selective sync blacklist
+     * @param path The folder path to check
+     * @return true if there are unsynced descendants, false otherwise
+     *
+     * This is used to prevent data loss when deleting folders that contain
+     * unsynced content (selective sync exclusions).
+     */
+    [[nodiscard]] bool hasSelectiveSyncDescendants(const QString &path);
+
+    /**
+     * @brief Get all synced file paths that are descendants of the given path
+     * @param path The folder path to get synced descendants for
+     * @return List of synced file paths
+     *
+     * This is used for partial deletion - we only want to delete synced content,
+     * keeping unsynced content on the server.
+     */
+    [[nodiscard]] QStringList getSyncedDescendants(const QString &path);
+
+    /**
      * Make sure that on the next sync fileName and its parents are discovered from the server.
      *
      * That means its metadata and, if it's a directory, its direct contents.

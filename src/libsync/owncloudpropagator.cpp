@@ -215,6 +215,43 @@ void blacklistUpdate(SyncJournalDb *journal, SyncFileItem &item)
     }
 }
 
+bool PropagateItemJob::addPathToSelectiveSync(SyncJournalDb *journal, const QString &folder_)
+{
+    bool ok = false;
+    QStringList list = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+    if (!ok)
+        return false;
+
+    ASSERT(!folder_.endsWith(QLatin1String("/")));
+    QString folder = folder_ + QLatin1String("/");
+
+    list.append(folder);
+
+    journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, list);
+    return true;
+}
+
+bool PropagateItemJob::removePathFromSelectiveSyncRecursively(SyncJournalDb *journal, const QString &folder_)
+{
+    bool ok = false;
+    QStringList list = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+    if (!ok)
+        return false;
+
+    ASSERT(!folder_.endsWith(QLatin1String("/")));
+    QString folder = folder_ + QLatin1String("/");
+
+    for (auto &s : list) {
+        if (s.startsWith(folder)) {
+            const int item = list.indexOf(s);
+            list.removeAt(item);
+        }
+    }
+
+    journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, list);
+    return true;
+}
+
 void PropagateItemJob::done(const SyncFileItem::Status statusArg, const QString &errorString, const ErrorCategory category)
 {
     // Duplicate calls to done() are a logic error

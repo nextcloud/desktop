@@ -37,5 +37,14 @@ public:
 
 private slots:
     void slotDeleteJobFinished();
+    void slotPartialDeleteJobFinished();
+
+private:
+    void deleteNextSyncedItem();
+    void createPartialDeleteJob(const QString &filename);
+
+    QStringList _syncedItemsToDelete;
+    QStringList _syncedItemsToKeep;
+    int _currentDeleteIndex = 0;
 };
 }
