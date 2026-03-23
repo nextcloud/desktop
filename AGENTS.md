@@ -51,11 +51,12 @@ Avoid creating source files that implement multiple types; instead, place each t
 
 ## macOS Specifics
 
-The following details are important when working on the desktop client on macOS.
+The following details are important and only relevant when working on the desktop client on macOS.
 
 ### Requirements
 
 - Latest stable Xcode available is required to be installed in the development environment.
+- The targeted macOS release (and all newer major releases) is specified in `./CMakeLists.txt`.
 
 ### Project Structure
 
@@ -84,3 +85,4 @@ The following details are important when working on the desktop client on macOS.
 - If there are changes in the Swift package located in `./shell_integration/MacOSX/NextcloudFileProviderKit`, then verify it still builds and runs tests successfully by running `swift test` in that directory. In case of build errors, try to fix them.
 - If there are changes in the directory located in `./shell_integration/MacOSX/NextcloudIntegration`, then verify it still builds and runs tests successfully by running `xcodebuild build -scheme desktopclient` in that directory. In case of build errors, try to fix them.
 - If there are changes in `./src`, then verify the main product still builds successfully by running `xcodebuild build -target NextcloudDev` in the directory `./shell_integration/MacOSX/NextcloudIntegration`. In case of build errors, try to fix them.
+- Do not attempt in place modifications of the built app bundle at `/Applications/NextcloudDev.app` because it will break the valid signing and corrupt the app as a whole. A rebuild is necessary instead.
