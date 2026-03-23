@@ -2424,7 +2424,7 @@ Alternativamente, puede restaurar todos los archivos borrados descargándolos de
     <message numerus="yes">
         <location filename="../src/gui/folderman.cpp" line="416"/>
         <source>%n sync folders require access re-approval after the app update. Please open settings to grant access.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n carpeta sincronizada requiere volver a autorizar el acceso después de actualizar la aplicación. Abra la configuración para conceder el acceso.</numerusform><numerusform>%n carpetas sincronizadas requieren volver a autorizar el acceso después de actualizar la aplicación. Abra la configuración para conceder el acceso.</numerusform><numerusform>%n carpetas sincronizadas requieren volver a autorizar el acceso después de actualizar la aplicación. Abra la configuración para conceder el acceso.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1801"/>
