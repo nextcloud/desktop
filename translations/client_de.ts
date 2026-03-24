@@ -563,7 +563,7 @@ Soll das Konto importiert werden?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
         <source>Storage space: …</source>
-        <translation>Speicherplatz: …</translation>
+        <translation>Speicherplatz: …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="237"/>
@@ -885,7 +885,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1198"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>Die Synchronisierung läuft gerade.&lt;br/&gt;Wollen Sie diese beenden?</translation>
+        <translation>Die Synchronisierung läuft gerade.&lt;br/&gt;Soll diese beendet werden?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1270"/>
@@ -1696,12 +1696,12 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="198"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation>Möchten Sie den Ordner &lt;i&gt;%1&lt;/i&gt; und dessen Inhalte dauerhaft löschen?</translation>
+        <translation>Soll der Ordner &lt;i&gt;%1&lt;/i&gt; und dessen Inhalte dauerhaft gelöscht werden?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="199"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation>Möchten Sie die Datei &lt;i&gt;%1&lt;/i&gt; dauerhaft löschen?</translation>
+        <translation>Soll die Datei &lt;i&gt;%1&lt;/i&gt; dauerhaft gelöscht werden?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="200"/>
@@ -2302,7 +2302,7 @@ Dies kann ein Problem mit Ihren OpenSSL-Bibliotheken sein.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="1502"/>
         <source>Would you like to stop syncing this folder?</source>
-        <translation>Möchten Sie die Synchronisierung dieses Ordners stoppen?</translation>
+        <translation>Soll die Synchronisierung dieses Ordners gestoppt werden?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1577"/>
@@ -5832,7 +5832,7 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1540"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Möchten Sie die Verbindung zum Konto &lt;i&gt;%1&lt;/i&gt; entfernen?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Hinweis:&lt;/b&gt; Es werden &lt;b&gt;keine&lt;/b&gt; Dateien gelöscht.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Soll die Verbindung zum Konto &lt;i&gt;%1&lt;/i&gt; entfernt werden?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Hinweis:&lt;/b&gt; Es werden &lt;b&gt;keine&lt;/b&gt; Dateien gelöscht.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1544"/>
