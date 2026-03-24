@@ -36,7 +36,7 @@
    <item>
     <widget class="QLabel" name="explanationLabel">
      <property name="text">
-      <string>could not be downloaded</string>
+      <string>Could not be downloaded</string>
      </property>
      <property name="textFormat">
       <enum>Qt::PlainText</enum>
