@@ -108,7 +108,10 @@ void FileActionsModel::setLocalPath(const QString &localPath)
     _localPath = localPath;
 
     setupFileProperties();
-    parseEndpoints();
+    if (!_fileId.isEmpty()) {
+        qCDebug(lcFileActions) << "File id is set with" << _fileId << ", calling parseEndpoints().";
+        parseEndpoints();
+    }
 
     Q_EMIT fileChanged();
 }
