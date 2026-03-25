@@ -16,7 +16,7 @@ namespace OCC
  * @brief Decrypts a Nextcloud E2EE folder metadata object.
  *
  * Implements a self-contained decryption pipeline for V1.x and V2.x metadata
- * using an unencrypted PKCS8 or traditional RSA PEM private key.
+ * using a PKCS8 or traditional RSA PEM private key (encrypted or unencrypted).
  * No live account, network access, or libsync dependency is needed.
  *
  * Decryption pipeline per version:
@@ -58,17 +58,33 @@ public:
     };
 
     /**
+     * Returns true when @p privateKeyPem is a passphrase-protected PEM private key.
+     *
+     * Two encrypted PEM formats are recognised:
+     *  - Traditional (PKCS#1) encrypted:  contains "Proc-Type: 4,ENCRYPTED" in the header
+     *  - PKCS#8 encrypted:                starts with "-----BEGIN ENCRYPTED PRIVATE KEY-----"
+     *
+     * The check is a fast string scan and does not parse the key.
+     */
+    [[nodiscard]] static bool isPemEncrypted(const QByteArray &privateKeyPem);
+
+    /**
      * Decrypt the metadata contained in @p metadataRoot.
      *
      * @param metadataRoot   Bare metadata JSON object (OCS API envelope already stripped).
      * @param version        Version string as detected by E2EEMetadataVerifier (e.g. "2.1").
-     * @param privateKeyPem  Unencrypted PKCS8 or traditional RSA PEM private key of a user
-     *                       that has access to the folder.
+     * @param privateKeyPem  PKCS8 or traditional RSA PEM private key of a user that has
+     *                       access to the folder.  May be encrypted or unencrypted.
+     * @param passphrase     Passphrase to decrypt @p privateKeyPem.  Pass an empty
+     *                       QByteArray (the default) when the key is unencrypted.
+     *                       Providing a wrong passphrase is reported as an error in the
+     *                       returned Result rather than causing undefined behaviour.
      * @return               Result with decryptedContent on success, or an error message.
      */
     [[nodiscard]] static Result decrypt(const QJsonObject &metadataRoot,
                                         const QString &version,
-                                        const QByteArray &privateKeyPem);
+                                        const QByteArray &privateKeyPem,
+                                        const QByteArray &passphrase = {});
 };
 
 } // namespace OCC

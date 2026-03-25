@@ -19,6 +19,7 @@
 #include <zlib.h>
 
 #include <memory>
+#include <cstring>
 
 namespace OCC
 {
@@ -49,20 +50,57 @@ QString opensslErrors()
     return result.isEmpty() ? QStringLiteral("(no OpenSSL error detail)") : result;
 }
 
-// ─── Primitive: load an unencrypted PEM private key ──────────────────────────
+// ─── Primitive: load a PEM private key (encrypted or plain) ──────────────────
 
-EvpPkeyPtr loadPemPrivateKey(const QByteArray &pem, QString &error)
+// OpenSSL passphrase callback used when the caller supplies the passphrase
+// out-of-band (e.g. after reading it from the terminal).
+// The `userdata` parameter points to the QByteArray holding the passphrase.
+static int pemPassphraseCallback(char *buf, int size, int /*rwflag*/, void *userdata)
+{
+    const auto *passphrase = static_cast<const QByteArray *>(userdata);
+    const int len = qMin(size, passphrase->size());
+    std::memcpy(buf, passphrase->constData(), static_cast<size_t>(len));
+    return len;
+}
+
+// OpenSSL passphrase callback that always returns 0 (empty passphrase) and
+// suppresses the default interactive terminal prompt.
+static int emptyPassphraseCallback(char * /*buf*/, int /*size*/, int /*rwflag*/, void * /*userdata*/)
+{
+    return 0;
+}
+
+EvpPkeyPtr loadPemPrivateKey(const QByteArray &pem, const QByteArray &passphrase, QString &error)
 {
     BioPtr bio{BIO_new_mem_buf(pem.constData(), pem.size()), BIO_free_all};
     if (!bio) {
         error = QStringLiteral("Failed to create BIO for private key PEM");
         return {nullptr, EVP_PKEY_free};
     }
-    EVP_PKEY *raw = PEM_read_bio_PrivateKey(bio.get(), nullptr, nullptr, nullptr);
-    if (!raw) {
-        error = QStringLiteral("Failed to read private key PEM: ") + opensslErrors();
-        return {nullptr, EVP_PKEY_free};
+
+    EVP_PKEY *raw = nullptr;
+    if (passphrase.isEmpty()) {
+        // Key is assumed to be unencrypted.  Provide a no-op callback so that
+        // OpenSSL does not fall back to prompting on the terminal.
+        raw = PEM_read_bio_PrivateKey(bio.get(), nullptr, emptyPassphraseCallback, nullptr);
+        if (!raw) {
+            error = QStringLiteral("Failed to read private key PEM — "
+                                   "if the key is passphrase-protected, supply the passphrase: ")
+                    + opensslErrors();
+            return {nullptr, EVP_PKEY_free};
+        }
+    } else {
+        // Key is passphrase-protected: supply the passphrase via callback.
+        raw = PEM_read_bio_PrivateKey(bio.get(), nullptr, pemPassphraseCallback,
+                                      const_cast<void *>(static_cast<const void *>(&passphrase)));
+        if (!raw) {
+            error = QStringLiteral("Failed to read private key PEM — "
+                                   "wrong passphrase or corrupted key: ")
+                    + opensslErrors();
+            return {nullptr, EVP_PKEY_free};
+        }
     }
+
     return {raw, EVP_PKEY_free};
 }
 
@@ -458,12 +496,22 @@ E2EEMetadataDecryptor::Result decryptV1(const QJsonObject &root,
 // Public API
 // ─────────────────────────────────────────────────────────────────────────────
 
+bool E2EEMetadataDecryptor::isPemEncrypted(const QByteArray &privateKeyPem)
+{
+    // PKCS#8 encrypted format:  -----BEGIN ENCRYPTED PRIVATE KEY-----
+    // Traditional encrypted format has a "Proc-Type: 4,ENCRYPTED" DEK-Info header.
+    // Both formats contain the word "ENCRYPTED" in their PEM header, so a single
+    // substring scan is sufficient.
+    return privateKeyPem.contains("ENCRYPTED");
+}
+
 E2EEMetadataDecryptor::Result E2EEMetadataDecryptor::decrypt(const QJsonObject &metadataRoot,
                                                               const QString &version,
-                                                              const QByteArray &privateKeyPem)
+                                                              const QByteArray &privateKeyPem,
+                                                              const QByteArray &passphrase)
 {
     QString keyError;
-    auto pkey = loadPemPrivateKey(privateKeyPem, keyError);
+    auto pkey = loadPemPrivateKey(privateKeyPem, passphrase, keyError);
     if (!pkey) {
         return {false, keyError};
     }
