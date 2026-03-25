@@ -116,7 +116,12 @@ void AsyncImageResponse::processNetworkReply(QNetworkReply *reply)
         return;
     }
 
-    if (!imageData.startsWith("<svg"_ba)) {
+    // check whether the reply might be an SVG by looking at the content type and the first 512 bytes of the response for `<svg`.
+    // Some graphics programs export SVGs that begin with `<?xml version="1.0" [...]` and/or include some comments after that (e.g.
+    // `<!-- Generator: ...`), so we can't rely on just the response to start with `<svg`.
+    if (const auto contentTypeHeader = reply->header(QNetworkRequest::ContentTypeHeader);
+        !(contentTypeHeader.toString().startsWith("image/svg"_ba) || imageData.first(qMin(imageData.size(), 512)).contains("<svg"_ba))) {
+        // Not an SVG: let's let QImage deal with the response.
         setImageAndEmitFinished(QImage::fromData(imageData));
         return;
     }
