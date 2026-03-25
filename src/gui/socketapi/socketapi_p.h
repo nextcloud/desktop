@@ -9,6 +9,7 @@
 
 #include <functional>
 #include <QBitArray>
+#include <QIODevice>
 #include <QPointer>
 
 #include <QJsonDocument>
