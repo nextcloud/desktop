@@ -17,6 +17,8 @@ endif()
 
 if(NOT BUILD_LIBRARIES_ONLY)
     add_executable(nextcloude2eemetadataverifier
+        e2eemetadatadecryptor.h
+        e2eemetadatadecryptor.cpp
         e2eemetadataverifier.h
         e2eemetadataverifier.cpp
         main.cpp)
@@ -26,7 +28,9 @@ if(NOT BUILD_LIBRARIES_ONLY)
 
     target_link_libraries(nextcloude2eemetadataverifier
         Qt::Core
-        Qt::Network)
+        Qt::Network
+        OpenSSL::Crypto
+        ZLIB::ZLIB)
 
     target_compile_definitions(nextcloude2eemetadataverifier PRIVATE
         APPLICATION_EXECUTABLE="${APPLICATION_EXECUTABLE}")

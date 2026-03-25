@@ -3,8 +3,10 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include "e2eemetadatadecryptor.h"
 #include "e2eemetadataverifier.h"
 
+#include <QCommandLineOption>
 #include <QCommandLineParser>
 #include <QCoreApplication>
 #include <QFile>
@@ -23,14 +25,25 @@ int main(int argc, char *argv[])
 
     QCommandLineParser parser;
     parser.setApplicationDescription(
-        QStringLiteral("Reads a Nextcloud E2EE folder metadata file, extracts its content, "
-                       "and verifies its structural integrity.\n\n"
+        QStringLiteral("Reads a Nextcloud E2EE folder metadata file, verifies its structural\n"
+                       "integrity, and optionally decrypts its content using the folder owner's\n"
+                       "private key.\n\n"
                        "Pass '-' as the file argument to read from standard input."));
     parser.addHelpOption();
     parser.addVersionOption();
+
+    const QCommandLineOption privateKeyOption(
+        {QStringLiteral("k"), QStringLiteral("private-key")},
+        QStringLiteral("Path to an unencrypted PKCS8 or RSA PEM private key file.\n"
+                       "When provided, the tool decrypts the metadata and prints\n"
+                       "the plaintext content in addition to the encrypted structure."),
+        QStringLiteral("file"));
+    parser.addOption(privateKeyOption);
+
     parser.addPositionalArgument(
         QStringLiteral("file"),
         QStringLiteral("Metadata JSON file to read, or '-' to read from stdin."));
+
     parser.process(app);
 
     const auto positional = parser.positionalArguments();
@@ -43,6 +56,7 @@ int main(int argc, char *argv[])
 
     const auto filePath = positional.first();
 
+    // Read the metadata file (or stdin).
     QByteArray metadataJson;
     if (filePath == QStringLiteral("-")) {
         QFile stdinFile;
@@ -86,12 +100,47 @@ int main(int argc, char *argv[])
         }
     }
 
-    // Print the extracted metadata content in human-readable form.
+    // Print the encrypted metadata structure.
+    out << QStringLiteral("=== Encrypted metadata ===\n");
     out << QJsonDocument(root).toJson(QJsonDocument::Indented);
     out.flush();
 
-    // Verify the structural integrity of the metadata and report any failures.
+    // Verify structural integrity and collect format errors.
     const auto report = OCC::E2EEMetadataVerifier::verify(metadataJson, filePath);
+
+    // Optionally decrypt using the provided private key.
+    bool decryptionFailed = false;
+    if (parser.isSet(privateKeyOption)) {
+        const auto privateKeyPath = parser.value(privateKeyOption);
+        QFile keyFile(privateKeyPath);
+        if (!keyFile.open(QIODevice::ReadOnly)) {
+            err << QStringLiteral("Error: cannot open private key file \"%1\": %2\n")
+                       .arg(privateKeyPath, keyFile.errorString());
+            err.flush();
+            return EXIT_FAILURE;
+        }
+        const auto privateKeyPem = keyFile.readAll();
+        if (privateKeyPem.isEmpty()) {
+            err << QStringLiteral("Error: private key file \"%1\" is empty.\n").arg(privateKeyPath);
+            err.flush();
+            return EXIT_FAILURE;
+        }
+
+        const auto decryptResult = OCC::E2EEMetadataDecryptor::decrypt(
+            root, report.detectedVersion, privateKeyPem);
+
+        if (decryptResult.success) {
+            out << QStringLiteral("\n=== Decrypted content ===\n");
+            out << QJsonDocument(decryptResult.decryptedContent).toJson(QJsonDocument::Indented);
+            out.flush();
+        } else {
+            err << QStringLiteral("\nDecryption error: ") << decryptResult.error << QLatin1Char('\n');
+            err.flush();
+            decryptionFailed = true;
+        }
+    }
+
+    // Report any format failures.
     if (!report.isValid()) {
         err << QStringLiteral("\nFormat errors:\n");
         for (const auto &check : report.checks) {
@@ -105,8 +154,10 @@ int main(int argc, char *argv[])
             err << QLatin1Char('\n');
         }
         err.flush();
-        return EXIT_FAILURE;
     }
 
+    if (decryptionFailed || !report.isValid()) {
+        return EXIT_FAILURE;
+    }
     return EXIT_SUCCESS;
 }
