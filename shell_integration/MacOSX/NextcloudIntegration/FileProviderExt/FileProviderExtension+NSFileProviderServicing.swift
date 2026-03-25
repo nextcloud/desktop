@@ -3,7 +3,6 @@
 
 import FileProvider
 import Foundation
-import NCDesktopClientSocketKit
 import NextcloudKit
 import NextcloudFileProviderKit
 import OSLog

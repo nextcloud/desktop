@@ -9,6 +9,7 @@
 
 #include <functional>
 #include <QBitArray>
+#include <QIODevice>
 #include <QPointer>
 
 #include <QJsonDocument>
@@ -57,7 +58,9 @@ public:
     {
     }
 
-    void sendMessage(const QString &message, bool doWait = false) const;
+    virtual ~SocketListener() = default;
+
+    virtual void sendMessage(const QString &message, bool doWait = false) const;
     void sendWarning(const QString &message, bool doWait = false) const
     {
         sendMessage(QStringLiteral("WARNING:") + message, doWait);
