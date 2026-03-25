@@ -122,7 +122,7 @@ void AsyncImageResponse::processNetworkReply(QNetworkReply *reply)
     if (const auto contentTypeHeader = reply->header(QNetworkRequest::ContentTypeHeader);
         !(contentTypeHeader.toString().startsWith("image/svg"_ba) || imageData.first(qMin(imageData.size(), 512)).contains("<svg"_ba))) {
         // Not an SVG: let's let QImage deal with the response.
-        setImageAndEmitFinished(QImage::fromData(imageData));
+        setImageAndEmitFinished(QImage::fromData(imageData).scaled(_requestedImageSize));
         return;
     }
 
