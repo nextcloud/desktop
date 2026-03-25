@@ -27,6 +27,7 @@
 #include "account.h"
 #include "accountmanager.h"
 #include "capabilities.h"
+#include "application.h"
 #include "common/asserts.h"
 #include "guiutility.h"
 #ifndef OWNCLOUD_TEST
