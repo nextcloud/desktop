@@ -28,6 +28,9 @@ if(NOT BUILD_LIBRARIES_ONLY)
         Qt::Core
         Qt::Network)
 
+    target_compile_definitions(nextcloude2eemetadataverifier PRIVATE
+        APPLICATION_EXECUTABLE="${APPLICATION_EXECUTABLE}")
+
     if(BUILD_OWNCLOUD_OSX_BUNDLE)
         set_target_properties(nextcloude2eemetadataverifier PROPERTIES
             RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_DIRECTORY}/${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS")

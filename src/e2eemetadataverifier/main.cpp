@@ -69,7 +69,7 @@ static void printReport(const OCC::E2EEMetadataVerifier::Report &report, bool qu
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
-    QCoreApplication::setApplicationName(QStringLiteral("nextcloude2eemetadataverifier"));
+    QCoreApplication::setApplicationName(QStringLiteral(APPLICATION_EXECUTABLE "e2eemetadataverifier"));
     QCoreApplication::setApplicationVersion(QStringLiteral("1.0"));
 
     QCommandLineParser parser;
