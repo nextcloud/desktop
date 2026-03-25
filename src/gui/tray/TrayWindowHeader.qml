@@ -120,6 +120,8 @@ Rectangle {
                         text: "  " + model.appName
                         font.pixelSize: Style.topLinePixelSize
                         icon.source: "image://tray-image-provider/" + model.appIconUrl
+                        icon.width: Style.trayWindowMenuIconSize
+                        icon.height: Style.trayWindowMenuIconSize
                         icon.color: palette.windowText
                         onTriggered: UserAppsModel.openAppUrl(appUrl)
                         Accessible.role: Accessible.MenuItem

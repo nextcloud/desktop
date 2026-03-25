@@ -177,6 +177,7 @@ QtObject {
     readonly property int trayWindowMenuOffsetY: 2
 
     readonly property int trayWindowMenuEntriesMargin: 6
+    readonly property int trayWindowMenuIconSize: 16
 
     // animation durations
     readonly property int shortAnimationDuration: 200
