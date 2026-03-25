@@ -5,66 +5,15 @@
 
 #include "e2eemetadataverifier.h"
 
-#include <QCommandLineOption>
 #include <QCommandLineParser>
 #include <QCoreApplication>
 #include <QFile>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QTextStream>
 
 static QTextStream out(stdout); // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
 static QTextStream err(stderr); // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
-
-static QString checkResultSymbol(OCC::E2EEMetadataVerifier::CheckResult result)
-{
-    switch (result) {
-    case OCC::E2EEMetadataVerifier::CheckResult::Pass:
-        return QStringLiteral("[PASS]");
-    case OCC::E2EEMetadataVerifier::CheckResult::Fail:
-        return QStringLiteral("[FAIL]");
-    case OCC::E2EEMetadataVerifier::CheckResult::Warning:
-        return QStringLiteral("[WARN]");
-    case OCC::E2EEMetadataVerifier::CheckResult::Info:
-        return QStringLiteral("[INFO]");
-    }
-    return {};
-}
-
-static void printReport(const OCC::E2EEMetadataVerifier::Report &report, bool quietMode)
-{
-    out << QStringLiteral("Nextcloud End-to-End Encryption Metadata Verifier\n");
-    out << QStringLiteral("==================================================\n");
-    if (!report.filePath.isEmpty()) {
-        out << QStringLiteral("File    : ") << report.filePath << QLatin1Char('\n');
-    }
-    if (!report.detectedVersion.isEmpty()) {
-        out << QStringLiteral("Version : ") << report.detectedVersion << QLatin1Char('\n');
-    }
-    out << QLatin1Char('\n');
-
-    for (const auto &check : report.checks) {
-        if (quietMode && check.result == OCC::E2EEMetadataVerifier::CheckResult::Pass) {
-            continue;
-        }
-        if (quietMode && check.result == OCC::E2EEMetadataVerifier::CheckResult::Info) {
-            continue;
-        }
-        out << QStringLiteral("  ") << checkResultSymbol(check.result) << QLatin1Char(' ') << check.name;
-        if (!check.details.isEmpty()) {
-            out << QStringLiteral(": ") << check.details;
-        }
-        out << QLatin1Char('\n');
-    }
-
-    out << QLatin1Char('\n');
-    const int totalChecks = report.passCount() + report.failCount() + report.warningCount();
-    out << QStringLiteral("Summary: %1/%2 checks passed").arg(report.passCount()).arg(totalChecks);
-    if (report.warningCount() > 0) {
-        out << QStringLiteral(", %1 warning(s)").arg(report.warningCount());
-    }
-    out << QStringLiteral(" \xe2\x80\x94 ") // em dash
-        << (report.isValid() ? QStringLiteral("VALID") : QStringLiteral("INVALID")) << QLatin1Char('\n');
-    out.flush();
-}
 
 int main(int argc, char *argv[])
 {
@@ -74,22 +23,14 @@ int main(int argc, char *argv[])
 
     QCommandLineParser parser;
     parser.setApplicationDescription(
-        QStringLiteral("Verifies the structural integrity of a Nextcloud end-to-end encrypted "
-                       "folder metadata file without requiring a live account or decryption "
-                       "keys.\n\n"
+        QStringLiteral("Reads a Nextcloud E2EE folder metadata file, extracts its content, "
+                       "and verifies its structural integrity.\n\n"
                        "Pass '-' as the file argument to read from standard input."));
     parser.addHelpOption();
     parser.addVersionOption();
-
-    const QCommandLineOption quietOption(
-        {QStringLiteral("q"), QStringLiteral("quiet")},
-        QStringLiteral("Only show failures and warnings; suppress passed checks and informational notes."));
-    parser.addOption(quietOption);
-
     parser.addPositionalArgument(
         QStringLiteral("file"),
-        QStringLiteral("Metadata JSON file to verify, or '-' to read from stdin."));
-
+        QStringLiteral("Metadata JSON file to read, or '-' to read from stdin."));
     parser.process(app);
 
     const auto positional = parser.positionalArguments();
@@ -100,7 +41,6 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
-    const bool quietMode = parser.isSet(quietOption);
     const auto filePath = positional.first();
 
     QByteArray metadataJson;
@@ -124,8 +64,49 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
-    const auto report = OCC::E2EEMetadataVerifier::verify(metadataJson, filePath);
-    printReport(report, quietMode);
+    // Parse the outer JSON and unwrap the OCS API envelope when present so
+    // that the printed content is always the bare metadata object.
+    QJsonParseError parseError;
+    auto doc = QJsonDocument::fromJson(metadataJson, &parseError);
+    if (doc.isNull()) {
+        err << QStringLiteral("Error: invalid JSON: %1\n").arg(parseError.errorString());
+        err.flush();
+        return EXIT_FAILURE;
+    }
 
-    return report.isValid() ? EXIT_SUCCESS : EXIT_FAILURE;
+    auto root = doc.object();
+    if (root.contains(QStringLiteral("ocs"))) {
+        const auto metaDataStr = root[QStringLiteral("ocs")]
+                                     .toObject()[QStringLiteral("data")]
+                                     .toObject()[QStringLiteral("meta-data")]
+                                     .toString();
+        const auto innerDoc = QJsonDocument::fromJson(metaDataStr.toUtf8(), &parseError);
+        if (!innerDoc.isNull()) {
+            root = innerDoc.object();
+        }
+    }
+
+    // Print the extracted metadata content in human-readable form.
+    out << QJsonDocument(root).toJson(QJsonDocument::Indented);
+    out.flush();
+
+    // Verify the structural integrity of the metadata and report any failures.
+    const auto report = OCC::E2EEMetadataVerifier::verify(metadataJson, filePath);
+    if (!report.isValid()) {
+        err << QStringLiteral("\nFormat errors:\n");
+        for (const auto &check : report.checks) {
+            if (check.result != OCC::E2EEMetadataVerifier::CheckResult::Fail) {
+                continue;
+            }
+            err << QStringLiteral("  [FAIL] ") << check.name;
+            if (!check.details.isEmpty()) {
+                err << QStringLiteral(": ") << check.details;
+            }
+            err << QLatin1Char('\n');
+        }
+        err.flush();
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
 }
