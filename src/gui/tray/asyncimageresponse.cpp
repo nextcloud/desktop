@@ -113,34 +113,36 @@ void AsyncImageResponse::processNetworkReply(QNetworkReply *reply)
     // from the list if available
     if (imageData.isEmpty() || imageData == "[]"_ba) {
         processNextImage();
-    } else {
-        if (imageData.startsWith("<svg"_ba)) {
-            // SVG image needs proper scaling, let's do it with QPainter and QSvgRenderer
-            QSvgRenderer svgRenderer;
-            if (svgRenderer.load(imageData)) {
-                QImage scaledSvg(_requestedImageSize, QImage::Format_ARGB32);
-                scaledSvg.fill("transparent");
-                QPainter painterForSvg(&scaledSvg);
-                svgRenderer.render(&painterForSvg);
-
-                if(!_svgRecolor.isValid()) {
-                    setImageAndEmitFinished(scaledSvg);
-                    return;
-                }
-
-                QImage image(_requestedImageSize, QImage::Format_ARGB32);
-                image.fill(_svgRecolor);
-                QPainter imagePainter(&image);
-                imagePainter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
-                imagePainter.drawImage(0, 0, scaledSvg);
-                setImageAndEmitFinished(image);
-                return;
-            } else {
-                processNextImage();
-            }
-        } else {
-            setImageAndEmitFinished(QImage::fromData(imageData));
-        }
+        return;
     }
+
+    if (!imageData.startsWith("<svg"_ba)) {
+        setImageAndEmitFinished(QImage::fromData(imageData));
+        return;
+    }
+
+    // SVG image needs proper scaling, let's do it with QPainter and QSvgRenderer
+    QSvgRenderer svgRenderer;
+    if (!svgRenderer.load(imageData)) {
+        processNextImage();
+        return;
+    }
+
+    QImage scaledSvg(_requestedImageSize, QImage::Format_ARGB32);
+    scaledSvg.fill("transparent");
+    QPainter painterForSvg(&scaledSvg);
+    svgRenderer.render(&painterForSvg);
+
+    if (!_svgRecolor.isValid()) {
+        setImageAndEmitFinished(scaledSvg);
+        return;
+    }
+
+    QImage image(_requestedImageSize, QImage::Format_ARGB32);
+    image.fill(_svgRecolor);
+    QPainter imagePainter(&image);
+    imagePainter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
+    imagePainter.drawImage(0, 0, scaledSvg);
+    setImageAndEmitFinished(image);
 }
 
