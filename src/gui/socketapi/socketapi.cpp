@@ -28,6 +28,9 @@
 #include "accountmanager.h"
 #include "capabilities.h"
 #include "application.h"
+#if defined(Q_OS_MACOS)
+#include "macOS/findersyncxpc.h"
+#endif
 #include "common/asserts.h"
 #include "guiutility.h"
 #ifndef OWNCLOUD_TEST
