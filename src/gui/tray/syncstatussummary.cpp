@@ -157,6 +157,19 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
         return;
     }
 
+#ifdef Q_OS_MACOS
+    if (folder->needsSandboxBookmark()) {
+        markFolderAsError(folder);
+        setSyncing(false);
+        setTotalFiles(0);
+        setSyncStatusString(tr("Reauthorization required"));
+        setSyncStatusDetailString(tr("Please grant access to your sync folders"));
+        setSyncIcon(Theme::instance()->error());
+        setNeedsSandboxReapproval(true);
+        return;
+    }
+#endif
+
     const auto state = determineSyncStatus(folder->syncResult());
 
     switch (state) {
@@ -176,6 +189,7 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
         break;
     }
 
+    updateNeedsSandboxReapproval();
     setSyncState(state);
 }
 
@@ -483,5 +497,33 @@ void SyncStatusSummary::initSyncState()
     if (syncStateFallbackNeeded) {
         setSyncStateToConnectedState();
     }
+}
+
+bool SyncStatusSummary::needsSandboxReapproval() const
+{
+    return _needsSandboxReapproval;
+}
+
+void SyncStatusSummary::setNeedsSandboxReapproval(bool value)
+{
+    if (_needsSandboxReapproval == value) {
+        return;
+    }
+
+    _needsSandboxReapproval = value;
+    emit needsSandboxReapprovalChanged();
+}
+
+void SyncStatusSummary::updateNeedsSandboxReapproval()
+{
+#ifdef Q_OS_MACOS
+    for (const auto &folder : FolderMan::instance()->map()) {
+        if (folder && folder->accountState() == _accountState.data() && folder->needsSandboxBookmark()) {
+            setNeedsSandboxReapproval(true);
+            return;
+        }
+    }
+#endif
+    setNeedsSandboxReapproval(false);
 }
 }

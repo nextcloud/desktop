@@ -413,7 +413,7 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
         }
     }
     if (sandboxFolderCount > 0) {
-        const auto message = tr("%n sync folders require access re-approval after the app update. Please open settings to grant access.", "", sandboxFolderCount);
+        const auto message = tr("Please open the app settings to grant access to the sync folders.");
         // Defer to ensure the tray/systray is initialized before posting
         QTimer::singleShot(0, this, [message]() {
             Logger::instance()->postGuiLog(Theme::instance()->appNameGUI(), message);

@@ -36,6 +36,7 @@ public:
 
         AddButton, // 1 = enabled; 2 = disabled
         FolderSyncText,
+        FolderNeedsSandboxBookmark,
         DataRoleCount
 
     };
@@ -51,6 +52,7 @@ public:
     static QRect optionsButtonRect(QRect within, Qt::LayoutDirection direction);
     static QRect addButtonRect(QRect within, Qt::LayoutDirection direction);
     static QRect errorsListRect(QRect within);
+    static QRect sandboxButtonRect(QRect errorBannerRect);
     static int rootFolderHeightWithoutErrors(const QFontMetrics &fm, const QFontMetrics &aliasFm);
 
 public slots:

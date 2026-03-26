@@ -45,6 +45,8 @@ public:
 
 public slots:
     void showFirstPage();
+    void showAccount(OCC::AccountState *account);
+    void setInitialAccount(OCC::AccountState *account);
     void showIssuesList(OCC::AccountState *account);
     void slotSwitchPage(QAction *action);
     void slotAccountAvatarChanged();
@@ -91,6 +93,7 @@ private:
     ownCloudGui *_gui;
     bool _styleUpdatePending = false;
     bool _updatingStyle = false;
+    OCC::AccountState *_initialAccount = nullptr;
 
     void setupUi();
 };
