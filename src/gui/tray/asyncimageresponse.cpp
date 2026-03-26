@@ -6,10 +6,13 @@
 #include "asyncimageresponse.h"
 
 #include <QIcon>
+#include <QMimeDatabase>
 #include <QPainter>
 #include <QSvgRenderer>
 
 #include "accountmanager.h"
+
+using namespace Qt::StringLiterals;
 
 AsyncImageResponse::AsyncImageResponse(const QString &id, const QSize &requestedSize)
 {
@@ -19,7 +22,7 @@ AsyncImageResponse::AsyncImageResponse(const QString &id, const QSize &requested
     }
 
     auto actualId = id;
-    const auto idSplit = id.split(QStringLiteral("/"), Qt::SkipEmptyParts);
+    const auto idSplit = id.split('/'_L1, Qt::SkipEmptyParts);
     const auto color = QColor(idSplit.last());
 
     if(color.isValid()) {
@@ -27,7 +30,7 @@ AsyncImageResponse::AsyncImageResponse(const QString &id, const QSize &requested
         actualId.remove("/" % idSplit.last());
     }
 
-    _imagePaths = actualId.split(QLatin1Char(';'), Qt::SkipEmptyParts);
+    _imagePaths = actualId.split(';'_L1, Qt::SkipEmptyParts);
     _requestedImageSize = requestedSize;
 
     if (_imagePaths.isEmpty()) {
@@ -56,10 +59,10 @@ void AsyncImageResponse::processNextImage()
     }
 
     const auto imagePath = _imagePaths.at(_index);
-    if (imagePath.startsWith(QStringLiteral(":/client"))) {
+    if (imagePath.startsWith(u":/client"_s)) {
         setImageAndEmitFinished(QIcon(imagePath).pixmap(_requestedImageSize).toImage());
         return;
-    } else if (imagePath.startsWith(QStringLiteral(":/fileicon"))) {
+    } else if (imagePath.startsWith(u":/fileicon"_s)) {
         const auto filePath = imagePath.mid(10);
         const auto fileInfo = QFileInfo(filePath);
         setImageAndEmitFinished(_fileIconProvider.icon(fileInfo).pixmap(_requestedImageSize).toImage());
@@ -83,7 +86,7 @@ void AsyncImageResponse::processNextImage()
             // for some reason trying to use `accountInRequestedServer` causes clang 21 to crash for me :(
             const auto accountQnam = accountInRequestedServer->networkAccessManager();
             QMetaObject::invokeMethod(accountQnam, [this, accountInRequestedServer, iconUrl]() -> void {
-                const auto reply = accountInRequestedServer->sendRawRequest(QByteArrayLiteral("GET"), iconUrl);
+                const auto reply = accountInRequestedServer->sendRawRequest("GET"_ba, iconUrl);
                 connect(reply, &QNetworkReply::finished, this, [this, reply]() -> void {
                     QMetaObject::invokeMethod(this, [this, reply]() -> void {
                         processNetworkReply(reply);
@@ -109,36 +112,42 @@ void AsyncImageResponse::processNetworkReply(QNetworkReply *reply)
     const QByteArray imageData = reply->readAll();
     // server returns "[]" for some some file previews (have no idea why), so, we use another image
     // from the list if available
-    if (imageData.isEmpty() || imageData == QByteArrayLiteral("[]")) {
+    if (imageData.isEmpty() || imageData == "[]"_ba) {
         processNextImage();
-    } else {
-        if (imageData.startsWith(QByteArrayLiteral("<svg"))) {
-            // SVG image needs proper scaling, let's do it with QPainter and QSvgRenderer
-            QSvgRenderer svgRenderer;
-            if (svgRenderer.load(imageData)) {
-                QImage scaledSvg(_requestedImageSize, QImage::Format_ARGB32);
-                scaledSvg.fill("transparent");
-                QPainter painterForSvg(&scaledSvg);
-                svgRenderer.render(&painterForSvg);
-
-                if(!_svgRecolor.isValid()) {
-                    setImageAndEmitFinished(scaledSvg);
-                    return;
-                }
-
-                QImage image(_requestedImageSize, QImage::Format_ARGB32);
-                image.fill(_svgRecolor);
-                QPainter imagePainter(&image);
-                imagePainter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
-                imagePainter.drawImage(0, 0, scaledSvg);
-                setImageAndEmitFinished(image);
-                return;
-            } else {
-                processNextImage();
-            }
-        } else {
-            setImageAndEmitFinished(QImage::fromData(imageData));
-        }
+        return;
     }
+
+    // Some graphics programs export SVGs that begin with `<?xml version="1.0" [...]` and/or include some comments after that (e.g.
+    // `<!-- Generator: ...`), so we can't rely on just the response to start with `<svg`.
+    if (const auto mimetype = QMimeDatabase().mimeTypeForData(imageData);
+        !(mimetype.isValid() && mimetype.inherits("image/svg+xml"_L1))) {
+        // Not an SVG: let's let QImage deal with the response.
+        setImageAndEmitFinished(QImage::fromData(imageData).scaled(_requestedImageSize));
+        return;
+    }
+
+    // SVG image needs proper scaling, let's do it with QPainter and QSvgRenderer
+    QSvgRenderer svgRenderer;
+    if (!svgRenderer.load(imageData)) {
+        processNextImage();
+        return;
+    }
+
+    QImage scaledSvg(_requestedImageSize, QImage::Format_ARGB32);
+    scaledSvg.fill("transparent");
+    QPainter painterForSvg(&scaledSvg);
+    svgRenderer.render(&painterForSvg);
+
+    if (!_svgRecolor.isValid()) {
+        setImageAndEmitFinished(scaledSvg);
+        return;
+    }
+
+    QImage image(_requestedImageSize, QImage::Format_ARGB32);
+    image.fill(_svgRecolor);
+    QPainter imagePainter(&image);
+    imagePainter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
+    imagePainter.drawImage(0, 0, scaledSvg);
+    setImageAndEmitFinished(image);
 }
 
