@@ -22,6 +22,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
+Name[lt_LT]=@APPLICATION_NAME@ Desktop
 Comment[lt_LT]=@APPLICATION_NAME@ darbalaukio sinchronizavimo kliento programa
 GenericName[lt_LT]=Aplankų sinchronizavimas
 Icon[lt_LT]=@APPLICATION_ICON_NAME@
