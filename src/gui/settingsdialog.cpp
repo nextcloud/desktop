@@ -434,7 +434,7 @@ void SettingsDialog::customizeStyle()
         "#Settings { background: palette(window); border-radius: 0; }"
 
         /* Navigation */
-        "#settings_navigation, #settings_navigation_scroll { background: palette(alternate-base); border-radius: 12px; padding: 4px; }"
+        "#settings_navigation, #settings_navigation_scroll { background: palette(light); border-radius: 12px; padding: 4px; }"
 
         /* Content area */
         "#settings_content, #settings_content_scroll { background: palette(window); border-radius: 12px; }"
@@ -442,7 +442,7 @@ void SettingsDialog::customizeStyle()
         /* Panels */
         "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
         "#accountStatusPanel, #connectionSettingsPanel, #fileProviderPanel, #syncFoldersPanel {"
-        " background: palette(alternate-base);"
+        " background: palette(light);"
         " border-radius: 10px;"
         " margin: 0px;"
         " padding: 6px;"

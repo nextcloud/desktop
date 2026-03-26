@@ -30,13 +30,13 @@ NetworkSettings::NetworkSettings(const AccountPtr &account, QWidget *parent)
 {
     _ui->setupUi(this);
     setAutoFillBackground(true);
-    setBackgroundRole(QPalette::AlternateBase);
+    setBackgroundRole(QPalette::Light);
     _ui->proxyGroupBox->setAutoFillBackground(true);
-    _ui->proxyGroupBox->setBackgroundRole(QPalette::AlternateBase);
+    _ui->proxyGroupBox->setBackgroundRole(QPalette::Light);
     _ui->downloadBox->setAutoFillBackground(true);
-    _ui->downloadBox->setBackgroundRole(QPalette::AlternateBase);
+    _ui->downloadBox->setBackgroundRole(QPalette::Light);
     _ui->uploadBox->setAutoFillBackground(true);
-    _ui->uploadBox->setBackgroundRole(QPalette::AlternateBase);
+    _ui->uploadBox->setBackgroundRole(QPalette::Light);
 
     _ui->manualSettings->setVisible(_ui->manualProxyRadioButton->isChecked());
 

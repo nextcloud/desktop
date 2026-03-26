@@ -182,7 +182,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     const auto delegate = new FolderStatusDelegate;
     delegate->setParent(this);
 
-    setStyleSheet("QWidget#syncFoldersPanelContents, QWidget#connectionSettingsPanelContents, QWidget#fileProviderPanelContents { background: palette(alternate-base); }"_L1);
+    setStyleSheet("QWidget#syncFoldersPanelContents, QWidget#connectionSettingsPanelContents, QWidget#fileProviderPanelContents { background: palette(light); }"_L1);
     _ui->syncFoldersPanelContents->setAutoFillBackground(true);
     _ui->syncFoldersPanelContents->setAttribute(Qt::WA_StyledBackground, true);
     _ui->syncFoldersPanelContents->setContentsMargins(0, 0, 0, 0);
@@ -199,7 +199,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->_folderList->header()->hide();
     _ui->_folderList->setAutoFillBackground(true);
     _ui->_folderList->setAttribute(Qt::WA_StyledBackground, true);
-    _ui->_folderList->setStyleSheet(QStringLiteral("QTreeView { background: palette(alternate-base); }"));
+    _ui->_folderList->setStyleSheet(QStringLiteral("QTreeView { background: palette(light); }"));
     _ui->_folderList->setItemDelegate(delegate);
     _ui->_folderList->setModel(_model);
     _ui->_folderList->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
