@@ -42,6 +42,14 @@
 
 using namespace Qt::StringLiterals;
 
+#ifdef Q_OS_WIN
+    // "light" looks too bright on dark mode on Windows only
+    #define BACKGROUND_PALETTE "alternate-base"
+#else
+    // ...and "alternate-base" looks too bright on macOS only.  On Linux/Plasma either one looked fine ...
+    #define BACKGROUND_PALETTE "light"
+#endif
+
 namespace {
 class CurrentPageSizeStackedWidget : public QStackedWidget
 {
@@ -434,7 +442,7 @@ void SettingsDialog::customizeStyle()
         "#Settings { background: palette(window); border-radius: 0; }"
 
         /* Navigation */
-        "#settings_navigation, #settings_navigation_scroll { background: palette(light); border-radius: 12px; padding: 4px; }"
+        "#settings_navigation, #settings_navigation_scroll { background: palette(" BACKGROUND_PALETTE "); border-radius: 12px; padding: 4px; }"
 
         /* Content area */
         "#settings_content, #settings_content_scroll { background: palette(window); border-radius: 12px; }"
@@ -442,7 +450,7 @@ void SettingsDialog::customizeStyle()
         /* Panels */
         "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
         "#accountStatusPanel, #connectionSettingsPanel, #fileProviderPanel, #syncFoldersPanel {"
-        " background: palette(light);"
+        " background: palette(" BACKGROUND_PALETTE ");"
         " border-radius: 10px;"
         " margin: 0px;"
         " padding: 6px;"
