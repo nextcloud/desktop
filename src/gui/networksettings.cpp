@@ -21,6 +21,15 @@
 #include <QPalette>
 #include <type_traits>
 
+constexpr auto BACKGROUND_ROLE =
+#ifdef Q_OS_WIN
+    // "light" looks too bright on dark mode on Windows only
+    QPalette::AlternateBase;
+#else
+    // ...and "alternate-base" looks too bright on macOS only.  On Linux/Plasma either one looked fine ...
+    QPalette::Light;
+#endif
+
 namespace OCC {
 
 NetworkSettings::NetworkSettings(const AccountPtr &account, QWidget *parent)
@@ -30,13 +39,13 @@ NetworkSettings::NetworkSettings(const AccountPtr &account, QWidget *parent)
 {
     _ui->setupUi(this);
     setAutoFillBackground(true);
-    setBackgroundRole(QPalette::AlternateBase);
+    setBackgroundRole(BACKGROUND_ROLE);
     _ui->proxyGroupBox->setAutoFillBackground(true);
-    _ui->proxyGroupBox->setBackgroundRole(QPalette::AlternateBase);
+    _ui->proxyGroupBox->setBackgroundRole(BACKGROUND_ROLE);
     _ui->downloadBox->setAutoFillBackground(true);
-    _ui->downloadBox->setBackgroundRole(QPalette::AlternateBase);
+    _ui->downloadBox->setBackgroundRole(BACKGROUND_ROLE);
     _ui->uploadBox->setAutoFillBackground(true);
-    _ui->uploadBox->setBackgroundRole(QPalette::AlternateBase);
+    _ui->uploadBox->setBackgroundRole(BACKGROUND_ROLE);
 
     _ui->manualSettings->setVisible(_ui->manualProxyRadioButton->isChecked());
 
