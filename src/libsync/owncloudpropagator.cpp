@@ -230,7 +230,7 @@ void PropagateItemJob::done(const SyncFileItem::Status statusArg, const QString 
             || _item->_status == SyncFileItem::Conflict) {
             _item->_status = SyncFileItem::Restoration;
         } else {
-            _item->_errorString += tr("; Restoration Failed: %1").arg(errorString);
+            _item->_errorString = tr("%1. Restoration failed: %2", "%1 is the generic error string, the file restoration error (%2) will be appended here").arg(_item->_errorString, errorString);
         }
     } else {
         if (_item->_errorString.isEmpty()) {
