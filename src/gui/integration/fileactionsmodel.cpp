@@ -88,6 +88,16 @@ void FileActionsModel::setAccountState(AccountState *accountState)
     _accountState = accountState;
     _accountUrl = _accountState->account()->url().toString();
     Q_EMIT accountStateChanged();
+
+    if (!_localPath.isEmpty()) {
+        qCDebug(lcFileActions) << "Local path is set with" << _fileId << ", calling setupFileProperties().";
+        setupFileProperties();
+    }
+
+    if (!_fileId.isEmpty() && !_localPath.isEmpty()) {
+        qCDebug(lcFileActions) << "File id is set with" << _fileId << ", calling parseEndpoints().";
+        parseEndpoints();
+    }
 }
 
 QString FileActionsModel::localPath() const
@@ -108,7 +118,10 @@ void FileActionsModel::setLocalPath(const QString &localPath)
     _localPath = localPath;
 
     setupFileProperties();
-    parseEndpoints();
+    if (!_fileId.isEmpty()) {
+        qCDebug(lcFileActions) << "File id is set with" << _fileId << ", calling parseEndpoints().";
+        parseEndpoints();
+    }
 
     Q_EMIT fileChanged();
 }
