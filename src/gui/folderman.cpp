@@ -17,12 +17,17 @@
 #include "lockwatcher.h"
 #include "common/asserts.h"
 #include "gui/systray.h"
+#include "logger.h"
 #include <pushnotifications.h>
 #include <syncengine.h>
 #include "updatee2eefolderusersmetadatajob.h"
 
 #ifdef Q_OS_MACOS
 #include <CoreServices/CoreServices.h>
+#include "common/utility_mac_sandbox.h"
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "macOS/fileprovider.h"
+#endif
 #endif
 
 #include <QMessageBox>
@@ -245,6 +250,41 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
         FolderDefinition folderDefinition;
         settings.beginGroup(folderAlias);
         if (FolderDefinition::load(settings, folderAlias, &folderDefinition)) {
+
+#ifdef Q_OS_MACOS
+            // macOS sandbox: Resolve the persisted security-scoped bookmark and
+            // start accessing the resource BEFORE any filesystem operations on
+            // the local sync folder path. The access handle will be transferred
+            // to the Folder object once it is created via addFolderInternal().
+            std::unique_ptr<Utility::MacSandboxPersistentAccess> securityScopedAccess;
+            bool bookmarkRefreshed = false;
+            if (!folderDefinition.securityScopedBookmarkData.isEmpty()) {
+                securityScopedAccess = Utility::MacSandboxPersistentAccess::createFromBookmarkData(
+                    folderDefinition.securityScopedBookmarkData);
+                if (!securityScopedAccess || !securityScopedAccess->isValid()) {
+                    qCWarning(lcFolderMan) << "Failed to restore security-scoped access for folder"
+                                           << folderAlias << "at" << folderDefinition.localPath;
+                    // Ensure we don't propagate an invalid or failed access handle.
+                    securityScopedAccess.reset();
+                } else if (securityScopedAccess->isStale()) {
+                    // Bookmark still works but macOS flagged it as stale.
+                    // Recreate it now while we have access so future launches
+                    // won't run into problems. The updated data will be
+                    // persisted when folder->saveToSettings() is called.
+                    const auto refreshed = Utility::createSecurityScopedBookmarkData(folderDefinition.localPath);
+                    if (!refreshed.isEmpty()) {
+                        folderDefinition.securityScopedBookmarkData = refreshed;
+                        bookmarkRefreshed = true;
+                        qCInfo(lcFolderMan) << "Refreshed stale security-scoped bookmark for folder"
+                                            << folderAlias;
+                    }
+                }
+            } else {
+                qCDebug(lcFolderMan) << "No security-scoped bookmark data for folder"
+                                     << folderAlias;
+            }
+#endif
+
             auto defaultJournalPath = folderDefinition.defaultJournalPath(account->account());
 
             // Migration: Old settings don't have journalPath
@@ -287,6 +327,13 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 }
 
                 const auto folder = addFolderInternal(folderDefinition, account.data(), std::move(vfs));
+#ifdef Q_OS_MACOS
+                if (securityScopedAccess) {
+                    folder->setSecurityScopedAccess(std::move(securityScopedAccess));
+                } else {
+                    folder->setNeedsSandboxBookmark(true);
+                }
+#endif
                 folder->saveToSettings();
 
                 continue;
@@ -319,6 +366,16 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
             }
 
             if (const auto folder = addFolderInternal(std::move(folderDefinition), account.data(), std::move(vfs))) {
+#ifdef Q_OS_MACOS
+                if (securityScopedAccess) {
+                    folder->setSecurityScopedAccess(std::move(securityScopedAccess));
+                } else {
+                    folder->setNeedsSandboxBookmark(true);
+                }
+                if (bookmarkRefreshed) {
+                    folder->saveToSettings();
+                }
+#endif
                 if (switchToVfs) {
                     folder->switchToVirtualFiles();
                 }
@@ -335,12 +392,34 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 if (foldersWithPlaceholders)
                     folder->setSaveInFoldersWithPlaceholders();
 
-                scheduleFolder(folder);
+#ifdef Q_OS_MACOS
+                if (!folder->needsSandboxBookmark()) {
+#endif
+                    scheduleFolder(folder);
+#ifdef Q_OS_MACOS
+                }
+#endif
                 emit folderSyncStateChange(folder);
             }
         }
         settings.endGroup();
     }
+
+#ifdef Q_OS_MACOS
+    int sandboxFolderCount = 0;
+    for (const auto *folder : map()) {
+        if (folder->needsSandboxBookmark()) {
+            ++sandboxFolderCount;
+        }
+    }
+    if (sandboxFolderCount > 0) {
+        const auto message = tr("%n sync folders require access re-approval after the app update. Please open settings to grant access.", "", sandboxFolderCount);
+        // Defer to ensure the tray/systray is initialized before posting
+        QTimer::singleShot(0, this, [message]() {
+            Logger::instance()->postGuiLog(Theme::instance()->appNameGUI(), message);
+        });
+    }
+#endif
 }
 
 int FolderMan::setupFoldersMigration()
@@ -579,6 +658,16 @@ void FolderMan::setupLegacyFolder(const QString &fileNamePath, AccountState *acc
 
             qCDebug(lcFolderMan) << "folderDefinition.alias" << folderDefinition.alias;
             qCDebug(lcFolderMan) << "folderDefinition.virtualFilesMode" << folderDefinition.virtualFilesMode;
+
+#ifdef Q_OS_MACOS
+            // macOS sandbox: Legacy configs won't have bookmark data yet.
+            // Try to create one now — this will only succeed if the app
+            // currently has access (e.g. first migration run right after
+            // the user granted access via QFileDialog).
+            if (folderDefinition.securityScopedBookmarkData.isEmpty()) {
+                folderDefinition.securityScopedBookmarkData = Utility::createSecurityScopedBookmarkData(folderDefinition.localPath);
+            }
+#endif
 
             auto vfs = createVfsFromPlugin(folderDefinition.virtualFilesMode);
             if (!vfs && folderDefinition.virtualFilesMode != Vfs::Off) {
@@ -1042,6 +1131,61 @@ void FolderMan::slotEtagPollTimerTimeout()
     qCInfo(lcFolderMan) << "Number of folders that don't use push notifications:" << foldersToRun.size();
 
     runEtagJobsIfPossible(foldersToRun);
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    // Signal the File Provider working set about remote changes
+    // This must be independent of sync folder configuration since File Provider
+    // can operate without traditional sync folders
+    qCInfo(lcFolderMan) << "Checking root folder ETags for file provider domains.";
+    const auto accounts = AccountManager::instance()->accounts();
+
+    for (const auto &accountState : accounts) {
+        const auto account = accountState->account();
+
+        // Skip accounts that don't have a File Provider domain
+        if (!Mac::FileProvider::instance()->domainManager()->domainForAccount(account.data())) {
+            qCDebug(lcFolderMan) << "Account" << account->displayName() << "has no file provider domain, skipping.";
+            continue;
+        }
+
+        // Skip accounts that use push notifications - they get real-time updates
+        if (pushNotificationsFilesReady(account)) {
+            qCDebug(lcFolderMan) << "Account" << account->displayName() << "uses push notifications, skipping ETag check";
+            continue;
+        }
+
+        // For accounts using polling, check the root folder ETag
+        qCInfo(lcFolderMan) << "Fetching root ETag for file provider domain of account:" << account->displayName();
+
+        auto *etagJob = new RequestEtagJob(account, QStringLiteral("/"), this);
+        etagJob->setTimeout(60 * 1000);
+
+        connect(etagJob, &RequestEtagJob::etagRetrieved, this,
+            [account](const QByteArray &etag, const QDateTime &) {
+                qCDebug(lcFolderMan) << "Root ETag retrieved for account" << account->displayName() << ":" << etag;
+
+                // Check if ETag has changed
+                const auto lastEtag = account->lastRootETag();
+
+                if (lastEtag != etag) {
+                    qCInfo(lcFolderMan) << "Root ETag changed for" << account->displayName()
+                                        << "from" << lastEtag << "to" << etag
+                                        << ", signaling file provider domain.";
+
+                    // Store new ETag in the account
+                    account->setLastRootETag(etag);
+
+                    // Signal File Provider about remote changes
+                    Mac::FileProvider::instance()->domainManager()->signalEnumeratorChanged(account.data());
+                } else {
+                    qCDebug(lcFolderMan) << "Root ETag unchanged for account" 
+                                         << account->displayName();
+                }
+            });
+
+        etagJob->start();
+    }
+#endif
 }
 
 void FolderMan::runEtagJobsIfPossible(const QList<Folder *> &folderMap)
@@ -1253,6 +1397,16 @@ Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition 
     if (!ensureJournalGone(definition.absoluteJournalPath())) {
         return nullptr;
     }
+
+#ifdef Q_OS_MACOS
+    // macOS sandbox: Create security-scoped bookmark data while we still
+    // have access to the path (the user just selected it via QFileDialog).
+    // This bookmark will be persisted to settings and resolved on next
+    // app launch to regain sandbox access.
+    if (definition.securityScopedBookmarkData.isEmpty()) {
+        definition.securityScopedBookmarkData = Utility::createSecurityScopedBookmarkData(definition.localPath);
+    }
+#endif
 
     auto vfs = createVfsFromPlugin(folderDefinition.virtualFilesMode);
     if (!vfs) {

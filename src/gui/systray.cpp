@@ -436,6 +436,97 @@ void Systray::createFileActivityDialog(const QString &localPath)
     Q_EMIT showFileDetailsPage(localPath, FileDetailsPage::Activity);
 }
 
+void Systray::showFileActionsDialog(const QString &localPath)
+{
+    createFileActionsDialog(localPath);
+}
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+
+void Systray::slotShowFileProviderFileActionsDialog(const QString &fileId, const QString &localPath, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier)
+{
+    createFileProviderFileActionsDialog(fileId, localPath, remoteItemPath, fileProviderDomainIdentifier);
+}
+
+void Systray::createFileProviderFileActionsDialog(const QString &fileId, const QString &localPath, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier)
+{
+    if (!_trayEngine) {
+        qCWarning(lcSystray) << "Could not open file actions dialog for" << localPath << "as no tray engine was available";
+        return;
+    }
+
+    const auto accountState = AccountManager::instance()->accountFromFileProviderDomainIdentifier(fileProviderDomainIdentifier);
+    if (!accountState) {
+        qCWarning(lcSystray) << "Could not open file actions dialog for" << localPath
+                             << "no account found for domain identifier" << fileProviderDomainIdentifier;
+        return;
+    }
+
+    createFileActionsDialogWithAccountState(localPath, accountState.data(), fileId, remoteItemPath);
+}
+
+#endif
+
+void Systray::createFileActionsDialog(const QString &localPath)
+{
+    if (!_trayEngine) {
+        qCWarning(lcSystray) << "Could not open file actions dialog for" << localPath << "as no tray engine was available";
+        return;
+    }
+
+    const auto folder = FolderMan::instance()->folderForPath(localPath);
+    if (!folder) {
+        qCWarning(lcSystray) << "Could not open file actions dialog for" << localPath << "no responsible folder found";
+        return;
+    }
+
+    createFileActionsDialogWithAccountState(localPath, folder->accountState());
+}
+
+void Systray::createFileActionsDialogWithAccountState(const QString &localPath, AccountState *accountState, const QString &fileId, const QString &remoteItemPath)
+{
+    if (!_trayEngine) {
+        qCWarning(lcSystray) << "Could not open file actions dialog for" << localPath << "as no tray engine was available";
+        return;
+    }
+
+    if (!accountState) {
+        qCWarning(lcSystray) << "Could not open file actions dialog for" << localPath << "no account state provided";
+        return;
+    }
+
+    QQmlComponent fileActionsQml(trayEngine(), QStringLiteral("qrc:/qml/src/gui/integration/FileActionsWindow.qml"));
+
+    if (fileActionsQml.isError()) {
+        qCWarning(lcSystray) << fileActionsQml.errorString();
+        qCWarning(lcSystray) << fileActionsQml.errors();
+        return;
+    }
+
+    QFileInfo localFile{localPath};
+    const auto shortLocalPath = localFile.fileName();
+
+    const QVariantMap initialProperties{
+        {"accountState", QVariant::fromValue(accountState)},
+        {"fileId", fileId},
+        {"remoteItemPath", remoteItemPath},
+        {"shortLocalPath", shortLocalPath},
+        {"localPath", localPath},
+    };
+
+    const auto fileActionsDialog = fileActionsQml.createWithInitialProperties(initialProperties);
+    const auto dialog = qobject_cast<QQuickWindow*>(fileActionsDialog);
+
+    if (!dialog) {
+        qCWarning(lcSystray) << "File Actions dialog window resulted in creation of object that was not a window!";
+        return;
+    }
+
+    dialog->show();
+    dialog->raise();
+    dialog->requestActivate();
+}
+
 void Systray::presentShareViewInTray(const QString &localPath)
 {
     const auto folder = FolderMan::instance()->folderForPath(localPath);
@@ -446,6 +537,12 @@ void Systray::presentShareViewInTray(const QString &localPath)
     qCDebug(lcSystray) << "Opening file details view in tray for " << localPath;
 
     Q_EMIT showFileDetails(folder->accountState(), localPath, FileDetailsPage::Sharing);
+}
+
+void Systray::presentFileActionsViewInSystray(const QString &localPath)
+{
+    qCDebug(lcSystray) << "Opening file actions view in tray for " << localPath;
+    createFileActionsDialog(localPath);
 }
 
 void Systray::slotCurrentUserChanged()

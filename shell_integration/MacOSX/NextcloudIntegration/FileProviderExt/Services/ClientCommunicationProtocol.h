@@ -15,14 +15,17 @@
  */
 - (void)getFileProviderDomainIdentifierWithCompletionHandler:(void(^)(NSString *extensionAccountId, NSError *error))completionHandler;
 
+/**
+ * @brief Ask the file provider extension whether it has dirty user data.
+ */
+- (void)hasDirtyUserDataWithCompletionHandler:(void(^)(BOOL hasDirtyUserData))completionHandler;
+
 - (void)configureAccountWithUser:(NSString *)user
                           userId:(NSString *)userId
                        serverUrl:(NSString *)serverUrl
                         password:(NSString *)password
                        userAgent:(NSString *)userAgent;
 - (void)removeAccountConfig;
-- (void)getTrashDeletionEnabledStateWithCompletionHandler:(void(^)(BOOL enabled, BOOL set))completionHandler;
-- (void)setTrashDeletionEnabled:(BOOL)enabled;
 - (void)setIgnoreList:(NSArray<NSString *> *)ignoreList;
 
 @end

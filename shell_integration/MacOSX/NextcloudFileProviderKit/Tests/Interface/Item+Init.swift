@@ -20,6 +20,7 @@ public extension Item {
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
         )

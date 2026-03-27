@@ -8,17 +8,17 @@ jobs:
   build:
     name: SonarCloud analysis
     runs-on: [ubuntu-latest, self-hosted]
-    container: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.8.1-2
+    container: ghcr.io/nextcloud/continuous-integration-client-qt6:client-forky-6.9.2-3
     env:
       SONAR_SERVER_URL: "https://sonarcloud.io"
       BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Directory where build-wrapper output will be placed
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
 
       - name: Restore cache
-        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         with:
           path: /cache
           key: ${{ runner.os }}
@@ -27,7 +27,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -G Ninja -DCMAKE_PREFIX_PATH=/opt/qt -DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-11 -DCMAKE_BUILD_TYPE=Debug -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DQT_MAJOR_VERSION=6 -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64 -DBUILD_COVERAGE=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+          cmake .. -G Ninja -DCMAKE_PREFIX_PATH=/opt/qt -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_BUILD_TYPE=Debug -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DQT_MAJOR_VERSION=6 -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64 -DBUILD_COVERAGE=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
           build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} ninja
       - name: Run tests
         run: |

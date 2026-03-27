@@ -180,9 +180,11 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     localPathRect.setTop(remotePathRect.bottom() + margin);
     localPathRect.setBottom(localPathRect.top() + subFm.height());
 
-    iconRect.setBottom(localPathRect.bottom());
-    iconRect.setWidth(iconRect.height());
-
+    constexpr int statusIconSize = 24;
+    constexpr int statusIconTopOffset = 4;
+    iconRect.setSize(QSize(statusIconSize, statusIconSize));
+    iconRect.moveTop(iconRect.top() + statusIconTopOffset);
+    
     const auto nextToIcon = iconRect.right() + aliasMargin;
     aliasRect.setLeft(nextToIcon);
     localPathRect.setLeft(nextToIcon);
@@ -224,7 +226,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         painter->drawText(QStyle::visualRect(option.direction, option.rect, localPathRect), textAlign, elidedPathText);
     }
 
-    auto textBoxTop = iconRect.bottom() + margin;
+    auto textBoxTop = localPathRect.bottom() + margin;
 
     // paint an error overlay if there is an error string or conflict string
     auto drawTextBox = [&](const QStringList &texts, QColor color) {

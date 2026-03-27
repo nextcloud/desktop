@@ -13,6 +13,7 @@
 #include "networkjobs.h"
 #include "syncoptions.h"
 
+#include <QByteArray>
 #include <QObject>
 #include <QStringList>
 #include <QUuid>
@@ -33,6 +34,12 @@ class AccountState;
 class SyncRunFileLog;
 class FolderWatcher;
 class LocalDiscoveryTracker;
+
+#ifdef Q_OS_MACOS
+namespace Utility {
+class MacSandboxPersistentAccess;
+}
+#endif
 
 /**
  * @brief The FolderDefinition class
@@ -60,6 +67,11 @@ public:
 
     /// Whether the vfs mode shall silently be updated if possible
     bool upgradeVfsMode = false;
+
+    /// macOS app-scoped security-scoped bookmark data for the local sync folder.
+    /// Persisted to settings so that a sandboxed app can regain access to the
+    /// user-selected folder after an app restart.
+    QByteArray securityScopedBookmarkData;
 
     /// Saves the folder definition into the current settings group.
     static void save(QSettings &settings, const FolderDefinition &folder);
@@ -264,7 +276,7 @@ public:
       * modified too recently, and this delay ensures the modification is
       * far enough in the past.
       *
-      * The delay doesn't reset with subsequent calls.
+      * The delay resets with subsequent calls.
       */
     void scheduleThisFolderSoon();
 
@@ -287,6 +299,44 @@ public:
      * May be called several times.
      */
     void registerFolderWatcher();
+
+#ifdef Q_OS_MACOS
+    /**
+     * @brief Takes ownership of a persistent security-scoped access handle.
+     *
+     * On macOS, sandboxed apps must resolve bookmark data and call
+     * startAccessingSecurityScopedResource() before accessing the local sync
+     * folder. This method stores the resulting handle so that access is
+     * maintained for the folder's entire lifetime.
+     *
+     * @param access The persistent access handle
+     */
+    void setSecurityScopedAccess(std::unique_ptr<Utility::MacSandboxPersistentAccess> access);
+
+    /**
+     * Whether this folder needs the user to re-approve access for macOS sandbox.
+     *
+     * True when the folder was loaded from settings without valid security-scoped
+     * bookmark data (e.g. after upgrading from a pre-sandbox client version).
+     * The folder is paused until the user re-selects it via a file dialog.
+     */
+    [[nodiscard]] bool needsSandboxBookmark() const;
+
+    /**
+     * Mark this folder as needing (or no longer needing) sandbox bookmark approval.
+     * When set to true, the folder is paused to prevent sync errors.
+     */
+    void setNeedsSandboxBookmark(bool needs);
+
+    /**
+     * Apply a newly acquired security-scoped bookmark after user re-approval.
+     *
+     * Stores the bookmark data, sets the persistent access handle, clears the
+     * needsSandboxBookmark flag, un-pauses the folder, and persists to settings.
+     */
+    void applySandboxBookmark(const QByteArray &bookmarkData,
+                              std::unique_ptr<Utility::MacSandboxPersistentAccess> access);
+#endif
 
     /** virtual files of some kind are enabled
      *
@@ -509,6 +559,16 @@ private:
     static void postExistingFolderNowBigNotification(const QString &folderPath);
     void postExistingFolderNowBigActivity(const QString &folderPath) const;
 
+#ifdef Q_OS_MACOS
+    /**
+     * macOS sandbox: Holds the persistent security-scoped resource access
+     * for the local sync folder path. Must outlive all filesystem access to
+     * the folder. Declared first so it is destroyed last (C++ destroys
+     * members in reverse declaration order).
+     */
+    std::unique_ptr<Utility::MacSandboxPersistentAccess> _securityScopedAccess;
+#endif
+
     AccountStatePtr _accountState;
     FolderDefinition _definition;
     QString _canonicalLocalPath; // As returned with QFileInfo:canonicalFilePath.  Always ends with "/"
@@ -568,6 +628,13 @@ private:
     bool _hasSwitchedToVfs = false;
 
     bool _silenceErrorsUntilNextSync = false;
+
+#ifdef Q_OS_MACOS
+    /** Whether this folder needs the user to re-approve access for macOS sandbox.
+     * Runtime-only flag, not persisted to settings.
+     */
+    bool _needsSandboxBookmark = false;
+#endif
 
     /**
      * Watches this folder's local directory for changes.

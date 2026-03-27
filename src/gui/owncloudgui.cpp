@@ -33,6 +33,7 @@
 #include "tray/sortedactivitylistmodel.h"
 #include "tray/syncstatussummary.h"
 #include "tray/unifiedsearchresultslistmodel.h"
+#include "integration/fileactionsmodel.h"
 #include "filesystem.h"
 
 #ifdef WITH_LIBCLOUDPROVIDERS
@@ -63,6 +64,7 @@
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "macOS/fileprovider.h"
 #include "macOS/fileproviderdomainmanager.h"
+#include "macOS/fileproviderservice.h"
 #include "macOS/fileprovidersettingscontroller.h"
 #endif
 
@@ -114,7 +116,8 @@ ownCloudGui::ownCloudGui(Application *parent)
 
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    connect(Mac::FileProvider::instance()->socketServer(), &Mac::FileProviderSocketServer::syncStateChanged, this, &ownCloudGui::slotComputeOverallSyncStatus);
+    connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::syncStateChanged, this, &ownCloudGui::slotComputeOverallSyncStatus);
+    connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::showFileActionsDialog, _tray.data(), &Systray::slotShowFileProviderFileActionsDialog);
 #endif
 
     connect(Logger::instance(), &Logger::guiLog, this, &ownCloudGui::slotShowTrayMessage);
@@ -134,6 +137,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<ShareeModel>("com.nextcloud.desktopclient", 1, 0, "ShareeModel");
     qmlRegisterType<SortedShareModel>("com.nextcloud.desktopclient", 1, 0, "SortedShareModel");
     qmlRegisterType<SyncConflictsModel>("com.nextcloud.desktopclient", 1, 0, "SyncConflictsModel");
+    qmlRegisterType<FileActionsModel>("com.nextcloud.desktopclient", 1, 0, "FileActionsModel");
 
     qmlRegisterUncreatableType<QAbstractItemModel>("com.nextcloud.desktopclient", 1, 0, "QAbstractItemModel", "QAbstractItemModel");
     qmlRegisterUncreatableType<Activity>("com.nextcloud.desktopclient", 1, 0, "activity", "Activity");
@@ -327,7 +331,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
         if (!fileProvider->xpc()->fileProviderDomainReachable(accountFpId)) {
             problemFileProviderAccounts.append(accountTooltipLabel);
         } else {
-            switch (fileProvider->socketServer()->latestReceivedSyncStatusForAccount(accountState->account())) {
+            switch (fileProvider->service()->latestReceivedSyncStatusForAccount(accountState->account())) {
             case SyncResult::Undefined:
             case SyncResult::NotYetStarted:
                 idleFileProviderAccounts.append(accountTooltipLabel);
@@ -713,6 +717,11 @@ void ownCloudGui::slotShowShareDialog(const QString &localPath) const
 void ownCloudGui::slotShowFileActivityDialog(const QString &localPath) const
 {
     _tray->createFileActivityDialog(localPath);
+}
+
+void ownCloudGui::slotShowFileActionsDialog(const QString &localPath) const
+{
+    _tray->showFileActionsDialog(localPath);
 }
 
 } // end namespace

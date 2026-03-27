@@ -34,13 +34,13 @@ struct Build: AsyncParsableCommand {
     var kdeBlueprintsGitUrl = "https://github.com/nextcloud/craft-blueprints-kde.git"
     
     @Option(name: [.long], help: "KDE Craft blueprints git ref/branch")
-    var kdeBlueprintsGitRef = "next"
+    var kdeBlueprintsGitRef = "master"
     
     @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprints Git URL.")
     var clientBlueprintsGitUrl = "https://github.com/nextcloud/desktop-client-blueprints.git"
     
     @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprints Git ref/branch.")
-    var clientBlueprintsGitRef = "next"
+    var clientBlueprintsGitRef = "master"
     
     @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprint name.")
     var craftBlueprintName = "nextcloud-client"
@@ -91,6 +91,9 @@ struct Build: AsyncParsableCommand {
     @Flag(help: "Build File Provider Module.")
     var buildFileProviderModule = false
     
+    @Flag(help: "Build without QtWebEngine.")
+    var withoutWebEngine = false
+
     @Flag(help: "Build without Sparkle auto-updater.")
     var disableAutoUpdater = false
     
@@ -202,7 +205,8 @@ struct Build: AsyncParsableCommand {
             "\(craftBlueprintName).osxArchs=\(arch)",
             "\(craftBlueprintName).buildTests=\(buildTests ? "True" : "False")",
             "\(craftBlueprintName).buildMacOSBundle=\(disableAppBundle ? "False" : "True")",
-            "\(craftBlueprintName).buildFileProviderModule=\(buildFileProviderModule ? "True" : "False")"
+            "\(craftBlueprintName).buildFileProviderModule=\(buildFileProviderModule ? "True" : "False")",
+            "\(craftBlueprintName).buildWithWebEngine=\(withoutWebEngine ? "False" : "True")"
         ]
         
         if let overrideServerUrl {
@@ -283,11 +287,83 @@ struct Build: AsyncParsableCommand {
             throw MacCrafterError.craftError("Error crafting Nextcloud Desktop Client.")
         }
 
-        // MARK: Signing
+        // MARK: Debug Symbols
 
         let clientAppURL = clientBuildURL
             .appendingPathComponent("image-\(buildType)-master")
             .appendingPathComponent("\(appName).app")
+
+        // When building in dev mode, copy dSYM bundles into the build directory
+        // so that Xcode/LLDB can resolve breakpoints via Spotlight UUID lookup.
+        //
+        // Background: KDE Craft's __internalPostInstallHandleSymbols() moves
+        // every .dSYM bundle out of the main image directory into a separate
+        // -dbg image directory whose contents have epoch (1970) timestamps and a
+        // double-nested DWARF structure — both of which prevent Spotlight from
+        // indexing them.  Copying and flattening the bundles into the build
+        // directory (which Spotlight does index) makes them discoverable.
+        //
+        // Placing the dSYMs in the build directory keeps /Applications clean and
+        // lets the entire build tree be discarded in one step.
+
+        if dev {
+            let dSYM = clientBuildURL
+                .appendingPathComponent("image-\(buildType)-master-dbg")
+                .appendingPathComponent("\(appName).app.dSYM")
+
+            let dSYMDestination = buildURL.appendingPathComponent("\(appName).app.dSYM")
+
+            Log.info("Copying main dSYM bundle to \"\(dSYMDestination.path)\"...")
+
+            if fm.fileExists(atPath: dSYMDestination.path) {
+                Log.info("Removing already existing main dSYM bundle at \"\(dSYMDestination.path)\"...")
+                try fm.removeItem(at: dSYMDestination)
+            }
+
+            try fm.copyItem(at: dSYM, to: dSYMDestination)
+
+            // KDE Craft's __internalPostInstallHandleSymbols() packs each
+            // library's complete .dSYM bundle as a subdirectory under
+            // Contents/Resources/DWARF/ instead of placing the bare DWARF binary
+            // there.  Flatten it back to the standard layout so that Spotlight
+            // can extract UUIDs and LLDB can resolve breakpoints.
+            try flattenDSYMBundle(at: dSYMDestination)
+
+            Log.info("Copying extension dSYM bundles to \"\(buildURL.path)\"...")
+
+            let shellIntegrationBuildDir = clientBuildURL
+                .appendingPathComponent("work")
+                .appendingPathComponent("build")
+                .appendingPathComponent("shell_integration")
+                .appendingPathComponent("MacOSX")
+                .appendingPathComponent(buildType)
+
+            guard fm.fileExists(atPath: shellIntegrationBuildDir.path) else {
+                Log.info("Shell integration build directory not found, skipping extension dSYM copy: \(shellIntegrationBuildDir.path)")
+                return
+            }
+
+            let entries = try fm.contentsOfDirectory(at: shellIntegrationBuildDir, includingPropertiesForKeys: [.isDirectoryKey])
+            let dSYMBundles = entries.filter { $0.pathExtension.lowercased() == "dsym" }
+
+            for dSYM in dSYMBundles {
+                let destination = buildURL.appendingPathComponent(dSYM.lastPathComponent)
+
+                if fm.fileExists(atPath: destination.path) {
+                    Log.info("Removing already existing extension dSYM bundle at \"\(destination.path)\"...")
+                    try fm.removeItem(at: destination)
+                }
+
+                try fm.copyItem(at: dSYM, to: destination)
+                Log.info("Copied \(dSYM.path) to \(destination.path)")
+            }
+
+            if dSYMBundles.isEmpty {
+                Log.info("No dSYM bundles found in \(shellIntegrationBuildDir.path)")
+            }
+        }
+
+        // MARK: Signing
 
         if let codeSignIdentity {
             Log.info("Signing Nextcloud Desktop Client libraries and frameworks...")
@@ -357,5 +433,94 @@ struct Build: AsyncParsableCommand {
         
         Log.info("Done!")
         Log.info(stopwatch.report())
+    }
+
+    /// Flatten a dSYM bundle whose `Contents/Resources/DWARF/` entries are
+    /// nested dSYM bundles (directories) instead of bare Mach-O DWARF files.
+    ///
+    /// KDE Craft's symbol handling can produce this layout:
+    /// ```
+    /// Foo.app.dSYM/Contents/Resources/DWARF/Foo/Contents/Resources/DWARF/Foo   ← actual DWARF binary
+    /// Foo.app.dSYM/Contents/Resources/DWARF/libBar.dylib/Contents/…/libBar.dylib
+    /// ```
+    /// This function rewrites it to the standard layout expected by Spotlight
+    /// and LLDB:
+    /// ```
+    /// Foo.app.dSYM/Contents/Info.plist
+    /// Foo.app.dSYM/Contents/Resources/DWARF/Foo          ← bare binary
+    /// Foo.app.dSYM/Contents/Resources/DWARF/libBar.dylib ← bare binary
+    /// ```
+    private func flattenDSYMBundle(at bundle: URL) throws {
+        let fm = FileManager.default
+
+        let dwarfDir = bundle
+            .appendingPathComponent("Contents")
+            .appendingPathComponent("Resources")
+            .appendingPathComponent("DWARF")
+
+        guard fm.fileExists(atPath: dwarfDir.path) else {
+            return
+        }
+
+        let entries = try fm.contentsOfDirectory(at: dwarfDir, includingPropertiesForKeys: [.isDirectoryKey])
+
+        // Determine the main binary name from the dSYM bundle name (e.g.
+        // "NextcloudDev.app.dSYM" → "NextcloudDev").
+        var dSYMName = bundle.deletingPathExtension().lastPathComponent  // strip .dSYM
+
+        if dSYMName.hasSuffix(".app") {
+            dSYMName = String(dSYMName.dropLast(4))  // strip .app
+        }
+
+        var promotedInfoPlist = false
+
+        for entry in entries {
+            let values = try entry.resourceValues(forKeys: [.isDirectoryKey])
+            guard values.isDirectory == true else {
+                continue
+            }
+
+            // Look for the inner DWARF binary.
+            let innerDWARF = entry
+                .appendingPathComponent("Contents")
+                .appendingPathComponent("Resources")
+                .appendingPathComponent("DWARF")
+                .appendingPathComponent(entry.lastPathComponent)
+
+            guard fm.fileExists(atPath: innerDWARF.path) else {
+                Log.info("Skipping unexpected directory in DWARF/: \(entry.lastPathComponent)")
+                continue
+            }
+
+            // Promote the inner Info.plist to the top-level bundle for the
+            // main binary so that Spotlight can index the dSYM by UUID.
+            if !promotedInfoPlist && entry.lastPathComponent == dSYMName {
+                let innerPlist = entry
+                    .appendingPathComponent("Contents")
+                    .appendingPathComponent("Info.plist")
+
+                let outerPlist = bundle
+                    .appendingPathComponent("Contents")
+                    .appendingPathComponent("Info.plist")
+
+                if fm.fileExists(atPath: innerPlist.path) {
+                    if fm.fileExists(atPath: outerPlist.path) {
+                        try fm.removeItem(at: outerPlist)
+                    }
+                    
+                    try fm.copyItem(at: innerPlist, to: outerPlist)
+                    promotedInfoPlist = true
+                    Log.info("Promoted Info.plist from inner dSYM to top-level bundle.")
+                }
+            }
+
+            // Replace the nested directory with the bare DWARF binary.
+            let flatTarget = dwarfDir.appendingPathComponent(entry.lastPathComponent + ".tmp")
+            try fm.copyItem(at: innerDWARF, to: flatTarget)
+            try fm.removeItem(at: entry)
+            try fm.moveItem(at: flatTarget, to: entry)
+
+            Log.info("Flattened DWARF entry: \(entry.lastPathComponent)")
+        }
     }
 }

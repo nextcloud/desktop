@@ -27,7 +27,6 @@ func upload(
     chunkUploadCompleteHandler: @escaping (_ fileChunk: RemoteFileChunk) -> Void = { _ in }
 ) async -> (
     ocId: String?,
-    chunks: [RemoteFileChunk]?,
     etag: String?,
     date: Date?,
     size: Int64?,
@@ -83,7 +82,7 @@ func upload(
             progressHandler: progressHandler
         )
 
-        return (ocId, nil, etag, date as? Date, size, remoteError)
+        return (ocId, etag, date as? Date, size, remoteError)
     }
 
     let chunkUploadId = chunkUploadId ?? UUID().uuidString
@@ -103,7 +102,7 @@ func upload(
         .where { $0.remoteChunkStoreFolderName == chunkUploadId }
         .toUnmanagedResults()
 
-    let (_, chunks, file, nkError) = await remoteInterface.chunkedUpload(
+    let (_, file, nkError) = await remoteInterface.chunkedUpload(
         localPath: localFilePath,
         remotePath: remotePath,
         remoteChunkStoreFolderName: chunkUploadId,
@@ -163,5 +162,5 @@ func upload(
 
     uploadLogger.info("\(localFilePath) successfully uploaded in chunks")
 
-    return (file?.ocId, chunks, file?.etag, file?.date, file?.size, nkError)
+    return (file?.ocId, file?.etag, file?.date, file?.size, nkError)
 }

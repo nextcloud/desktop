@@ -5,7 +5,7 @@
     <key>NSPrincipalClass</key>
     <string>NSApplication</string>
     <key>LSMinimumSystemVersion</key>
-    <string>12.0</string>
+    <string>13.0</string>
     <key>LSUIElement</key>
     <true/>
     <key>CFBundleDevelopmentRegion</key>
@@ -92,5 +92,10 @@
     </array>
     <key>NCFPKAppGroupIdentifier</key>
     <string>@DEVELOPMENT_TEAM@.@APPLICATION_REV_DOMAIN@</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

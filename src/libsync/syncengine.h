@@ -363,6 +363,8 @@ private:
 
     void finishSync();
 
+    [[nodiscard]] bool shouldRestartSync() const;
+
     bool handleMassDeletion();
 
     void handleRemnantReadOnlyFolders();
@@ -385,6 +387,7 @@ private:
     SyncOptions _syncOptions;
 
     AnotherSyncNeeded _anotherSyncNeeded = NoFollowUpSync;
+    bool _restartedSyncAfterDiscovery = false;
 
     /** Stores the time since a job touched a file. */
     QMultiMap<QElapsedTimer, QString> _touchedFiles;

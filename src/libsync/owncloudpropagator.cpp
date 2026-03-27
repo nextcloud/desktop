@@ -230,7 +230,7 @@ void PropagateItemJob::done(const SyncFileItem::Status statusArg, const QString 
             || _item->_status == SyncFileItem::Conflict) {
             _item->_status = SyncFileItem::Restoration;
         } else {
-            _item->_errorString += tr("; Restoration Failed: %1").arg(errorString);
+            _item->_errorString = tr("%1. Restoration failed: %2", "%1 is the generic error string, the file restoration error (%2) will be appended here").arg(_item->_errorString, errorString);
         }
     } else {
         if (_item->_errorString.isEmpty()) {
@@ -577,6 +577,7 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
             } else {
                 qCWarning(lcPropagator) << "WARNING:  Job within a removed directory?  This should not happen!"
                                         << item->_file << item->_instruction;
+                Q_ASSERT(false);
             }
         }
 
@@ -981,7 +982,7 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
 
         // If the file is locked, we want to retry this sync when it
         // becomes available again.
-        if (FileSystem::isFileLocked(fn)) {
+        if (FileSystem::isFileLocked(fn, FileSystem::LockMode::SharedRead)) {
             emit seenLockedFile(fn);
         }
 
@@ -1055,7 +1056,7 @@ OCC::Optional<QString> OwncloudPropagator::createCaseClashConflict(const SyncFil
 
         // If the file is locked, we want to retry this sync when it
         // becomes available again.
-        if (FileSystem::isFileLocked(filename)) {
+        if (FileSystem::isFileLocked(filename, FileSystem::LockMode::SharedRead)) {
             emit seenLockedFile(filename);
         }
 
@@ -1506,8 +1507,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
             || _item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA) {
 
             if (!_item->_remotePerm.isNull() &&
-                !_item->_remotePerm.hasPermission(RemotePermissions::CanAddFile) &&
-                !_item->_remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories)) {
+                !_item->_remotePerm.hasPermissionsForReadWrite()) {
                 try {
                     if (const auto fileName = propagator()->fullLocalPath(_item->_file); FileSystem::fileExists(fileName)) {
                         FileSystem::setFolderPermissions(fileName, FileSystem::FolderPermissions::ReadOnly);

@@ -27,3 +27,8 @@ OC_APPLICATION_REV_DOMAIN=$(OC_APPLICATION_REV_DOMAIN:default=com.nextcloud.desk
 // Hardened runtime as required for notarization.
 //
 ENABLE_HARDENED_RUNTIME=YES
+
+//
+// The required macOS version for all targets of the project.
+//
+MACOSX_DEPLOYMENT_TARGET=13.0

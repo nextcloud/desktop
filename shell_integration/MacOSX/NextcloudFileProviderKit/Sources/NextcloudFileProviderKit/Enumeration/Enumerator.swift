@@ -35,9 +35,9 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         domain: NSFileProviderDomain? = nil,
-        pageSize: Int = 100,
+        pageSize: Int = 1000,
         log: any FileProviderLogging
-    ) {
+    ) throws {
         self.enumeratedItemIdentifier = enumeratedItemIdentifier
         self.remoteInterface = remoteInterface
         self.account = account
@@ -51,16 +51,15 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
             serverUrl = account.davFilesUrl
             enumeratedItemMetadata = nil
         } else {
-            logger.debug("Providing enumerator for item with identifier.", [.item: enumeratedItemIdentifier])
-            enumeratedItemMetadata = dbManager.itemMetadata(
-                enumeratedItemIdentifier)
+            enumeratedItemMetadata = dbManager.itemMetadata(enumeratedItemIdentifier)
 
-            if let enumeratedItemMetadata {
-                serverUrl = enumeratedItemMetadata.serverUrl + "/" + enumeratedItemMetadata.fileName
-            } else {
-                serverUrl = ""
-                logger.error("Could not find itemMetadata for file with identifier.", [.item: enumeratedItemIdentifier])
+            guard let enumeratedItemMetadata, enumeratedItemMetadata.deleted == false else {
+                logger.error("Could not find item with identifier.", [.item: enumeratedItemIdentifier])
+                throw NSFileProviderError(.noSuchItem)
             }
+
+            logger.debug("Providing enumerator for item with identifier.", [.item: enumeratedItemIdentifier, .name: enumeratedItemMetadata.fileName])
+            serverUrl = enumeratedItemMetadata.serverUrl + "/" + enumeratedItemMetadata.fileName
         }
 
         logger.info("Set up enumerator.", [.account: self.account.ncKitAccount, .url: serverUrl])
@@ -68,29 +67,15 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     }
 
     public func invalidate() {
-        logger.debug("Enumerator is being invalidated.", [.item: enumeratedItemIdentifier])
+        logger.debug("Enumerator is being invalidated.", [.item: enumeratedItemIdentifier, .name: enumeratedItemMetadata?.fileName])
     }
 
     // MARK: - Protocol methods
 
     public func enumerateItems(for observer: NSFileProviderEnumerationObserver, startingAt page: NSFileProviderPage) {
         logger.info("Received enumerate items request for enumerator with user", [.account: account.ncKitAccount, .url: serverUrl])
-
-        /*
-         - inspect the page to determine whether this is an initial or a follow-up request (TODO)
-
-         If this is an enumerator for a directory, the root container or all directories:
-         - perform a server request to fetch directory contents
-         If this is an enumerator for the working set:
-         - perform a server request to update your local database
-         - fetch the working set from your local database
-
-         - inform the observer about the items returned by the server (possibly multiple times)
-         - inform the observer that you are finished with this page
-         */
-
         if enumeratedItemIdentifier == .trashContainer {
-            logger.info("Enumerating trash.", [.account: account.ncKitAccount, .url: serverUrl])
+            logger.info("Enumerating items in trash.", [.account: account.ncKitAccount, .url: serverUrl])
 
             Task { [weak self] in
                 guard let self else {
@@ -111,40 +96,10 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                     return
                 }
 
-                let domain = domain
-                let enumeratedItemIdentifier = enumeratedItemIdentifier
-
-                let (_, trashedItems, _, trashReadError) = await remoteInterface.listingTrashAsync(
-                    filename: nil,
-                    showHiddenFiles: true,
-                    account: account.ncKitAccount,
-                    options: .init(),
-                    taskHandler: { task in
-                        if let domain {
-                            NSFileProviderManager(for: domain)?.register(
-                                task,
-                                forItemWithIdentifier: enumeratedItemIdentifier,
-                                completionHandler: { _ in }
-                            )
-                        }
-                    }
-                )
-
-                guard trashReadError == .success else {
-                    let error = trashReadError.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: enumeratedItemIdentifier) ?? NSFileProviderError(.cannotSynchronize)
-                    observer.finishEnumeratingWithError(error)
-                    return
-                }
-
-                Self.completeEnumerationObserver(
-                    observer,
-                    account: account,
-                    remoteInterface: remoteInterface,
-                    dbManager: dbManager,
-                    numPage: 1,
-                    trashItems: trashedItems ?? [],
-                    log: logger.log
-                )
+                // We only want to list items deleted on the local device.
+                // That cannot happen before the initial content enumeration for a file provider domain because the latter does not exist yet.
+                // Hence the initial trash content enumeration can be finished with an empty set.
+                observer.finishEnumerating(upTo: Self.fileProviderPageforNumPage(1))
             }
 
             return
@@ -155,6 +110,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
             let ncKitAccount = account.ncKitAccount
             // Visited folders and downloaded files
             let materialisedItems = dbManager.materialisedItemMetadatas(account: ncKitAccount)
+                .filter { !$0.deleted }
             completeEnumerationObserver(observer, nextPage: nil, itemMetadatas: materialisedItems)
             return
         }
@@ -173,20 +129,45 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
             // Do not pass in the NSFileProviderPage default pages, these are not valid Nextcloud
             // pagination tokens
             var pageTotal: Int? = nil
+            var pageIndex = 0
+            var parsedPage: NSFileProviderPage? = nil
 
             if page != NSFileProviderPage.initialPageSortedByName as NSFileProviderPage, page != NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage {
                 if let enumPageResponse = try? JSONDecoder().decode(EnumeratorPageResponse.self, from: page.rawValue) {
                     if let total = enumPageResponse.total {
                         pageTotal = total
                     }
+                    pageIndex = enumPageResponse.index
+                    parsedPage = page
                 } else {
                     logger.error("Could not parse page")
                 }
             }
 
+            // Check server version to determine if pagination should be enabled.
+            // Pagination was fixed in Nextcloud 31 (server bug: https://github.com/nextcloud/server/issues/53674)
+            // For older servers, we fall back to non-paginated requests.
+            // Note: currentCapabilities uses RetrievedCapabilitiesActor which caches capabilities
+            // for 30 minutes, so this call is efficient and doesn't make a network request on every enumeration.
+            let (_, capabilities, _, _) = await remoteInterface.currentCapabilities(
+                account: account,
+                options: .init(),
+                taskHandler: { _ in }
+            )
+
+            let serverMajorVersion = capabilities?.major ?? 0
+            let supportsPagination = serverMajorVersion >= 31
+
+            // Enable pagination by passing page settings if server supports it
+            let pageSettings: (page: NSFileProviderPage?, index: Int, size: Int)? = supportsPagination ? (
+                page: parsedPage,
+                index: pageIndex,
+                size: pageItemCount
+            ) : nil
+
             let readResult = await Self.readServerUrl(
                 serverUrl,
-                pageSettings: nil,
+                pageSettings: pageSettings,
                 account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
@@ -223,7 +204,8 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                 nextPage = nil
             }
 
-            nextPage = nil
+            // Note: Removed unconditional `nextPage = nil` that was disabling pagination
+            // This enables proper pagination for large folders (1500+ files) when server supports it
 
             logger.info(
                 """
@@ -243,11 +225,9 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         logger.debug("Enumerating changes (anchor: \(String(data: anchor.rawValue, encoding: .utf8) ?? "")).", [.url: serverUrl])
 
         /*
-         - query the server for updates since the passed-in sync anchor (TODO)
+         If this is an enumerator for the working set, then:
 
-         If this is an enumerator for the working set:
          - note the changes in your local database
-
          - inform the observer about item deletions and updates (modifications + insertions)
          - inform the observer when you have finished enumerating up to a subsequent sync anchor
          */
@@ -265,19 +245,22 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                 return
             }
 
-            let pendingChanges = dbManager.pendingWorkingSetChanges(account: account, since: date)
+            Task {
+                await checkMaterializedItemsOnServer()
+                let pendingLocalChanges = dbManager.pendingWorkingSetChanges(since: date)
 
-            completeChangesObserver(
-                observer,
-                anchor: currentAnchor,
-                enumeratedItemIdentifier: enumeratedItemIdentifier,
-                account: account,
-                remoteInterface: remoteInterface,
-                dbManager: dbManager,
-                newMetadatas: [],
-                updatedMetadatas: pendingChanges.updated,
-                deletedMetadatas: pendingChanges.deleted
-            )
+                completeChangesObserver(
+                    observer,
+                    anchor: currentAnchor,
+                    enumeratedItemIdentifier: enumeratedItemIdentifier,
+                    account: account,
+                    remoteInterface: remoteInterface,
+                    dbManager: dbManager,
+                    newMetadatas: [],
+                    updatedMetadatas: pendingLocalChanges.updated,
+                    deletedMetadatas: pendingLocalChanges.deleted
+                )
+            }
 
             return
         } else if enumeratedItemIdentifier == .trashContainer {
@@ -334,9 +317,8 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                     observer,
                     anchor: anchor,
                     account: account,
-                    remoteInterface: remoteInterface,
                     dbManager: dbManager,
-                    trashItems: trashedItems ?? [],
+                    remoteTrashItems: trashedItems ?? [],
                     log: logger.log
                 )
             }
@@ -401,8 +383,8 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                         account: account,
                         remoteInterface: remoteInterface,
                         dbManager: dbManager,
-                        newMetadatas: nil,
-                        updatedMetadatas: nil,
+                        newMetadatas: [],
+                        updatedMetadatas: [],
                         deletedMetadatas: [itemMetadata]
                     )
                     return
@@ -438,6 +420,132 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
 
     // MARK: - Helper methods
 
+    private func checkMaterializedItemsOnServer() async {
+        logger.debug("Checking materialized items for changes on the server...")
+
+        defer {
+            logger.debug("Completed checking materialized items for changes on the server.")
+        }
+
+        // Unlike when enumerating items we can't progressively enumerate items as we need to
+        // wait to see which items are truly deleted and which have just been moved elsewhere.
+        // Visited folders and downloaded files. Sort in terms of their remote URLs.
+        // This way we ensure we visit parent folders before their children.
+        let materializedItems = dbManager
+            .materialisedItemMetadatas(account: account.ncKitAccount)
+            .filter { !$0.deleted }
+            .sorted { $0.remotePath().count < $1.remotePath().count }
+
+        var allNewMetadatas = [SendableItemMetadata]()
+        var allUpdatedMetadatas = [SendableItemMetadata]()
+        var allDeletedMetadatas = [SendableItemMetadata]()
+        var examinedItemIds = Set<String>()
+
+        for materializedItem in materializedItems where !examinedItemIds.contains(materializedItem.ocId) {
+            guard isLockFileName(materializedItem.fileName) == false else {
+                // Skip server requests for locally created lock files.
+                // They are not synchronized to the server for real.
+                // Thus they can be expected not to be found there.
+                // That would also cause their local deletion due to synchronization logic.
+                logger.debug("Skipping materialized item in working set check because the name hints a lock file.", [.item: materializedItem, .name: materializedItem.name])
+                continue
+            }
+
+            let itemRemoteUrl = materializedItem.remotePath()
+
+            let (metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, _, readError) = await Enumerator.readServerUrl(itemRemoteUrl, account: account, remoteInterface: remoteInterface, dbManager: dbManager, depth: materializedItem.directory ? .targetAndDirectChildren : .target, log: logger.log)
+
+            if readError?.errorCode == 404 {
+                allDeletedMetadatas.append(materializedItem)
+                examinedItemIds.insert(materializedItem.ocId)
+
+                materializedItems.filter {
+                    $0.serverUrl.hasPrefix(itemRemoteUrl)
+                }.forEach {
+                    allDeletedMetadatas.append($0)
+                    examinedItemIds.insert($0.ocId)
+                }
+            } else if let readError, readError != .success {
+                logger.error("Finished remote change enumeration of materialized items with error.", [.error: readError])
+                return
+            } else {
+                allDeletedMetadatas += deletedMetadatas ?? []
+                allUpdatedMetadatas += updatedMetadatas ?? []
+                allNewMetadatas += newMetadatas ?? []
+
+                // Just because we have read child directories metadata doesn't mean we need to in turn scan their children. This is not the case for files.
+                var examinedChildFilesAndDeletedItems = Set<String>()
+
+                if let metadatas, let target = metadatas.first {
+                    examinedItemIds.insert(target.ocId)
+
+                    if metadatas.count > 1 {
+                        examinedChildFilesAndDeletedItems.formUnion(metadatas[1...].filter { !$0.directory }.map(\.ocId))
+                    }
+
+                    // If the target is not in the updated metadatas then neither it, nor any of its kids have changed. So skip examining all of them.
+                    if !allUpdatedMetadatas.contains(where: { $0.ocId == target.ocId }) {
+                        logger.debug("Target has not changed. Skipping children.", [.url: itemRemoteUrl])
+                        let materialisedChildren = materializedItems.filter { $0.serverUrl.hasPrefix(itemRemoteUrl) }.map(\.ocId)
+                        examinedChildFilesAndDeletedItems.formUnion(materialisedChildren)
+                    }
+
+                    // OPTIMIZATION: For any child directories returned in this enumeration, if they haven't changed (etag matches database), mark them as examined so we don't enumerate them separately later.
+                    if metadatas.count > 1 {
+                        let childDirectories = metadatas[1...].filter(\.directory)
+
+                        for childDir in childDirectories {
+                            // Check if this directory is in our materialized items list
+                            if let localItem = materializedItems.first(where: { $0.ocId == childDir.ocId }), localItem.etag == childDir.etag {
+                                // Directory hasn't changed, mark as examined to skip separate enumeration.
+                                logger.debug("Child directory etag unchanged, marking as examined.", [.name: childDir.fileName, .eTag: childDir.etag])
+                                examinedChildFilesAndDeletedItems.insert(childDir.ocId)
+
+                                // Also mark any materialized children of this directory as examined.
+                                let grandChildren = materializedItems.filter {
+                                    $0.serverUrl.hasPrefix(localItem.remotePath())
+                                }
+
+                                examinedChildFilesAndDeletedItems.formUnion(grandChildren.map(\.ocId))
+                            }
+                        }
+                    }
+
+                    if let deletedMetadataOcIds = deletedMetadatas?.map(\.ocId) {
+                        examinedChildFilesAndDeletedItems.formUnion(deletedMetadataOcIds)
+                    }
+                }
+
+                examinedItemIds.formUnion(examinedChildFilesAndDeletedItems)
+            }
+        }
+
+        // Run a check to ensure files deleted in one location are not updated in another (e.g. when moved).
+        // The recursive scan provides us with updated/deleted metadatas only on a folder by folder basis; so we need to check we are not simultaneously marking a moved file as deleted and updated.
+        var checkedDeletedMetadatas = allDeletedMetadatas
+
+        for updatedMetadata in allUpdatedMetadatas {
+            guard let matchingDeletedMetadataIdx = checkedDeletedMetadatas.firstIndex(where: { $0.ocId == updatedMetadata.ocId }) else {
+                continue
+            }
+
+            checkedDeletedMetadatas.remove(at: matchingDeletedMetadataIdx)
+        }
+
+        allDeletedMetadatas = checkedDeletedMetadatas
+
+        for deletedMetadata in allDeletedMetadatas {
+            var deleteMarked = deletedMetadata
+            deleteMarked.deleted = true
+            deleteMarked.syncTime = Date()
+            dbManager.addItemMetadata(deleteMarked)
+        }
+
+        if allUpdatedMetadatas.isEmpty, allDeletedMetadatas.isEmpty {
+            logger.info("No remote changes found in materialized items.")
+        }
+    }
+
     static func fileProviderPageforNumPage(_: Int) -> NSFileProviderPage? {
         nil
         // TODO: Handle paging properly
@@ -461,9 +569,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                     logger.info("Did enumerate \(items.count) items. Next page is nil: \(nextPage == nil)")
 
                     if let nextPage, let nextPageData = try? JSONEncoder().encode(nextPage) {
-                        logger.info(
-                            "Next page: \(String(data: nextPageData, encoding: .utf8) ?? "?")"
-                        )
+                        logger.info("Next page: \(String(data: nextPageData, encoding: .utf8) ?? "?")")
                         observer.finishEnumerating(upTo: NSFileProviderPage(nextPageData))
                     } else {
                         observer.finishEnumerating(upTo: nil)
@@ -509,58 +615,70 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         deletedMetadatas: [SendableItemMetadata]?,
         handleInvalidParent: Bool = true
     ) {
-        guard newMetadatas != nil || updatedMetadatas != nil || deletedMetadatas != nil else {
-            logger.error("Received invalid newMetadatas, updatedMetadatas or deletedMetadatas. Finished enumeration of changes with error.")
+        logger.info("Completing change observation...")
 
-            observer.finishEnumeratingWithError(
-                NSError.fileProviderErrorForNonExistentItem(
-                    withIdentifier: enumeratedItemIdentifier
-                )
-            )
-
+        guard let newMetadatas else {
+            let error = NSError.fileProviderErrorForNonExistentItem(withIdentifier: enumeratedItemIdentifier)
+            logger.error("Received no new metadata objects. Finishing enumeration of changes with error.", [.error: error])
+            observer.finishEnumeratingWithError(error)
             return
         }
 
-        // Observer does not care about new vs updated, so join
-        var allUpdatedMetadatas: [SendableItemMetadata] = []
-        var allDeletedMetadatas: [SendableItemMetadata] = []
-
-        if let newMetadatas {
-            allUpdatedMetadatas += newMetadatas
+        guard let updatedMetadatas else {
+            let error = NSError.fileProviderErrorForNonExistentItem(withIdentifier: enumeratedItemIdentifier)
+            logger.error("Received no updated metadata objects. Finishing enumeration of changes with error.", [.error: error])
+            observer.finishEnumeratingWithError(error)
+            return
         }
 
-        if let updatedMetadatas {
-            allUpdatedMetadatas += updatedMetadatas
+        guard let deletedMetadatas else {
+            let error = NSError.fileProviderErrorForNonExistentItem(withIdentifier: enumeratedItemIdentifier)
+            logger.error("Received no deleted metadata objects. Finishing enumeration of changes with error.", [.error: error])
+            observer.finishEnumeratingWithError(error)
+            return
         }
 
-        if let deletedMetadatas {
-            allDeletedMetadatas = deletedMetadatas
+        for metadata in newMetadatas {
+            logger.debug("Got added metadata to report.", [.item: metadata.ocId, .name: metadata.fileName])
         }
 
-        let allFpItemDeletionsIdentifiers = Array(
-            allDeletedMetadatas.map { NSFileProviderItemIdentifier($0.ocId) })
-        if !allFpItemDeletionsIdentifiers.isEmpty {
-            observer.didDeleteItems(withIdentifiers: allFpItemDeletionsIdentifiers)
+        for metadata in updatedMetadatas {
+            logger.debug("Got updated metadata to report.", [.item: metadata.ocId, .name: metadata.fileName])
         }
 
-        Task { [allUpdatedMetadatas, allDeletedMetadatas] in
+        for metadata in deletedMetadatas {
+            logger.debug("Got deleted metadata to report.", [.item: metadata.ocId, .name: metadata.fileName])
+        }
+
+        // The file provider framework does not differentiate between newly added and updated items, hence the collections are merged.
+        let newAndUpdatedMetadatas: [SendableItemMetadata] = newMetadatas + updatedMetadatas
+
+        let deletedFileProviderItemIdentifiers = Array(deletedMetadatas.map {
+            NSFileProviderItemIdentifier($0.ocId)
+        })
+
+        if deletedFileProviderItemIdentifiers.isEmpty == false {
+            observer.didDeleteItems(withIdentifiers: deletedFileProviderItemIdentifiers)
+        }
+
+        Task { [newAndUpdatedMetadatas, deletedMetadatas] in
             do {
-                let updatedItems = try await allUpdatedMetadatas.toFileProviderItems(
-                    account: account, remoteInterface: remoteInterface, dbManager: dbManager, log: self.logger.log
-                )
+                let updatedItems = try await newAndUpdatedMetadatas.toFileProviderItems(account: account, remoteInterface: remoteInterface, dbManager: dbManager, log: self.logger.log)
 
                 Task { @MainActor in
                     if !updatedItems.isEmpty {
                         observer.didUpdate(updatedItems)
                     }
 
-                    logger.info("Processed \(updatedItems.count) new or updated metadatas. \(allDeletedMetadatas.count) deleted metadatas.")
-
                     observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
+
+                    for metadata in deletedMetadatas {
+                        dbManager.removeItemMetadata(ocId: metadata.ocId)
+                    }
                 }
             } catch let error as NSError { // This error can only mean a missing parent item identifier
                 guard handleInvalidParent else {
-                    logger.info("Not handling invalid parent in change enumeration.")
+                    logger.error("Not handling invalid parent in change enumeration!")
                     observer.finishEnumeratingWithError(error)
                     return
                 }
@@ -574,8 +692,10 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                         remoteInterface: remoteInterface,
                         dbManager: dbManager
                     )
+
                     var modifiedNewMetadatas = newMetadatas
-                    modifiedNewMetadatas?.append(metadata)
+                    modifiedNewMetadatas.append(metadata)
+
                     completeChangesObserver(
                         observer,
                         anchor: anchor,
@@ -592,6 +712,8 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                     observer.finishEnumeratingWithError(error)
                 }
             }
+
+            logger.info("Completed change observation.")
         }
     }
 

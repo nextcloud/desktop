@@ -51,6 +51,14 @@ void warnSystray()
 
 int main(int argc, char **argv)
 {
+#ifdef Q_OS_LINUX
+    const auto appImagePath = qEnvironmentVariable("APPIMAGE");
+    const auto runningInsideAppImage = !appImagePath.isNull() && QFile::exists(appImagePath);
+    if (runningInsideAppImage) {
+        qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--disable-gpu-compositing");
+    }
+#endif
+
 #ifdef Q_OS_WIN
     SetDllDirectory(L"");
     qputenv("QML_IMPORT_PATH", (QDir::currentPath() + QStringLiteral("/qml")).toLatin1());

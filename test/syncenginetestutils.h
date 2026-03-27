@@ -19,6 +19,7 @@
 #include "common/syncjournalfilerecord.h"
 #include "common/vfs.h"
 #include "csync_exclude.h"
+#include "testhelper.h"
 
 #include <QDir>
 #include <QNetworkReply>
@@ -599,6 +600,7 @@ class FakeFolder
     // FIXME: Clarify ownership, double delete
     FakeQNAM *_fakeQnam;
     OCC::AccountPtr _account;
+    FakeAccountState *_accountState;
     std::unique_ptr<OCC::SyncJournalDb> _journalDb;
     std::unique_ptr<OCC::SyncEngine> _syncEngine;
     QString _serverVersion = QStringLiteral("10.0.0");
@@ -616,6 +618,7 @@ public:
     [[nodiscard]] OCC::SyncEngine &syncEngine() const { return *_syncEngine; }
     [[nodiscard]] OCC::SyncJournalDb &syncJournal() const { return *_journalDb; }
     [[nodiscard]] FakeQNAM* networkAccessManager() const { return _fakeQnam; }
+    [[nodiscard]] FakeAccountState &accountState() { return *_accountState; }
 
     DiskFileModifier &localModifier() { return _localModifier; }
     FileInfo &remoteModifier() { return _fakeQnam->currentRemoteState(); }

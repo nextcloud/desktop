@@ -14,6 +14,9 @@ struct FileProviderDomainDefaults {
     /// > Warning: Do not change the raw values of these keys, as they are used in UserDefaults. Any change would make the already stored value inaccessible and be like a reset.
     ///
     private enum ConfigKey: String {
+        ///
+        /// Obsolete and kept only for documentation to avoid future collisions.
+        ///
         case trashDeletionEnabled
         case user
         case userId
@@ -85,29 +88,6 @@ struct FileProviderDomainDefaults {
     }
 
     ///
-    /// Whether trash deletion is enabled or not.
-    ///
-    var trashDeletionEnabled: Bool {
-        get {
-            let identifier = self.identifier.rawValue
-
-            if let value = internalConfig[ConfigKey.trashDeletionEnabled.rawValue] as? Bool {
-                logger.debug("Returning existing value \"\(value)\" for \"trashDeletionEnabled\" for file provider domain \"\(identifier)\".")
-                return value
-            } else {
-                return false
-            }
-        }
-
-        set {
-            let identifier = self.identifier.rawValue
-
-            logger.error("Setting value \"\(newValue)\" for \"trashDeletionEnabled\" for file provider domain \"\(identifier)\".")
-            internalConfig[ConfigKey.trashDeletionEnabled.rawValue] = newValue
-        }
-    }
-
-    ///
     /// The user name associated with the domain.
     ///
     var user: String? {
@@ -166,9 +146,4 @@ struct FileProviderDomainDefaults {
             }
         }
     }
-
-    ///
-    /// Whether a value for `trashDeletionEnabled` has been explicitly set.
-    ///
-    lazy var trashDeletionSet = internalConfig[ConfigKey.trashDeletionEnabled.rawValue] != nil
 }

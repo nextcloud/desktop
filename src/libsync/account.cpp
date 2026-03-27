@@ -748,6 +748,7 @@ void Account::setCapabilities(const QVariantMap &caps)
     updateServerColors();
     updateServerSubcription();
     updateDesktopEnterpriseChannel();
+    updateServerHasIntegration();
 
     emit capabilitiesChanged();
 
@@ -1193,6 +1194,17 @@ void Account::setFileProviderDomainIdentifier(const QString &identifier)
     _fileProviderDomainIdentifier = identifier;
     Q_EMIT wantsAccountSaved(sharedFromThis());
 }
+
+QByteArray Account::lastRootETag() const
+{
+    return _lastRootETag;
+}
+
+void Account::setLastRootETag(const QByteArray &etag)
+{
+    _lastRootETag = etag;
+}
+
 #endif
 
 void Account::setAskUserForMnemonic(const bool ask)
@@ -1475,6 +1487,10 @@ void Account::setUploadLimitSetting(const AccountNetworkTransferLimitSetting set
         qCInfo(lcAccount) << "Upload limit setting was requested to be set to the legacy global limit, falling back to unlimited";
         targetSetting = AccountNetworkTransferLimitSetting::NoLimit;
     }
+    if (setting == AccountNetworkTransferLimitSetting::AutoLimit) {
+        qCInfo(lcAccount) << "Upload limit setting was requested to be set to the deprecated auto limit, falling back to unlimited";
+        targetSetting = AccountNetworkTransferLimitSetting::NoLimit;
+    }
 
     _uploadLimitSetting = targetSetting;
     emit uploadLimitSettingChanged();
@@ -1495,6 +1511,10 @@ void Account::setDownloadLimitSetting(const AccountNetworkTransferLimitSetting s
 
     if (setting == AccountNetworkTransferLimitSetting::LegacyGlobalLimit) {
         qCInfo(lcAccount) << "Download limit setting was requested to be set to the legacy global limit, falling back to unlimited";
+        targetSetting = AccountNetworkTransferLimitSetting::NoLimit;
+    }
+    if (setting == AccountNetworkTransferLimitSetting::AutoLimit) {
+        qCInfo(lcAccount) << "Download limit setting was requested to be set to the deprecated auto limit, falling back to unlimited";
         targetSetting = AccountNetworkTransferLimitSetting::NoLimit;
     }
 
@@ -1530,6 +1550,16 @@ void Account::setDownloadLimit(const unsigned int limit)
 
     _downloadLimit = limit;
     emit downloadLimitChanged();
+}
+
+bool Account::serverHasIntegration() const
+{
+    return _serverHasIntegration;
+}
+
+void Account::updateServerHasIntegration()
+{
+    _serverHasIntegration = capabilities().serverHasClientIntegration();
 }
 
 } // namespace OCC

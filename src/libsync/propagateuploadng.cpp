@@ -25,6 +25,8 @@
 #include <cmath>
 #include <cstring>
 
+using namespace Qt::StringLiterals;
+
 namespace OCC {
 
 constexpr auto relativeUploadsPath = "remote.php/dav/uploads/";
@@ -80,7 +82,7 @@ QUrl PropagateUploadFileNG::chunkUrl(const int chunk) const
 QByteArray PropagateUploadFileNG::destinationHeader() const
 {
     const auto davUrl = Utility::trailingSlashPath(propagator()->account()->davUrl().toString());
-    const auto remotePath = Utility::noLeadingSlashPath(propagator()->fullRemotePath(_fileToUpload._file));
+    const auto remotePath = QUrl::toPercentEncoding(Utility::noLeadingSlashPath(propagator()->fullRemotePath(_fileToUpload._file)), "/"_ba);
     const auto destination = QString(davUrl + remotePath);
     return destination.toUtf8();
 }
@@ -321,7 +323,9 @@ void PropagateUploadFileNG::finishUpload()
     const auto fileSize = _fileToUpload._size;
     headers[QByteArrayLiteral("OC-Total-Length")] = QByteArray::number(fileSize);
     if (_item->_lockOwnerType == SyncFileItem::LockOwnerType::TokenLock &&
-        _item->_locked == SyncFileItem::LockStatus::LockedItem) {
+        _item->_locked == SyncFileItem::LockStatus::LockedItem &&
+        _item->_instruction != CSYNC_INSTRUCTION_NEW &&
+        _item->_instruction != CSYNC_INSTRUCTION_TYPE_CHANGE) {
         headers[QByteArrayLiteral("If")] = (QLatin1String("<") + propagator()->account()->davUrl().toString() + _fileToUpload._file + "> (<opaquelocktoken:" + _item->_lockToken.toUtf8() + ">)").toUtf8();
     }
 
@@ -352,12 +356,12 @@ void PropagateUploadFileNG::startNextChunk()
 
     const auto fileName = _fileToUpload._path;
     auto device = std::make_unique<UploadDevice>(fileName, _sent, _currentChunkSize, &propagator()->_bandwidthManager);
-    if (!device->open(QIODevice::ReadOnly)) {
+    if (auto isLocked = FileSystem::isFileLocked(fileName, FileSystem::LockMode::SharedRead); isLocked || !device->open(QIODevice::ReadOnly)) {
         qCWarning(lcPropagateUploadNG) << "Could not prepare upload device: " << device->errorString();
 
         // If the file is currently locked, we want to retry the sync
         // when it becomes available again.
-        if (FileSystem::isFileLocked(fileName)) {
+        if (isLocked) {
             emit propagator()->seenLockedFile(fileName);
         }
         // Soft error because this is likely caused by the user modifying his files while syncing

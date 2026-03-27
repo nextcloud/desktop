@@ -446,8 +446,8 @@ QString Theme::developerStringInfo() const
     const auto osStringList = Utility::platformName().split(QLatin1Char(' '));
     const auto osName = osStringList.at(0);
 
-    const auto devString = QString(tr("%1 Desktop Client Version %2 (%3)", "%1 is application name. %2 is the human version string. %3 is the operating system name."))
-    .arg(APPLICATION_NAME, QString::fromLatin1(MIRALL_HUMAN_VERSION_STRING), osName);
+    const auto devString = QString(tr("%1 Desktop Client Version %2 (%3 running on %4)", "%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the platform name (wayland, x11, …)"))
+    .arg(APPLICATION_NAME, QString::fromLatin1(MIRALL_HUMAN_VERSION_STRING), osName, qGuiApp->platformName());
 
     return devString;
 }
@@ -964,17 +964,24 @@ QIcon Theme::createColorAwareIcon(const QString &name, const QPalette &palette)
 
     inverted.invertPixels(QImage::InvertRgb);
 
+    const auto defaultPixmap = Theme::isDarkColor(palette.color(QPalette::Base))
+        ? QPixmap::fromImage(inverted)
+        : QPixmap::fromImage(img);
+    const auto highlightedPixmap = Theme::isDarkColor(palette.color(QPalette::HighlightedText))
+        ? QPixmap::fromImage(img)
+        : QPixmap::fromImage(inverted);
+
     QIcon icon;
-    if (Theme::isDarkColor(palette.color(QPalette::Base))) {
-        icon.addPixmap(QPixmap::fromImage(inverted));
-    } else {
-        icon.addPixmap(QPixmap::fromImage(img));
-    }
-    if (Theme::isDarkColor(palette.color(QPalette::HighlightedText))) {
-        icon.addPixmap(QPixmap::fromImage(img), QIcon::Normal, QIcon::On);
-    } else {
-        icon.addPixmap(QPixmap::fromImage(inverted), QIcon::Normal, QIcon::On);
-    }
+    icon.addPixmap(defaultPixmap, QIcon::Normal, QIcon::Off);
+    icon.addPixmap(defaultPixmap, QIcon::Active, QIcon::Off);
+    icon.addPixmap(defaultPixmap, QIcon::Selected, QIcon::Off);
+
+    icon.addPixmap(highlightedPixmap, QIcon::Normal, QIcon::On);
+    icon.addPixmap(highlightedPixmap, QIcon::Active, QIcon::On);
+    icon.addPixmap(highlightedPixmap, QIcon::Selected, QIcon::On);
+
+    icon.addPixmap(defaultPixmap, QIcon::Disabled, QIcon::Off);
+    icon.addPixmap(highlightedPixmap, QIcon::Disabled, QIcon::On);
     return icon;
 }
 

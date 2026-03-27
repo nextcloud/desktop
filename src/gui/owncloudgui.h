@@ -49,7 +49,7 @@ public:
     bool checkAccountExists(bool openSettings);
 
     static void raiseDialog(QWidget *raiseWidget);
-    static QSize settingsDialogSize() { return {800, 500}; }
+    static QSize settingsDialogSize() { return {720, 500}; }
     void setupOverlayIcons();
 #ifdef WITH_LIBCLOUDPROVIDERS
     void setupCloudProviders();
@@ -95,6 +95,7 @@ public slots:
      */
     void slotShowShareDialog(const QString &localPath) const;
     void slotShowFileActivityDialog(const QString &localPath) const;
+    void slotShowFileActionsDialog(const QString &localPath) const;
     void slotNewAccountWizard();
 
 private slots:

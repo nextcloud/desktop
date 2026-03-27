@@ -5,96 +5,29 @@
 import NextcloudKit
 
 extension Enumerator {
-    static func completeEnumerationObserver(
-        _ observer: NSFileProviderEnumerationObserver,
-        account: Account,
-        remoteInterface: RemoteInterface,
-        dbManager: FilesDatabaseManager,
-        numPage: Int,
-        trashItems: [NKTrash],
-        log: any FileProviderLogging
-    ) {
-        var metadatas = [SendableItemMetadata]()
-        for trashItem in trashItems {
-            let metadata = trashItem.toItemMetadata(account: account)
-            dbManager.addItemMetadata(metadata)
-            metadatas.append(metadata)
-        }
-
-        Task { [metadatas] in
-            let logger = FileProviderLogger(category: "Enumerator", log: log)
-
-            do {
-                let items = try await metadatas.toFileProviderItems(account: account, remoteInterface: remoteInterface, dbManager: dbManager, log: log)
-
-                Task { @MainActor in
-                    observer.didEnumerate(items)
-                    logger.info("Did enumerate \(items.count) trash items.")
-                    observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
-                }
-            } catch {
-                logger.error("Finishing enumeration with error.")
-                Task { @MainActor in observer.finishEnumeratingWithError(error) }
-            }
-        }
-    }
-
-    static func completeChangesObserver(
-        _ observer: NSFileProviderChangeObserver,
-        anchor: NSFileProviderSyncAnchor,
-        account: Account,
-        remoteInterface: RemoteInterface,
-        dbManager: FilesDatabaseManager,
-        trashItems: [NKTrash],
-        log: any FileProviderLogging
-    ) async {
+    ///
+    /// Change enumeration completion.
+    ///
+    /// `NKTrash` items do not have an ETag. We assume they cannot be modified while they are in the trash. So we will just check by their `ocId`.
+    /// Newly added items by deletion on the server side or another client are not of interest and we do not want to display them in the local trash.
+    /// In the end, only the remotely and permanently deleted items are of interest.
+    ///
+    static func completeChangesObserver(_ observer: NSFileProviderChangeObserver, anchor: NSFileProviderSyncAnchor, account: Account, dbManager: FilesDatabaseManager, remoteTrashItems: [NKTrash], log: any FileProviderLogging) async {
         let logger = FileProviderLogger(category: "Enumerator", log: log)
-        var newTrashedItems = [NSFileProviderItem]()
+        let localIdentifiers = dbManager.trashedItemMetadatas(account: account).map(\.ocId)
+        let localSet = Set(localIdentifiers)
+        let remoteIdentifiers = remoteTrashItems.map(\.ocId)
+        let remoteSet = Set(remoteIdentifiers)
+        let orphanedSet = localSet.subtracting(remoteSet)
+        let orphanedIdentifiers = orphanedSet.map { NSFileProviderItemIdentifier($0) }
 
-        // NKTrash items do not have an etag ; we assume they cannot be modified while they are in
-        // the trash, so we will just check by ocId
-        var existingTrashedItems = dbManager.trashedItemMetadatas(account: account)
-
-        for trashItem in trashItems {
-            if let existingTrashItemIndex = existingTrashedItems.firstIndex(
-                where: { $0.ocId == trashItem.ocId }
-            ) {
-                existingTrashedItems.remove(at: existingTrashItemIndex)
-                continue
-            }
-
-            let metadata = trashItem.toItemMetadata(account: account)
-            dbManager.addItemMetadata(metadata)
-
-            let item = await Item(
-                metadata: metadata,
-                parentItemIdentifier: .trashContainer,
-                account: account,
-                remoteInterface: remoteInterface,
-                dbManager: dbManager,
-                remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
-                log: log
-            )
-            newTrashedItems.append(item)
-
-            logger.debug("Will enumerate changed trash item.", [.item: metadata.ocId, .name: metadata.fileName])
+        for identifier in orphanedSet {
+            logger.info("Permanently deleting remote trash item which could not be matched with a local one.", [.item: identifier])
+            dbManager.deleteItemMetadata(ocId: identifier)
         }
 
-        let deletedTrashedItemsIdentifiers = existingTrashedItems.map {
-            NSFileProviderItemIdentifier($0.ocId)
-        }
-        if !deletedTrashedItemsIdentifiers.isEmpty {
-            for itemIdentifier in deletedTrashedItemsIdentifiers {
-                dbManager.deleteItemMetadata(ocId: itemIdentifier.rawValue)
-            }
-
-            logger.debug("Will enumerate deleted trashed items: \(deletedTrashedItemsIdentifiers)")
-            observer.didDeleteItems(withIdentifiers: deletedTrashedItemsIdentifiers)
-        }
-
-        if !newTrashedItems.isEmpty {
-            observer.didUpdate(newTrashedItems)
-        }
+        observer.didDeleteItems(withIdentifiers: orphanedIdentifiers)
         observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
+        logger.debug("Finished enumerating remote changes in trash.")
     }
 }

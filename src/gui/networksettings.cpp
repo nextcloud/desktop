@@ -14,10 +14,21 @@
 #include "folderman.h"
 #include "theme.h"
 
+#include <QShowEvent>
 #include <QNetworkProxy>
 #include <QString>
 #include <QList>
+#include <QPalette>
 #include <type_traits>
+
+constexpr auto BACKGROUND_ROLE =
+#ifdef Q_OS_WIN
+    // "light" looks too bright on dark mode on Windows only
+    QPalette::AlternateBase;
+#else
+    // ...and "alternate-base" looks too bright on macOS only.  On Linux/Plasma either one looked fine ...
+    QPalette::Light;
+#endif
 
 namespace OCC {
 
@@ -27,6 +38,14 @@ NetworkSettings::NetworkSettings(const AccountPtr &account, QWidget *parent)
     , _account(account)
 {
     _ui->setupUi(this);
+    setAutoFillBackground(true);
+    setBackgroundRole(BACKGROUND_ROLE);
+    _ui->proxyGroupBox->setAutoFillBackground(true);
+    _ui->proxyGroupBox->setBackgroundRole(BACKGROUND_ROLE);
+    _ui->downloadBox->setAutoFillBackground(true);
+    _ui->downloadBox->setBackgroundRole(BACKGROUND_ROLE);
+    _ui->uploadBox->setAutoFillBackground(true);
+    _ui->uploadBox->setBackgroundRole(BACKGROUND_ROLE);
 
     _ui->manualSettings->setVisible(_ui->manualProxyRadioButton->isChecked());
 
@@ -79,10 +98,8 @@ NetworkSettings::NetworkSettings(const AccountPtr &account, QWidget *parent)
 
     connect(_ui->uploadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->noUploadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
-    connect(_ui->autoUploadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->downloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->noDownloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
-    connect(_ui->autoDownloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->downloadSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->uploadSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &NetworkSettings::saveBWLimitSettings);
 }
@@ -148,19 +165,15 @@ void NetworkSettings::loadBWLimitSettings()
 
     if (useDownloadLimit >= 1) {
         _ui->downloadLimitRadioButton->setChecked(true);
-    } else if (useDownloadLimit == 0) {
-        _ui->noDownloadLimitRadioButton->setChecked(true);
     } else {
-        _ui->autoDownloadLimitRadioButton->setChecked(true);
+        _ui->noDownloadLimitRadioButton->setChecked(true);
     }
     _ui->downloadSpinBox->setValue(downloadLimit);
 
     if (useUploadLimit >= 1) {
         _ui->uploadLimitRadioButton->setChecked(true);
-    } else if (useUploadLimit == 0) {
-        _ui->noUploadLimitRadioButton->setChecked(true);
     } else {
-        _ui->autoUploadLimitRadioButton->setChecked(true);
+        _ui->noUploadLimitRadioButton->setChecked(true);
     }
     _ui->uploadSpinBox->setValue(uploadLimit);
 }
@@ -191,7 +204,9 @@ void NetworkSettings::saveProxySettings()
     if (_account) { // We must be setting up network proxy for a specific account
         _account->setProxySettings(proxyType, host, port, needsAuth, user, password);
         const auto accountState = AccountManager::instance()->accountFromUserId(_account->userIdAtHostWithPort());
-        accountState->freshConnectionAttempt();
+        if (accountState) {
+            accountState->freshConnectionAttempt();
+        }
         AccountManager::instance()->saveAccount(_account);
     }
 }
@@ -208,8 +223,6 @@ void NetworkSettings::saveBWLimitSettings()
         useDownloadLimit = 1;
     } else if (_ui->noDownloadLimitRadioButton->isChecked()) {
         useDownloadLimit = 0;
-    } else if (_ui->autoDownloadLimitRadioButton->isChecked()) {
-        useDownloadLimit = -1;
     } else if (_account) {
         useDownloadLimit = -2;
     }
@@ -218,8 +231,6 @@ void NetworkSettings::saveBWLimitSettings()
         useUploadLimit = 1;
     } else if (_ui->noUploadLimitRadioButton->isChecked()) {
         useUploadLimit = 0;
-    } else if (_ui->autoUploadLimitRadioButton->isChecked()) {
-        useUploadLimit = -1;
     } else if (_account) {
         useUploadLimit = -2;
     }

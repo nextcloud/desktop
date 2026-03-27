@@ -46,7 +46,6 @@ constexpr auto serverVersionC = "serverVersion";
 constexpr auto serverColorC = "serverColor";
 constexpr auto serverTextColorC = "serverTextColor";
 constexpr auto skipE2eeMetadataChecksumValidationC = "skipE2eeMetadataChecksumValidation";
-constexpr auto networkProxySettingC = "networkProxySetting";
 constexpr auto networkProxyTypeC = "networkProxyType";
 constexpr auto networkProxyHostNameC = "networkProxyHostName";
 constexpr auto networkProxyPortC = "networkProxyPort";
@@ -543,10 +542,10 @@ void AccountManager::migrateNetworkSettings(const AccountPtr &account, const QSe
     auto accountProxyNeedsAuth = settings.value(networkProxyNeedsAuthC).toBool();
     auto accountProxyUser = settings.value(networkProxyUserC).toString();
 
-    // Override user settings with global settings if user is set to use global settings
+    // Override user settings with global (QNetworkProxy::DefaultProxy) settings 
+    // if user is set to use global settings
     ConfigFile configFile;
-    auto accountProxySetting = settings.value(networkProxySettingC).toInt();
-    if (accountProxySetting == 0 && configFile.isMigrationInProgress()) {
+    if (accountProxyType == QNetworkProxy::DefaultProxy && configFile.isMigrationInProgress()) {
         accountProxyType = static_cast<QNetworkProxy::ProxyType>(configFile.proxyType());
         accountProxyHost = configFile.proxyHostName();
         accountProxyPort = configFile.proxyPort();
@@ -669,16 +668,27 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     }
     acc->setCredentials(CredentialsFactory::create(authType));
 
-    acc->setUploadLimitSetting(
-        settings.value(
-            networkUploadLimitSettingC,
-            QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::NoLimit)
-        ).value<Account::AccountNetworkTransferLimitSetting>());
-    acc->setDownloadLimitSetting(
-        settings.value(
-            networkDownloadLimitSettingC,
-            QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::NoLimit)
-        ).value<Account::AccountNetworkTransferLimitSetting>());
+    auto uploadLimitSetting = settings.value(
+        networkUploadLimitSettingC,
+        QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::NoLimit)
+    ).value<Account::AccountNetworkTransferLimitSetting>();
+    if (uploadLimitSetting == Account::AccountNetworkTransferLimitSetting::AutoLimit) {
+        qCInfo(lcAccountManager) << "Upload limit setting was set to deprecated auto limit, falling back to unlimited";
+        uploadLimitSetting = Account::AccountNetworkTransferLimitSetting::NoLimit;
+        settings.setValue(networkUploadLimitSettingC, static_cast<int>(uploadLimitSetting));
+    }
+    acc->setUploadLimitSetting(uploadLimitSetting);
+
+    auto downloadLimitSetting = settings.value(
+        networkDownloadLimitSettingC,
+        QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::NoLimit)
+    ).value<Account::AccountNetworkTransferLimitSetting>();
+    if (downloadLimitSetting == Account::AccountNetworkTransferLimitSetting::AutoLimit) {
+        qCInfo(lcAccountManager) << "Download limit setting was set to deprecated auto limit, falling back to unlimited";
+        downloadLimitSetting = Account::AccountNetworkTransferLimitSetting::NoLimit;
+        settings.setValue(networkDownloadLimitSettingC, static_cast<int>(downloadLimitSetting));
+    }
+    acc->setDownloadLimitSetting(downloadLimitSetting);
     acc->setUploadLimit(settings.value(networkUploadLimitC).toInt());
     acc->setDownloadLimit(settings.value(networkDownloadLimitC).toInt());
 

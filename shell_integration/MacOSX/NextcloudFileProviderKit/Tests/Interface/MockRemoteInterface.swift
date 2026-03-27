@@ -572,7 +572,10 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     public var expectedEnumerationPaginationTokens: [String: String] = [:]
     public var forceNextPageOnLastContentPage: Bool = false
 
-    // Handler to track enumerate calls
+    /// Track the number of read operations performed
+    public var readOperationCount: Int = 0
+
+    /// Handler to track enumerate calls
     public var enumerateCallHandler: ((String, EnumerateDepth, Bool, [String], Data?, Account, NKRequestOptions, @escaping (URLSessionTask) -> Void) -> Void)?
 
     public init(
@@ -823,13 +826,12 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         chunkUploadCompleteHandler: @escaping (RemoteFileChunk) -> Void = { _ in }
     ) async -> (
         account: String,
-        fileChunks: [RemoteFileChunk]?,
         file: NKFile?,
         nkError: NKError
     ) {
         guard let remoteUrl = URL(string: remotePath) else {
             print("Invalid remote path!")
-            return ("", nil, nil, .urlError)
+            return ("", nil, .urlError)
         }
 
         // Create temp directory for file and create chunks within it
@@ -887,7 +889,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         file.creationDate = creationDate ?? Date()
         file.date = date as? Date ?? Date()
 
-        return (account.ncKitAccount, totalChunks, file, remoteError)
+        return (account.ncKitAccount, file, remoteError)
     }
 
     public func move(
@@ -1064,6 +1066,9 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, files: [NKFile], data: AFDataResponse<Data>?, error: NKError) {
+        // Increment read operation counter
+        readOperationCount += 1
+
         var remotePath = remotePath
 
         if remotePath.last == "." {

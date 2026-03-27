@@ -46,7 +46,7 @@ struct RemoteInterfaceExtensionTests {
         #expect(result.account == testAccount.ncKitAccount)
     }
 
-    @Test func currentCapabilitiesFetchesOnNoCache() async throws {
+    @Test func currentCapabilitiesFetchesOnNoCache() async {
         await RetrievedCapabilitiesActor.shared.reset()
 
         let (fetchedCaps, fetchedData) = capabilitiesFromMockJSON()
@@ -69,7 +69,7 @@ struct RemoteInterfaceExtensionTests {
         #expect(actorCache?.capabilities == fetchedCaps)
     }
 
-    @Test func currentCapabilitiesFetchesOnStaleCache() async throws {
+    @Test func currentCapabilitiesFetchesOnStaleCache() async {
         await RetrievedCapabilitiesActor.shared.reset()
 
         let (staleCaps, _) = capabilitiesFromMockJSON(jsonString: """
@@ -81,6 +81,14 @@ struct RemoteInterfaceExtensionTests {
                     "message": "OK"
                 },
                 "data": {
+                    "version": {
+                        "major": 31,
+                        "minor": 0,
+                        "micro": 9,
+                        "string": "31.0.9",
+                        "edition": "",
+                        "extendedSupport": false
+                    },
                     "capabilities": {
                         "files": {
                             "undelete": false
@@ -119,7 +127,7 @@ struct RemoteInterfaceExtensionTests {
         #expect((actorCache?.retrievedAt ?? .distantPast) > staleDate)
     }
 
-    @Test func currentCapabilitiesAwaitsAndUsesCache() async throws {
+    @Test func currentCapabilitiesAwaitsAndUsesCache() async {
         await RetrievedCapabilitiesActor.shared.reset()
 
         let (cachedCaps, cachedData) = capabilitiesFromMockJSON()
@@ -155,7 +163,7 @@ struct RemoteInterfaceExtensionTests {
         }
     }
 
-    @Test func supportsTrashTrue() async throws {
+    @Test func supportsTrashTrue() async {
         await RetrievedCapabilitiesActor.shared.reset() // Reset shared actor
 
         // JSON where files.undelete is true (default mockCapabilitiesJSON)
@@ -176,7 +184,7 @@ struct RemoteInterfaceExtensionTests {
         #expect(result == true)
     }
 
-    @Test func supportsTrashFalse() async throws {
+    @Test func supportsTrashFalse() async {
         await RetrievedCapabilitiesActor.shared.reset()
         let jsonNoUndelete = """
         {
@@ -187,6 +195,14 @@ struct RemoteInterfaceExtensionTests {
                     "message": "OK"
                 },
                 "data": {
+                    "version": {
+                        "major": 31,
+                        "minor": 0,
+                        "micro": 9,
+                        "string": "31.0.9",
+                        "edition": "",
+                        "extendedSupport": false
+                    },
                     "capabilities": {
                         "files": {
                             "undelete": false
@@ -215,7 +231,7 @@ struct RemoteInterfaceExtensionTests {
         #expect(result == false)
     }
 
-    @Test func supportsTrashNilCapabilities() async throws {
+    @Test func supportsTrashNilCapabilities() async {
         await RetrievedCapabilitiesActor.shared.reset()
         let remoteInterface = TestableRemoteInterface { acc, _, _ in
             (acc.ncKitAccount, nil, nil, .invalidResponseError)
@@ -231,7 +247,7 @@ struct RemoteInterfaceExtensionTests {
         #expect(!result)
     }
 
-    @Test func supportsTrashNilFilesSection() async throws {
+    @Test func supportsTrashNilFilesSection() async {
         await RetrievedCapabilitiesActor.shared.reset()
         let jsonNoFilesSection = """
         {
@@ -242,6 +258,14 @@ struct RemoteInterfaceExtensionTests {
                     "message": "OK"
                 },
                 "data": {
+                    "version": {
+                        "major": 31,
+                        "minor": 0,
+                        "micro": 9,
+                        "string": "31.0.9",
+                        "edition": "",
+                        "extendedSupport": false
+                    },
                     "capabilities": {
                         "core": {
                             "pollinterval": 60
@@ -269,7 +293,7 @@ struct RemoteInterfaceExtensionTests {
         #expect(!result)
     }
 
-    @Test func supportsTrashHandlesErrorFromCurrentCapabilities() async throws {
+    @Test func supportsTrashHandlesErrorFromCurrentCapabilities() async {
         await RetrievedCapabilitiesActor.shared.reset()
 
         let remoteInterface = TestableRemoteInterface { acc, _, _ in

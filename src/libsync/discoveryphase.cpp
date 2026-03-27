@@ -651,19 +651,30 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
         }
     }
 
-    if (job->signature().isEmpty()) {
-        qCDebug(lcDiscovery) << "Initial signature is empty.";
-        _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
-        emit finished(HttpError{0, tr("Encrypted metadata setup error: initial signature from server is empty.")});
-        deleteLater();
-        return;
+    const auto jsonMetadata = statusCode == 404 ? QByteArray{} : json.toJson(QJsonDocument::Compact);
+    const auto jsonMetadataVersion = FolderMetadata::setupVersionFromExistingMetadata(jsonMetadata);
+    switch (jsonMetadataVersion) {
+    case FolderMetadata::MetadataVersion::VersionUndefined:
+    case FolderMetadata::MetadataVersion::Version1:
+    case FolderMetadata::MetadataVersion::Version1_2:
+        break;
+    case FolderMetadata::MetadataVersion::Version2_0:
+    case FolderMetadata::MetadataVersion::Version2_1:
+        if (job->signature().isEmpty()) {
+            qCDebug(lcDiscovery) << "Initial signature is empty.";
+            _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
+            emit finished(HttpError{0, tr("Encrypted metadata setup error: initial signature from server is empty.")});
+            deleteLater();
+            return;
+        }
+        break;
     }
 
     const auto e2EeFolderMetadata = new FolderMetadata(_account,
-                                                 _remoteRootFolderPath,
-                                                 statusCode == 404 ? QByteArray{} : json.toJson(QJsonDocument::Compact),
-                                                 RootEncryptedFolderInfo(Utility::fullRemotePathToRemoteSyncRootRelative(topLevelFolderPath, _remoteRootFolderPath)),
-                                                 job->signature());
+                                                       _remoteRootFolderPath,
+                                                       jsonMetadata,
+                                                       RootEncryptedFolderInfo(Utility::fullRemotePathToRemoteSyncRootRelative(topLevelFolderPath, _remoteRootFolderPath)),
+                                                       job->signature());
     connect(e2EeFolderMetadata, &FolderMetadata::setupComplete, this, [this, e2EeFolderMetadata] {
         e2EeFolderMetadata->deleteLater();
         if (!e2EeFolderMetadata->isValid()) {

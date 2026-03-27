@@ -45,7 +45,9 @@ public struct TestableRemoteInterface: RemoteInterface, @unchecked Sendable {
         size: Int64,
         response: HTTPURLResponse?,
         remoteError: NKError
-    ) { ("", nil, nil, nil, 0, nil, .invalidResponseError) }
+    ) {
+        ("", nil, nil, nil, 0, nil, .invalidResponseError)
+    }
 
     public func chunkedUpload(
         localPath _: String,
@@ -67,11 +69,10 @@ public struct TestableRemoteInterface: RemoteInterface, @unchecked Sendable {
         chunkUploadCompleteHandler _: @escaping (RemoteFileChunk) -> Void
     ) async -> (
         account: String,
-        fileChunks: [RemoteFileChunk]?,
         file: NKFile?,
         nkError: NKError
     ) {
-        ("", nil, nil, .invalidResponseError)
+        ("", nil, .invalidResponseError)
     }
 
     public func move(
@@ -81,7 +82,9 @@ public struct TestableRemoteInterface: RemoteInterface, @unchecked Sendable {
         account _: Account,
         options _: NKRequestOptions,
         taskHandler _: @Sendable @escaping (URLSessionTask) -> Void
-    ) async -> (account: String, data: Data?, error: NKError) { ("", nil, .invalidResponseError) }
+    ) async -> (account: String, data: Data?, error: NKError) {
+        ("", nil, .invalidResponseError)
+    }
 
     public func downloadAsync(
         serverUrlFileName _: Any,
@@ -149,14 +152,18 @@ public struct TestableRemoteInterface: RemoteInterface, @unchecked Sendable {
         account _: Account,
         options _: NKRequestOptions,
         taskHandler _: @Sendable @escaping (URLSessionTask) -> Void
-    ) async -> (account: String, data: Data?, error: NKError) { ("", nil, .invalidResponseError) }
+    ) async -> (account: String, data: Data?, error: NKError) {
+        ("", nil, .invalidResponseError)
+    }
 
     public func downloadThumbnail(
         url _: URL,
         account _: Account,
         options _: NKRequestOptions,
         taskHandler _: @Sendable @escaping (URLSessionTask) -> Void
-    ) async -> (account: String, data: Data?, error: NKError) { ("", nil, .invalidResponseError) }
+    ) async -> (account: String, data: Data?, error: NKError) {
+        ("", nil, .invalidResponseError)
+    }
 
     public func getUserProfileAsync(
         account _: String,
@@ -173,7 +180,9 @@ public struct TestableRemoteInterface: RemoteInterface, @unchecked Sendable {
 
     public func tryAuthenticationAttempt(
         account _: Account, options _: NKRequestOptions, taskHandler _: @Sendable @escaping (URLSessionTask) -> Void
-    ) async -> AuthenticationAttemptResultState { .connectionError }
+    ) async -> AuthenticationAttemptResultState {
+        .connectionError
+    }
 
     public typealias FetchResult = (account: String, capabilities: Capabilities?, data: Data?, error: NKError)
 
