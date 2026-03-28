@@ -18,6 +18,7 @@
 #include <iostream>
 
 using namespace OCC;
+using namespace Qt::StringLiterals;
 
 static void applyPermissionsFromName(FileInfo &info) {
     static QRegularExpression rx("_PERM_([^_]*)_[^/]*$");
@@ -969,7 +970,64 @@ private slots:
         fakeFolder.remoteModifier().insert("groupFolder/simpleChildFolder/otherFile", 12);
 
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(propfindCounter, 8);
+        QCOMPARE(propfindCounter, 10);
+    }
+
+    void testFolderReadonlyWhenRemotePermissionsWithoutEtagChanged_data()
+    {
+        QTest::addColumn<bool>("isReadOnly");
+        QTest::newRow("G")        << true;
+        QTest::newRow("GS")       << true;
+        QTest::newRow("GR")       << true;
+        QTest::newRow("GRS")      << true;
+        QTest::newRow("GRM")      << true;
+        QTest::newRow("GRMS")     << true;
+        QTest::newRow("GW")       << false;
+        QTest::newRow("GWS")      << false;
+        QTest::newRow("GD")       << false;
+        QTest::newRow("GDS")      << false;
+        QTest::newRow("GN")       << false;
+        QTest::newRow("GV")       << false;
+        QTest::newRow("GC")       << false;
+        QTest::newRow("GK")       << false;
+        QTest::newRow("GWD")      << false;
+        QTest::newRow("GWDS")     << false;
+        QTest::newRow("GDNCV")    << false;
+        QTest::newRow("GDNCVS")   << false;
+        QTest::newRow("GDNVCKR")  << false;
+        QTest::newRow("GDNVCKRS") << false;
+    }
+
+    void testFolderReadonlyWhenRemotePermissionsWithoutEtagChanged()
+    {
+        const auto remotePerm = QString::fromLocal8Bit(QTest::currentDataTag());
+        QFETCH(bool, isReadOnly);
+        auto remotePermChange = isReadOnly ? (remotePerm + "W") : u"G"_s;
+
+        FakeFolder fakeFolder{FileInfo{}};
+
+        const auto isFolderReadOnly = [&fakeFolder](const QString &relativePath) -> bool {
+            return FileSystem::isFolderReadOnly(std::filesystem::path{FileSystem::joinPath(fakeFolder.localPath(), relativePath).toStdWString()});
+        };
+
+        fakeFolder.remoteModifier().mkdir("root");
+        fakeFolder.remoteModifier().mkdir("root/subdir");
+        fakeFolder.remoteModifier().mkdir("root/subdir/subsubdir");
+        auto rootFolder = fakeFolder.remoteModifier().find("root");
+
+        qInfo() << "initial sync with" << remotePerm;
+        setAllPerm(rootFolder, RemotePermissions::fromServerString(remotePerm));
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE_EQ(isFolderReadOnly(u"root"_s), isReadOnly);
+        QCOMPARE_EQ(isFolderReadOnly(u"root/subdir"_s), isReadOnly);
+        QCOMPARE_EQ(isFolderReadOnly(u"root/subdir/subsubdir"_s), isReadOnly);
+
+        qInfo() << "remote update with" << remotePermChange;
+        setAllPerm(rootFolder, RemotePermissions::fromServerString(remotePermChange));
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE_EQ(isFolderReadOnly(u"root"_s), !isReadOnly);
+        QCOMPARE_EQ(isFolderReadOnly(u"root/subdir"_s), !isReadOnly);
+        QCOMPARE_EQ(isFolderReadOnly(u"root/subdir/subsubdir"_s), !isReadOnly);
     }
 };
 

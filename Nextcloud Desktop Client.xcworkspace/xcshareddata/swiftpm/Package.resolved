@@ -1,0 +1,132 @@
+{
+  "originHash" : "c2cd9543bfb69fd791a5e96177ee74f0de08eae497822ac444146e19f840390c",
+  "pins" : [
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire",
+      "state" : {
+        "revision" : "3f99050e75bbc6fe71fc323adabb039756680016",
+        "version" : "5.11.1"
+      }
+    },
+    {
+      "identity" : "nextcloudcapabilitieskit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nextcloud/NextcloudCapabilitiesKit.git",
+      "state" : {
+        "revision" : "e7cc7d2214ff565e08cffd8495465634d2c6998c",
+        "version" : "2.5.0"
+      }
+    },
+    {
+      "identity" : "nextcloudkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nextcloud/NextcloudKit",
+      "state" : {
+        "revision" : "ffae68384f77c260168698a02a69d622cc2e0f0f",
+        "version" : "7.2.6"
+      }
+    },
+    {
+      "identity" : "realm-core",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/realm/realm-core.git",
+      "state" : {
+        "revision" : "4cc46f8607516226e5465062fdacd088fbd94552",
+        "version" : "20.1.4"
+      }
+    },
+    {
+      "identity" : "realm-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/realm/realm-swift.git",
+      "state" : {
+        "revision" : "600e187711e5fa4e8e2c0429cacee27e8e44f112",
+        "version" : "20.0.4"
+      }
+    },
+    {
+      "identity" : "suggestionstextfieldkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/claucambra/SuggestionsTextFieldKit.git",
+      "state" : {
+        "revision" : "b8e267d98a2a6e0c915d6284fddb3f265dc33c25",
+        "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "swift-argument-parser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-argument-parser",
+      "state" : {
+        "revision" : "626b5b7b2f45e1b0b1c6f4a309296d1d21d7311b",
+        "version" : "1.7.1"
+      }
+    },
+    {
+      "identity" : "swift-atomics",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-atomics.git",
+      "state" : {
+        "revision" : "b601256eab081c0f92f059e12818ac1d4f178ff7",
+        "version" : "1.3.0"
+      }
+    },
+    {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections.git",
+      "state" : {
+        "revision" : "6675bc0ff86e61436e615df6fc5174e043e57924",
+        "version" : "1.4.1"
+      }
+    },
+    {
+      "identity" : "swift-nio",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-nio.git",
+      "state" : {
+        "revision" : "bdf004b44f77c56fca752cd1cf243c802f8469c9",
+        "version" : "2.97.0"
+      }
+    },
+    {
+      "identity" : "swift-system",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-system.git",
+      "state" : {
+        "revision" : "7c6ad0fc39d0763e0b699210e4124afd5041c5df",
+        "version" : "1.6.4"
+      }
+    },
+    {
+      "identity" : "swiftformat",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nicklockwood/SwiftFormat",
+      "state" : {
+        "revision" : "c8e50ff2cfc2eab46246c072a9ae25ab656c6ec3",
+        "version" : "0.60.1"
+      }
+    },
+    {
+      "identity" : "swiftyjson",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SwiftyJSON/SwiftyJSON",
+      "state" : {
+        "revision" : "af76cf3ef710b6ca5f8c05f3a31307d44a3c5828",
+        "version" : "5.0.2"
+      }
+    },
+    {
+      "identity" : "swiftyxmlparser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/yahoojapan/SwiftyXMLParser",
+      "state" : {
+        "revision" : "d7a1d23f04c86c1cd2e8f19247dd15d74e0ea8be",
+        "version" : "5.6.0"
+      }
+    }
+  ],
+  "version" : 3
+}

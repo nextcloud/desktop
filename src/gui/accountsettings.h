@@ -27,6 +27,8 @@ class QModelIndex;
 class QNetworkReply;
 class QListWidgetItem;
 class QLabel;
+class QPushButton;
+class QIcon;
 
 namespace OCC {
 
@@ -52,7 +54,13 @@ class AccountSettings : public QWidget
 public:
     explicit AccountSettings(AccountState *accountState, QWidget *parent = nullptr);
     ~AccountSettings() override;
-    [[nodiscard]] QSize sizeHint() const override { return ownCloudGui::settingsDialogSize(); }
+    [[nodiscard]] QSize sizeHint() const override
+    {
+        return {
+            ownCloudGui::settingsDialogSize().width(),
+            QWidget::sizeHint().height()
+        };
+    }
     bool canEncryptOrDecrypt(const FolderStatusModel::SubFolderInfo* folderInfo);
     [[nodiscard]] OCC::AccountState *accountsState() const { return _accountState; }
 
@@ -74,6 +82,9 @@ public slots:
 protected slots:
     void slotAddFolder();
     void slotEnableCurrentFolder(bool terminate = false);
+#ifdef Q_OS_MACOS
+    void slotFixSandboxBookmark(OCC::Folder *folder);
+#endif
     void slotScheduleCurrentFolder();
     void slotScheduleCurrentFolderForceRemoteDiscovery();
     void slotForceSyncCurrentFolder();
@@ -132,6 +143,8 @@ private:
     QAction *addActionToEncryptionMessage(const QString &actionTitle, const QString &actionId);
 
     void setupE2eEncryptionMessage();
+    void setEncryptionMessageIcon(const QIcon &icon);
+    void updateEncryptionMessageActions();
 
     /// Returns the alias of the selected folder, empty string if none
     [[nodiscard]] QString selectedFolderAlias() const;
@@ -149,6 +162,9 @@ private:
     bool _menuShown = false;
 
     QHash<QString, QMetaObject::Connection> _folderConnections;
+    QHash<QAction *, QPushButton *> _encryptionMessageButtons;
+
+    QString _spaceUsageText;
 };
 
 } // namespace OCC

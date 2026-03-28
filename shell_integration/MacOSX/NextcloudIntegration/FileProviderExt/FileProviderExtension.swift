@@ -1,20 +1,47 @@
-/*
- * SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
- */
+//  SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
-import NCDesktopClientSocketKit
 import NextcloudKit
 import NextcloudFileProviderKit
 import OSLog
 
-@objc class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
+///
+/// The file provider replicated extension implementation.
+///
+@objc final class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, @unchecked Sendable {
+    ///
+    /// The file provider domain managed by this file provider extension implementation.
+    ///
     let domain: NSFileProviderDomain
 
     let keychain: Keychain
     let log: any FileProviderLogging
     let logger: FileProviderLogger
+
+    ///
+    /// The file provider manager for the domain managed by this extension implementation.
+    ///
+    let manager: NSFileProviderManager?
+
+    // MARK: XPC
+
+    ///
+    /// The remote object proxy to interact with the app.
+    ///
+    /// This is updated by the `NSXPCListenerDelegate` implementation.
+    ///
+    var app: (any AppProtocol)?
+
+    ///
+    /// Connections established by the `NSXPCListenerDelegate` extension on this type.
+    ///
+    /// The individual interr
+    ///
+    var connections = Set<NSXPCConnection>()
+
+    var listener = NSXPCListener.anonymous()
+    let serviceName = NSFileProviderServiceName("com.nextcloud.desktopclient.ClientCommunicationService")
 
     ///
     /// NextcloudKit instance used by this file provider extension object.
@@ -23,21 +50,8 @@ import OSLog
 
     var ncAccount: Account?
     var dbManager: FilesDatabaseManager?
-    var changeObserver: RemoteChangeObserver?
     var ignoredFiles: IgnoredFilesMatcher?
     lazy var ncKitBackground = NKBackground(nkCommonInstance: ncKit.nkCommonInstance)
-
-    lazy var socketClient: LocalSocketClient? = {
-        guard let containerUrl = FileManager.default.applicationGroupContainer() else {
-            logger.fault("Won't start socket client, no container URL available!")
-            return nil;
-        }
-
-        let socketPath = containerUrl.appendingPathComponent("fps", conformingTo: .archive)
-        let lineProcessor = FileProviderSocketLineProcessor(delegate: self, log: log)
-
-        return LocalSocketClient(socketPath: socketPath.path, lineProcessor: lineProcessor)
-    }()
 
     var syncActions = Set<UUID>()
     var errorActions = Set<UUID>()
@@ -62,6 +76,7 @@ import OSLog
         // application extension process, call `FileProviderExtension.init(domain:)` to instantiate
         // the extension for that domain, and call methods on the instance.
         self.domain = domain
+        self.manager = NSFileProviderManager(for: domain)
 
         // Set up logging.
         self.log = FileProviderLog(fileProviderDomainIdentifier: domain.identifier)
@@ -82,7 +97,6 @@ import OSLog
         self.keychain = Keychain(log: log)
 
         super.init()
-        socketClient?.start()
     }
 
     func invalidate() {
@@ -141,30 +155,17 @@ import OSLog
         let progress = Progress()
         Task {
             progress.totalUnitCount = 1
-            if let item = await Item.storedItem(
-                identifier: identifier,
-                account: ncAccount,
-                remoteInterface: ncKit,
-                dbManager: dbManager,
-                log: log
-            ) {
+            if let item = await Item.storedItem(identifier: identifier, account: ncAccount, remoteInterface: ncKit, dbManager: dbManager, log: log), item.metadata.deleted == false {
                 progress.completedUnitCount = 1
                 completionHandler(item, nil)
             } else {
-                completionHandler(
-                    nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
-                )
+                completionHandler(nil, NSFileProviderError(.noSuchItem))
             }
         }
         return progress
     }
 
-    func fetchContents(
-        for itemIdentifier: NSFileProviderItemIdentifier,
-        version requestedVersion: NSFileProviderItemVersion?, 
-        request: NSFileProviderRequest,
-        completionHandler: @escaping (URL?, NSFileProviderItem?, Error?) -> Void
-    ) -> Progress {
+    func fetchContents(for itemIdentifier: NSFileProviderItemIdentifier, version requestedVersion: NSFileProviderItemVersion?,  request: NSFileProviderRequest, completionHandler: @escaping (URL?, NSFileProviderItem?, Error?) -> Void) -> Progress {
         let actionId = UUID()
         insertSyncAction(actionId)
         logger.debug("Received request to fetch contents of item.", [.item: itemIdentifier, .request: request])
@@ -194,33 +195,21 @@ import OSLog
             return Progress()
         }
 
-
         let progress = Progress()
-        Task {
-            guard let item = await Item.storedItem(
-                identifier: itemIdentifier,
-                account: ncAccount,
-                remoteInterface: ncKit,
-                dbManager: dbManager,
-                log: log
-            ) else {
-                logger.error("Not fetching contents for item because item was not found.", [.item: itemIdentifier])
 
-                completionHandler(
-                    nil,
-                    nil,
-                    NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
-                )
+        Task {
+            guard let item = await Item.storedItem(identifier: itemIdentifier, account: ncAccount, remoteInterface: ncKit, dbManager: dbManager, log: log) else {
+                logger.error("Not fetching contents for item because item was not found.", [.item: itemIdentifier])
+                completionHandler(nil, nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier))
                 insertErrorAction(actionId)
                 return
             }
 
-            let (localUrl, updatedItem, error) = await item.fetchContents(
-                domain: self.domain, progress: progress, dbManager: dbManager
-            )
+            let (localUrl, updatedItem, error) = await item.fetchContents(domain: self.domain, progress: progress, dbManager: dbManager)
             removeSyncAction(actionId)
             completionHandler(localUrl, updatedItem, error)
         }
+
         return progress
     }
 
@@ -283,16 +272,8 @@ import OSLog
             if error == nil {
                 removeSyncAction(actionId)
             } else {
-                // Do not consider the exclusion of a lock file a synchronization error resulting in a misleading status report because exclusion is expected.
-                // Though, the exclusion error code is only available starting with macOS 13, hence this logic reads a bit more cumbersome.
-
-                if #available(macOS 13.0, *) {
-                    if isLockFileName(itemTemplate.filename), let fileProviderError = error as? NSFileProviderError, fileProviderError.code == .excludedFromSync {
-                        removeSyncAction(actionId)
-                    } else {
-                        insertErrorAction(actionId)
-                        signalEnumerator(completionHandler: { _ in })
-                    }
+                if let fileProviderError = error as? NSFileProviderError, fileProviderError.code == .excludedFromSync {
+                    removeSyncAction(actionId)
                 } else {
                     insertErrorAction(actionId)
                     signalEnumerator(completionHandler: { _ in })
@@ -480,7 +461,7 @@ import OSLog
             throw NSFileProviderError(.cannotSynchronize)
         }
 
-        return Enumerator(
+        return try Enumerator(
             enumeratedItemIdentifier: containerItemIdentifier,
             account: ncAccount,
             remoteInterface: ncKit,
@@ -503,13 +484,13 @@ import OSLog
             return
         }
 
-        guard let fpManager = NSFileProviderManager(for: domain) else {
+        guard let manager = manager else {
             logger.error("Could not get file provider manager for domain: \(self.domain.displayName)")
             completionHandler()
             return
         }
 
-        let materialisedEnumerator = fpManager.enumeratorForMaterializedItems()
+        let materialisedEnumerator = manager.enumeratorForMaterializedItems()
         let materialisedObserver = MaterializedEnumerationObserver(account: ncAccount, dbManager: dbManager, log: log) { _, _ in
             completionHandler()
         }
@@ -521,11 +502,166 @@ import OSLog
     // MARK: - Helper functions
 
     func signalEnumerator(completionHandler: @escaping (_ error: Error?) -> Void) {
-        guard let fpManager = NSFileProviderManager(for: domain) else {
+        guard let manager = manager else {
             logger.error("Could not get file provider manager for domain, could not signal enumerator. This might lead to future conflicts.")
             return
         }
 
-        fpManager.signalEnumerator(for: .workingSet, completionHandler: completionHandler)
+        manager.signalEnumerator(for: .workingSet, completionHandler: completionHandler)
+    }
+
+    private func signalEnumeratorAfterAccountSetup() {
+        guard let manager = manager else {
+            logger.error("Could not get file provider manager for domain \(self.domain.displayName), cannot notify after account setup")
+            return
+        }
+
+        assert(ncAccount != nil)
+
+        manager.signalErrorResolved(NSFileProviderError(.notAuthenticated)) { error in
+            if error != nil {
+                self.logger.error("Error resolving not authenticated, received error: \(error!.localizedDescription)")
+            }
+        }
+
+        logger.debug("Signalling enumerators for user \(self.ncAccount!.username) at server \(self.ncAccount!.serverUrl)")
+
+        notifyChange()
+    }
+
+    ///
+    /// - Parameters:
+    ///     - completionHandler: An optional completion handler which will be provided an error, if any occurred. Omitting this completion handler is fine, but you won't get notified of errors.
+    ///
+    @objc func setupDomainAccount(
+        user: String,
+        userId: String,
+        serverUrl: String,
+        password: String,
+        userAgent: String = "Nextcloud-macOS/FileProviderExt",
+        completionHandler: ((NSError?) -> Void)? = nil
+    ) {
+        let account = Account(user: user, id: userId, serverUrl: serverUrl, password: password)
+
+        logger.info("Setting up domain account for user: \(user), userId: \(userId), serverUrl: \(serverUrl), password: \(password.isEmpty ? "<empty>" : "<not-empty>"), ncKitAccount: \(account.ncKitAccount)")
+
+        guard account != ncAccount else {
+            logger.info("Cancelling domain account setup because of receiving the same account information repeatedly!")
+            completionHandler?(NSError(.invalidCredentials))
+            return
+        }
+
+        guard password.isEmpty == false else {
+            logger.info("Cancelling domain account setup because \"password\" is an empty string!")
+            completionHandler?(NSError(.missingAccountInformation))
+            return
+        }
+
+        guard serverUrl.isEmpty == false else {
+            logger.info("Cancelling domain account setup because \"serverUrl\" is an empty string!")
+            completionHandler?(NSError(.missingAccountInformation))
+            return
+        }
+
+        guard user.isEmpty == false else {
+            logger.info("Cancelling domain account setup because \"user\" is an empty string!")
+            completionHandler?(NSError(.missingAccountInformation))
+            return
+        }
+
+        guard userId.isEmpty == false else {
+            logger.info("Cancelling domain account setup because \"userId\" is an empty string!")
+            completionHandler?(NSError(.missingAccountInformation))
+            return
+        }
+
+        // Store account information independently from the main app for later access.
+        config.serverUrl = serverUrl
+        config.user = user
+        config.userId = userId
+        keychain.savePassword(password, for: user, on: serverUrl)
+        NextcloudKit.clearAccountErrorState(for: account.ncKitAccount)
+
+        Task {
+            ncKit.appendSession(
+                account: account.ncKitAccount,
+                urlBase: serverUrl,
+                user: user,
+                userId: userId,
+                password: password,
+                userAgent: userAgent,
+                groupIdentifier: ""
+            )
+
+            var authAttemptState = AuthenticationAttemptResultState.connectionError // default
+
+            // Retry a few times if we have a connection issue
+            let options = NKRequestOptions(checkInterceptor: false)
+
+            for authTimeout in AuthenticationTimeouts {
+                authAttemptState = await ncKit.tryAuthenticationAttempt(account: account, options: options)
+
+                guard authAttemptState == .connectionError else {
+                    break
+                }
+
+                logger.info("\(user) authentication try timed out. Trying again soon.")
+                try? await Task.sleep(nanoseconds: authTimeout)
+            }
+
+            switch (authAttemptState) {
+                case .authenticationError:
+                    logger.error("Authentication of \"\(user)\" failed due to bad credentials, cancelling domain account setup!")
+                    completionHandler?(NSError(.invalidCredentials))
+                    return
+                case .connectionError:
+                    // Despite multiple connection attempts we are still getting connection issues.
+                    // Connection error should be provided
+                    logger.error("Authentication of \"\(user)\" try failed, no connection.")
+                    completionHandler?(NSError(.connection))
+                    return
+                case .success:
+                    logger.info("Successfully authenticated! Nextcloud account set up in file provider extension. User: \(user) at server: \(serverUrl)")
+            }
+
+            Task { @MainActor in
+                ncAccount = account
+                dbManager = FilesDatabaseManager(account: account, fileProviderDomainIdentifier: domain.identifier, log: log)
+
+                ncKit.setup(groupIdentifier: Bundle.main.bundleIdentifier!)
+                completionHandler?(nil)
+                signalEnumeratorAfterAccountSetup()
+            }
+        }
+    }
+
+    func updatedSyncStateReporting(oldActions: Set<UUID>) {
+        actionsLock.lock()
+
+        guard oldActions.isEmpty != syncActions.isEmpty else {
+            logger.debug("Cancelling synchronization state report due to lack of state change.")
+            actionsLock.unlock()
+            return
+        }
+
+        var argument: String?
+
+        if oldActions.isEmpty, !syncActions.isEmpty {
+            argument = "SYNC_STARTED"
+        } else if !oldActions.isEmpty, syncActions.isEmpty {
+            argument = errorActions.isEmpty ? "SYNC_FINISHED" : "SYNC_FAILED"
+            errorActions = []
+        }
+
+        actionsLock.unlock()
+
+        guard let argument else {
+            logger.error("State argument is nil!")
+            return
+        }
+
+        logger.debug("Reporting synchronization state.", [.name: argument])
+
+        app?.reportSyncStatus(argument, forDomainIdentifier: domain.identifier.rawValue)
     }
 }

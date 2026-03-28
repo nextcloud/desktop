@@ -24,7 +24,10 @@ public class MockRemoteItem: Equatable {
     public var locked: Bool
     public var lockOwner: String
     public var lockTimeOut: Date?
-    public var size: Int64 { Int64(data?.count ?? 0) }
+    public var size: Int64 {
+        Int64(data?.count ?? 0)
+    }
+
     public var account: String
     public var username: String
     public var userId: String

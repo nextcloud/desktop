@@ -114,6 +114,7 @@ private:
     int _crashLogIndex = 0;
     QFile _permanentDeleteLogFile;
     QScopedPointer<QTextStream> _permanentDeleteLogStream;
+    bool _didShowLogWriteError = false;
 };
 
 } // namespace OCC

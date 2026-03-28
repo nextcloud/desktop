@@ -15,6 +15,8 @@
 #include <QTest>
 #include <QSignalSpy>
 
+using namespace Qt::StringLiterals;
+
 class TestLockFile : public QObject
 {
     Q_OBJECT
@@ -870,6 +872,92 @@ private slots:
         QCOMPARE(fileRecord._lockstate._lockTimeout, 1800);
 
         QVERIFY(fakeFolder.syncOnce());
+    }
+
+    void testUploadLockedFilesInDeletedFolder()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        int nGET = 0, nPUT = 0;
+        auto verifyLackOfTokenIfHeader = false;
+        QObject parent;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData) -> QNetworkReply * {
+            Q_UNUSED(outgoingData)
+            Q_UNUSED(request)
+
+            if (op == QNetworkAccessManager::PutOperation) {
+                ++nPUT;
+                if (verifyLackOfTokenIfHeader) {
+                    if (request.hasRawHeader("If")) {
+                        Q_ASSERT(false);
+                    }
+                }
+            } else if (op == QNetworkAccessManager::GetOperation) {
+                ++nGET;
+            }
+
+            return nullptr;
+        });
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        const auto cleanUpHelper = [&nGET, &nPUT, &completeSpy] () {
+            nGET = 0;
+            nPUT = 0;
+            completeSpy.clear();
+        };
+
+        fakeFolder.localModifier().mkdir(u"parent"_s);
+
+        cleanUpHelper();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nGET, 0);
+        QCOMPARE(nPUT, 0);
+
+        fakeFolder.localModifier().mkdir(u"parent/child"_s);
+
+        cleanUpHelper();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nGET, 0);
+        QCOMPARE(nPUT, 0);
+
+        fakeFolder.localModifier().insert(u"parent/child/hello.odt"_s);
+
+        cleanUpHelper();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nGET, 0);
+        QCOMPARE(nPUT, 1);
+
+        OCC::SyncJournalFileRecord record;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(u"parent/child/hello.odt"_s, &record));
+        QVERIFY(record.isValid());
+        record._lockstate._locked = true;
+        record._lockstate._lockToken = u"azertyuiop"_s;
+        record._lockstate._lockOwnerType = static_cast<qint64>(OCC::SyncFileItem::LockOwnerType::TokenLock);
+        QVERIFY(fakeFolder.syncJournal().setFileRecord(record));
+        qDebug() << fakeFolder.localPath() + u"parent/child/.~lock.hello.odt#"_s;
+        QFile newLockFile(fakeFolder.localPath() + u"parent/child/.~lock.hello.odt#"_s);
+        newLockFile.open(QFile::OpenModeFlag::NewOnly);
+        OCC::FileSystem::setFileHidden(fakeFolder.localPath() + u"parent/child/.~lock.hello.odt#"_s, true);
+
+        fakeFolder.remoteModifier().remove(u"parent/child"_s);
+        fakeFolder.localModifier().insert(u"parent/child/hello.odt"_s, 128);
+
+        cleanUpHelper();
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem, {u"parent"_s, u"parent/child"_s, u"parent/child/.~lock.hello.odt#"_s, u"parent/child/hello.odt"_s});
+        QVERIFY(!fakeFolder.syncOnce());
+        QCOMPARE(nGET, 0);
+        QCOMPARE(nPUT, 1);
+        fakeFolder.syncJournal().wipeErrorBlacklistCategory(OCC::SyncJournalErrorBlacklistRecord::Normal);
+
+        fakeFolder.remoteModifier().mkdir(u"parent/child"_s);
+        cleanUpHelper();
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem, {u"parent"_s, u"parent/child"_s, u"parent/child/.~lock.hello.odt#"_s, u"parent/child/hello.odt"_s});
+        verifyLackOfTokenIfHeader = true;
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nGET, 0);
+        QCOMPARE(nPUT, 1);
     }
 };
 

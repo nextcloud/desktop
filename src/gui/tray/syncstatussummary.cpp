@@ -14,7 +14,7 @@
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "gui/macOS/fileprovider.h"
-#include "gui/macOS/fileprovidersocketserver.h"
+#include "gui/macOS/fileproviderservice.h"
 #include "gui/macOS/fileprovidersettingscontroller.h"
 #endif
 
@@ -36,6 +36,31 @@ OCC::SyncResult::Status determineSyncStatus(const OCC::SyncResult &syncResult)
     }
     return status;
 }
+
+bool hasConfiguredSyncSource(const OCC::AccountStatePtr &accountState)
+{
+    if (!accountState) {
+        return false;
+    }
+    
+ #ifdef BUILD_FILE_PROVIDER_MODULE
+    const auto account = accountState->account();
+    const auto userIdAtHostWithPort = account->userIdAtHostWithPort();
+    if (OCC::Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(userIdAtHostWithPort)) {
+        return true;
+    }
+#endif
+
+    for (const auto &folder : OCC::FolderMan::instance()->map()) {
+        if (folder->accountState() != accountState.data()) {
+            continue;
+        }
+        
+        return true;
+    }
+
+    return false;
+}
 }
 
 namespace OCC {
@@ -49,7 +74,7 @@ SyncStatusSummary::SyncStatusSummary(QObject *parent)
     connect(folderMan, &FolderMan::folderListChanged, this, &SyncStatusSummary::onFolderListChanged);
     connect(folderMan, &FolderMan::folderSyncStateChange, this, &SyncStatusSummary::onFolderSyncStateChanged);
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    connect(Mac::FileProvider::instance()->socketServer(), &Mac::FileProviderSocketServer::syncStateChanged, this, &SyncStatusSummary::onFileProviderDomainSyncStateChanged);
+    connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::syncStateChanged, this, &SyncStatusSummary::onFileProviderDomainSyncStateChanged);
 #endif
 }
 
@@ -249,7 +274,9 @@ void SyncStatusSummary::onFileProviderDomainSyncStateChanged(const AccountPtr &a
     case SyncResult::SetupError:
     case SyncResult::Problem:
     case SyncResult::Undefined:
-        _fileProviderDomainsWithErrors.insert(account->userIdAtHostWithPort());
+        _fileProviderDomainsWithErrors.erase(account->userIdAtHostWithPort());
+        state = SyncResult::Success;
+        break;
     case SyncResult::SyncRunning:
     case SyncResult::NotYetStarted:
     case SyncResult::Paused:
@@ -406,6 +433,9 @@ void SyncStatusSummary::setSyncStateToConnectedState()
     if (_accountState && !_accountState->isConnected()) {
         setSyncStatusString(tr("Offline"));
         setSyncIcon(Theme::instance()->folderOffline());
+    } else if (!hasConfiguredSyncSource(_accountState)) {
+        setSyncStatusString(tr("No synchronisation configured"));
+        setSyncIcon(Theme::instance()->pause());
     } else {
         setSyncStatusString(tr("All synced!"));
         setSyncIcon(Theme::instance()->syncStatusOk());
@@ -429,6 +459,10 @@ void SyncStatusSummary::initSyncState()
 {
     auto syncStateFallbackNeeded = true;
     for (const auto &folder : FolderMan::instance()->map()) {
+        if (!folder || folder->accountState() != _accountState.data()) {
+            continue;
+        }
+
         onFolderSyncStateChanged(folder);
         syncStateFallbackNeeded = false;
     }
@@ -439,7 +473,7 @@ void SyncStatusSummary::initSyncState()
         const auto userIdAtHostWithPort = account->userIdAtHostWithPort();
 
         if (Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(userIdAtHostWithPort)) {
-            const auto lastKnownSyncState = Mac::FileProvider::instance()->socketServer()->latestReceivedSyncStatusForAccount(account);
+            const auto lastKnownSyncState = Mac::FileProvider::instance()->service()->latestReceivedSyncStatusForAccount(account);
             onFileProviderDomainSyncStateChanged(account, lastKnownSyncState);
             syncStateFallbackNeeded = false;
         }

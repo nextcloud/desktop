@@ -5,6 +5,9 @@
 
 #include "fileproviderxpc_mac_utils.h"
 
+#import "AppProtocol.h"
+#import "fileprovider.h"
+
 #include <QLoggingCategory>
 
 #include "gui/accountmanager.h"
@@ -59,34 +62,30 @@ NSArray<NSFileProviderManager *> *getDomainManagers()
 // TODO: This should work for all service names, not just the communication service!
 NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *getFileProviderServices(NSArray<NSFileProviderManager *> *managers)
 {
-    if (@available(macOS 13.0, *)) {
-        NSMutableArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *const fpServices = NSMutableArray.array;
-        dispatch_group_t group = dispatch_group_create();
+    NSMutableArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *const fpServices = NSMutableArray.array;
+    dispatch_group_t group = dispatch_group_create();
 
-        for (NSFileProviderManager *const manager in managers) {
-            dispatch_group_enter(group);
+    for (NSFileProviderManager *const manager in managers) {
+        dispatch_group_enter(group);
 
-            [manager getServiceWithName:nsClientCommunicationServiceName
-                         itemIdentifier:NSFileProviderRootContainerItemIdentifier
-                      completionHandler:^(NSFileProviderService *const service, NSError *const error) {
+        [manager getServiceWithName:nsClientCommunicationServiceName
+                     itemIdentifier:NSFileProviderRootContainerItemIdentifier
+                  completionHandler:^(NSFileProviderService *const service, NSError *const error) {
 
-                if (error != nil) {
-                    qCWarning(lcFileProviderXPCUtils) << "Failed to resolve service for file provider domain: " << error;
-                } else if (service == nil) {
-                    qCWarning(lcFileProviderXPCUtils) << "Service is nil!";
-                } else {
-                    [fpServices addObject:@{service.name: service}];
-                }
+            if (error != nil) {
+                qCWarning(lcFileProviderXPCUtils) << "Failed to resolve service for file provider domain: " << error;
+            } else if (service == nil) {
+                qCWarning(lcFileProviderXPCUtils) << "Service is nil!";
+            } else {
+                [fpServices addObject:@{service.name: service}];
+            }
 
-                dispatch_group_leave(group);
-            }];
-            dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-        }
-        return fpServices.copy;
-    } else {
-        const auto domainUrls = FileProviderXPCUtils::getDomainUrlsForManagers(managers);
-        return FileProviderXPCUtils::getFileProviderServicesAtUrls(domainUrls);
+            dispatch_group_leave(group);
+        }];
     }
+
+    dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+    return fpServices.copy;
 }
 
 NSArray<NSURL *> *getDomainUrlsForManagers(NSArray<NSFileProviderManager *> *managers)
@@ -251,12 +250,22 @@ NSString *getFileProviderDomainIdentifier(NSObject<ClientCommunicationProtocol> 
     return domainIdentifier;
 }
 
-QHash<QString, void*> processClientCommunicationConnections(NSArray<NSXPCConnection *> *const connections)
+QHash<QString, void*> processClientCommunicationConnections(NSArray<NSXPCConnection *> *const connections, OCC::Mac::FileProviderService *const service)
 {
     QHash<QString, void*> clientCommServices;
 
     for (NSXPCConnection * const connection in connections) {
+        const auto exportedInterfaceProtocol = @protocol(AppProtocol);
         const auto remoteObjectInterfaceProtocol = @protocol(ClientCommunicationProtocol);
+        connection.exportedInterface = [NSXPCInterface interfaceWithProtocol:exportedInterfaceProtocol];
+        
+        // Set the FileProviderService delegate as the exported object
+        if (service) {
+            connection.exportedObject = (id<AppProtocol>)service->delegate();
+        } else {
+            qCWarning(lcFileProviderXPCUtils) << "FileProviderService is null, cannot set exported object";
+        }
+        
         connection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:remoteObjectInterfaceProtocol];
         configureFileProviderConnection(connection);
 

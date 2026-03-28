@@ -4,20 +4,20 @@
  */
 
 #import <Cocoa/Cocoa.h>
-#import <QString>
+#import <QUrl>
 
 #include "application.h"
 
 namespace OCC
 {
 
-QString socketApiSocketPath()
+QUrl socketApiSocketUrl()
 {
     NSString *appGroupId = [NSString stringWithFormat:@"%@.%@", @DEVELOPMENT_TEAM, @APPLICATION_REV_DOMAIN];
     NSURL *container = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroupId];
-    NSURL *socket = [container URLByAppendingPathComponent:@"s" isDirectory:false];
+    NSURL *socket = [container URLByAppendingPathComponent:@"s" isDirectory:NO];
 
-    return QString::fromNSString(socket.path);
+    return QUrl::fromNSURL(socket);
 }
 
 }

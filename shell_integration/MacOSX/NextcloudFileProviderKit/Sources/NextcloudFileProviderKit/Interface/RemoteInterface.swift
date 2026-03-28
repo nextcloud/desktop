@@ -63,7 +63,6 @@ public protocol RemoteInterface: Sendable {
         chunkUploadCompleteHandler: @escaping (_ fileChunk: RemoteFileChunk) -> Void
     ) async -> (
         account: String,
-        fileChunks: [RemoteFileChunk]?,
         file: NKFile?,
         nkError: NKError
     )

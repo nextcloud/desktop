@@ -40,7 +40,10 @@ void FileProviderXPC::connectToFileProviderDomains()
     const auto managers = FileProviderXPCUtils::getDomainManagers();
     const auto fpServices = FileProviderXPCUtils::getFileProviderServices(managers);
     const auto connections = FileProviderXPCUtils::connectToFileProviderServices(fpServices);
-    _clientCommServices = FileProviderXPCUtils::processClientCommunicationConnections(connections);
+    
+    // Get the FileProviderService singleton from FileProvider
+    const auto fileProviderService = FileProvider::instance()->service();
+    _clientCommServices = FileProviderXPCUtils::processClientCommunicationConnections(connections, fileProviderService);
 }
 
 void FileProviderXPC::authenticateFileProviderDomains()
@@ -137,6 +140,7 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
     }
 
     const auto service = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(fileProviderDomainIdentifier);
+
     if (service == nil) {
         qCWarning(lcFileProviderXPC) << "Could not get service for file provider domain" << fileProviderDomainIdentifier;
         return false;
@@ -171,7 +175,8 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
             const auto manager = [NSFileProviderManager managerForDomain:domain];
             const auto fpServices = FileProviderXPCUtils::getFileProviderServices(@[manager]);
             const auto connections = FileProviderXPCUtils::connectToFileProviderServices(fpServices);
-            const auto services = FileProviderXPCUtils::processClientCommunicationConnections(connections);
+            const auto fileProviderService = FileProvider::instance()->service();
+            const auto services = FileProviderXPCUtils::processClientCommunicationConnections(connections, fileProviderService);
             _clientCommServices.insert(services);
         }
 
@@ -183,6 +188,31 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
         }
     }
     return response;
+}
+
+bool FileProviderXPC::fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier) const
+{
+    qCInfo(lcFileProviderXPC) << "Checking for dirty user data in file provider domain" << fileProviderDomainIdentifier;
+
+    const auto service = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(fileProviderDomainIdentifier);
+
+    if (service == nil) {
+        qCWarning(lcFileProviderXPC) << "Could not get service for file provider domain" << fileProviderDomainIdentifier;
+        return false;
+    }
+
+    __block auto hasDirtyUserData = false;
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
+    [service hasDirtyUserDataWithCompletionHandler:^(BOOL dirty) {
+        hasDirtyUserData = dirty;
+        dispatch_semaphore_signal(semaphore);
+    }];
+
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    qCInfo(lcFileProviderXPC) << "File provider domain" << fileProviderDomainIdentifier << (hasDirtyUserData ? "has" : "does not have") << "dirty user data";
+
+    return hasDirtyUserData;
 }
 
 void FileProviderXPC::setIgnoreList() const

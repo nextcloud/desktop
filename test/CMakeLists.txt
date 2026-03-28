@@ -161,7 +161,9 @@ if(NOT BUILD_FILE_PROVIDER_MODULE)
     nextcloud_add_test(AccountSettings)
 endif()
 
+nextcloud_add_test(NetworkSettings)
 nextcloud_add_test(UpdateChannel)
+nextcloud_add_test(FileActionsModel)
 
 configure_file(test_journal.db "${PROJECT_BINARY_DIR}/bin/test_journal.db" COPYONLY)
 

@@ -23,27 +23,40 @@ Page {
     title: qsTr("Virtual files settings")
 
     background: Rectangle {
-        color: palette.base
+        color: palette.light
         border.width: root.showBorder ? Style.normalBorderWidth : 0
-        border.color: root.palette.dark
+        border.color: palette.mid
     }
 
-    padding: Style.standardSpacing
+    leftPadding: 0
+    rightPadding: 0
+    topPadding: 12 // Style.standardSpacing is 10, the QtWidgets layout uses 12.  set it here as well to avoid a rough cutoff
+    bottomPadding: 12
+    // 1. Tell the Page how tall it actually is
+    implicitHeight: rootColumn.implicitHeight + topPadding + bottomPadding
 
     ColumnLayout {
         id: rootColumn
 
-        anchors {
-            top: parent.top
-            left: parent.left
-            right: parent.right
-        }
+        anchors.left: parent.left
+        anchors.right: parent.right
+        spacing: Style.standardSpacing
 
-        CheckBox {
-            id: vfsEnabledCheckBox
-            text: qsTr("Enable virtual files")
-            checked: root.controller.vfsEnabledForAccount(root.accountUserIdAtHost)
-            onClicked: root.controller.setVfsEnabledForAccount(root.accountUserIdAtHost, checked)
+        RowLayout {
+            Layout.fillWidth: true
+
+            EnforcedPlainTextLabel {
+                Layout.fillWidth: true
+                horizontalAlignment: Text.AlignLeft
+                wrapMode: Text.WordWrap
+                text: qsTr("Virtual files appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. Virtual files and classic sync can not be used at the same time.")
+            }
+            Switch {
+                id: vfsEnabledCheckBox
+                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                checked: root.controller.vfsEnabledForAccount(root.accountUserIdAtHost)
+                onClicked: root.controller.setVfsEnabledForAccount(root.accountUserIdAtHost, checked)
+            }
         }
     }
 }

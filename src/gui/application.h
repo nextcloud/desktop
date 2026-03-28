@@ -7,22 +7,20 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include <QApplication>
-#include <QPointer>
-#include <QQueue>
-#include <QTimer>
-#include <QElapsedTimer>
-#include <QNetworkInformation>
-
-#include "qtsingleapplication.h"
-
-#include "syncresult.h"
-#include "logbrowser.h"
 #include "owncloudgui.h"
-#include "connectionvalidator.h"
 #include "progressdispatcher.h"
 #include "clientproxy.h"
 #include "folderman.h"
+
+#include <KDSingleApplication>
+
+#include <QApplication>
+#include <QPointer>
+#include <QQueue>
+#include <QSet>
+#include <QTimer>
+#include <QElapsedTimer>
+#include <QNetworkInformation>
 
 class QMessageBox;
 class QSystemTrayIcon;
@@ -37,11 +35,18 @@ class Folder;
 class ShellExtensionsServer;
 class SslErrorDialog;
 
+#if defined(Q_OS_MACOS)
+namespace Mac {
+class FinderSyncXPC;
+class FinderSyncService;
+}
+#endif
+
 /**
  * @brief The Application class
  * @ingroup gui
  */
-class Application : public SharedTools::QtSingleApplication
+class Application : public QApplication
 {
     Q_OBJECT
 public:
@@ -56,9 +61,17 @@ public:
     bool versionOnly(); // only display the version?
     void showVersion();
 
+    [[nodiscard]] bool isRunning() const;
+
+    bool sendMessage(const QString &message);
+
     void showMainDialog();
 
     [[nodiscard]] ownCloudGui *gui() const;
+
+#if defined(Q_OS_MACOS)
+    [[nodiscard]] Mac::FinderSyncXPC *finderSyncXPC() const;
+#endif
 
     bool event(QEvent *event) override;
 
@@ -87,7 +100,7 @@ signals:
     void systemPaletteChanged();
 
 protected slots:
-    void slotParseMessage(const QString &, QObject *);
+    void slotParseMessage(const QByteArray &msg);
     void slotCheckConnection();
     void slotCleanup();
     void slotAccountStateAdded(OCC::AccountState *accountState);
@@ -111,6 +124,8 @@ private:
     bool configVersionMigration();
 
     QPointer<ownCloudGui> _gui;
+
+    KDSingleApplication _singleApp;
 
     Theme *_theme;
 
@@ -143,6 +158,11 @@ private:
     QScopedPointer<FolderMan> _folderManager;
 #if defined(Q_OS_WIN)
     QScopedPointer<ShellExtensionsServer> _shellExtensionsServer;
+#endif
+#if defined(Q_OS_MACOS)
+    std::unique_ptr<Mac::FinderSyncXPC> _finderSyncXPC;
+    std::unique_ptr<Mac::FinderSyncService> _finderSyncService;
+    QSet<QString> _registeredFinderSyncPaths;
 #endif
 };
 

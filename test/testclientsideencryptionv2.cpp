@@ -130,7 +130,7 @@ private slots:
             const auto encryptedMetadataKey = QByteArray::fromBase64(folderUserObject.value("encryptedMetadataKey").toString().toUtf8());
 
             if (!encryptedMetadataKey.isEmpty()) {
-                const auto decryptedMetadataKey = metadata->decryptDataWithPrivateKey(encryptedMetadataKey);
+                const auto decryptedMetadataKey = metadata->decryptDataWithPrivateKey(encryptedMetadataKey, _account->e2e()->certificateSha256Fingerprint());
                 if (decryptedMetadataKey.isEmpty()) {
                     break;
                 }
@@ -215,7 +215,7 @@ private slots:
         QCOMPARE(metadataSetupExistingCompleteSpy.count(), 1);
 
         QVERIFY(metadataFromJson->metadataSignature().isEmpty());
-        QVERIFY(metadataFromJson->metadataKeyForDecryption().isEmpty());
+        QVERIFY(metadataFromJson->binaryMetadataKeyForDecryption().isEmpty());
         QVERIFY(!metadataFromJson->isValid());
     }
 
@@ -269,7 +269,7 @@ private slots:
             const auto encryptedMetadataKey = QByteArray::fromBase64(folderUserObject.value("encryptedMetadataKey").toString().toUtf8());
 
             if (!encryptedMetadataKey.isEmpty()) {
-                const auto decryptedMetadataKey = metadata->decryptDataWithPrivateKey(encryptedMetadataKey);
+                const auto decryptedMetadataKey = metadata->decryptDataWithPrivateKey(encryptedMetadataKey, _account->e2e()->certificateSha256Fingerprint());
                 if (decryptedMetadataKey.isEmpty()) {
                     break;
                 }
@@ -370,7 +370,7 @@ private slots:
             const auto encryptedMetadataKey = QByteArray::fromBase64(folderUserObject.value("encryptedMetadataKey").toString().toUtf8());
 
             if (!encryptedMetadataKey.isEmpty()) {
-                const auto decryptedMetadataKey = metadata->decryptDataWithPrivateKey(encryptedMetadataKey);
+                const auto decryptedMetadataKey = metadata->decryptDataWithPrivateKey(encryptedMetadataKey, _account->e2e()->certificateSha256Fingerprint());
                 if (decryptedMetadataKey.isEmpty()) {
                     break;
                 }

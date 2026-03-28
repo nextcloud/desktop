@@ -30,11 +30,12 @@ else
 fi
 
 swift run mac-crafter \
-    --build-path="$SOURCE_ROOT/DerivedData" \
+    --build-path="$DESKTOP_CLIENT_PROJECT_ROOT/build" \
     --product-path="/Applications" \
     --build-type="Debug" \
     --dev \
     --disable-auto-updater \
     --build-file-provider-module \
     --code-sign-identity="Apple Development" \
+    --without-web-engine \
     "$DESKTOP_CLIENT_PROJECT_ROOT"

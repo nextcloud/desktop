@@ -81,6 +81,12 @@ enum Signer: Signing {
             .appendingPathComponent("Frameworks")
 
         Log.info("Looking for frameworks in \(frameworksLocation.path)")
+
+        guard FileManager.default.fileExists(atPath: frameworksLocation.path) else {
+            Log.info("No Frameworks directory found, skipping")
+            return []
+        }
+
         var items = try FileManager.default.contentsOfDirectory(at: frameworksLocation, includingPropertiesForKeys: nil)
         
         items.removeAll { item in

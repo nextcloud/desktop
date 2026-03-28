@@ -78,12 +78,15 @@ public extension Item {
             )
         }
 
+        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: newMetadata.contentType)
+
         let modifiedItem = await Item(
             metadata: newMetadata,
             parentItemIdentifier: newParentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
+            displayFileActions: displayFileActions,
             remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
             log: logger.log
         )
@@ -128,7 +131,7 @@ public extension Item {
 
         let options = NKRequestOptions(customHeader: headers, queue: .global(qos: .utility))
 
-        let (_, _, etag, date, size, error) = await upload(
+        let (_, etag, date, size, error) = await upload(
             fileLocatedAt: newContents.path,
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
@@ -209,12 +212,15 @@ public extension Item {
 
         dbManager.addItemMetadata(newMetadata)
 
+        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: newMetadata.contentType)
+
         let modifiedItem = await Item(
             metadata: newMetadata,
             parentItemIdentifier: parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
+            displayFileActions: displayFileActions,
             remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
             log: logger.log
         )
@@ -401,7 +407,7 @@ public extension Item {
                     Handling child bundle or package file at: \(childUrlPath)
                     """
                 )
-                let (_, _, _, _, _, error) = await upload(
+                let (_, _, _, _, error) = await upload(
                     fileLocatedAt: childUrlPath,
                     toRemotePath: childRemoteUrl,
                     usingRemoteInterface: remoteInterface,
@@ -511,12 +517,15 @@ public extension Item {
 
         progress.completedUnitCount += 1
 
+        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: bundleRootMetadata.contentType)
+
         return await Item(
             metadata: bundleRootMetadata,
             parentItemIdentifier: parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
+            displayFileActions: displayFileActions,
             remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
             log: logger.log
         )
@@ -578,12 +587,7 @@ public extension Item {
             }
 
             modifiedItem = modifiedIgnored
-
-            if #available(macOS 13.0, *) {
-                return (modifiedItem, NSFileProviderError(.excludedFromSync))
-            } else {
-                return (modifiedItem, nil)
-            }
+            return (modifiedItem, NSFileProviderError(.excludedFromSync))
         }
 
         // We are handling an item that is available locally but not on the server -- so create it

@@ -36,7 +36,6 @@ set(client_UI_SRCS
     ignorelisteditor.ui
     ignorelisttablewidget.ui
     networksettings.ui
-    settingsdialog.ui
     sslerrordialog.ui
     addcertificatedialog.ui
     passwordinputdialog.ui
@@ -258,6 +257,8 @@ set(client_SRCS
     wizard/linklabel.cpp
     wizard/wizardproxysettingsdialog.h
     wizard/wizardproxysettingsdialog.cpp
+    integration/fileactionsmodel.h
+    integration/fileactionsmodel.cpp
     )
 
 if (NOT DISABLE_ACCOUNT_MIGRATION)
@@ -293,11 +294,21 @@ IF( APPLE )
 
     list(APPEND client_SRCS systray_mac_usernotifications.mm)
 
+    # FinderSync XPC is independent of File Provider — always built on macOS
+    list(APPEND client_SRCS
+        macOS/FinderSyncProtocol.h
+        macOS/FinderSyncAppProtocol.h
+        macOS/findersyncxpc.h
+        macOS/findersyncxpc_mac.mm
+        macOS/findersyncservice.h
+        macOS/findersyncservice.mm)
+
     if (BUILD_FILE_PROVIDER_MODULE)
         list(APPEND client_SRCS
-            # Symlinks to files in shell_integration/MacOSX/NextcloudIntegration/
+            # XPC Protocol files from shell_integration/MacOSX/NextcloudIntegration/
+            macOS/AppProtocol.h
             macOS/ClientCommunicationProtocol.h
-            # End of symlink files
+            # End of XPC protocol files
             macOS/fileprovider.h
             macOS/fileprovider_mac.mm
             macOS/fileproviderdomainmanager.h
@@ -308,13 +319,10 @@ IF( APPLE )
             macOS/fileprovideritemmetadata.h
             macOS/fileprovideritemmetadata.cpp
             macOS/fileprovideritemmetadata_mac.mm
+            macOS/fileproviderservice.h
+            macOS/fileproviderservice.mm
             macOS/fileprovidersettingscontroller.h
             macOS/fileprovidersettingscontroller_mac.mm
-            macOS/fileprovidersocketcontroller.h
-            macOS/fileprovidersocketcontroller.cpp
-            macOS/fileprovidersocketserver.h
-            macOS/fileprovidersocketserver.cpp
-            macOS/fileprovidersocketserver_mac.mm
             macOS/fileproviderutils.h
             macOS/fileproviderutils_mac.mm
             macOS/fileproviderxpc.h
@@ -362,14 +370,6 @@ ENDIF()
 set(3rdparty_SRC
     ../3rdparty/QProgressIndicator/QProgressIndicator.h
     ../3rdparty/QProgressIndicator/QProgressIndicator.cpp
-    ../3rdparty/qtlockedfile/qtlockedfile.h
-    ../3rdparty/qtlockedfile/qtlockedfile.cpp
-    ../3rdparty/qtsingleapplication/qtlocalpeer.h
-    ../3rdparty/qtsingleapplication/qtlocalpeer.cpp
-    ../3rdparty/qtsingleapplication/qtsingleapplication.h
-    ../3rdparty/qtsingleapplication/qtsingleapplication.cpp
-    ../3rdparty/qtsingleapplication/qtsinglecoreapplication.h
-    ../3rdparty/qtsingleapplication/qtsinglecoreapplication.cpp
     ../3rdparty/kmessagewidget/kmessagewidget.h
     ../3rdparty/kmessagewidget/kmessagewidget.cpp
     ../3rdparty/kirigami/wheelhandler.h
@@ -378,14 +378,6 @@ set(3rdparty_SRC
 
 set_property(SOURCE ../3rdparty/kmessagewidget/kmessagewidget.cpp PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
 set_property(SOURCE ../3rdparty/kirigami/wheelhandler.cpp PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
-
-if(NOT WIN32)
-   list(APPEND 3rdparty_SRC ../3rdparty/qtlockedfile/qtlockedfile_unix.cpp)
-   set_property(SOURCE ../3rdparty/qtlockedfile/qtlockedfile_unix.cpp PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
-else()
-   list(APPEND 3rdparty_SRC ../3rdparty/qtlockedfile/qtlockedfile_win.cpp )
-   set_property(SOURCE ../3rdparty/qtlockedfile/qtlockedfile_win.cpp PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
-endif()
 
 find_package(Qt${QT_VERSION_MAJOR} ${REQUIRED_QT_VERSION} COMPONENTS LinguistTools)
 if(Qt${QT_MAJOR_VERSION}LinguistTools_FOUND)
@@ -546,6 +538,7 @@ target_link_libraries(nextcloudCore
   Qt::QuickControls2
   Qt::QuickWidgets
   KF6::Archive
+  KDAB::kdsingleapplication
   )
 
 if(KF6GuiAddons_FOUND)
@@ -580,9 +573,7 @@ set_target_properties(nextcloudCore
 target_include_directories(nextcloudCore
   PUBLIC
   ${CMAKE_SOURCE_DIR}/src/3rdparty/QProgressIndicator
-  ${CMAKE_SOURCE_DIR}/src/3rdparty/qtlockedfile
   ${CMAKE_SOURCE_DIR}/src/3rdparty/kirigami
-  ${CMAKE_SOURCE_DIR}/src/3rdparty/qtsingleapplication
   ${CMAKE_SOURCE_DIR}/src/3rdparty/kmessagewidget
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}
@@ -715,9 +706,22 @@ endif()
 #
 # OSX: Run macdeployqt for src/gui and for src/cmd using the -executable option
 if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
+    # macdeployqt (POST_BUILD) replaces the build-tree RPATH with @loader_path/../Frameworks.
+    # Setting BUILD_WITH_INSTALL_RPATH prevents CMake from separately tracking the build-tree
+    # RPATH and then trying to delete it at cmake --install time (which would fail because
+    # macdeployqt has already removed it).
+    set_target_properties(nextcloud PROPERTIES BUILD_WITH_INSTALL_RPATH TRUE)
+
     get_target_property (QT_QMAKE_EXECUTABLE Qt::qmake IMPORTED_LOCATION)
     get_filename_component(QT_BIN_DIR "${QT_QMAKE_EXECUTABLE}" DIRECTORY)
     find_program(MACDEPLOYQT_EXECUTABLE macdeployqt HINTS "${QT_BIN_DIR}")
+    get_filename_component(MACDEPLOYQT_DIR "${MACDEPLOYQT_EXECUTABLE}" DIRECTORY)
+
+    execute_process(
+        COMMAND "${QT_QMAKE_EXECUTABLE}" -query QT_INSTALL_LIBS
+        OUTPUT_VARIABLE MACDEPLOYQT_LIB_DIR
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
 
     set(cmd_NAME ${APPLICATION_EXECUTABLE}cmd)
 
@@ -733,6 +737,7 @@ if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
         -qmldir=${CMAKE_SOURCE_DIR}/src/gui
         -always-overwrite
         -executable="$<TARGET_FILE_DIR:nextcloud>/${cmd_NAME}"
+        -libpath=${MACDEPLOYQT_LIB_DIR}
         ${NO_STRIP}
         COMMAND "${CMAKE_COMMAND}"
         -E rm -rf "${BIN_OUTPUT_DIRECTORY}/${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns/bearer"
