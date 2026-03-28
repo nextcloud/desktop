@@ -13,14 +13,10 @@
 #include <QFileInfo>
 #include <QCoreApplication>
 
-namespace {
+namespace OCC {
 
 constexpr auto portalDesktopService = "org.freedesktop.portal.Desktop";
 constexpr auto portalDesktopPath = "/org/freedesktop/portal/desktop";
-
-} // namespace
-
-namespace OCC {
 
 XdgPortal::XdgPortal(QObject *parent)
     : QObject(parent)

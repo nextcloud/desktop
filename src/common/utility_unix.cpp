@@ -16,7 +16,6 @@
 #include <QProcess>
 #include <QString>
 #include <QTextStream>
-#include <QtDBus/qdbusinterface.h>
 
 namespace OCC {
 
@@ -102,13 +101,13 @@ QString Utility::syncFolderDisplayName(const QString &folder, const QString &dis
 
 void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName, bool enable)
 {
-    const auto userAutoStartPath = getUserAutostartDir();
-    const QString desktopFileLocation = userAutoStartPath + appName + QLatin1String(".desktop");
     const bool usePortals = true; // TODO: how should this be configured? probably a build flag? or should we just default always use portals and if the call fails *then* fallback? XdgPortal::background does return a bool for if it was successful so that wouldn't be a difficulty.
     if (usePortals) {
         XdgPortal portal;
         portal.background(appName, enable);
     } else {
+        const auto userAutoStartPath = getUserAutostartDir();
+        const QString desktopFileLocation = userAutoStartPath + appName + QLatin1String(".desktop");
         if (enable) {
             if (!QDir().exists(userAutoStartPath) && !QDir().mkpath(userAutoStartPath)) {
                 qCWarning(lcUtility) << "Could not create autostart folder" << userAutoStartPath;
