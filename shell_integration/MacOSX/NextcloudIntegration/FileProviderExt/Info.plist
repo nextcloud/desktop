@@ -2,11 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
 	<key>CFBundleIcons</key>
 	<dict>
 		<key>CFBundlePrimaryIcon</key>
@@ -15,12 +10,13 @@
 			<string>cloud</string>
 		</dict>
 	</dict>
-	<key>CFBundleName</key>
-	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundleDisplayName</key>
-	<string>$(OC_APPLICATION_NAME) File Provider Extension</string>
-	<key>CFBundleIdentifier</key>
-	<string>$(OC_APPLICATION_REV_DOMAIN).$(PRODUCT_NAME)</string>
+	<string>$(OC_APPLICATION_NAME) File Provider</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionFileProviderActions</key>
@@ -41,14 +37,14 @@
 				<key>NSExtensionFileProviderActionName</key>
 				<string>Allow automatic freeing up space</string>
 			</dict>
-            <dict>
-                <key>NSExtensionFileProviderActionActivationRule</key>
-                <string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayFileActions == true ).@count &gt; 0</string>
-                <key>NSExtensionFileProviderActionIdentifier</key>
-                <string>com.nextcloud.desktopclient.FileProviderExt.FileActionsAction</string>
-                <key>NSExtensionFileProviderActionName</key>
-                <string>File actions</string>
-            </dict>
+			<dict>
+				<key>NSExtensionFileProviderActionActivationRule</key>
+				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayFileActions == true ).@count &gt; 0</string>
+				<key>NSExtensionFileProviderActionIdentifier</key>
+				<string>com.nextcloud.desktopclient.FileProviderExt.FileActionsAction</string>
+				<key>NSExtensionFileProviderActionName</key>
+				<string>File actions</string>
+			</dict>
 		</array>
 		<key>NSExtensionFileProviderDocumentGroup</key>
 		<string>$(DEVELOPMENT_TEAM).$(OC_APPLICATION_REV_DOMAIN)</string>
