@@ -27,6 +27,7 @@ class SyncStatusSummary : public QObject
     Q_PROPERTY(QString syncStatusString READ syncStatusString NOTIFY syncStatusStringChanged)
     Q_PROPERTY(QString syncStatusDetailString READ syncStatusDetailString NOTIFY syncStatusDetailStringChanged)
     Q_PROPERTY(qint64 totalFiles READ totalFiles NOTIFY totalFilesChanged)
+    Q_PROPERTY(bool needsSandboxReapproval READ needsSandboxReapproval NOTIFY needsSandboxReapprovalChanged)
 
 public:
     explicit SyncStatusSummary(QObject *parent = nullptr);
@@ -37,6 +38,7 @@ public:
     [[nodiscard]] QString syncStatusString() const;
     [[nodiscard]] QString syncStatusDetailString() const;
     [[nodiscard]] qint64 totalFiles() const;
+    [[nodiscard]] bool needsSandboxReapproval() const;
 
 signals:
     void syncProgressChanged();
@@ -45,6 +47,7 @@ signals:
     void syncStatusStringChanged();
     void syncStatusDetailStringChanged();
     void totalFilesChanged();
+    void needsSandboxReapprovalChanged();
 
 public slots:
     void load();
@@ -79,6 +82,8 @@ private:
     void setSyncIcon(const QUrl &value);
     void setAccountState(AccountStatePtr accountState);
     void setTotalFiles(const qint64 value);
+    void setNeedsSandboxReapproval(bool value);
+    void updateNeedsSandboxReapproval();
 
     AccountStatePtr _accountState;
     std::set<QString> _foldersWithErrors;
@@ -92,5 +97,6 @@ private:
     qint64 _totalFiles = 0;
     QString _syncStatusString = tr("All synced!");
     QString _syncStatusDetailString;
+    bool _needsSandboxReapproval = false;
 };
 }

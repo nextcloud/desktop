@@ -279,6 +279,14 @@ set_target_properties(
         ${APPLICATION_EXECUTABLE}sync
 )
 
+if(BUILD_OWNCLOUD_OSX_BUNDLE)
+    # macdeployqt (POST_BUILD on nextcloud) replaces the build-tree RPATH with
+    # @loader_path/../Frameworks.  Setting BUILD_WITH_INSTALL_RPATH prevents CMake
+    # from trying to adjust RPATHs at cmake --install time (which would conflict
+    # with changes macdeployqt has already made).
+    set_target_properties(nextcloudsync PROPERTIES BUILD_WITH_INSTALL_RPATH TRUE)
+endif()
+
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     install(TARGETS nextcloudsync
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}

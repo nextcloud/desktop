@@ -296,9 +296,27 @@ void SettingsDialog::slotSwitchPage(QAction *action)
 
 void SettingsDialog::showFirstPage()
 {
+    if (_initialAccount) {
+        showAccount(_initialAccount);
+        _initialAccount = nullptr;
+        return;
+    }
     QList<QAction *> actions = _toolBar->actions();
     if (!actions.empty()) {
         actions.first()->trigger();
+    }
+}
+
+void SettingsDialog::setInitialAccount(AccountState *account)
+{
+    _initialAccount = account;
+}
+
+void SettingsDialog::showAccount(AccountState *account)
+{
+    auto *action = _actionForAccount.value(account->account().data());
+    if (action) {
+        action->trigger();
     }
 }
 
