@@ -320,6 +320,7 @@ void FileActionsModel::parseEndpoints()
     }
 
     resetActions(actions);
+    setResponse({});
     qCDebug(lcFileActions) << "File" << _localPath << "has"
                            << actions.size()
                            << "actions available.";
