@@ -98,6 +98,7 @@ signals:
     void currentUserChanged();
     void openAccountWizard();
     void openSettings();
+    void openSettingsForSandboxReapproval();
     void openHelp();
     void shutdown();
 

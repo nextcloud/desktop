@@ -72,6 +72,9 @@ public slots:
     void slotUpdateProgress(const QString &folder, const OCC::ProgressInfo &progress);
     void slotShowGuiMessage(const QString &title, const QString &message);
     void slotShowSettings();
+#ifdef Q_OS_MACOS
+    void slotShowSettingsForSandboxReapproval();
+#endif
     void slotShowSyncProtocol();
     void slotShutdown();
     void slotSyncStateChange(OCC::Folder *);

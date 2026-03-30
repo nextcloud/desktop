@@ -83,6 +83,16 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem &option,
         }
     }
 
+    // add space for the "Grant access" button when sandbox re-approval is needed
+    if (index.data(FolderNeedsSandboxBookmark).toBool()) {
+        QFontMetrics buttonFm(qApp->font("QPushButton"));
+        QStyleOptionButton btnOpt;
+        btnOpt.text = tr("Grant access");
+        const auto btnSize = QApplication::style()->sizeFromContents(
+            QStyle::CT_PushButton, &btnOpt, buttonFm.size(Qt::TextSingleLine, btnOpt.text));
+        h += margin + btnSize.height();
+    }
+
     return {0, h};
 }
 
@@ -265,6 +275,29 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     if (!errorTexts.isEmpty()) {
         drawTextBox(errorTexts, QColor(0xbb, 0x4d, 0x4d));
     }
+
+    // Paint "Grant access" button when sandbox re-approval is needed
+    if (index.data(FolderNeedsSandboxBookmark).toBool()) {
+        QStyleOptionButton btnOpt;
+        static_cast<QStyleOption &>(btnOpt) = option;
+        btnOpt.state |= QStyle::State_Raised;
+        btnOpt.text = tr("Grant access");
+
+        QFontMetrics buttonFm(qApp->font("QPushButton"));
+        const auto btnSize = QApplication::style()->sizeFromContents(
+            QStyle::CT_PushButton, &btnOpt, buttonFm.size(Qt::TextSingleLine, btnOpt.text));
+
+        QRect btnRect(iconRect.left(), textBoxTop, btnSize.width(), btnSize.height());
+
+        btnOpt.rect = QStyle::visualRect(option.direction, option.rect, btnRect);
+        painter->save();
+        painter->setFont(qApp->font("QPushButton"));
+        QApplication::style()->drawControl(QStyle::CE_PushButton, &btnOpt, painter, option.widget);
+        painter->restore();
+
+        textBoxTop = btnRect.bottom() + margin;
+    }
+
     if (!infoTexts.isEmpty()) {
         drawTextBox(infoTexts, QColor(0x4d, 0x4d, 0xba));
     }
@@ -384,6 +417,16 @@ QRect FolderStatusDelegate::addButtonRect(QRect within, Qt::LayoutDirection dire
     QSize size = QApplication::style()->sizeFromContents(QStyle::CT_PushButton, &opt, fm.size(Qt::TextSingleLine, opt.text));
     QRect r(QPoint(within.left(), within.top() + within.height() / 2 - size.height() / 2), size);
     return QStyle::visualRect(direction, within, r);
+}
+
+QRect FolderStatusDelegate::sandboxButtonRect(QRect errorBannerRect)
+{
+    QFontMetrics fm(qApp->font("QPushButton"));
+    QStyleOptionButton opt;
+    opt.text = tr("Grant access");
+    const auto size = QApplication::style()->sizeFromContents(
+        QStyle::CT_PushButton, &opt, fm.size(Qt::TextSingleLine, opt.text));
+    return QRect(QPoint(errorBannerRect.left(), errorBannerRect.bottom()), size);
 }
 
 QRect FolderStatusDelegate::errorsListRect(QRect within)

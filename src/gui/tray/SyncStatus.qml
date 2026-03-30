@@ -102,6 +102,7 @@ RowLayout {
 
         visible: !activityModel.hasSyncConflicts &&
                  !syncStatus.syncing &&
+                 !syncStatus.needsSandboxReapproval &&
                  NC.UserModel.currentUser.hasLocalFolder &&
                  NC.UserModel.currentUser.isConnected
         enabled: visible
@@ -134,5 +135,19 @@ RowLayout {
         enabled: visible
 
         onClicked: NC.UserModel.openCurrentAccountServer()
+    }
+
+    Button {
+        Layout.rightMargin: Style.trayHorizontalMargin
+
+        text: qsTr("Open settings")
+
+        visible: syncStatus.needsSandboxReapproval &&
+                 !syncStatus.syncing &&
+                 NC.UserModel.currentUser.hasLocalFolder &&
+                 NC.UserModel.currentUser.isConnected
+        enabled: visible
+
+        onClicked: NC.Systray.openSettingsForSandboxReapproval()
     }
 }

@@ -103,6 +103,11 @@ ownCloudGui::ownCloudGui(Application *parent)
     connect(_tray.data(), &Systray::openSettings,
         this, &ownCloudGui::slotShowSettings);
 
+#ifdef Q_OS_MACOS
+    connect(_tray.data(), &Systray::openSettingsForSandboxReapproval,
+        this, &ownCloudGui::slotShowSettingsForSandboxReapproval);
+#endif
+
     connect(_tray.data(), &Systray::shutdown,
         this, &QCoreApplication::quit);
 
@@ -636,6 +641,34 @@ void ownCloudGui::slotSettingsDialogActivated()
 {
     emit isShowingSettingsDialog();
 }
+
+#ifdef Q_OS_MACOS
+void ownCloudGui::slotShowSettingsForSandboxReapproval()
+{
+    AccountState *targetAccount = nullptr;
+    for (const auto &folder : FolderMan::instance()->map()) {
+        if (folder->needsSandboxBookmark()) {
+            targetAccount = folder->accountState();
+            break;
+        }
+    }
+
+    const auto dialogAlreadyExisted = !_settingsDialog.isNull();
+    slotShowSettings();
+
+    if (targetAccount && !_settingsDialog.isNull()) {
+        if (dialogAlreadyExisted) {
+            // Dialog was already open — no timer race, switch page directly.
+            _settingsDialog->showAccount(targetAccount);
+        } else {
+            // Dialog was just created — its constructor queued a 1 ms
+            // QTimer::singleShot for showFirstPage(). Store the account so
+            // showFirstPage() navigates there instead of the General tab.
+            _settingsDialog->setInitialAccount(targetAccount);
+        }
+    }
+}
+#endif
 
 void ownCloudGui::slotShowSyncProtocol()
 {

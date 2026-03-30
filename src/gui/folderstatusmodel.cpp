@@ -252,7 +252,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         }
 #ifdef Q_OS_MACOS
         if (folder->needsSandboxBookmark()) {
-            errors.prepend(tr("This folder requires access re-approval. Click here to grant access."));
+            errors.prepend(tr("Select the synchronization folder to restore access."));
         }
 #endif
         return errors;
@@ -269,6 +269,12 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return folder->syncPaused();
     case FolderStatusDelegate::FolderAccountConnected:
         return accountConnected;
+    case FolderStatusDelegate::FolderNeedsSandboxBookmark:
+#ifdef Q_OS_MACOS
+        return folder->needsSandboxBookmark();
+#else
+        return false;
+#endif
     case Qt::ToolTipRole: {
         if (!progress.isNull()) {
             // e.g. 13 seconds left, 500 MB of 1 GB, file 3 of 6

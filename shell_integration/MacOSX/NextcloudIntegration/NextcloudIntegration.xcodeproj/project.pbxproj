@@ -511,6 +511,7 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1530;
 				LastUpgradeCheck = 2620;
+				ORGANIZATIONNAME = "Nextcloud GmbH";
 				TargetAttributes = {
 					538E396627F4765000FA63D5 = {
 						CreatedOnToolsVersion = 13.3;
@@ -535,7 +536,7 @@
 				};
 			};
 			buildConfigurationList = C2B573981B1CD88000303B36 /* Build configuration list for PBXProject "NextcloudIntegration" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (

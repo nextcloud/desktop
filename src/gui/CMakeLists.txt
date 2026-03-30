@@ -738,6 +738,7 @@ if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
         -always-overwrite
         -executable="$<TARGET_FILE_DIR:nextcloud>/${cmd_NAME}"
         -libpath=${MACDEPLOYQT_LIB_DIR}
+        -libpath=${BIN_OUTPUT_DIRECTORY}
         ${NO_STRIP}
         COMMAND "${CMAKE_COMMAND}"
         -E rm -rf "${BIN_OUTPUT_DIRECTORY}/${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns/bearer"
