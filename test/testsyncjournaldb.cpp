@@ -577,6 +577,89 @@ private slots:
         }
     }
 
+    void testE2EFolderBlacklistRestoration()
+    {
+        _db.setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, QStringList());
+        _db.setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, QStringList());
+
+        QStringList e2eFoldersToRestore = {"/encrypted1/", "/encrypted2/"};
+        QStringList blacklist = {"/regular_blacklisted/", "/encrypted1/", "/encrypted2/"};
+        
+        _db.setSelectiveSyncList(
+            SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist,
+            e2eFoldersToRestore);
+        _db.setSelectiveSyncList(
+            SyncJournalDb::SelectiveSyncBlackList,
+            blacklist);
+
+        bool ok = false;
+        auto restorationList = _db.getSelectiveSyncList(
+            SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, &ok);
+        QVERIFY(ok);
+        QCOMPARE(restorationList.size(), 2);
+        QVERIFY(restorationList.contains("/encrypted1/"));
+        QVERIFY(restorationList.contains("/encrypted2/"));
+
+        auto currentBlacklist = _db.getSelectiveSyncList(
+            SyncJournalDb::SelectiveSyncBlackList, &ok);
+        QVERIFY(ok);
+        QCOMPARE(currentBlacklist.size(), 3);
+        QVERIFY(currentBlacklist.contains("/encrypted1/"));
+        QVERIFY(currentBlacklist.contains("/encrypted2/"));
+        QVERIFY(currentBlacklist.contains("/regular_blacklisted/"));
+    }
+
+    void testE2EFolderNotTrackedIfUserBlacklisted()
+    {
+        _db.setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, QStringList());
+        _db.setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, QStringList());
+
+        QStringList userBlacklist = {"/user_blacklisted_e2e/"};
+        _db.setSelectiveSyncList(
+            SyncJournalDb::SelectiveSyncBlackList,
+            userBlacklist);
+
+        bool ok = false;
+        auto blacklist = _db.getSelectiveSyncList(
+            SyncJournalDb::SelectiveSyncBlackList, &ok);
+        QVERIFY(ok);
+        QCOMPARE(blacklist.size(), 1);
+
+        auto restorationList = _db.getSelectiveSyncList(
+            SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, &ok);
+        QVERIFY(ok);
+        QVERIFY(restorationList.isEmpty());
+    }
+
+    void testE2ERestorationClearsTrackingList()
+    {
+        _db.setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, QStringList());
+        _db.setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, QStringList());
+
+        QStringList e2eFoldersToRestore = {"/encrypted/"};
+        _db.setSelectiveSyncList(
+            SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist,
+            e2eFoldersToRestore);
+        _db.setSelectiveSyncList(
+            SyncJournalDb::SelectiveSyncBlackList,
+            e2eFoldersToRestore);
+
+        bool ok = false;
+        auto restorationList = _db.getSelectiveSyncList(
+            SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, &ok);
+        QVERIFY(ok);
+        QCOMPARE(restorationList.size(), 1);
+
+        _db.setSelectiveSyncList(
+            SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist,
+            {});
+
+        restorationList = _db.getSelectiveSyncList(
+            SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, &ok);
+        QVERIFY(ok);
+        QVERIFY(restorationList.isEmpty());
+    }
+
 private:
     SyncJournalDb _db;
 };

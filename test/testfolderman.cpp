@@ -14,6 +14,7 @@
 
 #include "QtTest/qtestcase.h"
 #include "common/utility.h"
+#include "common/syncjournaldb.h"
 #include "folderman.h"
 #include "account.h"
 #include "accountstate.h"
@@ -281,7 +282,9 @@ private slots:
         QVERIFY(dir2.mkpath("free2/sub"));
         {
             QFile f(dir.path() + "/sub/file.txt");
-            f.open(QFile::WriteOnly);
+            if (!f.open(QFile::WriteOnly)) {
+                return;
+            }
             f.write("hello");
         }
         QString dirPath = dir2.canonicalPath();
