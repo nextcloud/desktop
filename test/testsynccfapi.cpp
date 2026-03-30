@@ -1705,6 +1705,50 @@ private slots:
         QVERIFY(itemInstruction(completeSpy, "afileFromDirectory.txt", CSYNC_INSTRUCTION_RENAME));
         QVERIFY(itemInstruction(completeSpy, "afileFromSubdir.txt", CSYNC_INSTRUCTION_RENAME));
     }
+
+
+    void testServer_caseClash_createConflict()
+    {
+        FakeFolder fakeFolder{ FileInfo{} };
+        setupVfs(fakeFolder);
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        const auto cleanup = [&]() {
+            completeSpy.clear();
+        };
+
+        cleanup();
+
+        fakeFolder.remoteModifier().mkdir("perso");
+        fakeFolder.remoteModifier().mkdir("perso/hello");
+        fakeFolder.remoteModifier().mkdir("perso/Hello");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(completeSpy.size(), 1);
+        QVERIFY(itemInstruction(completeSpy, "perso", CSYNC_INSTRUCTION_NEW));
+
+        cleanup();
+
+        OCC::showInFileManager(fakeFolder.localPath() + "perso");
+
+        QTest::qWait(5000);
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(completeSpy.size(), 0);
+
+        OCC::showInFileManager(fakeFolder.localPath() + "perso");
+
+        QTest::qWait(5000);
+
+        cleanup();
+        fakeFolder.syncOnce();
+        QCOMPARE(completeSpy.size(), 0);
+
+        cleanup();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(completeSpy.size(), 0);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncCfApi)
