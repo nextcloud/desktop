@@ -46,6 +46,8 @@
     <string>dsa_pub.pem</string>
     <key>SUPublicEDKey</key>
     <string>c3RcfDWDayvsYSZW8FhZN1UOJhvPVN30zleb4zOqbtU=</string>
+    <key>SUEnableInstallerLauncherService</key>
+    <true/>
     <key>UTExportedTypeDeclarations</key>
     <array>
         <dict>
