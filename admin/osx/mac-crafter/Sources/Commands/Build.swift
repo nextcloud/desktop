@@ -50,11 +50,10 @@ struct Build: AsyncParsableCommand {
     
     @Option(name: [.long], help: "The application's branded name.")
     var appName = "Nextcloud"
-    
-    @Option(name: [.long], help: "Sparkle download URL.")
-    var sparkleDownloadUrl =
-    "https://github.com/sparkle-project/Sparkle/releases/download/2.6.4/Sparkle-2.6.4.tar.xz"
-    
+
+    @Option(name: [.long], help: "Sparkle release.")
+    var sparkleRelease = SparkleRepository.defaultRelease
+
     @Option(name: [.long], help: "Git clone command; include options such as depth.")
     var gitCloneCommand = "git clone --depth=1"
     
@@ -113,10 +112,7 @@ struct Build: AsyncParsableCommand {
     /// Download the Sparkle framework archive with URLSession.
     ///
     private func downloadSparkle() async throws -> URL {
-        guard let url = URL(string: sparkleDownloadUrl) else {
-            throw MacCrafterError.downloadError("Sparkle download URL appears to be invalid: \(sparkleDownloadUrl)")
-        }
-        
+        let url = await SparkleRepository.getDownloadAddress(for: sparkleRelease)
         let request = URLRequest(url: url)
         let (file, _) = try await URLSession.shared.download(for: request)
         
