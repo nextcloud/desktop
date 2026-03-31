@@ -2421,11 +2421,6 @@ De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Fuarthas sean dialann sioncronaithe &quot;% 1&quot;, ach níorbh fhéidir é a bhaint. Cinntigh le do thoil nach bhfuil aon fheidhmchlár á úsáid faoi láthair.</translation>
     </message>
-    <message numerus="yes">
-        <location filename="../src/gui/folderman.cpp" line="416"/>
-        <source>%n sync folders require access re-approval after the app update. Please open settings to grant access.</source>
-        <translation><numerusform>Éilíonn %n fillteán sioncrónaithe athcheadú rochtana tar éis nuashonrú an aip. Oscail socruithe le rochtain a dheonú.</numerusform><numerusform>Éilíonn %n fillteáin sioncrónaithe athcheadú rochtana tar éis nuashonrú an aip. Oscail socruithe le rochtain a dheonú.</numerusform><numerusform>Éilíonn %n fillteáin sioncrónaithe athcheadú rochtana tar éis nuashonrú an aip. Oscail socruithe le rochtain a dheonú.</numerusform><numerusform>Éilíonn %n fillteáin sioncrónaithe athcheadú rochtana tar éis nuashonrú an aip. Oscail socruithe le rochtain a dheonú.</numerusform><numerusform>Éilíonn %n fillteáin sioncrónaithe athcheadú rochtana tar éis nuashonrú an aip. Oscail socruithe le rochtain a dheonú.</numerusform></translation>
-    </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1801"/>
         <source>Undefined state.</source>
@@ -2552,6 +2547,11 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
         <translation>Tá an sioncronú ar sos.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="416"/>
+        <source>Please open the app settings to grant access to the sync folders.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1864"/>
         <source>%1 (Sync is paused)</source>
         <translation>% 1 (Tá an sioncronú curtha ar sos)</translation>
@@ -2563,6 +2563,13 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
         <location filename="../src/gui/folderstatusdelegate.cpp" line="45"/>
         <source>Add Folder Sync Connection</source>
         <translation>Cuir Fillteán Sync Ceangal leis</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="90"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="284"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="426"/>
+        <source>Grant access</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="272"/>
@@ -2597,11 +2604,6 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
         <location filename="../src/gui/folderstatusmodel.cpp" line="214"/>
         <source>Error while loading the list of folders from the server.</source>
         <translation>Earráid agus liosta na bhfillteán á lódáil ón bhfreastalaí.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
-        <source>This folder requires access re-approval. Click here to grant access.</source>
-        <translation>Éilíonn an fillteán seo athcheadú rochtana. Cliceáil anseo chun rochtain a dheonú.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
@@ -2670,6 +2672,11 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
         <location filename="../src/gui/folderstatusmodel.cpp" line="218"/>
         <source>Fetching folder list from server …</source>
         <translation>Liosta fillteán á fháil ón bhfreastalaí…</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
+        <source>Select the synchronization folder to restore access.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1057"/>
@@ -5474,6 +5481,16 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Ní mór duit glacadh leis na téarmaí seirbhíse</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="165"/>
+        <source>Reauthorization required</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="166"/>
+        <source>Please grant access to your sync folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="179"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="410"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="93"/>
@@ -5536,7 +5553,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Comhad % 1 de % 2 á shioncronú</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="437"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="451"/>
         <source>No synchronisation configured</source>
         <translation>Níl aon sioncrónú cumraithe</translation>
     </message>
@@ -6806,6 +6823,11 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <location filename="../src/gui/tray/SyncStatus.qml" line="131"/>
         <source>Open browser</source>
         <translation>Oscail brabhsálaí</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="143"/>
+        <source>Open settings</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

@@ -2421,11 +2421,6 @@ Alternativno, možete vratiti sve izbrisane datoteke tako da ih ponovno preuzmet
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Pronađen je stari sinkronizacijski dnevnik „%1” ali ga nije moguće ukloniti. Provjerite koristi li ga trenutno neka druga aplikacija.</translation>
     </message>
-    <message numerus="yes">
-        <location filename="../src/gui/folderman.cpp" line="416"/>
-        <source>%n sync folders require access re-approval after the app update. Please open settings to grant access.</source>
-        <translation><numerusform>%n mapa za sinkronizaciju zahtijeva ponovno odobrenje pristupa nakon ažuriranja aplikacije. Otvorite postavke kako biste odobrili pristup.</numerusform><numerusform>%n mape za sinkronizaciju zahtijeva ponovno odobrenje pristupa nakon ažuriranja aplikacije. Otvorite postavke kako biste odobrili pristup.</numerusform><numerusform>%n mapa za sinkronizaciju zahtijeva ponovno odobrenje pristupa nakon ažuriranja aplikacije. Otvorite postavke kako biste odobrili pristup.</numerusform></translation>
-    </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1801"/>
         <source>Undefined state.</source>
@@ -2552,6 +2547,11 @@ Za napredne korisnike: problem može biti povezan s više datoteka baze sinkroni
         <translation>Sinkronizacija je pauzirana.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="416"/>
+        <source>Please open the app settings to grant access to the sync folders.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1864"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Sinkronizacija je pauzirana)</translation>
@@ -2563,6 +2563,13 @@ Za napredne korisnike: problem može biti povezan s više datoteka baze sinkroni
         <location filename="../src/gui/folderstatusdelegate.cpp" line="45"/>
         <source>Add Folder Sync Connection</source>
         <translation>Dodaj poveznicu za sinkronizaciju mape</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="90"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="284"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="426"/>
+        <source>Grant access</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="272"/>
@@ -2597,11 +2604,6 @@ Za napredne korisnike: problem može biti povezan s više datoteka baze sinkroni
         <location filename="../src/gui/folderstatusmodel.cpp" line="214"/>
         <source>Error while loading the list of folders from the server.</source>
         <translation>Pogreška prilikom učitavanja popisa mapa s poslužitelja.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
-        <source>This folder requires access re-approval. Click here to grant access.</source>
-        <translation>Ova mapa zahtijeva ponovno odobrenje pristupa. Kliknite ovdje za odobravanje pristupa.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
@@ -2670,6 +2672,11 @@ Za napredne korisnike: problem može biti povezan s više datoteka baze sinkroni
         <location filename="../src/gui/folderstatusmodel.cpp" line="218"/>
         <source>Fetching folder list from server …</source>
         <translation>Dohvaćanje popisa mapa s poslužitelja…</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
+        <source>Select the synchronization folder to restore access.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1057"/>
@@ -5473,6 +5480,16 @@ Poslužitelj je vratio pogrešku: %2</translation>
         <translation>Morate prihvatiti uvjete korištenja</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="165"/>
+        <source>Reauthorization required</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="166"/>
+        <source>Please grant access to your sync folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="179"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="410"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="93"/>
@@ -5535,7 +5552,7 @@ Poslužitelj je vratio pogrešku: %2</translation>
         <translation>Sinkronizacija datoteke %1 od %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="437"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="451"/>
         <source>No synchronisation configured</source>
         <translation>Sinkronizacija nije konfigurirana</translation>
     </message>
@@ -6805,6 +6822,11 @@ Poslužitelj je vratio pogrešku: %2</translation>
         <location filename="../src/gui/tray/SyncStatus.qml" line="131"/>
         <source>Open browser</source>
         <translation>Otvori preglednik</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="143"/>
+        <source>Open settings</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
