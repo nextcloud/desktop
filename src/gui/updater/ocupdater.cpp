@@ -400,7 +400,10 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
                     setDownloadState(Downloading);
                     _file.reset(new QTemporaryFile);
                     _file->setAutoRemove(true);
-                    _file->open();
+                    const auto openResult = _file->open();
+                    if (!openResult) {
+                        qCWarning(lcUpdater()) << "error while opening the temporary file";
+                    }
                 }
             }
         }

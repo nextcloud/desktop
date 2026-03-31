@@ -2488,8 +2488,17 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
 bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& iv,
                                       QFile *input, QFile *output)
 {
-    input->open(QIODevice::ReadOnly);
-    output->open(QIODevice::WriteOnly);
+    const auto inputOpenResult = input->open(QIODevice::ReadOnly);
+    if (!inputOpenResult) {
+        qCWarning(lcCse()) << "Failed to open input file";
+        return false;
+    }
+
+    const auto outputOpenResult = output->open(QIODevice::WriteOnly);
+    if (!outputOpenResult) {
+        qCWarning(lcCse()) << "Failed to open output file";
+        return false;
+    }
 
     // Init
     CipherCtx ctx;
