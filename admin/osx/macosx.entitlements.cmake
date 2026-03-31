@@ -14,6 +14,11 @@
 	<array>
 		<string>@DEVELOPMENT_TEAM@.@APPLICATION_REV_DOMAIN@</string>
 	</array>
+	<key>com.apple.security.temporary-exception.mach-lookup.global-name</key>
+	<array>
+		<string>@APPLICATION_REV_DOMAIN@-spks</string>
+		<string>@APPLICATION_REV_DOMAIN@-spki</string>
+	</array>
 @DEBUG_ENTITLEMENTS@
 </dict>
 </plist>
