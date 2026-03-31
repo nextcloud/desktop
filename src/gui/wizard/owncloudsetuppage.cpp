@@ -411,7 +411,11 @@ QString subjectInfoHelper(const QSslCertificate &cert, const QByteArray &qa)
 void OwncloudSetupPage::slotCertificateAccepted()
 {
     QFile certFile(addCertDial->getCertificatePath());
-    certFile.open(QFile::ReadOnly);
+    const auto openResult = certFile.open(QFile::ReadOnly);
+    if (!openResult) {
+        qWarning() << "Failed to open certificate file:" << addCertDial->getCertificatePath();
+        return;
+    }
     QByteArray certData = certFile.readAll();
     QByteArray certPassword = addCertDial->getCertificatePasswd().toLocal8Bit();
 
