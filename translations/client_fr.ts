@@ -2419,11 +2419,6 @@ Vous pouvez également restaurer tous les fichiers supprimés en les télécharg
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Un ancien fichier journal &quot;%1&quot; a été trouvé, mais ne peut être supprimé. Veuillez vous assurer qu’aucune application ne l&apos;utilise en ce moment.</translation>
     </message>
-    <message numerus="yes">
-        <location filename="../src/gui/folderman.cpp" line="416"/>
-        <source>%n sync folders require access re-approval after the app update. Please open settings to grant access.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
-    </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1801"/>
         <source>Undefined state.</source>
@@ -2550,6 +2545,11 @@ Pour les utilisateurs avancés: ce problème peut aussi venir de plusieurs fichi
         <translation>La synchronisation est en pause.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="416"/>
+        <source>Please open the app settings to grant access to the sync folders.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1864"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synchronisation en pause)</translation>
@@ -2561,6 +2561,13 @@ Pour les utilisateurs avancés: ce problème peut aussi venir de plusieurs fichi
         <location filename="../src/gui/folderstatusdelegate.cpp" line="45"/>
         <source>Add Folder Sync Connection</source>
         <translation>Ajouter une synchronisation de dossier</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="90"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="284"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="426"/>
+        <source>Grant access</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="272"/>
@@ -2595,11 +2602,6 @@ Pour les utilisateurs avancés: ce problème peut aussi venir de plusieurs fichi
         <location filename="../src/gui/folderstatusmodel.cpp" line="214"/>
         <source>Error while loading the list of folders from the server.</source>
         <translation>Une erreur est survenue lors du chargement de la liste des dossiers depuis le serveur.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
-        <source>This folder requires access re-approval. Click here to grant access.</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
@@ -2668,6 +2670,11 @@ Pour les utilisateurs avancés: ce problème peut aussi venir de plusieurs fichi
         <location filename="../src/gui/folderstatusmodel.cpp" line="218"/>
         <source>Fetching folder list from server …</source>
         <translation>Récupération de la liste des dossiers depuis le serveur...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
+        <source>Select the synchronization folder to restore access.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1057"/>
@@ -5471,6 +5478,16 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Vous devez accepter les conditions d&apos;utilisation</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="165"/>
+        <source>Reauthorization required</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="166"/>
+        <source>Please grant access to your sync folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="179"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="410"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="93"/>
@@ -5533,7 +5550,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Synchronisation du fichier %1 sur %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="437"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="451"/>
         <source>No synchronisation configured</source>
         <translation type="unfinished"/>
     </message>
@@ -6803,6 +6820,11 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/gui/tray/SyncStatus.qml" line="131"/>
         <source>Open browser</source>
         <translation>Ouvrir le navigateur</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="143"/>
+        <source>Open settings</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

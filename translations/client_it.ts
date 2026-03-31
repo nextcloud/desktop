@@ -2422,11 +2422,6 @@ In alternativa, è possibile ripristinare tutti i file eliminati scaricandoli da
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>È stato trovato un vecchio registro di sincronizzazione &quot;%1&quot;, ma non può essere rimosso. Assicurati che nessuna applicazione lo stia utilizzando.</translation>
     </message>
-    <message numerus="yes">
-        <location filename="../src/gui/folderman.cpp" line="416"/>
-        <source>%n sync folders require access re-approval after the app update. Please open settings to grant access.</source>
-        <translation><numerusform>%n le cartelle sincronizzate necessitano di una riautorizzazione dell&apos;accesso a seguito dell&apos;aggiornamento dell&apos;applicazione. Si prega di aprire le impostazioni per concedere l&apos;accesso.</numerusform><numerusform>%n Le cartelle sincronizzate necessitano di una riautorizzazione dopo l&apos;aggiornamento dell&apos;app. Apri le impostazioni per concedere l&apos;accesso.</numerusform><numerusform>%n Le cartelle sincronizzate necessitano di una riautorizzazione dopo l&apos;aggiornamento dell&apos;app. Apri le impostazioni per concedere l&apos;accesso.</numerusform></translation>
-    </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1801"/>
         <source>Undefined state.</source>
@@ -2554,6 +2549,11 @@ Per utenti avanzati: questo problema potrebbe essere correlato a più file di da
         <translation>La sincronizzazione è sospesa.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="416"/>
+        <source>Please open the app settings to grant access to the sync folders.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1864"/>
         <source>%1 (Sync is paused)</source>
         <translation> %1 (La sincronizzazione è sospesa)</translation>
@@ -2565,6 +2565,13 @@ Per utenti avanzati: questo problema potrebbe essere correlato a più file di da
         <location filename="../src/gui/folderstatusdelegate.cpp" line="45"/>
         <source>Add Folder Sync Connection</source>
         <translation>Aggiungi connessioni di sincronizzazione cartelle</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="90"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="284"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="426"/>
+        <source>Grant access</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="272"/>
@@ -2599,11 +2606,6 @@ Per utenti avanzati: questo problema potrebbe essere correlato a più file di da
         <location filename="../src/gui/folderstatusmodel.cpp" line="214"/>
         <source>Error while loading the list of folders from the server.</source>
         <translation>Errore durante il caricamento dell&apos;elenco delle cartelle dal server.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
-        <source>This folder requires access re-approval. Click here to grant access.</source>
-        <translation>Per accedere a questa cartella è necessaria una nuova autorizzazione. Fare clic qui per concedere l&apos;accesso.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
@@ -2672,6 +2674,11 @@ Per utenti avanzati: questo problema potrebbe essere correlato a più file di da
         <location filename="../src/gui/folderstatusmodel.cpp" line="218"/>
         <source>Fetching folder list from server …</source>
         <translation>Recupero dell&apos;elenco delle cartelle dal server...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
+        <source>Select the synchronization folder to restore access.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1057"/>
@@ -5468,6 +5475,16 @@ Il server ha risposto con errore: %2</translation>
         <translation>Devi accettare i termini del servizio</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="165"/>
+        <source>Reauthorization required</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="166"/>
+        <source>Please grant access to your sync folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="179"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="410"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="93"/>
@@ -5530,7 +5547,7 @@ Il server ha risposto con errore: %2</translation>
         <translation>Sincronizzazione file %1 di %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="437"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="451"/>
         <source>No synchronisation configured</source>
         <translation>Nessuna sincronizzazione configurata</translation>
     </message>
@@ -6800,6 +6817,11 @@ Il server ha risposto con errore: %2</translation>
         <location filename="../src/gui/tray/SyncStatus.qml" line="131"/>
         <source>Open browser</source>
         <translation>Apri browser</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="143"/>
+        <source>Open settings</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

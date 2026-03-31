@@ -2421,11 +2421,6 @@ Prípadne môžete obnoviť všetky odstránené súbory ich stiahnutím zo serv
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Bol nájdený starý žurnál synchronizácie &quot;%1&quot;, avšak nemôže byť odstránený. Prosím uistite sa, že žiadna aplikácia ho práve nevyužíva.</translation>
     </message>
-    <message numerus="yes">
-        <location filename="../src/gui/folderman.cpp" line="416"/>
-        <source>%n sync folders require access re-approval after the app update. Please open settings to grant access.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
-    </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1801"/>
         <source>Undefined state.</source>
@@ -2552,6 +2547,11 @@ Pre pokročilých užívateľov: tento problém môže súvisieť s viacerými s
         <translation>Synchronizácia je pozastavená.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="416"/>
+        <source>Please open the app settings to grant access to the sync folders.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1864"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synchronizácia je pozastavená)</translation>
@@ -2563,6 +2563,13 @@ Pre pokročilých užívateľov: tento problém môže súvisieť s viacerými s
         <location filename="../src/gui/folderstatusdelegate.cpp" line="45"/>
         <source>Add Folder Sync Connection</source>
         <translation>Pridať prepojenie synchronizačného priečinka</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="90"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="284"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="426"/>
+        <source>Grant access</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="272"/>
@@ -2597,11 +2604,6 @@ Pre pokročilých užívateľov: tento problém môže súvisieť s viacerými s
         <location filename="../src/gui/folderstatusmodel.cpp" line="214"/>
         <source>Error while loading the list of folders from the server.</source>
         <translation>Pri načítavní zoznamu priečinkov zo servera nastala chyba.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
-        <source>This folder requires access re-approval. Click here to grant access.</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
@@ -2670,6 +2672,11 @@ Pre pokročilých užívateľov: tento problém môže súvisieť s viacerými s
         <location filename="../src/gui/folderstatusmodel.cpp" line="218"/>
         <source>Fetching folder list from server …</source>
         <translation>Načítava sa zoznam priečinkov zo servera…</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
+        <source>Select the synchronization folder to restore access.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1057"/>
@@ -5474,6 +5481,16 @@ Server odpovedal chybou: %2</translation>
         <translation>Je potrebné akceptovať zmluvné podmienky</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="165"/>
+        <source>Reauthorization required</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="166"/>
+        <source>Please grant access to your sync folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="179"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="410"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="93"/>
@@ -5536,7 +5553,7 @@ Server odpovedal chybou: %2</translation>
         <translation>Synchronizuje sa súbor %1 z %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="437"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="451"/>
         <source>No synchronisation configured</source>
         <translation type="unfinished"/>
     </message>
@@ -6806,6 +6823,11 @@ Server odpovedal chybou: %2</translation>
         <location filename="../src/gui/tray/SyncStatus.qml" line="131"/>
         <source>Open browser</source>
         <translation>Otvoriť prehliadač</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="143"/>
+        <source>Open settings</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

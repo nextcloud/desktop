@@ -2396,14 +2396,6 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation type="unfinished"></translation>
     </message>
-    <message numerus="yes">
-        <location filename="../src/gui/folderman.cpp" line="416"/>
-        <source>%n sync folders require access re-approval after the app update. Please open settings to grant access.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1955"/>
         <source>Undefined state.</source>
@@ -2527,6 +2519,11 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="416"/>
+        <source>Please open the app settings to grant access to the sync folders.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="2018"/>
         <source>%1 (Sync is paused)</source>
         <translation type="unfinished"></translation>
@@ -2540,7 +2537,14 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="274"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="90"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="284"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="426"/>
+        <source>Grant access</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="307"/>
         <source>File</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2574,59 +2578,54 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
-        <source>This folder requires access re-approval. Click here to grant access.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="262"/>
         <source>Virtual file support is enabled.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="279"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="285"/>
         <source>Signed out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="319"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="325"/>
         <source>Synchronizing virtual files in local folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="321"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="327"/>
         <source>Synchronizing files in local folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="993"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="999"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="997"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1003"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1004"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
         <source>Syncing local and remote changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1054"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1060"/>
         <source>%1 %2 …</source>
         <extracomment>Example text: &quot;Uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot; Example text: &quot;Syncing &apos;foo.txt&apos;, &apos;bar.txt&apos;&quot;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1060"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
         <source>Download %1/s</source>
         <extracomment>Example text: &quot;Download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1126"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1132"/>
         <source>File %1 of %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2636,8 +2635,8 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1056"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1067"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1062"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1073"/>
         <source>, </source>
         <translation type="unfinished"></translation>
     </message>
@@ -2647,52 +2646,57 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1062"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
+        <source>Select the synchronization folder to restore access.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1068"/>
         <source>↓ %1/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1070"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1076"/>
         <source>Upload %1/s</source>
         <extracomment>Example text: &quot;Upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1072"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1078"/>
         <source>↑ %1/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1078"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1084"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;Uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1084"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1090"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;Uploading foobar.png&quot;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1105"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1111"/>
         <source>A few seconds left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1110"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1116"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1119"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1125"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1179"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1185"/>
         <source>Waiting for %n other folder(s) …</source>
         <translation>
             <numerusform>Waiting for %n other folder …</numerusform>
@@ -2700,12 +2704,12 @@ For advanced users: this issue might be related to multiple sync database files 
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1179"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1185"/>
         <source>About to start syncing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1184"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1190"/>
         <source>Preparing to sync …</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4847,7 +4851,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="523"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="541"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4863,7 +4867,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="318"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="336"/>
         <source>Account</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5398,8 +5402,8 @@ Server replied with error: %2</source>
     <name>OCC::SyncStatusSummary</name>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="151"/>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="187"/>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="434"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="201"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="448"/>
         <source>Offline</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5409,69 +5413,79 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="204"/>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="440"/>
-        <location filename="../src/gui/tray/syncstatussummary.h" line="93"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="165"/>
+        <source>Reauthorization required</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="166"/>
+        <source>Please grant access to your sync folders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="218"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="454"/>
+        <location filename="../src/gui/tray/syncstatussummary.h" line="98"/>
         <source>All synced!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="213"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="227"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="214"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="228"/>
         <source>See below for errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="221"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="235"/>
         <source>Checking folder changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="223"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="237"/>
         <source>Syncing changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="232"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="246"/>
         <source>Sync paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="240"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="254"/>
         <source>Some files could not be synced!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="241"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="255"/>
         <source>See below for warnings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="312"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="326"/>
         <source>Syncing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="325"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="339"/>
         <source>%1 of %2 · %3 left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="329"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="343"/>
         <source>%1 of %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="334"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="348"/>
         <source>Syncing file %1 of %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="437"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="451"/>
         <source>No synchronisation configured</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6052,88 +6066,88 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="386"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="391"/>
         <source>Please sign in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="472"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="477"/>
         <source>There are no sync folders configured.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="367"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="372"/>
         <source>Disconnected from %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="267"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="272"/>
         <source>Unsupported Server Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="268"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="273"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="280"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="285"/>
         <source>Terms of service</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="281"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="286"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="455"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="460"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="464"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="462"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="467"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="465"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="470"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="531"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="536"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="534"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="539"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="370"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="375"/>
         <source>Disconnected from accounts:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="372"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="377"/>
         <source>Account %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="390"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="395"/>
         <source>Account synchronization is disabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="551"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="556"/>
         <source>%1 (%2, %3)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6742,13 +6756,18 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="118"/>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="119"/>
         <source>Resolve conflicts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="131"/>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="132"/>
         <source>Open browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="143"/>
+        <source>Open settings</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
