@@ -651,6 +651,230 @@ private slots:
         QCOMPARE(n507, 3);
     }
 
+    /**
+     * When the server reports folder quota via PROPFIND and a local file exceeds it,
+     * the client must:
+     *  1. Not start any upload (zero PUTs) — quota is detected during discovery,
+     *     before any data is transmitted.
+     *  2. Not start an automatic retry loop — _anotherSyncNeeded and
+     *     _filesNeedingScheduledSync must NOT be set for quota errors.
+     *  3. On the next manually-triggered sync (same quota), still not upload.
+     *  4. Upload successfully once quota is increased above the file size.
+     */
+    void testQuotaExceededBlocksUploadAndSuppressesRetry()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+
+        // Give folder "A" a tight quota: only 500 bytes of free space.
+        fakeFolder.remoteModifier().setFolderQuota("A", {0, 500});
+
+        int nPUT = 0;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op,
+                                        const QNetworkRequest &,
+                                        QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::PutOperation)
+                ++nPUT;
+            return nullptr;
+        });
+
+        // Insert a file whose size exceeds the available quota.
+        fakeFolder.localModifier().insert("A/toobig", 700);
+
+        // The sync must fail: quota is exceeded.
+        QVERIFY(!fakeFolder.syncOnce());
+
+        // No HTTP PUT must have been issued — the discovery-phase quota check must
+        // have blocked the upload before any data was transmitted.
+        QCOMPARE(nPUT, 0);
+
+        // Trigger another sync immediately (simulates the retry loop that existed
+        // before the fix).  With the old code _anotherSyncNeeded / _filesNeedingScheduledSync
+        // would cause an upload attempt; with the fix the discovery check re-fires and
+        // again blocks the upload without touching the network.
+        nPUT = 0;
+        QVERIFY(!fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 0);
+
+        // Now increase quota above the file size; the upload must succeed.
+        fakeFolder.remoteModifier().setFolderQuota("A", {0, 1000});
+        nPUT = 0;
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 1);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    /**
+     * When quota is unknown (bytesAvailable == -1, server did not report it),
+     * the upload must not be blocked — the client has no basis to refuse it.
+     * If the server later rejects with HTTP 507, the reactive path handles it.
+     *
+     * Two cases are verified indirectly (folderBytesAvailable() is private):
+     *
+     * Case 1 — _quotaBytesReserved == 0 at check time:
+     *   A single new file is inserted.  When folderBytesAvailable() is called,
+     *   _quotaBytesReserved is still 0.  adjustForReserved(-1) must return -1,
+     *   not 0.  Proof: nPUT == 1 (upload was not blocked).
+     *
+     * Case 2 — _quotaBytesReserved == 700 at check time:
+     *   A second new file is inserted in the same pass.  "A/first" (700 B) is
+     *   processed first (alphabetical order), gets approved, and increments
+     *   _quotaBytesReserved to 700.  When "A/second" (600 B) is evaluated,
+     *   adjustForReserved(-1) must still return -1 — not 0 or −701 — so the
+     *   upload is not blocked.  Proof: nPUT == 2 (both files uploaded).
+     *
+     *   If the clamping were wrong (raw < 0 → max(0, raw - reserved) = 0),
+     *   "A/second" would be blocked by the "size > 0 && 0 > -1" guard, giving
+     *   nPUT == 1 and a sync failure — which is the regression this catches.
+     */
+    void testQuotaUnknownDoesNotBlockUpload()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+
+        // Quota is unknown for folder "A" (bytesAvailable = -1).
+        fakeFolder.remoteModifier().setFolderQuota("A", {0, -1});
+
+        int nPUT = 0;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op,
+                                        const QNetworkRequest &,
+                                        QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::PutOperation)
+                ++nPUT;
+            return nullptr;
+        });
+
+        // Case 1: _quotaBytesReserved == 0 when "A/newfile" is evaluated.
+        // adjustForReserved(-1) must return -1 → upload allowed.
+        fakeFolder.localModifier().insert("A/newfile", 700);
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 1);  // upload was not blocked
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Case 2: _quotaBytesReserved == 700 when the second file is evaluated.
+        // "A/first" (700 B) sorts before "A/second" (600 B), so it is processed
+        // first, approved, and _quotaBytesReserved becomes 700.  When "A/second"
+        // is evaluated, adjustForReserved(-1) must still return -1 — not 0 — so
+        // the upload is not blocked despite the non-zero reservation.
+        nPUT = 0;
+        fakeFolder.localModifier().insert("A/first", 700);
+        fakeFolder.localModifier().insert("A/second", 600);
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 2);  // both files uploaded; neither was blocked
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    /**
+     * Chunked uploads (PropagateUploadFileNG) go through the same
+     * PropagateUploadFileCommon::startUploadFile() pre-upload quota check.
+     * Verify that a file larger than the reported quota is blocked before
+     * any chunk is transmitted, regardless of chunking being active.
+     */
+    void testQuotaExceededBlocksChunkedUpload()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+
+        fakeFolder.syncEngine().account()->setCapabilities(
+            {{"dav", QVariantMap{{"chunking", "1.0"}}}});
+        // Confirm capability wiring before proceeding: if chunkingNg() is false,
+        // PropagateUploadFileV1 is used instead of NG, MKCOL is never issued, and
+        // the post-quota-increase assertions would fail for the wrong reason.
+        QVERIFY(fakeFolder.syncEngine().account()->capabilities().chunkingNg());
+
+        // Force chunked mode: set initialChunkSize to 100 bytes so even our
+        // small test file is chunked.
+        SyncOptions syncOptions;
+        syncOptions._initialChunkSize = 100;
+        syncOptions.setMinChunkSize(100);
+        syncOptions.setMaxChunkSize(100);
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
+
+        // Quota: 500 bytes available.
+        fakeFolder.remoteModifier().setFolderQuota("A", {0, 500});
+
+        int nPUT = 0;
+        int nMKCOL = 0;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op,
+                                        const QNetworkRequest &request,
+                                        QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::PutOperation)
+                ++nPUT;
+            if (op == QNetworkAccessManager::CustomOperation
+                && request.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray() == QByteArrayLiteral("MKCOL"))
+                ++nMKCOL;
+            return nullptr;
+        });
+
+        // File exceeds quota.
+        fakeFolder.localModifier().insert("A/bigchunked", 700);
+
+        QVERIFY(!fakeFolder.syncOnce());
+
+        // Neither a PUT (chunk) nor a MKCOL (chunk folder creation) must have
+        // been issued — the quota check fires before the chunked upload starts.
+        QCOMPARE(nPUT, 0);
+        QCOMPARE(nMKCOL, 0);
+
+        // After quota increase the chunked upload must succeed and must actually
+        // transmit data — confirm MKCOL (chunk folder) and PUT (chunk data) happened.
+        fakeFolder.remoteModifier().setFolderQuota("A", {0, 1000});
+        nPUT = 0;
+        nMKCOL = 0;
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(nMKCOL > 0); // chunk folder was created
+        QVERIFY(nPUT > 0);   // at least one chunk was uploaded
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    /**
+     * Two files that individually fit the available quota but together exceed
+     * it must not both be approved in the same discovery pass.
+     *
+     * The first file processed reserves its bytes; the second then sees the
+     * reduced available quota and is blocked before any data is transmitted.
+     * This ensures the propagator-level 507 guard is never the first line of
+     * defence against combined over-quota uploads.
+     *
+     * File names are chosen so that alphabetical order (the iteration order of
+     * the std::map<QString, Entries> used internally) is the same as the intended
+     * processing order: "afile" sorts before "bfile", so "afile" is always first.
+     * This makes the ordering a stated property of the names, not a hidden
+     * assumption about the container implementation.
+     */
+    void testQuotaTwoFilesExceedingCombinedQuota()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+
+        // 1000 bytes free.  "afile" (700 B) and "bfile" (600 B) each individually
+        // fit (700 < 1000, 600 < 1000) but their combined size (1300 B) exceeds
+        // the quota.
+        fakeFolder.remoteModifier().setFolderQuota("A", {0, 1000});
+
+        int nPUT = 0;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op,
+                                        const QNetworkRequest &,
+                                        QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::PutOperation)
+                ++nPUT;
+            return nullptr;
+        });
+
+        // "afile" sorts before "bfile": "afile" is always processed first,
+        // its 700 B are reserved, and only 300 B remain when "bfile" is
+        // evaluated — which is then blocked (600 B > 300 B).
+        fakeFolder.localModifier().insert("A/afile", 700);
+        fakeFolder.localModifier().insert("A/bfile", 600);
+
+        // Sync must fail: "bfile" is blocked by the combined quota check.
+        QVERIFY(!fakeFolder.syncOnce());
+
+        // Exactly one PUT: "afile" uploaded, "bfile" blocked.  Without
+        // _quotaBytesReserved tracking both would be approved individually
+        // and together overflow the quota.
+        QCOMPARE(nPUT, 1);
+        QVERIFY(fakeFolder.currentLocalState() != fakeFolder.currentRemoteState());
+    }
+
     // Checks whether downloads with bad checksums are accepted
     void testChecksumValidation()
     {
