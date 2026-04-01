@@ -32,6 +32,8 @@ set(libsync_SRCS
     bandwidthmanager.cpp
     capabilities.h
     capabilities.cpp
+    capabilities/sharing.h
+    capabilities/sharing.cpp
     clientproxy.h
     clientproxy.cpp
     clientstatusreporting.h
