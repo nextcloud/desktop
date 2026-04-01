@@ -1093,6 +1093,30 @@ void SyncEngine::finishSync()
     _propagator = QSharedPointer<OwncloudPropagator>(
         new OwncloudPropagator(_account, _localPath, _remotePath, _journal, _bulkUploadBlackList));
     _propagator->setSyncOptions(_syncOptions);
+
+    // Seed the propagator's per-folder quota cache from the quota data gathered
+    // during the discovery phase (PROPFIND responses).  The propagator is recreated
+    // fresh every sync cycle, so without this seeding the pre-upload quota check in
+    // PropagateUploadFileCommon::startUploadFile() would always pass on the first
+    // attempt of a new cycle, causing a full upload that the server then rejects with
+    // HTTP 507 and wasting bandwidth.  By initialising the cache here, the pre-upload
+    // check can block oversized files from the very first attempt of each cycle.
+    //
+    // NOTE: This loop must remain before _propagator->start(std::move(_syncItems))
+    // below, because start() transfers ownership of _syncItems and leaves it empty.
+    for (const auto &syncItem : std::as_const(_syncItems)) {
+        if (syncItem->isDirectory() && syncItem->_folderQuota.bytesAvailable >= 0) {
+            // OwncloudPropagator keys _folderQuota by QFileInfo::path() of the file
+            // being uploaded, which yields "." for items at the root of the sync
+            // folder.  Normalise the empty-string root path accordingly.
+            const auto key = syncItem->_file.isEmpty() ? QStringLiteral(".") : syncItem->_file;
+            // Only insert when there is no tighter bound already present (e.g. set
+            // from a prior HTTP 507 reply within the same cycle).
+            if (!_propagator->_folderQuota.contains(key)) {
+                _propagator->_folderQuota.insert(key, syncItem->_folderQuota.bytesAvailable);
+            }
+        }
+    }
     connect(_propagator.data(), &OwncloudPropagator::itemCompleted,
             this, &SyncEngine::slotItemCompleted);
     connect(_propagator.data(), &OwncloudPropagator::progress,
@@ -1485,7 +1509,8 @@ void SyncEngine::slotInsufficientLocalStorage()
 
 void SyncEngine::slotInsufficientRemoteStorage()
 {
-    auto msg = tr("There is insufficient space available on the server for some uploads.");
+    auto msg = tr("Upload paused: one or more files exceed your remaining Nextcloud storage quota. "
+                  "Free up server space or contact your administrator to increase your quota.");
     if (_uniqueErrors.contains(msg)) {
         return;
     }

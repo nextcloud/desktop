@@ -281,14 +281,40 @@ void PropagateUploadFileCommon::startUploadFile() {
         return;
     }
 
-    // Check if we believe that the upload will fail due to remote quota limits
-    const qint64 quotaGuess = propagator()->_folderQuota.value(
-        QFileInfo(_fileToUpload._file).path(), std::numeric_limits<qint64>::max());
+    // Check if we believe that the upload will fail due to remote quota limits.
+    // _folderQuota is seeded at the start of each sync cycle from the quota data
+    // returned by PROPFIND during discovery (see SyncEngine::finishSync).
+    // It is also tightened reactively whenever the server returns HTTP 507.
+    //
+    // A PROPFIND quota entry applies to a directory and all its descendants.
+    // Walk up the path hierarchy to find the nearest quota entry, so that a
+    // quota set on "A" also guards uploads into "A/B/C/".
+    qint64 quotaGuess = std::numeric_limits<qint64>::max();
+    QString lookupPath = QFileInfo(_fileToUpload._file).path();
+    while (!lookupPath.isEmpty()) {
+        if (propagator()->_folderQuota.contains(lookupPath)) {
+            quotaGuess = propagator()->_folderQuota.value(lookupPath);
+            break;
+        }
+        if (lookupPath == QLatin1String("."))
+            break; // reached sync root with no quota entry
+        const int slash = lookupPath.lastIndexOf(QLatin1Char('/'));
+        lookupPath = slash >= 0 ? lookupPath.left(slash) : QStringLiteral(".");
+    }
     if (_fileToUpload._size > quotaGuess) {
-        // Necessary for blacklisting logic
+        // quotaGuess is never std::numeric_limits<qint64>::max() here: reaching
+        // this branch requires _size > quotaGuess, which is impossible when
+        // quotaGuess == max().  So Utility::octetsToString(quotaGuess) in the
+        // message below always formats a real quota value, never "max".
+        //
+        // Set httpErrorCode so blacklistUpdate creates an InsufficientRemoteStorage
+        // entry, which suppresses automatic retries until quota becomes sufficient.
         _item->_httpErrorCode = 507;
         emit propagator()->insufficientRemoteStorage();
-        done(SyncFileItem::DetailError, tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_fileToUpload._size)));
+        done(SyncFileItem::DetailError,
+             tr("Upload of %1 exceeds %2 of remaining storage quota for this folder")
+                 .arg(Utility::octetsToString(_fileToUpload._size),
+                      Utility::octetsToString(quotaGuess)));
         return;
     }
 
@@ -720,7 +746,8 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
 
         // Set up the error
         status = SyncFileItem::DetailError;
-        errorString = tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_fileToUpload._size));
+        errorString = tr("Upload of %1 exceeds the remaining storage quota for this folder")
+                          .arg(Utility::octetsToString(_fileToUpload._size));
         emit propagator()->insufficientRemoteStorage();
     } else if (_item->_httpErrorCode == 400) {
         const auto exception = job->errorStringParsingBodyException(replyContent);
