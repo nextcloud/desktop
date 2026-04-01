@@ -9,6 +9,11 @@ CODE_SIGNING_REQUIRED=NO
 CODE_SIGN_STYLE=Manual
 
 //
+// The build number (CFBundleVersion) in the Info.plist.
+//
+CURRENT_PROJECT_VERSION=$(CURRENT_PROJECT_VERSION:default=1)
+
+//
 // The development team identifier registered with Apple.
 //
 DEVELOPMENT_TEAM=$(DEVELOPMENT_TEAM:default=NKUJUXUJ3B)
@@ -32,3 +37,8 @@ ENABLE_HARDENED_RUNTIME=YES
 // The required macOS version for all targets of the project.
 //
 MACOSX_DEPLOYMENT_TARGET=13.0
+
+//
+// The short version string (CFBundleShortVersionString) in the Info.plist.
+//
+MARKETING_VERSION=$(MARKETING_VERSION:default=1.0.0)
