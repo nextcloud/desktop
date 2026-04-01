@@ -38,6 +38,8 @@
 #define NOTIFICATIONS_IFACE "org.freedesktop.Notifications"
 #endif
 
+using namespace Qt::StringLiterals;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcSystray, "nextcloud.gui.systray")
@@ -407,6 +409,34 @@ void Systray::createFileDetailsDialog(const QString &localPath)
         {"accountState", QVariant::fromValue(folder->accountState())},
         {"localPath", localPath},
     };
+
+    if (folder->accountState()->account()->capabilities().sharing().isAvailable()) {
+        // we have a server with the new unified sharing system, let's show the new fancy one
+        // TODO: reduce code duplication
+
+        QQmlComponent fileDetailsDialog(trayEngine(), "com.nextcloud.desktopclient.sharing"_L1, "ShareDialog"_L1);
+
+        if (!fileDetailsDialog.isError()) {
+            const auto createdDialog = fileDetailsDialog.createWithInitialProperties(initialProperties);
+            const auto dialog = qobject_cast<QQuickWindow*>(createdDialog);
+
+            if(!dialog) {
+                qCWarning(lcSystray) << "File details dialog window resulted in creation of object that was not a window!";
+                return;
+            }
+
+            _fileDetailDialogs.append(dialog);
+
+            dialog->show();
+            dialog->raise();
+            dialog->requestActivate();
+
+        } else {
+            qCWarning(lcSystray) << fileDetailsDialog.errorString();
+        }
+
+        return;
+    }
 
     QQmlComponent fileDetailsDialog(trayEngine(), QStringLiteral("qrc:/qml/src/gui/filedetails/FileDetailsWindow.qml"));
 
