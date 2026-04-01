@@ -70,11 +70,6 @@ public:
     void setPassword(const QString &shareId, const QString &password);
 
     /**
-     * Change the name of a share
-     */
-    void setName(const QString &shareId, const QString &name);
-
-    /**
      * Set the permissions
      *
      * @param permissions

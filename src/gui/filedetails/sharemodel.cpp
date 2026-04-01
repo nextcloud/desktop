@@ -93,8 +93,6 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
         switch (role) {
         case LinkRole:
             return linkShare->getLink();
-        case LinkShareNameRole:
-            return linkShare->getName();
         case LinkShareLabelRole:
             return linkShare->getLabel();
         case NoteEnabledRole:
@@ -184,7 +182,6 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
     case HideDownloadEnabledRole:
         return false;
     case LinkRole:
-    case LinkShareNameRole:
     case LinkShareLabelRole:
     case NoteRole:
     case ExpireDateRole:
@@ -666,7 +663,6 @@ void ShareModel::slotAddShare(const SharePtr &share)
 
     if (const auto linkShare = share.objectCast<LinkShare>()) {
         connect(linkShare.data(), &LinkShare::noteSet, this, [this, shareId]{ slotShareNoteSet(shareId); });
-        connect(linkShare.data(), &LinkShare::nameSet, this, [this, shareId]{ slotShareNameSet(shareId); });
         connect(linkShare.data(), &LinkShare::labelSet, this, [this, shareId]{ slotShareLabelSet(shareId); });
         connect(linkShare.data(), &LinkShare::expireDateSet, this, [this, shareId]{ slotShareExpireDateSet(shareId); });
         connect(linkShare.data(), &LinkShare::hideDownloadSet, this, [this, shareId] { slotHideDownloadSet(shareId); });
@@ -906,17 +902,6 @@ void ShareModel::slotShareNoteSet(const QString &shareId)
     const auto sharePersistentModelIndex = _shareIdIndexHash.value(shareId);
     const auto shareModelIndex = index(sharePersistentModelIndex.row());
     Q_EMIT dataChanged(shareModelIndex, shareModelIndex, { NoteEnabledRole, NoteRole });
-}
-
-void ShareModel::slotShareNameSet(const QString &shareId)
-{
-    if (shareId.isEmpty() || !_shareIdIndexHash.contains(shareId)) {
-        return;
-    }
-
-    const auto sharePersistentModelIndex = _shareIdIndexHash.value(shareId);
-    const auto shareModelIndex = index(sharePersistentModelIndex.row());
-    Q_EMIT dataChanged(shareModelIndex, shareModelIndex, { LinkShareNameRole });
 }
 
 void ShareModel::slotShareLabelSet(const QString &shareId)
