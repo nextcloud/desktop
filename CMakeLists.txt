@@ -93,6 +93,7 @@ include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(ECMMarkNonGuiExecutable)
 include(ECMSetupVersion)
+include(ECMQmlModule)
 
 #include(KDECompilerSettings NO_POLICY_SCOPE)
 include(ECMEnableSanitizers)
