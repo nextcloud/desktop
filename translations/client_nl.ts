@@ -1566,7 +1566,7 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1208"/>
         <source>Invalid PIN. Login failed</source>
-        <translation type="unfinished"/>
+        <translation>Ongeldige PIN. Login mislukt.</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1209"/>
@@ -2559,7 +2559,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderstatusdelegate.cpp" line="284"/>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="426"/>
         <source>Grant access</source>
-        <translation type="unfinished"/>
+        <translation>Geef toegang</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="272"/>
@@ -3442,7 +3442,7 @@ Onderdelen die gewist mogen worden, worden verwijderd als ze verhinderen dat een
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="46"/>
         <source>&lt;p&gt;Copyright 2017-2026 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright 2017-2026 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="49"/>
@@ -4185,7 +4185,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="412"/>
         <source>Folder name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>Mapnaam bevat minimaal één ongeldig karakter</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="413"/>
@@ -6811,7 +6811,7 @@ Server antwoordde met fout: %2</translation>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="143"/>
         <source>Open settings</source>
-        <translation type="unfinished"/>
+        <translation>Open instellingen</translation>
     </message>
 </context>
 <context>

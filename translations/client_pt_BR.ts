@@ -2549,7 +2549,7 @@ Para usuários avançados: este problema pode estar relacionado a vários arquiv
     <message>
         <location filename="../src/gui/folderman.cpp" line="416"/>
         <source>Please open the app settings to grant access to the sync folders.</source>
-        <translation type="unfinished"/>
+        <translation>Por favor, abra as configurações do aplicativo para conceder acesso às pastas de sincronização.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1864"/>
@@ -2569,7 +2569,7 @@ Para usuários avançados: este problema pode estar relacionado a vários arquiv
         <location filename="../src/gui/folderstatusdelegate.cpp" line="284"/>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="426"/>
         <source>Grant access</source>
-        <translation type="unfinished"/>
+        <translation>Conceder acesso</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="272"/>
@@ -2676,7 +2676,7 @@ Para usuários avançados: este problema pode estar relacionado a vários arquiv
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
         <source>Select the synchronization folder to restore access.</source>
-        <translation type="unfinished"/>
+        <translation>Selecione a pasta de sincronização para restaurar o acesso.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1057"/>
@@ -5483,12 +5483,12 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="165"/>
         <source>Reauthorization required</source>
-        <translation type="unfinished"/>
+        <translation>É necessária uma nova autorização</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="166"/>
         <source>Please grant access to your sync folders</source>
-        <translation type="unfinished"/>
+        <translation>Por favor, conceda acesso às suas pastas de sincronização</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="179"/>
@@ -6827,7 +6827,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="143"/>
         <source>Open settings</source>
-        <translation type="unfinished"/>
+        <translation>Abrir configurações</translation>
     </message>
 </context>
 <context>

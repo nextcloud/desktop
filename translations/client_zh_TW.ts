@@ -2550,7 +2550,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderman.cpp" line="416"/>
         <source>Please open the app settings to grant access to the sync folders.</source>
-        <translation type="unfinished"/>
+        <translation>請開啟應用程式設定以授予存取同步資料夾的權限。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1864"/>
@@ -2570,7 +2570,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderstatusdelegate.cpp" line="284"/>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="426"/>
         <source>Grant access</source>
-        <translation type="unfinished"/>
+        <translation>授予存取權</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="272"/>
@@ -2677,7 +2677,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
         <source>Select the synchronization folder to restore access.</source>
-        <translation type="unfinished"/>
+        <translation>請選取要還原存取權的同步資料夾。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1057"/>
@@ -5484,12 +5484,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="165"/>
         <source>Reauthorization required</source>
-        <translation type="unfinished"/>
+        <translation>需要重新授權</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="166"/>
         <source>Please grant access to your sync folders</source>
-        <translation type="unfinished"/>
+        <translation>請授權存取您的同步資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="179"/>
@@ -6828,7 +6828,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="143"/>
         <source>Open settings</source>
-        <translation type="unfinished"/>
+        <translation>開啟設定</translation>
     </message>
 </context>
 <context>

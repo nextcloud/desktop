@@ -2717,7 +2717,7 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderWatcher</name>
     <message>
-        <location filename="../src/gui/folderwatcher.cpp" line="167"/>
+        <location filename="../src/gui/folderwatcher.cpp" line="171"/>
         <source>The watcher did not receive a test notification.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3507,47 +3507,47 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="426"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="429"/>
         <source>New Version Available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="432"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="435"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="473"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="476"/>
         <source>Update Failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="479"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="482"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="492"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="495"/>
         <source>Ask again later</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="493"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="496"/>
         <source>Restart and update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="494"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="497"/>
         <source>Update manually</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="445"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="448"/>
         <source>Skip this time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="446"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
         <source>Get update</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3868,7 +3868,7 @@ Note that using any logging command line options will override this setting.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="431"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="435"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation type="unfinished"></translation>
     </message>
