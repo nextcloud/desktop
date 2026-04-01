@@ -196,7 +196,6 @@ class LinkShare : public Share
     Q_PROPERTY(QUrl directDownloadLink READ getDirectDownloadLink CONSTANT)
     Q_PROPERTY(bool publicCanUpload READ getPublicUpload CONSTANT)
     Q_PROPERTY(bool publicCanReadDirectory READ getShowFileListing CONSTANT)
-    Q_PROPERTY(QString name READ getName WRITE setName NOTIFY nameSet)
     Q_PROPERTY(QString note READ getNote WRITE setNote NOTIFY noteSet)
     Q_PROPERTY(QString label READ getLabel WRITE setLabel NOTIFY labelSet)
     Q_PROPERTY(bool hideDownload READ getHideDownload WRITE setHideDownload NOTIFY hideDownloadSet)
@@ -210,7 +209,6 @@ public:
         const QString &uidFileOwner,
         const QString &ownerDisplayName,
         const QString &path,
-        const QString &name,
         const QString &token,
         const Permissions permissions,
         bool isPasswordSet,
@@ -239,11 +237,6 @@ public:
      * Whether directory listings are available (READ permission)
      */
     [[nodiscard]] bool getShowFileListing() const;
-
-    /*
-     * Returns the name of the link share. Can be empty.
-     */
-    [[nodiscard]] QString getName() const;
 
     /*
      * Returns the note of the link share.
@@ -278,13 +271,6 @@ public:
     
 public slots:
     /*
-     * Set the name of the link share.
-     *
-     * Emits either nameSet() or serverError().
-     */
-    void setName(const QString &name);
-
-    /*
      * Set the note of the link share.
      */
     void setNote(const QString &note);
@@ -310,18 +296,15 @@ public slots:
 signals:
     void expireDateSet();
     void noteSet();
-    void nameSet();
     void labelSet();
 
 private slots:
     void slotNoteSet(const QJsonDocument &, const QVariant &value);
     void slotExpireDateSet(const QJsonDocument &reply, const QVariant &value);
-    void slotNameSet(const QJsonDocument &, const QVariant &value);
     void slotLabelSet(const QJsonDocument &, const QVariant &value);
     void slotHideDownloadSet(const QJsonDocument &jsonDoc, const QVariant &hideDownload);
 
 private:
-    QString _name;
     QString _token;
     QString _note;
     QDate _expireDate;
