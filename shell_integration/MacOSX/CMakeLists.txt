@@ -15,9 +15,15 @@ if(APPLE)
     # Pass the info through the xcodebuild command line and make sure that the project uses
     # those user-defined settings to build the plist.
     add_custom_target( mac_overlayplugin ALL
-        xcodebuild ARCHS=${CMAKE_OSX_ARCHITECTURES} ONLY_ACTIVE_ARCH=NO
+        xcodebuild
+        ARCHS=${CMAKE_OSX_ARCHITECTURES}
+        ONLY_ACTIVE_ARCH=NO
         -project ${CMAKE_SOURCE_DIR}/shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj
-        -target FinderSyncExt -configuration ${XCODE_TARGET_CONFIGURATION} "SYMROOT=${CMAKE_CURRENT_BINARY_DIR}"
+        -target FinderSyncExt
+        -configuration ${XCODE_TARGET_CONFIGURATION}
+        "SYMROOT=${CMAKE_CURRENT_BINARY_DIR}"
+        "MARKETING_VERSION=${MIRALL_VERSION}"
+        "CURRENT_PROJECT_VERSION=${MIRALL_VERSION_BUILD}"
         "OC_OEM_SHARE_ICNS=${OC_OEM_SHARE_ICNS}"
         "OC_APPLICATION_NAME=${APPLICATION_NAME}"
         "OC_APPLICATION_REV_DOMAIN=${APPLICATION_REV_DOMAIN}"
@@ -26,11 +32,15 @@ if(APPLE)
 
     if (BUILD_FILE_PROVIDER_MODULE)
         add_custom_target( mac_fileproviderplugin ALL
-            xcodebuild ARCHS=${CMAKE_OSX_ARCHITECTURES} ONLY_ACTIVE_ARCH=NO
+            xcodebuild
+            ARCHS=${CMAKE_OSX_ARCHITECTURES}
+            ONLY_ACTIVE_ARCH=NO
             -project ${CMAKE_SOURCE_DIR}/shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj
             -target FileProviderExt 
             -configuration ${XCODE_TARGET_CONFIGURATION}
             "SYMROOT=${CMAKE_CURRENT_BINARY_DIR}"
+            "MARKETING_VERSION=${MIRALL_VERSION}"
+            "CURRENT_PROJECT_VERSION=${MIRALL_VERSION_BUILD}"
             "OC_APPLICATION_EXECUTABLE_NAME=${APPLICATION_EXECUTABLE}"
             "OC_APPLICATION_VENDOR=${APPLICATION_VENDOR}"
             "OC_APPLICATION_NAME=${APPLICATION_NAME}"
@@ -39,9 +49,15 @@ if(APPLE)
             VERBATIM)
 
         add_custom_target( mac_fileprovideruiplugin ALL
-            xcodebuild ARCHS=${CMAKE_OSX_ARCHITECTURES} ONLY_ACTIVE_ARCH=NO
+            xcodebuild
+            ARCHS=${CMAKE_OSX_ARCHITECTURES}
+            ONLY_ACTIVE_ARCH=NO
             -project ${CMAKE_SOURCE_DIR}/shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj
-            -target FileProviderUIExt -configuration ${XCODE_TARGET_CONFIGURATION} "SYMROOT=${CMAKE_CURRENT_BINARY_DIR}"
+            -target FileProviderUIExt
+            -configuration ${XCODE_TARGET_CONFIGURATION}
+            "SYMROOT=${CMAKE_CURRENT_BINARY_DIR}"
+            "MARKETING_VERSION=${MIRALL_VERSION}"
+            "CURRENT_PROJECT_VERSION=${MIRALL_VERSION_BUILD}"
             "OC_APPLICATION_EXECUTABLE_NAME=${APPLICATION_EXECUTABLE}"
             "OC_APPLICATION_VENDOR=${APPLICATION_VENDOR}"
             "OC_APPLICATION_NAME=${APPLICATION_NAME}"
