@@ -35,6 +35,7 @@
 #include <QQmlExtensionPlugin>
 
 Q_IMPORT_QML_PLUGIN(com_nextcloud_desktopclient_searchPlugin)
+Q_IMPORT_QML_PLUGIN(com_nextcloud_desktopclient_sharingPlugin)
 
 using namespace OCC;
 
