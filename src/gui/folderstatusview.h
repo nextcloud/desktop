@@ -23,6 +23,7 @@ public:
 
     [[nodiscard]] QModelIndex indexAt(const QPoint &point) const override;
     [[nodiscard]] QRect visualRect(const QModelIndex &index) const override;
+    void keyboardSearch(const QString &search) override;
 };
 
 } // namespace OCC
