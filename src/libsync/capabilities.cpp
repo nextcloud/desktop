@@ -20,6 +20,7 @@ Q_LOGGING_CATEGORY(lcServerCapabilities, "nextcloud.sync.server.capabilities", Q
 
 Capabilities::Capabilities(const QVariantMap &capabilities)
     : _capabilities(capabilities)
+    , _sharingCapability(capabilities)
 {
 }
 
