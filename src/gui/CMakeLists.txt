@@ -287,6 +287,7 @@ IF(BUILD_UPDATER)
 endif()
 
 add_subdirectory(search)
+add_subdirectory(sharing)
 
 IF( APPLE )
     list(APPEND client_SRCS cocoainitializer_mac.mm)
@@ -698,6 +699,8 @@ set_target_properties(nextcloud PROPERTIES
 target_link_libraries(nextcloud PRIVATE
     nextcloudGuiSearch
     nextcloudGuiSearchplugin
+    nextcloudGuiSharing
+    nextcloudGuiSharingplugin
     nextcloudCore
 )
 target_compile_definitions(nextcloud PRIVATE QT_NO_KEYWORDS)
