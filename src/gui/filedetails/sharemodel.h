@@ -216,7 +216,6 @@ private slots:
     void slotSharePasswordSet(const QString &shareId);
     void slotShareNoteSet(const QString &shareId);
     void slotHideDownloadSet(const QString &shareId);
-    void slotShareNameSet(const QString &shareId);
     void slotShareLabelSet(const QString &shareId);
     void slotShareExpireDateSet(const QString &shareId);
     void slotDeleteE2EeShare(const OCC::SharePtr &share) const;

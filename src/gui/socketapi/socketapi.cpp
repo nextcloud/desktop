@@ -816,7 +816,7 @@ private slots:
             if (!linkShare)
                 continue;
 
-            if (linkShare->getName() == shareName) {
+            if (linkShare->getLabel() == shareName) {
                 qCDebug(lcPublicLink) << "Found existing share, reusing";
                 return success(linkShare->getLink().toString());
             }

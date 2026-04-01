@@ -81,16 +81,6 @@ void OcsShareJob::setNote(const QString &shareId, const QString &note)
     start();
 }
 
-void OcsShareJob::setName(const QString &shareId, const QString &name)
-{
-    appendPath(shareId);
-    setVerb("PUT");
-    addParam(QString::fromLatin1("name"), name);
-    _value = name;
-
-    start();
-}
-
 void OcsShareJob::setPermissions(const QString &shareId,
     const Share::Permissions permissions)
 {
