@@ -274,7 +274,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         _ui->autostartCheckBox->setToolTip(tr("You cannot disable autostart because system-wide autostart is enabled."));
     } else {
         connect(_ui->autostartCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleLaunchOnStartup);
-        _ui->autostartCheckBox->setChecked(ConfigFile().launchOnSystemStartup());
+        _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup(Theme::instance()->appName()));
     }
 
     // setup about section
@@ -655,9 +655,27 @@ void GeneralSettings::slotToggleLaunchOnStartup(bool enable)
         return;
     }
 
-    ConfigFile configFile;
-    configFile.setLaunchOnSystemStartup(enable);
     Utility::setLaunchOnStartup(theme->appName(), theme->appNameGUI(), enable);
+
+    const auto actualState = Utility::hasLaunchOnStartup(theme->appName());
+    ConfigFile configFile;
+    configFile.setLaunchOnSystemStartup(actualState);
+
+    if (actualState != enable) {
+        const QSignalBlocker blocker(_ui->autostartCheckBox);
+        _ui->autostartCheckBox->setChecked(actualState);
+    }
+
+#ifdef Q_OS_MACOS
+    if (enable && Utility::launchOnStartupRequiresApproval()) {
+        QMessageBox::information(
+            this,
+            tr("Login Item Requires Approval"),
+            tr("The login item has been registered but needs your approval to become active. "
+               "Please open System Settings → General → Login Items and enable %1 there.")
+                .arg(theme->appNameGUI()));
+    }
+#endif
 }
 
 void GeneralSettings::slotToggleOptionalServerNotifications(bool enable)

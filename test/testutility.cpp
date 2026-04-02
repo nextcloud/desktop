@@ -70,6 +70,12 @@ private slots:
 
     void testLaunchOnStartup()
     {
+#ifdef Q_OS_MACOS
+        // The macOS implementation uses SMAppService, which operates on the running app's
+        // system-level login item registration and requires a properly signed app bundle.
+        // Neither condition holds in a unit test runner, so this test is not applicable on macOS.
+        QSKIP("SMAppService-based launch-on-startup cannot be unit-tested outside a signed app bundle.");
+#endif
         QString postfix = QString::number(OCC::Utility::rand());
 
         const QString appName = QString::fromLatin1("testLaunchOnStartup.%1").arg(postfix);

@@ -283,6 +283,11 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName,
     }
 }
 
+bool Utility::launchOnStartupRequiresApproval()
+{
+    return false;
+}
+
 bool Utility::hasDarkSystray()
 {
     if(Utility::registryGetKeyValue(    HKEY_CURRENT_USER,
