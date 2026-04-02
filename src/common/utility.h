@@ -150,6 +150,9 @@ namespace Utility {
     OCSYNC_EXPORT bool hasSystemLaunchOnStartup(const QString &appName);
     OCSYNC_EXPORT bool hasLaunchOnStartup(const QString &appName);
     OCSYNC_EXPORT void setLaunchOnStartup(const QString &appName, const QString &guiName, const bool launch);
+    /** On macOS, returns true when the login item is registered but awaiting user approval
+     *  in System Settings → General → Login Items. Always returns false on other platforms. */
+    OCSYNC_EXPORT bool launchOnStartupRequiresApproval();
     OCSYNC_EXPORT uint convertSizeToUint(size_t &convertVar);
     OCSYNC_EXPORT int convertSizeToInt(size_t &convertVar);
 
