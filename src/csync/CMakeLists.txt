@@ -88,7 +88,9 @@ target_link_libraries(nextcloud_csync PRIVATE SQLite::SQLite3)
 if (APPLE)
     find_library(FOUNDATION_LIBRARY NAMES Foundation)
     find_library(CORESERVICES_LIBRARY NAMES CoreServices)
+    find_library(SERVICEMANAGEMENT_LIBRARY NAMES ServiceManagement)
     target_link_libraries(nextcloud_csync PUBLIC ${FOUNDATION_LIBRARY} ${CORESERVICES_LIBRARY})
+    target_link_libraries(nextcloud_csync PRIVATE ${SERVICEMANAGEMENT_LIBRARY})
 endif()
 
 set_target_properties(
