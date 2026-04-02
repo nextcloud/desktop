@@ -395,7 +395,11 @@ Application::Application(int &argc, char **argv)
     _shellExtensionsServer.reset(new ShellExtensionsServer);
 #endif
 
+#ifdef Q_OS_MACOS
+    connect(&_singleApp, &OCC::SingleInstanceManager::messageReceived, this, &Application::slotParseMessage);
+#else
     connect(&_singleApp, &KDSingleApplication::messageReceived, this, &Application::slotParseMessage);
+#endif
 
     // create accounts and folders from a legacy desktop client or from the current config file
     setupAccountsAndFolders();

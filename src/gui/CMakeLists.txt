@@ -291,6 +291,7 @@ endif()
 IF( APPLE )
     list(APPEND client_SRCS cocoainitializer_mac.mm)
     list(APPEND client_SRCS systray_mac_common.mm)
+    list(APPEND client_SRCS macOS/singleinstancemanager_mac.mm)
 
     list(APPEND client_SRCS systray_mac_usernotifications.mm)
 
