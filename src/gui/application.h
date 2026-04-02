@@ -12,7 +12,11 @@
 #include "clientproxy.h"
 #include "folderman.h"
 
+#ifdef Q_OS_MACOS
+#include "macOS/singleinstancemanager_mac.h"
+#else
 #include <KDSingleApplication>
+#endif
 
 #include <QApplication>
 #include <QPointer>
@@ -125,7 +129,11 @@ private:
 
     QPointer<ownCloudGui> _gui;
 
+#ifdef Q_OS_MACOS
+    OCC::SingleInstanceManager _singleApp;
+#else
     KDSingleApplication _singleApp;
+#endif
 
     Theme *_theme;
 
