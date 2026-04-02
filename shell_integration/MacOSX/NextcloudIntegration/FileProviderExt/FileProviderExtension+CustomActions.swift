@@ -58,6 +58,40 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                 onItemsWithIdentifiers: itemIdentifiers,
                 completionHandler: completionHandler
             )
+        case "com.nextcloud.desktopclient.FileProviderExt.OpenInBrowserAction":
+            guard let itemIdentifier = itemIdentifiers.first else {
+                logger.error("Failed to get first item identifier for open in browser action.")
+                completionHandler(NSFileProviderError(.noSuchItem))
+                return Progress()
+            }
+
+            guard let dbManager else {
+                logger.error("Cannot open in browser due to database manager not being available.", [.item: itemIdentifier])
+                completionHandler(NSFileProviderError(.cannotSynchronize))
+                return Progress()
+            }
+
+            Task {
+                guard let userVisibleURL = try await manager?.getUserVisibleURL(for: itemIdentifier) else {
+                    logger.error("Failed to get user-visible URL for item.", [.item: itemIdentifier])
+                    completionHandler(NSFileProviderError(.noSuchItem))
+                    return
+                }
+
+                guard let metadata = dbManager.itemMetadata(itemIdentifier) else {
+                    logger.error("Failed to get metadata for item.", [.item: itemIdentifier])
+                    completionHandler(NSFileProviderError(.cannotSynchronize))
+                    return
+                }
+
+                let path = userVisibleURL.path
+                let domainIdentifier = domain.identifier.rawValue
+                logger.info("Telling main app to open item in browser.", [.item: path, .domain: domainIdentifier])
+                app?.openInBrowserForPath(path, remoteItemPath: metadata.path, withDomainIdentifier: domainIdentifier)
+                completionHandler(nil)
+            }
+
+            return Progress()
         default:
             logger.error("Unsupported action: \(actionIdentifier.rawValue)")
             completionHandler(NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError))
