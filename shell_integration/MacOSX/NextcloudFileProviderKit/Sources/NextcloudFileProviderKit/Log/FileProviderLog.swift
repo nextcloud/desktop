@@ -107,7 +107,7 @@ public actor FileProviderLog: FileProviderLogging {
             logger.error("Failed to get URL for file provider domain logs!")
             file = nil
             handle = nil
-            self.logsDirectory = nil
+            logsDirectory = nil
             return
         }
 
