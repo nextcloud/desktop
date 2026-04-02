@@ -153,6 +153,10 @@ namespace Utility {
     OCSYNC_EXPORT uint convertSizeToUint(size_t &convertVar);
     OCSYNC_EXPORT int convertSizeToInt(size_t &convertVar);
 
+#ifdef Q_OS_UNIX
+    OCSYNC_EXPORT QString getAppExecutablePath();
+#endif
+
 #ifdef Q_OS_WIN
     OCSYNC_EXPORT DWORD convertSizeToDWORD(size_t &convertVar);
 #endif
