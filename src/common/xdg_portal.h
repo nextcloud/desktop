@@ -15,7 +15,7 @@ namespace OCC {
 /**
  * @brief XDG Desktop Portal interface for Qt D-Bus
  *
- * Adstracts D-Bus calls behind simpler methods.
+ * Abstracts D-Bus calls behind simpler methods.
  */
 class XdgPortal : public QObject
 {
