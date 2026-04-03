@@ -11,11 +11,11 @@ jobs:
     container: ghcr.io/nextcloud/continuous-integration-client-qt6:client-sid-6.10.2-1
     env:
       SONAR_SERVER_URL: "https://sonarcloud.io"
-      BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Directory where build-wrapper output will be placed
+      BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0
 
       - name: Restore cache
         uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
@@ -27,18 +27,33 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -G Ninja -DCMAKE_PREFIX_PATH=/opt/qt -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_BUILD_TYPE=Debug -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DQT_MAJOR_VERSION=6 -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64 -DBUILD_COVERAGE=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+          cmake .. -G Ninja -DCMAKE_PREFIX_PATH=/opt/qt -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ \
+            -DCMAKE_BUILD_TYPE=Debug -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 \
+            -DQT_MAJOR_VERSION=6 -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64 \
+            -DBUILD_COVERAGE=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
           build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} ninja
+
       - name: Run tests
         run: |
           cd build
           useradd -m -s /bin/bash test
           chown -R test:test .
           su -c 'xvfb-run ctest --output-on-failure --output-junit testResult.xml' test
+
       - name: Generate coverage report
         run: |
           cd build
           su -c 'ctest -T Coverage' test
+
+      - name: Install sonar-scanner
+        run: |
+          SONAR_VERSION=$(curl -s https://api.github.com/repos/SonarSource/sonar-scanner-cli/releases/latest \
+            | grep '"tag_name"' | cut -d'"' -f4)
+          curl -sSLo /tmp/sonar.zip \
+            "https://github.com/SonarSource/sonar-scanner-cli/releases/download/${SONAR_VERSION}/sonar-scanner-cli-${SONAR_VERSION}-linux-x64.zip"
+          unzip -q /tmp/sonar.zip -d /opt
+          ln -s /opt/sonar-scanner-${SONAR_VERSION}-linux-x64/bin/sonar-scanner /usr/local/bin/sonar-scanner
+
       - name: Run sonar-scanner
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -46,4 +61,6 @@ jobs:
         run: |
           cp sonar-project.properties build
           cd build
-          sonar-scanner --define sonar.host.url="${{ env.SONAR_SERVER_URL }}" --define sonar.cfamily.build-wrapper-output="${{ env.BUILD_WRAPPER_OUT_DIR }}"
+          sonar-scanner \
+            --define sonar.host.url="${{ env.SONAR_SERVER_URL }}" \
+            --define sonar.cfamily.build-wrapper-output="${{ env.BUILD_WRAPPER_OUT_DIR }}"
