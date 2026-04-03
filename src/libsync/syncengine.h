@@ -363,6 +363,14 @@ private:
 
     void finishSync();
 
+    void updateVirtualFileReadOnlyState(const SyncFileItemPtr &item, const QString &filePath) const;
+
+    // Returns false if decryption fails (caller should abort startSync in that case).
+    bool unlockE2eeFolders(const QList<QPair<QByteArray, QByteArray>> &e2EeLockedFolders);
+
+    // Count files that will be deleted in the current sync pass.
+    [[nodiscard]] int countDeletedFiles() const;
+
     [[nodiscard]] bool shouldRestartSync() const;
 
     bool handleMassDeletion();
