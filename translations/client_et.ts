@@ -3145,17 +3145,27 @@ Kui võtad selle kasutusele, siis eelmise versiooni juurde ei ole võimalik otse
         <translation>Katkesta</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.cpp" line="673"/>
+        <source>Login Item Requires Approval</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="674"/>
+        <source>The login item has been registered but needs your approval to become active. Please open System Settings → General → Login Items and enable %1 there.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.cpp" line="666"/>
         <source>Zip Archives</source>
         <translation>Zip-failid</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="735"/>
+        <location filename="../src/gui/generalsettings.cpp" line="753"/>
         <source>Failed to Access File</source>
         <translation>Ligipääs failile puudub</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="736"/>
+        <location filename="../src/gui/generalsettings.cpp" line="754"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
         <translation>Valitud asukohast polnud võimalik sisu laadida. Palun proovi uuesti või vali mõni muu asukoht.</translation>
     </message>

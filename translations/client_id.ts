@@ -3146,17 +3146,27 @@ Penurunan versi tidak dapat dilakukan secara langsung: berpindah dari stabil ke 
         <translation>Batal</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.cpp" line="673"/>
+        <source>Login Item Requires Approval</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="674"/>
+        <source>The login item has been registered but needs your approval to become active. Please open System Settings → General → Login Items and enable %1 there.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.cpp" line="666"/>
         <source>Zip Archives</source>
         <translation>Arsip Zip</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="735"/>
+        <location filename="../src/gui/generalsettings.cpp" line="753"/>
         <source>Failed to Access File</source>
         <translation>Gagal Mengakses File</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="736"/>
+        <location filename="../src/gui/generalsettings.cpp" line="754"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
         <translation>Tidak dapat mengakses lokasi yang dipilih. Silakan coba lagi atau pilih lokasi lain.</translation>
     </message>
