@@ -296,10 +296,12 @@ void PropagateUploadFileCommon::startUploadFile() {
             quotaGuess = propagator()->_folderQuota.value(lookupPath);
             break;
         }
-        if (lookupPath == QLatin1String("."))
-            break; // reached sync root with no quota entry
-        const int slash = lookupPath.lastIndexOf(QLatin1Char('/'));
-        lookupPath = slash >= 0 ? lookupPath.left(slash) : QStringLiteral(".");
+        if (lookupPath == QLatin1String(".")) {
+            lookupPath.clear(); // reached sync root with no quota entry; terminates the loop
+        } else {
+            const auto slash = lookupPath.lastIndexOf(QLatin1Char('/'));
+            lookupPath = slash >= 0 ? lookupPath.left(slash) : QStringLiteral(".");
+        }
     }
     if (_fileToUpload._size > quotaGuess) {
         // quotaGuess is never std::numeric_limits<qint64>::max() here: reaching
