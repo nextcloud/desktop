@@ -281,7 +281,11 @@ private slots:
         QVERIFY(dir2.mkpath("free2/sub"));
         {
             QFile f(dir.path() + "/sub/file.txt");
-            f.open(QFile::WriteOnly);
+            const auto openResult = f.open(QFile::WriteOnly);
+            if (!openResult) {
+                qWarning() << "Failed to create file:" << dir.path() + "/sub/file.txt";
+                return;
+            }
             f.write("hello");
         }
         QString dirPath = dir2.canonicalPath();

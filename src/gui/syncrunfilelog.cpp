@@ -37,7 +37,10 @@ void SyncRunFileLog::start(const QString &folderPath)
     while (FileSystem::fileExists(filename)) {
 
         QFile file(filename);
-        file.open(QIODevice::ReadOnly| QIODevice::Text);
+        const auto openResult = file.open(QIODevice::ReadOnly| QIODevice::Text);
+        if (!openResult) {
+            qWarning() << "error while opening the file" << filename;
+        }
         QTextStream in(&file);
         QString line = in.readLine();
 
@@ -66,7 +69,10 @@ void SyncRunFileLog::start(const QString &folderPath)
     }
     _file.reset(new QFile(filename));
 
-    _file->open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text);
+    const auto openResult = _file->open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text);
+    if (!openResult) {
+        qWarning() << "error while opening the file" << filename;
+    }
     _out.setDevice(_file.data());
 
 

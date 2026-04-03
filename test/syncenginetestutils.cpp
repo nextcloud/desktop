@@ -71,7 +71,10 @@ void DiskFileModifier::insert(const QString &relativePath, qint64 size, char con
     if (!file.exists()) {
         QVERIFY(!file.exists());
     }
-    file.open(QFile::WriteOnly);
+    const auto openResult = file.open(QFile::WriteOnly);
+    if (!openResult) {
+        qWarning() << "error while opening the file" << relativePath << _rootDir.filePath(relativePath);
+    }
     QByteArray buf(1024, contentChar);
     for (int x = 0; x < size / buf.size(); ++x) {
         file.write(buf);
@@ -90,7 +93,10 @@ void DiskFileModifier::setContents(const QString &relativePath, char contentChar
     QFile file { _rootDir.filePath(relativePath) };
     QVERIFY(file.exists());
     qint64 size = file.size();
-    file.open(QFile::WriteOnly);
+    const auto openResult = file.open(QFile::WriteOnly);
+    if (!openResult) {
+        qWarning() << "error while opening the file" << relativePath << _rootDir.filePath(relativePath);
+    }
     file.write(QByteArray {}.fill(contentChar, size));
 }
 
@@ -98,7 +104,10 @@ void DiskFileModifier::appendByte(const QString &relativePath)
 {
     QFile file { _rootDir.filePath(relativePath) };
     QVERIFY(file.exists());
-    file.open(QFile::ReadWrite);
+    const auto openResult = file.open(QFile::ReadWrite);
+    if (!openResult) {
+        qWarning() << "error while opening the file" << relativePath << _rootDir.filePath(relativePath);
+    }
     QByteArray contents = file.read(1);
     file.seek(file.size());
     file.write(contents);
@@ -1455,7 +1464,10 @@ void FakeFolder::toDisk(QDir &dir, const FileInfo &templateFi)
             toDisk(subDir, child);
         } else {
             QFile file { dir.filePath(child.name) };
-            file.open(QFile::WriteOnly);
+            const auto openResult = file.open(QFile::WriteOnly);
+            if (!openResult) {
+                qWarning() << "error while opening the file" << child.name << dir.filePath(child.name);
+            }
             file.write(QByteArray {}.fill(child.contentChar, child.size));
             file.close();
             OCC::FileSystem::setModTime(file.fileName(), OCC::Utility::qDateTimeToTime_t(child.lastModified));
@@ -1474,7 +1486,10 @@ void FakeFolder::fromDisk(QDir &dir, FileInfo &templateFi)
             fromDisk(subDir, subFi);
         } else {
             QFile f { diskChild.filePath() };
-            f.open(QFile::ReadOnly);
+            const auto openResult = f.open(QFile::ReadOnly);
+            if (!openResult) {
+                qWarning() << "error while opening the file" << diskChild.filePath();
+            }
             auto content = f.read(1);
             if (content.size() == 0) {
                 qWarning() << "Empty file at:" << diskChild.filePath();

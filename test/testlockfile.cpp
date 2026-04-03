@@ -938,7 +938,11 @@ private slots:
         QVERIFY(fakeFolder.syncJournal().setFileRecord(record));
         qDebug() << fakeFolder.localPath() + u"parent/child/.~lock.hello.odt#"_s;
         QFile newLockFile(fakeFolder.localPath() + u"parent/child/.~lock.hello.odt#"_s);
-        newLockFile.open(QFile::OpenModeFlag::NewOnly);
+        const auto openResult = newLockFile.open(QFile::OpenModeFlag::NewOnly);
+        if (!openResult) {
+            qWarning() << "Failed to create lock file:" << fakeFolder.localPath() + u"parent/child/.~lock.hello.odt#"_s;
+            return;
+        }
         OCC::FileSystem::setFileHidden(fakeFolder.localPath() + u"parent/child/.~lock.hello.odt#"_s, true);
 
         fakeFolder.remoteModifier().remove(u"parent/child"_s);
