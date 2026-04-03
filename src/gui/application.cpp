@@ -263,6 +263,21 @@ Application::Application(int &argc, char **argv)
     setApplicationName(_theme->appName());
     setWindowIcon(_theme->applicationIcon());
 
+    parseOptions(arguments());
+    //no need to waste time;
+    if (_helpOnly || _versionOnly) {
+        return;
+    }
+
+    if (_quitInstance) {
+        QTimer::singleShot(0, qApp, &QApplication::quit);
+        return;
+    }
+
+    if (!_singleApp.isPrimaryInstance()) {
+        return;
+    }
+
     if (!ConfigFile().exists()) {
         setApplicationName(_theme->appNameGUI());
         QString legacyDir = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + "/" + APPLICATION_CONFIG_NAME;
@@ -313,21 +328,6 @@ Application::Application(int &argc, char **argv)
                 accountState->account()->setProxyType(QNetworkProxy::NoProxy);
             }
         }
-    }
-
-    parseOptions(arguments());
-    //no need to waste time;
-    if (_helpOnly || _versionOnly) {
-        return;
-    }
-
-    if (_quitInstance) {
-        QTimer::singleShot(0, qApp, &QApplication::quit);
-        return;
-    }
-
-    if (!_singleApp.isPrimaryInstance()) {
-        return;
     }
 
     setupLogging();
