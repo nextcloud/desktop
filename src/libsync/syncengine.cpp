@@ -245,7 +245,8 @@ void SyncEngine::deleteStaleUploadInfos(const SyncFileItemVector &syncItems)
             if (!transferId)
                 continue; // Was not a chunked upload
             QUrl url = Utility::concatUrlPath(account()->url(), QLatin1String("remote.php/dav/uploads/") + account()->davUser() + QLatin1Char('/') + QString::number(transferId));
-            (new DeleteJob(account(), url, {}, this))->start();
+            auto *const deleteJob = new DeleteJob(account(), url, {}, this);
+            deleteJob->start();
         }
     }
 }
@@ -510,7 +511,7 @@ void SyncEngine::startSync()
                     return;
                 }
                 // TODO: We need to rollback changes done to metadata in case we have an active lock, this needs to be implemented on the server first
-                const auto unlockJob = new OCC::UnlockEncryptFolderApiJob(_account, folderId, *folderToken, _journal, this);
+                auto *const unlockJob = new OCC::UnlockEncryptFolderApiJob(_account, folderId, *folderToken, _journal, this);
                 unlockJob->setShouldRollbackMetadataChanges(true);
                 unlockJob->start();
             }
@@ -1185,7 +1186,7 @@ bool SyncEngine::handleMassDeletion()
             }
         }
 
-        promptUserBeforePropagation([this, side](auto &&callback){
+        promptUserBeforePropagation([this, side](auto &callback){
             emit aboutToRemoveAllFiles(side >= 0 ? SyncFileItem::Down : SyncFileItem::Up, callback);
         });
         return true;
@@ -1225,7 +1226,7 @@ void SyncEngine::handleRemnantReadOnlyFolders()
 template <typename T>
 void SyncEngine::promptUserBeforePropagation(T &&lambda)
 {
-    QPointer<QObject> guard = new QObject();
+    QPointer<QObject> guard = new QObject(this);
     QPointer<QObject> self = this;
     auto callback = [this, self, guard](bool cancel) -> void {
         // use a guard to ensure its only called once...
