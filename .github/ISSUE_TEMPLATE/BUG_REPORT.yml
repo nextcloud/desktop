@@ -98,11 +98,11 @@ body:
         - "Official Windows MSI"
         - "Official macOS 12+ universal pkg"
         - "Official macOS Virtual files 12+ universal pkg"
-        - "Official PPA"
-        - "Community FlatPak"
-        - "Community SNAP package"
-        - "Distro package manager"
-        - "Compiled it myself"
+        - "Community PPA (please test with the AppImage package ?)"
+        - "Community FlatPak (please test with the AppImage package ?)"
+        - "Community SNAP package (please test with the AppImage package ?)"
+        - "Distro package manager (please test with the AppImage package ?)"
+        - "Compiled it myself (please test with the AppImage package ?)"
         - "Other"
     validations:
       required: true
