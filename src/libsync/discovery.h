@@ -204,6 +204,8 @@ private:
      */
     MovePermissionResult checkMovePermissions(RemotePermissions srcPerm, const QString &srcPath, bool isDirectory);
 
+    void updateDirItemFromServerJob(const DiscoverySingleDirectoryJob *const serverJob);
+    void applyE2eeEncryptionStatusForLocalNew(const SyncFileItemPtr &item, const SyncJournalFileRecord &base);
     void processBlacklisted(const PathTuple &, const LocalInfo &, const SyncJournalFileRecord &dbEntry);
     void subJobFinished();
 
