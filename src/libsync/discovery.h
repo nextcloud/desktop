@@ -252,7 +252,7 @@ private:
     void setupDbPinStateActions(SyncJournalFileRecord &record);
 
     bool maybeRenameForWindowsCompatibility(const QString &absoluteFileName,
-                                            CSYNC_EXCLUDE_TYPE excludeReason);
+                                            CSYNC_EXCLUDE_TYPE excludeReason) const;
 
     [[nodiscard]] bool checkNewDeleteConflict(const SyncFileItemPtr &item) const;
 
