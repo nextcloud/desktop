@@ -413,7 +413,7 @@ private:
     LocalDiscoveryStyle _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
     std::set<QString> _localDiscoveryPaths;
 
-    QStringList _leadingAndTrailingSpacesFilesAllowed;
+    QStringList _spacesFilesAllowed;
     bool _shouldEnforceWindowsFileNameCompatibility = false;
 
     // Hash of files we have scheduled for later sync runs, along with a

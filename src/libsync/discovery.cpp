@@ -30,9 +30,9 @@
 namespace
 {
 constexpr std::array<const char *, 1> editorNamesForDelayedUpload = {"PowerPDF"};
-constexpr std::array<const char *, 1> fileExtensionsToCheckIfOpenForSigning = {".pdf"};
-constexpr auto delayIntervalForSyncRetryForOpenedForSigningFilesSeconds = 60;
-constexpr auto delayIntervalForSyncRetryForFilesExceedQuotaSeconds = 60;
+constexpr std::array<const char *, 1> kFileExtsForSigning = {".pdf"};
+constexpr auto kRetryDelaySigningFileSec = 60;
+constexpr auto kRetryDelayQuotaExceedSec = 60;
 }
 
 namespace OCC {
@@ -277,11 +277,11 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
                                             || excluded == CSYNC_FILE_EXCLUDE_TRAILING_SPACE
                                             || excluded == CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE;
 
-    const auto leadingAndTrailingSpacesFilesAllowed = !_discoveryData->_shouldEnforceWindowsFileNameCompatibility || _discoveryData->_leadingAndTrailingSpacesFilesAllowed.contains(_discoveryData->_localDir + path);
+    const auto spacesFilesAllowed = !_discoveryData->_shouldEnforceWindowsFileNameCompatibility || _discoveryData->_spacesFilesAllowed.contains(_discoveryData->_localDir + path);
 #if defined Q_OS_WINDOWS
-    if (hasLeadingOrTrailingSpaces && leadingAndTrailingSpacesFilesAllowed) {
+    if (hasLeadingOrTrailingSpaces && spacesFilesAllowed) {
 #else
-    if (hasLeadingOrTrailingSpaces && (wasSyncedAlready || leadingAndTrailingSpacesFilesAllowed)) {
+    if (hasLeadingOrTrailingSpaces && (wasSyncedAlready || spacesFilesAllowed)) {
 #endif
         excluded = CSYNC_NOT_EXCLUDED;
     }
@@ -1130,7 +1130,7 @@ int64_t ProcessDirectoryJob::folderBytesAvailable(const SyncFileItemPtr &item, c
     return _dirItem->_folderQuota.bytesAvailable;
 }
 
-void ProcessDirectoryJob::applyE2eeEncryptionStatusForLocalNew(const SyncFileItemPtr &item,
+void ProcessDirectoryJob::applyE2eeEncryptForLocalNew(const SyncFileItemPtr &item,
                                                                const SyncJournalFileRecord &base)
 {
     // renaming the encrypted folder is done via remove + re-upload hence we need to mark the
@@ -1231,7 +1231,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
             item->_status = SyncFileItem::Status::NormalError;
             _discoveryData->_anotherSyncNeeded = true;
-            _discoveryData->_filesNeedingScheduledSync.insert(path._original, delayIntervalForSyncRetryForFilesExceedQuotaSeconds);
+            _discoveryData->_filesNeedingScheduledSync.insert(path._original, kRetryDelayQuotaExceedSec);
         }
 
         if (item->_type != CSyncEnums::ItemTypeVirtualFile) {
@@ -1243,7 +1243,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 item->_errorString = tr("Could not upload file, because it is open in \"%1\".").arg(editorsString);
                 item->_status = SyncFileItem::Status::SoftError;
                 _discoveryData->_anotherSyncNeeded = true;
-                _discoveryData->_filesNeedingScheduledSync.insert(path._original, delayIntervalForSyncRetryForOpenedForSigningFilesSeconds);
+                _discoveryData->_filesNeedingScheduledSync.insert(path._original, kRetryDelaySigningFileSec);
             }
         }
 
@@ -1593,7 +1593,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     // If it's not a move it's just a local-NEW
     if (!isMove || (isE2eeMove && !isE2eeMoveOnlineOnlyItemWithCfApi)) {
         if (base.isE2eEncrypted()) {
-            applyE2eeEncryptionStatusForLocalNew(item, base);
+            applyE2eeEncryptForLocalNew(item, base);
         }
         postProcessLocalNew();
         finalize();
@@ -2112,10 +2112,10 @@ QStringList ProcessDirectoryJob::queryEditorsKeepingFileBusy(const SyncFileItemP
         return matchingEditorsKeepingFileBusy;
     }
 
-    if (const auto isMatchingFileExtension = std::ranges::find_if(fileExtensionsToCheckIfOpenForSigning,
+    if (const auto isMatchingFileExtension = std::ranges::find_if(kFileExtsForSigning,
             [path](const auto &matchingExtension) {
                 return path._local.endsWith(matchingExtension, Qt::CaseInsensitive);
-            }) != std::cend(fileExtensionsToCheckIfOpenForSigning);
+            }) != std::cend(kFileExtsForSigning);
         !isMatchingFileExtension) {
         return matchingEditorsKeepingFileBusy;
     }
@@ -2459,8 +2459,8 @@ bool ProcessDirectoryJob::maybeRenameForWindowsCompatibility(const QString &abso
 {
     auto result = true;
 
-    const auto leadingAndTrailingSpacesFilesAllowed = !_discoveryData->_shouldEnforceWindowsFileNameCompatibility || _discoveryData->_leadingAndTrailingSpacesFilesAllowed.contains(absoluteFileName);
-    if (leadingAndTrailingSpacesFilesAllowed) {
+    const auto spacesFilesAllowed = !_discoveryData->_shouldEnforceWindowsFileNameCompatibility || _discoveryData->_spacesFilesAllowed.contains(absoluteFileName);
+    if (spacesFilesAllowed) {
         return result;
     }
 

@@ -648,7 +648,7 @@ void SyncEngine::startSync()
 
     _discoveryPhase = std::make_unique<DiscoveryPhase>();
     _discoveryPhase->_fileSystemReliablePermissions = _filesystemPermissionsReliable;
-    _discoveryPhase->_leadingAndTrailingSpacesFilesAllowed = _leadingAndTrailingSpacesFilesAllowed;
+    _discoveryPhase->_spacesFilesAllowed = _spacesFilesAllowed;
     _discoveryPhase->_account = _account;
     _discoveryPhase->_excludes = _excludedFiles.data();
     if (const QString excludeFilePath = _localPath + QStringLiteral(".sync-exclude.lst");
@@ -983,7 +983,7 @@ void SyncEngine::finalize(bool success)
     _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
 
     _clearTouchedFilesTimer.start();
-    _leadingAndTrailingSpacesFilesAllowed.clear();
+    _spacesFilesAllowed.clear();
 }
 
 void SyncEngine::processCaseClashConflictsBeforeDiscovery()
@@ -1289,7 +1289,7 @@ void SyncEngine::slotClearTouchedFiles()
 
 void SyncEngine::addAcceptedInvalidFileName(const QString& filePath)
 {
-    _leadingAndTrailingSpacesFilesAllowed.append(filePath);
+    _spacesFilesAllowed.append(filePath);
 }
 
 void SyncEngine::setLocalDiscoveryEnforceWindowsFileNameCompatibility(bool value)
