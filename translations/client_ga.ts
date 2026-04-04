@@ -2549,7 +2549,7 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
     <message>
         <location filename="../src/gui/folderman.cpp" line="416"/>
         <source>Please open the app settings to grant access to the sync folders.</source>
-        <translation type="unfinished"/>
+        <translation>Oscail socruithe an aip le rochtain a dheonú ar na fillteáin sioncrónaithe.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1864"/>
@@ -2569,7 +2569,7 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
         <location filename="../src/gui/folderstatusdelegate.cpp" line="284"/>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="426"/>
         <source>Grant access</source>
-        <translation type="unfinished"/>
+        <translation>Deonaigh rochtain</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="272"/>
@@ -2676,7 +2676,7 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
         <source>Select the synchronization folder to restore access.</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh an fillteán sioncrónaithe chun rochtain a athbhunú.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1057"/>
@@ -3148,12 +3148,12 @@ Ní féidir leaganacha a íosghrádú láithreach: ciallaíonn athrú ó chobhsa
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="673"/>
         <source>Login Item Requires Approval</source>
-        <translation type="unfinished"/>
+        <translation>Éilíonn Mír Logála Isteach Ceadú</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="674"/>
         <source>The login item has been registered but needs your approval to become active. Please open System Settings → General → Login Items and enable %1 there.</source>
-        <translation type="unfinished"/>
+        <translation>Tá an mhír logála isteach cláraithe ach ní mór duit cead a fháil uait chun go mbeidh sí gníomhach. Oscail Socruithe Córais → Ginearálta → Míreanna Logála Isteach agus cumasaigh %1 ansin.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="666"/>
@@ -5493,12 +5493,12 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="165"/>
         <source>Reauthorization required</source>
-        <translation type="unfinished"/>
+        <translation>Athúdarú ag teastáil</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="166"/>
         <source>Please grant access to your sync folders</source>
-        <translation type="unfinished"/>
+        <translation>Tabhair rochtain ar do fhillteáin sioncrónaithe le do thoil</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="179"/>
@@ -6837,7 +6837,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="143"/>
         <source>Open settings</source>
-        <translation type="unfinished"/>
+        <translation>Oscail socruithe</translation>
     </message>
 </context>
 <context>
