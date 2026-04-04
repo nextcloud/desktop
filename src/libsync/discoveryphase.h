@@ -113,9 +113,9 @@ public:
     explicit DiscoverySingleDirectoryJob(const AccountPtr &account,
                                          const QString &path,
                                          const QString &remoteRootFolderPath,
-        /* TODO for topLevelE2eeFolderPaths, from review: I still do not get why giving the whole QSet instead of just the parent of the folder we are in
-        sounds to me like it would be much more efficient to just have the e2ee parent folder that we are
-        inside*/
+        // TODO for topLevelE2eeFolderPaths, from review: I still do not get why giving the whole QSet instead of just the parent of the folder we are in
+        // sounds to me like it would be much more efficient to just have the e2ee parent folder that we are
+        // inside
                                          const QSet<QString> &topLevelE2eeFolderPaths,
                                          SyncFileItem::EncryptionStatus parentEncryptionStatus,
                                          QObject *parent = nullptr);

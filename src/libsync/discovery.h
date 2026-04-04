@@ -103,7 +103,7 @@ public:
         ProcessDirectoryJob *parent);
 
     explicit ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState, const PathTuple &path, const SyncFileItemPtr &dirItem, const SyncFileItemPtr &parentDirItem,
-                                 QueryMode queryLocal, qint64 lastSyncTimestamp, QObject *parent);
+                                 const QueryMode queryLocal, qint64 lastSyncTimestamp, QObject *parent);
 
     void start();
     /** Start up to nbJobs, return the number of job started; emit finished() when done */
@@ -205,7 +205,7 @@ private:
     MovePermissionResult checkMovePermissions(RemotePermissions srcPerm, const QString &srcPath, bool isDirectory);
 
     void updateDirItemFromServerJob(const DiscoverySingleDirectoryJob *const serverJob);
-    void applyE2eeEncryptForLocalNew(const SyncFileItemPtr &item, const SyncJournalFileRecord &base);
+    void applyE2eeEncryptForLocalNew(const SyncFileItemPtr &item, const SyncJournalFileRecord &base) const;
     void processBlacklisted(const PathTuple &, const LocalInfo &, const SyncJournalFileRecord &dbEntry);
     void subJobFinished();
 
@@ -252,7 +252,7 @@ private:
     void setupDbPinStateActions(SyncJournalFileRecord &record);
 
     bool maybeRenameForWinCompatibility(const QString &absoluteFileName,
-                                            CSYNC_EXCLUDE_TYPE excludeReason) const;
+                                            const CSYNC_EXCLUDE_TYPE excludeReason) const;
 
     [[nodiscard]] bool checkNewDeleteConflict(const SyncFileItemPtr &item) const;
 

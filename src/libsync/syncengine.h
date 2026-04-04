@@ -152,7 +152,7 @@ public slots:
      */
     void setLocalDiscoveryOptions(OCC::LocalDiscoveryEnums::LocalDiscoveryStyle style, std::set<QString> paths = {});
     void addAcceptedInvalidFileName(const QString& filePath);
-    void setEnforceWindowsFilenameCompat(bool value);
+    void setEnforceWindowsFilenameCompat(const bool value);
 
 signals:
     // During update, before reconcile

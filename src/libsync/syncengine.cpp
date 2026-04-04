@@ -402,7 +402,7 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 
             // Update on-disk virtual file metadata
             if (modificationHappened && item->_type == ItemTypeVirtualFile) {
-                auto r = _syncOptions._vfs->updateMetadata(*item, filePath, {});
+                const auto r = _syncOptions._vfs->updateMetadata(*item, filePath, {});
                 if (!r) {
                     item->_status = SyncFileItem::Status::NormalError;
                     item->_instruction = CSYNC_INSTRUCTION_ERROR;
@@ -1292,7 +1292,7 @@ void SyncEngine::addAcceptedInvalidFileName(const QString& filePath)
     _spacesFilesAllowed.append(filePath);
 }
 
-void SyncEngine::setEnforceWindowsFilenameCompat(bool value)
+void SyncEngine::setEnforceWindowsFilenameCompat(const bool value)
 {
     _enforceWindowsFilenameCompat = value;
 }
@@ -1587,7 +1587,7 @@ QHash<qint64, SyncEngine::ScheduledSyncBucket> SyncEngine::groupNeededScheduledS
          it != _discoveryPhase->_filesNeedingScheduledSync.cend();
          ++it) {
 
-        const auto file = it.key();
+        const auto &file = it.key();
         const auto syncScheduledSecs = it.value();
 
         // We don't want to schedule syncs again for files we have already discovered needing a

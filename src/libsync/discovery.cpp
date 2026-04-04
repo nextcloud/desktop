@@ -62,7 +62,7 @@ ProcessDirectoryJob::ProcessDirectoryJob(const PathTuple &path, const SyncFileIt
     computePinState(parent->_pinState);
 }
 
-ProcessDirectoryJob::ProcessDirectoryJob(DiscoveryPhase *const data, const PinState basePinState, const PathTuple &path, const SyncFileItemPtr &dirItem, const SyncFileItemPtr &parentDirItem, QueryMode queryLocal, const qint64 lastSyncTimestamp, QObject *const parent)
+ProcessDirectoryJob::ProcessDirectoryJob(DiscoveryPhase *const data, const PinState basePinState, const PathTuple &path, const SyncFileItemPtr &dirItem, const SyncFileItemPtr &parentDirItem, const QueryMode queryLocal, const qint64 lastSyncTimestamp, QObject *const parent)
         : QObject(parent)
         , _dirItem(dirItem)
         , _dirParentItem(parentDirItem)
@@ -277,11 +277,12 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
                                             || excluded == CSYNC_FILE_EXCLUDE_TRAILING_SPACE
                                             || excluded == CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE;
 
-    const auto spacesFilesAllowed = !_discoveryData->_enforceWindowsFilenameCompat || _discoveryData->_spacesFilesAllowed.contains(_discoveryData->_localDir + path);
 #if defined Q_OS_WINDOWS
-    if (hasLeadingOrTrailingSpaces && spacesFilesAllowed) {
+    if (const auto spacesFilesAllowed = !_discoveryData->_enforceWindowsFilenameCompat || _discoveryData->_spacesFilesAllowed.contains(_discoveryData->_localDir + path);
+        hasLeadingOrTrailingSpaces && spacesFilesAllowed) {
 #else
-    if (hasLeadingOrTrailingSpaces && (wasSyncedAlready || spacesFilesAllowed)) {
+    if (const auto spacesFilesAllowed = !_discoveryData->_enforceWindowsFilenameCompat || _discoveryData->_spacesFilesAllowed.contains(_discoveryData->_localDir + path);
+        hasLeadingOrTrailingSpaces && (wasSyncedAlready || spacesFilesAllowed)) {
 #endif
         excluded = CSYNC_NOT_EXCLUDED;
     }
@@ -1119,8 +1120,7 @@ int64_t ProcessDirectoryJob::folderBytesAvailable(const SyncFileItemPtr &item, c
 
     qCDebug(lcDisco) << "_dirItem->_folderQuota.bytesAvailable:" << _dirItem->_folderQuota.bytesAvailable;
 
-    SyncJournalFileRecord dirItemDbRecord;
-    if (_discoveryData->_statedb->getFileRecord(_dirItem->_file, &dirItemDbRecord) && dirItemDbRecord.isValid()) {
+    if (SyncJournalFileRecord dirItemDbRecord; _discoveryData->_statedb->getFileRecord(_dirItem->_file, &dirItemDbRecord) && dirItemDbRecord.isValid()) {
         const auto dirDbBytesAvailable = dirItemDbRecord._folderQuota.bytesAvailable;
         qCDebug(lcDisco) << "Returning for item quota db value dirItemDbRecord._folderQuota.bytesAvailable" << dirDbBytesAvailable;
         return dirDbBytesAvailable;
@@ -1131,7 +1131,7 @@ int64_t ProcessDirectoryJob::folderBytesAvailable(const SyncFileItemPtr &item, c
 }
 
 void ProcessDirectoryJob::applyE2eeEncryptForLocalNew(const SyncFileItemPtr &item,
-                                                               const SyncJournalFileRecord &base)
+                                                               const SyncJournalFileRecord &base) const
 {
     // renaming the encrypted folder is done via remove + re-upload hence we need to mark the
     // newly created folder as encrypted.  base is the DB record with the old name and encryption info.
@@ -1629,7 +1629,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
         // Here we know the new location can't be uploaded: must prevent the source delete.
         // Two cases: either the source item was already processed or not.
-        auto [wasDeleted, deletedEtag] = _discoveryData->findAndCancelDeletedJob(originalPath);
+        const auto [wasDeleted, deletedEtag] = _discoveryData->findAndCancelDeletedJob(originalPath);
         if (wasDeleted) {
             // More complicated. The REMOVE is canceled. Restore will happen next sync.
             qCInfo(lcDisco) << "Undid remove instruction on source" << originalPath;
@@ -1646,7 +1646,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         return;
     }
 
-    auto [wasDeletedOnClient, deletedItemEtag] = _discoveryData->findAndCancelDeletedJob(originalPath);
+    const auto [wasDeletedOnClient, deletedItemEtag] = _discoveryData->findAndCancelDeletedJob(originalPath);
 
     auto processRename = [item, originalPath, base, this](PathTuple &path) {
         auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
@@ -2455,12 +2455,12 @@ void ProcessDirectoryJob::setupDbPinStateActions(SyncJournalFileRecord &record)
 }
 
 bool ProcessDirectoryJob::maybeRenameForWinCompatibility(const QString &absoluteFileName,
-                                                             CSYNC_EXCLUDE_TYPE excludeReason) const
+                                                             const CSYNC_EXCLUDE_TYPE excludeReason) const
 {
     auto result = true;
 
-    const auto spacesFilesAllowed = !_discoveryData->_enforceWindowsFilenameCompat || _discoveryData->_spacesFilesAllowed.contains(absoluteFileName);
-    if (spacesFilesAllowed) {
+    if (const auto spacesFilesAllowed = !_discoveryData->_enforceWindowsFilenameCompat || _discoveryData->_spacesFilesAllowed.contains(absoluteFileName);
+        spacesFilesAllowed) {
         return result;
     }
 
@@ -2484,8 +2484,8 @@ bool ProcessDirectoryJob::maybeRenameForWinCompatibility(const QString &absolute
     case CSYNC_FILE_EXCLUDE_LEADING_SPACE:
     case CSYNC_FILE_EXCLUDE_TRAILING_SPACE:
     {
-        const auto removeTrailingSpaces = [] (QString string) -> QString {
-            for (int n = string.size() - 1; n >= 0; -- n) {
+        const auto removeTrailingSpaces = [] (QString string) {
+            for (qsizetype n = string.size() - 1; n >= 0; -- n) {
                 if (!string.at(n).isSpace()) {
                     string.truncate(n + 1);
                     break;
