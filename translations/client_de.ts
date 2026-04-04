@@ -3147,12 +3147,12 @@ Ein Downgrade von Versionen ist nicht sofort möglich: Der Wechsel von Beta auf 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="673"/>
         <source>Login Item Requires Approval</source>
-        <translation type="unfinished"/>
+        <translation>Anmeldeelement erfordert Überprüfung</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="674"/>
         <source>The login item has been registered but needs your approval to become active. Please open System Settings → General → Login Items and enable %1 there.</source>
-        <translation type="unfinished"/>
+        <translation>Das Anmeldeelement wurde registriert, benötigt aber Ihre Überprüfung, um aktiviert zu werden. Bitte Systemeinstellungen → Allgemein → Anmeldeelemente öffnen und dort %1 aktivieren.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="666"/>

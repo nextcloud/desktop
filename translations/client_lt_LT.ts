@@ -4,12 +4,12 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="29"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>Atidaryti %1 vietoje</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="35"/>
         <source>In %1</source>
-        <translation type="unfinished"/>
+        <translation>Per %1</translation>
     </message>
 </context>
 <context>
@@ -22,12 +22,12 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="196"/>
         <source>File details</source>
-        <translation type="unfinished"/>
+        <translation>Išsamiau apie failą</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
         <source>File actions</source>
-        <translation type="unfinished"/>
+        <translation>Veiksmai su failais</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
@@ -58,12 +58,12 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="166"/>
         <source>Talk notification caller avatar</source>
-        <translation type="unfinished"/>
+        <translation>„Talk‟ pranešimas, skambinančiojo avataras</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="225"/>
         <source>Answer Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Atsakyti į „Talk“ skambučio pranešimą</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="232"/>
@@ -73,7 +73,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="242"/>
         <source>Decline Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Atsisakyti „Talk“ skambučio pranešimo</translation>
     </message>
 </context>
 <context>
@@ -128,7 +128,7 @@
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="236"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
-        <translation type="unfinished"/>
+        <translation>Atidarykite %1 darbalaukį. </translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="243"/>
@@ -221,22 +221,22 @@
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="244"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Dabartinės paskyros avataras</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="274"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Dabartinė paskyros būsena: prisijungęs</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="274"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Dabartinė paskyros būsena: netrukdyti</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="349"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Paskyros perjungiklis ir nustatymų meniu</translation>
     </message>
 </context>
 <context>
@@ -244,7 +244,7 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="83"/>
         <source>Opening file for local editing</source>
-        <translation type="unfinished"/>
+        <translation>Failo atidarymas vietiniam redagavimui</translation>
     </message>
 </context>
 <context>
@@ -260,7 +260,7 @@
     <message>
         <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="88"/>
         <source>Discovering the certificates stored on your USB token</source>
-        <translation type="unfinished"/>
+        <translation>USB rakte saugomų sertifikatų peržiūra</translation>
     </message>
 </context>
 <context>
@@ -276,7 +276,7 @@
     <message>
         <location filename="../src/gui/integration/FileActionsWindow.qml" line="33"/>
         <source>File actions for %1</source>
-        <translation type="unfinished"/>
+        <translation>Failo veiksmai dėl %1</translation>
     </message>
 </context>
 <context>
@@ -289,7 +289,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="227"/>
         <source>Sharing</source>
-        <translation type="unfinished"/>
+        <translation>Bendrinima</translation>
     </message>
 </context>
 <context>
@@ -297,7 +297,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsWindow.qml" line="28"/>
         <source>File details of %1 · %2</source>
-        <translation type="unfinished"/>
+        <translation>Failo duomenys: %1 · %2</translation>
     </message>
 </context>
 <context>
@@ -313,7 +313,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
         <source>Virtual files settings</source>
-        <translation type="unfinished"/>
+        <translation>Virtualių failų nustatymai</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
@@ -323,17 +323,17 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
         <source>Virtual files appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. Virtual files and classic sync can not be used at the same time.</source>
-        <translation type="unfinished"/>
+        <translation>Virtualūs failai atrodo kaip įprasti failai, tačiau jie neužima vietinės saugyklos vietos. Turinys atsisiunčiamas automatiškai atidarius failą. Virtualių failų ir klasikinio sinchronizavimo negalima naudoti vienu metu.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
         <source>Enable virtual files</source>
-        <translation type="unfinished"/>
+        <translation>Įgalinti virtualius failus</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Reset virtual files environment</source>
-        <translation type="unfinished"/>
+        <translation>Iš naujo nustatykite virtualių failų aplinką</translation>
     </message>
 </context>
 <context>
@@ -413,57 +413,57 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="245"/>
         <source>Main content</source>
-        <translation type="unfinished"/>
+        <translation>Pagrindinis turinys</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="330"/>
         <source>Issue with account %1</source>
-        <translation type="unfinished"/>
+        <translation>Nesklandumai su paskyra %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="332"/>
         <source>Issues with several accounts</source>
-        <translation type="unfinished"/>
+        <translation>Nesklandumai su keliomis paskyromis</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="413"/>
         <source>Start new conversation?</source>
-        <translation type="unfinished"/>
+        <translation>Pradėti naują pokalbį?</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="433"/>
         <source>New conversation</source>
-        <translation type="unfinished"/>
+        <translation>Naujas pokalbis</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="437"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Atsisakyti</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="458"/>
         <source>This will clear the existing conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Tai ištrins esamą pokalbį.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="503"/>
         <source>Ask Assistant…</source>
-        <translation type="unfinished"/>
+        <translation>Klausti asistento...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="531"/>
         <source>Send assistant question</source>
-        <translation type="unfinished"/>
+        <translation>Siųsti klausimą asistentui</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="552"/>
         <source>Start a new assistant chat</source>
-        <translation type="unfinished"/>
+        <translation>Pradėti naują pokalbį su asistentu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
         <source>Unified search results list</source>
-        <translation type="unfinished"/>
+        <translation>Vieningas paieškos rezultatų sąrašas</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="446"/>
@@ -476,17 +476,17 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="325"/>
         <source>The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Serveris atsakė per ilgai. Patikrinkite savo interneto ryšį ir pabandykite sinchronizuoti dar kartą. Jei vis tiek nepavyksta, kreipkitės į savo serverio administratorių.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="329"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Įvyko netikėta klaida. Prašome pabandyti sinchronizuoti dar kartą arba, jei problema neišsprendžiama, susisiekti su serverio administratoriumi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="609"/>
         <source>The server enforces strict transport security and does not accept untrusted certificates.</source>
-        <translation type="unfinished"/>
+        <translation>Serveris užtikrina griežtą duomenų perdavimo saugumą ir nepriima nepatikimų sertifikatų.</translation>
     </message>
 </context>
 <context>
@@ -494,22 +494,22 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="227"/>
         <source>Public Share Link</source>
-        <translation type="unfinished"/>
+        <translation>Vieša nuoroda</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="1071"/>
         <source>File %1 is already locked by %2.</source>
-        <translation type="unfinished"/>
+        <translation> Failą %1 jau užrakino %2.</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="1073"/>
         <source>Lock operation on %1 failed with error %2</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko užrakinti %1 dėl klaidos %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="1075"/>
         <source>Unlock operation on %1 failed with error %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 atrakinimo operacija nepavyko dėl klaidos %2</translation>
     </message>
 </context>
 <context>
@@ -518,13 +518,14 @@
         <location filename="../src/gui/accountmanager.cpp" line="244"/>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation type="unfinished"/>
+        <translation>Aptikta paskyra iš senesnio darbalaukio kliento.
+Ar paskyrą reikėtų importuoti?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="246"/>
         <location filename="../src/gui/accountmanager.cpp" line="359"/>
         <source>Legacy import</source>
-        <translation type="unfinished"/>
+        <translation>Senasis importavimas</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="247"/>
@@ -539,7 +540,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="360"/>
         <source>Could not import accounts from legacy client configuration.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko importuoti paskyrų iš senosios kliento konfigūracijos.</translation>
     </message>
 </context>
 <context>
@@ -547,12 +548,12 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="159"/>
         <source>Virtual files</source>
-        <translation type="unfinished"/>
+        <translation>Virtualūs failai</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="205"/>
         <source>Classic sync</source>
-        <translation type="unfinished"/>
+        <translation>Klasikinis sinchronizavimas</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="85"/>
@@ -582,12 +583,12 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="270"/>
         <source>Standard file sync</source>
-        <translation type="unfinished"/>
+        <translation>Standartinis failo sinchronizavimas</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="314"/>
         <source>Virtual file sync</source>
-        <translation type="unfinished"/>
+        <translation>Virtualus failo sinchronizavimas</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="319"/>
@@ -619,12 +620,12 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="92"/>
         <source>End-to-end Encryption with Virtual Files</source>
-        <translation type="unfinished"/>
+        <translation>Virtualių failų ištisinis šifravimas</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Atrodo, kad šiame aplanke įjungta virtualių failų funkcija. Šiuo metu neįmanoma netiesiogiai atsisiųsti virtualių failų, kurie yra užšifruoti ištisiniu šifravimu. Norėdami gauti geriausią patirtį su virtualiais failais ir ištisiniu šifravimu, įsitikinkite, kad užšifruotas aplankas pažymėtas „Visada pasiekti vietoje“.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="101"/>
@@ -647,27 +648,28 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountsettings.cpp" line="117"/>
         <source>This will encrypt your folder and all files within it. These files will no longer be accessible without your encryption mnemonic key. 
 &lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Tai užšifruos jūsų aplanką ir visus jame esančius failus. Šie failai nebebus pasiekiami be jūsų šifravimo mnemoninio rakto.
+&lt;b&gt;Šio proceso negalima atšaukti. Ar tikrai norite tęsti?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="280"/>
         <source>End-to-end encryption has not been initialized on this account.</source>
-        <translation type="unfinished"/>
+        <translation>Šioje paskyroje nebuvo inicijuotas ištisinis šifravimas.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="302"/>
         <source>Forget encryption setup</source>
-        <translation type="unfinished"/>
+        <translation>Pamirškite šifravimo sąranką</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="312"/>
         <source>Display mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Rodyti mnemoniką</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="319"/>
         <source>Encryption is set-up. Remember to &lt;b&gt;Encrypt&lt;/b&gt; a folder to end-to-end encrypt any new files added to it.</source>
-        <translation type="unfinished"/>
+        <translation>Šifravimas nustatytas. Nepamirškite &lt;b&gt;užšifruoti&lt;/b&gt; aplanko, kad būtų užšifruoti visi į jį pridedami nauji failai.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="352"/>
@@ -677,23 +679,24 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="398"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
-        <translation type="unfinished"/>
+        <translation>Prieš bandydami užšifruoti aplanką, palaukite, kol jis bus sinchronizuotas.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="400"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation type="unfinished"/>
+        <translation>Aplankas turi nedidelę sinchronizavimo problemą. Šį aplanką bus galima užšifruoti, kai jis bus sėkmingai sinchronizuotas.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="402"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation type="unfinished"/>
+        <translation>Aplanke yra sinchronizavimo klaida. Šį aplanką bus galima užšifruoti, kai jis bus sėkmingai sinchronizuotas.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="413"/>
         <source>You cannot encrypt this folder because the end-to-end encryption is not set-up yet on this device.
 Would you like to do this now?</source>
-        <translation type="unfinished"/>
+        <translation>Šio aplanko užšifruoti negalima, nes šiame įrenginyje dar nenustatytas ištisinis šifravimas.
+Ar norėtumėte tai padaryti dabar?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="437"/>
@@ -758,17 +761,17 @@ Palaukite naujo sinchronizavimo, o tuomet jį šifruokite.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="718"/>
         <source>Disable virtual file support …</source>
-        <translation type="unfinished"/>
+        <translation>Išjungti virtualių failų palaikymą…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="727"/>
         <source>Enable virtual file support %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Įgalinti virtualių failų palaikymą %1…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="727"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(eksperimentinis)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="821"/>
@@ -788,48 +791,48 @@ Palaukite naujo sinchronizavimo, o tuomet jį šifruokite.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="962"/>
         <source>Grant access to sync folder</source>
-        <translation type="unfinished"/>
+        <translation>Suteikti prieigą sinchronizuoti aplanką</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="974"/>
         <source>Access Error</source>
-        <translation type="unfinished"/>
+        <translation>Prieigos klaida</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="975"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko gauti prieigos prie pasirinkto aplanko. Bandykite dar kartą.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="983"/>
         <source>Wrong Folder</source>
-        <translation type="unfinished"/>
+        <translation>Neteisingas aplankas</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="984"/>
         <source>Please select the original sync folder: %1</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinkite pradinį sinchronizavimo aplanką: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="993"/>
         <location filename="../src/gui/accountsettings.cpp" line="1002"/>
         <source>Bookmark Error</source>
-        <translation type="unfinished"/>
+        <translation>Adresnyo klaida</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="994"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko sukurti aplankui saugos adresyno. Bandykite dar kartą.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1003"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko nustatyti saugos adresyno. Bandykite dar kartą.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1000"/>
         <source>Disable virtual file support?</source>
-        <translation type="unfinished"/>
+        <translation>Išjungti virtualių failų palaikymą?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1001"/>
@@ -838,37 +841,41 @@ Palaukite naujo sinchronizavimo, o tuomet jį šifruokite.</translation>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation type="unfinished"/>
+        <translation>Šis veiksmas išjungs virtualių failų palaikymą. Dėl to bus atsisiųstas šiuo metu kaip „prieinama tik internete“ pažymėtų aplankų turinys.
+
+Vienintelis virtualių failų palaikymo išjungimo privalumas yra tai, kad vėl bus galima naudotis selektyvios sinchronizacijos funkcija.
+
+Šis veiksmas nutrauks visus šiuo metu vykstančius sinchronizavimo procesus.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1008"/>
         <source>Disable support</source>
-        <translation type="unfinished"/>
+        <translation>Išjungti palaikymą</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1095"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Ištisinio šifravimo mnemonikas</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1097"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
-        <translation type="unfinished"/>
+        <translation>Siekdami apsaugoti jūsų kriptografinę tapatybę, mes ją užšifruojame naudodami 12 žodžių mnemoniką. Užsirašykite ją ir saugokite saugioje vietoje. Ji jums bus reikalinga, norint nustatyti užšifruotų aplankų sinchronizavimą kituose jūsų įrenginiuose.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1122"/>
         <source>Forget the end-to-end encryption on this device</source>
-        <translation type="unfinished"/>
+        <translation>Pamiršti ištisinį šifravimą šiame įrenginyje</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1123"/>
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
-        <translation type="unfinished"/>
+        <translation>Ar norite pamiršti šio įrenginio %1 ištisinio šifravimo nustatymus?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1124"/>
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
-        <translation type="unfinished"/>
+        <translation>Pamiršus ištisinį šifravimą, iš šio įrenginio bus pašalinti jautrūs duomenys ir visi užšifruoti failai. Tačiau užšifruoti failai liks serveryje ir visuose kituose įrenginiuose, jei jie sukonfigūruoti.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1197"/>
@@ -898,32 +905,32 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1422"/>
         <source>Connected to %1 (%2).</source>
-        <translation type="unfinished"/>
+        <translation>Prisijungta prie %1 (%2).</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1537"/>
         <source>Migrate certificate to a new one</source>
-        <translation type="unfinished"/>
+        <translation>Perkelti sertifikatą į naują</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1644"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
-        <translation type="unfinished"/>
+        <translation>Yra aplankų, kurių dydis viršija %1 MB: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1695"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
-        <translation type="unfinished"/>
+        <translation>Šioje paskyroje kitame įrenginyje buvo inicijuotas ištisinis šifravimas. &lt;br&gt;Įveskite unikalų mnemoniką, kad užšifruoti aplankai būtų sinchronizuojami ir šiame įrenginyje.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1753"/>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
-        <translation type="unfinished"/>
+        <translation>Ši paskyra palaiko ištisinį šifravimą, bet pirmiausia jį reikia nustatyti.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1858"/>
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
-        <translation type="unfinished"/>
+        <translation>Virtualių failų integracija dar nepalaiko ištisinio šifravimo.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1757"/>
@@ -1004,12 +1011,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1317"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Serverio %1 versija nepalaikoma! Tęskite savo rizika.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1329"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
-        <translation type="unfinished"/>
+        <translation>Serveris %1 šiuo metu peradresuojamas arba jūsų ryšys veikia per fiksuotą portalą.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1335"/>
@@ -1029,7 +1036,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1353"/>
         <source>You need to accept the terms of service at %1.</source>
-        <translation type="unfinished"/>
+        <translation>Turite sutikti su paslaugų teikimo sąlygomis adresu %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1358"/>
@@ -1042,17 +1049,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="133"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>Autentifikuota užklausa serveriui buvo nukreipta į „%1“. URL yra blogas, serveris yra netinkamai sukonfigūruotas.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="143"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation type="unfinished"/>
+        <translation>Serveris draudžia prieigą. Norėdami patikrinti, ar turite tinkamą prieigą, &lt;a href=&quot;%1&quot;&gt;spustelėkite čia&lt;/a&gt;, kad pasiektumėte paslaugą naudodami naršyklę.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="151"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation type="unfinished"/>
+        <translation>Į autentifikuotą „WebDAV“ užklausą buvo pateiktas neteisingas atsakymas</translation>
     </message>
 </context>
 <context>
@@ -1105,7 +1112,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="170"/>
         <source>Need the user to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Reikalaujama, kad vartotojas sutiktų su paslaugų teikimo sąlygomis</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="172"/>
@@ -1128,7 +1135,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="605"/>
         <source>Network error occurred: client will retry syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Įvyko tinklo klaida: klientas bandys sinchronizuoti dar kartą.</translation>
     </message>
 </context>
 <context>
@@ -1156,7 +1163,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation type="unfinished"/>
+        <translation>Primygtinai rekomenduojama naudoti užšifruotą „pkcs12“ paketą, nes kopija bus saugoma konfigūracijos faile.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
@@ -1176,7 +1183,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="44"/>
         <source>Could not access the selected certificate file.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko pasiekti pasirinkto sertifikato failo.</translation>
     </message>
 </context>
 <context>
@@ -1184,7 +1191,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="177"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Kai kurie nustatymai buvo sukonfigūruoti šio kliento %1 versijose ir naudoja funkcijas, kurios šioje versijoje nėra prieinamos.&lt;br&gt;&lt;br&gt; Tęsiant bus &lt;b&gt;naudojami šie nustatymai %2&lt;/b&gt;. &lt;br&gt;&lt;br&gt;Dabartinis konfigūracijos failas jau buvo sukurtas atsargine kopija &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="183"/>
@@ -1196,17 +1203,17 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/application.cpp" line="183"/>
         <source>older</source>
         <comment>older software version</comment>
-        <translation type="unfinished"/>
+        <translation>senesnė</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="184"/>
         <source>ignoring</source>
-        <translation type="unfinished"/>
+        <translation>ignoruojama</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="184"/>
         <source>deleting</source>
-        <translation type="unfinished"/>
+        <translation>ištrinama</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="186"/>
@@ -1222,7 +1229,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/application.cpp" line="522"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
-        <translation type="unfinished"/>
+        <translation>%1 paskyros</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="523"/>
@@ -1233,7 +1240,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/application.cpp" line="525"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
-        <translation type="unfinished"/>
+        <translation>%1 aplankai</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="526"/>
@@ -1243,14 +1250,15 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="528"/>
         <source>Legacy import</source>
-        <translation type="unfinished"/>
+        <translation>Senasis importavimas</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="529"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
-        <translation type="unfinished"/>
+        <translation>Importuota %1 ir %2 iš senesnio darbalaukio kliento.
+%3</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="612"/>
@@ -1260,7 +1268,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="613"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
-        <translation type="unfinished"/>
+        <translation>Bandant pasiekti konfigūracijos failą adresu %1, įvyko klaida. Įsitikinkite, kad jūsų sistemos paskyra gali pasiekti failą.</translation>
     </message>
 </context>
 <context>
@@ -1273,7 +1281,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="24"/>
         <source>Enter username and password for &quot;%1&quot; at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Įveskite vartotojo vardą ir slaptažodį, skirtus „%1“, adresu %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="29"/>
@@ -1296,7 +1304,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/basepropagateremotedeleteencrypted.cpp" line="127"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Serveris grąžino neteisingą HTTP kodą. Tikėtasi 204, bet gautas „%1 %2“.</translation>
     </message>
 </context>
 <context>
@@ -1304,23 +1312,23 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="143"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>%1 failo negalima atsisiųsti dėl vietinio failo pavadinimų konflikto!</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="165"/>
         <source>Unable to update metadata of new file %1.</source>
         <comment>error with update metadata of new Win VFS file</comment>
-        <translation type="unfinished"/>
+        <translation>Nepavyko atnaujinti naujo failo %1 metaduomenų.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="188"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Klaida atnaujinant metaduomenis: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="191"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Failas %1 šiuo metu yra naudojamas</translation>
     </message>
 </context>
 <context>
@@ -1328,38 +1336,38 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="141"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>Failo %1 įkelti nepavyko, nes yra kitas failas, besiskiriantis didžiosiomis ir mažosiomis raidėmis</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="182"/>
         <source>File contains leading or trailing spaces and couldn&apos;t be renamed</source>
-        <translation type="unfinished"/>
+        <translation>Faile yra tarpų pradžioje arba pabaigoje, todėl jo pervadinti nepavyko.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="200"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>%1 failo modifikavimo laikas negalioja. Neįkelti į serverį.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="352"/>
         <source>File Removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Failas pašalintas (pradėti įkėlimą) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="371"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>%1 failo pakeitimo laikas yra negaliojantis. Nekelkite į serverį.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="384"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Failas kompiuteryje sinchronizavimo metu buvo pakeistas. Bus tęsiama.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="398"/>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="745"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Failas kompiuteryje sinchronizavimo metu buvo pakeistas.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="508"/>
@@ -1379,12 +1387,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="727"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Vietinis failas sinchronizavimo metu buvo pašalintas.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="775"/>
         <source>Restoration failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Atkūrimas nepavyko: %1</translation>
     </message>
 </context>
 <context>
@@ -1392,22 +1400,22 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="68"/>
         <source>Cannot rename file because a file with the same name already exists on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko pervadinti failo, nes serveryje jau yra failas tokiu pavadinimu. Pasirinkite kitą pavadinimą.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="111"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko pervadinti failo. Įsitikinkite, kad esate prisijungę prie serverio.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="162"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation type="unfinished"/>
+        <translation>Jūs neturite leidimo pervadinti šį failą. Paprašykite failo autoriaus, kad jį pervadintų.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="169"/>
         <source>Failed to fetch permissions with error %1</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko gauti leidimų, įvyko klaida %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="190"/>
@@ -1430,12 +1438,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="14"/>
         <source>Case Clash Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Raidžių registro sutapties konfliktas</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it generates a case clash conflict with an existing file on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Failo nepavyko sinchronizuoti, nes jis sukuria raidžių registro sutapties konfliktą su esamu failu šioje sistemoje.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="36"/>
@@ -1445,7 +1453,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="53"/>
         <source>Existing file</source>
-        <translation type="unfinished"/>
+        <translation>Egzistuojantis failas</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
@@ -1462,7 +1470,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="114"/>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="220"/>
         <source>0 byte</source>
-        <translation type="unfinished"/>
+        <translation>0 baitų</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="121"/>
@@ -1473,7 +1481,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="165"/>
         <source>Case clashing file</source>
-        <translation type="unfinished"/>
+        <translation>Besidubliuojančio registro failas</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
@@ -1484,12 +1492,12 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="227"/>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="107"/>
         <source>Open clashing file</source>
-        <translation type="unfinished"/>
+        <translation>Atidaryti konfliktuojantį failą</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="268"/>
         <source>Please enter a new name for the clashing file:</source>
-        <translation type="unfinished"/>
+        <translation>Įveskite naują failo pavadinimą konfliktuojančiam failui:</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="281"/>
@@ -1504,17 +1512,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="93"/>
         <source>The file &quot;%1&quot; could not be synced because of a case clash conflict with an existing file on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Failo „%1“ nepavyko sinchronizuoti dėl registro konflikto su esamu failu šioje sistemoje.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="94"/>
         <source>%1 does not support equal file names with only letter casing differences.</source>
-        <translation type="unfinished"/>
+        <translation>%1 nepalaiko vienodų failų pavadinimų, kuriuose skiriasi tik didžiosios ir mažosios raidės.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="239"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Failo pavadinime yra tarpų pradžioje ir pabaigoje.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="242"/>
@@ -1529,7 +1537,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="249"/>
         <source>Use invalid name</source>
-        <translation type="unfinished"/>
+        <translation>Naudoti netinkamą pavadinimą</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="274"/>
@@ -1551,27 +1559,27 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1189"/>
         <source>Input PIN code</source>
         <comment>Please keep it short and shorter than &quot;Enter Certificate USB Token PIN:&quot;</comment>
-        <translation type="unfinished"/>
+        <translation>Įvesti PIN kodą</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1190"/>
         <source>Enter Certificate USB Token PIN:</source>
-        <translation type="unfinished"/>
+        <translation>Įveskite sertifikato USB prieigos rakto PIN kodą:</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1208"/>
         <source>Invalid PIN. Login failed</source>
-        <translation type="unfinished"/>
+        <translation>Neteisingas PIN kodas. Prisijungti nepavyko.</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1209"/>
         <source>Login to the token failed after providing the user PIN. It may be invalid or wrong. Please try again!</source>
-        <translation type="unfinished"/>
+        <translation>Prisijungti prie prieigos rakto nepavyko įvedus vartotojo PIN kodą. Jis gali būti negaliojantis arba neteisingas. Bandykite dar kartą!</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="2275"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Įveskite savo ištisinio šifravimo slaptažodį: &lt;br&gt;&lt;br&gt;Vartotojo vardas: %2&lt;br&gt;Paskyra: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="2283"/>
@@ -1584,18 +1592,18 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="14"/>
         <source>Sync Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizavimo konfliktas</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
         <location filename="../src/gui/conflictdialog.cpp" line="88"/>
         <source>Conflicting versions of %1.</source>
-        <translation type="unfinished"/>
+        <translation>%1 versijų konfliktas.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
         <source>Which version of the file do you want to keep?&lt;br/&gt;If you select both versions, the local file will have a number added to its name.</source>
-        <translation type="unfinished"/>
+        <translation>Kurią failo versiją norite išsaugoti? &lt;br/&gt; Jei pasirinksite abi versijas, prie vietinio failo pavadinimo bus pridėtas numeris.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
@@ -1707,12 +1715,12 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/connectionvalidator.cpp" line="46"/>
         <source>No %1 account configured</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation type="unfinished"/>
+        <translation>Nesukonfigūruota %1 paskyra</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="177"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Pasibaigė laikas</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="297"/>
@@ -1740,12 +1748,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="195"/>
         <source>Error while canceling deletion of a file</source>
-        <translation type="unfinished"/>
+        <translation>Klaida atšaukiant failo ištrynimą</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="196"/>
         <source>Error while canceling deletion of %1</source>
-        <translation type="unfinished"/>
+        <translation>Klaida atšaukiant %1 ištrynimą</translation>
     </message>
 </context>
 <context>
@@ -1753,12 +1761,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="566"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation type="unfinished"/>
+        <translation>Serverio klaida: PROPFIND atsakymas nėra XML formato!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="596"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
-        <translation type="unfinished"/>
+        <translation>Serveris pateikė nenumatytą atsakymą, kurio nepavyko perskaityti. Susisiekite su serverio administratoriumi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="627"/>
@@ -1769,7 +1777,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="660"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
-        <translation type="unfinished"/>
+        <translation>Užšifruotų metaduomenų sąrankos klaida: pradinis serverio parašas tuščias.</translation>
     </message>
 </context>
 <context>
@@ -1782,7 +1790,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="360"/>
         <source>Directory not accessible on client, permission denied</source>
-        <translation type="unfinished"/>
+        <translation>Katalogas nepasiekiamas kliento kompiuteryje, leidimas nesuteiktas</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="364"/>
@@ -1812,19 +1820,19 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/editlocallyjob.cpp" line="405"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="425"/>
         <source>Could not start editing locally.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko pradėti redaguoti lokaliai.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="38"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="314"/>
         <source>An error occurred during setup.</source>
-        <translation type="unfinished"/>
+        <translation>Sąrankos metu įvyko klaida.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="44"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="129"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko rasti failo vietiniam redagavimui. Įsitikinkite, kad jo kelias galioja ir jis sinchronizuotas vietoje.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="59"/>
@@ -1832,35 +1840,35 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/editlocallyjob.cpp" line="74"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="124"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko rasti failo vietiniam redagavimui. Įsitikinkite, kad jis nėra išskirtas naudojant atrankinį sinchronizavimą.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="98"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="370"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="379"/>
         <source>An error occurred during data retrieval.</source>
-        <translation type="unfinished"/>
+        <translation>Duomenų paieškos metu įvyko klaida.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="174"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="406"/>
         <source>An error occurred trying to synchronise the file to edit locally.</source>
-        <translation type="unfinished"/>
+        <translation>Bandant sinchronizuoti failą, kad jį būtų galima redaguoti lokaliai, įvyko klaida.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="358"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation type="unfinished"/>
+        <translation>Serverio klaida: PROPFIND atsakymas nėra XML formato!</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="360"/>
         <source>Could not find a remote file info for local editing. Make sure its path is valid.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko rasti failo vietiniam redagavimui. Įsitikinkite, kad jo kelias galioja.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="426"/>
         <source>Invalid local file path.</source>
-        <translation type="unfinished"/>
+        <translation>Neteisingas vietinio failo kelias.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="436"/>
@@ -1875,23 +1883,23 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="521"/>
         <source>File %1 already locked.</source>
-        <translation type="unfinished"/>
+        <translation>%1 failas jau yra užrakintas</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="522"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="533"/>
         <source>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</source>
-        <translation type="unfinished"/>
+        <translation>Užraktas bus aktyvus %1 minučių. Baigę redaguoti, šį failą taip pat galite atrakinti rankiniu būdu.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="532"/>
         <source>File %1 now locked.</source>
-        <translation type="unfinished"/>
+        <translation>%1 failas dabar užrakintas.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="541"/>
         <source>File %1 could not be locked.</source>
-        <translation type="unfinished"/>
+        <translation>%1 failas negali būti užrakintas.</translation>
     </message>
 </context>
 <context>
@@ -1899,7 +1907,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/editlocallymanager.cpp" line="109"/>
         <source>Could not validate the request to open a file from server.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko patvirtinti prašymo atidaryti failą iš serverio.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallymanager.cpp" line="110"/>
@@ -1912,7 +1920,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="83"/>
         <source>Invalid token received.</source>
-        <translation type="unfinished"/>
+        <translation>Gautas neteisingas žymuo.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="83"/>
@@ -1924,22 +1932,22 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="90"/>
         <source>Invalid file path was provided.</source>
-        <translation type="unfinished"/>
+        <translation>Pateiktas neteisingas failo kelias.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="96"/>
         <source>Could not find an account for local editing.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko rasti paskyros, kurią būtų galima redaguoti vietoje.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="120"/>
         <source>Could not start editing locally.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko pradėti redaguoti lokaliai.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="121"/>
         <source>An error occurred trying to verify the request to edit locally.</source>
-        <translation type="unfinished"/>
+        <translation>Bandant patvirtinti prašymą redaguoti lokaliai įvyko klaida.</translation>
     </message>
 </context>
 <context>
@@ -1948,7 +1956,8 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/libsync/encryptfolderjob.cpp" line="118"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko sugeneruoti šifravimo metaduomenų, aplankas atrakinamas.
+Tai gali būti susiję su jūsų „OpenSSL“ bibliotekomis.</translation>
     </message>
 </context>
 <context>
@@ -1983,7 +1992,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="333"/>
         <source>Failed to upload metadata</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko įkelti metaduomenų</translation>
     </message>
 </context>
 <context>
@@ -1992,38 +2001,38 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="260"/>
         <source>Your account is offline %1.</source>
         <comment>account url</comment>
-        <translation type="unfinished"/>
+        <translation>Jūsų paskyra yra neprisijungusi %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="269"/>
         <source>The file ID is empty for %1.</source>
         <comment>file name</comment>
-        <translation type="unfinished"/>
+        <translation>Failo ID laukas %1 yra tuščias.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="277"/>
         <source>The file type for %1 is not valid.</source>
         <comment>file name</comment>
-        <translation type="unfinished"/>
+        <translation>Failo tipas, skirtas %1, negalioja.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="289"/>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mimetype, e.g text/plain files</comment>
         <extracomment>TRANSLATOR Placeholder contains file MIME type</extracomment>
-        <translation type="unfinished"/>
+        <translation>Serveris nepateikė jokių veiksmų, susijusių su %1 failais.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="372"/>
         <source>%1 did not succeed, please try again later. If you need help, contact your server administrator.</source>
         <comment>file action error message</comment>
-        <translation type="unfinished"/>
+        <translation>%1 nepavyko, bandykite dar kartą vėliau. Jei reikia pagalbos, susisiekite su serverio administratoriumi.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="388"/>
         <source>%1 done.</source>
         <comment>file action success message</comment>
-        <translation type="unfinished"/>
+        <translation>%1 atlikta.</translation>
     </message>
 </context>
 <context>
@@ -2056,19 +2065,19 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="128"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>prieš %1 mėnesį</numerusform><numerusform>prieš %1 mėnesius</numerusform><numerusform>prieš %1 mėnesių</numerusform><numerusform>prieš %1 mėnesių</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="131"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>prieš %1 metus</numerusform><numerusform>prieš %1 metus</numerusform><numerusform>prieš %1 metų</numerusform><numerusform>prieš %1 metų</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="163"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Užrakino %1 – Baigia galioti po %2 minutės</numerusform><numerusform>Užrakino %1 – Baigia galioti po %2 minučių</numerusform><numerusform>Užrakino %1 – Baigia galioti po %2 minučių</numerusform><numerusform>Užrakino %1 – Baigia galioti po %2 minučių</numerusform></translation>
     </message>
 </context>
 <context>
@@ -2076,28 +2085,28 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="248"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Grąžintas serverio URL neprasideda HTTPS, nors prisijungimo URL prasidėjo HTTPS. Prisijungti nebus galima, nes tai gali būti saugumo problema. Susisiekite su administratoriumi.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="259"/>
         <source>The server is temporarily unavailable because it is in maintenance mode. Please try again once maintenance has finished.</source>
-        <translation type="unfinished"/>
+        <translation>Serveris laikinai nepasiekiamas, nes veikia techninės priežiūros režimu. Bandykite dar kartą, kai techninės priežiūros darbai bus baigti.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="263"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="271"/>
         <source>An unexpected error occurred when trying to access the server. Please try to access it again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Bandant prisijungti prie serverio įvyko netikėta klaida. Pabandykite prisijungti dar kartą vėliau arba, jei problema išlieka, susisiekite su serverio administratoriumi.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="276"/>
         <source>We couldn&apos;t parse the server response. Please try connecting again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko išanalizuoti serverio atsakymo. Pabandykite prisijungti dar kartą vėliau arba susisiekite su serverio administratoriumi, jei problema išlieka.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="280"/>
         <source>The server did not reply with the expected data. Please try connecting again later or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Serveris neatsakė pateikdamas laukiamus duomenis. Pabandykite prisijungti dar kartą vėliau arba susisiekite su serverio administratoriumi, jei problema išlieka.</translation>
     </message>
 </context>
 <context>
@@ -2166,27 +2175,27 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="449"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Pašalintas %1 ir dar %n failas.</numerusform><numerusform>Pašalinti %1 ir dar %n failai.</numerusform><numerusform>Pašalinta %1 ir dar %n failų.</numerusform><numerusform>Pašalinta %1 ir dar %n failų.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="189"/>
         <source>Please choose a different location. The folder %1 doesn&apos;t exist.</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinkite kitą vietą. %1 aplanko nėra.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="191"/>
         <source>Please choose a different location. %1 isn&apos;t a valid folder.</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinkite kitą vietą. %1 neteisingas aplankas.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="193"/>
         <source>Please choose a different location. %1 isn&apos;t a readable folder.</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinkite kitą vietą. %1 nėra skaitomas aplankas.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="456"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Pridėtas %1 ir dar %n kitas failas.</numerusform><numerusform>Pridėti %1 ir dar %n kiti failai.</numerusform><numerusform>Pridėta %1 ir dar %n kitų failų.</numerusform><numerusform>Pridėta %1 ir dar %n kitų failų.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="458"/>
@@ -2271,27 +2280,28 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/folder.cpp" line="1472"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
-        <translation type="unfinished"/>
+        <translation>Aplankas viršijo nustatytą aplanko dydžio ribą – %1MB: %2.
+%3</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1483"/>
         <source>Keep syncing</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizuoti toliau</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1491"/>
         <source>Stop syncing</source>
-        <translation type="unfinished"/>
+        <translation>Sustabdyti sinchronizavimą</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1502"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
-        <translation type="unfinished"/>
+        <translation>%1 aplankas viršijo nustatytą aplanko dydžio ribą – %2MB.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1503"/>
         <source>Would you like to stop syncing this folder?</source>
-        <translation type="unfinished"/>
+        <translation>Ar norite sustabdyti šio aplanko sinchronizavimą?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1578"/>
@@ -2317,21 +2327,25 @@ Tai reiškia, kad sinchronizacijos klientas gali iš karto neįkelti lokalių pa
     <message>
         <location filename="../src/gui/folder.cpp" line="1630"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Virtualaus failo atsisiuntimas nepavyko. Kodas „%1“, būsena „%2“ ir klaidos pranešimas „%3“</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1724"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Iš serverio buvo ištrinta daug failų.
+Patvirtinkite, jei norite tęsti šiuos trynimus.
+Arba galite atkurti visus ištrintus failus įkeldami juos iš aplanko „%1“ į serverį.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1725"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Jūsų vietiniame aplanke „%1“ buvo ištrinta daug failų.
+Patvirtinkite, ar norite tęsti šiuos trynimus.
+Arba galite atkurti visus ištrintus failus atsisiųsdami juos iš serverio.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1726"/>
@@ -2341,17 +2355,17 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folder.cpp" line="1730"/>
         <source>Proceed with Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Tęsti ištrynimą</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1731"/>
         <source>Restore Files to Server</source>
-        <translation type="unfinished"/>
+        <translation>Atkurti failus į serverį</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1731"/>
         <source>Restore Files from Server</source>
-        <translation type="unfinished"/>
+        <translation>Atkurti failus iš serverio</translation>
     </message>
 </context>
 <context>
@@ -2379,7 +2393,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="71"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko sukurti aplanko! Patikrinkite rašymo teises.</translation>
     </message>
 </context>
 <context>
@@ -2402,7 +2416,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="425"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation type="unfinished"/>
+        <translation>Rastas senas sinchronizavimo žurnalas „%1“, bet jo pašalinti nepavyko. Įsitikinkite, kad šiuo metu jo nenaudoja jokia programėlė.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1801"/>
@@ -2457,7 +2471,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1844"/>
         <source>Sync finished with unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizavimas baigtas su neišspręstais konfliktais.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1846"/>
@@ -2472,46 +2486,46 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1855"/>
         <source>Sync request was cancelled.</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizavimo užklausa atšaukta.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1872"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinkite kitą vietą. Pasirinktas aplankas negalioja.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1880"/>
         <location filename="../src/gui/folderman.cpp" line="1959"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinkite kitą vietą. %1 jau naudojama kaip sinchronizavimo aplankas.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1889"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinkite kitą vietą. %1 kelias neegzistuoja.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1893"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinkite kitą vietą. Kelias %1 nėra aplankas.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1901"/>
         <location filename="../src/gui/folderman.cpp" line="1906"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
-        <translation type="unfinished"/>
+        <translation>Pasirinkite kitą vietą. Jūs neturite pakankamai leidimų rašyti į %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1966"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinkite kitą vietą. %1 jau yra aplanke, naudojamame kaip sinchronizavimo aplankas.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1981"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
-        <translation type="unfinished"/>
+        <translation>Pasirinkite kitą vietą. %1 jau naudojama kaip sinchronizavimo aplankas, skirtas %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="2118"/>
@@ -2519,7 +2533,10 @@ Alternatively, you can restore all deleted files by downloading them from the se
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation type="unfinished"/>
+        <translation>Aplankas %1 susietas su keliomis paskyromis.
+Dėl šios sąrankos gali būti prarasti duomenys ir ji nebepalaikoma.
+Norėdami išspręsti šią problemą: pašalinkite %1 iš vienos iš paskyrų ir sukurkite naują sinchronizavimo aplanką.
+Pažengusiems vartotojams: ši problema gali būti susijusi su keliais sinchronizavimo duomenų bazės failais, rastais viename aplanke. Patikrinkite, ar aplanke %1 nėra pasenusių ir nenaudojamų .sync_*.db failų, ir juos pašalinkite.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1858"/>
@@ -2529,7 +2546,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderman.cpp" line="416"/>
         <source>Please open the app settings to grant access to the sync folders.</source>
-        <translation type="unfinished"/>
+        <translation>Atidarykite programėlės nustatymus, kad suteiktumėte prieigą prie sinchronizavimo aplankų.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1864"/>
@@ -2549,7 +2566,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderstatusdelegate.cpp" line="284"/>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="426"/>
         <source>Grant access</source>
-        <translation type="unfinished"/>
+        <translation>Suteikti prieigą</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="272"/>
@@ -2588,7 +2605,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
         <source>Virtual file support is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Įjungtas virtualių failų palaikymas.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="274"/>
@@ -2598,27 +2615,27 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="314"/>
         <source>Synchronizing virtual files in local folder</source>
-        <translation type="unfinished"/>
+        <translation>Virtualių failų sinchronizavimas vietiniame aplanke</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="316"/>
         <source>Synchronizing files in local folder</source>
-        <translation type="unfinished"/>
+        <translation>Failų sinchronizavimas vietiniame aplanke</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="988"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Tikrinami pakeitimai nuotoliniame „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="992"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Tikrinami vietinio „%1“ pakeitimai</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="999"/>
         <source>Syncing local and remote changes</source>
-        <translation type="unfinished"/>
+        <translation>Vietinių ir nuotolinių pakeitimų sinchronizavimas</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1049"/>
@@ -2635,7 +2652,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1121"/>
         <source>File %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 failas iš %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="244"/>
@@ -2656,7 +2673,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
         <source>Select the synchronization folder to restore access.</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinkite sinchronizavimo aplanką, kad atkurtumėte prieigą.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1057"/>
@@ -2690,7 +2707,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderstatusmodel.cpp" line="1100"/>
         <source>A few seconds left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Liko kelios sekundės, %1 iš %2, failas %3 iš %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1105"/>
@@ -2706,12 +2723,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1174"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Laukiamas dar %n kitas aplankas…</numerusform><numerusform>Laukiami dar %n kiti aplankai…</numerusform><numerusform>Laukiama dar %n kitų aplankų...</numerusform><numerusform>Laukiama dar %n kitų aplankų...</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1174"/>
         <source>About to start syncing</source>
-        <translation type="unfinished"/>
+        <translation>Tuoj bus pradėtas sinchronizavimas</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1179"/>
@@ -2724,7 +2741,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwatcher.cpp" line="167"/>
         <source>The watcher did not receive a test notification.</source>
-        <translation type="unfinished"/>
+        <translation>Stebėtojas negavo bandymo pranešimo.</translation>
     </message>
 </context>
 <context>
@@ -2776,7 +2793,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="218"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
-        <translation type="unfinished"/>
+        <translation>Žemiau įveskite naujo aplanko, kuris bus sukurtas, pavadinimą „%1‟:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="247"/>
@@ -2807,12 +2824,12 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderwizard.cpp" line="498"/>
         <location filename="../src/gui/folderwizard.cpp" line="510"/>
         <source>Please choose a different location. %1 is already being synced to %2.</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinkite kitą vietą. %1 jau sinchronizuojamas su %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="505"/>
         <source>You are already syncing the subfolder %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Jau sinchronizuojate %1 poaplankį adresu %2.</translation>
     </message>
 </context>
 <context>
@@ -2821,23 +2838,23 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderwizard.cpp" line="572"/>
         <location filename="../src/gui/folderwizard.cpp" line="609"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
-        <translation type="unfinished"/>
+        <translation>Naudokite virtualius failus, užuot iš karto atsisiuntę turinį %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="572"/>
         <location filename="../src/gui/folderwizard.cpp" line="609"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(eksperimentinis)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="605"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation type="unfinished"/>
+        <translation>Virtualūs failai nepalaikomi „Windows“ skaidinio šakniniuose kataloguose kaip vietiniai aplankai. Pasirinkite galiojantį poaplankį pagal disko raidę.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="630"/>
         <source>Virtual files are not supported at the selected location</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinktoje vietoje virtualūs failai nepalaikomi</translation>
     </message>
 </context>
 <context>
@@ -2855,7 +2872,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="207"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation type="unfinished"/>
+        <translation>Gavome netikėtą atsisiuntimo užklausą „Content-Length“.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="235"/>
@@ -2873,7 +2890,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
         <source>Show Call Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Rodyti skambučių pranešimus</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="40"/>
@@ -2883,7 +2900,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="50"/>
         <source>Show Chat Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Rodyti pokalbių pranešimus</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="57"/>
@@ -2919,7 +2936,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="46"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>Bendri nustatymai</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
@@ -2929,42 +2946,42 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="64"/>
         <source>Show &amp;Quota Warning Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Rodyti įspėjimus apie viršytą kvotą</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="87"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Prašyti patvirtinimo prieš sinchronizuojant naujus aplankus, didesnius nei</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="150"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation type="unfinished"/>
+        <translation>Pranešti, kai sinchronizuoti aplankai viršija nurodytą limitą</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="177"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation type="unfinished"/>
+        <translation>Automatiškai išjungti aplankų, viršijančių limitą, sinchronizavimą</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="201"/>
         <source>Move removed files to trash</source>
-        <translation type="unfinished"/>
+        <translation>Perkelti pašalintus failus į šiukšliadėžę</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="212"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
-        <translation type="unfinished"/>
+        <translation>Rodyti sinchronizavimo aplankus „&amp;Explorer“ šoninėje juostoje</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="224"/>
         <source>Server poll interval</source>
-        <translation type="unfinished"/>
+        <translation>Serverio apklausos intervalas</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="244"/>
         <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
-        <translation type="unfinished"/>
+        <translation>sekundės (jei funkcija „Client Push“ neveikia)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="278"/>
@@ -2985,12 +3002,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="325"/>
         <source>Desktop client x.x.x</source>
-        <translation type="unfinished"/>
+        <translation>Darbalaukio klientas x.x.x</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="349"/>
         <source>Update channel</source>
-        <translation type="unfinished"/>
+        <translation>Atnaujinti kanalą</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="402"/>
@@ -3005,17 +3022,17 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="445"/>
         <source>Usage Documentation</source>
-        <translation type="unfinished"/>
+        <translation>Naudojimo dokumentacija</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="452"/>
         <source>Legal Notice</source>
-        <translation type="unfinished"/>
+        <translation>Teisinis pranešimas</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="462"/>
         <source>Restore &amp;Default</source>
-        <translation type="unfinished"/>
+        <translation>Atkurti ir grąžinti į numatytuosius nustatymus</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="385"/>
@@ -3030,33 +3047,33 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="220"/>
         <source>Show chat notification dialogs.</source>
-        <translation type="unfinished"/>
+        <translation>Rodyti pokalbių pranešimų dialogo langus.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="224"/>
         <source>Show call notification dialogs.</source>
-        <translation type="unfinished"/>
+        <translation>Rodyti skambučių pranešimų dialogo langus.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="227"/>
         <source>Show notification when quota usage exceeds 80%.</source>
-        <translation type="unfinished"/>
+        <translation>Rodyti pranešimą, kai kvotos panaudojimas viršija 80 %.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="241"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Automatinio paleidimo išjungti negalima, nes įjungtas visos sistemos automatinis paleidimas.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="376"/>
         <source>Restore to &amp;%1</source>
-        <translation type="unfinished"/>
+        <translation>Atkurti į &amp;%1</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="448"/>
         <location filename="../src/gui/generalsettings.cpp" line="474"/>
         <source>Connected to an enterprise system. Update channel (%1) cannot be changed.</source>
-        <translation type="unfinished"/>
+        <translation>Prijungta prie įmonės sistemos. Atnaujinimo kanalo (%1) pakeisti negalima.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="452"/>
@@ -3076,7 +3093,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="464"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>įmonė</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="502"/>
@@ -3085,7 +3102,10 @@ For advanced users: this issue might be related to multiple sync database files 
 
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
         <comment>list of available update channels to non enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- beta: pateikiamos versijos su naujomis funkcijomis, kurios gali būti ne kruopščiai išbandytos
+- kasdien: pateikiamos versijos, kasdien kuriamos tik testavimui ir kūrimui
+
+Versijų negalima iš karto grąžinti į senesnę versiją: keitimas iš beta į stabilią reiškia naujos stabilios versijos laukimą.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="507"/>
@@ -3093,12 +3113,14 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
         <comment>list of available update channels to enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- įmonėms: čia pateikiamos stabilios versijos klientams.
+
+Versijos negalima iškart pakeisti į senesnę: norint pereiti iš stabilios versijos į įmonės, reikia palaukti, kol bus išleista nauja versija įmonėms.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="514"/>
         <source>Changing update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Keičiate naujinimo kanalą?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="515"/>
@@ -3106,7 +3128,9 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 - stable: contains tested versions considered reliable
 </source>
         <comment>starts list of available update channels, stable is always available</comment>
-        <translation type="unfinished"/>
+        <translation>Kanalas nustato, kurie atnaujinimai bus siūlomi diegti:
+- stabilus: yra patikrintos versijos, kurios laikomos patikimomis
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="521"/>
@@ -3121,12 +3145,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="673"/>
         <source>Login Item Requires Approval</source>
-        <translation type="unfinished"/>
+        <translation>Prisijungimo elementui reikalingas patvirtinimas</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="674"/>
         <source>The login item has been registered but needs your approval to become active. Please open System Settings → General → Login Items and enable %1 there.</source>
-        <translation type="unfinished"/>
+        <translation>Prisijungimo elementas užregistruotas, bet norint jį suaktyvinti, reikia jūsų patvirtinimo. Atidarykite Sistemos nustatymus → Bendrieji → Prisijungimo elementai ir ten %1 įgalinkite.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="666"/>
@@ -3136,12 +3160,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="753"/>
         <source>Failed to Access File</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko pasiekti failo</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="754"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko pasiekti pasirinktos vietos. Bandykite dar kartą arba pasirinkite kitą vietą.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="676"/>
@@ -3151,7 +3175,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="677"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Prieš dalindamiesi informacija, ištrinkite jautrią informaciją! Derinimo archyvas sukurtas adresu %1</translation>
     </message>
 </context>
 <context>
@@ -3186,12 +3210,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="53"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Įveskite %1 slaptažodį: &lt;br&gt;&lt;br&gt;Vartotojo vardas: %2&lt;br&gt; Paskyra: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="67"/>
         <source>Reading from keychain failed with error: &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko nuskaityti duomenų iš raktinės. Klaida: „%1‟</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="74"/>
@@ -3229,7 +3253,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="32"/>
         <source>This entry is provided by the system at &quot;%1&quot; and cannot be modified in this view.</source>
-        <translation type="unfinished"/>
+        <translation>Šį įrašą pateikė sistema adresu „%1“ ir šioje peržiūroje jo negalima keisti.</translation>
     </message>
 </context>
 <context>
@@ -3299,7 +3323,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Failo nepavyko sinchronizuoti, nes jame yra simbolių, kurie šioje sistemoje neleidžiami.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="39"/>
@@ -3329,32 +3353,32 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="93"/>
         <source>The following characters are not allowed on the system: \ / : ? * &quot;  &lt; &gt; | leading/trailing spaces</source>
-        <translation type="unfinished"/>
+        <translation>Sistemoje neleidžiama naudoti šių simbolių: \ / : ? * &quot; &lt; &gt; | tarpai prieš ir po žodžio</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="96"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Failo „%1“ sinchronizuoti nepavyko, nes jo pavadinime yra simbolių, kurių serveris neleidžia naudoti.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="107"/>
         <source>The following characters are not allowed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Neleidžiami šie simboliai: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="110"/>
         <source>The following basenames are not allowed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Šie bazinių vardų variantai yra draudžiami: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="113"/>
         <source>The following filenames are not allowed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Neleidžiami šie failų pavadinimai: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="116"/>
         <source>The following file extensions are not allowed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Šios failų plėtinys neleidžiamos: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="127"/>
@@ -3369,27 +3393,27 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="166"/>
         <source>Failed to fetch permissions with error %1</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko gauti leidimų, įvyko klaida %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="183"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Failo pavadinime yra tarpai prieš ir po pavadinimo.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="186"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Failo pavadinime yra tarpų pradžioje.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="188"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Failo pavadinimo gale yra tarpų.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="193"/>
         <source>Use invalid name</source>
-        <translation type="unfinished"/>
+        <translation>Naudoti netinkamą pavadinimą</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="249"/>
@@ -3417,12 +3441,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="21"/>
         <source>Legacy import</source>
-        <translation type="unfinished"/>
+        <translation>Senasis importavimas</translation>
     </message>
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="24"/>
         <source>Select the accounts to import from the legacy configuration:</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinkite paskyras, kurias norite importuoti iš senosios konfigūracijos:</translation>
     </message>
 </context>
 <context>
@@ -3441,7 +3465,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="46"/>
         <source>&lt;p&gt;Copyright 2017-2026 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Autorinės teisės 2017–2026 m. Nextcloud GmbH&lt;br /&gt;Autorinės teisės 2012–2023 m. ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="49"/>
@@ -3461,7 +3485,9 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>Klientas gali įrašyti derinimo žurnalus į laikiną aplanką. Šie žurnalai labai padeda diagnozuoti problemas.
+Kadangi žurnalo failai gali tapti dideli, klientas kiekvieno sinchronizavimo ciklo metu pradės naują failą ir suspaudžia senesnius. Be to, po kelių valandų tai ištrins žurnalo failus, kad nebūtų užimama per daug vietos diske.
+Jei ši funkcija įjungta, žurnalai bus įrašomi į %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="56"/>
@@ -3472,7 +3498,8 @@ If enabled, logs will be written to %1</source>
         <location filename="../src/gui/logbrowser.cpp" line="62"/>
         <source>This setting persists across client restarts.
 Note that using any logging command line options will override this setting.</source>
-        <translation type="unfinished"/>
+        <translation>Šis nustatymas išlieka ir po kliento paleidimo iš naujo.
+Atkreipkite dėmesį, kad naudojant bet kurias žurnalo įrašymo komandinės eilutės parinktis, šis nustatymas bus pakeistas.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="69"/>
@@ -3492,7 +3519,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/libsync/logger.cpp" line="375"/>
         <location filename="../src/libsync/logger.cpp" line="405"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;nobr&gt;Failas &apos;%1&apos;&lt;br/&gt;negali būti atidarytas rašymui.&lt;br/&gt;&lt;br/&gt;Įvykių žurnalo išvestis &lt;b&gt;negali&lt;/b&gt;būti išsaugota!&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -3500,17 +3527,17 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="35"/>
         <source>Could not start editing locally.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko pradėti redaguoti lokaliai.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="35"/>
         <source>An error occurred during setup.</source>
-        <translation type="unfinished"/>
+        <translation>Sąrankos metu įvyko klaida.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="41"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko rasti failo vietiniam redagavimui. Įsitikinkite, kad jo kelias galioja ir jis sinchronizuotas vietoje.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="74"/>
@@ -3548,7 +3575,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="460"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Yra prieinama nauja %1 kliento programos versija, bet atnaujinimas patyrė nesėkmę.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; atsiųsta. Įdiegta versija yra %3. Jei patvirtinsite perkrovimą ir atnaujinimą, kompiuteris gali iš naujo paleisti sistemą, kad užbaigtų diegimą.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="473"/>
@@ -3630,17 +3657,17 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/networksettings.ui" line="250"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Pastaba: proxy nustatymai neturi jokios įtakos paskyroms, esančioms „localhost“</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="275"/>
         <source>Manually specify proxy</source>
-        <translation type="unfinished"/>
+        <translation>Rankiniu būdu nurodykite tarpinį serverį</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="51"/>
         <source>No proxy</source>
-        <translation type="unfinished"/>
+        <translation>Nera tarpinio serverio</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="327"/>
@@ -3699,7 +3726,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="100"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process. Your computer may reboot to complete the installation.</source>
-        <translation type="unfinished"/>
+        <translation>Netrukus bus diegiamas %1 naujas naujinimas. Atnaujinimo programa proceso metu gali paprašyti papildomų teisių. Jūsų kompiuteris gali būti paleistas iš naujo, kad būtų baigtas diegimas.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="144"/>
@@ -3714,22 +3741,22 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
         <source>Could not download update. Please open &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko atsisiųsti atnaujinimo. Atidarykite &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;, kad atsisiųstumėte atnaujinimą rankiniu būdu.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>Could not download update. Please open %1 to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko atsisiųsti atnaujinimo. Atidarykite %1, kad atsisiųstumėte atnaujinimą rankiniu būdu.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
         <source>New %1 is available. Please open &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Pasiekiamas naujas %1. Atidarykite &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;, kad atsisiųstumėte atnaujinimą.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="159"/>
         <source>New %1 is available. Please open %2 to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Pasiekiamas naujas %1. Atidarykite %2, kad atsisiųstumėte atnaujinimą.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>
@@ -3739,12 +3766,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
         <source>You are using the %1 update channel. Your installation is the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>Naudojate %1 atnaujinimo kanalą. Jūsų įdiegta versija yra naujausia.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="174"/>
         <source>No updates available. Your installation is the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>Nėra pasiekiamų atnaujinimų. Jūsų įdiegta versija yra naujausia.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="194"/>
@@ -3757,29 +3784,29 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="66"/>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>Prisijungti</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="103"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="283"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(eksperimentinis)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="118"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="285"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
-        <translation type="unfinished"/>
+        <translation>Naudokite virtualius failus, užuot iš karto atsisiuntę turinį %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="277"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation type="unfinished"/>
+        <translation>Virtualūs failai nepalaikomi „Windows“ skaidinio šakniniuose kataloguose kaip vietiniai aplankai. Pasirinkite galiojantį poaplankį pagal disko raidę.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="318"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
-        <translation type="unfinished"/>
+        <translation>%1 aplankas „%2“ sinchronizuotas į vietinį aplanką „%3“</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="321"/>
@@ -3789,19 +3816,19 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="326"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
-        <translation type="unfinished"/>
+        <translation>Įspėjimas: vietinis aplankas nėra tuščias. Pasirinkite sprendimo būdą!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="339"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="657"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
-        <translation type="unfinished"/>
+        <translation>%1 laisvos vietos</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="427"/>
         <source>Virtual files are not supported at the selected location</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinktoje vietoje virtualūs failai nepalaikomi</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="490"/>
@@ -3822,7 +3849,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="655"/>
         <source>In Finder&apos;s &quot;Locations&quot; sidebar section</source>
-        <translation type="unfinished"/>
+        <translation>„Finder“ šoninės juostos skyriuje „Vietos“</translation>
     </message>
 </context>
 <context>
@@ -3850,7 +3877,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
         <source>Configure client-side TLS certificate</source>
-        <translation type="unfinished"/>
+        <translation>Nustatyti kliento pusės TLS sertifikatą</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="24"/>
@@ -3882,7 +3909,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/libsync/owncloudpropagator.cpp" line="966"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1043"/>
         <source>Impossible to get modification time for file in conflict %1</source>
-        <translation type="unfinished"/>
+        <translation>Neįmanoma gauti pakeitimo laiko konfliktuojančiam failui %1 </translation>
     </message>
 </context>
 <context>
@@ -3891,7 +3918,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
         <source>The link to your %1 web interface when you open it in the browser.</source>
         <comment>%1 will be replaced with the application name</comment>
-        <translation type="unfinished"/>
+        <translation>Nuoroda į jūsų %1 internetinę sąsają, kai ją atidarote naršyklėje.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="260"/>
@@ -3901,7 +3928,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="320"/>
         <source>Server address does not seem to be valid</source>
-        <translation type="unfinished"/>
+        <translation>Atrodo, kad serverio adresas yra neteisingas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="432"/>
@@ -3945,7 +3972,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="457"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>Autentifikuota užklausa serveriui buvo nukreipta į „%1“. URL yra blogas, serveris yra netinkamai sukonfigūruotas.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="480"/>
@@ -4047,12 +4074,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="700"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyksta pašalinti aplanko ir sukurti atsarginės kopijos, nes aplankas arba jame esantis failas yra atidarytas kitoje programoje. Uždarykite aplanką arba failą ir bandykite dar kartą arba atšaukite sąranką.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="732"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Failų teikėjo pagrindu %1 paskyra sukurta sėkmingai!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="774"/>
@@ -4081,19 +4108,19 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="105"/>
         <source>Proxy Settings</source>
         <comment>Proxy Settings button text in new account wizard</comment>
-        <translation type="unfinished"/>
+        <translation>Tarpinio serverio nustatymai</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="107"/>
         <source>Next</source>
         <comment>Next button text in new account wizard</comment>
-        <translation type="unfinished"/>
+        <translation>Kitas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="108"/>
         <source>Back</source>
         <comment>Next button text in new account wizard</comment>
-        <translation type="unfinished"/>
+        <translation>Atgal</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="512"/>
@@ -4109,12 +4136,18 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Kai įjungtas „virtualių failų“ režimas, iš pradžių failai nebus atsisiunčiami. Vietoj to, kiekvienam serveryje esančiam failui bus sukurtas nedidelis „%1“ failas. Turinį galima atsisiųsti paleidus šiuos failus arba pasinaudojus jų kontekstiniu meniu.
+
+„Virtualių failų“ režimas yra nesuderinamas su selektyviąja sinchronizacija. Šiuo metu nepasirinkti aplankai bus perkelti į tik internete esančius aplankus, o jūsų selektyviosios sinchronizacijos nustatymai bus iš naujo nustatyti.
+
+Perėjus į šį režimą, bus nutraukta bet kokia šiuo metu vykdoma sinchronizacija.
+
+Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome pranešti apie bet kokias iškilusias problemas.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="527"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>Įjungti eksperimentinį vietos laikiklio režimą</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="528"/>
@@ -4127,12 +4160,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="23"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Reikalingas slaptažodis bendrinimui</translation>
     </message>
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="35"/>
         <source>Please enter a password for your share:</source>
-        <translation type="unfinished"/>
+        <translation>Įveskite slaptažodį savo bendrinimui:</translation>
     </message>
 </context>
 <context>
@@ -4148,49 +4181,49 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="383"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizuojant simbolinės nuorodos nepalaikomos.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="392"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>Failas įtrauktas į ignoruojamų sąrašą.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="396"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Šioje failų sistemoje nepalaikomi failų pavadinimai, baigiantys tašku.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="408"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
-        <translation type="unfinished"/>
+        <translation>Šioje failų sistemoje nepalaikomi aplankų pavadinimai, kuriuose yra simbolis „%1“.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="409"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
-        <translation type="unfinished"/>
+        <translation>Šioje failų sistemoje nepalaikomi failų pavadinimai, kuriuose yra simbolis „%1“.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="412"/>
         <source>Folder name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>Aplanko pavadinime yra bent vienas netinkamas simbolis</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="413"/>
         <source>File name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>Failo pavadinime yra bent vienas netinkamas simbolis</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="416"/>
         <source>Folder name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Aplanko pavadinimas yra rezervuotas pavadinimas šioje failų sistemoje.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="417"/>
         <source>File name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Šioje failų sistemoje šis failo pavadinimas yra rezervuotas.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="423"/>
@@ -4203,17 +4236,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/discovery.cpp" line="440"/>
         <location filename="../src/libsync/discovery.cpp" line="482"/>
         <source>Cannot be renamed or uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Negali būti pervadintas arba įkeltas.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="430"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Failo pavadinime yra tarpų pradžioje.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="437"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Failo pavadinime yra tarpai prieš ir po pavadinimo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="444"/>
@@ -4228,125 +4261,125 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="451"/>
         <source>Stat failed.</source>
-        <translation type="unfinished"/>
+        <translation>Statistika nesėkminga.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="454"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Klaida: atsisiųsta serverio versija, vietinė kopija pervadinta ir neįkelta.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="458"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
-        <translation type="unfinished"/>
+        <translation>Raidžių registro sutapties konfliktas: serverio failas atsisiųstas ir pervadintas, kad būtų išvengta konflikto.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="462"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>Failo pavadinimo negalima užkoduoti jūsų failų sistemoje.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="465"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Šio failo pavadinimas įtrauktas į serverio juodąjį sąrašą.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="468"/>
         <source>Reason: the entire filename is forbidden.</source>
-        <translation type="unfinished"/>
+        <translation>Priežastis: draudžiama naudoti visą failo pavadinimą.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="471"/>
         <source>Reason: the filename has a forbidden base name (filename start).</source>
-        <translation type="unfinished"/>
+        <translation>Priežastis: draudžiama naudoti visą failo pavadinimą.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="474"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
-        <translation type="unfinished"/>
+        <translation>Priežastis: failo plėtinys yra draudžiamas (.%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="477"/>
         <source>Reason: the filename contains a forbidden character (%1).</source>
-        <translation type="unfinished"/>
+        <translation>Priežastis: failo pavadinime yra draudžiamas simbolis (%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="623"/>
         <source>File has extension reserved for virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Failo plėtinys yra skirtas virtualiems failams.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="788"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>Aplankas serveryje yra neprieinamas.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="789"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>Failas serveryje yra neprieinamas.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1202"/>
         <source>Cannot sync due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizuoti negalima dėl neteisingo pakeitimo laiko</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1218"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
-        <translation type="unfinished"/>
+        <translation>Įkeltas %1 viršija asmeniniuose failuose likusią %2 vietą.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1221"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
-        <translation type="unfinished"/>
+        <translation>Įkelto failo %1 kiekis viršija %2 laisvos vietos aplanke %3.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1237"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko įkelti failo, nes jis atidarytas aplanke „%1“.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1287"/>
         <source>Error while deleting file record %1 from the database</source>
-        <translation type="unfinished"/>
+        <translation>Klaida šalinant failo įrašą %1 iš duomenų bazės</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1575"/>
         <location filename="../src/libsync/discovery.cpp" line="2048"/>
         <source>Moved to invalid target, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Perkelta į netinkamą paskirties vietą, atkuriama</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1903"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyksta modifikuoti užšifruoto elemento, nes pasirinktas sertifikatas negalioja.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1972"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation type="unfinished"/>
+        <translation>Ignoruojama dėl juodojo sąrašo „pasirinkti, ką sinchronizuoti“</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="2006"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>Neleidžiama, nes neturite leidimo pridėti poaplankių prie šio aplanko</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="2012"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation type="unfinished"/>
+        <translation>Neleidžiama, nes neturite leidimo pridėti failų į tą aplanką</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="2026"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Šio failo įkelti neleidžiama, nes serveryje jis skirtas tik skaitymui, atkuriama</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="2062"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Neleidžiama pašalinti, atkuriama</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="2233"/>
@@ -4359,12 +4392,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1479"/>
         <source>Could not delete file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko ištrinti %1 failo iš vietinės duomenų bazės</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1493"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Atnaujinant metaduomenis įvyko klaida dėl netinkamo pakeitimo laiko</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1525"/>
@@ -4374,7 +4407,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1566"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1572"/>
         <source>The folder %1 cannot be made read-only: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 aplanko negalima padaryti skirtu tik skaitymui: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1537"/>
