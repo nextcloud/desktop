@@ -277,7 +277,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
                                             || excluded == CSYNC_FILE_EXCLUDE_TRAILING_SPACE
                                             || excluded == CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE;
 
-    const auto spacesFilesAllowed = !_discoveryData->_shouldEnforceWindowsFileNameCompatibility || _discoveryData->_spacesFilesAllowed.contains(_discoveryData->_localDir + path);
+    const auto spacesFilesAllowed = !_discoveryData->_enforceWindowsFilenameCompat || _discoveryData->_spacesFilesAllowed.contains(_discoveryData->_localDir + path);
 #if defined Q_OS_WINDOWS
     if (hasLeadingOrTrailingSpaces && spacesFilesAllowed) {
 #else
@@ -376,7 +376,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
     const auto setSpaceExcludeError = [&](const QString &msg) {
         item->_errorString = msg;
         item->_status = SyncFileItem::FileNameInvalid;
-        if (isLocal && !maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded))
+        if (isLocal && !maybeRenameForWinCompatibility(_discoveryData->_localDir + item->_file, excluded))
             item->_errorString += QStringLiteral(" %1").arg(tr("Cannot be renamed or uploaded."));
     };
 
@@ -468,7 +468,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         case CSYNC_FILE_EXCLUDE_SERVER_BLACKLISTED:
             item->_errorString = buildBlacklistErrorString();
             item->_status = SyncFileItem::FileNameInvalidOnServer;
-            if (isLocal && !maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded))
+            if (isLocal && !maybeRenameForWinCompatibility(_discoveryData->_localDir + item->_file, excluded))
                 item->_errorString += QStringLiteral(" %1").arg(tr("Cannot be renamed or uploaded."));
             break;
         }
@@ -1576,14 +1576,14 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     const auto isE2eeMove = isMove && (base.isE2eEncrypted() || isInsideEncryptedTree());
     const auto isCfApiVfsMode = _discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() == Vfs::WindowsCfApi;
     const bool isOnlineOnlyItem = isCfApiVfsMode && (localEntry.isDirectory || _discoveryData->_syncOptions._vfs->isDehydratedPlaceholder(_discoveryData->_localDir + path._local));
-    const auto isE2eeMoveOnlineOnlyItemWithCfApi = isE2eeMove && isOnlineOnlyItem;
+    const auto isE2eeMoveOnlineOnlyWithCfApi = isE2eeMove && isOnlineOnlyItem;
 
     if (isE2eeMove) {
         qCDebug(lcDisco) << "requesting permanent deletion for" << originalPath;
         _discoveryData->_permanentDeletionRequests.insert(originalPath);
     }
 
-    if (isE2eeMoveOnlineOnlyItemWithCfApi) {
+    if (isE2eeMoveOnlineOnlyWithCfApi) {
         item->_instruction = CSYNC_INSTRUCTION_NEW;
         item->_direction = SyncFileItem::Down;
         item->_isRestoration = true;
@@ -1591,7 +1591,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     }
 
     // If it's not a move it's just a local-NEW
-    if (!isMove || (isE2eeMove && !isE2eeMoveOnlineOnlyItemWithCfApi)) {
+    if (!isMove || (isE2eeMove && !isE2eeMoveOnlineOnlyWithCfApi)) {
         if (base.isE2eEncrypted()) {
             applyE2eeEncryptForLocalNew(item, base);
         }
@@ -1605,7 +1605,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     const auto serverHasMountRootProperty = _discoveryData->_account->serverHasMountRootProperty();
     const auto isExternalStorage = base._remotePerm.hasPermission(RemotePermissions::IsMounted) && base.isDirectory();
     if (const auto movePerms = checkMovePermissions(base._remotePerm, originalPath, item->isDirectory());
-        !movePerms.sourceOk || !movePerms.destinationOk || (serverHasMountRootProperty && isExternalStorage) || isE2eeMoveOnlineOnlyItemWithCfApi) {
+        !movePerms.sourceOk || !movePerms.destinationOk || (serverHasMountRootProperty && isExternalStorage) || isE2eeMoveOnlineOnlyWithCfApi) {
         qCInfo(lcDisco) << "Move without permission to rename base file, "
                         << "source:" << movePerms.sourceOk
                         << ", target:" << movePerms.destinationOk
@@ -1623,7 +1623,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         // If the destination upload will work, we're fine with the source deletion.
         // If the source deletion can't work, checkPermissions will error.
         // In case of external storage mounted folders we are never allowed to move/delete them
-        if (movePerms.destinationNewOk && !isExternalStorage && !isE2eeMoveOnlineOnlyItemWithCfApi) {
+        if (movePerms.destinationNewOk && !isExternalStorage && !isE2eeMoveOnlineOnlyWithCfApi) {
             return;
         }
 
@@ -2454,12 +2454,12 @@ void ProcessDirectoryJob::setupDbPinStateActions(SyncJournalFileRecord &record)
     }
 }
 
-bool ProcessDirectoryJob::maybeRenameForWindowsCompatibility(const QString &absoluteFileName,
+bool ProcessDirectoryJob::maybeRenameForWinCompatibility(const QString &absoluteFileName,
                                                              CSYNC_EXCLUDE_TYPE excludeReason) const
 {
     auto result = true;
 
-    const auto spacesFilesAllowed = !_discoveryData->_shouldEnforceWindowsFileNameCompatibility || _discoveryData->_spacesFilesAllowed.contains(absoluteFileName);
+    const auto spacesFilesAllowed = !_discoveryData->_enforceWindowsFilenameCompat || _discoveryData->_spacesFilesAllowed.contains(absoluteFileName);
     if (spacesFilesAllowed) {
         return result;
     }

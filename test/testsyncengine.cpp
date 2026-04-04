@@ -2296,7 +2296,7 @@ private slots:
         FakeFolder fakeFolder{FileInfo{}};
         fakeFolder.enableEnforceWindowsFileNameCompatibility();
 
-        fakeFolder.syncEngine().setLocalDiscoveryEnforceWindowsFileNameCompatibility(true);
+        fakeFolder.syncEngine().setEnforceWindowsFilenameCompat(true);
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 

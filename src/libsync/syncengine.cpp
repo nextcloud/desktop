@@ -687,12 +687,12 @@ void SyncEngine::startSync()
         !forbiddenBasenames.isEmpty() &&
         !forbiddenExtensions.isEmpty() &&
         !forbiddenChars.isEmpty()) {
-        _shouldEnforceWindowsFileNameCompatibility = true;
-        _discoveryPhase->_shouldEnforceWindowsFileNameCompatibility = _shouldEnforceWindowsFileNameCompatibility;
+        _enforceWindowsFilenameCompat = true;
+        _discoveryPhase->_enforceWindowsFilenameCompat = _enforceWindowsFilenameCompat;
     }
 #if defined Q_OS_WINDOWS
-    _shouldEnforceWindowsFileNameCompatibility = true;
-    _discoveryPhase->_shouldEnforceWindowsFileNameCompatibility = _shouldEnforceWindowsFileNameCompatibility;
+    _enforceWindowsFilenameCompat = true;
+    _discoveryPhase->_enforceWindowsFilenameCompat = _enforceWindowsFilenameCompat;
 #endif
 
     // Check for invalid character in old server version
@@ -1292,9 +1292,9 @@ void SyncEngine::addAcceptedInvalidFileName(const QString& filePath)
     _spacesFilesAllowed.append(filePath);
 }
 
-void SyncEngine::setLocalDiscoveryEnforceWindowsFileNameCompatibility(bool value)
+void SyncEngine::setEnforceWindowsFilenameCompat(bool value)
 {
-    _shouldEnforceWindowsFileNameCompatibility = value;
+    _enforceWindowsFilenameCompat = value;
 }
 
 bool SyncEngine::wasFileTouched(const QString &fn) const
@@ -1349,7 +1349,7 @@ const SyncEngine::SingleItemDiscoveryOptions &SyncEngine::singleItemDiscoveryOpt
     return _singleItemDiscoveryOptions;
 }
 
-void SyncEngine::setFilesystemPermissionsReliable(const bool reliable)
+void SyncEngine::setFilesystemPermsReliable(const bool reliable)
 {
     _filesystemPermissionsReliable = reliable;
 }

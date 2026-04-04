@@ -125,7 +125,7 @@ public:
     [[nodiscard]] QSharedPointer<OwncloudPropagator> getPropagator() const { return _propagator; } // for the test
     [[nodiscard]] const SyncEngine::SingleItemDiscoveryOptions &singleItemDiscoveryOptions() const;
 
-    void setFilesystemPermissionsReliable(bool reliable);
+    void setFilesystemPermsReliable(bool reliable);
 
 public slots:
     void setSingleItemDiscoveryOptions(const OCC::SyncEngine::SingleItemDiscoveryOptions &singleItemDiscoveryOptions);
@@ -152,7 +152,7 @@ public slots:
      */
     void setLocalDiscoveryOptions(OCC::LocalDiscoveryEnums::LocalDiscoveryStyle style, std::set<QString> paths = {});
     void addAcceptedInvalidFileName(const QString& filePath);
-    void setLocalDiscoveryEnforceWindowsFileNameCompatibility(bool value);
+    void setEnforceWindowsFilenameCompat(bool value);
 
 signals:
     // During update, before reconcile
@@ -414,7 +414,7 @@ private:
     std::set<QString> _localDiscoveryPaths;
 
     QStringList _spacesFilesAllowed;
-    bool _shouldEnforceWindowsFileNameCompatibility = false;
+    bool _enforceWindowsFilenameCompat = false;
 
     // Hash of files we have scheduled for later sync runs, along with a
     // pointer to the timer which will trigger the sync run for it.
