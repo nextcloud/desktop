@@ -27,7 +27,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
         <source>File actions</source>
-        <translation>Veiksmai su failais</translation>
+        <translation>Failo veiksmai</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
@@ -1036,7 +1036,7 @@ Vienintelis virtualių failų palaikymo išjungimo privalumas yra tai, kad vėl 
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1353"/>
         <source>You need to accept the terms of service at %1.</source>
-        <translation>Turite sutikti su paslaugų teikimo sąlygomis adresu %1.</translation>
+        <translation>Turite sutikti su paslaugų teikimo sąlygomis: %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1358"/>
@@ -4431,18 +4431,18 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="458"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko gauti %1 failo  iš vietinės duomenų bazės </translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="475"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation type="unfinished"/>
+        <translation>Failo %1 atsisiųsti nepavyko, nes trūksta šifravimo informacijos.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="515"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1370"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko ištrinti %1 failo įrašo iš vietinės duomenų bazės</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="698"/>
@@ -4467,18 +4467,18 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="942"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
-        <translation type="unfinished"/>
+        <translation>Atsisiųstas failas yra tuščias, tačiau serveris nurodė, kad jame turėtų būti duomenų %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1204"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1218"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
-        <translation type="unfinished"/>
+        <translation>Serveris pranešė, kad %1 failo pakeitimo laikas yra neteisingas. Neišsaugokite jo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1291"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>%1 failas atsisiųstas, tačiau dėl to kilo vietinių failų pavadinimų konfliktas!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1402"/>
@@ -4503,7 +4503,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
         <location filename="../src/libsync/owncloudpropagator.cpp" line="233"/>
         <source>%1. Restoration failed: %2</source>
         <comment>%1 is the generic error string, the file restoration error (%2) will be appended here</comment>
-        <translation type="unfinished"/>
+        <translation>%1. Atkūrimas nepavyko: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="233"/>
@@ -4526,7 +4526,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="232"/>
         <source>Folder %1 cannot be created because of a local file or folder name clash!</source>
-        <translation type="unfinished"/>
+        <translation>%1 aplanko neįmanoma sukurti dėl vietinio failo arba aplanko pavadinimo sutapimo!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="264"/>
@@ -4538,7 +4538,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
         <location filename="../src/libsync/propagatorjobs.cpp" line="282"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="288"/>
         <source>The folder %1 cannot be made read-only: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 aplanko negalima padaryti skirtu tik skaitymui: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="288"/>
@@ -4568,12 +4568,12 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
         <location filename="../src/libsync/propagatorjobs.cpp" line="166"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="176"/>
         <source>Temporary error when removing local item removed from server.</source>
-        <translation type="unfinished"/>
+        <translation>Laikina klaida: iš serverio pašalintas vietinis elementas.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="185"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko ištrinti %1 failo įrašo iš vietinės duomenų bazės</translation>
     </message>
 </context>
 <context>
@@ -4581,24 +4581,24 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="381"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Neįmanoma pervadinti %1 aplanko pavadinimo dėl vietinio failo arba aplanko pavadinimo sutapimo!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="389"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>%1 failas atsisiųstas, tačiau dėl to kilo vietinių failų pavadinimų konfliktas!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="489"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="576"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko gauti %1 failo  iš vietinės duomenų bazės </translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="502"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="563"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko pakeisti failo prieinamumo būsenos</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="515"/>
@@ -4613,7 +4613,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="553"/>
         <source>Failed to propagate directory rename in hierarchy</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko paskleisti katalogo pervadinimo hierarchijoje</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="558"/>
@@ -4623,7 +4623,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="581"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko ištrinti %1 failo įrašo iš vietinės duomenų bazės</translation>
     </message>
 </context>
 <context>
@@ -4636,7 +4636,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="124"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko ištrinti %1 failo įrašo iš vietinės duomenų bazės</translation>
     </message>
 </context>
 <context>
@@ -4644,7 +4644,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="149"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Serveris grąžino neteisingą HTTP kodą. Tikėtasi 204, bet gautas „%1 %2“.</translation>
     </message>
 </context>
 <context>
@@ -4697,17 +4697,17 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="255"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko gauti %1 failo  iš vietinės duomenų bazės </translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="267"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko ištrinti %1 failo įrašo iš vietinės duomenų bazės</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="298"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko pakeisti failo prieinamumo būsenos</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="305"/>
@@ -4727,7 +4727,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
         <location filename="../src/libsync/propagateupload.cpp" line="411"/>
         <location filename="../src/libsync/propagateupload.cpp" line="424"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>%1 failo pakeitimo laikas yra negaliojantis. Nekelkite į serverį.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="434"/>
@@ -4747,7 +4747,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="729"/>
         <source>Unable to upload an item with invalid characters</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko įkelti elemento, kuriame yra neteisingų simbolių</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="828"/>
@@ -4768,7 +4768,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="245"/>
         <source>Failed to upload encrypted file.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko įkelti šifruoto failo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="408"/>
@@ -4791,7 +4791,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="508"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>Nėra apklausos URL adreso</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="517"/>
@@ -4807,13 +4807,13 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
         <location filename="../src/libsync/propagateuploadng.cpp" line="544"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>Aplankas serveryje yra neprieinamas.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="545"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>Failas serveryje yra neprieinamas.</translation>
     </message>
 </context>
 <context>
@@ -4914,7 +4914,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="140"/>
         <source>Reply</source>
-        <translation type="unfinished"/>
+        <translation>Atsakyti</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="177"/>
@@ -4959,12 +4959,12 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="571"/>
         <source>%1 days</source>
-        <translation type="unfinished"/>
+        <translation>%1 dienos</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="573"/>
         <source>1 day</source>
-        <translation type="unfinished"/>
+        <translation>1 diena</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="574"/>
@@ -4974,17 +4974,17 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="748"/>
         <source>Secure file drop link</source>
-        <translation type="unfinished"/>
+        <translation>Saugi nuoroda failų perdavimui</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="748"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>Bendrinimo nuoroda</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="756"/>
         <source>Link share</source>
-        <translation type="unfinished"/>
+        <translation>Nuorodos dalijimasis</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="758"/>
@@ -4994,12 +4994,12 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="760"/>
         <source>Secure file drop</source>
-        <translation type="unfinished"/>
+        <translation>Saugus failų perdavimas</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="960"/>
         <source>Could not find local folder for %1</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko rasti vietinio aplanko, skirto %1</translation>
     </message>
 </context>
 <context>
@@ -5013,12 +5013,12 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="281"/>
         <source>No results found</source>
-        <translation type="unfinished"/>
+        <translation>Nerasta jokių rezultatų</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="281"/>
         <source>Global search results</source>
-        <translation type="unfinished"/>
+        <translation>Globalios paieškos rezultatai</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="297"/>
@@ -5032,7 +5032,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="773"/>
         <source>Context menu share</source>
-        <translation type="unfinished"/>
+        <translation>Kontekstinio meniu bendrinimas</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1111"/>
@@ -5058,12 +5058,12 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="539"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko užšifruoti aplanko, esančio „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="540"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
-        <translation type="unfinished"/>
+        <translation>%1 paskyroje nesukonfigūruotas ištisinis šifravimas. Norėdami įjungti aplankų šifravimą, sukonfigūruokite tai savo paskyros nustatymuose.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="559"/>
@@ -5075,7 +5075,9 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko užšifruoti šio aplanko: „%1‟.
+
+Serveris atsakė su klaida: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="567"/>
@@ -5090,13 +5092,13 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1055"/>
         <source>Select new location …</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinkite naują vietą…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1146"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1209"/>
         <source>File actions</source>
-        <translation type="unfinished"/>
+        <translation>Failo veiksmai</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1125"/>
@@ -5107,7 +5109,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1153"/>
         <source>Leave this share</source>
-        <translation type="unfinished"/>
+        <translation>Palikti šį bendrinimą</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1159"/>
@@ -5117,7 +5119,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1159"/>
         <source>Resharing this folder is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Neleidžiama pakartotinai bendrinti šį aplanką</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1203"/>
@@ -5143,12 +5145,12 @@ Server replied with error: %2</source>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1237"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Baigia galioti po %1 minutės</numerusform><numerusform>Baigia galioti po %1 minučių</numerusform><numerusform>Baigia galioti po %1 minučių</numerusform><numerusform>Baigia galioti po %1 minučių</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1377"/>
         <source>Resolve conflict …</source>
-        <translation type="unfinished"/>
+        <translation>Išspręsti konfilktą ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1381"/>
@@ -5158,7 +5160,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1384"/>
         <source>Move, rename and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Perkelti, pervadinti ir įkelti…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1386"/>
@@ -5168,7 +5170,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1392"/>
         <source>Move and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Perkelti ir įkelti…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1393"/>
@@ -5438,22 +5440,22 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="404"/>
         <source>Could not update virtual file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko atnaujinti virtualaus failo metaduomenų: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="411"/>
         <source>Could not update file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko atnaujinti virtualaus failo metaduomenų: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="421"/>
         <source>Could not set file record to local DB: %1</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko nustatyti failo įrašo į vietinę duomenų bazę: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="604"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>Naudojami virtualūs failai su priesaga, bet priesaga nenustatyta</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="616"/>
@@ -5478,22 +5480,22 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="162"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="407"/>
         <source>Offline</source>
-        <translation type="unfinished"/>
+        <translation>Neprisijungęs</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="129"/>
         <source>You need to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Turite sutikti su paslaugų teikimo sąlygomis.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="165"/>
         <source>Reauthorization required</source>
-        <translation type="unfinished"/>
+        <translation>Reikalingas pakartotinis leidimas</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="166"/>
         <source>Please grant access to your sync folders</source>
-        <translation type="unfinished"/>
+        <translation>Suteikite prieigą prie sinchronizavimo aplankų</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="179"/>
@@ -5515,17 +5517,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="196"/>
         <source>Checking folder changes</source>
-        <translation type="unfinished"/>
+        <translation>Tikrinami aplanko pakeitimai</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="198"/>
         <source>Syncing changes</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizuojami pakeitimai</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="207"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizavimas pristabdytas</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="215"/>
@@ -5540,7 +5542,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="285"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizuojama</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="298"/>
@@ -5560,7 +5562,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="451"/>
         <source>No synchronisation configured</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizavimas nenustatytas</translation>
     </message>
 </context>
 <context>
@@ -5579,7 +5581,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/systray.cpp" line="179"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
-        <translation type="unfinished"/>
+        <translation>Atidarykite %1 darbalaukį. </translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="182"/>
@@ -5601,7 +5603,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="185"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>Pagalba</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="186"/>
@@ -5611,12 +5613,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="192"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Sustabdyti visas sinchronizacijas</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="198"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Atnaujinti visas sinchronizacijas</translation>
     </message>
 </context>
 <context>
@@ -5624,12 +5626,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="125"/>
         <source>Waiting for terms to be accepted</source>
-        <translation type="unfinished"/>
+        <translation>Laukiama, kol bus priimtos sąlygos</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="131"/>
         <source>Polling</source>
-        <translation type="unfinished"/>
+        <translation>Apklausa</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="137"/>
@@ -5653,23 +5655,23 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/theme.cpp" line="449"/>
         <source>%1 Desktop Client Version %2 (%3 running on %4)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the platform name (wayland, x11, …)</comment>
-        <translation type="unfinished"/>
+        <translation>%1 darbalaukio kliento versija %2 (%3 veikia %4)</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="449"/>
         <source>%1 Desktop Client Version %2 (%3)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 darbalaukio kliento versija %2 (%3)</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="634"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Naudojant virtualių failų įskiepį: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="652"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Šį išleidimą pateikė %1.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -5677,22 +5679,22 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="398"/>
         <source>Failed to fetch providers.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko atsisiųsti paslaugų teikėjų.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="409"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko gauti paieškos paslaugų teikėjų pagal „%1“. Klaida: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="443"/>
         <source>Search has failed for &apos;%2&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko rasti „%2“.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="472"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko rasti „%1“. Klaida: %2</translation>
     </message>
 </context>
 <context>
@@ -5710,7 +5712,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="156"/>
         <source>Failed to finalize item.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko užbaigti operacijos.</translation>
     </message>
 </context>
 <context>
@@ -5726,22 +5728,22 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="194"/>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="253"/>
         <source>Error updating metadata for a folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Klaida atnaujinant %1 aplanko metaduomenis </translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="83"/>
         <source>Could not fetch public key for user %1</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko gauti %1 vartotojo viešojo rakto </translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="90"/>
         <source>Could not find root encrypted folder for folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko rasti šakninio užšifruoto aplanko aplankui %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="111"/>
         <source>Could not add or remove user %1 to access folder %2</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko pridėti arba pašalinti naudotojo %1, kad jis pasiektų aplanką %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="231"/>
@@ -5754,17 +5756,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="112"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
-        <translation type="unfinished"/>
+        <translation>Ištisinio šifravimo sertifikatą reikia perkelti į naują</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="114"/>
         <source>Trigger the migration</source>
-        <translation type="unfinished"/>
+        <translation>Pradėti perkėlimą</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
         <source>%n notification(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n pranešimas</numerusform><numerusform>%n pranešimai</numerusform><numerusform>%n pranešimų</numerusform><numerusform>%n pranešimų</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="657"/>
@@ -5775,7 +5777,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/usermodel.cpp" line="708"/>
         <location filename="../src/gui/tray/usermodel.cpp" line="870"/>
         <source>Resolve conflict</source>
-        <translation type="unfinished"/>
+        <translation>Išspręsti konfilktą</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="860"/>
@@ -5785,70 +5787,70 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1002"/>
         <source>Public Share Link</source>
-        <translation type="unfinished"/>
+        <translation>Vieša nuoroda</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
         <source>Open %1 Assistant in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation type="unfinished"/>
+        <translation>Atverti %1 asistentą naršyklėje</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1088"/>
         <source>Open %1 Talk in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation type="unfinished"/>
+        <translation>Atverti %1 „Talk‟ naršyklėje</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1357"/>
         <source>Open %1 Assistant</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation type="unfinished"/>
+        <translation>Atverti %1 asistentą</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1464"/>
         <source>Assistant is not available for this account.</source>
-        <translation type="unfinished"/>
+        <translation>Asistentas šiai paskyrai nepasiekiamas.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1470"/>
         <source>Assistant is already processing a request.</source>
-        <translation type="unfinished"/>
+        <translation>Asistentas jau apdoroja užklausą.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1507"/>
         <source>Sending your request…</source>
-        <translation type="unfinished"/>
+        <translation>Siunčiamas jūsų prašymas…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1580"/>
         <source>No response yet. Please try again later.</source>
-        <translation type="unfinished"/>
+        <translation>Kol kas nėra atsakymo. Bandykite dar kartą vėliau.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1599"/>
         <source>No supported assistant task types were returned.</source>
-        <translation type="unfinished"/>
+        <translation>Nerasta jokių palaikomų asistento užduočių tipų.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1681"/>
         <source>Waiting for the assistant response…</source>
-        <translation type="unfinished"/>
+        <translation>Laukiama asistento atsakymo…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1703"/>
         <source>Assistant request failed (%1).</source>
-        <translation type="unfinished"/>
+        <translation>Asistento užklausa nepavyko (%1).</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1211"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
-        <translation type="unfinished"/>
+        <translation>Kvota atnaujinama; naudojamas %1 procentas(-ų) visos vietos.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1231"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
-        <translation type="unfinished"/>
+        <translation>Kvotos įspėjimas – naudojama %1 procentai(-ų) ar daugiau saugyklos vietos</translation>
     </message>
 </context>
 <context>
@@ -5876,12 +5878,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1629"/>
         <source>Leave share</source>
-        <translation type="unfinished"/>
+        <translation>Palikti bendrinimą</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1629"/>
         <source>Remove account</source>
-        <translation type="unfinished"/>
+        <translation>Šalinti paskyrą</translation>
     </message>
 </context>
 <context>
@@ -5889,32 +5891,32 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="143"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko gauti iš anksto nustatytų būsenų. Įsitikinkite, kad esate prisijungę prie serverio.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="147"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko gauti būsenos. Įsitikinkite, kad esate prisijungę prie serverio.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="151"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
-        <translation type="unfinished"/>
+        <translation>Būsenos funkcija nepalaikoma. Negalėsite nustatyti savo būsenos.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="155"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
-        <translation type="unfinished"/>
+        <translation>Emoji simboliai nepalaikomi. Kai kurios būsenos funkcijos gali neveikti.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko nustatyti būsenos. Patikrinkite, ar esate prisijungę prie serverio.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="163"/>
         <source>Could not clear status message. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko ištrinti būsenos pranešimo. Patikrinkite, ar esate prisijungę prie serverio.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="350"/>
@@ -5947,27 +5949,27 @@ Server replied with error: %2</source>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="365"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="444"/>
         <source>This week</source>
-        <translation type="unfinished"/>
+        <translation>Šią savaitę</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="408"/>
         <source>Less than a minute</source>
-        <translation type="unfinished"/>
+        <translation>Mažiau nei minutė</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="411"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minutė</numerusform><numerusform>%n minutės</numerusform><numerusform>%n minučių</numerusform><numerusform>%n minučių</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="414"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n valanda</numerusform><numerusform>%n valandos</numerusform><numerusform>%n valandų</numerusform><numerusform>%n valandų</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="417"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n diena</numerusform><numerusform>%n dienos</numerusform><numerusform>%n dienų</numerusform><numerusform>%n dienų</numerusform></translation>
     </message>
 </context>
 <context>
@@ -5975,17 +5977,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/vfs.cpp" line="64"/>
         <source>Please choose a different location. %1 is a drive. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Prašome pasirinkti kitą vietą. %1 yra diskas. Jis nepalaiko virtualių failų.</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="68"/>
         <source>Please choose a different location. %1 isn&apos;t a NTFS file system. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Prašome pasirinkti kitą vietą. %1 nėra NTFS failų sistema. Ji nepalaiko virtualių failų.</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="72"/>
         <source>Please choose a different location. %1 is a network drive. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Prašome pasirinkti kitą vietą. %1 yra tinklo diskas. Jis nepalaiko virtualių failų.</translation>
     </message>
 </context>
 <context>
@@ -6003,7 +6005,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="39"/>
         <source>Could not be downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Negali būti atsiųstas</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="61"/>
@@ -6032,7 +6034,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="74"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="85"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Atnaujinant metaduomenis įvyko klaida dėl netinkamo pakeitimo laiko</translation>
     </message>
 </context>
 <context>
@@ -6041,7 +6043,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="68"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="79"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Atnaujinant metaduomenis įvyko klaida dėl netinkamo pakeitimo laiko</translation>
     </message>
 </context>
 <context>
@@ -6062,7 +6064,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="172"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation type="unfinished"/>
+        <translation>Jūs buvote atsijungę nuo savo paskyros %1 %2. Prašome prisijungti iš naujo.</translation>
     </message>
 </context>
 <context>
@@ -6070,7 +6072,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Anketa</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
@@ -6080,32 +6082,32 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
         <source>Sign up with provider</source>
-        <translation type="unfinished"/>
+        <translation>Užsiregistruokite pas paslaugų teikėją</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="59"/>
         <source>Keep your data secure and under your control</source>
-        <translation type="unfinished"/>
+        <translation>Saugiai laikykite ir valdykite savo duomenis</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="60"/>
         <source>Secure collaboration &amp; file exchange</source>
-        <translation type="unfinished"/>
+        <translation>Saugus bendradarbiavimas ir apsikeitimas failais</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="61"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation type="unfinished"/>
+        <translation>Lengvai naudojamas el. paštas, kalendorius bei adresatai</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="62"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation type="unfinished"/>
+        <translation>Ekrano bendrinimas, internetiniai susitikimai ir internetinės konferencijos</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="102"/>
         <source>Host your own server</source>
-        <translation type="unfinished"/>
+        <translation>Administruoti savo serverį</translation>
     </message>
 </context>
 <context>
@@ -6114,32 +6116,32 @@ Server replied with error: %2</source>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="23"/>
         <source>Proxy Settings</source>
         <comment>Dialog window title for proxy settings</comment>
-        <translation type="unfinished"/>
+        <translation>Tarpinio serverio nustatymai</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25"/>
         <source>Hostname of proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Tarpinio serverio pavadinimas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26"/>
         <source>Username for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Tarpinio serverio vartotojo vardas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="27"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Tarpinio serverio slaptažodis</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="29"/>
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished"/>
+        <translation>HTTP(S) tarpinis serveris</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="30"/>
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished"/>
+        <translation>SOCKS5 tarpinis serveris</translation>
     </message>
 </context>
 <context>
@@ -6167,48 +6169,48 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="264"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Paskyroje %1 esantis serveris naudoja nepalaikomą %2 versiją. Šio kliento naudojimas su nepalaikomomis serverio versijomis yra neišbandytas ir gali būti pavojingas. Tęskite savo rizika.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="276"/>
         <source>Terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Paslaugų teikimo sąlygos</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="277"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
-        <translation type="unfinished"/>
+        <translation>Jūsų paskyra %1 reikalauja sutikti su serverio paslaugų teikimo sąlygomis. Būsite nukreipti į %2, kad patvirtintumėte, jog jas perskaitėte ir su jomis sutinkate.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="450"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="454"/>
         <source>macOS VFS for %1: Sync is running.</source>
-        <translation type="unfinished"/>
+        <translation>macOS VFS, skirtas %1: Vykdomas sinchronizavimas.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="457"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>macOS VFS, skirtas %1: Paskutinis sinchronizavimas buvo sėkmingas.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="460"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
-        <translation type="unfinished"/>
+        <translation>macOS VFS, skirtas %1: Iškilo problema.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="526"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Tikrinama, ar yra pokyčių nuotolinėje „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="529"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Patikrinti, ar yra pokyčių vietiniame „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>
@@ -6246,7 +6248,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="135"/>
         <source>Choose different folder</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinkti kitą aplanką</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="228"/>
@@ -6256,27 +6258,27 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
         <source>Sync Logo</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizavimo logotipas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
         <source>Synchronize everything from server</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizuoti viską iš serverio</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="360"/>
         <source>Ask before syncing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Prieš sinchronizuodami aplankus, kurių dydis didesnis nei</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="432"/>
         <source>Ask before syncing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Prieš sinchronizuojant išorines saugyklas, paklauskite</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="612"/>
         <source>Keep local data</source>
-        <translation type="unfinished"/>
+        <translation>Palikti vietinius duomenis</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="628"/>
@@ -6286,7 +6288,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="631"/>
         <source>Erase local folder and start a clean sync</source>
-        <translation type="unfinished"/>
+        <translation>Ištrinkite vietinį aplanką ir pradėkite sinchronizavimą iš naujo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="386"/>
@@ -6333,7 +6335,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="261"/>
         <source>This is the link to your %1 web interface when you open it in the browser.</source>
-        <translation type="unfinished"/>
+        <translation>Tai yra nuoroda į jūsų %1 internetinę sąsają, kai ją atidarote naršyklėje.</translation>
     </message>
 </context>
 <context>
@@ -6341,42 +6343,42 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Anketa</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="29"/>
         <source>Proxy Settings</source>
-        <translation type="unfinished"/>
+        <translation>Tarpinio serverio nustatymai</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="35"/>
         <source>Manually specify proxy</source>
-        <translation type="unfinished"/>
+        <translation>Rankiniu būdu nurodykite tarpinį serverį</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="91"/>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>Serveris</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="142"/>
         <source>Proxy server requires authentication</source>
-        <translation type="unfinished"/>
+        <translation>Tarpinis serveris reikalauja nustatyti tapatybę</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="205"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Pastaba: proxy nustatymai neturi jokios įtakos paskyroms, esančioms „localhost“</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="230"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>Naudoti sistemos tarpinį serverį</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="237"/>
         <source>No proxy</source>
-        <translation type="unfinished"/>
+        <translation>Nera tarpinio serverio</translation>
     </message>
 </context>
 <context>
@@ -6385,7 +6387,7 @@ Server replied with error: %2</source>
         <location filename="../src/common/utility.cpp" line="427"/>
         <source>%nd</source>
         <comment>delay in days after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nd</numerusform><numerusform>%nd</numerusform><numerusform>%nd</numerusform><numerusform>%nd</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="431"/>
@@ -6396,7 +6398,7 @@ Server replied with error: %2</source>
         <location filename="../src/common/utility.cpp" line="436"/>
         <source>%nh</source>
         <comment>delay in hours after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nval</numerusform><numerusform>%nval</numerusform><numerusform>%nval</numerusform><numerusform>%nval</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="442"/>
@@ -6407,13 +6409,13 @@ Server replied with error: %2</source>
         <location filename="../src/common/utility.cpp" line="444"/>
         <source>1min</source>
         <comment>one minute after activity date and time</comment>
-        <translation type="unfinished"/>
+        <translation>1min</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="447"/>
         <source>%nmin</source>
         <comment>delay in minutes after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nmin</numerusform><numerusform>%nmin</numerusform><numerusform>%nmin</numerusform><numerusform>%nmin</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="451"/>
@@ -6434,27 +6436,27 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="127"/>
         <source>Failed to create debug archive</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko sukurti derinimo archyvo</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="128"/>
         <source>Could not create debug archive in selected location!</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko sukurti derinimo archyvo pasirinktoje vietoje!</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="198"/>
         <source>Could not create debug archive in temporary location!</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko sukurti derinimo archyvo laikinoje vietoje!</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="212"/>
         <source>Could not remove existing file at destination!</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko pašalinti esamo failo paskirties vietoje!</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="226"/>
         <source>Could not move debug archive to selected location!</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko perkelti derinimo archyvo į pasirinktą vietą!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="789"/>
@@ -6479,147 +6481,147 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="819"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizuota %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="333"/>
         <source>Error deleting the file</source>
-        <translation type="unfinished"/>
+        <translation>Klaida ištrinant failą</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="64"/>
         <source>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</source>
-        <translation type="unfinished"/>
+        <translation>VFS režimu nepalaikomi keliai, prasidedantys simboliu &apos;#&apos;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="493"/>
         <source>We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko apdoroti jūsų užklausos. Prašome vėliau pabandyti sinchronizuoti dar kartą. Jei ši problema kartojasi, kreipkitės pagalbos į savo serverio administratorių.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="496"/>
         <source>You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Norėdami tęsti, turite prisijungti. Jei kyla problemų su prisijungimo duomenimis, kreipkitės į savo serverio administratorių.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="499"/>
         <source>You don’t have access to this resource. If you think this is a mistake, please contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Jūs neturite prieigos prie šio išteklio. Jei manote, kad tai klaida, kreipkitės į savo serverio administratorių.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="502"/>
         <source>We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Neradome to, ko ieškojote. Galbūt tai buvo perkelta arba ištrinta. Jei reikės pagalbos, kreipkitės į savo serverio administratorių.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="505"/>
         <source>It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Atrodo, kad naudojate tarpinį serverį, kuriam reikalingas autentifikavimas. Patikrinkite savo tarpinio serverio nustatymus ir prisijungimo duomenis. Jei reikės pagalbos, kreipkitės į savo serverio administratorių.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="508"/>
         <source>The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Užklausa trunka ilgiau nei įprastai. Prašome pabandyti sinchronizuoti dar kartą. Jei vis tiek nepavyksta, kreipkitės į savo serverio administratorių.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="511"/>
         <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
-        <translation type="unfinished"/>
+        <translation>Jums dirbant buvo pakeisti serverio failai. Prašome pabandyti sinchronizuoti dar kartą. Jei problema neišsprendžiama, kreipkitės į serverio administratorių.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="514"/>
         <source>This folder or file isn’t available anymore. If you need assistance, please contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Šio aplanko ar failo nebėra. Jei reikės pagalbos, kreipkitės į savo serverio administratorių.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="517"/>
         <source>The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Prašymo nebuvo galima įvykdyti, nes nebuvo įvykdytos kai kurios būtinos sąlygos. Prašome pabandyti sinchronizuoti vėliau. Jei reikės pagalbos, kreipkitės į savo serverio administratorių.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="520"/>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Failas per didelis, kad jį būtų galima įkelti. Galbūt reikės pasirinkti mažesnį failą arba kreiptis pagalbos į serverio administratorių.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="523"/>
         <source>The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Užklausai pateikti naudotas adresas yra per ilgas, kad serveris galėtų jį apdoroti. Prašome sutrumpinti siunčiamą informaciją arba kreiptis pagalbos į savo serverio administratorių.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="526"/>
         <source>This file type isn’t supported. Please contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Šis failo tipas nepalaikomas. Kreipkitės į savo serverio administratorių, jei reikės pagalbos.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="529"/>
         <source>The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Serveris negalėjo apdoroti jūsų užklausos, nes kai kurie duomenys buvo neteisingi arba neišsamūs. Prašome vėliau pabandyti sinchronizuoti dar kartą arba kreiptis pagalbos į serverio administratorių.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="532"/>
         <source>The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Šiuo metu išteklis, kurį bandote pasiekti, yra užrakintas ir jo negalima keisti. Prašome pabandyti vėliau arba kreiptis pagalbos į savo serverio administratorių.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="535"/>
         <source>This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administrator for help.</source>
-        <translation type="unfinished"/>
+        <translation>Šio prašymo nebuvo galima įvykdyti, nes trūksta kai kurių būtinų sąlygų. Prašome pabandyti vėliau arba kreiptis pagalbos į savo serverio administratorių.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="538"/>
         <source>You made too many requests. Please wait and try again. If you keep seeing this, your server administrator can help.</source>
-        <translation type="unfinished"/>
+        <translation>Jūs pateikėte per daug užklausų. Prašome palaukti ir bandyti dar kartą. Jei šis pranešimas vis pasirodo, kreipkitės į serverio administratorių.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="541"/>
         <source>Something went wrong on the server. Please try syncing again later, or contact your server administrator if the issue persists.</source>
-        <translation type="unfinished"/>
+        <translation>Serveryje įvyko gedimas. Prašome vėliau pabandyti sinchronizuoti dar kartą arba, jei problema neišsprendžiama, susisiekti su serverio administratoriumi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="544"/>
         <source>The server does not recognize the request method. Please contact your server administrator for help.</source>
-        <translation type="unfinished"/>
+        <translation>Serveris nepripažįsta užklausos metodo. Kreipkitės į serverio administratorių pagalbos.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="547"/>
         <source>We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administrator can help you.</source>
-        <translation type="unfinished"/>
+        <translation>Kyla problemų prisijungiant prie serverio. Prašome netrukus pabandyti dar kartą. Jei problema neišsprendžiama, kreipkitės į serverio administratorių.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="550"/>
         <source>The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.</source>
-        <translation type="unfinished"/>
+        <translation>Šiuo metu serveris yra užimtas. Prašome pabandyti prisijungti dar kartą po kelių minučių arba, jei tai skubu, susisiekti su serverio administratoriumi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="553"/>
         <source>It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Prisijungimas prie serverio trunka pernelyg ilgai. Prašome pabandyti vėliau. Jei reikės pagalbos, kreipkitės į serverio administratorių.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="556"/>
         <source>The server does not support the version of the connection being used. Contact your server administrator for help.</source>
-        <translation type="unfinished"/>
+        <translation>Serveris nepalaiko naudojamos ryšio versijos. Kreipkitės į serverio administratorių pagalbos.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="559"/>
         <source>The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Serveryje nepakanka vietos jūsų užklausai įvykdyti. Susisiekite su serverio administratoriumi ir pasiteiraukite, kokią kvotą turi jūsų vartotojas.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="562"/>
         <source>Your network needs extra authentication. Please check your connection. Contact your server administrator for help if the issue persists.</source>
-        <translation type="unfinished"/>
+        <translation>Jūsų tinklui reikalingas papildomas autentifikavimas. Patikrinkite savo ryšį. Jei problema neišsprendžiama, kreipkitės pagalbos į serverio administratorių.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="565"/>
         <source>You don’t have permission to access this resource. If you believe this is an error, contact your server administrator to ask for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Jūs neturite leidimo pasiekti šį išteklių. Jei manote, kad tai klaida, kreipkitės į savo serverio administratorių ir paprašykite pagalbos.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="568"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Įvyko netikėta klaida. Prašome pabandyti sinchronizuoti dar kartą arba, jei problema neišsprendžiama, susisiekti su serverio administratoriumi.</translation>
     </message>
 </context>
 <context>
@@ -6627,18 +6629,18 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="31"/>
         <source>Solve sync conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Išspręsti sinchronizavimo konfliktus</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="48"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 failo konfliktas</numerusform><numerusform>%1 failų konfliktas</numerusform><numerusform>%1 failų konfliktas</numerusform><numerusform>%1 failų konfliktas</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="55"/>
         <source>Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinkite, ar norite išsaugoti vietinę versiją, serverio versiją, ar abi. Jei pasirinksite abi, prie vietinio failo pavadinimo bus pridėtas numeris.</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="71"/>
@@ -6653,7 +6655,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="144"/>
         <source>Resolve conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Išspręsti konfliktus</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="148"/>
@@ -6684,28 +6686,28 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="282"/>
         <source>Share label</source>
-        <translation type="unfinished"/>
+        <translation>Pasidalinti etikete</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="314"/>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="360"/>
         <source>Allow upload and editing</source>
-        <translation type="unfinished"/>
+        <translation>Leisti įkelti ir redaguoti</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="347"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>Tik peržiūrėti</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="373"/>
         <source>File drop (upload only)</source>
-        <translation type="unfinished"/>
+        <translation>Failų įmetimas (tik įkėlimas)</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="393"/>
         <source>Allow resharing</source>
-        <translation type="unfinished"/>
+        <translation>Leisti bendrinti iš naujo</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="432"/>
@@ -6715,27 +6717,27 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="459"/>
         <source>Password protection</source>
-        <translation type="unfinished"/>
+        <translation>Apsauga slaptažodžiu</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="569"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Nustatyti galiojimo pabaigos datą</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="654"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Pastaba gavėjui</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="700"/>
         <source>Enter a note for the recipient</source>
-        <translation type="unfinished"/>
+        <translation>Įrašykite pranešimą gavėjui</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="721"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Nustoti bendrinti</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="729"/>
@@ -6745,12 +6747,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="772"/>
         <source>Share link copied!</source>
-        <translation type="unfinished"/>
+        <translation>Bendrinimo nuoroda nukopijuota!</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="772"/>
         <source>Copy share link</source>
-        <translation type="unfinished"/>
+        <translation>Kopijuoti bendrinimo nuorodą</translation>
     </message>
 </context>
 <context>
@@ -6758,22 +6760,22 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="84"/>
         <source>Password required for new share</source>
-        <translation type="unfinished"/>
+        <translation>Naujajam bendrinimui reikalingas slaptažodis</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="112"/>
         <source>Share password</source>
-        <translation type="unfinished"/>
+        <translation>Pasidalinti slaptažodžiu</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="148"/>
         <source>Shared with you by %1</source>
-        <translation type="unfinished"/>
+        <translation>Su jumis bendrina %1</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="154"/>
         <source>Expires in %1</source>
-        <translation type="unfinished"/>
+        <translation>Baigia galioti %1</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="304"/>
@@ -6801,7 +6803,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="39"/>
         <source>Sharing is not available for this folder</source>
-        <translation type="unfinished"/>
+        <translation>Šio aplanko bendrinimas negalimas</translation>
     </message>
 </context>
 <context>
@@ -6822,17 +6824,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="118"/>
         <source>Resolve conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Išspręsti konfliktus</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="131"/>
         <source>Open browser</source>
-        <translation type="unfinished"/>
+        <translation>Atverti naršyklę</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="143"/>
         <source>Open settings</source>
-        <translation type="unfinished"/>
+        <translation>Atverti nustatymus</translation>
     </message>
 </context>
 <context>
@@ -6840,12 +6842,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="21"/>
         <source>Reply to …</source>
-        <translation type="unfinished"/>
+        <translation>Atsakyti ...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="57"/>
         <source>Send reply to chat message</source>
-        <translation type="unfinished"/>
+        <translation>Atsakyti į pokalbio žinutę</translation>
     </message>
 </context>
 <context>
@@ -6853,17 +6855,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="26"/>
         <source>Terms of Service</source>
-        <translation type="unfinished"/>
+        <translation>Paslaugų teikimo sąlygos</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="47"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>Logotipas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="76"/>
         <source>Switch to your browser to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Grįžkite į naršyklę, kad sutiktumėte su paslaugų teikimo sąlygomis</translation>
     </message>
 </context>
 <context>
@@ -6871,7 +6873,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Atidaryti vietinius arba grupės aplankus</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
@@ -6881,22 +6883,22 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
         <source>Open local folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Atidaryti vietinį aplanką „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
         <source>Open group folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Atidaryti grupės aplanką „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="187"/>
         <source>Open %1 in file explorer</source>
-        <translation type="unfinished"/>
+        <translation>Atidaryti %1 failų naršyklėje</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="192"/>
         <source>User group and local folders menu</source>
-        <translation type="unfinished"/>
+        <translation>Vartotojų grupių ir vietinių aplankų meniu</translation>
     </message>
 </context>
 <context>
@@ -6904,17 +6906,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="66"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Atidaryti vietinius arba grupės aplankus</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="101"/>
         <source>More apps</source>
-        <translation type="unfinished"/>
+        <translation>Daugiau programėlių</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="124"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>Atverti %1 naršyklėje</translation>
     </message>
 </context>
 <context>
@@ -6922,7 +6924,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="34"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>Ieškoti failų, pranešimų, įvykių…</translation>
     </message>
 </context>
 <context>
@@ -6930,7 +6932,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchPlaceholderView.qml" line="30"/>
         <source>Start typing to search</source>
-        <translation type="unfinished"/>
+        <translation>Rašykite norėdami atlikti paiešką</translation>
     </message>
 </context>
 <context>
@@ -6946,7 +6948,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultItemSkeleton.qml" line="20"/>
         <source>Search result skeleton.</source>
-        <translation type="unfinished"/>
+        <translation>Paieškos rezultatų struktūra.</translation>
     </message>
 </context>
 <context>
@@ -6962,7 +6964,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultNothingFound.qml" line="31"/>
         <source>No results for</source>
-        <translation type="unfinished"/>
+        <translation>Nerasta rezultatų</translation>
     </message>
 </context>
 <context>
@@ -6970,7 +6972,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultSectionItem.qml" line="24"/>
         <source>Search results section %1</source>
-        <translation type="unfinished"/>
+        <translation>Paieškos rezultatų skyrius %1</translation>
     </message>
 </context>
 <context>
@@ -6983,17 +6985,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="62"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Dabartinė paskyros būsena: prisijungęs</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="62"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Dabartinė paskyros būsena: netrukdyti</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="166"/>
         <source>Account sync status requires attention</source>
-        <translation type="unfinished"/>
+        <translation>Reikia atkreipti dėmesį į paskyros sinchronizavimo būseną</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="153"/>
@@ -7003,12 +7005,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="173"/>
         <source>Set status</source>
-        <translation type="unfinished"/>
+        <translation>Nustatyti būseną</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="187"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Būsenos žinutė</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="201"/>
@@ -7026,32 +7028,32 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusMessageView.qml" line="40"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Būsenos žinutė</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusMessageView.qml" line="116"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>Kokia jūsų būsena?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusMessageView.qml" line="168"/>
         <source>Clear status message after</source>
-        <translation type="unfinished"/>
+        <translation>Išvalyti būsenos žinutę po</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusMessageView.qml" line="205"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Atsisakyti</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusMessageView.qml" line="212"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Išvalyti</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusMessageView.qml" line="221"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Taikyti</translation>
     </message>
 </context>
 <context>
@@ -7059,47 +7061,47 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="42"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>Prisijungimo būsena</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="51"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Prisijungęs</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="61"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Atsitraukęs</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="72"/>
         <source>Busy</source>
-        <translation type="unfinished"/>
+        <translation>Užimtas</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="82"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Netrukdyti</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="83"/>
         <source>Mute all notifications</source>
-        <translation type="unfinished"/>
+        <translation>Išjungti visus pranešimus</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="94"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Nematomas</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="95"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>Atrodyti atsijungusiu</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="106"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Būsenos žinutė</translation>
     </message>
 </context>
 <context>
@@ -7132,32 +7134,32 @@ Server replied with error: %2</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="286"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n metai</numerusform><numerusform>%n metai</numerusform><numerusform>%n metų</numerusform><numerusform>%n metų</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="287"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n mėnesis</numerusform><numerusform>%n mėnesiai</numerusform><numerusform>%n mėnesių</numerusform><numerusform>%n mėnesių</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="288"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n diena</numerusform><numerusform>%n dienos</numerusform><numerusform>%n dienų</numerusform><numerusform>%n dienų</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="289"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n valanda</numerusform><numerusform>%n valandos</numerusform><numerusform>%n valandų</numerusform><numerusform>%n valandų</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="290"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minutė</numerusform><numerusform>%n minutės</numerusform><numerusform>%n minučių</numerusform><numerusform>%n minučių</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="291"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n sekundė</numerusform><numerusform>%n sekundės</numerusform><numerusform>%n sekundžių</numerusform><numerusform>%n sekundžių</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="315"/>
@@ -7180,7 +7182,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/checksums.cpp" line="298"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Atsisiųsto failo kontrolinė suma nesutampa, atsisiuntimas bus tęsiamas. „%1“ != „%2“</translation>
     </message>
 </context>
 <context>
@@ -7193,7 +7195,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/main.cpp" line="43"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &quot;trayer&quot; and try again.</source>
-        <translation type="unfinished"/>
+        <translation>%1 reikalauja veikiančios sistemos dėklo. Jei naudojate XFCE aplinką, laikykitės &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;šių nurodymų&lt;/a&gt;. Kitais atvejais įdiekite sistemos dėklo programą, pavyzdžiui, „trayer“, ir pabandykite dar kartą.</translation>
     </message>
 </context>
 <context>
@@ -7201,7 +7203,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="615"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Sukurta iš „Git“ versijos&lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; %3, %4 naudojant Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -7209,12 +7211,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="25"/>
         <source>Virtual file created</source>
-        <translation type="unfinished"/>
+        <translation>Sukurtas virtualus failas</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="27"/>
         <source>Replaced by virtual file</source>
-        <translation type="unfinished"/>
+        <translation>Pakeista virtualiu failu</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="29"/>
@@ -7234,7 +7236,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into case conflict conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Serverio versija atsisiųsta, pakeistas vietinis failas nukopijuotas į konfliktinio atvejo konflikto failą</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
@@ -7270,12 +7272,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="52"/>
         <source>Updated local virtual files metadata</source>
-        <translation type="unfinished"/>
+        <translation>Atnaujinti vietinių virtualių failų metaduomenys</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
         <source>Updated end-to-end encryption metadata</source>
-        <translation type="unfinished"/>
+        <translation>Atnaujinti ištisinio šifravimo metaduomenys</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="57"/>
@@ -7286,7 +7288,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="71"/>
         <source>Downloading</source>
-        <translation type="unfinished"/>
+        <translation>Atsisiunčiama</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="73"/>
@@ -7296,32 +7298,32 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="75"/>
         <source>Deleting</source>
-        <translation type="unfinished"/>
+        <translation>Ištrinama</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="78"/>
         <source>Moving</source>
-        <translation type="unfinished"/>
+        <translation>Perkeliama</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="80"/>
         <source>Ignoring</source>
-        <translation type="unfinished"/>
+        <translation>Ignoruojama</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="85"/>
         <source>Updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>Atnaujinami vietiniai metaduomenys</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="87"/>
         <source>Updating local virtual files metadata</source>
-        <translation type="unfinished"/>
+        <translation>Atnaujinami vietinių virtualių failų metaduomenys</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="89"/>
         <source>Updating end-to-end encryption metadata</source>
-        <translation type="unfinished"/>
+        <translation>Atnaujinami ištisinio šifravimo metaduomenys</translation>
     </message>
 </context>
 <context>
@@ -7329,12 +7331,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="93"/>
         <source>Sync status is unknown</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizavimo būsena nežinoma</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="96"/>
         <source>Waiting to start syncing</source>
-        <translation type="unfinished"/>
+        <translation>Laukiama pradėti sinchronizavimą.</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="99"/>
@@ -7344,27 +7346,27 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="102"/>
         <source>Sync was successful</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizavimas buvo sėkmingas.</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="105"/>
         <source>Sync was successful but some files were ignored</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizavimas sėkmingas, bet kai kurie failai buvo ignoruojami</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="108"/>
         <source>Error occurred during sync</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizavimo metu įvyko klaida</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="111"/>
         <source>Error occurred during setup</source>
-        <translation type="unfinished"/>
+        <translation>Sąrankos metu įvyko klaida</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="117"/>
         <source>Stopping sync</source>
-        <translation type="unfinished"/>
+        <translation>Sustabdomas sinchronizavimas</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="114"/>
@@ -7402,32 +7404,32 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="77"/>
         <source>Always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Visada pasiekiama vietoje</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="79"/>
         <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <translation>Šiuo metu pasiekiama vietoje</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="81"/>
         <source>Some available online only</source>
-        <translation type="unfinished"/>
+        <translation>Kai kurie pasiekiami tik internetu</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="84"/>
         <source>Available online only</source>
-        <translation type="unfinished"/>
+        <translation>Pasiekiami tik internetu</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="91"/>
         <source>Make always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Padaryti visada pasiekiamą vietoje</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="96"/>
         <source>Free up local space</source>
-        <translation type="unfinished"/>
+        <translation>Atlaisvinkite vietos atmintį</translation>
     </message>
 </context>
 <context>
@@ -7435,12 +7437,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="27"/>
         <source>Remove local copies</source>
-        <translation type="unfinished"/>
+        <translation>Pašalinti vietines kopijas</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="43"/>
         <source>Local copies</source>
-        <translation type="unfinished"/>
+        <translation>Vietinės kopijos</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="51"/>
@@ -7453,17 +7455,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="31"/>
         <source>Local storage use</source>
-        <translation type="unfinished"/>
+        <translation>Vietinės saugyklos naudojimas</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="40"/>
         <source>%1 GB of %2 GB remote files synced</source>
-        <translation type="unfinished"/>
+        <translation>%1 GB nuotolinių failų, sinchronizuotų iš %2 GB</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="50"/>
         <source>Free up space …</source>
-        <translation type="unfinished"/>
+        <translation>Atlaisvinti vietos ...</translation>
     </message>
 </context>
 <context>
@@ -7471,7 +7473,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizuojama</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
@@ -7481,13 +7483,14 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="62"/>
         <source>Request sync</source>
-        <translation type="unfinished"/>
+        <translation>Prašyti sinchronizuoti</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="69"/>
         <source>Request a sync of changes for the VFS environment.
 macOS may ignore or delay this request.</source>
-        <translation type="unfinished"/>
+        <translation>Paprašykite sinchronizuoti VFS aplinkos pakeitimus.
+„macOS“ gali ignoruoti šį prašymą arba jį atidėti.</translation>
     </message>
 </context>
 </TS>
