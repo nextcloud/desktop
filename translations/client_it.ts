@@ -620,7 +620,7 @@ L&apos;account deve essere importato?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="92"/>
         <source>End-to-end Encryption with Virtual Files</source>
-        <translation>Cifratura End-to-End con file virtuali</translation>
+        <translation>Cifratura end-to-end con file virtuali</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
@@ -1579,7 +1579,7 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="2275"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Digita la tua frase segreta di crittografia End-to-End:&lt;br&gt;&lt;br&gt; Utente: %2&lt;br&gt;Account: %3&lt;br&gt;</translation>
+        <translation>Digita la tua frase segreta per la crittografia end-to-end:&lt;br&gt;&lt;br&gt; Utente: %2&lt;br&gt;Account: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="2283"/>
@@ -6632,7 +6632,7 @@ Il server ha risposto con errore: %2</translation>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="48"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation><numerusform>%1 file in conflitto</numerusform><numerusform>%1 files in conflitto</numerusform><numerusform>%1 files in conflitto</numerusform></translation>
+        <translation><numerusform>%1 file in conflitto</numerusform><numerusform>%1 file in conflitto</numerusform><numerusform>%1 file in conflitto</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="55"/>
