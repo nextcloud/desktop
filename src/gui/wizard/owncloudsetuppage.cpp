@@ -44,7 +44,6 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     const auto theme = Theme::instance();
     if (theme->overrideServerUrl().isEmpty()) {
         _ui.comboBox->hide();
-        _ui.leUrl->setPostfix(theme->wizardUrlPostfix());
         _ui.leUrl->setPlaceholderText(theme->wizardUrlHint());
     } else if (theme->multipleOverrideServers() && theme->forceOverrideServerUrl()) {
         _ui.leUrl->hide();
@@ -156,11 +155,6 @@ void OwncloudSetupPage::setupCustomization()
 
     variant = theme->customMedia(Theme::oCSetupBottom);
     WizardCommon::setupCustomMedia(variant, _ui.bottomLabel);
-
-    auto leUrlPalette = _ui.leUrl->palette();
-    leUrlPalette.setColor(QPalette::Text, Qt::black);
-    leUrlPalette.setColor(QPalette::Base, Qt::white);
-    _ui.leUrl->setPalette(leUrlPalette);
 }
 
 // slot hit from textChanged of the url entry field.
@@ -195,27 +189,27 @@ void OwncloudSetupPage::slotUrlChanged(const QString &url)
     if (newUrl != url) {
         _ui.leUrl->setText(newUrl);
     }
-    setProxySettingsButtonEnabled(!_ui.leUrl->fullText().isEmpty());
+    setProxySettingsButtonEnabled(!_ui.leUrl->text().isEmpty());
 }
 
 void OwncloudSetupPage::slotUrlEditFinished()
 {
-    QString url = _ui.leUrl->fullText();
+    QString url = _ui.leUrl->text();
     if (QUrl(url).isRelative() && !url.isEmpty()) {
         // no scheme defined, set one
         url.prepend("https://");
-        _ui.leUrl->setFullText(url);
+        _ui.leUrl->setText(url);
     }
 }
 
 void OwncloudSetupPage::slotSetProxySettings()
 {
     if (!_proxySettingsDialog) {
-        _proxySettingsDialog = new WizardProxySettingsDialog{QUrl::fromUserInput(_ui.leUrl->fullText()), _proxySettings, this};
+        _proxySettingsDialog = new WizardProxySettingsDialog{QUrl::fromUserInput(_ui.leUrl->text()), _proxySettings, this};
 
         connect(_proxySettingsDialog, &WizardProxySettingsDialog::proxySettingsAccepted, this, [this] (const OCC::WizardProxySettingsDialog::WizardProxySettings &proxySettings) { _proxySettings = proxySettings;});
     } else {
-        _proxySettingsDialog->setServerUrl(QUrl::fromUserInput(_ui.leUrl->fullText()));
+        _proxySettingsDialog->setServerUrl(QUrl::fromUserInput(_ui.leUrl->text()));
         _proxySettingsDialog->setProxySettings(_proxySettings);
     }
 
@@ -306,7 +300,7 @@ QString OwncloudSetupPage::url() const
     if (theme->multipleOverrideServers() && theme->forceOverrideServerUrl()) {
         return _ui.comboBox->currentData().toString();
     } else {
-        return _ui.leUrl->fullText().simplified();
+        return _ui.leUrl->text().simplified();
     }
 }
 
@@ -365,7 +359,7 @@ void OwncloudSetupPage::setErrorString(const QString &err, bool retryHTTPonly)
             switch (retVal) {
             case OwncloudConnectionMethodDialog::No_TLS: {
                 url.setScheme("http");
-                _ui.leUrl->setFullText(url.toString());
+                _ui.leUrl->setText(url.toString());
                 // skip ahead to next page, since the user would expect us to retry automatically
                 wizard()->next();
             } break;
