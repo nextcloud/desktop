@@ -1149,7 +1149,7 @@ OCC::Result<void, QString> OCC::CfApiWrapper::createPlaceholdersInfo(const QStri
         qCWarning(lcCfApiWrapper) << "Couldn't create placeholders info" << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage()) << "number of placeholders created:" << numberOfCreatedPlaceholders;
 
         for(auto itemIndice = 0; itemIndice < filteredItemsInfo.size(); ++itemIndice) {
-            qCDebug(lcCfApiWrapper) << QString::fromStdWString(cloudEntry[itemIndice].RelativeFileName) << QString::fromWCharArray(_com_error(cloudEntry[itemIndice].Result).ErrorMessage());
+            qCWarning(lcCfApiWrapper) << QString::fromStdWString(cloudEntry[itemIndice].RelativeFileName) << QString::fromWCharArray(_com_error(cloudEntry[itemIndice].Result).ErrorMessage());
         }
 
         return { "Couldn't create placeholder info" };
