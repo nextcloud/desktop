@@ -231,7 +231,7 @@
                <number>0</number>
               </property>
               <item>
-               <widget class="OCC::PostfixLineEdit" name="leUrl">
+               <widget class="QLineEdit" name="leUrl">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -365,13 +365,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>OCC::PostfixLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>wizard/postfixlineedit.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>
