@@ -464,7 +464,7 @@ void SocketApi::slotUnregisterPath(const QString &alias)
 
     Folder *f = FolderMan::instance()->folder(alias);
     if (f)
-        broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"), removeTrailingSlash(f->path()), QString()), true);
+        broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"), removeTrailingSlash(f->path()), QString()));
 
     _registeredAliases.remove(alias);
 }
