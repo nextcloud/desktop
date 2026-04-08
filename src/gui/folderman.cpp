@@ -126,6 +126,8 @@ void FolderMan::unloadFolder(Folder *f)
         this, &FolderMan::slotForwardFolderSyncStateChange);
     disconnect(f, &Folder::syncPausedChanged,
         this, &FolderMan::slotFolderSyncPaused);
+    disconnect(f, &Folder::canSyncChanged,
+        this, &FolderMan::slotFolderCanSyncChanged);
     disconnect(&f->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged,
         _socketApi.data(), &SocketApi::broadcastStatusPushMessage);
     disconnect(f, &Folder::watchedFileChangedExternally,
