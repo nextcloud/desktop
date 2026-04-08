@@ -906,20 +906,6 @@ public:
 
 #endif
 
-void SocketApi::command_COPY_SECUREFILEDROP_LINK(const QString &localFile, SocketListener *)
-{
-    const auto fileData = FileData::get(localFile);
-    if (!fileData.folder) {
-        return;
-    }
-
-    const auto account = fileData.folder->accountState()->account();
-    const auto getOrCreatePublicLinkShareJob = new GetOrCreatePublicLinkShare(account, fileData.serverRelativePath, true, this);
-    connect(getOrCreatePublicLinkShareJob, &GetOrCreatePublicLinkShare::done, this, [](const QString &url) { copyUrlToClipboard(url); });
-    connect(getOrCreatePublicLinkShareJob, &GetOrCreatePublicLinkShare::error, this, [=, this]() { emit shareCommandReceived(fileData.localPath); });
-    getOrCreatePublicLinkShareJob->run();
-}
-
 // Windows Shell / Explorer pinning fallbacks, see issue: https://github.com/nextcloud/desktop/issues/1599
 #ifdef Q_OS_WIN
 void SocketApi::command_COPYASPATH(const QString &localFile, SocketListener *)

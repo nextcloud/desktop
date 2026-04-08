@@ -193,7 +193,6 @@ Q_LOGGING_CATEGORY(lcMacFinderSyncService, "nextcloud.gui.macfindersyncservice",
     static const QSet<QString> allowedCommands = {
         QStringLiteral("SHARE"),
         QStringLiteral("LEAVESHARE"),
-        QStringLiteral("COPY_SECUREFILEDROP_LINK"),
         QStringLiteral("COPY_PRIVATE_LINK"),
         QStringLiteral("EMAIL_PRIVATE_LINK"),
         QStringLiteral("OPEN_PRIVATE_LINK"),
@@ -448,5 +447,4 @@ QList<QMap<QString, QString>> FinderSyncService::getMenuItems(const QStringList 
 } // namespace Mac
 
 } // namespace OCC
-
 
