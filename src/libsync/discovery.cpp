@@ -259,6 +259,11 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
 
     auto excluded = _discoveryData->_excludes->traversalPatternMatch(path, isDirectory ? ItemTypeDirectory : ItemTypeFile);
 
+    if (OCC::FileSystem::isFileLocked(_discoveryData->_localDir + path, OCC::FileSystem::LockMode::SharedRead)) {
+        qCInfo(lcDisco) << _discoveryData->_localDir + path << "is locked" << "exluding it from sync";
+        excluded = CSYNC_FILE_SILENTLY_EXCLUDED;
+    }
+
     const auto fileName = path.mid(path.lastIndexOf('/') + 1);
 
     const auto isLocal = entries.localEntry.isValid();
