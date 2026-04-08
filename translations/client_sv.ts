@@ -3918,23 +3918,23 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
 <context>
     <name>OCC::OwncloudSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="94"/>
         <source>The link to your %1 web interface when you open it in the browser.</source>
         <comment>%1 will be replaced with the application name</comment>
         <translation>Länken till din %1 webbsida när du öppnar den i webbläsaren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="260"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="254"/>
         <source>&amp;Next &gt;</source>
         <translation>&amp;Nästa &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="320"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="314"/>
         <source>Server address does not seem to be valid</source>
         <translation>Serverns adress verkar var ogiltig</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="432"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="426"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Kunde inte läsa in certifikatet. Felaktigt lösenord?</translation>
     </message>

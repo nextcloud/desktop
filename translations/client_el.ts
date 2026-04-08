@@ -3905,23 +3905,23 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::OwncloudSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="94"/>
         <source>The link to your %1 web interface when you open it in the browser.</source>
         <comment>%1 will be replaced with the application name</comment>
         <translation>Ο σύνδεσμος προς τη διεπαφή ιστού του %1 όταν την ανοίγετε στο πρόγραμμα περιήγησης.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="260"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="254"/>
         <source>&amp;Next &gt;</source>
         <translation>&amp;Επόμενο &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="320"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="314"/>
         <source>Server address does not seem to be valid</source>
         <translation>Η διεύθυνση του διακομιστή δεν φαίνεται να είναι έγκυρη</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="432"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="426"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Δεν ήταν δυνατή η φόρτωση του πιστοποιητικού. Ίσος είναι λάθος ο κωδικός;</translation>
     </message>

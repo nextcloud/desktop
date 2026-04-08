@@ -3916,23 +3916,23 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::OwncloudSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="94"/>
         <source>The link to your %1 web interface when you open it in the browser.</source>
         <comment>%1 will be replaced with the application name</comment>
         <translation>브라우저에서 내 %1 웹 인터페이스를 열 때 사용되는 링크</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="260"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="254"/>
         <source>&amp;Next &gt;</source>
         <translation>다음&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="320"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="314"/>
         <source>Server address does not seem to be valid</source>
         <translation>서버 주소가 유효하지 않은 것 같습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="432"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="426"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>인증서를 가져오지 못했습니다. 암호가 잘못되었을 수 있습니다.</translation>
     </message>

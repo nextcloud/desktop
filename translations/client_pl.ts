@@ -3918,23 +3918,23 @@ Zauważ, że użycie jakichkolwiek opcji wiersza poleceń logowania spowoduje za
 <context>
     <name>OCC::OwncloudSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="94"/>
         <source>The link to your %1 web interface when you open it in the browser.</source>
         <comment>%1 will be replaced with the application name</comment>
         <translation>Link do interfejsu internetowego %1, aby otworzyć w przeglądarce.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="260"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="254"/>
         <source>&amp;Next &gt;</source>
         <translation>&amp;Dalej &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="320"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="314"/>
         <source>Server address does not seem to be valid</source>
         <translation>Adres serwera wygląda na nieprawidłowy</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="432"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="426"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Nie udało się załadować certyfikatu. Być może hasło jest nieprawidłowe?</translation>
     </message>

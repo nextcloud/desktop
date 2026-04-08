@@ -3917,23 +3917,23 @@ Palun arvesta, et käsurealt lisatud logimistingimused on alati primaarsed nende
 <context>
     <name>OCC::OwncloudSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="94"/>
         <source>The link to your %1 web interface when you open it in the browser.</source>
         <comment>%1 will be replaced with the application name</comment>
         <translation>See on sinu %1i kasutajaliidese veebiaadress, kui sa avad ta veebibrauseris.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="260"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="254"/>
         <source>&amp;Next &gt;</source>
         <translation>&amp;Edasi &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="320"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="314"/>
         <source>Server address does not seem to be valid</source>
         <translation>Serveri aadress ei tundu olema korrektne</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="432"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="426"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Ei õnnestu laadida sertifikaati. Kas salasõna oli vale?</translation>
     </message>
