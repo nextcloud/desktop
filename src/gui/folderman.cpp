@@ -661,12 +661,12 @@ void FolderMan::slotFolderSyncPaused(Folder *f, bool paused)
 
 void FolderMan::slotFolderCanSyncChanged()
 {
-    auto *f = qobject_cast<Folder *>(sender());
-     ASSERT(f);
-    if (f->canSync()) {
-        _socketApi->slotRegisterPath(f->alias());
+    auto folder = qobject_cast<Folder *>(sender());
+    ASSERT(folder);
+    if (folder->canSync()) {
+        _socketApi->slotRegisterPath(folder->alias());
     } else {
-        _socketApi->slotUnregisterPath(f->alias());
+        _socketApi->slotUnregisterPath(folder->alias());
     }
 }
 
