@@ -263,6 +263,21 @@ Application::Application(int &argc, char **argv)
     setApplicationName(_theme->appName());
     setWindowIcon(_theme->applicationIcon());
 
+    parseOptions(arguments());
+    //no need to waste time;
+    if (_helpOnly || _versionOnly) {
+        return;
+    }
+
+    if (_quitInstance) {
+        QTimer::singleShot(0, qApp, &QApplication::quit);
+        return;
+    }
+
+    if (!_singleApp.isPrimaryInstance()) {
+        return;
+    }
+
     if (!ConfigFile().exists()) {
         setApplicationName(_theme->appNameGUI());
         QString legacyDir = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + "/" + APPLICATION_CONFIG_NAME;
@@ -279,18 +294,18 @@ Application::Application(int &argc, char **argv)
                 confDir.chop(1);
             }
 
-            qCInfo(lcApplication) << "Migrating old config from" << legacyDir << "to" << confDir;
+            qCDebug(lcApplication) << "Migrating old config from" << legacyDir << "to" << confDir;
 
             if (!QFile::rename(legacyDir, confDir)) {
-                qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << legacyDir << "to" << confDir << ")";
+                qCDebug(lcApplication) << "Failed to move the old config directory to its new location (" << legacyDir << "to" << confDir << ")";
 
                 // Try to move the files one by one
                 if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
                     const QStringList filesList = QDir(legacyDir).entryList(QDir::Files);
-                    qCInfo(lcApplication) << "Will move the individual files" << filesList;
+                    qCDebug(lcApplication) << "Will move the individual files" << filesList;
                     for (const auto &name : filesList) {
                         if (!QFile::rename(legacyDir + "/" + name,  confDir + "/" + name)) {
-                            qCWarning(lcApplication) << "Fallback move of " << name << "also failed";
+                            qCDebug(lcApplication) << "Fallback move of " << name << "also failed";
                         }
                     }
                 }
@@ -313,21 +328,6 @@ Application::Application(int &argc, char **argv)
                 accountState->account()->setProxyType(QNetworkProxy::NoProxy);
             }
         }
-    }
-
-    parseOptions(arguments());
-    //no need to waste time;
-    if (_helpOnly || _versionOnly) {
-        return;
-    }
-
-    if (_quitInstance) {
-        QTimer::singleShot(0, qApp, &QApplication::quit);
-        return;
-    }
-
-    if (!_singleApp.isPrimaryInstance()) {
-        return;
     }
 
     setupLogging();
@@ -635,17 +635,17 @@ void Application::setupConfigFile()
         confDir.chop(1);
     }
 
-    qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
+    qCDebug(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
     if (!QFile::rename(oldDir, confDir)) {
-        qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << oldDir << "to" << confDir << ")";
+        qCDebug(lcApplication) << "Failed to move the old config directory to its new location (" << oldDir << "to" << confDir << ")";
 
         // Try to move the files one by one
         if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
             const QStringList filesList = QDir(oldDir).entryList(QDir::Files);
-            qCInfo(lcApplication) << "Will move the individual files" << filesList;
+            qCDebug(lcApplication) << "Will move the individual files" << filesList;
             for (const auto &name : filesList) {
                 if (!QFile::rename(oldDir + "/" + name,  confDir + "/" + name)) {
-                    qCWarning(lcApplication) << "Fallback move of " << name << "also failed";
+                    qCDebug(lcApplication) << "Fallback move of " << name << "also failed";
                 }
             }
         }
