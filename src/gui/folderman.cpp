@@ -131,6 +131,8 @@ void FolderMan::unloadFolder(Folder *f)
         this, &FolderMan::slotForwardFolderSyncStateChange);
     disconnect(f, &Folder::syncPausedChanged,
         this, &FolderMan::slotFolderSyncPaused);
+    disconnect(f, &Folder::canSyncChanged,
+        this, &FolderMan::slotFolderCanSyncChanged);
     disconnect(&f->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged,
         _socketApi.data(), &SocketApi::broadcastStatusPushMessage);
     disconnect(f, &Folder::watchedFileChangedExternally,
@@ -748,12 +750,12 @@ void FolderMan::slotFolderSyncPaused(Folder *f, bool paused)
 
 void FolderMan::slotFolderCanSyncChanged()
 {
-    auto *f = qobject_cast<Folder *>(sender());
-     ASSERT(f);
-    if (f->canSync()) {
-        _socketApi->slotRegisterPath(f->alias());
+    auto folder = qobject_cast<Folder *>(sender());
+    ASSERT(folder);
+    if (folder->canSync()) {
+        _socketApi->slotRegisterPath(folder->alias());
     } else {
-        _socketApi->slotUnregisterPath(f->alias());
+        _socketApi->slotUnregisterPath(folder->alias());
     }
 }
 
