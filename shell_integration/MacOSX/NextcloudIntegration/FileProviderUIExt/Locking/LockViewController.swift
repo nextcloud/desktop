@@ -184,7 +184,7 @@ class LockViewController: NSViewController {
                 user: account.username,
                 userId: account.id,
                 password: account.password,
-                userAgent: "Nextcloud-macOS/FileProviderUIExt",
+                userAgent: "IONOS HiDrive Next/FileProviderUIExt",
                 groupIdentifier: ""
             )
 

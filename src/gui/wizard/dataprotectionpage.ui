@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>OCC::DataProtectionPage</class>
+    <widget class="QWidget" name="OCC::DataProtectionPage">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>626</width>
+                <height>450</height>
+            </rect>
+        </property>
+        <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+            </sizepolicy>
+        </property>
+        <property name="windowTitle">
+            <string>Form</string>
+        </property>
+        <layout class="QVBoxLayout" name="mainVBox">
+            <item>
+                <widget class="QLabel" name="logoLabel"/>
+            </item>
+            <item>
+                <widget class="QLabel" name="descriptionLabel">
+                    <property name="wordWrap">
+                        <bool>true</bool>
+                    </property> 
+                </widget>
+            </item>
+            <item>
+                <layout class="QHBoxLayout" name="buttonLayout">
+                    <item>
+                        <widget class="QPushButton" name="settingsButton">
+                            <property name="text">
+                                <string>Settings</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QPushButton" name="agreeButton">
+                            <property name="text">
+                                <string>Agree</string>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+        </layout>
+    </widget>
+    <customwidgets>
+        <customwidget>
+            <class>OCC::SlideShow</class>
+            <extends>QWidget</extends>
+            <header>wizard/slideshow.h</header>
+        </customwidget>
+        <customwidget>
+            <class>OCC::LinkLabel</class>
+            <extends>QWidget</extends>
+            <header>wizard/linklabel.h</header>
+            <container>1</container>
+        </customwidget>
+    </customwidgets>
+    <resources/>
+    <connections/>
+</ui>

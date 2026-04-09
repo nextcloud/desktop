@@ -15,7 +15,7 @@
 
 namespace OCC
 {
-Q_LOGGING_CATEGORY(lcCseMetadata, "nextcloud.sync.clientsideencryption.metadata", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCseMetadata, "nextcloud.metadata", QtInfoMsg)
 
 namespace
 {

@@ -6,12 +6,14 @@
 
 #include "selectivesyncdialog.h"
 #include "account.h"
+#include "buttonstyle.h"
 #include "common/utility.h"
 #include "configfile.h"
 #include "folder.h"
 #include "folderman.h"
 #include "networkjobs.h"
 #include "theme.h"
+#include "whitelabeltheme.h"
 #include <QDialogButtonBox>
 #include <QFileIconProvider>
 #include <QHeaderView>
@@ -65,11 +67,19 @@ SelectiveSyncWidget::SelectiveSyncWidget(AccountPtr account, QWidget *parent)
     _loading = new QLabel(tr("Loading …"), _folderTree);
 
     auto layout = new QVBoxLayout(this);
-    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setContentsMargins(1, 2, 1, 1);
 
     auto header = new QLabel(this);
     header->setText(tr("Deselect remote folders you do not wish to synchronize."));
     header->setWordWrap(true);
+    header->setStyleSheet(
+        WLTheme.fontConfigurationCss(
+            WLTheme.settingsFont(),
+            WLTheme.settingsTextSize(),
+            WLTheme.settingsTextWeight(),
+            WLTheme.titleColor())
+        + QStringLiteral("background-color: %1;").arg(WLTheme.dialogBackgroundColor())
+    );
     layout->addWidget(header);
 
     layout->addWidget(_folderTree);
@@ -86,6 +96,42 @@ SelectiveSyncWidget::SelectiveSyncWidget(AccountPtr account, QWidget *parent)
     _folderTree->header()->setStretchLastSection(true);
     _folderTree->headerItem()->setText(0, tr("Name"));
     _folderTree->headerItem()->setText(1, tr("Size"));
+
+
+#ifdef Q_OS_MAC
+    _folderTree->header()->setStyleSheet(
+    "QHeaderView::section {"
+    "    background-color: white;" // Set the background color
+    "    border: 1px solid #e6e6e6;"   // Optional: add a border
+    "    padding-left: 4px;" 
+    +    QString(WLTheme.fontConfigurationCss(
+            WLTheme.settingsFont(),
+            WLTheme.settingsTextSize(),
+            WLTheme.settingsTextWeight(),
+            WLTheme.titleColor())) 
+    +
+    "}"
+    );
+#else
+    _folderTree->header()->setStyleSheet(
+        WLTheme.fontConfigurationCss(
+            WLTheme.settingsFont(),
+            WLTheme.settingsTextSize(),
+            WLTheme.settingsTextWeight(),
+            WLTheme.titleColor()
+    ));
+#endif
+
+    _folderTree->setStyleSheet(WLTheme.fontConfigurationCss(
+        WLTheme.settingsFont(),
+        WLTheme.settingsTextSize(),
+        WLTheme.settingsTextWeight(),
+        WLTheme.titleColor()
+    ));
+
+#ifdef Q_OS_MAC
+    _folderTree->setPalette(QPalette(WLTheme.white()));
+#endif
 
     ConfigFile::setupDefaultExcludeFilePaths(_excludedFiles);
     _excludedFiles.reloadExcludeFiles();
@@ -470,6 +516,7 @@ SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, Folder *folder, QWi
     , _folder(folder)
 {
     bool ok = false;
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     init(account);
     QStringList selectiveSyncList = _folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
     if (ok) {
@@ -487,6 +534,7 @@ SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, const QString &fold
     , _folder(nullptr)
 {
     init(account);
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     _selectiveSync->setFolderInfo(folder, folder, blacklist);
 }
 
@@ -497,12 +545,60 @@ void SelectiveSyncDialog::init(const AccountPtr &account)
     _selectiveSync = new SelectiveSyncWidget(account, this);
     layout->addWidget(_selectiveSync);
     auto *buttonBox = new QDialogButtonBox(Qt::Horizontal);
+    
     _okButton = buttonBox->addButton(QDialogButtonBox::Ok);
+    _okButton->setProperty("buttonStyle", QVariant::fromValue(ButtonStyleName::Primary));
     connect(_okButton, &QPushButton::clicked, this, &SelectiveSyncDialog::accept);
+
     QPushButton *button = nullptr;
     button = buttonBox->addButton(QDialogButtonBox::Cancel);
+    button->setStyleSheet(
+        button->styleSheet() + QStringLiteral("QPushButton { %1; } ").arg(
+            WLTheme.fontConfigurationCss(
+                WLTheme.settingsFont(),
+                WLTheme.settingsTextSize(),
+                WLTheme.settingsTextWeight(),
+                WLTheme.black()
+            )
+        )
+    );
     connect(button, &QAbstractButton::clicked, this, &QDialog::reject);
+
     layout->addWidget(buttonBox);
+    customizeStyle();
+}
+
+void SelectiveSyncDialog::customizeStyle()
+{
+    this->setStyleSheet(
+        QStringLiteral("QWidget QTreeView{ background-color: %1; }").arg(WLTheme.dialogBackgroundColor())
+    );
+
+    _okButton->setStyleSheet(
+        _okButton->styleSheet() + QStringLiteral("QPushButton { %1; } ").arg(
+            WLTheme.fontConfigurationCss(
+                WLTheme.settingsFont(),
+                WLTheme.settingsTextSize(),
+                WLTheme.settingsTitleWeight500(),
+                WLTheme.white()
+            )
+        )
+    );
+
+    // Set background colors
+    auto dialogPalette = palette();
+    const auto backgroundColor = QColor(WLTheme.dialogBackgroundColor());
+
+    // Set Color of upper part
+    dialogPalette.setColor(QPalette::Base, backgroundColor);
+
+    // Set Color of lower part
+    dialogPalette.setColor(QPalette::Window, backgroundColor);
+
+    // Set separator color
+    dialogPalette.setColor(QPalette::Mid, backgroundColor);
+
+    setPalette(dialogPalette);
 }
 
 void SelectiveSyncDialog::accept()

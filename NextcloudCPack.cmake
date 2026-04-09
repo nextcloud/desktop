@@ -5,7 +5,7 @@ include( InstallRequiredSystemLibraries )
 
 set( CPACK_PACKAGE_CONTACT  "Dominik Schmidt <domme@tomahawk-player.org>" )
 
-include("${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake")
+include("${CMAKE_SOURCE_DIR}/IONOS.cmake")
 
 include( VERSION.cmake )
 set( CPACK_PACKAGE_VERSION_MAJOR  ${MIRALL_VERSION_MAJOR} )

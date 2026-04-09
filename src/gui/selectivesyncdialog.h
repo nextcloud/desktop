@@ -102,7 +102,7 @@ public:
 
 private:
     void init(const AccountPtr &account);
-
+    void customizeStyle();
     SelectiveSyncWidget *_selectiveSync = nullptr;
 
     Folder *_folder;

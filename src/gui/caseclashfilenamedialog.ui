@@ -120,6 +120,9 @@
              <property name="text">
               <string>Open existing file</string>
              </property>
+                <property name="openExternalLinks">
+                 <bool>true</bool>
+                </property>
             </widget>
            </item>
            <item>
@@ -226,6 +229,9 @@
              <property name="text">
               <string>Open clashing file</string>
              </property>
+                <property name="openExternalLinks">
+                 <bool>true</bool>
+                </property>
             </widget>
            </item>
            <item>

@@ -7,6 +7,7 @@
 #include "accountmanager.h"
 #include "systray.h"
 #include "theme.h"
+#include "whitelabeltheme.h"
 #include "config.h"
 #include "common/utility.h"
 #include "tray/svgimageprovider.h"
@@ -200,6 +201,12 @@ void Systray::setupContextMenu()
         resumeAction->setVisible(anyPaused);
         resumeAction->setEnabled(anyPaused);
     });
+
+    _contextMenu->setStyleSheet(WLTheme.fontConfigurationCss(
+        WLTheme.settingsFont(),
+        WLTheme.settingsTextSize(),
+        WLTheme.settingsTextWeight(),
+        WLTheme.menuTextColor()));
 }
 
 void Systray::destroyDialog(QQuickWindow *dialog) const

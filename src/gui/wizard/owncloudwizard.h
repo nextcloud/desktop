@@ -27,6 +27,8 @@ class OwncloudSetupPage;
 class OwncloudHttpCredsPage;
 class TermsOfServiceWizardPage;
 class OwncloudAdvancedSetupPage;
+class DataProtectionPage;
+class DataProtectionSettingsPage;
 class OwncloudWizardResultPage;
 class AbstractCredentials;
 class AbstractCredentialsWizardPage;
@@ -126,6 +128,8 @@ private:
     Flow2AuthCredsPage *_flow2CredsPage = nullptr;
     TermsOfServiceWizardPage *_termsOfServicePage = nullptr;
     OwncloudAdvancedSetupPage *_advancedSetupPage = nullptr;
+    DataProtectionPage *_dataProtectionPage = nullptr;
+    DataProtectionSettingsPage *_dataProtectionSettingsPage = nullptr;
     OwncloudWizardResultPage *_resultPage = nullptr;
     AbstractCredentialsWizardPage *_credentialsPage = nullptr;
     WebViewPage*_webViewPage = nullptr;

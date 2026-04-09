@@ -9,34 +9,30 @@ import QtQuick.Layouts
 
 import Style
 
-import com.nextcloud.desktopclient as NC
+import com.ionos.hidrivenext.desktopclient as NC
 
 RowLayout {
     id: root
 
     property alias model: syncStatus
-    property color accentColor: Style.ncBlue
 
     spacing: Style.trayHorizontalMargin
 
-    NC.SyncStatusSummary {
-        id: syncStatus
+    Rectangle{
+        color: Style.sesBackgroundColor
+
+        NC.SyncStatusSummary {
+            id: syncStatus
+        }
     }
 
     NCBusyIndicator {
         id: syncIcon
-        property int size: Style.trayListItemIconSize * 0.6
-        property int whiteSpace: (Style.trayListItemIconSize - size)
-
-        Layout.preferredWidth: size
-        Layout.preferredHeight: size
-
         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-        Layout.topMargin: Style.trayHorizontalMargin
-        Layout.rightMargin: whiteSpace * (0.5 + Style.thumbnailImageSizeReduction)
-        Layout.bottomMargin: Style.trayHorizontalMargin
-        Layout.leftMargin: Style.trayHorizontalMargin + (whiteSpace * (0.5 - Style.thumbnailImageSizeReduction))
-
+        Layout.topMargin: 16
+        Layout.rightMargin: 0
+        Layout.bottomMargin: 16
+        Layout.leftMargin: Style.sesActivityItemDistanceToFrame
         padding: 0
 
         imageSource: syncStatus.syncIcon
@@ -46,10 +42,11 @@ RowLayout {
     ColumnLayout {
         id: syncProgressLayout
 
-        Layout.alignment: Qt.AlignVCenter
+        Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
         Layout.topMargin: 8
-        Layout.rightMargin: Style.trayHorizontalMargin
+        Layout.rightMargin: Style.sesActivityItemDistanceToFrame
         Layout.bottomMargin: 8
+        Layout.leftMargin: 0
         Layout.fillWidth: true
         Layout.fillHeight: true
 
@@ -60,8 +57,7 @@ RowLayout {
 
             text: syncStatus.syncStatusString
             verticalAlignment: Text.AlignVCenter
-            font.pixelSize: Style.topLinePixelSize
-            font.bold: true
+            font: root.font
             wrapMode: Text.Wrap
         }
 
@@ -75,7 +71,6 @@ RowLayout {
             sourceComponent: NCProgressBar {
                 id: syncProgressBar
                 value: syncStatus.syncProgress
-                fillColor: root.accentColor
             }
         }
 
@@ -86,24 +81,19 @@ RowLayout {
 
             text: syncStatus.syncStatusDetailString
             visible: syncStatus.syncStatusDetailString !== ""
-            font.pixelSize: Style.subLinePixelSize
+            font: root.font
             wrapMode: Text.Wrap
         }
     }
 
-    Button {
+    PrimaryPillButton {
         id: syncNowButton
 
         Layout.rightMargin: Style.trayHorizontalMargin
 
         text: qsTr("Sync now")
 
-        padding: Style.smallSpacing
-
-        visible: !activityModel.hasSyncConflicts &&
-                 !syncStatus.syncing &&
-                 NC.UserModel.currentUser.hasLocalFolder &&
-                 NC.UserModel.currentUser.isConnected
+        visible: false // SES-4 removed
         enabled: visible
         onClicked: {
             if(!syncStatus.syncing) {
@@ -112,11 +102,14 @@ RowLayout {
         }
     }
 
-    Button {
+    PrimaryPillButton {
         Layout.rightMargin: Style.trayHorizontalMargin
 
-        text: qsTr("Resolve conflicts")
+        font.pixelSize: pixelSize
+        font.weight: fontWeight
 
+        text: qsTr("Resolve conflicts")
+        
         visible: activityModel.hasSyncConflicts &&
                  !syncStatus.syncing &&
                  NC.UserModel.currentUser.hasLocalFolder &&

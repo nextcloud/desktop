@@ -8,7 +8,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Style
-import com.nextcloud.desktopclient
+import com.ionos.hidrivenext.desktopclient
 
 Repeater {
     id: root
@@ -18,7 +18,7 @@ Repeater {
     property variant linksContextMenu: []
     property bool displayActions: false
 
-    property color moreActionsButtonColor: palette.base
+    property color moreActionsButtonColor: "transparent"
 
     property int maxActionButtons: 0
 
@@ -31,7 +31,7 @@ Repeater {
 
     model: root.linksForActionButtons
 
-    Button {
+    PrimaryPillButton {
         id: activityActionButton
 
         property string verb: model.modelData.verb
@@ -39,7 +39,7 @@ Repeater {
 
         Layout.alignment: Qt.AlignTop | Qt.AlignRight
 
-        hoverEnabled: true
+        hoverEnabled: false
         padding: Style.smallSpacing
         display: Button.TextOnly
 

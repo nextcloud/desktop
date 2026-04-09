@@ -8,8 +8,10 @@
 
 #include "folderman.h"
 
+#include "buttonstyle.h"
 #include <QFile>
 #include <QInputDialog>
+#include <QDialogButtonBox>
 #include <QLineEdit>
 #include <QMessageBox>
 
@@ -31,18 +33,29 @@ IgnoreListTableWidget::IgnoreListTableWidget(QWidget *parent)
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     ui->setupUi(this);
 
+    customizeIgnoreListDialogStyle();
+
     ui->descriptionLabel->setText(tr("Files or folders matching a pattern will not be synchronized.\n\n"
-                                     "Items where deletion is allowed will be deleted if they prevent a "
-                                     "directory from being removed. "
-                                     "This is useful for meta data."));
+                                    "Items where deletion is allowed will be deleted if they prevent a "
+                                    "directory from being removed. "
+                                    "This is useful for meta data."));
 
     ui->removePushButton->setEnabled(false);
-    connect(ui->tableWidget, &QTableWidget::itemSelectionChanged,
+    connect(ui->tableWidget,         &QTableWidget::itemSelectionChanged,
             this, &IgnoreListTableWidget::slotItemSelectionChanged);
-    connect(ui->removePushButton, &QAbstractButton::clicked,
+
+    ui->removePushButton->setProperty("buttonStyle", QVariant::fromValue(OCC::ButtonStyleName::Secondary));
+    ui->removePushButton->setMinimumSize(QSize(114, 40));
+    connect(ui->removePushButton,    &QAbstractButton::clicked,
             this, &IgnoreListTableWidget::slotRemoveCurrentItem);
-    connect(ui->addPushButton, &QAbstractButton::clicked,
+
+    ui->addPushButton->setProperty("buttonStyle", QVariant::fromValue(OCC::ButtonStyleName::Primary));
+    ui->addPushButton->setMinimumSize(QSize(114, 40));
+    connect(ui->addPushButton,       &QAbstractButton::clicked,
             this, &IgnoreListTableWidget::slotAddPattern);
+
+    ui->removeAllPushButton->setProperty("buttonStyle", QVariant::fromValue(OCC::ButtonStyleName::Primary));
+    ui->removeAllPushButton->setMinimumSize(QSize(114, 40));
     connect(ui->removeAllPushButton, &QAbstractButton::clicked,
             this, &IgnoreListTableWidget::slotRemoveAllItems);
 
@@ -126,13 +139,13 @@ void IgnoreListTableWidget::slotWriteIgnoreFile(const QString &file)
 
 void IgnoreListTableWidget::slotAddPattern()
 {
-    auto okClicked = false;
-    const auto pattern = QInputDialog::getText(this,
-                                               tr("Add Ignore Pattern"),
-                                               tr("Add a new ignore pattern:"),
-                                               QLineEdit::Normal,
-                                               {},
-                                               &okClicked);
+    QInputDialog inputDialog(this);
+
+    customizeAddIgnorePatternDialogStyle(inputDialog);
+
+    bool okClicked = inputDialog.exec() == QDialog::Accepted;
+
+    QString pattern = inputDialog.textValue();
 
     if (!okClicked || pattern.isEmpty())
         return;
@@ -188,6 +201,110 @@ int IgnoreListTableWidget::addPattern(const QString &pattern, const bool deletab
     ui->removeAllPushButton->setEnabled(true);
 
     return newRow;
+}
+
+void IgnoreListTableWidget::customizeIgnoreListDialogStyle(){
+
+    ui->tableWidget->setStyleSheet(
+        QStringLiteral("QTableWidget { background-color: %1; color: %2; } ").arg(
+            WLTheme.white(), 
+            WLTheme.black()
+        ) + 
+        WLTheme.fontConfigurationCss(
+            WLTheme.settingsFont(),
+            WLTheme.settingsTextSize(),
+            WLTheme.settingsTextWeight(),
+            WLTheme.titleColor()
+        )
+    );
+    
+    ui->descriptionLabel->setStyleSheet(
+        WLTheme.fontConfigurationCss(
+            WLTheme.settingsFont(),
+            WLTheme.settingsTextSize(),
+            WLTheme.settingsTextWeight(),
+            WLTheme.titleColor()
+        )
+    );
+
+    ui->tableWidget->horizontalHeader()->setStyleSheet(
+            QStringLiteral("QHeaderView::section { background-color: %1; color: %2; border-bottom: none; %3; }").arg(
+            WLTheme.white(), 
+            WLTheme.black(),
+            WLTheme.fontConfigurationCss(
+                WLTheme.settingsFont(),
+                WLTheme.settingsTextSize(),
+                WLTheme.settingsTextWeight(),
+                WLTheme.titleColor()
+            )
+        )
+    );
+
+    ui->tableWidget->setMinimumSize(374, 424);
+
+#if defined(Q_OS_MAC)
+    ui->verticalButtonLayout->setSpacing(30);
+    this->setFixedWidth(584);
+#endif
+
+}
+
+void IgnoreListTableWidget::customizeAddIgnorePatternDialogStyle(QInputDialog &inputDialog){
+    inputDialog.setWindowTitle(tr("Ignore Pattern"));
+    inputDialog.setLabelText(tr("Add a new ignore pattern:"));
+    inputDialog.setTextValue(QString());
+    inputDialog.resize(626, 196);
+    inputDialog.setVisible(true);
+    inputDialog.setContentsMargins(12,0,12,12);
+    
+    inputDialog.setStyleSheet( QStringLiteral("QDialog { %1; background: %2; }").arg(
+            WLTheme.fontConfigurationCss(
+                WLTheme.settingsFont(),
+                WLTheme.settingsTextSize(),
+                WLTheme.settingsTextWeight(),
+                WLTheme.titleColor()
+            ),
+            WLTheme.dialogBackgroundColor()
+        )
+    );
+
+    QLabel *label = inputDialog.findChild<QLabel*>();
+    label->setAlignment(Qt::AlignCenter);
+    label->setStyleSheet(
+         WLTheme.fontConfigurationCss(
+            WLTheme.settingsFont(),
+            WLTheme.settingsTextSize(),
+            WLTheme.settingsTextWeight(),
+            WLTheme.titleColor()
+        )
+    );
+
+    QLineEdit *lineEdit = inputDialog.findChild<QLineEdit*>();
+    lineEdit->setStyleSheet(
+        QStringLiteral(
+            "color: %1; font-family: %2; font-size: %3; font-weight: %4; border-radius: %5; border: 1px "
+            "solid %6; padding: 0px 12px; text-align: left; vertical-align: middle; height: 40px; background: %7; ")
+            .arg(WLTheme.folderWizardPathColor(),
+                 WLTheme.settingsFont(),
+                 WLTheme.settingsTextSize(),
+                 WLTheme.settingsTextWeight(),
+                 WLTheme.buttonRadius(),
+                 WLTheme.menuBorderColor(),
+                 WLTheme.white()
+            )
+    );
+
+    QDialogButtonBox *buttonBox = inputDialog.findChild<QDialogButtonBox*>();
+    buttonBox->setLayoutDirection(Qt::RightToLeft);
+    buttonBox->layout()->setSpacing(16);
+    buttonBox->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
+
+    QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
+    okButton->setProperty("buttonStyle", QVariant::fromValue(ButtonStyleName::Primary)); 
+
+#if defined(Q_OS_MAC)
+    buttonBox->layout()->setSpacing(32);
+#endif
 }
 
 } // namespace OCC

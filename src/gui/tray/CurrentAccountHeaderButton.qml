@@ -11,8 +11,8 @@ import "../"
 import "../filedetails/"
 
 import Style
-import com.nextcloud.desktopclient
-import com.nextcloud.desktopclient as NC
+import com.ionos.hidrivenext.desktopclient
+// TODO SES-459 
 
 Button {
     id: root

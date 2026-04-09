@@ -8,6 +8,7 @@
 
 #include "conflictsolver.h"
 #include "common/utility.h"
+#include "buttonstyle.h"
 
 #include <QDateTime>
 #include <QDebug>
@@ -42,8 +43,10 @@ ConflictDialog::ConflictDialog(QWidget *parent)
 {
     _ui->setupUi(this);
     forceHeaderFont(_ui->conflictMessage);
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Keep selected version"));
+    _ui->buttonBox->button(QDialogButtonBox::Ok)->setProperty("buttonStyle", QVariant::fromValue(ButtonStyleName::Primary));
 
     _ui->conflictMessage->setTextFormat(Qt::PlainText);
 
@@ -59,6 +62,8 @@ ConflictDialog::ConflictDialog(QWidget *parent)
 
     connect(_solver, &ConflictSolver::localVersionFilenameChanged, this, &ConflictDialog::updateWidgets);
     connect(_solver, &ConflictSolver::remoteVersionFilenameChanged, this, &ConflictDialog::updateWidgets);
+
+    customizeStyle();
 }
 
 QString ConflictDialog::baseFilename() const
@@ -170,6 +175,37 @@ void ConflictDialog::updateButtonStates()
                     : isRemotePicked ? tr("Keep server version")
                     : tr("Keep selected version");
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setText(text);
+    _ui->buttonBox->button(QDialogButtonBox::Ok)->setProperty("buttonStyle", QVariant::fromValue(ButtonStyleName::Primary));
+
+}
+
+void ConflictDialog::customizeStyle()
+{
+    this->setStyleSheet(
+        QStringLiteral("QDialog {background-color: %1; color: %2;} QLabel{ %3;}").arg(
+            WLTheme.dialogBackgroundColor(), 
+            WLTheme.black(),
+            WLTheme.fontConfigurationCss(
+                WLTheme.settingsFont(),
+                WLTheme.settingsTextSize(),
+                WLTheme.settingsTextWeight(),
+                WLTheme.titleColor()
+            )
+        )
+    );
+ 
+    #ifdef Q_OS_MAC
+        _ui->buttonBox->layout()->setSpacing(24);
+        _ui->buttonBox->setLayoutDirection(Qt::LeftToRight);
+
+        _ui->localVersionRadio->setStyleSheet(
+            QStringLiteral("QCheckBox {color: %1;}").arg(WLTheme.black())
+        );
+
+        _ui->remoteVersionRadio->setStyleSheet(
+            QStringLiteral("QCheckBox {color: %1;}").arg(WLTheme.black())
+        );
+    #endif
 }
 
 } // namespace OCC

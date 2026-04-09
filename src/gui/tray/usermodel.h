@@ -12,6 +12,7 @@
 #include <QStringList>
 #include <QQuickImageProvider>
 #include <QHash>
+#include <QMessageBox>
 
 #include "accountfwd.h"
 #include "accountmanager.h"
@@ -292,6 +293,7 @@ private:
     bool _init = true;
 
     void buildUserList();
+    void styleMessageBox(QMessageBox &messageBox, QPushButton *yesButton);
 };
 
 class ImageProvider : public QQuickAsyncImageProvider

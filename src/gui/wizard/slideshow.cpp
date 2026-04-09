@@ -4,6 +4,8 @@
  */
 
 #include "slideshow.h"
+#include "whitelabeltheme.h"
+
 #include <QGuiApplication>
 #include <QMouseEvent>
 #include <QPainter>
@@ -12,14 +14,19 @@
 
 namespace OCC {
 
-static const int Spacing = 6;
+static const int Spacing = WLTheme.LoginPageSpacer();
 static const int SlideDuration = 1000;
 static const int SlideDistance = 400;
 
 SlideShow::SlideShow(QWidget *parent) : QWidget(parent)
 {
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-    setStyleSheet(QStringLiteral("font: bold 18pt"));
+    setStyleSheet(WLTheme.fontConfigurationCss(
+        WLTheme.settingsFont(),
+        WLTheme.onboardingTitle(),
+        WLTheme.settingsTitleWeight400(),
+        WLTheme.titleColor()
+    ));
 }
 
 void SlideShow::addSlide(const QPixmap &pixmap, const QString &label)
@@ -181,7 +188,7 @@ void SlideShow::maybeRestartTimer()
 }
 
 void SlideShow::drawSlide(QPainter *painter, int index)
-{    
+{
     const auto label = _labels.value(index);
     const auto labelRect = style()->itemTextRect(fontMetrics(),
                                                  rect(),

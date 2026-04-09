@@ -107,7 +107,7 @@ exit 0
   set codepage=%~1
 
   echo :: Compiling MSI project for codepage !codepage!
-  "%WIX%\bin\candle.exe" -dcodepage=!codepage! -dProductCode=%PRODUCTCODE% -dPlatform=%BuildArch% -arch %BuildArch% -dHarvestAppDir="%HarvestAppDir%" -ext WixUtilExtension NCMsiHelper.wxs WinShellExt.wxs collect.wxs Nextcloud.wxs RegistryCleanupCustomAction.wxs
+  "%WIX%\bin\candle.exe" -dcodepage=!codepage! -dProductCode=%PRODUCTCODE% -dPlatform=%BuildArch% -arch %BuildArch% -dHarvestAppDir="%HarvestAppDir%" -ext WixUtilExtension NCMsiHelper.wxs WinShellExt.wxs collect.wxs Ionos.wxs RegistryCleanupCustomAction.wxs
   if %ERRORLEVEL% neq 0 exit %ERRORLEVEL%
   echo/
 
@@ -121,7 +121,7 @@ exit 0
     set culture=%%c
 
     echo :: Linking MSI project for !culture!
-    "%WIX%\bin\light.exe" -sw1076 -ext WixUIExtension -ext WixUtilExtension -cultures:!culture!;en-us NCMsiHelper.wixobj WinShellExt.wixobj collect.wixobj Nextcloud.wixobj RegistryCleanupCustomAction.wixobj -out "!culture!_@MSI_INSTALLER_FILENAME@"
+    "%WIX%\bin\light.exe" -sw1076 -ext WixUIExtension -ext WixUtilExtension -cultures:!culture!;en-us NCMsiHelper.wixobj WinShellExt.wixobj collect.wixobj Ionos.wixobj RegistryCleanupCustomAction.wixobj -out "!culture!_@MSI_INSTALLER_FILENAME@"
     if %ERRORLEVEL% neq 0 exit %ERRORLEVEL%
 
     if NOT "!culture!" == "en-us" (

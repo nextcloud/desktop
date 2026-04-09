@@ -86,7 +86,9 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
 
 void OwncloudSetupPage::setLogo()
 {
+    #ifndef IONOS_BUILD
     _ui.logoLabel->setPixmap(Theme::instance()->wizardApplicationLogo());
+    #endif
 }
 
 void OwncloudSetupPage::setupServerAddressDescriptionLabel()
@@ -317,7 +319,11 @@ bool OwncloudSetupPage::validatePage()
         const auto urlString = url();
         const auto qurl = QUrl::fromUserInput(urlString);
         if (!qurl.isValid() || qurl.host().isEmpty()) {
+        #ifndef IONOS_BUILD
             setErrorString(tr("Server address does not seem to be valid"), false);
+        #else
+            setConnectionError(tr("Server address does not seem to be valid"), false);
+        #endif
             return false;
         }
 
@@ -344,11 +350,20 @@ void OwncloudSetupPage::setAuthType(DetermineAuthTypeJob::AuthType type)
     stopSpinner();
 }
 
+void OwncloudSetupPage::setConnectionError(const QString &err, bool retryHTTPonly)
+{
+    this->setVisible(true);
+    _ocWizard->button(QWizard::BackButton)->setHidden(false);
+    setErrorString(err, retryHTTPonly);
+}
+
 void OwncloudSetupPage::setErrorString(const QString &err, bool retryHTTPonly)
 {
     if (err.isEmpty()) {
         _ui.errorLabel->setVisible(false);
     } else {
+        // SES-84: Should only be shown in the Managed Cloud Client
+        #ifndef IONOS_BUILD
         if (retryHTTPonly) {
             const auto urlString = url();
             auto url = QUrl::fromUserInput(urlString);
@@ -380,6 +395,7 @@ void OwncloudSetupPage::setErrorString(const QString &err, bool retryHTTPonly)
                 }
             }
         }
+        #endif
 
         _ui.errorLabel->setVisible(true);
         _ui.errorLabel->setText(err);
@@ -443,7 +459,9 @@ void OwncloudSetupPage::slotStyleChanged()
 
 void OwncloudSetupPage::customizeStyle()
 {
+    #ifndef IONOS_BUILD
     setLogo();
+    #endif
 
     if (_progressIndi) {
         const auto isDarkBackground = Theme::isDarkColor(palette().window().color());

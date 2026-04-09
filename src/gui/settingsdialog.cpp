@@ -9,6 +9,7 @@
 
 #include "folderman.h"
 #include "theme.h"
+#include "whitelabeltheme.h"
 #include "generalsettings.h"
 #include "networksettings.h"
 #include "accountsettings.h"
@@ -37,10 +38,25 @@
 namespace {
 const QString TOOLBAR_CSS()
 {
+#ifdef IONOS_BUILD
+    return QStringLiteral("QToolBar { background: %1; border: none; border-bottom: 1px solid %2; } "
+                        "QToolBar QToolButton { background: %1; border: none; margin: 2px 0px 7px 12px; padding: 10px 4px 4px 4px; border-radius: %5; %8; } "
+                        "QToolBar QToolButton:checked { background: %7; color: %4; }"
+                        "QToolBar QToolButton:hover { background: %3; }"
+                        "QToolBar QToolButton:pressed { background: %6; color: %4; }"
+                        "QToolBar::separator { height: 100%; width: 1px; background: %2; margin-left: 12px; } " // Style for the separator
+                        "QToolBarExtension#qt_toolbar_ext_button {margin: 0 0 7px 0; padding: 0;}" // Style overflow button
+                        "QMenu { background: %1; color: %4; }" // Style overflow menu
+                        "QMenu::item::checked { background: %7; color: %4; }"
+                        "QMenu::item::selected { background: %3; color: %4; }" 
+                        "QMenu::item::pressed { background: %6; color: %4; }"
+                        );
+#else
     return QStringLiteral("QToolBar { background: %1; margin: 0; padding: 0; border: none; border-bottom: 1px solid %2; spacing: 0; } "
-                          "QToolBar QToolButton { background: %1; border: none; border-bottom: 1px solid %2; margin: 0; padding: 5px; } "
-                          "QToolBar QToolBarExtension { padding:0; } "
-                          "QToolBar QToolButton:checked { background: %3; color: %4; }");
+        "QToolBar QToolButton { background: %1; border: none; border-bottom: 1px solid %2; margin: 0; padding: 5px; } "
+        "QToolBar QToolBarExtension { padding:0; } "
+        "QToolBar QToolButton:checked { background: %3; color: %4; }");
+#endif
 }
 
 const float buttonSizeRatio = 1.618f; // golden ratio
@@ -62,7 +78,7 @@ QString shortDisplayNameForSettings(OCC::Account *account, int width)
         QFont f;
         QFontMetrics fm(f);
         host = fm.elidedText(host, Qt::ElideMiddle, width);
-        user = fm.elidedText(user, Qt::ElideRight, width);
+        user = fm.elidedText(user, Qt::ElideMiddle, width);
     }
     return QStringLiteral("%1\n%2").arg(user, host);
 }
@@ -80,8 +96,9 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     _ui->setupUi(this);
     _toolBar = new QToolBar;
-    _toolBar->setIconSize(QSize(32, 32));
+    _toolBar->setIconSize(QSize(WLTheme.toolbarIconSize(), WLTheme.toolbarIconSize()));
     _toolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    _toolBar->setFixedHeight(94);
     layout()->setMenuBar(_toolBar);
 
     // People perceive this as a Window, so also make Ctrl+W work
@@ -105,13 +122,20 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _actionGroup->setExclusive(true);
     connect(_actionGroup, &QActionGroup::triggered, this, &SettingsDialog::slotSwitchPage);
 
+    QAction *newAccountAction = createColorAwareAction(WLTheme.plusIcon("qtwidget"), tr("New account"));
+    _actionGroup->addAction(newAccountAction);
+    _toolBar->addAction(newAccountAction);
+    connect(newAccountAction, &QAction::triggered, _gui, &ownCloudGui::slotNewAccountWizard);
+    
+#ifndef IONOS_BUILD
     // Adds space between users + activities and general + network actions
     auto *spacer = new QWidget();
     spacer->setMinimumWidth(10);
     spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
     _toolBar->addWidget(spacer);
+#endif
 
-    QAction *generalAction = createColorAwareAction(QLatin1String(":/client/theme/settings.svg"), tr("General"));
+    QAction *generalAction = createColorAwareAction(WLTheme.settingsIcon("qtwidget"), tr("General"));
     _actionGroup->addAction(generalAction);
     _toolBar->addAction(generalAction);
     auto *generalSettings = new GeneralSettings;
@@ -127,6 +151,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 #endif
 
     _actionGroupWidgets.insert(generalAction, generalSettings);
+    _toolBar->addSeparator();
 
     const auto accountsList = AccountManager::instance()->accounts();
     for (const auto &account : accountsList) {
@@ -151,6 +176,10 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint & Qt::Window);
     cfg.restoreGeometry(this);
+    resize(width() > WLTheme.minimalSettingsDialogWidth() + 50 ? width(): WLTheme.minimalSettingsDialogWidth() + 50, 
+        (height() > generalSettings->sizeHint().height() + 75 ? height(): generalSettings->sizeHint().height()) + 75);
+    setMinimumSize(WLTheme.minimalSettingsDialogWidth() + 50, generalSettings->sizeHint().height() + 75);
+
 }
 
 SettingsDialog::~SettingsDialog()
@@ -209,7 +238,7 @@ void SettingsDialog::showFirstPage()
 {
     QList<QAction *> actions = _toolBar->actions();
     if (!actions.empty()) {
-        actions.first()->trigger();
+        actions.at(1)->trigger();
     }
 }
 
@@ -227,14 +256,14 @@ void SettingsDialog::accountAdded(AccountState *s)
     bool brandingSingleAccount = !Theme::instance()->multiAccount();
 
     const auto actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
-    const auto accountAction = createColorAwareAction(QLatin1String(":/client/theme/account.svg"), actionText);
+    const auto accountAction = createColorAwareAction(WLTheme.avatarIcon("qtwidget"), actionText);
 
     if (!brandingSingleAccount) {
         accountAction->setToolTip(s->account()->displayName());
         accountAction->setIconText(shortDisplayNameForSettings(s->account().data(), static_cast<int>(height * buttonSizeRatio)));
     }
 
-    _toolBar->insertAction(_toolBar->actions().at(0), accountAction);
+    _toolBar->addAction(accountAction);
     auto accountSettings = new AccountSettings(s, this);
     QString objectName = QLatin1String("accountSettings_");
     objectName += s->account()->displayName();
@@ -268,6 +297,7 @@ void SettingsDialog::accountAdded(AccountState *s)
 
 void SettingsDialog::slotAccountAvatarChanged()
 {
+#ifndef IONOS_BUILD
     auto *account = dynamic_cast<Account *>(sender());
     if (account && _actionForAccount.contains(account)) {
         QAction *action = _actionForAccount[account];
@@ -278,6 +308,7 @@ void SettingsDialog::slotAccountAvatarChanged()
             }
         }
     }
+#endif
 }
 
 void SettingsDialog::slotAccountDisplayNameChanged()
@@ -327,6 +358,51 @@ void SettingsDialog::accountRemoved(AccountState *s)
     }
 }
 
+#ifdef IONOS_BUILD
+
+void SettingsDialog::customizeStyle()
+{
+    QVariantMap palette = Theme::instance()->systemPalette();
+
+    QString white(palette["window"].value<QColor>().name());
+    QString hoverColor(WLTheme.toolButtonHoveredColor());
+    QString pressedColor(WLTheme.toolButtonPressedColor());
+    QString selectedColor(WLTheme.menuSelectedItemColor());
+
+    QString borderColor(palette["shadow"].value<QColor>().name());
+    QString highlightTextColor(palette["highlightedText"].value<QColor>().name());
+
+    QString toolbarActionBorderRadius(WLTheme.toolbarActionBorderRadius());
+    QString toolbarSideMargin (WLTheme.toolbarSideMargin());
+    QString toolButtonFont (
+        WLTheme.fontConfigurationCss(
+                WLTheme.settingsFont(),
+                WLTheme.settingsTextSize(),
+                WLTheme.settingsTextWeight(),
+                WLTheme.menuTextColor()
+        )
+    );
+
+    _toolBar->setStyleSheet(
+        TOOLBAR_CSS().arg(white, borderColor, hoverColor, highlightTextColor, toolbarActionBorderRadius, pressedColor, selectedColor, toolButtonFont)
+    );
+
+    for (const auto a : _actionGroup->actions()) {
+        QIcon icon = Theme::createColorAwareIcon(a->property("iconPath").toString(), this->palette());
+        a->setIcon(icon);
+        auto *btn = qobject_cast<QToolButton *>(_toolBar->widgetForAction(a));
+        if (btn) {
+            Q_FOREACH (auto ai, AccountManager::instance()->accounts()){
+                if (a->text().contains(ai->account()->displayName())){
+                    btn->setFixedWidth(164);
+                }
+            }
+
+            btn->setIcon(icon);
+        }
+    }
+}
+#else
 void SettingsDialog::customizeStyle()
 {
     QString highlightColor(palette().highlight().color().name());
@@ -344,6 +420,7 @@ void SettingsDialog::customizeStyle()
             btn->setIcon(icon);
     }
 }
+#endif
 
 class ToolButtonAction : public QWidgetAction
 {
@@ -368,10 +445,11 @@ public:
         QString objectName = QLatin1String("settingsdialog_toolbutton_");
         objectName += text();
         btn->setObjectName(objectName);
-
+        btn->setFixedSize(158, 94);
         btn->setDefaultAction(this);
         btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-        btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+
+        btn->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         return btn;
     }
 };

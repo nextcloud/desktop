@@ -8,7 +8,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import Style
-import com.nextcloud.desktopclient
+import com.ionos.hidrivenext.desktopclient
 import "./tray"
 
 Item {

@@ -1,0 +1,97 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+            {
+            "name": "(Linux-IONOS-RelWithDebInfo) Launch HiDriveNext",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/linux-GCC-x64/RelWithDebInfo/bin/IONOS_HiDrive_Next",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+                {
+                    "name": "LD_LIBRARY_PATH",
+                    "value": "/home/chaetty/CraftRoot/bin:${env:LD_LIBRARY_PATH}"
+                },
+                { "name": "QML_IMPORT_TRACE", "value": "1" },
+                { "name": "QT_LOGGING_RULES", "value": "qt.qml.debug=true" }
+            ],
+            "MIMode": "gdb",
+            "setupCommands": [
+            { "description": "Enable pretty-printing for gdb", "text": "-enable-pretty-printing", "ignoreFailures": true }
+        ]
+        },
+        {
+            "name": "(Linux-STRATO-RelWithDebInfo) Launch HiDriveNext",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/linux-GCC-x64/RelWithDebInfo/bin/STRATO_HiDrive_Next",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+                {
+                    "name": "LD_LIBRARY_PATH",
+                    "value": "/home/chaetty/CraftRoot/bin:${env:LD_LIBRARY_PATH}"
+                },
+                { "name": "QML_IMPORT_TRACE", "value": "1" },
+                { "name": "QT_LOGGING_RULES", "value": "qt.qml.debug=true" }
+            ],
+            "MIMode": "gdb",
+            "setupCommands": [
+            { "description": "Enable pretty-printing for gdb", "text": "-enable-pretty-printing", "ignoreFailures": true }
+        ]
+        },
+        {
+            "name": "(RelWithDebInfo) Launch HiDriveNext",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/../build/win32-MSVC-x64/RelWithDebInfo/bin/IONOS_HiDrive_Next.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+                {
+                    "name": "PATH",
+                    "value": "C:/CraftRoot/bin;C:/Craft64/bin;%PATH%"
+                },
+                { "name": "QML_IMPORT_TRACE", "value": "1" },
+                { "name": "QT_LOGGING_RULES", "value": "qt.qml.debug=true" }
+            ],
+        },
+        {
+            "name": "(RelWithDebInfo) Launch NextCloud",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/../build/win32-MSVC-x64/RelWithDebInfo/bin/nextcloud.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+                {
+                    "name": "PATH",
+                    "value": "C:/CraftRoot/bin;C:/Craft64/bin;%PATH%"
+                },
+            ],
+        },
+        {
+            "name": "(Release) Launch NextCloud",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/../build/win32-MSVC-x64/Release/bin/nextcloud.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+                {
+                    "name": "PATH",
+                    "value": "C:/CraftRoot/bin;C:/Craft64/bin;%PATH%"
+                },
+            ],
+        },
+    ]
+}

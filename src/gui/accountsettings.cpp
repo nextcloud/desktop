@@ -12,6 +12,9 @@
 #include "ui_accountsettings.h"
 
 #include "theme.h"
+#include "whitelabeltheme.h"
+#include "buttonstyle.h"
+#include "account.h"
 #include "foldercreationdialog.h"
 #include "folderman.h"
 #include "folderwizard.h"
@@ -57,8 +60,6 @@
 #include "macOS/fileprovider.h"
 #endif
 
-#include "account.h"
-
 namespace {
 constexpr auto propertyFolder = "folder";
 constexpr auto propertyPath = "path";
@@ -75,15 +76,13 @@ class AccountSettings;
 
 Q_LOGGING_CATEGORY(lcAccountSettings, "nextcloud.gui.account.settings", QtInfoMsg)
 
-static const char progressBarStyleC[] =
-    "QProgressBar {"
-    "border: 1px solid grey;"
-    "border-radius: 5px;"
-    "text-align: center;"
-    "}"
-    "QProgressBar::chunk {"
-    "background-color: %1; width: 1px;"
-    "}";
+const QString progressBarStyle()
+{
+    return QStringLiteral(
+        "QProgressBar::horizontal { border: 1px solid grey; border-radius: 5px; text-align: center; background-color: %1; }"
+        "QProgressBar::chunk { background-color: %2; width: 1px; }"
+    );
+}
 
 void showEnableE2eeWithVirtualFilesWarningDialog(std::function<void(void)> onAccept)
 {
@@ -156,7 +155,7 @@ protected:
             const auto index = folderList->indexAt(pos);
             if (model->classify(index) == FolderStatusModel::RootFolder &&
                 (FolderStatusDelegate::errorsListRect(folderList->visualRect(index)).contains(pos) ||
-                    FolderStatusDelegate::optionsButtonRect(folderList->visualRect(index),folderList->layoutDirection()).contains(pos))) {
+                    FolderStatusDelegate::optionsButtonRect(folderList->visualRect(index), folderList->layoutDirection()).contains(pos))) {
                 shape = Qt::PointingHandCursor;
             }
             folderList->setCursor(shape);
@@ -173,6 +172,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     , _userInfo(accountState, false, true)
 {
     _ui->setupUi(this);
+    this->setAutoFillBackground(true);
+    setPalette(QPalette(QPalette::Window, WLTheme.dialogBackgroundColor()));
 
     _model->setAccountState(_accountState);
     _model->setParent(this);
@@ -181,6 +182,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
     // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
     connect(this, &AccountSettings::styleChanged, delegate, &FolderStatusDelegate::slotStyleChanged);
+
+    _ui->_folderList->setFont(WLTheme.settingsFontDefault());
 
     _ui->_folderList->header()->hide();
     _ui->_folderList->setItemDelegate(delegate);
@@ -202,6 +205,16 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
         fpSettingsLayout->setContentsMargins(0, 0, 0, 0);
         fpSettingsLayout->addWidget(fpSettingsWidget);
         fileProviderTab->setLayout(fpSettingsLayout);
+
+        _ui->tabWidget->setStyleSheet(QStringLiteral("QTabWidget::pane { background-color: %1; }").arg(WLTheme.white()));
+        _ui->tabWidget->tabBar()->setStyleSheet("QTabBar::tab {\
+                                   color: #000000;\
+                               }\
+                               QTabBar::tab:selected {\
+                                   color: #ffffff;\
+                               }");
+    } else {
+        disguiseTabWidget();
     }
 #else
     const auto tabWidget = _ui->tabWidget;
@@ -219,12 +232,26 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     connectionSettingsLayout->addWidget(networkSettings);
     connectionSettingsTab->setLayout(connectionSettingsLayout);
 
+    const auto connectionSettingsTabIndex = _ui->tabWidget->indexOf(connectionSettingsTab);
+    if(connectionSettingsTabIndex >= 0){
+        _ui->tabWidget->removeTab(connectionSettingsTabIndex);
+    }
+    _ui->tabWidget->setCurrentIndex(0);
+#ifndef BUILD_FILE_PROVIDER_MODULE
+    _ui->tabWidget->tabBar()->hide();
+#endif
+
     const auto mouseCursorChanger = new MouseCursorChanger(this);
     mouseCursorChanger->folderList = _ui->_folderList;
     mouseCursorChanger->model = _model;
     _ui->_folderList->setMouseTracking(true);
     _ui->_folderList->setAttribute(Qt::WA_Hover, true);
     _ui->_folderList->installEventFilter(mouseCursorChanger);
+
+#ifdef Q_OS_MAC
+    _ui->expandMemoryButton->setAutoDefault(false);
+    _ui->expandMemoryButton->setFocusPolicy(Qt::NoFocus);
+#endif
 
     connect(this, &AccountSettings::removeAccountFolders,
             AccountManager::instance(), &AccountManager::removeAccountFolders);
@@ -268,11 +295,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     connect(FolderMan::instance(), &FolderMan::folderListChanged, _model, &FolderStatusModel::resetFolders);
     connect(this, &AccountSettings::folderChanged, _model, &FolderStatusModel::resetFolders);
 
-
-    // quotaProgressBar style now set in customizeStyle()
-    /*QColor color = palette().highlight().color();
-     _ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));*/
-
     // Connect E2E stuff
     if (_accountState->isConnected()) {
         setupE2eEncryption();
@@ -288,6 +310,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
     connect(&_userInfo, &UserInfo::quotaUpdated,
         this, &AccountSettings::slotUpdateQuota);
+
+    connect(_ui->expandMemoryButton, &QAbstractButton::clicked, this, &AccountSettings::slotExpandMemoryClicked);
 
     customizeStyle();
 
@@ -555,10 +579,12 @@ void AccountSettings::openIgnoredFilesDialog(const QString & absFolderPath)
     const QString ignoreFile{absFolderPath + ".sync-exclude.lst"};
     const auto layout = new QVBoxLayout();
     const auto ignoreListWidget = new IgnoreListTableWidget(this);
+    ignoreListWidget->setFont(WLTheme.settingsFont());
     ignoreListWidget->readIgnoreFile(ignoreFile);
     layout->addWidget(ignoreListWidget);
 
     const auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    customizeButtonBox(buttonBox);
     layout->addWidget(buttonBox);
 
     const auto dialog = new QDialog();
@@ -572,7 +598,26 @@ void AccountSettings::openIgnoredFilesDialog(const QString & absFolderPath)
     });
     connect(buttonBox, &QDialogButtonBox::rejected, dialog, &QDialog::close);
 
+    dialog->setPalette(QPalette(QPalette::Window, WLTheme.white()));
+    dialog->setWindowFlag(Qt::WindowContextHelpButtonHint, false);
+    
     dialog->open();
+}
+
+void AccountSettings::customizeButtonBox(QDialogButtonBox *buttonBox){
+    buttonBox->layout()->setSpacing(16);
+    buttonBox->setContentsMargins(0,0,11,10);
+
+    const auto okButton = buttonBox->button(QDialogButtonBox::Ok);
+
+    okButton->setProperty("buttonStyle", QVariant::fromValue(ButtonStyleName::Primary));
+    okButton->setMinimumSize(80, 40);
+
+    buttonBox->button(QDialogButtonBox::Cancel)->setMinimumSize(80, 40);
+
+#if defined(Q_OS_MAC)
+    buttonBox->layout()->setSpacing(32);
+#endif
 }
 
 void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index, const QPoint& pos)
@@ -637,9 +682,61 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
 
         ac = availabilityMenu->addAction(Utility::vfsFreeSpaceActionText());
         connect(ac, &QAction::triggered, this, [this, folder, path] { slotSetSubFolderAvailability(folder, path, PinState::OnlineOnly); });
+
+        styleCustomContextMenu(availabilityMenu);
     }
 
+    styleCustomContextMenu(&menu);
+
     menu.exec(QCursor::pos());
+}
+
+void AccountSettings::styleCustomContextMenu(QMenu *menu) const
+{
+    menu->setWindowFlags(menu->windowFlags() | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
+
+    menu->setAttribute(Qt::WA_TranslucentBackground);
+
+    menu->setStyleSheet(
+        QStringLiteral(
+            "QMenu {"
+                "background-color: %1; "
+                "border: 1px solid %2; "
+                "padding: 15px; "
+                "border-radius: %7; "
+                "font-family: %8; "
+                "font-size: %9; "
+                "font-weight: %10; "
+            "}"
+            "QMenu::item  {"
+                "background-color: transparent;"
+                "padding: 16px 18px; "
+                "color: %3; "
+                "border-radius: 8px; "
+            "}"
+            "QMenu::item:selected  {"
+                "background-color: %5; "
+                "color: %3; "
+                "border-radius: 8px; "
+            "}"
+            "QMenu::item:pressed  {"
+                "background-color: %6; "
+                "color: %4; "
+                "border-radius: 8px; "
+            "}"
+        ).arg(
+            WLTheme.white(),
+            WLTheme.menuBorderColor(),
+            WLTheme.menuTextColor(),
+            WLTheme.menuPressedTextColor(),
+            WLTheme.menuSelectedItemColor(),
+            WLTheme.menuPressedItemColor(),
+            WLTheme.menuBorderRadius(),
+            WLTheme.contextMenuFont(),
+            WLTheme.settingsTextSize(),
+            WLTheme.settingsTextWeight()
+        )
+    );
 }
 
 void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
@@ -671,6 +768,13 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     }
 
     const auto menu = new QMenu(treeView);
+
+    connect(menu, &QMenu::aboutToHide, [treeView, index]() {
+        auto* delegate = qobject_cast<FolderStatusDelegate*>(treeView->itemDelegate(index));
+        delegate->MousePos = QPoint(-1, -1);
+        treeView->update();
+    });
+
 
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
@@ -718,6 +822,8 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         ac = menu->addAction(tr("Disable virtual file support …"));
         connect(ac, &QAction::triggered, this, &AccountSettings::slotDisableVfsCurrentFolder);
         ac->setDisabled(Theme::instance()->enforceVirtualFilesSyncFolder());
+
+        styleCustomContextMenu(availabilityMenu);
     }
 
     if (const auto mode = bestAvailableVfsMode();
@@ -732,6 +838,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         }
     }
 
+    styleCustomContextMenu(menu);
 
     menu->popup(treeView->mapToGlobal(pos));
 }
@@ -740,16 +847,6 @@ void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
 {
     if (indx.data(FolderStatusDelegate::AddButton).toBool()) {
         // "Add Folder Sync Connection"
-        const auto treeView = _ui->_folderList;
-        const auto pos = treeView->mapFromGlobal(QCursor::pos());
-        QStyleOptionViewItem opt;
-        opt.initFrom(treeView);
-        const auto btnRect = treeView->visualRect(indx);
-        const auto btnSize = treeView->itemDelegateForIndex(indx)->sizeHint(opt, indx);
-        const auto actual = QStyle::visualRect(opt.direction, btnRect, QRect(btnRect.topLeft(), btnSize));
-        if (!actual.contains(pos)) {
-            return;
-        }
 
         if (indx.flags() & Qt::ItemIsEnabled) {
             slotAddFolder();
@@ -884,8 +981,22 @@ void AccountSettings::slotRemoveCurrentFolder()
                 .arg(shortGuiLocalPath),
             QMessageBox::NoButton,
             this);
+
+        messageBox->setStyleSheet(
+            QStringLiteral("QMessageBox QLabel { %1; } QDialog { background-color: %2; }").arg(
+                WLTheme.fontConfigurationCss(
+                    WLTheme.settingsFont(),
+                    WLTheme.settingsTextSize(),
+                    WLTheme.settingsTextWeight(),
+                    WLTheme.titleColor()
+                ),
+                WLTheme.dialogBackgroundColor()
+            )
+        );
+
         messageBox->setAttribute(Qt::WA_DeleteOnClose);
         const auto yesButton = messageBox->addButton(tr("Remove Folder Sync Connection"), QMessageBox::YesRole);
+        yesButton->setProperty("buttonStyle", QVariant::fromValue(ButtonStyleName::Primary));
         messageBox->addButton(tr("Cancel"), QMessageBox::NoRole);
         connect(messageBox, &QMessageBox::finished, this, [messageBox, yesButton, folder, row, this]{
             if (messageBox->clickedButton() == yesButton) {
@@ -1005,7 +1116,22 @@ void AccountSettings::slotDisableVfsCurrentFolder()
            "will become available again."
            "\n\n"
            "This action will abort any currently running synchronization."));
+
+    msgBox->setStyleSheet(QStringLiteral(
+            "QMessageBox QLabel { %1 background-color: %2; }").arg(
+                WLTheme.fontConfigurationCss(
+                    WLTheme.settingsFont(),
+                    WLTheme.settingsTextSize(),
+                    WLTheme.settingsTextWeight(),
+                    WLTheme.titleColor()
+                ),
+                WLTheme.white()
+        )
+    );
+
     const auto acceptButton = msgBox->addButton(tr("Disable support"), QMessageBox::AcceptRole);
+    acceptButton->setProperty("buttonStyle", QVariant::fromValue(ButtonStyleName::Primary));
+
     msgBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
     connect(msgBox, &QMessageBox::finished, msgBox, [this, msgBox, folder, acceptButton] {
         msgBox->deleteLater();
@@ -1154,6 +1280,9 @@ void AccountSettings::migrateCertificateForAccount(const AccountPtr &account)
 
 void AccountSettings::showConnectionLabel(const QString &message, QStringList errors)
 {
+
+    #ifndef IONOS_BUILD
+    //SES-4 Removed
     const auto errStyle = QLatin1String("color:#ffffff; background-color:#bb4d4d;padding:5px;"
                                         "border-width: 1px; border-style: solid; border-color: #aaaaaa;"
                                         "border-radius:5px;");
@@ -1167,12 +1296,13 @@ void AccountSettings::showConnectionLabel(const QString &message, QStringList er
         errors.prepend(message);
         auto userFriendlyMsg = errors.join(QLatin1String("<br>"));
         qCDebug(lcAccountSettings) << userFriendlyMsg;
-        Theme::replaceLinkColorString(userFriendlyMsg, QColor(0xc1c8e6));
+        Theme::replaceLinkColorString(userFriendlyMsg, QColor("#c1c8e6"));
         _ui->connectLabel->setText(userFriendlyMsg);
         _ui->connectLabel->setToolTip({});
         _ui->connectLabel->setStyleSheet(errStyle);
     }
-    _ui->accountStatus->setVisible(!message.isEmpty());
+    #endif
+    _ui->accountStatus->setVisible(false);
 }
 
 void AccountSettings::slotEnableCurrentFolder(bool terminate)
@@ -1199,9 +1329,30 @@ void AccountSettings::slotEnableCurrentFolder(bool terminate)
                     QMessageBox::Yes | QMessageBox::No, this);
                 msgbox->setAttribute(Qt::WA_DeleteOnClose);
                 msgbox->setDefaultButton(QMessageBox::Yes);
+                msgbox->defaultButton()->setProperty("buttonStyle", QVariant::fromValue(ButtonStyleName::Primary));
+
+                QHBoxLayout *buttonLayout = msgbox->findChild<QHBoxLayout *>();
+                buttonLayout->setSpacing(8);
+
+#ifdef Q_OS_MAC
+                buttonLayout->setSpacing(24);
+#endif
+
                 connect(msgbox, &QMessageBox::accepted, this, [this]{
                     slotEnableCurrentFolder(true);
                 });
+
+                msgbox->setStyleSheet(
+                    QStringLiteral("QMessageBox QLabel { %1; }").arg(
+                        WLTheme.fontConfigurationCss(
+                            WLTheme.settingsFont(),
+                            WLTheme.settingsTextSize(),
+                            WLTheme.settingsTextWeight(),
+                            WLTheme.titleColor()
+                        )
+                    )
+                );
+
                 msgbox->open();
                 return;
             }
@@ -1271,6 +1422,7 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
         _ui->quotaInfoLabel->setText(tr("%1 of %2 in use").arg(usedStr, totalStr));
         _ui->quotaInfoLabel->setToolTip(toolTip);
         _ui->quotaProgressBar->setToolTip(toolTip);
+        _ui->quotaInfo2Label->setText(tr("Storage space %1% occupied").arg(percentStr));
     } else {
         _ui->quotaProgressBar->setVisible(false);
         _ui->quotaInfoLabel->setToolTip({});
@@ -1444,6 +1596,11 @@ void AccountSettings::slotHideSelectiveSyncWidget()
     _ui->selectiveSyncStatus->setVisible(false);
     _ui->selectiveSyncButtons->setVisible(false);
     _ui->selectiveSyncLabel->hide();
+}
+
+void AccountSettings::slotExpandMemoryClicked()
+{
+     QDesktopServices::openUrl(QUrl(tr("https://wl.hidrive.com/easy/0057")));
 }
 
 void AccountSettings::slotSelectiveSyncChanged(const QModelIndex &topLeft,
@@ -1628,9 +1785,9 @@ void AccountSettings::refreshSelectiveSyncStatus()
     QString infoString;
 
     if (!unsyncedFoldersString.isEmpty()) {
-        infoString += !cfg.confirmExternalStorage() ? tr("There are folders that were not synchronized because they are too big: ")
-            : !cfg.newBigFolderSizeLimit().first    ? tr("There are folders that were not synchronized because they are external storages: ")
-                                                    : tr("There are folders that were not synchronized because they are too big or external storages: ");
+        infoString += !cfg.confirmExternalStorage() ? tr("There are folders that were not synchronized because they are too big:") + " "
+            : !cfg.newBigFolderSizeLimit().first    ? tr("There are folders that were not synchronized because they are external storages:") + " "
+                                                    : tr("There are folders that were not synchronized because they are too big or external storages:") + " ";
 
         infoString += unsyncedFoldersString;
     }
@@ -1678,12 +1835,51 @@ void AccountSettings::customizeStyle()
     _ui->connectLabel->setText(msg);
 
     const auto color = palette().highlight().color();
-    _ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));
+    _ui->quotaProgressBar->setStyleSheet(progressBarStyle().arg(WLTheme.dialogBackgroundColor(), WLTheme.quotaProgressColor()));
+
+    _ui->quotaInfoLabel->setStyleSheet(
+        WLTheme.fontConfigurationCss(
+            WLTheme.settingsFont(),
+            WLTheme.settingsTextSize(),
+            WLTheme.settingsTitleWeight600(),
+            WLTheme.titleColor()
+        )
+    );
+
+    _ui->quotaInfo2Label->setStyleSheet(
+        WLTheme.fontConfigurationCss(
+            WLTheme.settingsFont(),
+            WLTheme.settingsSmallTextSize(),
+            WLTheme.settingsTextWeight(),
+            WLTheme.titleColor()
+        )
+    );
+
+    _ui->_folderList->setStyleSheet(
+        QStringLiteral("background: %1; %2;").arg(
+            WLTheme.white(),
+            WLTheme.fontConfigurationCss(
+                WLTheme.settingsFont(),
+                WLTheme.settingsTextSize(),
+                WLTheme.settingsTextWeight(),
+                WLTheme.titleColor()
+            )
+        )
+    );
+
+#if defined(Q_OS_MAC)
+    _ui->selectiveSyncLabel->setStyleSheet(QString("color: %1;").arg(WLTheme.black()));
+    _ui->horizontalLayout->setSpacing(16);
+#endif
+
 }
 
 void AccountSettings::setupE2eEncryption()
 {
-    connect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, &AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync);
+    connect(_accountState->account()->e2e(),
+            &ClientSideEncryption::initializationFinished,
+            this,
+            &AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync);
 
     if (_accountState->account()->e2e()->isInitialized()) {
         slotE2eEncryptionMnemonicReady();
@@ -1756,6 +1952,14 @@ void AccountSettings::setupE2eEncryptionMessage()
 
     auto *const actionSetupE2e = addActionToEncryptionMessage(tr("Set up encryption"), e2EeUiActionSetupEncryptionId);
     connect(actionSetupE2e, &QAction::triggered, this, &AccountSettings::slotE2eEncryptionGenerateKeys);
+}
+
+void AccountSettings::disguiseTabWidget() const
+{
+    // Ensure all elements of the tab widget are hidden.
+    // Document mode lets the child view take up the whole view.
+    _ui->tabWidget->setDocumentMode(true);
+    _ui->tabWidget->tabBar()->hide();
 }
 
 } // namespace OCC

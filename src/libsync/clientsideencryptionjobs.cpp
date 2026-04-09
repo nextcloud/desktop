@@ -27,8 +27,8 @@ Q_LOGGING_CATEGORY(lcSignPublicKeyApiJob, "nextcloud.sync.networkjob.sendcsr", Q
 Q_LOGGING_CATEGORY(lcStorePublicKeyApiJob, "nextcloud.sync.networkjob.storepublickey", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcStorePrivateKeyApiJob, "nextcloud.sync.networkjob.storeprivatekey", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcCseJob, "nextcloud.sync.networkjob.clientsideencrypt", QtInfoMsg)
-
 namespace
+
 {
 constexpr auto e2eeSignatureHeaderName = "X-NC-E2EE-SIGNATURE";
 }
