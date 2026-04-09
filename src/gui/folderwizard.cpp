@@ -628,9 +628,7 @@ bool FolderWizardRemotePath::isComplete() const
         }
 
         if (targetPath.startsWith(remoteDir)) {
-            _ui.warnFrame->show();
-            _ui.warnLabel->hide();
-            _ui.infoLabel->setText(tr("You are already syncing the subfolder %1 at %2.").arg(Utility::escape(targetPath), Utility::escape(localDir)));
+            showWarn(tr("You are already syncing the subfolder %1 at %2.").arg(Utility::escape(targetPath), Utility::escape(localDir)));
             break;
         }
 

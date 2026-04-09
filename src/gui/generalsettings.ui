@@ -56,9 +56,9 @@
                                     </widget>
                                 </item>
                                 <item>
-                                    <widget class="QCheckBox" name="serverNotificationsCheckBox">
+                                    <widget class="QCheckBox" name="callNotificationsCheckBox">
                                         <property name="text">
-                                            <string>Show Server &amp;Notifications</string>
+                                            <string>Show call notifications</string>
                                         </property>
                                     </widget>
                                 </item>
@@ -72,13 +72,13 @@
                                         </property>
                                     </widget>
                                 </item>
-                                <item>
-                                    <widget class="QCheckBox" name="callNotificationsCheckBox">
-                                        <property name="text">
-                                            <string>Show call notifications</string>
-                                        </property>
-                                    </widget>
-                                </item>
+								<item>
+								    <widget class="QCheckBox" name="chatNotificationsCheckBox">
+								        <property name="text">
+								         <string>Show Chat Notifications</string>
+								        </property>
+								    </widget>
+                                </item>                                
                             </layout>
                         </widget>
                     </item>
@@ -131,7 +131,14 @@
                                             <string>Check Now</string>
                                         </property>
                                     </widget>
-                                </item>                                
+                                </item>  
+                                <item>
+                                    <widget class="QCheckBox" name="serverNotificationsCheckBox">
+                                        <property name="text">
+                                            <string>Show Server &amp;Notifications</string>
+                                        </property>
+                                    </widget>
+                                </item>                              
                             </layout>
                         </widget>
                     </item>
@@ -334,6 +341,61 @@
                                     </widget>
                                 </item>
                             </layout>
+                        </item>
+                        <item>
+                            <widget class="QWidget" name="horizontalLayoutWidget_remotePollInterval">
+                                <layout class="QHBoxLayout" name="horizontalLayout_remotePollInterval">
+                                    <item>
+                                        <widget class="QLabel" name="remotePollIntervalLabel">
+                                            <property name="text">
+                                            <string>Server poll interval</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item>
+                                        <widget class="QSpinBox" name="remotePollIntervalSpinBox">
+                                            <property name="minimum">
+                                                <number>5</number>
+                                            </property>
+                                            <property name="maximum">
+                                                <number>999999</number>
+                                            </property>
+                                            <property name="singleStep">
+                                                <number>1</number>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item>
+                                        <widget class="QLabel" name="labelInterval">
+                                            <property name="text">
+                                                <string>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</string>
+                                            </property>
+                                            <property name="textFormat">
+                                                <enum>Qt::TextFormat::RichText</enum>
+                                            </property>
+                                            <property name="openExternalLinks">
+                                                <bool>true</bool>
+                                            </property>
+                                            <property name="textInteractionFlags">
+                                                <set>Qt::TextInteractionFlag::LinksAccessibleByKeyboard|Qt::TextInteractionFlag::LinksAccessibleByMouse</set>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item>
+                                        <spacer name="horizontalSpacer_remotePollInterval">
+                                            <property name="orientation">
+                                                <enum>Qt::Orientation::Horizontal</enum>
+                                            </property>
+                                            <property name="sizeHint" stdset="0">
+                                                <size>
+                                                <width>40</width>
+                                                <height>20</height>
+                                                </size>
+                                            </property>
+                                        </spacer>
+                                    </item>
+                                </layout>
+                            </widget>
                         </item>
                         <item>
                             <layout class="QHBoxLayout" name="horizontalLayout_8">
@@ -629,6 +691,23 @@
                                                     </property>
                                                 </widget>
                                             </item>
+									         <item>
+									         <widget class="QPushButton" name="legalNoticeButton">
+									          <property name="text">
+									           <string>Legal Notice</string>
+									          </property>
+									         </widget>
+									        </item>
+									        <item>
+									         <widget class="QPushButton" name="restoreUpdateChannelButton">
+									          <property name="enabled">
+									           <bool>false</bool>
+									          </property>
+									          <property name="text">
+									           <string>Restore &amp;Default</string>
+									          </property>
+									         </widget>
+									        </item>
                                             <item>
                                                 <spacer name="horizontalSpacer_8">
                                                     <property name="orientation">
