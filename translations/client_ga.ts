@@ -5098,8 +5098,8 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Roghnaigh suíomh nua…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1146"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1209"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1132"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1195"/>
         <source>File actions</source>
         <translation>Gníomhartha comhaid</translation>
     </message>
