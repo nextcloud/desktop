@@ -238,7 +238,6 @@ void Logger::setupTemporaryFolderLogDir()
     auto dir = temporaryFolderLogDirPath();
     if (!QDir().mkpath(dir)) 
         return;
-    }
 
     // Since we're using the temp folder, lock down permissions to owner only
     QFile::Permissions perm = QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner;

@@ -8,6 +8,7 @@
 #include <QImage>
 #include <QQuickImageProvider>
 #include "sesFileIconProvider.h"
+#include <QNetworkReply>
 
 class AsyncImageResponse : public QQuickImageResponse
 {
