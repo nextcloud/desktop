@@ -10,7 +10,7 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import QtQml.Models
 import Style
-import com.nextcloud.desktopclient
+import com.ionos.hidrivenext.desktopclient
 import "./tray"
 
 ApplicationWindow {
@@ -138,15 +138,26 @@ ApplicationWindow {
         }
 
         DialogButtonBox {
+            id: buttonBox
             Layout.fillWidth: true
 
-            Button {
+            readonly property int pixelSize: Style.sesFontPixelSize
+            readonly property int fontWeight: Style.sesFontNormalWeight
+
+            PrimaryPillButton {
+                font.pixelSize: pixelSize
+                font.weight: fontWeight
                 text: qsTr("Resolve conflicts")
-                DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+
+                onClicked: buttonBox.onAccepted()
             }
-            Button {
+
+            SecondaryPillButton {
+                font.pixelSize: pixelSize
+                font.weight: fontWeight
                 text: qsTr("Cancel")
-                DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
+
+                onClicked: buttonBox.onRejected()
             }
 
             onAccepted: function() {
@@ -158,11 +169,5 @@ ApplicationWindow {
                 Systray.destroyDialog(conflictsDialog)
             }
         }
-    }
-
-    Rectangle {
-        color: palette.base
-        anchors.fill: parent
-        z: 1
     }
 }

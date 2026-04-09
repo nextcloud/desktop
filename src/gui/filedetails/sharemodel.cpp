@@ -28,7 +28,7 @@ static const auto secureFileDropPlaceholderLinkShareId = QStringLiteral("__secur
 
 namespace OCC
 {
-Q_LOGGING_CATEGORY(lcShareModel, "com.nextcloud.sharemodel")
+Q_LOGGING_CATEGORY(lcShareModel, "com.hidrivenext.sharemodel")
 
 ShareModel::ShareModel(QObject *parent)
     : QAbstractListModel(parent)
@@ -773,7 +773,7 @@ QString ShareModel::iconUrlForShare(const SharePtr &share) const
 
     switch(share->getShareType()) {
     case Share::TypeInternalLink:
-        return QString(iconsPath + QStringLiteral("external.svg"));
+        return QString(iconsPath + QStringLiteral("public.svg"));
     case Share::TypePlaceholderLink:
     case Share::TypeSecureFileDropPlaceholderLink:
     case Share::TypeLink:

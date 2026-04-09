@@ -13,7 +13,6 @@ Label {
             textFormat = Text.PlainText;
         }
     }
-
     textFormat: Text.PlainText
     onTextFormatChanged: resetToPlainText()
     Component.onCompleted: resetToPlainText()

@@ -5,7 +5,7 @@
 
 import QtQuick
 import QtQuick.Controls
-import com.nextcloud.desktopclient
+import com.ionos.hidrivenext.desktopclient
 
 NCInputTextField {
     id: root

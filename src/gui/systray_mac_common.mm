@@ -9,7 +9,7 @@
 
 #include "systray.h"
 
-Q_LOGGING_CATEGORY(lcMacSystrayCommon, "nextcloud.gui.macsystraycommon")
+Q_LOGGING_CATEGORY(lcMacSystrayCommon, "hidrivenext.gui.macsystraycommon")
 
 namespace OCC {
 

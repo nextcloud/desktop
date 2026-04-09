@@ -6,6 +6,7 @@
 #pragma once
 
 #include <QWidget>
+#include <QInputDialog>
 
 class QAbstractButton;
 
@@ -37,6 +38,9 @@ private slots:
 
 private:
     void setupTableReadOnlyItems();
+    void customizeIgnoreListDialogStyle();
+    void customizeAddIgnorePatternDialogStyle(QInputDialog &inputDialog);
+    
     QString readOnlyTooltip;
     Ui::IgnoreListTableWidget *ui;
 };

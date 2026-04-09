@@ -24,6 +24,7 @@
 #include "tray/talkreply.h"
 #include "userstatusconnector.h"
 #include "common/utility.h"
+#include "buttonstyle.h"
 
 #include <QtCore>
 #include <QDesktopServices>
@@ -33,6 +34,10 @@
 #include <QPainter>
 #include <QPushButton>
 #include <QDateTime>
+#include <QDialogButtonBox>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QMetaType>
 
 // time span in milliseconds which has to be between two
 // refreshes of the notifications
@@ -1536,7 +1541,7 @@ void UserModel::removeAccount(const int id)
     }
 
     QMessageBox messageBox(QMessageBox::Question,
-                           tr("Confirm Account Removal"),
+                           tr("Confirm Account Removal"), 
                            tr("<p>Do you really want to remove the connection to the account <i>%1</i>?</p>"
                               "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
                                .arg(Utility::escape(_users[id]->name())),
@@ -1544,7 +1549,10 @@ void UserModel::removeAccount(const int id)
     const auto * const yesButton = messageBox.addButton(tr("Remove connection"), QMessageBox::YesRole);
     messageBox.addButton(tr("Cancel"), QMessageBox::NoRole);
 
+    styleMessageBox(messageBox, yesButton);
+
     messageBox.exec();
+
     if (messageBox.clickedButton() != yesButton) {
         return;
     }
@@ -1712,6 +1720,38 @@ int UserModel::findUserIdForAccount(AccountState *account) const
 
     const auto id = std::distance(std::cbegin(_users), it);
     return id;
+}
+
+void UserModel::styleMessageBox(QMessageBox &messageBox, QPushButton *yesButton){ 
+
+    messageBox.setStyleSheet(QStringLiteral("QMessageBox { background-color: %1; } QMessageBox QLabel { %2 } ").arg(
+        WLTheme.dialogBackgroundColor(),
+        WLTheme.fontConfigurationCss(
+            WLTheme.settingsFont(),
+            WLTheme.settingsTextSize(),
+            WLTheme.settingsTextWeight(),
+            WLTheme.titleColor()
+        )
+        )
+    );
+
+    messageBox.setIconPixmap(QPixmap(WLTheme.questionCircleIcon()));
+    
+    yesButton->setProperty("buttonStyle", QVariant::fromValue(OCC::ButtonStyleName::Primary));
+
+    QDialogButtonBox *buttonBox = messageBox.findChild<QDialogButtonBox *>();
+    buttonBox->setLayoutDirection(Qt::RightToLeft); 
+    buttonBox->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+
+    QHBoxLayout *buttonBoxLayout = messageBox.findChild<QHBoxLayout *>();
+    buttonBoxLayout->setSpacing(8);
+#ifdef Q_OS_MACOS
+    buttonBoxLayout->setSpacing(24);
+#endif
+
+    QLabel *label = messageBox.findChild<QLabel *>("qt_msgbox_label");
+    label->setMinimumSize(529, 49);
+    label->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 }
 /*-------------------------------------------------------------------------------------*/
 

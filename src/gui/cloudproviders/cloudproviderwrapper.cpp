@@ -130,7 +130,7 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
         qint64 currentFile = progress.currentFile();
         qint64 totalFileCount = qMax(progress.totalFiles(), currentFile);
         if (progress.trustEta()) {
-            msg = tr("Syncing %1 of %2  (%3 left)")
+            msg = tr("Syncing %1 of %2 (%3 left)")
                     .arg(currentFile)
                     .arg(totalFileCount)
                     .arg(Utility::durationToDescriptiveString2(progress.totalProgress().estimatedEta));

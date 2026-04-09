@@ -6,6 +6,8 @@ cmake_policy(SET CMP0071 NEW) # Enable use of QtQuick compiler/generated code
 
 project(client)
 
+add_compile_definitions(IONOS_BUILD)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 if(APPLE)
     set(CMAKE_OSX_DEPLOYMENT_TARGET "12.0" CACHE STRING "Minimum OSX deployment version")
 endif()
@@ -29,6 +31,7 @@ endif()
 set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 include(${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake)
+include(${CMAKE_SOURCE_DIR}/IONOS.cmake)
 
 set(QT_VERSION_MAJOR "6")
 set(REQUIRED_QT_VERSION "6.8.0")
@@ -238,7 +241,7 @@ if(OWNCLOUD_5XX_NO_BLACKLIST)
 endif()
 
 if(APPLE)
-  set( SOCKETAPI_TEAM_IDENTIFIER_PREFIX "" CACHE STRING "SocketApi prefix (including a following dot) that must match the codesign key's TeamIdentifier/Organizational Unit" )
+  set( SOCKETAPI_TEAM_IDENTIFIER_PREFIX "5TDLCVD243." CACHE STRING "SocketApi prefix (including a following dot) that must match the codesign key's TeamIdentifier/Organizational Unit" )
 endif()
 
 if(BUILD_CLIENT)

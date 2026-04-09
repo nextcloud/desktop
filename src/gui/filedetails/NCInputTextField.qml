@@ -7,7 +7,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import com.nextcloud.desktopclient
+import com.ionos.hidrivenext.desktopclient
 import Style
 
 TextField {
@@ -23,6 +23,14 @@ TextField {
     rightPadding: submitButton.width
 
     selectByMouse: true
+    
+    background: Rectangle {
+        id: textFieldBorder
+        radius: Style.slightlyRoundedButtonRadius
+        border.width: Style.normalBorderWidth
+        border.color: root.activeFocus ? root.validInput ? root.accentColor : Style.errorBoxBackgroundColor : root.secondaryColor
+        color: palette.base
+    }
 
     Button {
         id: submitButton

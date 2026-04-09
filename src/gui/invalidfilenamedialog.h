@@ -72,6 +72,7 @@ private:
     void onPropfindPermissionSuccess(const QVariantMap &values);
     void onPropfindPermissionError(QNetworkReply *reply = nullptr);
     void allowRenaming();
+    void customizeStyle();
 private slots:
     void useInvalidName();
 };

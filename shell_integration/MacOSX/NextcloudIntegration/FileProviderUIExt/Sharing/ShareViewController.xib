@@ -243,6 +243,8 @@
                                                     <items>
                                                         <menuItem title="Public link share" state="on" id="JhA-rv-1xy"/>
                                                         <menuItem title="User share" id="CpL-qc-lAA"/>
+                                                        <!-- Commented out for SES-323
+                                                        
                                                         <menuItem title="Group share" id="bnp-aV-ZvE"/>
                                                         <menuItem title="Email share" id="5DB-JD-Ij0">
                                                             <modifierMask key="keyEquivalentModifierMask"/>
@@ -255,7 +257,7 @@
                                                         </menuItem>
                                                         <menuItem title="Talk conversation share" id="aHo-Mr-vTn">
                                                             <modifierMask key="keyEquivalentModifierMask"/>
-                                                        </menuItem>
+                                                        </menuItem> -->
                                                     </items>
                                                 </menu>
                                             </popUpButtonCell>

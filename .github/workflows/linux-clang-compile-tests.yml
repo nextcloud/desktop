@@ -2,8 +2,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 name: Linux Clang compilation and tests
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  workflow_dispatch:
 jobs:
   build:
     name: Linux Clang compilation and tests

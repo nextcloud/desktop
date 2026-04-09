@@ -1,0 +1,18 @@
+Nextcloud Desktop - Ionos HiDrive Next
+
+This project includes software developed by chinchilla, available at:
+[https://github.com/564398053/Qt-GoogleAnalytics4].
+
+Bundled Components:
+    Qt-GoogleAnalytics4
+    ga4/ganalytics.cpp
+    ga4/ganalytics_worker.cpp
+    Copyright 2022 chinchilla
+    Licensed under the Apache License, Version 2.0.
+    You may obtain a copy of the license at:
+    [http://www.apache.org/licenses/LICENSE-2.0].
+
+
+Important Note:
+The rest of this project is not licensed under the Apache License, Version 2.0. It remains under the original license as specified in the original repository:
+[https://github.com/IONOS-Productivity/nc-desktop].

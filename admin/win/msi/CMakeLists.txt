@@ -29,9 +29,9 @@ install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/make-msi.bat
         EnsureACL.js
         Platform.wxi
-        Nextcloud.wxs
+        Ionos.wxs
         ${CMAKE_CURRENT_BINARY_DIR}/RegistryCleanup.vbs
         RegistryCleanupCustomAction.wxs
-        gui/banner.bmp
-        gui/dialog.bmp
+        gui/banner_2.bmp
+        gui/dialog_2.bmp
     DESTINATION msi/)

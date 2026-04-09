@@ -1456,12 +1456,12 @@ QString FolderMan::getBackupName(QString fullPathName) const
     if (fullPathName.isEmpty())
         return QString();
 
-    QString newName = fullPathName + tr(" (backup)");
+    QString newName = fullPathName + " " + tr("(backup)");
     QFileInfo fi(newName);
     int cnt = 2;
     do {
         if (fi.exists()) {
-            newName = fullPathName + tr(" (backup %1)").arg(cnt++);
+            newName = fullPathName + " " + tr("(backup %1)").arg(cnt++);
             fi.setFile(newName);
         }
     } while (fi.exists());

@@ -11,7 +11,7 @@ import Style 1.0
 import "../../filedetails"
 import "../../tray"
 
-import com.nextcloud.desktopclient 1.0
+import com.ionos.hidrivenext.desktopclient
 
 GridLayout {
     id: root
@@ -44,9 +44,8 @@ GridLayout {
         Layout.column: 1
         Layout.columnSpan: root.syncStatus.syncing ? 2 : 1
         Layout.fillWidth: true
-        font.bold: true
-        font.pointSize: Style.headerFontPtSize
         text: root.syncStatus.syncing ? qsTr("Syncing") : qsTr("All synced!")
+        color: Style.sesTrayFontColor
     }
 
     NCProgressBar {

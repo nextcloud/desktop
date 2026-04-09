@@ -49,8 +49,8 @@ struct Build: AsyncParsableCommand {
     var buildType = "RelWithDebInfo"
     
     @Option(name: [.long], help: "The application's branded name.")
-    var appName = "Nextcloud"
-    
+    var appName = "IONOS HiDrive Next"
+
     @Option(name: [.long], help: "Sparkle download URL.")
     var sparkleDownloadUrl =
     "https://github.com/sparkle-project/Sparkle/releases/download/2.6.4/Sparkle-2.6.4.tar.xz"
@@ -313,3 +313,87 @@ struct Build: AsyncParsableCommand {
         print(stopwatch.report())
     }
 }
+
+struct Codesign: ParsableCommand {
+    static let configuration = CommandConfiguration(abstract: "Codesigning script for the client.")
+
+    @Argument(help: "Path to the Nextcloud Desktop Client app bundle.")
+    var appBundlePath = "\(FileManager.default.currentDirectoryPath)/product/IONOS HiDrive Next.app"
+
+    @Option(name: [.short, .long], help: "Code signing identity for desktop client and libs.")
+    var codeSignIdentity: String
+
+    @Option(name: [.short, .long], help: "Entitlements to apply to the app bundle.")
+    var entitlementsPath: String?
+
+    mutating func run() throws {
+        let absolutePath = appBundlePath.hasPrefix("/")
+            ? appBundlePath
+            : "\(FileManager.default.currentDirectoryPath)/\(appBundlePath)"
+
+        try codesignClientAppBundle(
+            at: absolutePath,
+            withCodeSignIdentity: codeSignIdentity,
+            usingEntitlements: entitlementsPath
+        )
+    }
+}
+
+struct Package: ParsableCommand {
+    static let configuration = CommandConfiguration(abstract: "Packaging script for the client.")
+
+    @Option(name: [.short, .long], help: "Architecture.")
+    var arch = "arm64"
+
+    @Option(name: [.short, .long], help: "Path for build files to be written.")
+    var buildPath = "\(FileManager.default.currentDirectoryPath)/build"
+
+    @Option(name: [.short, .long], help: "Path for the final product to be put.")
+    var productPath = "\(FileManager.default.currentDirectoryPath)/product"
+
+    @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprint name.")
+    var craftBlueprintName = "nextcloud-client"
+
+    @Option(name: [.long], help: "The application's branded name.")
+    var appName = "IONOS HiDrive Next"
+
+    @Option(name: [.long], help: "Apple ID, used for notarisation.")
+    var appleId: String?
+
+    @Option(name: [.long], help: "Apple ID password, used for notarisation.")
+    var applePassword: String?
+
+    @Option(name: [.long], help: "Apple Team ID, used for notarisation.")
+    var appleTeamId: String?
+
+    @Option(name: [.long], help: "Apple package signing ID.")
+    var packageSigningId: String?
+
+    @Option(name: [.long], help: "Sparkle package signing key.")
+    var sparklePackageSignKey: String?
+
+    mutating func run() throws {
+        try packageAppBundle(
+            productPath: productPath,
+            buildPath: buildPath,
+            craftTarget: archToCraftTarget(arch),
+            craftBlueprintName: craftBlueprintName,
+            appName: appName,
+            packageSigningId: packageSigningId,
+            appleId: appleId,
+            applePassword: applePassword,
+            appleTeamId: appleTeamId,
+            sparklePackageSignKey: sparklePackageSignKey
+        )
+    }
+}
+
+struct MacCrafter: ParsableCommand {
+    static let configuration = CommandConfiguration(
+        abstract: "A tool to easily build a fully-functional Nextcloud Desktop Client for macOS.",
+        subcommands: [Build.self, Codesign.self, Package.self],
+        defaultSubcommand: Build.self
+    )
+}
+
+MacCrafter.main()

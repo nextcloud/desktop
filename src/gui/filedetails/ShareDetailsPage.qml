@@ -9,9 +9,10 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import Qt5Compat.GraphicalEffects
 
-import com.nextcloud.desktopclient
+import com.ionos.hidrivenext.desktopclient
 import Style
 import "../tray"
+import "../SesComponents/"
 import "../"
 
 Page {
@@ -33,6 +34,12 @@ Page {
     signal setExpireDate(var milliseconds) // Since QML ints are only 32 bits, use a variant
     signal setPassword(string password)
     signal setNote(string note)
+
+
+    font.family: Style.sesOpenSansRegular
+    font.pixelSize: Style.sesFontPixelSize
+    font.weight: Style.sesFontNormalWeight
+    palette.windowText: Style.sesTrayFontColor
 
     property bool backgroundsVisible: true
     property color accentColor: Style.ncBlue
@@ -71,6 +78,7 @@ Page {
     readonly property bool isHideDownloadInProgress: shareModelData.isHideDownloadInProgress
     readonly property int  currentPermissionMode: shareModelData.currentPermissionMode
 
+    readonly property bool isInternalShare: shareModelData.shareType === ShareModel.ShareTypeUser || shareModelData.shareType === ShareModel.ShareTypeGroup || shareModelData.shareType === ShareModel.ShareTypeCircle 
     readonly property bool isLinkShare: shareModelData.shareType === ShareModel.ShareTypeLink
     readonly property bool isEmailShare: shareModelData.shareType === ShareModel.ShareTypeEmail
     readonly property bool shareSupportsPassword: isLinkShare || isEmailShare
@@ -85,6 +93,16 @@ Page {
     property bool waitingForPasswordChange: false
     property bool waitingForNoteChange: false
 
+    readonly property int titlePixelSize: Style.sesFontPixelSizeTitle
+    readonly property int titleFontWeight: Style.sesFontNormalWeight
+
+    readonly property int hintPixelSize: Style.sesFontHintPixelSize
+    readonly property int hintFontWeight: Style.sesFontNormalWeight
+
+
+    readonly property int pixelSize: Style.sesFontPixelSize
+    readonly property int fontWeight: Style.sesFontNormalWeight
+
     function showPasswordSetError(message) {
         passwordErrorBoxLoader.message = message !== "" ?
                                          message : qsTr("An error occurred setting the share password.");
@@ -96,8 +114,8 @@ Page {
     }
 
     function resetLinkShareLabelField() {
-        linkShareLabelTextField.text = linkShareLabel;
-        waitingForLinkShareLabelChange = false;
+        // linkShareLabelTextField.text = linkShareLabel;
+        // waitingForLinkShareLabelChange = false;
     }
 
     function resetPasswordField() {
@@ -165,8 +183,7 @@ Page {
     padding: Style.standardSpacing * 2
 
     background: Rectangle {
-        color: palette.base
-        visible: root.backgroundsVisible
+        color: Style.sesBackgroundColor
     }
 
     header: ColumnLayout {
@@ -201,38 +218,45 @@ Page {
             }
 
             EnforcedPlainTextLabel {
-                id: headLabel
+                id: fileNameLabel
 
                 Layout.fillWidth: true
+                Layout.rightMargin: headerGridLayout.textRightMargin
 
-                text: qsTr("Edit share")
-                font.bold: true
-                elide: Text.ElideRight
+                text: root.fileDetails.name
+
+                font.pixelSize: titlePixelSize
+                font.weight: titleFontWeight
+
+                wrapMode: Text.Wrap
             }
 
-            Button {
-                id: closeButton
+            IconButton {
+                id: placeholder
+
+                customHoverEnabled: false
 
                 Layout.rowSpan: headerGridLayout.rows
-                Layout.preferredWidth: Style.activityListButtonWidth
-                Layout.preferredHeight: Style.activityListButtonHeight
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                Layout.preferredWidth: Style.iconButtonWidth
+                Layout.preferredHeight: width
                 Layout.rightMargin: root.padding
 
-                icon.source: "image://svgimage-custom-color/clear.svg" + "/" + palette.buttonText
-                icon.width: Style.activityListButtonIconSize
-                icon.height: Style.activityListButtonIconSize
+                iconSource: Style.sesAccountQuit
+
                 onClicked: root.closeShareDetails()
             }
 
             EnforcedPlainTextLabel {
-                id: secondaryLabel
+                id: fileDetailsLabel
 
                 Layout.fillWidth: true
-                Layout.rightMargin: root.padding
+                Layout.rightMargin: headerGridLayout.textRightMargin
 
-                text: root.fileDetails.name
+                text: `${root.fileDetails.sizeString}, ${root.fileDetails.lastChangedString}`
                 wrapMode: Text.Wrap
+
+                font.pixelSize: hintPixelSize
+                font.weight: hintFontWeight
             }
         }
     }
@@ -250,198 +274,7 @@ Page {
             readonly property int itemPadding: Style.smallSpacing
 
             width: parent.width
-            spacing: Style.smallSpacing
 
-            RowLayout {
-                Layout.fillWidth: true
-                height: visible ? implicitHeight : 0
-                spacing: scrollContentsColumn.indicatorSpacing
-
-                visible: root.isLinkShare
-
-                Image {
-                    Layout.preferredWidth: scrollContentsColumn.indicatorItemWidth
-                    Layout.fillHeight: true
-
-                    verticalAlignment: Image.AlignVCenter
-                    horizontalAlignment: Image.AlignHCenter
-                    fillMode: Image.Pad
-
-                    source: "image://svgimage-custom-color/label.svg/" + palette.windowText
-                    sourceSize.width: scrollContentsColumn.rowIconWidth
-                    sourceSize.height: scrollContentsColumn.rowIconWidth
-                }
-
-                NCInputTextField {
-                    id: linkShareLabelTextField
-
-                    Layout.fillWidth: true
-                    height: visible ? implicitHeight : 0
-
-                    text: root.linkShareLabel
-                    placeholderText: qsTr("Share label")
-
-                    enabled: root.isLinkShare &&
-                             !root.waitingForLinkShareLabelChange
-
-                    onAccepted: if(text !== root.linkShareLabel) {
-                        root.setLinkShareLabel(text);
-                        root.waitingForLinkShareLabelChange = true;
-                    }
-
-                    NCBusyIndicator {
-                        anchors.fill: parent
-                        visible: root.waitingForLinkShareLabelChange
-                        running: visible
-                        z: 1
-                    }
-                }
-            }
-
-            Loader {
-                Layout.fillWidth: true
-                active: !root.isFolderItem && !root.isEncryptedItem
-                visible: active
-                sourceComponent: CheckBox {
-                    spacing: scrollContentsColumn.indicatorSpacing
-                    leftPadding: scrollContentsColumn.itemPadding
-                    rightPadding: scrollContentsColumn.itemPadding
-                    indicator.width: scrollContentsColumn.indicatorItemWidth
-                    indicator.height: scrollContentsColumn.indicatorItemWidth
-
-                    checkable: true
-                    checked: root.editingAllowed
-                    text: qsTr("Allow upload and editing")
-                    enabled: !root.isSharePermissionChangeInProgress
-
-                    onClicked: root.toggleAllowEditing(checked)
-
-                    NCBusyIndicator {
-                        anchors.fill: parent
-                        visible: root.isSharePermissionChangeInProgress
-                        running: visible
-                        z: 1
-                    }
-                }
-            }
-
-            Loader {
-                Layout.fillWidth: true
-                active: root.isFolderItem && !root.isEncryptedItem
-                visible: active
-                sourceComponent: ColumnLayout {
-                    id: permissionRadioButtonsLayout
-                    spacing: Layout.smallSpacing
-                    width: parent.width
-
-                    ButtonGroup {
-                        id: permissionModeRadioButtonsGroup
-                    }
-
-                    RadioButton {
-                        readonly property int permissionMode: ShareModel.ModeViewOnly
-                        Layout.fillWidth: true
-                        ButtonGroup.group: permissionModeRadioButtonsGroup
-                        enabled: !root.isSharePermissionChangeInProgress
-                        checked: root.currentPermissionMode === permissionMode
-                        text: qsTr("View only")
-                        spacing: scrollContentsColumn.indicatorSpacing
-                        leftPadding: scrollContentsColumn.itemPadding
-                        rightPadding: scrollContentsColumn.itemPadding
-                        onClicked: root.permissionModeChanged(permissionMode)
-                    }
-
-                    RadioButton {
-                        readonly property int permissionMode: ShareModel.ModeUploadAndEditing
-                        Layout.fillWidth: true
-                        ButtonGroup.group: permissionModeRadioButtonsGroup
-                        enabled: !root.isSharePermissionChangeInProgress
-                        checked: root.currentPermissionMode === permissionMode
-                        text: qsTr("Allow upload and editing")
-                        spacing: scrollContentsColumn.indicatorSpacing
-                        leftPadding: scrollContentsColumn.itemPadding
-                        rightPadding: scrollContentsColumn.itemPadding
-                        onClicked: root.permissionModeChanged(permissionMode)
-                    }
-
-                    RadioButton {
-                        readonly property int permissionMode: ShareModel.ModeFileDropOnly
-                        Layout.fillWidth: true
-                        ButtonGroup.group: permissionModeRadioButtonsGroup
-                        enabled: !root.isSharePermissionChangeInProgress
-                        checked: root.currentPermissionMode === permissionMode
-                        text: qsTr("File drop (upload only)")
-                        spacing: scrollContentsColumn.indicatorSpacing
-                        leftPadding: scrollContentsColumn.itemPadding
-                        rightPadding: scrollContentsColumn.itemPadding
-                        onClicked: root.permissionModeChanged(permissionMode)
-                    }
-
-                    CheckBox {
-                        id: allowResharingCheckBox
-
-                        Layout.fillWidth: true
-
-                        spacing: scrollContentsColumn.indicatorSpacing
-                        leftPadding: scrollContentsColumn.itemPadding
-                        rightPadding: scrollContentsColumn.itemPadding
-                        indicator.width: scrollContentsColumn.indicatorItemWidth
-                        indicator.height: scrollContentsColumn.indicatorItemWidth
-
-                        checkable: true
-                        checked: root.resharingAllowed
-                        text: qsTr("Allow resharing")
-                        enabled: !root.isSharePermissionChangeInProgress && root.serverAllowsResharing
-                        visible: root.serverAllowsResharing
-                        onClicked: root.toggleAllowResharing(checked);
-
-                        Connections {
-                            target: root
-                            onResharingAllowedChanged: allowResharingCheckBox.checked = root.resharingAllowed
-                        }
-                    }
-                }
-
-                NCBusyIndicator {
-                    anchors.fill: parent
-                    visible: root.isSharePermissionChangeInProgress
-                    running: visible
-                    z: 1
-                }
-            }
-
-            Loader {
-                Layout.fillWidth: true
-
-                active: root.isLinkShare
-                visible: active
-                sourceComponent: ColumnLayout {
-                    CheckBox {
-                        id: hideDownloadEnabledMenuItem
-
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-
-                        spacing: scrollContentsColumn.indicatorSpacing
-                        leftPadding: scrollContentsColumn.itemPadding
-                        rightPadding: scrollContentsColumn.itemPadding
-                        indicator.width: scrollContentsColumn.indicatorItemWidth
-                        indicator.height: scrollContentsColumn.indicatorItemWidth
-
-                        checked: root.hideDownload
-                        text: qsTr("Hide download")
-                        enabled: !root.isHideDownloadInProgress
-                        onClicked: root.toggleHideDownload(checked);
-
-                        NCBusyIndicator {
-                            anchors.fill: parent
-                            visible: root.isHideDownloadInProgress
-                            running: visible
-                            z: 1
-                        }
-                    }
-                }
-            }
 
             CheckBox {
                 id: passwordProtectEnabledMenuItem
@@ -449,8 +282,7 @@ Page {
                 Layout.fillWidth: true
 
                 spacing: scrollContentsColumn.indicatorSpacing
-                leftPadding: scrollContentsColumn.itemPadding
-                rightPadding: scrollContentsColumn.itemPadding
+                padding: scrollContentsColumn.itemPadding
                 indicator.width: scrollContentsColumn.indicatorItemWidth
                 indicator.height: scrollContentsColumn.indicatorItemWidth
 
@@ -465,62 +297,6 @@ Page {
                 onClicked: {
                     root.togglePasswordProtect(checked);
                     root.waitingForPasswordProtectEnabledChange = true;
-                }
-
-                NCBusyIndicator {
-                    anchors.fill: parent
-                    visible: root.waitingForPasswordProtectEnabledChange
-                    running: visible
-                    z: 1
-                }
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
-
-                height: visible ? implicitHeight : 0
-                spacing: scrollContentsColumn.indicatorSpacing
-
-                visible: root.shareSupportsPassword && root.passwordProtectEnabled
-
-                Image {
-                    Layout.preferredWidth: scrollContentsColumn.indicatorItemWidth
-                    Layout.fillHeight: true
-
-                    verticalAlignment: Image.AlignVCenter
-                    horizontalAlignment: Image.AlignHCenter
-                    fillMode: Image.Pad
-
-                    source: "image://svgimage-custom-color/lock-https.svg/" + palette.windowText
-                    sourceSize.width: scrollContentsColumn.rowIconWidth
-                    sourceSize.height: scrollContentsColumn.rowIconWidth
-                }
-
-                NCInputTextField {
-                    id: passwordTextField
-
-                    Layout.fillWidth: true
-                    height: visible ? implicitHeight : 0
-
-                    text: root.password !== "" ? root.password : root.passwordPlaceholder
-                    enabled: visible &&
-                             root.passwordProtectEnabled &&
-                             !root.waitingForPasswordChange &&
-                             !root.waitingForPasswordProtectEnabledChange
-
-                    onAccepted: if(text !== root.password && text !== root.passwordPlaceholder) {
-                        passwordErrorBoxLoader.message = "";
-                        root.setPassword(text);
-                        root.waitingForPasswordChange = true;
-                    }
-
-                    NCBusyIndicator {
-                        anchors.fill: parent
-                        visible: root.waitingForPasswordChange ||
-                                 root.waitingForPasswordProtectEnabledChange
-                        running: visible
-                        z: 1
-                    }
                 }
             }
 
@@ -542,7 +318,7 @@ Page {
                     // Artificially add vertical padding
                     implicitHeight: passwordErrorBox.implicitHeight + (Style.smallSpacing * 2)
 
-                    ErrorBox {
+                    SesErrorBox {
                         id: passwordErrorBox
                         anchors.left: parent.left
                         anchors.right: parent.right
@@ -553,14 +329,53 @@ Page {
                 }
             }
 
+            TextEdit {
+                id: passwordTextEdit
+                visible: root.passwordProtectEnabled
+                Layout.fillWidth: true
+                Layout.leftMargin: 3
+                Layout.rightMargin: 3
+                height: visible ? 64 : 0
+                wrapMode: TextEdit.Wrap
+                selectByMouse: true
+                text: root.password !== "" ? root.password : root.passwordPlaceholder
+
+                font.family: root.font.family
+                font.pixelSize: pixelSize
+                font.weight: fontWeight
+
+                padding: scrollContentsColumn.itemPadding
+                enabled: visible &&
+                         root.passwordProtectEnabled &&
+                         !root.waitingForPasswordChange &&
+                         !root.waitingForPasswordProtectEnabledChange
+
+                onEditingFinished: if(text !== root.password && text !== root.passwordPlaceholder) {
+                    passwordErrorBoxLoader.message = "";
+                    root.setPassword(text);
+                    root.waitingForPasswordChange = true;
+                }
+
+                Rectangle {
+                    id: passwordTextBorder
+                    anchors.fill: parent
+                    radius: Style.slightlyRoundedButtonRadius
+                    border.width: Style.thickBorderWidth
+                    border.color: Style.sesTrayInputField
+                    color: palette.base
+                    z: -1
+                }
+            }
+
             CheckBox {
                 id: expireDateEnabledMenuItem
 
                 Layout.fillWidth: true
+                font.pixelSize: pixelSize
+                font.weight: fontWeight
 
                 spacing: scrollContentsColumn.indicatorSpacing
-                leftPadding: scrollContentsColumn.itemPadding
-                rightPadding: scrollContentsColumn.itemPadding
+                padding: scrollContentsColumn.itemPadding
                 indicator.width: scrollContentsColumn.indicatorItemWidth
                 indicator.height: scrollContentsColumn.indicatorItemWidth
 
@@ -573,179 +388,334 @@ Page {
                     root.toggleExpirationDate(checked);
                     root.waitingForExpireDateEnabledChange = true;
                 }
-
-                NCBusyIndicator {
-                    anchors.fill: parent
-                    visible: root.waitingForExpireDateEnabledChange
-                    running: visible
-                    z: 1
-                }
             }
 
-            RowLayout {
+            NCInputDateField {
+                id: expireDateField
+
+                font.pixelSize: pixelSize
+                font.weight: fontWeight
+
                 Layout.fillWidth: true
+                Layout.leftMargin: 3
+                Layout.rightMargin: 3
                 height: visible ? implicitHeight : 0
-                spacing: scrollContentsColumn.indicatorSpacing
+                leftPadding: 15
 
                 visible: root.expireDateEnabled
 
-                Image {
-                    Layout.preferredWidth: scrollContentsColumn.indicatorItemWidth
-                    Layout.fillHeight: true
+                selectByMouse: true
 
-                    verticalAlignment: Image.AlignVCenter
-                    horizontalAlignment: Image.AlignHCenter
-                    fillMode: Image.Pad
-
-                    source: "image://svgimage-custom-color/calendar.svg/" + palette.windowText
-                    sourceSize.width: scrollContentsColumn.rowIconWidth
-                    sourceSize.height: scrollContentsColumn.rowIconWidth
+                dateInMs: root.expireDate
+                maximumDateMs: root.maximumExpireDate
+                minimumDateMs: {
+                    const currentDate = new Date();
+                    const currentYear = currentDate.getFullYear();
+                    const currentMonth = currentDate.getMonth();
+                    const currentMonthDay = currentDate.getDate();
+                    // Start of day at 00:00:0000 UTC
+                    return Date.UTC(currentYear, currentMonth, currentMonthDay + 1);
                 }
 
-                NCInputDateField {
-                    id: expireDateField
+                enabled: root.expireDateEnabled &&
+                            !root.waitingForExpireDateChange &&
+                            !root.waitingForExpireDateEnabledChange
+
+                onUserAcceptedDate: {
+                    root.setExpireDate(dateInMs);
+                    root.waitingForExpireDateChange = true;
+                }
+
+                Rectangle {
+                    id: dateTextBorder
+                    anchors.fill: parent
+                    radius: Style.slightlyRoundedButtonRadius
+                    border.width: Style.thickBorderWidth
+                    border.color: Style.sesTrayInputField
+                    color: palette.base
+                    z: -1
+                }
+            }
+            
+            ColumnLayout {
+                Layout.fillWidth: true
+                height: visible ? implicitHeight : 0
+                spacing: Style.extraSmallSpacing
+
+                CheckBox {
+                    id: noteEnabledMenuItem
 
                     Layout.fillWidth: true
-                    height: visible ? implicitHeight : 0
 
-                    dateInMs: root.expireDate
-                    maximumDateMs: root.maximumExpireDate
-                    minimumDateMs: {
-                        const currentDate = new Date();
-                        const currentYear = currentDate.getFullYear();
-                        const currentMonth = currentDate.getMonth();
-                        const currentMonthDay = currentDate.getDate();
-                        // Start of day at 00:00:0000 UTC
-                        return Date.UTC(currentYear, currentMonth, currentMonthDay + 1);
+                    font.pixelSize: pixelSize
+                    font.weight: fontWeight
+
+
+                    spacing: scrollContentsColumn.indicatorSpacing
+                        padding: scrollContentsColumn.itemPadding
+                    indicator.width: scrollContentsColumn.indicatorItemWidth
+                    indicator.height: scrollContentsColumn.indicatorItemWidth
+
+                    checkable: true
+                    checked: root.noteEnabled
+                    text: qsTr("Note to recipient")
+                    enabled: !root.waitingForNoteEnabledChange
+
+                    onClicked: {
+                        root.toggleNoteToRecipient(checked);
+                        root.waitingForNoteEnabledChange = true;
+                    }
+                }
+            
+                Text{
+                    text: qsTr("Enter the note to recipient")
+                    color: Style.sesGray
+                    padding: scrollContentsColumn.itemPadding
+                    visible: root.noteEnabled
+                    font.family: root.font.family
+                    font.pixelSize: pixelSize
+                    font.weight: fontWeight
+                }
+
+                TextEdit {
+                    id: noteTextEdit
+                    visible: root.noteEnabled
+                    font.family: root.font.family
+                    font.pixelSize: pixelSize
+                    font.weight: fontWeight
+                    color: Style.sesTrayFontColor
+                    Layout.fillWidth: true
+                    Layout.leftMargin: 3
+                    Layout.rightMargin: 3
+                    height: visible ? 64 : 0
+                    wrapMode: TextEdit.Wrap
+                    selectByMouse: true
+                    padding: scrollContentsColumn.itemPadding
+                    enabled: root.noteEnabled &&
+                             !root.waitingForNoteChange &&
+                             !root.waitingForNoteEnabledChange
+
+                    onEditingFinished: if(text !== "") {
+                        root.setNote(text);
+                        root.waitingForNoteChange = true;
                     }
 
-                    enabled: root.expireDateEnabled &&
-                             !root.waitingForExpireDateChange &&
-                             !root.waitingForExpireDateEnabledChange
-
-                    onUserAcceptedDate: {
-                        root.setExpireDate(dateInMs);
-                        root.waitingForExpireDateChange = true;
-                    }
-
-                    NCBusyIndicator {
+                    Rectangle {
+                        id: noteTextBorder
                         anchors.fill: parent
-                        visible: root.waitingForExpireDateEnabledChange ||
-                                 root.waitingForExpireDateChange
-                        running: visible
-                        z: 1
+                        radius: Style.slightlyRoundedButtonRadius
+                        border.width: Style.thickBorderWidth
+                        border.color: Style.sesTrayInputField
+                        color: palette.base
+                        z: -1
+                    }
+                }
+            }           
+
+            Loader {
+                Layout.fillWidth: true
+                active: !root.isFolderItem && !root.isEncryptedItem
+                visible: active
+                sourceComponent: CheckBox {
+
+                    font.pixelSize: pixelSize
+                    font.weight: fontWeight
+
+                    spacing: scrollContentsColumn.indicatorSpacing
+                    padding: scrollContentsColumn.itemPadding
+                    indicator.width: scrollContentsColumn.indicatorItemWidth
+                    indicator.height: scrollContentsColumn.indicatorItemWidth
+
+                    checkable: true
+                    checked: root.editingAllowed
+                    text: qsTr("Allow upload and editing")
+                    enabled: !root.isSharePermissionChangeInProgress
+
+                    onClicked: root.toggleAllowEditing(checked)
+                }
+            }
+
+            Loader {
+                Layout.fillWidth: true
+                active: root.isFolderItem && !root.isEncryptedItem
+                visible: active
+                sourceComponent: ColumnLayout {
+                    id: permissionRadioButtonsLayout
+                    spacing: 0
+                    width: parent.width
+
+                    ButtonGroup {
+                        id: permissionModeRadioButtonsGroup
+                    }
+
+                    CheckBox {
+                        id: customPermissionsCheckBox
+                        Layout.fillWidth: true
+                        enabled: !root.isSharePermissionChangeInProgress
+                        checkable: false
+                        checked: true
+                        text: qsTr("Custom Permissions")
+                        spacing: scrollContentsColumn.indicatorSpacing
+                        padding: scrollContentsColumn.itemPadding
+                        indicator.width: scrollContentsColumn.indicatorItemWidth
+                        indicator.height: scrollContentsColumn.indicatorItemWidth
+                        onClicked: root.permissionModeChanged(permissionMode)
+                        font.pixelSize: pixelSize
+                        font.weight: fontWeight
+                    }
+
+                    CheckBox {
+                        readonly property int permissionMode: ShareModel.ModeViewOnly
+                        Layout.fillWidth: true
+                        Layout.leftMargin: 30
+                        ButtonGroup.group: permissionModeRadioButtonsGroup
+                        enabled: !root.isSharePermissionChangeInProgress
+                        checked: root.currentPermissionMode === permissionMode
+                        text: qsTr("View only")
+                        indicator.width: scrollContentsColumn.indicatorItemWidth
+                        indicator.height: scrollContentsColumn.indicatorItemWidth
+                        spacing: scrollContentsColumn.indicatorSpacing
+                        padding: scrollContentsColumn.itemPadding
+                        onClicked: root.permissionModeChanged(permissionMode)
+                        visible: customPermissionsCheckBox.checked
+                        font.pixelSize: pixelSize
+                        font.weight: fontWeight
+                    }
+
+                    CheckBox {
+                        readonly property int permissionMode: ShareModel.ModeUploadAndEditing
+                        Layout.fillWidth: true
+                        Layout.leftMargin: 30
+                        ButtonGroup.group: permissionModeRadioButtonsGroup
+                        enabled: !root.isSharePermissionChangeInProgress
+                        checked: root.currentPermissionMode === permissionMode
+                        text: qsTr("Allow upload and editing")
+                        indicator.width: scrollContentsColumn.indicatorItemWidth
+                        indicator.height: scrollContentsColumn.indicatorItemWidth
+                        spacing: scrollContentsColumn.indicatorSpacing
+                        padding: scrollContentsColumn.itemPadding
+                        onClicked: root.permissionModeChanged(permissionMode)
+                        visible: customPermissionsCheckBox.checked
+                        font.pixelSize: pixelSize
+                        font.weight: fontWeight
+                    }
+
+                    CheckBox {
+                        readonly property int permissionMode: ShareModel.ModeFileDropOnly
+                        Layout.fillWidth: true
+                        Layout.leftMargin: 30
+                        ButtonGroup.group: permissionModeRadioButtonsGroup
+                        enabled: !root.isSharePermissionChangeInProgress
+                        checked: root.currentPermissionMode === permissionMode
+                        text: qsTr("File drop (upload only)")
+                        indicator.width: scrollContentsColumn.indicatorItemWidth
+                        indicator.height: scrollContentsColumn.indicatorItemWidth
+                        spacing: scrollContentsColumn.indicatorSpacing
+                        padding: scrollContentsColumn.itemPadding
+                        onClicked: root.permissionModeChanged(permissionMode)
+                        visible: customPermissionsCheckBox.checked && !root.isInternalShare // Removed SES-307
+                        font.pixelSize: pixelSize
+                        font.weight: fontWeight
                     }
                 }
             }
 
             CheckBox {
-                id: noteEnabledMenuItem
+                id: allowResharingCheckBox
 
                 Layout.fillWidth: true
 
+                font.pixelSize: pixelSize
+                font.weight: fontWeight
+
                 spacing: scrollContentsColumn.indicatorSpacing
-                leftPadding: scrollContentsColumn.itemPadding
-                rightPadding: scrollContentsColumn.itemPadding
+                padding: scrollContentsColumn.itemPadding
                 indicator.width: scrollContentsColumn.indicatorItemWidth
                 indicator.height: scrollContentsColumn.indicatorItemWidth
 
                 checkable: true
-                checked: root.noteEnabled
-                text: qsTr("Note to recipient")
-                enabled: !root.waitingForNoteChange
+                checked: root.resharingAllowed
+                text: qsTr("Allow resharing")
+                enabled: !root.isSharePermissionChangeInProgress && root.serverAllowsResharing
+                visible: root.serverAllowsResharing
+                onClicked: root.toggleAllowResharing(checked);
 
-                onClicked: {
-                    if (!checked && root.note !== "") {
-                        root.setNote("");
-                        root.waitingForNoteChange = true;
-                    }
-                }
-
-                NCBusyIndicator {
-                    anchors.fill: parent
-                    visible: root.waitingForNoteChange && !noteEnabledMenuItem.checked
-                    running: visible
-                    z: 1
+                Connections {
+                    target: root
+                    onResharingAllowedChanged: allowResharingCheckBox.checked = root.resharingAllowed
                 }
             }
 
-            RowLayout {
+            Loader {
                 Layout.fillWidth: true
-                height: visible ? implicitHeight : 0
-                spacing: scrollContentsColumn.indicatorSpacing
 
-                visible: noteEnabledMenuItem.checked
+                active: root.isLinkShare
+                visible: active
+                sourceComponent: ColumnLayout {
+                    CheckBox {
+                        id: hideDownloadEnabledMenuItem
 
-                Image {
-                    Layout.preferredWidth: scrollContentsColumn.indicatorItemWidth
-                    Layout.fillHeight: true
+                        anchors.left: parent.left
+                        anchors.right: parent.right
 
-                    verticalAlignment: Image.AlignVCenter
-                    horizontalAlignment: Image.AlignHCenter
-                    fillMode: Image.Pad
+                        font.pixelSize: pixelSize
+                        font.weight: fontWeight
 
-                    source: "image://svgimage-custom-color/comment.svg/" + palette.windowText
-                    sourceSize.width: scrollContentsColumn.rowIconWidth
-                    sourceSize.height: scrollContentsColumn.rowIconWidth
-                }
+                        spacing: scrollContentsColumn.indicatorSpacing
+                        padding: scrollContentsColumn.itemPadding
+                        indicator.width: scrollContentsColumn.indicatorItemWidth
+                        indicator.height: scrollContentsColumn.indicatorItemWidth
 
-                NCInputTextArea {
-                    id: noteTextArea
-
-                    Layout.fillWidth: true
-                    // no height here -- let the textarea figure it out how much it needs
-                    submitButton.height: Math.min(Style.talkReplyTextFieldPreferredHeight, height - 2)
-
-                    text: root.note
-                    placeholderText: qsTr("Enter a note for the recipient")
-                    enabled: noteEnabledMenuItem.checked && !root.waitingForNoteChange
-
-                    onEditingFinished: if (text !== "" && text !== root.note) {
-                        root.setNote(text);
-                        root.waitingForNoteChange = true;
-                    }
-
-                    NCBusyIndicator {
-                        anchors.fill: parent
-                        visible: root.waitingForNoteChange && noteEnabledMenuItem.checked
-                        running: visible
-                        z: 1
+                        checked: root.hideDownload
+                        text: qsTr("Hide download")
+                        enabled: !root.isHideDownloadInProgress
+                        onClicked: root.toggleHideDownload(checked);
                     }
                 }
-            }
-
-            Button {
-                height: Style.standardPrimaryButtonHeight
-                icon.source: "image://svgimage-custom-color/close.svg/" + palette.buttonText
-                icon.height: Style.extraSmallIconSize
-                text: qsTr("Unshare")
-                onClicked: root.deleteShare()
-            }
-
-            Button {
-                height: Style.standardPrimaryButtonHeight
-                icon.source: "image://svgimage-custom-color/add.svg/" + palette.buttonText
-                icon.height: Style.extraSmallIconSize
-                text: qsTr("Add another link")
-                visible: root.isLinkShare && root.canCreateLinkShares
-                enabled: visible
-                onClicked: root.createNewLinkShare()
             }
         }
     }
 
-    footer: DialogButtonBox {
-        topPadding: 0
-        bottomPadding: root.padding
-        rightPadding: root.padding
-        leftPadding: root.padding
-        alignment: Qt.AlignRight | Qt.AlignVCenter
-        contentWidth: (contentItem as ListView).contentWidth
-        visible: copyShareLinkButton.visible
+    footer: GridLayout {
+        id: buttonGrid
 
-        background: Rectangle { color: "transparent" }
+        columns: 1
+        rows: 2
 
-        Button {
+        PrimaryPillButton {
+            Layout.columnSpan: buttonGrid.columns
+
+            iconSource: Style.sesLightPlus
+
+            font.pixelSize: pixelSize
+            font.weight: fontWeight
+            text: qsTr("Add another link")
+
+            visible: root.isLinkShare && root.canCreateLinkShares
+            enabled: visible
+
+            Layout.leftMargin: 16
+            Layout.bottomMargin: 16
+            Layout.row: 0
+
+            onClicked: root.createNewLinkShare()
+        }
+
+        SecondaryPillButton {
+            id: unshareButton
+
+            font.pixelSize: pixelSize
+            font.weight: fontWeight
+            text: qsTr("Unshare")
+
+            Layout.bottomMargin: 16
+            Layout.leftMargin: 16
+            Layout.rightMargin: 60
+            Layout.row: 1
+            onClicked: root.deleteShare()
+        }
+
+        PrimaryPillButton {
             id: copyShareLinkButton
 
             function copyShareLink() {
@@ -760,20 +730,19 @@ Page {
 
             property bool shareLinkCopied: false
 
-            height: Style.standardPrimaryButtonHeight
+            iconSource: Style.sesLightClipboard
 
-            Layout.preferredWidth: Style.activityListButtonWidth
-            Layout.preferredHeight: Style.activityListButtonHeight
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-
-            icon.source: "image://svgimage-custom-color/copy.svg/" + palette.brightText
-            icon.width: Style.smallIconSize
-            icon.height: Style.smallIconSize
             text: shareLinkCopied ? qsTr("Share link copied!") : qsTr("Copy share link")
+
             visible: root.isLinkShare
             enabled: visible
 
             onClicked: copyShareLink()
+
+            Layout.alignment: Qt.AlignRight
+            Layout.bottomMargin: 16
+            Layout.rightMargin: 20
+            Layout.row: 1
 
             Behavior on Layout.preferredWidth {
                 SmoothedAnimation { duration: Style.shortAnimationDuration }

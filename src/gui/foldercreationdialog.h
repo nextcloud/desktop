@@ -34,6 +34,9 @@ private:
     Ui::FolderCreationDialog *ui;
 
     QString _destination;
+
+    void customizeStyle();
+    void sizeDialog();
 };
 
 }
