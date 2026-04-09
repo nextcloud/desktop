@@ -910,24 +910,6 @@ public:
 
 #endif
 
-// Windows Shell / Explorer pinning fallbacks, see issue: https://github.com/nextcloud/desktop/issues/1599
-#ifdef Q_OS_WIN
-void SocketApi::command_COPYASPATH(const QString &localFile, SocketListener *)
-{
-    setClipboardText(localFile);
-}
-
-void SocketApi::command_OPENNEWWINDOW(const QString &localFile, SocketListener *)
-{
-    QDesktopServices::openUrl(QUrl::fromLocalFile(localFile));
-}
-
-void SocketApi::command_OPEN(const QString &localFile, SocketListener *socketListener)
-{
-    command_OPENNEWWINDOW(localFile, socketListener);
-}
-#endif
-
 // Fetches the private link url asynchronously and then calls the target slot
 void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFile, const std::function<void(const QString &url)> &targetFun)
 {
