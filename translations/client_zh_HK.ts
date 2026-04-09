@@ -5100,8 +5100,8 @@ Server replied with error: %2</source>
         <translation>選擇新位址...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1146"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1209"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1132"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1195"/>
         <source>File actions</source>
         <translation>檔案操作</translation>
     </message>

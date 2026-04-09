@@ -5097,8 +5097,8 @@ Veateade serveri päringuvastuses: %2</translation>
         <translation>Vali uus asukoht…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1146"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1209"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1132"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1195"/>
         <source>File actions</source>
         <translation>Tegevused failidega</translation>
     </message>
