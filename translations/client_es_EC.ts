@@ -2392,136 +2392,136 @@ Alternatively, you can restore all deleted files by downloading them from the se
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="424"/>
+        <location filename="../src/gui/folderman.cpp" line="426"/>
         <source>Could not reset folder state</source>
         <translation>No fue posible restablecer el estado de la carpeta</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1457"/>
+        <location filename="../src/gui/folderman.cpp" line="1459"/>
         <source> (backup)</source>
         <translation>(respaldo)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1462"/>
+        <location filename="../src/gui/folderman.cpp" line="1464"/>
         <source> (backup %1)</source>
         <translation>(respaldo %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="425"/>
+        <location filename="../src/gui/folderman.cpp" line="427"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Se encontró un antiguo registro de sincronización &quot;%1&quot;, pero no se pudo eliminar. Por favor, asegúrate de que ninguna aplicación lo esté utilizando actualmente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1801"/>
+        <location filename="../src/gui/folderman.cpp" line="1803"/>
         <source>Undefined state.</source>
         <translation>Estado indefinido.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1804"/>
+        <location filename="../src/gui/folderman.cpp" line="1806"/>
         <source>Waiting to start syncing.</source>
         <translation>Agurardando para iniciar la sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1807"/>
+        <location filename="../src/gui/folderman.cpp" line="1809"/>
         <source>Preparing for sync.</source>
         <translation>Preparando para sincronizar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1817"/>
+        <location filename="../src/gui/folderman.cpp" line="1819"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1820"/>
+        <location filename="../src/gui/folderman.cpp" line="1822"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1823"/>
+        <location filename="../src/gui/folderman.cpp" line="1825"/>
         <source>Syncing %1 of %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1829"/>
+        <location filename="../src/gui/folderman.cpp" line="1831"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1831"/>
+        <location filename="../src/gui/folderman.cpp" line="1833"/>
         <source>Syncing %1 (%2 left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1834"/>
+        <location filename="../src/gui/folderman.cpp" line="1836"/>
         <source>Syncing %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1839"/>
+        <location filename="../src/gui/folderman.cpp" line="1841"/>
         <source>Sync is running.</source>
         <translation>La Sincronización está en curso.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1844"/>
+        <location filename="../src/gui/folderman.cpp" line="1846"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>La sincronización finalizó con conflictos no resueltos.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1846"/>
+        <location filename="../src/gui/folderman.cpp" line="1848"/>
         <source>Last sync was successful.</source>
         <translation>La última sincronización fue exitosa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1852"/>
+        <location filename="../src/gui/folderman.cpp" line="1854"/>
         <source>Setup error.</source>
         <translation>Error de configuración.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1855"/>
+        <location filename="../src/gui/folderman.cpp" line="1857"/>
         <source>Sync request was cancelled.</source>
         <translation>La solicitud de sincronización fue cancelada.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1872"/>
+        <location filename="../src/gui/folderman.cpp" line="1874"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1880"/>
-        <location filename="../src/gui/folderman.cpp" line="1959"/>
+        <location filename="../src/gui/folderman.cpp" line="1882"/>
+        <location filename="../src/gui/folderman.cpp" line="1961"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1889"/>
+        <location filename="../src/gui/folderman.cpp" line="1891"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1893"/>
+        <location filename="../src/gui/folderman.cpp" line="1895"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1901"/>
-        <location filename="../src/gui/folderman.cpp" line="1906"/>
+        <location filename="../src/gui/folderman.cpp" line="1903"/>
+        <location filename="../src/gui/folderman.cpp" line="1908"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1966"/>
+        <location filename="../src/gui/folderman.cpp" line="1968"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1981"/>
+        <location filename="../src/gui/folderman.cpp" line="1983"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2118"/>
+        <location filename="../src/gui/folderman.cpp" line="2120"/>
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
@@ -2529,17 +2529,17 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1858"/>
+        <location filename="../src/gui/folderman.cpp" line="1860"/>
         <source>Sync is paused.</source>
         <translation>La sincronización está pausada.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="416"/>
+        <location filename="../src/gui/folderman.cpp" line="418"/>
         <source>Please open the app settings to grant access to the sync folders.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1864"/>
+        <location filename="../src/gui/folderman.cpp" line="1866"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (La sincronización está pausada)</translation>
     </message>
@@ -3164,22 +3164,22 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="805"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="809"/>
         <source>Password for share required</source>
         <translation>Se requiere contraseña para compartir</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="806"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="810"/>
         <source>Please enter a password for your link share:</source>
         <translation>Ingresa una contraseña para compartir tu enlace:</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="832"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="836"/>
         <source>Sharing error</source>
         <translation>Error al compartir</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="833"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="837"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -5013,48 +5013,48 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="773"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="777"/>
         <source>Context menu share</source>
         <translation>Compartir desde el menú contextual</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1111"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1115"/>
         <source>I shared something with you</source>
         <translation>Te compartí algo</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1124"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1161"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1128"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1165"/>
         <source>Share options</source>
         <translation>Opciones de uso compartido</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1128"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1132"/>
         <source>Send private link by email …</source>
         <translation>Enviar enlace privado por correo electrónico...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1127"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1131"/>
         <source>Copy private link to clipboard</source>
         <translation>Copiar la liga privada al portapapeles</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="539"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="543"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
         <translation>Error al cifrar la carpeta en &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="540"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="544"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
         <translation>La cuenta %1 no tiene configurada la cifrado de extremo a extremo. Configúralo en la configuración de tu cuenta para habilitar el cifrado de carpetas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="559"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="563"/>
         <source>Failed to encrypt folder</source>
         <translation>Error al cifrar la carpeta</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="560"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="564"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
@@ -5063,111 +5063,111 @@ Server replied with error: %2</source>
       El servidor respondió con el error: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="567"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="571"/>
         <source>Folder encrypted successfully</source>
         <translation>Carpeta cifrada correctamente</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="568"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="572"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
         <translation>La siguiente carpeta se cifró correctamente: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1055"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1059"/>
         <source>Select new location …</source>
         <translation>Seleccionar una nueva ubicación...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1132"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1195"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1136"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1199"/>
         <source>File actions</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1125"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1342"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1129"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1346"/>
         <source>Activity</source>
         <translation>Actividad</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1153"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1157"/>
         <source>Leave this share</source>
         <translation>Dejar este uso compartido</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1159"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1163"/>
         <source>Resharing this file is not allowed</source>
         <translation>No se permite volver a compartir este archivo</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1159"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1163"/>
         <source>Resharing this folder is not allowed</source>
         <translation>No se permite volver a compartir esta carpeta</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1203"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1207"/>
         <source>Encrypt</source>
         <translation>Cifrar</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1214"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1218"/>
         <source>Lock file</source>
         <translation>Bloquear archivo</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1217"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1221"/>
         <source>Unlock file</source>
         <translation>Desbloquear archivo</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1233"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1237"/>
         <source>Locked by %1</source>
         <translation>Bloqueado por %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1237"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1241"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1377"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1381"/>
         <source>Resolve conflict …</source>
         <translation>Resolver conflicto...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1381"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1385"/>
         <source>Move and rename …</source>
         <translation>Mover y renombrar...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1384"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1388"/>
         <source>Move, rename and upload …</source>
         <translation>Mover, renombrar y cargar...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1386"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1390"/>
         <source>Delete local changes</source>
         <translation>Eliminar cambios locales</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1392"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1396"/>
         <source>Move and upload …</source>
         <translation>Mover y cargar...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1393"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1397"/>
         <source>Delete</source>
         <translation>Borrar</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1165"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1169"/>
         <source>Copy internal link</source>
         <translation>Copiar enlace interno</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1348"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1350"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1352"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1354"/>
         <source>Open in browser</source>
         <translation>Abrir en el navegador</translation>
     </message>
