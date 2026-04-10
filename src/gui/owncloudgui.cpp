@@ -139,11 +139,11 @@ ownCloudGui::ownCloudGui(Application *parent)
 
 // TODO SES-459 check casing / spelling
     qmlRegisterUncreatableType<QAbstractItemModel>("com.ionos.hidrivenext.desktopclient", 1, 0, "QAbstractItemModel", "QAbstractItemModel");
-    qmlRegisterUncreatableType<Activity>("com.ionos.hidrivenext.desktopclient", 1, 0, "Activity", "Activity");
-    qmlRegisterUncreatableType<TalkNotificationData>("com.ionos.hidrivenext.desktopclient", 1, 0, "TalkNotificationData", "TalkNotificationData");
+    qmlRegisterUncreatableType<Activity>("com.ionos.hidrivenext.desktopclient", 1, 0, "activity", "Activity");
+    qmlRegisterUncreatableType<TalkNotificationData>("com.ionos.hidrivenext.desktopclient", 1, 0, "talkNotificationData", "TalkNotificationData");
     qmlRegisterUncreatableType<UnifiedSearchResultsListModel>("com.ionos.hidrivenext.desktopclient", 1, 0, "UnifiedSearchResultsListModel", "UnifiedSearchResultsListModel");
-    qmlRegisterUncreatableType<UserStatus>("com.ionos.hidrivenext.desktopclient", 1, 0, "UserStatus", "Access to Status enum");
-    qmlRegisterUncreatableType<Sharee>("com.ionos.hidrivenext.desktopclient", 1, 0, "Sharee", "Access to Type enum");
+    qmlRegisterUncreatableType<UserStatus>("com.ionos.hidrivenext.desktopclient", 1, 0, "userStatus", "Access to Status enum");
+    qmlRegisterUncreatableType<Sharee>("com.ionos.hidrivenext.desktopclient", 1, 0, "sharee", "Access to Type enum");
     qmlRegisterUncreatableType<ClientSideEncryptionTokenSelector>("com.ionos.hidrivenext.desktopclient", 1, 0, "ClientSideEncryptionTokenSelector", "Access to the certificate selector");
 
     qRegisterMetaType<ActivityListModel *>("ActivityListModel*");
