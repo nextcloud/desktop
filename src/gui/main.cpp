@@ -70,6 +70,8 @@ int main(int argc, char **argv)
 
     Q_INIT_RESOURCE(resources);
     Q_INIT_RESOURCE(theme);
+    Q_INIT_RESOURCE(ionos);
+    Q_INIT_RESOURCE(ionos_theme);
 
     // OpenSSL 1.1.0: No explicit initialisation or de-initialisation is necessary.
 #ifdef Q_OS_MACOS
@@ -110,11 +112,11 @@ int main(int argc, char **argv)
 #endif
 
 #ifdef IONOS_BUILD
-    OCC::Application app(argc, argv);
-    app.setStyle(new sesStyle(QStyleFactory::create("WindowsVista")));
-
     QQuickStyle::setStyle(qmlStyle);
     QQuickStyle::setFallbackStyle(QStringLiteral("Fusion"));
+
+    OCC::Application app(argc, argv);
+    app.setStyle(new sesStyle(QStyleFactory::create("WindowsVista")));
 #elif
     QQuickStyle::setStyle(qmlStyle);
 
