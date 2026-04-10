@@ -32,6 +32,7 @@ public:
 
     void initializePage() override;
     void cleanupPage() override;
+    [[nodiscard]] int nextId() const override;
     void setConnected();
     [[nodiscard]] bool isComplete() const override;
 
