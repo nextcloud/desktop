@@ -138,7 +138,14 @@
                                             <string>Show Server &amp;Notifications</string>
                                         </property>
                                     </widget>
-                                </item>                              
+                                </item>   
+                                <item>
+							       <widget class="QCheckBox" name="quotaWarningNotificationsCheckBox">
+							        <property name="text">
+							         <string>Show &amp;Quota Warning Notifications</string>
+							        </property>
+							       </widget>
+							      </item>                           
                             </layout>
                         </widget>
                     </item>

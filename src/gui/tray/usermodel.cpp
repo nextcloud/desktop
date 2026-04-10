@@ -1546,7 +1546,7 @@ void UserModel::removeAccount(const int id)
                               "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
                                .arg(Utility::escape(_users[id]->name())),
                            QMessageBox::NoButton);
-    const auto * const yesButton = messageBox.addButton(tr("Remove connection"), QMessageBox::YesRole);
+    QPushButton * yesButton = messageBox.addButton(tr("Remove connection"), QMessageBox::YesRole);
     messageBox.addButton(tr("Cancel"), QMessageBox::NoRole);
 
     styleMessageBox(messageBox, yesButton);
