@@ -8,6 +8,8 @@
           "C:/Craft64/dev-utils/bin"
       ],
         "BUILD_TESTING":"OFF",
+        "LOCALBUILD": "ON",
+        "WHITELABEL_NAME": "ionos",
       },
       "cmake.buildDirectory": "${workspaceFolder}/../build/${buildKitTargetOs}-${buildKitVendor}-${buildKitTargetArch}/${buildType}",
       "files.associations": {

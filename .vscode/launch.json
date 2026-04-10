@@ -50,7 +50,7 @@
             "name": "(RelWithDebInfo) Launch HiDriveNext",
             "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/../build/win32-MSVC-x64/RelWithDebInfo/bin/IONOS_HiDrive_Next.exe",
+            "program": "${workspaceFolder}/../build/win32-MSVC-x64/RelWithDebInfo/bin/ionos-hidrive-next.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
