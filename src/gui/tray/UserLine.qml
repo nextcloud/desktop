@@ -91,7 +91,6 @@ AbstractButton {
                     visible: model.statusMessage !== ""
                     text: statusMessage
                     elide: Text.ElideRight
-                    font: userLine.font
                     leftPadding: Style.accountLabelsSpacing
                     font.pixelSize: Style.subLinePixelSize
 
@@ -128,7 +127,6 @@ AbstractButton {
                 width: Style.sesAccountMenuWidth
                 height: Math.min(implicitHeight, maxMenuHeight)
                 closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
-                height: implicitHeight
 
                 bottomInset: 0
                 topInset: 0

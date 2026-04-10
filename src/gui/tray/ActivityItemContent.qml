@@ -269,9 +269,8 @@ RowLayout {
                 wrapMode: Text.Wrap
                 maximumLineCount: 2
                 font: root.font
-                color: Style.sesTrayFontColor                
+                color: Style.sesTrayFontColor
                 visible: text !== ""
-                color: root.adaptiveTextColor
             }
 
             ActivityItemActions {
