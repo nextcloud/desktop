@@ -22,12 +22,12 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="196"/>
         <source>File details</source>
-        <translation type="unfinished"/>
+        <translation>Detaily súboru</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
         <source>File actions</source>
-        <translation type="unfinished"/>
+        <translation>Akcie súboru</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
@@ -276,7 +276,7 @@
     <message>
         <location filename="../src/gui/integration/FileActionsWindow.qml" line="33"/>
         <source>File actions for %1</source>
-        <translation type="unfinished"/>
+        <translation>Akcie súboru pre %1</translation>
     </message>
 </context>
 <context>
@@ -323,7 +323,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
         <source>Virtual files appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. Virtual files and classic sync can not be used at the same time.</source>
-        <translation type="unfinished"/>
+        <translation>Virtuálne súbory sa zobrazujú ako bežné súbory, ale nepoužívajú miestny úložný priestor. Obsah sa stiahne automaticky, keď otvoríte súbor. Virtuálne súbory a klasická synchronizácia sa nemôžu používať súčasne.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
@@ -428,37 +428,37 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="413"/>
         <source>Start new conversation?</source>
-        <translation type="unfinished"/>
+        <translation>Začať novú konverzáciu?</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="433"/>
         <source>New conversation</source>
-        <translation type="unfinished"/>
+        <translation>Nová konverzácia</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="437"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Zrušiť</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="458"/>
         <source>This will clear the existing conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Týmto sa vymaže existujúca konverzácia.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="503"/>
         <source>Ask Assistant…</source>
-        <translation type="unfinished"/>
+        <translation>Opýtajte sa asistenta…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="531"/>
         <source>Send assistant question</source>
-        <translation type="unfinished"/>
+        <translation>Odoslať otázku asistentovi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="552"/>
         <source>Start a new assistant chat</source>
-        <translation type="unfinished"/>
+        <translation>Spustiť nový chat s asistentom</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
@@ -548,12 +548,12 @@ Malo by sa konto importovať?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="159"/>
         <source>Virtual files</source>
-        <translation type="unfinished"/>
+        <translation>Virtuálne súbory</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="205"/>
         <source>Classic sync</source>
-        <translation type="unfinished"/>
+        <translation>Klasická synchronizácia</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="85"/>
@@ -791,43 +791,43 @@ Počkajte na novú synchronizáciu a potom ho zašifrujte.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="962"/>
         <source>Grant access to sync folder</source>
-        <translation type="unfinished"/>
+        <translation>Povoliť prístup na synchronizačný priečinok</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="974"/>
         <source>Access Error</source>
-        <translation type="unfinished"/>
+        <translation>Prístupová chyba</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="975"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Nie je možné získať prístup k vybranému priečinku. Skúste to prosím znova.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="983"/>
         <source>Wrong Folder</source>
-        <translation type="unfinished"/>
+        <translation>Nesprávny priečinok</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="984"/>
         <source>Please select the original sync folder: %1</source>
-        <translation type="unfinished"/>
+        <translation>Prosím, vyberte pôvodnú synchronizačnú zložku: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="993"/>
         <location filename="../src/gui/accountsettings.cpp" line="1002"/>
         <source>Bookmark Error</source>
-        <translation type="unfinished"/>
+        <translation>Chyba záložky</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="994"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa vytvoriť bezpečnostnú záložku pre priečinok. Skúste to prosím znova.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1003"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa vyriešiť bezpečnostnú záložku. Skúste to znova.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1000"/>
@@ -905,7 +905,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1422"/>
         <source>Connected to %1 (%2).</source>
-        <translation type="unfinished"/>
+        <translation>Pripojené k %1 (%2).</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1537"/>
@@ -930,7 +930,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1858"/>
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
-        <translation type="unfinished"/>
+        <translation>Integrácia virtuálnych súborov zatiaľ nepodporuje šifrovanie od konca ku koncu.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1757"/>
@@ -2001,38 +2001,38 @@ Môže to byť problém s knižnicami OpenSSL.</translation>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="260"/>
         <source>Your account is offline %1.</source>
         <comment>account url</comment>
-        <translation type="unfinished"/>
+        <translation>Váš účet je offline %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="269"/>
         <source>The file ID is empty for %1.</source>
         <comment>file name</comment>
-        <translation type="unfinished"/>
+        <translation>ID súboru je prázdne pre %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="277"/>
         <source>The file type for %1 is not valid.</source>
         <comment>file name</comment>
-        <translation type="unfinished"/>
+        <translation>Typ súboru pre%1 nie je platný.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="289"/>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mimetype, e.g text/plain files</comment>
         <extracomment>TRANSLATOR Placeholder contains file MIME type</extracomment>
-        <translation type="unfinished"/>
+        <translation>Žiadne akcie so súbormi neboli serverom vrátené pre %1 súbory.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="372"/>
         <source>%1 did not succeed, please try again later. If you need help, contact your server administrator.</source>
         <comment>file action error message</comment>
-        <translation type="unfinished"/>
+        <translation>%1 nepodarilo sa to, skúste to prosím neskôr. Ak potrebujete pomoc, kontaktujte správcu servera.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="388"/>
         <source>%1 done.</source>
         <comment>file action success message</comment>
-        <translation type="unfinished"/>
+        <translation>%1 hotovo.</translation>
     </message>
 </context>
 <context>
@@ -2549,7 +2549,7 @@ Pre pokročilých užívateľov: tento problém môže súvisieť s viacerými s
     <message>
         <location filename="../src/gui/folderman.cpp" line="418"/>
         <source>Please open the app settings to grant access to the sync folders.</source>
-        <translation type="unfinished"/>
+        <translation>Prosím, otvorte nastavenia aplikácie a povoľte prístup k synchronizačným priečinkom.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1866"/>
@@ -2569,7 +2569,7 @@ Pre pokročilých užívateľov: tento problém môže súvisieť s viacerými s
         <location filename="../src/gui/folderstatusdelegate.cpp" line="284"/>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="426"/>
         <source>Grant access</source>
-        <translation type="unfinished"/>
+        <translation>Povoliť prístup</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="272"/>
@@ -2676,7 +2676,7 @@ Pre pokročilých užívateľov: tento problém môže súvisieť s viacerými s
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
         <source>Select the synchronization folder to restore access.</source>
-        <translation type="unfinished"/>
+        <translation>Vyberte synchronizačný priečinok na obnovenie prístupu.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1057"/>
@@ -2939,7 +2939,7 @@ Pre pokročilých užívateľov: tento problém môže súvisieť s viacerými s
     <message>
         <location filename="../src/gui/generalsettings.ui" line="46"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>Všeobecné nastavenia</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
@@ -3148,12 +3148,12 @@ Prechod na nižšiu verziu nie je možný okamžite: zmena zo stabilnej na podni
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="673"/>
         <source>Login Item Requires Approval</source>
-        <translation type="unfinished"/>
+        <translation> Položka prihlásenia vyžaduje schválenie</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="674"/>
         <source>The login item has been registered but needs your approval to become active. Please open System Settings → General → Login Items and enable %1 there.</source>
-        <translation type="unfinished"/>
+        <translation>Položka prihlásenia bola zaregistrovaná, ale na aktiváciu vyžaduje vaše schválenie. Otvorte prosím Systémové nastavenia → Všeobecné → Položky prihlásenia a tam %1 ju povoľte.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="666"/>
@@ -3468,7 +3468,7 @@ Položky, pri ktorých je povolené odstraňovanie budú vymazané, ak bránia o
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="46"/>
         <source>&lt;p&gt;Copyright 2017-2026 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright 2017-2026 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="49"/>
@@ -4506,7 +4506,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <location filename="../src/libsync/owncloudpropagator.cpp" line="233"/>
         <source>%1. Restoration failed: %2</source>
         <comment>%1 is the generic error string, the file restoration error (%2) will be appended here</comment>
-        <translation type="unfinished"/>
+        <translation>%1. Obnovenie zlyhalo: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="233"/>
@@ -5101,7 +5101,7 @@ Server odpovedal chybou: %2</translation>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1136"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1199"/>
         <source>File actions</source>
-        <translation type="unfinished"/>
+        <translation>Akcie súboru</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1129"/>
@@ -5493,12 +5493,12 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="165"/>
         <source>Reauthorization required</source>
-        <translation type="unfinished"/>
+        <translation>Opätovné povolenie vyžadované</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="166"/>
         <source>Please grant access to your sync folders</source>
-        <translation type="unfinished"/>
+        <translation>Prosím, udeľte prístup k vašim synchronizačným priečinkom</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="179"/>
@@ -5565,7 +5565,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="451"/>
         <source>No synchronisation configured</source>
-        <translation type="unfinished"/>
+        <translation>Žiadna synchronizácia nie je nastavená</translation>
     </message>
 </context>
 <context>
@@ -5808,42 +5808,42 @@ Server odpovedal chybou: %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="1357"/>
         <source>Open %1 Assistant</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation type="unfinished"/>
+        <translation>Otvoriť %1 asistenta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1464"/>
         <source>Assistant is not available for this account.</source>
-        <translation type="unfinished"/>
+        <translation>Asistent nie je pre tento účet dostupný.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1470"/>
         <source>Assistant is already processing a request.</source>
-        <translation type="unfinished"/>
+        <translation>Asistent už spracováva požiadavku.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1507"/>
         <source>Sending your request…</source>
-        <translation type="unfinished"/>
+        <translation>Odosielanie vašej požiadavky…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1580"/>
         <source>No response yet. Please try again later.</source>
-        <translation type="unfinished"/>
+        <translation>Žiadna odpoveď zatiaľ. Skúste to, prosím, neskôr.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1599"/>
         <source>No supported assistant task types were returned.</source>
-        <translation type="unfinished"/>
+        <translation>Žiadne podporované typy úloh asistenta neboli vrátené.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1681"/>
         <source>Waiting for the assistant response…</source>
-        <translation type="unfinished"/>
+        <translation>Čakanie na odpoveď asistenta…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1703"/>
         <source>Assistant request failed (%1).</source>
-        <translation type="unfinished"/>
+        <translation>Požiadavka asistenta zlyhala (%1).</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1211"/>
@@ -6008,7 +6008,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="39"/>
         <source>Could not be downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Nie je možné stiahnuť</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="61"/>
@@ -6837,7 +6837,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="143"/>
         <source>Open settings</source>
-        <translation type="unfinished"/>
+        <translation>Otvoriť nastavenia</translation>
     </message>
 </context>
 <context>
@@ -6998,7 +6998,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="166"/>
         <source>Account sync status requires attention</source>
-        <translation type="unfinished"/>
+        <translation>Stav synchronizácie účtu vyžaduje pozornosť</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="153"/>
