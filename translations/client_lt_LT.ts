@@ -6097,7 +6097,7 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="61"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation>Lengvai naudojamas el. paštas, kalendorius bei adresatai</translation>
+        <translation>Lengvai naudojamas el. paštas, kalendorius bei kontaktai</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="62"/>
