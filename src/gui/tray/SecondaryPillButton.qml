@@ -13,7 +13,7 @@ Button{
 
   property bool isMouseOver: false
   property bool removeBorder: false
-  property color textColor: "black"
+  property color textColor: Style.sesTrayFontColor
   property color backgroundColor: Style.sesPillButtonSecondaryBackgroundColor
 
   contentItem: Row {
