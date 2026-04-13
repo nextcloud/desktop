@@ -252,7 +252,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         }
 #ifdef Q_OS_MACOS
         if (folder->needsSandboxBookmark()) {
-            errors.prepend(tr("Select the synchronization folder to restore access."));
+            errors.prepend(tr("Due to recent security improvements, the client no longer has access to the folder. Your approval is required one time to restore access. Please select the synchronization folder root."));
         }
 #endif
         return errors;
