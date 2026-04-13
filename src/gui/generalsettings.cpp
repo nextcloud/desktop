@@ -304,13 +304,13 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 
     // accountAdded means the wizard was finished and the wizard might change some options.
     connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
-    connect(_ui->checkUpdateLinkButton, &OCC::LinkButton::clicked, this, &GeneralSettings::slotUpdateCheckNow);
     connect(_ui->moreInfoLinkButton, &OCC::LinkButton::clicked, this, &GeneralSettings::slotOpenMoreInformationLink);
     connect(_ui->legalNoticeLinkButton, &OCC::LinkButton::clicked, this, &GeneralSettings::slotOpenLegalNoticeLink);
     connect(_ui->openSourceLinkButton, &OCC::LinkButton::clicked, this, &GeneralSettings::slotOpenOpenSourceLink);
     connect(_ui->privacyLinkButton, &OCC::LinkButton::clicked, this, &GeneralSettings::slotOpenPrivacyLink);
     connect(_ui->sendAnonymousData_checkbox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleSendData);
 #if defined(BUILD_UPDATER)
+    connect(_ui->checkUpdateLinkButton, &OCC::LinkButton::clicked, this, &GeneralSettings::slotUpdateCheckNow);
     loadUpdateChannelsList();
 #endif
 
