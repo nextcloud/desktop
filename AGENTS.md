@@ -24,11 +24,11 @@ Other platforms like iOS and Android are irrelevant for this project.
 | Directory       | Description                                         | Agent Action         |
 |-----------------|-----------------------------------------------------|----------------------|
 | `./admin`       | Platform-specific build, packaging, and distribution tooling (macOS, Windows, Linux, Nix) | Ignore unless packaging or installer logic must be updated |
+| `./build` | Build artifacts of mac-crafter and derived data. | Build artifacts |
 | `./admin/osx/mac-crafter` | Build tool for macOS | Ignore unless the build process must be updated |
 | `./shell_integration/MacOSX/NextcloudIntegration` | Xcode project for macOS app extensions | Look here first for changes in context of the file provider extension |
 | `./translations` | Translation files from Transifex.                   | Do not modify |
 | `.mac-crafter` | Build artifacts and derived data. | Ignore |
-| `.xcode` | Build artifacts and derived data. | Ignore |
 
 ## General Guidance
 
@@ -61,8 +61,6 @@ The following details are important and only relevant when working on the deskto
 ### Project Structure
 
 - There is a self-contained and independent build tool called mac-crafter in `./admin/osx/mac-crafter` implemented as a Swift package which builds as an executable.
-- To enable a macOS app build, the file `./shell_integration/MacOSX/NextcloudIntegration/NextcloudDev/Build.xcconfig` must be created if not existent already and it must contain the Xcode build setting `CODE_SIGN_IDENTITY=Apple Development`.
-- To verify that the project builds successfully on macOS, mac-crafter can be run in its own directory with these arguments: `swift run mac-crafter --build-path=DerivedData --product-path=/Applications --build-type=Debug --dev --disable-auto-updater --build-file-provider-module`
 - The macOS app includes a FinderSync extension.
 - The macOS app can be built to include a file provider extension and file provider UI extension.
 - The macOS extensions bundled with the main app are built in the Xcode project in `./shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj`. The build system later copies the built extension bundles into the main app bundle on its own. The Xcode project does not build the main app.
