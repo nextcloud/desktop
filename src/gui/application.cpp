@@ -478,6 +478,18 @@ Application::Application(int &argc, char **argv)
 
     handleEditLocallyFromOptions();
 
+#ifdef Q_OS_MACOS
+    // If any sync folder needs sandbox reapproval after upgrading to v33+,
+    // automatically open the settings dialog on the first affected account
+    // so the user is guided to grant access as quickly as possible.
+    for (const auto &folder : FolderMan::instance()->map()) {
+        if (folder->needsSandboxBookmark()) {
+            QTimer::singleShot(0, _gui.data(), &ownCloudGui::slotShowSettingsForSandboxReapproval);
+            break;
+        }
+    }
+#endif
+
     if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
         AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
     }
