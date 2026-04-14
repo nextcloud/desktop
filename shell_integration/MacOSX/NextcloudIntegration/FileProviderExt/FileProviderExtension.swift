@@ -57,6 +57,11 @@ import OSLog
     var errorActions = Set<UUID>()
     var actionsLock = NSLock()
 
+    // Serialization state for `setupDomainAccount(…)`. See the method for details.
+    private let setupLock = NSLock()
+    private var pendingAccount: Account?
+    private var setupChain: Task<Void, Never> = Task {}
+
     // Whether or not we are going to recursively scan new folders when they are discovered.
     // Apple's recommendation is that we should always scan the file hierarchy fully.
     // This does lead to long load times when a file provider domain is initially configured.
@@ -530,6 +535,13 @@ import OSLog
     }
 
     ///
+    /// Concurrent invocations of this method are serialized: at most one `performSetup(…)` runs
+    /// at a time. Duplicate invocations — by value equality on ``Account`` — received while a
+    /// setup is already in flight (tracked via ``pendingAccount``) or already completed (tracked
+    /// via ``ncAccount``) are dropped silently. This prevents concurrent XPC callers from each
+    /// opening their own NextcloudKit session and spinning up their own `FilesDatabaseManager`
+    /// (and hence their own Realm) for the same credentials.
+    ///
     /// - Parameters:
     ///     - completionHandler: An optional completion handler which will be provided an error, if any occurred. Omitting this completion handler is fine, but you won't get notified of errors.
     ///
@@ -544,12 +556,6 @@ import OSLog
         let account = Account(user: user, id: userId, serverUrl: serverUrl, password: password)
 
         logger.info("Setting up domain account for user: \(user), userId: \(userId), serverUrl: \(serverUrl), password: \(password.isEmpty ? "<empty>" : "<not-empty>"), ncKitAccount: \(account.ncKitAccount)")
-
-        guard account != ncAccount else {
-            logger.info("Cancelling domain account setup because of receiving the same account information repeatedly!")
-            completionHandler?(NSError(.invalidCredentials))
-            return
-        }
 
         guard password.isEmpty == false else {
             logger.info("Cancelling domain account setup because \"password\" is an empty string!")
@@ -575,63 +581,116 @@ import OSLog
             return
         }
 
+        setupLock.lock()
+
+        if account == ncAccount || account == pendingAccount {
+            setupLock.unlock()
+            logger.info("Cancelling domain account setup because of receiving the same account information repeatedly!")
+            completionHandler?(nil)
+            return
+        }
+
+        pendingAccount = account
+        let previous = setupChain
+
+        let next = Task { [weak self] in
+            _ = await previous.value
+
+            guard let self else {
+                return
+            }
+
+            await self.performSetup(account: account, userAgent: userAgent, completionHandler: completionHandler)
+            self.clearPendingAccount(matching: account)
+        }
+
+        setupChain = next
+        setupLock.unlock()
+    }
+
+    ///
+    /// Synchronous cleanup helper used by the ``setupChain`` continuation so the lock acquisition
+    /// stays out of the surrounding asynchronous context. `NSLock.lock()` / `unlock()` are
+    /// unavailable from async functions in Swift 6 because awaiting across them can deadlock the
+    /// cooperative thread pool; doing the lock dance inside this synchronous method sidesteps the
+    /// diagnostic without changing the semantics.
+    ///
+    private func clearPendingAccount(matching account: Account) {
+        setupLock.lock()
+
+        if pendingAccount == account {
+            pendingAccount = nil
+        }
+
+        setupLock.unlock()
+    }
+
+    ///
+    /// Runs the actual account setup work for one ``Account``.
+    ///
+    /// Must only be invoked from the ``setupChain`` serialization queue established by
+    /// ``setupDomainAccount(user:userId:serverUrl:password:userAgent:completionHandler:)``.
+    ///
+    private func performSetup(
+        account: Account,
+        userAgent: String,
+        completionHandler: ((NSError?) -> Void)?
+    ) async {
         // Store account information independently from the main app for later access.
-        config.serverUrl = serverUrl
-        config.user = user
-        config.userId = userId
-        keychain.savePassword(password, for: user, on: serverUrl)
+        config.serverUrl = account.serverUrl
+        config.user = account.username
+        config.userId = account.id
+        keychain.savePassword(account.password, for: account.username, on: account.serverUrl)
         NextcloudKit.clearAccountErrorState(for: account.ncKitAccount)
 
-        Task {
-            ncKit.appendSession(
-                account: account.ncKitAccount,
-                urlBase: serverUrl,
-                user: user,
-                userId: userId,
-                password: password,
-                userAgent: userAgent,
-                groupIdentifier: ""
-            )
+        ncKit.appendSession(
+            account: account.ncKitAccount,
+            urlBase: account.serverUrl,
+            user: account.username,
+            userId: account.id,
+            password: account.password,
+            userAgent: userAgent,
+            groupIdentifier: ""
+        )
 
-            var authAttemptState = AuthenticationAttemptResultState.connectionError // default
+        var authAttemptState = AuthenticationAttemptResultState.connectionError // default
 
-            // Retry a few times if we have a connection issue
-            let options = NKRequestOptions(checkInterceptor: false)
+        // Retry a few times if we have a connection issue
+        let options = NKRequestOptions(checkInterceptor: false)
 
-            for authTimeout in AuthenticationTimeouts {
-                authAttemptState = await ncKit.tryAuthenticationAttempt(account: account, options: options)
+        for authTimeout in AuthenticationTimeouts {
+            authAttemptState = await ncKit.tryAuthenticationAttempt(account: account, options: options)
 
-                guard authAttemptState == .connectionError else {
-                    break
-                }
-
-                logger.info("\(user) authentication try timed out. Trying again soon.")
-                try? await Task.sleep(nanoseconds: authTimeout)
+            guard authAttemptState == .connectionError else {
+                break
             }
 
-            switch (authAttemptState) {
-                case .authenticationError:
-                    logger.error("Authentication of \"\(user)\" failed due to bad credentials, cancelling domain account setup!")
-                    completionHandler?(NSError(.invalidCredentials))
-                    return
-                case .connectionError:
-                    // Despite multiple connection attempts we are still getting connection issues.
-                    // Connection error should be provided
-                    logger.error("Authentication of \"\(user)\" try failed, no connection.")
-                    completionHandler?(NSError(.connection))
-                    return
-                case .success:
-                    logger.info("Successfully authenticated! Nextcloud account set up in file provider extension. User: \(user) at server: \(serverUrl)")
-            }
+            logger.info("\(account.username) authentication try timed out. Trying again soon.")
+            try? await Task.sleep(nanoseconds: authTimeout)
+        }
 
-            Task { @MainActor in
-                ncAccount = account
-                dbManager = FilesDatabaseManager(account: account, fileProviderDomainIdentifier: domain.identifier, log: log)
+        switch (authAttemptState) {
+            case .authenticationError:
+                logger.error("Authentication of \"\(account.username)\" failed due to bad credentials, cancelling domain account setup!")
+                completionHandler?(NSError(.invalidCredentials))
+                return
+            case .connectionError:
+                // Despite multiple connection attempts we are still getting connection issues.
+                // Connection error should be provided
+                logger.error("Authentication of \"\(account.username)\" try failed, no connection.")
+                completionHandler?(NSError(.connection))
+                return
+            case .success:
+                logger.info("Successfully authenticated! Nextcloud account set up in file provider extension. User: \(account.username) at server: \(account.serverUrl)")
+        }
 
-                ncKit.setup(groupIdentifier: Bundle.main.bundleIdentifier!)
-                completionHandler?(nil)
-                signalEnumeratorAfterAccountSetup()
-            }
+        await MainActor.run {
+            ncAccount = account
+            dbManager = FilesDatabaseManager(account: account, fileProviderDomainIdentifier: domain.identifier, log: log)
+
+            ncKit.setup(groupIdentifier: Bundle.main.bundleIdentifier!)
+            completionHandler?(nil)
+            signalEnumeratorAfterAccountSetup()
         }
     }
 
