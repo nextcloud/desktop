@@ -45,7 +45,13 @@ done
 export MACOSX_DEPLOYMENT_TARGET=10.15
 
 # Some variables
-PRODUCT_NAME="IONOS HiDrive Next"
+# The product name depends on whether we build an OSX bundle or not.
+# See src/gui/CMakeLists.txt: OUTPUT_NAME is set to APPLICATION_NAME (bundle) or APPLICATION_EXECUTABLE (non-bundle).
+if [ "$OSX_BUNDLE" == "true" ]; then
+  PRODUCT_NAME="IONOS HiDrive Next"
+else
+  PRODUCT_NAME="ionos-hidrive-next"
+fi
 REPO_ROOT_DIR="../../.."
 CRAFT_DIR=~/Craft64
 PRODUCT_DIR=$BUILD_DIR/product
@@ -102,22 +108,30 @@ if [ "$CLEAN_REBUILD" == "true" ] && [ "$BUILD_UPDATER" == "true" ]; then
 fi
 
 # Build the client
-cmake -S $REPO_ROOT_DIR/ -B $BUILD_DIR \
-      -DQT_TRANSLATIONS_DIR=$REPO_ROOT_DIR/translations \
-      -DCMAKE_INSTALL_PREFIX=$PRODUCT_DIR \
-      -DBUILD_TESTING=OFF \
+# Only reconfigure if this is a clean build or no CMakeCache exists yet
+if [ "$CLEAN_REBUILD" == "true" ] || [ ! -f "$BUILD_DIR/CMakeCache.txt" ]; then
+  cmake -S $REPO_ROOT_DIR/ -B $BUILD_DIR \
+        -G Ninja \
+        -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+        -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+        -DQT_TRANSLATIONS_DIR=$REPO_ROOT_DIR/translations \
+        -DCMAKE_INSTALL_PREFIX=$PRODUCT_DIR \
+        -DBUILD_TESTING=OFF \
       -DBUILD_UPDATER=$(if [ $BUILD_UPDATER == true ]; then echo "ON"; else echo "OFF"; fi) \
-      -DMIRALL_VERSION_BUILD=`date +%Y%m%d` \
-      -DMIRALL_VERSION_SUFFIX="stable" \
+        -DMIRALL_VERSION_BUILD=`date +%Y%m%d` \
+        -DMIRALL_VERSION_SUFFIX="stable" \
       -DBUILD_OWNCLOUD_OSX_BUNDLE=$(if [ $OSX_BUNDLE == true ]; then echo "ON"; else echo "OFF"; fi) \
-      -DCMAKE_OSX_ARCHITECTURES=$ARCHITECTURE \
+        -DCMAKE_OSX_ARCHITECTURES=$ARCHITECTURE \
       -DBUILD_FILE_PROVIDER_MODULE=$(if [ $BUILD_FILEPROVIDER == true ]; then echo "ON"; else echo "OFF"; fi) \
-      -DCMAKE_PREFIX_PATH=$CRAFT_DIR \
-      -DSPARKLE_LIBRARY=$SPARKLE_DIR/Sparkle.framework \
-      -DSOCKETAPI_TEAM_IDENTIFIER_PREFIX="$TEAM_IDENTIFIER." \
-      -DARG_SIDEBAR_ICONS=ON \
+        -DCMAKE_PREFIX_PATH=$CRAFT_DIR \
+        -DSPARKLE_LIBRARY=$SPARKLE_DIR/Sparkle.framework \
+        -DSOCKETAPI_TEAM_IDENTIFIER_PREFIX="$TEAM_IDENTIFIER." \
+        -DARG_SIDEBAR_ICONS=ON \
+        -DLOCALBUILD=ON \
+        -DWHITELABEL_NAME=ionos
+fi
 
-make install -C $BUILD_DIR -j4
+ninja -C $BUILD_DIR install
 
 # ---------------------------------------------------
 # Sign the client
