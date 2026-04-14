@@ -568,7 +568,7 @@ import OSLog
 
         guard account != ncAccount else {
             logger.info("Cancelling domain account setup because of receiving the same account information repeatedly!")
-            completionHandler?(NSError(.invalidCredentials))
+            completionHandler?(nil)
             return
         }
 
