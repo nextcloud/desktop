@@ -48,7 +48,7 @@
 				<key>NSExtensionFileProviderActionActivationRule</key>
 				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.downloaded == true ).@count &gt; 0</string>
 				<key>NSExtensionFileProviderActionIdentifier</key>
-				<string>com.nextcloud.desktopclient.FileProviderUIExt.EvictAction</string>
+				<string>com.ionos.hidrive.desktopclient.FileProviderUIExt.EvictAction</string>
 				<key>NSExtensionFileProviderActionName</key>
 				<string>Free up space</string>
 			</dict>

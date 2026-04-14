@@ -70,7 +70,7 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
                 prepare(childViewController: LockViewController(itemIdentifiers, locking: true, serviceResolver: serviceResolver, log: log))
         case "com.ionos.hidrivenext.desktopclient.FileProviderUIExt.UnlockFileAction":
                 prepare(childViewController: LockViewController(itemIdentifiers, locking: false, serviceResolver: serviceResolver, log: log))
-        case "com.nextcloud.desktopclient.FileProviderUIExt.EvictAction":
+        case "com.ionos.hidrive.desktopclient.FileProviderUIExt.EvictAction":
                 evict(itemsWithIdentifiers: itemIdentifiers, inDomain: domain);
                 extensionContext.completeRequest();
             default:

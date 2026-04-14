@@ -42,7 +42,7 @@
       allowLocationSimulation = "YES">
       <PathRunnable
          runnableDebuggingMode = "0"
-         BundleIdentifier = "com.nextcloud.desktopclient"
+         BundleIdentifier = "com.ionos.hidrive.desktopclient"
          FilePath = "/Applications/NextcloudDev.app">
       </PathRunnable>
    </LaunchAction>
