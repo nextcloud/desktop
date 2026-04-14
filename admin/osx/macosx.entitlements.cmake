@@ -6,6 +6,5 @@
 	<array>
 		<string>5TDLCVD243.com.ionos.hidrivenext.desktopclient</string>
 	</array>
-@DEBUG_ENTITLEMENTS@
 </dict>
 </plist>
