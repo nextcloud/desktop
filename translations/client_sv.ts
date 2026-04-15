@@ -2606,6 +2606,11 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
         <translation>Ett fel uppstod när mapplistan försökte läsas in från servern.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
+        <source>Due to recent security improvements, the client no longer has access to the folder. Your approval is required one time to restore access. Please select the synchronization folder root.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
         <source>Virtual file support is enabled.</source>
         <translation>Stöd för virtuella filer är aktiverat.</translation>
@@ -2672,11 +2677,6 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
         <location filename="../src/gui/folderstatusmodel.cpp" line="218"/>
         <source>Fetching folder list from server …</source>
         <translation>Hämtar mapplistan från server …</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
-        <source>Select the synchronization folder to restore access.</source>
-        <translation>Välj synkroniseringsmappen för att återställa åtkomst.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1057"/>
