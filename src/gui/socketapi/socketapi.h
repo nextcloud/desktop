@@ -15,7 +15,7 @@
 
 #include <QLocalServer>
 
-class QUrl;
+#include <QUrl>
 class QLocalSocket;
 class QFileInfo;
 
@@ -30,7 +30,7 @@ class SocketApiJob;
 Q_DECLARE_LOGGING_CATEGORY(lcSocketApi)
 
 #ifdef Q_OS_MACOS
-QString socketApiSocketPath();
+QUrl socketApiSocketUrl();
 #endif
 
 /**

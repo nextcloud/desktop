@@ -4,14 +4,14 @@
  */
 
 #import <Cocoa/Cocoa.h>
-#import <QString>
+#import <QUrl>
 
 #include "application.h"
 
 namespace OCC
 {
 
-QString socketApiSocketPath()
+QUrl socketApiSocketUrl()
 {
     // This must match the code signing Team setting of the extension
     // Example for developer builds (with ad-hoc signing identity): "" "com.owncloud.desktopclient" ".socket"
@@ -19,8 +19,9 @@ QString socketApiSocketPath()
     NSString *appGroupId = @SOCKETAPI_TEAM_IDENTIFIER_PREFIX APPLICATION_REV_DOMAIN;
 
     NSURL *container = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroupId];
-    NSURL *socketPath = [container URLByAppendingPathComponent:@".socket" isDirectory:false];
-    return QString::fromNSString(socketPath.path);
+    NSURL *socket = [container URLByAppendingPathComponent:@"s" isDirectory:false];
+
+    return QUrl::fromNSURL(socket);
 }
 
 }

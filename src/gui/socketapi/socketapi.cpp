@@ -258,7 +258,9 @@ SocketApi::SocketApi(QObject *parent)
         // + Theme::instance()->appName();
     } else if (Utility::isMac()) {
 #ifdef Q_OS_MACOS
-        socketPath = socketApiSocketPath();
+        socketPath = socketApiSocketUrl().toLocalFile();
+        qCDebug(lcSocketApi) << "macOS socket path:" << socketPath;
+        /*
         CFURLRef url = (CFURLRef)CFAutorelease((CFURLRef)CFBundleCopyBundleURL(CFBundleGetMainBundle()));
         QString bundlePath = QUrl::fromCFURL(url).path();
 
@@ -276,7 +278,7 @@ SocketApi::SocketApi(QObject *parent)
         _system(QStringLiteral("pluginkit"), { QStringLiteral("-a"), QStringLiteral("%1Contents/PlugIns/FinderSyncExt.appex/").arg(bundlePath) });
         // Tell Finder to use the Extension (checking it from System Preferences -> Extensions)
         _system(QStringLiteral("pluginkit"), { QStringLiteral("-e"), QStringLiteral("use"), QStringLiteral("-i"), QStringLiteral(APPLICATION_REV_DOMAIN ".FinderSyncExt") });
-
+        */
 #endif
     } else if (Utility::isLinux() || Utility::isBSD()) {
         QString runtimeDir;
@@ -301,10 +303,20 @@ SocketApi::SocketApi(QObject *parent)
             }
         }
     }
-    if (!_localServer.listen(socketPath)) {
-        qCWarning(lcSocketApi) << "can't start server" << socketPath;
+    const bool result = _localServer.listen(socketPath);
+    qCDebug(lcSocketApi) << "Full server name:" << _localServer.fullServerName();
+
+    if (result) {
+        qCInfo(lcSocketApi) << "Listen started.";
+
+        if (!QFile::exists(socketPath)) { // verify the socket actually exists
+            qCWarning(lcSocketApi) << "Socket file doesn't exist despite listen() success! Server is listening:"
+                                   << _localServer.isListening()
+                                   << "Full name:"
+                                   << _localServer.fullServerName();
+        }
     } else {
-        qCInfo(lcSocketApi) << "server started, listening at " << socketPath;
+        qCWarning(lcSocketApi) << "Listen failed:" << _localServer.errorString();
     }
 
     connect(&_localServer, &QLocalServer::newConnection, this, &SocketApi::slotNewConnection);
