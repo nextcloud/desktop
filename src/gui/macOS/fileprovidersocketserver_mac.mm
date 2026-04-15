@@ -22,8 +22,9 @@ QString fileProviderSocketPath()
     NSString *appGroupId = @SOCKETAPI_TEAM_IDENTIFIER_PREFIX APPLICATION_REV_DOMAIN;
 
     NSURL *container = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroupId];
-    NSURL *socketPath = [container URLByAppendingPathComponent:@".fileprovidersocket" isDirectory:false];
-    return QString::fromNSString(socketPath.path);
+    NSURL *socket = [container URLByAppendingPathComponent:@"fps" isDirectory:false];
+
+    return QString::fromNSString(socket.path);
 }
 
 } // namespace Mac
