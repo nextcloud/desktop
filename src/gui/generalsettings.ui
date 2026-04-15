@@ -19,7 +19,7 @@
                 <number>24</number>
             </property>
             <property name="topMargin">
-                <number>32</number>
+                <number>16</number>
             </property>
             <property name="rightMargin">
                 <number>24</number>
@@ -29,7 +29,7 @@
             </property>
             <item>
                 <layout class="QHBoxLayout">
-                    <item>
+                    <item alignment="Qt::AlignTop">
                         <widget class="QGroupBox" name="generalGroupBox">
                             <property name="title">
                                 <string>General Settings</string>
@@ -46,7 +46,7 @@
                             </property>
                             <layout class="QVBoxLayout" name="generalBoxLayout">
                                 <property name="topMargin">
-                                    <number>32</number>
+                                    <number>12</number>
                                 </property>
                                 <item>
                                     <widget class="QCheckBox" name="autostartCheckBox">
@@ -96,7 +96,7 @@
                         </spacer>
                     </item>
                     <!-- Updates -->
-                    <item>
+                    <item alignment="Qt::AlignTop">
                         <widget class="QGroupBox" name="updateGroupBox">
                             <property name="title">
                                 <string>Updates</string>
@@ -107,7 +107,7 @@
                             </property>
                             <layout class="QVBoxLayout">
                                 <property name="topMargin">
-                                    <number>32</number>
+                                    <number>12</number>
                                 </property>
                                 <item>
                                     <widget class="QCheckBox" name="autoCheckForUpdatesCheckBox">
@@ -461,7 +461,7 @@
                     </property>
                     <layout class="QVBoxLayout" name="dataProtectionBoxLayout">
                         <property name="topMargin">
-                            <number>32</number>
+                            <number>12</number>
                         </property>
                         <item>        
                             <layout class="QVBoxLayout" name="necessaryDataLayout">

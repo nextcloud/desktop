@@ -798,7 +798,7 @@ void GeneralSettings::customizeStyle()
     setPalette(QPalette(QPalette::Window, WLTheme.dialogBackgroundColor()));
 
     this->setStyleSheet(
-        QStringLiteral("QGroupBox { border: %1; font-size: %2; font-weight: %3; color: %4; }").arg(
+        QStringLiteral("QGroupBox { border: %1; font-size: %2; font-weight: %3; color: %4; padding-top: 8px; margin-top: 8px; }").arg(
             Theme::instance()->systemPalette()["base"].value<QColor>().name(),
             WLTheme.settingsTitleSize(),
             WLTheme.settingsTitleWeight600(),
