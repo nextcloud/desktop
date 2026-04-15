@@ -2603,6 +2603,11 @@ Pažengusiems vartotojams: ši problema gali būti susijusi su keliais sinchroni
         <translation>Klaida įkeliant aplankų sąrašą iš serverio.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
+        <source>Due to recent security improvements, the client no longer has access to the folder. Your approval is required one time to restore access. Please select the synchronization folder root.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
         <source>Virtual file support is enabled.</source>
         <translation>Įjungtas virtualių failų palaikymas.</translation>
@@ -2669,11 +2674,6 @@ Pažengusiems vartotojams: ši problema gali būti susijusi su keliais sinchroni
         <location filename="../src/gui/folderstatusmodel.cpp" line="218"/>
         <source>Fetching folder list from server …</source>
         <translation>Gaunamas aplankų sąrašas iš serverio…</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
-        <source>Select the synchronization folder to restore access.</source>
-        <translation>Pasirinkite sinchronizavimo aplanką, kad atkurtumėte prieigą.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1057"/>
