@@ -19,7 +19,7 @@
                 <number>24</number>
             </property>
             <property name="topMargin">
-                <number>16</number>
+                <number>24</number>
             </property>
             <property name="rightMargin">
                 <number>24</number>
@@ -46,7 +46,7 @@
                             </property>
                             <layout class="QVBoxLayout" name="generalBoxLayout">
                                 <property name="topMargin">
-                                    <number>12</number>
+                                    <number>0</number>
                                 </property>
                                 <item>
                                     <widget class="QCheckBox" name="autostartCheckBox">
@@ -105,9 +105,9 @@
                                 <font>
                                 </font>
                             </property>
-                            <layout class="QVBoxLayout">
+                            <layout class="QVBoxLayout" name="updateGroupBoxLayout">
                                 <property name="topMargin">
-                                    <number>12</number>
+                                    <number>0</number>
                                 </property>
                                 <item>
                                     <widget class="QCheckBox" name="autoCheckForUpdatesCheckBox">
@@ -461,7 +461,7 @@
                     </property>
                     <layout class="QVBoxLayout" name="dataProtectionBoxLayout">
                         <property name="topMargin">
-                            <number>12</number>
+                            <number>0</number>
                         </property>
                         <item>        
                             <layout class="QVBoxLayout" name="necessaryDataLayout">

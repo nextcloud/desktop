@@ -798,13 +798,17 @@ void GeneralSettings::customizeStyle()
     setPalette(QPalette(QPalette::Window, WLTheme.dialogBackgroundColor()));
 
     this->setStyleSheet(
-        QStringLiteral("QGroupBox { border: %1; font-size: %2; font-weight: %3; color: %4; padding-top: 8px; margin-top: 8px; }").arg(
-            Theme::instance()->systemPalette()["base"].value<QColor>().name(),
+        QStringLiteral("QGroupBox { border: none; font-size: %2; font-weight: %3; color: %4; padding-top: 8px; margin-top: 8px; }").arg(
             WLTheme.settingsTitleSize(),
             WLTheme.settingsTitleWeight600(),
             WLTheme.black()
         )
     );
+
+    const auto margins = _ui->generalBoxLayout->contentsMargins();
+    _ui->generalBoxLayout->setContentsMargins(margins.left(), 16, margins.right(), margins.bottom());
+    _ui->updateGroupBoxLayout->setContentsMargins(margins.left(), 16, margins.right(), margins.bottom());
+    _ui->dataProtectionBoxLayout->setContentsMargins(margins.left(), 16, margins.right(), margins.bottom());
 
     this->setStyleSheet(
         this->styleSheet() + QStringLiteral("QCheckBox { font-size: %1; font-weight: %2; margin-left: %3 px; color: %4; }").arg(
@@ -895,6 +899,7 @@ void GeneralSettings::customizeStyle()
     // updater info
     slotUpdateInfo();
 #else
+    _ui->checkUpdateLinkButton->setVisible(false);
     _ui->updatesContainer->setVisible(false);
 #endif
 }
