@@ -2606,6 +2606,11 @@ Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több 
         <translation>Hiba történt a kiszolgálón levő mappák listájának betöltésekor.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
+        <source>Due to recent security improvements, the client no longer has access to the folder. Your approval is required one time to restore access. Please select the synchronization folder root.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
         <source>Virtual file support is enabled.</source>
         <translation>A virtuális fájl támogatás engedélyezett.</translation>
@@ -2672,11 +2677,6 @@ Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több 
         <location filename="../src/gui/folderstatusmodel.cpp" line="218"/>
         <source>Fetching folder list from server …</source>
         <translation>Mappalista letöltése a kiszolgálóról…</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
-        <source>Select the synchronization folder to restore access.</source>
-        <translation>Válasszon szinkronizálási mappát a hozzáférés helyreállításához.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1057"/>

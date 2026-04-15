@@ -2606,6 +2606,11 @@ Para usuarios avanzados: Este problema puede estar relacionado a múltiples arch
         <translation>Error mientras se cargaba la lista de carpetas desde el servidor.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
+        <source>Due to recent security improvements, the client no longer has access to the folder. Your approval is required one time to restore access. Please select the synchronization folder root.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
         <source>Virtual file support is enabled.</source>
         <translation>El soporte para archivos virtuales está activado.</translation>
@@ -2672,11 +2677,6 @@ Para usuarios avanzados: Este problema puede estar relacionado a múltiples arch
         <location filename="../src/gui/folderstatusmodel.cpp" line="218"/>
         <source>Fetching folder list from server …</source>
         <translation>Obteniendo la lista de carpetas del servidor ...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
-        <source>Select the synchronization folder to restore access.</source>
-        <translation>Selecciona la carpeta de sincronización para restablecer el acceso.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1057"/>

@@ -2606,6 +2606,11 @@ Za napredne korisnike: problem može biti povezan s više datoteka baze sinkroni
         <translation>Pogreška prilikom učitavanja popisa mapa s poslužitelja.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
+        <source>Due to recent security improvements, the client no longer has access to the folder. Your approval is required one time to restore access. Please select the synchronization folder root.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
         <source>Virtual file support is enabled.</source>
         <translation>Podrška za virtualne datoteke je omogućena.</translation>
@@ -2672,11 +2677,6 @@ Za napredne korisnike: problem može biti povezan s više datoteka baze sinkroni
         <location filename="../src/gui/folderstatusmodel.cpp" line="218"/>
         <source>Fetching folder list from server …</source>
         <translation>Dohvaćanje popisa mapa s poslužitelja…</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
-        <source>Select the synchronization folder to restore access.</source>
-        <translation>Odaberite mapu za sinkronizaciju kako biste ponovno omogućili pristup. </translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1057"/>

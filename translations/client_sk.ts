@@ -2606,6 +2606,11 @@ Pre pokročilých užívateľov: tento problém môže súvisieť s viacerými s
         <translation>Pri načítavní zoznamu priečinkov zo servera nastala chyba.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
+        <source>Due to recent security improvements, the client no longer has access to the folder. Your approval is required one time to restore access. Please select the synchronization folder root.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
         <source>Virtual file support is enabled.</source>
         <translation>Podpora virtuálnych súborov povolená.</translation>
@@ -2672,11 +2677,6 @@ Pre pokročilých užívateľov: tento problém môže súvisieť s viacerými s
         <location filename="../src/gui/folderstatusmodel.cpp" line="218"/>
         <source>Fetching folder list from server …</source>
         <translation>Načítava sa zoznam priečinkov zo servera…</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
-        <source>Select the synchronization folder to restore access.</source>
-        <translation>Vyberte synchronizačný priečinok na obnovenie prístupu.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1057"/>
