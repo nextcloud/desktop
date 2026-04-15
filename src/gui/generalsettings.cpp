@@ -221,10 +221,12 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     connect(_ui->serverNotificationsCheckBox, &QAbstractButton::toggled,
         this, &GeneralSettings::slotToggleOptionalServerNotifications);
     _ui->serverNotificationsCheckBox->setToolTip(tr("Server notifications that require attention."));
+    _ui->serverNotificationsCheckBox->setVisible(false);
 
-    // connect(_ui->chatNotificationsCheckBox, &QAbstractButton::toggled,
-    //         this, &GeneralSettings::slotToggleChatNotifications);
-    // _ui->chatNotificationsCheckBox->setToolTip(tr("Show chat notification dialogs."));
+    connect(_ui->chatNotificationsCheckBox, &QAbstractButton::toggled,
+            this, &GeneralSettings::slotToggleChatNotifications);
+    _ui->chatNotificationsCheckBox->setToolTip(tr("Show chat notification dialogs."));
+    _ui->chatNotificationsCheckBox->setVisible(false);
 
     connect(_ui->callNotificationsCheckBox, &QAbstractButton::toggled,
         this, &GeneralSettings::slotToggleCallNotifications);
@@ -232,6 +234,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 
     connect(_ui->quotaWarningNotificationsCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleQuotaWarningNotifications);
     _ui->quotaWarningNotificationsCheckBox->setToolTip(tr("Show notification when quota usage exceeds 80%."));
+    _ui->quotaWarningNotificationsCheckBox->setVisible(false);
 
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowInExplorerNavigationPane);
 
