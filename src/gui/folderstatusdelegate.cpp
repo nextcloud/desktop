@@ -75,12 +75,23 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem &option,
     // this already includes the bottom margin
 
     // add some space for the message boxes.
-    int margin = fm.height() / 4;
+    const int margin = fm.height() / 4;
+    const int aliasMargin = aliasFm.height() / 2;
+    // Mirrors the inner text width used in paint()'s drawTextBox():
+    // box spans from (option.rect.left() + aliasMargin) to (option.rect.right() - margin),
+    // with an additional `margin` of inner padding on each side.
+    const int textWidth = qMax(1, option.rect.width() - aliasMargin - 3 * margin);
     for (auto role : {FolderConflictMsg, FolderErrorMsg, FolderInfoMsg}) {
         auto msgs = qvariant_cast<QStringList>(index.data(role));
-        if (!msgs.isEmpty()) {
-            h += margin + 2 * margin + msgs.count() * fm.height();
+        if (msgs.isEmpty()) {
+            continue;
         }
+        int textBlockHeight = 0;
+        for (const auto &msg : msgs) {
+            textBlockHeight += fm.boundingRect(QRect(0, 0, textWidth, 0),
+                                               Qt::TextWordWrap, msg).height();
+        }
+        h += margin + 2 * margin + textBlockHeight;
     }
 
     // add space for the "Grant access" button when sandbox re-approval is needed
@@ -243,8 +254,23 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         auto rect = localPathRect;
         rect.setLeft(iconRect.left());
         rect.setTop(textBoxTop);
-        rect.setHeight(texts.count() * subFm.height() + 2 * margin);
         rect.setRight(option.rect.right() - margin);
+
+        const int innerWidth = qMax(1, rect.width() - 2 * margin);
+
+        // Pre-compute each message's wrapped height so the box fits the full,
+        // line-wrapped text instead of eliding with an ellipsis. This must stay
+        // in sync with the height reserved in sizeHint().
+        QList<int> messageHeights;
+        messageHeights.reserve(texts.size());
+        int totalTextHeight = 0;
+        for (const auto &eText : texts) {
+            const auto hMsg = subFm.boundingRect(QRect(0, 0, innerWidth, 0),
+                                                 Qt::TextWordWrap, eText).height();
+            messageHeights.append(hMsg);
+            totalTextHeight += hMsg;
+        }
+        rect.setHeight(totalTextHeight + 2 * margin);
 
         // save previous state to not mess up colours with the background (fixes issue: https://github.com/nextcloud/desktop/issues/1237)
         painter->save();
@@ -256,12 +282,15 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         painter->setFont(errorFont);
         QRect textRect(rect.left() + margin,
             rect.top() + margin,
-            rect.width() - 2 * margin,
-            subFm.height());
+            innerWidth,
+            0);
 
-        for (const auto &eText : texts) {
-            painter->drawText(QStyle::visualRect(option.direction, option.rect, textRect), textAlign, subFm.elidedText(eText, Qt::ElideRight, textRect.width()));
-            textRect.translate(0, textRect.height());
+        for (int i = 0; i < texts.size(); ++i) {
+            textRect.setHeight(messageHeights.at(i));
+            painter->drawText(QStyle::visualRect(option.direction, option.rect, textRect),
+                              textAlign | Qt::TextWordWrap,
+                              texts.at(i));
+            textRect.translate(0, messageHeights.at(i));
         }
         // restore previous state
         painter->restore();
