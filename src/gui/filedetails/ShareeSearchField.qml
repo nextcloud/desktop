@@ -40,6 +40,8 @@ TextField {
 
     placeholderText: enabled ? qsTr("Search for users or groups…") : qsTr("Sharing is not available for this folder")
     placeholderTextColor: placeholderColor
+    color: Style.sesTrayFontColor
+    Component.onCompleted: contentItem.cursorColor = Style.sesTrayFontColor
     verticalAlignment: Qt.AlignVCenter
     implicitHeight: Math.max(Style.talkReplyTextFieldPreferredHeight, contentHeight)
 
@@ -166,6 +168,11 @@ TextField {
         width: root.width
         y: root.height
 
+        background: Rectangle {
+            color: Style.sesBackgroundColor
+            border.color: Style.sesMenuBorder
+        }
+
         contentItem: ScrollView {
             id: suggestionsScrollView
 
@@ -186,7 +193,7 @@ TextField {
 
                 highlight: Rectangle {
                     anchors.fill: shareeListView.currentItem
-                    color: palette.highlight
+                    color: Style.sesHover
                 }
                 highlightFollowsCurrentItem: true
                 highlightMoveDuration: 0
