@@ -2608,7 +2608,7 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
         <source>Due to recent security improvements, the client no longer has access to the folder. Your approval is required one time to restore access. Please select the synchronization folder root.</source>
-        <translation type="unfinished"/>
+        <translation>På grund av nyligen införda säkerhetsförbättringar har klienten inte längre åtkomst till mappen. Ditt godkännande krävs en gång för att återställa åtkomsten. Välj rotmappen för synkronisering.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>

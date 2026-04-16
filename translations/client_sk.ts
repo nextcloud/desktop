@@ -2608,7 +2608,7 @@ Pre pokročilých užívateľov: tento problém môže súvisieť s viacerými s
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
         <source>Due to recent security improvements, the client no longer has access to the folder. Your approval is required one time to restore access. Please select the synchronization folder root.</source>
-        <translation type="unfinished"/>
+        <translation>V dôsledku nedávnych bezpečnostných vylepšení už klient nemá prístup k tejto zložke. Na obnovenie prístupu je potrebné vaše jednorazové schválenie. Vyberte prosím koreňovú zložku synchronizácie.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
