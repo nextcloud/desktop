@@ -1,13 +1,13 @@
 {
-  "originHash" : "c2cd9543bfb69fd791a5e96177ee74f0de08eae497822ac444146e19f840390c",
+  "originHash" : "bcf8f31d00a42fa9b91759ea772f7a38952c1a24478cfaa21b7ffb27634a0eed",
   "pins" : [
     {
       "identity" : "alamofire",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Alamofire/Alamofire",
       "state" : {
-        "revision" : "3f99050e75bbc6fe71fc323adabb039756680016",
-        "version" : "5.11.1"
+        "revision" : "e938f8c66708e7352fc7e3512647fa54255b267a",
+        "version" : "5.11.2"
       }
     },
     {
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/nextcloud/NextcloudKit",
       "state" : {
-        "revision" : "ffae68384f77c260168698a02a69d622cc2e0f0f",
-        "version" : "7.2.6"
+        "revision" : "6f25e101f5833d4d01961c5012acb37d526fffd2",
+        "version" : "7.2.8"
       }
     },
     {
@@ -87,8 +87,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-nio.git",
       "state" : {
-        "revision" : "bdf004b44f77c56fca752cd1cf243c802f8469c9",
-        "version" : "2.97.0"
+        "revision" : "558f24a4647193b5a0e2104031b71c55d31ff83a",
+        "version" : "2.97.1"
       }
     },
     {
@@ -105,8 +105,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/nicklockwood/SwiftFormat",
       "state" : {
-        "revision" : "c8e50ff2cfc2eab46246c072a9ae25ab656c6ec3",
-        "version" : "0.60.1"
+        "revision" : "397309e73621d6355d3a7fb832ca233ac9dd5254",
+        "version" : "0.61.0"
       }
     },
     {
