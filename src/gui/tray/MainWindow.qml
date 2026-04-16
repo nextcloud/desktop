@@ -485,7 +485,7 @@ ApplicationWindow {
 
             activeFocusOnTab: true
             model: activityModel
-            onOpenFile: Qt.openUrlExternally(filePath);
+            onOpenFile: Systray.openUrlInBrowser(filePath);
             onActivityItemClicked: {
                 model.slotTriggerDefaultAction(index)
             }

@@ -20,13 +20,19 @@ Q_LOGGING_CATEGORY(lcUtility, "nextcloud.gui.utility", QtInfoMsg)
 
 bool Utility::openBrowser(const QUrl &url, QWidget *errorWidgetParent)
 {
+    if (!url.isValid()) {
+        qCWarning(lcUtility) << "URL format is invalid and has been rejected:" << url.toString();
+        return false;
+    }
+
     const QStringList allowedUrlSchemes = {
         "http",
         "https",
     };
-
-    if (!allowedUrlSchemes.contains(url.scheme())) {
-        qCWarning(lcUtility) << "URL format is not supported, or it has been compromised for:" << url.toString();
+    
+    const auto scheme = url.scheme().toLower();
+    if (!allowedUrlSchemes.contains(scheme)) {
+        qCWarning(lcUtility) << "URL scheme is not allowed and has been rejected:" << url.toString();
         return false;
     }
 
