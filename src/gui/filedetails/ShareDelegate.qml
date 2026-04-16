@@ -183,6 +183,7 @@ GridLayout {
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: shareLinkCopied ? implicitWidth : Style.iconButtonWidth
             Layout.preferredHeight: Style.iconButtonWidth
+            Layout.rightMargin: Style.sesSmallMargin
             
             toolTipText: qsTr("Copy share link location")
 
