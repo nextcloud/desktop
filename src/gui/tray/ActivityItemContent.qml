@@ -142,7 +142,6 @@ RowLayout {
                 elide: Text.ElideRight
                 wrapMode: Text.Wrap
                 maximumLineCount: 2
-                font: root.font
                 visible: text !== ""
                 color: root.adaptiveTextColor
             }
@@ -268,7 +267,6 @@ RowLayout {
                 elide: Text.ElideRight
                 wrapMode: Text.Wrap
                 maximumLineCount: 2
-                font: root.font
                 color: Style.sesTrayFontColor
                 visible: text !== ""
             }

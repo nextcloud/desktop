@@ -57,7 +57,6 @@ RowLayout {
 
             text: syncStatus.syncStatusString
             verticalAlignment: Text.AlignVCenter
-            font: root.font
             wrapMode: Text.Wrap
         }
 
@@ -81,7 +80,6 @@ RowLayout {
 
             text: syncStatus.syncStatusDetailString
             visible: syncStatus.syncStatusDetailString !== ""
-            font: root.font
             wrapMode: Text.Wrap
         }
     }
@@ -105,8 +103,8 @@ RowLayout {
     PrimaryPillButton {
         Layout.rightMargin: Style.trayHorizontalMargin
 
-        font.pixelSize: pixelSize
-        font.weight: fontWeight
+        font.pixelSize: Style.sesFontPixelSize
+        font.weight: Style.sesFontBoldWeight
 
         text: qsTr("Resolve conflicts")
         
