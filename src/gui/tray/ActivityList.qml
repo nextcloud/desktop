@@ -137,6 +137,11 @@ ScrollView {
         Button {
             id: scrollToTopButton
 
+            background: Rectangle {
+                color: Style.sesBackgroundColor
+                border.color: Style.sesMenuBorder
+            }
+
             anchors.bottom: parent.bottom
             anchors.right: parent.right
 
@@ -150,6 +155,7 @@ ScrollView {
             icon.source: "image://svgimage-custom-color/chevron-double-up.svg/" + palette.buttonText
             icon.width: Style.activityListButtonIconSize
             icon.height: Style.activityListButtonIconSize
+            icon.color: Style.sesTrayFontColor
 
             onClicked: controlRoot.scrollToTop()
 
