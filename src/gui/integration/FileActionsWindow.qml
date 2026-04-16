@@ -222,7 +222,7 @@ ApplicationWindow {
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
                     onClicked: {
-                        Qt.openUrlExternally(fileActionModel.responseUrl)
+                        Systray.openUrlInBrowser(fileActionModel.responseUrl)
                         root.close()
                     }
                 }

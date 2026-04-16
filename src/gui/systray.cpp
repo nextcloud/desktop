@@ -16,6 +16,7 @@
 #include "configfile.h"
 #include "accessmanager.h"
 #include "callstatechecker.h"
+#include "guiutility.h"
 
 #include <QCursor>
 #include <QGuiApplication>
@@ -67,6 +68,11 @@ void Systray::setTrayEngine(QQmlApplicationEngine *trayEngine)
     _trayEngine->addImageProvider("avatars", new ImageProvider);
     _trayEngine->addImageProvider(QLatin1String("svgimage-custom-color"), new OCC::Ui::SvgImageProvider);
     _trayEngine->addImageProvider(QLatin1String("tray-image-provider"), new TrayImageProvider);
+}
+
+bool Systray::openUrlInBrowser(const QUrl &url) const
+{
+    return Utility::openBrowser(url);
 }
 
 Systray::Systray()
