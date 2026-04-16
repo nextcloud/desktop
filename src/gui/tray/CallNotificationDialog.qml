@@ -217,7 +217,7 @@ ApplicationWindow {
                         Layout.preferredHeight: Style.callNotificationPrimaryButtonMinHeight
 
                         onClicked: {
-                            Qt.openUrlExternally(modelData.link);
+                            Systray.openUrlInBrowser(modelData.link);
                             root.closeNotification();
                         }
 
