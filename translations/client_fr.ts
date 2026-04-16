@@ -553,7 +553,7 @@ Le compte doit-il être importé ?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="205"/>
         <source>Classic sync</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation classique</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="85"/>
