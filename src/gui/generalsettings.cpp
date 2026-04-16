@@ -805,11 +805,6 @@ void GeneralSettings::customizeStyle()
         )
     );
 
-    const auto margins = _ui->generalBoxLayout->contentsMargins();
-    _ui->generalBoxLayout->setContentsMargins(margins.left(), 16, margins.right(), margins.bottom());
-    _ui->updateGroupBoxLayout->setContentsMargins(margins.left(), 16, margins.right(), margins.bottom());
-    _ui->dataProtectionBoxLayout->setContentsMargins(margins.left(), 16, margins.right(), margins.bottom());
-
     this->setStyleSheet(
         this->styleSheet() + QStringLiteral("QCheckBox { font-size: %1; font-weight: %2; margin-left: %3 px; color: %4; }").arg(
             WLTheme.settingsTextSize(),
@@ -881,10 +876,17 @@ void GeneralSettings::customizeStyle()
 
         )
     );
+    
+    const auto margins = _ui->generalBoxLayout->contentsMargins();
 
 #if defined(Q_OS_MAC)
-    // _ui->generalBoxLayout->setMargin(16);
-    // _ui->dataProtectionBoxLayout->setMargin(16);
+    _ui->generalBoxLayout->setContentsMargins(margins.left(), 32, margins.right(), margins.bottom());
+    _ui->updateGroupBoxLayout->setContentsMargins(margins.left(), 32, margins.right(), margins.bottom());
+    _ui->dataProtectionBoxLayout->setContentsMargins(margins.left(), 32, margins.right(), margins.bottom());
+#else 
+    _ui->generalBoxLayout->setContentsMargins(margins.left(), 16, margins.right(), margins.bottom());
+    _ui->updateGroupBoxLayout->setContentsMargins(margins.left(), 16, margins.right(), margins.bottom());
+    _ui->dataProtectionBoxLayout->setContentsMargins(margins.left(), 16, margins.right(), margins.bottom());
 #endif
 
 #ifdef IONOS_BUILD
