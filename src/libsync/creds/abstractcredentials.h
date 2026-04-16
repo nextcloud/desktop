@@ -105,6 +105,9 @@ Q_SIGNALS:
      */
     void asked();
 
+    /** Emitted when persist() has finished writing credentials to the keychain. */
+    void credentialsPersisted();
+
 protected:
     Account *_account = nullptr;
     bool _wasFetched = false;
