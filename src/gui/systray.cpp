@@ -69,6 +69,11 @@ void Systray::setTrayEngine(QQmlApplicationEngine *trayEngine)
     _trayEngine->addImageProvider(QLatin1String("tray-image-provider"), new TrayImageProvider);
 }
 
+bool Systray::openUrlInBrowser(const QUrl &url) const
+{
+    return Utility::openBrowser(url);
+}
+
 Systray::Systray()
     : QSystemTrayIcon(nullptr)
 {
