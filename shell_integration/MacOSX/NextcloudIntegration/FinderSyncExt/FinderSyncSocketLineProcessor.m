@@ -52,6 +52,10 @@ static os_log_t getFinderSyncSocketLineProcessorLogger(void) {
     os_log_debug(_log, "Command: %{public}@", command);
     
     if([command isEqualToString:@"STATUS"]) {
+        if([split count] < 3) {
+            os_log_error(_log, "STATUS message too short: %{public}@", line);
+            return;
+        }
         NSString *result = [split objectAtIndex:1];
         NSArray *pathSplit = [split subarrayWithRange:NSMakeRange(2, [split count] - 2)]; // Get everything after location 2
         NSString *path = [pathSplit componentsJoinedByString:@":"];
@@ -66,6 +70,10 @@ static os_log_t getFinderSyncSocketLineProcessorLogger(void) {
             [self.delegate setResult:result forPath:path];
         });
     } else if([command isEqualToString:@"UPDATE_VIEW"]) {
+        if([split count] < 2) {
+            os_log_error(_log, "UPDATE_VIEW message too short: %{public}@", line);
+            return;
+        }
         NSString *path = [split objectAtIndex:1];
         os_log_debug(_log, "UPDATE_VIEW command: path=%{public}@", path);
         
@@ -78,6 +86,10 @@ static os_log_t getFinderSyncSocketLineProcessorLogger(void) {
             [self.delegate reFetchFileNameCacheForPath:path];
         });
     } else if([command isEqualToString:@"REGISTER_PATH"]) {
+        if([split count] < 2) {
+            os_log_error(_log, "REGISTER_PATH message too short: %{public}@", line);
+            return;
+        }
         NSString *path = [split objectAtIndex:1];
         os_log_debug(_log, "REGISTER_PATH command: path=%{public}@", path);
         
@@ -90,6 +102,10 @@ static os_log_t getFinderSyncSocketLineProcessorLogger(void) {
             [self.delegate registerPath:path];
         });
     } else if([command isEqualToString:@"UNREGISTER_PATH"]) {
+        if([split count] < 2) {
+            os_log_error(_log, "UNREGISTER_PATH message too short: %{public}@", line);
+            return;
+        }
         NSString *path = [split objectAtIndex:1];
         os_log_debug(_log, "UNREGISTER_PATH command: path=%{public}@", path);
         
@@ -102,10 +118,14 @@ static os_log_t getFinderSyncSocketLineProcessorLogger(void) {
             [self.delegate unregisterPath:path];
         });
     } else if([command isEqualToString:@"GET_STRINGS"]) {
-        os_log_debug(_log, "GET_STRINGS command: %{public}@", [split objectAtIndex:1] ?: @"(no subcommand)");
+        os_log_debug(_log, "GET_STRINGS command: %{public}@", [split count] > 1 ? [split objectAtIndex:1] : @"(no subcommand)");
         // BEGIN and END messages, do nothing.
         return;
     } else if([command isEqualToString:@"STRING"]) {
+        if([split count] < 3) {
+            os_log_error(_log, "STRING message too short: %{public}@", line);
+            return;
+        }
         NSString *key = [split objectAtIndex:1];
         NSString *value = [split objectAtIndex:2];
         os_log_debug(_log, "STRING command: key=%{public}@, value=%{public}@", key, value);
@@ -119,7 +139,11 @@ static os_log_t getFinderSyncSocketLineProcessorLogger(void) {
             [self.delegate setString:key value:value];
         });
     } else if([command isEqualToString:@"GET_MENU_ITEMS"]) {
-        os_log_debug(_log, "GET_MENU_ITEMS command: subcommand=%{public}@", [split objectAtIndex:1] ?: @"(no subcommand)");
+        if([split count] < 2) {
+            os_log_error(_log, "GET_MENU_ITEMS message too short: %{public}@", line);
+            return;
+        }
+        os_log_debug(_log, "GET_MENU_ITEMS command: subcommand=%{public}@", [split objectAtIndex:1]);
         if([[split objectAtIndex:1] isEqualToString:@"BEGIN"]) {
             __weak typeof(self) weakSelf = self;
 
@@ -134,6 +158,10 @@ static os_log_t getFinderSyncSocketLineProcessorLogger(void) {
             [self.delegate menuHasCompleted];
         }
     } else if([command isEqualToString:@"MENU_ITEM"]) {
+        if([split count] < 4) {
+            os_log_error(_log, "MENU_ITEM message too short: %{public}@", line);
+            return;
+        }
         NSDictionary *item = @{@"command": [split objectAtIndex:1], @"flags": [split objectAtIndex:2], @"text": [split objectAtIndex:3]};
         os_log_debug(_log, "MENU_ITEM command: command=%{public}@, flags=%{public}@, text=%{public}@", [split objectAtIndex:1], [split objectAtIndex:2], [split objectAtIndex:3]);
         
