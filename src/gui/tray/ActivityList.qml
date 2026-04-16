@@ -99,9 +99,9 @@ ScrollView {
 
         delegate: ActivityItem {
 
-            background: Rectangle {
-                color: Style.sesBackgroundColor
-            }
+            palette.highlight: Style.sesHover
+            palette.text: Style.sesTrayFontColor
+            palette.highlightedText: Style.sesTrayFontColor
 
             width: activityList.contentItem.width
 
