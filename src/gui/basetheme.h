@@ -164,8 +164,8 @@ public:
         return themePrefix() + _sesFolder + additionalThemePrefix() + QStringLiteral("ses-syncstate-error.svg");
     }
 
-    virtual QString syncOfflineIcon() const {
-        return themePrefix() + _sesFolder + additionalThemePrefix() + QStringLiteral("ses-state-offline.svg");
+    virtual QString syncOfflineIcon(QString context = "qml") const {
+        return themePrefix(context) + _sesFolder + additionalThemePrefix() + QStringLiteral("ses-state-offline.svg");
     }
 
     virtual QString snackbarErrorIcon() const {

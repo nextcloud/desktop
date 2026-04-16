@@ -38,7 +38,7 @@ Item {
 
         anchors.fill: parent
         anchors.margins: Style.standardSpacing
-        anchors.leftMargin: Style.standardSpacing + solidStripe.width
+        anchors.leftMargin: Style.standardSpacing
 
         columns: 2
 

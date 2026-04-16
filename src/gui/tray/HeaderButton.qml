@@ -67,8 +67,6 @@ Button {
 
             width: imageWidth
             height: imageHeight
-
-            anchors.verticalCenter: parent
         }
 
         Text {

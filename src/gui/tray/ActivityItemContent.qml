@@ -290,7 +290,7 @@ RowLayout {
 
                 maxActionButtons: activityModel.maxActionButtons
 
-                onTriggerAction: activityModel.slotTriggerAction(activityData.activityIndex, actionIndex)
+                onTriggerAction: (activityData, actionIndex) => activityModel.slotTriggerAction(activityData.activityIndex, actionIndex)
 
                 onShowReplyField: isTalkReplyOptionVisible = true
                 talkReplyButtonVisible: root.activityData.messageSent === "" && !isTalkReplyOptionVisible

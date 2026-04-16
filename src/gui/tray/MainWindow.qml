@@ -112,9 +112,9 @@ ApplicationWindow {
             fileDetailsDrawer.close();
 
             if (Systray.isOpen) {
-                trayWindowHeaderBackground.currentAccountHeaderButton.accountMenu.close();
-                trayWindowHeaderBackground.appsMenu.close();
-                trayWindowHeaderBackground.openLocalFolderButton.closeMenu()
+                trayWindowHeaderBackground?.currentAccountHeaderButton?.accountMenu?.close()
+                trayWindowHeaderBackground?.appsMenu?.close();
+                trayWindowHeaderBackground?.openLocalFolderButton?.closeMenu()
             }
         }
 

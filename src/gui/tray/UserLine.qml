@@ -18,6 +18,16 @@ AbstractButton {
     property bool isHovered: userLine.hovered || userLine.visualFocus
     property bool isActive: userLine.pressed
 
+    readonly property color statusItemColor: {
+        if (!userLine.parent)
+            return Style.sesTrayFontColor;
+        if (!userLine.parent.enabled)
+            return userLine.parent.palette.mid;
+        if ((userLine.parent.highlighted || userLine.parent.down) && Qt.platform.os !== "windows")
+            return userLine.parent.palette.highlightedText;
+        return userLine.parent.palette.text;
+    }
+
     signal showUserStatusSelector(int id)
     signal showUserStatusMessageSelector(int id)
 
@@ -78,11 +88,7 @@ AbstractButton {
                     visible: model.statusEmoji !== ""
                     text: statusEmoji
 
-                    color: !userLine.parent.enabled
-                        ? userLine.parent.palette.mid
-                        : ((userLine.parent.highlighted || userLine.parent.down) && Qt.platform.os !== "windows"
-                            ? userLine.parent.palette.highlightedText
-                            : userLine.parent.palette.text)
+                    color: userLine.statusItemColor
                 }
 
                 EnforcedPlainTextLabel {
@@ -94,11 +100,7 @@ AbstractButton {
                     leftPadding: Style.accountLabelsSpacing
                     font.pixelSize: Style.subLinePixelSize
 
-                    color: !userLine.parent.enabled
-                        ? userLine.parent.palette.mid
-                        : ((userLine.parent.highlighted || userLine.parent.down) && Qt.platform.os !== "windows"
-                            ? userLine.parent.palette.highlightedText
-                            : userLine.parent.palette.text)
+                    color: userLine.statusItemColor
                 }
             }
         }

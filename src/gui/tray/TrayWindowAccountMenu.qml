@@ -111,8 +111,8 @@ Button {
                 }
                 onClicked: UserModel.currentUserId = model.index;
             }
-            onObjectAdded: accountMenu.insertItem(index, object)
-            onObjectRemoved: accountMenu.removeItem(object)
+            onObjectAdded: (index, object) => accountMenu.insertItem(index, object)
+            onObjectRemoved: (index, object) => accountMenu.removeItem(object)
         }
 
         Rectangle {
@@ -241,7 +241,7 @@ Button {
                 text: UserModel.currentUser.name
                 elide: Text.ElideRight
                 color: Style.currentUserHeaderTextColor
-                font: root.font
+                font: currentAccountButton.font
             }
 
             RowLayout {
