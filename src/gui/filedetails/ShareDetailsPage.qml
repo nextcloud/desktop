@@ -18,6 +18,10 @@ import "../"
 Page {
     id: root
 
+    component SesCheckBox: CheckBox {
+        hoverEnabled: false
+    }
+
     signal closeShareDetails
     signal deleteShare
     signal createNewLinkShare
@@ -275,8 +279,7 @@ Page {
 
             width: parent.width
 
-
-            CheckBox {
+            SesCheckBox {
                 id: passwordProtectEnabledMenuItem
 
                 Layout.fillWidth: true
@@ -367,7 +370,7 @@ Page {
                 }
             }
 
-            CheckBox {
+            SesCheckBox {
                 id: expireDateEnabledMenuItem
 
                 Layout.fillWidth: true
@@ -442,7 +445,7 @@ Page {
                 height: visible ? implicitHeight : 0
                 spacing: Style.extraSmallSpacing
 
-                CheckBox {
+                SesCheckBox {
                     id: noteEnabledMenuItem
 
                     Layout.fillWidth: true
@@ -516,7 +519,7 @@ Page {
                 Layout.fillWidth: true
                 active: !root.isFolderItem && !root.isEncryptedItem
                 visible: active
-                sourceComponent: CheckBox {
+                sourceComponent: SesCheckBox {
 
                     font.pixelSize: pixelSize
                     font.weight: fontWeight
@@ -548,7 +551,7 @@ Page {
                         id: permissionModeRadioButtonsGroup
                     }
 
-                    CheckBox {
+                    SesCheckBox {
                         id: customPermissionsCheckBox
                         Layout.fillWidth: true
                         enabled: !root.isSharePermissionChangeInProgress
@@ -564,7 +567,7 @@ Page {
                         font.weight: fontWeight
                     }
 
-                    CheckBox {
+                    SesCheckBox {
                         readonly property int permissionMode: ShareModel.ModeViewOnly
                         Layout.fillWidth: true
                         Layout.leftMargin: 30
@@ -582,7 +585,7 @@ Page {
                         font.weight: fontWeight
                     }
 
-                    CheckBox {
+                    SesCheckBox {
                         readonly property int permissionMode: ShareModel.ModeUploadAndEditing
                         Layout.fillWidth: true
                         Layout.leftMargin: 30
@@ -600,7 +603,7 @@ Page {
                         font.weight: fontWeight
                     }
 
-                    CheckBox {
+                    SesCheckBox {
                         readonly property int permissionMode: ShareModel.ModeFileDropOnly
                         Layout.fillWidth: true
                         Layout.leftMargin: 30
@@ -620,7 +623,7 @@ Page {
                 }
             }
 
-            CheckBox {
+            SesCheckBox {
                 id: allowResharingCheckBox
 
                 Layout.fillWidth: true
@@ -652,7 +655,7 @@ Page {
                 active: root.isLinkShare
                 visible: active
                 sourceComponent: ColumnLayout {
-                    CheckBox {
+                    SesCheckBox {
                         id: hideDownloadEnabledMenuItem
 
                         anchors.left: parent.left
