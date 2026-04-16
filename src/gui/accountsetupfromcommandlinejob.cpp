@@ -7,6 +7,7 @@
 
 #include "accountmanager.h"
 #include "accountstate.h"
+#include "creds/abstractcredentials.h"
 #include "creds/webflowcredentials.h"
 #include "filesystem.h"
 #include "folder.h"
@@ -92,14 +93,21 @@ void AccountSetupFromCommandLineJob::accountSetupFromCommandLinePropfindHandleSu
 {
     const auto accountManager = AccountManager::instance();
     const auto accountState = accountManager->addAccount(_account);
-    accountManager->save();
 
-    if (!_localDirPath.isEmpty()) {
-        setupLocalSyncFolder(accountState);
-    } else {
-        qCInfo(lcAccountSetupCommandLineJob) << QStringLiteral("Set up a new account without a folder.");
-        printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Account %1 setup from command line success.").arg(_account->displayName()), false);
-    }
+    // credentials->persist() (called by save()) is asynchronous — it chains
+    // multiple keychain write jobs before the password actually lands in the
+    // keychain.  Wait for the final write to complete before exiting so that
+    // the credentials are not lost when the process quits.
+    connect(_account->credentials(), &AbstractCredentials::credentialsPersisted, this, [this, accountState]() {
+        if (!_localDirPath.isEmpty()) {
+            setupLocalSyncFolder(accountState);
+        } else {
+            qCInfo(lcAccountSetupCommandLineJob) << QStringLiteral("Set up a new account without a folder.");
+            printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Account %1 setup from command line success.").arg(_account->displayName()), false);
+        }
+    });
+
+    accountManager->save();
 }
 
 void AccountSetupFromCommandLineJob::accountSetupFromCommandLinePropfindHandleFailure()
