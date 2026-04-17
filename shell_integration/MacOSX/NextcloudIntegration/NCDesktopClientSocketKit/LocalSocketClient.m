@@ -349,20 +349,13 @@ static os_log_t getLocalSocketClientLogger(void) {
                                                            options:0
                                                              range:inBufferLengthRange];
 
-        NSUInteger nullTerminatorIndex = NSUIntegerMax;
-
-        // Add NULL terminator, so we can use C string methods
         if (firstSeparatorIndex.location == NSNotFound) {
-            os_log_debug(_log, "No separator found. Creating new buffer with space for null terminator.");
-
-            [_inBuffer appendBytes:terminator length:1];
-            nullTerminatorIndex = inBufferLength;
-        } else {
-            nullTerminatorIndex = firstSeparatorIndex.location;
-            [_inBuffer replaceBytesInRange:NSMakeRange(nullTerminatorIndex, 1) withBytes:terminator];
+            os_log_debug(_log, "No separator found. Waiting for more data.");
+            return;
         }
 
-        NSAssert(nullTerminatorIndex != NSUIntegerMax, @"Null terminator index should be valid.");
+        const NSUInteger nullTerminatorIndex = firstSeparatorIndex.location;
+        [_inBuffer replaceBytesInRange:NSMakeRange(nullTerminatorIndex, 1) withBytes:terminator];
 
         NSString * const newLine = [NSString stringWithUTF8String:_inBuffer.bytes];
         const NSRange nullTerminatorRange = NSMakeRange(0, nullTerminatorIndex + 1);
