@@ -48,8 +48,8 @@ if(LOCALBUILD)
 
 endif()
 
-
-if(APPLE AND "${APPLICATION_NAME}" MATCHES "HiDrive Next")
+string(TOLOWER "${APPLICATION_NAME}" app_name_lower)
+if(APPLE AND app_name_lower MATCHES "hidrive")
     set(APPLICATION_ICON_NAME "${APPLICATION_EXECUTABLE}-macOS")
     message("Using macOS-specific application icon: ${APPLICATION_ICON_NAME}")
 endif()
