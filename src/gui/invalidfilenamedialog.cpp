@@ -327,11 +327,14 @@ void InvalidFilenameDialog::onRemoteSourceFileDoesNotExist(QNetworkReply *reply)
 void InvalidFilenameDialog::customizeStyle()
 {
     this->setStyleSheet(
-        QStringLiteral("QDialog {background-color: %1; } QLabel{ font-family: %2; font-size: %3; font-weight: %4; }").arg(
+        QStringLiteral("QDialog {background-color: %1; } QLabel{ %2 }").arg(
             WLTheme.dialogBackgroundColor(), 
-            WLTheme.settingsFont(),
-            WLTheme.settingsTextSize(),
-            WLTheme.settingsTextWeight()
+            WLTheme.fontConfigurationCss(
+                WLTheme.settingsFont(),
+                WLTheme.settingsTextSize(),
+                WLTheme.settingsTextWeight(),
+                WLTheme.titleColor()
+            )
         )
     );
  
