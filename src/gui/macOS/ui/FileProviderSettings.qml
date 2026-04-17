@@ -107,8 +107,15 @@ Page {
                 }
 
                 Button {
+                    id: resetVfsButton
                     text: qsTr("Reset virtual files environment")
                     onPressed: root.controller.resetVfsForAccount(root.accountUserIdAtHost);
+
+                    background: Rectangle {
+                        color: resetVfsButton.hovered ? resetVfsButton.pressed ? Style.sesButtonPressed : Style.sesHover : Style.sesBackgroundColor
+                        border.width: 1
+                        border.color: Style.sesBorderColor
+                    }
                 }
             }
         }

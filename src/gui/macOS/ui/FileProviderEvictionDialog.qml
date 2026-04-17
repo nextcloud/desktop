@@ -53,9 +53,15 @@ ApplicationWindow {
             }
 
             Button {
+                id: reloadButton
                 padding: Style.smallSpacing
                 text: qsTr("Reload")
                 onClicked: reloadMaterialisedItems(accountUserIdAtHost)
+                background: Rectangle {
+                    color: reloadButton.hovered ? reloadButton.pressed ? Style.sesButtonPressed : Style.sesHover : Style.sesBackgroundColor
+                    border.width: 1
+                    border.color: Style.sesBorderColor
+                }
             }
         }
 

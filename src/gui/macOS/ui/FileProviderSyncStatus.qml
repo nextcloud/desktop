@@ -62,9 +62,13 @@ GridLayout {
         visible: !root.syncStatus.syncing
         hoverEnabled: true
         onClicked: root.domainSignalRequested()
-
         ToolTip.visible: hovered
         ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
         ToolTip.text: qsTr("Request a sync of changes for the VFS environment.\nmacOS may ignore or delay this request.")
+        background: Rectangle {
+            color: requestSyncButton.hovered ? requestSyncButton.pressed ? Style.sesButtonPressed : Style.sesHover : Style.sesBackgroundColor
+            border.width: 1
+            border.color: Style.sesBorderColor
+        }
     }
 }
