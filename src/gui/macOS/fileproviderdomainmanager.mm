@@ -5,6 +5,7 @@
 
 #include "configfile.h"
 
+#import <AppKit/AppKit.h>
 #import <FileProvider/FileProvider.h>
 
 #include <QDir>
@@ -538,6 +539,17 @@ QString FileProviderDomainManager::userVisibleUrlForDomainIdentifier(const QStri
     qCWarning(lcMacFileProviderDomainManager) << "No file provider domain found with identifier"
                                               << domainIdentifier;
     return {};
+}
+
+void FileProviderDomainManager::openFileViewerForDomainIdentifier(const QString &domainIdentifier) const
+{
+    const auto url = userVisibleUrlForDomainIdentifier(domainIdentifier);
+
+    if (url.isEmpty()) {
+        return;
+    }
+
+    [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:@[[NSURL fileURLWithPath:url.toNSString()]]];
 }
 
 void FileProviderDomainManager::slotHandleFileIdsChanged(const OCC::Account * const account, const QList<qint64> &fileIds)

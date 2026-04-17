@@ -56,17 +56,33 @@ Rectangle {
             Layout.preferredWidth:  Style.trayWindowHeaderHeight
             Layout.fillHeight: true
 
-            visible: currentUser.hasLocalFolder
+            visible: currentUser.hasLocalFolder || (Qt.platform.os === "osx" && currentUser.hasFileProvider)
             currentUser: UserModel.currentUser
             parentBackgroundColor: root.color
 
-            onClicked: openLocalFolderButton.userHasGroupFolders ? openLocalFolderButton.toggleMenuOpen() : UserModel.openCurrentAccountLocalFolder()
+            onClicked: {
+                if (openLocalFolderButton.userHasGroupFolders) {
+                    openLocalFolderButton.toggleMenuOpen()
+                } else if (currentUser.hasLocalFolder) {
+                    UserModel.openCurrentAccountLocalFolder()
+                } else if (Qt.platform.os === "osx") {
+                    UserModel.openCurrentAccountFileProviderDomain()
+                }
+            }
 
             onFolderEntryTriggered: isGroupFolder ? UserModel.openCurrentAccountFolderFromTrayInfo(fullFolderPath) : UserModel.openCurrentAccountLocalFolder()
 
             Accessible.role: Accessible.Graphic
             Accessible.name: qsTr("Open local or group folders")
-            Accessible.onPressAction: openLocalFolderButton.userHasGroupFolders ? openLocalFolderButton.toggleMenuOpen() : UserModel.openCurrentAccountLocalFolder() 
+            Accessible.onPressAction: {
+                if (openLocalFolderButton.userHasGroupFolders) {
+                    openLocalFolderButton.toggleMenuOpen()
+                } else if (currentUser.hasLocalFolder) {
+                    UserModel.openCurrentAccountLocalFolder()
+                } else if (Qt.platform.os === "osx") {
+                    UserModel.openCurrentAccountFileProviderDomain()
+                }
+            }
         }
 
         HeaderButton {

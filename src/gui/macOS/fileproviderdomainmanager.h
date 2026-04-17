@@ -73,6 +73,12 @@ public:
      */
     [[nodiscard]] QString userVisibleUrlForDomainIdentifier(const QString &domainIdentifier) const;
 
+    /**
+     * @brief Open the system file viewer at the root container of a file provider domain.
+     * @param domainIdentifier The identifier of the file provider domain.
+     */
+    void openFileViewerForDomainIdentifier(const QString &domainIdentifier) const;
+
 public slots:
     /**
      * @brief Handle file ID changes from push notifications
