@@ -31,6 +31,11 @@ ItemDelegate {
     Accessible.name: (model.path !== "" && model.displayPath !== "") ? qsTr("Open %1 locally").arg(model.displayPath) : model.message
     Accessible.onPressAction: root.clicked()
 
+    background: Rectangle {
+        color: root.hovered ? root.down ? Style.sesWhite : Style.sesHover : Style.sesWhite
+        radius: Style.mediumRoundedButtonRadius
+    }
+
     ToolTip {
         popupType: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
         visible: root.hovered && !activityContent.childHovered && model.displayLocation !== ""
