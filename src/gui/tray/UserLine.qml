@@ -184,6 +184,18 @@ AbstractButton {
                         }
                         accountMenu.close()
                     }
+
+                    background: Item {
+                        height: parent.height
+                        width: parent.menu.width
+                        Rectangle {
+                            radius: 0
+                            anchors.fill: parent
+                            anchors.margins: 1
+                            color: logInOutButton.isActive ? Style.sesButtonPressed :
+                                   logInOutButton.isHovered ? Style.sesAccountMenuHover : "transparent"
+                        }
+                    }
                }
 
                 MenuItem {
