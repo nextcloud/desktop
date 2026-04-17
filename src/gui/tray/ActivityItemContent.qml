@@ -196,7 +196,11 @@ RowLayout {
                     rightPadding: 0
 
                     visible: model.showFileDetails
-                    onClicked: Systray.presentShareViewInTray(model.openablePath)
+                    onClicked: {
+                        if (model.openablePath) {
+                            Systray.presentShareViewInTray(model.openablePath)
+                        }
+                    }
                 }
 
                 IconButton {

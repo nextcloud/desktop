@@ -453,6 +453,10 @@ void Systray::createFileActivityDialog(const QString &localPath)
 
 void Systray::presentShareViewInTray(const QString &localPath)
 {
+    if (localPath.isEmpty()) {
+        return;
+    }
+
     const auto folder = FolderMan::instance()->folderForPath(localPath);
     if (!folder) {
         qCWarning(lcSystray) << "Could not open file details view in tray for" << localPath << "no responsible folder found";
