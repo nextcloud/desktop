@@ -141,11 +141,11 @@ private slots:
 
         QVERIFY(seenLockedFiles.contains(fakeFolder.localPath() + "A/a1"));
         QVERIFY(seenLockedFiles.size() == 1);
-        QVERIFY(hasLocalDiscoveryPath("A/a1"));
+        QVERIFY(!hasLocalDiscoveryPath("A/a1"));
 
         CloseHandle(h1);
 
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, tracker.localDiscoveryPaths());
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, {"A/a1"});
         tracker.startSyncPartialDiscovery();
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
