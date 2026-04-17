@@ -1199,6 +1199,21 @@ void User::openLocalFolder() const
     }
 }
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+void User::openFileProviderDomain() const
+{
+    const auto domainIdentifier = _account->account()->fileProviderDomainIdentifier();
+    if (domainIdentifier.isEmpty()) {
+        return;
+    }
+    const auto domainManager = Mac::FileProvider::instance()->domainManager();
+    if (!domainManager) {
+        return;
+    }
+    domainManager->openFileViewerForDomainIdentifier(domainIdentifier);
+}
+#endif
+
 void User::openFolderLocallyOrInBrowser(const QString &fullRemotePath)
 {
     const auto folder = getFolder();
@@ -1336,6 +1351,13 @@ bool User::hasLocalFolder() const
 {
     return getFolder() != nullptr;
 }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+bool User::hasFileProvider() const
+{
+    return !_account->account()->fileProviderDomainIdentifier().isEmpty();
+}
+#endif
 
 bool User::serverHasTalk() const
 {
@@ -2055,6 +2077,16 @@ void UserModel::openCurrentAccountLocalFolder()
 
     _users[_currentUserId]->openLocalFolder();
 }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+void UserModel::openCurrentAccountFileProviderDomain()
+{
+    if (_currentUserId < 0 || _currentUserId >= _users.size())
+        return;
+
+    _users[_currentUserId]->openFileProviderDomain();
+}
+#endif
 
 void UserModel::openCurrentAccountServer()
 {

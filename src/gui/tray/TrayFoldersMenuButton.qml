@@ -36,7 +36,7 @@ HeaderButton {
         }
     }
 
-    visible: currentUser.hasLocalFolder
+    visible: currentUser.hasLocalFolder || (Qt.platform.os === "osx" && currentUser.hasFileProvider)
     display: AbstractButton.IconOnly
     flat: true
 

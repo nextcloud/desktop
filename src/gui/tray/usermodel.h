@@ -68,6 +68,9 @@ class User : public QObject
     Q_PROPERTY(QString statusMessage READ statusMessage NOTIFY statusChanged)
     Q_PROPERTY(bool desktopNotificationsAllowed READ isDesktopNotificationsAllowed NOTIFY desktopNotificationsAllowedChanged)
     Q_PROPERTY(bool hasLocalFolder READ hasLocalFolder NOTIFY hasLocalFolderChanged)
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    Q_PROPERTY(bool hasFileProvider READ hasFileProvider NOTIFY accountStateChanged)
+#endif
     Q_PROPERTY(bool isFeaturedAppEnabled READ isFeaturedAppEnabled NOTIFY featuredAppChanged)
     Q_PROPERTY(QString featuredAppIcon READ featuredAppIcon NOTIFY featuredAppChanged)
     Q_PROPERTY(QString featuredAppAccessibleName READ featuredAppAccessibleName NOTIFY featuredAppChanged)
@@ -100,10 +103,16 @@ public:
     ActivityListModel *getActivityModel();
     [[nodiscard]] UnifiedSearchResultsListModel *getUnifiedSearchResultsListModel() const;
     void openLocalFolder() const;
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    void openFileProviderDomain() const;
+#endif
     void openFolderLocallyOrInBrowser(const QString &fullRemotePath);
     [[nodiscard]] QString name() const;
     [[nodiscard]] QString server(bool shortened = true) const;
     [[nodiscard]] bool hasLocalFolder() const;
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    [[nodiscard]] bool hasFileProvider() const;
+#endif
     [[nodiscard]] bool isFeaturedAppEnabled() const;
     [[nodiscard]] QString featuredAppIcon() const;
     [[nodiscard]] QString featuredAppAccessibleName() const;
@@ -338,6 +347,9 @@ signals:
 public slots:
     void fetchCurrentActivityModel();
     void openCurrentAccountLocalFolder();
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    void openCurrentAccountFileProviderDomain();
+#endif
     void openCurrentAccountServer();
     void openCurrentAccountFolderFromTrayInfo(const QString &fullRemotePath);
     void openCurrentAccountFeaturedApp();
