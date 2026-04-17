@@ -364,7 +364,7 @@ SocketApi::SocketApi(QObject *parent)
         _localServer.setSocketOptions(QLocalServer::UserAccessOption);
     }
 
-   const bool result = _localServer.listen(socketPath);
+    const bool result = _localServer.listen(socketPath);
     qCDebug(lcSocketApi) << "Full server name:" << _localServer.fullServerName();
 
     if (result) {
