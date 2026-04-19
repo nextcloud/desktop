@@ -2608,7 +2608,7 @@ Para usuarios avanzados: Este problema puede estar relacionado a múltiples arch
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
         <source>Due to recent security improvements, the client no longer has access to the folder. Your approval is required one time to restore access. Please select the synchronization folder root.</source>
-        <translation type="unfinished"/>
+        <translation>Debido a las recientes mejoras de seguridad, el cliente ya no tiene acceso a la carpeta. Es necesario que des tu autorización una sola vez para restablecer el acceso. Selecciona la raíz de la carpeta de sincronización.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
@@ -3148,12 +3148,12 @@ Cambiar a una versión anterior no es inmediatamente posible: cambiar de estable
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="673"/>
         <source>Login Item Requires Approval</source>
-        <translation type="unfinished"/>
+        <translation>Este elemento de inicio de sesión requiere aprobación</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="674"/>
         <source>The login item has been registered but needs your approval to become active. Please open System Settings → General → Login Items and enable %1 there.</source>
-        <translation type="unfinished"/>
+        <translation>El elemento de inicio de sesión se ha registrado, pero necesita tu aprobación para activarse. Abre Configuración del sistema → General → Elementos de inicio de sesión y activa %1 allí.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="666"/>
