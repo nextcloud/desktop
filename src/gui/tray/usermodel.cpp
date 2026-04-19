@@ -1809,7 +1809,7 @@ void User::slotGroupFoldersFetched(QNetworkReply *reply)
 {
     Q_ASSERT(reply);
     if (!reply) {
-        qCWarning(lcActivity) << "Group folders fetch error";
+        qCWarning(lcActivity) << "Team folders fetch error";
         return;
     }
 
@@ -1822,7 +1822,7 @@ void User::slotGroupFoldersFetched(QNetworkReply *reply)
         if (oldSize != _trayFolderInfos.size()) {
             emit groupFoldersChanged();
         }
-        qCWarning(lcActivity) << "Group folders fetch error" << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() << replyData;
+        qCWarning(lcActivity) << "Team folders fetch error" << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() << replyData;
         return;
     }
 
@@ -1830,7 +1830,7 @@ void User::slotGroupFoldersFetched(QNetworkReply *reply)
     const auto json = QJsonDocument::fromJson(replyData, &jsonParseError);
 
     if (jsonParseError.error != QJsonParseError::NoError) {
-        qCWarning(lcActivity) << "Group folders JSON parse error" << jsonParseError.error << jsonParseError.errorString();
+        qCWarning(lcActivity) << "Team folders JSON parse error" << jsonParseError.error << jsonParseError.errorString();
         if (oldSize != _trayFolderInfos.size()) {
             emit groupFoldersChanged();
         }
