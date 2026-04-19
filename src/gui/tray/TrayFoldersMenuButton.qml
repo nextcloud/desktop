@@ -55,7 +55,7 @@ HeaderButton {
         id: tooltip
         popupType: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
         visible: root.hovered && !foldersMenuLoader.isMenuVisible
-        text: root.userHasGroupFolders ? qsTr("Open local or group folders") : qsTr("Open local folder")
+        text: root.userHasGroupFolders ? qsTr("Open local or team folders") : qsTr("Open local folder")
     }
 
 
@@ -169,7 +169,7 @@ HeaderButton {
                         property bool isGroupFolder: model.modelData.isGroupFolder
 
                         text: model.modelData.name
-                        toolTipText: !isGroupFolder ? qsTr("Open local folder \"%1\"").arg(model.modelData.fullPath) : qsTr("Open group folder \"%1\"").arg(model.modelData.fullPath)
+                        toolTipText: !isGroupFolder ? qsTr("Open local folder \"%1\"").arg(model.modelData.fullPath) : qsTr("Open team folder \"%1\"").arg(model.modelData.fullPath)
                         subline: model.modelData.parentPath
                         width: foldersMenuListView.width
                         height: Style.standardPrimaryButtonHeight
