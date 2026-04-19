@@ -73,7 +73,7 @@ Rectangle {
             onFolderEntryTriggered: isGroupFolder ? UserModel.openCurrentAccountFolderFromTrayInfo(fullFolderPath) : UserModel.openCurrentAccountLocalFolder()
 
             Accessible.role: Accessible.Graphic
-            Accessible.name: qsTr("Open local or group folders")
+            Accessible.name: qsTr("Open local or team folders")
             Accessible.onPressAction: {
                 if (openLocalFolderButton.userHasGroupFolders) {
                     openLocalFolderButton.toggleMenuOpen()
