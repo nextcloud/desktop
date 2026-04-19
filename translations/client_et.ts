@@ -2608,7 +2608,7 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
         <source>Due to recent security improvements, the client no longer has access to the folder. Your approval is required one time to restore access. Please select the synchronization folder root.</source>
-        <translation type="unfinished"/>
+        <translation>Hiljutiste turvatäienduste tõttu puudub kliendil ligipääs sellele kaustale. Ligipääsu taastamiseks on vaja sinu ühekordset nõusolekut. Palun vali sünkroniseeritav juurkaust.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
@@ -2832,7 +2832,7 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="505"/>
         <source>You are already syncing the subfolder %1 at %2.</source>
-        <translation>Sa juba sünkroonid „%2“ alamkasuta „%1“.</translation>
+        <translation>Sa juba sünkroonid „%2“ alamkausta „%1“.</translation>
     </message>
 </context>
 <context>
@@ -3152,7 +3152,7 @@ Kui võtad selle kasutusele, siis eelmise versiooni juurde ei ole võimalik otse
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="674"/>
         <source>The login item has been registered but needs your approval to become active. Please open System Settings → General → Login Items and enable %1 there.</source>
-        <translation type="unfinished"/>
+        <translation>Sisselogimisobjekt on registreeritud, aga ta vajab aktiveerimiseks sinu kinnitust. Palun ava „Süsteemi seadistused“ → „Üldine“ → „Sisselogimisobjektid“ ja kinnita seal „%1“.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="666"/>
