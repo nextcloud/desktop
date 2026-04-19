@@ -1925,17 +1925,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="90"/>
         <source>Invalid file path was provided.</source>
-        <translation type="unfinished"/>
+        <translation>Abrid n ufaylu i d-ittunefken d armeɣtu.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="96"/>
         <source>Could not find an account for local editing.</source>
-        <translation type="unfinished"/>
+        <translation>Ur yezmir ara tifin n umiḍan i wesiẓreg adigan.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="120"/>
         <source>Could not start editing locally.</source>
-        <translation type="unfinished"/>
+        <translation>Ulamek asekker n usiẓreg adigan.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="121"/>
@@ -1962,29 +1962,29 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="180"/>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="208"/>
         <source>Error fetching metadata.</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa deg wawway n yiɣefisefka.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="123"/>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="129"/>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="222"/>
         <source>Error locking folder.</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa deg usekkeṛ n ukaram.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="156"/>
         <source>Error fetching encrypted folder ID.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;Tuccḍa deg wawway n usulay n ukaram awgelhan.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="190"/>
         <source>Error parsing or decrypting metadata.</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa deg uslaḍ neɣ tukksa uwgelhen n yiɣefisefka.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="333"/>
         <source>Failed to upload metadata</source>
-        <translation type="unfinished"/>
+        <translation>Asali n yiɣefisefka ur yeddi ara</translation>
     </message>
 </context>
 <context>
@@ -1993,38 +1993,38 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="260"/>
         <source>Your account is offline %1.</source>
         <comment>account url</comment>
-        <translation type="unfinished"/>
+        <translation>Amiḍan-ik·im atan deg uskar aruqqin %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="269"/>
         <source>The file ID is empty for %1.</source>
         <comment>file name</comment>
-        <translation type="unfinished"/>
+        <translation>Asulay n ufaylu d ilem i %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="277"/>
         <source>The file type for %1 is not valid.</source>
         <comment>file name</comment>
-        <translation type="unfinished"/>
+        <translation>Anaw ufaylu i %1 d arameɣtu.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="289"/>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mimetype, e.g text/plain files</comment>
         <extracomment>TRANSLATOR Placeholder contains file MIME type</extracomment>
-        <translation type="unfinished"/>
+        <translation>Ulac tigawin n ufaylu i d-yuɣalen seg uqeddac i yifuyla %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="372"/>
         <source>%1 did not succeed, please try again later. If you need help, contact your server administrator.</source>
         <comment>file action error message</comment>
-        <translation type="unfinished"/>
+        <translation>%1 ur yeddi ara, ɛreḍ tikelt nniḍen ticki. Ma teḥwaǧeḍ tallelt, nermes anedbal n uqeddac-ik·im.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="388"/>
         <source>%1 done.</source>
         <comment>file action success message</comment>
-        <translation type="unfinished"/>
+        <translation>%1 immed.</translation>
     </message>
 </context>
 <context>
@@ -2033,37 +2033,37 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="116"/>
         <source>%1 second(s) ago</source>
         <comment>seconds elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 tasint aya</numerusform><numerusform>%1 n tasinin aya</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="119"/>
         <source>%1 minute(s) ago</source>
         <comment>minutes elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 n tesdat aya</numerusform><numerusform>%1 n tesdatin aya</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="122"/>
         <source>%1 hour(s) ago</source>
         <comment>hours elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 usrag aya</numerusform><numerusform>%1 yisragen aya</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="125"/>
         <source>%1 day(s) ago</source>
         <comment>days elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 n wass aya</numerusform><numerusform>%1 n wussan aya</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="128"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 aggur aya</numerusform><numerusform>%1 n wagguren aya</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="131"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 useggas aya</numerusform><numerusform>%1 n yiseggasen aya</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="163"/>
@@ -2111,27 +2111,27 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="154"/>
         <source>Waiting for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Yettraǧu tasiregt</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="159"/>
         <source>Polling for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Asuter n tasiregt</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="164"/>
         <source>Starting authorization</source>
-        <translation type="unfinished"/>
+        <translation>Bdu tasiregt</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="168"/>
         <source>Link copied to clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Aseɣwen yettwanɣel ɣer tecfawit.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="215"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Ldi iminig</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="217"/>
@@ -2145,65 +2145,65 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/folder.cpp" line="451"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 yettwakkes.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="465"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 yettwaleqqem.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="472"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 yettusenfel yisem-is ɣer %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="479"/>
         <source>%1 has been moved to %2.</source>
-        <translation type="unfinished"/>
+        <translation>%1 yettwasmutti ɣer %2.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="449"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 akked %n ufaylu-nniḍen ttwakksen.</numerusform><numerusform>%1 akked %n ifuyla-nniḍen ttwakksen.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="189"/>
         <source>Please choose a different location. The folder %1 doesn&apos;t exist.</source>
-        <translation type="unfinished"/>
+        <translation>Ttxil-k·m fren adig-nniḍen. Akaram %1 ulac-it.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="191"/>
         <source>Please choose a different location. %1 isn&apos;t a valid folder.</source>
-        <translation type="unfinished"/>
+        <translation>Ttxil-k·m fren adig-nniḍen. %1 mačči d akaram ameɣtu.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="193"/>
         <source>Please choose a different location. %1 isn&apos;t a readable folder.</source>
-        <translation type="unfinished"/>
+        <translation>Ttxil-k·m fren adig-nniḍen. %1 mačči d akaram yettwaɣren.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="456"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 akked %n n ufaylu nniḍen ttwarnan.</numerusform><numerusform>%1 akked %n n yifuyla nniḍen ttwarnan.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="458"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 yettwarna.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="463"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 akked %n ufaylu-nniḍen ttwaleqqemen.</numerusform><numerusform>%1 akked %n ifuyla-nniḍen ttwaleqqemen.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="470"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 yettusenfel yisem-is ɣer %2 yerna %n ufaylu nniḍen yettwabeddel yisem-is.</numerusform><numerusform>%1 yettusenfel yisem-is ɣer %2 yerna %n n yifuyla nniḍen yettwabeddel yismawen-nsen.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="477"/>
@@ -2233,17 +2233,17 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="498"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 akked %n ufaylu nniḍen ttwasekkṛen akka tura.</numerusform><numerusform>%1 akked %n ifuyla nniḍen ttwasekkṛen akka tura.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="500"/>
         <source>%1 is currently locked.</source>
-        <translation type="unfinished"/>
+        <translation>%1 yettwassekeṛ.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="508"/>
         <source>Sync Activity</source>
-        <translation type="unfinished"/>
+        <translation>Armud n umtawi</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1121"/>
