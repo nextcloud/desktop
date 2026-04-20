@@ -73,7 +73,7 @@ if ([string]::IsNullOrEmpty($env:WILANGID)) {
 
 # ── Generate a unique ProductCode for this build ──────────────────────────────
 # A fresh ProductCode guarantees that embedded language transforms are not
-# accidentally shared across builds (see desktop#8610).
+# accidentally shared across builds (see https://github.com/nextcloud/desktop/issues/8610).
 $productCode = [System.Guid]::NewGuid().ToString()
 Write-Host ''
 Write-Host ":: Using ProductCode=$productCode"
