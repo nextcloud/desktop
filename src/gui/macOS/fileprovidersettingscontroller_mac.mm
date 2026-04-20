@@ -161,7 +161,8 @@ public:
     void signalFileProviderDomain(const QString &userIdAtHost) const
     {
         qCInfo(lcFileProviderSettingsController) << "Signalling file provider domain" << userIdAtHost;
-        NSFileProviderDomain * const domain = FileProviderUtils::domainForIdentifier(userIdAtHost);
+        const auto domainId = FileProviderUtils::domainIdentifierForAccountIdentifier(userIdAtHost);
+        NSFileProviderDomain * const domain = FileProviderUtils::domainForIdentifier(domainId);
         NSFileProviderManager * const manager = [NSFileProviderManager managerForDomain:domain];
         [domain release];
         [manager signalEnumeratorForContainerItemIdentifier:NSFileProviderRootContainerItemIdentifier
@@ -204,8 +205,10 @@ public slots:
             const auto items = storageUseObserver.materialisedItems;
             Q_ASSERT(items != nil);
 
-            // Remember that OCC::Account::userIdAtHost == domain.identifier for us
             const auto qDomainIdentifier = QString::fromNSString(domain.identifier);
+            OCC::ConfigFile cfg;
+            const auto accountUserIdAtHost = cfg.accountIdFromFileProviderDomainUuid(qDomainIdentifier);
+            const auto key = accountUserIdAtHost.isEmpty() ? qDomainIdentifier : accountUserIdAtHost;
             QVector<FileProviderItemMetadata> qMaterialisedItems;
             qMaterialisedItems.reserve(items.count);
             unsigned long long storageUsage = 0;
@@ -218,11 +221,11 @@ public slots:
                                                           << "with total size" << storageUsage;
                 qMaterialisedItems.append(itemMetadata);
             }
-            _storageUsage.insert(qDomainIdentifier, storageUsage);
-            _materialisedFiles.insert(qDomainIdentifier, qMaterialisedItems);
+            _storageUsage.insert(key, storageUsage);
+            _materialisedFiles.insert(key, qMaterialisedItems);
 
-            emit q->localStorageUsageForAccountChanged(qDomainIdentifier);
-            emit q->materialisedItemsForAccountChanged(qDomainIdentifier);
+            emit q->localStorageUsageForAccountChanged(key);
+            emit q->materialisedItemsForAccountChanged(key);
 
             [storageUseObserver release];
             [enumerator release];
@@ -445,8 +448,9 @@ void FileProviderSettingsController::createEvictionWindowForAccount(const QStrin
 
 void FileProviderSettingsController::refreshMaterialisedItemsForAccount(const QString &userIdAtHost)
 {
-    d->enumerateMaterialisedFilesForDomainManager(FileProviderUtils::managerForDomainIdentifier(userIdAtHost),
-                                                  FileProviderUtils::domainForIdentifier(userIdAtHost));
+    const auto domainId = FileProviderUtils::domainIdentifierForAccountIdentifier(userIdAtHost);
+    d->enumerateMaterialisedFilesForDomainManager(FileProviderUtils::managerForDomainIdentifier(domainId),
+                                                  FileProviderUtils::domainForIdentifier(domainId));
 }
 
 void FileProviderSettingsController::signalFileProviderDomain(const QString &userIdAtHost)
