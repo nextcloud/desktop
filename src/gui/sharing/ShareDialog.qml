@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Window
 import QtQuick.Layouts
@@ -30,124 +32,227 @@ ApplicationWindow {
 
     title: qsTr("Share \"%1\"").arg(root.shortLocalPath)
 
-    ColumnLayout {
-        id: windowContent
+    StackView {
+        id: stack
+        initialItem: mainView
         anchors.fill: parent
-        anchors.margins: Style.standardSpacing
+    }
 
-        RowLayout {
-            id: windowHeader
-            Layout.fillWidth: true
-            spacing: Style.standardSpacing
+    Component {
+        id: mainView
 
-            EnforcedPlainTextLabel {
-                id: headerLocalPath
-                text: qsTr("Share \"%1\"").arg(root.shortLocalPath)
-                elide: Text.ElideRight
-                font.bold: true
-                font.pixelSize: Style.pixelSize
-                color: palette.text
+        ColumnLayout {
+            id: windowContent
+            anchors.fill: parent
+            anchors.margins: Style.standardSpacing
+
+            RowLayout {
+                id: windowHeader
                 Layout.fillWidth: true
-                Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-            }
+                spacing: Style.standardSpacing
 
-            Button {
-                id: settingsButton
-                flat: true
-                padding: Style.extraSmallSpacing
-                spacing: 0
-                icon.source: "image://svgimage-custom-color/settings.svg/" + palette.windowText
-                icon.width: Style.extraSmallIconSize
-                icon.height: Style.extraSmallIconSize
-                Layout.alignment: Qt.AlignTop | Qt.AlignRight
-                Layout.rightMargin: Style.extraSmallSpacing
-                Layout.topMargin: Style.extraSmallSpacing
-                background: Rectangle {
-                    color: "transparent"
-                    radius: root.windowRadius
-                    border.width: closeButton.hovered ? Style.trayWindowBorderWidth : 0
-                    border.color: palette.dark
-                    anchors.fill: parent
-                    Layout.margins: Style.extraSmallSpacing
-                }
-            }
-
-            Button {
-                id: closeButton
-                flat: true
-                padding: Style.extraSmallSpacing
-                spacing: 0
-                icon.source: "image://svgimage-custom-color/close.svg/" + palette.windowText
-                icon.width: Style.extraSmallIconSize
-                icon.height: Style.extraSmallIconSize
-                Layout.alignment: Qt.AlignTop | Qt.AlignRight
-                Layout.rightMargin: Style.extraSmallSpacing
-                Layout.topMargin: Style.extraSmallSpacing
-                onClicked: root.close()
-                background: Rectangle {
-                    color: "transparent"
-                    radius: root.windowRadius
-                    border.width: closeButton.hovered ? Style.trayWindowBorderWidth : 0
-                    border.color: palette.dark
-                    anchors.fill: parent
-                    Layout.margins: Style.extraSmallSpacing
-                }
-            }
-        }
-
-        TabBar {
-            id: bar
-            Layout.fillWidth: true
-            TabButton {
-                id: viewInvitedPeople
-                text: qsTr("Invited people")
-            }
-            TabButton {
-                id: viewAnyone
-                text: qsTr("Anyone")
-            }
-        }
-
-        StackLayout {
-            currentIndex: bar.currentIndex
-            ColumnLayout {
-                Label {
-                    text: qsTr("Add people")
-                }
-                Label {
-                    text: qsTr("Participants")
-                }
-                TextArea {
+                EnforcedPlainTextLabel {
+                    id: headerLocalPath
+                    text: qsTr("Share \"%1\"").arg(root.shortLocalPath)
+                    elide: Text.ElideRight
+                    font.bold: true
+                    font.pixelSize: Style.pixelSize
+                    color: palette.text
                     Layout.fillWidth: true
-                    placeholderText: qsTr("Note to recipients")
+                    Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+                }
+
+                Button {
+                    id: settingsButton
+                    flat: true
+                    padding: Style.extraSmallSpacing
+                    spacing: 0
+                    icon.source: "image://svgimage-custom-color/settings.svg/" + palette.windowText
+                    icon.width: Style.extraSmallIconSize
+                    icon.height: Style.extraSmallIconSize
+                    Layout.alignment: Qt.AlignTop | Qt.AlignRight
+                    Layout.rightMargin: Style.extraSmallSpacing
+                    Layout.topMargin: Style.extraSmallSpacing
+                    background: Rectangle {
+                        color: "transparent"
+                        radius: root.windowRadius
+                        border.width: closeButton.hovered ? Style.trayWindowBorderWidth : 0
+                        border.color: palette.dark
+                        anchors.fill: parent
+                        Layout.margins: Style.extraSmallSpacing
+                    }
+
+                    onClicked: stack.push(settingsView)
+                }
+
+                Button {
+                    id: closeButton
+                    flat: true
+                    padding: Style.extraSmallSpacing
+                    spacing: 0
+                    icon.source: "image://svgimage-custom-color/close.svg/" + palette.windowText
+                    icon.width: Style.extraSmallIconSize
+                    icon.height: Style.extraSmallIconSize
+                    Layout.alignment: Qt.AlignTop | Qt.AlignRight
+                    Layout.rightMargin: Style.extraSmallSpacing
+                    Layout.topMargin: Style.extraSmallSpacing
+                    background: Rectangle {
+                        color: "transparent"
+                        radius: root.windowRadius
+                        border.width: closeButton.hovered ? Style.trayWindowBorderWidth : 0
+                        border.color: palette.dark
+                        anchors.fill: parent
+                        Layout.margins: Style.extraSmallSpacing
+                    }
+
+                    onClicked: root.close()
                 }
             }
-            ColumnLayout {
-                Label {
-                    text: qsTr("Anyone with the link")
+
+            TabBar {
+                id: bar
+                Layout.fillWidth: true
+                TabButton {
+                    id: viewInvitedPeople
+                    text: qsTr("Invited people")
                 }
-                TextArea {
+                TabButton {
+                    id: viewAnyone
+                    text: qsTr("Anyone")
+                }
+            }
+
+            StackLayout {
+                currentIndex: bar.currentIndex
+                ColumnLayout {
+                    Label {
+                        text: qsTr("Add people")
+                    }
+                    Label {
+                        text: qsTr("Participants")
+                    }
+                    TextArea {
+                        Layout.fillWidth: true
+                        placeholderText: qsTr("Note to recipients")
+                    }
+                }
+                ColumnLayout {
+                    Label {
+                        text: qsTr("Anyone with the link")
+                    }
+                    TextArea {
+                        Layout.fillWidth: true
+                        placeholderText: qsTr("Note to recipients")
+                    }
+                }
+            }
+
+            RowLayout {
+                Button {
                     Layout.fillWidth: true
-                    placeholderText: qsTr("Note to recipients")
+
+                    text: qsTr("Copy link")
                 }
-            }
-        }
+                Button {
+                    Layout.fillWidth: true
 
-        RowLayout {
-            Button {
-                Layout.fillWidth: true
-
-                text: qsTr("Copy link")
-            }
-            Button {
-                Layout.fillWidth: true
-
-                text: qsTr("Send")
-                visible: !viewAnyone.checked
-                enabled: !viewAnyone.checked
+                    text: qsTr("Send")
+                    visible: !viewAnyone.checked
+                    enabled: !viewAnyone.checked
+                }
             }
         }
     }
 
+    Component {
+        id: settingsView
 
+        ColumnLayout {
+            id: windowContent
+            anchors.fill: parent
+            anchors.margins: Style.standardSpacing
+
+            RowLayout {
+                id: windowHeader
+                Layout.fillWidth: true
+                spacing: Style.standardSpacing
+
+
+                Button {
+                    id: backButton
+                    flat: true
+                    padding: Style.extraSmallSpacing
+                    spacing: 0
+                    icon.source: "image://svgimage-custom-color/confirm.svg/" + palette.windowText // TODO: back button icon!
+                    icon.width: Style.extraSmallIconSize
+                    icon.height: Style.extraSmallIconSize
+                    Layout.alignment: Qt.AlignTop | Qt.AlignRight
+                    Layout.rightMargin: Style.extraSmallSpacing
+                    Layout.topMargin: Style.extraSmallSpacing
+                    background: Rectangle {
+                        color: "transparent"
+                        radius: root.windowRadius
+                        border.width: closeButton.hovered ? Style.trayWindowBorderWidth : 0
+                        border.color: palette.dark
+                        anchors.fill: parent
+                        Layout.margins: Style.extraSmallSpacing
+                    }
+
+                    onClicked: stack.pop()
+                }
+
+                ColumnLayout {
+                    EnforcedPlainTextLabel {
+                        id: headerSettings
+                        text: qsTr("Sharing settings")
+                        elide: Text.ElideRight
+                        font.bold: true
+                        font.pixelSize: Style.pixelSize
+                        color: palette.text
+                        Layout.fillWidth: true
+                        Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+                    }
+                    EnforcedPlainTextLabel {
+                        id: headerSettingsLocalPath
+                        text: root.shortLocalPath
+                        elide: Text.ElideRight
+                        font.bold: false
+                        font.pixelSize: Style.pixelSize
+                        color: palette.text
+                        Layout.fillWidth: true
+                        Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+                    }
+                }
+
+                Button {
+                    id: closeButton
+                    flat: true
+                    padding: Style.extraSmallSpacing
+                    spacing: 0
+                    icon.source: "image://svgimage-custom-color/close.svg/" + palette.windowText
+                    icon.width: Style.extraSmallIconSize
+                    icon.height: Style.extraSmallIconSize
+                    Layout.alignment: Qt.AlignTop | Qt.AlignRight
+                    Layout.rightMargin: Style.extraSmallSpacing
+                    Layout.topMargin: Style.extraSmallSpacing
+                    background: Rectangle {
+                        color: "transparent"
+                        radius: root.windowRadius
+                        border.width: closeButton.hovered ? Style.trayWindowBorderWidth : 0
+                        border.color: palette.dark
+                        anchors.fill: parent
+                        Layout.margins: Style.extraSmallSpacing
+                    }
+
+                    onClicked: root.close()
+                }
+            }
+
+            ColumnLayout {
+                Label {
+                    text: qsTr("Show files in grid view")
+                }
+            }
+        }
+    }
 }
