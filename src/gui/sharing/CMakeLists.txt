@@ -6,6 +6,8 @@ ecm_add_qml_module(nextcloudGuiSharing
   URI com.nextcloud.desktopclient.sharing
   GENERATE_PLUGIN_SOURCE
   QML_FILES
+    MainPage.qml
+    SettingsPage.qml
     ShareDialog.qml
 )
 
