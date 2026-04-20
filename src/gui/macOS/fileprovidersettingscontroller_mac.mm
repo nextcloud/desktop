@@ -8,6 +8,7 @@
 #include <QFileDialog>
 #include <QQmlApplicationEngine>
 
+#include "configfile.h"
 #include "gui/systray.h"
 #include "gui/userinfo.h"
 #include "gui/macOS/fileprovider.h"
