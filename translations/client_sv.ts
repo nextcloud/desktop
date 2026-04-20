@@ -45,7 +45,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="139"/>
         <source>Scroll to top</source>
-        <translation>Skrolla till toppen</translation>
+        <translation>Bläddra till toppen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="168"/>
@@ -252,7 +252,7 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="136"/>
         <source>No recent emojis</source>
-        <translation>Inga nya emojis</translation>
+        <translation>Inga senaste emojier</translation>
     </message>
 </context>
 <context>
@@ -260,7 +260,7 @@
     <message>
         <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="88"/>
         <source>Discovering the certificates stored on your USB token</source>
-        <translation>Söker efter certifikaten som lagras på din USB-token</translation>
+        <translation>Sök efter certifikaten som är lagrade på din USB-token</translation>
     </message>
 </context>
 <context>
@@ -364,7 +364,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="76"/>
         <source>Switch to your browser to connect your account</source>
-        <translation>Använd din webläsare för att få åtkomst till ditt konto</translation>
+        <translation>Använd din webbläsare för att få åtkomst till ditt konto</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="229"/>
@@ -458,7 +458,7 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="552"/>
         <source>Start a new assistant chat</source>
-        <translation>Starta ny chat med assistenten</translation>
+        <translation>Starta en ny chatt med assistenten.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
@@ -525,7 +525,7 @@ Ska kontot importeras?</translation>
         <location filename="../src/gui/accountmanager.cpp" line="246"/>
         <location filename="../src/gui/accountmanager.cpp" line="359"/>
         <source>Legacy import</source>
-        <translation>Legacyimport</translation>
+        <translation>Import från äldre version</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="247"/>
@@ -713,7 +713,7 @@ Vänta på en ny synk och kryptera den sedan.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="461"/>
         <source>Could not encrypt folder because the folder does not exist anymore</source>
-        <translation>Kunde inte kryptera mappen eftersom den inte längre existerar</translation>
+        <translation>Kunde inte kryptera mappen eftersom den inte längre finns</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="602"/>
@@ -736,7 +736,7 @@ Vänta på en ny synk och kryptera den sedan.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="619"/>
         <location filename="../src/gui/accountsettings.cpp" line="709"/>
         <source>Availability</source>
-        <translation>Din tillgänglighet</translation>
+        <translation>Tillgänglighet</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="688"/>
@@ -996,7 +996,7 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="882"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Vill du verkligen avbryta synkronisering av mappen &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Observera:&lt;/b&gt; Detta kommer &lt;b&gt;inte&lt;/b&gt; radera några filer.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Vill du verkligen avbryta synkronisering av mappen &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Observera:&lt;/b&gt; Detta kommer &lt;b&gt;inte&lt;/b&gt; att radera några filer.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1271"/>
@@ -1011,7 +1011,7 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1317"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation>Serverversion %1 stöds! Fortsätt på egen risk.</translation>
+        <translation>Serverversion %1 stöds inte! Fortsätt på egen risk.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1329"/>
@@ -1148,7 +1148,7 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
         <source>This server probably requires a SSL client certificate.</source>
-        <translation>Denna server kräver förmodligen ett SSL kliencertifikat</translation>
+        <translation>Denna server kräver förmodligen ett SSL klientcertifikat</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
@@ -1250,7 +1250,7 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="528"/>
         <source>Legacy import</source>
-        <translation>Legacyimport</translation>
+        <translation>Import från äldre version</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="529"/>
@@ -1336,7 +1336,7 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="141"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation>Fil %1 kan inte laddas upp eftersom en annan fil med samma namn, där endast stora/små bokstäver skiljer sig, existerar</translation>
+        <translation>Fil %1 kan inte laddas upp eftersom en annan fil med samma namn, där endast stora/små bokstäver skiljer sig, finns</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="182"/>
@@ -1382,7 +1382,7 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="557"/>
         <source>The file %1 is currently in use</source>
-        <translation>Filen %1 används för tillfället</translation>
+        <translation>Filen %1 används för närvarande</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="727"/>
@@ -2386,7 +2386,7 @@ Alternativt kan du återställa alla raderade filer genom att ladda ner dem frå
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
         <source>Folder already exists</source>
-        <translation>Mappen existerar redan</translation>
+        <translation>Mappen finns redan</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="71"/>
@@ -4491,7 +4491,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1405"/>
         <source>The file %1 is currently in use</source>
-        <translation>Filen %1 används för tillfället</translation>
+        <translation>Filen %1 används för närvarande</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="494"/>
@@ -4556,7 +4556,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="324"/>
         <source>The file %1 is currently in use</source>
-        <translation>Filen %1 används för tillfället</translation>
+        <translation>Filen %1 används för närvarande</translation>
     </message>
 </context>
 <context>
@@ -4611,7 +4611,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="518"/>
         <source>The file %1 is currently in use</source>
-        <translation>Filen %1 används för tillfället</translation>
+        <translation>Filen %1 används för närvarande</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="553"/>
@@ -4670,7 +4670,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="277"/>
         <source>The file %1 is currently in use</source>
-        <translation>Filen %1 används för tillfället</translation>
+        <translation>Filen %1 används för närvarande</translation>
     </message>
 </context>
 <context>
@@ -4690,7 +4690,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <location filename="../src/libsync/propagateremotemove.cpp" line="222"/>
         <location filename="../src/libsync/propagateremotemove.cpp" line="292"/>
         <source>The file %1 is currently in use</source>
-        <translation>Filen %1 används för tillfället</translation>
+        <translation>Filen %1 används för närvarande</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="236"/>
@@ -4723,7 +4723,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="280"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation>Fil %1 kan inte laddas upp eftersom en annan fil med samma namn, där endast stora/små bokstäver skiljer sig, existerar</translation>
+        <translation>Fil %1 kan inte laddas upp eftersom en annan fil med samma namn, där endast stora/små bokstäver skiljer sig, finns</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="335"/>
@@ -4760,7 +4760,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="831"/>
         <source>The file %1 is currently in use</source>
-        <translation>Filen %1 används för tillfället</translation>
+        <translation>Filen %1 används för närvarande</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="291"/>
@@ -5866,7 +5866,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1540"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Vill du verkligen ta bort anslutningen till konto &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;OBS:&lt;/b&gt; Detta kommer &lt;b&gt;inte&lt;/b&gt; radera några filer.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Vill du verkligen ta bort anslutningen till konto &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;OBS:&lt;/b&gt; Detta kommer &lt;b&gt;inte&lt;/b&gt; att radera några filer.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1544"/>
@@ -5909,7 +5909,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="155"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
-        <translation>Emojis stöds inte. Viss statusfunktionalitet kan vara otillgänglig.</translation>
+        <translation>Emojier stöds inte. Viss statusfunktionalitet kan vara otillgänglig.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
@@ -6875,18 +6875,28 @@ Servern svarade med fel: %2</translation>
     <name>TrayFoldersMenuButton</name>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
-        <source>Open local or group folders</source>
-        <translation>Öppna lokala eller gruppmappar</translation>
+        <source>Open local folder</source>
+        <translation>Öppnar lokal mapp</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
-        <source>Open local folder</source>
-        <translation>Öppnar lokal mapp</translation>
+        <source>Open local or team folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
+        <source>Open local or group folders</source>
+        <translation>Öppna lokala eller gruppmappar</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
         <source>Open local folder &quot;%1&quot;</source>
         <translation>Öppna lokala mappen &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
+        <source>Open team folder &quot;%1&quot;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
@@ -6910,6 +6920,11 @@ Servern svarade med fel: %2</translation>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="66"/>
         <source>Open local or group folders</source>
         <translation>Öppna lokala eller gruppmappar</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="76"/>
+        <source>Open local or team folders</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="101"/>

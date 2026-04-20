@@ -2248,50 +2248,53 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="1121"/>
         <source>Could not read system exclude file</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi taɣuri n ufaylu n ustixer n unagraw</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1411"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Akaram amaynut meqqer ɣef %1 MAṬ yettwarna: %2.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1414"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation type="unfinished"/>
+        <translation>Akaram seg usekles azɣaray yettwarna.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1415"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation type="unfinished"/>
+        <translation>Ttxil-k·m, ddu ɣer yiɣewwaṛen akken ad t-tferneḍ ma tebɣiḍ ad t-id-tsidreḍ.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1472"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
-        <translation type="unfinished"/>
+        <translation>Akaram yugar asbadu n talast n teɣzi n ukaram n %1MAṬ: %2.
+%3</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1483"/>
         <source>Keep syncing</source>
-        <translation type="unfinished"/>
+        <translation>Kemmel amtawi</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1491"/>
         <source>Stop syncing</source>
-        <translation type="unfinished"/>
+        <translation>Ḥbes amtawi</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1502"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
-        <translation type="unfinished"/>
+        <translation>Akaram %1 iɛedda ɣef usbadu n talast n teɣzi ukaram n %2MAṬ.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1503"/>
         <source>Would you like to stop syncing this folder?</source>
-        <translation type="unfinished"/>
+        <translation>Tebɣiḍ ad tḥebseḍ amtawi n ukaram-agi?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1578"/>
@@ -2334,22 +2337,22 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folder.cpp" line="1726"/>
         <source>Remove all files?</source>
-        <translation type="unfinished"/>
+        <translation>Kkes akk ifuyla?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1730"/>
         <source>Proceed with Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Kemmel s tukksa</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1731"/>
         <source>Restore Files to Server</source>
-        <translation type="unfinished"/>
+        <translation>Err-d Ifuyla ɣer uqeddac</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1731"/>
         <source>Restore Files from Server</source>
-        <translation type="unfinished"/>
+        <translation>Err-d Ifuyla seg uqeddac</translation>
     </message>
 </context>
 <context>
@@ -2362,12 +2365,12 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
         <source>Enter folder name</source>
-        <translation type="unfinished"/>
+        <translation>Sekcem isem n ukaram</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
         <source>Folder already exists</source>
-        <translation type="unfinished"/>
+        <translation>Akaram yella yakan</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="71"/>
@@ -2377,7 +2380,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="71"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi asnulfu n ukaram! Senqed isirigen n tira.</translation>
     </message>
 </context>
 <context>
@@ -2385,17 +2388,17 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="426"/>
         <source>Could not reset folder state</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi awennez n waddad n ukaram</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1459"/>
         <source> (backup)</source>
-        <translation type="unfinished"/>
+        <translation>(Aḥraz)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1464"/>
         <source> (backup %1)</source>
-        <translation type="unfinished"/>
+        <translation>(Aḥraz %1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="427"/>
@@ -2405,111 +2408,111 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1803"/>
         <source>Undefined state.</source>
-        <translation type="unfinished"/>
+        <translation>Addad ur yettwassen ara.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1806"/>
         <source>Waiting to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Yettraǧu ad yebdu amtawi.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1809"/>
         <source>Preparing for sync.</source>
-        <translation type="unfinished"/>
+        <translation>Aheyyi i umtawi.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1819"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
-        <translation type="unfinished"/>
+        <translation>Amtawi %1 n %2 (Kra n tasinin i d-yeqqimen)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1822"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Amtawi %1 n %2 (%3 i d-yeqqimen)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1825"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Amtawi %1 n %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1831"/>
         <source>Syncing %1 (A few seconds left)</source>
-        <translation type="unfinished"/>
+        <translation>Amtawi %1 (Kra n tasinin i d-yeqqimen)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1833"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Amtawi %1 (%2 i d-yeqqimen)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1836"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>Amtawi %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1841"/>
         <source>Sync is running.</source>
-        <translation type="unfinished"/>
+        <translation>Amtawi iteddu.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1846"/>
         <source>Sync finished with unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Amtawi ifuk s imgarraden ur nefri.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1848"/>
         <source>Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>Amtawi aneggaru yedda akken iwata.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1854"/>
         <source>Setup error.</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa n usebded.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1857"/>
         <source>Sync request was cancelled.</source>
-        <translation type="unfinished"/>
+        <translation>Asuter n umtawi yettwasefsex.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1874"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
-        <translation type="unfinished"/>
+        <translation>Ttxil-k·m fren adig-nniḍen. Akaram yettwafernen mačči d ameɣtu.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1882"/>
         <location filename="../src/gui/folderman.cpp" line="1961"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Ttxil-k fren adig-nniḍen. %1 yettuseqdac yakan am ukaram n umtawi.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1891"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
-        <translation type="unfinished"/>
+        <translation>Ttxil-k·m fren adig-nniḍen. Abrid %1 ulac-it.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1895"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
-        <translation type="unfinished"/>
+        <translation>Ttxil-k·m fren adig-nniḍen. Abrid %1 mačči d akaram.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1903"/>
         <location filename="../src/gui/folderman.cpp" line="1908"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
-        <translation type="unfinished"/>
+        <translation>Ttxil-k·m fren adig-nniḍen. Ur tesɛiḍ ara aṭas n tisirag akken ad taruḍ ar %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1968"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Ttxil-k·m fren adig-nniḍen. %1 yella yakan deg ukaram yettwasqedcen am ukaram n umtawi.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1983"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
-        <translation type="unfinished"/>
+        <translation>Ttxil-k·m fren adig-nniḍen. %1 yettuseqdac yakan am ukaram n umtawi i %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="2120"/>
@@ -2522,17 +2525,17 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1860"/>
         <source>Sync is paused.</source>
-        <translation type="unfinished"/>
+        <translation>Amtawi ibedd.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="418"/>
         <source>Please open the app settings to grant access to the sync folders.</source>
-        <translation type="unfinished"/>
+        <translation>Ttxil-k·m ldi iɣewwaṛen n usnas akken ad muddeḍ addaf ɣer ikaramen n umtawi.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1866"/>
         <source>%1 (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (Amtawi ibedd)</translation>
     </message>
 </context>
 <context>
@@ -2540,14 +2543,14 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="45"/>
         <source>Add Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Rnu tuqqna ɣer ukaram n umtawi</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="101"/>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="313"/>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="455"/>
         <source>Grant access</source>
-        <translation type="unfinished"/>
+        <translation>Mudd addaf</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="272"/>
@@ -2560,17 +2563,17 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="154"/>
         <source>You need to be connected to add a folder</source>
-        <translation type="unfinished"/>
+        <translation>Ilaq ad teqqneḍ iwakken ad ternuḍ akaram</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="156"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Sit taqfalt-agi iwakken ad ternuḍ akaram ɣer umtawi.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="169"/>
         <source>Could not decrypt!</source>
-        <translation type="unfinished"/>
+        <translation>D awezɣi tukksa n uwgelhen!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="171"/>
@@ -2581,7 +2584,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="214"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa deg usali n tebdart n yikaramen seg uqeddac.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
@@ -2591,59 +2594,59 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
         <source>Virtual file support is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Asefrek n ufaylu uhlis yermed.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="274"/>
         <source>Signed out</source>
-        <translation type="unfinished"/>
+        <translation>Yeffeɣ</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="314"/>
         <source>Synchronizing virtual files in local folder</source>
-        <translation type="unfinished"/>
+        <translation>Amtawi n yifuyla tuhlisin deg ukaram adigan</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="316"/>
         <source>Synchronizing files in local folder</source>
-        <translation type="unfinished"/>
+        <translation>Amtawi n yifuyla deg ukaram adigan</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="988"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Aselken n ibeddilen s wudem anmeggag &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="992"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Aszlken n ibeddilen s wudem adigan &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="999"/>
         <source>Syncing local and remote changes</source>
-        <translation type="unfinished"/>
+        <translation>Amtawi adigan akked ibeddilen inmeggagen</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1049"/>
         <source>%1 %2 …</source>
         <extracomment>Example text: &quot;Uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot; Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1055"/>
         <source>Download %1/s</source>
         <extracomment>Example text: &quot;Download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation type="unfinished"/>
+        <translation>Asider %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1121"/>
         <source>File %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu %1 n %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="244"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation type="unfinished"/>
+        <translation>Llan imgarraden ur nefri ara. Sit ɣef ugar n telqayt.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1051"/>
@@ -6829,17 +6832,27 @@ Server replied with error: %2</source>
     <name>TrayFoldersMenuButton</name>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
-        <source>Open local or group folders</source>
+        <source>Open local folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
-        <source>Open local folder</source>
+        <source>Open local or team folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
+        <source>Open local or group folders</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
         <source>Open local folder &quot;%1&quot;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
+        <source>Open team folder &quot;%1&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -6863,6 +6876,11 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="66"/>
         <source>Open local or group folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="76"/>
+        <source>Open local or team folders</source>
         <translation type="unfinished"/>
     </message>
     <message>
