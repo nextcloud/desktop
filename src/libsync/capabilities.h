@@ -14,8 +14,6 @@
 #include <QMimeDatabase>
 #include <QColor>
 
-#include "capabilities/sharing.h"
-
 namespace OCC {
 
 class DirectEditor;
@@ -181,21 +179,11 @@ public:
     DirectEditor* getDirectEditorForMimetype(const QMimeType &mimeType);
     DirectEditor* getDirectEditorForOptionalMimetype(const QMimeType &mimeType);
 
-    /**
-     * Returns the capabilities from the "sharing" app
-     */
-    [[nodiscard]] const CapabilityInfo::Sharing &sharing() const
-    {
-        return _sharingCapability;
-    }
-
 private:
     [[nodiscard]] QMap<QString, QVariant> serverThemingMap() const;
 
     QVariantMap _capabilities;
     QList<DirectEditor*> _directEditors;
-
-    CapabilityInfo::Sharing _sharingCapability;
 };
 
 /*-------------------------------------------------------------------------------------*/
