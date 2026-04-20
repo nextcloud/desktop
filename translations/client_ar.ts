@@ -6853,18 +6853,28 @@ Server replied with error: %2</source>
     <name>TrayFoldersMenuButton</name>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
-        <source>Open local or group folders</source>
-        <translation>فتح المجلدات المحلية أو مجلدات المجموعة</translation>
+        <source>Open local folder</source>
+        <translation>فتح المجلد المحلي</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
-        <source>Open local folder</source>
-        <translation>فتح المجلد المحلي</translation>
+        <source>Open local or team folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
+        <source>Open local or group folders</source>
+        <translation>فتح المجلدات المحلية أو مجلدات المجموعة</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
         <source>Open local folder &quot;%1&quot;</source>
         <translation>فتح المجلد المحلي &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
+        <source>Open team folder &quot;%1&quot;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
@@ -6888,6 +6898,11 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="66"/>
         <source>Open local or group folders</source>
         <translation>فتح مجلدات محلية أو جماعية</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="76"/>
+        <source>Open local or team folders</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="101"/>

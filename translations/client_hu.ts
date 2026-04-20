@@ -6875,18 +6875,28 @@ A kiszolgáló hibával válaszolt: %2</translation>
     <name>TrayFoldersMenuButton</name>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
-        <source>Open local or group folders</source>
-        <translation>Helyi vagy csoportmappák megnyitása</translation>
+        <source>Open local folder</source>
+        <translation>Helyi mappa megnyitása</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
-        <source>Open local folder</source>
-        <translation>Helyi mappa megnyitása</translation>
+        <source>Open local or team folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
+        <source>Open local or group folders</source>
+        <translation>Helyi vagy csoportmappák megnyitása</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
         <source>Open local folder &quot;%1&quot;</source>
         <translation>A(z) „%1” helyi mappa megnyitása</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
+        <source>Open team folder &quot;%1&quot;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
@@ -6910,6 +6920,11 @@ A kiszolgáló hibával válaszolt: %2</translation>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="66"/>
         <source>Open local or group folders</source>
         <translation>Helyi vagy csoportmappák megnyitása</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="76"/>
+        <source>Open local or team folders</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="101"/>

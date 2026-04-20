@@ -6875,18 +6875,28 @@ Server odpovedal chybou: %2</translation>
     <name>TrayFoldersMenuButton</name>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
-        <source>Open local or group folders</source>
-        <translation>Otvoriť miestne alebo skupinové priečinky</translation>
+        <source>Open local folder</source>
+        <translation>Otvoriť lokálny priečinok</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
-        <source>Open local folder</source>
-        <translation>Otvoriť lokálny priečinok</translation>
+        <source>Open local or team folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
+        <source>Open local or group folders</source>
+        <translation>Otvoriť miestne alebo skupinové priečinky</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
         <source>Open local folder &quot;%1&quot;</source>
         <translation>Otvoriť lokálny priečinok &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
+        <source>Open team folder &quot;%1&quot;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
@@ -6910,6 +6920,11 @@ Server odpovedal chybou: %2</translation>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="66"/>
         <source>Open local or group folders</source>
         <translation>Otvoriť miestne alebo skupinové adresáre</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="76"/>
+        <source>Open local or team folders</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="101"/>
