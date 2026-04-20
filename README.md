@@ -7,7 +7,7 @@
 
 [![REUSE status](https://api.reuse.software/badge/github.com/nextcloud/desktop)](https://api.reuse.software/info/github.com/nextcloud/desktop)
 
-The Nextcloud Desktop Client is an app to synchronize files from Nextcloud Server with your computer.
+The Nextcloud Desktop Client is an app to synchronize files from Nextcloud Server with your computer available for Windows, macOS and Linux.
 
 <p align="center">
     <img src="doc/images/main_dialog_christine.png" alt="Desktop Client on Windows" width="450">
@@ -15,6 +15,9 @@ The Nextcloud Desktop Client is an app to synchronize files from Nextcloud Serve
 
 ## Downloads 🚀
 For the latest stable and recommended version, please refer to [the official download page](https://nextcloud.com/install/#install-clients).
+
+## Help 🛟
+You can find [the user, administration and developer manuals for the desktop client](https://docs.nextcloud.com/#desktop) on our central documentation site.
 
 ## Contributing 🫴
 :v: Please read the [Code of Conduct](https://nextcloud.com/community/code-of-conduct/). This document offers some guidance to ensure Nextcloud participants can cooperate effectively in a positive and inspiring atmosphere and to explain how together we can strengthen and support each other.
