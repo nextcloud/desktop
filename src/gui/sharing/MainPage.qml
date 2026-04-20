@@ -23,6 +23,10 @@ Page {
 
     title: qsTr("Share \"%1\"").arg(root.shortLocalPath)
 
+    SharingModel {
+        id: theModel
+    }
+
     ColumnLayout {
         id: windowContent
         anchors.fill: parent
@@ -57,6 +61,14 @@ Page {
                 TextArea {
                     Layout.fillWidth: true
                     placeholderText: qsTr("Note to recipients")
+                }
+                Repeater {
+                    model: theModel
+
+                    delegate: Label {
+                        required property string label
+                        text: label
+                    }
                 }
             }
             ColumnLayout {
