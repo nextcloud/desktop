@@ -21,12 +21,12 @@ set(MSI_INSTALLER_FILENAME "${APPLICATION_SHORTNAME}-${VERSION}${VERSION_SUFFIX}
 configure_file(RegistryCleanup.vbs.in ${CMAKE_CURRENT_BINARY_DIR}/RegistryCleanup.vbs)
 configure_file(OEM.wxi.in ${CMAKE_CURRENT_BINARY_DIR}/OEM.wxi)
 configure_file(collect-transform.xsl.in ${CMAKE_CURRENT_BINARY_DIR}/collect-transform.xsl)
-configure_file(make-msi.bat.in ${CMAKE_CURRENT_BINARY_DIR}/make-msi.bat)
+configure_file(make-msi.ps1.in ${CMAKE_CURRENT_BINARY_DIR}/make-msi.ps1)
 
 install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/OEM.wxi
         ${CMAKE_CURRENT_BINARY_DIR}/collect-transform.xsl
-        ${CMAKE_CURRENT_BINARY_DIR}/make-msi.bat
+        ${CMAKE_CURRENT_BINARY_DIR}/make-msi.ps1
         EnsureACL.js
         Platform.wxi
         Nextcloud.wxs

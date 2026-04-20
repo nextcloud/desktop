@@ -1,0 +1,165 @@
+#Requires -Version 5.1
+# SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: GPL-2.0-or-later
+#
+# This file is a CMake template.  It is configured into make-msi.ps1 by the
+# CMake build system and placed in the MSI install directory alongside the
+# WXS source files.  Do not run this .in file directly.
+<#
+.SYNOPSIS
+    Builds a multi-language WiX MSI installer for the Nextcloud Desktop client.
+.DESCRIPTION
+    1. Harvests application files with heat.exe.
+    2. For each supported language group: compiles with candle.exe and links
+       per-culture MSIs with light.exe.  Non-English MSIs are converted to
+       language transforms (.mst) with torch.exe and then deleted.
+    3. Embeds language transforms into the base MSI with WiSubStg.vbs.
+    4. Updates the Package/@Language attribute with WiLangId.vbs.
+    5. Renames the resulting file to the final installer filename.
+
+    Run from the directory that contains the WXS source files (the MSI install
+    directory produced by cmake --target install).
+.PARAMETER HarvestAppDir
+    Path to the directory of collected application files to harvest and package.
+#>
+param(
+    [Parameter(Mandatory)][string]$HarvestAppDir
+)
+
+$ErrorActionPreference = 'Stop'
+
+# ── CMake-substituted values ──────────────────────────────────────────────────
+$buildArch     = '@MSI_BUILD_ARCH@'        # x86 or x64
+$installerFile = '@MSI_INSTALLER_FILENAME@' # e.g. Nextcloud-6.0.0-x64.msi
+
+# ── Supported languages ───────────────────────────────────────────────────────
+# Each entry maps a Windows code page to one or more IETF culture tags.
+# candle.exe is run once per code-page group; light.exe is run once per culture.
+# Adding a language increases build time by approximately one minute.
+# See: https://learn.microsoft.com/en-gb/windows/win32/msi/localizing-the-error-and-actiontext-tables
+$languageGroups = @(
+    @{ Codepage = '1252'; Cultures = @('en-us', 'de-de', 'fr-fr', 'it-it', 'es-es') }
+)
+
+# LCID for each culture – used when embedding transforms and updating the MSI
+# Package/@Language attribute.
+$languagesToId = [ordered]@{
+    'en-us' = '1033'
+    'de-de' = '1031'
+    'fr-fr' = '1036'
+    'it-it' = '1040'
+    'es-es' = '3082'
+}
+
+# ── Validate prerequisites ────────────────────────────────────────────────────
+if (-not $env:WIX) {
+    throw "WiX Toolset path not set (environment variable 'WIX'). Please install the WiX Toolset."
+}
+$wixBin = "$env:WIX\bin"
+
+# Without WiSubStg.vbs we cannot embed language transforms, so restrict the
+# build to English only.
+if ([string]::IsNullOrEmpty($env:WISUBSTG)) {
+    Write-Host ':: WiSubStg.vbs not found (WISUBSTG not set) -- building English-only installer'
+    $languageGroups = @(
+        @{ Codepage = '1252'; Cultures = @('en-us') }
+    )
+    $languagesToId  = [ordered]@{ 'en-us' = '1033' }
+}
+
+if ([string]::IsNullOrEmpty($env:WILANGID)) {
+    Write-Host ':: WiLangId.vbs not found (WILANGID not set) -- Package language IDs will not be updated'
+}
+
+# ── Generate a unique ProductCode for this build ──────────────────────────────
+# A fresh ProductCode guarantees that embedded language transforms are not
+# accidentally shared across builds (see desktop#8610).
+$productCode = [System.Guid]::NewGuid().ToString()
+Write-Host ''
+Write-Host ":: Using ProductCode=$productCode"
+
+# ── Harvest application files ─────────────────────────────────────────────────
+Write-Host ''
+Write-Host ':: Harvesting files for MSI'
+& "$wixBin\heat.exe" dir $HarvestAppDir `
+    -dr INSTALLDIR -sreg -srd -sfrag -ag `
+    -cg ClientFiles `
+    -var var.HarvestAppDir `
+    "-platform=$buildArch" `
+    -t collect-transform.xsl `
+    -out collect.wxs
+if ($LASTEXITCODE -ne 0) { throw "heat.exe failed (exit $LASTEXITCODE)" }
+
+# ── Compile and link per-language MSIs ───────────────────────────────────────
+foreach ($group in $languageGroups) {
+    $codepage = $group.Codepage
+    $cultures = $group.Cultures
+
+    Write-Host ''
+    Write-Host ":: Compiling MSI project for codepage $codepage"
+    & "$wixBin\candle.exe" `
+        "-dcodepage=$codepage" `
+        "-dProductCode=$productCode" `
+        "-dPlatform=$buildArch" `
+        -arch $buildArch `
+        "-dHarvestAppDir=$HarvestAppDir" `
+        -ext WixUtilExtension `
+        NCMsiHelper.wxs WinShellExt.wxs collect.wxs Nextcloud.wxs RegistryCleanupCustomAction.wxs
+    if ($LASTEXITCODE -ne 0) { throw "candle.exe failed for codepage $codepage (exit $LASTEXITCODE)" }
+
+    foreach ($culture in $cultures) {
+        Write-Host ''
+        Write-Host ":: Linking MSI project for $culture"
+        & "$wixBin\light.exe" `
+            -sw1076 `
+            -ext WixUIExtension `
+            -ext WixUtilExtension `
+            "-cultures:$culture;en-us" `
+            NCMsiHelper.wixobj WinShellExt.wixobj collect.wixobj `
+            Nextcloud.wixobj RegistryCleanupCustomAction.wixobj `
+            -out "${culture}_$installerFile"
+        if ($LASTEXITCODE -ne 0) { throw "light.exe failed for $culture (exit $LASTEXITCODE)" }
+
+        if ($culture -ne 'en-us') {
+            # Create a language transform relative to the English base installer
+            Write-Host ":: Creating MSI transform for $culture"
+            & "$wixBin\torch.exe" -p -t language `
+                "en-us_$installerFile" "${culture}_$installerFile" `
+                -out "$culture.mst"
+            if ($LASTEXITCODE -ne 0) { throw "torch.exe failed for $culture (exit $LASTEXITCODE)" }
+
+            # The per-culture installer is no longer needed once the transform exists
+            Remove-Item -Path "${culture}_$installerFile" -Force
+        }
+    }
+}
+
+# ── Embed language transforms into the base MSI ───────────────────────────────
+if (-not [string]::IsNullOrEmpty($env:WISUBSTG)) {
+    foreach ($group in $languageGroups) {
+        foreach ($culture in $group.Cultures) {
+            if ($culture -eq 'en-us') { continue }
+            $langId = $languagesToId[$culture]
+            Write-Host ":: Embedding language $culture (LCID=$langId) into MSI"
+            & cscript.exe //NoLogo $env:WISUBSTG "en-us_$installerFile" "$culture.mst" $langId
+            if ($LASTEXITCODE -ne 0) {
+                throw "WiSubStg.vbs failed for $culture (exit $LASTEXITCODE)"
+            }
+        }
+    }
+}
+
+# ── Update the Package/@Language attribute with all supported LCIDs ───────────
+if (-not [string]::IsNullOrEmpty($env:WILANGID)) {
+    $allIds = ($languagesToId.Values) -join ','
+    Write-Host ":: Updating supported languages in MSI Package to $allIds"
+    & cscript.exe //NoLogo $env:WILANGID "en-us_$installerFile" Package $allIds
+    if ($LASTEXITCODE -ne 0) { throw "WiLangId.vbs failed (exit $LASTEXITCODE)" }
+    Write-Host ''
+}
+
+# ── Rename the English base installer to the final filename ───────────────────
+Write-Host ':: Finalising MSI build'
+Rename-Item -Path "en-us_$installerFile" -NewName $installerFile -Force
+Write-Host ''
+Write-Host ':: Done'
