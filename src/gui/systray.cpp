@@ -408,32 +408,33 @@ void Systray::createFileDetailsDialog(const QString &localPath)
     const QVariantMap initialProperties{
         {"accountState", QVariant::fromValue(folder->accountState())},
         {"localPath", localPath},
+        {"sharingManager", QVariant::fromValue(folder->accountState()->account()->sharing())},
     };
 
-    if (folder->accountState()->account()->capabilities().sharing().isAvailable()) {
+    if (folder->accountState()->account()->sharing()->isAvailable()) {
         // we have a server with the new unified sharing system, let's show the new fancy one
         // TODO: reduce code duplication
 
         QQmlComponent fileDetailsDialog(trayEngine(), "com.nextcloud.desktopclient.sharing"_L1, "ShareDialog"_L1);
 
-        if (!fileDetailsDialog.isError()) {
-            const auto createdDialog = fileDetailsDialog.createWithInitialProperties(initialProperties);
-            const auto dialog = qobject_cast<QQuickWindow*>(createdDialog);
-
-            if(!dialog) {
-                qCWarning(lcSystray) << "File details dialog window resulted in creation of object that was not a window!";
-                return;
-            }
-
-            _fileDetailDialogs.append(dialog);
-
-            dialog->show();
-            dialog->raise();
-            dialog->requestActivate();
-
-        } else {
+        if (fileDetailsDialog.isError()) {
             qCWarning(lcSystray) << fileDetailsDialog.errorString();
+            return;
         }
+
+        const auto createdDialog = fileDetailsDialog.createWithInitialProperties(initialProperties);
+        const auto dialog = qobject_cast<QQuickWindow*>(createdDialog);
+
+        if (!dialog) {
+            qCWarning(lcSystray) << "File details dialog window resulted in creation of object that was not a window!";
+            return;
+        }
+
+        _fileDetailDialogs.append(dialog);
+
+        dialog->show();
+        dialog->raise();
+        dialog->requestActivate();
 
         return;
     }
