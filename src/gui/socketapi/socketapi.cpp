@@ -407,6 +407,14 @@ void SocketApi::slotNewConnection()
     }
 
 #ifdef Q_OS_WIN
+   // SECURITY NOTE:
+    // This is the central trust boundary for incoming Windows SocketAPI clients.
+    // We gate new connections here (before listener registration and command
+    // dispatch) using named-pipe client process/session validation.
+    //
+    // This check improves local IPC hardening but is not a complete security
+    // boundary against a fully compromised same-user environment. Command-level
+    // validation and user interaction requirements remain important.
     QString trustError;
     if (!isTrustedWindowsPipeClient(socket, &trustError)) {
         qCWarning(lcSocketApi) << "Rejecting untrusted SocketAPI client:" << trustError;
