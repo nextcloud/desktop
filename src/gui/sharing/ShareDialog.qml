@@ -17,6 +17,7 @@ ApplicationWindow {
     visible: true
 
     property var accountState
+    property QtObject sharingManager
     property string localPath: ""
     property string shortLocalPath: ""
 
