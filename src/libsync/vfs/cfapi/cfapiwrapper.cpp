@@ -338,11 +338,25 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderStat
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.LastAccessTime);
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.ChangeTime);
 
-
     qCInfo(lcCfApiWrapper) << "updatePlaceholderState" << path << modtime;
-    const qint64 result =
-        CfUpdatePlaceholder(OCC::CfApiWrapper::handleForPath(path).get(), updateType == CfApiUpdateMetadataType::AllMetadata ? &metadata : nullptr,
-                            fileId.data(), static_cast<DWORD>(fileId.size()), nullptr, 0, CF_UPDATE_FLAG_MARK_IN_SYNC, nullptr, nullptr);
+
+    // Capture FILE_ATTRIBUTE_SYSTEM before the update — both CfUpdatePlaceholder and
+    // CfSetPinState can clear it, since neither preserves Windows shell attributes.
+    // Without it, Explorer ignores Desktop.ini and custom folder icons disappear after sync.
+    const auto nativePath = path.toStdWString();
+    const auto existingAttrs = OCC::FileSystem::isDir(path) ? GetFileAttributesW(nativePath.data()) : INVALID_FILE_ATTRIBUTES;
+    const bool hadSystemAttr = (existingAttrs != INVALID_FILE_ATTRIBUTES) && (existingAttrs & FILE_ATTRIBUTE_SYSTEM);
+    const qint64 result = CfUpdatePlaceholder(OCC::CfApiWrapper::handleForPath(path).get(), 
+                                                updateType == CfApiUpdateMetadataType::AllMetadata 
+                                                    ? &metadata 
+                                                    : nullptr, 
+                                                fileId.data(), 
+                                                static_cast<DWORD>(fileId.size()),
+                                                nullptr, 
+                                                0, 
+                                                CF_UPDATE_FLAG_MARK_IN_SYNC, 
+                                                nullptr,
+                                                nullptr);
 
     if (result != S_OK) {
         const auto errorMessage = createErrorMessageForPlaceholderUpdateAndCreate(path, "Couldn't update placeholder info");
@@ -350,9 +364,17 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderStat
         return errorMessage;
     }
 
-           // Pin state tends to be lost on updates, so restore it every time
+    // Pin state tends to be lost on updates, so restore it every time
     if (!setPinState(path, previousPinState, OCC::CfApiWrapper::NoRecurse)) {
         return { "Couldn't restore pin state" };
+    }
+
+    // Restore FILE_ATTRIBUTE_SYSTEM AFTER both CfUpdatePlaceholder and CfSetPinState
+    if (hadSystemAttr) {
+        if (const auto postAttrs = GetFileAttributesW(nativePath.data()); 
+            postAttrs != INVALID_FILE_ATTRIBUTES && !(postAttrs & FILE_ATTRIBUTE_SYSTEM)) {
+            SetFileAttributesW(nativePath.data(), postAttrs | FILE_ATTRIBUTE_SYSTEM);
+        }
     }
 
     return OCC::Vfs::ConvertToPlaceholderResult::Ok;
