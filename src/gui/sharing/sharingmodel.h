@@ -18,7 +18,17 @@ class SharingModel : public QAbstractListModel
 public:
     enum Roles {
         LabelRole = Qt::UserRole,
+        PropertyRole,
+        TypeRole,
+        PlaceholderRole,
     };
+
+    enum FieldTypes {
+        Switch,
+        TextField,
+        TextArea,
+    };
+    Q_ENUM(FieldTypes)
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
