@@ -22,14 +22,14 @@ Page {
     property string shortLocalPath: ""
     required property SharingModel sharingModel
 
+    signal recipientTypesChanged(recipientTypes: list<string>)
+
     title: qsTr("Share \"%1\"").arg(root.shortLocalPath)
 
     ColumnLayout {
         id: windowContent
         anchors.fill: parent
         anchors.margins: Style.standardSpacing
-
-        // TODO: the contents should be presented through a viewmodel
 
         RowLayout {
             TabBar {
@@ -46,35 +46,38 @@ Page {
             }
         }
 
-        StackLayout {
-            currentIndex: bar.currentIndex
-            ScrollView {
-                ScrollBar.vertical.policy: propertyList.contentHeight > propertyList.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
-                contentWidth: availableWidth
-                rightPadding: ScrollBar.vertical.policy == ScrollBar.AlwaysOn ? ScrollBar.vertical.width + Style.standardSpacing : 0
+        ScrollView {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
 
-                ListView {
-                    id: propertyList
-                    clip: true
+            ScrollBar.vertical.policy: propertyList.contentHeight > propertyList.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
+            contentWidth: availableWidth
+            contentHeight: availableHeight
+            rightPadding: ScrollBar.vertical.policy == ScrollBar.AlwaysOn ? ScrollBar.vertical.width + Style.standardSpacing : 0
 
-                    model: SharingFilterModel {
-                        filterType: SharingFilterModel.General
-                        sourceModel: root.sharingModel
-                    }
+            ListView {
+                id: propertyList
+                clip: true
 
-                    delegate: FieldDelegate {
-                        width: propertyList.contentItem.width
-                    }
+                model: SharingFilterModel {
+                    filterType: SharingFilterModel.General
+                    sourceModel: root.sharingModel
+                    recipientTypes: [
+                        [
+                            // TODO: this won't be hardcoded in the future
+                            "OC\\Core\\Sharing\\RecipientType\\UserShareRecipientType",
+                            "OC\\Core\\Sharing\\RecipientType\\GroupShareRecipientType",
+                        ],
+                        [
+                            "OC\\Core\\Sharing\\RecipientType\\TokenShareRecipientType",
+                        ]
+                    ][bar.currentIndex]
+
+                    onRecipientTypesChanged: root.recipientTypesChanged(this.recipientTypes)
                 }
-            }
 
-            ColumnLayout {
-                Label {
-                    text: qsTr("Anyone with the link")
-                }
-                TextArea {
-                    Layout.fillWidth: true
-                    placeholderText: qsTr("Note to recipients")
+                delegate: FieldDelegate {
+                    width: propertyList.contentItem.width
                 }
             }
         }
