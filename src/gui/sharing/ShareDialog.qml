@@ -25,6 +25,8 @@ ApplicationWindow {
 
     readonly property int windowRadius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
 
+    property list<string> recipientTypes: []
+
     SharingModel {
         id: sharingModel
         accountState: root.accountState
@@ -119,6 +121,7 @@ ApplicationWindow {
                 sharingManager: root.sharingManager,
                 shortLocalPath: root.shortLocalPath,
                 sharingModel: sharingModel,
+                recipientTypes: recipientTypes,
             }))
         }
 
@@ -161,5 +164,7 @@ ApplicationWindow {
         localPath: root.localPath
         shortLocalPath: root.shortLocalPath
         sharingModel: sharingModel
+
+        onRecipientTypesChanged: (recipientTypes) => { root.recipientTypes = recipientTypes }
     }
 }
