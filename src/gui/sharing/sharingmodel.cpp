@@ -8,6 +8,10 @@
 using namespace Qt::StringLiterals;
 using namespace OCC::Gui::Sharing;
 
+SharingModel::SharingModel(QObject *parent)
+    : QAbstractListModel{parent}
+{}
+
 int SharingModel::rowCount(const QModelIndex &parent) const
 {
     return 7;
