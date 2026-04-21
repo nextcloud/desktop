@@ -1537,6 +1537,8 @@ void AccountSettings::slotAccountStateChanged()
 
 void AccountSettings::checkClientSideEncryptionState()
 {
+    return; // E2E encryption message disabled
+
     /* TODO: We should probably do something better here.
      * Verify if the user has a private key already uploaded to the server,
      * if it has, do not offer to create one.
