@@ -340,12 +340,14 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderStat
 
     qCInfo(lcCfApiWrapper) << "updatePlaceholderState" << path << modtime;
 
-    // Capture FILE_ATTRIBUTE_SYSTEM before the update — both CfUpdatePlaceholder and
-    // CfSetPinState can clear it, since neither preserves Windows shell attributes.
-    // Without it, Explorer ignores Desktop.ini and custom folder icons disappear after sync.
+    // CfUpdatePlaceholder passes FileAttributes=0 in metadata, and CfSetPinState can also clear attributes. 
+    // FILE_ATTRIBUTE_SYSTEM and FILE_ATTRIBUTE_READONLY signal Explorer to read Desktop.ini - losing either makes the custom icon disappear. 
+    // Capture both before the update and restore any that were cleared.
     const auto nativePath = path.toStdWString();
     const auto existingAttrs = OCC::FileSystem::isDir(path) ? GetFileAttributesW(nativePath.data()) : INVALID_FILE_ATTRIBUTES;
-    const bool hadSystemAttr = (existingAttrs != INVALID_FILE_ATTRIBUTES) && (existingAttrs & FILE_ATTRIBUTE_SYSTEM);
+    const DWORD shellAttrsToPreserve = (existingAttrs != INVALID_FILE_ATTRIBUTES) 
+        ? (existingAttrs & (FILE_ATTRIBUTE_READONLY | FILE_ATTRIBUTE_SYSTEM)) 
+        : 0;
     const qint64 result = CfUpdatePlaceholder(OCC::CfApiWrapper::handleForPath(path).get(), 
                                                 updateType == CfApiUpdateMetadataType::AllMetadata 
                                                     ? &metadata 
@@ -369,11 +371,12 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderStat
         return { "Couldn't restore pin state" };
     }
 
-    // Restore FILE_ATTRIBUTE_SYSTEM AFTER both CfUpdatePlaceholder and CfSetPinState
-    if (hadSystemAttr) {
-        if (const auto postAttrs = GetFileAttributesW(nativePath.data()); 
-            postAttrs != INVALID_FILE_ATTRIBUTES && !(postAttrs & FILE_ATTRIBUTE_SYSTEM)) {
-            SetFileAttributesW(nativePath.data(), postAttrs | FILE_ATTRIBUTE_SYSTEM);
+    // Restore any shell attributes cleared by CfUpdatePlaceholder or CfSetPinState.
+    if (shellAttrsToPreserve) {
+        if (const auto postAttrs = GetFileAttributesW(nativePath.data()); postAttrs != INVALID_FILE_ATTRIBUTES) {
+            if (const auto missingAttrs = shellAttrsToPreserve & ~postAttrs; missingAttrs) {
+                SetFileAttributesW(nativePath.data(), postAttrs | missingAttrs);
+            }
         }
     }
 
