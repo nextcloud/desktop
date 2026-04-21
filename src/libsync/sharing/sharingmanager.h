@@ -34,6 +34,10 @@ public:
      */
     [[nodiscard]] bool isAvailable() const;
 
+    [[nodiscard]] QMap<QString, QSharedPointer<ShareType>> sourceTypes() const;
+    [[nodiscard]] QMap<QString, QSharedPointer<ShareType>> recipientTypes() const;
+    [[nodiscard]] QMap<QString, QSharedPointer<Feature>> features() const;
+
 Q_SIGNALS:
     void availableChanged();
 
