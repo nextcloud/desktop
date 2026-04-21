@@ -297,6 +297,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
     // Connect E2E stuff
     _ui->encryptionMessage->setVisible(false);
+    _ui->encryptionMessage->hide();
     if (_accountState->isConnected()) {
         setupE2eEncryption();
     } else {
