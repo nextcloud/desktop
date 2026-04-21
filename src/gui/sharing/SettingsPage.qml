@@ -21,28 +21,37 @@ Page {
     property string localPath: ""
     property string shortLocalPath: ""
     required property SharingModel sharingModel
+    required property list<string> recipientTypes
 
     title: qsTr("Sharing settings")
 
-    ScrollView {
+    ColumnLayout {
+        id: windowContent
         anchors.fill: parent
+        anchors.margins: Style.standardSpacing
 
-        ScrollBar.vertical.policy: propertyList.contentHeight > propertyList.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
-        contentWidth: availableWidth
-        rightPadding: ScrollBar.vertical.policy == ScrollBar.AlwaysOn ? ScrollBar.vertical.width + Style.standardSpacing : 0
+        ScrollView {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
 
-        ListView {
-            id: propertyList
-            clip: true
+            ScrollBar.vertical.policy: propertyList.contentHeight > propertyList.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
+            contentWidth: availableWidth
+            rightPadding: ScrollBar.vertical.policy == ScrollBar.AlwaysOn ? ScrollBar.vertical.width + Style.standardSpacing : 0
 
-            model: SharingFilterModel {
-                filterType: SharingFilterModel.Settings
-                sourceModel: root.sharingModel
-            }
+            ListView {
+                id: propertyList
+                clip: true
+
+                model: SharingFilterModel {
+                    filterType: SharingFilterModel.Settings
+                    sourceModel: root.sharingModel
+                    recipientTypes: root.recipientTypes
+                }
 
 
-            delegate: FieldDelegate {
-                width: propertyList.contentItem.width
+                delegate: FieldDelegate {
+                    width: propertyList.contentItem.width
+                }
             }
         }
     }
