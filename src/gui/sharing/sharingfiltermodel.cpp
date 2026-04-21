@@ -6,6 +6,8 @@
 #include "sharingfiltermodel.h"
 #include "sharingmodel.h"
 
+#include "account.h"
+
 using namespace Qt::StringLiterals;
 using namespace OCC::Gui::Sharing;
 
@@ -31,6 +33,23 @@ void SharingFilterModel::setFilterType(SharingFilterModel::FilterType filterType
     Q_EMIT filterTypeChanged();
 }
 
+QStringList SharingFilterModel::recipientTypes() const
+{
+    return _recipientTypes;
+}
+
+void SharingFilterModel::setRecipientTypes(const QStringList &recipientTypes)
+{
+    if (_recipientTypes == recipientTypes) {
+        return;
+    }
+
+    beginFilterChange();
+    _recipientTypes = recipientTypes;
+    endFilterChange();
+    Q_EMIT recipientTypesChanged();
+}
+
 bool SharingFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
     const auto model = qobject_cast<SharingModel *>(sourceModel());
@@ -39,22 +58,31 @@ bool SharingFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex &sour
         return true;
     }
 
+    const auto accountState = model->accountState();
+    if (!accountState) {
+        return true;
+    }
+
     const auto index = model->index(sourceRow, 0, sourceParent);
     if (!index.isValid()) {
         return true;
     }
 
-    auto propertyRole = model->data(index, SharingModel::PropertyRole).toString();
-    bool filterProperty = false;
-    if (propertyRole == "prop2" || propertyRole == "prop3" || propertyRole == "prop5") {
-        filterProperty = true;
+    const auto sharing = accountState->account()->sharing();
+    const auto featureRole = model->data(index, SharingModel::LabelRole).toString(); // TODO: this will not be label
+
+    if (!sharing->isFeatureAvailable(featureRole, {"OCA\\Files\\Sharing\\SourceType\\NodeShareSourceType"}, _recipientTypes)) {
+        // this feature is not available in general for these recipient types
+        return false;
     }
+
+    bool isAdvancedProperty = !featureRole.contains("NoteShareFeature");
 
     switch (_filterType) {
     case General:
-        return !filterProperty;
+        return !isAdvancedProperty;
     case Settings:
-        return filterProperty;
+        return isAdvancedProperty;
     }
 
     return true;

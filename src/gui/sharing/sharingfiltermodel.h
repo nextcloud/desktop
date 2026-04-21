@@ -16,6 +16,7 @@ class SharingFilterModel : public QSortFilterProxyModel
     QML_ELEMENT
 
     Q_PROPERTY(FilterType filterType READ filterType WRITE setFilterType NOTIFY filterTypeChanged)
+    Q_PROPERTY(QStringList recipientTypes READ recipientTypes WRITE setRecipientTypes NOTIFY recipientTypesChanged)
 
 public:
     enum FilterType {
@@ -29,14 +30,19 @@ public:
     [[nodiscard]] FilterType filterType() const;
     void setFilterType(FilterType filterType);
 
+    [[nodiscard]] QStringList recipientTypes() const;
+    void setRecipientTypes(const QStringList &recipientTypes);
+
 Q_SIGNALS:
     void filterTypeChanged();
+    void recipientTypesChanged();
 
 protected:
     [[nodiscard]] bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
 
 private:
     FilterType _filterType = FilterType::General;
+    QStringList _recipientTypes = {};
 };
 
 }

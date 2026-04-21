@@ -67,11 +67,11 @@ QList<QSharedPointer<Feature>> SharingManager::availableFeatures(const QStringLi
 
     for (const auto &feature : std::as_const(_features)) {
         if (const auto compatibleSourceTypes = feature->compatibleSourceTypes();
-            !QSet(compatibleSourceTypes.cbegin(), compatibleSourceTypes.cend()).intersects(sourceTypesSet)) {
+            !sourceTypesSet.intersects(QSet(compatibleSourceTypes.cbegin(), compatibleSourceTypes.cend()))) {
             continue;
         }
         if (const auto compatibleRecipientTypes = feature->compatibleRecipientTypes();
-            !QSet(compatibleRecipientTypes.cbegin(), compatibleRecipientTypes.cend()).intersects(sourceTypesSet)) {
+            !recipientTypesSet.intersects(QSet(compatibleRecipientTypes.cbegin(), compatibleRecipientTypes.cend()))) {
             continue;
         }
 
@@ -92,12 +92,12 @@ bool SharingManager::isFeatureAvailable(const QString &feature, const QStringLis
     const auto recipientTypesSet = QSet(recipientTypes.cbegin(), recipientTypes.cend());
 
     if (const auto compatibleSourceTypes = featureObject->compatibleSourceTypes();
-        !QSet(compatibleSourceTypes.cbegin(), compatibleSourceTypes.cend()).intersects(sourceTypesSet)) {
+        !sourceTypesSet.intersects(QSet(compatibleSourceTypes.cbegin(), compatibleSourceTypes.cend()))) {
         return false;
     }
 
     if (const auto compatibleRecipientTypes = featureObject->compatibleRecipientTypes();
-        !QSet(compatibleRecipientTypes.cbegin(), compatibleRecipientTypes.cend()).intersects(sourceTypesSet)) {
+        !recipientTypesSet.intersects(QSet(compatibleRecipientTypes.cbegin(), compatibleRecipientTypes.cend()))) {
         return false;
     }
 
