@@ -118,3 +118,18 @@ void SharingManager::setAvailable(bool available)
     _available = available;
     Q_EMIT availableChanged();
 }
+
+QMap<QString, QSharedPointer<ShareType>> SharingManager::sourceTypes() const
+{
+    return _sourceTypes;
+}
+
+QMap<QString, QSharedPointer<ShareType>> SharingManager::recipientTypes() const
+{
+    return _recipientTypes;
+}
+
+QMap<QString, QSharedPointer<Feature>> SharingManager::features() const
+{
+    return _features;
+}
