@@ -27,6 +27,7 @@ ApplicationWindow {
 
     SharingModel {
         id: sharingModel
+        accountState: root.accountState
     }
 
     width: 400
