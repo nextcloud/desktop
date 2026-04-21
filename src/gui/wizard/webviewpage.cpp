@@ -26,18 +26,6 @@ WebViewPage::WebViewPage(QWidget *parent)
     : AbstractCredentialsWizardPage()
 {
     _ocWizard = qobject_cast<OwncloudWizard *>(parent);
-
-    qCInfo(lcWizardWebiewPage()) << "Time for a webview!";
-    _webView = new WebView(this);
-
-    auto *layout = new QVBoxLayout(this);
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->addWidget(_webView, 1);
-    setLayout(layout);
-
-    connect(_webView, &WebView::urlCatched, this, &WebViewPage::urlCatched);
-
-    //_useSystemProxy = QNetworkProxyFactory::usesSystemConfiguration();
 }
 
 WebViewPage::~WebViewPage() = default;
@@ -47,6 +35,7 @@ WebViewPage::~WebViewPage() = default;
 
 void WebViewPage::initializePage() {
     //QNetworkProxy::setApplicationProxy(QNetworkProxy::applicationProxy());
+    initializeWebView();
 
     QString url;
     if (_ocWizard->registration()) {
@@ -119,6 +108,19 @@ void WebViewPage::urlCatched(QString user, QString pass, QString host) {
 
     qCInfo(lcWizardWebiewPage()) << "URL: " << field("OCUrl").toString();
     emit connectToOCUrl(host);
+}
+
+void WebViewPage::initializeWebView()
+{
+    qCInfo(lcWizardWebiewPage()) << "Time for a webview!";
+    _webView = new WebView(this);
+
+    auto *layout = new QVBoxLayout(this);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(_webView, 1);
+    setLayout(layout);
+
+    connect(_webView, &WebView::urlCatched, this, &WebViewPage::urlCatched);
 }
 
 }
