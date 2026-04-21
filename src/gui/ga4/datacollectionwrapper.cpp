@@ -2,7 +2,7 @@
 
 #ifdef BUILDTYPE_RELWITHDEBINFO
     // const QString GA_MEASUREMENT_ID = "G-P9KD4TLW0V";  // Verwende diesen String nur wenn wir in Debug bauen
-    const QString GA_MEASUREMENT_ID = "G-5XHQT73DSV";  // Verwende diesen String nur wenn wir in Debug bauen
+    const QString GA_MEASUREMENT_ID = "G-P9KD4TLW0V";  // Verwende diesen String nur wenn wir in Debug bauen
 #else
     #ifdef Q_OS_WIN
         const QString GA_MEASUREMENT_ID = "G-270CYZ49V0";  // Verwende diesen String nur wenn wir in Release bauen
