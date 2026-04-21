@@ -59,7 +59,7 @@ ApplicationWindow {
             background: Rectangle {
                 color: "transparent"
                 radius: root.windowRadius
-                border.width: closeButton.hovered ? Style.trayWindowBorderWidth : 0
+                border.width: parent.hovered ? Style.trayWindowBorderWidth : 0
                 border.color: palette.dark
                 anchors.fill: parent
                 Layout.margins: Style.extraSmallSpacing
@@ -108,7 +108,7 @@ ApplicationWindow {
             background: Rectangle {
                 color: "transparent"
                 radius: root.windowRadius
-                border.width: closeButton.hovered ? Style.trayWindowBorderWidth : 0
+                border.width: parent.hovered ? Style.trayWindowBorderWidth : 0
                 border.color: palette.dark
                 anchors.fill: parent
                 Layout.margins: Style.extraSmallSpacing
@@ -139,7 +139,7 @@ ApplicationWindow {
             background: Rectangle {
                 color: "transparent"
                 radius: root.windowRadius
-                border.width: closeButton.hovered ? Style.trayWindowBorderWidth : 0
+                border.width: parent.hovered ? Style.trayWindowBorderWidth : 0
                 border.color: palette.dark
                 anchors.fill: parent
                 Layout.margins: Style.extraSmallSpacing
