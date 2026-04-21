@@ -19,6 +19,22 @@
 	</dict>
 	<key>NSExtension</key>
 	<dict>
+		<key>NSFileProviderDecorations</key>
+		<array>
+			<dict>
+				<key>Identifier</key>
+				<string>$(OC_APPLICATION_REV_DOMAIN).FileProviderExt.keep-downloaded</string>
+				<key>BadgeImageType</key>
+				<string>$(OC_APPLICATION_REV_DOMAIN).decoration.keep-downloaded</string>
+				<key>Category</key>
+				<string>Badge</string>
+				<key>Label</key>
+				<dict>
+					<key>NSStringFormat</key>
+					<string>Always keep downloaded</string>
+				</dict>
+			</dict>
+		</array>
 		<key>NSExtensionFileProviderActions</key>
 		<array>
 			<dict>
