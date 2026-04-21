@@ -6,6 +6,7 @@
 #include "sharingmodel.h"
 
 using namespace Qt::StringLiterals;
+using namespace OCC;
 using namespace OCC::Gui::Sharing;
 
 SharingModel::SharingModel(QObject *parent)
@@ -14,11 +15,19 @@ SharingModel::SharingModel(QObject *parent)
 
 int SharingModel::rowCount(const QModelIndex &parent) const
 {
+    if (!_accountState) {
+        return 0;
+    }
+
     return 7;
 }
 
 QVariant SharingModel::data(const QModelIndex &index, int role) const
 {
+    if (!_accountState) {
+        return {};
+    }
+
     switch (role) {
     case LabelRole:
         return u"Item number %1"_s.arg(QString::number(index.row()));
@@ -42,3 +51,20 @@ QHash<int, QByteArray> SharingModel::roleNames() const
         { PlaceholderRole, "placeholder"_ba},
     };
 };
+
+AccountState *SharingModel::accountState() const
+{
+    return _accountState;
+}
+
+void SharingModel::setAccountState(AccountState *accountState)
+{
+    if (_accountState == accountState) {
+        return;
+    }
+
+    beginResetModel();
+    _accountState = accountState;
+    Q_EMIT accountStateChanged();
+    endResetModel();
+}
