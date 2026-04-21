@@ -6815,12 +6815,12 @@ Server replied with error: %2</source>
     <name>TrayFoldersMenuButton</name>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
-        <source>Open local or group folders</source>
+        <source>Open local folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
-        <source>Open local folder</source>
+        <source>Open local or team folders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6830,7 +6830,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
-        <source>Open group folder &quot;%1&quot;</source>
+        <source>Open team folder &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6848,7 +6848,7 @@ Server replied with error: %2</source>
     <name>TrayWindowHeader</name>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="68"/>
-        <source>Open local or group folders</source>
+        <source>Open local or team folders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
