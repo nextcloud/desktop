@@ -35,11 +35,12 @@ private slots:
     void urlCatched(QString user, QString pass, QString host);
 
 private:
+    void initializeWebView();
     void resizeWizard();
     bool tryToSetWizardSize(int width, int height);
 
-    OwncloudWizard *_ocWizard;
-    WebView *_webView;
+    OwncloudWizard *_ocWizard = nullptr;
+    WebView *_webView = nullptr;
 
     QString _user;
     QString _pass;
