@@ -57,7 +57,10 @@ Page {
                     id: propertyList
                     clip: true
 
-                    model: root.sharingModel
+                    model: SharingFilterModel {
+                        filterType: SharingFilterModel.General
+                        sourceModel: root.sharingModel
+                    }
 
                     delegate: FieldDelegate {
                         width: propertyList.contentItem.width
