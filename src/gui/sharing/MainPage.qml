@@ -51,26 +51,23 @@ Page {
 
         StackLayout {
             currentIndex: bar.currentIndex
-            ColumnLayout {
-                Label {
-                    text: qsTr("Add people")
-                }
-                Label {
-                    text: qsTr("Participants")
-                }
-                TextArea {
-                    Layout.fillWidth: true
-                    placeholderText: qsTr("Note to recipients")
-                }
-                Repeater {
+            ScrollView {
+                ScrollBar.vertical.policy: propertyList.contentHeight > propertyList.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
+                contentWidth: availableWidth
+                rightPadding: ScrollBar.vertical.policy == ScrollBar.AlwaysOn ? ScrollBar.vertical.width + Style.standardSpacing : 0
+
+                ListView {
+                    id: propertyList
+                    clip: true
+
                     model: theModel
 
-                    delegate: Label {
-                        required property string label
-                        text: label
+                    delegate: FieldDelegate {
+                        width: propertyList.contentItem.width
                     }
                 }
             }
+
             ColumnLayout {
                 Label {
                     text: qsTr("Anyone with the link")
