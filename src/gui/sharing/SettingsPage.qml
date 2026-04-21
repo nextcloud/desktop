@@ -20,18 +20,25 @@ Page {
     property QtObject sharingManager
     property string localPath: ""
     property string shortLocalPath: ""
+    required property SharingModel sharingModel
 
     title: qsTr("Sharing settings")
 
-    ColumnLayout {
-        id: windowContent
+    ScrollView {
         anchors.fill: parent
-        anchors.margins: Style.standardSpacing
 
-        ColumnLayout {
-            // TODO: these should be presented through a viewmodel
-            Label {
-                text: qsTr("Show files in grid view")
+        ScrollBar.vertical.policy: propertyList.contentHeight > propertyList.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
+        contentWidth: availableWidth
+        rightPadding: ScrollBar.vertical.policy == ScrollBar.AlwaysOn ? ScrollBar.vertical.width + Style.standardSpacing : 0
+
+        ListView {
+            id: propertyList
+            clip: true
+
+            model: sharingModel
+
+            delegate: FieldDelegate {
+                width: propertyList.contentItem.width
             }
         }
     }

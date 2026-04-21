@@ -25,6 +25,10 @@ ApplicationWindow {
 
     readonly property int windowRadius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
 
+    SharingModel {
+        id: sharingModel
+    }
+
     width: 400
     height: 500
     minimumWidth: 300
@@ -113,6 +117,7 @@ ApplicationWindow {
                 accountState: root.accountState,
                 sharingManager: root.sharingManager,
                 shortLocalPath: root.shortLocalPath,
+                sharingModel: sharingModel,
             }))
         }
 
@@ -154,5 +159,6 @@ ApplicationWindow {
         sharingManager: root.sharingManager
         localPath: root.localPath
         shortLocalPath: root.shortLocalPath
+        sharingModel: sharingModel
     }
 }

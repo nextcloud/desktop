@@ -20,12 +20,9 @@ Page {
     property QtObject sharingManager
     property string localPath: ""
     property string shortLocalPath: ""
+    required property SharingModel sharingModel
 
     title: qsTr("Share \"%1\"").arg(root.shortLocalPath)
-
-    SharingModel {
-        id: theModel
-    }
 
     ColumnLayout {
         id: windowContent
@@ -60,7 +57,7 @@ Page {
                     id: propertyList
                     clip: true
 
-                    model: theModel
+                    model: root.sharingModel
 
                     delegate: FieldDelegate {
                         width: propertyList.contentItem.width
