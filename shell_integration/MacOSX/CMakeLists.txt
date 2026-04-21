@@ -110,6 +110,10 @@ if(APPLE)
             install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${XCODE_TARGET_CONFIGURATION}/PackageFrameworks/RealmSwift.framework
                 DESTINATION ${OSX_PLUGINS_INSTALL_DIR}/FileProviderUIExt.appex/Contents/Frameworks
                 USE_SOURCE_PERMISSIONS)
+
+            # File provider badge icon asset for items marked as "Always keep downloaded"
+            install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/KeepDownloaded.icns
+                DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources)
         endif()
     endif()
 endif()

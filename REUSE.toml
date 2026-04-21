@@ -126,7 +126,10 @@ SPDX-FileCopyrightText = "2018-2025 Google LLC"
 SPDX-License-Identifier = "Apache-2.0"
 
 [[annotations]]
-path = ["Nextcloud Desktop Client.xcworkspace/**"]
+path = [
+    "Nextcloud Desktop Client.xcworkspace/**",
+    "shell_integration/MacOSX/KeepDownloaded.icns"
+]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 Nextcloud GmbH and Nextcloud contributors"
 SPDX-License-Identifier = "GPL-2.0-or-later"
