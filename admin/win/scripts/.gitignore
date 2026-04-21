@@ -1,0 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+# Un-ignore batch scripts whose names start with "build" — they are tracked source files,
+# not build artefacts, and must not be excluded by the repository-level "build*" rule.
+!build*.bat
