@@ -58,5 +58,11 @@ Button{
   ToolTip {
       text: root.toolTipText
       visible: root.toolTipText && root.isMouseOver
+      background: Rectangle {
+                            color: Style.sesBackgroundColor
+                            border.color: Style.sesBorderColor
+                            border.width: 1
+                            radius: 4
+                        }
   }
 }

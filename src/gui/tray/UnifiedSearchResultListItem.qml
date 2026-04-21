@@ -33,6 +33,12 @@ MouseArea {
         popupType: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
         visible: unifiedSearchResultMouseArea.containsMouse
         text: isFetchMoreTrigger ? qsTr("Load more results") : model.resultTitle + "\n\n" + model.subline
+        background: Rectangle {
+                            color: Style.sesBackgroundColor
+                            border.color: Style.sesBorderColor
+                            border.width: 1
+                            radius: 4
+                        }
     }
 
     Rectangle {

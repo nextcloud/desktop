@@ -40,6 +40,12 @@ ItemDelegate {
         popupType: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
         visible: root.hovered && !activityContent.childHovered && model.displayLocation !== ""
         text: qsTr("In %1").arg(model.displayLocation)
+        background: Rectangle {
+                            color: Style.sesBackgroundColor
+                            border.color: Style.sesBorderColor
+                            border.width: 1
+                            radius: 4
+        }
     }
 
     // TODO: the current style does not support customization of this control

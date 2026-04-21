@@ -190,6 +190,12 @@ RowLayout {
                         popupType: Qt.platform.os === "windows" ? Popup.Item : Qt.platform.os === "windows" ? Popup.Item : Popup.Native
                         text: qsTr("Open file details")
                         visible: parent.hovered
+                        background: Rectangle {
+                            color: Style.sesBackgroundColor
+                            border.color: Style.sesBorderColor
+                            border.width: 1
+                            radius: 4
+                        }
                     }
 
                     leftPadding: 0
@@ -221,6 +227,12 @@ RowLayout {
                         popupType: Qt.platform.os === "windows" ? Popup.Item : Qt.platform.os === "windows" ? Popup.Item : Popup.Native
                         text: qsTr("Dismiss")
                         visible: parent.hovered
+                        background: Rectangle {
+                            color: Style.sesBackgroundColor
+                            border.color: Style.sesBorderColor
+                            border.width: 1
+                            radius: 4
+                        }
                     }
 
                     visible: root.showDismissButton

@@ -74,6 +74,7 @@ GridLayout {
                 color: Style.sesBackgroundColor
                 border.width: 1
                 border.color: Style.sesBorderColor
+                radius: 4
             }
         }
         background: Rectangle {
