@@ -296,6 +296,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     connect(this, &AccountSettings::folderChanged, _model, &FolderStatusModel::resetFolders);
 
     // Connect E2E stuff
+    _ui->encryptionMessage->setVisible(false);
     if (_accountState->isConnected()) {
         setupE2eEncryption();
     } else {
@@ -323,6 +324,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
 void AccountSettings::slotE2eEncryptionMnemonicReady()
 {
+    return; // E2E encryption message disabled
     const auto actionDisableEncryption = addActionToEncryptionMessage(tr("Forget encryption setup"), e2EeUiActionForgetEncryptionId);
     connect(actionDisableEncryption, &QAction::triggered, this, [this] {
         forgetEncryptionOnDeviceForAccount(_accountState->account());
