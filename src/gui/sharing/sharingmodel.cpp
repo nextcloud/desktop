@@ -5,6 +5,8 @@
 
 #include "sharingmodel.h"
 
+#include "account.h"
+
 using namespace Qt::StringLiterals;
 using namespace OCC;
 using namespace OCC::Gui::Sharing;
@@ -19,7 +21,10 @@ int SharingModel::rowCount(const QModelIndex &parent) const
         return 0;
     }
 
-    return 7;
+    // TODO: cache this after setting accountstate
+    const auto sharing = accountState()->account()->sharing();
+    const auto features = sharing->features().values();
+    return features.size();
 }
 
 QVariant SharingModel::data(const QModelIndex &index, int role) const
@@ -28,9 +33,14 @@ QVariant SharingModel::data(const QModelIndex &index, int role) const
         return {};
     }
 
+    // TODO: cache this after setting accountstate
+    const auto sharing = accountState()->account()->sharing();
+    const auto features = sharing->features().values();
+    const auto feature = features.at(index.row());
+
     switch (role) {
     case LabelRole:
-        return u"Item number %1"_s.arg(QString::number(index.row()));
+        return feature->type();
     case PropertyRole:
         return u"prop%1"_s.arg(QString::number(index.row()));
     case TypeRole:
