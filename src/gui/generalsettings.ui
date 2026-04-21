@@ -56,6 +56,13 @@
                                     </widget>
                                 </item>
                                 <item>
+                                    <widget class="QCheckBox" name="serverNotificationsCheckBox">
+                                        <property name="text">
+                                            <string>Show Server &amp;Notifications</string>
+                                        </property>
+                                    </widget>
+                                </item>  
+                                <item>
                                     <widget class="QCheckBox" name="callNotificationsCheckBox">
                                         <property name="text">
                                             <string>Show call notifications</string>
@@ -129,13 +136,6 @@
                                     <widget class="OCC::LinkButton" name="checkUpdateLinkButton">
                                         <property name="text">
                                             <string>Check Now</string>
-                                        </property>
-                                    </widget>
-                                </item>  
-                                <item>
-                                    <widget class="QCheckBox" name="serverNotificationsCheckBox">
-                                        <property name="text">
-                                            <string>Show Server &amp;Notifications</string>
                                         </property>
                                     </widget>
                                 </item>   

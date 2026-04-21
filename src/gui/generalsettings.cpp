@@ -221,7 +221,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     connect(_ui->serverNotificationsCheckBox, &QAbstractButton::toggled,
         this, &GeneralSettings::slotToggleOptionalServerNotifications);
     _ui->serverNotificationsCheckBox->setToolTip(tr("Server notifications that require attention."));
-    _ui->serverNotificationsCheckBox->setVisible(false);
 
     connect(_ui->chatNotificationsCheckBox, &QAbstractButton::toggled,
             this, &GeneralSettings::slotToggleChatNotifications);
