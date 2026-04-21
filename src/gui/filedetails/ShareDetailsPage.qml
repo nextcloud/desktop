@@ -20,6 +20,14 @@ Page {
 
     component SesCheckBox: CheckBox {
         hoverEnabled: false
+        palette.base: Style.sesBackgroundColor
+        contentItem: Text {
+            text: parent.text
+            color: Style.sesTrayFontColor
+            font: parent.font
+            leftPadding: parent.indicator.width + parent.spacing
+            verticalAlignment: Text.AlignVCenter
+        }
     }
 
     signal closeShareDetails
@@ -228,7 +236,7 @@ Page {
                 Layout.rightMargin: headerGridLayout.textRightMargin
 
                 text: root.fileDetails.name
-
+                color: Style.sesTrayFontColor
                 font.pixelSize: titlePixelSize
                 font.weight: titleFontWeight
 
@@ -258,6 +266,7 @@ Page {
 
                 text: `${root.fileDetails.sizeString}, ${root.fileDetails.lastChangedString}`
                 wrapMode: Text.Wrap
+                color: Style.sesTrayFontColor
 
                 font.pixelSize: hintPixelSize
                 font.weight: hintFontWeight
@@ -365,7 +374,7 @@ Page {
                     radius: Style.slightlyRoundedButtonRadius
                     border.width: Style.thickBorderWidth
                     border.color: Style.sesTrayInputField
-                    color: palette.base
+                    color: Style.sesBackgroundColor
                     z: -1
                 }
             }
@@ -435,7 +444,7 @@ Page {
                     radius: Style.slightlyRoundedButtonRadius
                     border.width: Style.thickBorderWidth
                     border.color: Style.sesTrayInputField
-                    color: palette.base
+                    color: Style.sesBackgroundColor
                     z: -1
                 }
             }
