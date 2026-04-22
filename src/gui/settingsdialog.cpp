@@ -177,8 +177,8 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint & Qt::Window);
     cfg.restoreGeometry(this);
     resize(width() > WLTheme.minimalSettingsDialogWidth() + 50 ? width(): WLTheme.minimalSettingsDialogWidth() + 50, 
-        (height() > generalSettings->sizeHint().height() + 75 ? height(): generalSettings->sizeHint().height()) + 75);
-    setMinimumSize(WLTheme.minimalSettingsDialogWidth() + 50, generalSettings->sizeHint().height() + 75);
+        (height() > generalSettings->sizeHint().height() + 100 ? height(): generalSettings->sizeHint().height()) + 100);
+    setMinimumSize(WLTheme.minimalSettingsDialogWidth() + 50, generalSettings->sizeHint().height() + 100);
 
 }
 
