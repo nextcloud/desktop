@@ -20,6 +20,10 @@ ApplicationWindow {
 
     flags: Qt.Window | Qt.Dialog
     visible: true
+    color: Style.sesBackgroundColor
+    palette.base: Style.sesBackgroundColor
+    palette.windowText: Style.sesTrayFontColor
+    palette.text: Style.sesTrayFontColor
 
     LayoutMirroring.enabled: Application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
@@ -131,7 +135,7 @@ ApplicationWindow {
 
                     delegate: ConflictDelegate {
                         width: conflictListView.contentItem.width
-                        height: 100
+                        height: 140
                     }
                 }
             }
@@ -140,6 +144,10 @@ ApplicationWindow {
         DialogButtonBox {
             id: buttonBox
             Layout.fillWidth: true
+
+            background: Rectangle {
+                color: Style.sesBackgroundColor
+            }
 
             readonly property int pixelSize: Style.sesFontPixelSize
             readonly property int fontWeight: Style.sesFontNormalWeight
