@@ -35,6 +35,7 @@ Create a small abstraction in `src/gui` (each type in its own dedicated source/h
   - `Q_INVOKABLE void play(const QString &path, int loopCount);`
   - `Q_INVOKABLE void stop();`
   - optional `bool isPlaying() const`.
+  - must provide thread-safe stop/play state transitions if backend callbacks race with UI teardown.
 - `INativeSoundBackend` interface (internal only).
 - Platform-specific backend implementations selected at compile time:
   - **Windows**: `PlaySoundW` (`winmm`) with async/loop flags.
@@ -43,7 +44,10 @@ Create a small abstraction in `src/gui` (each type in its own dedicated source/h
     - Apply the established PIMPL approach in `src/gui/macOS` so public headers stay Qt/C++-centric.
     - Follow local naming patterns (`.mm` implementation files and `_mac` suffix where appropriate).
     - Keep compatibility with the non-ARC setup in `src` and use explicit memory management where needed.
-  - **Linux**: choose backend after a short spike with explicit candidates (`libcanberra`, PulseAudio/PipeWire API path, ALSA path) and define fallback behavior when no backend is available.
+  - **Linux**: choose backend after a short spike with explicit candidates (`libcanberra`, PulseAudio/PipeWire API path, ALSA path).
+    - Evaluation criteria: runtime availability on major desktop distros, minimal dependency overhead, and reliable loop/stop behavior.
+    - Preferred direction: prioritize `libcanberra` for desktop integration if it satisfies loop/stop requirements.
+    - Fallback behavior: skip sound playback and log a warning while keeping visual call notification fully functional.
 
 QML then calls the facade instead of `SoundEffect`.
 
@@ -67,6 +71,7 @@ QML then calls the facade instead of `SoundEffect`.
 
 5. **Validation**
    - Unit tests for `RingtonePlayer` control flow (start/stop/loop argument handling) with mock backend.
+   - Platform-specific backend verification (conditional integration tests where feasible, otherwise explicit manual smoke tests on each OS).
    - Manual platform checks:
      - incoming call starts ringtone,
      - decline/close stops ringtone immediately,
