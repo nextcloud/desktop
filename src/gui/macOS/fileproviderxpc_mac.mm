@@ -124,6 +124,11 @@ void FileProviderXPC::slotAccountStateChanged(const AccountState::State state) c
     case AccountState::Connected:
         // Provide credentials
         authenticateFileProviderDomain(fileProviderDomainId);
+        // Push the ignore list alongside credentials — the extension rejects
+        // `modifyItem` and friends with `.notAuthenticated` as long as its
+        // `ignoredFiles` is still `nil`, so a domain that comes online after
+        // startup needs both halves of the configuration, not just the one.
+        setIgnoreList();
         break;
     }
 }
