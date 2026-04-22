@@ -69,26 +69,37 @@ namespace {
 
 [[nodiscard]] QUrl parseAddAccountServerUrl(const QUrl &url)
 {
-    // Supported format:
+    // Supported formats:
     // - nc://addAccount?server_url=https%3A%2F%2Fcloud.example.com
+    // - nc://login/user:&password:&server:http://localhost:8033
     if (url.scheme() != QLatin1String(APPLICATION_URI_HANDLER_SCHEME)) {
         return {};
     }
-    if (url.host() != QLatin1String("addAccount")) {
-        return {};
-    }
+    auto serverUrlRaw = QString{};
 
-    const auto query = QUrlQuery(url);
-    const auto serverUrlRaw = query.queryItemValue(QStringLiteral("server_url"));
-    if (serverUrlRaw.isEmpty()) {
+    if (url.host() == QLatin1String("addAccount")) {
+        const auto query = QUrlQuery(url);
+        serverUrlRaw = query.queryItemValue(QStringLiteral("server_url"));
+    } else if (url.host() == QLatin1String("login")) {
+        const auto urlPath = url.path().mid(1);
+        for (const auto &part : urlPath.split(QLatin1Char('&'), Qt::SkipEmptyParts)) {
+            if (part.startsWith(QLatin1String("server:"))) {
+                serverUrlRaw = part.mid(7);
+                break;
+            }
+        }
+    } else {
         return {};
     }
 
     const auto serverUrl = QUrl::fromUserInput(serverUrlRaw);
-    if (!serverUrl.isValid() || serverUrl.host().isEmpty()
-        || (serverUrl.scheme() != QLatin1String("https") && serverUrl.scheme() != QLatin1String("http"))) {
+    if (!serverUrl.isValid() || serverUrl.host().isEmpty()) {
         return {};
     }
+    if (serverUrl.scheme() != QLatin1String("https") && serverUrl.scheme() != QLatin1String("http")) {
+        return {};
+    }
+
     return serverUrl;
 }
 
@@ -967,7 +978,8 @@ void Application::parseOptions(const QStringList &options)
                 qCInfo(lcApplication) << errorParsingLocalFileEditingUrl;
                 showHint(errorParsingLocalFileEditingUrl.toStdString());
             }
-        } else if (option.startsWith(QStringLiteral(APPLICATION_URI_HANDLER_SCHEME "://addAccount"))) {
+        } else if (option.startsWith(QStringLiteral(APPLICATION_URI_HANDLER_SCHEME "://addAccount"))
+                   || option.startsWith(QStringLiteral(APPLICATION_URI_HANDLER_SCHEME "://login"))) {
             _addAccountServerUrl = parseAddAccountServerUrl(QUrl::fromUserInput(option));
             if (!_addAccountServerUrl.isValid()) {
                 const auto errorParsingAddAccountUrl = QStringLiteral("The supplied url for account setup '%1' is invalid!").arg(option);
