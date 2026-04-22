@@ -61,11 +61,18 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
             } else {
                 stillMaterializedItems.insert(enumeratedIdentifier)
 
-                guard var metadata = if enumeratedIdentifier == .rootContainer {
-                    dbManager.rootItemMetadata(account: account)
-                } else {
-                    dbManager.itemMetadata(enumeratedIdentifier)
-                } else {
+                var metadata: SendableItemMetadata?
+
+                switch enumeratedIdentifier {
+                    case .rootContainer:
+                        metadata = dbManager.rootItemMetadata(account: account)
+                    case .trashContainer:
+                        continue // there is no placeholder item for the trash container in the database
+                    default:
+                        metadata = dbManager.itemMetadata(enumeratedIdentifier)
+                }
+
+                guard var metadata else {
                     logger.error("No metadata for enumerated item found.", [.item: enumeratedIdentifier])
                     continue
                 }
