@@ -280,11 +280,12 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray) const
     QString key = name + "," + flavor;
     QIcon &cached = _iconCache[key];
     if (cached.isNull()) {
+        #if !(defined(IONOS_BUILD) && defined(IONOS_BUILD))
         if (QIcon::hasThemeIcon(name)) {
             // use from theme
             return cached = QIcon::fromTheme(name);
         }
-
+        #endif
         const QString svgName = QString(Theme::themePrefix) + QString::fromLatin1("%1/%2.svg").arg(flavor).arg(name);
         QSvgRenderer renderer(svgName);
         const auto createPixmapFromSvg = [&renderer] (int size) {
