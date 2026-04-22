@@ -33,6 +33,8 @@ RowLayout {
         Layout.rightMargin: 0
         Layout.bottomMargin: 16
         Layout.leftMargin: Style.sesActivityItemDistanceToFrame
+        Layout.preferredWidth: Style.sesIconSize
+        Layout.preferredHeight: Style.sesIconSize
         padding: 0
 
         imageSource: syncStatus.syncIcon
