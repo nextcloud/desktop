@@ -36,6 +36,7 @@ class OwncloudSetupWizard : public QObject
 public:
     /** Run the wizard */
     static void runWizard(QObject *obj, const char *amember, QWidget *parent = nullptr);
+    static void runWizardForLoginFlow(const QUrl &serverUrl, QObject *obj, const char *amember, QWidget *parent = nullptr);
     static bool bringWizardToFrontIfVisible();
 
 signals:
@@ -66,6 +67,8 @@ private slots:
 private:
     explicit OwncloudSetupWizard(QObject *parent = nullptr);
     ~OwncloudSetupWizard() override;
+    void setupTemporaryLoginFlowFromUrl(const QUrl &serverUrl);
+    void clearTemporaryThemeOverride();
     void startWizard();
     void testOwnCloudConnect();
     void createRemoteFolder();
@@ -77,6 +80,10 @@ private:
     OwncloudWizard *_ocWizard = nullptr;
     QString _initLocalFolder;
     QString _remoteFolder;
+    bool _hasTemporaryThemeOverride = false;
+    QString _previousOverrideServerUrl;
+    bool _previousForceOverrideServerUrl = false;
+    bool _previousStartLoginFlowAutomatically = false;
 };
 }
 

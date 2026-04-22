@@ -116,6 +116,7 @@ private:
     void setHelp();
 
     void handleEditLocallyFromOptions();
+    void handleAddAccountFromOptions();
 
     AccountManager::AccountsRestoreResult restoreLegacyAccount();
     void setupConfigFile();
@@ -154,6 +155,7 @@ private:
     bool _debugMode = false;
     bool _backgroundMode = false;
     QUrl _editFileLocallyUrl;
+    QUrl _addAccountServerUrl;
 
     ClientProxy _proxy;
 

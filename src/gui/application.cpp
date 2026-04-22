@@ -67,7 +67,32 @@ Q_LOGGING_CATEGORY(lcApplication, "nextcloud.gui.application", QtInfoMsg)
 
 namespace {
 
-    static const char optionsC[] =
+[[nodiscard]] QUrl parseAddAccountServerUrl(const QUrl &url)
+{
+    // Supported format:
+    // - nc://addAccount?server_url=https%3A%2F%2Fcloud.example.com
+    if (url.scheme() != QLatin1String(APPLICATION_URI_HANDLER_SCHEME)) {
+        return {};
+    }
+    if (url.host() != QLatin1String("addAccount")) {
+        return {};
+    }
+
+    const auto query = QUrlQuery(url);
+    const auto serverUrlRaw = query.queryItemValue(QStringLiteral("server_url"));
+    if (serverUrlRaw.isEmpty()) {
+        return {};
+    }
+
+    const auto serverUrl = QUrl::fromUserInput(serverUrlRaw);
+    if (!serverUrl.isValid() || serverUrl.host().isEmpty()
+        || (serverUrl.scheme() != QLatin1String("https") && serverUrl.scheme() != QLatin1String("http"))) {
+        return {};
+    }
+    return serverUrl;
+}
+
+static const char optionsC[] =
         "Options:\n"
         "  --help, -h                 : show this help screen.\n"
         "  --version, -v              : show version information.\n"
@@ -477,6 +502,7 @@ Application::Application(int &argc, char **argv)
     _gui->createTray();
 
     handleEditLocallyFromOptions();
+    handleAddAccountFromOptions();
 
 #ifdef Q_OS_MACOS
     // If any sync folder needs sandbox reapproval after upgrading to v33+,
@@ -845,6 +871,7 @@ void Application::slotParseMessage(const QByteArray &message)
         }
 
         handleEditLocallyFromOptions();
+        handleAddAccountFromOptions();
 
         if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
             AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
@@ -939,6 +966,13 @@ void Application::parseOptions(const QStringList &options)
                 const auto errorParsingLocalFileEditingUrl = QStringLiteral("The supplied url for local file editing '%1' is invalid!").arg(option);
                 qCInfo(lcApplication) << errorParsingLocalFileEditingUrl;
                 showHint(errorParsingLocalFileEditingUrl.toStdString());
+            }
+        } else if (option.startsWith(QStringLiteral(APPLICATION_URI_HANDLER_SCHEME "://addAccount"))) {
+            _addAccountServerUrl = parseAddAccountServerUrl(QUrl::fromUserInput(option));
+            if (!_addAccountServerUrl.isValid()) {
+                const auto errorParsingAddAccountUrl = QStringLiteral("The supplied url for account setup '%1' is invalid!").arg(option);
+                qCInfo(lcApplication) << errorParsingAddAccountUrl;
+                showHint(errorParsingAddAccountUrl.toStdString());
             }
         } else if (option == QStringLiteral("--overrideserverurl")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
@@ -1079,6 +1113,16 @@ void Application::handleEditLocallyFromOptions()
 
     EditLocallyManager::instance()->handleRequest(_editFileLocallyUrl);
     _editFileLocallyUrl.clear();
+}
+
+void Application::handleAddAccountFromOptions()
+{
+    if (!_addAccountServerUrl.isValid()) {
+        return;
+    }
+
+    OwncloudSetupWizard::runWizardForLoginFlow(_addAccountServerUrl, qApp, SLOT(slotownCloudWizardDone(int)));
+    _addAccountServerUrl.clear();
 }
 
 QString enforcedLanguage()
@@ -1239,8 +1283,13 @@ bool Application::event(QEvent *event)
         } else if (!openEvent->url().isEmpty() && openEvent->url().isValid()) {
             // On macOS, Qt does not handle receiving a custom URI as it does on other systems (as an application argument).
             // Instead, it sends out a QFileOpenEvent. We therefore need custom handling for our URI handling on macOS.
-            qCInfo(lcApplication) << "macOS: Opening local file for editing: " << openEvent->url();
-            EditLocallyManager::instance()->handleRequest(openEvent->url());
+            if (const auto addAccountServerUrl = parseAddAccountServerUrl(openEvent->url()); addAccountServerUrl.isValid()) {
+                qCInfo(lcApplication) << "macOS: Opening account setup flow from custom URL for server:" << addAccountServerUrl;
+                OwncloudSetupWizard::runWizardForLoginFlow(addAccountServerUrl, qApp, SLOT(slotownCloudWizardDone(int)));
+            } else {
+                qCInfo(lcApplication) << "macOS: Opening local file for editing: " << openEvent->url();
+                EditLocallyManager::instance()->handleRequest(openEvent->url());
+            }
         } else {
             const auto errorParsingLocalFileEditingUrl = QStringLiteral("The supplied url for local file editing '%1' is invalid!").arg(openEvent->url().toString());
             qCInfo(lcApplication) << errorParsingLocalFileEditingUrl;

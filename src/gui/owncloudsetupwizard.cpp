@@ -63,10 +63,12 @@ OwncloudSetupWizard::OwncloudSetupWizard(QObject *parent)
 
 OwncloudSetupWizard::~OwncloudSetupWizard()
 {
+    clearTemporaryThemeOverride();
     _ocWizard->deleteLater();
 }
 
 static QPointer<OwncloudSetupWizard> owncloudSetupWizard = nullptr;
+static QUrl pendingLoginFlowServerUrl = {};
 
 void OwncloudSetupWizard::runWizard(QObject *obj, const char *amember, QWidget *parent)
 {
@@ -84,11 +86,21 @@ void OwncloudSetupWizard::runWizard(QObject *obj, const char *amember, QWidget *
     }
 
     owncloudSetupWizard = new OwncloudSetupWizard(parent);
+    if (pendingLoginFlowServerUrl.isValid()) {
+        owncloudSetupWizard->setupTemporaryLoginFlowFromUrl(pendingLoginFlowServerUrl);
+        pendingLoginFlowServerUrl = {};
+    }
     connect(owncloudSetupWizard, SIGNAL(ownCloudWizardDone(int)), obj, amember);
     connect(owncloudSetupWizard->_ocWizard, &OwncloudWizard::wizardClosed, obj, [] { owncloudSetupWizard.clear(); });
 
     FolderMan::instance()->setSyncEnabled(false);
     owncloudSetupWizard->startWizard();
+}
+
+void OwncloudSetupWizard::runWizardForLoginFlow(const QUrl &serverUrl, QObject *obj, const char *amember, QWidget *parent)
+{
+    pendingLoginFlowServerUrl = serverUrl;
+    runWizard(obj, amember, parent);
 }
 
 bool OwncloudSetupWizard::bringWizardToFrontIfVisible()
@@ -146,6 +158,36 @@ void OwncloudSetupWizard::startWizard()
     _ocWizard->adjustWizardSize();
     _ocWizard->open();
     _ocWizard->raise();
+}
+
+void OwncloudSetupWizard::setupTemporaryLoginFlowFromUrl(const QUrl &serverUrl)
+{
+    if (!serverUrl.isValid()) {
+        return;
+    }
+
+    auto *theme = Theme::instance();
+    _previousOverrideServerUrl = theme->overrideServerUrl();
+    _previousForceOverrideServerUrl = theme->forceOverrideServerUrl();
+    _previousStartLoginFlowAutomatically = theme->startLoginFlowAutomatically();
+    _hasTemporaryThemeOverride = true;
+
+    theme->setOverrideServerUrl(serverUrl.toString());
+    theme->setForceOverrideServerUrl(true);
+    theme->setStartLoginFlowAutomatically(true);
+}
+
+void OwncloudSetupWizard::clearTemporaryThemeOverride()
+{
+    if (!_hasTemporaryThemeOverride) {
+        return;
+    }
+
+    auto *theme = Theme::instance();
+    theme->setOverrideServerUrl(_previousOverrideServerUrl);
+    theme->setForceOverrideServerUrl(_previousForceOverrideServerUrl);
+    theme->setStartLoginFlowAutomatically(_previousStartLoginFlowAutomatically);
+    _hasTemporaryThemeOverride = false;
 }
 
 // also checks if an installation is valid and determines auth type in a second step
@@ -711,6 +753,7 @@ bool OwncloudSetupWizard::ensureStartFromScratch(const QString &localFolder)
 // Method executed when the user end has finished the basic setup.
 void OwncloudSetupWizard::slotAssistantFinished(int result)
 {
+    clearTemporaryThemeOverride();
     FolderMan *folderMan = FolderMan::instance();
 
     if (result == QDialog::Rejected) {
@@ -779,6 +822,7 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
 
 void OwncloudSetupWizard::slotSkipFolderConfiguration()
 {
+    clearTemporaryThemeOverride();
     applyAccountChanges();
 
     disconnect(_ocWizard, &OwncloudWizard::basicSetupFinished,
