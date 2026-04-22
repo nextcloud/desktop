@@ -38,8 +38,8 @@ Create a small abstraction in `src/gui`:
 - `INativeSoundBackend` interface (internal only).
 - Platform-specific backend implementations selected at compile time:
   - **Windows**: `PlaySoundW` (`winmm`) with async/loop flags.
-  - **macOS**: Objective-C++ backend using native audio API (e.g. `NSSound` or `AVAudioPlayer`) with explicit retain/release handling.
-  - **Linux**: native backend selected after short spike (prefer desktop-native API with minimal footprint; define fallback behavior when backend unavailable).
+  - **macOS**: Objective-C++ backend using `AVAudioPlayer` as primary option (evaluate alternatives only if required). Since this code lives in `src`, keep compatibility with the project’s non-ARC setup and use explicit memory management where applicable.
+  - **Linux**: choose backend after a short spike with explicit candidates (`libcanberra`, PulseAudio/PipeWire API path, ALSA path) and define fallback behavior when no backend is available.
 
 QML then calls the facade instead of `SoundEffect`.
 
