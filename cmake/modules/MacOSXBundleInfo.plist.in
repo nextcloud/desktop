@@ -65,6 +65,18 @@
                 <string>public.data</string>
             </array>
         </dict>
+        <dict>
+            <key>UTTypeIdentifier</key>
+            <string>@APPLICATION_REV_DOMAIN@.decoration.keep-downloaded</string>
+            <key>UTTypeDescription</key>
+            <string>Always keep downloaded</string>
+            <key>UTTypeConformsTo</key>
+            <array>
+                <string>com.apple.icon-decoration.badge</string>
+            </array>
+            <key>UTTypeIconFile</key>
+            <string>KeepDownloaded.icns</string>
+        </dict>
     </array>
     <key>CFBundleDocumentTypes</key>
     <array>
