@@ -236,7 +236,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         remoteSupportsTrash: Bool,
         log: any FileProviderLogging
     ) -> Item {
-        let metadata = SendableItemMetadata(
+        var metadata = SendableItemMetadata(
             ocId: NSFileProviderItemIdentifier.rootContainer.rawValue,
             account: account.ncKitAccount,
             classFile: NKTypeClassFile.directory.rawValue,
@@ -261,6 +261,19 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             user: "", // Placeholder as not set in original code
             userId: "" // Placeholder as not set in original code
         )
+
+        // Merge persisted state for the root from the database so that
+        // per-item toggles (most importantly `keepDownloaded`) survive across
+        // calls to this factory. Without this, the root is always rebuilt
+        // with defaults and `userInfo` keeps offering "Always keep downloaded"
+        // even after the user has enabled it — `displayKeepDownloaded` /
+        // `displayAllowAutoEvicting` and `contentPolicy` all derive from the
+        // freshly-synthesised (and therefore stale) metadata.
+        if let existing = dbManager.itemMetadata(ocId: metadata.ocId) {
+            metadata.keepDownloaded = existing.keepDownloaded
+            metadata.downloaded = existing.downloaded
+        }
+
         return Item(
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
@@ -280,7 +293,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         remoteSupportsTrash: Bool,
         log: any FileProviderLogging
     ) -> Item {
-        let metadata = SendableItemMetadata(
+        var metadata = SendableItemMetadata(
             ocId: NSFileProviderItemIdentifier.trashContainer.rawValue,
             account: account.ncKitAccount,
             classFile: NKTypeClassFile.directory.rawValue,
@@ -305,6 +318,15 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             user: "", // Placeholder as not set in original code
             userId: "" // Placeholder as not set in original code
         )
+
+        // See the matching rationale in `rootContainer(...)`: merge persisted
+        // per-item toggles from the database so the trash container does not
+        // forget its state between factory invocations.
+        if let existing = dbManager.itemMetadata(ocId: metadata.ocId) {
+            metadata.keepDownloaded = existing.keepDownloaded
+            metadata.downloaded = existing.downloaded
+        }
+
         return Item(
             metadata: metadata,
             parentItemIdentifier: .trashContainer,
