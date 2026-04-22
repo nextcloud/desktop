@@ -41,10 +41,11 @@ Create a small abstraction in `src/gui` (each type in its own dedicated source/h
   - **Windows**: `PlaySoundW` (`winmm`) with async/loop flags.
   - **macOS**:
     - Use Objective-C++ backend with `AVAudioPlayer` as primary option.
+    - Add/verify `AVFoundation` framework linkage in build configuration.
     - Apply the established PIMPL approach in `src/gui/macOS` so public headers stay Qt/C++-centric.
     - Follow local naming patterns (`.mm` implementation files and `_mac` suffix where appropriate).
     - Keep compatibility with the non-ARC setup in `src` and use explicit memory management where needed.
-  - **Linux**: choose backend after a short spike with explicit candidates (`libcanberra`, PulseAudio/PipeWire API path, ALSA path).
+  - **Linux**: choose backend after a short spike with explicit candidates (`libcanberra`, PulseAudio, PipeWire, ALSA).
     - Evaluation criteria: runtime availability on major desktop distros, minimal dependency overhead, and reliable loop/stop behavior.
     - Preferred direction: prioritize `libcanberra` for desktop integration if it satisfies loop/stop requirements.
     - Fallback behavior: skip sound playback and log a warning while keeping visual call notification fully functional.
