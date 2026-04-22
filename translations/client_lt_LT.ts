@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
         <source>Dismiss</source>
-        <translation>Uždaryti</translation>
+        <translation>Atmesti</translation>
     </message>
 </context>
 <context>
@@ -364,12 +364,12 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="76"/>
         <source>Switch to your browser to connect your account</source>
-        <translation>Perjunkite į naršyklė, kad prisijungtumėte prie savo paskyros</translation>
+        <translation>Perjunkite į naršyklę, kad prisijungtumėte prie savo paskyros</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="229"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation>Jungiantis, įvyko klaida. Bandykite dar kartą.</translation>
+        <translation>Jungiantis įvyko klaida. Bandykite dar kartą.</translation>
     </message>
 </context>
 <context>
@@ -377,7 +377,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="33"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation>Pasirinkite kompiuterio aplanką, kurį norite sinchronizuoti.</translation>
+        <translation>Pasirinkite vietinį aplanką savo kompiuteryje, kurį norite sinchronizuoti.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
@@ -1125,7 +1125,7 @@ Vienintelis virtualių failų palaikymo išjungimo privalumas yra tai, kad vėl 
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="478"/>
         <source>For more activities please open the Activity app.</source>
-        <translation>Jei norite matyti daugiau veiklos, atidarykite programą Veikla.</translation>
+        <translation>Jei norite matyti daugiau veiklos, atidarykite programėlę „Veikla“.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="498"/>
@@ -1143,7 +1143,7 @@ Vienintelis virtualių failų palaikymo išjungimo privalumas yra tai, kad vėl 
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
         <source>SSL client certificate authentication</source>
-        <translation>SSL kliento sertifikato atpažinimas</translation>
+        <translation>SSL kliento sertifikato autentifikavimas</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
@@ -1735,7 +1735,7 @@ Vienintelis virtualių failų palaikymo išjungimo privalumas yra tai, kad vėl 
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="165"/>
         <source>Authentication error: Either username or password are wrong.</source>
-        <translation>Tapatumo nustatymo klaida: netinkamas naudotojo vardas arba slaptažodis. </translation>
+        <translation>Autentifikavimo klaida: netinkamas naudotojo vardas arba slaptažodis. </translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="214"/>
@@ -2206,7 +2206,7 @@ Tai gali būti susiję su jūsų „OpenSSL“ bibliotekomis.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="463"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation><numerusform>Atnaujintas %1 ir dar %n failas.</numerusform><numerusform>Atnaujintas %1 ir dar %n failai.</numerusform><numerusform>Atnaujintas %1 ir dar %n failų.</numerusform><numerusform>Atnaujintas %1 ir dar %n failas.</numerusform></translation>
+        <translation><numerusform> %1 ir  %n failas buvo atnaujintas.</numerusform><numerusform> %1 ir  %n failai buvo atnaujinti.</numerusform><numerusform> %1 ir  %n failų buvo atnaujinta.</numerusform><numerusform> %1 ir  %n failai buvo atnaujinti.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="470"/>
@@ -2226,7 +2226,7 @@ Tai gali būti susiję su jūsų „OpenSSL“ bibliotekomis.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="486"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation>%1 turi sinchronizavimo konfliktą. Patikrinkite &quot;konfliktų&quot; failą!</translation>
+        <translation>%1 turi sinchronizavimo konfliktą. Patikrinkite „konfliktų“ failą!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="491"/>
@@ -2256,7 +2256,7 @@ Tai gali būti susiję su jūsų „OpenSSL“ bibliotekomis.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="1121"/>
         <source>Could not read system exclude file</source>
-        <translation>Nepavyko perskaityti sistemos išskyrimo failo</translation>
+        <translation>Nepavyko perskaityti sistemos išimčių failo</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1411"/>
@@ -2269,12 +2269,13 @@ Tai gali būti susiję su jūsų „OpenSSL“ bibliotekomis.</translation>
         <location filename="../src/gui/folder.cpp" line="1414"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation>Buvo pridėtas aplankas iš išorinė saugyklos.</translation>
+        <translation>Buvo pridėtas aplankas iš išorinės saugyklos.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1415"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation>Jei norite parsisiųsti, eikite į nustatymus.</translation>
+        <translation>Jei norite atsisiųsti, eikite į nustatymus ir pasirinkite.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1472"/>
@@ -2322,7 +2323,9 @@ This means that the synchronization client might not upload local changes immedi
 %1</source>
         <translation>Nepavyko užtinkti patikimo aplankalų sinchronozacijos sekimo.
 
-Tai reiškia, kad sinchronizacijos klientas gali iš karto neįkelti lokalių pakeitimų, o tik juos nuskaityti. Įkėlimas bus atliekamas tam tikrais laiko tarpais (pagal numatytuosius nustatymus kas dvi valandas).</translation>
+Tai reiškia, kad sinchronizacijos klientas gali iš karto neįkelti lokalių pakeitimų, o tik juos nuskaityti. Įkėlimas bus atliekamas tam tikrais laiko tarpais (pagal numatytuosius nustatymus kas dvi valandas).
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1630"/>
@@ -2770,7 +2773,7 @@ Pažengusiems vartotojams: ši problema gali būti susijusi su keliais sinchroni
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="77"/>
         <source>Click to select a local folder to sync.</source>
-        <translation>Spustelėkite, norėdami pasirinkti vietinį aplanką, kurį sinchronizuoti.</translation>
+        <translation>Spustelėkite, kad pasirinktumėte vietinį aplanką sinchronizavimui.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="84"/>
@@ -2798,22 +2801,22 @@ Pažengusiems vartotojams: ši problema gali būti susijusi su keliais sinchroni
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="247"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>Aplankas buvo sėkmingai sukurtas % 1.</translation>
+        <translation>Aplankas buvo sėkmingai sukurtas %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="257"/>
         <source>Authentication failed accessing %1</source>
-        <translation>Nepavyko tapatumo nustatymas pasiekiant %1</translation>
+        <translation>Nepavyko autentifikuoti prisijungiant prie %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="259"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation>Nepavyko sukurti aplanko ant %1. Prašome patikrinkite.</translation>
+        <translation>Nepavyko sukurti aplanko  %1. Patikrinkite rankiniu būdu.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="277"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation>Nepavyko įkelti katalogo. Klaida:% 1</translation>
+        <translation>Nepavyko įkelti katalogo. Klaida: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="358"/>
@@ -2867,7 +2870,7 @@ Pažengusiems vartotojams: ši problema gali būti susijusi su keliais sinchroni
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="196"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Mes gavome kitą „E-Tag“ atnaujinimui. Pakrtosime kitą kartą.</translation>
+        <translation>Gavome kitą „E-Tag“ kodą, kad galėtume tęsti. Bandysime dar kartą kitą kartą.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="207"/>
@@ -2895,7 +2898,7 @@ Pažengusiems vartotojams: ši problema gali būti susijusi su keliais sinchroni
     <message>
         <location filename="../src/gui/generalsettings.ui" line="40"/>
         <source>For System Tray</source>
-        <translation>Sistemos dėklui</translation>
+        <translation>Užduočių juostos srityje</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="50"/>
@@ -2905,7 +2908,7 @@ Pažengusiems vartotojams: ši problema gali būti susijusi su keliais sinchroni
     <message>
         <location filename="../src/gui/generalsettings.ui" line="57"/>
         <source>Show Server &amp;Notifications</source>
-        <translation>Rodyti serverio pra&amp;nešimus</translation>
+        <translation>Rodyti serverį ir pranešimus</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="74"/>
@@ -2986,7 +2989,7 @@ Pažengusiems vartotojams: ši problema gali būti susijusi su keliais sinchroni
     <message>
         <location filename="../src/gui/generalsettings.ui" line="278"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>Taisyti &amp;nepaisomus failus</translation>
+        <translation>Redaguoti &amp;nepaisomus failus</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="285"/>
@@ -3188,7 +3191,7 @@ Versijos negalima iškart pakeisti į senesnę: norint pereiti iš stabilios ver
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="810"/>
         <source>Please enter a password for your link share:</source>
-        <translation>Įveskite per nuorodą bendrinamo viešinio slaptažodį:</translation>
+        <translation>Įveskite slaptažodį, kuriuo bendrinsite nuorodą:</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="836"/>
@@ -3225,7 +3228,7 @@ Versijos negalima iškart pakeisti į senesnę: norint pereiti iš stabilios ver
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Spustelėkite čia&lt;/a&gt;, kad užklausti žiniatinklio sąsajoje prašomą programos slaptažodį.</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Spustelėkite čia&lt;/a&gt;, kad užklausti žiniatinklio sąsajoje prašomą programėlės slaptažodį.</translation>
     </message>
 </context>
 <context>
@@ -3623,7 +3626,7 @@ Atkreipkite dėmesį, kad naudojant bet kurias žurnalo įrašymo komandinės ei
     <message>
         <location filename="../src/gui/networksettings.ui" line="187"/>
         <source>Proxy server requires authentication</source>
-        <translation>Įgaliotasis serveris reikalauja nustatyti tapatybę</translation>
+        <translation>Tarpinis serveris reikalauja autentifikavimo</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="302"/>
@@ -3683,17 +3686,17 @@ Atkreipkite dėmesį, kad naudojant bet kurias žurnalo įrašymo komandinės ei
     <message>
         <location filename="../src/gui/networksettings.cpp" line="36"/>
         <source>Hostname of proxy server</source>
-        <translation>Įgaliotojo serverio pavadinimas </translation>
+        <translation>Tarpinio serverio pavadinimas </translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="37"/>
         <source>Username for proxy server</source>
-        <translation>Prisijungimo vardas prie įgaliotojo serverio</translation>
+        <translation>Prisijungimo vardas prie tarpinio serverio</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="38"/>
         <source>Password for proxy server</source>
-        <translation>Slaptažodis prisijungimui prie įgaliotojo serverio</translation>
+        <translation>Slaptažodis prisijungimui prie tarpinio serverio</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="40"/>
@@ -3833,7 +3836,7 @@ Atkreipkite dėmesį, kad naudojant bet kurias žurnalo įrašymo komandinės ei
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="490"/>
         <source>Local Sync Folder</source>
-        <translation>Sinchronizavimo aplankas kompiuteryje</translation>
+        <translation>Vietinis sinchronizavimo aplankas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="533"/>
@@ -3862,7 +3865,7 @@ Atkreipkite dėmesį, kad naudojant bet kurias žurnalo įrašymo komandinės ei
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>1</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nepavyko prisijungti prie nurodyto saugaus serverio adreso. Kaip norite tęsti?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
@@ -4027,7 +4030,7 @@ Atkreipkite dėmesį, kad naudojant bet kurias žurnalo įrašymo komandinės ei
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="644"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>Serverio aplankas %1 jau yra. Prisijunkite jį sinchronizavimui.</translation>
+        <translation>Serverio aplankas %1 jau yra. Prijungiama sinchronizavimui.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="646"/>
@@ -4084,7 +4087,7 @@ Atkreipkite dėmesį, kad naudojant bet kurias žurnalo įrašymo komandinės ei
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="774"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Sinchronizavimo aplankas %1 kompiuteryje buvo sėkmingai sukurtas! &lt;/b&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Vietinis sinchronizavimo aplankas %1 buvo sėkmingai sukurtas! &lt;/b&gt;&lt;/font&gt;</translation>
     </message>
 </context>
 <context>
@@ -4173,7 +4176,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="142"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation>Neteisingas JSON iš apklausų URL adreso</translation>
+        <translation>Neteisingas JSON atsakymas iš apklausos URL</translation>
     </message>
 </context>
 <context>
@@ -4494,7 +4497,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
         <location filename="../src/libsync/propagatedownload.cpp" line="494"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1320"/>
         <source>File has changed since discovery</source>
-        <translation>Aptikus failą, jis buvo pakeistas</translation>
+        <translation>Failas buvo pakeistas po to, kai buvo aptiktas</translation>
     </message>
 </context>
 <context>
@@ -4513,7 +4516,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="305"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
-        <translation>Failas ar aplankas buvo pašalintas iš tik skaitymui skirtos bendros vietos, atstatymas nepavyko: %1</translation>
+        <translation>Failas arba aplankas buvo pašalintas iš tik skaitymo bendrinimo, tačiau atkurti nepavyko: %1</translation>
     </message>
 </context>
 <context>
@@ -4561,7 +4564,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="117"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation>Nepavyko pašalinti failo %1 dėl kompiuterio failo nesuderinamumo</translation>
+        <translation>Nepavyko pašalinti  %1 dėl vietinio failo vardo sutapimo</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="157"/>
@@ -4631,7 +4634,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="116"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>Serveris grąžino neteisingą HTTP kodą. Tikimasi 204, gauta &quot;%1 %2&quot;.</translation>
+        <translation>Serveris grąžino neteisingą HTTP kodą. Tikimasi 204, gauta „%1 %2“.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="124"/>
@@ -4692,7 +4695,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="236"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation>Serveris grąžino neteisingą HTTP kodą. Tikimasi 201, gauta &quot;%1 %2&quot;.</translation>
+        <translation>Serveris grąžino neteisingą HTTP kodą. Tikimasi 201, gauta „%1 %2“</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="255"/>
@@ -4732,12 +4735,12 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="434"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation>Failas kompiuteryje sinchronizavimo metu buvo pakeistas. Bus tęsiama.</translation>
+        <translation>Vietinis failas sinchronizavimo metu buvo pakeistas. Bus tęsiama.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="445"/>
         <source>Local file changed during sync.</source>
-        <translation>Failas kompiuteryje sinchronizavimo metu buvo pakeistas.</translation>
+        <translation>Vietinis failas sinchronizavimo metu buvo pakeistas.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="455"/>
@@ -4773,7 +4776,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="408"/>
         <source>File Removed (start upload) %1</source>
-        <translation>Failas pašalintas (pradėkite įkėlimas) %1</translation>
+        <translation>Failas pašalintas (pradėkite įkėlimą) %1</translation>
     </message>
 </context>
 <context>
@@ -4786,7 +4789,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="466"/>
         <source>Local file changed during sync.</source>
-        <translation>Failas kompiuteryje sinchronizavimo metu buvo pakeistas.</translation>
+        <translation>Vietinis failas sinchronizavimo metu buvo pakeistas.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="508"/>
@@ -4796,12 +4799,12 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="517"/>
         <source>Unexpected return code from server (%1)</source>
-        <translation>Nežinomas atsakymo kodas iš serverio (%1)</translation>
+        <translation>Nenumatytas atsakymo kodas iš serverio (%1)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="524"/>
         <source>Missing File ID from server</source>
-        <translation>Nėra File ID iš serverio</translation>
+        <translation>Trūksta failo ID iš serverio</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="544"/>
@@ -4821,7 +4824,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="228"/>
         <source>Poll URL missing</source>
-        <translation>Nėra apklausos URL adreso</translation>
+        <translation>Trūksta apklausos URL adreso</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="252"/>
@@ -4831,7 +4834,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="267"/>
         <source>Local file changed during sync.</source>
-        <translation>Failas kompiuteryje sinchronizavimo metu buvo pakeistas.</translation>
+        <translation>Vietinis failas sinchronizavimo metu buvo pakeistas.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="281"/>
@@ -4844,7 +4847,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="20"/>
         <source>Proxy authentication required</source>
-        <translation>Reikalingas tapatybės nustatymas įgaliotajame serveryje</translation>
+        <translation>Reikalingas tarpinio serverio autentifikavimas</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
@@ -5194,7 +5197,7 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="80"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Išsamesnė liudijimo informacija&lt;/h3&gt;</translation>
+        <translation>&lt;h3&gt;Sertifikato duomenys&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="83"/>
@@ -5239,7 +5242,7 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="95"/>
         <source>Issuer:</source>
-        <translation>Išdavė:</translation>
+        <translation>Išdavėjas:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="96"/>
@@ -5274,7 +5277,7 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="129"/>
         <source>%1 (self-signed)</source>
-        <translation>%1 (išduotas pačių)</translation>
+        <translation>%1  (savo paties pasirašytas)</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="131"/>
@@ -5321,7 +5324,7 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation>Vis tiek pasitikėti šiuo liudijimu</translation>
+        <translation>Vis tiek pasitikėti šiuo sertifikatu</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="79"/>
@@ -5341,7 +5344,7 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
         <source>with Certificate %1</source>
-        <translation>su liudijimu %1</translation>
+        <translation>su sertifikatu %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="206"/>
@@ -5396,7 +5399,7 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="233"/>
         <source>Issuer: %1</source>
-        <translation>Leidėjas: %!</translation>
+        <translation>Išdavėjas: %1</translation>
     </message>
 </context>
 <context>
@@ -5410,12 +5413,12 @@ Serveris atsakė su klaida: %2</translation>
         <location filename="../src/libsync/syncengine.cpp" line="555"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation>Leidžiami tik %1, būtina bent %2, kad galėtumėte pradėti</translation>
+        <translation>Leidžiami tik %1, būtina bent %2, kad būtų pradėta</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="588"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Nepavyko atverti ar sukurti sinchronizavimo duomenų bazės kompiuteryje. Įsitikinkite, kad į sinchronizavimo aplanką galite rašyti.</translation>
+        <translation>Nepavyko atidaryti arba sukurti vietinės sinchronizavimo duomenų bazės. Įsitikinkite, kad turite rašymo teises sinchronizavimo aplanke.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1472"/>
@@ -5425,7 +5428,7 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1479"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation>Kai kuriems įkėlimams serveryje neužteks vietos.</translation>
+        <translation>Serveryje nepakanka vietos kai kuriems įkėlimams.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="453"/>
@@ -5460,12 +5463,12 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="616"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation>Nepavyko perskaityti juodojo sąrašo iš duomenų bazės kompiuteryje</translation>
+        <translation>Nepavyko nuskaityti juodojo sąrašo iš vietinės duomenų bazės</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="657"/>
         <source>Unable to read from the sync journal.</source>
-        <translation>Nepavyko perskaityti sinchronizavimo žurnalo.</translation>
+        <translation>Nepavyko nuskaityti iš sinchronizavimo žurnalo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="814"/>
@@ -6056,7 +6059,7 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="240"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation>Serveris &quot;%1&quot; pateikė negaliojantį liudijimą. Tęsti?</translation>
+        <translation>Serveris „%1“ pateikė negaliojantį sertifikatą. Tęsti?</translation>
     </message>
 </context>
 <context>
@@ -6154,7 +6157,7 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="467"/>
         <source>There are no sync folders configured.</source>
-        <translation>Sinchronizuojamų aplankų nėra.</translation>
+        <translation>Nėra sukonfigūruotų sinchronizavimo aplankų.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="362"/>
@@ -6681,7 +6684,7 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="208"/>
         <source>Edit share</source>
-        <translation>Taisyti viešinį</translation>
+        <translation>Redaguoti bendrinimą</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="282"/>
@@ -6878,7 +6881,7 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
         <source>Open local or team folders</source>
-        <translation type="unfinished"/>
+        <translation>Atidaryti vietinius arba komandos aplankus</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
@@ -6888,7 +6891,7 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
         <source>Open team folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Atidaryti komandos aplanką „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="187"/>
@@ -6906,7 +6909,7 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="66"/>
         <source>Open local or team folders</source>
-        <translation type="unfinished"/>
+        <translation>Atidaryti vietinius arba komandos aplankus</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="101"/>
@@ -7231,7 +7234,7 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation>Atsisiųsta serverio versija, kompiuteryje esantis failas nukopijuotas į konfliktų failą</translation>
+        <translation>Serverio versija atsisiųsta, pakeistas vietinis failas nukopijuotas į konfliktinį failą</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
@@ -7256,7 +7259,7 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="46"/>
         <source>Filesystem access error</source>
-        <translation>Prieigos prie failų sistemos klaida</translation>
+        <translation>Failų sistemos prieigos klaida</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
@@ -7389,7 +7392,7 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="44"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation>Atidarant naršyklėje adresą %1 įvyko klaida. Gal nepasirinkta pagrindinė naršyklė?</translation>
+        <translation>Paleidžiant naršyklę, norint pereiti į URL %1, įvyko klaida. Galbūt nesukonfigūruota numatytoji naršyklė?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="67"/>
@@ -7399,7 +7402,7 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="68"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation>Laiško sukūrimui atidarant el. pašto klientą įvyko klaida. Gal nepasirinktas el. pašto klientas?</translation>
+        <translation>Paleidžiant el. pašto programą, kad būtų sukurta nauja žinutė, įvyko klaida. Galbūt nėra nustatytos numatytosios el. pašto programos?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="83"/>
