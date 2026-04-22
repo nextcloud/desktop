@@ -29,7 +29,7 @@ Replace Qt Multimedia with a lightweight native, cross-platform C++ API that can
 
 ## Proposed architecture
 
-Create a small abstraction in `src/gui`:
+Create a small abstraction in `src/gui` (each type in its own dedicated source/header file):
 
 - `RingtonePlayer` (Qt/C++ facade exposed to QML)
   - `Q_INVOKABLE void play(const QString &path, int loopCount);`
@@ -38,7 +38,7 @@ Create a small abstraction in `src/gui`:
 - `INativeSoundBackend` interface (internal only).
 - Platform-specific backend implementations selected at compile time:
   - **Windows**: `PlaySoundW` (`winmm`) with async/loop flags.
-  - **macOS**: Objective-C++ backend using `AVAudioPlayer` as primary option (evaluate alternatives only if required). Since this code lives in `src`, keep compatibility with the project’s non-ARC setup and use explicit memory management where applicable.
+  - **macOS**: Objective-C++ backend using `AVAudioPlayer` as primary option (evaluate alternatives only if required). Use the established PIMPL approach for Objective-C++ code in `src/gui/macOS` so public headers stay Qt/C++-centric. Since this code lives in `src`, keep compatibility with the project’s non-ARC setup and use explicit memory management where applicable.
   - **Linux**: choose backend after a short spike with explicit candidates (`libcanberra`, PulseAudio/PipeWire API path, ALSA path) and define fallback behavior when no backend is available.
 
 QML then calls the facade instead of `SoundEffect`.
@@ -62,8 +62,9 @@ QML then calls the facade instead of `SoundEffect`.
    - Verify installer/bundling scripts no longer include Qt Multimedia artifacts.
 
 5. **Validation**
-   - Unit tests for `RingtonePlayer` control flow (start/stop/loop argument handling) with mock backend.
-   - Manual platform checks:
+    - Unit tests for `RingtonePlayer` control flow (start/stop/loop argument handling) with mock backend.
+    - If any macOS extension-level tests are introduced as part of this work, prefer Swift Testing over XCTest per project conventions.
+    - Manual platform checks:
      - incoming call starts ringtone,
      - decline/close stops ringtone immediately,
      - ringtone stops after configured loop count,
