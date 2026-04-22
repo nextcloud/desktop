@@ -67,6 +67,10 @@ HeaderButton {
             border.width: 1
             radius: 4
         }    
+        contentItem: Text {
+            text: tooltip.text
+            color: Style.sesTrayFontColor
+        } 
     }
 
 

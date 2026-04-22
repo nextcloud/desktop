@@ -218,7 +218,6 @@ Page {
                     ToolTip {
                         popupType: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
                         visible: hoverHandler.hovered
-                        text: tagRepeater.fileTagModel.overflowTagsString
                         
                         font.pixelSize: Style.sesFontPixelSize
                         font.weight: Style.sesFontNormalWeight
@@ -227,6 +226,10 @@ Page {
                             border.color: Style.sesBorderColor
                             border.width: 1
                             radius: 4
+                        }
+                        contentItem: Text {
+                            text: tagRepeater.fileTagModel.overflowTagsString
+                            color: Style.sesTrayFontColor
                         }
                     }
                 }

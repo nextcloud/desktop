@@ -27,7 +27,6 @@ Button{
   }
 
   ToolTip {
-      text: root.toolTipText
       visible: root.toolTipText && root.isMouseOver
       background: Rectangle {
                             color: Style.sesBackgroundColor
@@ -35,6 +34,10 @@ Button{
                             border.width: 1
                             radius: 4
       }
+      contentItem: Text {
+        text: root.toolTipText
+        color: Style.sesTrayFontColor
+      } 
   }
 
   background: Rectangle {

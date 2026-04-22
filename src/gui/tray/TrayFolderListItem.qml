@@ -19,13 +19,16 @@ MenuItem {
     ToolTip {
         popupType: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
         visible: root.hovered && root.toolTipText !== ""
-        text: root.toolTipText
         background: Rectangle {
-                            color: Style.sesBackgroundColor
-                            border.color: Style.sesBorderColor
-                            border.width: 1
-                            radius: 4
-                        }
+            color: Style.sesBackgroundColor
+            border.color: Style.sesBorderColor
+            border.width: 1
+            radius: 4
+        }
+        contentItem: Text {
+            text: root.toolTipText
+            color: Style.sesTrayFontColor
+        } 
     }
 
     contentItem: RowLayout {

@@ -39,12 +39,15 @@ ItemDelegate {
     ToolTip {
         popupType: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
         visible: root.hovered && !activityContent.childHovered && model.displayLocation !== ""
-        text: qsTr("In %1").arg(model.displayLocation)
         background: Rectangle {
                             color: Style.sesBackgroundColor
                             border.color: Style.sesBorderColor
                             border.width: 1
                             radius: 4
+        }
+        contentItem: Text {
+            text: qsTr("In %1").arg(model.displayLocation)
+            color: Style.sesTrayFontColor
         }
     }
 
