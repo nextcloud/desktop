@@ -1780,17 +1780,19 @@ void FolderMan::setDirtyNetworkLimits(const AccountPtr &account) const
     }
 }
 
-void FolderMan::leaveShare(const QString &localFile)
+void FolderMan::leaveShare(const QString &localFile, UserInteraction userInteraction)
 {
     const auto localFileNoTrailingSlash = localFile.endsWith('/') ? localFile.chopped(1) : localFile;
 
-    QMessageBox::StandardButtons buttons = QMessageBox::Yes | QMessageBox::No;
+    if (userInteraction == UserInteraction::AskUserConfirmation) {
+        const QMessageBox::StandardButtons buttons = QMessageBox::Yes | QMessageBox::No;
 
-    const auto message = tr("Are you sure to want to leave share %1?").arg(Utility::escape(localFileNoTrailingSlash));
-    const auto result = QMessageBox::question(nullptr, tr("Confirm share leave"), message, buttons);
-    if (result == QMessageBox::No) {
-        qCDebug(lcFolderMan()) << "user canceled leaving share" << localFile;
-        return;
+        const auto message = tr("Are you sure to want to leave share %1?").arg(Utility::escape(localFileNoTrailingSlash));
+        const auto result = QMessageBox::question(nullptr, tr("Confirm share leave"), message, buttons);
+        if (result == QMessageBox::No) {
+            qCDebug(lcFolderMan()) << "user canceled leaving share" << localFile;
+            return;
+        }
     }
 
     if (const auto folder = FolderMan::instance()->folderForPath(localFileNoTrailingSlash)) {

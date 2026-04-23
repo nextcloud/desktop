@@ -79,6 +79,13 @@ public:
         AllowOverrideExistingPath,
     };
 
+    enum class UserInteraction {
+        AskUserConfirmation,
+        NoUserInteraction,
+    };
+
+    Q_ENUM(UserInteraction)
+
     ~FolderMan() override;
     static FolderMan *instance();
 
@@ -229,7 +236,7 @@ public:
     void setDirtyNetworkLimits(const AccountPtr &account) const;
 
     /** removes current user from the share **/
-    void leaveShare(const QString &localFile);
+    void leaveShare(const QString &localFile, UserInteraction userInteraction = UserInteraction::AskUserConfirmation);
 
     /** Whether or not vfs is supported in the location. */
     [[nodiscard]] bool checkVfsAvailability(const QString &path, Vfs::Mode mode = bestAvailableVfsMode()) const;
