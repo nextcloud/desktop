@@ -86,7 +86,7 @@ import OSLog
         // Set up logging.
         self.log = FileProviderLog(fileProviderDomainIdentifier: domain.identifier)
         self.logger = FileProviderLogger(category: "FileProviderExtension", log: log)
-        logger.debug("Initializing with domain identifier: \(domain.identifier.rawValue)")
+        logger.debug("Initializing with domain identifier.", [.domain: domain.identifier.rawValue])
 
         // Set up NextcloudKit.
         self.ncKit = NextcloudKit.shared
@@ -97,10 +97,8 @@ import OSLog
         NKLogFileManager.configure(logLevel: .normal)
         #endif
 
-        logger.info("Current NextcloudKit log file URL: \(NKLogFileManager.shared.currentLogFileURL().absoluteString)")
-
+        logger.info("NextcloudKit logging configured.", [.url: NKLogFileManager.shared.currentLogFileURL()])
         self.keychain = Keychain(log: log)
-
         super.init()
     }
 
@@ -146,13 +144,13 @@ import OSLog
         logger.debug("Received request for item.", [.item: identifier, .request: request])
 
         guard let ncAccount else {
-            logger.error("Not fetching item because account not set up yet.", [.item: identifier])
+            logger.debug("Not fetching item because account not set up yet.", [.item: identifier])
             completionHandler(nil, NSFileProviderError(.notAuthenticated))
             return Progress()
         }
         
         guard let dbManager else {
-            logger.error("Not fetching item because database is unavailable.", [.item: identifier])
+            logger.debug("Not fetching item because database is unavailable.", [.item: identifier])
             completionHandler(nil, NSFileProviderError(.notAuthenticated))
             return Progress()
         }
@@ -188,14 +186,14 @@ import OSLog
         }
 
         guard let ncAccount else {
-            logger.error("Not fetching contents for item because account not set up yet.", [.item: itemIdentifier])
+            logger.debug("Not fetching contents for item because account not set up yet.", [.item: itemIdentifier])
             insertErrorAction(actionId)
             completionHandler(nil, nil, NSFileProviderError(.notAuthenticated))
             return Progress()
         }
 
         guard let dbManager else {
-            logger.error("Not fetching contents for item because database is unavailable.", [.item: itemIdentifier])
+            logger.debug("Not fetching contents for item because database is unavailable.", [.item: itemIdentifier])
             completionHandler(nil, nil, NSFileProviderError(.cannotSynchronize))
             return Progress()
         }
@@ -233,26 +231,21 @@ import OSLog
         logger.debug("Received request to create item.", [.item: itemTemplate, .name: itemTemplate.filename, .request: request])
 
         guard let ncAccount else {
-            logger.error(
-                """
-                Not creating item: \(itemTemplate.itemIdentifier.rawValue)
-                as account not set up yet
-                """
-            )
+            logger.debug("Not creating item because account is not set up yet.", [.item: itemTemplate.itemIdentifier])
             insertErrorAction(actionId)
             completionHandler(itemTemplate, [], false, NSFileProviderError(.notAuthenticated))
             return Progress()
         }
 
         guard let ignoredFiles else {
-            logger.error("Not creating item for identifier: \(itemTemplate.itemIdentifier.rawValue) as ignore list not set up yet.")
+            logger.debug("Not creating item because ignore list not set up yet.", [.item: itemTemplate.itemIdentifier])
             insertErrorAction(actionId)
             completionHandler(itemTemplate, [], false, NSFileProviderError(.notAuthenticated))
             return Progress()
         }
 
         guard let dbManager else {
-            logger.error("Not creating item because database is unavailable.", [.item: itemTemplate.itemIdentifier])
+            logger.debug("Not creating item because database is unavailable.", [.item: itemTemplate.itemIdentifier])
             insertErrorAction(actionId)
             completionHandler(itemTemplate, [], false, NSFileProviderError(.cannotSynchronize))
             return Progress()
@@ -317,14 +310,14 @@ import OSLog
         logger.debug("Received request to modify item.", [.item: item, .request: request])
 
         guard let ncAccount else {
-            logger.error("Not modifying item because account not set up yet.", [.item: identifier])
+            logger.debug("Not modifying item because account not set up yet.", [.item: identifier])
             insertErrorAction(actionId)
             completionHandler(item, [], false, NSFileProviderError(.notAuthenticated))
             return Progress()
         }
 
         guard let ignoredFiles else {
-            logger.error("Not modifying item because ignore list not set up yet.", [.item: identifier])
+            logger.debug("Not modifying item because ignore list not set up yet.", [.item: identifier])
             insertErrorAction(actionId)
             completionHandler(item, [], false, NSFileProviderError(.notAuthenticated))
             return Progress()
@@ -332,7 +325,7 @@ import OSLog
 
 
         guard let dbManager else {
-            logger.error("Not modifying item because the database is unavailable.")
+            logger.debug("Not modifying item because the database is unavailable.")
             insertErrorAction(actionId)
             completionHandler(item, [], false, NSFileProviderError(.cannotSynchronize))
             return Progress()
@@ -401,21 +394,21 @@ import OSLog
         logger.debug("Received request to delete item.", [.item: identifier, .request: request])
 
         guard let ncAccount else {
-            logger.error("Not deleting item \(identifier.rawValue), account not set up yet")
+            logger.debug("Not deleting item because account is not set up yet.", [.item: identifier])
             insertErrorAction(actionId)
             completionHandler(NSFileProviderError(.notAuthenticated))
             return Progress()
         }
 
         guard let ignoredFiles else {
-            logger.error("Not deleting \(identifier.rawValue), ignore list not received")
+            logger.debug("Not deleting item because ignore list not received.", [.item: identifier])
             insertErrorAction(actionId)
             completionHandler(NSFileProviderError(.notAuthenticated))
             return Progress()
         }
 
         guard let dbManager else {
-            logger.error("Not deleting item \(identifier.rawValue), db manager unavailable")
+            logger.debug("Not deleting item because database unavailable.", [.item: identifier])
             insertErrorAction(actionId)
             completionHandler(NSFileProviderError(.cannotSynchronize))
             return Progress()
@@ -457,12 +450,12 @@ import OSLog
         logger.debug("System requested enumerator.", [.item: containerItemIdentifier])
 
         guard let ncAccount else {
-            logger.error("Not providing enumerator for container with identifier \(containerItemIdentifier.rawValue) yet as account not set up")
+            logger.debug("Not providing enumerator for item because account is not set up yet.", [.item: containerItemIdentifier])
             throw NSFileProviderError(.notAuthenticated)
         }
 
         guard let dbManager else {
-            logger.error("Not providing enumerator for container with identifier \(containerItemIdentifier.rawValue) yet as db manager is unavailable")
+            logger.debug("Not providing enumerator for item because database is unavailable.", [.item: containerItemIdentifier])
             throw NSFileProviderError(.cannotSynchronize)
         }
 
@@ -478,19 +471,19 @@ import OSLog
 
     func materializedItemsDidChange(completionHandler: @escaping () -> Void) {
         guard let ncAccount else {
-            logger.error("Not purging stale local file metadatas, account not set up")
+            logger.debug("Not purging stale local file metadatas because account not set up.")
             completionHandler()
             return
         }
 
         guard let dbManager else {
-            logger.error("Not purging stale local file metadatas. db manager unabilable for domain: \(self.domain.displayName)")
+            logger.debug("Not purging stale local file metadatas because database is not available.")
             completionHandler()
             return
         }
 
         guard let manager = manager else {
-            logger.error("Could not get file provider manager for domain: \(self.domain.displayName)")
+            logger.debug("Could not get file provider manager.")
             completionHandler()
             return
         }
@@ -508,7 +501,7 @@ import OSLog
 
     func signalEnumerator(completionHandler: @escaping (_ error: Error?) -> Void) {
         guard let manager = manager else {
-            logger.error("Could not get file provider manager for domain, could not signal enumerator. This might lead to future conflicts.")
+            logger.error("Cannot get file provider manager for domain. Cannot signal enumerator.")
             return
         }
 
@@ -517,7 +510,7 @@ import OSLog
 
     private func signalEnumeratorAfterAccountSetup() {
         guard let manager = manager else {
-            logger.error("Could not get file provider manager for domain \(self.domain.displayName), cannot notify after account setup")
+            logger.error("Could not get manager for domain. Cannot signal enumerator after account setup.")
             return
         }
 
@@ -525,12 +518,11 @@ import OSLog
 
         manager.signalErrorResolved(NSFileProviderError(.notAuthenticated)) { error in
             if error != nil {
-                self.logger.error("Error resolving not authenticated, received error: \(error!.localizedDescription)")
+                self.logger.error("Cannot resolve .notAuthenticated error.", [.error: error?.localizedDescription])
             }
         }
 
-        logger.debug("Signalling enumerators for user \(self.ncAccount!.username) at server \(self.ncAccount!.serverUrl)")
-
+        logger.debug("Signalling enumerators.")
         notifyChange()
     }
 
@@ -558,25 +550,25 @@ import OSLog
         logger.info("Setting up domain account for user: \(user), userId: \(userId), serverUrl: \(serverUrl), password: \(password.isEmpty ? "<empty>" : "<not-empty>"), ncKitAccount: \(account.ncKitAccount)")
 
         guard password.isEmpty == false else {
-            logger.info("Cancelling domain account setup because \"password\" is an empty string!")
+            logger.info("Cancelling domain account setup because \"password\" is an empty string.")
             completionHandler?(NSError(.missingAccountInformation))
             return
         }
 
         guard serverUrl.isEmpty == false else {
-            logger.info("Cancelling domain account setup because \"serverUrl\" is an empty string!")
+            logger.info("Cancelling domain account setup because \"serverUrl\" is an empty string.")
             completionHandler?(NSError(.missingAccountInformation))
             return
         }
 
         guard user.isEmpty == false else {
-            logger.info("Cancelling domain account setup because \"user\" is an empty string!")
+            logger.info("Cancelling domain account setup because \"user\" is an empty string.")
             completionHandler?(NSError(.missingAccountInformation))
             return
         }
 
         guard userId.isEmpty == false else {
-            logger.info("Cancelling domain account setup because \"userId\" is an empty string!")
+            logger.info("Cancelling domain account setup because \"userId\" is an empty string.")
             completionHandler?(NSError(.missingAccountInformation))
             return
         }
@@ -585,7 +577,7 @@ import OSLog
 
         if account == ncAccount || account == pendingAccount {
             setupLock.unlock()
-            logger.info("Cancelling domain account setup because of receiving the same account information repeatedly!")
+            logger.info("Cancelling domain account setup because of receiving the same account information repeatedly.")
             completionHandler?(nil)
             return
         }
@@ -665,23 +657,23 @@ import OSLog
                 break
             }
 
-            logger.info("\(account.username) authentication try timed out. Trying again soon.")
+            logger.info("Authentication try timed out. Trying again soon.")
             try? await Task.sleep(nanoseconds: authTimeout)
         }
 
         switch (authAttemptState) {
             case .authenticationError:
-                logger.error("Authentication of \"\(account.username)\" failed due to bad credentials, cancelling domain account setup!")
+                logger.error("Authentication failed due to bad credentials.")
                 completionHandler?(NSError(.invalidCredentials))
                 return
             case .connectionError:
                 // Despite multiple connection attempts we are still getting connection issues.
                 // Connection error should be provided
-                logger.error("Authentication of \"\(account.username)\" try failed, no connection.")
+                logger.error("Authentication failed due to a connection error.")
                 completionHandler?(NSError(.connection))
                 return
             case .success:
-                logger.info("Successfully authenticated! Nextcloud account set up in file provider extension. User: \(account.username) at server: \(account.serverUrl)")
+                logger.info("Successfully authenticated.")
         }
 
         await MainActor.run {
@@ -715,7 +707,7 @@ import OSLog
         actionsLock.unlock()
 
         guard let argument else {
-            logger.error("State argument is nil!")
+            logger.error("State argument is nil.")
             return
         }
 
