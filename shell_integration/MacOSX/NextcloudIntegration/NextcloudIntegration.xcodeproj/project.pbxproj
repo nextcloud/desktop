@@ -25,7 +25,6 @@
 		538E396D27F4765000FA63D5 /* FileProviderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E396C27F4765000FA63D5 /* FileProviderExtension.swift */; };
 		538E397627F4765000FA63D5 /* FileProviderExt.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 538E396727F4765000FA63D5 /* FileProviderExt.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		53B979812B84C81F002DA742 /* DocumentActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B979802B84C81F002DA742 /* DocumentActionViewController.swift */; };
-		53D666612B70C9A70042C03D /* FileProviderDomainDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D666602B70C9A70042C03D /* FileProviderDomainDefaults.swift */; };
 		53ED473029C9CE0B00795DB1 /* FileProviderExtension+NSFileProviderServicing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53ED472F29C9CE0B00795DB1 /* FileProviderExtension+NSFileProviderServicing.swift */; };
 		53FE14502B8E0658006C4193 /* ShareTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FE144F2B8E0658006C4193 /* ShareTableViewDataSource.swift */; };
 		53FE14592B8E3F6C006C4193 /* ShareTableItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FE14582B8E3F6C006C4193 /* ShareTableItemView.swift */; };
@@ -122,7 +121,6 @@
 		53B9797E2B84C81F002DA742 /* FileProviderUIExt.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FileProviderUIExt.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		53B979802B84C81F002DA742 /* DocumentActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentActionViewController.swift; sourceTree = "<group>"; };
 		53B979852B84C81F002DA742 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		53D666602B70C9A70042C03D /* FileProviderDomainDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderDomainDefaults.swift; sourceTree = "<group>"; };
 		53ED472F29C9CE0B00795DB1 /* FileProviderExtension+NSFileProviderServicing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderExtension+NSFileProviderServicing.swift"; sourceTree = "<group>"; };
 		53FE144F2B8E0658006C4193 /* ShareTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTableViewDataSource.swift; sourceTree = "<group>"; };
 		53FE14582B8E3F6C006C4193 /* ShareTableItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTableItemView.swift; sourceTree = "<group>"; };
@@ -267,7 +265,6 @@
 			children = (
 				5352E85929B7BFB4002CE85C /* Extensions */,
 				5350E4C72B0C368B00F276CB /* Services */,
-				53D666602B70C9A70042C03D /* FileProviderDomainDefaults.swift */,
 				538E396C27F4765000FA63D5 /* FileProviderExtension.swift */,
 				AAA6F17C2F1E647800FFB2BA /* FileProviderExtension+NSFileProviderServiceSource.swift */,
 				AAA6F1802F1E652E00FFB2BA /* FileProviderExtension+ClientCommunicationProtocol.swift */,
@@ -737,7 +734,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA9987862E72B6EF00B2C428 /* NextcloudKit+clearAccountErrorState.swift in Sources */,
-				53D666612B70C9A70042C03D /* FileProviderDomainDefaults.swift in Sources */,
 				AAA6F17D2F1E647D00FFB2BA /* FileProviderExtension+NSFileProviderServiceSource.swift in Sources */,
 				53ED473029C9CE0B00795DB1 /* FileProviderExtension+NSFileProviderServicing.swift in Sources */,
 				AAA6F1792F1E608000FFB2BA /* FileProviderExtension+ChangeNotificationInterface.swift in Sources */,

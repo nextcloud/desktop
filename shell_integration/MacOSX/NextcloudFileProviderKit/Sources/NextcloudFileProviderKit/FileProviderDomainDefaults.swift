@@ -3,13 +3,12 @@
 
 import FileProvider
 import Foundation
-import NextcloudFileProviderKit
 import os
 
 ///
 /// Abstraction for the user defaults specific to file provider domains.
 ///
-struct FileProviderDomainDefaults {
+public struct FileProviderDomainDefaults {
     ///
     /// > Warning: Do not change the raw values of these keys, as they are used in UserDefaults. Any change would make the already stored value inaccessible and be like a reset.
     ///
@@ -30,7 +29,7 @@ struct FileProviderDomainDefaults {
 
     let logger: FileProviderLogger
 
-    init(identifier: NSFileProviderDomainIdentifier, log: any FileProviderLogging) {
+    public init(identifier: NSFileProviderDomainIdentifier, log: any FileProviderLogging) {
         self.identifier = identifier
         self.logger = FileProviderLogger(category: "FileProviderDomainDefaults", log: log)
     }
@@ -60,7 +59,7 @@ struct FileProviderDomainDefaults {
     ///
     /// The address of the server to connect to.
     ///
-    var serverUrl: String? {
+    public var serverUrl: String? {
         get {
             let identifier = self.identifier.rawValue
 
@@ -90,7 +89,7 @@ struct FileProviderDomainDefaults {
     ///
     /// The user name associated with the domain.
     ///
-    var user: String? {
+    public var user: String? {
         get {
             let identifier = self.identifier.rawValue
 
@@ -120,7 +119,7 @@ struct FileProviderDomainDefaults {
     ///
     /// The full user identifier associated with the domain.
     ///
-    var userId: String? {
+    public var userId: String? {
         get {
             let identifier = self.identifier.rawValue
 
