@@ -449,80 +449,67 @@ Page {
                 }
             }
             
-            ColumnLayout {
+            SesCheckBox {
+                id: noteEnabledMenuItem
+
                 Layout.fillWidth: true
-                height: visible ? implicitHeight : 0
-                spacing: Style.extraSmallSpacing
 
-                SesCheckBox {
-                    id: noteEnabledMenuItem
+                spacing: scrollContentsColumn.indicatorSpacing
+                leftPadding: scrollContentsColumn.itemPadding
+                rightPadding: scrollContentsColumn.itemPadding
+                indicator.width: scrollContentsColumn.indicatorItemWidth
+                indicator.height: scrollContentsColumn.indicatorItemWidth
 
-                    Layout.fillWidth: true
+                checkable: true
+                checked: root.noteEnabled
+                text: qsTr("Note to recipient")
+                enabled: !root.waitingForNoteChange
 
-                    font.pixelSize: pixelSize
-                    font.weight: fontWeight
-
-
-                    spacing: scrollContentsColumn.indicatorSpacing
-                        padding: scrollContentsColumn.itemPadding
-                    indicator.width: scrollContentsColumn.indicatorItemWidth
-                    indicator.height: scrollContentsColumn.indicatorItemWidth
-
-                    checkable: true
-                    checked: root.noteEnabled
-                    text: qsTr("Note to recipient")
-                    enabled: !root.waitingForNoteEnabledChange
-
-                    onClicked: {
-                        root.toggleNoteToRecipient(checked);
-                        root.waitingForNoteEnabledChange = true;
+                onClicked: {
+                    if (!checked && root.note !== "") {
+                        root.setNote("");
+                        root.waitingForNoteChange = true;
                     }
                 }
-            
-                Text{
-                    text: qsTr("Enter the note to recipient")
-                    color: Style.sesGray
-                    padding: scrollContentsColumn.itemPadding
-                    visible: root.noteEnabled
-                    font.family: root.font.family
-                    font.pixelSize: pixelSize
-                    font.weight: fontWeight
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                height: visible ? implicitHeight : 0
+                spacing: scrollContentsColumn.indicatorSpacing
+
+                visible: noteEnabledMenuItem.checked
+
+                Image {
+                    Layout.preferredWidth: scrollContentsColumn.indicatorItemWidth
+                    Layout.fillHeight: true
+
+                    verticalAlignment: Image.AlignVCenter
+                    horizontalAlignment: Image.AlignHCenter
+                    fillMode: Image.Pad
+
+                    source: "image://svgimage-custom-color/comment.svg/" + palette.windowText
+                    sourceSize.width: scrollContentsColumn.rowIconWidth
+                    sourceSize.height: scrollContentsColumn.rowIconWidth
                 }
 
-                TextEdit {
-                    id: noteTextEdit
-                    visible: root.noteEnabled
-                    font.family: root.font.family
-                    font.pixelSize: pixelSize
-                    font.weight: fontWeight
-                    color: Style.sesTrayFontColor
-                    Layout.fillWidth: true
-                    Layout.leftMargin: 3
-                    Layout.rightMargin: 3
-                    height: visible ? 64 : 0
-                    wrapMode: TextEdit.Wrap
-                    selectByMouse: true
-                    padding: scrollContentsColumn.itemPadding
-                    enabled: root.noteEnabled &&
-                             !root.waitingForNoteChange &&
-                             !root.waitingForNoteEnabledChange
+                NCInputTextArea {
+                    id: noteTextArea
 
-                    onEditingFinished: if(text !== "") {
+                    Layout.fillWidth: true
+                    // no height here -- let the textarea figure it out how much it needs
+                    submitButton.height: Math.min(Style.talkReplyTextFieldPreferredHeight, height - 2)
+
+                    text: root.note
+                    placeholderText: qsTr("Enter a note for the recipient")
+                    enabled: noteEnabledMenuItem.checked && !root.waitingForNoteChange
+
+                    onEditingFinished: if (text !== "" && text !== root.note) {
                         root.setNote(text);
                         root.waitingForNoteChange = true;
                     }
-
-                    Rectangle {
-                        id: noteTextBorder
-                        anchors.fill: parent
-                        radius: Style.slightlyRoundedButtonRadius
-                        border.width: Style.thickBorderWidth
-                        border.color: Style.sesTrayInputField
-                        color: palette.base
-                        z: -1
-                    }
                 }
-            }           
+            }          
 
             Loader {
                 Layout.fillWidth: true
