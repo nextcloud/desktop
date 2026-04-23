@@ -10,11 +10,8 @@
 #import <AppKit/NSApplication.h>
 
 #include "application.h"
+#include "addaccounturlhandler.h"
 #include "editlocallymanager.h"
-#include "owncloudsetupwizard.h"
-
-#include <QCoreApplication>
-#include <QUrlQuery>
 
 /* In theory, we should be able to just capture QFileOpenEvents
  * when we open our custom URLs in our Application class and be
@@ -55,19 +52,7 @@
 {
     NSURL* url = [NSURL URLWithString:[[event paramDescriptorForKeyword:keyDirectObject] stringValue]];
     const auto qtUrl = QUrl::fromNSURL(url);
-    const auto pathParts = qtUrl.path().split(QLatin1Char('/'), Qt::SkipEmptyParts);
-    const auto hasAddAccountHost = qtUrl.host().compare(QStringLiteral("addaccount"), Qt::CaseInsensitive) == 0;
-    const auto hasAddAccountPath = !pathParts.isEmpty() && pathParts.constFirst().compare(QStringLiteral("addaccount"), Qt::CaseInsensitive) == 0;
-    if (hasAddAccountHost || hasAddAccountPath) {
-        const auto urlQuery = QUrlQuery{qtUrl};
-        const auto serverUrlRaw = urlQuery.queryItemValue(QStringLiteral("server_url"));
-        const auto serverUrl = QUrl::fromUserInput(serverUrlRaw);
-        if (serverUrl.isValid() && !serverUrl.host().isEmpty()) {
-            OCC::OwncloudSetupWizard::runWizardForLoginFlow(serverUrl, qApp, SLOT(slotownCloudWizardDone(int)));
-        } else {
-            OCC::EditLocallyManager::showError(QCoreApplication::translate("Application", "Invalid account setup URL"),
-                                               QCoreApplication::translate("Application", "The provided addAccount URL could not be parsed."));
-        }
+    if (OCC::AddAccountUrlHandler::handleAddAccountUrl(qtUrl)) {
         return;
     }
 

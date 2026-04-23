@@ -7,6 +7,7 @@
 #include "application.h"
 
 #include "account.h"
+#include "addaccounturlhandler.h"
 #include "accountmanager.h"
 #include "accountsetupcommandlinemanager.h"
 #include "accountstate.h"
@@ -49,7 +50,6 @@
 #include <QMessageBox>
 #include <QDesktopServices>
 #include <QGuiApplication>
-#include <QUrlQuery>
 #include <QVersionNumber>
 #include <QRandomGenerator>
 #include <QHttp2Configuration>
@@ -66,42 +66,6 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcApplication, "nextcloud.gui.application", QtInfoMsg)
 
 namespace {
-
-[[nodiscard]] bool isAddAccountActionUrl(const QUrl &url)
-{
-    if (url.scheme() != QLatin1String(APPLICATION_URI_HANDLER_SCHEME)) {
-        return false;
-    }
-    const auto pathParts = url.path().split(QLatin1Char('/'), Qt::SkipEmptyParts);
-    const auto hasAddAccountHost = url.host().compare(QLatin1String("addaccount"), Qt::CaseInsensitive) == 0;
-    const auto hasAddAccountPath = !pathParts.isEmpty() && pathParts.constFirst().compare(QLatin1String("addaccount"), Qt::CaseInsensitive) == 0;
-    return hasAddAccountHost || hasAddAccountPath;
-}
-
-[[nodiscard]] QUrl parseAddAccountServerUrl(const QUrl &url)
-{
-    // Supported format:
-    // - nc://addAccount?server_url=https%3A%2F%2Fcloud.example.com
-    if (!isAddAccountActionUrl(url)) {
-        return {};
-    }
-
-    const auto query = QUrlQuery(url);
-    const auto serverUrlRaw = query.queryItemValue(QStringLiteral("server_url"));
-    if (serverUrlRaw.isEmpty()) {
-        return {};
-    }
-
-    const auto serverUrl = QUrl::fromUserInput(serverUrlRaw);
-    if (!serverUrl.isValid() || serverUrl.host().isEmpty()) {
-        return {};
-    }
-    if (serverUrl.scheme() != QLatin1String("https") && serverUrl.scheme() != QLatin1String("http")) {
-        return {};
-    }
-
-    return serverUrl;
-}
 
 static const char optionsC[] =
         "Options:\n"
@@ -979,7 +943,7 @@ void Application::parseOptions(const QStringList &options)
                 showHint(errorParsingLocalFileEditingUrl.toStdString());
             }
         } else if (option.startsWith(QStringLiteral(APPLICATION_URI_HANDLER_SCHEME "://addAccount"))) {
-            _addAccountServerUrl = parseAddAccountServerUrl(QUrl::fromUserInput(option));
+            _addAccountServerUrl = AddAccountUrlHandler::parseAddAccountServerUrl(QUrl::fromUserInput(option));
             if (!_addAccountServerUrl.isValid()) {
                 const auto errorParsingAddAccountUrl = QStringLiteral("The supplied url for account setup '%1' is invalid!").arg(option);
                 qCInfo(lcApplication) << errorParsingAddAccountUrl;
@@ -1294,15 +1258,8 @@ bool Application::event(QEvent *event)
         } else if (!openEvent->url().isEmpty() && openEvent->url().isValid()) {
             // On macOS, Qt does not handle receiving a custom URI as it does on other systems (as an application argument).
             // Instead, it sends out a QFileOpenEvent. We therefore need custom handling for our URI handling on macOS.
-            if (isAddAccountActionUrl(openEvent->url())) {
-                const auto addAccountServerUrl = parseAddAccountServerUrl(openEvent->url());
-                if (addAccountServerUrl.isValid()) {
-                    qCInfo(lcApplication) << "macOS: Opening account setup flow from custom URL for server:" << addAccountServerUrl;
-                    OwncloudSetupWizard::runWizardForLoginFlow(addAccountServerUrl, qApp, SLOT(slotownCloudWizardDone(int)));
-                } else {
-                    EditLocallyManager::showError(tr("Invalid account setup URL"),
-                                                  tr("The provided addAccount URL could not be parsed."));
-                }
+            if (AddAccountUrlHandler::handleAddAccountUrl(openEvent->url())) {
+                // URL was an addAccount action (valid or invalid) and was handled.
             } else {
                 qCInfo(lcApplication) << "macOS: Opening local file for editing: " << openEvent->url();
                 EditLocallyManager::instance()->handleRequest(openEvent->url());
