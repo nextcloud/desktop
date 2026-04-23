@@ -32,6 +32,7 @@ namespace OCC{
     void DataProtectionSettingsPage::setupPage()
     {
         ConfigFile cfgFile;
+        cfgFile.setSendData(false);
 
         connect(_ui->backButton, &QPushButton::clicked, this, [this, &cfgFile]() {
             _ui->anonymousDataCheckBox->setChecked(false);

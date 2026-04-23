@@ -27,8 +27,10 @@ namespace OCC{
     void DataProtectionPage::initializePage()
     {
         ConfigFile cfgFile;
-        cfgFile.setSendData(true);
-        connect(_ui->agreeButton, &QPushButton::clicked, this, [this]() {
+        cfgFile.setSendData(false);
+
+        connect(_ui->agreeButton, &QPushButton::clicked, this, [this, &cfgFile]() {
+            cfgFile.setSendData(true);
             _nextPage = WizardCommon::Page_AdvancedSetup; 
             _ocWizard->next();
         });
