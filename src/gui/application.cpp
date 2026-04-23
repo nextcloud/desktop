@@ -476,8 +476,10 @@ Application::Application(int &argc, char **argv)
 
     _gui->createTray();
 
-    handleEditLocallyFromOptions();
+    // Handle addAccount first to avoid accidentally running edit-locally
+    // handling when both URL types are present.
     handleAddAccountFromOptions();
+    handleEditLocallyFromOptions();
 
 #ifdef Q_OS_MACOS
     // If any sync folder needs sandbox reapproval after upgrading to v33+,
@@ -845,8 +847,9 @@ void Application::slotParseMessage(const QByteArray &message)
             qApp->quit();
         }
 
-        handleEditLocallyFromOptions();
+        // Keep same priority order as startup handling.
         handleAddAccountFromOptions();
+        handleEditLocallyFromOptions();
 
         if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
             AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
