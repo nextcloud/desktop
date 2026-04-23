@@ -54,7 +54,10 @@
 {
     NSURL* url = [NSURL URLWithString:[[event paramDescriptorForKeyword:keyDirectObject] stringValue]];
     const auto qtUrl = QUrl::fromNSURL(url);
-    if (qtUrl.host().compare(QStringLiteral("addaccount"), Qt::CaseInsensitive) == 0) {
+    const auto pathParts = qtUrl.path().split(QLatin1Char('/'), Qt::SkipEmptyParts);
+    const auto hasAddAccountHost = qtUrl.host().compare(QStringLiteral("addaccount"), Qt::CaseInsensitive) == 0;
+    const auto hasAddAccountPath = !pathParts.isEmpty() && pathParts.constFirst().compare(QStringLiteral("addaccount"), Qt::CaseInsensitive) == 0;
+    if (hasAddAccountHost || hasAddAccountPath) {
         const auto urlQuery = QUrlQuery{qtUrl};
         const auto serverUrlRaw = urlQuery.queryItemValue(QStringLiteral("server_url"));
         const auto serverUrl = QUrl::fromUserInput(serverUrlRaw);

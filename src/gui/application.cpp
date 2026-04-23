@@ -74,7 +74,10 @@ namespace {
     if (url.scheme() != QLatin1String(APPLICATION_URI_HANDLER_SCHEME)) {
         return {};
     }
-    if (url.host().compare(QLatin1String("addaccount"), Qt::CaseInsensitive) != 0) {
+    const auto pathParts = url.path().split(QLatin1Char('/'), Qt::SkipEmptyParts);
+    const auto hasAddAccountHost = url.host().compare(QLatin1String("addaccount"), Qt::CaseInsensitive) == 0;
+    const auto hasAddAccountPath = !pathParts.isEmpty() && pathParts.constFirst().compare(QLatin1String("addaccount"), Qt::CaseInsensitive) == 0;
+    if (!hasAddAccountHost && !hasAddAccountPath) {
         return {};
     }
 
