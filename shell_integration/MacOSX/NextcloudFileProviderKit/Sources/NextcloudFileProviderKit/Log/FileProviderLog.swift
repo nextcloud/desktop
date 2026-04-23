@@ -3,7 +3,6 @@
 
 @preconcurrency import FileProvider
 import Foundation
-import NextcloudKit
 import os
 
 ///
@@ -16,11 +15,12 @@ import os
 ///
 /// In general, there should be only one instance for every process.
 ///
-/// Messages are forwarded to Apple's unified logging system in addition to being written to the JSONL log file, in both debug and release builds.
+/// This actor owns the JSON Lines log file. Forwarding to Apple's unified logging system is handled by ``FileProviderLogger``, which tags each message with the calling type's category.
 ///
 /// Whether `.debug`-level messages are included is controlled at runtime by the `debugLoggingEnabled` boolean key under the file provider extension's domain in `UserDefaults.standard`.
 /// When the key is unset, debug logging is enabled in DEBUG builds and disabled in release builds, matching the previous compile-time behavior.
 /// The value is observed via KVO, so changes made with `defaults write` take effect without restarting the extension.
+/// The gate applies to both the JSONL output here and the unified logging forwarding done by ``FileProviderLogger``.
 /// See `Logging.md` for administrator instructions.
 ///
 /// > To Do: Consider using macros for the calls so the calling functions and files can be recorded, too!
@@ -62,9 +62,10 @@ public actor FileProviderLog: FileProviderLogging {
     var handle: FileHandle?
 
     ///
-    /// The fallback logger.
+    /// Unified logger used for self-diagnostics of this actor, tagged with the category `"FileProviderLog"`.
     ///
-    /// This is important in case the actual log file could be created or written to.
+    /// Used for messages about this actor's own concerns — log file rotation, startup and KVO transitions of the debug-logging gate, and errors that prevent writing to the JSONL file.
+    /// Messages emitted by callers are forwarded to Apple's unified logging system by ``FileProviderLogger`` under the respective calling type's category instead.
     ///
     let logger: Logger
 
@@ -89,7 +90,7 @@ public actor FileProviderLog: FileProviderLogging {
     /// Initialized from `UserDefaults.standard` (key `"debugLoggingEnabled"`) at startup and kept in sync via KVO so changes propagate live.
     /// When the key is unset, falls back to the build-configuration default: enabled in DEBUG builds, disabled otherwise.
     ///
-    var debugLoggingEnabled: Bool
+    public var debugLoggingEnabled: Bool
 
     ///
     /// Retains the KVO token that reacts to changes of the `debugLoggingEnabled` user default.
@@ -301,52 +302,10 @@ public actor FileProviderLog: FileProviderLogging {
         }
     }
 
-    private func writeToUnifiedLoggingSystem(level: OSLogType, message: String, details: [FileProviderLogDetailKey: (any Sendable)?], file: StaticString, function: StaticString, line: UInt) {
-        if details.isEmpty {
-            logger.log(level: level, "\(message, privacy: .public)\n\n\(file, privacy: .public):\(line, privacy: .public) \(function, privacy: .public)")
-            return
-        }
-
-        let sortedKeys = details.keys.sorted()
-
-        let detailDescriptions: [String] = sortedKeys.compactMap { key in
-            let valueDescription: String = switch details[key] {
-                case let account as Account:
-                    account.ncKitAccount
-                case let date as Date:
-                    messageDateFormatter.string(from: date)
-                case let error as NSError:
-                    error.debugDescription
-                case let lock as NKLock:
-                    lock.token ?? "nil"
-                case let item as NSFileProviderItem:
-                    item.itemIdentifier.rawValue
-                case let identifier as NSFileProviderItemIdentifier:
-                    identifier.rawValue
-                case let url as URL:
-                    url.absoluteString
-                case let text as String:
-                    text
-                case let request as NSFileProviderRequest:
-                    "requestingExecutable: \(request.requestingExecutable?.path ?? "nil"), isFileViewerRequest: \(request.isFileViewerRequest), isSystemRequest: \(request.isSystemRequest)"
-                case nil:
-                    "nil"
-                default:
-                    "<unsupported log detail value type>"
-            }
-
-            return "- \(key.rawValue): \(valueDescription)"
-        }
-
-        logger.log(level: level, "\(message, privacy: .public)\n\n\(detailDescriptions.joined(separator: "\n"), privacy: .public)\n\n\(file, privacy: .public):\(line, privacy: .public) \(function, privacy: .public)")
-    }
-
     public func write(category: String, level: OSLogType, message: String, details: [FileProviderLogDetailKey: (any Sendable)?], file: StaticString, function: StaticString, line: UInt) {
         if level == .debug && !debugLoggingEnabled {
             return
         }
-
-        writeToUnifiedLoggingSystem(level: level, message: message, details: details, file: file, function: function, line: line)
 
         rotateLogFileIfNeeded() // Check if log file needs rotation before writing anything.
 
