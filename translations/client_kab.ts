@@ -2884,12 +2884,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="50"/>
         <source>Show Chat Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Sken tilɣa n udiwenni</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="57"/>
         <source>Show Server &amp;Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Sken aqeddac akked tilɣa</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="74"/>
@@ -2905,12 +2905,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="190"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Suter asentem send amtawi n usekles azɣaray</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
         <source>&amp;Launch on System Startup</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Sekker deg usekker n unagraw</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="20"/>
@@ -2935,7 +2935,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="87"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Suter asentem send amtawi n yikaramen imaynuten imeqqranen ugar ɣef </translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="150"/>
@@ -2950,7 +2950,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="201"/>
         <source>Move removed files to trash</source>
-        <translation type="unfinished"/>
+        <translation>Smutti ifuyla yettwakksen ɣer tqecwalt</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="212"/>
@@ -2970,18 +2970,18 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="278"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Ẓreg &amp;Ifuyla yattwazglen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="285"/>
         <location filename="../src/gui/generalsettings.cpp" line="664"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Snulfu-d aɣbaṛ n useɣti</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="310"/>
         <source>Info</source>
-        <translation type="unfinished"/>
+        <translation>Talɣut</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="325"/>
@@ -2991,22 +2991,22 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="349"/>
         <source>Update channel</source>
-        <translation type="unfinished"/>
+        <translation>Abadu n uleqqem</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="402"/>
         <source>&amp;Automatically check for updates</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Nadi s wudem awurman ileqman</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="418"/>
         <source>Check Now</source>
-        <translation type="unfinished"/>
+        <translation>Selken Tura</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="445"/>
         <source>Usage Documentation</source>
-        <translation type="unfinished"/>
+        <translation>Tasemlit n useqdec</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="452"/>
@@ -3016,12 +3016,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="462"/>
         <source>Restore &amp;Default</source>
-        <translation type="unfinished"/>
+        <translation>Err-d &amp;Amezwer</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="385"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>Ales asekker sakin leqqem</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="216"/>
@@ -3031,17 +3031,17 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="220"/>
         <source>Show chat notification dialogs.</source>
-        <translation type="unfinished"/>
+        <translation>Sken tankult n telɣut n udiwenni.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="224"/>
         <source>Show call notification dialogs.</source>
-        <translation type="unfinished"/>
+        <translation>Sken tankult n telɣut n usiwel.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="227"/>
         <source>Show notification when quota usage exceeds 80%.</source>
-        <translation type="unfinished"/>
+        <translation>Sken talɣut mi ara iɛeddi wamur n useqdec n 80%.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="241"/>
@@ -3051,7 +3051,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="376"/>
         <source>Restore to &amp;%1</source>
-        <translation type="unfinished"/>
+        <translation>Err-it-id ɣer &amp;%1</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="448"/>
@@ -3062,7 +3062,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="452"/>
         <source>stable</source>
-        <translation type="unfinished"/>
+        <translation>urkid</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="456"/>
@@ -3072,12 +3072,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="460"/>
         <source>daily</source>
-        <translation type="unfinished"/>
+        <translation>yal ass</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="464"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>Takebbanit</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="502"/>
@@ -3112,7 +3112,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="521"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Snifel abadu n uleqqem</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="522"/>
@@ -3122,7 +3122,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="673"/>
         <source>Login Item Requires Approval</source>
-        <translation type="unfinished"/>
+        <translation>Aferdis n tuqqna isra aqbal</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="674"/>
@@ -3132,12 +3132,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="666"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Iɣbaren Zip</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="753"/>
         <source>Failed to Access File</source>
-        <translation type="unfinished"/>
+        <translation>Anekcum ar ufaylu ur yeddi ara</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="754"/>
@@ -3147,7 +3147,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="676"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Aɣbaṛ n useɣti yettwarna</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="677"/>
@@ -3160,7 +3160,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="809"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Awal uffir i beṭṭu yettwasra</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="810"/>
@@ -3170,7 +3170,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="836"/>
         <source>Sharing error</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa n beṭṭu</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="837"/>
