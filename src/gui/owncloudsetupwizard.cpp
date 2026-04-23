@@ -88,7 +88,7 @@ void OwncloudSetupWizard::runWizard(QObject *obj, const char *amember, QWidget *
     owncloudSetupWizard = new OwncloudSetupWizard(parent);
     if (pendingLoginFlowServerUrl.isValid()) {
         owncloudSetupWizard->setupTemporaryLoginFlowFromUrl(pendingLoginFlowServerUrl);
-        pendingLoginFlowServerUrl = {};
+        pendingLoginFlowServerUrl = QUrl{};
     }
     connect(owncloudSetupWizard, SIGNAL(ownCloudWizardDone(int)), obj, amember);
     connect(owncloudSetupWizard->_ocWizard, &OwncloudWizard::wizardClosed, obj, [] { owncloudSetupWizard.clear(); });
