@@ -74,7 +74,7 @@ namespace {
     if (url.scheme() != QLatin1String(APPLICATION_URI_HANDLER_SCHEME)) {
         return {};
     }
-    if (url.host() != QLatin1String("addAccount")) {
+    if (url.host().compare(QLatin1String("addaccount"), Qt::CaseInsensitive) != 0) {
         return {};
     }
 

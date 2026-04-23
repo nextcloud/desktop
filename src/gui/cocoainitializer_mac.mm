@@ -54,7 +54,7 @@
 {
     NSURL* url = [NSURL URLWithString:[[event paramDescriptorForKeyword:keyDirectObject] stringValue]];
     const auto qtUrl = QUrl::fromNSURL(url);
-    if (qtUrl.host() == QStringLiteral("addAccount")) {
+    if (qtUrl.host().compare(QStringLiteral("addaccount"), Qt::CaseInsensitive) == 0) {
         const auto urlQuery = QUrlQuery{qtUrl};
         const auto serverUrlRaw = urlQuery.queryItemValue(QStringLiteral("server_url"));
         const auto serverUrl = QUrl::fromUserInput(serverUrlRaw);
