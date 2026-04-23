@@ -22,23 +22,24 @@ namespace OCC{
     void DataProtectionPage::setupUi()
     {
         _ui->setupUi(this);
+
+        connect(_ui->agreeButton, &QPushButton::clicked, this, [this]() {
+            ConfigFile cfgFile;
+            cfgFile.setSendData(true);
+            _nextPage = WizardCommon::Page_AdvancedSetup;
+            _ocWizard->next();
+        });
+
+        connect(_ui->settingsButton, &QPushButton::clicked, this, [this]() {
+            _nextPage = WizardCommon::Page_DataProtectionSettings;
+            _ocWizard->next();
+        });
     }
 
     void DataProtectionPage::initializePage()
     {
         ConfigFile cfgFile;
         cfgFile.setSendData(false);
-
-        connect(_ui->agreeButton, &QPushButton::clicked, this, [this, &cfgFile]() {
-            cfgFile.setSendData(true);
-            _nextPage = WizardCommon::Page_AdvancedSetup; 
-            _ocWizard->next();
-        });
-
-        connect(_ui->settingsButton, &QPushButton::clicked, this, [this](){
-            _nextPage = WizardCommon::Page_DataProtectionSettings; 
-            _ocWizard->next();
-        });
 
         QString dataProtectionLogo = QString();
 

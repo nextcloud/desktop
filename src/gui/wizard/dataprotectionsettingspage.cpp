@@ -34,12 +34,13 @@ namespace OCC{
         ConfigFile cfgFile;
         cfgFile.setSendData(false);
 
-        connect(_ui->backButton, &QPushButton::clicked, this, [this, &cfgFile]() {
+        connect(_ui->backButton, &QPushButton::clicked, this, [this]() {
             _ui->anonymousDataCheckBox->setChecked(false);
             _ocWizard->back();
         });
 
-        connect(_ui->saveButton, &QPushButton::clicked, this, [this, &cfgFile](){
+        connect(_ui->saveButton, &QPushButton::clicked, this, [this]() {
+            ConfigFile cfgFile;
             cfgFile.setSendData(_ui->anonymousDataCheckBox->isChecked());
             _ocWizard->next();
         });
