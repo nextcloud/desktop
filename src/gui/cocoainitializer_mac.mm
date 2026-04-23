@@ -11,6 +11,9 @@
 
 #include "application.h"
 #include "editlocallymanager.h"
+#include "owncloudsetupwizard.h"
+
+#include <QUrlQuery>
 
 /* In theory, we should be able to just capture QFileOpenEvents
  * when we open our custom URLs in our Application class and be
@@ -51,6 +54,16 @@
 {
     NSURL* url = [NSURL URLWithString:[[event paramDescriptorForKeyword:keyDirectObject] stringValue]];
     const auto qtUrl = QUrl::fromNSURL(url);
+    if (qtUrl.host() == QStringLiteral("addAccount")) {
+        const auto urlQuery = QUrlQuery{qtUrl};
+        const auto serverUrlRaw = urlQuery.queryItemValue(QStringLiteral("server_url"));
+        const auto serverUrl = QUrl::fromUserInput(serverUrlRaw);
+        if (serverUrl.isValid() && !serverUrl.host().isEmpty()) {
+            OCC::OwncloudSetupWizard::runWizardForLoginFlow(serverUrl, qApp, SLOT(slotownCloudWizardDone(int)));
+            return;
+        }
+    }
+
     OCC::EditLocallyManager::instance()->handleRequest(qtUrl);
 }
 
