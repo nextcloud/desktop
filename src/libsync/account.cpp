@@ -176,7 +176,7 @@ QString Account::displayName() const
         credentialsUser = _credentials->user();
     }
 
-    auto displayName = QStringLiteral("%1@%2").arg(credentialsUser, _url.host());
+    auto displayName = QStringLiteral("%1").arg(prettyName());
     const auto port = url().port();
     if (port > 0 && port != 80 && port != 443) {
         displayName.append(QLatin1Char(':'));
