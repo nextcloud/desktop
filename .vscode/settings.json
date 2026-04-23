@@ -11,6 +11,7 @@
         "LOCALBUILD": "ON",
         "WHITELABEL_NAME": "ionos",
         "CMAKE_CXX_CLANG_TIDY": "",
+        "DO_NOT_USE_PROXY": "ON",
       },
       "cmake.buildArgs": ["-j", "16"],
       "cmake.buildDirectory": "${workspaceFolder}/../build/${buildKitTargetOs}-${buildKitVendor}-${buildKitTargetArch}/${buildType}",
