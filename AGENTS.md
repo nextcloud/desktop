@@ -84,6 +84,7 @@ These instructions are restricted to `./shell_integration/MacOSX/NextcloudIntegr
 - Log messages must not contain interpolations.
 - Log messages must end with a full stop.
 - Relevant run time values to log must be provided through the `arguments` argument.
+- Inclusion of `.debug`-level messages is controlled at runtime by the `debugLoggingEnabled` boolean key under the `com.nextcloud.desktopclient.FileProviderExt` domain in `UserDefaults.standard`. When unset, DEBUG builds include debug messages and release builds do not. Administrators can flip the value with `defaults write` for troubleshooting; changes propagate live via KVO. The gate applies to both Apple unified logging and the JSONL file output. See `Logging.md`.
 
 ### Tests
 
