@@ -13,6 +13,7 @@
 #include "editlocallymanager.h"
 #include "owncloudsetupwizard.h"
 
+#include <QCoreApplication>
 #include <QUrlQuery>
 
 /* In theory, we should be able to just capture QFileOpenEvents
@@ -63,8 +64,11 @@
         const auto serverUrl = QUrl::fromUserInput(serverUrlRaw);
         if (serverUrl.isValid() && !serverUrl.host().isEmpty()) {
             OCC::OwncloudSetupWizard::runWizardForLoginFlow(serverUrl, qApp, SLOT(slotownCloudWizardDone(int)));
-            return;
+        } else {
+            OCC::EditLocallyManager::showError(QCoreApplication::translate("Application", "Invalid account setup URL"),
+                                               QCoreApplication::translate("Application", "The provided addAccount URL could not be parsed."));
         }
+        return;
     }
 
     OCC::EditLocallyManager::instance()->handleRequest(qtUrl);

@@ -67,17 +67,22 @@ Q_LOGGING_CATEGORY(lcApplication, "nextcloud.gui.application", QtInfoMsg)
 
 namespace {
 
-[[nodiscard]] QUrl parseAddAccountServerUrl(const QUrl &url)
+[[nodiscard]] bool isAddAccountActionUrl(const QUrl &url)
 {
-    // Supported format:
-    // - nc://addAccount?server_url=https%3A%2F%2Fcloud.example.com
     if (url.scheme() != QLatin1String(APPLICATION_URI_HANDLER_SCHEME)) {
-        return {};
+        return false;
     }
     const auto pathParts = url.path().split(QLatin1Char('/'), Qt::SkipEmptyParts);
     const auto hasAddAccountHost = url.host().compare(QLatin1String("addaccount"), Qt::CaseInsensitive) == 0;
     const auto hasAddAccountPath = !pathParts.isEmpty() && pathParts.constFirst().compare(QLatin1String("addaccount"), Qt::CaseInsensitive) == 0;
-    if (!hasAddAccountHost && !hasAddAccountPath) {
+    return hasAddAccountHost || hasAddAccountPath;
+}
+
+[[nodiscard]] QUrl parseAddAccountServerUrl(const QUrl &url)
+{
+    // Supported format:
+    // - nc://addAccount?server_url=https%3A%2F%2Fcloud.example.com
+    if (!isAddAccountActionUrl(url)) {
         return {};
     }
 
@@ -1289,9 +1294,15 @@ bool Application::event(QEvent *event)
         } else if (!openEvent->url().isEmpty() && openEvent->url().isValid()) {
             // On macOS, Qt does not handle receiving a custom URI as it does on other systems (as an application argument).
             // Instead, it sends out a QFileOpenEvent. We therefore need custom handling for our URI handling on macOS.
-            if (const auto addAccountServerUrl = parseAddAccountServerUrl(openEvent->url()); addAccountServerUrl.isValid()) {
-                qCInfo(lcApplication) << "macOS: Opening account setup flow from custom URL for server:" << addAccountServerUrl;
-                OwncloudSetupWizard::runWizardForLoginFlow(addAccountServerUrl, qApp, SLOT(slotownCloudWizardDone(int)));
+            if (isAddAccountActionUrl(openEvent->url())) {
+                const auto addAccountServerUrl = parseAddAccountServerUrl(openEvent->url());
+                if (addAccountServerUrl.isValid()) {
+                    qCInfo(lcApplication) << "macOS: Opening account setup flow from custom URL for server:" << addAccountServerUrl;
+                    OwncloudSetupWizard::runWizardForLoginFlow(addAccountServerUrl, qApp, SLOT(slotownCloudWizardDone(int)));
+                } else {
+                    EditLocallyManager::showError(tr("Invalid account setup URL"),
+                                                  tr("The provided addAccount URL could not be parsed."));
+                }
             } else {
                 qCInfo(lcApplication) << "macOS: Opening local file for editing: " << openEvent->url();
                 EditLocallyManager::instance()->handleRequest(openEvent->url());
