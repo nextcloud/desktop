@@ -36,9 +36,12 @@
 #endif
 
 #include "owncloudsetupwizard.h"
+#include "sesstyle.h"
 #include "version.h"
 #include "csync_exclude.h"
 #include "common/vfs.h"
+
+#include <QStyleFactory>
 
 #include "config.h"
 
@@ -388,6 +391,10 @@ Application::Application(int &argc, char **argv)
 #endif
 
     connect(this, &SharedTools::QtSingleApplication::messageReceived, this, &Application::slotParseMessage);
+
+#ifdef IONOS_BUILD
+    setStyle(new sesStyle(QStyleFactory::create("WindowsVista")));
+#endif
 
     // create accounts and folders from a legacy desktop client or from the current config file
     setupAccountsAndFolders();

@@ -33,7 +33,6 @@
 #include <QQuickWindow>
 #include <QSurfaceFormat>
 #include <QOperatingSystemVersion>
-#include "sesstyle.h"
 #include "ga4/ganalytics.h"
 #include "ga4/datacollectionwrapper.h"
 
@@ -116,7 +115,6 @@ int main(int argc, char **argv)
     QQuickStyle::setFallbackStyle(QStringLiteral("Fusion"));
 
     OCC::Application app(argc, argv);
-    app.setStyle(new sesStyle(QStyleFactory::create("WindowsVista")));
 #elif
     QQuickStyle::setStyle(qmlStyle);
 

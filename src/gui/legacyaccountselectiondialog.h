@@ -30,6 +30,8 @@ public:
 
 private:
     QMap<QString, QCheckBox *> _checkBoxes;
+
+    void customizeStyle();
 };
 
 } // namespace OCC
