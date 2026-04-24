@@ -91,6 +91,27 @@ void OwncloudSetupWizard::runWizard(QObject *obj, const char *amember, QWidget *
     owncloudSetupWizard->startWizard();
 }
 
+void OwncloudSetupWizard::runWizardForLoginFlow(QObject *obj, const char *amember, const QUrl &serverUrl, QWidget *parent)
+{
+#if defined ENFORCE_SINGLE_ACCOUNT
+    if (!AccountManager::instance()->accounts().isEmpty()) {
+        return;
+    }
+#endif
+
+    if (!owncloudSetupWizard.isNull()) {
+        bringWizardToFrontIfVisible();
+        return;
+    }
+
+    owncloudSetupWizard = new OwncloudSetupWizard(parent);
+    connect(owncloudSetupWizard, SIGNAL(ownCloudWizardDone(int)), obj, amember);
+    connect(owncloudSetupWizard->_ocWizard, &OwncloudWizard::wizardClosed, obj, [] { owncloudSetupWizard.clear(); });
+
+    FolderMan::instance()->setSyncEnabled(false);
+    owncloudSetupWizard->startWizardForLoginFlow(serverUrl);
+}
+
 bool OwncloudSetupWizard::bringWizardToFrontIfVisible()
 {
     if (owncloudSetupWizard.isNull()) {
@@ -103,14 +124,35 @@ bool OwncloudSetupWizard::bringWizardToFrontIfVisible()
 
 void OwncloudSetupWizard::startWizard()
 {
-    AccountPtr account = AccountManager::createAccount();
-    account->setCredentials(CredentialsFactory::create("dummy"));
     const auto defaultUrl =
         Theme::instance()->multipleOverrideServers() ? QString{} : Theme::instance()->overrideServerUrl();
-    account->setUrl(defaultUrl);
+    initializeWizardAccount(QUrl{defaultUrl});
+
+    const auto isEnforcedServerSetup =
+        Theme::instance()->startLoginFlowAutomatically() && Theme::instance()->forceOverrideServerUrl() && !_ocWizard->account()->url().isEmpty();
+
+#ifdef WITH_PROVIDERS
+    const auto startPage = isEnforcedServerSetup ? WizardCommon::Page_ServerSetup : WizardCommon::Page_Welcome;
+#else // WITH_PROVIDERS
+    const auto startPage = WizardCommon::Page_ServerSetup;
+#endif // WITH_PROVIDERS
+    openWizardAtPage(startPage);
+}
+
+void OwncloudSetupWizard::startWizardForLoginFlow(const QUrl &serverUrl)
+{
+    initializeWizardAccount(serverUrl);
+    _ocWizard->_credentialsPage = _ocWizard->_flow2CredsPage;
+    openWizardAtPage(WizardCommon::Page_Flow2AuthCreds);
+}
+
+void OwncloudSetupWizard::initializeWizardAccount(const QUrl &serverUrl)
+{
+    AccountPtr account = AccountManager::createAccount();
+    account->setCredentials(CredentialsFactory::create("dummy"));
+    account->setUrl(serverUrl);
     _ocWizard->setAccount(account);
     _ocWizard->setOCUrl(account->url().toString());
-
     _remoteFolder = Theme::instance()->defaultServerFolder();
     // remoteFolder may be empty, which means /
     QString localFolder = Theme::instance()->defaultClientFolder();
@@ -132,15 +174,10 @@ void OwncloudSetupWizard::startWizard()
     // remember the local folder to compare later if it changed, but clean first
     _initLocalFolder = Utility::trailingSlashPath(QDir::fromNativeSeparators(localFolder));
     _ocWizard->setRemoteFolder(_remoteFolder);
+}
 
-    const auto isEnforcedServerSetup =
-        Theme::instance()->startLoginFlowAutomatically() && Theme::instance()->forceOverrideServerUrl() && !account->url().isEmpty();
-
-#ifdef WITH_PROVIDERS
-    const auto startPage = isEnforcedServerSetup ? WizardCommon::Page_ServerSetup : WizardCommon::Page_Welcome;
-#else // WITH_PROVIDERS
-    const auto startPage = WizardCommon::Page_ServerSetup;
-#endif // WITH_PROVIDERS
+void OwncloudSetupWizard::openWizardAtPage(WizardCommon::Pages startPage)
+{
     _ocWizard->setStartId(startPage);
     _ocWizard->restart();
     _ocWizard->adjustWizardSize();

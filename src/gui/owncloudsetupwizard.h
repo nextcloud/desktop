@@ -12,11 +12,13 @@
 #include <QProcess>
 #include <QNetworkReply>
 #include <QPointer>
+#include <QUrl>
 
 #include "accountfwd.h"
 #include "theme.h"
 #include "networkjobs.h"
 
+#include "wizard/owncloudwizardcommon.h"
 #include "wizard/wizardproxysettingsdialog.h"
 
 namespace OCC {
@@ -36,6 +38,7 @@ class OwncloudSetupWizard : public QObject
 public:
     /** Run the wizard */
     static void runWizard(QObject *obj, const char *amember, QWidget *parent = nullptr);
+    static void runWizardForLoginFlow(QObject *obj, const char *amember, const QUrl &serverUrl, QWidget *parent = nullptr);
     static bool bringWizardToFrontIfVisible();
 
 signals:
@@ -67,6 +70,9 @@ private:
     explicit OwncloudSetupWizard(QObject *parent = nullptr);
     ~OwncloudSetupWizard() override;
     void startWizard();
+    void startWizardForLoginFlow(const QUrl &serverUrl);
+    void initializeWizardAccount(const QUrl &serverUrl);
+    void openWizardAtPage(WizardCommon::Pages startPage);
     void testOwnCloudConnect();
     void createRemoteFolder();
     void finalizeSetup(bool);

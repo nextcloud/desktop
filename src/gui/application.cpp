@@ -15,13 +15,13 @@
 #include "configfile.h"
 #include "connectionvalidator.h"
 #include "creds/abstractcredentials.h"
-#include "editlocallymanager.h"
 #include "folder.h"
 #include "folderman.h"
 #include "logger.h"
 #include "pushnotifications.h"
 #include "socketapi/socketapi.h"
 #include "theme.h"
+#include "urischemehandler.h"
 
 #if defined(BUILD_UPDATER)
 #include "updater/ocupdater.h"
@@ -49,7 +49,6 @@
 #include <QMessageBox>
 #include <QDesktopServices>
 #include <QGuiApplication>
-#include <QUrlQuery>
 #include <QVersionNumber>
 #include <QRandomGenerator>
 #include <QHttp2Configuration>
@@ -476,7 +475,7 @@ Application::Application(int &argc, char **argv)
 
     _gui->createTray();
 
-    handleEditLocallyFromOptions();
+    handleUriFromOptions();
 
 #ifdef Q_OS_MACOS
     // If any sync folder needs sandbox reapproval after upgrading to v33+,
@@ -844,7 +843,7 @@ void Application::slotParseMessage(const QByteArray &message)
             qApp->quit();
         }
 
-        handleEditLocallyFromOptions();
+        handleUriFromOptions();
 
         if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
             AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
@@ -931,14 +930,13 @@ void Application::parseOptions(const QStringList &options)
         } else if (option.endsWith(QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX))) {
             // virtual file, open it after the Folder were created (if the app is not terminated)
             QTimer::singleShot(0, this, [this, option] { openVirtualFile(option); });
-        } else if (option.startsWith(QStringLiteral(APPLICATION_URI_HANDLER_SCHEME "://open"))) {
-            // see the section Local file editing of the Architecture page of the user documentation
-            _editFileLocallyUrl = QUrl::fromUserInput(option);
-            if (!_editFileLocallyUrl.isValid()) {
-                _editFileLocallyUrl.clear();
-                const auto errorParsingLocalFileEditingUrl = QStringLiteral("The supplied url for local file editing '%1' is invalid!").arg(option);
-                qCInfo(lcApplication) << errorParsingLocalFileEditingUrl;
-                showHint(errorParsingLocalFileEditingUrl.toStdString());
+        } else if (option.startsWith(QStringLiteral(APPLICATION_URI_HANDLER_SCHEME "://"))) {
+            _uriSchemeUrl = QUrl{option};
+            if (!_uriSchemeUrl.isValid()) {
+                _uriSchemeUrl.clear();
+                const auto errorParsingUri = QStringLiteral("The supplied url '%1' is invalid!").arg(option);
+                qCInfo(lcApplication) << errorParsingUri;
+                showHint(errorParsingUri.toStdString());
             }
         } else if (option == QStringLiteral("--overrideserverurl")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
@@ -1071,14 +1069,14 @@ void Application::setHelp()
     _helpOnly = true;
 }
 
-void Application::handleEditLocallyFromOptions()
+void Application::handleUriFromOptions()
 {
-    if (!_editFileLocallyUrl.isValid()) {
+    if (!_uriSchemeUrl.isValid()) {
         return;
     }
 
-    EditLocallyManager::instance()->handleRequest(_editFileLocallyUrl);
-    _editFileLocallyUrl.clear();
+    UriSchemeHandler::handleUri(_uriSchemeUrl);
+    _uriSchemeUrl.clear();
 }
 
 QString enforcedLanguage()
@@ -1239,8 +1237,8 @@ bool Application::event(QEvent *event)
         } else if (!openEvent->url().isEmpty() && openEvent->url().isValid()) {
             // On macOS, Qt does not handle receiving a custom URI as it does on other systems (as an application argument).
             // Instead, it sends out a QFileOpenEvent. We therefore need custom handling for our URI handling on macOS.
-            qCInfo(lcApplication) << "macOS: Opening local file for editing: " << openEvent->url();
-            EditLocallyManager::instance()->handleRequest(openEvent->url());
+            qCInfo(lcApplication) << "macOS: Handling custom URI: " << openEvent->url();
+            UriSchemeHandler::handleUri(openEvent->url());
         } else {
             const auto errorParsingLocalFileEditingUrl = QStringLiteral("The supplied url for local file editing '%1' is invalid!").arg(openEvent->url().toString());
             qCInfo(lcApplication) << errorParsingLocalFileEditingUrl;

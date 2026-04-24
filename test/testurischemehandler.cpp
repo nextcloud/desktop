@@ -1,0 +1,93 @@
+/*
+ * SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: CC0-1.0
+ */
+
+#include <QtTest>
+
+#include <QUrl>
+
+#include "urischemehandler.h"
+
+using namespace OCC;
+
+Q_DECLARE_METATYPE(OCC::UriSchemeHandler::Action)
+
+class TestUriSchemeHandler : public QObject
+{
+    Q_OBJECT
+
+private slots:
+    void parseUri_data()
+    {
+        QTest::addColumn<QUrl>("url");
+        QTest::addColumn<UriSchemeHandler::Action>("expectedAction");
+        QTest::addColumn<QUrl>("expectedServerUrl");
+        QTest::addColumn<bool>("expectError");
+
+        QTest::newRow("add account")
+            << QUrl(QStringLiteral("nc://addAccount/?server_url=https%3A%2F%2Fcloud.example.com"))
+            << UriSchemeHandler::Action::AddAccount
+            << QUrl(QStringLiteral("https://cloud.example.com"))
+            << false;
+
+        QTest::newRow("add account without slash")
+            << QUrl(QStringLiteral("nc://addAccount?server_url=https%3A%2F%2Fcloud.example.com"))
+            << UriSchemeHandler::Action::Invalid
+            << QUrl{}
+            << true;
+
+        QTest::newRow("add account missing server url")
+            << QUrl(QStringLiteral("nc://addAccount/"))
+            << UriSchemeHandler::Action::Invalid
+            << QUrl{}
+            << true;
+
+        QTest::newRow("add account relative server url")
+            << QUrl(QStringLiteral("nc://addAccount/?server_url=cloud.example.com"))
+            << UriSchemeHandler::Action::Invalid
+            << QUrl{}
+            << true;
+
+        QTest::newRow("add account hostless server url")
+            << QUrl(QStringLiteral("nc://addAccount/?server_url=https%3A%2F%2F"))
+            << UriSchemeHandler::Action::Invalid
+            << QUrl{}
+            << true;
+
+        QTest::newRow("add account unsupported server url scheme")
+            << QUrl(QStringLiteral("nc://addAccount/?server_url=ftp%3A%2F%2Fcloud.example.com"))
+            << UriSchemeHandler::Action::Invalid
+            << QUrl{}
+            << true;
+
+        QTest::newRow("local edit")
+            << QUrl(QStringLiteral("nc://open/admin@cloud.example.com/Documents/file.txt?token=secret"))
+            << UriSchemeHandler::Action::OpenLocalEdit
+            << QUrl{}
+            << false;
+
+        QTest::newRow("unknown action")
+            << QUrl(QStringLiteral("nc://unknown/"))
+            << UriSchemeHandler::Action::Invalid
+            << QUrl{}
+            << true;
+    }
+
+    void parseUri()
+    {
+        QFETCH(QUrl, url);
+        QFETCH(UriSchemeHandler::Action, expectedAction);
+        QFETCH(QUrl, expectedServerUrl);
+        QFETCH(bool, expectError);
+
+        const auto result = UriSchemeHandler::parseUri(url);
+
+        QCOMPARE(result.action, expectedAction);
+        QCOMPARE(result.serverUrl, expectedServerUrl);
+        QCOMPARE(result.error.isEmpty(), !expectError);
+    }
+};
+
+QTEST_APPLESS_MAIN(TestUriSchemeHandler)
+#include "testurischemehandler.moc"

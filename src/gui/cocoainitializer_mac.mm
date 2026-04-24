@@ -10,7 +10,9 @@
 #import <AppKit/NSApplication.h>
 
 #include "application.h"
-#include "editlocallymanager.h"
+#include "urischemehandler.h"
+
+#include <QTimer>
 
 /* In theory, we should be able to just capture QFileOpenEvents
  * when we open our custom URLs in our Application class and be
@@ -51,7 +53,11 @@
 {
     NSURL* url = [NSURL URLWithString:[[event paramDescriptorForKeyword:keyDirectObject] stringValue]];
     const auto qtUrl = QUrl::fromNSURL(url);
-    OCC::EditLocallyManager::instance()->handleRequest(qtUrl);
+    if (qApp) {
+        QTimer::singleShot(0, qApp, [qtUrl] {
+            OCC::UriSchemeHandler::handleUri(qtUrl);
+        });
+    }
 }
 
 @end
