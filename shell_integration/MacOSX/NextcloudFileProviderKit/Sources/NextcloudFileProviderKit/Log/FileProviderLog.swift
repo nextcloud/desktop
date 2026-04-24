@@ -303,7 +303,7 @@ public actor FileProviderLog: FileProviderLogging {
     }
 
     public func write(category: String, level: OSLogType, message: String, details: [FileProviderLogDetailKey: (any Sendable)?], file: StaticString, function: StaticString, line: UInt) {
-        if level == .debug && !debugLoggingEnabled {
+        if level == .debug, !debugLoggingEnabled {
             return
         }
 

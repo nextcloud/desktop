@@ -42,7 +42,7 @@ public struct FileProviderLogger: Sendable {
     public init(category: String, log: any FileProviderLogging) {
         self.category = category
         self.log = log
-        self.logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: category)
+        logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: category)
     }
 
     ///
