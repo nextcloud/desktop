@@ -6881,7 +6881,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
         <source>Open local or team folders</source>
-        <translation type="unfinished"/>
+        <translation>Oscail fillteáin áitiúla nó foirne</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
@@ -6891,7 +6891,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
         <source>Open team folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Oscail fillteán foirne &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="187"/>
@@ -6909,7 +6909,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="66"/>
         <source>Open local or team folders</source>
-        <translation type="unfinished"/>
+        <translation>Oscail fillteáin áitiúla nó foirne</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="101"/>

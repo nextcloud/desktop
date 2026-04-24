@@ -1389,7 +1389,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="775"/>
         <source>Restoration failed: %1</source>
-        <translation>还原失败：%1</translation>
+        <translation>恢复失败：%1</translation>
     </message>
 </context>
 <context>
@@ -2546,7 +2546,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderman.cpp" line="418"/>
         <source>Please open the app settings to grant access to the sync folders.</source>
-        <translation type="unfinished"/>
+        <translation>请打开应用设置以授予对同步文件夹的访问权限。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1866"/>
@@ -2566,7 +2566,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderstatusdelegate.cpp" line="313"/>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="455"/>
         <source>Grant access</source>
-        <translation type="unfinished"/>
+        <translation>授予访问权限</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="272"/>
@@ -2605,7 +2605,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
         <source>Due to recent security improvements, the client no longer has access to the folder. Your approval is required one time to restore access. Please select the synchronization folder root.</source>
-        <translation type="unfinished"/>
+        <translation>由于最近的安全改进，客户端不再有权访问该文件夹。恢复访问权限需要一次您的批准。请选择同步文件夹根目录。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
@@ -3145,12 +3145,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="673"/>
         <source>Login Item Requires Approval</source>
-        <translation type="unfinished"/>
+        <translation>登录项目需要批准</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="674"/>
         <source>The login item has been registered but needs your approval to become active. Please open System Settings → General → Login Items and enable %1 there.</source>
-        <translation type="unfinished"/>
+        <translation>登录项目已注册，但需要您的批准才能激活。请打开系统设置 → 常规 → 登录项目，然后启用 %1。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="666"/>
@@ -3465,7 +3465,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="46"/>
         <source>&lt;p&gt;Copyright 2017-2026 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;版权所有 2017-2026 Nextcloud GmbH&lt;br /&gt;版权所有 2012-2023 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="49"/>
@@ -3985,12 +3985,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="537"/>
         <source>Creating local sync folder %1 …</source>
-        <translation>正在新建本地同步文件夹 %1 ……</translation>
+        <translation>正在创建本地同步文件夹 %1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="541"/>
         <source>OK</source>
-        <translation>好</translation>
+        <translation>确定</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="543"/>
@@ -4495,7 +4495,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/owncloudpropagator.cpp" line="233"/>
         <source>%1. Restoration failed: %2</source>
         <comment>%1 is the generic error string, the file restoration error (%2) will be appended here</comment>
-        <translation type="unfinished"/>
+        <translation>%1。恢复失败：%2</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="233"/>
@@ -5482,12 +5482,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="165"/>
         <source>Reauthorization required</source>
-        <translation type="unfinished"/>
+        <translation>需要重新授权</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="166"/>
         <source>Please grant access to your sync folders</source>
-        <translation type="unfinished"/>
+        <translation>请授予对同步文件夹的访问权限</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="179"/>
@@ -5997,7 +5997,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="39"/>
         <source>Could not be downloaded</source>
-        <translation type="unfinished"/>
+        <translation>无法下载</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="61"/>
@@ -6826,7 +6826,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="143"/>
         <source>Open settings</source>
-        <translation type="unfinished"/>
+        <translation>打开设置</translation>
     </message>
 </context>
 <context>
@@ -6870,7 +6870,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
         <source>Open local or team folders</source>
-        <translation type="unfinished"/>
+        <translation>打开本地或团队文件夹</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
@@ -6880,7 +6880,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
         <source>Open team folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>打开团队文件夹“%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="187"/>
@@ -6898,7 +6898,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="66"/>
         <source>Open local or team folders</source>
-        <translation type="unfinished"/>
+        <translation>打开本地或团队文件夹</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="101"/>
