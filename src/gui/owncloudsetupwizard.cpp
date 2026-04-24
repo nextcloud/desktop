@@ -17,6 +17,7 @@
 #include "owncloudsetupwizard.h"
 #include "owncloudpropagator_p.h"
 #include "sslerrordialog.h"
+#include "wizard/flow2authcredspage.h"
 #include "wizard/owncloudwizard.h"
 #include "wizard/owncloudwizardcommon.h"
 #include "account.h"
