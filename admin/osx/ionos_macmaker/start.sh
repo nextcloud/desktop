@@ -24,7 +24,7 @@ export -f sign_folder_content
 set -xe
 
 # Parse the command line arguments
-while getopts "a:b:s:cifou" opt; do
+while getopts "a:b:s:cifoum" opt; do
   case ${opt} in
     a ) ARCHITECTURE=$OPTARG ;;
     b )BUILD_DIR=$OPTARG;;
@@ -34,6 +34,7 @@ while getopts "a:b:s:cifou" opt; do
     f )BUILD_FILEPROVIDER=true ;;
     o )OSX_BUNDLE=true ;;
     u )BUILD_UPDATER=true ;;
+    m )SKIP_MACDEPLOY=true ;;
     \? )
       echo "Usage: start.sh [-b <build_dir>] [-s <code_sign_identity>] [-c] [-i]"
       exit 1
@@ -42,7 +43,8 @@ while getopts "a:b:s:cifou" opt; do
 done
 
 # Set the deployment target
-export MACOSX_DEPLOYMENT_TARGET=10.15
+export MACOSX_DEPLOYMENT_TARGET=13.0
+# export MACOSX_DEPLOYMENT_TARGET=10.15
 
 # Some variables
 # The product name depends on whether we build an OSX bundle or not.
@@ -107,9 +109,14 @@ if [ "$CLEAN_REBUILD" == "true" ] && [ "$BUILD_UPDATER" == "true" ]; then
   fi
 fi
 
+# Nach Zeile ~133, vor dem eigentlichen Build-Befehl (ninja/cmake --build)
+# QML-Ressourcen invalidieren damit Änderungen erkannt werden
+find "$BUILD_DIR" -name "*.qmlc" -delete
+find "$BUILD_DIR" -name "qrc_*.cpp" -delete
+
 # Build the client
 # Only reconfigure if this is a clean build or no CMakeCache exists yet
-if [ "$CLEAN_REBUILD" == "true" ] || [ ! -f "$BUILD_DIR/CMakeCache.txt" ]; then
+# if [ "$CLEAN_REBUILD" == "true" ] || [ ! -f "$BUILD_DIR/CMakeCache.txt" ]; then
   cmake -S $REPO_ROOT_DIR/ -B $BUILD_DIR \
         -G Ninja \
         -DCMAKE_C_COMPILER_LAUNCHER=ccache \
@@ -128,10 +135,12 @@ if [ "$CLEAN_REBUILD" == "true" ] || [ ! -f "$BUILD_DIR/CMakeCache.txt" ]; then
         -DSOCKETAPI_TEAM_IDENTIFIER_PREFIX="$TEAM_IDENTIFIER." \
         -DARG_SIDEBAR_ICONS=ON \
         -DLOCALBUILD=ON \
-        -DWHITELABEL_NAME=ionos
-fi
+      -DSKIP_MACDEPLOYQT=$(if [ $SKIP_MACDEPLOY == true ]; then echo "ON"; else echo "OFF"; fi) \
+        -DWHITELABEL_NAME=ionos \
+      -DDO_NOT_USE_PROXY=ON
 
-ninja -C $BUILD_DIR install
+# fi
+ninja -C $BUILD_DIR install -v
 
 # ---------------------------------------------------
 # Sign the client
@@ -141,6 +150,16 @@ ninja -C $BUILD_DIR install
 if [ -z "$CODE_SIGN_IDENTITY" ]; then
   echo "Code sign identity not set. Exiting."
   open $PRODUCT_DIR
+
+  export CRAFT="$HOME/Craft64"
+
+  export DYLD_LIBRARY_PATH="$CRAFT/lib"
+  export DYLD_FRAMEWORK_PATH="$CRAFT/lib"
+  export QT_PLUGIN_PATH="$CRAFT/plugins"
+  export QT_QPA_PLATFORM_PLUGIN_PATH="$CRAFT/plugins/platforms"
+  export QML2_IMPORT_PATH="$CRAFT/qml"
+
+  $BUILD_DIR/bin/IONOS\ HiDrive\ Next.app/Contents/MacOS/IONOS\ HiDrive\ Next
   exit 0
 fi
 
@@ -155,7 +174,7 @@ find "$CLIENT_FRAMEWORKS_DIR" -print0 | xargs -0 -I {} bash -c 'recursive_sign "
 find "$CLIENT_PLUGINS_DIR" -print0 | xargs -0 -I {} bash -c 'recursive_sign "$@" "$CODE_SIGN_IDENTITY"' _ {} "$CODE_SIGN_IDENTITY"
 find "$CLIENT_RESOURCES_DIR" -print0 | xargs -0 -I {} bash -c 'recursive_sign "$@" "$CODE_SIGN_IDENTITY"' _ {} "$CODE_SIGN_IDENTITY"
 
-codesign -s "$CODE_SIGN_IDENTITY" --force --preserve-metadata=entitlements --verbose=4 --deep --options=runtime --timestamp "$PRODUCT_PATH"
+codesign -s "$CODE_SIGN_IDENTITY" --force --preserve-metadata=entitlements --verbose=0 --deep --options=runtime "$PRODUCT_PATH"
 
 
 # Sign the client
@@ -202,3 +221,13 @@ xcrun stapler staple $PACKAGE_FILENAME
 xcrun stapler validate $PACKAGE_FILENAME
 
 open $PRODUCT_DIR
+
+export CRAFT="$HOME/Craft64"
+
+export DYLD_LIBRARY_PATH="$CRAFT/lib"
+export DYLD_FRAMEWORK_PATH="$CRAFT/lib"
+export QT_PLUGIN_PATH="$CRAFT/plugins"
+export QT_QPA_PLATFORM_PLUGIN_PATH="$CRAFT/plugins/platforms"
+export QML2_IMPORT_PATH="$CRAFT/qml"
+
+$BUILD_DIR/bin/IONOS\ HiDrive\ Next.app/Contents/MacOS/IONOS\ HiDrive\ Next
