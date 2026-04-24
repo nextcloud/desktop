@@ -32,7 +32,7 @@ public struct FileProviderDomainDefaults {
 
     public init(identifier: NSFileProviderDomainIdentifier, log: any FileProviderLogging) {
         self.identifier = identifier
-        self.logger = FileProviderLogger(category: "FileProviderDomainDefaults", log: log)
+        logger = FileProviderLogger(category: "FileProviderDomainDefaults", log: log)
     }
 
     ///
@@ -62,7 +62,7 @@ public struct FileProviderDomainDefaults {
     ///
     public var serverUrl: String? {
         get {
-            let identifier = self.identifier.rawValue
+            let identifier = identifier.rawValue
 
             if let value = internalConfig[ConfigKey.serverUrl.rawValue] as? String {
                 logger.debug("Returning existing value \"\(value)\" for \"serverUrl\" for file provider domain \"\(identifier)\".")
@@ -74,7 +74,7 @@ public struct FileProviderDomainDefaults {
         }
 
         set {
-            let identifier = self.identifier.rawValue
+            let identifier = identifier.rawValue
 
             if newValue == nil {
                 logger.debug("Removing key \"serverUrl\" for file provider domain \"\(identifier)\" because the new value is nil.")
@@ -92,7 +92,7 @@ public struct FileProviderDomainDefaults {
     ///
     public var user: String? {
         get {
-            let identifier = self.identifier.rawValue
+            let identifier = identifier.rawValue
 
             if let value = internalConfig[ConfigKey.user.rawValue] as? String {
                 logger.debug("Returning existing value \"\(value)\" for \"user\" for file provider domain \"\(identifier)\".")
@@ -104,7 +104,7 @@ public struct FileProviderDomainDefaults {
         }
 
         set {
-            let identifier = self.identifier.rawValue
+            let identifier = identifier.rawValue
 
             if newValue == nil {
                 logger.debug("Removing key \"user\" for file provider domain \"\(identifier)\" because the new value is nil.")
@@ -122,7 +122,7 @@ public struct FileProviderDomainDefaults {
     ///
     public var userId: String? {
         get {
-            let identifier = self.identifier.rawValue
+            let identifier = identifier.rawValue
 
             if let value = internalConfig[ConfigKey.userId.rawValue] as? String {
                 logger.debug("Returning existing value \"\(value)\" for \"userId\" for file provider domain \"\(identifier)\".")
@@ -134,7 +134,7 @@ public struct FileProviderDomainDefaults {
         }
 
         set {
-            let identifier = self.identifier.rawValue
+            let identifier = identifier.rawValue
 
             if newValue == nil {
                 logger.debug("Removing key \"userId\" for file provider domain \"\(identifier)\" because the new value is nil.")
