@@ -762,7 +762,8 @@ endif()
 # if building a bundle or not and the install_qt4_executable needs to be called afterwards
 #
 # OSX: Run macdeployqt for src/gui and for src/cmd using the -executable option
-if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
+option(SKIP_MACDEPLOYQT "Skip macdeployqt post-build step for faster incremental build" OFF)
+if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY AND NOT SKIP_MACDEPLOYQT) 
     get_target_property (QT_QMAKE_EXECUTABLE Qt::qmake IMPORTED_LOCATION)
     get_filename_component(QT_BIN_DIR "${QT_QMAKE_EXECUTABLE}" DIRECTORY)
     find_program(MACDEPLOYQT_EXECUTABLE macdeployqt HINTS "${QT_BIN_DIR}")
