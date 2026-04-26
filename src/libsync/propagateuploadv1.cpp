@@ -127,6 +127,7 @@ void PropagateUploadFileV1::startNextChunk()
         isFinalChunk = true;
     }
     qCDebug(lcPropagateUploadV1) << _chunkCount << isFinalChunk << chunkStart << currentChunkSize;
+    _sent += currentChunkSize;
 
     if (isFinalChunk && !_transmissionChecksumHeader.isEmpty()) {
         qCInfo(lcPropagateUploadV1) << propagator()->fullRemotePath(path) << _transmissionChecksumHeader;
@@ -245,7 +246,7 @@ void PropagateUploadFileV1::slotPutFinished()
     // yet, the upload can be stopped and an error can be displayed, because
     // the server hasn't registered the new file yet.
     QByteArray etag = getEtagFromReply(job->reply());
-    _finished = etag.length() > 0;
+    _finished = etag.length() > 0 && _sent == _fileToUpload._size;
 
     // Check if the file still exists
     const QString fullFilePath(propagator()->fullLocalPath(_item->_file));

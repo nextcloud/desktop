@@ -339,6 +339,7 @@ private:
     int _currentChunk = 0;
     int _chunkCount = 0; /// Total number of chunks for this file
     uint _transferId = 0; /// transfer id (part of the url)
+    qint64 _sent = 0; /// bytes dispatched to the network across all chunks so far
 
     [[nodiscard]] qint64 chunkSize() const {
         // Old chunking does not use dynamic chunking algorithm, and does not adjusts the chunk size respectively,
