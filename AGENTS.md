@@ -72,6 +72,20 @@ The following details are important and only relevant when working on the deskto
 - To abstract macOS and Objective-C specific APIs, prefer to use Qt and C++ types in public identifiers declared in headers. Use and prefer Objective-C or native macOS features only internally in implementations. This rule applies only to the code in `src/gui/macOS`, though.
 - When writing code in Swift, respect strict concurrency rules and Swift 6 compatibility.
 
+#### Logging
+
+These instructions are restricted to `./shell_integration/MacOSX/NextcloudIntegration/FileProviderExt` and `./shell_integration/MacOSX/NextcloudFileProviderKit`:
+
+- Use the `FileProviderLog` and `FileProviderLogger` types for logging.
+- One `FileProviderLog` is set up by a `FileProviderExtension` instance. That needs to be reused and passed down every call stack.
+- Every initialized object in the call stack must set up its own `FileProviderLogger` with the `category` argument being a string literal equal to the name of the type initializing it.
+- Log messages should be a single line string.
+- Log messages must not contain line breaks.
+- Log messages must not contain interpolations.
+- Log messages must end with a full stop.
+- Relevant run time values to log must be provided through the `arguments` argument.
+- Inclusion of `.debug`-level messages is controlled at runtime by the `debugLoggingEnabled` boolean key under the `com.nextcloud.desktopclient.FileProviderExt` domain in `UserDefaults.standard`. When unset, DEBUG builds include debug messages and release builds do not. Administrators can flip the value with `defaults write` for troubleshooting; changes propagate live via KVO. The gate applies to both Apple unified logging and the JSONL file output. See `Logging.md`.
+
 ### Tests
 
 - When implementing new test suites, prefer Swift Testing over XCTest for implementation.

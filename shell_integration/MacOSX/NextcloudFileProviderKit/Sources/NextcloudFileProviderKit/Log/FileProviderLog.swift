@@ -3,7 +3,6 @@
 
 @preconcurrency import FileProvider
 import Foundation
-import NextcloudKit
 import os
 
 ///
@@ -16,9 +15,13 @@ import os
 ///
 /// In general, there should be only one instance for every process.
 ///
-/// Messages with debug level are written only for debug configuration builds.
+/// This actor owns the JSON Lines log file. Forwarding to Apple's unified logging system is handled by ``FileProviderLogger``, which tags each message with the calling type's category.
 ///
-/// Debug configuration builds also write to the unified logging system as an alternative to view logged messages.
+/// Whether `.debug`-level messages are included is controlled at runtime by the `debugLoggingEnabled` boolean key under the file provider extension's domain in `UserDefaults.standard`.
+/// When the key is unset, debug logging is enabled in DEBUG builds and disabled in release builds, matching the previous compile-time behavior.
+/// The value is observed via KVO, so changes made with `defaults write` take effect without restarting the extension.
+/// The gate applies to both the JSONL output here and the unified logging forwarding done by ``FileProviderLogger``.
+/// See `Logging.md` for administrator instructions.
 ///
 /// > To Do: Consider using macros for the calls so the calling functions and files can be recorded, too!
 ///
@@ -59,9 +62,10 @@ public actor FileProviderLog: FileProviderLogging {
     var handle: FileHandle?
 
     ///
-    /// The fallback logger.
+    /// Unified logger used for self-diagnostics of this actor, tagged with the category `"FileProviderLog"`.
     ///
-    /// This is important in case the actual log file could be created or written to.
+    /// Used for messages about this actor's own concerns — log file rotation, startup and KVO transitions of the debug-logging gate, and errors that prevent writing to the JSONL file.
+    /// Messages emitted by callers are forwarded to Apple's unified logging system by ``FileProviderLogger`` under the respective calling type's category instead.
     ///
     let logger: Logger
 
@@ -79,6 +83,22 @@ public actor FileProviderLog: FileProviderLogging {
     /// The subsystem string to be used as with the unified logging system.
     ///
     let subsystem: String
+
+    ///
+    /// Whether `.debug`-level messages are included in both the JSONL file output and Apple unified logging.
+    ///
+    /// Initialized from `UserDefaults.standard` (key `"debugLoggingEnabled"`) at startup and kept in sync via KVO so changes propagate live.
+    /// When the key is unset, falls back to the build-configuration default: enabled in DEBUG builds, disabled otherwise.
+    ///
+    public var debugLoggingEnabled: Bool
+
+    ///
+    /// Retains the KVO token that reacts to changes of the `debugLoggingEnabled` user default.
+    ///
+    /// Marked `nonisolated(unsafe)` so it can be assigned during `init` (after `self` escapes via the observer closure) and read from the non-isolated `deinit`.
+    /// Safe in practice because it is written exactly once in `init` before the instance is visible to any other thread and read only in `deinit` after all other references have been dropped.
+    ///
+    nonisolated(unsafe) var debugLoggingObservation: NSKeyValueObservation?
 
     ///
     /// Initialize a new log file abstraction.
@@ -103,15 +123,85 @@ public actor FileProviderLog: FileProviderLogging {
         subsystem = Bundle.main.bundleIdentifier ?? ""
         logger = Logger(subsystem: subsystem, category: "FileProviderLog")
 
+        let defaultFallback = Self.buildConfigurationDefaultDebugLoggingEnabled
+        let raw = UserDefaults.standard.object(forKey: "debugLoggingEnabled")
+
+        if raw == nil {
+            debugLoggingEnabled = defaultFallback
+            logger.log(level: .default, "Debug logging \(defaultFallback ? "enabled" : "disabled", privacy: .public) (build fallback; `debugLoggingEnabled` default is unset).")
+        } else if let number = raw as? NSNumber {
+            debugLoggingEnabled = number.boolValue
+            logger.log(level: .default, "Debug logging \(number.boolValue ? "enabled" : "disabled", privacy: .public) (from `debugLoggingEnabled` user default).")
+        } else {
+            debugLoggingEnabled = defaultFallback
+            logger.error("Ignoring non-boolean value for `debugLoggingEnabled` user default. Falling back to build default (\(defaultFallback ? "enabled" : "disabled", privacy: .public)).")
+        }
+
         guard let logsDirectory = fileManager.fileProviderDomainLogDirectory(for: identifier) else {
             logger.error("Failed to get URL for file provider domain logs!")
             file = nil
             handle = nil
             logsDirectory = nil
+            debugLoggingObservation = UserDefaults.standard.observe(\.debugLoggingEnabled, options: [.new]) { [weak self] _, _ in
+                Task { [weak self] in
+                    await self?.reloadDebugLoggingEnabled()
+                }
+            }
             return
         }
 
         self.logsDirectory = logsDirectory
+        debugLoggingObservation = UserDefaults.standard.observe(\.debugLoggingEnabled, options: [.new]) { [weak self] _, _ in
+            Task { [weak self] in
+                await self?.reloadDebugLoggingEnabled()
+            }
+        }
+    }
+
+    deinit {
+        debugLoggingObservation?.invalidate()
+    }
+
+    ///
+    /// Build-configuration default for ``debugLoggingEnabled``, used when the user default is unset.
+    ///
+    private static var buildConfigurationDefaultDebugLoggingEnabled: Bool {
+        #if DEBUG
+            return true
+        #else
+            return false
+        #endif
+    }
+
+    ///
+    /// Re-reads the `debugLoggingEnabled` user default and updates ``debugLoggingEnabled`` accordingly.
+    ///
+    /// Called from the KVO observer when `defaults write` (or `defaults delete`) changes the value in another process.
+    ///
+    func reloadDebugLoggingEnabled() {
+        let defaultFallback = Self.buildConfigurationDefaultDebugLoggingEnabled
+        let raw = UserDefaults.standard.object(forKey: "debugLoggingEnabled")
+        let newValue: Bool
+        let source: String
+
+        if raw == nil {
+            newValue = defaultFallback
+            source = "build fallback; `debugLoggingEnabled` default is unset"
+        } else if let number = raw as? NSNumber {
+            newValue = number.boolValue
+            source = "from `debugLoggingEnabled` user default"
+        } else {
+            newValue = defaultFallback
+            logger.error("Ignoring non-boolean value for `debugLoggingEnabled` user default. Falling back to build default.")
+            source = "build fallback; `debugLoggingEnabled` default is of an unsupported type"
+        }
+
+        if newValue == debugLoggingEnabled {
+            return
+        }
+
+        debugLoggingEnabled = newValue
+        logger.log(level: .default, "Debug logging \(newValue ? "enabled" : "disabled", privacy: .public) (\(source, privacy: .public)).")
     }
 
     ///
@@ -212,58 +302,10 @@ public actor FileProviderLog: FileProviderLogging {
         }
     }
 
-    private func writeToUnifiedLoggingSystem(level: OSLogType, message: String, details: [FileProviderLogDetailKey: (any Sendable)?], file: StaticString, function: StaticString, line: UInt) {
-        if details.isEmpty {
-            logger.log(level: level, "\(message, privacy: .public)\n\n\(file, privacy: .public):\(line, privacy: .public) \(function, privacy: .public)")
+    public func write(category: String, level: OSLogType, message: String, details: [FileProviderLogDetailKey: (any Sendable)?], file: StaticString, function: StaticString, line: UInt) {
+        if level == .debug, !debugLoggingEnabled {
             return
         }
-
-        let sortedKeys = details.keys.sorted()
-
-        let detailDescriptions: [String] = sortedKeys.compactMap { key in
-            let valueDescription: String = switch details[key] {
-                case let account as Account:
-                    account.ncKitAccount
-                case let date as Date:
-                    messageDateFormatter.string(from: date)
-                case let error as NSError:
-                    error.debugDescription
-                case let lock as NKLock:
-                    lock.token ?? "nil"
-                case let item as NSFileProviderItem:
-                    item.itemIdentifier.rawValue
-                case let identifier as NSFileProviderItemIdentifier:
-                    identifier.rawValue
-                case let url as URL:
-                    url.absoluteString
-                case let text as String:
-                    text
-                case let request as NSFileProviderRequest:
-                    "requestingExecutable: \(request.requestingExecutable?.path ?? "nil"), isFileViewerRequest: \(request.isFileViewerRequest), isSystemRequest: \(request.isSystemRequest)"
-                case nil:
-                    "nil"
-                default:
-                    "<unsupported log detail value type>"
-            }
-
-            return "- \(key.rawValue): \(valueDescription)"
-        }
-
-        logger.log(level: level, "\(message, privacy: .public)\n\n\(detailDescriptions.joined(separator: "\n"), privacy: .public)\n\n\(file, privacy: .public):\(line, privacy: .public) \(function, privacy: .public)")
-    }
-
-    public func write(category: String, level: OSLogType, message: String, details: [FileProviderLogDetailKey: (any Sendable)?], file: StaticString, function: StaticString, line: UInt) {
-        #if DEBUG
-
-            writeToUnifiedLoggingSystem(level: level, message: message, details: details, file: file, function: function, line: line)
-
-        #else
-
-            if level == .debug {
-                return // We want debug messages only in debug builds.
-            }
-
-        #endif
 
         rotateLogFileIfNeeded() // Check if log file needs rotation before writing anything.
 

@@ -6,6 +6,8 @@ import NextcloudFileProviderKit
 import os
 
 public actor FileProviderLogMock: FileProviderLogging {
+    public let debugLoggingEnabled: Bool = true
+
     let logger: Logger
 
     public init() {
