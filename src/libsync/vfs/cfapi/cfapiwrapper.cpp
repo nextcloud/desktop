@@ -197,7 +197,15 @@ void cfApiSendPlaceholdersTransferInfo(const CF_CONNECTION_KEY &connectionKey,
 
     const qint64 cfExecuteresult = CfExecute(&opInfo, &opParams);
     if (cfExecuteresult != S_OK) {
-        qCCritical(lcCfApiWrapper) << "Couldn't send transfer info" << QString::number(transferKey.QuadPart, 16) << ":" << cfExecuteresult << QString::fromWCharArray(_com_error(cfExecuteresult).ErrorMessage());
+        qCCritical(lcCfApiWrapper).nospace() << "Couldn't send transfer info, consider placeholders to be invalid"
+            << " transferKey=" << QString::number(transferKey.QuadPart, 16)
+            << " cfExecuteresult=" << cfExecuteresult
+            << " errorMessage="<< QString::fromWCharArray(_com_error(cfExecuteresult).ErrorMessage());
+
+        for (auto &newEntry : newEntries) {
+            newEntry.creationStatus = OCC::VirtualItemCreationStatus::Error;
+        }
+        return;
     }
 
     for (auto virtualItemIndex = 0; virtualItemIndex < newEntries.size(); ++virtualItemIndex) {
