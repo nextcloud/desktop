@@ -21,8 +21,7 @@ Page {
     property string localPath: ""
     property string shortLocalPath: ""
     required property SharingModel sharingModel
-
-    signal recipientTypesChanged(recipientTypes: list<string>)
+    required property list<string> recipientTypes
 
     title: qsTr("Share \"%1\"").arg(root.shortLocalPath)
 
@@ -30,21 +29,6 @@ Page {
         id: windowContent
         anchors.fill: parent
         anchors.margins: Style.standardSpacing
-
-        RowLayout {
-            TabBar {
-                id: bar
-                Layout.fillWidth: true
-                TabButton {
-                    id: viewInvitedPeople
-                    text: qsTr("Invited people")
-                }
-                TabButton {
-                    id: viewAnyone
-                    text: qsTr("Anyone")
-                }
-            }
-        }
 
         ScrollView {
             Layout.fillHeight: true
@@ -62,18 +46,7 @@ Page {
                 model: SharingFilterModel {
                     filterType: SharingFilterModel.General
                     sourceModel: root.sharingModel
-                    recipientTypes: [
-                        [
-                            // TODO: this won't be hardcoded in the future
-                            "OC\\Core\\Sharing\\RecipientType\\UserShareRecipientType",
-                            "OC\\Core\\Sharing\\RecipientType\\GroupShareRecipientType",
-                        ],
-                        [
-                            "OC\\Core\\Sharing\\RecipientType\\TokenShareRecipientType",
-                        ]
-                    ][bar.currentIndex]
-
-                    onRecipientTypesChanged: root.recipientTypesChanged(this.recipientTypes)
+                    recipientTypes: root.recipientTypes
                 }
 
                 delegate: FieldDelegate {
@@ -92,8 +65,8 @@ Page {
                 Layout.fillWidth: true
 
                 text: qsTr("Send")
-                visible: !viewAnyone.checked
-                enabled: !viewAnyone.checked
+                visible: root.recipientTypes.length > 1
+                enabled: root.recipientTypes.length > 1
             }
         }
     }
