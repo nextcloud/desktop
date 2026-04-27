@@ -50,6 +50,7 @@ const QString TOOLBAR_CSS()
                         "QMenu::item::checked { background: %7; color: %4; }"
                         "QMenu::item::selected { background: %3; color: %4; }" 
                         "QMenu::item::pressed { background: %6; color: %4; }"
+                        "QToolTip { color: %4; background-color: %1; border: 1px solid %2; }"
                         );
 #else
     return QStringLiteral("QToolBar { background: %1; margin: 0; padding: 0; border: none; border-bottom: 1px solid %2; spacing: 0; } "

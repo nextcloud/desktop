@@ -1838,16 +1838,21 @@ void AccountSettings::customizeStyle()
     auto msg = _ui->connectLabel->text();
     Theme::replaceLinkColorStringBackgroundAware(msg);
     _ui->connectLabel->setText(msg);
-
+ 
     const auto color = palette().highlight().color();
-    _ui->quotaProgressBar->setStyleSheet(progressBarStyle().arg(WLTheme.dialogBackgroundColor(), WLTheme.quotaProgressColor()));
-
+    const auto toolTipStyle = QStringLiteral("QToolTip { color: %1; background-color: %2; border: 1px solid %1; }")
+        .arg(WLTheme.titleColor(), WLTheme.dialogBackgroundColor());
+    _ui->quotaProgressBar->setStyleSheet(progressBarStyle().arg(WLTheme.dialogBackgroundColor(), WLTheme.quotaProgressColor()) + toolTipStyle);
+ 
     _ui->quotaInfoLabel->setStyleSheet(
-        WLTheme.fontConfigurationCss(
-            WLTheme.settingsFont(),
-            WLTheme.settingsTextSize(),
-            WLTheme.settingsTitleWeight600(),
-            WLTheme.titleColor()
+        QStringLiteral("QLabel { %1 } %2").arg(
+            WLTheme.fontConfigurationCss(
+                WLTheme.settingsFont(),
+                WLTheme.settingsTextSize(),
+                WLTheme.settingsTitleWeight600(),
+                WLTheme.titleColor()
+            ),
+            toolTipStyle
         )
     );
 
