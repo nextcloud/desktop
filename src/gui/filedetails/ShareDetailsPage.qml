@@ -508,6 +508,16 @@ Page {
                         root.setNote(text);
                         root.waitingForNoteChange = true;
                     }
+
+                    Rectangle {
+                        id: noteTextBorder
+                        anchors.fill: parent
+                        radius: Style.slightlyRoundedButtonRadius
+                        border.width: Style.thickBorderWidth
+                        border.color: Style.sesTrayInputField
+                        color: Style.sesBackgroundColor
+                        z: -1
+                    }
                 }
             }          
 
