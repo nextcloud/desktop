@@ -708,6 +708,7 @@ void SyncEngine::startSync()
     connect(_discoveryPhase.get(), &DiscoveryPhase::silentlyExcluded,
         _syncFileStatusTracker.data(), &SyncFileStatusTracker::slotAddSilentlyExcluded);
     connect(_discoveryPhase.get(), &DiscoveryPhase::remnantReadOnlyFolderDiscovered, this, &SyncEngine::remnantReadOnlyFolderDiscovered);
+    connect(_discoveryPhase.get(), &DiscoveryPhase::seenLockedFile, this, &SyncEngine::seenLockedFile);
 
     ProcessDirectoryJob *discoveryJob = nullptr;
 
