@@ -5,11 +5,13 @@
 
 #include "conflictsolver.h"
 
+#include <QAbstractButton>
 #include <QFileDialog>
 #include <QMessageBox>
 
 #include "common/utility.h"
 #include "filesystem.h"
+#include "buttonstyle.h"
 
 namespace OCC {
 
@@ -196,8 +198,15 @@ bool ConflictSolver::confirmDeletion()
     QFileInfo info(_localVersionFilename);
     const auto message = FileSystem::isDir(_localVersionFilename)
         ? tr("Do you want to delete the directory <i>%1</i> and all its contents permanently?").arg(Utility::escape(info.dir().dirName()))
-                                    : tr("Do you want to delete the file <i>%1</i> permanently?").arg(Utility::escape(info.fileName()));
-    const auto result = QMessageBox::question(_parentWidget, tr("Confirm deletion"), message, buttons);
+                                : tr("Do you want to delete the file <i>%1</i> permanently?").arg(Utility::escape(info.fileName()));
+
+    QMessageBox msgBox(_parentWidget);
+    msgBox.setWindowTitle(tr("Confirm deletion"));
+    msgBox.setText(message);
+    msgBox.setStandardButtons(buttons);
+    msgBox.button(QMessageBox::Yes)->setProperty("buttonStyle", QVariant::fromValue(OCC::ButtonStyleName::Primary));
+
+    const auto result = static_cast<QMessageBox::StandardButton>(msgBox.exec());
     switch (result)
     {
         case QMessageBox::YesToAll:
