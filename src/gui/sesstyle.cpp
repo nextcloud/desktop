@@ -42,7 +42,20 @@ void sesStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption *option, QP
     case PE_FrameFocusRect:
         // nothing, we don't want focus rects
         break;
-    #ifdef Q_OS_MAC   
+
+#ifdef Q_OS_MAC
+    case PE_PanelItemViewItem:
+        if (option->state & State_MouseOver) {
+            painter->save();
+            painter->setRenderHint(QPainter::Antialiasing, true);
+            painter->setPen(Qt::NoPen);
+            painter->setBrush(QColor(OCC::WLTheme.treeViewHoverColor()));
+            painter->drawRoundedRect(option->rect, 4, 4);
+            painter->restore();
+        } else {
+            super::drawPrimitive(pe, option, painter, widget);
+        }
+        break;
     case PE_IndicatorBranch:
         {
 

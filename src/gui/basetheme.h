@@ -519,6 +519,10 @@ public:
         return "#E6F9FC";
     }
 
+    virtual QString treeViewHoverColor() const {
+        return "#e5f3ff";
+    }
+
     private:
     inline static const QString _sesFolder = QStringLiteral("ses/");
 };
