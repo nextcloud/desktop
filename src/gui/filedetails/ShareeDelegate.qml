@@ -18,6 +18,10 @@ ItemDelegate {
 
     text: model.display
 
+    background: Rectangle {
+        color: root.hovered ? root.pressed ? Style.sesButtonPressed : Style.sesHover : Style.sesWhite
+    }
+
     contentItem: RowLayout {
         height: visible ? implicitHeight : 0
 

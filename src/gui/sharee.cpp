@@ -94,11 +94,15 @@ bool Sharee::updateIconUrl()
     if (_iconUrl.isEmpty() || !_isIconColourful) {
         return false;
     }
-
+ 
     const auto iconUrlColoured = _iconUrlColoured;
+#ifdef IONOS_BUILD
+    _iconColor = QStringLiteral("black");
+#else
     _iconColor = (!_isIconColourful || !Theme::instance()->darkMode()) ? QStringLiteral("black") : QStringLiteral("white");
+#endif
     _iconUrlColoured = QStringLiteral("image://svgimage-custom-color/") + _iconUrl + QStringLiteral("/") + _iconColor;
-
+ 
     return iconUrlColoured != _iconUrlColoured;
 }
 
