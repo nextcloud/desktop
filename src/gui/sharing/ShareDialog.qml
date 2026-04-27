@@ -29,12 +29,6 @@ ApplicationWindow {
 
     ButtonGroup {
         id: shareType
-
-        onClicked: (button) => {
-            console.log(`clicked on button ${button}`)
-            console.log(`root: ${root.recipientTypes}`)
-            // root.recipientTypes = button.recipientTypes
-        }
     }
 
     SharingModel {
@@ -49,12 +43,15 @@ ApplicationWindow {
 
     title: mainPage.title
 
-    header: ColumnLayout {
-        id: windowHeader
+    ColumnLayout {
         spacing: Style.standardSpacing
-        anchors.margins: Style.standardSpacing // TODO: this doesn't seem to do anything
+        anchors.fill: parent
+        anchors.margins: Style.standardSpacing
+
         RowLayout {
             // TODO: extract this to a shared component
+            id: windowHeader
+            Layout.fillWidth: true
 
             Button {
                 id: backButton
@@ -195,16 +192,17 @@ ApplicationWindow {
                 ButtonGroup.group: shareType
             }
         }
+
+        StackView {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            id: stack
+
+            initialItem: mainPage
+        }
     }
 
-    StackView {
-        id: stack
-        anchors.fill: parent
-
-        initialItem: mainPage
-    }
-
-   MainPage {
+    MainPage {
         id: mainPage
 
         accountState: root.accountState
