@@ -53,10 +53,20 @@
 {
     NSURL* url = [NSURL URLWithString:[[event paramDescriptorForKeyword:keyDirectObject] stringValue]];
     const auto qtUrl = QUrl::fromNSURL(url);
+    qCInfo(lcApplication) << "macOS AppleEvent contains custom URI scheme request:"
+                          << "scheme=" << qtUrl.scheme()
+                          << "host=" << qtUrl.host()
+                          << "path=" << qtUrl.path();
     if (qApp) {
         QTimer::singleShot(0, qApp, [qtUrl] {
+            qCInfo(lcApplication) << "Dispatching macOS AppleEvent custom URI scheme request:"
+                                  << "scheme=" << qtUrl.scheme()
+                                  << "host=" << qtUrl.host()
+                                  << "path=" << qtUrl.path();
             OCC::UriSchemeHandler::handleUri(qtUrl);
         });
+    } else {
+        qCWarning(lcApplication) << "Could not dispatch macOS AppleEvent custom URI scheme request because qApp is not available yet.";
     }
 }
 

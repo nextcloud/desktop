@@ -932,6 +932,10 @@ void Application::parseOptions(const QStringList &options)
             QTimer::singleShot(0, this, [this, option] { openVirtualFile(option); });
         } else if (option.startsWith(QStringLiteral(APPLICATION_URI_HANDLER_SCHEME "://"))) {
             _uriSchemeUrl = QUrl{option};
+            qCInfo(lcApplication) << "Command line contains custom URI scheme request:"
+                                  << "scheme=" << _uriSchemeUrl.scheme()
+                                  << "host=" << _uriSchemeUrl.host()
+                                  << "path=" << _uriSchemeUrl.path();
             if (!_uriSchemeUrl.isValid()) {
                 _uriSchemeUrl.clear();
                 const auto errorParsingUri = QStringLiteral("The supplied url '%1' is invalid!").arg(option);
@@ -1072,9 +1076,14 @@ void Application::setHelp()
 void Application::handleUriFromOptions()
 {
     if (!_uriSchemeUrl.isValid()) {
+        qCDebug(lcApplication) << "No pending custom URI scheme request from command line options.";
         return;
     }
 
+    qCInfo(lcApplication) << "Dispatching pending custom URI scheme request from command line options:"
+                          << "scheme=" << _uriSchemeUrl.scheme()
+                          << "host=" << _uriSchemeUrl.host()
+                          << "path=" << _uriSchemeUrl.path();
     UriSchemeHandler::handleUri(_uriSchemeUrl);
     _uriSchemeUrl.clear();
 }
@@ -1237,7 +1246,10 @@ bool Application::event(QEvent *event)
         } else if (!openEvent->url().isEmpty() && openEvent->url().isValid()) {
             // On macOS, Qt does not handle receiving a custom URI as it does on other systems (as an application argument).
             // Instead, it sends out a QFileOpenEvent. We therefore need custom handling for our URI handling on macOS.
-            qCInfo(lcApplication) << "macOS: Handling custom URI: " << openEvent->url();
+            qCInfo(lcApplication) << "macOS QFileOpenEvent contains custom URI scheme request:"
+                                  << "scheme=" << openEvent->url().scheme()
+                                  << "host=" << openEvent->url().host()
+                                  << "path=" << openEvent->url().path();
             UriSchemeHandler::handleUri(openEvent->url());
         } else {
             const auto errorParsingLocalFileEditingUrl = QStringLiteral("The supplied url for local file editing '%1' is invalid!").arg(openEvent->url().toString());
