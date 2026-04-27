@@ -25,7 +25,17 @@ ApplicationWindow {
 
     readonly property int windowRadius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
 
-    property list<string> recipientTypes: []
+    property list<string> recipientTypes: shareType.checkedButton?.recipientTypes || []
+
+    ButtonGroup {
+        id: shareType
+
+        onClicked: (button) => {
+            console.log(`clicked on button ${button}`)
+            console.log(`root: ${root.recipientTypes}`)
+            // root.recipientTypes = button.recipientTypes
+        }
+    }
 
     SharingModel {
         id: sharingModel
@@ -39,113 +49,151 @@ ApplicationWindow {
 
     title: mainPage.title
 
-    header: RowLayout {
-        // TODO: extract this to a shared component
+    header: ColumnLayout {
         id: windowHeader
         spacing: Style.standardSpacing
         anchors.margins: Style.standardSpacing // TODO: this doesn't seem to do anything
+        RowLayout {
+            // TODO: extract this to a shared component
 
-        Button {
-            id: backButton
-            flat: true
-            padding: Style.extraSmallSpacing
-            spacing: 0
-            icon.source: "image://svgimage-custom-color/confirm.svg/" + palette.windowText // TODO: back button icon!
-            icon.width: Style.extraSmallIconSize
-            icon.height: Style.extraSmallIconSize
-            Layout.alignment: Qt.AlignTop | Qt.AlignRight
-            Layout.rightMargin: Style.extraSmallSpacing
-            Layout.topMargin: Style.extraSmallSpacing
-            background: Rectangle {
-                color: "transparent"
-                radius: root.windowRadius
-                border.width: parent.hovered ? Style.trayWindowBorderWidth : 0
-                border.color: palette.dark
-                anchors.fill: parent
-                Layout.margins: Style.extraSmallSpacing
-            }
+            Button {
+                id: backButton
+                flat: true
+                padding: Style.extraSmallSpacing
+                spacing: 0
+                icon.source: "image://svgimage-custom-color/confirm.svg/" + palette.windowText // TODO: back button icon!
+                icon.width: Style.extraSmallIconSize
+                icon.height: Style.extraSmallIconSize
+                Layout.alignment: Qt.AlignTop | Qt.AlignRight
+                Layout.rightMargin: Style.extraSmallSpacing
+                Layout.topMargin: Style.extraSmallSpacing
+                background: Rectangle {
+                    color: "transparent"
+                    radius: root.windowRadius
+                    border.width: parent.hovered ? Style.trayWindowBorderWidth : 0
+                    border.color: palette.dark
+                    anchors.fill: parent
+                    Layout.margins: Style.extraSmallSpacing
+                }
 
-            onClicked: stack.pop()
-            visible: stack.depth > 1
-        }
-
-        ColumnLayout {
-            EnforcedPlainTextLabel {
-                id: headerSettings
-                text: stack.currentItem.title
-                elide: Text.ElideRight
-                font.bold: true
-                font.pixelSize: Style.pixelSize
-                color: palette.text
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-            }
-            EnforcedPlainTextLabel {
-                id: headerSettingsLocalPath
-                text: root.shortLocalPath
-                elide: Text.ElideRight
-                font.bold: false
-                font.pixelSize: Style.pixelSize
-                color: palette.text
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-
+                onClicked: stack.pop()
                 visible: stack.depth > 1
             }
-        }
 
-        Button {
-            id: settingsButton
-            flat: true
-            padding: Style.extraSmallSpacing
-            spacing: 0
-            icon.source: "image://svgimage-custom-color/settings.svg/" + palette.windowText
-            icon.width: Style.extraSmallIconSize
-            icon.height: Style.extraSmallIconSize
-            Layout.alignment: Qt.AlignTop | Qt.AlignRight
-            Layout.rightMargin: Style.extraSmallSpacing
-            Layout.topMargin: Style.extraSmallSpacing
-            background: Rectangle {
-                color: "transparent"
-                radius: root.windowRadius
-                border.width: parent.hovered ? Style.trayWindowBorderWidth : 0
-                border.color: palette.dark
-                anchors.fill: parent
-                Layout.margins: Style.extraSmallSpacing
+            ColumnLayout {
+                EnforcedPlainTextLabel {
+                    id: headerSettings
+                    text: stack.currentItem.title
+                    elide: Text.ElideRight
+                    font.bold: true
+                    font.pixelSize: Style.pixelSize
+                    color: palette.text
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+                }
+                EnforcedPlainTextLabel {
+                    id: headerSettingsLocalPath
+                    text: root.shortLocalPath
+                    elide: Text.ElideRight
+                    font.bold: false
+                    font.pixelSize: Style.pixelSize
+                    color: palette.text
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+
+                    visible: stack.depth > 1
+                }
             }
 
-            visible: stack.depth < 2
+            Button {
+                id: settingsButton
+                flat: true
+                padding: Style.extraSmallSpacing
+                spacing: 0
+                icon.source: "image://svgimage-custom-color/settings.svg/" + palette.windowText
+                icon.width: Style.extraSmallIconSize
+                icon.height: Style.extraSmallIconSize
+                Layout.alignment: Qt.AlignTop | Qt.AlignRight
+                Layout.rightMargin: Style.extraSmallSpacing
+                Layout.topMargin: Style.extraSmallSpacing
+                background: Rectangle {
+                    color: "transparent"
+                    radius: root.windowRadius
+                    border.width: parent.hovered ? Style.trayWindowBorderWidth : 0
+                    border.color: palette.dark
+                    anchors.fill: parent
+                    Layout.margins: Style.extraSmallSpacing
+                }
 
-            onClicked: stack.push(Qt.createComponent("com.nextcloud.desktopclient.sharing", "SettingsPage").createObject(root, {
-                accountState: root.accountState,
-                sharingManager: root.sharingManager,
-                shortLocalPath: root.shortLocalPath,
-                sharingModel: sharingModel,
-                recipientTypes: recipientTypes,
-            }))
-        }
+                visible: stack.depth < 2
 
-        Button {
-            id: closeButton
-            flat: true
-            padding: Style.extraSmallSpacing
-            spacing: 0
-            icon.source: "image://svgimage-custom-color/close.svg/" + palette.windowText
-            icon.width: Style.extraSmallIconSize
-            icon.height: Style.extraSmallIconSize
-            Layout.alignment: Qt.AlignTop | Qt.AlignRight
-            Layout.rightMargin: Style.extraSmallSpacing
-            Layout.topMargin: Style.extraSmallSpacing
-            background: Rectangle {
-                color: "transparent"
-                radius: root.windowRadius
-                border.width: parent.hovered ? Style.trayWindowBorderWidth : 0
-                border.color: palette.dark
-                anchors.fill: parent
-                Layout.margins: Style.extraSmallSpacing
+                onClicked: stack.push(Qt.createComponent("com.nextcloud.desktopclient.sharing", "SettingsPage").createObject(root, {
+                    accountState: root.accountState,
+                    sharingManager: root.sharingManager,
+                    shortLocalPath: root.shortLocalPath,
+                    sharingModel: sharingModel,
+                    recipientTypes: Qt.binding(() => root.recipientTypes),
+                }))
             }
 
-            onClicked: root.close()
+            Button {
+                id: closeButton
+                flat: true
+                padding: Style.extraSmallSpacing
+                spacing: 0
+                icon.source: "image://svgimage-custom-color/close.svg/" + palette.windowText
+                icon.width: Style.extraSmallIconSize
+                icon.height: Style.extraSmallIconSize
+                Layout.alignment: Qt.AlignTop | Qt.AlignRight
+                Layout.rightMargin: Style.extraSmallSpacing
+                Layout.topMargin: Style.extraSmallSpacing
+                background: Rectangle {
+                    color: "transparent"
+                    radius: root.windowRadius
+                    border.width: parent.hovered ? Style.trayWindowBorderWidth : 0
+                    border.color: palette.dark
+                    anchors.fill: parent
+                    Layout.margins: Style.extraSmallSpacing
+                }
+
+                onClicked: root.close()
+            }
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+
+            Button {
+                Layout.fillWidth: true
+
+                id: viewInvitedPeople
+                text: qsTr("Invited people")
+
+                readonly property list<string> recipientTypes: [
+                    // TODO: this won't be hardcoded in the future
+                    "OC\\Core\\Sharing\\RecipientType\\UserShareRecipientType",
+                    "OC\\Core\\Sharing\\RecipientType\\GroupShareRecipientType",
+                ]
+
+                checkable: true
+                checked: true
+                ButtonGroup.group: shareType
+            }
+
+            Button {
+                Layout.fillWidth: true
+
+                id: viewAnyone
+                text: qsTr("Anyone")
+
+                readonly property list<string> recipientTypes: [
+                    // TODO: this won't be hardcoded in the future
+                    "OC\\Core\\Sharing\\RecipientType\\TokenShareRecipientType",
+                ]
+
+                checkable: true
+                ButtonGroup.group: shareType
+            }
         }
     }
 
@@ -164,7 +212,6 @@ ApplicationWindow {
         localPath: root.localPath
         shortLocalPath: root.shortLocalPath
         sharingModel: sharingModel
-
-        onRecipientTypesChanged: (recipientTypes) => { root.recipientTypes = recipientTypes }
+        recipientTypes: root.recipientTypes
     }
 }
