@@ -1638,6 +1638,7 @@ void AccountSettings::slotSelectiveSyncChanged(const QModelIndex &topLeft,
     }
 
     _ui->selectiveSyncApply->setEnabled(true);
+    _ui->selectiveSyncApply->setProperty("buttonStyle", QVariant::fromValue(ButtonStyleName::Primary));
     _ui->selectiveSyncButtons->setVisible(true);
 
     if (shouldBeVisible != wasVisible) {
