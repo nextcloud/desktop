@@ -1279,10 +1279,15 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
         }
 
         auto newEntry = RemoteInfo{};
+        newEntry.name = itemFileName;
+        newEntry.size = -1;
 
         LsColJob::propertyMapToRemoteInfo(properties,
                                           serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
                                           newEntry);
+        if (newEntry.isDirectory) {
+            newEntry.size = 0;
+        }
 
         promise->emplaceResult(itemFileName, itemFileName.toStdWString(), absoluteItemPathName, newEntry);
     });
