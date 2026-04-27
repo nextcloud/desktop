@@ -28,7 +28,6 @@ Page {
     ColumnLayout {
         id: windowContent
         anchors.fill: parent
-        anchors.margins: Style.standardSpacing
 
         ScrollView {
             Layout.fillHeight: true
