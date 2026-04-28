@@ -44,6 +44,8 @@ QVariant SharingModel::data(const QModelIndex &index, int role) const
             return FieldTypes::RecipientsField;
         case PlaceholderRole:
             return "Name, team, email, or federated cloud ID"_L1;
+        case ValueRole:
+            return _fieldValues.value("recipients"_L1).toList(); // TODO
         default:
             return {};
         }
@@ -63,9 +65,46 @@ QVariant SharingModel::data(const QModelIndex &index, int role) const
         return static_cast<FieldTypes>(index.row() % 3);
     case PlaceholderRole:
         return u"Placeholder for row %1"_s.arg(QString::number(index.row()));
+    case ValueRole:
+        return _fieldValues.value(feature->type());
     default:
         return {};
     }
+}
+
+bool SharingModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (!_accountState) {
+        qCritical() << "no accountState, but setData called with" << index << value << role;
+        return false;
+    }
+
+    qCritical() << "setData called with" << index << value << role;
+
+    if (role != ValueRole) {
+        return false;
+    }
+
+    if (index.row() == 0) {
+        qCritical() << "changing" << "recipients"_L1 << "to" << value;
+        _fieldValues.insert("recipients"_L1, value); // TODO
+    } else {
+        // TODO: cache this after setting accountstate
+        const auto sharing = accountState()->account()->sharing();
+        const auto features = sharing->features().values();
+        const auto feature = features.at(index.row() - 1); // TODO: -1 to adjust the special feature for searching
+        qCritical() << "changing" << feature->type() << "to" << value;
+        _fieldValues.insert(feature->type(), value);
+    }
+
+    Q_EMIT dataChanged(index, index, {ValueRole});
+    return true;
+}
+
+Qt::ItemFlags SharingModel::flags(const QModelIndex &index) const
+{
+    qCritical() << "flags for" << index << QAbstractListModel::flags(index) << Qt::ItemIsEditable << "returning" << (QAbstractListModel::flags(index) | Qt::ItemIsEditable);
+    return QAbstractListModel::flags(index) | Qt::ItemIsEditable;
 }
 
 QHash<int, QByteArray> SharingModel::roleNames() const
@@ -75,6 +114,7 @@ QHash<int, QByteArray> SharingModel::roleNames() const
         { PropertyRole, "property"_ba},
         { TypeRole, "type"_ba},
         { PlaceholderRole, "placeholder"_ba},
+        { ValueRole, "value"_ba},
     };
 };
 
