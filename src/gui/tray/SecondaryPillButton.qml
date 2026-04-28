@@ -17,6 +17,7 @@ Button{
   property color backgroundColor: Style.sesPillButtonSecondaryBackgroundColor
 
   contentItem: Row {
+    id: contentRow
     spacing: Style.sesPillButtonVerticalPadding
     padding: Style.sesPillButtonVerticalPadding
     leftPadding: Style.sesPillButtonHorizontalPadding
@@ -27,12 +28,18 @@ Button{
         color: textColor
         font.weight: Style.sesFontNormalWeight
         font.pixelSize: Style.sesFontHintPixelSize
+        maximumLineCount: 2
+        elide: Text.ElideRight
+        wrapMode: Text.WordWrap
+        width: Math.min(implicitWidth, root.width - contentRow.leftPadding - contentRow.rightPadding - (root.iconSource ? Style.sesPillIconSize + contentRow.spacing : 0))
+        anchors.verticalCenter: parent.verticalCenter
     }
     Image {
       visible: root.iconSource
       source: root.iconSource
       width: Style.sesPillIconSize
       height: Style.sesPillIconSize
+      anchors.verticalCenter: parent.verticalCenter
     }
   }
 

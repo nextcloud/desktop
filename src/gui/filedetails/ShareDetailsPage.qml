@@ -702,6 +702,7 @@ Page {
 
             Layout.leftMargin: 16
             Layout.bottomMargin: 16
+            Layout.maximumWidth: actionButtonsGrid.width
 
             onClicked: root.createNewLinkShare()
         }
@@ -721,6 +722,8 @@ Page {
 
             SecondaryPillButton {
                 id: unshareButton
+
+                Layout.maximumWidth: actionButtonsGrid.width
 
                 font.pixelSize: pixelSize
                 font.weight: fontWeight
@@ -752,6 +755,8 @@ Page {
                 iconSource: Style.sesLightClipboard
 
             text: shareLinkCopied ? qsTr("Share link copied!") : qsTr("Copy share link")
+
+                Layout.maximumWidth: actionButtonsGrid.width
 
                 visible: root.isLinkShare
                 enabled: visible
