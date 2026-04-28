@@ -16,11 +16,9 @@ import Style
 Page {
     id: root
 
-    property var accountState
-    property QtObject sharingManager
     property string localPath: ""
     property string shortLocalPath: ""
-    required property SharingModel sharingModel
+    required property SharingController sharingController
     required property list<string> recipientTypes
 
     title: qsTr("Share \"%1\"").arg(root.shortLocalPath)
@@ -38,18 +36,29 @@ Page {
             contentHeight: availableHeight
             rightPadding: ScrollBar.vertical.policy == ScrollBar.AlwaysOn ? ScrollBar.vertical.width + Style.standardSpacing : 0
 
+            RecipientSearchField {
+                id: searchField
+                Layout.fillWidth: true
+                account: root.sharingController.account
+
+                onRecipientSelected: (recipientType, recipientValue) => {
+                    root.sharingController.addRecipient(recipientType, recipientValue)
+                }
+            }
+
+
             ListView {
                 id: propertyList
                 clip: true
 
-                model: SharingFilterModel {
-                    filterType: SharingFilterModel.General
-                    sourceModel: root.sharingModel
-                    recipientTypes: root.recipientTypes
-                }
+                // model: SharingFilterModel {
+                //     filterType: SharingFilterModel.General
+                //     sourceModel: root.sharingModel
+                //     recipientTypes: root.recipientTypes
+                // }
 
                 delegate: FieldDelegate {
-                    accountState: root.accountState
+                    account: root.account
                     width: propertyList.contentItem.width
                 }
             }
