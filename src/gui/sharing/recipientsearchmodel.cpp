@@ -5,7 +5,12 @@
 
 #include "recipientsearchmodel.h"
 
-#include "account.h"
+#include <QLoggingCategory>
+#include <QJsonObject>
+
+#include "ocssharingjob.h"
+
+Q_LOGGING_CATEGORY(lcSharingRecipientShareModel, "nextcloud.gui.sharing.recipientsearchmodel", QtInfoMsg)
 
 using namespace Qt::StringLiterals;
 using namespace OCC;
@@ -26,11 +31,13 @@ QVariant RecipientSearchModel::data(const QModelIndex &index, int role) const
 
     switch (role) {
     case TypeRole:
-        return item.toObject().value("type"_L1).toString();
+        return item.toObject().value("class"_L1).toString();
     case ValueRole:
         return item.toObject().value("value"_L1).toString();
     case DisplayNameRole:
         return item.toObject().value("display_name"_L1).toString();
+    case IconRole:
+        return "image://tray-image-provider/%1"_L1.arg(item.toObject().value("icon"_L1).toObject().value("light").toString());
     default:
         return {};
     }
@@ -42,23 +49,24 @@ QHash<int, QByteArray> RecipientSearchModel::roleNames() const
         { TypeRole, "type"_ba},
         { ValueRole, "value"_ba},
         { DisplayNameRole, "displayName"_ba},
+        { IconRole, "iconUrl"_ba},
     };
 };
 
-AccountState *RecipientSearchModel::accountState() const
+AccountPtr RecipientSearchModel::account() const
 {
-    return _accountState;
+    return _account;
 }
 
-void RecipientSearchModel::setAccountState(AccountState *accountState)
+void RecipientSearchModel::setAccount(AccountPtr account)
 {
-    if (_accountState == accountState) {
+    if (_account == account) {
         return;
     }
 
     beginResetModel();
-    _accountState = accountState;
-    Q_EMIT accountStateChanged();
+    _account = account;
+    Q_EMIT accountChanged();
     endResetModel();
 }
 
@@ -69,11 +77,15 @@ QString RecipientSearchModel::query() const
 
 void RecipientSearchModel::setQuery(const QString &query)
 {
+    if (!_account) {
+        return;
+    }
+
     if (_query == query) {
         return;
     }
 
-    qCritical() << "query set to" << query;
+    qCDebug(lcSharingRecipientShareModel) << "query set to" << query;
     _query = query;
     Q_EMIT queryChanged();
 
@@ -85,11 +97,11 @@ void RecipientSearchModel::setQuery(const QString &query)
     }
 
     // TODO: start timer for search job
-    auto job = _accountState->account()->sharing()->createSearchJob(_query, 0, 10, this);
-    connect(job, &OCC::JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json, int statusCode) -> void {
+    auto job = new OcsSharingJob(_account);
+    connect(job, &OcsSharingJob::jobFinished, this, [this](const QJsonDocument &json, int statusCode) -> void {
         beginResetModel();
         _searchResults = json.object().value("ocs"_L1).toObject().value("data"_L1).toArray();
         endResetModel();
     });
-    job->start();
+    job->searchRecipients(query, 0, 10);
 }
