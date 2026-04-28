@@ -82,7 +82,7 @@ Loader {
                 // no placeholderText on SearchField, really?
 
                 suggestionModel: RecipientSearchModel {
-                    accountState: root.accountState
+                    accountState: instantiator.accountState
                     query: searchField.text
                 }
                 textRole: "query"
