@@ -103,6 +103,11 @@ int Capabilities::shareDefaultPermissions() const
     return {};
 }
 
+bool Capabilities::unifiedSharingAvailable() const
+{
+    return _capabilities.contains("sharing"_L1);
+}
+
 bool Capabilities::clientSideEncryptionAvailable() const
 {
     auto it = _capabilities.constFind(QStringLiteral("end-to-end-encryption"));

@@ -6,10 +6,11 @@
 #pragma once
 
 #include <QAbstractListModel>
-#include <qqmlintegration.h>
 
+#include <qqmlintegration.h>
 #include <QJsonArray>
-#include "accountstate.h"
+
+#include "accountfwd.h"
 
 namespace OCC::Gui::Sharing {
 
@@ -18,7 +19,7 @@ class RecipientSearchModel : public QAbstractListModel
     Q_OBJECT
     QML_ELEMENT
 
-    Q_PROPERTY(AccountState *accountState READ accountState WRITE setAccountState NOTIFY accountStateChanged)
+    Q_PROPERTY(AccountPtr account READ account WRITE setAccount NOTIFY accountChanged)
     Q_PROPERTY(QString query READ query WRITE setQuery NOTIFY queryChanged)
 
 public:
@@ -26,6 +27,7 @@ public:
         TypeRole = Qt::UserRole,
         ValueRole,
         DisplayNameRole,
+        IconRole,
     };
 
     explicit RecipientSearchModel(QObject *parent = nullptr);
@@ -34,18 +36,18 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QHash<int, QByteArray> roleNames() const override;
 
-    [[nodiscard]] AccountState *accountState() const;
-    void setAccountState(AccountState *accountState);
+    [[nodiscard]] AccountPtr account() const;
+    void setAccount(AccountPtr account);
 
     [[nodiscard]] QString query() const;
     void setQuery(const QString &query);
 
 Q_SIGNALS:
-    void accountStateChanged();
+    void accountChanged();
     void queryChanged();
 
 private:
-    AccountState *_accountState = nullptr;
+    AccountPtr _account = nullptr;
     QJsonArray _searchResults;
     QString _query;
 };
