@@ -230,8 +230,13 @@ def auto_commit(ts_files, step_name, auto_commit_enabled):
     )
     print(f"  Committed: {step_name}")
 
-def validate_ts_files(ts_files, step_name):
-    """Validate translation files after a step. Returns True if valid, exits on critical error."""
+def validate_ts_files(ts_files, step_name, strict=False):
+    """Validate translation files after a step.
+    
+    strict=True: cross-file key mismatches are errors (use for steps 0, 2, 5).
+    strict=False: cross-file key mismatches are warnings (use for steps 1, 3, 4).
+    File existence and XML validity are always errors.
+    """
     errors = []
     warnings = []
     file_stats = {}
@@ -288,7 +293,8 @@ def validate_ts_files(ts_files, step_name):
         if duplicate_keys:
             warnings.append(f"{basename}: {len(duplicate_keys)} duplicate key(s) within same context")
     
-    # Cross-file consistency: all files should have the same source keys (except after step 3 merge which adds diff keys)
+    # Cross-file consistency check
+    consistency_issues = []
     if len(file_stats) >= 2:
         ref_name = list(file_stats.keys())[0]
         ref_keys = file_stats[ref_name]["source_keys"]
@@ -298,14 +304,19 @@ def validate_ts_files(ts_files, step_name):
             if name == ref_name:
                 continue
             if stats["messages"] != ref_count:
-                warnings.append(f"message count mismatch: {ref_name}={ref_count}, {name}={stats['messages']}")
+                consistency_issues.append(f"message count mismatch: {ref_name}={ref_count}, {name}={stats['messages']}")
             
             missing = ref_keys - stats["source_keys"]
             extra = stats["source_keys"] - ref_keys
             if missing:
-                errors.append(f"{name}: missing {len(missing)} key(s) that {ref_name} has")
+                consistency_issues.append(f"{name}: missing {len(missing)} key(s) that {ref_name} has")
             if extra:
-                errors.append(f"{name}: has {len(extra)} extra key(s) that {ref_name} doesn't")
+                consistency_issues.append(f"{name}: has {len(extra)} extra key(s) that {ref_name} doesn't")
+    
+    if strict:
+        errors.extend(consistency_issues)
+    else:
+        warnings.extend(consistency_issues)
     
     # Print validation summary
     print(f"  Validation ({step_name}):")
@@ -494,7 +505,7 @@ if __name__ == "__main__":
             for ts_file in ts_files:      
                 sort_and_repair(ts_file)  
             print("Step 0 completed: lupdate from NC source + sorted")
-            validate_ts_files(ts_files, "Step 0")
+            validate_ts_files(ts_files, "Step 0", strict=True)
             auto_commit(ts_files, "Step 0", auto_commit_enabled)
         
         if step == "1" or step == "all":
@@ -515,7 +526,7 @@ if __name__ == "__main__":
             for ts_file in ts_files:        
                 sort_and_repair(ts_file)  
             print("Step 2 completed: lupdate removed obsolete")
-            validate_ts_files(ts_files, "Step 2")
+            validate_ts_files(ts_files, "Step 2", strict=True)
             auto_commit(ts_files, "Step 2", auto_commit_enabled)
                 
             # Step 3 merge diff into
@@ -542,7 +553,7 @@ if __name__ == "__main__":
             for ts_file in ts_files:        
                 sort_and_repair(ts_file)  
             print("Step 5 completed: lupdate remove obsolete, sort")
-            validate_ts_files(ts_files, "Step 5")
+            validate_ts_files(ts_files, "Step 5", strict=True)
             auto_commit(ts_files, "Step 5", auto_commit_enabled)
 
     except Exception as e:
