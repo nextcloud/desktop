@@ -10,26 +10,28 @@ Diese Anleitung beschreibt den Prozess zur Lokalisierung des HiDrive Next Client
 
 # Vorgehen bei Release
 
-Um in einem Release zu erstellen und einen valider PR zur übersetuen zu haben ist folgendes Vorgehen notwendig:
+Um in einem Release zu erstellen und einen valider PR zur Übersetzung zu haben ist folgendes Vorgehen notwendig:
 
 0. (Optional) Einbeziehen unserer Änderungen aus Phrase. Dieser Schritt ist optional, da die Änderungen in der Regel schon in der Diff-Datei enthalten sind. Sollte es dennoch notwendig sein, können die Änderungen aus Phrase in die `.ts`-Diff-Dateien gemerged werden.
-1. Es wird ein neuer `treanslations_<version source>` branch erstellt. Abgeleitet vom entsprechenden `develop_<version source>`. (z.b. translations_stable-3.16)
+1. Es wird ein neuer `translations_<version source>` branch erstellt. Abgeleitet vom entsprechenden `develop_<version source>`. (z.b. translations_stable-3.16)
 2. Durchlaufen der unter stehen den Schritte 1-6
 3. Erstellen eines "approved" PRs von `translations_<version source>` nach `<version source>`, also in Richtung der eigentlichen Basisversion von nc (z.B. [stable-3.16] Translations)
-4. Der PR wird dann hoffentlich vom Brander gemerged
+4. Der PR wird dann vom Brander gemerged
 
-Das Rebasedn der translations branches lohnt sich eigentlich nicht, weil der nextcloud master sich relativ jäufig Ändert, was zu vielen Konflikten führen würde.
+Das Rebasedn der Translation-Branches lohnt sich eigentlich nicht, weil der nextcloud master sich relativ häufig ändert, was zu vielen Konflikten führen würde.
 
 ## Allgemeines
 
-Die Lokalisierung erfolgt in mehreren Schritten. Für eine bessere Vergleichbarkeit werden der Dateiname (Location) und die Zeilennummer in den `.ts`-Dateien entfernt. Die `.ts`-Dateien müssen vor jedem Merge-Schritt sortiert werden.
+Die Lokalisierung erfolgt in mehreren Schritten. 
+Die Qt-Translation Files (`.ts`-Dateien) enthalten zu jeder Resource die entsprechnde Datei und die Zeilennummer. Diese Informationen entfernen wir für eine bessere Vergleichabrkeit.
+*Die `.ts`-Dateien müssen vor jedem Merge-Schritt sortiert werden.*
 
 ## Schritte
 
 ### 1. Nextcloud-Grundstand aktualisieren
 
 - Den **unveränderten Nextcloud Stable Client** verwenden.
-- Am Einfachsten ist es den branch auschecken, den befehl laufen lassen, stashen und dann wieder auf den alten branch wechseln. Stash poppen.
+- Am einfachsten ist es den Branch auschecken, den Befehl laufen lassen, Stash erstellen und dann wieder auf den aktuellen Translation-Branch zu wechseln. Stash anwenden.
 - Mit folgendem Befehl die `.ts`Dateien auf den neuesten Stand bringen:
 
 ```
