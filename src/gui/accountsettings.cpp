@@ -1283,19 +1283,13 @@ void AccountSettings::migrateCertificateForAccount(const AccountPtr &account)
 
 void AccountSettings::showConnectionLabel(const QString &message, QStringList errors)
 {
+    _ui->accountStatus->setVisible(false);
 
-    #ifndef IONOS_BUILD
-    //SES-4 Removed
     const auto errStyle = QLatin1String("color:#ffffff; background-color:#bb4d4d;padding:5px;"
                                         "border-width: 1px; border-style: solid; border-color: #aaaaaa;"
                                         "border-radius:5px;");
-    if (errors.isEmpty()) {
-        auto msg = message;
-        Theme::replaceLinkColorStringBackgroundAware(msg);
-        _ui->connectLabel->setText(msg);
-        _ui->connectLabel->setToolTip({});
-        _ui->connectLabel->setStyleSheet({});
-    } else {
+    if (!errors.isEmpty()) {
+        _ui->accountStatus->setVisible(true);
         errors.prepend(message);
         auto userFriendlyMsg = errors.join(QLatin1String("<br>"));
         qCDebug(lcAccountSettings) << userFriendlyMsg;
@@ -1304,8 +1298,7 @@ void AccountSettings::showConnectionLabel(const QString &message, QStringList er
         _ui->connectLabel->setToolTip({});
         _ui->connectLabel->setStyleSheet(errStyle);
     }
-    #endif
-    _ui->accountStatus->setVisible(false);
+    
 }
 
 void AccountSettings::slotEnableCurrentFolder(bool terminate)
