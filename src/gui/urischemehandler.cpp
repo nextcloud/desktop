@@ -24,8 +24,8 @@ Q_LOGGING_CATEGORY(lcUriSchemeHandler, "nextcloud.gui.urischemehandler", QtInfoM
 namespace {
 
 constexpr auto openAction = "open";
-constexpr auto addAccountAction = "addAccount";
-constexpr auto serverUrlQueryItem = "server_url";
+constexpr auto addAccountAction = "addaccount";
+constexpr auto serverUrlQueryItem = "serverUrl";
 
 [[nodiscard]] QString describeUriForLog(const QUrl &url)
 {
@@ -83,7 +83,7 @@ UriSchemeHandler::ParsedUri UriSchemeHandler::parseUri(const QUrl &url)
         return result;
     }
 
-    const auto action = url.host();
+    const auto action = url.host().toCaseFolded();
     if (action == QLatin1String(openAction)) {
         result.action = Action::OpenLocalEdit;
         qCInfo(lcUriSchemeHandler) << "Accepted URI scheme request for local edit:" << describeUriForLog(url);
@@ -104,14 +104,14 @@ UriSchemeHandler::ParsedUri UriSchemeHandler::parseUri(const QUrl &url)
 
     const auto query = QUrlQuery{url};
     if (!query.hasQueryItem(QLatin1String(serverUrlQueryItem))) {
-        result.error = QStringLiteral("The add account URL is missing the server_url query item.");
+        result.error = QStringLiteral("The add account URL is missing the serverUrl query item.");
         qCWarning(lcUriSchemeHandler) << "Rejected URI scheme request:" << result.error << describeUriForLog(url);
         return result;
     }
 
     const auto serverUrl = QUrl{query.queryItemValue(QLatin1String(serverUrlQueryItem))};
     if (!isValidServerUrl(serverUrl)) {
-        result.error = QStringLiteral("The add account URL contains an invalid server_url query item.");
+        result.error = QStringLiteral("The add account URL contains an invalid serverUrl query item.");
         qCWarning(lcUriSchemeHandler) << "Rejected URI scheme request:" << result.error << describeUriForLog(url);
         return result;
     }

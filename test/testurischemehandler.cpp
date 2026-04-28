@@ -26,13 +26,25 @@ private slots:
         QTest::addColumn<bool>("expectError");
 
         QTest::newRow("add account")
-            << QUrl(QStringLiteral("nc://addAccount/?server_url=https%3A%2F%2Fcloud.example.com"))
+            << QUrl(QStringLiteral("nc://addAccount/?serverUrl=https%3A%2F%2Fcloud.example.com"))
             << UriSchemeHandler::Action::AddAccount
             << QUrl(QStringLiteral("https://cloud.example.com"))
             << false;
 
         QTest::newRow("add account without slash")
-            << QUrl(QStringLiteral("nc://addAccount?server_url=https%3A%2F%2Fcloud.example.com"))
+            << QUrl(QStringLiteral("nc://addAccount?serverUrl=https%3A%2F%2Fcloud.example.com"))
+            << UriSchemeHandler::Action::Invalid
+            << QUrl{}
+            << true;
+
+        QTest::newRow("add account lowercase host")
+            << QUrl(QStringLiteral("nc://addaccount/?serverUrl=https%3A%2F%2Fcloud.example.com"))
+            << UriSchemeHandler::Action::AddAccount
+            << QUrl(QStringLiteral("https://cloud.example.com"))
+            << false;
+
+        QTest::newRow("add account snake case query")
+            << QUrl(QStringLiteral("nc://addAccount/?server_url=https%3A%2F%2Fcloud.example.com"))
             << UriSchemeHandler::Action::Invalid
             << QUrl{}
             << true;
@@ -44,19 +56,19 @@ private slots:
             << true;
 
         QTest::newRow("add account relative server url")
-            << QUrl(QStringLiteral("nc://addAccount/?server_url=cloud.example.com"))
+            << QUrl(QStringLiteral("nc://addAccount/?serverUrl=cloud.example.com"))
             << UriSchemeHandler::Action::Invalid
             << QUrl{}
             << true;
 
         QTest::newRow("add account hostless server url")
-            << QUrl(QStringLiteral("nc://addAccount/?server_url=https%3A%2F%2F"))
+            << QUrl(QStringLiteral("nc://addAccount/?serverUrl=https%3A%2F%2F"))
             << UriSchemeHandler::Action::Invalid
             << QUrl{}
             << true;
 
         QTest::newRow("add account unsupported server url scheme")
-            << QUrl(QStringLiteral("nc://addAccount/?server_url=ftp%3A%2F%2Fcloud.example.com"))
+            << QUrl(QStringLiteral("nc://addAccount/?serverUrl=ftp%3A%2F%2Fcloud.example.com"))
             << UriSchemeHandler::Action::Invalid
             << QUrl{}
             << true;
