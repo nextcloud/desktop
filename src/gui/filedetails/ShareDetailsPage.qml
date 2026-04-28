@@ -493,7 +493,7 @@ Page {
                     sourceSize.height: scrollContentsColumn.rowIconWidth
                 }
 
-                NCInputTextArea {
+                TextEdit {
                     id: noteTextArea
 
                     Layout.fillWidth: true
