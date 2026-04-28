@@ -49,6 +49,7 @@ Page {
                 }
 
                 delegate: FieldDelegate {
+                    accountState: root.accountState
                     width: propertyList.contentItem.width
                 }
             }
