@@ -125,6 +125,19 @@ Loader {
                     required property string displayName
                     required property string value
                 }
+
+                onActivated: (index) => {
+                    console.log(`activated index ${index}`)
+                    console.log(`activated index ${index} => ${suggestionModel.get(index).value}`)
+                    instantiator.model.value.append(suggestionModel.get(index).value)
+                }
+            }
+            Repeater {
+                model: model.value ?? []
+                Label {
+                    required property list<string> value
+                    text: value
+                }
             }
         }
     }
