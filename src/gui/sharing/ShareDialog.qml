@@ -18,8 +18,7 @@ ApplicationWindow {
     id: root
     visible: true
 
-    property var accountState
-    property QtObject sharingManager
+    property var account
     property string localPath: ""
     property string shortLocalPath: root.localPath.split("/").reverse()[0]
 
@@ -31,9 +30,13 @@ ApplicationWindow {
         id: shareType
     }
 
-    SharingModel {
-        id: sharingModel
-        accountState: root.accountState
+    SharingController {
+        id: sharingController
+        account: root.account
+    }
+
+    Component.onCompleted: {
+        sharingController.createShare("8") // TODO: do not hardcode fileid
     }
 
     width: 400
@@ -125,10 +128,8 @@ ApplicationWindow {
                 visible: stack.depth < 2
 
                 onClicked: stack.push(Qt.createComponent("com.nextcloud.desktopclient.sharing", "SettingsPage").createObject(root, {
-                    accountState: root.accountState,
-                    sharingManager: root.sharingManager,
+                    sharingController: sharingController,
                     shortLocalPath: root.shortLocalPath,
-                    sharingModel: sharingModel,
                     recipientTypes: Qt.binding(() => root.recipientTypes),
                 }))
             }
@@ -205,11 +206,9 @@ ApplicationWindow {
     MainPage {
         id: mainPage
 
-        accountState: root.accountState
-        sharingManager: root.sharingManager
+        sharingController: sharingController
         localPath: root.localPath
         shortLocalPath: root.shortLocalPath
-        sharingModel: sharingModel
         recipientTypes: root.recipientTypes
     }
 }

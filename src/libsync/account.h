@@ -13,7 +13,6 @@
 #include "clientstatusreporting.h"
 #include "common/utility.h"
 #include "common/vfs.h"
-#include "sharing/sharingmanager.h"
 #include "syncfileitem.h"
 #include "updatechannel.h"
 
@@ -57,10 +56,6 @@ class SimpleNetworkJob;
 class PushNotifications;
 class UserStatusConnector;
 class SyncJournalDb;
-
-namespace Sharing {
-    class SharingManager;
-}
 
 /**
  * @brief Reimplement this to handle SSL errors from libsync
@@ -450,8 +445,6 @@ public:
     [[nodiscard]] QUuid uuid() const;
 
 public Q_SLOTS:
-    [[nodiscard]] Sharing::SharingManager *sharing() const;
-
     /// Used when forgetting credentials
     void clearQNAMCache();
     void slotHandleSslErrors(QNetworkReply *, QList<QSslError>);
@@ -613,8 +606,6 @@ private:
     bool _serverHasValidSubscription = false;
     UpdateChannel _enterpriseUpdateChannel = UpdateChannel::Invalid;
     QByteArray _encryptionCertificateFingerprint;
-
-    Sharing::SharingManager *_sharingManager = nullptr;
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
     QString _fileProviderDomainIdentifier;

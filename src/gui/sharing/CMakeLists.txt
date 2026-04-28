@@ -5,12 +5,24 @@ add_library(nextcloudGuiSharing STATIC)
 
 target_sources(nextcloudGuiSharing
   PRIVATE
+    ocssharingjob.h
+    ocssharingjob.cpp
+    permission.h
+    permission.cpp
+    property.h
+    property.cpp
+    propertymodel.h
+    propertymodel.cpp
     recipientsearchmodel.h
     recipientsearchmodel.cpp
-    sharingfiltermodel.h
-    sharingfiltermodel.cpp
-    sharingmodel.h
-    sharingmodel.cpp
+    share.h
+    share.cpp
+    # sharingfiltermodel.h
+    # sharingfiltermodel.cpp
+    sharingcontroller.h
+    sharingcontroller.cpp
+    # sharingmodel.h
+    # sharingmodel.cpp
 )
 
 ecm_add_qml_module(nextcloudGuiSharing
@@ -19,6 +31,7 @@ ecm_add_qml_module(nextcloudGuiSharing
   QML_FILES
     FieldDelegate.qml
     MainPage.qml
+    RecipientSearchField.qml
     SettingsPage.qml
     ShareDialog.qml
 )
