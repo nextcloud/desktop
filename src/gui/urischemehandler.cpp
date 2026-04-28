@@ -109,7 +109,14 @@ UriSchemeHandler::ParsedUri UriSchemeHandler::parseUri(const QUrl &url)
         return result;
     }
 
-    const auto serverUrl = QUrl{query.queryItemValue(QLatin1String(serverUrlQueryItem))};
+    const auto serverUrlValue = query.queryItemValue(QLatin1String(serverUrlQueryItem), QUrl::FullyDecoded);
+    const auto serverUrl = QUrl{serverUrlValue};
+    qCInfo(lcUriSchemeHandler) << "Decoded add account serverUrl query item:"
+                               << "isValid=" << serverUrl.isValid()
+                               << "isRelative=" << serverUrl.isRelative()
+                               << "scheme=" << serverUrl.scheme()
+                               << "host=" << serverUrl.host()
+                               << "path=" << serverUrl.path();
     if (!isValidServerUrl(serverUrl)) {
         result.error = QStringLiteral("The add account URL contains an invalid serverUrl query item.");
         qCWarning(lcUriSchemeHandler) << "Rejected URI scheme request:" << result.error << describeUriForLog(url);
