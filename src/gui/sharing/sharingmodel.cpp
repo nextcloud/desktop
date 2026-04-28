@@ -24,7 +24,7 @@ int SharingModel::rowCount(const QModelIndex &parent) const
     // TODO: cache this after setting accountstate
     const auto sharing = accountState()->account()->sharing();
     const auto features = sharing->features().values();
-    return features.size();
+    return features.size() + 1; // TODO: +1 for the special feature at the beginning for the recipients
 }
 
 QVariant SharingModel::data(const QModelIndex &index, int role) const
@@ -33,10 +33,26 @@ QVariant SharingModel::data(const QModelIndex &index, int role) const
         return {};
     }
 
+    if (index.row() == 0) {
+        // special feature for the recipients search
+        switch (role) {
+        case LabelRole:
+            return "Add people"_L1;
+        case PropertyRole:
+            return "recipients"_L1;
+        case TypeRole:
+            return FieldTypes::RecipientsField;
+        case PlaceholderRole:
+            return "Name, team, email, or federated cloud ID"_L1;
+        default:
+            return {};
+        }
+    }
+
     // TODO: cache this after setting accountstate
     const auto sharing = accountState()->account()->sharing();
     const auto features = sharing->features().values();
-    const auto feature = features.at(index.row());
+    const auto feature = features.at(index.row() - 1); // TODO: -1 to adjust the special feature for searching
 
     switch (role) {
     case LabelRole:

@@ -9,6 +9,7 @@
 #include <QStringList>
 
 #include "accountfwd.h"
+#include "networkjobs.h"
 
 #include "sharetype.h"
 #include "feature.h"
@@ -37,6 +38,8 @@ public:
     [[nodiscard]] QMap<QString, QSharedPointer<ShareType>> sourceTypes() const;
     [[nodiscard]] QMap<QString, QSharedPointer<ShareType>> recipientTypes() const;
     [[nodiscard]] QMap<QString, QSharedPointer<Feature>> features() const;
+
+    JsonApiJob *createSearchJob(const QString &query, int64_t offset, int64_t limit, QObject *parent);
 
 Q_SIGNALS:
     void availableChanged();
