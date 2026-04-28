@@ -751,20 +751,30 @@ Page {
                 }
 
                 property bool shareLinkCopied: false
+                property bool hasBeenClicked: false
 
+                clip: true
                 iconSource: Style.sesLightClipboard
+                textWrapMode: widthAnimation.running ? Text.NoWrap : Text.WordWrap
 
-            text: shareLinkCopied ? qsTr("Share link copied!") : qsTr("Copy share link")
+                text: shareLinkCopied ? qsTr("Share link copied!") : qsTr("Copy share link")
 
                 Layout.maximumWidth: actionButtonsGrid.width
 
                 visible: root.isLinkShare
                 enabled: visible
 
-                onClicked: copyShareLink()
+                onClicked: {
+                    hasBeenClicked = true;
+                    copyShareLink();
+                }
 
                 Behavior on implicitWidth {
-                    SmoothedAnimation { duration: Style.shortAnimationDuration }
+                    enabled: copyShareLinkButton.hasBeenClicked
+                    SmoothedAnimation {
+                        id: widthAnimation
+                        duration: Style.shortAnimationDuration
+                    }
                 }
 
                 TextEdit {

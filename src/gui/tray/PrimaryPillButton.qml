@@ -7,6 +7,7 @@ import Style
 Button{
   id: root
   property string iconSource
+  property int textWrapMode: Text.WordWrap
 
   property bool isMouseOver: false
 
@@ -27,7 +28,7 @@ Button{
         font.pixelSize: Style.sesFontHintPixelSize
         maximumLineCount: 2
         elide: Text.ElideRight
-        wrapMode: Text.WordWrap
+        wrapMode: root.textWrapMode
         width: Math.min(implicitWidth, root.width - contentRow.leftPadding - contentRow.rightPadding - (root.iconSource ? Style.sesPillIconSize + contentRow.spacing : 0))
         anchors.verticalCenter: parent.verticalCenter
     }
