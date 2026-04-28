@@ -24,7 +24,7 @@ Das Rebasedn der Translation-Branches lohnt sich eigentlich nicht, weil der next
 
 Die Lokalisierung erfolgt in mehreren Schritten. 
 Die Qt-Translation Files (`.ts`-Dateien) enthalten zu jeder Resource die entsprechnde Datei und die Zeilennummer. Diese Informationen entfernen wir für eine bessere Vergleichabrkeit.
-*Die `.ts`-Dateien müssen vor jedem Merge-Schritt sortiert werden.*
+*Die `.ts`-Dateien müssen vor jedem Merge-Schritt sortiert werden.* Dies geschieht in der Regel durch das Skript selbst.
 
 ## Schritte
 
@@ -44,9 +44,7 @@ Danach die .ts Dateien mit folgendem Befehl sortieren:
 python3 merge_translation.py 0
 ```
 
-- Wichtig: **Obsolete Keys entfernen**.
-- Die `.ts`Datei manuell per Skript sortieren.
-- Datei in den **Translation Branch** legen und committen.
+- Datei in den **Translation Branch** legen und committen (STEP 0).
 
 ### 2. Merge-Schritt 1
 
@@ -60,7 +58,7 @@ python3 merge_translation.py 1
 - Obsolete Einträge werden **nicht gelöscht**.
 - Neue Keys werden hinzugefügt.
 - Obsolete-Markierungen werden entfernt und die Datei wird sortiert.
-- Commit durchführen.
+- Commit durchführen (STEP 1).
 
 ### 3. Merge-Schritt 2
 
@@ -73,7 +71,7 @@ python3 merge_translation.py 2
 - Führt ein `lupdate` aus.
 - **Obsolete Keys werden entfernt**.
 - Die Datei enthält jetzt nur die aktuellen Keys (unsere Keys ohne Übersetzungen).
-- Commit durchführen.
+- Commit durchführen (STEP 2).
 
 ### 4. Merge-Schritt 3
 
@@ -86,7 +84,7 @@ python3 merge_translation.py 3
 - Sprachabhängige Diff-Dateien werden in die `.ts`Dateien gemergt.
 - Leere Keys werden mit Übersetzungen gefüllt.
 - Obsolete Keys aus der Diff-Datei werden gegebenenfalls eingefügt.
-- Commit durchführen.
+- Commit durchführen (STEP 3).
 
 ### 5. Merge-Schritt 4
 
@@ -98,6 +96,7 @@ python3 merge_translation.py 4
 
 - Ein weiteres `lupdate` wird ausgeführt.
 - Heuristische Füllung von doppelten Keys mit unseren Übersetzungen.
+- Commit durchführen (STEP 4).
 
 ### 6. Merge-Schritt 5
 
@@ -108,7 +107,7 @@ python3 merge_translation.py 5
 ```
 
 - **Obsolete Keys werden endgültig entfernt**.
-- Commit durchführen.
+- Commit durchführen (STEP 5).
 
 ## Abschluss
 
