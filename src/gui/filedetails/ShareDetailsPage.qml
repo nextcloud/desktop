@@ -685,15 +685,12 @@ Page {
         }
     }
 
-    footer: GridLayout {
+    footer: ColumnLayout {
         id: buttonGrid
 
-        columns: 1
-        rows: 2
+        spacing: 0
 
         PrimaryPillButton {
-            Layout.columnSpan: buttonGrid.columns
-
             iconSource: Style.sesLightPlus
 
             font.pixelSize: pixelSize
@@ -705,67 +702,76 @@ Page {
 
             Layout.leftMargin: 16
             Layout.bottomMargin: 16
-            Layout.row: 0
 
             onClicked: root.createNewLinkShare()
         }
 
-        SecondaryPillButton {
-            id: unshareButton
+        GridLayout {
+            id: actionButtonsGrid
 
-            font.pixelSize: pixelSize
-            font.weight: fontWeight
-            text: qsTr("Unshare")
+            readonly property bool buttonsOverflow: unshareButton.implicitWidth + copyShareLinkButton.implicitWidth + columnSpacing + 16 + 20 > root.width
 
-            Layout.bottomMargin: 16
+            Layout.fillWidth: true
             Layout.leftMargin: 16
-            Layout.rightMargin: 60
-            Layout.row: 1
-            onClicked: root.deleteShare()
-        }
+            Layout.rightMargin: 20
+            Layout.bottomMargin: 16
+            columns: buttonsOverflow ? 1 : 3
+            columnSpacing: 8
+            rowSpacing: 8
 
-        PrimaryPillButton {
-            id: copyShareLinkButton
+            SecondaryPillButton {
+                id: unshareButton
 
-            function copyShareLink() {
-                clipboardHelper.text = root.link;
-                clipboardHelper.selectAll();
-                clipboardHelper.copy();
-                clipboardHelper.clear();
+                font.pixelSize: pixelSize
+                font.weight: fontWeight
+                text: qsTr("Unshare")
 
-                shareLinkCopied = true;
-                shareLinkCopyTimer.start();
+                onClicked: root.deleteShare()
             }
 
-            property bool shareLinkCopied: false
+            Item {
+                Layout.fillWidth: true
+                visible: !actionButtonsGrid.buttonsOverflow
+            }
 
-            iconSource: Style.sesLightClipboard
+            PrimaryPillButton {
+                id: copyShareLinkButton
+
+                function copyShareLink() {
+                    clipboardHelper.text = root.link;
+                    clipboardHelper.selectAll();
+                    clipboardHelper.copy();
+                    clipboardHelper.clear();
+
+                    shareLinkCopied = true;
+                    shareLinkCopyTimer.start();
+                }
+
+                property bool shareLinkCopied: false
+
+                iconSource: Style.sesLightClipboard
 
             text: shareLinkCopied ? qsTr("Share link copied!") : qsTr("Copy share link")
 
-            visible: root.isLinkShare
-            enabled: visible
+                visible: root.isLinkShare
+                enabled: visible
 
-            onClicked: copyShareLink()
+                onClicked: copyShareLink()
 
-            Layout.alignment: Qt.AlignRight
-            Layout.bottomMargin: 16
-            Layout.rightMargin: 20
-            Layout.row: 1
+                Behavior on implicitWidth {
+                    SmoothedAnimation { duration: Style.shortAnimationDuration }
+                }
 
-            Behavior on Layout.preferredWidth {
-                SmoothedAnimation { duration: Style.shortAnimationDuration }
-            }
+                TextEdit {
+                    id: clipboardHelper
+                    visible: false
+                }
 
-            TextEdit {
-                id: clipboardHelper
-                visible: false
-            }
-
-            Timer {
-                id: shareLinkCopyTimer
-                interval: Style.veryLongAnimationDuration
-                onTriggered: copyShareLinkButton.shareLinkCopied = false
+                Timer {
+                    id: shareLinkCopyTimer
+                    interval: Style.veryLongAnimationDuration
+                    onTriggered: copyShareLinkButton.shareLinkCopied = false
+                }
             }
         }
     }
