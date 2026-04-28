@@ -30,20 +30,14 @@ Die Qt-Translation Files (`.ts`-Dateien) enthalten zu jeder Resource die entspre
 
 ### 1. Nextcloud-Grundstand aktualisieren
 
-- Den **unveränderten Nextcloud Stable Client** verwenden.
-- Am einfachsten ist es den Branch auschecken, den Befehl laufen lassen, Stash erstellen und dann wieder auf den aktuellen Translation-Branch zu wechseln. Stash anwenden.
-- Mit folgendem Befehl die `.ts`Dateien auf den neuesten Stand bringen:
+- Das Skript verwendet `git worktree`, um den unveränderten Nextcloud-Quellcode temporär verfügbar zu machen, ohne den aktuellen Branch zu wechseln.
+- Der NC-Basisbranch wird als zweites Argument übergeben:
 
 ```
-C:\Craft64\bin\lupdate.exe -locations none -no-obsolete -no-ui-lines .\src\libsync\ .\src\gui\ .\src\csync\ .\src\common\ .\src\cmd\ -ts .\translations\client_de.ts .\translations\client_en.ts .\translations\client_en_GB.ts .\translations\client_es.ts .\translations\client_fr.ts .\translations\client_it.ts .\translations\client_nl.ts
+python3 merge_translation.py 0 stable-4.0
 ```
 
-Danach die .ts Dateien mit folgendem Befehl sortieren:
-
-```
-python3 merge_translation.py 0
-```
-
+- Das Skript erstellt automatisch einen temporären Worktree, führt `lupdate` gegen den NC-Quellcode aus, sortiert die Dateien und räumt den Worktree wieder auf.
 - Datei in den **Translation Branch** legen und committen (STEP 0).
 
 ### 2. Merge-Schritt 1

@@ -1,4 +1,6 @@
 import sys
+import os
+import tempfile
 import subprocess
 import xml.etree.ElementTree as ET
 
@@ -216,6 +218,61 @@ def run_script(script_name, input_file, output_file):
     except subprocess.CalledProcessError as e:
         print(f"An error occurred while running {script_name} with input '{input_file}' and output '{output_file}': {e}")
 
+def run_lupdate_from_branch(ts_files, nc_branch):
+    """Run lupdate against the unmodified NC branch source using git worktree.
+    
+    This avoids the need to manually checkout the NC branch (which would make
+    this script disappear). A temporary worktree is created, lupdate runs
+    against it, and the worktree is cleaned up afterwards.
+    """
+    repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    worktree_dir = os.path.join(tempfile.gettempdir(), "nc_lupdate_worktree")
+    
+    # Clean up any leftover worktree from a previous failed run
+    if os.path.exists(worktree_dir):
+        print(f"Cleaning up leftover worktree at {worktree_dir}...")
+        subprocess.run(["git", "worktree", "remove", "--force", worktree_dir],
+                        cwd=repo_root, check=False)
+    
+    try:
+        # Create worktree for the NC branch
+        print(f"Creating temporary worktree for branch '{nc_branch}'...")
+        result = subprocess.run(
+            ["git", "worktree", "add", worktree_dir, nc_branch],
+            cwd=repo_root, capture_output=True, text=True
+        )
+        if result.returncode != 0:
+            print(f"Error creating worktree: {result.stderr}")
+            sys.exit(1)
+        
+        # Build lupdate command pointing at the worktree's source directories
+        src_dirs = ["src/libsync", "src/gui", "src/csync", "src/common", "src/cmd"]
+        command = [
+            r"C:\Craft64\bin\lupdate.exe",
+            "-locations", "none",
+            "-no-obsolete",
+            "-no-ui-lines",
+            "-no-sort",
+        ]
+        for d in src_dirs:
+            command.append(os.path.join(worktree_dir, d))
+        
+        command.append("-ts")
+        # Convert ts paths to absolute so they resolve regardless of cwd
+        command.extend([os.path.abspath(f) for f in ts_files])
+        
+        print("Running lupdate against NC source...")
+        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
+        print("Output:", result.stdout)
+    except subprocess.CalledProcessError as e:
+        print(f"lupdate error: {e.stderr}")
+        sys.exit(1)
+    finally:
+        # Always clean up the worktree
+        print("Removing temporary worktree...")
+        subprocess.run(["git", "worktree", "remove", "--force", worktree_dir],
+                        cwd=repo_root, check=False)
+
 def run_lupdate(ts_files, mode="default"):
     command = [
         r"C:\Craft64\bin\lupdate.exe",
@@ -294,20 +351,31 @@ if __name__ == "__main__":
                   ]
 
     if len(sys.argv) == 1:
-        print("Usage: python merge.py <input_file> <output_file>")
+        print("Usage: python merge_translation.py <step> [nc_branch]")
+        print("  step: 0-5 or 'all'")
+        print("  nc_branch: required for step 0 (e.g. stable-4.0)")
         sys.exit()
     if len(sys.argv) == 3:
-        print("Usage: python remove_line_attributes.py <input_file> <output_file>")
-        sys.exit()
-    if len(sys.argv) == 2:
         step = sys.argv[1]
+        nc_branch = sys.argv[2]
+    elif len(sys.argv) == 2:
+        step = sys.argv[1]
+        nc_branch = None
+    
+    if step == "0" or step == "all":
+        if nc_branch is None:
+            print("Error: step 0 requires the NC base branch as second argument")
+            print("  Example: python merge_translation.py 0 stable-4.0")
+            sys.exit(1)
+
     try:
         
         if step == "0" or step == "all":
-            # Step 0 full sort
+            # Step 0: lupdate against unmodified NC source + sort
+            run_lupdate_from_branch(ts_files, nc_branch)
             for ts_file in ts_files:      
                 sort_and_repair(ts_file)  
-            print("Step 0 completed: sorted")
+            print("Step 0 completed: lupdate from NC source + sorted, you should commit now")
         
         if step == "1" or step == "all":
             # Step 1 lupdate Nextcloud in our latest change state, keep obsolete
