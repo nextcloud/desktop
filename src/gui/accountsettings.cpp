@@ -1283,6 +1283,28 @@ void AccountSettings::migrateCertificateForAccount(const AccountPtr &account)
 
 void AccountSettings::showConnectionLabel(const QString &message, QStringList errors)
 {
+    #ifndef IONOS_BUILD
+    const auto errStyle = QLatin1String("color:#ffffff; background-color:#bb4d4d;padding:5px;"
+                                        "border-width: 1px; border-style: solid; border-color: #aaaaaa;"
+                                        "border-radius:5px;");
+    if (errors.isEmpty()) {
+        auto msg = message;
+        Theme::replaceLinkColorStringBackgroundAware(msg);
+        _ui->connectLabel->setText(msg);
+        _ui->connectLabel->setToolTip({});
+        _ui->connectLabel->setStyleSheet({});
+    } else {
+        errors.prepend(message);
+        auto userFriendlyMsg = errors.join(QLatin1String("<br>"));
+        qCDebug(lcAccountSettings) << userFriendlyMsg;
+        Theme::replaceLinkColorString(userFriendlyMsg, QColor("#c1c8e6"));
+        _ui->connectLabel->setText(userFriendlyMsg);
+        _ui->connectLabel->setToolTip({});
+        _ui->connectLabel->setStyleSheet(errStyle);
+    }
+    _ui->accountStatus->setVisible(false);
+    #else
+    
     _ui->accountStatus->setVisible(false);
 
     const auto errStyle = QLatin1String("color:#ffffff; background-color:#bb4d4d;padding:5px;"
@@ -1298,7 +1320,7 @@ void AccountSettings::showConnectionLabel(const QString &message, QStringList er
         _ui->connectLabel->setToolTip({});
         _ui->connectLabel->setStyleSheet(errStyle);
     }
-    
+    #endif
 }
 
 void AccountSettings::slotEnableCurrentFolder(bool terminate)
