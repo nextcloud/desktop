@@ -195,7 +195,7 @@ class ShareOptionsView: NSView {
                 ? .on : .off
 
             groupShareMenuItem.isHidden = true
-            emailShareMenuItem.isHidden = true
+            emailShareMenuItem.isHidden = false
             federatedCloudShareMenuItem.isHidden = true
             teamShare.isHidden = true
             talkConversationShare.isHidden = true
