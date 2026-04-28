@@ -230,6 +230,99 @@ def auto_commit(ts_files, step_name, auto_commit_enabled):
     )
     print(f"  Committed: {step_name}")
 
+def validate_ts_files(ts_files, step_name):
+    """Validate translation files after a step. Returns True if valid, exits on critical error."""
+    errors = []
+    warnings = []
+    file_stats = {}
+    
+    for ts_file in ts_files:
+        basename = os.path.basename(ts_file)
+        
+        # Check file exists
+        if not os.path.exists(ts_file):
+            errors.append(f"{basename}: file not found")
+            continue
+        
+        # Check XML validity
+        try:
+            tree = ET.parse(ts_file)
+            root = tree.getroot()
+        except ET.ParseError as e:
+            errors.append(f"{basename}: invalid XML - {e}")
+            continue
+        
+        # Gather stats
+        contexts = root.findall("context")
+        messages = root.findall(".//message")
+        empty_contexts = [c for c in contexts if len(c.findall("message")) == 0]
+        
+        msg_count = len(messages)
+        ctx_count = len(contexts)
+        
+        # Count source keys for consistency check
+        source_keys = set()
+        duplicate_keys = []
+        for ctx in contexts:
+            ctx_name = ctx.find("name").text if ctx.find("name") is not None else ""
+            seen_in_ctx = set()
+            for msg in ctx.findall("message"):
+                src = msg.find("source")
+                if src is not None and src.text:
+                    key = (ctx_name, src.text)
+                    if key in seen_in_ctx:
+                        duplicate_keys.append(f"{ctx_name}::{src.text[:50]}")
+                    seen_in_ctx.add(key)
+                    source_keys.add(key)
+        
+        file_stats[basename] = {
+            "messages": msg_count,
+            "contexts": ctx_count,
+            "source_keys": source_keys,
+        }
+        
+        if empty_contexts:
+            names = [c.find("name").text for c in empty_contexts if c.find("name") is not None]
+            warnings.append(f"{basename}: {len(empty_contexts)} empty context(s): {', '.join(names[:3])}")
+        
+        if duplicate_keys:
+            warnings.append(f"{basename}: {len(duplicate_keys)} duplicate key(s) within same context")
+    
+    # Cross-file consistency: all files should have the same source keys (except after step 3 merge which adds diff keys)
+    if len(file_stats) >= 2:
+        ref_name = list(file_stats.keys())[0]
+        ref_keys = file_stats[ref_name]["source_keys"]
+        ref_count = file_stats[ref_name]["messages"]
+        
+        for name, stats in file_stats.items():
+            if name == ref_name:
+                continue
+            if stats["messages"] != ref_count:
+                warnings.append(f"message count mismatch: {ref_name}={ref_count}, {name}={stats['messages']}")
+            
+            missing = ref_keys - stats["source_keys"]
+            extra = stats["source_keys"] - ref_keys
+            if missing:
+                errors.append(f"{name}: missing {len(missing)} key(s) that {ref_name} has")
+            if extra:
+                errors.append(f"{name}: has {len(extra)} extra key(s) that {ref_name} doesn't")
+    
+    # Print validation summary
+    print(f"  Validation ({step_name}):")
+    for name, stats in file_stats.items():
+        print(f"    {name}: {stats['messages']} messages, {stats['contexts']} contexts")
+    
+    for w in warnings:
+        print(f"    WARNING: {w}")
+    
+    if errors:
+        for e in errors:
+            print(f"    ERROR: {e}")
+        print(f"  Validation FAILED for {step_name}. Aborting.")
+        sys.exit(1)
+    
+    print(f"    OK")
+
 def run_script(script_name, input_file, output_file):
     try:
         # Running each script with input and output file arguments
@@ -401,6 +494,7 @@ if __name__ == "__main__":
             for ts_file in ts_files:      
                 sort_and_repair(ts_file)  
             print("Step 0 completed: lupdate from NC source + sorted")
+            validate_ts_files(ts_files, "Step 0")
             auto_commit(ts_files, "Step 0", auto_commit_enabled)
         
         if step == "1" or step == "all":
@@ -413,6 +507,7 @@ if __name__ == "__main__":
                 sort_and_repair(ts_file)  
                
             print("Step 1 completed: lupdate (keep obsolete), pop vanished, full sort")
+            validate_ts_files(ts_files, "Step 1")
             auto_commit(ts_files, "Step 1", auto_commit_enabled)
                                  
         if step == "2" or step == "all":            
@@ -420,6 +515,7 @@ if __name__ == "__main__":
             for ts_file in ts_files:        
                 sort_and_repair(ts_file)  
             print("Step 2 completed: lupdate removed obsolete")
+            validate_ts_files(ts_files, "Step 2")
             auto_commit(ts_files, "Step 2", auto_commit_enabled)
                 
             # Step 3 merge diff into
@@ -429,6 +525,7 @@ if __name__ == "__main__":
                 merge(diff_files[ts_files.index(ts_file)], ts_file)
                 sort_and_repair(ts_file)  
             print("Step 3 completed: merged, sorted")
+            validate_ts_files(ts_files, "Step 3")
             auto_commit(ts_files, "Step 3", auto_commit_enabled)
 
         if step == "4" or step == "all":            
@@ -437,6 +534,7 @@ if __name__ == "__main__":
                 pop_vanished(ts_file)   
                 sort_and_repair(ts_file)  
             print("Step 4 completed: lupdate fill duplicates, format")
+            validate_ts_files(ts_files, "Step 4")
             auto_commit(ts_files, "Step 4", auto_commit_enabled)
             
         if step == "5" or step == "all":            
@@ -444,6 +542,7 @@ if __name__ == "__main__":
             for ts_file in ts_files:        
                 sort_and_repair(ts_file)  
             print("Step 5 completed: lupdate remove obsolete, sort")
+            validate_ts_files(ts_files, "Step 5")
             auto_commit(ts_files, "Step 5", auto_commit_enabled)
 
     except Exception as e:
