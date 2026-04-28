@@ -8,18 +8,16 @@
 #include <QAbstractListModel>
 #include <qqmlintegration.h>
 
-#include "accountstate.h"
-
-#include "sharing/share.h"
+#include "share.h"
 
 namespace OCC::Gui::Sharing {
 
-class SharingModel : public QAbstractListModel
+class PropertyModel : public QAbstractListModel
 {
     Q_OBJECT
     QML_ELEMENT
 
-    Q_PROPERTY(AccountState *accountState READ accountState WRITE setAccountState NOTIFY accountStateChanged)
+    Q_PROPERTY(Share *share READ share WRITE setShare NOTIFY shareChanged)
 
 public:
     enum Roles {
@@ -38,7 +36,7 @@ public:
     };
     Q_ENUM(FieldTypes)
 
-    explicit SharingModel(QObject *parent = nullptr);
+    explicit PropertyModel(QObject *parent = nullptr);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
@@ -46,17 +44,14 @@ public:
     Qt::ItemFlags flags(const QModelIndex &index) const override;
     QHash<int, QByteArray> roleNames() const override;
 
-    [[nodiscard]] AccountState *accountState() const;
-    void setAccountState(AccountState *accountState);
-
-    Q_INVOKABLE void addRecipient(const QString &type, const QString &value);
+    [[nodiscard]] Share* share() const;
+    void setShare(Share* share);
 
 Q_SIGNALS:
-    void accountStateChanged();
+    void shareChanged();
 
 private:
-    AccountState *_accountState = nullptr;
-    QSharedPointer<OCC::Sharing::Share> _share = nullptr;
+    Share *_share = nullptr;
     QVariantMap _fieldValues;
 };
 

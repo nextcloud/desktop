@@ -53,8 +53,6 @@
 
 #include "creds/abstractcredentials.h"
 
-#include "sharing/sharingmanager.h"
-
 using namespace QKeychain;
 
 namespace {
@@ -100,7 +98,6 @@ AccountPtr Account::create()
     AccountPtr acc = AccountPtr(new Account);
     acc->setSharedThis(acc);
     acc->_e2e.setAccount(acc);
-    acc->_sharingManager = new Sharing::SharingManager{acc, acc.get()};
     return acc;
 }
 
@@ -781,9 +778,6 @@ void Account::setCapabilities(const QVariantMap &caps)
     trySetupPushNotifications();
 
     trySetupClientStatusReporting();
-    if (_sharingManager) {
-        _sharingManager->updateFromCapabilities(caps);
-    }
 }
 
 void Account::setupUserStatusConnector()
@@ -1593,11 +1587,6 @@ bool Account::serverHasIntegration() const
 void Account::updateServerHasIntegration()
 {
     _serverHasIntegration = capabilities().serverHasClientIntegration();
-}
-
-Sharing::SharingManager *Account::sharing() const
-{
-    return _sharingManager;
 }
 
 } // namespace OCC
