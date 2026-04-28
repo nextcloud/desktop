@@ -5,6 +5,8 @@ add_library(nextcloudGuiSharing STATIC)
 
 target_sources(nextcloudGuiSharing
   PRIVATE
+    recipientsearchmodel.h
+    recipientsearchmodel.cpp
     sharingfiltermodel.h
     sharingfiltermodel.cpp
     sharingmodel.h
