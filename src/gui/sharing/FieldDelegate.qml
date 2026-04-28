@@ -15,10 +15,10 @@ import Style
 
 Loader {
     id: instantiator
-    required property var modelData
+    required property var model
     required property var accountState
 
-    sourceComponent: switch (modelData.type) {
+    sourceComponent: switch (model.type) {
         case SharingModel.Switch:
             return switchComponent;
         case SharingModel.TextField:
@@ -35,10 +35,17 @@ Loader {
         id: switchComponent
         RowLayout {
             Label {
-                text: modelData.label
+                text: instantiator.model.label
                 Layout.fillWidth: true
             }
             Switch {
+                Component.onCompleted: checked = instantiator.model.value ?? false
+                onCheckedChanged: {
+                    if (instantiator.model.value === checked) {
+                        return;
+                    }
+                    instantiator.model.value = checked
+                }
             }
         }
     }
@@ -47,11 +54,18 @@ Loader {
         id: textFieldComponent
         ColumnLayout {
             Label {
-                text: modelData.label
+                text: instantiator.model.label
             }
             TextField {
                 Layout.fillWidth: true
-                placeholderText: modelData.placeholder
+                placeholderText: instantiator.model.placeholder
+                Component.onCompleted: text = instantiator.model.value ?? ""
+                onEditingFinished: {
+                    if (instantiator.model.value === text) {
+                        return;
+                    }
+                    instantiator.model.value = text
+                }
             }
         }
     }
@@ -60,11 +74,18 @@ Loader {
         id: textAreaComponent
         ColumnLayout {
             Label {
-                text: modelData.label
+                text: instantiator.model.label
             }
             TextArea {
                 Layout.fillWidth: true
-                placeholderText: modelData.placeholder
+                placeholderText: instantiator.model.placeholder
+                Component.onCompleted: text = instantiator.model.value ?? ""
+                onEditingFinished: {
+                    if (instantiator.model.value === text) {
+                        return;
+                    }
+                    instantiator.model.value = text
+                }
             }
         }
     }
@@ -73,7 +94,7 @@ Loader {
         id: recipientsFieldComponent
         ColumnLayout {
             Label {
-                text: modelData.label
+                text: instantiator.model.label
             }
             SearchField {
                 id: searchField
