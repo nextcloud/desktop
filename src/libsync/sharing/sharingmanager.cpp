@@ -133,3 +133,16 @@ QMap<QString, QSharedPointer<Feature>> SharingManager::features() const
 {
     return _features;
 }
+
+OCC::JsonApiJob *SharingManager::createSearchJob(const QString &query, int64_t offset, int64_t limit, QObject *parent)
+{
+    // TODO: use promises?
+    auto job = new JsonApiJob(_account, "/ocs/v2.php/apps/sharing/api/v1/recipients"_L1, parent);
+    QUrlQuery params;
+    params.addQueryItem("query"_L1, query);
+    params.addQueryItem("offset"_L1, QString::number(offset));
+    params.addQueryItem("limit"_L1, QString::number(limit));
+    job->addQueryParams(params);
+
+    return job;
+}
