@@ -28,6 +28,22 @@ Die Qt-Translation Files (`.ts`-Dateien) enthalten zu jeder Resource die entspre
 
 ## Schritte
 
+### Automatischer Durchlauf
+
+Alle Schritte (0–5) können mit einem einzigen Befehl ausgeführt werden. Mit `--auto-commit` wird nach jedem Schritt automatisch committet:
+
+```
+python3 merge_translation.py all stable-4.0 --auto-commit
+```
+
+### Einzelne Schritte
+
+Die Schritte können auch einzeln ausgeführt werden. Mit `--auto-commit` entfällt das manuelle Committen:
+
+```
+python3 merge_translation.py 1 --auto-commit
+```
+
 ### 1. Nextcloud-Grundstand aktualisieren
 
 - Das Skript verwendet `git worktree`, um den unveränderten Nextcloud-Quellcode temporär verfügbar zu machen, ohne den aktuellen Branch zu wechseln.
@@ -38,7 +54,7 @@ python3 merge_translation.py 0 stable-4.0
 ```
 
 - Das Skript erstellt automatisch einen temporären Worktree, führt `lupdate` gegen den NC-Quellcode aus, sortiert die Dateien und räumt den Worktree wieder auf.
-- Datei in den **Translation Branch** legen und committen (STEP 0).
+- Committen (STEP 0) — oder `--auto-commit` verwenden.
 
 ### 2. Merge-Schritt 1
 
@@ -52,7 +68,7 @@ python3 merge_translation.py 1
 - Obsolete Einträge werden **nicht gelöscht**.
 - Neue Keys werden hinzugefügt.
 - Obsolete-Markierungen werden entfernt und die Datei wird sortiert.
-- Commit durchführen (STEP 1).
+- Committen (STEP 1) — oder `--auto-commit` verwenden.
 
 ### 3. Merge-Schritt 2
 
@@ -65,7 +81,7 @@ python3 merge_translation.py 2
 - Führt ein `lupdate` aus.
 - **Obsolete Keys werden entfernt**.
 - Die Datei enthält jetzt nur die aktuellen Keys (unsere Keys ohne Übersetzungen).
-- Commit durchführen (STEP 2).
+- Committen (STEP 2) — oder `--auto-commit` verwenden.
 
 ### 4. Merge-Schritt 3
 
@@ -78,7 +94,7 @@ python3 merge_translation.py 3
 - Sprachabhängige Diff-Dateien werden in die `.ts`Dateien gemergt.
 - Leere Keys werden mit Übersetzungen gefüllt.
 - Obsolete Keys aus der Diff-Datei werden gegebenenfalls eingefügt.
-- Commit durchführen (STEP 3).
+- Committen (STEP 3) — oder `--auto-commit` verwenden.
 
 ### 5. Merge-Schritt 4
 
@@ -90,7 +106,7 @@ python3 merge_translation.py 4
 
 - Ein weiteres `lupdate` wird ausgeführt.
 - Heuristische Füllung von doppelten Keys mit unseren Übersetzungen.
-- Commit durchführen (STEP 4).
+- Committen (STEP 4) — oder `--auto-commit` verwenden.
 
 ### 6. Merge-Schritt 5
 
@@ -101,7 +117,7 @@ python3 merge_translation.py 5
 ```
 
 - **Obsolete Keys werden endgültig entfernt**.
-- Commit durchführen (STEP 5).
+- Committen (STEP 5) — oder `--auto-commit` verwenden.
 
 ## Abschluss
 

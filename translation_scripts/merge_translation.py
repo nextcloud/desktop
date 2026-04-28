@@ -210,6 +210,26 @@ def sort_and_repair(file):
     full_sort(file)
     repair_file(file)
 
+def auto_commit(ts_files, step_name, auto_commit_enabled):
+    """Commit the translation files with the given step name if auto-commit is enabled."""
+    if not auto_commit_enabled:
+        return
+    repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    abs_ts_files = [os.path.abspath(f) for f in ts_files]
+    subprocess.run(["git", "add"] + abs_ts_files, cwd=repo_root, check=True)
+    result = subprocess.run(
+        ["git", "diff", "--cached", "--quiet"],
+        cwd=repo_root
+    )
+    if result.returncode == 0:
+        print(f"  No changes to commit for {step_name}")
+        return
+    subprocess.run(
+        ["git", "commit", "-m", step_name],
+        cwd=repo_root, check=True
+    )
+    print(f"  Committed: {step_name}")
+
 def run_script(script_name, input_file, output_file):
     try:
         # Running each script with input and output file arguments
@@ -350,17 +370,22 @@ if __name__ == "__main__":
                   , r".\en_GB.ts"
                   ]
 
-    if len(sys.argv) == 1:
-        print("Usage: python merge_translation.py <step> [nc_branch]")
+    # Parse --auto-commit flag
+    args = sys.argv[1:]
+    auto_commit_enabled = False
+    if "--auto-commit" in args:
+        auto_commit_enabled = True
+        args.remove("--auto-commit")
+
+    if len(args) == 0:
+        print("Usage: python merge_translation.py <step> [nc_branch] [--auto-commit]")
         print("  step: 0-5 or 'all'")
         print("  nc_branch: required for step 0 (e.g. stable-4.0)")
+        print("  --auto-commit: automatically commit after each step")
         sys.exit()
-    if len(sys.argv) == 3:
-        step = sys.argv[1]
-        nc_branch = sys.argv[2]
-    elif len(sys.argv) == 2:
-        step = sys.argv[1]
-        nc_branch = None
+    
+    step = args[0]
+    nc_branch = args[1] if len(args) >= 2 else None
     
     if step == "0" or step == "all":
         if nc_branch is None:
@@ -375,7 +400,8 @@ if __name__ == "__main__":
             run_lupdate_from_branch(ts_files, nc_branch)
             for ts_file in ts_files:      
                 sort_and_repair(ts_file)  
-            print("Step 0 completed: lupdate from NC source + sorted, you should commit now")
+            print("Step 0 completed: lupdate from NC source + sorted")
+            auto_commit(ts_files, "Step 0", auto_commit_enabled)
         
         if step == "1" or step == "all":
             # Step 1 lupdate Nextcloud in our latest change state, keep obsolete
@@ -386,13 +412,15 @@ if __name__ == "__main__":
                 pop_vanished(ts_file)   
                 sort_and_repair(ts_file)  
                
-            print("Step 1 completed: lupdate (keep obsolete), pop vanished, full sort, you should commit now")
+            print("Step 1 completed: lupdate (keep obsolete), pop vanished, full sort")
+            auto_commit(ts_files, "Step 1", auto_commit_enabled)
                                  
         if step == "2" or step == "all":            
             run_lupdate(ts_files, "no_obs")
             for ts_file in ts_files:        
                 sort_and_repair(ts_file)  
-            print("Step 2 completed: lupdate removed obsolete, you should commit now")
+            print("Step 2 completed: lupdate removed obsolete")
+            auto_commit(ts_files, "Step 2", auto_commit_enabled)
                 
             # Step 3 merge diff into
         if step == "3" or step == "all":
@@ -400,20 +428,23 @@ if __name__ == "__main__":
             for ts_file in ts_files:        
                 merge(diff_files[ts_files.index(ts_file)], ts_file)
                 sort_and_repair(ts_file)  
-            print("Step 3 completed: merged, sorted, you should commit now")
+            print("Step 3 completed: merged, sorted")
+            auto_commit(ts_files, "Step 3", auto_commit_enabled)
 
         if step == "4" or step == "all":            
             run_lupdate(ts_files)
             for ts_file in ts_files:        
                 pop_vanished(ts_file)   
                 sort_and_repair(ts_file)  
-            print("Step 4 completed: lupdate fill duplicates, format, you should commit now")
+            print("Step 4 completed: lupdate fill duplicates, format")
+            auto_commit(ts_files, "Step 4", auto_commit_enabled)
             
         if step == "5" or step == "all":            
             run_lupdate(ts_files, "location")
             for ts_file in ts_files:        
                 sort_and_repair(ts_file)  
-            print("Step 5 completed: lupdate remove obsolete, sort, you should commit now")
+            print("Step 5 completed: lupdate remove obsolete, sort")
+            auto_commit(ts_files, "Step 5", auto_commit_enabled)
 
     except Exception as e:
         print(f"An error occurred: {e}")
