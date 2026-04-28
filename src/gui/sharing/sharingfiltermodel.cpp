@@ -70,6 +70,10 @@ bool SharingFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex &sour
 
     const auto sharing = accountState->account()->sharing();
     const auto featureRole = model->data(index, SharingModel::LabelRole).toString(); // TODO: this will not be label
+    if (featureRole == "Add people"_L1) {
+        // TODO: same as above for now; >1 because link shares are only one recipient types
+        return _recipientTypes.size() > 1;
+    }
 
     if (!sharing->isFeatureAvailable(featureRole, {"OCA\\Files\\Sharing\\SourceType\\NodeShareSourceType"}, _recipientTypes)) {
         // this feature is not available in general for these recipient types
