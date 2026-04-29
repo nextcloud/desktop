@@ -14,6 +14,8 @@
 #include <QMetaObject>
 
 #include "accountmanager.h"
+#include "folderman.h"
+#include "socketapi/socketapi.h"
 
 namespace OCC {
 
@@ -107,6 +109,37 @@ Q_LOGGING_CATEGORY(lcMacFileProviderService, "nextcloud.gui.macfileproviderservi
                               Q_ARG(OCC::SyncResult::Status, syncState));
 }
 
+- (void)openInBrowserForPath:(NSString *)path remoteItemPath:(NSString *)remoteItemPath withDomainIdentifier:(NSString *)domainIdentifier
+{
+    Q_UNUSED(remoteItemPath)
+    Q_UNUSED(domainIdentifier)
+
+    const auto localPath = QString::fromNSString(path);
+
+    qCDebug(OCC::lcMacFileProviderService) << "Received open in browser request for path:" << localPath;
+
+    if (!_service) {
+        qCWarning(OCC::lcMacFileProviderService) << "No service available to open item in browser";
+        return;
+    }
+
+    auto *const socketApi = OCC::FolderMan::instance()->socketApi();
+    if (!socketApi) {
+        qCWarning(OCC::lcMacFileProviderService) << "SocketApi is unavailable, cannot open item in browser:" << localPath;
+        return;
+    }
+
+    // Execute on the socket API object thread.
+    QMetaObject::invokeMethod(socketApi, [socketApi, localPath]() {
+        OCC::SocketListener *nullListener = nullptr;
+        if (socketApi->getDirectEditorForLocalFile(localPath)) {
+            socketApi->command_EDIT(localPath, nullListener);
+        } else {
+            socketApi->command_OPEN_PRIVATE_LINK(localPath, nullListener);
+        }
+    }, Qt::QueuedConnection);
+}
+
 @end
 
 namespace OCC {
@@ -166,4 +199,3 @@ void FileProviderService::setLatestReceivedSyncStatus(const QString &userId, Syn
 } // namespace Mac
 
 } // namespace OCC
-
