@@ -54,6 +54,8 @@ struct RemoteInfo
     bool isLivePhoto = false;
     QString livePhotoFile;
 
+    bool requestUpload = false;
+
     FolderQuota folderQuota;
 };
 
