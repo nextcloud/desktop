@@ -2474,7 +2474,7 @@ Alternatiivina saad nad taasta serverist uuesti allalaadides.</translation>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1846"/>
         <source>Sync finished with unresolved conflicts.</source>
-        <translation>Sünkroniseerimine lõppes lahendamata failikonfliktidega.</translation>
+        <translation>Sünkroonimine lõppes lahendamata failikonfliktidega.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1848"/>
@@ -2852,7 +2852,7 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="605"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation>Virtuaalsed faili pole toetatud Windowsi partitsiooni juurkaustas kohaliku kausta rollis. Palun vali sellelt kettalt mõni alamkaust.</translation>
+        <translation>Virtuaalsed failid pole toetatud Windowsi partitsiooni juurkaustas kohaliku kausta rollis. Palun vali sellelt kettalt mõni alamkaust.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="630"/>
@@ -3803,7 +3803,7 @@ Palun arvesta, et käsurealt lisatud logimistingimused on alati primaarsed nende
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="277"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation>Virtuaalsed faili pole toetatud Windowsi partitsiooni juurkaustas kohaliku kausta rollis. Palun vali sellelt kettalt mõni alamkaust.</translation>
+        <translation>Virtuaalsed failid pole toetatud Windowsi partitsiooni juurkaustas kohaliku kausta rollis. Palun vali sellelt kettalt mõni alamkaust.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="318"/>
@@ -4188,7 +4188,7 @@ Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun
     <message>
         <location filename="../src/libsync/discovery.cpp" line="396"/>
         <source>File is locked by another application.</source>
-        <translation type="unfinished"/>
+        <translation>Fail on lukustatud muu rakenduse poolt.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="392"/>
@@ -4789,7 +4789,7 @@ Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun
         <location filename="../src/libsync/propagateuploadng.cpp" line="364"/>
         <source>File is locked preventing syncing it</source>
         <comment>Generic warning message when a locked file cannot be synced</comment>
-        <translation type="unfinished"/>
+        <translation>Fail on lukustatud ja see takistab tema sünkroonimist</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="451"/>
@@ -4835,7 +4835,7 @@ Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun
         <location filename="../src/libsync/propagateuploadv1.cpp" line="141"/>
         <source>File is locked preventing syncing it</source>
         <comment>Generic warning message when a locked file cannot be synced</comment>
-        <translation type="unfinished"/>
+        <translation>Fail on lukustatud ja see takistab tema sünkroonimist</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="228"/>
@@ -6126,7 +6126,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="102"/>
         <source>Host your own server</source>
-        <translation>Võid ka kasutada oma serverit</translation>
+        <translation>Võid kasutada ka oma serverit</translation>
     </message>
 </context>
 <context>
@@ -6277,12 +6277,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
         <source>Sync Logo</source>
-        <translation>Sünkroniseerimislogo</translation>
+        <translation>Sünkroonimislogo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
         <source>Synchronize everything from server</source>
-        <translation>Sünkroniseeri kõik serverist</translation>
+        <translation>Sünkrooni kõik serverist</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="360"/>
