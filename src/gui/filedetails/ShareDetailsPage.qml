@@ -502,6 +502,7 @@ Page {
 
                     text: root.note
                     placeholderText: qsTr("Enter a note for the recipient")
+                    color: Style.sesTrayFontColor
                     enabled: noteEnabledMenuItem.checked && !root.waitingForNoteChange
 
                     onEditingFinished: if (text !== "" && text !== root.note) {
@@ -509,7 +510,7 @@ Page {
                         root.waitingForNoteChange = true;
                     }
 
-                    Rectangle {
+                    background: Rectangle {
                         id: noteTextBorder
                         anchors.fill: parent
                         radius: Style.slightlyRoundedButtonRadius
