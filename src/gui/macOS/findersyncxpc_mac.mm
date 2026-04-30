@@ -7,8 +7,8 @@
 
 #import <Foundation/Foundation.h>
 #import <Security/Security.h>
-#import "FinderSyncProtocol.h"
-#import "FinderSyncAppProtocol.h"
+#import "../../../shell_integration/MacOSX/NextcloudIntegration/FinderSyncExt/Services/FinderSyncProtocol.h"
+#import "../../../shell_integration/MacOSX/NextcloudIntegration/FinderSyncExt/Services/FinderSyncAppProtocol.h"
 
 #include <QLoggingCategory>
 #include <QMetaObject>

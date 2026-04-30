@@ -2,7 +2,6 @@
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
 import Foundation
-import NextcloudFileProviderKit
 import os
 
 ///

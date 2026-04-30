@@ -225,13 +225,17 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(parentDbItem.uploaded)
     }
 
-    func testCreateBundle() async throws {
+    /// Verify that bundles are refused at the file provider boundary with `.excludedFromSync`
+    /// and that nothing is uploaded to the (mock) server. Replaces the previous
+    /// `testCreateBundle` test, which validated the now-removed recursive-mirror code path.
+    /// See https://github.com/nextcloud/desktop/issues/9827.
+    func testCreateBundleIsExcluded() async throws {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db)
 
         let keynoteBundleFilename = "test.key"
-
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
         var bundleItemMetadata = SendableItemMetadata(
             ocId: "keynotebundleid", fileName: keynoteBundleFilename, account: Self.account
         )
@@ -239,66 +243,6 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         bundleItemMetadata.serverUrl = Self.account.davFilesUrl
         bundleItemMetadata.classFile = NKTypeClassFile.directory.rawValue
         bundleItemMetadata.contentType = UTType.bundle.identifier
-
-        let fm = FileManager.default
-        let tempUrl = fm.temporaryDirectory.appendingPathComponent(keynoteBundleFilename)
-        try fm.createDirectory(at: tempUrl, withIntermediateDirectories: true, attributes: nil)
-        let keynoteIndexZipPath = tempUrl.appendingPathComponent("Index.zip")
-        try Data("This is a fake zip!".utf8).write(to: keynoteIndexZipPath)
-        let keynoteDataDir = tempUrl.appendingPathComponent("Data")
-        try fm.createDirectory(
-            at: keynoteDataDir, withIntermediateDirectories: true, attributes: nil
-        )
-        let keynoteMetadataDir = tempUrl.appendingPathComponent("Metadata")
-        try fm.createDirectory(
-            at: keynoteMetadataDir, withIntermediateDirectories: true, attributes: nil
-        )
-        let keynoteDocIdentifierPath =
-            keynoteMetadataDir.appendingPathComponent("DocumentIdentifier")
-        try Data("8B0C6C1F-4DA4-4DE8-8510-0C91FDCE7D01".utf8).write(to: keynoteDocIdentifierPath)
-        let keynoteBuildVersionPlistPath =
-            keynoteMetadataDir.appendingPathComponent("BuildVersionHistory.plist")
-        try Data(
-            """
-            <?xml version="1.0" encoding="UTF-8"?>
-            <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-            <plist version="1.0">
-            <array>
-                <string>Template: 35_DynamicWavesDark (14.1)</string>
-                <string>M14.1-7040.0.73-4</string>
-            </array>
-            </plist>
-            """
-            .utf8
-        ).write(to: keynoteBuildVersionPlistPath)
-        let keynotePropertiesPlistPath = keynoteMetadataDir.appendingPathComponent("Properties.plist")
-        try Data(
-            """
-            <?xml version="1.0" encoding="UTF-8"?>
-            <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-            <plist version="1.0">
-            <dict>
-                <key>revision</key>
-                <string>0::5B42B84E-6F62-4E53-9E71-7DD24FA7E2EA</string>
-                <key>documentUUID</key>
-                <string>8B0C6C1F-4DA4-4DE8-8510-0C91FDCE7D01</string>
-                <key>versionUUID</key>
-                <string>5B42B84E-6F62-4E53-9E71-7DD24FA7E2EA</string>
-                <key>privateUUID</key>
-                <string>637C846B-6146-40C2-8EF8-26996E598E49</string>
-                <key>isMultiPage</key>
-                <false/>
-                <key>stableDocumentUUID</key>
-                <string>8B0C6C1F-4DA4-4DE8-8510-0C91FDCE7D01</string>
-                <key>fileFormatVersion</key>
-                <string>14.1.1</string>
-                <key>shareUUID</key>
-                <string>8B0C6C1F-4DA4-4DE8-8510-0C91FDCE7D01</string>
-            </dict>
-            </plist>
-            """
-            .utf8
-        ).write(to: keynotePropertiesPlistPath)
 
         let bundleItemTemplate = Item(
             metadata: bundleItemMetadata,
@@ -308,10 +252,9 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             dbManager: Self.dbManager
         )
 
-        // TODO: Add fail test with no contents
-        let (createdBundleItemMaybe, bundleError) = await Item.create(
+        let (item, error) = await Item.create(
             basedOn: bundleItemTemplate,
-            contents: tempUrl,
+            contents: nil,
             account: Self.account,
             remoteInterface: remoteInterface,
             progress: Progress(),
@@ -319,57 +262,52 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock()
         )
 
-        let createdBundleItem = try XCTUnwrap(createdBundleItemMaybe)
+        // The exclusion path returns a placeholder item plus the system-recognised exclusion error.
+        XCTAssertNotNil(item)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .excludedFromSync)
 
-        XCTAssertNil(bundleError)
-        XCTAssertNotNil(createdBundleItem)
-        XCTAssertEqual(createdBundleItem.metadata.fileName, bundleItemMetadata.fileName)
-        XCTAssertEqual(createdBundleItem.metadata.directory, true)
-        XCTAssertTrue(createdBundleItem.isDownloaded)
-        XCTAssertTrue(createdBundleItem.isUploaded)
+        // Nothing should have reached the (mock) server.
+        XCTAssertNil(rootItem.children.first { $0.name == keynoteBundleFilename })
+    }
 
-        // Below: this is an upstream issue (which we should fix)
-        // XCTAssertTrue(createdBundleItem.contentType.conforms(to: .bundle))
+    /// Same expectation for `.app` (`com.apple.application-bundle`) — historically the most
+    /// problematic bundle type for our recursive-mirror approach because of internal symlinks.
+    func testCreateDotAppIsExcluded() async throws {
+        let db = Self.dbManager.ncDatabase()
+        debugPrint(db)
 
-        XCTAssertNotNil(rootItem.children.first { $0.name == bundleItemMetadata.name })
-        XCTAssertNotNil(
-            rootItem.children.first { $0.identifier == createdBundleItem.itemIdentifier.rawValue }
+        let appFilename = "Test.app"
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        var appMetadata = SendableItemMetadata(
+            ocId: "test-app-id", fileName: appFilename, account: Self.account
         )
-        let remoteItem = rootItem.children.first { $0.name == bundleItemMetadata.name }
-        XCTAssertTrue(remoteItem?.directory ?? false)
+        appMetadata.directory = true
+        appMetadata.serverUrl = Self.account.davFilesUrl
+        appMetadata.classFile = NKTypeClassFile.directory.rawValue
+        appMetadata.contentType = UTType.applicationBundle.identifier
 
-        let dbItem = try XCTUnwrap(
-            Self.dbManager.itemMetadata(ocId: createdBundleItem.itemIdentifier.rawValue)
+        let appItemTemplate = Item(
+            metadata: appMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
-        XCTAssertEqual(dbItem.fileName, bundleItemMetadata.fileName)
-        XCTAssertEqual(dbItem.fileNameView, bundleItemMetadata.fileNameView)
-        XCTAssertEqual(dbItem.directory, bundleItemMetadata.directory)
-        XCTAssertEqual(dbItem.serverUrl, bundleItemMetadata.serverUrl)
-        XCTAssertEqual(dbItem.ocId, createdBundleItem.itemIdentifier.rawValue)
-        XCTAssertEqual(
-            dbItem.etag, String(data: createdBundleItem.itemVersion.contentVersion, encoding: .utf8)
+
+        let (item, error) = await Item.create(
+            basedOn: appItemTemplate,
+            contents: nil,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
         )
-        XCTAssertTrue(dbItem.downloaded)
-        XCTAssertTrue(dbItem.uploaded)
 
-        let remoteBundleItem = rootItem.children.first { $0.name == keynoteBundleFilename }
-        XCTAssertNotNil(remoteBundleItem)
-        XCTAssertEqual(remoteBundleItem?.children.count, 3)
-
-        XCTAssertNotNil(remoteBundleItem?.children.first { $0.name == "Data" })
-        XCTAssertNotNil(remoteBundleItem?.children.first { $0.name == "Index.zip" })
-
-        let remoteMetadataItem = remoteBundleItem?.children.first { $0.name == "Metadata" }
-        XCTAssertNotNil(remoteMetadataItem)
-        XCTAssertEqual(remoteMetadataItem?.children.count, 3)
-        XCTAssertNotNil(remoteMetadataItem?.children.first { $0.name == "DocumentIdentifier" })
-        XCTAssertNotNil(remoteMetadataItem?.children.first { $0.name == "Properties.plist" })
-        XCTAssertNotNil(remoteMetadataItem?.children.first {
-            $0.name == "BuildVersionHistory.plist"
-        })
-
-        let childrenCount = Self.dbManager.childItemCount(directoryMetadata: dbItem)
-        XCTAssertEqual(childrenCount, 6) // Ensure all children recorded to database
+        XCTAssertNotNil(item)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .excludedFromSync)
+        XCTAssertNil(rootItem.children.first { $0.name == appFilename })
     }
 
     func testCreateFileChunked() async throws {

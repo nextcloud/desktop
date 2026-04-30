@@ -6,7 +6,7 @@ As an example, this includes the file provider extension.
 ## Localization
 
 Transifex is used for localization.
-Currently, [the file provider extension](https://app.transifex.com/nextcloud/nextcloud/client-fileprovider/) and [file provider UI extension](https://app.transifex.com/nextcloud/nextcloud/client-fileproviderui/) both have a resource there.
+Currently, [the file provider UI extension](https://app.transifex.com/nextcloud/nextcloud/client-fileproviderui/) has a localizable resource.
 These localizations are excluded from our usual and automated translation flow due to how Transifex synchronizes Xcode string catalogs and the danger of data loss.
 To pull updated localizations from Transifex into the Xcode project manually, follow the steps below.
 
@@ -37,7 +37,6 @@ Use it for all updated Xcode string catalogs.
 
 ```sh
 tx pull --force --all --mode=translator
-swift run --package-path=../TransifexStringCatalogSanitizer TransifexStringCatalogSanitizer ./FileProviderExt/Localizable.xcstrings
 swift run --package-path=../TransifexStringCatalogSanitizer TransifexStringCatalogSanitizer ./FileProviderUIExt/Localizable.xcstrings
 ```
 
@@ -62,11 +61,6 @@ In other words: The "NextcloudDev" scheme enables you to build, run and debug th
 ### Requirements
 
 - You must have an Apple Development certificate for signing in your keychain.
-
-### Usage
-
-1. Copy [`Build.xcconfig.template`](NextcloudDev/Build.xcconfig.template) in the "NextcloudDev" source code folder to `Build.xcconfig` in the same location and adjust the values in it to your local setup.
-2. Build or run the "NextcloudDev scheme".
 
 ### Known Issues
 

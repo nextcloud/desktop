@@ -6,7 +6,7 @@
 #include "fileproviderservice.h"
 
 #import <Foundation/Foundation.h>
-#import "AppProtocol.h"
+#import "../../../shell_integration/MacOSX/NextcloudFileProviderKit/Sources/NextcloudFileProviderXPC/include/NextcloudFileProviderXPC.h"
 
 #include <QLoggingCategory>
 #include <QReadLocker>
@@ -55,11 +55,34 @@ Q_LOGGING_CATEGORY(lcMacFileProviderService, "nextcloud.gui.macfileproviderservi
                               Q_ARG(QString, domainId));
 }
 
+- (void)reportItemExcludedFromSync:(NSString *)relativePath
+                          fileName:(NSString *)fileName
+                            reason:(NSString *)reason
+               forDomainIdentifier:(NSString *)domainIdentifier
+{
+    const auto qDomainIdentifier = QString::fromNSString(domainIdentifier);
+    const auto qRelativePath = QString::fromNSString(relativePath);
+    const auto qFileName = QString::fromNSString(fileName);
+    const auto qReason = QString::fromNSString(reason);
+
+    qCInfo(OCC::lcMacFileProviderService) << "File provider extension reported item excluded from sync:"
+                                          << qFileName
+                                          << "for domain:" << qDomainIdentifier;
+
+    // The XPC callback may arrive on a non-main thread; use a queued connection so observers
+    // running on the GUI thread (e.g. `OCC::User`) receive the signal there.
+    QMetaObject::invokeMethod(_service, "itemExcludedFromSync", Qt::QueuedConnection,
+                              Q_ARG(QString, qDomainIdentifier),
+                              Q_ARG(QString, qRelativePath),
+                              Q_ARG(QString, qFileName),
+                              Q_ARG(QString, qReason));
+}
+
 - (void)reportSyncStatus:(NSString *)status forDomainIdentifier:(NSString *)domainIdentifier
 {
     const auto statusString = QString::fromNSString(status);
     const auto domainIdString = QString::fromNSString(domainIdentifier);
-    
+
     qCDebug(OCC::lcMacFileProviderService) << "Received sync status from file provider extension:"
                                            << statusString
                                            << "for domain:" << domainIdString;

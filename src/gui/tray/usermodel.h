@@ -197,6 +197,13 @@ public slots:
     void slotAccountCapabilitiesChangedRefreshGroupFolders();
     void slotFetchGroupFolders();
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    /// Surface a bundle-shaped item refused by the file provider extension as an entry in the
+    /// account's activity view. Connected from `Mac::FileProviderService::itemExcludedFromSync`.
+    /// Tracked at https://github.com/nextcloud/desktop/issues/9827.
+    void slotFileProviderItemExcludedFromSync(const QString &domainIdentifier, const QString &relativePath, const QString &fileName, const QString &reason);
+#endif
+
 private slots:
     void slotPushNotificationsReady();
     void slotDisconnectPushNotifications();
@@ -248,6 +255,11 @@ private:
     QElapsedTimer _guiLogTimer;
     QSet<qint64> _notifiedNotifications;
     QSet<qint64> _activeNotifications;
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    /// Rate-limit per relativePath so repeated bundle drops don't spam the activity view.
+    /// Cleared by the existing `_expiredActivitiesCheckTimer` tick.
+    QSet<QString> _reportedExcludedBundles;
+#endif
     QMimeDatabase _mimeDb;
 
     // number of currently running notification requests. If non zero,

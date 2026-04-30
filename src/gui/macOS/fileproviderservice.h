@@ -68,6 +68,20 @@ signals:
      */
     void showFileActionsDialog(const QString &fileId, const QString &localFile, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier);
 
+    /**
+     * @brief Emitted when a file provider extension reports an item it refused to sync (for now: macOS bundles).
+     *
+     * Consumers (e.g. `OCC::User`) surface the item in the systray's activity view — the same
+     * place the classic sync engine reports excluded items. See
+     * https://github.com/nextcloud/desktop/issues/9827.
+     *
+     * @param domainIdentifier The file provider domain identifier for the affected account.
+     * @param relativePath The path of the item relative to the file provider domain root.
+     * @param fileName The display name of the item.
+     * @param reason A localized, human-readable explanation of why the item was excluded. Already translated by the extension.
+     */
+    void itemExcludedFromSync(const QString &domainIdentifier, const QString &relativePath, const QString &fileName, const QString &reason);
+
 private:
     class MacImplementation;
     std::unique_ptr<MacImplementation> d;

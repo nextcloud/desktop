@@ -15,6 +15,10 @@ let package = Package(
         .library(
             name: "NextcloudFileProviderKit",
             targets: ["NextcloudFileProviderKit"]
+        ),
+        .library(
+            name: "NextcloudFileProviderXPC",
+            targets: ["NextcloudFileProviderXPC"]
         )
     ],
     dependencies: [
@@ -28,11 +32,20 @@ let package = Package(
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
+            name: "NextcloudFileProviderXPC",
+            path: "Sources/NextcloudFileProviderXPC",
+            publicHeadersPath: "include"
+        ),
+        .target(
             name: "NextcloudFileProviderKit",
             dependencies: [
+                "NextcloudFileProviderXPC",
                 .product(name: "NextcloudCapabilitiesKit", package: "NextcloudCapabilitiesKit"),
                 .product(name: "NextcloudKit", package: "NextcloudKit"),
                 .product(name: "RealmSwift", package: "realm-swift")
+            ],
+            resources: [
+                .process("Resources")
             ]
         ),
         .target(

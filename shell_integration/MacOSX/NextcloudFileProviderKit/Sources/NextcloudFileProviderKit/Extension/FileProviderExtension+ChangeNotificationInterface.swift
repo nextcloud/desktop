@@ -2,10 +2,9 @@
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
-import NextcloudFileProviderKit
 
 extension FileProviderExtension: ChangeNotificationInterface {
-    func notifyChange() {
+    public func notifyChange() {
         guard let fpManager = NSFileProviderManager(for: domain) else {
             logger.error("Could not get file provider manager for domain \(self.domain.displayName), cannot notify changes")
             return

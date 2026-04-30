@@ -4,6 +4,7 @@
 @preconcurrency import FileProvider
 import Foundation
 import NextcloudCapabilitiesKit
+import NextcloudFileProviderXPC
 import NextcloudKit
 import UniformTypeIdentifiers
 
@@ -244,210 +245,6 @@ public extension Item {
         return (fpItem, nil)
     }
 
-    @discardableResult private static func createBundleOrPackageInternals(
-        rootItem: Item,
-        contents: URL,
-        remotePath: String,
-        domain: NSFileProviderDomain? = nil,
-        account: Account,
-        remoteInterface: RemoteInterface,
-        forcedChunkSize: Int?,
-        progress: Progress,
-        dbManager: FilesDatabaseManager,
-        log: any FileProviderLogging
-    ) async throws -> Item? {
-        let logger = FileProviderLogger(category: "Item", log: log)
-
-        logger.debug(
-            """
-            Handling new bundle/package/internal directory at: \(contents.path)
-            """
-        )
-        let attributesToFetch: Set<URLResourceKey> = [
-            .isDirectoryKey, .fileSizeKey, .creationDateKey, .contentModificationDateKey
-        ]
-        let fm = FileManager.default
-        guard let enumerator = fm.enumerator(
-            at: contents, includingPropertiesForKeys: Array(attributesToFetch)
-        ) else {
-            logger.error(
-                """
-                Could not create enumerator for contents of bundle or package
-                    at: \(contents.path)
-                """
-            )
-            throw NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable)
-        }
-
-        guard let enumeratorArray = enumerator.allObjects as? [URL] else {
-            logger.error(
-                """
-                Could not create enumerator array for contents of bundle or package
-                    at: \(contents.path)
-                """
-            )
-            throw NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable)
-        }
-
-        func remoteErrorToThrow(_ error: NKError) -> Error {
-            error.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
-        }
-
-        let contentsPath = contents.path
-        let privatePrefix = "/private"
-        let privateContentsPath = contentsPath.hasPrefix(privatePrefix)
-        var remoteDirectoriesPaths = [remotePath]
-
-        // Add one more total unit count to signify final reconciliation of bundle creation process
-        progress.totalUnitCount = Int64(enumeratorArray.count) + 1
-
-        for childUrl in enumeratorArray {
-            var childUrlPath = childUrl.path
-            if childUrlPath.hasPrefix(privatePrefix), !privateContentsPath {
-                childUrlPath.removeFirst(privatePrefix.count)
-            }
-            let childRelativePath = childUrlPath.replacingOccurrences(of: contents.path, with: "")
-            let childRemoteUrl = remotePath + childRelativePath
-            let childUrlAttributes = try childUrl.resourceValues(forKeys: attributesToFetch)
-
-            if childUrlAttributes.isDirectory ?? false {
-                logger.debug(
-                    """
-                    Handling child bundle or package directory at: \(childUrlPath)
-                    """
-                )
-                let (_, _, _, createError) = await remoteInterface.createFolder(
-                    remotePath: childRemoteUrl,
-                    account: account,
-                    options: .init(), taskHandler: { task in
-                        if let domain {
-                            NSFileProviderManager(for: domain)?.register(
-                                task,
-                                forItemWithIdentifier: rootItem.itemIdentifier,
-                                completionHandler: { _ in }
-                            )
-                        }
-                    }
-                )
-
-                // As with the creating of the bundle's root folder, we do not want to abort on fail
-                // as we might have faced an error creating some other internal content and we want
-                // to retry all of its contents
-                guard createError == .success || createError.matchesCollisionError else {
-                    logger.error(
-                        """
-                        Could not create new bpi folder at: \(remotePath),
-                        received error: \(createError.errorCode)
-                        \(createError.errorDescription)
-                        """
-                    )
-                    throw remoteErrorToThrow(createError)
-                }
-                remoteDirectoriesPaths.append(childRemoteUrl)
-
-            } else {
-                logger.debug(
-                    """
-                    Handling child bundle or package file at: \(childUrlPath)
-                    """
-                )
-                let (_, _, _, _, error) = await upload(
-                    fileLocatedAt: childUrlPath,
-                    toRemotePath: childRemoteUrl,
-                    usingRemoteInterface: remoteInterface,
-                    withAccount: account,
-                    inChunksSized: forcedChunkSize,
-                    dbManager: dbManager,
-                    creationDate: childUrlAttributes.creationDate,
-                    modificationDate: childUrlAttributes.contentModificationDate,
-                    log: log,
-                    requestHandler: { progress.setHandlersFromAfRequest($0) },
-                    taskHandler: { task in
-                        if let domain {
-                            NSFileProviderManager(for: domain)?.register(
-                                task,
-                                forItemWithIdentifier: rootItem.itemIdentifier,
-                                completionHandler: { _ in }
-                            )
-                        }
-                    },
-                    progressHandler: { _ in }
-                )
-
-                // Do not fail on existing item, just keep going
-                guard error == .success || error.matchesCollisionError else {
-                    logger.error(
-                        """
-                        Could not upload bpi file at: \(childUrlPath),
-                        received error: \(error.errorCode)
-                        \(error.errorDescription)
-                        """
-                    )
-                    throw remoteErrorToThrow(error)
-                }
-            }
-            progress.completedUnitCount += 1
-        }
-
-        for remoteDirectoryPath in remoteDirectoriesPaths {
-            // After everything, check into what the final state is of each folder now
-            logger.debug("Reading bpi folder at: \(remoteDirectoryPath)")
-
-            let (_, _, _, _, _, readError) = await Enumerator.readServerUrl(
-                remoteDirectoryPath,
-                account: account,
-                remoteInterface: remoteInterface,
-                dbManager: dbManager,
-                log: log
-            )
-
-            if let readError, readError != .success {
-                logger.error(
-                    """
-                    Could not read bpi folder at: \(remotePath),
-                    received error: \(readError.errorDescription)
-                    """
-                )
-                throw remoteErrorToThrow(readError)
-            }
-        }
-
-        guard let bundleRootMetadata = dbManager.itemMetadata(
-            account: account.ncKitAccount, locatedAtRemoteUrl: remotePath
-        ) else {
-            logger.error(
-                """
-                Could not find directory metadata for bundle or package at:
-                    \(remotePath)
-                    of account:
-                    \(account.ncKitAccount)
-                    with contents located at:
-                    \(contentsPath)
-                """
-            )
-            // Yes, it's weird to throw a "non-existent item" error during an item's creation.
-            // No, it's not the wrong solution. Thanks to the peculiar way we have to handle bundles
-            // things can happen as we are populating the bundle remotely and then checking it.
-            throw NSError.fileProviderErrorForNonExistentItem(
-                withIdentifier: rootItem.itemIdentifier
-            )
-        }
-
-        progress.completedUnitCount += 1
-
-        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: bundleRootMetadata.contentType)
-
-        return await Item(
-            metadata: bundleRootMetadata,
-            parentItemIdentifier: rootItem.parentItemIdentifier,
-            account: account,
-            remoteInterface: remoteInterface,
-            dbManager: dbManager,
-            displayFileActions: displayFileActions,
-            remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
-            log: log
-        )
-    }
 
     static func create(
         basedOn itemTemplate: NSFileProviderItem,
@@ -462,6 +259,7 @@ public extension Item {
         forcedChunkSize: Int? = nil,
         progress: Progress,
         dbManager: FilesDatabaseManager,
+        appProxy: (any AppProtocol)? = nil,
         log: any FileProviderLogging
     ) async -> (Item?, Error?) {
         let logger = FileProviderLogger(category: "Item", log: log)
@@ -515,6 +313,26 @@ public extension Item {
 
         let itemTemplateIsFolder = itemTemplate.contentType?.conforms(to: .directory) ?? false
 
+        // Bundles and packages (`.app`, `.key`, `.pages`, `.fcpbundle`, …) are folders that the
+        // system presents as atomic files. WebDAV cannot represent the full bundle layout
+        // (symlinks, resource forks, permissions); the previous recursive-mirror implementation
+        // produced silently incomplete bundles or aborted mid-upload, leaving partial state on
+        // the server. Until a proper transport is in place, refuse bundles at the file provider
+        // boundary, route them through the existing `createIgnored` path (which returns
+        // `NSFileProviderError(.excludedFromSync)`), and tell the user via the activity view.
+        // Tracked at https://github.com/nextcloud/desktop/issues/9827.
+        let isBundleOrPackage = itemTemplate.contentType?.conforms(to: .bundle) == true || itemTemplate.contentType?.conforms(to: .package) == true
+
+        if isBundleOrPackage {
+            logger.info("Refusing to sync bundle or package because this is not supported.", [.name: itemTemplate.filename])
+
+            if let domain {
+                BundleExclusionReporter.report(relativePath: parentItemRelativePath + "/" + itemTemplate.filename, fileName: itemTemplate.filename, domainIdentifier: domain.identifier, appProxy: appProxy, log: log)
+            }
+
+            return await Item.createIgnored(basedOn: itemTemplate, parentItemRemotePath: parentItemRemotePath, contents: url, account: account, remoteInterface: remoteInterface, progress: progress, dbManager: dbManager, log: log)
+        }
+
         guard !isLockFileName(itemTemplate.filename) || itemTemplateIsFolder else {
             return await Item.createLockFile(
                 basedOn: itemTemplate,
@@ -558,106 +376,20 @@ public extension Item {
         )
 
         guard !itemTemplateIsFolder else {
-            let isBundleOrPackage =
-                itemTemplate.contentType?.conforms(to: .bundle) == true ||
-                itemTemplate.contentType?.conforms(to: .package) == true
-
-            var (item, error) = await Self.createNewFolder(
+            // Bundles and packages are filtered out earlier in this function and routed through
+            // `Item.createIgnored` (see the bundle-exclusion check above). Anything that still
+            // arrives here as a folder is a regular directory.
+            return await Self.createNewFolder(
                 itemTemplate: itemTemplate,
                 remotePath: newServerUrlFileName,
                 parentItemIdentifier: parentItemIdentifier,
                 domain: domain,
                 account: account,
                 remoteInterface: remoteInterface,
-                progress: isBundleOrPackage ? Progress() : progress,
+                progress: progress,
                 dbManager: dbManager,
                 log: log
             )
-
-            guard isBundleOrPackage else {
-                return (item, error)
-            }
-
-            // Ignore collision errors as we might have faced an error creating one of the bundle's
-            // internal files or folders and we want to retry all of its contents
-            let fpErrorCode = (error as? NSFileProviderError)?.code
-            guard error == nil || fpErrorCode == .filenameCollision else {
-                logger.error("Could not create item.", [.item: item?.itemIdentifier, .error: error])
-                return (item, error)
-            }
-
-            if item == nil {
-                logger.debug("Item is a bundle or package whose root folder already exists, ignoring errors. Fetching remote information, proceeding with creation of internal contents.")
-                let (metadatas, _, _, _, _, readError) = await Enumerator.readServerUrl(
-                    newServerUrlFileName,
-                    account: account,
-                    remoteInterface: remoteInterface,
-                    dbManager: dbManager,
-                    domain: domain,
-                    depth: .target,
-                    log: log
-                )
-
-                if let readError, readError != .success {
-                    logger.error("Could not read existing bundle or package folder.", [.error: readError, .url: newServerUrlFileName])
-                    return (nil, readError.fileProviderError)
-                }
-                guard let itemMetadata = metadatas?.first else {
-                    logger.error("Could not create item for remotely-existing bundle or package. This should not happen.", [.item: tempId])
-
-                    return (
-                        nil,
-                        NSError.fileProviderErrorForNonExistentItem(
-                            withIdentifier: itemTemplate.itemIdentifier
-                        )
-                    )
-                }
-
-                let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: itemMetadata.contentType)
-
-                item = await Item(
-                    metadata: itemMetadata,
-                    parentItemIdentifier: parentItemIdentifier,
-                    account: account,
-                    remoteInterface: remoteInterface,
-                    dbManager: dbManager,
-                    displayFileActions: displayFileActions,
-                    remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
-                    log: log
-                )
-            }
-
-            guard let item else {
-                logger.error("Could not create item for remotely-existing bundle or package as item is null. This should not happen!", [.item: tempId])
-                return (nil, NSFileProviderError(.cannotSynchronize))
-            }
-
-            guard let url else {
-                logger.error("Could not create item as it is a bundle or package and no contents were provided.", [.item: tempId])
-                return (nil, NSError(domain: NSURLErrorDomain, code: NSURLErrorBadURL))
-            }
-
-            // Bundles and packages are given to us as if they were files -- i.e. we don't get
-            // notified about internal changes. So we need to manually handle their internal
-            // contents
-            logger.debug("Handling bundle or package contents for item.", [.item: tempId])
-
-            do {
-                return try await (Self.createBundleOrPackageInternals(
-                    rootItem: item,
-                    contents: url,
-                    remotePath: newServerUrlFileName,
-                    domain: domain,
-                    account: account,
-                    remoteInterface: remoteInterface,
-                    forcedChunkSize: forcedChunkSize,
-                    progress: progress,
-                    dbManager: dbManager,
-                    log: log
-                ), nil)
-            } catch {
-                return (nil, error)
-            }
         }
 
         return await Self.createNewFile(

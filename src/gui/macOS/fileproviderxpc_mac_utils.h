@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 #import <FileProvider/FileProvider.h>
 
-#import "ClientCommunicationProtocol.h"
+#import "../../../shell_integration/MacOSX/NextcloudFileProviderKit/Sources/NextcloudFileProviderXPC/include/NextcloudFileProviderXPC.h"
 #import "fileproviderservice.h"
 
 namespace OCC::Mac::FileProviderXPCUtils {

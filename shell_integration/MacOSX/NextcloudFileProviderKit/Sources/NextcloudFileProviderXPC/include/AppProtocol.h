@@ -30,6 +30,21 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)reportSyncStatus:(NSString *)status forDomainIdentifier:(NSString *)domainIdentifier;
 
+/**
+ * @brief The file provider extension reports an item it refused to sync because that kind of item isn't supported yet (currently: macOS bundles).
+ *
+ * The main app surfaces the message in its activity view in the systray's tray window — the same place the classic sync engine reports excluded items.
+ *
+ * @param relativePath The path of the item relative to the file provider domain root.
+ * @param fileName The display name of the item.
+ * @param reason A localized, human-readable explanation of why the item was excluded. Already translated extension-side.
+ * @param domainIdentifier The file provider domain identifier for the account that owns the item.
+ */
+- (void)reportItemExcludedFromSync:(NSString *)relativePath
+                          fileName:(NSString *)fileName
+                            reason:(NSString *)reason
+               forDomainIdentifier:(NSString *)domainIdentifier;
+
 @end
 
 NS_ASSUME_NONNULL_END

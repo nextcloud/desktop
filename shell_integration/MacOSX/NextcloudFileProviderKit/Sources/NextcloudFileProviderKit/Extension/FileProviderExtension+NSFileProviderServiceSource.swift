@@ -4,7 +4,7 @@
 import FileProvider
 
 extension FileProviderExtension: NSFileProviderServiceSource {
-    func makeListenerEndpoint() throws -> NSXPCListenerEndpoint {
+    public func makeListenerEndpoint() throws -> NSXPCListenerEndpoint {
         logger.info("Making listener endpoint...")
 
         // Invalidate existing listener.

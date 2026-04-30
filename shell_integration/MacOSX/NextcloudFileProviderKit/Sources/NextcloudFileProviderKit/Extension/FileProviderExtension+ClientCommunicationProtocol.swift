@@ -2,10 +2,10 @@
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
-import NextcloudFileProviderKit
+import NextcloudFileProviderXPC
 
 extension FileProviderExtension: ClientCommunicationProtocol {
-    func hasDirtyUserData(completionHandler: ((Bool) -> Void)?) {
+    public func hasDirtyUserData(completionHandler: ((Bool) -> Void)?) {
         logger.debug("Dirty user data check is requested.")
 
         guard let completionHandler else {
@@ -25,23 +25,23 @@ extension FileProviderExtension: ClientCommunicationProtocol {
         enumerator.enumerateItems(for: observer, startingAt: page)
     }
 
-    func getFileProviderDomainIdentifier(completionHandler: @escaping (String?, Error?) -> Void) {
+    public func getFileProviderDomainIdentifier(completionHandler: @escaping (String?, Error?) -> Void) {
         logger.debug("Returning file provider domain identifier.", [.domain: domain.identifier.rawValue])
         completionHandler(domain.identifier.rawValue, nil)
     }
 
-    func configureAccount(withUser user: String, userId: String, serverUrl: String, password: String, userAgent: String) {
+    public func configureAccount(withUser user: String, userId: String, serverUrl: String, password: String, userAgent: String) {
         logger.info("Received account to configure.")
         setupDomainAccount(user: user, userId: userId, serverUrl: serverUrl, password: password, userAgent: userAgent)
     }
 
-    func removeAccountConfig() {
+    public func removeAccountConfig() {
         logger.info("Received request to remove account data.")
         dbManager = nil
         ncAccount = nil
     }
 
-    func setIgnoreList(_ ignoreList: [String]) {
+    public func setIgnoreList(_ ignoreList: [String]) {
         ignoredFiles = IgnoredFilesMatcher(ignoreList: ignoreList, log: log)
         logger.info("Ignore list updated.")
     }

@@ -1,15 +1,18 @@
 //  SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
-import FileProvider
+@preconcurrency import FileProvider
+import NextcloudFileProviderXPC
 import NextcloudKit
-import NextcloudFileProviderKit
 import OSLog
 
 ///
 /// The file provider replicated extension implementation.
 ///
-@objc final class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, @unchecked Sendable {
+/// `public` so the runtime can locate this principal class via the package's module name
+/// (referenced from `Info.plist`'s `NSExtensionPrincipalClass`).
+///
+@objc public final class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, @unchecked Sendable {
     ///
     /// The file provider domain managed by this file provider extension implementation.
     ///
@@ -40,8 +43,8 @@ import OSLog
     ///
     var connections = Set<NSXPCConnection>()
 
-    var listener = NSXPCListener.anonymous()
-    let serviceName = NSFileProviderServiceName("com.nextcloud.desktopclient.ClientCommunicationService")
+    public var listener = NSXPCListener.anonymous()
+    public let serviceName = NSFileProviderServiceName("com.nextcloud.desktopclient.ClientCommunicationService")
 
     ///
     /// NextcloudKit instance used by this file provider extension object.
@@ -75,7 +78,7 @@ import OSLog
     // enumeration if they want for safety.
     lazy var config = FileProviderDomainDefaults(identifier: domain.identifier, log: log)
 
-    required init(domain: NSFileProviderDomain) {
+    public required init(domain: NSFileProviderDomain) {
         // The containing application must create a domain using 
         // `NSFileProviderManager.add(_:, completionHandler:)`. The system will then launch the
         // application extension process, call `FileProviderExtension.init(domain:)` to instantiate
@@ -102,7 +105,7 @@ import OSLog
         super.init()
     }
 
-    func invalidate() {
+    public func invalidate() {
         logger.debug("File provider extension process is being invalidated.")
     }
 
@@ -140,8 +143,8 @@ import OSLog
 
     // MARK: - NSFileProviderReplicatedExtension protocol methods
 
-    func item(for identifier: NSFileProviderItemIdentifier, request: NSFileProviderRequest, completionHandler: @escaping (NSFileProviderItem?, Error?) -> Void) -> Progress {
-        logger.debug("Received request for item.", [.item: identifier, .request: request])
+    public func item(for identifier: NSFileProviderItemIdentifier, request: NSFileProviderRequest, completionHandler: @Sendable @escaping (NSFileProviderItem?, Error?) -> Void) -> Progress {
+        logger.debug("Received request for item.", [.item: identifier])
 
         guard let ncAccount else {
             logger.debug("Not fetching item because account not set up yet.", [.item: identifier])
@@ -155,9 +158,9 @@ import OSLog
             return Progress()
         }
 
-        let progress = Progress()
+        let progress = Progress(totalUnitCount: 1)
+
         Task {
-            progress.totalUnitCount = 1
             if let item = await Item.storedItem(identifier: identifier, account: ncAccount, remoteInterface: ncKit, dbManager: dbManager, log: log), item.metadata.deleted == false {
                 progress.completedUnitCount = 1
                 completionHandler(item, nil)
@@ -165,13 +168,14 @@ import OSLog
                 completionHandler(nil, NSFileProviderError(.noSuchItem))
             }
         }
+
         return progress
     }
 
-    func fetchContents(for itemIdentifier: NSFileProviderItemIdentifier, version requestedVersion: NSFileProviderItemVersion?,  request: NSFileProviderRequest, completionHandler: @escaping (URL?, NSFileProviderItem?, Error?) -> Void) -> Progress {
+    public func fetchContents(for itemIdentifier: NSFileProviderItemIdentifier, version requestedVersion: NSFileProviderItemVersion?,  request: NSFileProviderRequest, completionHandler: @Sendable @escaping (URL?, NSFileProviderItem?, Error?) -> Void) -> Progress {
         let actionId = UUID()
         insertSyncAction(actionId)
-        logger.debug("Received request to fetch contents of item.", [.item: itemIdentifier, .request: request])
+        logger.debug("Received request to fetch contents of item.", [.item: itemIdentifier])
 
         guard requestedVersion == nil else {
             // TODO: Add proper support for file versioning
@@ -216,19 +220,19 @@ import OSLog
         return progress
     }
 
-    func createItem(
+    public func createItem(
         basedOn itemTemplate: NSFileProviderItem, 
         fields: NSFileProviderItemFields,
         contents url: URL?, 
         options: NSFileProviderCreateItemOptions = [],
         request: NSFileProviderRequest,
-        completionHandler: @escaping ( 
+        completionHandler: @Sendable @escaping (
             NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?
         ) -> Void
     ) -> Progress {
         let actionId = UUID()
         insertSyncAction(actionId)
-        logger.debug("Received request to create item.", [.item: itemTemplate, .name: itemTemplate.filename, .request: request])
+        logger.debug("Received request to create item.", [.item: itemTemplate.itemIdentifier, .name: itemTemplate.filename])
 
         guard let ncAccount else {
             logger.debug("Not creating item because account is not set up yet.", [.item: itemTemplate.itemIdentifier])
@@ -264,6 +268,7 @@ import OSLog
                 ignoredFiles: ignoredFiles,
                 progress: progress,
                 dbManager: dbManager,
+                appProxy: app,
                 log: log
             )
 
@@ -290,16 +295,14 @@ import OSLog
         return progress
     }
 
-    func modifyItem(
+    public func modifyItem(
         _ item: NSFileProviderItem, 
         baseVersion: NSFileProviderItemVersion,
         changedFields: NSFileProviderItemFields, 
         contents newContents: URL?,
         options: NSFileProviderModifyItemOptions = [], 
         request: NSFileProviderRequest,
-        completionHandler: @escaping (
-            NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?
-        ) -> Void
+        completionHandler: @Sendable @escaping (NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?) -> Void
     ) -> Progress {
         // An item was modified on disk, process the item's modification
         // TODO: Handle finder things like tags, other possible item changed fields
@@ -307,7 +310,7 @@ import OSLog
         insertSyncAction(actionId)
 
         let identifier = item.itemIdentifier
-        logger.debug("Received request to modify item.", [.item: item, .request: request])
+        logger.debug("Received request to modify item.", [.item: item.itemIdentifier])
 
         guard let ncAccount else {
             logger.debug("Not modifying item because account not set up yet.", [.item: identifier])
@@ -364,7 +367,8 @@ import OSLog
                 ignoredFiles: ignoredFiles,
                 domain: domain,
                 progress: progress,
-                dbManager: dbManager
+                dbManager: dbManager,
+                appProxy: app
             )
 
             if error != nil {
@@ -381,17 +385,17 @@ import OSLog
         return progress
     }
 
-    func deleteItem(
+    public func deleteItem(
         identifier: NSFileProviderItemIdentifier, 
         baseVersion _: NSFileProviderItemVersion,
         options _: NSFileProviderDeleteItemOptions = [], 
         request: NSFileProviderRequest,
-        completionHandler: @escaping (Error?) -> Void
+        completionHandler: @Sendable @escaping (Error?) -> Void
     ) -> Progress {
         let actionId = UUID()
         insertSyncAction(actionId)
 
-        logger.debug("Received request to delete item.", [.item: identifier, .request: request])
+        logger.debug("Received request to delete item.", [.item: identifier])
 
         guard let ncAccount else {
             logger.debug("Not deleting item because account is not set up yet.", [.item: identifier])
@@ -446,7 +450,7 @@ import OSLog
         return progress
     }
 
-    func enumerator(for containerItemIdentifier: NSFileProviderItemIdentifier, request: NSFileProviderRequest) throws -> NSFileProviderEnumerator {
+    public func enumerator(for containerItemIdentifier: NSFileProviderItemIdentifier, request: NSFileProviderRequest) throws -> NSFileProviderEnumerator {
         logger.debug("System requested enumerator.", [.item: containerItemIdentifier])
 
         guard let ncAccount else {
@@ -469,7 +473,7 @@ import OSLog
         )
     }
 
-    func materializedItemsDidChange(completionHandler: @escaping () -> Void) {
+    public func materializedItemsDidChange(completionHandler: @escaping () -> Void) {
         guard let ncAccount else {
             logger.debug("Not purging stale local file metadatas because account not set up.")
             completionHandler()
@@ -543,7 +547,7 @@ import OSLog
         serverUrl: String,
         password: String,
         userAgent: String = "Nextcloud-macOS/FileProviderExt",
-        completionHandler: ((NSError?) -> Void)? = nil
+        completionHandler: (@Sendable (NSError?) -> Void)? = nil
     ) {
         let account = Account(user: user, id: userId, serverUrl: serverUrl, password: password)
 
@@ -626,7 +630,7 @@ import OSLog
     private func performSetup(
         account: Account,
         userAgent: String,
-        completionHandler: ((NSError?) -> Void)?
+        completionHandler: (@Sendable (NSError?) -> Void)?
     ) async {
         // Store account information independently from the main app for later access.
         config.serverUrl = account.serverUrl

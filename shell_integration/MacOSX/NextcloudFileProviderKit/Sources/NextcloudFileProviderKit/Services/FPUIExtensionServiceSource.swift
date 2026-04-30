@@ -4,7 +4,6 @@
 import FileProvider
 import Foundation
 import NextcloudKit
-import NextcloudFileProviderKit
 import OSLog
 
 class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCListenerDelegate, FPUIExtensionService {

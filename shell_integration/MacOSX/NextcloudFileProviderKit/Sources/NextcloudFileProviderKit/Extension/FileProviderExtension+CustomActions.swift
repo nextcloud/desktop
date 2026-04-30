@@ -1,15 +1,14 @@
 //  SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
-import FileProvider
-import NextcloudFileProviderKit
+@preconcurrency import FileProvider
 import OSLog
 
 extension FileProviderExtension: NSFileProviderCustomAction {
-    func performAction(
+    public func performAction(
         identifier actionIdentifier: NSFileProviderExtensionActionIdentifier,
         onItemsWithIdentifiers itemIdentifiers: [NSFileProviderItemIdentifier],
-        completionHandler: @escaping ((any Error)?) -> Void
+        completionHandler: @Sendable @escaping ((any Error)?) -> Void
     ) -> Progress {
         switch actionIdentifier.rawValue {
         case "com.nextcloud.desktopclient.FileProviderExt.FileActionsAction":
@@ -68,7 +67,7 @@ extension FileProviderExtension: NSFileProviderCustomAction {
     private func performKeepDownloadedAction(
         keepDownloaded: Bool,
         onItemsWithIdentifiers itemIdentifiers: [NSFileProviderItemIdentifier],
-        completionHandler: @escaping ((any Error)?) -> Void
+        completionHandler: @Sendable @escaping ((any Error)?) -> Void
     ) -> Progress {
         guard let ncAccount else {
             logger.error("Not setting keep offline for items, account not set up yet.")

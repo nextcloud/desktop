@@ -1,8 +1,11 @@
 //  SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
+import FileProvider
+import NextcloudFileProviderXPC
+
 extension FileProviderExtension: NSXPCListenerDelegate {
-    func listener(_ listener: NSXPCListener, shouldAcceptNewConnection newConnection: NSXPCConnection) -> Bool {
+    public func listener(_ listener: NSXPCListener, shouldAcceptNewConnection newConnection: NSXPCConnection) -> Bool {
         logger.info("Listener should accept new connection...")
 
         newConnection.exportedInterface = NSXPCInterface(with: ClientCommunicationProtocol.self)
