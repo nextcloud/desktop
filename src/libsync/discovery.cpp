@@ -31,7 +31,6 @@ namespace
 constexpr const char *editorNamesForDelayedUpload[] = {"PowerPDF"};
 constexpr const char *fileExtensionsToCheckIfOpenForSigning[] = {".pdf"};
 constexpr auto delayIntervalForSyncRetryForOpenedForSigningFilesSeconds = 60;
-constexpr auto delayIntervalForSyncRetryForFilesExceedQuotaSeconds = 60;
 }
 
 namespace OCC {
@@ -1125,10 +1124,25 @@ int64_t ProcessDirectoryJob::folderBytesAvailable(const SyncFileItemPtr &item, c
         return unlimitedFreeSpace;
     }
 
+    // Helper: subtract _quotaBytesReserved from a known quota value (>= 0),
+    // clamping to 0.  Negative sentinels (-1 = new unscanned folder,
+    // -2 = unknown, -3 = unlimited) are passed through unchanged so the
+    // caller's "folderQuota > -1" guard correctly skips them.
+    auto adjustForReserved = [this](const int64_t raw) {
+        return raw >= 0 ? std::max<int64_t>(0, raw - _quotaBytesReserved) : raw;
+    };
+
     if (serverEntry == FolderQuota::ServerEntry::Valid) {
         qCDebug(lcDisco) << "Returning cached _folderQuota.bytesAvailable for item quota.";
-        return _folderQuota.bytesAvailable;
+        return adjustForReserved(_folderQuota.bytesAvailable);
     }
+
+    // serverEntry == Invalid: the file is new locally and has no server-side
+    // counterpart yet.  Fall through to the DB / _dirItem fallback so the
+    // quota value stored during the previous PROPFIND cycle is used.  If quota
+    // remains unknown there too, folderBytesAvailable() returns unlimitedFreeSpace
+    // and the upload is allowed; the propagator's reactive HTTP-507 path catches
+    // the failure and blacklists the item when quota is unavailable upfront.
 
     if (!_dirItem) {
         qCDebug(lcDisco) << "Returning unlimited free space (-3) for item quota with no _dirItem.";
@@ -1137,15 +1151,28 @@ int64_t ProcessDirectoryJob::folderBytesAvailable(const SyncFileItemPtr &item, c
 
     qCDebug(lcDisco) << "_dirItem->_folderQuota.bytesAvailable:" << _dirItem->_folderQuota.bytesAvailable;
 
+    // Priority 1: fresh value from the current PROPFIND cycle stored in _dirItem.
+    // _dirItem is the SyncFileItem for the parent folder (e.g. "A"), whose
+    // _folderQuota was populated by processFileAnalyzeRemoteInfo() when "A"
+    // was itself processed — this happens before any child of "A" is finalized.
+    if (_dirItem->_folderQuota.bytesAvailable != -1) {
+        qCDebug(lcDisco) << "Returning _dirItem->_folderQuota.bytesAvailable for item quota (fresh PROPFIND value).";
+        return adjustForReserved(_dirItem->_folderQuota.bytesAvailable);
+    }
+
+    // Priority 2: value persisted from the previous sync cycle in the journal DB.
     SyncJournalFileRecord dirItemDbRecord;
     if (_discoveryData->_statedb->getFileRecord(_dirItem->_file, &dirItemDbRecord) && dirItemDbRecord.isValid()) {
         const auto dirDbBytesAvailable = dirItemDbRecord._folderQuota.bytesAvailable;
-        qCDebug(lcDisco) << "Returning for item quota db value dirItemDbRecord._folderQuota.bytesAvailable" << dirDbBytesAvailable;
-        return dirDbBytesAvailable;
+        if (dirDbBytesAvailable != -1) {
+            qCDebug(lcDisco) << "Returning for item quota db value dirItemDbRecord._folderQuota.bytesAvailable" << dirDbBytesAvailable;
+            return adjustForReserved(dirDbBytesAvailable);
+        }
     }
 
-    qCDebug(lcDisco) << "Returning _dirItem->_folderQuota.bytesAvailable for item quota.";
-    return _dirItem->_folderQuota.bytesAvailable;
+    // Priority 3: quota unknown, allow the upload; reactive HTTP-507 will catch it.
+    qCDebug(lcDisco) << "Returning unlimited free space (-3) for item quota: quota unknown from both dirItem and DB.";
+    return unlimitedFreeSpace;
 }
 
 void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
@@ -1231,9 +1258,22 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                                                                                                    _currentFolder._server);
             }
 
-            item->_status = SyncFileItem::Status::NormalError;
-            _discoveryData->_anotherSyncNeeded = true;
-            _discoveryData->_filesNeedingScheduledSync.insert(path._original, delayIntervalForSyncRetryForFilesExceedQuotaSeconds);
+            // Use DetailError so the error appears in the issues tab without a
+            // prominent pop-up, matching the reactive HTTP 507 path.
+            // Do NOT set _anotherSyncNeeded or insert into _filesNeedingScheduledSync:
+            // those were the source of the 60-second retry loop.  The discovery check
+            // re-fires on every normal sync cycle, so the upload remains blocked
+            // without wasting any network bandwidth.
+            item->_status = SyncFileItem::Status::DetailError;
+        } else if (item->_direction == SyncFileItem::Up
+                   && !item->isDirectory()
+                   && (item->_instruction == CSYNC_INSTRUCTION_NEW
+                       || item->_instruction == CSYNC_INSTRUCTION_SYNC)) {
+            // Upload approved: reserve these bytes so subsequent files processed
+            // in the same discovery pass see the reduced available quota.  Without
+            // this, two files that individually fit but together exceed the quota
+            // would both be approved.
+            _quotaBytesReserved += item->_size;
         }
 
         if (item->_type != CSyncEnums::ItemTypeVirtualFile) {
@@ -1942,6 +1982,15 @@ void ProcessDirectoryJob::processFileFinalize(
         auto job = new ProcessDirectoryJob(path, item, recurseQueryLocal, recurseQueryServer,
             _lastSyncTimestamp, this);
         job->setInsideEncryptedTree(isInsideEncryptedTree() || item->isEncrypted());
+        // Propagate the parent folder's quota into the child job so that
+        // new-local-only files (serverEntry invalid, no DB record yet) can
+        // read a valid quota via _folderQuota in folderBytesAvailable().
+        if (item->_folderQuota.bytesAvailable != -1) {
+            OCC::FolderQuota folderQuota;
+            folderQuota.bytesUsed = item->_folderQuota.bytesUsed;
+            folderQuota.bytesAvailable = item->_folderQuota.bytesAvailable;
+            job->setFolderQuota(folderQuota);
+        }
         if (removed) {
             job->setParent(_discoveryData);
             _discoveryData->_deletedItem[path._original] = item;

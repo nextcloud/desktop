@@ -300,6 +300,11 @@ private:
     bool _isInsideEncryptedTree = false; // this directory is encrypted or is within the tree of directories with root directory encrypted
 
     FolderQuota _folderQuota;
+    // Running total of bytes already reserved for approved uploads in this
+    // directory during the current discovery pass.  Subtracted from the quota
+    // returned by folderBytesAvailable() so that two files which individually
+    // fit but together exceed quota cannot both be approved in one pass.
+    qint64 _quotaBytesReserved = 0;
 
     int64_t folderBytesAvailable(const SyncFileItemPtr &item, const FolderQuota::ServerEntry serverEntry) const;
 
