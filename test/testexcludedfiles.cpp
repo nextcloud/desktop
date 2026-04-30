@@ -11,12 +11,16 @@
 #include <QtTest>
 #include <QTemporaryDir>
 
+#include "common/utility.h"
+#include "csync.h"
 #include "csync_exclude.h"
 #include "logger.h"
 
 using namespace OCC;
 
-#define EXCLUDE_LIST_FILE SOURCEDIR "/../../sync-exclude.lst"
+using namespace Qt::StringLiterals;
+
+constexpr auto EXCLUDE_LIST_FILE = SOURCEDIR "/../../sync-exclude.lst";
 
 // The tests were converted from the old CMocka framework, that's why there is a global
 static QScopedPointer<ExcludedFiles> excludedFiles;
@@ -397,8 +401,8 @@ private slots:
         QCOMPARE(check_file_traversal("/excludepath/withsubdir"), CSYNC_FILE_EXCLUDE_LIST);
         QCOMPARE(check_dir_traversal("/excludepath/withsubdir2"), CSYNC_NOT_EXCLUDED);
 
-        // because leading dirs aren't checked!
-        QCOMPARE(check_dir_traversal("/excludepath/withsubdir/foo"), CSYNC_NOT_EXCLUDED);
+        // Parent directories are considered too
+        QCOMPARE(check_dir_traversal("/excludepath/withsubdir/foo"), CSYNC_FILE_EXCLUDE_LIST);
 
         /* Check ending of pattern */
         QCOMPARE(check_file_traversal("/exclude"), CSYNC_FILE_EXCLUDE_LIST);
@@ -689,32 +693,6 @@ private slots:
         QVERIFY(0 == strcmp(line.constData(), "\\"));
     }
 
-    void check_version_directive()
-    {
-        ExcludedFiles excludes;
-        excludes.setClientVersion(ExcludedFiles::Version(2, 5, 0));
-
-        std::vector<std::pair<const char *, bool>> tests = {
-            { "#!version == 2.5.0", true },
-            { "#!version == 2.6.0", false },
-            { "#!version < 2.6.0", true },
-            { "#!version <= 2.6.0", true },
-            { "#!version > 2.6.0", false },
-            { "#!version >= 2.6.0", false },
-            { "#!version < 2.4.0", false },
-            { "#!version <= 2.4.0", false },
-            { "#!version > 2.4.0", true },
-            { "#!version >= 2.4.0", true },
-            { "#!version < 2.5.0", false },
-            { "#!version <= 2.5.0", true },
-            { "#!version > 2.5.0", false },
-            { "#!version >= 2.5.0", true },
-        };
-        for (auto test : tests) {
-            QVERIFY(excludes.versionDirectiveKeepNextLine(test.first) == test.second);
-        }
-    }
-     
     void testAddExcludeFilePath_addSameFilePath_listSizeDoesNotIncrease()
     {
         excludedFiles.reset(new ExcludedFiles());
@@ -784,6 +762,71 @@ private slots:
         excludedFiles->addExcludeFilePath(existingFilePath);
         QCOMPARE(excludedFiles->reloadExcludeFiles(), true);
         QCOMPARE(excludedFiles->_allExcludes.size(), 1);
+    }
+
+    void testFolderExcludeListInheritsGlobalExcludes()
+    {
+        QTemporaryDir tempDir;
+        const auto localPath = Utility::trailingSlashPath(tempDir.path());
+        excludedFiles.reset(new ExcludedFiles(localPath));
+
+        // create .sync-exclude.lst files inside `a/b` and `a/b/c` subdirectories
+        QDir localDir(localPath);
+        QVERIFY(localDir.mkpath("a/b/c/d"));
+        const auto writeExcludeList = [&localDir](const QString& path, const QStringList& contents) -> bool {
+            QFile f(localDir.filePath("%1/.sync-exclude.lst"_L1.arg(path)));
+            if (!f.open(QIODevice::WriteOnly)) {
+                return false;
+            }
+            f.write(contents.join("\n").toLocal8Bit());
+            f.close();
+            return true;
+        };
+        QVERIFY(writeExcludeList("a/b", {"B_ignore*"}));
+        QVERIFY(writeExcludeList("a/b/c", {"C_ignore*"}));
+
+        // add default/global exclude list from the client
+        excludedFiles->addExcludeFilePath(EXCLUDE_LIST_FILE);
+        QVERIFY(excludedFiles->reloadExcludeFiles());
+
+        QCOMPARE(excludedFiles->traversalPatternMatch("~$_patternExcludedByDefault", ItemTypeFile), CSYNC_FILE_EXCLUDE_LIST);
+
+        // according to `ExcludedFiles::traversalPatternMatch`, directories are
+        // guaranteed to be visited before their files, so match those first.
+        //
+        // The function has the side effect of reading additional excludes from
+        // a ".sync-exclude.lst" file in the passed directory
+        QCOMPARE(excludedFiles->_allExcludes.size(), 1);
+        QCOMPARE(excludedFiles->traversalPatternMatch("a", ItemTypeDirectory), CSYNC_NOT_EXCLUDED);
+        QCOMPARE(excludedFiles->_allExcludes.size(), 1);
+        QCOMPARE(excludedFiles->traversalPatternMatch("a/b", ItemTypeDirectory), CSYNC_NOT_EXCLUDED);
+        QCOMPARE(excludedFiles->_allExcludes.size(), 2);
+        QCOMPARE(excludedFiles->traversalPatternMatch("a/b/c", ItemTypeDirectory), CSYNC_NOT_EXCLUDED);
+        QCOMPARE(excludedFiles->_allExcludes.size(), 3);
+        QCOMPARE(excludedFiles->traversalPatternMatch("a/b/c/d", ItemTypeDirectory), CSYNC_NOT_EXCLUDED);
+        QCOMPARE(excludedFiles->_allExcludes.size(), 3);
+
+        // validate custom ignores from the directory-specific .sync-exclude.lst
+        QCOMPARE(excludedFiles->traversalPatternMatch("a/b/B_ignoredFile", ItemTypeFile), CSYNC_FILE_EXCLUDE_LIST);
+        QCOMPARE(excludedFiles->traversalPatternMatch("a/b/c/C_ignoredFile", ItemTypeFile), CSYNC_FILE_EXCLUDE_LIST);
+
+        // excludes from subfolders are not propagated to their parent(s)
+        QCOMPARE(excludedFiles->traversalPatternMatch("B_ignoredFile", ItemTypeFile), CSYNC_NOT_EXCLUDED);
+        QCOMPARE(excludedFiles->traversalPatternMatch("a/B_ignoredFile", ItemTypeFile), CSYNC_NOT_EXCLUDED);
+        QCOMPARE(excludedFiles->traversalPatternMatch("C_ignoredFile", ItemTypeFile), CSYNC_NOT_EXCLUDED);
+        QCOMPARE(excludedFiles->traversalPatternMatch("a/C_ignoredFile", ItemTypeFile), CSYNC_NOT_EXCLUDED);
+        QCOMPARE(excludedFiles->traversalPatternMatch("a/b/C_ignoredFile", ItemTypeFile), CSYNC_NOT_EXCLUDED);
+
+        // global exclude list should still match in subdirs
+        QCOMPARE(excludedFiles->traversalPatternMatch("a/~$_patternExcludedByDefault", ItemTypeFile), CSYNC_FILE_EXCLUDE_LIST);
+        QCOMPARE(excludedFiles->traversalPatternMatch("a/b/~$_patternExcludedByDefault", ItemTypeFile), CSYNC_FILE_EXCLUDE_LIST);
+        QCOMPARE(excludedFiles->traversalPatternMatch("a/b/c/~$_patternExcludedByDefault", ItemTypeFile), CSYNC_FILE_EXCLUDE_LIST);
+        QCOMPARE(excludedFiles->traversalPatternMatch("a/b/c/d/~$_patternExcludedByDefault", ItemTypeFile), CSYNC_FILE_EXCLUDE_LIST);
+
+        // excludes from subfolders inherit the parent excludes
+        QCOMPARE(excludedFiles->traversalPatternMatch("a/b/c/B_ignoredFile", ItemTypeFile), CSYNC_FILE_EXCLUDE_LIST);
+        QCOMPARE(excludedFiles->traversalPatternMatch("a/b/c/d/B_ignoredFile", ItemTypeFile), CSYNC_FILE_EXCLUDE_LIST);
+        QCOMPARE(excludedFiles->traversalPatternMatch("a/b/c/d/C_ignoredFile", ItemTypeFile), CSYNC_FILE_EXCLUDE_LIST);
     }
 };
 

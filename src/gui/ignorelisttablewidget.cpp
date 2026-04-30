@@ -24,6 +24,8 @@ static constexpr int patternCol = 0;
 static constexpr int deletableCol = 1;
 static constexpr int readOnlyRows = 3;
 
+Q_LOGGING_CATEGORY(lcIgnoreListTableWidget, "nextcloud.gui.ignorelisttablewidget", QtInfoMsg)
+
 IgnoreListTableWidget::IgnoreListTableWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::IgnoreListTableWidget)
@@ -84,30 +86,38 @@ void IgnoreListTableWidget::slotWriteIgnoreFile(const QString &file)
 {
     QFile ignores(file);
 
-    if (ignores.open(QIODevice::WriteOnly)) {
-        // rewrites the whole file since now the user can also remove system patterns
-        QFile::resize(file, 0);
-
-        for (auto row = 0; row < ui->tableWidget->rowCount(); ++row) {
-            const auto patternItem = ui->tableWidget->item(row, patternCol);
-            const auto deletableItem = ui->tableWidget->item(row, deletableCol);
-
-            if (patternItem->flags() & Qt::ItemIsEnabled) {
-                QByteArray prepend;
-                if (deletableItem->checkState() == Qt::Checked) {
-                    prepend = "]";
-                } else if (patternItem->text().startsWith('#')) {
-                    prepend = "\\";
-                }
-                ignores.write(prepend + patternItem->text().toUtf8() + '\n');
-            }
-        }
-    } else {
+    if (!ignores.open(QIODevice::WriteOnly)) {
+        qCWarning(lcIgnoreListTableWidget).nospace() << "failed to write ignore list"
+            << " file=" << file
+            << " errorString=" << ignores.errorString();
         QMessageBox::warning(this,
                              tr("Could not open file"),
                              tr("Cannot write changes to \"%1\".").arg(file));
+
+        ignores.close();
+        return;
     }
-    ignores.close(); //close the file before reloading stuff.
+
+    // rewrite the whole file since the user can also remove system patterns
+    ignores.resize(0);
+
+    for (auto row = 0; row < ui->tableWidget->rowCount(); ++row) {
+        const auto patternItem = ui->tableWidget->item(row, patternCol);
+        if (!(patternItem->flags() & Qt::ItemIsEnabled)) {
+            // skip read-only patterns
+            continue;
+        }
+        const auto deletableItem = ui->tableWidget->item(row, deletableCol);
+
+        QByteArray prefix;
+        if (deletableItem && deletableItem->checkState() == Qt::Checked) {
+            prefix = "]";
+        } else if (patternItem->text().startsWith('#')) {
+            prefix = "\\";
+        }
+        ignores.write(prefix + patternItem->text().toUtf8() + '\n');
+    }
+    ignores.close(); // close the file before reloading stuff.
 
     const auto folderMan = FolderMan::instance();
 
@@ -134,8 +144,9 @@ void IgnoreListTableWidget::slotAddPattern()
                                                {},
                                                &okClicked);
 
-    if (!okClicked || pattern.isEmpty())
+    if (!okClicked || pattern.isEmpty()) {
         return;
+    }
 
     addPattern(pattern, false, false);
     ui->tableWidget->scrollToBottom();
@@ -181,7 +192,6 @@ int IgnoreListTableWidget::addPattern(const QString &pattern, const bool deletab
 
     if (readOnly) {
         patternItem->setFlags(patternItem->flags() ^ Qt::ItemIsEnabled);
-        patternItem->setToolTip(readOnlyTooltip);
         deletableItem->setFlags(deletableItem->flags() ^ Qt::ItemIsEnabled);
     }
 
