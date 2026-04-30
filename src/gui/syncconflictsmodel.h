@@ -12,12 +12,14 @@
 #include <QAbstractListModel>
 #include <QMimeDatabase>
 #include <QLocale>
+#include <qqmlregistration.h>
 
 namespace OCC {
 
 class SyncConflictsModel : public QAbstractListModel
 {
     Q_OBJECT
+    QML_ELEMENT
 
     Q_PROPERTY(OCC::ActivityList conflictActivities READ conflictActivities WRITE setConflictActivities NOTIFY conflictActivitiesChanged)
 

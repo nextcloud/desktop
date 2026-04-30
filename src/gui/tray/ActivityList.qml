@@ -6,7 +6,6 @@
 import QtQuick
 import QtQuick.Controls
 
-import Style
 import com.nextcloud.desktopclient as NC
 
 ScrollView {
@@ -15,7 +14,7 @@ ScrollView {
     property alias count: activityList.count
     property alias atYBeginning : activityList.atYBeginning
     property bool isFileActivityList: false
-    property int iconSize: Style.trayListItemIconSize
+    property int iconSize: NC.Style.trayListItemIconSize
     property int delegateHorizontalPadding: 0
 
     property bool scrollingToTop: false
@@ -38,8 +37,8 @@ ScrollView {
 
     ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
     ScrollBar.vertical.policy: ScrollBar.AlwaysOn
-    ScrollBar.vertical.width: Math.max(ScrollBar.vertical.implicitWidth, Style.minimumScrollBarWidth)
-    ScrollBar.vertical.minimumSize: Style.minimumScrollBarThumbSize
+    ScrollBar.vertical.width: Math.max(ScrollBar.vertical.implicitWidth, NC.Style.minimumScrollBarWidth)
+    ScrollBar.vertical.minimumSize: NC.Style.minimumScrollBarThumbSize
 
     data: NC.WheelHandler {
         target: controlRoot.contentItem
@@ -62,12 +61,12 @@ ScrollView {
 
         Timer {
             id: repeatUpFlickTimer
-            interval: Style.activityListScrollToTopTimerInterval
+            interval: NC.Style.activityListScrollToTopTimerInterval
             running: controlRoot.scrollingToTop
             repeat: true
             onTriggered: {
                 if (!activityList.atYBeginning) {
-                    activityList.flick(0, Style.activityListScrollToTopVelocity)
+                    activityList.flick(0, NC.Style.activityListScrollToTopVelocity)
                 } else {
                     controlRoot.scrollingToTop = false
                 }
@@ -78,7 +77,7 @@ ScrollView {
             id: activityHover
             anchors.fill: activityList.currentItem
             color: palette.highlight
-            radius: Style.mediumRoundedButtonRadius
+            radius: NC.Style.mediumRoundedButtonRadius
             visible: activityList.activeFocus
         }
 
@@ -133,15 +132,15 @@ ScrollView {
             anchors.right: parent.right
 
             hoverEnabled: true
-            padding: Style.smallSpacing
+            padding: NC.Style.smallSpacing
 
             Accessible.role: Accessible.Button
             Accessible.name: qsTr("Scroll to top")
             Accessible.onPressAction: scrollToTopButton.clicked()
 
             icon.source: "image://svgimage-custom-color/chevron-double-up.svg/" + palette.buttonText
-            icon.width: Style.activityListButtonIconSize
-            icon.height: Style.activityListButtonIconSize
+            icon.width: NC.Style.activityListButtonIconSize
+            icon.height: NC.Style.activityListButtonIconSize
 
             onClicked: controlRoot.scrollToTop()
 
@@ -153,7 +152,7 @@ ScrollView {
             width: parent.width * 0.8
             anchors.centerIn: parent
             visible: activityList.count === 0
-            spacing: Style.standardSpacing
+            spacing: NC.Style.standardSpacing
 
             Image {
                 width: parent.width

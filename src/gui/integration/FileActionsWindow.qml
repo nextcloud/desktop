@@ -11,7 +11,6 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import Qt5Compat.GraphicalEffects
 import com.nextcloud.desktopclient
-import Style
 import "./../tray"
 
 ApplicationWindow {
