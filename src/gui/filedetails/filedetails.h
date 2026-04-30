@@ -46,6 +46,7 @@ public:
 
 public slots:
     void setLocalPath(const QString &localPath);
+    void showInFileManager() const;
 
 signals:
     void localPathChanged();
