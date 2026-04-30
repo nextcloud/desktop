@@ -13,6 +13,7 @@
 #include "progressdispatcher.h"
 #include <QDebug>
 #include <algorithm>
+#include <array>
 #include <QEventLoop>
 #include <QDir>
 #include <set>
@@ -28,10 +29,10 @@
 
 namespace
 {
-constexpr const char *editorNamesForDelayedUpload[] = {"PowerPDF"};
-constexpr const char *fileExtensionsToCheckIfOpenForSigning[] = {".pdf"};
-constexpr auto delayIntervalForSyncRetryForOpenedForSigningFilesSeconds = 60;
-constexpr auto delayIntervalForSyncRetryForFilesExceedQuotaSeconds = 60;
+constexpr std::array<const char *, 1> editorNamesForDelayedUpload = {"PowerPDF"};
+constexpr std::array<const char *, 1> kFileExtsForSigning = {".pdf"};
+constexpr auto kRetryDelaySigningFileSec = 60;
+constexpr auto kRetryDelayQuotaExceedSec = 60;
 }
 
 namespace OCC {
@@ -61,7 +62,7 @@ ProcessDirectoryJob::ProcessDirectoryJob(const PathTuple &path, const SyncFileIt
     computePinState(parent->_pinState);
 }
 
-ProcessDirectoryJob::ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState, const PathTuple &path, const SyncFileItemPtr &dirItem, const SyncFileItemPtr &parentDirItem, QueryMode queryLocal, qint64 lastSyncTimestamp, QObject *parent)
+ProcessDirectoryJob::ProcessDirectoryJob(DiscoveryPhase *const data, const PinState basePinState, const PathTuple &path, const SyncFileItemPtr &dirItem, const SyncFileItemPtr &parentDirItem, const QueryMode queryLocal, const qint64 lastSyncTimestamp, QObject *const parent)
         : QObject(parent)
         , _dirItem(dirItem)
         , _dirParentItem(parentDirItem)
@@ -230,9 +231,8 @@ void ProcessDirectoryJob::process()
 
         const auto isBlacklisted = _queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original) || isEncryptedFolderButE2eIsNotSetup;
 
-        const auto willBeExcluded = handleExcluded(path._target, e, entries, isHidden, isBlacklisted);
-
-        if (willBeExcluded) {
+        if (const auto willBeExcluded = handleExcluded(path._target, e, entries, isHidden, isBlacklisted);
+            willBeExcluded) {
             continue;
         }
 
@@ -277,11 +277,12 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
                                             || excluded == CSYNC_FILE_EXCLUDE_TRAILING_SPACE
                                             || excluded == CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE;
 
-    const auto leadingAndTrailingSpacesFilesAllowed = !_discoveryData->_shouldEnforceWindowsFileNameCompatibility || _discoveryData->_leadingAndTrailingSpacesFilesAllowed.contains(_discoveryData->_localDir + path);
 #if defined Q_OS_WINDOWS
-    if (hasLeadingOrTrailingSpaces && leadingAndTrailingSpacesFilesAllowed) {
+    if (const auto spacesFilesAllowed = !_discoveryData->_enforceWindowsFilenameCompat || _discoveryData->_spacesFilesAllowed.contains(_discoveryData->_localDir + path);
+        hasLeadingOrTrailingSpaces && spacesFilesAllowed) {
 #else
-    if (hasLeadingOrTrailingSpaces && (wasSyncedAlready || leadingAndTrailingSpacesFilesAllowed)) {
+    if (const auto spacesFilesAllowed = !_discoveryData->_enforceWindowsFilenameCompat || _discoveryData->_spacesFilesAllowed.contains(_discoveryData->_localDir + path);
+        hasLeadingOrTrailingSpaces && (wasSyncedAlready || spacesFilesAllowed)) {
 #endif
         excluded = CSYNC_NOT_EXCLUDED;
     }
@@ -319,8 +320,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
 
     auto forbiddenCharMatch = QString{};
     const auto containsForbiddenCharacters =
-        std::any_of(forbiddenChars.cbegin(),
-                    forbiddenChars.cend(),
+        std::ranges::any_of(forbiddenChars,
                     [&localName, &forbiddenCharMatch](const QString &charPattern) {
                         if (localName.contains(charPattern)) {
                             forbiddenCharMatch = charPattern;
@@ -382,6 +382,27 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         return true;
     }
 
+    const auto setSpaceExcludeError = [&](const QString &msg) {
+        item->_errorString = msg;
+        item->_status = SyncFileItem::FileNameInvalid;
+        if (isLocal && !maybeRenameForWinCompatibility(_discoveryData->_localDir + item->_file, excluded))
+            item->_errorString += QStringLiteral(" %1").arg(tr("Cannot be renamed or uploaded."));
+    };
+
+    const auto buildBlacklistErrorString = [&]() {
+        const auto errorBase = tr("The filename is blacklisted on the server.");
+        QString reason;
+        if (hasForbiddenFilename)
+            reason = tr("Reason: the entire filename is forbidden.");
+        if (hasForbiddenBasename)
+            reason = tr("Reason: the filename has a forbidden base name (filename start).");
+        if (hasForbiddenExtension)
+            reason = tr("Reason: the file has a forbidden extension (.%1).").arg(extension);
+        if (containsForbiddenCharacters)
+            reason = tr("Reason: the filename contains a forbidden character (%1).").arg(forbiddenCharMatch);
+        return reason.isEmpty() ? errorBase : QStringLiteral("%1 %2").arg(errorBase, reason);
+    };
+
     if (entries.localEntry.isSymLink) {
         /* Symbolic links are ignored. */
         item->_errorString = tr("Symbolic links are not supported in syncing.");
@@ -427,25 +448,13 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
             item->_status = SyncFileItem::FileNameInvalid;
             break;
         case CSYNC_FILE_EXCLUDE_TRAILING_SPACE:
-            item->_errorString = tr("Filename contains trailing spaces.");
-            item->_status = SyncFileItem::FileNameInvalid;
-            if (isLocal && !maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
-                item->_errorString += QStringLiteral(" %1").arg(tr("Cannot be renamed or uploaded."));
-            }
+            setSpaceExcludeError(tr("Filename contains trailing spaces."));
             break;
         case CSYNC_FILE_EXCLUDE_LEADING_SPACE:
-            item->_errorString = tr("Filename contains leading spaces.");
-            item->_status = SyncFileItem::FileNameInvalid;
-            if (isLocal && !maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
-                item->_errorString += QStringLiteral(" %1").arg(tr("Cannot be renamed or uploaded."));
-            }
+            setSpaceExcludeError(tr("Filename contains leading spaces."));
             break;
         case CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE:
-            item->_errorString = tr("Filename contains leading and trailing spaces.");
-            item->_status = SyncFileItem::FileNameInvalid;
-            if (isLocal && !maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
-                item->_errorString += QStringLiteral(" %1").arg(tr("Cannot be renamed or uploaded."));
-            }
+            setSpaceExcludeError(tr("Filename contains leading and trailing spaces."));
             break;
         case CSYNC_FILE_EXCLUDE_LONG_FILENAME:
             item->_errorString = tr("Filename is too long.");
@@ -469,25 +478,10 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
             item->_errorString = tr("The filename cannot be encoded on your file system.");
             break;
         case CSYNC_FILE_EXCLUDE_SERVER_BLACKLISTED:
-            const auto errorString = tr("The filename is blacklisted on the server.");
-            QString reasonString;
-            if (hasForbiddenFilename) {
-                reasonString = tr("Reason: the entire filename is forbidden.");
-            }
-            if (hasForbiddenBasename) {
-                reasonString = tr("Reason: the filename has a forbidden base name (filename start).");
-            }
-            if (hasForbiddenExtension) {
-                reasonString = tr("Reason: the file has a forbidden extension (.%1).").arg(extension);
-            }
-            if (containsForbiddenCharacters) {
-                reasonString = tr("Reason: the filename contains a forbidden character (%1).").arg(forbiddenCharMatch);
-            }
-            item->_errorString = reasonString.isEmpty() ? errorString : QStringLiteral("%1 %2").arg(errorString, reasonString);
+            item->_errorString = buildBlacklistErrorString();
             item->_status = SyncFileItem::FileNameInvalidOnServer;
-            if (isLocal && !maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
+            if (isLocal && !maybeRenameForWinCompatibility(_discoveryData->_localDir + item->_file, excluded))
                 item->_errorString += QStringLiteral(" %1").arg(tr("Cannot be renamed or uploaded."));
-            }
             break;
         }
     }
@@ -513,7 +507,7 @@ bool ProcessDirectoryJob::canRemoveCaseClashConflictedCopy(const QString &path, 
     const auto conflictRecord = _discoveryData->_statedb->caseConflictRecordByPath(path.toUtf8());
     const auto originalBaseFileName = QFileInfo(QString(_discoveryData->_localDir + "/" + conflictRecord.initialBasePath)).fileName();
 
-    if (allEntries.find(originalBaseFileName) == allEntries.end()) {
+    if (!allEntries.contains(originalBaseFileName)) {
         // original entry is no longer on the server, remove conflicted copy
         qCDebug(lcDisco) << "original entry:" << originalBaseFileName << "is no longer on the server, remove conflicted copy:" << path;
         return true;
@@ -694,7 +688,7 @@ void ProcessDirectoryJob::postProcessServerNew(const SyncFileItemPtr &item,
         _pendingAsyncJobs++;
         _discoveryData->checkSelectiveSyncNewFolder(path._server,
                                                     serverEntry.remotePerm,
-                                                    [=, this](bool result) {
+                                                    [this, item, path, localEntry, serverEntry, dbEntry](const bool result) {
                                                         --_pendingAsyncJobs;
                                                         if (!result) {
                                                             processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
@@ -754,7 +748,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     if (item->_e2eEncryptionStatusRemote != SyncFileItem::EncryptionStatus::NotEncrypted) {
         Q_ASSERT(item->_e2eEncryptionStatus != SyncFileItem::EncryptionStatus::NotEncrypted);
     }
-    item->_encryptedFileName = [=, this] {
+    item->_encryptedFileName = [this, &serverEntry] {
         if (serverEntry.e2eMangledName.isEmpty()) {
             return QString();
         }
@@ -1061,7 +1055,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
             // we need to make a request to the server to know that the original file is deleted on the server
             _pendingAsyncJobs++;
             const auto job = new RequestEtagJob(_discoveryData->_account, _discoveryData->_remoteFolder + originalPath, this);
-            connect(job, &RequestEtagJob::finishedWithResult, this, [=, this](const HttpResult<QByteArray> &etag) mutable {
+            connect(job, &RequestEtagJob::finishedWithResult, this, [this, item, path, localEntry, serverEntry, dbEntry, originalPath, postProcessRename](const HttpResult<QByteArray> &etag) mutable {
                 _pendingAsyncJobs--;
                 QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
                 if (etag || etag.error().code != 404 ||
@@ -1137,8 +1131,7 @@ int64_t ProcessDirectoryJob::folderBytesAvailable(const SyncFileItemPtr &item, c
 
     qCDebug(lcDisco) << "_dirItem->_folderQuota.bytesAvailable:" << _dirItem->_folderQuota.bytesAvailable;
 
-    SyncJournalFileRecord dirItemDbRecord;
-    if (_discoveryData->_statedb->getFileRecord(_dirItem->_file, &dirItemDbRecord) && dirItemDbRecord.isValid()) {
+    if (SyncJournalFileRecord dirItemDbRecord; _discoveryData->_statedb->getFileRecord(_dirItem->_file, &dirItemDbRecord) && dirItemDbRecord.isValid()) {
         const auto dirDbBytesAvailable = dirItemDbRecord._folderQuota.bytesAvailable;
         qCDebug(lcDisco) << "Returning for item quota db value dirItemDbRecord._folderQuota.bytesAvailable" << dirDbBytesAvailable;
         return dirDbBytesAvailable;
@@ -1146,6 +1139,22 @@ int64_t ProcessDirectoryJob::folderBytesAvailable(const SyncFileItemPtr &item, c
 
     qCDebug(lcDisco) << "Returning _dirItem->_folderQuota.bytesAvailable for item quota.";
     return _dirItem->_folderQuota.bytesAvailable;
+}
+
+void ProcessDirectoryJob::applyE2eeEncryptForLocalNew(const SyncFileItemPtr &item,
+                                                               const SyncJournalFileRecord &base) const
+{
+    // renaming the encrypted folder is done via remove + re-upload hence we need to mark the
+    // newly created folder as encrypted.  base is the DB record with the old name and encryption info.
+    item->_e2eEncryptionStatus = EncryptionStatusEnums::fromDbEncryptionStatus(base._e2eEncryptionStatus);
+    item->_e2eEncryptionServerCapability = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(
+        _discoveryData->_account->capabilities().clientSideEncryptionVersion());
+    if (item->_e2eEncryptionStatus != item->_e2eEncryptionServerCapability) {
+        item->_e2eEncryptionStatus = item->_e2eEncryptionServerCapability;
+    }
+    const auto wasEncrypted = base._e2eEncryptionStatus != SyncJournalFileRecord::EncryptionStatus::NotEncrypted;
+    Q_ASSERT(!wasEncrypted || item->_e2eEncryptionStatus != SyncFileItem::EncryptionStatus::NotEncrypted);
+    Q_ASSERT(item->_e2eEncryptionStatus != SyncFileItem::EncryptionStatus::NotEncrypted);
 }
 
 void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
@@ -1233,7 +1242,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
             item->_status = SyncFileItem::Status::NormalError;
             _discoveryData->_anotherSyncNeeded = true;
-            _discoveryData->_filesNeedingScheduledSync.insert(path._original, delayIntervalForSyncRetryForFilesExceedQuotaSeconds);
+            _discoveryData->_filesNeedingScheduledSync.insert(path._original, kRetryDelayQuotaExceedSec);
         }
 
         if (item->_type != CSyncEnums::ItemTypeVirtualFile) {
@@ -1245,7 +1254,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 item->_errorString = tr("Could not upload file, because it is open in \"%1\".").arg(editorsString);
                 item->_status = SyncFileItem::Status::SoftError;
                 _discoveryData->_anotherSyncNeeded = true;
-                _discoveryData->_filesNeedingScheduledSync.insert(path._original, delayIntervalForSyncRetryForOpenedForSigningFilesSeconds);
+                _discoveryData->_filesNeedingScheduledSync.insert(path._original, kRetryDelaySigningFileSec);
             }
         }
 
@@ -1478,7 +1487,14 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     item->_checksumHeader.clear();
     item->_size = localEntry.size;
     item->_modtime = localEntry.modtime;
-    item->_type = localEntry.isDirectory && !localEntry.isVirtualFile ? ItemTypeDirectory : localEntry.isDirectory ? ItemTypeVirtualDirectory : localEntry.isVirtualFile ? ItemTypeVirtualFile : ItemTypeFile;
+    if (localEntry.isDirectory && !localEntry.isVirtualFile)
+        item->_type = ItemTypeDirectory;
+    else if (localEntry.isDirectory)
+        item->_type = ItemTypeVirtualDirectory;
+    else if (localEntry.isVirtualFile)
+        item->_type = ItemTypeVirtualFile;
+    else
+        item->_type = ItemTypeFile;
     _childModified = true;
 
     if (!localEntry.caseClashConflictingName.isEmpty()) {
@@ -1571,14 +1587,14 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     const auto isE2eeMove = isMove && (base.isE2eEncrypted() || isInsideEncryptedTree());
     const auto isCfApiVfsMode = _discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() == Vfs::WindowsCfApi;
     const bool isOnlineOnlyItem = isCfApiVfsMode && (localEntry.isDirectory || _discoveryData->_syncOptions._vfs->isDehydratedPlaceholder(_discoveryData->_localDir + path._local));
-    const auto isE2eeMoveOnlineOnlyItemWithCfApi = isE2eeMove && isOnlineOnlyItem;
+    const auto isE2eeMoveOnlineOnlyWithCfApi = isE2eeMove && isOnlineOnlyItem;
 
     if (isE2eeMove) {
         qCDebug(lcDisco) << "requesting permanent deletion for" << originalPath;
         _discoveryData->_permanentDeletionRequests.insert(originalPath);
     }
 
-    if (isE2eeMoveOnlineOnlyItemWithCfApi) {
+    if (isE2eeMoveOnlineOnlyWithCfApi) {
         item->_instruction = CSYNC_INSTRUCTION_NEW;
         item->_direction = SyncFileItem::Down;
         item->_isRestoration = true;
@@ -1586,19 +1602,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     }
 
     // If it's not a move it's just a local-NEW
-    if (!isMove || (isE2eeMove && !isE2eeMoveOnlineOnlyItemWithCfApi)) {
+    if (!isMove || (isE2eeMove && !isE2eeMoveOnlineOnlyWithCfApi)) {
         if (base.isE2eEncrypted()) {
-            // renaming the encrypted folder is done via remove + re-upload hence we need to mark the newly created folder as encrypted
-            // base is a record in the SyncJournal database that contains the data about the being-renamed folder with it's old name and encryption information
-            item->_e2eEncryptionStatus = EncryptionStatusEnums::fromDbEncryptionStatus(base._e2eEncryptionStatus);
-            item->_e2eEncryptionServerCapability = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_discoveryData->_account->capabilities().clientSideEncryptionVersion());
-            if (item->_e2eEncryptionStatus != item->_e2eEncryptionServerCapability) {
-                item->_e2eEncryptionStatus = item->_e2eEncryptionServerCapability;
-                if (base._e2eEncryptionStatus != SyncJournalFileRecord::EncryptionStatus::NotEncrypted) {
-                    Q_ASSERT(item->_e2eEncryptionStatus != SyncFileItem::EncryptionStatus::NotEncrypted);
-                }
-            }
-            Q_ASSERT(item->_e2eEncryptionStatus != SyncFileItem::EncryptionStatus::NotEncrypted);
+            applyE2eeEncryptForLocalNew(item, base);
         }
         postProcessLocalNew();
         finalize();
@@ -1609,8 +1615,8 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     // Technically we should use the permissions from the server, but we'll assume it is the same
     const auto serverHasMountRootProperty = _discoveryData->_account->serverHasMountRootProperty();
     const auto isExternalStorage = base._remotePerm.hasPermission(RemotePermissions::IsMounted) && base.isDirectory();
-    const auto movePerms = checkMovePermissions(base._remotePerm, originalPath, item->isDirectory());
-    if (!movePerms.sourceOk || !movePerms.destinationOk || (serverHasMountRootProperty && isExternalStorage) || isE2eeMoveOnlineOnlyItemWithCfApi) {
+    if (const auto movePerms = checkMovePermissions(base._remotePerm, originalPath, item->isDirectory());
+        !movePerms.sourceOk || !movePerms.destinationOk || (serverHasMountRootProperty && isExternalStorage) || isE2eeMoveOnlineOnlyWithCfApi) {
         qCInfo(lcDisco) << "Move without permission to rename base file, "
                         << "source:" << movePerms.sourceOk
                         << ", target:" << movePerms.destinationOk
@@ -1628,14 +1634,14 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         // If the destination upload will work, we're fine with the source deletion.
         // If the source deletion can't work, checkPermissions will error.
         // In case of external storage mounted folders we are never allowed to move/delete them
-        if (movePerms.destinationNewOk && !isExternalStorage && !isE2eeMoveOnlineOnlyItemWithCfApi) {
+        if (movePerms.destinationNewOk && !isExternalStorage && !isE2eeMoveOnlineOnlyWithCfApi) {
             return;
         }
 
         // Here we know the new location can't be uploaded: must prevent the source delete.
         // Two cases: either the source item was already processed or not.
-        auto wasDeletedOnClient = _discoveryData->findAndCancelDeletedJob(originalPath);
-        if (wasDeletedOnClient.first) {
+        const auto [wasDeleted, deletedEtag] = _discoveryData->findAndCancelDeletedJob(originalPath);
+        if (wasDeleted) {
             // More complicated. The REMOVE is canceled. Restore will happen next sync.
             qCInfo(lcDisco) << "Undid remove instruction on source" << originalPath;
             if (!_discoveryData->_statedb->deleteFileRecord(originalPath, true)) {
@@ -1651,7 +1657,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         return;
     }
 
-    auto wasDeletedOnClient = _discoveryData->findAndCancelDeletedJob(originalPath);
+    const auto [wasDeletedOnClient, deletedItemEtag] = _discoveryData->findAndCancelDeletedJob(originalPath);
 
     auto processRename = [item, originalPath, base, this](PathTuple &path) {
         auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
@@ -1685,8 +1691,8 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
         qCInfo(lcDisco) << "Rename detected (up) " << item->_file << " -> " << item->_renameTarget;
     };
-    if (wasDeletedOnClient.first) {
-        recurseQueryServer = wasDeletedOnClient.second == base._etag ? ParentNotChanged : NormalQuery;
+    if (wasDeletedOnClient) {
+        recurseQueryServer = deletedItemEtag == base._etag ? ParentNotChanged : NormalQuery;
         processRename(path);
     } else {
         // We must query the server to know if the etag has not changed
@@ -1695,7 +1701,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         if (base.isVirtualFile() && isVfsWithSuffix())
             chopVirtualFileSuffix(serverOriginalPath);
         auto job = new RequestEtagJob(_discoveryData->_account, serverOriginalPath, this);
-        connect(job, &RequestEtagJob::finishedWithResult, this, [=, this](const HttpResult<QByteArray> &etag) mutable {
+        connect(job, &RequestEtagJob::finishedWithResult, this, [this, base, item, originalPath, postProcessLocalNew, processRename, path, recurseQueryServer, serverEntry, dbEntry](const HttpResult<QByteArray> &etag) mutable {
 
 
             if (!etag || (etag.get() != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)
@@ -1741,7 +1747,7 @@ void ProcessDirectoryJob::processFileConflict(const SyncFileItemPtr &item, Proce
     // If there's no content hash, use heuristics
     if (serverEntry.checksumHeader.isEmpty()) {
         // If the size or mtime is different, it's definitely a conflict.
-        bool isConflict = (serverEntry.size != localEntry.size) || (serverEntry.modtime != localEntry.modtime) || (dbEntry.isValid() && dbEntry._modtime != localEntry.modtime && serverEntry.modtime == localEntry.modtime);
+        const bool isConflict = (serverEntry.size != localEntry.size) || (serverEntry.modtime != localEntry.modtime) || (dbEntry.isValid() && dbEntry._modtime != localEntry.modtime && serverEntry.modtime == localEntry.modtime);
 
         // It could be a conflict even if size and mtime match!
         //
@@ -1864,7 +1870,7 @@ void ProcessDirectoryJob::processFileFinalize(
     if (_discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() != OCC::Vfs::Off &&
         (item->_type == CSyncEnums::ItemTypeFile || item->_type == CSyncEnums::ItemTypeDirectory) &&
         item->_instruction == CSyncEnums::CSYNC_INSTRUCTION_NONE &&
-        FileSystem::isLnkFile((_discoveryData->_localDir + path._local)) &&
+        FileSystem::isLnkFile(_discoveryData->_localDir + path._local) &&
         !_discoveryData->_syncOptions._vfs->isPlaceHolderInSync(_discoveryData->_localDir + path._local)) {
         item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_SYNC;
         item->_direction = SyncFileItem::Down;
@@ -2117,12 +2123,11 @@ QStringList ProcessDirectoryJob::queryEditorsKeepingFileBusy(const SyncFileItemP
         return matchingEditorsKeepingFileBusy;
     }
 
-    const auto isMatchingFileExtension = std::find_if(std::cbegin(fileExtensionsToCheckIfOpenForSigning), std::cend(fileExtensionsToCheckIfOpenForSigning),
-        [path](const auto &matchingExtension) {
-            return path._local.endsWith(matchingExtension, Qt::CaseInsensitive);
-        }) != std::cend(fileExtensionsToCheckIfOpenForSigning);
-
-    if (!isMatchingFileExtension) {
+    if (const auto isMatchingFileExtension = std::ranges::find_if(kFileExtsForSigning,
+            [&path](const auto &matchingExtension) {
+                return path._local.endsWith(matchingExtension, Qt::CaseInsensitive);
+            }) != std::cend(kFileExtsForSigning);
+        !isMatchingFileExtension) {
         return matchingEditorsKeepingFileBusy;
     }
 
@@ -2130,8 +2135,8 @@ QStringList ProcessDirectoryJob::queryEditorsKeepingFileBusy(const SyncFileItemP
     const auto editorsKeepingFileBusy = Utility::queryProcessInfosKeepingFileOpen(fullLocalPath);
 
     for (const auto &detectedEditorName : editorsKeepingFileBusy) {
-        const auto isMatchingEditorFound = std::find_if(std::cbegin(editorNamesForDelayedUpload), std::cend(editorNamesForDelayedUpload),
-            [detectedEditorName](const auto &matchingEditorName) {
+        const auto isMatchingEditorFound = std::ranges::find_if(editorNamesForDelayedUpload,
+            [&detectedEditorName](const auto &matchingEditorName) {
                 return detectedEditorName.processName.startsWith(matchingEditorName, Qt::CaseInsensitive);
             }) != std::cend(editorNamesForDelayedUpload);
         if (isMatchingEditorFound) {
@@ -2191,7 +2196,7 @@ void ProcessDirectoryJob::subJobFinished()
     if (job->_dirItem)
         emit _discoveryData->itemDiscovered(job->_dirItem);
 
-    int count = _runningJobs.removeAll(job);
+    const auto count = _runningJobs.removeAll(job);
     ASSERT(count == 1);
     job->deleteLater();
     QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
@@ -2270,9 +2275,33 @@ void ProcessDirectoryJob::chopVirtualFileSuffix(QString &str) const
     }
 }
 
+void ProcessDirectoryJob::updateDirItemFromServerJob(const DiscoverySingleDirectoryJob *const serverJob)
+{
+    if (_dirItem->isEncrypted()) {
+        _dirItem->_isFileDropDetected = serverJob->isFileDropDetected();
+
+        SyncJournalFileRecord record;
+        const auto alreadyDownloaded = _discoveryData->_statedb->getFileRecord(_dirItem->_file, &record) && record.isValid();
+        // we need to make sure we first download all e2ee files/folders before migrating
+        _dirItem->_isEncryptedMetadataNeedUpdate = alreadyDownloaded && serverJob->encryptedMetadataNeedUpdate();
+        _dirItem->_e2eEncryptionStatus = serverJob->currentEncryptionStatus();
+        _dirItem->_e2eEncryptionStatusRemote = serverJob->currentEncryptionStatus();
+        _dirItem->_e2eEncryptionServerCapability = serverJob->requiredEncryptionStatus();
+        qCDebug(lcDisco()) << _dirItem->_e2eEncryptionStatus << _dirItem->_e2eEncryptionServerCapability;
+        Q_ASSERT(_dirItem->_e2eEncryptionStatus != SyncFileItem::EncryptionStatus::Encrypted);
+        Q_ASSERT(_dirItem->_e2eEncryptionStatus != SyncFileItem::EncryptionStatus::NotEncrypted);
+        _discoveryData->_anotherSyncNeeded = !alreadyDownloaded && serverJob->encryptedMetadataNeedUpdate();
+    }
+    qCDebug(lcDisco) << "serverJob has finished for folder:" << _dirItem->_file
+                     << "and it has _isFileDropDetected:" << _dirItem->_isFileDropDetected
+                     << "with quota bytesUsed:" << _dirItem->_folderQuota.bytesUsed
+                     << "bytesAvailable:" << _dirItem->_folderQuota.bytesAvailable;
+}
+
 DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
 {
-    if (_dirItem && _dirItem->isEncrypted() && _dirItem->_encryptedFileName.isEmpty()) {
+    if (const auto shouldAddE2eeFolderPath = _dirItem && _dirItem->isEncrypted() && _dirItem->_encryptedFileName.isEmpty();
+        shouldAddE2eeFolderPath) {
         _discoveryData->_topLevelE2eeFolderPaths.insert(_discoveryData->_remoteFolder + _dirItem->_file);
     }
     auto serverJob = new DiscoverySingleDirectoryJob(_discoveryData->_account,
@@ -2292,24 +2321,7 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
     _pendingAsyncJobs++;
     connect(serverJob, &DiscoverySingleDirectoryJob::finished, this, [this, serverJob](const auto &results) {
         if (_dirItem) {
-            if (_dirItem->isEncrypted()) {
-                _dirItem->_isFileDropDetected = serverJob->isFileDropDetected();
-
-                SyncJournalFileRecord record;
-                const auto alreadyDownloaded = _discoveryData->_statedb->getFileRecord(_dirItem->_file, &record) && record.isValid();
-                // we need to make sure we first download all e2ee files/folders before migrating
-                _dirItem->_isEncryptedMetadataNeedUpdate = alreadyDownloaded && serverJob->encryptedMetadataNeedUpdate();
-                _dirItem->_e2eEncryptionStatus = serverJob->currentEncryptionStatus();
-                _dirItem->_e2eEncryptionStatusRemote = serverJob->currentEncryptionStatus();
-                _dirItem->_e2eEncryptionServerCapability = serverJob->requiredEncryptionStatus();
-                qCDebug(lcDisco()) << _dirItem->_e2eEncryptionStatus << _dirItem->_e2eEncryptionServerCapability;
-                Q_ASSERT(_dirItem->_e2eEncryptionStatus != SyncFileItem::EncryptionStatus::Encrypted);
-                Q_ASSERT(_dirItem->_e2eEncryptionStatus != SyncFileItem::EncryptionStatus::NotEncrypted);
-                _discoveryData->_anotherSyncNeeded = !alreadyDownloaded && serverJob->encryptedMetadataNeedUpdate();
-            }
-            qCDebug(lcDisco) << "serverJob has finished for folder:" << _dirItem->_file << " and it has _isFileDropDetected:" << _dirItem->_isFileDropDetected
-                             << "with quota bytesUsed:" << _dirItem->_folderQuota.bytesUsed
-                             << "bytesAvailable:" << _dirItem->_folderQuota.bytesAvailable;
+            updateDirItemFromServerJob(serverJob);
         }
         _discoveryData->_currentlyActiveJobs--;
         _pendingAsyncJobs--;
@@ -2365,7 +2377,7 @@ void ProcessDirectoryJob::setFolderQuota(const FolderQuota &folderQuota)
 void ProcessDirectoryJob::startAsyncLocalQuery()
 {
     QString localPath = _discoveryData->_localDir + _currentFolder._local;
-    auto localJob = new DiscoverySingleLocalDirectoryJob(_discoveryData->_account, localPath, _discoveryData->_syncOptions._vfs.data(), _discoveryData->_fileSystemReliablePermissions);
+    auto *const localJob = new DiscoverySingleLocalDirectoryJob(_discoveryData->_account, localPath, _discoveryData->_syncOptions._vfs.data(), _discoveryData->_fileSystemReliablePermissions);
 
     _discoveryData->_currentlyActiveJobs++;
     _pendingAsyncJobs++;
@@ -2453,13 +2465,13 @@ void ProcessDirectoryJob::setupDbPinStateActions(SyncJournalFileRecord &record)
     }
 }
 
-bool ProcessDirectoryJob::maybeRenameForWindowsCompatibility(const QString &absoluteFileName,
-                                                             CSYNC_EXCLUDE_TYPE excludeReason)
+bool ProcessDirectoryJob::maybeRenameForWinCompatibility(const QString &absoluteFileName,
+                                                             const CSYNC_EXCLUDE_TYPE excludeReason) const
 {
     auto result = true;
 
-    const auto leadingAndTrailingSpacesFilesAllowed = !_discoveryData->_shouldEnforceWindowsFileNameCompatibility || _discoveryData->_leadingAndTrailingSpacesFilesAllowed.contains(absoluteFileName);
-    if (leadingAndTrailingSpacesFilesAllowed) {
+    if (const auto spacesFilesAllowed = !_discoveryData->_enforceWindowsFilenameCompat || _discoveryData->_spacesFilesAllowed.contains(absoluteFileName);
+        spacesFilesAllowed) {
         return result;
     }
 
@@ -2484,8 +2496,8 @@ bool ProcessDirectoryJob::maybeRenameForWindowsCompatibility(const QString &abso
     case CSYNC_FILE_EXCLUDE_LEADING_SPACE:
     case CSYNC_FILE_EXCLUDE_TRAILING_SPACE:
     {
-        const auto removeTrailingSpaces = [] (QString string) -> QString {
-            for (int n = string.size() - 1; n >= 0; -- n) {
+        const auto removeTrailingSpaces = [] (QString string) {
+            for (qsizetype n = string.size() - 1; n >= 0; -- n) {
                 if (!string.at(n).isSpace()) {
                     string.truncate(n + 1);
                     break;
@@ -2501,6 +2513,9 @@ bool ProcessDirectoryJob::maybeRenameForWindowsCompatibility(const QString &abso
         result = FileSystem::rename(absoluteFileName, renameTarget);
         break;
     }
+    default:
+        // All known CSYNC_EXCLUDE_TYPE values are handled above.
+        break;
     }
     return result;
 }

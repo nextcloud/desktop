@@ -125,7 +125,7 @@ public:
     [[nodiscard]] QSharedPointer<OwncloudPropagator> getPropagator() const { return _propagator; } // for the test
     [[nodiscard]] const SyncEngine::SingleItemDiscoveryOptions &singleItemDiscoveryOptions() const;
 
-    void setFilesystemPermissionsReliable(bool reliable);
+    void setFilesystemPermsReliable(bool reliable);
 
 public slots:
     void setSingleItemDiscoveryOptions(const OCC::SyncEngine::SingleItemDiscoveryOptions &singleItemDiscoveryOptions);
@@ -152,7 +152,7 @@ public slots:
      */
     void setLocalDiscoveryOptions(OCC::LocalDiscoveryEnums::LocalDiscoveryStyle style, std::set<QString> paths = {});
     void addAcceptedInvalidFileName(const QString& filePath);
-    void setLocalDiscoveryEnforceWindowsFileNameCompatibility(bool value);
+    void setEnforceWindowsFilenameCompat(const bool value);
 
 signals:
     // During update, before reconcile
@@ -363,6 +363,14 @@ private:
 
     void finishSync();
 
+    void updateVirtualFileReadOnlyState(const SyncFileItemPtr &item, const QString &filePath) const;
+
+    // Returns false if decryption fails (caller should abort startSync in that case).
+    bool unlockE2eeFolders(const QList<QPair<QByteArray, QByteArray>> &e2EeLockedFolders);
+
+    // Count files that will be deleted in the current sync pass.
+    [[nodiscard]] int countDeletedFiles() const;
+
     [[nodiscard]] bool shouldRestartSync() const;
 
     bool handleMassDeletion();
@@ -405,8 +413,8 @@ private:
     LocalDiscoveryStyle _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
     std::set<QString> _localDiscoveryPaths;
 
-    QStringList _leadingAndTrailingSpacesFilesAllowed;
-    bool _shouldEnforceWindowsFileNameCompatibility = false;
+    QStringList _spacesFilesAllowed;
+    bool _enforceWindowsFilenameCompat = false;
 
     // Hash of files we have scheduled for later sync runs, along with a
     // pointer to the timer which will trigger the sync run for it.

@@ -1222,7 +1222,7 @@ void Folder::startSync(const QStringList &pathList)
     }
 
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
-    _engine->setFilesystemPermissionsReliable(_folderWatcher->canSetPermissions());
+    _engine->setFilesystemPermsReliable(_folderWatcher->canSetPermissions());
 
     correctPlaceholderFiles();
 

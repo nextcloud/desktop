@@ -241,11 +241,12 @@ void SyncEngine::deleteStaleUploadInfos(const SyncFileItemVector &syncItems)
 
     // Delete the stales chunk on the server.
     if (account()->capabilities().chunkingNg()) {
-        for (uint transferId : std::as_const(ids)) {
+        for (const uint transferId : std::as_const(ids)) {
             if (!transferId)
                 continue; // Was not a chunked upload
             QUrl url = Utility::concatUrlPath(account()->url(), QLatin1String("remote.php/dav/uploads/") + account()->davUser() + QLatin1Char('/') + QString::number(transferId));
-            (new DeleteJob(account(), url, {}, this))->start();
+            auto *const deleteJob = new DeleteJob(account(), url, {}, this);
+            deleteJob->start();
         }
     }
 }
@@ -319,6 +320,22 @@ void SyncEngine::caseClashConflictRecordMaintenance()
 }
 
 
+void SyncEngine::updateVirtualFileReadOnlyState(const SyncFileItemPtr &item, const QString &filePath) const
+{
+    const auto lockOwnerTypeToSkipReadonly = _account->capabilities().filesLockTypeAvailable()
+        ? SyncFileItem::LockOwnerType::TokenLock
+        : SyncFileItem::LockOwnerType::UserLock;
+    if (item->_locked == SyncFileItem::LockStatus::LockedItem
+        && (item->_lockOwnerType != lockOwnerTypeToSkipReadonly || item->_lockOwnerId != account()->davUser())) {
+        qCDebug(lcEngine()) << filePath << "file is locked: making it read only";
+        FileSystem::setFileReadOnly(filePath, true);
+    } else {
+        const auto isReadOnly = !item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite);
+        qCDebug(lcEngine()) << filePath << "file is not locked: making it" << (isReadOnly ? "read only" : "read write");
+        FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
+    }
+}
+
 void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 {
     emit itemDiscovered(item);
@@ -380,24 +397,12 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
             }
 
             if (item->_type == CSyncEnums::ItemTypeVirtualFile) {
-                const auto lockOwnerTypeToSkipReadonly = _account->capabilities().filesLockTypeAvailable()
-                    ? SyncFileItem::LockOwnerType::TokenLock
-                    : SyncFileItem::LockOwnerType::UserLock;
-                if (item->_locked == SyncFileItem::LockStatus::LockedItem
-                    && (item->_lockOwnerType != lockOwnerTypeToSkipReadonly || item->_lockOwnerId != account()->davUser())) {
-                    qCDebug(lcEngine()) << filePath << "file is locked: making it read only";
-                    FileSystem::setFileReadOnly(filePath, true);
-                } else {
-                    qCDebug(lcEngine()) << filePath << "file is not locked: making it"
-                                        << ((!item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) ? "read only"
-                                                                                                                                           : "read write");
-                    FileSystem::setFileReadOnlyWeak(filePath, (!item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite)));
-                }
+                updateVirtualFileReadOnlyState(item, filePath);
             }
 
             // Update on-disk virtual file metadata
             if (modificationHappened && item->_type == ItemTypeVirtualFile) {
-                auto r = _syncOptions._vfs->updateMetadata(*item, filePath, {});
+                const auto r = _syncOptions._vfs->updateMetadata(*item, filePath, {});
                 if (!r) {
                     item->_status = SyncFileItem::Status::NormalError;
                     item->_instruction = CSYNC_INSTRUCTION_ERROR;
@@ -474,14 +479,35 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
     _needsUpdate = true;
 
     // Insert sorted
-    auto it = std::lower_bound( _syncItems.begin(), _syncItems.end(), item ); // the _syncItems is sorted
-    _syncItems.insert( it, item );
+    const auto it = std::ranges::lower_bound(_syncItems, item); // the _syncItems is sorted
+    _syncItems.insert(it, item);
 
     slotNewItem(item);
 
     if (item->isDirectory()) {
         slotFolderDiscovered(item->_etag.isEmpty(), item->_file);
     }
+}
+
+bool SyncEngine::unlockE2eeFolders(const QList<QPair<QByteArray, QByteArray>> &e2EeLockedFolders)
+{
+    for (const auto &[folderId, folderTokenEncrypted] : e2EeLockedFolders) {
+        qCInfo(lcEngine()) << "start unlock job for folderId:" << folderId;
+        const auto folderToken = EncryptionHelper::decryptStringAsymmetric(
+            _account->e2e()->getCertificateInformation(),
+            _account->e2e()->paddingMode(),
+            *_account->e2e(),
+            folderTokenEncrypted);
+        if (!folderToken) {
+            qCWarning(lcEngine()) << "decrypt failed";
+            return false;
+        }
+        // TODO: We need to rollback changes done to metadata in case we have an active lock, this needs to be implemented on the server first
+        auto *const unlockJob = new OCC::UnlockEncryptFolderApiJob(_account, folderId, *folderToken, _journal, this);
+        unlockJob->setShouldRollbackMetadataChanges(true);
+        unlockJob->start();
+    }
+    return true;
 }
 
 void SyncEngine::startSync()
@@ -500,20 +526,8 @@ void SyncEngine::startSync()
 
         const auto e2EeLockedFolders = _journal->e2EeLockedFolders();
 
-        if (!e2EeLockedFolders.isEmpty()) {
-            for (const auto &e2EeLockedFolder : e2EeLockedFolders) {
-                const auto folderId = e2EeLockedFolder.first;
-                qCInfo(lcEngine()) << "start unlock job for folderId:" << folderId;
-                const auto folderToken = EncryptionHelper::decryptStringAsymmetric(_account->e2e()->getCertificateInformation(), _account->e2e()->paddingMode(), *_account->e2e(), e2EeLockedFolder.second);
-                if (!folderToken) {
-                    qCWarning(lcEngine()) << "decrypt failed";
-                    return;
-                }
-                // TODO: We need to rollback changes done to metadata in case we have an active lock, this needs to be implemented on the server first
-                const auto unlockJob = new OCC::UnlockEncryptFolderApiJob(_account, folderId, *folderToken, _journal, this);
-                unlockJob->setShouldRollbackMetadataChanges(true);
-                unlockJob->start();
-            }
+        if (!e2EeLockedFolders.isEmpty() && !unlockE2eeFolders(e2EeLockedFolders)) {
+            return;
         }
     }
 
@@ -634,11 +648,11 @@ void SyncEngine::startSync()
 
     _discoveryPhase = std::make_unique<DiscoveryPhase>();
     _discoveryPhase->_fileSystemReliablePermissions = _filesystemPermissionsReliable;
-    _discoveryPhase->_leadingAndTrailingSpacesFilesAllowed = _leadingAndTrailingSpacesFilesAllowed;
+    _discoveryPhase->_spacesFilesAllowed = _spacesFilesAllowed;
     _discoveryPhase->_account = _account;
     _discoveryPhase->_excludes = _excludedFiles.data();
-    const QString excludeFilePath = _localPath + QStringLiteral(".sync-exclude.lst");
-    if (FileSystem::fileExists(excludeFilePath)) {
+    if (const QString excludeFilePath = _localPath + QStringLiteral(".sync-exclude.lst");
+        FileSystem::fileExists(excludeFilePath)) {
         _discoveryPhase->_excludes->addExcludeFilePath(excludeFilePath);
         _discoveryPhase->_excludes->reloadExcludeFiles();
     }
@@ -673,12 +687,12 @@ void SyncEngine::startSync()
         !forbiddenBasenames.isEmpty() &&
         !forbiddenExtensions.isEmpty() &&
         !forbiddenChars.isEmpty()) {
-        _shouldEnforceWindowsFileNameCompatibility = true;
-        _discoveryPhase->_shouldEnforceWindowsFileNameCompatibility = _shouldEnforceWindowsFileNameCompatibility;
+        _enforceWindowsFilenameCompat = true;
+        _discoveryPhase->_enforceWindowsFilenameCompat = _enforceWindowsFilenameCompat;
     }
 #if defined Q_OS_WINDOWS
-    _shouldEnforceWindowsFileNameCompatibility = true;
-    _discoveryPhase->_shouldEnforceWindowsFileNameCompatibility = _shouldEnforceWindowsFileNameCompatibility;
+    _enforceWindowsFilenameCompat = true;
+    _discoveryPhase->_enforceWindowsFilenameCompat = _enforceWindowsFilenameCompat;
 #endif
 
     // Check for invalid character in old server version
@@ -700,7 +714,7 @@ void SyncEngine::startSync()
     connect(_discoveryPhase.get(), &DiscoveryPhase::itemDiscovered, this, &SyncEngine::slotItemDiscovered);
     connect(_discoveryPhase.get(), &DiscoveryPhase::newBigFolder, this, &SyncEngine::newBigFolder);
     connect(_discoveryPhase.get(), &DiscoveryPhase::existingFolderNowBig, this, &SyncEngine::existingFolderNowBig);
-    connect(_discoveryPhase.get(), &DiscoveryPhase::fatalError, this, [this](const QString &errorString, ErrorCategory errorCategory) {
+    connect(_discoveryPhase.get(), &DiscoveryPhase::fatalError, this, [this](const QString &errorString, const ErrorCategory errorCategory) {
         Q_EMIT syncError(errorString, errorCategory);
         finalize(false);
     });
@@ -917,7 +931,7 @@ void SyncEngine::slotItemCompleted(const SyncFileItemPtr &item, const ErrorCateg
     detectFileLock(item);
 }
 
-void SyncEngine::slotPropagationFinished(OCC::SyncFileItem::Status status)
+void SyncEngine::slotPropagationFinished(const OCC::SyncFileItem::Status status)
 {
     if (_propagator->_anotherSyncNeeded && _anotherSyncNeeded == NoFollowUpSync) {
         _anotherSyncNeeded = ImmediateFollowUp;
@@ -970,7 +984,7 @@ void SyncEngine::finalize(bool success)
     _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
 
     _clearTouchedFilesTimer.start();
-    _leadingAndTrailingSpacesFilesAllowed.clear();
+    _spacesFilesAllowed.clear();
 }
 
 void SyncEngine::processCaseClashConflictsBeforeDiscovery()
@@ -1032,7 +1046,7 @@ void SyncEngine::restoreOldFiles(SyncFileItemVector &syncItems)
     }
 }
 
-void SyncEngine::cancelSyncOrContinue(bool cancel)
+void SyncEngine::cancelSyncOrContinue(const bool cancel)
 {
     if (cancel) {
         qCInfo(lcEngine) << "User aborted sync";
@@ -1144,13 +1158,32 @@ bool SyncEngine::shouldRestartSync() const
         return false;
     }
 
-    for (const auto &syncItem : _syncItems) {
-        // If there's at least one remove instruction to be propagated to the remote: bail out, we might have lost a local rename.
-        if (syncItem->_instruction == CSYNC_INSTRUCTION_REMOVE && syncItem->_direction == SyncFileItem::Up) {
-            return true;
+    return std::ranges::any_of(_syncItems, [](const auto &syncItem) {
+        return syncItem->_instruction == CSYNC_INSTRUCTION_REMOVE && syncItem->_direction == SyncFileItem::Up;
+    });
+}
+
+int SyncEngine::countDeletedFiles() const
+{
+    auto counter = 0;
+    for (const auto &oneItem : std::as_const(_syncItems)) {
+        if (oneItem->_instruction != CSYNC_INSTRUCTION_REMOVE) {
+            continue;
+        }
+        if (oneItem->isDirectory()) {
+            const auto result = _journal->listFilesInPath(oneItem->_file.toUtf8(), [&counter](const auto &oneRecord) {
+                if (oneRecord.isFile()) {
+                    ++counter;
+                }
+            });
+            if (!result) {
+                qCDebug(lcEngine()) << "unable to find the number of files within a deleted folder:" << oneItem->_file;
+            }
+        } else {
+            ++counter;
         }
     }
-    return false;
+    return counter;
 }
 
 bool SyncEngine::handleMassDeletion()
@@ -1158,26 +1191,8 @@ bool SyncEngine::handleMassDeletion()
     const auto displayDialog = ConfigFile().promptDeleteFiles() && !_syncOptions.isCmd();
     const auto allFilesDeleted = !_hasNoneFiles && _hasRemoveFile;
 
-    auto deletionCounter = 0;
-    for (const auto &oneItem : std::as_const(_syncItems)) {
-        if (oneItem->_instruction == CSYNC_INSTRUCTION_REMOVE) {
-            if (oneItem->isDirectory()) {
-                const auto result = _journal->listFilesInPath(oneItem->_file.toUtf8(), [&deletionCounter] (const auto &oneRecord) {
-                    if (oneRecord.isFile()) {
-                        ++deletionCounter;
-                    }
-                });
-                if (!result) {
-                    qCDebug(lcEngine()) << "unable to find the number of files within a deleted folder:" << oneItem->_file;
-                }
-            } else {
-                ++deletionCounter;
-            }
-        }
-    }
-    const auto filesDeletedThresholdExceeded = deletionCounter > ConfigFile().deleteFilesThreshold();
-
-    if ((allFilesDeleted || filesDeletedThresholdExceeded) && displayDialog) {
+    if (const auto filesDeletedThresholdExceeded = countDeletedFiles() > ConfigFile().deleteFilesThreshold();
+        (allFilesDeleted || filesDeletedThresholdExceeded) && displayDialog) {
         qCWarning(lcEngine) << "Many files are going to be deleted, asking the user";
         int side = 0; // > 0 means more deleted on the server.  < 0 means more deleted on the client
         for (const auto &it : std::as_const(_syncItems)) {
@@ -1186,7 +1201,7 @@ bool SyncEngine::handleMassDeletion()
             }
         }
 
-        promptUserBeforePropagation([this, side](auto &&callback){
+        promptUserBeforePropagation([this, side](auto &callback){
             emit aboutToRemoveAllFiles(side >= 0 ? SyncFileItem::Down : SyncFileItem::Up, callback);
         });
         return true;
@@ -1211,7 +1226,7 @@ void SyncEngine::handleRemnantReadOnlyFolders()
         slotAddTouchedFile(_localPath + oneFolder->_file);
 
         if (oneFolder->_type == ItemType::ItemTypeDirectory) {
-            const auto deletionCallback = [this] (const QString &deleteItem, bool) {
+            const auto deletionCallback = [this] (const QString &deleteItem, const bool) {
                 slotAddTouchedFile(deleteItem);
             };
 
@@ -1226,9 +1241,9 @@ void SyncEngine::handleRemnantReadOnlyFolders()
 template <typename T>
 void SyncEngine::promptUserBeforePropagation(T &&lambda)
 {
-    QPointer<QObject> guard = new QObject();
-    QPointer<QObject> self = this;
-    auto callback = [this, self, guard](bool cancel) -> void {
+    const QPointer<QObject> guard = new QObject(this);
+    const QPointer<QObject> self = this;
+    auto callback = [this, self, guard](const bool cancel) {
         // use a guard to ensure its only called once...
         // qpointer to self to ensure we still exist
         if (!guard || !self) {
@@ -1275,12 +1290,12 @@ void SyncEngine::slotClearTouchedFiles()
 
 void SyncEngine::addAcceptedInvalidFileName(const QString& filePath)
 {
-    _leadingAndTrailingSpacesFilesAllowed.append(filePath);
+    _spacesFilesAllowed.append(filePath);
 }
 
-void SyncEngine::setLocalDiscoveryEnforceWindowsFileNameCompatibility(bool value)
+void SyncEngine::setEnforceWindowsFilenameCompat(const bool value)
 {
-    _shouldEnforceWindowsFileNameCompatibility = value;
+    _enforceWindowsFilenameCompat = value;
 }
 
 bool SyncEngine::wasFileTouched(const QString &fn) const
@@ -1335,7 +1350,7 @@ const SyncEngine::SingleItemDiscoveryOptions &SyncEngine::singleItemDiscoveryOpt
     return _singleItemDiscoveryOptions;
 }
 
-void SyncEngine::setFilesystemPermissionsReliable(bool reliable)
+void SyncEngine::setFilesystemPermsReliable(const bool reliable)
 {
     _filesystemPermissionsReliable = reliable;
 }
@@ -1573,7 +1588,7 @@ QHash<qint64, SyncEngine::ScheduledSyncBucket> SyncEngine::groupNeededScheduledS
          it != _discoveryPhase->_filesNeedingScheduledSync.cend();
          ++it) {
 
-        const auto file = it.key();
+        const auto &file = it.key();
         const auto syncScheduledSecs = it.value();
 
         // We don't want to schedule syncs again for files we have already discovered needing a

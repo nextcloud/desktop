@@ -71,7 +71,7 @@ void PUTFileJob::start()
         qCWarning(lcPutJob) << " Network error: " << reply()->errorString();
     }
 
-    connect(reply(), &QNetworkReply::uploadProgress, this, [requestID] (qint64 bytesSent, qint64 bytesTotal) {
+    connect(reply(), &QNetworkReply::uploadProgress, this, [requestID] (const qint64 bytesSent, const qint64 bytesTotal) {
         qCDebug(lcPutJob()) << requestID << "upload progress" << bytesSent << bytesTotal;
     });
 
@@ -114,9 +114,9 @@ bool PollJob::finished()
         _item->_requestId = requestId();
         _item->_status = classifyError(err, _item->_httpErrorCode);
         _item->_errorString = errorString();
-        const auto exceptionParsed = getExceptionFromReply(reply());
-        _item->_errorExceptionName = exceptionParsed.first;
-        _item->_errorExceptionMessage = exceptionParsed.second;
+        const auto [exceptionName, exceptionMessage] = getExceptionFromReply(reply());
+        _item->_errorExceptionName = exceptionName;
+        _item->_errorExceptionMessage = exceptionMessage;
 
         if (_item->_status == SyncFileItem::FatalError || _item->_httpErrorCode >= 400) {
             if (_item->_status != SyncFileItem::FatalError
@@ -158,10 +158,8 @@ bool PollJob::finished()
         _item->_status = SyncFileItem::Success;
         _item->_fileId = json["fileId"].toString().toUtf8();
 
-        if (SyncJournalFileRecord oldRecord; _journal->getFileRecord(_item->destination(), &oldRecord) && oldRecord.isValid()) {
-            if (oldRecord._etag != _item->_etag) {
-                _item->updateLockStateFromDbRecord(oldRecord);
-            }
+        if (SyncJournalFileRecord oldRecord; _journal->getFileRecord(_item->destination(), &oldRecord) && oldRecord.isValid() && oldRecord._etag != _item->_etag) {
+            _item->updateLockStateFromDbRecord(oldRecord);
         }
 
         _item->_etag = parseEtag(json["ETag"].toString().toUtf8());
@@ -182,9 +180,6 @@ bool PollJob::finished()
 
 PropagateUploadFileCommon::PropagateUploadFileCommon(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
     : PropagateItemJob(propagator, item)
-    , _finished(false)
-    , _deleteExisting(false)
-    , _aborting(false)
 {
     const auto path = _item->_file;
     const auto slashPosition = path.lastIndexOf('/');
@@ -741,7 +736,7 @@ void PropagateUploadFileCommon::adjustLastJobTimeout(AbstractNetworkJob *job, qi
 
     job->setTimeout(qBound(
         // Calculate 3 minutes for each gigabyte of data
-        qMin(thirtyMinutes - 1, qRound64(threeMinutes * fileSize / 1e9)),
+        qMin(thirtyMinutes - 1, qRound64(threeMinutes * static_cast<double>(fileSize) / 1e9)),
         job->timeoutMsec(),
         // Maximum of 30 minutes
         thirtyMinutes));
@@ -749,7 +744,7 @@ void PropagateUploadFileCommon::adjustLastJobTimeout(AbstractNetworkJob *job, qi
 
 void PropagateUploadFileCommon::slotJobDestroyed(QObject *job)
 {
-    _jobs.erase(std::remove(_jobs.begin(), _jobs.end(), job), _jobs.end());
+    _jobs.erase(std::ranges::remove(_jobs, job).begin(), _jobs.end());
 }
 
 // This function is used whenever there is an error occurring and jobs might be in progress
