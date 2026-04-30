@@ -308,6 +308,46 @@ private slots:
             }
         }
     }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    void testEmptyFileId()
+    {
+        _model.setAccountState(&_fakeFolder->accountState());
+        const auto unsyncedFile = QStringLiteral("unsynced.odt");
+        _model.setLocalPath(_fakeFolder->localPath() + unsyncedFile);
+        QVERIFY(_model.fileId().isEmpty());
+        QCOMPARE(_model.rowCount(), 0);
+        _model.parseEndpoints();
+        QVERIFY(_model.responseLabel().contains(QStringLiteral("The file ID is empty")));
+
+        _fakeFolder->localModifier().insert(_fakeFolder->localPath() + unsyncedFile);
+        QVERIFY(_fakeFolder->syncOnce());
+        const auto fileInfo = _fakeFolder->remoteModifier().find(unsyncedFile);
+        QVERIFY(fileInfo);
+        QVERIFY(!fileInfo->fileId.isEmpty());
+        _model.setFileId(fileInfo->fileId);
+        QCOMPARE(_model.fileId(), fileInfo->fileId);
+        _model.parseEndpoints();
+        QVERIFY(_model.responseLabel().isEmpty());
+        QCOMPARE(_model.rowCount(), 6);
+
+        FileActionsModel fileProviderModel;
+        QSignalSpy fileActionModelChangedSpy(&fileProviderModel, &FileActionsModel::fileActionModelChanged);
+        fileProviderModel.setAccountState(&_fakeFolder->accountState());
+        fileProviderModel.setLocalPath(QDir::tempPath() + QStringLiteral("/fileprovider.odt"));
+        QVERIFY(fileProviderModel.fileId().isEmpty());
+        QCOMPARE(fileProviderModel.rowCount(), 0);
+
+        fileProviderModel.parseEndpoints();
+        QVERIFY(fileProviderModel.responseLabel().contains(QStringLiteral("The file ID is empty")));
+
+        fileProviderModel.setFileId("test-file-provider-id");
+        QCOMPARE(fileProviderModel.fileId(), QByteArray("test-file-provider-id"));
+        QVERIFY(fileActionModelChangedSpy.count() > 0);
+        QVERIFY(fileProviderModel.rowCount() > 0);
+        QVERIFY(fileProviderModel.responseLabel().isEmpty());
+    }
+#endif
 };
 
 QTEST_MAIN(TestFileActionsModel)
