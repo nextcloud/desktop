@@ -1526,7 +1526,7 @@ void User::submitAssistantQuestion(const QString &question)
     _assistantError.clear();
     emit assistantErrorChanged();
 
-    _assistantResponse = tr("Sending your request…");
+    _assistantResponse = tr("Sending your request\u00A0…");
     emit assistantResponseChanged();
 
     _assistantMessages.append(QVariantMap{
