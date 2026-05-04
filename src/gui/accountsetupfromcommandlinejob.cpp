@@ -26,52 +26,64 @@ Q_LOGGING_CATEGORY(lcAccountSetupCommandLineJob, "nextcloud.gui.accountsetupcomm
 AccountSetupFromCommandLineJob::AccountSetupFromCommandLineJob(QString appPassword,
                                                                QString userId,
                                                                QUrl serverUrl,
-                                                               QString localDirPath,
+                                                               QList<QPair<QString, QString>> folderPaths,
                                                                bool isVfsEnabled,
-                                                               QString remoteDirPath,
                                                                QObject *parent)
     : QObject(parent)
     , _appPassword(appPassword)
     , _userId(userId)
     , _serverUrl(serverUrl)
-    , _localDirPath(localDirPath)
+    , _folderPaths(folderPaths)
     , _isVfsEnabled(isVfsEnabled)
-    , _remoteDirPath(remoteDirPath)
 {
 }
 
 void AccountSetupFromCommandLineJob::handleAccountSetupFromCommandLine()
 {
-    if (AccountManager::instance()->accountFromUserId(QStringLiteral("%1@%2").arg(_userId).arg(_serverUrl.host()))) {
-        printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Account %1 already exists!").arg(QDir::toNativeSeparators(_userId)), true);
+    // Validate all requested local paths before doing any work
+    for (const auto &[localPath, remotePath] : _folderPaths) {
+        if (!localPath.isEmpty()) {
+            const QDir dir(localPath);
+            if (dir.exists() && !dir.isEmpty()) {
+                printAccountSetupFromCommandLineStatusAndExit(
+                    QStringLiteral("Local folder %1 already exists and is non-empty!").arg(QDir::toNativeSeparators(localPath)),
+                    true);
+                return;
+            }
+        }
+    }
+
+    // If the account already exists, reuse it and only add the new folders
+    const auto existingAccountState = AccountManager::instance()->accountFromUserId(
+        QStringLiteral("%1@%2").arg(_userId).arg(_serverUrl.host()));
+    if (existingAccountState) {
+        qCInfo(lcAccountSetupCommandLineJob) << QStringLiteral("Account %1 already exists. Adding folders to existing account.").arg(_userId);
+        _account = existingAccountState->account();
+        setupLocalSyncFolders(existingAccountState.data());
         return;
     }
 
-    if (!_localDirPath.isEmpty()) {
-        QDir dir(_localDirPath);
-        if (dir.exists() && !dir.isEmpty()) {
-            printAccountSetupFromCommandLineStatusAndExit(
-                QStringLiteral("Local folder %1 already exists and is non-empty!").arg(QDir::toNativeSeparators(_localDirPath)),
-                true);
-            return;
+    // Create local directories for a new account
+    for (const auto &[localPath, remotePath] : _folderPaths) {
+        if (!localPath.isEmpty()) {
+            QDir dir(localPath);
+            qCInfo(lcAccountSetupCommandLineJob) << "Creating folder" << localPath;
+            if (!dir.exists() && !dir.mkpath(".")) {
+                printAccountSetupFromCommandLineStatusAndExit(
+                    QStringLiteral("Folder creation failed. Could not create local folder %1").arg(QDir::toNativeSeparators(localPath)),
+                    true);
+                return;
+            }
+            FileSystem::setFolderMinimumPermissions(localPath);
+            Utility::setupFavLink(localPath);
         }
-
-        qCInfo(lcAccountSetupCommandLineJob) << "Creating folder" << _localDirPath;
-        if (!dir.exists() && !dir.mkpath(".")) {
-            printAccountSetupFromCommandLineStatusAndExit(
-                QStringLiteral("Folder creation failed. Could not create local folder %1").arg(QDir::toNativeSeparators(_localDirPath)),
-                true);
-            return;
-        }
-
-        FileSystem::setFolderMinimumPermissions(_localDirPath);
-        Utility::setupFavLink(_localDirPath);
     }
 
     const auto credentials = new WebFlowCredentials(_userId, _appPassword);
     _account = AccountManager::createAccount();
     _account->setCredentials(credentials);
     _account->setUrl(_serverUrl);
+    _accountIsNew = true;
 
     fetchUserName();
 }
@@ -99,8 +111,8 @@ void AccountSetupFromCommandLineJob::accountSetupFromCommandLinePropfindHandleSu
     // keychain.  Wait for the final write to complete before exiting so that
     // the credentials are not lost when the process quits.
     connect(_account->credentials(), &AbstractCredentials::credentialsPersisted, this, [this, accountState]() {
-        if (!_localDirPath.isEmpty()) {
-            setupLocalSyncFolder(accountState);
+        if (!_folderPaths.isEmpty()) {
+            setupLocalSyncFolders(accountState);
         } else {
             qCInfo(lcAccountSetupCommandLineJob) << QStringLiteral("Set up a new account without a folder.");
             printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Account %1 setup from command line success.").arg(_account->displayName()), false);
@@ -163,39 +175,44 @@ void AccountSetupFromCommandLineJob::accountSetupFromCommandLinePropfindHandleFa
         true);
 }
 
-void AccountSetupFromCommandLineJob::setupLocalSyncFolder(AccountState *accountState)
+void AccountSetupFromCommandLineJob::setupLocalSyncFolders(AccountState *accountState)
 {
-    FolderDefinition definition;
-    definition.localPath = _localDirPath;
-    definition.targetPath = FolderDefinition::prepareTargetPath(!_remoteDirPath.isEmpty() ? _remoteDirPath : QStringLiteral("/"));
-    definition.virtualFilesMode = _isVfsEnabled ? bestAvailableVfsMode() : Vfs::Off;
-
     const auto folderMan = FolderMan::instance();
-
-    definition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
-    definition.alias = folderMan->map().size() > 0 ? QString::number(folderMan->map().size()) : QString::number(0);
-
-#ifdef Q_OS_WIN
-    if (folderMan->navigationPaneHelper().showInExplorerNavigationPane()) {
-        definition.navigationPaneClsid = QUuid::createUuid();
-    }
-#endif
-
     folderMan->setSyncEnabled(false);
 
-    if (const auto folder = folderMan->addFolder(accountState, definition)) {
-        if (definition.virtualFilesMode != Vfs::Off) {
-            folder->setRootPinState(PinState::OnlineOnly);
+    for (const auto &[localPath, remotePath] : _folderPaths) {
+        FolderDefinition definition;
+        definition.localPath = localPath;
+        definition.targetPath = FolderDefinition::prepareTargetPath(!remotePath.isEmpty() ? remotePath : QStringLiteral("/"));
+        definition.virtualFilesMode = _isVfsEnabled ? bestAvailableVfsMode() : Vfs::Off;
+        definition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
+        definition.alias = folderMan->map().size() > 0 ? QString::number(folderMan->map().size()) : QString::number(0);
+
+#ifdef Q_OS_WIN
+        if (folderMan->navigationPaneHelper().showInExplorerNavigationPane()) {
+            definition.navigationPaneClsid = QUuid::createUuid();
         }
-        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, QStringList() << QLatin1String("/"));
-        qCInfo(lcAccountSetupCommandLineJob) << QStringLiteral("Folder %1 setup from command line success.").arg(definition.localPath);
-        printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Account %1 setup from command line success.").arg(_account->displayName()), false);
-    } else {
-        AccountManager::instance()->deleteAccount(accountState);
-        printAccountSetupFromCommandLineStatusAndExit(
-            QStringLiteral("Account %1 setup from command line failed, due to folder creation failure.").arg(_account->displayName()),
-            false);
+#endif
+
+        if (const auto folder = folderMan->addFolder(accountState, definition)) {
+            if (definition.virtualFilesMode != Vfs::Off) {
+                folder->setRootPinState(PinState::OnlineOnly);
+            }
+            folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, QStringList() << QLatin1String("/"));
+            qCInfo(lcAccountSetupCommandLineJob) << QStringLiteral("Folder %1 setup from command line success.").arg(localPath);
+        } else {
+            if (_accountIsNew) {
+                AccountManager::instance()->deleteAccount(accountState);
+            }
+            printAccountSetupFromCommandLineStatusAndExit(
+                QStringLiteral("Account %1 setup from command line failed, due to folder creation failure.").arg(_account->displayName()),
+                true);
+            return;
+        }
     }
+
+    printAccountSetupFromCommandLineStatusAndExit(
+        QStringLiteral("Account %1 setup from command line success.").arg(_account->displayName()), false);
 }
 
 void AccountSetupFromCommandLineJob::printAccountSetupFromCommandLineStatusAndExit(const QString &status, bool isFailure)
