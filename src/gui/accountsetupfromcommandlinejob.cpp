@@ -19,6 +19,8 @@
 #include <QJsonObject>
 #include <QLoggingCategory>
 
+#include <algorithm>
+
 namespace OCC
 {
 Q_LOGGING_CATEGORY(lcAccountSetupCommandLineJob, "nextcloud.gui.accountsetupcommandlinejob", QtInfoMsg)
@@ -184,6 +186,15 @@ void AccountSetupFromCommandLineJob::setupLocalSyncFolders(AccountState *account
         FolderDefinition definition;
         definition.localPath = localPath;
         definition.targetPath = FolderDefinition::prepareTargetPath(!remotePath.isEmpty() ? remotePath : QStringLiteral("/"));
+
+        const auto &existingFolders = folderMan->map();
+        const auto alreadyConfigured = std::any_of(existingFolders.cbegin(), existingFolders.cend(), [&](const Folder *folder) {
+            return folder->cleanPath() == QDir::cleanPath(localPath) && folder->remotePath() == definition.targetPath;
+        });
+        if (alreadyConfigured) {
+            qCInfo(lcAccountSetupCommandLineJob) << QStringLiteral("Folder %1 syncing %2 is already configured. Skipping.").arg(localPath, definition.targetPath);
+            continue;
+        }
         definition.virtualFilesMode = _isVfsEnabled ? bestAvailableVfsMode() : Vfs::Off;
         definition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
         definition.alias = folderMan->map().size() > 0 ? QString::number(folderMan->map().size()) : QString::number(0);
