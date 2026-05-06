@@ -210,6 +210,73 @@ def sort_and_repair(file):
     full_sort(file)
     repair_file(file)
 
+def get_source_keys(ts_file):
+    """Extract all (context_name, source_text) keys from a .ts file."""
+    tree = ET.parse(ts_file)
+    root = tree.getroot()
+    keys = set()
+    for context in root.findall("context"):
+        context_name = context.find("name").text if context.find("name") is not None else ""
+        for message in context.findall("message"):
+            source = message.find("source")
+            if source is not None and source.text:
+                keys.add((context_name, source.text))
+    return keys
+
+
+def get_untranslated_keys(ts_file):
+    """Extract keys that have no translation, categorized as 'empty' or 'unfinished'."""
+    tree = ET.parse(ts_file)
+    root = tree.getroot()
+    empty = set()
+    unfinished = set()
+    for context in root.findall("context"):
+        context_name = context.find("name").text if context.find("name") is not None else ""
+        for message in context.findall("message"):
+            source = message.find("source")
+            translation = message.find("translation")
+            if source is not None and source.text:
+                key = (context_name, source.text)
+                if translation is None or not translation.text or translation.text.strip() == "":
+                    empty.add(key)
+                elif translation.attrib.get("type") == "unfinished":
+                    unfinished.add(key)
+    return empty, unfinished
+
+
+def validate_untranslated(ts_files, keys_after_step0, keys_after_step1):
+    """Report keys without translations: both newly added and overall."""
+    print("\n  Final validation: checking for untranslated keys...")
+    
+    # EN files always have empty NC base translations — skip those
+    en_files = {"client_en.ts", "client_en_GB.ts"}
+    
+    for ts_file in ts_files:
+        basename = os.path.basename(ts_file)
+        empty, unfinished = get_untranslated_keys(ts_file)
+        
+        # Find which empty keys were added in step 1
+        step0_keys = keys_after_step0.get(ts_file, set())
+        step1_keys = keys_after_step1.get(ts_file, set())
+        added_in_step1 = step1_keys - step0_keys
+        added_empty = empty & added_in_step1
+        other_empty = empty - added_in_step1
+        
+        print(f"    {basename}: {len(empty)} empty, {len(unfinished)} unfinished")
+        
+        if added_empty:
+            print(f"      {len(added_empty)} empty key(s) added in step 1 (our custom keys without translation):")
+            for ctx_name, source_text in sorted(added_empty):
+                display = source_text[:80] + "..." if len(source_text) > 80 else source_text
+                print(f"        - {ctx_name}::{display}")
+        
+        if other_empty and basename not in en_files:
+            print(f"      {len(other_empty)} empty key(s) from NC base (no translation):")
+            for ctx_name, source_text in sorted(other_empty):
+                display = source_text[:80] + "..." if len(source_text) > 80 else source_text
+                print(f"        - {ctx_name}::{display}")
+
+
 def auto_commit(ts_files, step_name, auto_commit_enabled):
     """Commit the translation files with the given step name if auto-commit is enabled."""
     if not auto_commit_enabled:
@@ -497,6 +564,10 @@ if __name__ == "__main__":
             print("  Example: python merge_translation.py 0 stable-4.0")
             sys.exit(1)
 
+    # Track keys for final validation (added in step 1, removed in step 5)
+    keys_after_step0 = {}
+    keys_after_step1 = {}
+
     try:
         
         if step == "0" or step == "all":
@@ -507,6 +578,9 @@ if __name__ == "__main__":
             print("Step 0 completed: lupdate from NC source + sorted")
             validate_ts_files(ts_files, "Step 0", strict=True)
             auto_commit(ts_files, "Step 0", auto_commit_enabled)
+            # Snapshot keys after step 0
+            for ts_file in ts_files:
+                keys_after_step0[ts_file] = get_source_keys(ts_file)
         
         if step == "1" or step == "all":
             # Step 1 lupdate Nextcloud in our latest change state, keep obsolete
@@ -520,6 +594,9 @@ if __name__ == "__main__":
             print("Step 1 completed: lupdate (keep obsolete), pop vanished, full sort")
             validate_ts_files(ts_files, "Step 1")
             auto_commit(ts_files, "Step 1", auto_commit_enabled)
+            # Snapshot keys after step 1
+            for ts_file in ts_files:
+                keys_after_step1[ts_file] = get_source_keys(ts_file)
                                  
         if step == "2" or step == "all":            
             run_lupdate(ts_files, "no_obs")
@@ -555,6 +632,10 @@ if __name__ == "__main__":
             print("Step 5 completed: lupdate remove obsolete, sort")
             validate_ts_files(ts_files, "Step 5", strict=True)
             auto_commit(ts_files, "Step 5", auto_commit_enabled)
+
+        # Final validation: detect untranslated keys
+        if keys_after_step0 and keys_after_step1:
+            validate_untranslated(ts_files, keys_after_step0, keys_after_step1)
 
     except Exception as e:
         print(f"An error occurred: {e}")
