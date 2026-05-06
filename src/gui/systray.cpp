@@ -176,6 +176,9 @@ void Systray::hideWindow()
 #ifdef Q_OS_MACOS
     if (!useNormalWindow()) {
         hideMacOSTrayPopup();
+        if (_trayWindow) {
+            _trayWindow->hide();
+        }
         setIsOpen(false);
         return;
     }

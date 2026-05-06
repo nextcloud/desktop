@@ -388,7 +388,10 @@ void showMacOSTrayPopup(const QRect &iconRect)
     x = x < 8 ? 8 : (x > xMax ? xMax : x);
 
     [s_popup setFrameOrigin:NSMakePoint(x, y)];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [NSApp activateIgnoringOtherApps:YES];
+#pragma clang diagnostic pop
     [s_popup makeKeyAndOrderFront:nil];
 }
 
