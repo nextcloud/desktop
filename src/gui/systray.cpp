@@ -137,11 +137,24 @@ void Systray::create()
 
 void Systray::showWindow(WindowPosition position)
 {
-    if(isOpen() || !_trayWindow) {
+    if (isOpen()) {
         return;
     }
 
-    if(position == WindowPosition::Center) {
+#ifdef Q_OS_MACOS
+    if (!useNormalWindow()) {
+        showMacOSTrayPopup(geometry());
+        setIsOpen(true);
+        UserModel::instance()->fetchCurrentActivityModel();
+        return;
+    }
+#endif
+
+    if (!_trayWindow) {
+        return;
+    }
+
+    if (position == WindowPosition::Center) {
         positionWindowAtScreenCenter(_trayWindow.data());
     } else {
         positionWindowAtTray(_trayWindow.data());
@@ -151,13 +164,24 @@ void Systray::showWindow(WindowPosition position)
     _trayWindow->requestActivate();
 
     setIsOpen(true);
-
     UserModel::instance()->fetchCurrentActivityModel();
 }
 
 void Systray::hideWindow()
 {
-    if(!isOpen() || !_trayWindow) {
+    if (!isOpen()) {
+        return;
+    }
+
+#ifdef Q_OS_MACOS
+    if (!useNormalWindow()) {
+        hideMacOSTrayPopup();
+        setIsOpen(false);
+        return;
+    }
+#endif
+
+    if (!_trayWindow) {
         return;
     }
 

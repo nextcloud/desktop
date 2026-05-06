@@ -48,6 +48,8 @@ void sendOsXTalkNotification(const QString &title, const QString &message, const
 #endif
 void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window);
 double menuBarThickness();
+void showMacOSTrayPopup(const QRect &iconRect);
+void hideMacOSTrayPopup();
 #endif
 
 /**
