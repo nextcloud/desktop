@@ -951,4 +951,58 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         )
         XCTAssertEqual(itemB.contentPolicy, .inherited)
     }
+
+    ///
+    /// Verifies the per-item evictability signal that drives Finder's "Remove
+    /// Download" entry visibility (#9891).
+    ///
+    /// `.allowsEvicting` should appear only for items that are downloaded **and**
+    /// not pinned via "keep downloaded". Pinned items use the
+    /// `.downloadEagerlyAndKeepDownloaded` content policy, which the framework
+    /// refuses to evict — surfacing the capability would expose a Finder action
+    /// that always errors. Undownloaded items have nothing to evict.
+    ///
+    func testCapabilityAllowsEvictingMatchesDownloadAndPinState() {
+        // Undownloaded, unpinned: not evictable (no content to evict).
+        var undownloadedMetadata =
+            SendableItemMetadata(ocId: "u", fileName: "u.txt", account: Self.account)
+        undownloadedMetadata.permissions = "G"
+        let undownloadedItem = Item(
+            metadata: undownloadedMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager
+        )
+        XCTAssertFalse(undownloadedItem.capabilities.contains(.allowsEvicting))
+
+        // Downloaded, unpinned: evictable.
+        var downloadedMetadata =
+            SendableItemMetadata(ocId: "d", fileName: "d.txt", account: Self.account)
+        downloadedMetadata.permissions = "G"
+        downloadedMetadata.downloaded = true
+        let downloadedItem = Item(
+            metadata: downloadedMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager
+        )
+        XCTAssertTrue(downloadedItem.capabilities.contains(.allowsEvicting))
+
+        // Downloaded, pinned: not evictable (content policy refuses eviction).
+        var pinnedMetadata =
+            SendableItemMetadata(ocId: "p", fileName: "p.txt", account: Self.account)
+        pinnedMetadata.permissions = "G"
+        pinnedMetadata.downloaded = true
+        pinnedMetadata.keepDownloaded = true
+        let pinnedItem = Item(
+            metadata: pinnedMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager
+        )
+        XCTAssertFalse(pinnedItem.capabilities.contains(.allowsEvicting))
+    }
 }

@@ -62,6 +62,10 @@
 				<string>File actions</string>
 			</dict>
 		</array>
+		<key>NSExtensionFileProviderAllowsContextualMenuDownloadEntry</key>
+		<false/>
+		<key>NSExtensionFileProviderAllowsUserControlledEviction</key>
+		<false/>
 		<key>NSExtensionFileProviderDocumentGroup</key>
 		<string>$(DEVELOPMENT_TEAM).$(OC_APPLICATION_REV_DOMAIN)</string>
 		<key>NSExtensionFileProviderSupportsEnumeration</key>
