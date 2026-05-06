@@ -55,6 +55,14 @@
 			</dict>
 			<dict>
 				<key>NSExtensionFileProviderActionActivationRule</key>
+				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayEvict == true ).@count &gt; 0</string>
+				<key>NSExtensionFileProviderActionIdentifier</key>
+				<string>com.nextcloud.desktopclient.FileProviderExt.EvictAction</string>
+				<key>NSExtensionFileProviderActionName</key>
+				<string>Remove download</string>
+			</dict>
+			<dict>
+				<key>NSExtensionFileProviderActionActivationRule</key>
 				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayFileActions == true ).@count &gt; 0</string>
 				<key>NSExtensionFileProviderActionIdentifier</key>
 				<string>com.nextcloud.desktopclient.FileProviderExt.FileActionsAction</string>

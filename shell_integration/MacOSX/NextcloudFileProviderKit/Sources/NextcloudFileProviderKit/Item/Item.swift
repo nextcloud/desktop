@@ -41,12 +41,15 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             if permissions.contains("D") { // Deletable
                 capabilities.insert(.allowsDeleting)
             }
+
             if remoteSupportsTrash, !isLockFileName(filename) {
                 capabilities.insert(.allowsTrashing)
             }
+
             if permissions.contains("W"), !metadata.directory { // Updateable (file)
                 capabilities.insert(.allowsWriting)
             }
+
             if permissions.contains("NV") { // Updateable, renameable, moveable
                 capabilities.formUnion([.allowsRenaming, .allowsReparenting])
 
@@ -54,6 +57,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
                     capabilities.insert(.allowsAddingSubItems)
                 }
             }
+
             if permissions.contains("CK"), metadata.directory { // Folder not changeable but adding sub-files & -folders
                 capabilities.insert(.allowsWriting)
             }
@@ -199,6 +203,12 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
 
         userInfoDict["displayKeepDownloaded"] = !metadata.keepDownloaded
         userInfoDict["displayAllowAutoEvicting"] = metadata.keepDownloaded
+        // Restricted to non-pinned items so the action only appears once the
+        // framework has refreshed `contentPolicy` to `.inherited`. Both fields
+        // are read from the same `Item` returned by `item(for:)`, so they
+        // always agree — preventing the -2008 NonEvictable race that would
+        // otherwise occur if we tried to evict while `requestModification`'s
+        // unpin signal was still queued (#9891).
         userInfoDict["displayEvict"] = metadata.downloaded && !metadata.keepDownloaded
 
         // https://docs.nextcloud.com/server/latest/developer_manual/client_apis/WebDAV/basic.html
@@ -209,13 +219,10 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         return userInfoDict
     }
 
-    @available(macOS 13.0, iOS 16.0, visionOS 1.0, *)
     public var contentPolicy: NSFileProviderContentPolicy {
-        #if os(macOS)
-            if metadata.keepDownloaded {
-                return .downloadEagerlyAndKeepDownloaded // Unavailable in iOS.
-            }
-        #endif
+        if metadata.keepDownloaded {
+            return .downloadEagerlyAndKeepDownloaded
+        }
 
         return .inherited
     }

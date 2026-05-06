@@ -217,6 +217,13 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         )
         XCTAssertTrue(canEvictPredicate.evaluate(with: fileproviderItems))
 
+        // Pinned items must NOT advertise the evict action. The framework
+        // would still report `contentPolicy == .downloadEagerlyAndKeepDownloaded`
+        // until its own refresh of the item lands, so a tight unpin-then-evict
+        // path races with -2008 NonEvictable. Gating on `!keepDownloaded`
+        // forces the user to clear the pin first; once the framework has
+        // re-fetched the item, both `displayEvict` and `contentPolicy` flip
+        // together (#9891).
         metadata.keepDownloaded = true
         let keepDownloadedItem = Item(
             metadata: metadata,
@@ -228,10 +235,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(keepDownloadedItem.userInfo?["displayEvict"])
 
         let fileproviderKeepDownloadedItems = ["fileproviderItems": [keepDownloadedItem]]
-        let cannotEvictPredicate = NSPredicate(
-            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayEvict == true ).@count > 0"
-        )
-        XCTAssertFalse(cannotEvictPredicate.evaluate(with: fileproviderKeepDownloadedItems))
+        XCTAssertFalse(canEvictPredicate.evaluate(with: fileproviderKeepDownloadedItems))
     }
 
     func testItemUserInfoNoDisplayEvictState() {
@@ -299,6 +303,9 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         )
         XCTAssertEqual(itemC.userInfo?["displayKeepDownloaded"] as? Bool, false)
         XCTAssertEqual(itemC.userInfo?["displayAllowAutoEvicting"] as? Bool, true)
+        // Pinned + downloaded: NOT offered for "Remove download". The user must
+        // unpin first via "Allow automatic freeing up space"; once the
+        // framework refreshes the item, the evict entry appears (#9891).
         XCTAssertEqual(itemC.userInfo?["displayEvict"] as? Bool, false)
 
         var metadataD =
@@ -871,12 +878,11 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
                 log: FileProviderLogMock()
             )
 
-            XCTAssertTrue(
-                item.capabilities.contains(.allowsExcludingFromSync),
-                "Should allow excluding from sync on supported macOS versions."
-            )
-        }
-    #endif
+        XCTAssertTrue(
+            item.capabilities.contains(.allowsExcludingFromSync),
+            "Should allow excluding from sync on supported macOS versions."
+        )
+    }
 
     func testItemShared() {
         var sharedMetadata =
@@ -953,56 +959,79 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
     }
 
     ///
-    /// Verifies the per-item evictability signal that drives Finder's "Remove
-    /// Download" entry visibility (#9891).
+    /// Regression coverage for #9891: the "Remove download" custom action must
+    /// only be offered for items that are downloaded **and** not pinned via
+    /// "Always keep downloaded".
     ///
-    /// `.allowsEvicting` should appear only for items that are downloaded **and**
-    /// not pinned via "keep downloaded". Pinned items use the
-    /// `.downloadEagerlyAndKeepDownloaded` content policy, which the framework
-    /// refuses to evict — surfacing the capability would expose a Finder action
-    /// that always errors. Undownloaded items have nothing to evict.
+    /// Pinning is enforced by `contentPolicy == .downloadEagerlyAndKeepDownloaded`,
+    /// which the framework refuses to evict (-2008 `NonEvictable`).
+    /// `requestModification` cannot signal a `contentPolicy` field change
+    /// (`NSFileProviderItemFields` has no such case) and is queued
+    /// asynchronously — there is no synchronous way to invalidate the
+    /// framework's cached policy, so a tight unpin-then-evict path races. The
+    /// fix is to keep the entry hidden until the framework has refreshed the
+    /// item: both `displayEvict` and `contentPolicy` are read off the same
+    /// `Item` returned by `item(for:)` and therefore flip together. The user
+    /// flow is two-step: "Allow automatic freeing up space" → "Remove download".
     ///
-    func testCapabilityAllowsEvictingMatchesDownloadAndPinState() {
-        // Undownloaded, unpinned: not evictable (no content to evict).
-        var undownloadedMetadata =
-            SendableItemMetadata(ocId: "u", fileName: "u.txt", account: Self.account)
-        undownloadedMetadata.permissions = "G"
-        let undownloadedItem = Item(
-            metadata: undownloadedMetadata,
+    /// The action's activation rule in the file provider extension's
+    /// `Info.plist` is a `SUBQUERY` over `userInfo.displayEvict`, so this
+    /// asserts directly against the predicate Finder evaluates.
+    ///
+    func testItemUserInfoDisplayEvictGatedOnUnpinned() {
+        var pinnedDownloadedMetadata =
+            SendableItemMetadata(ocId: "pd", fileName: "pd.txt", account: Self.account)
+        pinnedDownloadedMetadata.downloaded = true
+        pinnedDownloadedMetadata.keepDownloaded = true
+        let pinnedDownloadedItem = Item(
+            metadata: pinnedDownloadedMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
-        XCTAssertFalse(undownloadedItem.capabilities.contains(.allowsEvicting))
 
-        // Downloaded, unpinned: evictable.
-        var downloadedMetadata =
-            SendableItemMetadata(ocId: "d", fileName: "d.txt", account: Self.account)
-        downloadedMetadata.permissions = "G"
-        downloadedMetadata.downloaded = true
-        let downloadedItem = Item(
-            metadata: downloadedMetadata,
+        var unpinnedDownloadedMetadata =
+            SendableItemMetadata(ocId: "ud", fileName: "ud.txt", account: Self.account)
+        unpinnedDownloadedMetadata.downloaded = true
+        let unpinnedDownloadedItem = Item(
+            metadata: unpinnedDownloadedMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
-        XCTAssertTrue(downloadedItem.capabilities.contains(.allowsEvicting))
 
-        // Downloaded, pinned: not evictable (content policy refuses eviction).
-        var pinnedMetadata =
-            SendableItemMetadata(ocId: "p", fileName: "p.txt", account: Self.account)
-        pinnedMetadata.permissions = "G"
-        pinnedMetadata.downloaded = true
-        pinnedMetadata.keepDownloaded = true
-        let pinnedItem = Item(
-            metadata: pinnedMetadata,
+        let onlyUnpinnedQualifiesPredicate = NSPredicate(
+            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayEvict == true ).@count == 1"
+        )
+        XCTAssertTrue(
+            onlyUnpinnedQualifiesPredicate.evaluate(
+                with: ["fileproviderItems": [pinnedDownloadedItem, unpinnedDownloadedItem]]
+            ),
+            "Of pinned+downloaded and unpinned+downloaded, only the unpinned item must qualify for the evict action."
+        )
+
+        // Sanity: pinned but undownloaded — nothing to evict — also excluded.
+        var pinnedUndownloadedMetadata =
+            SendableItemMetadata(ocId: "pu", fileName: "pu.txt", account: Self.account)
+        pinnedUndownloadedMetadata.keepDownloaded = true
+        let pinnedUndownloadedItem = Item(
+            metadata: pinnedUndownloadedMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
-        XCTAssertFalse(pinnedItem.capabilities.contains(.allowsEvicting))
+
+        let noEvictPredicate = NSPredicate(
+            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayEvict == true ).@count == 0"
+        )
+        XCTAssertTrue(
+            noEvictPredicate.evaluate(
+                with: ["fileproviderItems": [pinnedUndownloadedItem]]
+            ),
+            "Pinned but undownloaded items have nothing to evict and must not qualify."
+        )
     }
 }
