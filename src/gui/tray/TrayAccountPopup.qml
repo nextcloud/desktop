@@ -14,61 +14,96 @@ import com.nextcloud.desktopclient
 Window {
     id: root
 
-    readonly property int popupWidth: 340
-    readonly property int rowHeight: 56
-    readonly property int actionHeight: 36
-    readonly property int avatarSize: 34
+    readonly property bool hasAccounts: UserModel && UserModel.count > 0
+    readonly property color rowHoverColor: Qt.rgba(root.palette.windowText.r,
+                                                   root.palette.windowText.g,
+                                                   root.palette.windowText.b,
+                                                   Style.trayAccountPopupRowHoverOpacity)
 
-    width: popupWidth
+    width: Style.trayAccountPopupWidth
     height: contentColumn.height
     color: "transparent"
     flags: Qt.Tool | Qt.FramelessWindowHint | Qt.NoDropShadowWindowHint
 
     property bool _closing: false
+    property bool _hadFocusSinceShow: false
+
+    onVisibleChanged: {
+        if (visible) {
+            _hadFocusSinceShow = false
+        }
+    }
 
     onActiveChanged: {
-        if (!active && !_closing) {
+        if (active) {
+            _hadFocusSinceShow = true
+        } else if (_hadFocusSinceShow && !_closing) {
             Systray.hideWindow()
         }
         _closing = false
     }
 
     Rectangle {
+        id: popupContainer
         anchors.fill: parent
         radius: Style.trayWindowRadius
         color: palette.window
         border.width: Style.trayWindowBorderWidth
         border.color: palette.dark
+        clip: true
 
         Column {
             id: contentColumn
             width: parent.width
+            spacing: 0
 
             Repeater {
                 model: UserModel
 
                 delegate: ItemDelegate {
                     id: accountRow
-                    width: root.popupWidth
-                    height: root.rowHeight
+                    width: root.width
+                    height: Style.trayAccountPopupRowHeight
                     hoverEnabled: true
+                    topInset: 0
+                    leftInset: 0
+                    rightInset: 0
+                    bottomInset: 0
                     padding: 0
-                    leftPadding: 12
-                    rightPadding: 12
+                    leftPadding: Style.trayAccountPopupRowPadding
+                    rightPadding: Style.trayAccountPopupRowPadding
 
-                    background: Rectangle {
-                        color: accountRow.hovered
-                            ? Qt.rgba(root.palette.windowText.r, root.palette.windowText.g, root.palette.windowText.b, 0.07)
-                            : "transparent"
-                        Behavior on color { ColorAnimation { duration: 80 } }
+                    background: Item {
+                        Rectangle {
+                            visible: index !== 0
+                            anchors.fill: parent
+                            color: accountRow.hovered ? root.rowHoverColor : "transparent"
+                            Behavior on color { ColorAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
+                        }
+
+                        Item {
+                            visible: index === 0
+                            anchors.fill: parent
+                            clip: true
+
+                            Rectangle {
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                anchors.top: parent.top
+                                height: parent.height + Style.trayWindowRadius
+                                radius: Style.trayWindowRadius
+                                color: accountRow.hovered ? root.rowHoverColor : "transparent"
+                                Behavior on color { ColorAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
+                            }
+                        }
                     }
 
                     contentItem: RowLayout {
-                        spacing: 10
+                        spacing: Style.trayAccountPopupRowSpacing
 
                         Image {
-                            Layout.preferredWidth: root.avatarSize
-                            Layout.preferredHeight: root.avatarSize
+                            Layout.preferredWidth: Style.trayAccountPopupAvatarSize
+                            Layout.preferredHeight: Style.trayAccountPopupAvatarSize
                             source: model.avatar !== "" ? model.avatar
                                 : (Style.darkMode ? "image://avatars/fallbackWhite" : "image://avatars/fallbackBlack")
                             fillMode: Image.PreserveAspectCrop
@@ -76,8 +111,8 @@ Window {
                             layer.enabled: true
                             layer.effect: OpacityMask {
                                 maskSource: Rectangle {
-                                    width: root.avatarSize
-                                    height: root.avatarSize
+                                    width: Style.trayAccountPopupAvatarSize
+                                    height: Style.trayAccountPopupAvatarSize
                                     radius: width / 2
                                     visible: false
                                 }
@@ -91,7 +126,7 @@ Window {
                             Label {
                                 Layout.fillWidth: true
                                 text: model.name
-                                font.pixelSize: 13
+                                font.pixelSize: Style.trayAccountPopupPrimaryFontSize
                                 font.weight: Font.DemiBold
                                 elide: Text.ElideRight
                                 color: palette.windowText
@@ -100,7 +135,7 @@ Window {
                             Label {
                                 Layout.fillWidth: true
                                 text: model.server
-                                font.pixelSize: 11
+                                font.pixelSize: Style.trayAccountPopupSecondaryFontSize
                                 elide: Text.ElideRight
                                 color: palette.windowText
                                 opacity: 0.6
@@ -108,15 +143,16 @@ Window {
                         }
 
                         Image {
-                            Layout.preferredWidth: 16
-                            Layout.preferredHeight: 16
+                            Layout.preferredWidth: Style.trayAccountPopupSyncIconSize
+                            Layout.preferredHeight: Style.trayAccountPopupSyncIconSize
                             source: model.syncStatusIcon
-                            sourceSize: Qt.size(16, 16)
+                            sourceSize: Qt.size(Style.trayAccountPopupSyncIconSize,
+                                                Style.trayAccountPopupSyncIconSize)
                         }
 
                         Label {
                             text: "›"
-                            font.pixelSize: 18
+                            font.pixelSize: Style.trayAccountPopupChevronFontSize
                             color: palette.windowText
                             opacity: 0.35
                         }
@@ -138,22 +174,24 @@ Window {
 
             ItemDelegate {
                 id: settingsRow
-                width: root.popupWidth
-                height: root.actionHeight
+                width: root.width
+                height: Style.trayAccountPopupActionHeight
                 hoverEnabled: true
+                topInset: 0
+                leftInset: 0
+                rightInset: 0
+                bottomInset: 0
                 padding: 0
-                leftPadding: 12
+                leftPadding: Style.trayAccountPopupRowPadding
 
                 background: Rectangle {
-                    color: settingsRow.hovered
-                        ? Qt.rgba(root.palette.windowText.r, root.palette.windowText.g, root.palette.windowText.b, 0.07)
-                        : "transparent"
-                    Behavior on color { ColorAnimation { duration: 80 } }
+                    color: settingsRow.hovered ? root.rowHoverColor : "transparent"
+                    Behavior on color { ColorAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
                 }
 
                 contentItem: Label {
                     text: qsTr("Settings")
-                    font.pixelSize: 13
+                    font.pixelSize: Style.trayAccountPopupPrimaryFontSize
                     color: palette.windowText
                     verticalAlignment: Text.AlignVCenter
                 }
@@ -167,22 +205,36 @@ Window {
 
             ItemDelegate {
                 id: quitRow
-                width: root.popupWidth
-                height: root.actionHeight
+                width: root.width
+                height: Style.trayAccountPopupActionHeight
                 hoverEnabled: true
+                topInset: 0
+                leftInset: 0
+                rightInset: 0
+                bottomInset: 0
                 padding: 0
-                leftPadding: 12
+                leftPadding: Style.trayAccountPopupRowPadding
 
-                background: Rectangle {
-                    color: quitRow.hovered
-                        ? Qt.rgba(root.palette.windowText.r, root.palette.windowText.g, root.palette.windowText.b, 0.07)
-                        : "transparent"
-                    Behavior on color { ColorAnimation { duration: 80 } }
+                background: Item {
+                    Item {
+                        anchors.fill: parent
+                        clip: true
+
+                        Rectangle {
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.bottom: parent.bottom
+                            height: parent.height + Style.trayWindowRadius
+                            radius: Style.trayWindowRadius
+                            color: quitRow.hovered ? root.rowHoverColor : "transparent"
+                            Behavior on color { ColorAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
+                        }
+                    }
                 }
 
                 contentItem: Label {
                     text: qsTr("Quit")
-                    font.pixelSize: 13
+                    font.pixelSize: Style.trayAccountPopupPrimaryFontSize
                     color: palette.windowText
                     verticalAlignment: Text.AlignVCenter
                 }
