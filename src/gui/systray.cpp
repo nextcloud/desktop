@@ -128,6 +128,15 @@ void Systray::create()
         } else {
             _trayWindow.reset(qobject_cast<QQuickWindow*>(trayWindowComponent.create()));
         }
+
+#ifndef Q_OS_MACOS
+        QQmlComponent popupComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/tray/TrayAccountPopup.qml"));
+        if (popupComponent.isError()) {
+            qCWarning(lcSystray) << popupComponent.errorString();
+        } else {
+            _popupWindow.reset(qobject_cast<QQuickWindow*>(popupComponent.create()));
+        }
+#endif
     }
     hideWindow();
     emit activated(QSystemTrayIcon::ActivationReason::Unknown);
@@ -146,6 +155,15 @@ void Systray::showWindow(WindowPosition position)
         showMacOSTrayPopup(geometry());
         setIsOpen(true);
         UserModel::instance()->fetchCurrentActivityModel();
+        return;
+    }
+#else
+    if (!useNormalWindow() && _popupWindow) {
+        positionWindowAtTray(_popupWindow.data());
+        _popupWindow->show();
+        _popupWindow->raise();
+        _popupWindow->requestActivate();
+        setIsOpen(true);
         return;
     }
 #endif
@@ -182,6 +200,17 @@ void Systray::hideWindow()
         setIsOpen(false);
         return;
     }
+#else
+    if (!useNormalWindow()) {
+        if (_popupWindow) {
+            _popupWindow->hide();
+        }
+        if (_trayWindow) {
+            _trayWindow->hide();
+        }
+        setIsOpen(false);
+        return;
+    }
 #endif
 
     if (!_trayWindow) {
@@ -192,12 +221,18 @@ void Systray::hideWindow()
     setIsOpen(false);
 }
 
-#ifdef Q_OS_MACOS
 void Systray::showQMLWindow()
 {
     if (!_trayWindow) {
         return;
     }
+#ifdef Q_OS_MACOS
+    hideMacOSTrayPopup();
+#else
+    if (_popupWindow) {
+        _popupWindow->hide();
+    }
+#endif
     positionWindowAtTray(_trayWindow.data());
     _trayWindow->show();
     _trayWindow->raise();
@@ -205,7 +240,6 @@ void Systray::showQMLWindow()
     setIsOpen(true);
     UserModel::instance()->fetchCurrentActivityModel();
 }
-#endif
 
 void Systray::setupContextMenu()
 {

@@ -10,26 +10,17 @@
 
 #import <Cocoa/Cocoa.h>
 
-// ---------------------------------------------------------------------------
-// Layout constants
-// ---------------------------------------------------------------------------
-
-static const CGFloat kPopupWidth    = 340.0;
-static const CGFloat kRowHeight     = 64.0;
-static const CGFloat kAvatarSize    = 40.0;
-static const CGFloat kActionHeight  = 38.0;
-static const CGFloat kCornerRadius  = 14.0;
-static const CGFloat kHPad          = 14.0;
-static const CGFloat kVPad          = 12.0;
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
+static const CGFloat kPopupWidth   = 340.0;
+static const CGFloat kRowHeight    = 64.0;
+static const CGFloat kAvatarSize   = 40.0;
+static const CGFloat kActionHeight = 38.0;
+static const CGFloat kCornerRadius = 14.0;
+static const CGFloat kHPad         = 14.0;
+static const CGFloat kVPad         = 12.0;
 
 static NSImage *nsImageFromQImage(const QImage &qimg)
 {
     if (qimg.isNull()) return nil;
-
     const QImage rgba = qimg.convertToFormat(QImage::Format_RGBA8888);
     NSBitmapImageRep *rep = [[NSBitmapImageRep alloc]
         initWithBitmapDataPlanes:nullptr
@@ -43,21 +34,54 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
                      bytesPerRow:rgba.bytesPerLine()
                     bitsPerPixel:32];
     memcpy(rep.bitmapData, rgba.constBits(), (size_t)rgba.bytesPerLine() * rgba.height());
-
     NSImage *img = [[NSImage alloc] initWithSize:NSMakeSize(rgba.width(), rgba.height())];
     [img addRepresentation:rep];
     return img;
 }
 
-// ---------------------------------------------------------------------------
-// NCAccountRow — a hoverable NSView wrapping one account entry
-// ---------------------------------------------------------------------------
+@interface NCHoverView : NSView
+@end
+
+@implementation NCHoverView
+
+- (instancetype)init
+{
+    self = [super init];
+    if (!self) return nil;
+    self.wantsLayer = YES;
+    self.layer.backgroundColor = CGColorGetConstantColor(kCGColorClear);
+    self.translatesAutoresizingMaskIntoConstraints = NO;
+    return self;
+}
+
+- (void)mouseEntered:(NSEvent *)event
+{
+    self.layer.backgroundColor = [NSColor.labelColor colorWithAlphaComponent:0.08].CGColor;
+}
+
+- (void)mouseExited:(NSEvent *)event
+{
+    self.layer.backgroundColor = CGColorGetConstantColor(kCGColorClear);
+}
+
+- (void)updateTrackingAreas
+{
+    [super updateTrackingAreas];
+    for (NSTrackingArea *ta in self.trackingAreas.copy) [self removeTrackingArea:ta];
+    [self addTrackingArea:[[NSTrackingArea alloc]
+        initWithRect:self.bounds
+             options:NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways
+               owner:self
+            userInfo:nil]];
+}
+
+@end
 
 @protocol NCAccountRowDelegate
 - (void)onAccountRowClicked:(int)index;
 @end
 
-@interface NCAccountRow : NSView
+@interface NCAccountRow : NCHoverView
 @property (nonatomic, assign) int userIndex;
 @property (nonatomic, assign) id<NCAccountRowDelegate> popupDelegate;
 @end
@@ -69,58 +93,43 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
     [self.popupDelegate onAccountRowClicked:self.userIndex];
 }
 
-- (void)mouseEntered:(NSEvent *)event
-{
-    self.layer.backgroundColor = [NSColor.labelColor colorWithAlphaComponent:0.08].CGColor;
+@end
+
+@interface NCActionRow : NCHoverView
+- (instancetype)initWithTitle:(NSString *)title action:(dispatch_block_t)action;
+@end
+
+@implementation NCActionRow {
+    dispatch_block_t _action;
 }
 
-- (void)mouseExited:(NSEvent *)event
+- (instancetype)initWithTitle:(NSString *)title action:(dispatch_block_t)action
 {
-    self.layer.backgroundColor = CGColorGetConstantColor(kCGColorClear);
+    self = [super init];
+    if (!self) return nil;
+    _action = [action copy];
+
+    NSTextField *label = [NSTextField labelWithString:title];
+    label.font = [NSFont systemFontOfSize:13];
+    label.textColor = NSColor.labelColor;
+    label.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:label];
+
+    [NSLayoutConstraint activateConstraints:@[
+        [label.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:kHPad],
+        [label.centerYAnchor constraintEqualToAnchor:self.centerYAnchor],
+        [self.heightAnchor constraintEqualToConstant:kActionHeight],
+        [self.widthAnchor constraintEqualToConstant:kPopupWidth],
+    ]];
+    return self;
 }
 
-- (void)updateTrackingAreas
+- (void)mouseUp:(NSEvent *)event
 {
-    [super updateTrackingAreas];
-    for (NSTrackingArea *ta in self.trackingAreas.copy) [self removeTrackingArea:ta];
-    NSTrackingAreaOptions opts = NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways;
-    [self addTrackingArea:[[NSTrackingArea alloc] initWithRect:self.bounds options:opts owner:self userInfo:nil]];
+    if (_action) _action();
 }
 
 @end
-
-// ---------------------------------------------------------------------------
-// NCHoverButton — NSButton with the same hover highlight as NCAccountRow
-// ---------------------------------------------------------------------------
-
-@interface NCHoverButton : NSButton
-@end
-
-@implementation NCHoverButton
-
-- (void)mouseEntered:(NSEvent *)event
-{
-    self.layer.backgroundColor = [NSColor.labelColor colorWithAlphaComponent:0.08].CGColor;
-}
-
-- (void)mouseExited:(NSEvent *)event
-{
-    self.layer.backgroundColor = CGColorGetConstantColor(kCGColorClear);
-}
-
-- (void)updateTrackingAreas
-{
-    [super updateTrackingAreas];
-    for (NSTrackingArea *ta in self.trackingAreas.copy) [self removeTrackingArea:ta];
-    NSTrackingAreaOptions opts = NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways;
-    [self addTrackingArea:[[NSTrackingArea alloc] initWithRect:self.bounds options:opts owner:self userInfo:nil]];
-}
-
-@end
-
-// ---------------------------------------------------------------------------
-// NCTrayPopup
-// ---------------------------------------------------------------------------
 
 @interface NCTrayPopup : NSPanel <NCAccountRowDelegate>
 - (void)populate;
@@ -164,7 +173,6 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
         [_stack.trailingAnchor constraintEqualToAnchor:vev.trailingAnchor],
         [_stack.bottomAnchor constraintEqualToAnchor:vev.bottomAnchor],
     ]];
-
     return self;
 }
 
@@ -177,8 +185,6 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
     OCC::Systray::instance()->setIsOpen(false);
 }
 
-// ---- Account row ----------------------------------------------------------
-
 - (NCAccountRow *)makeRowForIndex:(int)index
                              name:(NSString *)name
                            server:(NSString *)server
@@ -186,53 +192,40 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
                            syncOk:(BOOL)syncOk
 {
     NCAccountRow *row = [[NCAccountRow alloc] init];
-    row.wantsLayer = YES;
-    row.layer.backgroundColor = CGColorGetConstantColor(kCGColorClear);
-    row.translatesAutoresizingMaskIntoConstraints = NO;
     row.userIndex = index;
     row.popupDelegate = self;
 
-    // Avatar
     NSImageView *avatarView = [[NSImageView alloc] init];
     avatarView.image = avatar != nil ? avatar : [NSImage imageWithSystemSymbolName:@"person.circle.fill"
-                                                              accessibilityDescription:nil];
+                                                            accessibilityDescription:nil];
     avatarView.wantsLayer = YES;
     avatarView.layer.cornerRadius = kAvatarSize / 2.0;
     avatarView.layer.masksToBounds = YES;
     avatarView.imageScaling = NSImageScaleProportionallyUpOrDown;
     avatarView.translatesAutoresizingMaskIntoConstraints = NO;
 
-    // Name label
     NSTextField *nameLabel = [NSTextField labelWithString:name];
     nameLabel.font = [NSFont systemFontOfSize:13 weight:NSFontWeightSemibold];
     nameLabel.textColor = NSColor.labelColor;
     nameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     nameLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
-    // Server label
     NSTextField *serverLabel = [NSTextField labelWithString:server];
     serverLabel.font = [NSFont systemFontOfSize:11];
     serverLabel.textColor = NSColor.secondaryLabelColor;
     serverLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     serverLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
-    // Sync status icon
     NSImageView *statusView = [[NSImageView alloc] init];
     NSString *symbol = syncOk ? @"checkmark.circle.fill" : @"arrow.triangle.2.circlepath";
-    NSImage *statusImg = [NSImage imageWithSystemSymbolName:symbol accessibilityDescription:nil];
-    NSImageSymbolConfiguration *cfg = [NSImageSymbolConfiguration
-        configurationWithPointSize:16 weight:NSFontWeightMedium];
-    statusView.image = [statusImg imageWithSymbolConfiguration:cfg];
+    statusView.image = [[NSImage imageWithSystemSymbolName:symbol accessibilityDescription:nil]
+        imageWithSymbolConfiguration:[NSImageSymbolConfiguration configurationWithPointSize:16 weight:NSFontWeightMedium]];
     statusView.contentTintColor = syncOk ? NSColor.systemGreenColor : NSColor.systemBlueColor;
     statusView.translatesAutoresizingMaskIntoConstraints = NO;
 
-    // Chevron
     NSImageView *chevron = [[NSImageView alloc] init];
-    NSImageSymbolConfiguration *chevCfg = [NSImageSymbolConfiguration
-        configurationWithPointSize:11 weight:NSFontWeightMedium];
-    chevron.image = [[NSImage imageWithSystemSymbolName:@"chevron.right"
-                                  accessibilityDescription:nil]
-                     imageWithSymbolConfiguration:chevCfg];
+    chevron.image = [[NSImage imageWithSystemSymbolName:@"chevron.right" accessibilityDescription:nil]
+        imageWithSymbolConfiguration:[NSImageSymbolConfiguration configurationWithPointSize:11 weight:NSFontWeightMedium]];
     chevron.contentTintColor = NSColor.tertiaryLabelColor;
     chevron.translatesAutoresizingMaskIntoConstraints = NO;
 
@@ -243,72 +236,35 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
     [row addSubview:chevron];
 
     [NSLayoutConstraint activateConstraints:@[
-        // Avatar — vertically centered, left edge
         [avatarView.leadingAnchor constraintEqualToAnchor:row.leadingAnchor constant:kHPad],
         [avatarView.centerYAnchor constraintEqualToAnchor:row.centerYAnchor],
         [avatarView.widthAnchor constraintEqualToConstant:kAvatarSize],
         [avatarView.heightAnchor constraintEqualToConstant:kAvatarSize],
 
-        // Name — top half, next to avatar
         [nameLabel.leadingAnchor constraintEqualToAnchor:avatarView.trailingAnchor constant:10],
         [nameLabel.topAnchor constraintEqualToAnchor:row.topAnchor constant:kVPad],
         [nameLabel.trailingAnchor constraintLessThanOrEqualToAnchor:statusView.leadingAnchor constant:-8],
 
-        // Server — below name
         [serverLabel.leadingAnchor constraintEqualToAnchor:nameLabel.leadingAnchor],
         [serverLabel.topAnchor constraintEqualToAnchor:nameLabel.bottomAnchor constant:2],
         [serverLabel.trailingAnchor constraintLessThanOrEqualToAnchor:statusView.leadingAnchor constant:-8],
 
-        // Chevron — far right, centered
         [chevron.trailingAnchor constraintEqualToAnchor:row.trailingAnchor constant:-kHPad],
         [chevron.centerYAnchor constraintEqualToAnchor:row.centerYAnchor],
         [chevron.widthAnchor constraintEqualToConstant:8],
         [chevron.heightAnchor constraintEqualToConstant:13],
 
-        // Status icon — left of chevron
         [statusView.trailingAnchor constraintEqualToAnchor:chevron.leadingAnchor constant:-8],
         [statusView.centerYAnchor constraintEqualToAnchor:row.centerYAnchor],
         [statusView.widthAnchor constraintEqualToConstant:18],
         [statusView.heightAnchor constraintEqualToConstant:18],
 
-        // Row size
         [row.heightAnchor constraintEqualToConstant:kRowHeight],
         [row.widthAnchor constraintEqualToConstant:kPopupWidth],
     ]];
 
     return row;
 }
-
-// ---- Action button --------------------------------------------------------
-
-- (NCHoverButton *)makeActionButton:(NSString *)title
-{
-    NCHoverButton *btn = [NCHoverButton buttonWithTitle:title target:nil action:nil];
-    btn.bordered = NO;
-    btn.alignment = NSTextAlignmentLeft;
-    btn.font = [NSFont systemFontOfSize:13];
-    btn.translatesAutoresizingMaskIntoConstraints = NO;
-    btn.wantsLayer = YES;
-    btn.layer.backgroundColor = CGColorGetConstantColor(kCGColorClear);
-
-    NSMutableParagraphStyle *ps = [[NSMutableParagraphStyle alloc] init];
-    ps.firstLineHeadIndent = kHPad;
-    btn.attributedTitle = [[NSAttributedString alloc]
-        initWithString:title
-            attributes:@{
-                NSFontAttributeName: btn.font,
-                NSForegroundColorAttributeName: NSColor.labelColor,
-                NSParagraphStyleAttributeName: ps
-            }];
-
-    [NSLayoutConstraint activateConstraints:@[
-        [btn.heightAnchor constraintEqualToConstant:kActionHeight],
-        [btn.widthAnchor constraintEqualToConstant:kPopupWidth],
-    ]];
-    return btn;
-}
-
-// ---- Populate -------------------------------------------------------------
 
 - (void)populate
 {
@@ -323,42 +279,31 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
         NSString *name   = model->data(idx, OCC::UserModel::NameRole).toString().toNSString();
         NSString *server = model->data(idx, OCC::UserModel::ServerRole).toString().toNSString();
         const bool syncOk = model->data(idx, OCC::UserModel::SyncStatusOkRole).toBool();
-        const QImage qavatar = model->avatarForRow(i);
-        NSImage *avatar = nsImageFromQImage(qavatar);
-
-        [_stack addArrangedSubview:[self makeRowForIndex:i
-                                                    name:name
-                                                  server:server
-                                                  avatar:avatar
-                                                  syncOk:syncOk]];
+        NSImage *avatar = nsImageFromQImage(model->avatarForRow(i));
+        [_stack addArrangedSubview:[self makeRowForIndex:i name:name server:server avatar:avatar syncOk:syncOk]];
     }
 
-    // Separator
     NSBox *sep = [[NSBox alloc] init];
     sep.boxType = NSBoxSeparator;
     sep.translatesAutoresizingMaskIntoConstraints = NO;
     [_stack addArrangedSubview:sep];
     [sep.widthAnchor constraintEqualToConstant:kPopupWidth].active = YES;
 
-    // Action buttons
-    NSButton *settingsBtn = [self makeActionButton:@"Settings"];
-    [settingsBtn setTarget:self];
-    [settingsBtn setAction:@selector(onSettings:)];
-    [_stack addArrangedSubview:settingsBtn];
+    __unsafe_unretained NCTrayPopup *weakSelf = self;
+    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:@"Settings" action:^{
+        [weakSelf orderOut:nil];
+        OCC::Systray::instance()->setIsOpen(false);
+        OCC::Systray::instance()->openSettings();
+    }]];
+    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:@"Quit" action:^{
+        OCC::Systray::instance()->shutdown();
+    }]];
 
-    NSButton *quitBtn = [self makeActionButton:@"Quit"];
-    [quitBtn setTarget:self];
-    [quitBtn setAction:@selector(onQuit:)];
-    [_stack addArrangedSubview:quitBtn];
-
-    // Resize window to fit content
     [self.contentView layoutSubtreeIfNeeded];
     NSRect frame = self.frame;
     frame.size.height = _stack.fittingSize.height;
     [self setFrame:frame display:NO];
 }
-
-// ---- Row click ------------------------------------------------------------
 
 - (void)onAccountRowClicked:(int)index
 {
@@ -368,25 +313,7 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
     OCC::Systray::instance()->showQMLWindow();
 }
 
-// ---- Action handlers ------------------------------------------------------
-
-- (void)onSettings:(id)sender
-{
-    [self orderOut:nil];
-    OCC::Systray::instance()->setIsOpen(false);
-    OCC::Systray::instance()->openSettings();
-}
-
-- (void)onQuit:(id)sender
-{
-    OCC::Systray::instance()->shutdown();
-}
-
 @end
-
-// ---------------------------------------------------------------------------
-// C++ bridge
-// ---------------------------------------------------------------------------
 
 namespace OCC {
 
