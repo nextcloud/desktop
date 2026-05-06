@@ -310,7 +310,7 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
     [sep.widthAnchor constraintEqualToConstant:kPopupWidth].active = YES;
 
     // Action buttons
-    NSButton *settingsBtn = [self makeActionButton:@"App Settings…"];
+    NSButton *settingsBtn = [self makeActionButton:@"Settings"];
     [settingsBtn setTarget:self];
     [settingsBtn setAction:@selector(onSettings:)];
     [_stack addArrangedSubview:settingsBtn];
