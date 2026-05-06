@@ -40,6 +40,6 @@
 
     <!-- UI resources -->
     <?define UIBannerBmp = "banner_2.bmp" ?>
-    <?define UIDialogBmp = "dialog_2.bmp" ?>
+    <?define UIDialogBmp = "@WIN_MSI_UI_DIALOG_BMP@" ?>
 
 </Include>

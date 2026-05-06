@@ -33,5 +33,6 @@ install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/RegistryCleanup.vbs
         RegistryCleanupCustomAction.wxs
         gui/banner_2.bmp
-        gui/dialog_2.bmp
+        gui/dialog_ionos.bmp
+        gui/dialog_strato.bmp
     DESTINATION msi/)
