@@ -394,6 +394,17 @@ Vous pouvez également restaurer tous les fichiers supprimés en les télécharg
     </message>
   </context>
   <context>
+    <name>TrayWindowAccountMenu</name>
+    <message>
+        <source>Pause sync for all</source>
+        <translation>Mettre en pause la synchronisation pour tous</translation>
+    </message>
+    <message>
+        <source>Resume sync for all</source>
+        <translation>Reprendre la synchronisation pour tous</translation>
+    </message>
+  </context>
+  <context>
     <name>OCC::IgnoreListTableWidget</name>
     <message>
       <source>Add a new ignore pattern:</source>

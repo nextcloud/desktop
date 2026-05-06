@@ -394,6 +394,17 @@ Alternatively, you can restore all deleted files by downloading them from the se
     </message>
   </context>
   <context>
+    <name>TrayWindowAccountMenu</name>
+    <message>
+        <source>Pause sync for all</source>
+        <translation>Sospendi la sincronizzazione per tutti</translation>
+    </message>
+    <message>
+        <source>Resume sync for all</source>
+        <translation>Riprendi la sincronizzazione per tutti</translation>
+    </message>
+  </context>
+  <context>
     <name>OCC::IgnoreListTableWidget</name>
     <message>
       <source>Add a new ignore pattern:</source>

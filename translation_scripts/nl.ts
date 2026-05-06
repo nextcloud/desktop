@@ -394,6 +394,17 @@ U kunt ook alle verwijderde bestanden herstellen door ze van de server te downlo
     </message>
   </context>
   <context>
+    <name>TrayWindowAccountMenu</name>
+    <message>
+        <source>Pause sync for all</source>
+        <translation>Synchronisatie pauzeren voor alles</translation>
+    </message>
+    <message>
+        <source>Resume sync for all</source>
+        <translation>Synchronisatie hervatten voor alles</translation>
+    </message>
+  </context>
+  <context>
     <name>OCC::IgnoreListTableWidget</name>
     <message>
       <source>Add a new ignore pattern:</source>

@@ -394,6 +394,17 @@ Alternativ können Sie alle gelöschten Dateien wiederherstellen, indem Sie sie 
     </message>
   </context>
   <context>
+    <name>TrayWindowAccountMenu</name>
+    <message>
+      <source>Pause sync for all</source>
+      <translation>Synchronisierung für alle pausieren</translation>
+    </message>
+    <message>
+        <source>Resume sync for all</source>
+        <translation>Synchronisierung für alle fortsetzen</translation>
+    </message>
+  </context>
+  <context>
     <name>OCC::IgnoreListTableWidget</name>
     <message>
       <source>Add a new ignore pattern:</source>

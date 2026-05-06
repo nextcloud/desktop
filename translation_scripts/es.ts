@@ -395,6 +395,17 @@ Alternativamente, puedes restaurar todos los archivos borrados descargándolos d
     </message>
   </context>
   <context>
+    <name>TrayWindowAccountMenu</name>
+    <message>
+        <source>Pause sync for all</source>
+        <translation>Pausar sincronización para todos</translation>
+    </message>
+    <message>
+        <source>Resume sync for all</source>
+        <translation>Reanudar sincronización para todos</translation>
+    </message>
+  </context>
+  <context>
     <name>OCC::IgnoreListTableWidget</name>
     <message>
       <source>Add a new ignore pattern:</source>
