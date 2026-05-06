@@ -50,6 +50,7 @@ void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window);
 double menuBarThickness();
 void showMacOSTrayPopup(const QRect &iconRect);
 void hideMacOSTrayPopup();
+void showMacOSQMLWindow();
 #endif
 
 /**
@@ -145,6 +146,9 @@ public slots:
 
     void showWindow(OCC::Systray::WindowPosition position = OCC::Systray::WindowPosition::Default);
     void hideWindow();
+#ifdef Q_OS_MACOS
+    void showQMLWindow();
+#endif
 
     void setSyncIsPaused(const bool syncIsPaused);
     void setIsOpen(const bool isOpen);

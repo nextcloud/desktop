@@ -334,7 +334,7 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
     [self orderOut:nil];
     OCC::Systray::instance()->setIsOpen(false);
     OCC::UserModel::instance()->setCurrentUserId(index);
-    OCC::Systray::instance()->showWindow();
+    OCC::Systray::instance()->showQMLWindow();
 }
 
 // ---- Action handlers ------------------------------------------------------

@@ -189,6 +189,21 @@ void Systray::hideWindow()
     setIsOpen(false);
 }
 
+#ifdef Q_OS_MACOS
+void Systray::showQMLWindow()
+{
+    if (!_trayWindow) {
+        return;
+    }
+    positionWindowAtTray(_trayWindow.data());
+    _trayWindow->show();
+    _trayWindow->raise();
+    _trayWindow->requestActivate();
+    setIsOpen(true);
+    UserModel::instance()->fetchCurrentActivityModel();
+}
+#endif
+
 void Systray::setupContextMenu()
 {
     const auto oldContextMenu = _contextMenu.data();
