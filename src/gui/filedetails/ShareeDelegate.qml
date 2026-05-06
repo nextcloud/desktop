@@ -8,7 +8,7 @@ import QtQuick.Window
 import QtQuick.Layouts
 import QtQuick.Controls
 
-import com.ionos.hidrivenext.desktopclient
+import com.strato.hidrivenext.desktopclient
 import Style
 
 import "../tray"

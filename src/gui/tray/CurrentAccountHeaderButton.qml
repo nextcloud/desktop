@@ -11,7 +11,7 @@ import "../"
 import "../filedetails/"
 
 import Style
-import com.ionos.hidrivenext.desktopclient
+import com.strato.hidrivenext.desktopclient
 // TODO SES-459 
 
 Button {

@@ -28,6 +28,6 @@ if __name__ == "__main__":
     mode = sys.argv[1]
     root_dir = sys.argv[2]
     if mode == "to-nextcloud":
-        replace_qml_imports(root_dir, "com.ionos.hidrivenext", "com.nextcloud")
+        replace_qml_imports(root_dir, "com.strato.hidrivenext", "com.nextcloud")
     else:
-        replace_qml_imports(root_dir, "com.nextcloud", "com.ionos.hidrivenext")
+        replace_qml_imports(root_dir, "com.nextcloud", "com.strato.hidrivenext")

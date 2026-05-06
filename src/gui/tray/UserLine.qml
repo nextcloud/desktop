@@ -10,7 +10,7 @@ import QtQuick.Layouts
 
 // Custom qml modules are in /theme (and included by resources.qrc)
 import Style
-import com.ionos.hidrivenext.desktopclient
+import com.strato.hidrivenext.desktopclient
 
 AbstractButton {
     id: userLine

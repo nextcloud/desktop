@@ -439,7 +439,7 @@ def run_lupdate_from_branch(ts_files, nc_branch):
         # Build lupdate command pointing at the worktree's source directories
         src_dirs = ["src/libsync", "src/gui", "src/csync", "src/common", "src/cmd"]
         command = [
-            r"C:\Craft64\bin\lupdate.exe",
+            r"C:\CraftRoot\bin\lupdate.exe",
             "-locations", "none",
             "-no-obsolete",
             "-no-ui-lines",
@@ -466,7 +466,7 @@ def run_lupdate_from_branch(ts_files, nc_branch):
 
 def run_lupdate(ts_files, mode="default"):
     command = [
-        r"C:\Craft64\bin\lupdate.exe",
+        r"C:\CraftRoot\bin\lupdate.exe",
         "-locations", "none",
         "-no-ui-lines",
         "-no-sort",
@@ -479,7 +479,7 @@ def run_lupdate(ts_files, mode="default"):
     ]
     
     command_no_obs = [
-        r"C:\Craft64\bin\lupdate.exe",
+        r"C:\CraftRoot\bin\lupdate.exe",
         "-locations", "none",
         "-no-ui-lines",
         "-no-sort",
@@ -493,7 +493,7 @@ def run_lupdate(ts_files, mode="default"):
     ]
     
     command_location = [
-        r"C:\Craft64\bin\lupdate.exe",
+        r"C:\CraftRoot\bin\lupdate.exe",
         "-locations", "absolute",
         "-no-sort",
         "-no-obsolete",

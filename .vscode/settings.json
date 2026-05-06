@@ -9,7 +9,7 @@
       ],
         "BUILD_TESTING":"OFF",
         "LOCALBUILD": "ON",
-        "WHITELABEL_NAME": "ionos",
+        "WHITELABEL_NAME": "strato",
         "CMAKE_CXX_CLANG_TIDY": "",
         "DO_NOT_USE_PROXY": "ON",
       },

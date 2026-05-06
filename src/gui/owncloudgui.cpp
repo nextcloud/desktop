@@ -122,29 +122,29 @@ ownCloudGui::ownCloudGui(Application *parent)
     connect(Logger::instance(), &Logger::guiLog, this, &ownCloudGui::slotShowTrayMessage);
     connect(Logger::instance(), &Logger::guiMessage, this, &ownCloudGui::slotShowGuiMessage);
 
-    qmlRegisterType<SyncStatusSummary>("com.ionos.hidrivenext.desktopclient", 1, 0, "SyncStatusSummary");
-    qmlRegisterType<EmojiModel>("com.ionos.hidrivenext.desktopclient", 1, 0, "EmojiModel");
-    qmlRegisterType<UserStatusSelectorModel>("com.ionos.hidrivenext.desktopclient", 1, 0, "UserStatusSelectorModel");
-    qmlRegisterType<ActivityListModel>("com.ionos.hidrivenext.desktopclient", 1, 0, "ActivityListModel");
-    qmlRegisterType<FileActivityListModel>("com.ionos.hidrivenext.desktopclient", 1, 0, "FileActivityListModel");
-    qmlRegisterType<SortedActivityListModel>("com.ionos.hidrivenext.desktopclient", 1, 0, "SortedActivityListModel");
-    qmlRegisterType<WheelHandler>("com.ionos.hidrivenext.desktopclient", 1, 0, "WheelHandler");
-    qmlRegisterType<CallStateChecker>("com.ionos.hidrivenext.desktopclient", 1, 0, "CallStateChecker");
-    qmlRegisterType<Quick::DateFieldBackend>("com.ionos.hidrivenext.desktopclient", 1, 0, "DateFieldBackend");
-    qmlRegisterType<FileDetails>("com.ionos.hidrivenext.desktopclient", 1, 0, "FileDetails");
-    qmlRegisterType<ShareModel>("com.ionos.hidrivenext.desktopclient", 1, 0, "ShareModel");
-    qmlRegisterType<ShareeModel>("com.ionos.hidrivenext.desktopclient", 1, 0, "ShareeModel");
-    qmlRegisterType<SortedShareModel>("com.ionos.hidrivenext.desktopclient", 1, 0, "SortedShareModel");
-    qmlRegisterType<SyncConflictsModel>("com.ionos.hidrivenext.desktopclient", 1, 0, "SyncConflictsModel");
+    qmlRegisterType<SyncStatusSummary>("com.strato.hidrivenext.desktopclient", 1, 0, "SyncStatusSummary");
+    qmlRegisterType<EmojiModel>("com.strato.hidrivenext.desktopclient", 1, 0, "EmojiModel");
+    qmlRegisterType<UserStatusSelectorModel>("com.strato.hidrivenext.desktopclient", 1, 0, "UserStatusSelectorModel");
+    qmlRegisterType<ActivityListModel>("com.strato.hidrivenext.desktopclient", 1, 0, "ActivityListModel");
+    qmlRegisterType<FileActivityListModel>("com.strato.hidrivenext.desktopclient", 1, 0, "FileActivityListModel");
+    qmlRegisterType<SortedActivityListModel>("com.strato.hidrivenext.desktopclient", 1, 0, "SortedActivityListModel");
+    qmlRegisterType<WheelHandler>("com.strato.hidrivenext.desktopclient", 1, 0, "WheelHandler");
+    qmlRegisterType<CallStateChecker>("com.strato.hidrivenext.desktopclient", 1, 0, "CallStateChecker");
+    qmlRegisterType<Quick::DateFieldBackend>("com.strato.hidrivenext.desktopclient", 1, 0, "DateFieldBackend");
+    qmlRegisterType<FileDetails>("com.strato.hidrivenext.desktopclient", 1, 0, "FileDetails");
+    qmlRegisterType<ShareModel>("com.strato.hidrivenext.desktopclient", 1, 0, "ShareModel");
+    qmlRegisterType<ShareeModel>("com.strato.hidrivenext.desktopclient", 1, 0, "ShareeModel");
+    qmlRegisterType<SortedShareModel>("com.strato.hidrivenext.desktopclient", 1, 0, "SortedShareModel");
+    qmlRegisterType<SyncConflictsModel>("com.strato.hidrivenext.desktopclient", 1, 0, "SyncConflictsModel");
 
 // TODO SES-459 check casing / spelling
-    qmlRegisterUncreatableType<QAbstractItemModel>("com.ionos.hidrivenext.desktopclient", 1, 0, "QAbstractItemModel", "QAbstractItemModel");
-    qmlRegisterUncreatableType<Activity>("com.ionos.hidrivenext.desktopclient", 1, 0, "activity", "Activity");
-    qmlRegisterUncreatableType<TalkNotificationData>("com.ionos.hidrivenext.desktopclient", 1, 0, "talkNotificationData", "TalkNotificationData");
-    qmlRegisterUncreatableType<UnifiedSearchResultsListModel>("com.ionos.hidrivenext.desktopclient", 1, 0, "UnifiedSearchResultsListModel", "UnifiedSearchResultsListModel");
-    qmlRegisterUncreatableType<UserStatus>("com.ionos.hidrivenext.desktopclient", 1, 0, "userStatus", "Access to Status enum");
-    qmlRegisterUncreatableType<Sharee>("com.ionos.hidrivenext.desktopclient", 1, 0, "sharee", "Access to Type enum");
-    qmlRegisterUncreatableType<ClientSideEncryptionTokenSelector>("com.ionos.hidrivenext.desktopclient", 1, 0, "ClientSideEncryptionTokenSelector", "Access to the certificate selector");
+    qmlRegisterUncreatableType<QAbstractItemModel>("com.strato.hidrivenext.desktopclient", 1, 0, "QAbstractItemModel", "QAbstractItemModel");
+    qmlRegisterUncreatableType<Activity>("com.strato.hidrivenext.desktopclient", 1, 0, "activity", "Activity");
+    qmlRegisterUncreatableType<TalkNotificationData>("com.strato.hidrivenext.desktopclient", 1, 0, "talkNotificationData", "TalkNotificationData");
+    qmlRegisterUncreatableType<UnifiedSearchResultsListModel>("com.strato.hidrivenext.desktopclient", 1, 0, "UnifiedSearchResultsListModel", "UnifiedSearchResultsListModel");
+    qmlRegisterUncreatableType<UserStatus>("com.strato.hidrivenext.desktopclient", 1, 0, "userStatus", "Access to Status enum");
+    qmlRegisterUncreatableType<Sharee>("com.strato.hidrivenext.desktopclient", 1, 0, "sharee", "Access to Type enum");
+    qmlRegisterUncreatableType<ClientSideEncryptionTokenSelector>("com.strato.hidrivenext.desktopclient", 1, 0, "ClientSideEncryptionTokenSelector", "Access to the certificate selector");
 
     qRegisterMetaType<ActivityListModel *>("ActivityListModel*");
     qRegisterMetaType<UnifiedSearchResultsListModel *>("UnifiedSearchResultsListModel*");
@@ -154,14 +154,14 @@ ownCloudGui::ownCloudGui(Application *parent)
     qRegisterMetaType<Sharee>("Sharee");
     qRegisterMetaType<OCC::ActivityList>("ActivityList");
 
-    qmlRegisterSingletonInstance("com.ionos.hidrivenext.desktopclient", 1, 0, "UserModel", UserModel::instance());
-    qmlRegisterSingletonInstance("com.ionos.hidrivenext.desktopclient", 1, 0, "UserAppsModel", UserAppsModel::instance());
-    qmlRegisterSingletonInstance("com.ionos.hidrivenext.desktopclient", 1, 0, "Theme", Theme::instance());
-    qmlRegisterSingletonInstance("com.ionos.hidrivenext.desktopclient", 1, 0, "Systray", Systray::instance());
-    qmlRegisterSingletonInstance<BaseTheme>("com.ionos.hidrivenext.desktopclient", 1, 0, "WLTheme", &WLTheme);
+    qmlRegisterSingletonInstance("com.strato.hidrivenext.desktopclient", 1, 0, "UserModel", UserModel::instance());
+    qmlRegisterSingletonInstance("com.strato.hidrivenext.desktopclient", 1, 0, "UserAppsModel", UserAppsModel::instance());
+    qmlRegisterSingletonInstance("com.strato.hidrivenext.desktopclient", 1, 0, "Theme", Theme::instance());
+    qmlRegisterSingletonInstance("com.strato.hidrivenext.desktopclient", 1, 0, "Systray", Systray::instance());
+    qmlRegisterSingletonInstance<BaseTheme>("com.strato.hidrivenext.desktopclient", 1, 0, "WLTheme", &WLTheme);
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    qmlRegisterSingletonInstance("com.ionos.hidrivenext.desktopclient", 1, 0, "FileProviderSettingsController", Mac::FileProviderSettingsController::instance());
+    qmlRegisterSingletonInstance("com.strato.hidrivenext.desktopclient", 1, 0, "FileProviderSettingsController", Mac::FileProviderSettingsController::instance());
 #endif
 }
 

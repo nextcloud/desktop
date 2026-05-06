@@ -9,7 +9,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Style
 import Qt5Compat.GraphicalEffects
-import com.ionos.hidrivenext.desktopclient
+import com.strato.hidrivenext.desktopclient
 
 RowLayout {
     id: root

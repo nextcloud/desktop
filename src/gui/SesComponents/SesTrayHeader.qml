@@ -11,7 +11,7 @@ import "../tray/"
 // Custom qml modules are in /theme (and included by resources.qrc)
 import Style 1.0
 
-import com.ionos.hidrivenext.desktopclient
+import com.strato.hidrivenext.desktopclient
 
 
 Rectangle {

@@ -8,9 +8,9 @@ import QtQuick.Window
 import QtQuick.Layouts
 import QtQuick.Controls
 
-import com.ionos.hidrivenext.desktopclient
+import com.strato.hidrivenext.desktopclient
 // TODO Check SES-459
-import com.ionos.hidrivenext.desktopclient as NC
+import com.strato.hidrivenext.desktopclient as NC
 import Style
 import "../tray"
 

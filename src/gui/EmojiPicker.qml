@@ -8,7 +8,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import Style
-import com.ionos.hidrivenext.desktopclient as NC
+import com.strato.hidrivenext.desktopclient as NC
 import "./tray"
 
 ColumnLayout {

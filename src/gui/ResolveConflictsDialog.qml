@@ -10,7 +10,7 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import QtQml.Models
 import Style
-import com.ionos.hidrivenext.desktopclient
+import com.strato.hidrivenext.desktopclient
 import "./tray"
 
 ApplicationWindow {

@@ -7,7 +7,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import com.ionos.hidrivenext.desktopclient
+import com.strato.hidrivenext.desktopclient
 import Style
 
 TextArea {

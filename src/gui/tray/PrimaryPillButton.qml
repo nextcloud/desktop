@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Controls
-import com.ionos.hidrivenext.desktopclient 
+import com.strato.hidrivenext.desktopclient 
 
 import Style
 

@@ -9,7 +9,7 @@ import QtQuick.Controls
 import Qt5Compat.GraphicalEffects
 import Style
 
-import com.ionos.hidrivenext.desktopclient
+import com.strato.hidrivenext.desktopclient
 
 TextField {
     id: root

@@ -7,7 +7,7 @@ import QtQml
 import QtQuick
 import QtQuick.Controls
 import Style
-import com.ionos.hidrivenext.desktopclient
+import com.strato.hidrivenext.desktopclient
 
 MouseArea {
     id: unifiedSearchResultMouseArea

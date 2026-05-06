@@ -7,7 +7,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 
-import com.ionos.hidrivenext.desktopclient
+import com.strato.hidrivenext.desktopclient
 import Style
 
 StackView {

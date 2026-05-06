@@ -6,7 +6,7 @@
 import QtQuick
 import QtQuick.Window
 import Style
-import com.ionos.hidrivenext.desktopclient
+import com.strato.hidrivenext.desktopclient
 import QtQuick.Layouts
 import QtMultimedia
 import QtQuick.Controls
