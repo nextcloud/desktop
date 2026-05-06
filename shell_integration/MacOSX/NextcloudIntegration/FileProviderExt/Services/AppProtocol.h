@@ -24,6 +24,18 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)presentFileActions:(NSString *)fileId path:(NSString *)path remoteItemPath:(NSString *)remoteItemPath withDomainIdentifier:(NSString *)domainIdentifier;
 
 /**
+ * @brief The file provider extension can request opening an item in the browser.
+ *
+ * The main app decides whether to use direct editing (`EDIT`) or private link (`OPEN_PRIVATE_LINK`)
+ * depending on the direct editor availability for the given local file.
+ *
+ * @param path The local and absolute path for the item to open.
+ * @param remoteItemPath The server-side path of the item (reserved for future fallback logic).
+ * @param domainIdentifier The file provider domain identifier for the account that manages this file.
+ */
+- (void)openInBrowserForPath:(NSString *)path remoteItemPath:(NSString *)remoteItemPath withDomainIdentifier:(NSString *)domainIdentifier;
+
+/**
  * @brief The file provider extension can report its synchronization status as a string constant value to the main app through this method.
  * @param status The synchronization status string.
  * @param domainIdentifier The file provider domain identifier for which the status is reported.
@@ -34,4 +46,3 @@ NS_ASSUME_NONNULL_BEGIN
 
 NS_ASSUME_NONNULL_END
 #endif /* AppProtocol_h */
-
