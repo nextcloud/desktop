@@ -150,8 +150,6 @@ GridLayout {
             Layout.preferredWidth: Style.iconButtonWidth
             Layout.preferredHeight: width
             
-            toolTipText: qsTr("Create a new share link")
-
             iconSource: Style.sesDarkPlus + palette.buttonText
             icon.width: Style.smallIconSize
             icon.height: Style.smallIconSize
@@ -183,9 +181,7 @@ GridLayout {
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: shareLinkCopied ? implicitWidth : Style.iconButtonWidth
             Layout.preferredHeight: Style.iconButtonWidth
-            Layout.rightMargin: Style.sesSmallMargin
-            
-            toolTipText: qsTr("Copy share link location")
+            Layout.rightMargin: Style.sesSmallMargin            
 
             text: shareLinkCopied ? qsTr("Copied!") : ""
             textColor: Style.sesDarkGreen
