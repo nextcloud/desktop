@@ -101,7 +101,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="145"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation>Sünkroniseerin: %1 (jäänud %2 )</translation>
+        <translation>Sünkroonin: %1 (jäänud %2 )</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="148"/>
@@ -122,7 +122,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="192"/>
         <source>Syncing</source>
-        <translation>Andmed on sünkroniseerimisel</translation>
+        <translation>Andmed on sünkroonimisel</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="236"/>
@@ -448,7 +448,7 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="503"/>
         <source>Ask Assistant …</source>
-        <translation type="unfinished"/>
+        <translation>Küsi Abiliselt…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="503"/>
@@ -4988,7 +4988,7 @@ Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="573"/>
         <source>%1 day</source>
-        <translation type="unfinished"/>
+        <translation>%1 päev</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="573"/>
@@ -5215,7 +5215,7 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1334"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1336"/>
         <source>Open in browser</source>
-        <translation>Ava veebilehitsejas</translation>
+        <translation>Ava veebibrauseris</translation>
     </message>
 </context>
 <context>
@@ -5854,7 +5854,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1529"/>
         <source>Sending your request …</source>
-        <translation type="unfinished"/>
+        <translation>Saadan sinu päringut…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1580"/>
