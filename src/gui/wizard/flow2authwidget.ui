@@ -142,9 +142,6 @@
                             </item>
                             <item>
                                 <widget class="QPushButton" name="openLinkButton">
-                                    <property name="text">
-                                        <string>Reopen Browser</string>
-                                    </property>
                                 </widget>
                             </item>
                             <item>
