@@ -102,10 +102,6 @@ include(ECMEnableSanitizers)
 
 include(ECMCoverageOption)
 
-if(NOT CRASHREPORTER_EXECUTABLE)
-    set(CRASHREPORTER_EXECUTABLE "${APPLICATION_EXECUTABLE}_crash_reporter")
-endif()
-
 include(Warnings)
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
@@ -122,15 +118,6 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}/src
 )
-
-# disable the crashreporter if libcrashreporter-qt is not available or we're building for ARM
-if( CMAKE_SYSTEM_PROCESSOR MATCHES "arm" OR NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/3rdparty/libcrashreporter-qt/CMakeLists.txt")
-    set( WITH_CRASHREPORTER OFF )
-endif()
-
-if(NOT WITH_CRASHREPORTER)
-    message(STATUS "Build of crashreporter disabled.")
-endif()
 
 include(GNUInstallDirs)
 include(DefineInstallationPaths)

@@ -331,24 +331,7 @@
                                 </item>
                             </layout>
                         </item>
-                        <item>
-                            <layout class="QHBoxLayout" name="horizontalLayout_7">
-                                <item>
-                                    <widget class="QCheckBox" name="crashreporterCheckBox">
-                                        <property name="sizePolicy">
-                                            <sizepolicy hsizetype="MinimumExpanding"
-                                                vsizetype="Fixed">
-                                                <horstretch>0</horstretch>
-                                                <verstretch>0</verstretch>
-                                            </sizepolicy>
-                                        </property>
-                                        <property name="text">
-                                            <string>S&amp;how crash reporter</string>
-                                        </property>
-                                    </widget>
-                                </item>
-                            </layout>
-                        </item>
+
                         <item>
                             <widget class="QWidget" name="horizontalLayoutWidget_remotePollInterval">
                                 <layout class="QHBoxLayout" name="horizontalLayout_remotePollInterval">
@@ -785,7 +768,7 @@
         <tabstop>ignoredFilesButton</tabstop>
         <tabstop>newFolderLimitCheckBox</tabstop>
         <tabstop>newFolderLimitSpinBox</tabstop>
-        <tabstop>crashreporterCheckBox</tabstop>
+
         <tabstop>restartButton</tabstop>
     </tabstops>
     <resources />

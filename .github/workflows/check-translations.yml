@@ -27,7 +27,7 @@ jobs:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: Check Elipsis
         run: |
-          lupdate -no-obsolete src/gui/ src/cmd/ src/common/ $crashreporter src/csync/ src/libsync/ $resources -ts ../ci-client.ts
+          lupdate -no-obsolete src/gui/ src/cmd/ src/common/ src/csync/ src/libsync/ $resources -ts ../ci-client.ts
           if [ $(grep '\.\.\.' ../ci-client.ts | wc -l) -ne 0 ]; then
             echo "English source contains three consecutive dots. Unicode … should be used instead"
             exit -1
