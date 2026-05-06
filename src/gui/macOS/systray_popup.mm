@@ -90,6 +90,35 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
 @end
 
 // ---------------------------------------------------------------------------
+// NCHoverButton — NSButton with the same hover highlight as NCAccountRow
+// ---------------------------------------------------------------------------
+
+@interface NCHoverButton : NSButton
+@end
+
+@implementation NCHoverButton
+
+- (void)mouseEntered:(NSEvent *)event
+{
+    self.layer.backgroundColor = [NSColor.labelColor colorWithAlphaComponent:0.08].CGColor;
+}
+
+- (void)mouseExited:(NSEvent *)event
+{
+    self.layer.backgroundColor = CGColorGetConstantColor(kCGColorClear);
+}
+
+- (void)updateTrackingAreas
+{
+    [super updateTrackingAreas];
+    for (NSTrackingArea *ta in self.trackingAreas.copy) [self removeTrackingArea:ta];
+    NSTrackingAreaOptions opts = NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways;
+    [self addTrackingArea:[[NSTrackingArea alloc] initWithRect:self.bounds options:opts owner:self userInfo:nil]];
+}
+
+@end
+
+// ---------------------------------------------------------------------------
 // NCTrayPopup
 // ---------------------------------------------------------------------------
 
@@ -252,13 +281,15 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
 
 // ---- Action button --------------------------------------------------------
 
-- (NSButton *)makeActionButton:(NSString *)title
+- (NCHoverButton *)makeActionButton:(NSString *)title
 {
-    NSButton *btn = [NSButton buttonWithTitle:title target:nil action:nil];
+    NCHoverButton *btn = [NCHoverButton buttonWithTitle:title target:nil action:nil];
     btn.bordered = NO;
     btn.alignment = NSTextAlignmentLeft;
     btn.font = [NSFont systemFontOfSize:13];
     btn.translatesAutoresizingMaskIntoConstraints = NO;
+    btn.wantsLayer = YES;
+    btn.layer.backgroundColor = CGColorGetConstantColor(kCGColorClear);
 
     NSMutableParagraphStyle *ps = [[NSMutableParagraphStyle alloc] init];
     ps.firstLineHeadIndent = kHPad;
