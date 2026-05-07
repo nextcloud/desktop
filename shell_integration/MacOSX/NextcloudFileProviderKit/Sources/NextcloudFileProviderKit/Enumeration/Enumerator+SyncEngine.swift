@@ -225,6 +225,8 @@ extension Enumerator {
             let updatedMetadatas = isNew ? [] : [metadata]
             let newMetadatas = isNew ? [metadata] : []
 
+            metadata.lockToken = existing?.lockToken
+            metadata.visitedDirectory = existing?.visitedDirectory == true
             metadata.downloaded = existing?.downloaded == true
             metadata.keepDownloaded = existing?.keepDownloaded == true
             dbManager.addItemMetadata(metadata)
