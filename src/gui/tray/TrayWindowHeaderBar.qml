@@ -79,7 +79,6 @@ Rectangle {
             onClicked: UserModel.openCurrentAccountTalk()
 
             Accessible.role: Accessible.Button
-            Accessible.name: qsTr("Open Nextcloud Talk in browser")
             Accessible.onPressAction: trayWindowTalkButton.clicked()
 
             Layout.alignment: Qt.AlignRight

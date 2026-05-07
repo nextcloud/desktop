@@ -65,7 +65,7 @@
                                 <item>
                                     <widget class="QCheckBox" name="callNotificationsCheckBox">
                                         <property name="text">
-                                            <string>Show call notifications</string>
+                                            <string>Show Call Notifications</string>
                                         </property>
                                     </widget>
                                 </item>
@@ -75,7 +75,7 @@
                                             <string>For System Tray</string>
                                         </property>
                                         <property name="text">
-                                            <string>Use &amp;monochrome icons</string>
+                                            <string>Use &amp;Monochrome Icons</string>
                                         </property>
                                     </widget>
                                 </item>
