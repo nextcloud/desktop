@@ -108,20 +108,6 @@ ApplicationWindow {
         }
     }
 
-    OpacityMask {
-        anchors.fill: parent
-        anchors.margins: Style.trayWindowBorderWidth
-        source: ShaderEffectSource {
-            sourceItem: trayWindowMainItem
-            hideSource: true
-        }
-        maskSource: Rectangle {
-            width: trayWindow.width
-            height: trayWindow.height
-            radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
-        }
-    }
-
     Drawer {
         id: userStatusDrawer
         width: parent.width
