@@ -700,6 +700,7 @@ void SyncJournalDb::close()
     qCInfo(lcDb) << "Closing DB" << _dbFile;
 
     commitTransaction();
+    walCheckpoint();
 
     _db.close();
     clearEtagStorageFilter();
