@@ -80,7 +80,7 @@ extension NKFile {
             sharePermissionsCloudMesh: sharePermissionsCloudMesh,
             shareType: shareType,
             size: size,
-            tags: tags.map(\.name),
+            tags: tags,
             uploaded: uploaded,
             trashbinFileName: trashbinFileName,
             trashbinOriginalLocation: trashbinOriginalLocation,
