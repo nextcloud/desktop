@@ -2022,4 +2022,143 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             )
         }
     }
+
+    func testLockChangeInNestedFileDetectedDuringWorkingSetEnumeration() async throws {
+        let db = Self.dbManager.ncDatabase()
+        debugPrint(db)
+
+        let remoteChildFolder = MockRemoteItem(
+            identifier: "childFolder",
+            versionIdentifier: "CHILD_V1",
+            name: "childFolder",
+            remotePath: Self.account.davFilesUrl + "/folder/childFolder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        let remoteNestedFile = MockRemoteItem(
+            identifier: "nestedFile",
+            versionIdentifier: "FILE_V1",
+            name: "nestedFile.txt",
+            remotePath: Self.account.davFilesUrl + "/folder/childFolder/nestedFile.txt",
+            locked: true,
+            lockOwner: "otherUser",
+            lockTimeOut: Date.now.advanced(by: 1_000_000),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        remoteFolder.children = [remoteChildFolder]
+        remoteChildFolder.parent = remoteFolder
+        remoteChildFolder.children = [remoteNestedFile]
+        remoteNestedFile.parent = remoteChildFolder
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        var folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        folderMetadata.visitedDirectory = true
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        var childFolderMetadata = remoteChildFolder.toItemMetadata(account: Self.account)
+        childFolderMetadata.visitedDirectory = true
+        Self.dbManager.addItemMetadata(childFolderMetadata)
+
+        var nestedFileMetadata = remoteNestedFile.toItemMetadata(account: Self.account)
+        nestedFileMetadata.downloaded = true
+        nestedFileMetadata.lock = false
+        nestedFileMetadata.lockOwner = ""
+        nestedFileMetadata.lockTimeOut = nil
+        Self.dbManager.addItemMetadata(nestedFileMetadata)
+
+        let anchorDate = Date().addingTimeInterval(-300)
+        let formatter = ISO8601DateFormatter()
+        let anchor = try NSFileProviderSyncAnchor(XCTUnwrap(formatter.string(from: anchorDate).data(using: .utf8)))
+
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        let observer = MockChangeObserver(enumerator: enumerator)
+        try await observer.enumerateChanges(from: anchor)
+
+        XCTAssertNil(observer.error)
+
+        let dbNestedFile = try XCTUnwrap(
+            Self.dbManager.itemMetadata(ocId: remoteNestedFile.identifier)
+        )
+        XCTAssertTrue(
+            dbNestedFile.lock,
+            "Lock change on nested file should be detected during working set enumeration"
+        )
+        XCTAssertEqual(dbNestedFile.lockOwner, "otherUser")
+
+        let nestedFileReported = observer.changedItems.contains {
+            $0.itemIdentifier.rawValue == remoteNestedFile.identifier
+        }
+        XCTAssertTrue(
+            nestedFileReported,
+            "Nested file with lock change should be reported as changed"
+        )
+    }
+
+    func testLockTokenPreservedDuringTargetDepthRead() async throws {
+        let db = Self.dbManager.ncDatabase()
+        debugPrint(db)
+
+        let remoteFile = MockRemoteItem(
+            identifier: "lockedFile",
+            versionIdentifier: "V1",
+            name: "lockedFile.txt",
+            remotePath: Self.account.davFilesUrl + "/lockedFile.txt",
+            locked: true,
+            lockOwner: Self.account.username,
+            lockTimeOut: Date.now.advanced(by: 1_000_000),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        rootItem.children = [remoteFile]
+        remoteFile.parent = rootItem
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        var fileMetadata = remoteFile.toItemMetadata(account: Self.account)
+        fileMetadata.lockToken = "local-lock-token-123"
+        fileMetadata.downloaded = true
+        Self.dbManager.addItemMetadata(fileMetadata)
+
+        let preRead = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "lockedFile"))
+        XCTAssertEqual(preRead.lockToken, "local-lock-token-123")
+
+        let (metadatas, _, _, _, _, readError) = await Enumerator.readServerUrl(
+            Self.account.davFilesUrl + "/lockedFile.txt",
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            depth: .target,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertNil(readError)
+        XCTAssertNotNil(metadatas)
+
+        let postRead = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "lockedFile"))
+        XCTAssertEqual(
+            postRead.lockToken,
+            "local-lock-token-123",
+            "lockToken must be preserved across target-depth reads"
+        )
+        XCTAssertTrue(postRead.downloaded, "downloaded state must be preserved")
+    }
 }
