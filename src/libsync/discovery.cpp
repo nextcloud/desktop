@@ -691,15 +691,13 @@ void ProcessDirectoryJob::postProcessServerNew(const SyncFileItemPtr &item,
             item->_type = ItemTypeVirtualDirectory;
         }
 
-        _pendingAsyncJobs++;
         _discoveryData->checkSelectiveSyncNewFolder(path._server,
                                                     serverEntry.remotePerm,
+                                                    serverEntry.sizeOfFolder,
                                                     [=, this](bool result) {
-                                                        --_pendingAsyncJobs;
                                                         if (!result) {
                                                             processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
                                                         }
-                                                        QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
                                                     });
         return;
     }
@@ -827,7 +825,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
 
         if (serverEntry.isDirectory) {
             // Even if over quota, continue syncing as normal for now
-            _discoveryData->checkSelectiveSyncExistingFolder(path._server);
+            _discoveryData->checkSelectiveSyncExistingFolder(path._server, serverEntry.sizeOfFolder);
         }
 
         if (serverEntry.isDirectory != dbEntry.isDirectory()) {
@@ -1190,7 +1188,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     _childModified |= serverModified;
 
-    auto finalize = [&] {
+    auto finalize = [=, this]() mutable {
         bool recurse = item->isDirectory() || localEntry.isDirectory || serverEntry.isDirectory;
         // Even if we have a local directory: If the remote is a file that's propagated as a
         // conflict we don't need to recurse into it. (local c1.owncloud, c1/ ; remote: c1)
@@ -1441,10 +1439,29 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             // check #4754 #4755
             bool isEmlFile = path._original.endsWith(QLatin1String(".eml"), Qt::CaseInsensitive);
             if (isEmlFile && dbEntry._fileSize == localEntry.size && !dbEntry._checksumHeader.isEmpty()) {
-                if (computeLocalChecksum(dbEntry._checksumHeader, _discoveryData->_localDir + path._local, item)
-                        && item->_checksumHeader == dbEntry._checksumHeader) {
-                    qCInfo(lcDisco) << "NOTE: Checksums are identical, file did not actually change: " << path._local;
-                    item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+                auto checksumType = parseChecksumHeaderType(dbEntry._checksumHeader);
+                if (!checksumType.isEmpty()) {
+                    // Compute checksum asynchronously to avoid blocking the discovery thread
+                    auto computeChecksum = new ComputeChecksum(this);
+                    computeChecksum->setChecksumType(checksumType);
+                    _pendingAsyncJobs++;
+                    connect(computeChecksum, &ComputeChecksum::done, this,
+                        [this, computeChecksum, item, path, dbEntry, finalize]
+                        (const QByteArray &type, const QByteArray &checksum) mutable {
+                            computeChecksum->deleteLater();
+                            if (!checksum.isEmpty()) {
+                                item->_checksumHeader = makeChecksumHeader(type, checksum);
+                                if (item->_checksumHeader == dbEntry._checksumHeader) {
+                                    qCInfo(lcDisco) << "NOTE: Checksums are identical, file did not actually change: " << path._local;
+                                    item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+                                }
+                            }
+                            finalize();
+                            _pendingAsyncJobs--;
+                            QMetaObject::invokeMethod(_discoveryData, &DiscoveryPhase::scheduleMoreJobs, Qt::QueuedConnection);
+                        });
+                    computeChecksum->start(_discoveryData->_localDir + path._local);
+                    return;
                 }
             }
         }
