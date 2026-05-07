@@ -15,6 +15,7 @@
 #include "common/utility.h"
 #include "filesystem.h"
 #include "propagatorjobs.h"
+#include "lockfilejobs.h"
 #include "common/checksums.h"
 #include "syncengine.h"
 #include "deletejob.h"
@@ -689,13 +690,24 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
     QString errorString = job->errorStringParsingBody(&replyContent);
     qCWarning(lcPropagateUpload) << replyContent; // display the XML error in the debug
 
-    if (_item->_httpErrorCode == 412) {
-        // Precondition Failed: Either an etag or a checksum mismatch.
-
-        // Maybe the bad etag is in the database, we need to clear the
-        // parent folder etag so we won't read from DB next sync.
-        propagator()->_journal->schedulePathForRemoteDiscovery(_item->_file);
+    if (_item->_httpErrorCode == LockFileJob::PRECONDITION_FAILED_ERROR_CODE
+        || _item->_httpErrorCode == LockFileJob::LOCKED_HTTP_ERROR_CODE) {
+        if (!_item->_lockToken.isEmpty()) {
+            SyncJournalFileRecord record;
+            if (propagator()->_journal->getFileRecord(_item->_file, &record) && record.isValid()) {
+                record._lockstate._lockToken.clear();
+                record._lockstate._locked = false;
+                if (const auto result = propagator()->_journal->setFileRecord(record); !result) {
+                    qCWarning(lcPropagateUpload) << "Failed to clear stale lock token for" << _item->_file << result.error();
+                }
+            }
+            _item->_lockToken.clear();
+            _item->_locked = SyncFileItem::LockStatus::UnlockedItem;
+        }
         propagator()->_anotherSyncNeeded = true;
+        if (_item->_httpErrorCode == LockFileJob::PRECONDITION_FAILED_ERROR_CODE) {
+            propagator()->_journal->schedulePathForRemoteDiscovery(_item->_file);
+        }
     }
 
     // Ensure errors that should eventually reset the chunked upload are tracked.
