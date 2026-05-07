@@ -26,10 +26,6 @@
       <translation>Invia l'uso anonimo</translation>
     </message>
     <message>
-      <source>Settings</source>
-      <translation>Impostazioni</translation>
-    </message>
-    <message>
       <source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href='https://wl.hidrive.com/easy/0005'&gt;privacy policy&lt;/a&gt;.</source>
       <translation>Questa applicazione utilizza tecnologie di tracciamento. Facendo clic su Accetto, si accetta il trattamento dei propri dati anonimizzati. È possibile modificare le proprie scelte in qualsiasi momento tramite le impostazioni. &lt;br/&gt; &lt;br/&gt;Informazioni sul trattamento dei dati e altro ancora sono disponibili nella nostra &lt;a href='https://wl.hidrive.com/easy/0035'&gt;politica sulla privacy&lt;/a&gt;.</translation>
     </message>
@@ -228,6 +224,13 @@ Should the accounts be imported?</source>
     </message>
   </context>
   <context>
+    <name>OCC::DataProtectionPage</name>
+    <message>
+      <source>Settings</source>
+      <translation>Impostazioni</translation>
+    </message>
+  </context>
+  <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
       <source>Encrypted metadata setup error: initial signature from server is empty.</source>
@@ -391,17 +394,6 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
       <source>Updates</source>
       <translation>Aggiornamenti</translation>
-    </message>
-  </context>
-  <context>
-    <name>TrayWindowAccountMenu</name>
-    <message>
-        <source>Pause sync for all</source>
-        <translation>Sospendi la sincronizzazione per tutti</translation>
-    </message>
-    <message>
-        <source>Resume sync for all</source>
-        <translation>Riprendi la sincronizzazione per tutti</translation>
     </message>
   </context>
   <context>
@@ -572,6 +564,17 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
       <source>Files</source>
       <translation>File</translation>
+    </message>
+  </context>
+  <context>
+    <name>TrayWindowAccountMenu</name>
+    <message>
+      <source>Pause sync for all</source>
+      <translation>Sospendi la sincronizzazione per tutti</translation>
+    </message>
+    <message>
+      <source>Resume sync for all</source>
+      <translation>Riprendi la sincronizzazione per tutti</translation>
     </message>
   </context>
   <context>

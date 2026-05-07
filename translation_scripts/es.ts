@@ -26,10 +26,6 @@
       <translation>Enviar uso anónimo</translation>
     </message>
     <message>
-      <source>Settings</source>
-      <translation>Ajustes</translation>
-    </message>
-    <message>
       <source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href='https://wl.hidrive.com/easy/0005'&gt;privacy policy&lt;/a&gt;.</source>
       <translation>Esta aplicación utiliza tecnologías de seguimiento. Al hacer clic en Aceptar, usted acepta el tratamiento de sus datos anónimos. Puede ajustar sus opciones en cualquier momento a través de la configuración. &lt;br/&gt; &lt;br/&gt;Puede encontrar información sobre el procesamiento de datos y más en nuestra &lt;a href='https://wl.hidrive.com/easy/0015'&gt;política de privacidad&lt;/a&gt;.</translation>
     </message>
@@ -42,7 +38,7 @@
       <translation>Recopilamos datos de carácter anónimo para la optimización de nuestra aplicación.
 Para ello, utilizamos soluciones de software de distintos socios. Deseamos transmitirte total transparencia y libertad de decisión acerca de la recopilación y el tratamiento de tu uso anónimo. Puedes modificar tu configuración en la opción del menú «Protección de datos» en cualquier momento.</translation>
     </message>
-  </context>
+  </context>  
   <context>
     <name>BasicComboBox</name>
     <message>
@@ -229,6 +225,13 @@ Should the accounts be imported?</source>
     </message>
   </context>
   <context>
+    <name>OCC::DataProtectionPage</name>
+    <message>
+      <source>Settings</source>
+      <translation>Ajustes</translation>
+    </message>
+  </context>
+  <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
       <source>Encrypted metadata setup error: initial signature from server is empty.</source>
@@ -241,6 +244,10 @@ Should the accounts be imported?</source>
   </context>
   <context>
     <name>OCC::Flow2AuthWidget</name>
+    <message>
+      <source>Copy Link</source>
+      <translation>Copiar enlace</translation>
+    </message>
     <message>
       <source>Open Browser</source>
       <translation>Abrir en el navegador</translation>
@@ -392,17 +399,6 @@ Alternativamente, puedes restaurar todos los archivos borrados descargándolos d
     <message>
       <source>Updates</source>
       <translation>Actualizaciones</translation>
-    </message>
-  </context>
-  <context>
-    <name>TrayWindowAccountMenu</name>
-    <message>
-        <source>Pause sync for all</source>
-        <translation>Pausar sincronización para todos</translation>
-    </message>
-    <message>
-        <source>Resume sync for all</source>
-        <translation>Reanudar sincronización para todos</translation>
     </message>
   </context>
   <context>
@@ -573,6 +569,25 @@ Los objetos cuyo borrado esté permitido se eliminarán si impiden que se borre 
     <message>
       <source>Files</source>
       <translation>Archivos</translation>
+    </message>
+  </context>
+  <context>
+    <name>TrayWindowAccountMenu</name>
+    <message>
+        <source>Add account</source>
+        <translation>Añadir cuenta</translation>
+    </message>
+    <message>
+        <source>Pause sync for all</source>
+        <translation>Pausar sincronización para todos</translation>
+    </message>
+    <message>
+        <source>Resume sync for all</source>
+        <translation>Reanudar sincronización para todos</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>Configuración</translation>
     </message>
   </context>
   <context>

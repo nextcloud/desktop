@@ -26,10 +26,6 @@
       <translation>Anoniem gebruik verzenden</translation>
     </message>
     <message>
-      <source>Settings</source>
-      <translation>Instellingen</translation>
-    </message>
-    <message>
       <source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href='https://wl.hidrive.com/easy/0005'&gt;privacy policy&lt;/a&gt;.</source>
       <translation>Deze applicatie maakt gebruik van traceertechnologieën. Door op Akkoord te klikken, accepteert u de verwerking van uw geanonimiseerde gegevens. U kunt uw keuzes op elk gewenst moment aanpassen via de instellingen. &lt;br/&gt; &lt;br/&gt;Informatie over gegevensverwerking en meer kunt u vinden in ons &lt;a href='https://wl.hidrive.com/easy/0045'&gt;privacybeleid&lt;/a&gt;.</translation>
     </message>
@@ -228,6 +224,13 @@ Moeten de accounts worden geïmporteerd?</translation>
     </message>
   </context>
   <context>
+    <name>OCC::DataProtectionPage</name>
+    <message>
+      <source>Settings</source>
+      <translation>Instellingen</translation>
+    </message>
+  </context>
+  <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
       <source>Encrypted metadata setup error: initial signature from server is empty.</source>
@@ -391,17 +394,6 @@ U kunt ook alle verwijderde bestanden herstellen door ze van de server te downlo
     <message>
       <source>Updates</source>
       <translation>Updates</translation>
-    </message>
-  </context>
-  <context>
-    <name>TrayWindowAccountMenu</name>
-    <message>
-        <source>Pause sync for all</source>
-        <translation>Synchronisatie pauzeren voor alles</translation>
-    </message>
-    <message>
-        <source>Resume sync for all</source>
-        <translation>Synchronisatie hervatten voor alles</translation>
     </message>
   </context>
   <context>
@@ -572,6 +564,17 @@ Objecten die verwijderd mogen worden, worden verwijderd als ze zouden verhindere
     <message>
       <source>Files</source>
       <translation>Bestanden</translation>
+    </message>
+  </context>
+  <context>
+    <name>TrayWindowAccountMenu</name>
+    <message>
+      <source>Pause sync for all</source>
+      <translation>Synchronisatie pauzeren voor alles</translation>
+    </message>
+    <message>
+      <source>Resume sync for all</source>
+      <translation>Synchronisatie hervatten voor alles</translation>
     </message>
   </context>
   <context>

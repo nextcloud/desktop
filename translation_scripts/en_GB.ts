@@ -26,10 +26,6 @@
       <translation>Send anonymous use</translation>
     </message>
     <message>
-      <source>Settings</source>
-      <translation>Settings</translation>
-    </message>
-    <message>
       <source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href='https://wl.hidrive.com/easy/0005'&gt;privacy policy&lt;/a&gt;.</source>
       <translation>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href='https://wl.hidrive.com/easy/0005'&gt;privacy policy&lt;/a&gt;.</translation>
     </message>
@@ -228,6 +224,13 @@ Should the accounts be imported?</translation>
     </message>
   </context>
   <context>
+    <name>OCC::DataProtectionPage</name>
+    <message>
+      <source>Settings</source>
+      <translation>Settings</translation>
+    </message>
+  </context>
+  <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
       <source>Encrypted metadata setup error: initial signature from server is empty.</source>
@@ -391,17 +394,6 @@ Alternativ können Sie alle gelöschten Dateien wiederherstellen, indem Sie sie 
     <message>
       <source>Updates</source>
       <translation>Updates</translation>
-    </message>
-  </context>
-  <context>
-    <name>TrayWindowAccountMenu</name>
-    <message>
-      <source>Pause sync for all</source>
-      <translation>Pause sync for all</translation>
-    </message>
-    <message>
-        <source>Resume sync for all</source>
-        <translation>Resume sync for all</translation>
     </message>
   </context>
   <context>
@@ -572,6 +564,17 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
       <source>Files</source>
       <translation>Files</translation>
+    </message>
+  </context>
+  <context>
+    <name>TrayWindowAccountMenu</name>
+    <message>
+      <source>Pause sync for all</source>
+      <translation>Pause sync for all</translation>
+    </message>
+    <message>
+      <source>Resume sync for all</source>
+      <translation>Resume sync for all</translation>
     </message>
   </context>
   <context>
