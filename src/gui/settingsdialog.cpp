@@ -98,7 +98,8 @@ constexpr auto TOOLBAR_CSS = QLatin1String(
 );
 
 const float buttonSizeRatio = 1.618f; // golden ratio
-
+constexpr auto settingsDialogDefaultWidth = 950;
+constexpr auto settingsDialogDefaultHeight = 500;
 
 /** display name with two lines that is displayed in the settings
  * If width is bigger than 0, the string will be ellided so it does not exceed that width
@@ -539,7 +540,8 @@ QAction *SettingsDialog::createColorAwareAction(const QString &iconPath, const Q
 void SettingsDialog::setupUi()
 {
     setWindowTitle(tr("Settings"));
-    setGeometry(0, 0, 950, 500);
+    setGeometry(0, 0, settingsDialogDefaultWidth, settingsDialogDefaultHeight);
+    setMinimumSize(settingsDialogDefaultWidth, settingsDialogDefaultHeight);
 
     auto *mainLayout = new QHBoxLayout(this);
     mainLayout->setContentsMargins(12, 12, 12, 12);
