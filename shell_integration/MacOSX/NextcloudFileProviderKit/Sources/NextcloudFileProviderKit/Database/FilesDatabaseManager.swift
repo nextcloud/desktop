@@ -208,7 +208,10 @@ public final class FilesDatabaseManager: Sendable {
         account: String, underServerUrl serverUrl: String
     ) -> [SendableItemMetadata] {
         itemMetadatas
-            .where { $0.account == account && $0.serverUrl.starts(with: serverUrl) }
+            .where {
+                $0.account == account &&
+                    ($0.serverUrl == serverUrl || $0.serverUrl.starts(with: serverUrl + "/"))
+            }
             .toUnmanagedResults()
     }
 
