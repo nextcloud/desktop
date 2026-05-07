@@ -523,35 +523,46 @@ void PropagateLocalRename::start()
         }
     } else if (!fileAlreadyMoved) {
         qCDebug(lcPropagateLocalRename) << "propagate child items after move from" << existingFile << "to" << targetFile;
-        const auto dbQueryResult = propagator()->_journal->getFilesBelowPath(previousNameInDb.toUtf8(), [previousNameInDb, this] (const SyncJournalFileRecord &record) -> void {
-            const auto oldFileNameString = propagator()->adjustRenamedPath(QString::fromUtf8(record._path));
-            auto newFileNameString = oldFileNameString;
-            newFileNameString.replace(0, previousNameInDb.length(), _item->_renameTarget);
+        // Collect all child records first, then batch the DB mutations
+        // (avoids interleaving reads/writes while the streaming query cursor is open)
+        struct RenameEntry {
+            QString oldName;
+            QString newName;
+            SyncJournalFileRecord record;
+        };
+        QVector<RenameEntry> renameEntries;
 
-            qCDebug(lcPropagateLocalRename) << "child rename from" << oldFileNameString << "to" << newFileNameString;
+        const auto dbQueryResult = propagator()->_journal->getFilesBelowPath(previousNameInDb.toUtf8(), [&renameEntries, &previousNameInDb, this] (const SyncJournalFileRecord &record) -> void {
+            RenameEntry entry;
+            entry.oldName = propagator()->adjustRenamedPath(QString::fromUtf8(record._path));
+            entry.newName = entry.oldName;
+            entry.newName.replace(0, previousNameInDb.length(), _item->_renameTarget);
+            entry.record = record;
 
-            if (oldFileNameString == newFileNameString) {
-                Q_ASSERT(false);
-                return;
+            if (entry.oldName != entry.newName) {
+                renameEntries.append(std::move(entry));
             }
+        });
+
+        propagator()->_journal->commit("localRename pre-batch", true);
+        // Process collected entries in batch
+        for (const auto &entry : renameEntries) {
+            qCDebug(lcPropagateLocalRename) << "child rename from" << entry.oldName << "to" << entry.newName;
 
             SyncJournalFileRecord oldRecord;
-            if (!propagator()->_journal->getFileRecord(oldFileNameString, &oldRecord)) {
-                qCWarning(lcPropagateLocalRename) << "Could not get file from local DB" << oldFileNameString;
-                return;
+            if (!propagator()->_journal->getFileRecord(entry.oldName, &oldRecord)) {
+                qCWarning(lcPropagateLocalRename) << "Could not get file from local DB" << entry.oldName;
+                continue;
             }
-            if (!propagator()->_journal->deleteFileRecord(oldFileNameString)) {
-                qCWarning(lcPropagateLocalRename) << "could not delete file from local DB" << oldFileNameString;
-                return;
+            if (!propagator()->_journal->deleteFileRecord(entry.oldName)) {
+                qCWarning(lcPropagateLocalRename) << "could not delete file from local DB" << entry.oldName;
+                continue;
             }
 
             const auto newItem = SyncFileItem::fromSyncJournalFileRecord(oldRecord);
-            newItem->_file = newFileNameString;
-            const auto result = propagator()->updateMetadata(*newItem);
-            if (!result) {
-                return;
-            }
-        });
+            newItem->_file = entry.newName;
+            propagator()->updateMetadata(*newItem);
+        }
         if (!dbQueryResult) {
             done(SyncFileItem::FatalError, tr("Failed to propagate directory rename in hierarchy"), OCC::ErrorCategory::GenericError);
             return;

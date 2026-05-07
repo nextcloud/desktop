@@ -47,10 +47,6 @@ ApplicationWindow {
     onClosing: Systray.isOpen = false
 
     onVisibleChanged: {
-        // HACK: reload account Instantiator immediately by restting it - could be done better I guess
-        // see also id:trayWindowHeader.currentAccountHeaderButton.accountMenu below
-        trayWindowHeader.currentAccountHeaderButton.userLineInstantiator.active = false;
-        trayWindowHeader.currentAccountHeaderButton.userLineInstantiator.active = true;
         syncStatus.model.load();
     }
 

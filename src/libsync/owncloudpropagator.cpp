@@ -441,6 +441,12 @@ void OwncloudPropagator::adjustDeletedFoldersWithNewChildren(SyncFileItemVector 
        instead of CSYNC_INSTRUCTION_REMOVE
        NOTE: We are iterating backwards to take advantage of optimization later, when searching for the parent of current it
     */
+    // Build index for O(1) lookup by file name (replaces O(n) std::find_if per item)
+    QHash<QString, int> fileNameToIndex;
+    for (int i = 0; i < static_cast<int>(items.size()); ++i) {
+        fileNameToIndex.insert(items[i]->_file, i);
+    }
+
     for (auto it = std::crbegin(items); it != std::crend(items); ++it) {
         if ((*it)->_instruction != CSYNC_INSTRUCTION_NEW || (*it)->_direction != SyncFileItem::Up || !(*it)->isDirectory() || (*it)->_file == QStringLiteral("/")) {
             continue;
@@ -455,17 +461,14 @@ void OwncloudPropagator::adjustDeletedFoldersWithNewChildren(SyncFileItemVector 
         if (itemRootFolderName.isEmpty()) {
             continue;
         }
-        // #2 iterate backwards (for optimization) and find the root folder by name
-        const auto itemRootFolderReverseIt = std::find_if(it, std::crend(items), [&itemRootFolderName](const auto &currentItem) {
-            return currentItem->_file == itemRootFolderName;
-        });
-
-        if (itemRootFolderReverseIt == std::rend(items)) {
+        // #2 O(1) lookup for the root folder by name
+        const auto indexIt = fileNameToIndex.constFind(itemRootFolderName);
+        if (indexIt == fileNameToIndex.constEnd()) {
             continue;
         }
 
-        // #3 convert reverse iterator to normal iterator
-        const auto itemFolderIt = (itemRootFolderReverseIt + 1).base();
+        // #3 get forward iterator directly from index
+        const auto itemFolderIt = items.begin() + indexIt.value();
 
         // #4 if the root folder is set to be removed, then we will need to fix this by reuploading every folder in
         // the tree, including the root

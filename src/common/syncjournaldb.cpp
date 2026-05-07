@@ -1147,23 +1147,71 @@ bool SyncJournalDb::getRootE2eFolderRecord(const QString &remoteFolderPath, Sync
         return false;
     }
 
-    auto remoteFolderPathSplit = remoteFolderPath.split(QLatin1Char('/'), Qt::SkipEmptyParts);
+    const auto remoteFolderPathSplit = remoteFolderPath.split(QLatin1Char('/'), Qt::SkipEmptyParts);
 
     if (remoteFolderPathSplit.isEmpty()) {
         qCWarning(lcDb) << "Invalid folder path!";
         return false;
     }
 
-    while (!remoteFolderPathSplit.isEmpty()) {
-        const auto result = getFileRecord(remoteFolderPathSplit.join(QLatin1Char('/')), rec);
-        if (!result) {
+    // Build all ancestor paths and their phashes upfront (deepest to shallowest)
+    QVector<QPair<QByteArray, qint64>> ancestors;
+    {
+        QStringList components = remoteFolderPathSplit;
+        while (!components.isEmpty()) {
+            const auto path = components.join(QLatin1Char('/')).toUtf8();
+            ancestors.append({path, getPHash(path)});
+            components.removeLast();
+        }
+    }
+
+    QMutexLocker locker(&_mutex);
+    if (_metadataTableIsEmpty)
+        return true;
+    if (!checkConnect())
+        return false;
+
+    // Single IN query for all ancestors instead of N separate queries
+    QByteArray sql = QByteArrayLiteral(GET_FILE_RECORD_QUERY " WHERE phash IN (");
+    for (int i = 0; i < ancestors.size(); ++i) {
+        if (i > 0) sql += ',';
+        sql += '?' + QByteArray::number(i + 1);
+    }
+    sql += ')';
+
+    SqlQuery query(_db);
+    query.prepare(sql);
+    for (int i = 0; i < ancestors.size(); ++i) {
+        query.bindValue(i + 1, ancestors[i].second);
+    }
+
+    if (!query.exec()) {
+        qCWarning(lcDb) << "database error:" << query.error();
+        return false;
+    }
+
+    // Collect results keyed by path
+    QHash<QByteArray, SyncJournalFileRecord> results;
+    forever {
+        auto next = query.next();
+        if (!next.ok) {
+            qCWarning(lcDb) << "database error:" << query.error();
             return false;
         }
-        if (rec->isE2eEncrypted() && rec->_e2eMangledName.isEmpty()) {
-            // it's a toplevel folder record
+        if (!next.hasData)
+            break;
+        SyncJournalFileRecord r;
+        fillFileRecordFromGetQuery(r, query);
+        results.insert(r._path, r);
+    }
+
+    // Walk from deepest to shallowest (same order as original)
+    for (const auto &ancestor : ancestors) {
+        const auto it = results.constFind(ancestor.first);
+        if (it != results.constEnd() && it->isE2eEncrypted() && it->_e2eMangledName.isEmpty()) {
+            *rec = *it;
             return true;
         }
-        remoteFolderPathSplit.removeLast();
     }
 
     return true;
@@ -1226,19 +1274,69 @@ bool SyncJournalDb::findEncryptedAncestorForRecord(const QString &filename, Sync
     const auto slashPosition = filename.lastIndexOf(QLatin1Char('/'));
     const auto parentPath = slashPosition >= 0 ? filename.left(slashPosition) : QString();
 
-    auto pathComponents = parentPath.split(QLatin1Char('/'));
-    while (!pathComponents.isEmpty()) {
-        const auto pathCompontentsJointed = pathComponents.join(QLatin1Char('/'));
-        if (!getFileRecord(pathCompontentsJointed, rec)) {
-            qCWarning(lcDb) << "could not get file from local DB" << pathCompontentsJointed;
+    if (parentPath.isEmpty())
+        return true;
+
+    // Build all ancestor paths and their phashes upfront (deepest to shallowest)
+    QVector<QPair<QByteArray, qint64>> ancestors;
+    {
+        auto pathComponents = parentPath.split(QLatin1Char('/'));
+        while (!pathComponents.isEmpty()) {
+            const auto path = pathComponents.join(QLatin1Char('/')).toUtf8();
+            ancestors.append({path, getPHash(path)});
+            pathComponents.removeLast();
+        }
+    }
+
+    QMutexLocker locker(&_mutex);
+    if (_metadataTableIsEmpty)
+        return true;
+    if (!checkConnect())
+        return false;
+
+    // Single IN query for all ancestors instead of N separate queries
+    QByteArray sql = QByteArrayLiteral(GET_FILE_RECORD_QUERY " WHERE phash IN (");
+    for (int i = 0; i < ancestors.size(); ++i) {
+        if (i > 0) sql += ',';
+        sql += '?' + QByteArray::number(i + 1);
+    }
+    sql += ')';
+
+    SqlQuery query(_db);
+    query.prepare(sql);
+    for (int i = 0; i < ancestors.size(); ++i) {
+        query.bindValue(i + 1, ancestors[i].second);
+    }
+
+    if (!query.exec()) {
+        qCWarning(lcDb) << "database error:" << query.error();
+        return false;
+    }
+
+    // Collect results keyed by path
+    QHash<QByteArray, SyncJournalFileRecord> results;
+    forever {
+        auto next = query.next();
+        if (!next.ok) {
+            qCWarning(lcDb) << "database error:" << query.error();
             return false;
         }
+        if (!next.hasData)
+            break;
+        SyncJournalFileRecord r;
+        fillFileRecordFromGetQuery(r, query);
+        results.insert(r._path, r);
+    }
 
-        if (rec->isValid() && rec->isE2eEncrypted()) {
+    // Walk from deepest to shallowest (same order as original)
+    for (const auto &ancestor : ancestors) {
+        const auto it = results.constFind(ancestor.first);
+        if (it != results.constEnd() && it->isValid() && it->isE2eEncrypted()) {
+            *rec = *it;
             break;
         }
-        pathComponents.removeLast();
     }
+
     return true;
 }
 

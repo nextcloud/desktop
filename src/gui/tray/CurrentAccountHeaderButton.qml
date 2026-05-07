@@ -62,10 +62,6 @@ Button {
         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
         onClosed: {
-            // HACK: reload account Instantiator immediately by resetting it - could be done better I guess
-            // see also onVisibleChanged above
-            userLineInstantiator.active = false;
-            userLineInstantiator.active = true;
         }
 
         Instantiator {
