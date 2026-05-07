@@ -512,6 +512,7 @@ void LsColJob::start()
     }
 
     QNetworkRequest req;
+    req.setDecompressedSafetyCheckThreshold(-1); // TODO: make use of Nextcloud 31+'s pagination feature and re-enable this
     req.setRawHeader("Depth", "1");
     QByteArray xml("<?xml version=\"1.0\" ?>\n"
                    "<d:propfind xmlns:d=\"DAV:\" xmlns:oc=\"http://owncloud.org/ns\">\n"
