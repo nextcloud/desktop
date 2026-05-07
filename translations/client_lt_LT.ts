@@ -5799,6 +5799,11 @@ Serveris atsakė su klaida: %2</translation>
         <translation><numerusform>%n pranešimas</numerusform><numerusform>%n pranešimai</numerusform><numerusform>%n pranešimų</numerusform><numerusform>%n pranešimų</numerusform></translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="632"/>
+        <source>“%1” was not synchronized</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="657"/>
         <source>Retry all uploads</source>
         <translation>Pakartoti visus įkėlimus</translation>
@@ -5853,7 +5858,7 @@ Serveris atsakė su klaida: %2</translation>
         <translation>Siunčiamas jūsų prašymas…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1529"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1576"/>
         <source>Sending your request …</source>
         <translation>Siunčiamas jūsų prašymas  …</translation>
     </message>

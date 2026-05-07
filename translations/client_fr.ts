@@ -5796,6 +5796,11 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation><numerusform>%n notification</numerusform><numerusform>%n notifications</numerusform><numerusform>%n notifications</numerusform></translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="632"/>
+        <source>“%1” was not synchronized</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="657"/>
         <source>Retry all uploads</source>
         <translation>Réessayer tous les téléversements</translation>
@@ -5850,7 +5855,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Envoi de votre requête…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1529"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1576"/>
         <source>Sending your request …</source>
         <translation type="unfinished"/>
     </message>
