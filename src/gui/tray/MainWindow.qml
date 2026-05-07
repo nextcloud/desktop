@@ -376,21 +376,23 @@ ApplicationWindow {
             footer: Item {}
             onOpened: assistantResetConfirmationDialog.open()
 
-            background: Rectangle {
-                color: palette.base
-                border.width: 1
-                border.color: "#808080"
-                radius: 10
-                antialiasing: true
-
-                layer.enabled: true
-                layer.smooth: true
-                layer.effect: DropShadow {
-                    horizontalOffset: 4
-                    verticalOffset: 4
+            background: Item {
+                Rectangle {
+                    anchors.fill: parent
+                    anchors.leftMargin: -1
+                    anchors.topMargin: -1
                     radius: 10
-                    samples: 16
                     color: "#80000000"
+                    x: 4
+                    y: 4
+                }
+                Rectangle {
+                    anchors.fill: parent
+                    color: palette.base
+                    border.width: 1
+                    border.color: "#808080"
+                    radius: 10
+                    antialiasing: true
                 }
             }
             contentItem: Rectangle {

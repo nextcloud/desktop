@@ -8,7 +8,6 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Style
-import Qt5Compat.GraphicalEffects
 import com.nextcloud.desktopclient
 
 RowLayout {
@@ -50,35 +49,26 @@ RowLayout {
                 readonly property int paintedWidth: model.thumbnail.isMimeTypeIcon ? thumbnailImage.paintedWidth * 0.8 : thumbnailImage.paintedWidth
                 readonly property int paintedHeight: model.thumbnail.isMimeTypeIcon ? thumbnailImage.paintedHeight * 0.55 : thumbnailImage.paintedHeight
 
-                Image {
-                    id: thumbnailImage
-                    width: thumbnailItem.imageWidth
-                    height: thumbnailItem.imageHeight
+                Rectangle {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: parent.left
-                    cache: true
-                    fillMode: Image.PreserveAspectFit
-                    source: model.thumbnail.source
-                    visible: false
-                    sourceSize.height: 64
-                    sourceSize.width: 64
-                }
-
-                Rectangle {
-                    id: mask
-                    color: "white"
+                    width: thumbnailItem.imageWidth
+                    height: thumbnailItem.imageHeight
                     radius: thumbnailItem.thumbnailRadius
-                    anchors.fill: thumbnailImage
-                    visible: false
-                    width: thumbnailImage.paintedWidth
-                    height: thumbnailImage.paintedHeight
-                }
-
-                OpacityMask {
-                    anchors.fill: thumbnailImage
-                    source: thumbnailImage
-                    maskSource: mask
+                    clip: true
+                    color: "transparent"
                     visible: model.thumbnail !== undefined
+
+                    Image {
+                        id: thumbnailImage
+                        anchors.fill: parent
+                        cache: true
+                        fillMode: Image.PreserveAspectFit
+                        source: model.thumbnail.source
+                        asynchronous: true
+                        sourceSize.height: 64
+                        sourceSize.width: 64
+                    }
                 }
             }
         }
