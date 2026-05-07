@@ -17,6 +17,7 @@
       "cmake.buildDirectory": "${workspaceFolder}/../build/${buildKitTargetOs}-${buildKitVendor}-${buildKitTargetArch}/${buildType}",
       "files.associations": {
         "qwizardpage": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "*.ts": "xml"
       },
 }
