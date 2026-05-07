@@ -1493,7 +1493,7 @@ private slots:
 
         // After clearing the error, the next sync must succeed.
         fakeFolder.serverErrorPaths().clear();
-        fakeFolder.syncJournal().wipeErrorBlacklist();
+        [[maybe_unused]] const auto blacklistWiped = fakeFolder.syncJournal().wipeErrorBlacklist();
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
