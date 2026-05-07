@@ -44,6 +44,7 @@ RowLayout {
 
     property color baseGradientColor: palette.light
     property int animationRectangleWidth: Style.trayWindowWidth
+    property real sharedAnimationX: Number.NaN
 
     Item {
         property int whiteSpace: (Style.trayListItemIconSize - unifiedSearchResultSkeletonItemDetails.iconWidth)
@@ -67,6 +68,7 @@ RowLayout {
                 sourceComponent: UnifiedSearchResultItemSkeletonGradientRectangle {
                     width: unifiedSearchResultSkeletonItemDetails.animationRectangleWidth
                     height: parent.height
+                    sharedAnimationX: unifiedSearchResultSkeletonItemDetails.sharedAnimationX
                 }
             }
         }
@@ -110,6 +112,7 @@ RowLayout {
                     sourceComponent: UnifiedSearchResultItemSkeletonGradientRectangle {
                         width: unifiedSearchResultSkeletonItemDetails.animationRectangleWidth
                         height: parent.height
+                        sharedAnimationX: unifiedSearchResultSkeletonItemDetails.sharedAnimationX
                     }
                 }
             }
@@ -146,6 +149,7 @@ RowLayout {
                     sourceComponent: UnifiedSearchResultItemSkeletonGradientRectangle {
                         width: unifiedSearchResultSkeletonItemDetails.animationRectangleWidth
                         height: parent.height
+                        sharedAnimationX: unifiedSearchResultSkeletonItemDetails.sharedAnimationX
                     }
                 }
             }

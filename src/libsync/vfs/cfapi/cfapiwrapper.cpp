@@ -1163,12 +1163,16 @@ OCC::Result<void, QString> OCC::CfApiWrapper::createPlaceholdersInfo(const QStri
         return { "Couldn't create placeholder info" };
     }
 
+    // Hoist the parent placeholder lookup outside the per-file loop: all files placed
+    // under localBasePath share the same parent directory, so one lookup suffices.
+    const auto sharedParentInfo = findPlaceholderInfo(QDir::toNativeSeparators(QFileInfo(localBasePath).absoluteFilePath()));
+    const auto sharedState = sharedParentInfo && sharedParentInfo->PinState == CF_PIN_STATE_UNPINNED
+        ? CF_PIN_STATE_UNPINNED
+        : CF_PIN_STATE_INHERIT;
+
     for(auto itemIndice = 0; itemIndice < filteredItemsInfo.size(); ++itemIndice) {
         const auto &placeholderInfo = filteredItemsInfo[itemIndice];
-        const auto parentInfo = findPlaceholderInfo(QDir::toNativeSeparators(QFileInfo(localBasePath + QDir::separator() + placeholderInfo.relativePath).absolutePath()));
-        const auto state = parentInfo && parentInfo->PinState == CF_PIN_STATE_UNPINNED ? CF_PIN_STATE_UNPINNED : CF_PIN_STATE_INHERIT;
-
-        if (!setPinState(QDir::toNativeSeparators(QFileInfo(localBasePath + QDir::separator() + placeholderInfo.relativePath).absoluteFilePath()), cfPinStateToPinState(state), NoRecurse)) {
+        if (!setPinState(QDir::toNativeSeparators(QFileInfo(localBasePath + QDir::separator() + placeholderInfo.relativePath).absoluteFilePath()), cfPinStateToPinState(sharedState), NoRecurse)) {
             return { "Couldn't set the default inherit pin state" };
         }
     }

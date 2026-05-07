@@ -15,6 +15,17 @@ ColumnLayout {
 
     property int animationRectangleWidth: Style.trayWindowWidth
 
+    // Single shared animation driver for all child skeleton items.
+    property real sharedAnimationX: -animationRectangleWidth
+
+    NumberAnimation on sharedAnimationX {
+        from: -unifiedSearchResultsListViewSkeletonColumn.animationRectangleWidth
+        to: unifiedSearchResultsListViewSkeletonColumn.animationRectangleWidth
+        duration: 1000
+        loops: Animation.Infinite
+        running: true
+    }
+
     Item {
         id: placeholderSectionHeader
 
@@ -46,6 +57,7 @@ ColumnLayout {
                 sourceComponent: UnifiedSearchResultItemSkeletonGradientRectangle {
                     width: unifiedSearchResultsListViewSkeletonColumn.animationRectangleWidth
                     height: parent.height
+                    sharedAnimationX: unifiedSearchResultsListViewSkeletonColumn.sharedAnimationX
                 }
             }
         }
@@ -71,6 +83,7 @@ ColumnLayout {
             width: unifiedSearchResultsListViewSkeletonColumn.width
             height: Style.trayWindowHeaderHeight
             animationRectangleWidth: unifiedSearchResultsListViewSkeletonColumn.animationRectangleWidth
+            sharedAnimationX: unifiedSearchResultsListViewSkeletonColumn.sharedAnimationX
         }
     }
 }

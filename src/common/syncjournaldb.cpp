@@ -1291,6 +1291,7 @@ qint64 SyncJournalDb::keyValueStoreGetInt(const QString &key, qint64 defaultValu
 
 void SyncJournalDb::keyValueStoreDelete(const QString &key)
 {
+    QMutexLocker locker(&_mutex);
     const auto query = _queryManager.get(PreparedSqlQueryManager::DeleteKeyValueStoreQuery, QByteArrayLiteral("DELETE FROM key_value_store WHERE key=?1;"), _db);
     if (!query) {
         qCWarning(lcDb) << "database error:" << query->error();

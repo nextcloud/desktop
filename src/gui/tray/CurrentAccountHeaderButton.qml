@@ -237,7 +237,6 @@ Button {
 
             Layout.leftMargin: Style.trayHorizontalMargin
             verticalAlignment: Qt.AlignCenter
-            cache: false
             source: (UserModel.currentUser && UserModel.currentUser.avatar !== "") ? UserModel.currentUser.avatar : "image://avatars/fallbackWhite"
             Layout.preferredHeight: Style.accountAvatarSize
             Layout.preferredWidth: Style.accountAvatarSize
@@ -266,7 +265,6 @@ Button {
                          && UserModel.currentUser.status !== NC.userStatus.Invisible
                          && UserModel.currentUser.status !== NC.userStatus.Offline
                 source: UserModel.currentUser ? UserModel.currentUser.statusIcon : ""
-                cache: false
                 anchors.centerIn: currentAccountStatusIndicatorBackground
                 sourceSize.width: Style.accountAvatarStateIndicatorSize
                 sourceSize.height: Style.accountAvatarStateIndicatorSize

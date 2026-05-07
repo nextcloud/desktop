@@ -33,7 +33,6 @@ AbstractButton {
             id: accountAvatar
             Layout.leftMargin: Style.accountIconsMenuMargin
             verticalAlignment: Qt.AlignCenter
-            cache: false
             source: model.avatar !== "" ? model.avatar : Style.darkMode ? "image://avatars/fallbackWhite" : "image://avatars/fallbackBlack"
             Layout.preferredHeight: Style.accountAvatarSize
             Layout.preferredWidth: Style.accountAvatarSize
@@ -58,7 +57,6 @@ AbstractButton {
                 id: accountStatusIndicator
                 visible: model.isConnected && model.serverHasUserStatus
                 source: model.statusIcon
-                cache: false
                 anchors.centerIn: accountStatusIndicatorBackground
                 sourceSize.width: Style.accountAvatarStateIndicatorSize
                 sourceSize.height: Style.accountAvatarStateIndicatorSize
@@ -157,7 +155,6 @@ AbstractButton {
                 id: syncStatusIndicator
                 visible: !model.syncStatusOk
                 source: model.syncStatusIcon
-                cache: false
                 anchors.centerIn: parent
                 sourceSize.width: Style.accountAvatarStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset
                 sourceSize.height: Style.accountAvatarStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset

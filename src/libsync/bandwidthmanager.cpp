@@ -40,10 +40,12 @@ BandwidthManager::BandwidthManager(OwncloudPropagator *p)
     _switchingTimer.start();
     QMetaObject::invokeMethod(this, "switchingTimerExpired", Qt::QueuedConnection);
 
-    // absolute uploads/downloads
+    // absolute uploads/downloads — only start the timer when a limit is actually configured
     QObject::connect(&_absoluteLimitTimer, &QTimer::timeout, this, &BandwidthManager::absoluteLimitTimerExpired);
     _absoluteLimitTimer.setInterval(1000);
-    _absoluteLimitTimer.start();
+    if (usingAbsoluteUploadLimit() || usingAbsoluteDownloadLimit()) {
+        _absoluteLimitTimer.start();
+    }
 
 }
 
@@ -52,6 +54,7 @@ BandwidthManager::~BandwidthManager() = default;
 void BandwidthManager::registerUploadDevice(UploadDevice *p)
 {
     _absoluteUploadDeviceList.push_back(p);
+    _dirty = true;
     QObject::connect(p, &QObject::destroyed, this, &BandwidthManager::unregisterUploadDevice);
 
     if (usingAbsoluteUploadLimit()) {
@@ -67,11 +70,13 @@ void BandwidthManager::unregisterUploadDevice(QObject *o)
 {
     auto p = reinterpret_cast<UploadDevice *>(o); // note, we might already be in the ~QObject
     _absoluteUploadDeviceList.remove(p);
+    _dirty = true;
 }
 
 void BandwidthManager::registerDownloadJob(GETFileJob *j)
 {
     _downloadJobList.push_back(j);
+    _dirty = true;
     QObject::connect(j, &QObject::destroyed, this, &BandwidthManager::unregisterDownloadJob);
 
     if (usingAbsoluteDownloadLimit()) {
@@ -87,10 +92,16 @@ void BandwidthManager::unregisterDownloadJob(QObject *o)
 {
     auto *j = reinterpret_cast<GETFileJob *>(o); // note, we might already be in the ~QObject
     _downloadJobList.remove(j);
+    _dirty = true;
 }
 
 void BandwidthManager::switchingTimerExpired()
 {
+    if (!_dirty) {
+        return;
+    }
+    _dirty = false;
+
     const auto newUploadLimit = _propagator->_uploadLimit;
     if (newUploadLimit != _currentUploadLimit) {
         qCInfo(lcBandwidthManager) << "Upload Bandwidth limit changed" << _currentUploadLimit << newUploadLimit;
@@ -126,10 +137,24 @@ void BandwidthManager::switchingTimerExpired()
             }
         }
     }
+
+    // Start or stop the absolute-limit timer based on whether any limit is now active.
+    if (usingAbsoluteUploadLimit() || usingAbsoluteDownloadLimit()) {
+        if (!_absoluteLimitTimer.isActive()) {
+            _absoluteLimitTimer.start();
+        }
+    } else {
+        _absoluteLimitTimer.stop();
+    }
 }
 
 void BandwidthManager::absoluteLimitTimerExpired()
 {
+    if (!_dirty) {
+        return;
+    }
+    _dirty = false;
+
     if (usingAbsoluteUploadLimit() && !_absoluteUploadDeviceList.empty()) {
         const auto quotaPerDevice = _currentUploadLimit / qMax((std::list<UploadDevice *>::size_type)1, _absoluteUploadDeviceList.size());
 

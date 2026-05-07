@@ -57,6 +57,8 @@ private:
 
     std::list<GETFileJob *> _downloadJobList;
     qint64 _currentDownloadLimit = 0;
+
+    bool _dirty = false;
 };
 
 } // namespace OCC

@@ -16,6 +16,10 @@ Rectangle {
     property color progressGradientColor: Style.darkMode ? Qt.lighter(palette.light, 1.2) : Qt.darker(palette.light, 1.1)
     property int animationStartX: -width
     property int animationEndX: width
+    // If sharedAnimationX is provided by a parent container, bind x to it directly.
+    // Otherwise fall back to the local NumberAnimation.
+    property real sharedAnimationX: Number.NaN
+    readonly property bool useSharedAnimation: !isNaN(sharedAnimationX)
 
     gradient: Gradient {
         orientation: Gradient.Horizontal
@@ -42,6 +46,13 @@ Rectangle {
         to: root.animationEndX
         duration: 1000
         loops: Animation.Infinite
-        running: true
+        running: !root.useSharedAnimation
+    }
+
+    Binding {
+        target: root
+        property: "x"
+        value: root.sharedAnimationX
+        when: root.useSharedAnimation
     }
 }
