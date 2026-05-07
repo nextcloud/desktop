@@ -272,10 +272,11 @@ public final class FilesDatabaseManager: Sendable {
         for var updatedMetadata in updatedMetadatas {
             if let existingMetadata = existingMetadatas.first(where: { $0.ocId == updatedMetadata.ocId }) {
                 if existingMetadata.status == Status.normal.rawValue, !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata) {
-                    if updatedMetadata.directory,
-                       updatedMetadata.serverUrl != existingMetadata.serverUrl ||
-                       updatedMetadata.fileName != existingMetadata.fileName
-                    {
+                    let pathChanged =
+                        updatedMetadata.serverUrl != existingMetadata.serverUrl ||
+                        updatedMetadata.fileName != existingMetadata.fileName
+
+                    if updatedMetadata.directory, pathChanged {
                         directoriesNeedingRename.append(updatedMetadata)
                     }
 
@@ -285,7 +286,7 @@ public final class FilesDatabaseManager: Sendable {
 
                     updatedMetadata.visitedDirectory = existingMetadata.visitedDirectory
                     updatedMetadata.keepDownloaded = existingMetadata.keepDownloaded
-                    updatedMetadata.lockToken = existingMetadata.lockToken
+                    updatedMetadata.lockToken = pathChanged ? nil : existingMetadata.lockToken
 
                     returningUpdatedMetadatas.append(updatedMetadata)
 
@@ -646,6 +647,7 @@ public final class FilesDatabaseManager: Sendable {
                 itemMetadata.fileName = newFileName
                 itemMetadata.fileNameView = newFileName
                 itemMetadata.serverUrl = newServerUrl
+                itemMetadata.lockToken = nil
 
                 database.add(itemMetadata, update: .all)
 

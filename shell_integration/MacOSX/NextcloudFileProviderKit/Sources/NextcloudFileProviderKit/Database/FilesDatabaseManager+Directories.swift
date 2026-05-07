@@ -141,6 +141,7 @@ public extension FilesDatabaseManager {
                         of: oldDirectoryServerUrl, with: newDirectoryServerUrl
                     )
                     childItem.serverUrl = movedServerUrl
+                    childItem.lockToken = nil
                     database.add(childItem, update: .all)
                     logger.debug(
                         """

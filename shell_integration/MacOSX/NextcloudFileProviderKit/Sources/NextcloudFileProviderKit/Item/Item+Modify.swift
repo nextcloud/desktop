@@ -168,6 +168,11 @@ public extension Item {
                 """
             )
 
+            if error.isPreconditionFailedError || error.isLockedError {
+                logger.info("Clearing stale lock token after lock/precondition error.", [.item: itemIdentifier])
+                metadata.lockToken = nil
+            }
+
             metadata.status = Status.uploadError.rawValue
             metadata.sessionError = error.errorDescription
             dbManager.addItemMetadata(metadata)
