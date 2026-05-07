@@ -58,6 +58,11 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                 onItemsWithIdentifiers: itemIdentifiers,
                 completionHandler: completionHandler
             )
+        case "com.nextcloud.desktopclient.FileProviderExt.EvictAction":
+            return performEvictAction(
+                onItemsWithIdentifiers: itemIdentifiers,
+                completionHandler: completionHandler
+            )
         default:
             logger.error("Unsupported action: \(actionIdentifier.rawValue)")
             completionHandler(NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError))
