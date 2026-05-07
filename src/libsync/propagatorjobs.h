@@ -20,6 +20,19 @@ constexpr auto contentMd5HeaderC = "Content-MD5";
 constexpr auto checksumRecalculateOnServerHeaderC = "X-Recalculate-Hash";
 
 /**
+ * Whether @p path sits inside the already removed directory @p deletedDir.
+ * Compares with a trailing slash so a sibling such as "A/BC" is not mistaken
+ * for a child of "A/B".
+ */
+[[nodiscard]] inline bool isPathInsideDeletedDir(const QString &path, const QString &deletedDir)
+{
+    return !deletedDir.isEmpty()
+        && path.size() > deletedDir.size()
+        && path[deletedDir.size()] == QLatin1Char('/')
+        && path.startsWith(deletedDir);
+}
+
+/**
  * @brief Declaration of the other propagation jobs
  * @ingroup libsync
  */
