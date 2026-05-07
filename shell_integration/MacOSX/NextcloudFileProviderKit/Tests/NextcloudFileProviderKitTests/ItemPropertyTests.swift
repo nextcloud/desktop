@@ -862,21 +862,20 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(item.capabilities, expected)
     }
 
-    #if os(macOS)
-        func testCapabilitiesMacOSExclusion() {
-            var metadata = SendableItemMetadata(
-                ocId: "macos-exclusion", fileName: "file.txt", account: Self.account
-            )
-            metadata.permissions = ""
-            let item = Item(
-                metadata: metadata,
-                parentItemIdentifier: .rootContainer,
-                account: Self.account,
-                remoteInterface: MockRemoteInterface(account: Self.account),
-                dbManager: Self.dbManager,
-                remoteSupportsTrash: true,
-                log: FileProviderLogMock()
-            )
+    func testCapabilitiesMacOSExclusion() {
+        var metadata = SendableItemMetadata(
+            ocId: "macos-exclusion", fileName: "file.txt", account: Self.account
+        )
+        metadata.permissions = ""
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
+        )
 
         XCTAssertTrue(
             item.capabilities.contains(.allowsExcludingFromSync),
