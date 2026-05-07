@@ -305,6 +305,7 @@ void PropagateRemoteMove::finalize()
             done(SyncFileItem::FatalError, tr("Error writing metadata to the database"), ErrorCategory::GenericError);
             return;
         }
+        propagator()->_journal->renameErrorBlacklistPaths(_item->_file, _item->_renameTarget);
     }
 
     propagator()->_journal->commit("Remote Rename");
