@@ -145,6 +145,7 @@ public:
 
     SyncJournalErrorBlacklistRecord errorBlacklistEntry(const QString &);
     [[nodiscard]] bool deleteStaleErrorBlacklistEntries(const QSet<QString> &keep);
+    void renameErrorBlacklistPaths(const QString &from, const QString &to);
 
     /// Delete flags table entries that have no metadata correspondent
     void deleteStaleFlagsEntries();

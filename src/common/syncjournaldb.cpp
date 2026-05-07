@@ -2171,6 +2171,26 @@ SyncJournalErrorBlacklistRecord SyncJournalDb::errorBlacklistEntry(const QString
     return entry;
 }
 
+void SyncJournalDb::renameErrorBlacklistPaths(const QString &from, const QString &to)
+{
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect()) {
+        return;
+    }
+
+    // Update the exact folder entry and all entries whose path starts with "from/".
+    // Uses the same range trick as IS_PREFIX_PATH_OR_EQUAL: '/' + 1 == '0'.
+    SqlQuery query(_db);
+    query.prepare("UPDATE blacklist "
+                  "SET path = ?2 || substr(path, length(?1) + 1) "
+                  "WHERE path == ?1 OR (path > (?1 || '/') AND path < (?1 || '0'))");
+    query.bindValue(1, from);
+    query.bindValue(2, to);
+    if (!query.exec()) {
+        sqlFail(QStringLiteral("renameErrorBlacklistPaths"), query);
+    }
+}
+
 bool SyncJournalDb::deleteStaleErrorBlacklistEntries(const QSet<QString> &keep)
 {
     QMutexLocker locker(&_mutex);

@@ -2,7 +2,7 @@
  * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
  * SPDX-FileCopyrightText: 2018 ownCloud, Inc.
  * SPDX-License-Identifier: CC0-1.0
- * 
+ *
  * This software is in the public domain, furnished "as is", without technical
  * support, and with no warranty, express or implied, as to its usefulness for
  * any purpose.
@@ -49,6 +49,150 @@ private slots:
         QVERIFY(!fakeFolder.currentRemoteState().find("B/b1"));
         QVERIFY(!fakeFolder.currentRemoteState().find("B/hello.txt"));
 
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    // Verify that a file blocked from uploading by a remote storage quota error is
+    // protected from local deletion when the remote parent folder is subsequently deleted.
+    void testQuotaBlockedFileProtectedFromParentFolderDeletion()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+
+        // Establish an initial clean sync: a1 and a2 exist on both sides.
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Add a new local file that will fail to upload due to remote quota (HTTP 507).
+        fakeFolder.localModifier().insert(QStringLiteral("A/quota_blocked.txt"), 100);
+        fakeFolder.serverErrorPaths().append(QStringLiteral("A/quota_blocked.txt"), 507);
+
+        // Upload fails so file is blacklisted as InsufficientRemoteStorage.
+        QVERIFY(!fakeFolder.syncOnce());
+        {
+            auto entry = fakeFolder.syncJournal().errorBlacklistEntry(QStringLiteral("A/quota_blocked.txt"));
+            QVERIFY(entry.isValid());
+            QCOMPARE(entry._errorCategory, SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage);
+        }
+
+        // The file was never uploaded.
+        QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("A/quota_blocked.txt")));
+
+        // Remove the server error so further requests to that path don't return 507.
+        fakeFolder.serverErrorPaths().clear();
+
+        // Server side: folder A is moved/deleted.
+        fakeFolder.remoteModifier().remove(QStringLiteral("A"));
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+        fakeFolder.syncOnce();
+
+        // File that does not exist in the server and is blocked from upload with error must not have been deleted locally.
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/quota_blocked.txt")));
+
+        // Parent folder A must also survive because it still contains the protected file.
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A")));
+
+        // Previously synced siblings must have been deleted locally (trust the server).
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1")));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a2")));
+
+        // File that does not exist in the server and has error must still not exist on the server.
+        QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("A/quota_blocked.txt")));
+
+        // The protected file must be reported as an error item with the quota specific message,
+        // not silently ignored or overwritten with a generic blacklist message.
+        {
+            auto item = completeSpy.findItem(QStringLiteral("A/quota_blocked.txt"));
+            QVERIFY(item);
+            const bool isErrorItem = item->_instruction == CSYNC_INSTRUCTION_ERROR
+                || item->_instruction == CSYNC_INSTRUCTION_IGNORE; // BlacklistedError reuses IGNORE
+            QVERIFY(isErrorItem);
+            const bool isErrorStatus = item->_status == SyncFileItem::SoftError
+                || item->_status == SyncFileItem::BlacklistedError;
+            QVERIFY(isErrorStatus);
+        }
+    }
+
+    // A quota upload blocked file must survive even if the parent folder is first moved then deleted on the server.
+    void testQuotaBlockedFileProtectedAfterParentFolderMoveThenDelete()
+    {
+        // Use a custom initial state with only folder A to avoid rename collisions.
+        FileInfo initialState{QString{}, {
+            {QStringLiteral("A"), {
+                {QStringLiteral("a1"), 4},
+                {QStringLiteral("a2"), 4},
+            }},
+        }};
+        FakeFolder fakeFolder{initialState};
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // New local file that fails to upload due to quota.
+        fakeFolder.localModifier().insert(QStringLiteral("A/quota_blocked.txt"), 100);
+        fakeFolder.serverErrorPaths().append(QStringLiteral("A/quota_blocked.txt"), 507);
+
+        QVERIFY(!fakeFolder.syncOnce());
+        {
+            auto entry = fakeFolder.syncJournal().errorBlacklistEntry(QStringLiteral("A/quota_blocked.txt"));
+            QVERIFY(entry.isValid());
+            QCOMPARE(entry._errorCategory, SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage);
+        }
+        QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("A/quota_blocked.txt")));
+
+        // Switch the quota error to the new path so the file remains blocked after the rename.
+        fakeFolder.serverErrorPaths().clear();
+        fakeFolder.serverErrorPaths().append(QStringLiteral("D/quota_blocked.txt"), 507);
+
+        // Server side: folder A is renamed to D. The quota blocked file was never on the
+        // server, so the blacklist entry path is still "A/quota_blocked.txt" while the
+        // local file moves to "D/" as the client follows the rename.
+        fakeFolder.remoteModifier().rename(QStringLiteral("A"), QStringLiteral("D"));
+        // Sync: local A is renamed to D; any upload attempt for D/quota_blocked.txt fails with 507.
+        fakeFolder.syncOnce();
+
+        // Blacklist entry must have been updated to the new path.
+        {
+            auto entry = fakeFolder.syncJournal().errorBlacklistEntry(QStringLiteral("D/quota_blocked.txt"));
+            QVERIFY(entry.isValid());
+            QCOMPARE(entry._errorCategory, SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage);
+        }
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("D/quota_blocked.txt")));
+
+        // Server side: now delete folder D.
+        fakeFolder.serverErrorPaths().clear();
+        fakeFolder.remoteModifier().remove(QStringLiteral("D"));
+        ItemCompletedSpy completeSpy(fakeFolder);
+        fakeFolder.syncOnce();
+
+        // File must not have been deleted locally.
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("D/quota_blocked.txt")));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("D")));
+
+        // Previously synced siblings must be gone.
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("D/a1")));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("D/a2")));
+
+        // The protected file must be reported with the quota specific error, not silently ignored.
+        {
+            const auto item = completeSpy.findItem(QStringLiteral("D/quota_blocked.txt"));
+            QVERIFY(item);
+            QCOMPARE(item->_instruction, CSYNC_INSTRUCTION_ERROR);
+            QVERIFY(!item->_errorString.contains(QStringLiteral("skipped due to earlier error")));
+        }
+    }
+
+    // Regression: new files in a server deleted folder must still be deleted locally
+    void testDeleteDirectoryWithNewFileNoQuotaError()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.remoteModifier().remove(QStringLiteral("A"));
+        fakeFolder.localModifier().insert(QStringLiteral("A/newfile.txt"), 100);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        // New local file with no quota blacklist entry must be removed when parent is deleted on server.
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/newfile.txt")));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 

@@ -561,6 +561,7 @@ void PropagateLocalRename::start()
             done(SyncFileItem::FatalError, tr("Failed to rename file"), ErrorCategory::GenericError);
             return;
         }
+        propagator()->_journal->renameErrorBlacklistPaths(oldFile, _item->_renameTarget);
     }
     if (pinState != PinState::Inherited && !vfs->setPinState(_item->_renameTarget, pinState)) {
         done(SyncFileItem::NormalError, tr("Error setting pin state"), ErrorCategory::GenericError);

@@ -1231,6 +1231,11 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             }
 
             item->_status = SyncFileItem::Status::NormalError;
+            // Mark as a quota error so blacklistUpdate writes an InsufficientRemoteStorage entry.
+            // Without this, _httpErrorCode would be 0 and blacklistUpdate would not create an
+            // entry, leaving the file unprotected by checkNewDeleteConflict if the remote parent
+            // folder is deleted before the quota situation is resolved.
+            item->_httpErrorCode = 507;
             _discoveryData->_anotherSyncNeeded = true;
             _discoveryData->_filesNeedingScheduledSync.insert(path._original, delayIntervalForSyncRetryForFilesExceedQuotaSeconds);
         }
@@ -2504,18 +2509,41 @@ bool ProcessDirectoryJob::maybeRenameForWindowsCompatibility(const QString &abso
     return result;
 }
 
-bool ProcessDirectoryJob::checkNewDeleteConflict(const SyncFileItemPtr &item) const
+bool ProcessDirectoryJob::checkNewDeleteConflict(const SyncFileItemPtr &item)
 {
-    if (_discoveryData->recursiveCheckForDeletedParents(item->_file)) {
-        qCWarning(lcDisco) << "Removing local file inside a remotely deleted folder" << item->_file;
-        item->_instruction = CSYNC_INSTRUCTION_REMOVE;
-        item->_direction = SyncFileItem::Down;
-        item->_wantsSpecificActions = SyncFileItem::SynchronizationOptions::MoveToClientTrashBin;
+    if (!_discoveryData->recursiveCheckForDeletedParents(item->_file)) {
+        return false;
+    }
+
+    // Deleting the local copy could result in permanent data loss if the file was never in the 
+    // server and blocked from being uploaded by a quota error.
+    // Protect it instead and let the user resolve the storage situation first.
+    if (const auto blacklistEntry = _discoveryData->_statedb->errorBlacklistEntry(item->_file);
+        blacklistEntry.isValid()
+        && blacklistEntry._errorCategory == SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage) {
+        qCWarning(lcDisco) << "Not removing local file inside a remotely deleted folder: "
+                              "file was never uploaded due to storage quota —"
+                           << item->_file;
+        item->_instruction = CSYNC_INSTRUCTION_ERROR;
+        item->_status = SyncFileItem::SoftError;
+        // Keep _httpErrorCode at 507 so blacklistUpdate recreates the InsufficientRemoteStorage 
+        // entry if the current ignore-duration later expires.
+        item->_httpErrorCode = 507;
+        item->_errorString = tr("%1 could not be removed: it has unsynced changes due to full server storage. "
+                                "Please manage your files and try syncing again.")
+                                 .arg(item->_file);
+        // Prevent the parent directory from being deleted while a file with an error exists.
+        _childIgnored = true;
         emit _discoveryData->itemDiscovered(item);
         return true;
     }
 
-    return false;
+    qCWarning(lcDisco) << "Removing local file inside a remotely deleted folder" << item->_file;
+    item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+    item->_direction = SyncFileItem::Down;
+    item->_wantsSpecificActions = SyncFileItem::SynchronizationOptions::MoveToClientTrashBin;
+    emit _discoveryData->itemDiscovered(item);
+    return true;
 }
 
 }
