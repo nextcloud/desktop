@@ -87,7 +87,7 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
         for (const auto &it : deleted) {
             if (!it.first.startsWith(propagator()->localPath()))
                 continue;
-            if (!deletedDir.isEmpty() && it.first.startsWith(deletedDir))
+            if (isPathInsideDeletedDir(it.first, deletedDir))
                 continue;
             if (it.second) {
                 deletedDir = it.first;
