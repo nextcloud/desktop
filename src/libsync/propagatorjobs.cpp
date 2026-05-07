@@ -544,6 +544,8 @@ void PropagateLocalRename::start()
 
             const auto newItem = SyncFileItem::fromSyncJournalFileRecord(oldRecord);
             newItem->_file = newFileNameString;
+            newItem->_lockToken.clear();
+            newItem->_locked = SyncFileItem::LockStatus::UnlockedItem;
             const auto result = propagator()->updateMetadata(*newItem);
             if (!result) {
                 return;
