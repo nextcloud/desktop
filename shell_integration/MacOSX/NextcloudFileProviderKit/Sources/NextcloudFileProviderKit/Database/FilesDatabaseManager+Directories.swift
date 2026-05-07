@@ -94,7 +94,17 @@ public extension FilesDatabaseManager {
                 ($0.serverUrl == directoryUrlPath || $0.serverUrl.starts(with: directoryUrlPath + "/"))
         }
 
+        // TODO: Parent is deleted even when a child upload is pending. The child will
+        // orphan after upload. Follow-up: defer parent deletion or re-parent after upload.
         for result in results {
+            if result.status >= Status.inUpload.rawValue {
+                logger.info("Skipping deletion of child with pending upload.", [.item: result.ocId])
+                continue
+            }
+            if result.isLockFileOfLocalOrigin {
+                logger.info("Skipping deletion of local-origin lock file during directory delete.", [.item: result.ocId, .name: result.fileName])
+                continue
+            }
             let inactiveItemMetadata = SendableItemMetadata(value: result)
             do {
                 try database.write { result.deleted = true }
