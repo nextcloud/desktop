@@ -94,7 +94,15 @@ public extension FilesDatabaseManager {
                 ($0.serverUrl == directoryUrlPath || $0.serverUrl.starts(with: directoryUrlPath + "/"))
         }
 
+        // TODO: The parent directory is already marked deleted above even when a child has a
+        // pending upload. The orphaned child will complete its upload successfully but then fail to
+        // update its metadata because the parent is gone. A follow-up should either defer the
+        // parent deletion until all children finish uploading, or re-parent the child after upload.
         for result in results {
+            if result.status >= Status.inUpload.rawValue {
+                logger.info("Skipping deletion of child with pending upload.", [.item: result.ocId])
+                continue
+            }
             let inactiveItemMetadata = SendableItemMetadata(value: result)
             do {
                 try database.write { result.deleted = true }

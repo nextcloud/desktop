@@ -474,13 +474,8 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
             if readError?.errorCode == 404 {
                 allDeletedMetadatas.append(materializedItem)
                 examinedItemIds.insert(materializedItem.ocId)
-
-                materializedItems.filter {
-                    $0.serverUrl.hasPrefix(itemRemoteUrl)
-                }.forEach {
-                    allDeletedMetadatas.append($0)
-                    examinedItemIds.insert($0.ocId)
-                }
+                // Children are not marked deleted here — they may have moved with their parent.
+                logger.debug("Parent returned 404; children will be checked individually.", [.url: itemRemoteUrl])
             } else if let readError, readError != .success {
                 logger.error("Finished remote change enumeration of materialized items with error.", [.error: readError])
                 return
@@ -531,21 +526,18 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
             }
         }
 
-        // Run a check to ensure files deleted in one location are not updated in another (e.g. when moved).
-        // The recursive scan provides us with updated/deleted metadatas only on a folder by folder basis; so we need to check we are not simultaneously marking a moved file as deleted and updated.
-        var checkedDeletedMetadatas = allDeletedMetadatas
+        // Catches moves across directories: items found at a new location (updated or new)
+        // should not be marked deleted at the old location.
+        let survivingOcIds = Set(allUpdatedMetadatas.map(\.ocId))
+            .union(allNewMetadatas.map(\.ocId))
 
-        for updatedMetadata in allUpdatedMetadatas {
-            guard let matchingDeletedMetadataIdx = checkedDeletedMetadatas.firstIndex(where: { $0.ocId == updatedMetadata.ocId }) else {
-                continue
-            }
-
-            checkedDeletedMetadatas.remove(at: matchingDeletedMetadataIdx)
-        }
-
-        allDeletedMetadatas = checkedDeletedMetadatas
+        allDeletedMetadatas.removeAll { survivingOcIds.contains($0.ocId) }
 
         for deletedMetadata in allDeletedMetadatas {
+            if deletedMetadata.status >= Status.inUpload.rawValue {
+                logger.info("Skipping deletion of item with pending upload.", [.item: deletedMetadata.ocId])
+                continue
+            }
             var deleteMarked = deletedMetadata
             deleteMarked.deleted = true
             deleteMarked.syncTime = Date()
