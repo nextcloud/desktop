@@ -168,6 +168,37 @@ public extension Item {
                 """
             )
 
+            if error.isPreconditionFailedError || error.isLockedError {
+                logger.info("Clearing stale lock token after lock/precondition error.", [.item: itemIdentifier])
+                metadata.lockToken = nil
+                // Signal re-enumeration: if the parent was also renamed (causing the
+                // precondition failure), the working set check will update the path
+                // before the system retries.
+                if let domain, let manager = NSFileProviderManager(for: domain) {
+                    Task {
+                        try? await manager.signalEnumerator(for: .workingSet)
+                    }
+                }
+            }
+
+            // Remote path gone — parent renamed on another client while the file was
+            // open. Clear any stale lock token and signal the working set enumerator
+            // so the system discovers the new path before retrying. Return
+            // cannotSynchronize rather than noSuchItem: the file still exists on the
+            // server at a different location.
+            if error.isNotFoundError {
+                metadata.lockToken = nil
+                metadata.status = Status.uploadError.rawValue
+                metadata.sessionError = error.errorDescription
+                dbManager.addItemMetadata(metadata)
+                if let domain, let manager = NSFileProviderManager(for: domain) {
+                    Task {
+                        try? await manager.signalEnumerator(for: .workingSet)
+                    }
+                }
+                return (nil, NSFileProviderError(.cannotSynchronize))
+            }
+
             metadata.status = Status.uploadError.rawValue
             metadata.sessionError = error.errorDescription
             dbManager.addItemMetadata(metadata)
