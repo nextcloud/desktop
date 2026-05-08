@@ -37,6 +37,7 @@ AbstractButton {
             source: model.avatar !== "" ? model.avatar : Style.darkMode ? "image://avatars/fallbackWhite" : "image://avatars/fallbackBlack"
             Layout.preferredHeight: Style.accountAvatarSize
             Layout.preferredWidth: Style.accountAvatarSize
+            asynchronous: true
 
             Rectangle {
                 id: accountStatusIndicatorBackground

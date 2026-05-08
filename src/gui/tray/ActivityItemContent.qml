@@ -60,6 +60,7 @@ RowLayout {
                     fillMode: Image.PreserveAspectFit
                     source: model.thumbnail.source
                     visible: false
+                    asynchronous: true
                     sourceSize.height: 64
                     sourceSize.width: 64
                 }
