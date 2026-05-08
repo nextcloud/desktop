@@ -136,6 +136,82 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(createdItem.isUploaded)
     }
 
+    /// Pre-flight quota gate: when the parent's `quotaAvailableBytes` is below the local
+    /// file size, refuse the upload up-front with `.insufficientQuota` and never call
+    /// the remote upload endpoint. See nextcloud/desktop#9598.
+    func testCreateFileBlockedByInsufficientQuota() async throws {
+        rootItem.quotaAvailableBytes = 4 // less than the file we're about to upload
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        var fileItemMetadata = SendableItemMetadata(
+            ocId: "file-id", fileName: "file", account: Self.account
+        )
+        fileItemMetadata.classFile = NKTypeClassFile.document.rawValue
+
+        let tempUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("quota-blocked-create")
+        try Data("Hello world".utf8).write(to: tempUrl) // 11 bytes > 4 bytes available
+
+        let fileItemTemplate = Item(
+            metadata: fileItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let (createdItem, error) = await Item.create(
+            basedOn: fileItemTemplate,
+            contents: tempUrl,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertNil(createdItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .insufficientQuota)
+        // No upload was attempted: the file did not appear under the remote root.
+        XCTAssertNil(rootItem.children.first { $0.name == fileItemMetadata.fileName })
+    }
+
+    /// Negative `quotaAvailableBytes` (the default for accounts with no quota set) must
+    /// not trigger the new pre-flight gate; the upload proceeds normally.
+    func testCreateFileWithUnknownQuotaProceeds() async throws {
+        XCTAssertEqual(rootItem.quotaAvailableBytes, -1) // default sentinel
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        var fileItemMetadata = SendableItemMetadata(
+            ocId: "file-id", fileName: "file-no-quota", account: Self.account
+        )
+        fileItemMetadata.classFile = NKTypeClassFile.document.rawValue
+
+        let tempUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("quota-unknown-create")
+        try Data("Hello world".utf8).write(to: tempUrl)
+
+        let fileItemTemplate = Item(
+            metadata: fileItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let (createdItemMaybe, error) = await Item.create(
+            basedOn: fileItemTemplate,
+            contents: tempUrl,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertNil(error)
+        let createdItem = try XCTUnwrap(createdItemMaybe)
+        XCTAssertNotNil(rootItem.children.first { $0.identifier == createdItem.itemIdentifier.rawValue })
+    }
+
     func testCreateFileIntoFolder() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
