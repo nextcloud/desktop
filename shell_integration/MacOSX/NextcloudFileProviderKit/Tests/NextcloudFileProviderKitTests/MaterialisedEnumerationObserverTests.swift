@@ -131,7 +131,7 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
 
             let finalDirD = dbManager.itemMetadata(ocId: "dirD")
             XCTAssertFalse(
-                finalDirD?.visitedDirectory ?? true, "dirD should now be marked as not visited."
+                finalDirD?.visitedDirectory ?? false, "dirD should be marked as visited."
             )
 
             expect.fulfill()
