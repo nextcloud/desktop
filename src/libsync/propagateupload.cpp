@@ -57,6 +57,8 @@ void PUTFileJob::start()
 
     req.setPriority(QNetworkRequest::LowPriority); // Long uploads must not block non-propagation jobs.
 
+    enableStallDetection();
+
     auto requestID = QByteArray{};
 
     if (_url.isValid()) {
