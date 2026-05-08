@@ -109,6 +109,19 @@ public:
     /// Returns a standardised error message in case of HSTS errors
     [[nodiscard]] static std::optional<QString> hstsErrorStringFromReply(QNetworkReply *reply);
 
+public:
+    /**
+     * Enables per-job stall detection for uploads and downloads.
+     *
+     * Once enabled, a timer is started when the job begins transferring data.
+     * The timer is reset whenever progress is made. If no bytes are transferred
+     * within @p timeoutMs milliseconds, the transferStalled() signal is emitted
+     * and the reply is aborted.
+     *
+     * Call this from a subclass's start() before invoking sendRequest().
+     */
+    void enableStallDetection(int timeoutMs = 30 * 1000);
+
 public Q_SLOTS:
     void setTimeout(qint64 msec);
 Q_SIGNALS:
@@ -118,6 +131,12 @@ Q_SIGNALS:
      */
     void networkError(QNetworkReply *reply);
     void networkActivity();
+
+    /**
+     * Emitted when stall detection is active and no bytes have been transferred
+     * within the configured timeout. The reply is aborted immediately after.
+     */
+    void transferStalled();
 
     /** Emitted when a redirect is followed.
      *
@@ -219,6 +238,10 @@ private:
     //
     // Reparented to the currently running QNetworkReply.
     QPointer<QIODevice> _requestBody;
+
+    QTimer _stallTimer;
+    qint64 _lastTransferBytes = -1;
+    bool _stallDetectionEnabled = false;
 };
 
 /** Gets the SabreDAV-style error message from an error response.
