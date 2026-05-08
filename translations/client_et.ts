@@ -1886,23 +1886,23 @@ Samuti katkevad kõik hetkel toimivad sünkroniseerimised.</translation>
         <translation>Palun proovi uuesti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="521"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="522"/>
         <source>File %1 already locked.</source>
         <translation>%1 fail on juba lukustatud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="522"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="533"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="523"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="534"/>
         <source>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</source>
         <translation>Sinu seadistatud lukustus kestab %1 minutit. Kui jõuad muutmise varem lõpetada, siis  saad lukustuase ka käsitsi eemaldada.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="532"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="533"/>
         <source>File %1 now locked.</source>
         <translation>„%1“ fail on nüüd lukustatud</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="541"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="542"/>
         <source>File %1 could not be locked.</source>
         <translation>„%1“ faili lukustamine ei õnnestunud.</translation>
     </message>
@@ -5800,7 +5800,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="632"/>
         <source>“%1” was not synchronized</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ jäi sünkroonimata</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="657"/>
@@ -6535,7 +6535,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="493"/>
         <source>We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.</source>
-        <translation>Sinu tehtud päringu töötlemine polnud võimalik. Proovi uuesti andmeid uuesti hiljem sünkroonida. Kui probleem kordub, siis võta ühendust oma serveri haldajaga.</translation>
+        <translation>Sinu tehtud päringu töötlemine polnud võimalik. Proovi andmeid hiljem uuesti sünkroonida. Kui probleem kordub, siis võta ühendust oma serveri haldajaga.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="496"/>
