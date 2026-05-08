@@ -130,7 +130,7 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
             XCTAssertTrue(finalItemC?.downloaded ?? false, "itemC should remain downloaded.")
 
             let finalDirD = dbManager.itemMetadata(ocId: "dirD")
-            XCTAssertFalse(
+            XCTAssertTrue(
                 finalDirD?.visitedDirectory ?? false, "dirD should be marked as visited."
             )
 
