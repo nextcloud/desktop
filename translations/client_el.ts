@@ -1886,23 +1886,23 @@ This action will abort any currently running synchronization.</source>
         <translation>Παρακαλώ δοκιμάστε ξανά.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="521"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="522"/>
         <source>File %1 already locked.</source>
         <translation>Το αρχείο %1 είναι ήδη κλειδωμένο.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="522"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="533"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="523"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="534"/>
         <source>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</source>
         <translation>Το κλείδωμα θα διαρκέσει για %1 λεπτά. Μπορείτε επίσης να ξεκλειδώσετε αυτό το αρχείο χειροκίνητα μόλις ολοκληρώσετε την επεξεργασία.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="532"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="533"/>
         <source>File %1 now locked.</source>
         <translation>Το αρχείο %1 είναι τώρα κλειδωμένο.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="541"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="542"/>
         <source>File %1 could not be locked.</source>
         <translation>Το αρχείο %1 δεν μπόρεσε να κλειδωθεί.</translation>
     </message>
@@ -5780,6 +5780,11 @@ Server replied with error: %2</source>
         <translation><numerusform>%n ειδοποίηση</numerusform><numerusform>%n ειδοποιήσεις</numerusform></translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="632"/>
+        <source>“%1” was not synchronized</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="657"/>
         <source>Retry all uploads</source>
         <translation>Επανάληψη όλων των μεταφορτώσεων</translation>
@@ -5834,7 +5839,7 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1529"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1576"/>
         <source>Sending your request …</source>
         <translation type="unfinished"/>
     </message>

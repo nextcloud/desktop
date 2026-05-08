@@ -55,6 +55,14 @@
 			</dict>
 			<dict>
 				<key>NSExtensionFileProviderActionActivationRule</key>
+				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayEvict == true ).@count &gt; 0</string>
+				<key>NSExtensionFileProviderActionIdentifier</key>
+				<string>com.nextcloud.desktopclient.FileProviderExt.EvictAction</string>
+				<key>NSExtensionFileProviderActionName</key>
+				<string>Remove download</string>
+			</dict>
+			<dict>
+				<key>NSExtensionFileProviderActionActivationRule</key>
 				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayFileActions == true ).@count &gt; 0</string>
 				<key>NSExtensionFileProviderActionIdentifier</key>
 				<string>com.nextcloud.desktopclient.FileProviderExt.FileActionsAction</string>
@@ -62,6 +70,10 @@
 				<string>File actions</string>
 			</dict>
 		</array>
+		<key>NSExtensionFileProviderAllowsContextualMenuDownloadEntry</key>
+		<false/>
+		<key>NSExtensionFileProviderAllowsUserControlledEviction</key>
+		<false/>
 		<key>NSExtensionFileProviderDocumentGroup</key>
 		<string>$(DEVELOPMENT_TEAM).$(OC_APPLICATION_REV_DOMAIN)</string>
 		<key>NSExtensionFileProviderSupportsEnumeration</key>

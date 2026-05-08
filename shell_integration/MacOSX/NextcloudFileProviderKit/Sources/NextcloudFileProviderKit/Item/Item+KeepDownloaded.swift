@@ -28,15 +28,11 @@ public extension Item {
         _ = try dbManager.set(keepDownloaded: keepDownloaded, for: metadata)
 
         guard let manager = NSFileProviderManager(for: domain) else {
-            if #available(iOS 17.1, macOS 14.1, *) {
+            if #available(macOS 14.1, *) {
                 throw NSFileProviderError(.providerDomainNotFound)
             } else {
                 let providerDomainNotFoundErrorCode = -2013
-                throw NSError(
-                    domain: NSFileProviderErrorDomain,
-                    code: providerDomainNotFoundErrorCode,
-                    userInfo: [NSLocalizedDescriptionKey: "Failed to get manager for domain."]
-                )
+                throw NSError(domain: NSFileProviderErrorDomain, code: providerDomainNotFoundErrorCode, userInfo: [NSLocalizedDescriptionKey: "Failed to get manager for domain."])
             }
         }
 
@@ -53,13 +49,17 @@ public extension Item {
             try await enumerateSubtreeBreadthFirst(domain: domain)
         }
 
-        try await signalKeepDownloaded(
-            keepDownloaded: keepDownloaded,
-            identifier: itemIdentifier,
-            isDirectory: metadata.directory,
-            isDownloaded: isDownloaded,
-            manager: manager
-        )
+        try await signalKeepDownloaded(keepDownloaded: keepDownloaded, identifier: itemIdentifier, isDirectory: metadata.directory, isDownloaded: isDownloaded, manager: manager)
+
+        // When disabling, fragment the chain of pinned ancestors above this
+        // item so the unpin actually takes effect against
+        // `.downloadEagerlyAndKeepDownloaded` inheritance (#9891). Siblings at
+        // every level retain their pin via the flag already set on them by
+        // the original recursive enable; we only need to flip the path
+        // ancestors themselves to `.inherited`.
+        if !keepDownloaded {
+            try await fragmentPathToRoot(manager: manager)
+        }
 
         guard metadata.directory else { return }
 
@@ -103,20 +103,132 @@ public extension Item {
     /// already-downloaded files, and the disable path — just bump
     /// `lastUsedDate` so the framework re-evaluates eviction/pin state.
     ///
-    private func signalKeepDownloaded(
-        keepDownloaded: Bool,
-        identifier: NSFileProviderItemIdentifier,
-        isDirectory: Bool,
-        isDownloaded: Bool,
-        manager: NSFileProviderManager
-    ) async throws {
+    private func signalKeepDownloaded(keepDownloaded: Bool, identifier: NSFileProviderItemIdentifier, isDirectory: Bool, isDownloaded: Bool, manager: NSFileProviderManager) async throws {
         if keepDownloaded, !isDirectory, !isDownloaded {
             try await manager.requestDownloadForItem(withIdentifier: identifier)
         } else {
-            try await manager.requestModification(
-                of: [.lastUsedDate], forItemWithIdentifier: identifier
-            )
+            try await manager.requestModification(of: [.lastUsedDate], forItemWithIdentifier: identifier)
         }
+    }
+
+    ///
+    /// Walk the parent chain of this item, flipping every pinned ancestor's
+    /// keep-downloaded flag to `false` so its `contentPolicy` reverts from
+    /// `.downloadEagerlyAndKeepDownloaded` to `.inherited`.
+    ///
+    /// Why: the framework refuses `evictItem` on items whose effective
+    /// content policy is `.downloadEagerlyAndKeepDownloaded`, and that policy
+    /// inherits down the tree. Recursive "Always keep downloaded" sets the
+    /// strict policy on every ancestor; unpinning a deep descendant
+    /// in isolation leaves the descendant's `keepDownloaded == false` but its
+    /// effective policy unchanged because some ancestor still resolves to the
+    /// strict value. To actually free the descendant we have to cut the
+    /// ancestors out of the strict-pin chain. Siblings at each level retain
+    /// their pin via the flag already set on them by the original recursive
+    /// enable, so no sibling write is needed (#9891).
+    ///
+    /// The walk stops at the first ancestor that is not pinned; if no pinned
+    /// ancestor exists, this is a no-op (the unpin gesture targets the pin
+    /// root itself or there was no pin tree).
+    ///
+    private func fragmentPathToRoot(manager: NSFileProviderManager) async throws {
+        let outcome = fragmentPathToRootInDatabase()
+
+        // Cousins newly transitioned from `.inherited` (under a strict-pinned
+        // ancestor) to an explicit pin must be told to the framework so it
+        // refreshes their `contentPolicy` to `.downloadEagerlyAndKeepDownloaded`
+        // — otherwise the unpin of the path ancestors would silently take
+        // them down with the path.
+        for cousin in outcome.newlyPinnedCousins {
+            do {
+                try await signalKeepDownloaded(keepDownloaded: true, identifier: NSFileProviderItemIdentifier(cousin.ocId), isDirectory: cousin.directory, isDownloaded: cousin.downloaded, manager: manager)
+            } catch {
+                logger.error("Could not signal newly-pinned cousin during unpin-path fragmentation.", [.item: cousin.ocId, .name: cousin.fileName, .error: error])
+            }
+        }
+
+        // Apply ancestor flips top-down (pin root first). Order does not affect
+        // correctness — each ancestor is independent — but matches the
+        // conceptual order of "cut from the top of the strict-pin chain
+        // downward".
+        for ancestor in outcome.unpinnedAncestors.reversed() {
+            do {
+                try await signalKeepDownloaded(keepDownloaded: false, identifier: NSFileProviderItemIdentifier(ancestor.ocId), isDirectory: ancestor.directory, isDownloaded: ancestor.downloaded, manager: manager)
+            } catch {
+                logger.error("Could not signal fragmented ancestor unpin to framework.", [.item: ancestor.ocId, .name: ancestor.fileName, .error: error])
+            }
+        }
+    }
+
+    ///
+    /// Outcome of a database-only fragmentation walk.
+    ///
+    /// `unpinnedAncestors` are listed bottom-up (immediate parent first, pin
+    /// root last) — the order in which the walk discovered them. Callers that
+    /// signal the framework should emit the unpin events top-down to mirror
+    /// the conceptual "cut from the top of the strict-pin chain downward".
+    ///
+    internal struct FragmentationOutcome {
+        let unpinnedAncestors: [SendableItemMetadata]
+        let newlyPinnedCousins: [SendableItemMetadata]
+    }
+
+    ///
+    /// Database-only counterpart to ``fragmentPathToRoot(manager:)``.
+    /// Walks parents, pins every off-path immediate child ("cousin") that
+    /// isn't already pinned, then flips every pinned ancestor's flag to
+    /// `false`. The framework-side signaling is the caller's job.
+    ///
+    /// Why pin cousins explicitly instead of trusting the original recursive
+    /// enable: the recursive enable runs once at pin time and only sees
+    /// items the database knew about then. Items discovered later — e.g. a
+    /// new server-side sibling surfaced by enumeration — enter with
+    /// `keepDownloaded == false`. Without this explicit re-pin those cousins
+    /// would silently lose their pin when the path ancestors flip to
+    /// `.inherited` (#9891).
+    ///
+    /// Exposed at module scope so tests can verify the flag mutations
+    /// without needing a registered file provider domain.
+    ///
+    internal func fragmentPathToRootInDatabase() -> FragmentationOutcome {
+        // (ancestor, ocId of the child along the path) bottom-up.
+        var pinnedAncestorsAndPathChildren: [(ancestor: SendableItemMetadata, pathChildOcId: String)] = []
+        var cursor = metadata
+
+        while let parent = dbManager.parentDirectoryMetadataForItem(cursor) {
+            guard parent.keepDownloaded else {
+                break
+            }
+
+            pinnedAncestorsAndPathChildren.append((ancestor: parent, pathChildOcId: cursor.ocId))
+            cursor = parent
+        }
+
+        var newlyPinnedCousins: [SendableItemMetadata] = []
+
+        for (ancestor, pathChildOcId) in pinnedAncestorsAndPathChildren {
+            // Pin every immediate child of this ancestor except the one along
+            // the path. Cousins already flagged are skipped to avoid noisy
+            // DB writes (and noisy framework signals downstream).
+            for cousin in dbManager.immediateChildItems(directoryMetadata: ancestor) where cousin.ocId != pathChildOcId && !cousin.keepDownloaded {
+                do {
+                    _ = try dbManager.set(keepDownloaded: true, for: cousin)
+                    newlyPinnedCousins.append(cousin)
+                } catch {
+                    logger.error("Could not pin off-path sibling while fragmenting unpin path.", [.item: cousin.ocId, .name: cousin.fileName, .error: error])
+                }
+            }
+
+            // Then flip the ancestor itself.
+            do {
+                _ = try dbManager.set(keepDownloaded: false, for: ancestor)
+            } catch {
+                logger.error("Could not clear keep-downloaded on ancestor while fragmenting unpin path.", [.item: ancestor.ocId, .name: ancestor.fileName, .error: error])
+                continue
+            }
+        }
+
+        return FragmentationOutcome(unpinnedAncestors: pinnedAncestorsAndPathChildren.map(\.ancestor), newlyPinnedCousins: newlyPinnedCousins)
     }
 
     ///
@@ -153,20 +265,12 @@ public extension Item {
 
             if let readError, readError != .success {
                 if isTopLevel {
-                    logger.error(
-                        "Could not enumerate directory for keep-downloaded.",
-                        [.name: metadata.fileName, .url: remoteDirectoryPath, .error: readError]
-                    )
-                    throw readError.fileProviderError(
-                        handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier
-                    ) ?? NSFileProviderError(.cannotSynchronize)
+                    logger.error("Could not enumerate directory for keep-downloaded.", [.name: metadata.fileName, .url: remoteDirectoryPath, .error: readError])
+                    throw readError.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier) ?? NSFileProviderError(.cannotSynchronize)
                 } else {
                     // A single failing descendant must not abort the whole
                     // subtree — log and skip the rest of this branch.
-                    logger.error(
-                        "Could not enumerate descendant directory for keep-downloaded; skipping branch.",
-                        [.url: remoteDirectoryPath, .error: readError]
-                    )
+                    logger.error("Could not enumerate descendant directory for keep-downloaded; skipping branch.", [.url: remoteDirectoryPath, .error: readError])
                     isTopLevel = false
                     continue
                 }

@@ -21,6 +21,19 @@ public extension FilesDatabaseManager {
             .toUnmanagedResults()
     }
 
+    ///
+    /// Immediate children of a directory — i.e. items whose parent ``serverUrl``
+    /// equals the directory's full path. Unlike ``childItems(directoryMetadata:)``
+    /// this does not recurse into descendants.
+    ///
+    func immediateChildItems(directoryMetadata: SendableItemMetadata) -> [SendableItemMetadata] {
+        let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
+
+        return itemMetadatas
+            .where { $0.serverUrl == directoryServerUrl }
+            .toUnmanagedResults()
+    }
+
     func childItemCount(directoryMetadata: SendableItemMetadata) -> Int {
         let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
         return itemMetadatas
