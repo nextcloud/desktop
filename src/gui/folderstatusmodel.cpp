@@ -5,6 +5,7 @@
  */
 
 #include "folderstatusmodel.h"
+#include "whitelabeltheme.h"
 #include "accountstate.h"
 #include "common/asserts.h"
 #include "common/utility.h"
@@ -286,17 +287,17 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         const auto status  = result.status();
 
         if (folder->syncPaused()) {
-            return theme->folderStateIcon(SyncResult::Paused);
+            return QIcon(WLTheme.syncPausedIcon("cpp"));
         }
 
         if (status == SyncResult::SyncPrepare || status == SyncResult::Undefined) {
-            return theme->folderStateIcon(SyncResult::SyncRunning);
+            return QIcon(WLTheme.syncSyncingIcon("cpp"));
         }
 
         if (status == SyncResult::Success || status == SyncResult::Problem) {
-            return theme->folderStateIcon(result.hasUnresolvedConflicts()
-                ? SyncResult::Problem
-                : SyncResult::Success);
+            return result.hasUnresolvedConflicts()
+                ? QIcon(WLTheme.syncWarningIcon("cpp"))
+                : QIcon(WLTheme.syncSuccessIcon("cpp"));
         }
 
         return theme->folderStateIcon(status);

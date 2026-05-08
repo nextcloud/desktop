@@ -226,14 +226,14 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         if (a._type == Activity::NotificationType && !a._talkNotificationData.userAvatar.isEmpty()) {
             return QStringLiteral("image://svgimage-custom-color/talk-bordered.svg");
         } else if (a._type == Activity::SyncResultType) {
-            colorIconPath.append("state-ok.svg");
+            colorIconPath = WLTheme.syncSuccessIcon();
             return colorIconPath;
         } else if (a._type == Activity::SyncFileItemType) {
             if (a._syncFileItemStatus == SyncFileItem::NormalError
                 || a._syncFileItemStatus == SyncFileItem::FatalError
                 || a._syncFileItemStatus == SyncFileItem::DetailError
                 || a._syncFileItemStatus == SyncFileItem::BlacklistedError) {
-                colorIconPath.append("state-error.svg");
+                colorIconPath = WLTheme.syncErrorIcon();
                 return colorIconPath;
             } else if (a._syncFileItemStatus == SyncFileItem::SoftError
                 || a._syncFileItemStatus == SyncFileItem::Conflict
@@ -242,7 +242,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                 || a._syncFileItemStatus == SyncFileItem::FileNameInvalid
                 || a._syncFileItemStatus == SyncFileItem::FileNameInvalidOnServer
                 || a._syncFileItemStatus == SyncFileItem::FileNameClash) {
-                colorIconPath.append("state-warning.svg");
+                colorIconPath = WLTheme.syncWarningIcon();
                 return colorIconPath;
             } else if (a._syncFileItemStatus == SyncFileItem::FileIgnored) {
                 colorIconPath = WLTheme.infoIcon();
