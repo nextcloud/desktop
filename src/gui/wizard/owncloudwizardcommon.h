@@ -41,6 +41,7 @@ namespace WizardCommon {
 #ifdef WITH_WEBENGINE
         Page_WebView,
 #endif // WITH_WEBENGINE
+        Page_ProviderSignup,
         Page_TermsOfService,
         Page_AdvancedSetup,
     };

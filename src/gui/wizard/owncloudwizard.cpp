@@ -22,6 +22,7 @@
 #include "wizard/owncloudadvancedsetuppage.h"
 #include "wizard/webviewpage.h"
 #include "wizard/flow2authcredspage.h"
+#include "wizard/providersignuppage.h"
 
 #include "common/vfs.h"
 
@@ -49,6 +50,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     , _setupPage(new OwncloudSetupPage(this))
     , _httpCredsPage(new OwncloudHttpCredsPage(this))
     , _flow2CredsPage(new Flow2AuthCredsPage)
+    , _providerSignupPage(new ProviderSignupPage)
     , _termsOfServicePage(new TermsOfServiceWizardPage)
     , _advancedSetupPage(new OwncloudAdvancedSetupPage(this))
 #ifdef WITH_WEBENGINE
@@ -68,6 +70,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setPage(WizardCommon::Page_ServerSetup, _setupPage);
     setPage(WizardCommon::Page_HttpCreds, _httpCredsPage);
     setPage(WizardCommon::Page_Flow2AuthCreds, _flow2CredsPage);
+    setPage(WizardCommon::Page_ProviderSignup, _providerSignupPage);
     setPage(WizardCommon::Page_TermsOfService, _termsOfServicePage);
     setPage(WizardCommon::Page_AdvancedSetup, _advancedSetupPage);
 #ifdef WITH_WEBENGINE
@@ -118,6 +121,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     connect(this, &OwncloudWizard::styleChanged, _setupPage, &OwncloudSetupPage::slotStyleChanged);
     connect(this, &OwncloudWizard::styleChanged, _advancedSetupPage, &OwncloudAdvancedSetupPage::slotStyleChanged);
     connect(this, &OwncloudWizard::styleChanged, _flow2CredsPage, &Flow2AuthCredsPage::slotStyleChanged);
+    connect(this, &OwncloudWizard::styleChanged, _providerSignupPage, &ProviderSignupPage::slotStyleChanged);
     connect(this, &OwncloudWizard::styleChanged, _termsOfServicePage, &TermsOfServiceWizardPage::styleChanged);
 
     customizeStyle();
@@ -276,6 +280,9 @@ void OwncloudWizard::successfulStep()
         _flow2CredsPage->setConnected();
         break;
 
+    case WizardCommon::Page_ProviderSignup:
+        break;
+
 #ifdef WITH_WEBENGINE
     case WizardCommon::Page_WebView:
         if (!this->useFlow2()) {
@@ -361,6 +368,7 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
 #ifdef WITH_WEBENGINE
         id == WizardCommon::Page_WebView ||
 #endif // WITH_WEBENGINE
+        id == WizardCommon::Page_ProviderSignup ||
         id == WizardCommon::Page_Flow2AuthCreds ||
         id == WizardCommon::Page_TermsOfService) {
         setButtonLayout({QWizard::BackButton, QWizard::Stretch});
@@ -395,6 +403,7 @@ void OwncloudWizard::displayError(const QString &msg, bool retryHTTPonly)
     switch (static_cast<WizardCommon::Pages>(currentId())) {
     case WizardCommon::Page_Welcome:
     case WizardCommon::Page_Flow2AuthCreds:
+    case WizardCommon::Page_ProviderSignup:
 #ifdef WITH_WEBENGINE
     case WizardCommon::Page_WebView:
 #endif // WITH_WEBENGINE

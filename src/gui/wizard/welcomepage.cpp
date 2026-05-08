@@ -76,6 +76,7 @@ void WelcomePage::setupSlideShow()
 void WelcomePage::setupLoginButton()
 {
     connect(_ui->loginButton, &QPushButton::clicked, this, [this](bool /*checked*/) {
+        _ocWizard->setRegistration(false);
         _nextPage = WizardCommon::Page_ServerSetup;
         _ocWizard->next();
     });
@@ -83,18 +84,11 @@ void WelcomePage::setupLoginButton()
 
 void WelcomePage::setupCreateAccountButton()
 {
-#ifdef WITH_WEBENGINE
     connect(_ui->createAccountButton, &QPushButton::clicked, this, [this](bool /*checked*/) {
         _ocWizard->setRegistration(true);
-        _nextPage = WizardCommon::Page_WebView;
-        _ocWizard->setAuthType(OCC::DetermineAuthTypeJob::WebViewFlow);
+        _nextPage = WizardCommon::Page_ProviderSignup;
+        _ocWizard->next();
     });
-#else // WITH_WEBENGINE
-    connect(_ui->createAccountButton, &QPushButton::clicked, this, [this](bool /*checked*/) {
-        _ocWizard->setRegistration(true);
-        Utility::openBrowser(QStringLiteral("https://nextcloud.com/register"));
-    });
-#endif // WITH_WEBENGINE
 }
 
 void WelcomePage::setupHostYourOwnServerLabel()

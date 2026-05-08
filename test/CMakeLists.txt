@@ -164,6 +164,7 @@ endif()
 nextcloud_add_test(NetworkSettings)
 nextcloud_add_test(UpdateChannel)
 nextcloud_add_test(FileActionsModel)
+nextcloud_add_test(UriSchemeHandler)
 
 configure_file(test_journal.db "${PROJECT_BINARY_DIR}/bin/test_journal.db" COPYONLY)
 

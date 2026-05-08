@@ -166,6 +166,8 @@ set(client_SRCS
     proxyauthdialog.cpp
     tooltipupdater.h
     tooltipupdater.cpp
+    urischemehandler.h
+    urischemehandler.cpp
     notificationconfirmjob.h
     notificationconfirmjob.cpp
     guiutility.h
@@ -237,6 +239,8 @@ set(client_SRCS
     wizard/flow2authcredspage.cpp
     wizard/flow2authwidget.h
     wizard/flow2authwidget.cpp
+    wizard/providersignuppage.h
+    wizard/providersignuppage.cpp
     wizard/owncloudsetuppage.h
     wizard/owncloudsetuppage.cpp
     wizard/termsofservicecheckwidget.h

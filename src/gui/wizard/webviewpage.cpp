@@ -37,12 +37,7 @@ void WebViewPage::initializePage() {
     //QNetworkProxy::setApplicationProxy(QNetworkProxy::applicationProxy());
     initializeWebView();
 
-    QString url;
-    if (_ocWizard->registration()) {
-        url = "https://nextcloud.com/register";
-    } else {
-        url = Utility::trailingSlashPath(_ocWizard->ocUrl()) + "index.php/login/flow";
-    }
+    const auto url = Utility::trailingSlashPath(_ocWizard->ocUrl()) + "index.php/login/flow";
     qCInfo(lcWizardWebiewPage()) << "Url to auth at: " << url;
     _webView->setUrl(QUrl(url));
 
