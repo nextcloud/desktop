@@ -279,7 +279,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     }
     case FolderStatusDelegate::FolderStatusIconRole: {
         if (!accountConnected) {
-            return Theme::instance()->folderStateIcon(SyncResult::SetupError);
+            return Theme::instance()->syncStateIcon(SyncResult::SetupError);
         }
 
         const auto theme   = Theme::instance();
@@ -287,20 +287,20 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         const auto status  = result.status();
 
         if (folder->syncPaused()) {
-            return QIcon(WLTheme.syncPausedIcon("cpp"));
+            return theme->syncStateIcon(SyncResult::Paused);
         }
 
         if (status == SyncResult::SyncPrepare || status == SyncResult::Undefined) {
-            return QIcon(WLTheme.syncSyncingIcon("cpp"));
+            return theme->syncStateIcon(SyncResult::SyncRunning);
         }
 
         if (status == SyncResult::Success || status == SyncResult::Problem) {
-            return result.hasUnresolvedConflicts()
-                ? QIcon(WLTheme.syncWarningIcon("cpp"))
-                : QIcon(WLTheme.syncSuccessIcon("cpp"));
+            return theme->syncStateIcon(result.hasUnresolvedConflicts()
+                ? SyncResult::Problem
+                : SyncResult::Success);
         }
 
-        return theme->folderStateIcon(status);
+        return theme->syncStateIcon(status);
     }
     case FolderStatusDelegate::SyncProgressItemString:
         // e.g. Syncing fileName1, filename2
