@@ -78,6 +78,7 @@ private:
     QPointer<IgnoreListEditor> _ignoreEditor;
     bool _currentlyLoading = false;
     QStringList _currentUpdateChannelList;
+    QMetaObject::Connection _updateLabelConnection;
 };
 
 

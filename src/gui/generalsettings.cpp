@@ -492,8 +492,8 @@ void GeneralSettings::slotUpdateInfo()
         Theme::replaceLinkColorStringBackgroundAware(status);
 
         _ui->updateStateLabel->setOpenExternalLinks(false);
-        disconnect(_ui->updateStateLabel, &QLabel::linkActivated, nullptr, nullptr);
-        connect(_ui->updateStateLabel, &QLabel::linkActivated, this, [](const QString &link) {
+        disconnect(_updateLabelConnection);
+        _updateLabelConnection = connect(_ui->updateStateLabel, &QLabel::linkActivated, this, [](const QString &link) {
             Utility::openBrowser(QUrl(link));
         });
         _ui->updateStateLabel->setText(status);
