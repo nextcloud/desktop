@@ -472,6 +472,145 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         )
     }
 
+    ///
+    /// Children persisted by a page-0 paginated read must keep their existing
+    /// ``keepDownloaded`` flag. Before the fix for #9923 the bulk write at the
+    /// end of ``Enumerator.handlePagedReadResults`` used ``addItemMetadata``
+    /// which replaces the entire row, silently clearing flags set by a prior
+    /// "Always keep downloaded" enable.
+    ///
+    /// The metadatas returned to the enumeration observer must also reflect
+    /// the preserved state: the framework builds `Item.contentPolicy` from
+    /// `metadata.keepDownloaded` on whatever metadata we hand it, so reporting
+    /// the pre-merge fresh-from-server metadata would leave the OS view of
+    /// pinned descendants stuck on `.inherited` even though the database row
+    /// is correct. (Symptom observed in #9923 for `/Documents/Documenter`.)
+    ///
+    func testHandlePagedReadResultsPreservesKeepDownloadedOnPageZeroChildren() {
+        let dbManager = Self.dbManager
+        debugPrint(dbManager.ncDatabase())
+
+        // Seed two of the upcoming page-0 children as already pinned. The
+        // third stays unseeded so we can also assert the flag does not leak
+        // onto items that never had it.
+        let pinnedChildren = ["pagedChild0", "pagedChild2"]
+        for ocId in pinnedChildren {
+            var seeded = SendableItemMetadata(ocId: ocId, fileName: "\(ocId).txt", account: Self.account)
+            seeded.keepDownloaded = true
+            dbManager.addItemMetadata(seeded)
+        }
+
+        let parentNKFile = remoteFolder.toNKFile()
+        let childrenNKFiles = (0 ..< 3).map { i in
+            MockRemoteItem(
+                identifier: "pagedChild\(i)",
+                name: "pagedChild\(i).txt",
+                remotePath: Self.account.davFilesUrl + "/folder/pagedChild\(i).txt",
+                account: Self.account.ncKitAccount,
+                username: Self.account.username,
+                userId: Self.account.id,
+                serverUrl: Self.account.serverUrl
+            ).toNKFile()
+        }
+
+        let (returnedMetadatas, error) = Enumerator.handlePagedReadResults(
+            files: [parentNKFile] + childrenNKFiles, pageIndex: 0, dbManager: dbManager
+        )
+        XCTAssertNil(error)
+
+        for ocId in pinnedChildren {
+            let stored = dbManager.itemMetadata(ocId: ocId)
+            XCTAssertEqual(
+                stored?.keepDownloaded, true,
+                "Page-0 child \(ocId) must retain keepDownloaded across the paginated write (#9923)."
+            )
+            let returned = returnedMetadatas?.first(where: { $0.ocId == ocId })
+            XCTAssertEqual(
+                returned?.keepDownloaded, true,
+                "Page-0 child \(ocId) reported back to the enumeration observer must also reflect the preserved keepDownloaded — the framework builds contentPolicy from this value."
+            )
+        }
+        XCTAssertEqual(
+            dbManager.itemMetadata(ocId: "pagedChild1")?.keepDownloaded, false,
+            "Children that were never pinned must not gain the flag from the paginated write."
+        )
+    }
+
+    ///
+    /// Same protection on follow-up pages: a paginated read with `pageIndex > 0`
+    /// must not clobber ``keepDownloaded`` on any of its items. This is the
+    /// path most likely to land on already-pinned descendants because the
+    /// recursive enable of "Always keep downloaded" runs without pagination
+    /// while the OS-driven enumeration that follows uses pagination.
+    ///
+    func testHandlePagedReadResultsPreservesKeepDownloadedOnFollowUpPage() {
+        let dbManager = Self.dbManager
+        debugPrint(dbManager.ncDatabase())
+
+        var seeded = SendableItemMetadata(ocId: "pagedChild5", fileName: "pagedChild5.txt", account: Self.account)
+        seeded.keepDownloaded = true
+        dbManager.addItemMetadata(seeded)
+
+        let followUpChildrenNKFiles = (5 ..< 8).map { i in
+            MockRemoteItem(
+                identifier: "pagedChild\(i)",
+                name: "pagedChild\(i).txt",
+                remotePath: Self.account.davFilesUrl + "/folder/pagedChild\(i).txt",
+                account: Self.account.ncKitAccount,
+                username: Self.account.username,
+                userId: Self.account.id,
+                serverUrl: Self.account.serverUrl
+            ).toNKFile()
+        }
+
+        let (returnedMetadatas, error) = Enumerator.handlePagedReadResults(
+            files: followUpChildrenNKFiles, pageIndex: 1, dbManager: dbManager
+        )
+        XCTAssertNil(error)
+
+        XCTAssertEqual(
+            dbManager.itemMetadata(ocId: "pagedChild5")?.keepDownloaded, true,
+            "Follow-up page child must retain keepDownloaded across the paginated write (#9923)."
+        )
+        XCTAssertEqual(
+            returnedMetadatas?.first(where: { $0.ocId == "pagedChild5" })?.keepDownloaded, true,
+            "Follow-up page child reported back to the enumeration observer must also reflect the preserved keepDownloaded."
+        )
+    }
+
+    ///
+    /// The page-0 target directory must continue to be marked as visited
+    /// after the preservation refactor — the original inline path applied
+    /// `visitedDirectory = true` unconditionally, and that behaviour must
+    /// survive even when a previous DB row carries `visitedDirectory = false`.
+    /// Previously-set ``keepDownloaded`` on the directory must also survive.
+    ///
+    func testHandlePagedReadResultsTargetDirectoryRecordsVisitAndKeepsKeepDownloaded() {
+        let dbManager = Self.dbManager
+        debugPrint(dbManager.ncDatabase())
+
+        var seeded = remoteFolder.toItemMetadata(account: Self.account)
+        seeded.keepDownloaded = true
+        seeded.visitedDirectory = false
+        dbManager.addItemMetadata(seeded)
+
+        let parentNKFile = remoteFolder.toNKFile()
+        let (_, error) = Enumerator.handlePagedReadResults(
+            files: [parentNKFile], pageIndex: 0, dbManager: dbManager
+        )
+        XCTAssertNil(error)
+
+        let stored = dbManager.itemMetadata(ocId: parentNKFile.ocId)
+        XCTAssertEqual(
+            stored?.visitedDirectory, true,
+            "Page-0 target directory must be flagged as visited by the current request."
+        )
+        XCTAssertEqual(
+            stored?.keepDownloaded, true,
+            "Page-0 target directory must retain its existing keepDownloaded flag."
+        )
+    }
+
     func testWorkingSetEnumerateChanges() async throws {
         // This test verifies that `enumerateChanges` for the working set correctly
         // queries the local database for changes since the provided sync anchor date.

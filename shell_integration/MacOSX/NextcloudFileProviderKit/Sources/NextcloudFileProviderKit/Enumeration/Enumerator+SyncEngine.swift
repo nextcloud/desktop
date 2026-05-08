@@ -15,17 +15,35 @@ extension Enumerator {
         if pageIndex == 0 {
             guard let firstFile = files.first else { return (nil, .invalidResponseError) }
             var metadata = firstFile.toItemMetadata()
+
             if metadata.directory {
+                // Mark the directory as visited in this request, then persist
+                // while preserving the rest of the local-only state. Skip
+                // preservation of `visitedDirectory` so the just-set `true`
+                // is not overwritten by the existing row's value.
                 metadata.visitedDirectory = true
-                if let existingMetadata = dbManager.itemMetadata(ocId: metadata.ocId) {
-                    metadata.downloaded = existingMetadata.downloaded
-                    metadata.keepDownloaded = existingMetadata.keepDownloaded
-                }
+                dbManager.addItemMetadataPreservingLocalState(metadata, preserveVisitedDirectory: false)
+            } else {
+                dbManager.addItemMetadataPreservingLocalState(metadata)
             }
-            dbManager.addItemMetadata(metadata)
         }
-        let metadatas = files[startIndex...].map { $0.toItemMetadata() }
-        metadatas.forEach { dbManager.addItemMetadata($0) }
+        
+        // Persist children — including those on follow-up pages — while
+        // carrying over any local-only state previously set on existing rows
+        // (e.g. `keepDownloaded` from a recursive "Always keep downloaded"
+        // enable). A plain `addItemMetadata` would clobber those flags via
+        // Realm's `update: .all`, which is the root cause of #9923.
+        //
+        // Use the merged metadata returned by the helper for both the DB
+        // write and the value reported back to the framework. Returning the
+        // pre-merge fresh-from-server metadata would tell the framework
+        // `keepDownloaded == false` for items that are pinned in the
+        // database, leaving the OS view (`isKeepDownloaded`, `contentPolicy`)
+        // out of sync with the local truth.
+        let metadatas = files[startIndex...].map { file -> SendableItemMetadata in
+            dbManager.addItemMetadataPreservingLocalState(file.toItemMetadata())
+        }
+
         return (metadatas, nil)
     }
 

@@ -448,6 +448,52 @@ public final class FilesDatabaseManager: Sendable {
     }
 
     ///
+    /// Add or replace `metadata` while carrying over local-only fields the
+    /// server payload cannot know about: ``keepDownloaded``, ``downloaded``,
+    /// ``visitedDirectory``, and ``lockToken``.
+    ///
+    /// Mirrors the preservation set applied by
+    /// ``processItemMetadatasToUpdate`` for non-paginated reads. Use this from
+    /// any code path that ingests fresh PROPFIND results (e.g. paginated
+    /// enumeration); plain ``addItemMetadata(_:)`` would otherwise overwrite
+    /// these fields back to their defaults via Realm's `update: .all`,
+    /// silently undoing user-visible state such as "Always keep downloaded"
+    /// (#9923).
+    ///
+    /// Returns the merged metadata that was persisted. Callers that report
+    /// items back to the file-provider framework MUST forward the returned
+    /// value rather than the input — otherwise the framework receives the
+    /// pre-merge defaults and renders the item as if the local-only state
+    /// (e.g. pinned-via-keep-downloaded) had been cleared.
+    ///
+    /// - Parameters:
+    ///   - metadata: The freshly-built metadata to persist.
+    ///   - preserveVisitedDirectory: When `false`, do not carry over
+    ///     ``visitedDirectory`` from the existing row. Callers that have just
+    ///     visited the directory in the current request should pass `false`
+    ///     and pre-set `metadata.visitedDirectory = true`, so the visit is
+    ///     recorded rather than overwritten by a stale `false` from the DB.
+    ///
+    @discardableResult
+    public func addItemMetadataPreservingLocalState(_ metadata: SendableItemMetadata, preserveVisitedDirectory: Bool = true) -> SendableItemMetadata {
+        var toWrite = metadata
+
+        if let existing = itemMetadatas.where({ $0.ocId == metadata.ocId }).first {
+            toWrite.downloaded = existing.downloaded
+            toWrite.keepDownloaded = existing.keepDownloaded
+
+            if preserveVisitedDirectory {
+                toWrite.visitedDirectory = existing.visitedDirectory
+            }
+
+            toWrite.lockToken = existing.lockToken
+        }
+
+        addItemMetadata(toWrite)
+        return toWrite
+    }
+
+    ///
     /// Mark an item as deleted.
     ///
     /// This is a soft delete and does not actually delete data for which there is ``removeItemMetadata(ocId:)``.
