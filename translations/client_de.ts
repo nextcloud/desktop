@@ -382,7 +382,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose …</source>
-        <translation>&amp;Wählen …</translation>
+        <translation>&amp;Wählen …</translation>
     </message>
 </context>
 <context>
@@ -1173,7 +1173,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse …</source>
-        <translation>Durchsuchen …</translation>
+        <translation>Durchsuchen …</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="28"/>
@@ -2343,7 +2343,7 @@ Dies bedeutet, dass der Synchronisierungs-Client lokale Änderungen möglicherwe
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
         <translation>Eine große Anzahl von Dateien auf dem Server wurde gelöscht.
-Bitte bestätigen Sie, dass Sie mit diesen Löschungen fortfahren möchten.
+Bitte bestätigen Sie, dass Sie mit deren Löschung fortfahren möchten.
 Alternativ können Sie alle gelöschten Dateien wiederherstellen, indem Sie von Ordner &apos;%1&apos; auf den Server hochladen.</translation>
     </message>
     <message>
@@ -2741,7 +2741,7 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1179"/>
         <source>Preparing to sync …</source>
-        <translation>Synchronisierung wird vorbereitet …</translation>
+        <translation>Synchronisierung wird vorbereitet …</translation>
     </message>
 </context>
 <context>
@@ -3390,7 +3390,7 @@ Objekte, bei denen Löschen erlaubt ist, werden gelöscht, wenn diese das Entfer
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="127"/>
         <source>Checking rename permissions …</source>
-        <translation>Prüfe Umbenennungs-Rechte …</translation>
+        <translation>Prüfe Umbenennungsrechte …</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="161"/>
@@ -3738,7 +3738,7 @@ Beachten Sie, dass die Verwendung von Befehlszeilenoptionen für die Protokollie
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
         <source>Downloading %1 …</source>
-        <translation>Lade %1 herunter …</translation>
+        <translation>Lade %1 herunter …</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
@@ -3994,7 +3994,7 @@ Beachten Sie, dass die Verwendung von Befehlszeilenoptionen für die Protokollie
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="537"/>
         <source>Creating local sync folder %1 …</source>
-        <translation>Lokaler Ordner %1 für die Synchronisierung wird erstellt …</translation>
+        <translation>Lokaler Ordner %1 für die Synchronisierung wird erstellt …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="541"/>
@@ -5184,12 +5184,12 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1367"/>
         <source>Move and rename …</source>
-        <translation>Verschieben und umbenennen …</translation>
+        <translation>Verschieben und umbenennen …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1370"/>
         <source>Move, rename and upload …</source>
-        <translation>Verschieben, umbenennen und hochladen …</translation>
+        <translation>Verschieben, umbenennen und hochladen …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1372"/>
@@ -5199,7 +5199,7 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1378"/>
         <source>Move and upload …</source>
-        <translation>Verschieben und hochladen …</translation>
+        <translation>Verschieben und hochladen …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1379"/>

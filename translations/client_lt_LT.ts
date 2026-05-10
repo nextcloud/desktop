@@ -252,7 +252,7 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="136"/>
         <source>No recent emojis</source>
-        <translation>Nėra paskiausiai naudotų šypsenėlių</translation>
+        <translation>Nėra paskiausiai naudotų emociukų</translation>
     </message>
 </context>
 <context>
@@ -5946,7 +5946,7 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="155"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
-        <translation>Emoji simboliai nepalaikomi. Kai kurios būsenos funkcijos gali neveikti.</translation>
+        <translation>Emociukų simboliai nepalaikomi. Kai kurios būsenos funkcijos gali neveikti.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
