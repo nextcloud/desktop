@@ -5801,7 +5801,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="632"/>
         <source>“%1” was not synchronized</source>
-        <translation type="unfinished"/>
+        <translation>“%1” synkroniserades inte</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="657"/>
