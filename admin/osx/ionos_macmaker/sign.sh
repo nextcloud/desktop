@@ -22,18 +22,17 @@ export -f sign_folder_content
 
 # This script is used to build the Mac OS X version of the IONOS client.
 # Parse the command line arguments
-while getopts "b:p:s:n:civt" opt; do
+while getopts "b:p:s:civt" opt; do
   case ${opt} in
     b )BASE_DIR=$OPTARG;;
     p )PATH_TO_PKG=$OPTARG ;;
     s )CODE_SIGN_IDENTITY=$OPTARG ;;
-    n )PRODUCT_NAME=$OPTARG ;;
     c )CLEAN_REBUILD=true ;;
     i )PACKAGE_INSTALLER=true ;;
-    v )VERBOSE=true ;;
+    v )VERBOSE=true ;; 
     t )TEAM_PATCHING=true ;;
     \? )
-      echo "Usage: sign.sh [-b <base_dir>] [-p <path_to_pkg>] [-s <code_sign_identity>] [-n <product_name>] [-c clean-rebuild] [-i build-installer] [-v verbose]"
+      echo "Usage: sign.sh [-b <base_dir>] [-p <path_to_pkg>] [-s <code_sign_identity>] [-c clean-rebuild] [-i build-installer] [-v verbose]"
       exit 1
       ;;
   esac
@@ -46,12 +45,12 @@ fi
 # Some variables
 PKG_FULLNAME=$(basename "$PATH_TO_PKG")
 PKG_FILENAME="${PKG_FULLNAME%.pkg}"
-UNDERSCORE_PRODUCT_NAME="${PRODUCT_NAME// /_}"
+PRODUCT_NAME="IONOS HiDrive Next"
+UNDERSCORE_PRODUCT_NAME="IONOS_HiDrive_Next"
 
 IONOS_TEAM_IDENTIFIER="5TDLCVD243"
 NC_TEAM_IDENTIFIER="NKUJUXUJ3B"
 INSTALLER_CERT="Developer ID Installer: $CODE_SIGN_IDENTITY"
-KEYCHAIN_PROFILE="${CODE_SIGN_IDENTITY% (*} HiDrive Next"
 APPLICATION_CERT="Developer ID Application: $CODE_SIGN_IDENTITY"
 
 WORK_DIR="ex"
@@ -115,13 +114,7 @@ fi
 # Sign the client
 # CODE_SIGN_IDENTITY="Developer ID Application: IONOS SE (5TDLCVD243)"
 
-# Check required parameters
-if [ -z "$PRODUCT_NAME" ]; then
-  echo "Product name not set. Use -n <product_name>. Exiting."
-  open $BASE_DIR
-  exit 1
-fi
-
+# Check if CODE_SIGN_IDENTITY is set, if not exit
 if [ -z "$CODE_SIGN_IDENTITY" ]; then
   echo "Code sign identity not set. Exiting."
   open $BASE_DIR
@@ -183,7 +176,7 @@ mv $PAYLOAD_DIR.new $PAYLOAD_DIR
 rm -rf $INNER_PKG
 mv $INNER_PKG.flat $INNER_PKG
 
-productsign --timestamp --sign "$INSTALLER_CERT" \
+productsign --timestamp --sign 'Developer ID Installer: IONOS SE (5TDLCVD243)' \
   $INNER_PKG \
   $INNER_PKG.signed
 
@@ -196,11 +189,11 @@ mv $INNER_PKG.signed $INNER_PKG
   --package-path ex \
   $INSTALLER_PKG.unsigned)
 
-productsign --timestamp --sign "$INSTALLER_CERT" $INSTALLER_PKG.unsigned "$BASE_DIR$PKG_FILENAME.resigned.pkg"
+productsign --timestamp --sign 'Developer ID Installer: IONOS SE (5TDLCVD243)' $INSTALLER_PKG.unsigned "$BASE_DIR$PKG_FILENAME.resigned.pkg"
 
 # catch the output of the notarytool command
 OUTPUT=$(xcrun notarytool submit --wait "$BASE_DIR$PKG_FILENAME.resigned.pkg"\
-  --keychain-profile "$KEYCHAIN_PROFILE")
+  --keychain-profile "IONOS SE HiDrive Next")
 
 SUBMISSION_STATUS=$(echo $OUTPUT | grep -o 'status: [^ ]*' | cut -d ' ' -f 2)
 
