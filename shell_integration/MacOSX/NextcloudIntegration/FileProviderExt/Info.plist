@@ -24,7 +24,7 @@
 				<key>NSExtensionFileProviderActionActivationRule</key>
 				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayKeepDownloaded == true ).@count &gt; 0</string>
 				<key>NSExtensionFileProviderActionIdentifier</key>
-				<string>$(OC_APPLICATION_REV_DOMAIN).$(PRODUCT_NAME).KeepDownloadedAction</string>
+				<string>$(OC_APPLICATION_REV_DOMAIN).FileProviderExt.KeepDownloadedAction</string>
 				<key>NSExtensionFileProviderActionName</key>
 				<string>Always keep downloaded</string>
 			</dict>
@@ -32,7 +32,7 @@
 				<key>NSExtensionFileProviderActionActivationRule</key>
 				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayAllowAutoEvicting == true ).@count &gt; 0</string>
 				<key>NSExtensionFileProviderActionIdentifier</key>
-				<string>$(OC_APPLICATION_REV_DOMAIN).$(PRODUCT_NAME).AutoEvictAction</string>
+				<string>$(OC_APPLICATION_REV_DOMAIN).FileProviderExt.AutoEvictAction</string>
 				<key>NSExtensionFileProviderActionName</key>
 				<string>Allow automatic freeing up space</string>
 			</dict>
