@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>5TDLCVD243.com.ionos.hidrivenext.desktopclient</string>
+		<string>@SOCKETAPI_TEAM_IDENTIFIER_PREFIX@@APPLICATION_REV_DOMAIN@</string>
 	</array>
 </dict>
 </plist>

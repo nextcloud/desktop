@@ -22,7 +22,7 @@
 		<array>
 			<dict>
 				<key>NSExtensionFileProviderActionIdentifier</key>
-				<string>com.ionos.hidrivenext.desktopclient.FileProviderUIExt.UnlockFileAction</string>
+				<string>$(OC_APPLICATION_REV_DOMAIN).$(PRODUCT_NAME).UnlockFileAction</string>
 				<key>NSExtensionFileProviderActionName</key>
 				<string>Unlock file</string>
 				<key>NSExtensionFileProviderActionActivationRule</key>
@@ -34,13 +34,13 @@
 				<key>NSExtensionFileProviderActionName</key>
 				<string>Lock file</string>
 				<key>NSExtensionFileProviderActionIdentifier</key>
-				<string>com.ionos.hidrivenext.desktopclient.FileProviderUIExt.LockFileAction</string>
+				<string>$(OC_APPLICATION_REV_DOMAIN).$(PRODUCT_NAME).LockFileAction</string>
 			</dict>
 			<dict>
 				<key>NSExtensionFileProviderActionActivationRule</key>
 				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayShare == true ).@count &gt; 0</string>
 				<key>NSExtensionFileProviderActionIdentifier</key>
-				<string>com.ionos.hidrivenext.desktopclient.FileProviderUIExt.ShareAction</string>
+				<string>$(OC_APPLICATION_REV_DOMAIN).$(PRODUCT_NAME).ShareAction</string>
 				<key>NSExtensionFileProviderActionName</key>
 				<string>Share options</string>
 			</dict>
@@ -48,7 +48,7 @@
 				<key>NSExtensionFileProviderActionActivationRule</key>
 				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.downloaded == true ).@count &gt; 0</string>
 				<key>NSExtensionFileProviderActionIdentifier</key>
-				<string>com.ionos.hidrive.desktopclient.FileProviderUIExt.EvictAction</string>
+				<string>$(OC_APPLICATION_REV_DOMAIN).$(PRODUCT_NAME).EvictAction</string>
 				<key>NSExtensionFileProviderActionName</key>
 				<string>Free up space</string>
 			</dict>
