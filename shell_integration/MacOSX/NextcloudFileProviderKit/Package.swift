@@ -17,7 +17,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/nextcloud/NextcloudCapabilitiesKit.git", from: "2.5.0"),
-        .package(url: "https://github.com/nextcloud/NextcloudKit", from: "7.2.3"),
+        .package(url: "https://github.com/nextcloud/NextcloudKit", from: "7.2.8"),
         .package(url: "https://github.com/nicklockwood/SwiftFormat", from: "0.55.0"),
         .package(url: "https://github.com/realm/realm-swift.git", from: "20.0.4"),
         .package(url: "https://github.com/apple/swift-nio.git", from: "2.0.0")
