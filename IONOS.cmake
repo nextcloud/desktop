@@ -1,5 +1,3 @@
-set( APPLICATION_REV_DOMAIN "com.ionos.hidrivenext.desktopclient" )
-
 option(LOCALBUILD "Local developer build" OFF)
 
 if(LOCALBUILD)
@@ -22,6 +20,7 @@ if(LOCALBUILD)
     endif()
 
     if("${WHITELABEL_NAME}" STREQUAL "strato")
+        set( APPLICATION_REV_DOMAIN "com.strato.hidrivenext.desktopclient" )
         set( APPLICATION_NAME       "STRATO HiDrive Next" )
         set( APPLICATION_SHORTNAME  "STRATOHiDriveNext" )
         set( APPLICATION_EXECUTABLE "strato-hidrive-next" )
@@ -32,6 +31,7 @@ if(LOCALBUILD)
         set( APPLICATION_HELP_URL   "" CACHE STRING "URL for the help menu" FORCE)
         set( APPLICATION_SERVER_URL "https://storage.ionos.fr" CACHE STRING "URL for the server to use. If entered, the UI field will be pre-filled with it" FORCE)
     elseif("${WHITELABEL_NAME}" STREQUAL "ionos")
+        set( APPLICATION_REV_DOMAIN "com.ionos.hidrivenext.desktopclient" )
         set( APPLICATION_NAME       "IONOS HiDrive Next" )
         set( APPLICATION_SHORTNAME  "IONOSHiDriveNext" )
         set( APPLICATION_EXECUTABLE "ionos-hidrive-next" )
