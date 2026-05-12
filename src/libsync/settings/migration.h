@@ -74,14 +74,17 @@ public:
     [[nodiscard]] QString discoveredLegacyConfigPath() const;
     void setDiscoveredLegacyConfigPath(const QString &discoveredLegacyConfigPath);
    
-    [[nodiscard]] bool isUpgrade();
-    [[nodiscard]] bool isDowngrade();
-    [[nodiscard]] bool versionChanged();
+    [[nodiscard]] bool isUpgrade() const;
+    [[nodiscard]] bool isDowngrade() const;
+    [[nodiscard]] bool versionChanged() const;
     [[nodiscard]] bool shouldTryUnbrandedToBrandedMigration();
     [[nodiscard]] bool isUnbrandedToBrandedMigration() const;
-    [[nodiscard]] bool shouldTryToMigrate();
+    [[nodiscard]] bool shouldTryToMigrate() const;
     [[nodiscard]] bool isClientVersionSet() const;
     [[nodiscard]] bool isInProgress() const;
+
+    /// Resets all shared state to initial values. Only intended for use in unit tests.
+    static void resetForTesting();
 
 private:
     static Phase _phase;

@@ -26,7 +26,7 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcMigration, "nextcloud.settings.migration", QtInfoMsg)
 
-Migration::Phase Migration::_phase = Phase::NotStarted;;
+Migration::Phase Migration::_phase = Phase::NotStarted;
 Migration::BrandingType Migration::_brandingType = BrandingType::UnbrandedToUnbranded;
 Migration::UpgradeType Migration::_upgradeType = UpgradeType::NoChange;
 QString Migration::_discoveredLegacyConfigPath = {};
@@ -80,25 +80,17 @@ void Migration::setUpgradeType(const UpgradeType type)
     _upgradeType = type;
 }
 
-bool Migration::isUpgrade()
+bool Migration::isUpgrade() const
 {
-    const auto isUpgrade = currentVersion() > previousVersion();
-    if (isUpgrade) {
-        setUpgradeType(UpgradeType::Upgrade);
-    }
-    return _upgradeType == UpgradeType::Upgrade;
+    return currentVersion() > previousVersion();
 }
 
-bool Migration::isDowngrade()
+bool Migration::isDowngrade() const
 {
-    const auto isDowngrade = previousVersion() > currentVersion();
-    if (isDowngrade) {
-        setUpgradeType(UpgradeType::Downgrade);
-    }
-    return _upgradeType == UpgradeType::Downgrade;
+    return previousVersion() > currentVersion();
 }
 
-bool Migration::versionChanged()
+bool Migration::versionChanged() const
 {
     return isUpgrade() || isDowngrade();
 }
@@ -120,7 +112,7 @@ bool Migration::isUnbrandedToBrandedMigration() const
     return isInProgress() && brandingType() == BrandingType::UnbrandedToBranded;
 }
 
-bool Migration::shouldTryToMigrate()
+bool Migration::shouldTryToMigrate() const
 {
     return !isClientVersionSet() && (isUpgrade() || isDowngrade());
 }
@@ -136,8 +128,17 @@ bool Migration::isClientVersionSet() const
 bool Migration::isInProgress() const
 {
     const auto currentPhase = phase();
-    return currentPhase != Phase::NotStarted 
+    return currentPhase != Phase::NotStarted
         && currentPhase != Phase::Done;
+}
+
+void Migration::resetForTesting()
+{
+    _phase = Phase::NotStarted;
+    _brandingType = BrandingType::UnbrandedToUnbranded;
+    _upgradeType = UpgradeType::NoChange;
+    _discoveredLegacyConfigPath = {};
+    _legacyData = {};
 }
 
 Migration::LegacyData Migration::legacyData() const
@@ -192,10 +193,9 @@ Migration::LegacyData Migration::legacyData() const
                 configFile.setClientPreviousVersionString(legacyVersion);
                 qCInfo(lcMigration) << "Migrating from legacy version" << legacyVersion;
                 qCDebug(lcMigration) << "Copy settings" << oCSettings->allKeys().join(", ");
-                Migration migration;
-                migration.setDiscoveredLegacyConfigPath(configFileInfo.canonicalPath());
-                legacyData.reset(oCSettings.get());
-                migration.setLegacyData(legacyData);
+                setDiscoveredLegacyConfigPath(configFileInfo.canonicalPath());
+                legacyData.reset(oCSettings.release());
+                setLegacyData(legacyData);
                 break;
             } else {
                 qCInfo(lcMigration) << "Migrate: could not read old config " << configFileString;
