@@ -52,8 +52,7 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
-    // Verify that a file blocked from uploading by a remote storage quota error is
-    // protected from local deletion when the remote parent folder is subsequently deleted.
+    // Files blocked from upload because of quota errors must survive remote parent folder deletion.
     void testQuotaBlockedFileProtectedFromParentFolderDeletion()
     {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
@@ -86,7 +85,7 @@ private slots:
         ItemCompletedSpy completeSpy(fakeFolder);
         fakeFolder.syncOnce();
 
-        // File that does not exist in the server and is blocked from upload with error must not have been deleted locally.
+        // File must survive local deletion when its parent folder is removed on the server.
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/quota_blocked.txt")));
 
         // Parent folder A must also survive because it still contains the protected file.
@@ -96,24 +95,20 @@ private slots:
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1")));
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a2")));
 
-        // File that does not exist in the server and has error must still not exist on the server.
+        // File must remain absent on the server.
         QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("A/quota_blocked.txt")));
 
-        // The protected file must be reported as an error item with the quota specific message,
-        // not silently ignored or overwritten with a generic blacklist message.
+        // Must be reported as an error with the quota message, not silently ignored.
         {
             auto item = completeSpy.findItem(QStringLiteral("A/quota_blocked.txt"));
             QVERIFY(item);
-            const bool isErrorItem = item->_instruction == CSYNC_INSTRUCTION_ERROR
-                || item->_instruction == CSYNC_INSTRUCTION_IGNORE; // BlacklistedError reuses IGNORE
-            QVERIFY(isErrorItem);
-            const bool isErrorStatus = item->_status == SyncFileItem::SoftError
-                || item->_status == SyncFileItem::BlacklistedError;
-            QVERIFY(isErrorStatus);
+            QCOMPARE(item->_instruction, CSYNC_INSTRUCTION_ERROR);
+            QVERIFY(item->_status == SyncFileItem::SoftError || item->_status == SyncFileItem::NormalError);
+            QVERIFY(!item->_errorString.contains(QStringLiteral("skipped due to earlier error")));
         }
     }
 
-    // A quota upload blocked file must survive even if the parent folder is first moved then deleted on the server.
+    // Files blocked from upload because of quota errors must survive parent folder rename then delete.
     void testQuotaBlockedFileProtectedAfterParentFolderMoveThenDelete()
     {
         // Use a custom initial state with only folder A to avoid rename collisions.

@@ -143,6 +143,16 @@ bool SyncEngine::checkErrorBlacklisting(SyncFileItem &item)
 
     item._hasBlacklistEntry = true;
 
+    // Discovery already produced a deliberate error for items protected in checkNewDeleteConflict.
+    // Keep its instruction and message intact so the specific reason is displayed.
+    // Still show the quota notification if applicable.
+    if (item._instruction == CSYNC_INSTRUCTION_ERROR) {
+        if (entry._errorCategory == SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage) {
+            slotInsufficientRemoteStorage();
+        }
+        return true;
+    }
+
     // If duration has expired, it's not blacklisted anymore
     time_t now = Utility::qDateTimeToTime_t(QDateTime::currentDateTimeUtc());
     if (now >= entry._lastTryTime + entry._ignoreDuration) {
