@@ -57,9 +57,14 @@ public:
 
         migrateToAppSandbox();
         removeOrphanedDomains();
-        restoreMissingDomains();
-        Mac::FileProvider::instance()->domainManager()->reconnectAll();
-        Mac::FileProvider::instance()->configureXPC();
+
+        if (Mac::FileProvider::available()) {
+            restoreMissingDomains();
+            Mac::FileProvider::instance()->domainManager()->reconnectAll();
+            Mac::FileProvider::instance()->configureXPC();
+        } else {
+            disableFileProviderForAllEnabledAccountsOnUnsupportedOS();
+        }
     };
 
     ~MacImplementation() override = default;
@@ -284,6 +289,32 @@ public:
         }
 
         qCInfo(lcFileProviderSettingsController) << "Finished removing orphaned domains.";
+    }
+
+    // macOS 13 Ventura cleanup: removes any pre-existing file provider domain
+    // gracefully (preserving dirty user data) for each account that still has
+    // VFS enabled. Can be deleted once Ventura is no longer supported.
+    void disableFileProviderForAllEnabledAccountsOnUnsupportedOS()
+    {
+        qCInfo(lcFileProviderSettingsController) << "macOS 13 Ventura: disabling file provider for all enabled accounts.";
+
+        const auto accountStates = AccountManager::instance()->accounts();
+
+        for (const auto &accountState : accountStates) {
+            const auto account = accountState->account();
+
+            if (!account) {
+                continue;
+            }
+
+            if (account->fileProviderDomainIdentifier().isEmpty()) {
+                continue;
+            }
+
+            const auto userIdAtHost = account->userIdAtHostWithPort();
+            qCInfo(lcFileProviderSettingsController) << "Disabling file provider for account" << userIdAtHost;
+            (void)setVfsEnabledForAccount(userIdAtHost, false);
+        }
     }
 
 private:
