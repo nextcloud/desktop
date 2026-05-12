@@ -8,7 +8,6 @@
 #include "syncfileitem.h"
 #include "syncengine.h"
 #include "common/syncjournaldb.h"
-#include "common/syncjournalfilerecord.h"
 #include "propagatorjobs.h"
 #include "filesystem.h"
 #include "account.h"
@@ -26,69 +25,6 @@ BulkPropagatorDownloadJob::BulkPropagatorDownloadJob(OwncloudPropagator *propaga
     , _filesToDownload{}
     , _parentDirJob{parentDirJob}
 {
-}
-
-namespace
-{
-static QString makeBulkDownloadRecallFileName(const QString &fn)
-{
-    auto recallFileName(fn);
-    // Add _recall-XXXX  before the extension.
-    auto dotLocation = recallFileName.lastIndexOf('.');
-    // If no extension, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
-    if (dotLocation <= recallFileName.lastIndexOf('/') + 1) {
-        dotLocation = recallFileName.size();
-    }
-
-    const auto &timeString = QDateTime::currentDateTimeUtc().toString("yyyyMMdd-hhmmss");
-    recallFileName.insert(dotLocation, "_.sys.admin#recall#-" + timeString);
-
-    return recallFileName;
-}
-
-void handleBulkDownloadRecallFile(const QString &filePath, const QString &folderPath, SyncJournalDb &journal)
-{
-    qCDebug(lcBulkPropagatorDownloadJob) << "handleBulkDownloadRecallFile: " << filePath;
-
-    FileSystem::setFileHidden(filePath, true);
-
-    auto file = QFile{filePath};
-    if (!file.open(QIODevice::ReadOnly)) {
-        qCWarning(lcBulkPropagatorDownloadJob) << "Could not open recall file" << file.errorString();
-        return;
-    }
-    const auto existingFile = QFileInfo{filePath};
-    const auto &baseDir = existingFile.dir();
-
-    while (!file.atEnd()) {
-        auto line = file.readLine();
-        line.chop(1); // remove trailing \n
-
-        const auto &recalledFile = QDir::cleanPath(baseDir.filePath(line));
-        if (!recalledFile.startsWith(folderPath) || !recalledFile.startsWith(baseDir.path())) {
-            qCWarning(lcBulkPropagatorDownloadJob) << "Ignoring recall of " << recalledFile;
-            continue;
-        }
-
-        // Path of the recalled file in the local folder
-        const auto &localRecalledFile = recalledFile.mid(folderPath.size());
-
-        auto record = SyncJournalFileRecord{};
-        if (!journal.getFileRecord(localRecalledFile, &record) || !record.isValid()) {
-            qCWarning(lcBulkPropagatorDownloadJob) << "No db entry for recall of" << localRecalledFile;
-            continue;
-        }
-
-        qCInfo(lcBulkPropagatorDownloadJob) << "Recalling" << localRecalledFile << "Checksum:" << record._checksumHeader;
-
-        const auto &targetPath = makeBulkDownloadRecallFileName(recalledFile);
-
-        qCDebug(lcBulkPropagatorDownloadJob) << "Copy recall file: " << recalledFile << " -> " << targetPath;
-        // Remove the target first, QFile::copy will not overwrite it.
-        FileSystem::remove(targetPath);
-        QFile::copy(recalledFile, targetPath);
-    }
-}
 }
 
 void BulkPropagatorDownloadJob::addDownloadItem(const SyncFileItemPtr &item)
@@ -193,12 +129,6 @@ bool BulkPropagatorDownloadJob::updateMetadata(const SyncFileItemPtr &item)
     }
 
     propagator()->_journal->commit("download file start2");
-
-    // handle the special recall file
-    if (!item->_remotePerm.hasPermission(RemotePermissions::IsShared)
-        && (item->_file == QLatin1String(".sys.admin#recall#") || item->_file.endsWith(QLatin1String("/.sys.admin#recall#")))) {
-        handleBulkDownloadRecallFile(fullFileName, propagator()->localPath(), *propagator()->_journal);
-    }
 
     const auto isLockOwnedByCurrentUser = item->_lockOwnerId == propagator()->account()->davUser();
 
