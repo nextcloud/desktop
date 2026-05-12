@@ -90,7 +90,7 @@ public:
     void setUpgradeType(const UpgradeType type);
 
     /// Returns QSettings from a legacy config file
-    [[nodiscard]] LegacyData legacyData() const;
+    [[nodiscard]] LegacyData legacyData();
     void setLegacyData(const LegacyData legacyData);
 
     /// Set during first time migration of legacy accounts in AccountManager

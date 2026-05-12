@@ -141,7 +141,7 @@ void Migration::resetForTesting()
     _legacyData = {};
 }
 
-Migration::LegacyData Migration::legacyData() const
+Migration::LegacyData Migration::legacyData()
 {
     qCInfo(lcMigration) << "Migrate: restoreFromLegacySettings, checking settings group" << Theme::instance()->appName();
 
