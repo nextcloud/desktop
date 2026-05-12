@@ -5798,9 +5798,30 @@ Server antwortete mit Fehler: %2</translation>
         <translation><numerusform>%n Benachrichtigung</numerusform><numerusform>%n Benachrichtigungen</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="632"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="641"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="680"/>
         <source>“%1” was not synchronized</source>
         <translation>“%1” wurde nicht synchronisiert</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="682"/>
+        <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="685"/>
+        <source>Insufficient storage on the server. The file requires %1.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="688"/>
+        <source>Insufficient storage on the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
+        <source>There is insufficient space available on the server for some uploads.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="657"/>
@@ -5857,7 +5878,7 @@ Server antwortete mit Fehler: %2</translation>
         <translation>Anfrage wird gesendet …</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1576"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1703"/>
         <source>Sending your request …</source>
         <translation>Anfrage wird gesendet …</translation>
     </message>
@@ -6240,6 +6261,11 @@ Server antwortete mit Fehler: %2</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="460"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFS für %1: Es ist ein Problem aufgetreten.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="489"/>
+        <source>macOS VFS for %1: An error was encountered.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="526"/>
