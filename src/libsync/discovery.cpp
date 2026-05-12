@@ -2218,6 +2218,13 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
                 // Do not remove a directory that has ignored files
                 qCInfo(lcDisco) << "Child ignored for a folder to remove" << _dirItem->_file << "direction" << _dirItem->_direction;
                 _dirItem->_instruction = CSYNC_INSTRUCTION_NONE;
+                // Invalidate the parent directory's etag so the next sync queries it from
+                // the server instead of using a ParentNotChanged cache hit.  Without this, a
+                // parent whose etag has not changed since the server side deletion uses its DB
+                // record as a proxy for server state and keeps issuing NONE for this folder.
+                const auto slashPos = _dirItem->_file.lastIndexOf(QLatin1Char('/'));
+                const auto parentPath = slashPos >= 0 ? _dirItem->_file.left(slashPos) : QString();
+                _discoveryData->_statedb->schedulePathForRemoteDiscovery(parentPath.toUtf8());
             }
         }
         emit finished();
@@ -2526,8 +2533,8 @@ bool ProcessDirectoryJob::checkNewDeleteConflict(const SyncFileItemPtr &item)
                            << item->_file;
         item->_instruction = CSYNC_INSTRUCTION_ERROR;
         item->_status = SyncFileItem::SoftError;
-        // Keep _httpErrorCode at 507 so blacklistUpdate recreates the InsufficientRemoteStorage 
-        // entry if the current ignore-duration later expires.
+        // Keep _httpErrorCode at 507 so blacklistUpdate recreates the InsufficientRemoteStorage
+        // entry if the ignore duration later expires.
         item->_httpErrorCode = 507;
         item->_errorString = tr("%1 could not be removed: it has unsynced changes due to full server storage. "
                                 "Please manage your files and try syncing again.")
