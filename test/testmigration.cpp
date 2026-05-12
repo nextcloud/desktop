@@ -154,10 +154,15 @@ private slots:
         QStandardPaths::setTestModeEnabled(true);
     }
 
-    // Reset all static Migration state before every test so tests are independent.
+    // Reset all Migration static state and QSettings config before every test
+    // so tests are fully independent of each other.
     void init()
     {
         Migration::resetForTesting();
+        setupStandardConfigFolder();
+        QSettings settings(_configFile.configFile(), QSettings::IniFormat);
+        settings.clear();
+        settings.sync();
     }
 
     void testSetPhase()
@@ -278,9 +283,8 @@ private slots:
 
     void testIsDowngrade_noSideEffects()
     {
-        // simulate a downgrade: set previous version to a future version
-        setupStandardConfigFolder();
-        _configFile.setClientVersionString("99.0.0");
+        // simulate a downgrade: the previously installed version was newer than the current binary
+        _configFile.setClientPreviousVersionString("99.0.0");
 
         Migration migration;
         QCOMPARE(migration.isDowngrade(), true);
