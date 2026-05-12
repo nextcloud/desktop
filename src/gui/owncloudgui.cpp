@@ -356,7 +356,11 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 #endif
 
     if (!problemAccounts.empty()) {
+#ifdef IONOS_BUILD
+        _tray->setIcon(QIcon(WLTheme.syncOfflineIcon("tray")));
+#else
         _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
+#endif
 #ifdef Q_OS_WIN
         // Windows has a 128-char tray tooltip length limit.
         QStringList accountNames;
@@ -381,11 +385,19 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     }
 
     if (allSignedOut) {
+#ifdef IONOS_BUILD
+        _tray->setIcon(QIcon(WLTheme.syncOfflineIcon("tray")));
+#else
         _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
+#endif
         _tray->setToolTip(tr("Please sign in"));
         return;
     } else if (allPaused) {
+#ifdef IONOS_BUILD
+        _tray->setIcon(QIcon(WLTheme.syncPausedIcon("tray")));
+#else
         _tray->setIcon(Theme::instance()->syncStateIcon(SyncResult::Paused, true));
+#endif
         _tray->setToolTip(tr("Account synchronization is disabled"));
         return;
     }
@@ -430,8 +442,34 @@ void ownCloudGui::slotComputeOverallSyncStatus()
         iconStatus = SyncResult::Problem;
     }
 
-    QIcon statusIcon = Theme::instance()->syncStateIcon(iconStatus, true);
-    _tray->setIcon(statusIcon);
+#ifdef IONOS_BUILD
+    QString statusIconPath;
+    switch (iconStatus) {
+    case SyncResult::NotYetStarted:
+    case SyncResult::SyncPrepare:
+    case SyncResult::SyncRunning:
+        statusIconPath = WLTheme.syncSyncingIcon("tray");
+        break;
+    case SyncResult::SyncAbortRequested:
+    case SyncResult::Paused:
+        statusIconPath = WLTheme.syncPausedIcon("tray");
+        break;
+    case SyncResult::Success:
+        statusIconPath = WLTheme.syncSuccessIcon("tray");
+        break;
+    case SyncResult::Problem:
+        statusIconPath = WLTheme.syncWarningIcon("tray");
+        break;
+    case SyncResult::Error:
+    case SyncResult::SetupError:
+    default:
+        statusIconPath = WLTheme.syncErrorIcon("tray");
+        break;
+    }
+    _tray->setIcon(QIcon(statusIconPath));
+#else
+    _tray->setIcon(Theme::instance()->syncStateIcon(iconStatus, true));
+#endif
 
     // create the tray blob message, check if we have an defined state
 #ifdef BUILD_FILE_PROVIDER_MODULE

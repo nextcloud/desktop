@@ -156,24 +156,24 @@ public:
         return themePrefix() + _sesFolder + additionalThemePrefix() + QStringLiteral("ses-chevron.svg");
     }
 
-    virtual QString syncSuccessIcon() const {
-        return themePrefix() + _sesFolder + additionalThemePrefix() + QStringLiteral("ses-syncstate-success.svg");
+    virtual QString syncSuccessIcon(QString context = "qml") const {
+        return themePrefix(context) + _sesFolder + additionalThemePrefix() + QStringLiteral("ses-syncstate-success.svg");
     }
 
-    virtual QString syncErrorIcon() const {
-        return themePrefix() + _sesFolder + additionalThemePrefix() + QStringLiteral("ses-syncstate-error.svg");
+    virtual QString syncErrorIcon(QString context = "qml") const {
+        return themePrefix(context) + _sesFolder + additionalThemePrefix() + QStringLiteral("ses-syncstate-error.svg");
     }
 
-    virtual QString syncPausedIcon() const {
-        return themePrefix() + _sesFolder + additionalThemePrefix() + QStringLiteral("ses-syncstate-paused.svg");
+    virtual QString syncPausedIcon(QString context = "qml") const {
+        return themePrefix(context) + _sesFolder + additionalThemePrefix() + QStringLiteral("ses-syncstate-paused.svg");
     }
 
-    virtual QString syncWarningIcon() const {
-        return themePrefix() + _sesFolder + additionalThemePrefix() + QStringLiteral("ses-syncstate-warning.svg");
+    virtual QString syncWarningIcon(QString context = "qml") const {
+        return themePrefix(context) + _sesFolder + additionalThemePrefix() + QStringLiteral("ses-syncstate-warning.svg");
     }
 
-    virtual QString syncSyncingIcon() const {
-        return themePrefix() + _sesFolder + additionalThemePrefix() + QStringLiteral("ses-syncstate-syncing.svg");
+    virtual QString syncSyncingIcon(QString context = "qml") const {
+        return themePrefix(context) + _sesFolder + additionalThemePrefix() + QStringLiteral("ses-syncstate-syncing.svg");
     }
 
     virtual QString syncOfflineIcon(QString context = "qml") const {
