@@ -97,6 +97,7 @@ public final class FilesDatabaseManager: Sendable {
         do {
             _ = try Realm()
             logger.info("Successfully created Realm.")
+            cleanupPreexistingLogicalDuplicates()
         } catch {
             logger.fault("Error creating Realm: \(error)")
         }
@@ -378,6 +379,17 @@ public final class FilesDatabaseManager: Sendable {
             }
 
             try database.write {
+                // Evict any logical-address duplicates before persisting fresh
+                // payloads, so an ocId rotation (or rename whose target collides
+                // with a third row) does not leave two non-deleted siblings at
+                // the same `(account, serverUrl, fileName)`.
+                for metadata in metadatasToCreate {
+                    evictLogicalDuplicates(of: metadata, in: database)
+                }
+                for metadata in metadatasToUpdate {
+                    evictLogicalDuplicates(of: metadata, in: database)
+                }
+
                 // Do not delete the metadatas that have been deleted
                 database.add(metadatasToDelete.map { RealmItemMetadata(value: $0) }, update: .modified)
                 database.add(metadatasToUpdate.map { RealmItemMetadata(value: $0) }, update: .modified)
@@ -439,6 +451,7 @@ public final class FilesDatabaseManager: Sendable {
 
         do {
             try database.write {
+                evictLogicalDuplicates(of: metadata, in: database)
                 database.add(RealmItemMetadata(value: metadata), update: .all)
                 logger.debug("Added item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl])
             }
@@ -478,7 +491,9 @@ public final class FilesDatabaseManager: Sendable {
     public func addItemMetadataPreservingLocalState(_ metadata: SendableItemMetadata, preserveVisitedDirectory: Bool = true) -> SendableItemMetadata {
         var toWrite = metadata
 
-        if let existing = itemMetadatas.where({ $0.ocId == metadata.ocId }).first {
+        let metadatas = ncDatabase().objects(RealmItemMetadata.self)
+
+        if let existing = metadatas.where({ $0.ocId == metadata.ocId }).first {
             toWrite.downloaded = existing.downloaded
             toWrite.keepDownloaded = existing.keepDownloaded
 
@@ -487,6 +502,36 @@ public final class FilesDatabaseManager: Sendable {
             }
 
             toWrite.lockToken = existing.lockToken
+        } else {
+            // The ocId lookup missed. Before falling back to defaults from the
+            // server payload, look for a single non-deleted, non-local-lock row
+            // at the same logical address — an ocId rotation (restore-from-
+            // trash, recreate during reconnect, upload finalizer assigning a
+            // new server-side ocId) leaves the local-only state on the previous
+            // row, and #9923's preservation contract would otherwise silently
+            // drop `keepDownloaded`, `downloaded`, `visitedDirectory`, and
+            // `lockToken`. Only carry over when exactly one candidate exists:
+            // multiple candidates mean the DB is already in the duplicated
+            // state and choosing one would risk merging from the row about to
+            // be evicted. Eviction in `addItemMetadata` will then prune the
+            // prior row in the same write that persists the fresh one.
+            let logicalCandidates = metadatas.where {
+                $0.account == metadata.account
+                    && $0.serverUrl == metadata.serverUrl
+                    && $0.fileName == metadata.fileName
+                    && !$0.deleted
+                    && !$0.isLockFileOfLocalOrigin
+            }
+            if logicalCandidates.count == 1, let existing = logicalCandidates.first {
+                toWrite.downloaded = existing.downloaded
+                toWrite.keepDownloaded = existing.keepDownloaded
+
+                if preserveVisitedDirectory {
+                    toWrite.visitedDirectory = existing.visitedDirectory
+                }
+
+                toWrite.lockToken = existing.lockToken
+            }
         }
 
         addItemMetadata(toWrite)
