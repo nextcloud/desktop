@@ -222,8 +222,7 @@ void ProcessDirectoryJob::process()
         // If the filename starts with a . we consider it a hidden file
         // For windows, the hidden state is also discovered within the vio
         // local stat function.
-        // Recall file shall not be ignored (#4420)
-        const auto isHidden = e.localEntry.isHidden || (!f.first.isEmpty() && f.first[0] == '.' && f.first != QLatin1String(".sys.admin#recall#"));
+        const auto isHidden = e.localEntry.isHidden || (!f.first.isEmpty() && f.first[0] == '.');
 
         const auto isEncryptedFolderButE2eIsNotSetup = e.serverEntry.isValid() && e.serverEntry.isE2eEncrypted() &&
             _discoveryData->_account->e2e() && !_discoveryData->_account->e2e()->isInitialized();
