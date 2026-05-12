@@ -278,12 +278,31 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return toolTip;
     }
     case FolderStatusDelegate::FolderStatusIconRole: {
-        if (!accountConnected) {
 #ifdef IONOS_BUILD
+        if (!accountConnected)
             return QIcon(WLTheme.syncOfflineIcon("cpp"));
-#else
-            return Theme::instance()->folderStateIcon(SyncResult::SetupError);
+        {
+            const auto result = folder->syncResult();
+            const auto status = result.status();
+            if (folder->syncPaused())
+                return QIcon(WLTheme.syncPausedIcon("cpp"));
+            switch (status) {
+            case SyncResult::NotYetStarted:
+            case SyncResult::SyncPrepare:
+            case SyncResult::SyncRunning:
+            case SyncResult::SyncAbortRequested:
+            case SyncResult::Undefined:
+                return QIcon(WLTheme.syncSyncingIcon("cpp"));
+            case SyncResult::Success:
+            case SyncResult::Problem:
+                return QIcon(result.hasUnresolvedConflicts() ? WLTheme.syncWarningIcon("cpp") : WLTheme.syncSuccessIcon("cpp"));
+            default:
+                return QIcon(WLTheme.syncErrorIcon("cpp"));
+            }
+        }
 #endif
+        if (!accountConnected) {
+            return Theme::instance()->folderStateIcon(SyncResult::SetupError);
         }
 
         const auto theme   = Theme::instance();
@@ -291,42 +310,19 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         const auto status  = result.status();
 
         if (folder->syncPaused()) {
-#ifdef IONOS_BUILD
-            return QIcon(WLTheme.syncPausedIcon("cpp"));
-#else
-            return theme->syncStateIcon(SyncResult::Paused);
-#endif
+            return theme->folderStateIcon(SyncResult::Paused);
         }
 
         if (status == SyncResult::SyncPrepare || status == SyncResult::Undefined) {
-#ifdef IONOS_BUILD
-            return QIcon(WLTheme.syncSyncingIcon("cpp"));
-#else
-            return theme->syncStateIcon(status);
-#endif
+            return theme->folderStateIcon(SyncResult::SyncRunning);
         }
 
         if (status == SyncResult::Success || status == SyncResult::Problem) {
-#ifdef IONOS_BUILD
-            return result.hasUnresolvedConflicts()
-                ? QIcon(WLTheme.syncWarningIcon("cpp"))
-                : QIcon(WLTheme.syncSuccessIcon("cpp"));
-#else
-            return theme->folderStateIcon(status);
-#endif
+            return theme->folderStateIcon(result.hasUnresolvedConflicts()
+                ? SyncResult::Problem
+                : SyncResult::Success);
         }
 
-#ifdef IONOS_BUILD
-        if (status == SyncResult::NotYetStarted
-                || status == SyncResult::SyncRunning
-                || status == SyncResult::SyncAbortRequested) {
-            return QIcon(WLTheme.syncSyncingIcon("cpp"));
-        }
-
-        if (status == SyncResult::Error || status == SyncResult::SetupError) {
-            return QIcon(WLTheme.syncErrorIcon("cpp"));
-        }
-#endif
         return theme->folderStateIcon(status);
     }
     case FolderStatusDelegate::SyncProgressItemString:

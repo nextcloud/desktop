@@ -285,6 +285,27 @@ void ownCloudGui::slotNeedToAcceptTermsOfService(const OCC::AccountPtr &account,
     }
 }
 
+#ifdef IONOS_BUILD
+static QIcon trayIconForStatus(SyncResult::Status status)
+{
+    switch (status) {
+    case SyncResult::NotYetStarted:
+    case SyncResult::SyncPrepare:
+    case SyncResult::SyncRunning:
+        return QIcon(WLTheme.syncSyncingIcon("tray"));
+    case SyncResult::SyncAbortRequested:
+    case SyncResult::Paused:
+        return QIcon(WLTheme.syncPausedIcon("tray"));
+    case SyncResult::Success:
+        return QIcon(WLTheme.syncSuccessIcon("tray"));
+    case SyncResult::Problem:
+        return QIcon(WLTheme.syncWarningIcon("tray"));
+    default:
+        return QIcon(WLTheme.syncErrorIcon("tray"));
+    }
+}
+#endif
+
 void ownCloudGui::slotComputeOverallSyncStatus()
 {
     bool allSignedOut = true;
@@ -443,30 +464,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     }
 
 #ifdef IONOS_BUILD
-    QString statusIconPath;
-    switch (iconStatus) {
-    case SyncResult::NotYetStarted:
-    case SyncResult::SyncPrepare:
-    case SyncResult::SyncRunning:
-        statusIconPath = WLTheme.syncSyncingIcon("tray");
-        break;
-    case SyncResult::SyncAbortRequested:
-    case SyncResult::Paused:
-        statusIconPath = WLTheme.syncPausedIcon("tray");
-        break;
-    case SyncResult::Success:
-        statusIconPath = WLTheme.syncSuccessIcon("tray");
-        break;
-    case SyncResult::Problem:
-        statusIconPath = WLTheme.syncWarningIcon("tray");
-        break;
-    case SyncResult::Error:
-    case SyncResult::SetupError:
-    default:
-        statusIconPath = WLTheme.syncErrorIcon("tray");
-        break;
-    }
-    _tray->setIcon(QIcon(statusIconPath));
+    _tray->setIcon(trayIconForStatus(iconStatus));
 #else
     _tray->setIcon(Theme::instance()->syncStateIcon(iconStatus, true));
 #endif
