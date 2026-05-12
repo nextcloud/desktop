@@ -46,16 +46,39 @@ public:
     [[nodiscard]] QVersionNumber configVersion() const;
 
     /**
-     * => Application::configVersionMigration: check existing config
-     *  => no upgrade/downgrade/migration: Migration::Phase::Done
-     *  => need to set config file: Migration::Phase::SetupConfigFile
-     * => Application::setupAccountsAndFolders: Migration::Phase::SetupUsers
-     *   => Application::restoreLegacyAccount
-     *     => AccountManager::restore
-     *       => AccountManager::restoreFromLegacySettings:
-     *         => Migration::legacyData: find legacy config and read its settings using
-     *     => FolderMan::setupFolders: Migration::Phase::SetupFolders
-     * => AccountState::slotCredentialsFetched: Migration::Phase::Done
+     * Application::configVersionMigration                     [start]
+     *   |-- no migration needed ----------------------> Phase::Done
+     *   |
+     *   Phase::SetupConfigFile
+     *   |   backup config files, remove incompatible keys
+     *   |
+     * Application::setupAccountsAndFolders
+     *   |
+     *   Phase::SetupUsers
+     *   |
+     *   Application::restoreLegacyAccount
+     *     |
+     *     AccountManager::restore
+     *       |-- accounts in current config -----------> load accounts
+     *       |
+     *       AccountManager::restoreFromLegacySettings
+     *         |
+     *         Migration::legacyData
+     *           |   search legacy config locations
+     *           |-- no legacy config found -----------> return
+     *           |
+     *           store legacy QSettings + config path
+     *   |
+     *   Phase::SetupFolders
+     *   |
+     *   FolderMan::setupFolders
+     *     |-- legacy path known -> setupFoldersMigration
+     *     |
+     *     load folder definitions
+     *   |
+     * AccountState::slotCredentialsFetched            [end]
+     *   |
+     *   Phase::Done
      */
     [[nodiscard]] Phase phase() const;
     void setPhase(const Phase phase);
