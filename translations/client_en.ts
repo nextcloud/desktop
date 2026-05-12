@@ -4520,49 +4520,49 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="381"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="384"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="389"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="392"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="489"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="576"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="492"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="579"/>
         <source>Could not get file %1 from local DB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="502"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="563"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="505"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="566"/>
         <source>Error setting pin state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="515"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="518"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="518"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="521"/>
         <source>The file %1 is currently in use</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="553"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="556"/>
         <source>Failed to propagate directory rename in hierarchy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="558"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="561"/>
         <source>Failed to rename file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="581"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="584"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5430,7 +5430,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="151"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="201"/>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="448"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="453"/>
         <source>Offline</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5451,7 +5451,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="218"/>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="454"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="459"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="98"/>
         <source>All synced!</source>
         <translation type="unfinished"></translation>
@@ -5492,27 +5492,27 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="326"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="331"/>
         <source>Syncing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="339"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="344"/>
         <source>%1 of %2 · %3 left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="343"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="348"/>
         <source>%1 of %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="348"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="353"/>
         <source>Syncing file %1 of %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="451"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="456"/>
         <source>No synchronisation configured</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5710,7 +5710,7 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/tray/usermodel.cpp" line="392"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="398"/>
         <source>%n notification(s)</source>
         <translation>
             <numerusform>%n notification</numerusform>
@@ -5718,79 +5718,101 @@ Server replied with error: %2</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="632"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="641"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="680"/>
         <source>“%1” was not synchronized</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="954"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="682"/>
+        <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="685"/>
+        <source>Insufficient storage on the server. The file requires %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="688"/>
+        <source>Insufficient storage on the server.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
+        <source>There is insufficient space available on the server for some uploads.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="740"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1081"/>
         <source>Retry all uploads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1005"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1167"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1132"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1294"/>
         <source>Resolve conflict</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1157"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1284"/>
         <source>Rename file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1314"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1441"/>
         <source>Public Share Link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1426"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1553"/>
         <source>Open %1 Assistant</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1533"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1660"/>
         <source>Assistant is not available for this account.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1539"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1666"/>
         <source>Assistant is already processing a request.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1576"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1703"/>
         <source>Sending your request&#xa0;…</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1649"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1776"/>
         <source>No response yet. Please try again later.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1668"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1795"/>
         <source>No supported assistant task types were returned.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1750"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1877"/>
         <source>Waiting for the assistant response…</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1772"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1899"/>
         <source>Assistant request failed (%1).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1826"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1953"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1846"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1973"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5798,32 +5820,32 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2235"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2362"/>
         <source>Confirm Account Removal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2236"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2363"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2240"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2367"/>
         <source>Remove connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2241"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2368"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2327"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2454"/>
         <source>Leave share</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2327"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2454"/>
         <source>Remove account</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6098,17 +6120,17 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="391"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="405"/>
         <source>Please sign in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="477"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="496"/>
         <source>There are no sync folders configured.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="372"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="386"/>
         <source>Disconnected from %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6133,53 +6155,58 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="460"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="476"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="464"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="480"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="467"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="483"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="470"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="486"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="536"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="489"/>
+        <source>macOS VFS for %1: An error was encountered.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="555"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="539"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="558"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="375"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="389"/>
         <source>Disconnected from accounts:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="377"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="391"/>
         <source>Account %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="395"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="409"/>
         <source>Account synchronization is disabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="556"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="575"/>
         <source>%1 (%2, %3)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6422,27 +6449,27 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1086"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1213"/>
         <source>You renamed %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1088"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1215"/>
         <source>You deleted %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1090"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1217"/>
         <source>You created %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1092"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1219"/>
         <source>You changed %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1116"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1243"/>
         <source>Synced %1</source>
         <translation type="unfinished"></translation>
     </message>

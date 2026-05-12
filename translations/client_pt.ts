@@ -5761,8 +5761,29 @@ Server replied with error: %2</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="632"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="641"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="680"/>
         <source>“%1” was not synchronized</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="682"/>
+        <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="685"/>
+        <source>Insufficient storage on the server. The file requires %1.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="688"/>
+        <source>Insufficient storage on the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
+        <source>There is insufficient space available on the server for some uploads.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -5820,7 +5841,7 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1576"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1703"/>
         <source>Sending your request …</source>
         <translation type="unfinished"/>
     </message>
@@ -6202,6 +6223,11 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="460"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="489"/>
+        <source>macOS VFS for %1: An error was encountered.</source>
         <translation type="unfinished"/>
     </message>
     <message>
