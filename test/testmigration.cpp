@@ -40,14 +40,14 @@ private:
         "logHttp=false\n"
         "optionalDesktopNotifications=true\n"
         "\n"
-        "[Accounts]e\n"
+        "[Accounts]\n"
         "0\\Folders\\2ba4b09a-1223-aaaa-abcd-c2df238816d8\\davUrl=@Variant(http://oc.de/remote.php/dav/files/admin/)\n"
         "0\\Folders\\2ba4b09a-1223-aaaa-abcd-c2df238816d8\\deployed=false\n"
         "0\\Folders\\2ba4b09a-1223-aaaa-abcd-c2df238816d8\\displayString=ownCloud\n"
-        "0\\Folders\2ba4b09a-1223-aaaa-abcd-c2df238816d8\\ignoreHiddenFiles=true\n"
-        "0\\Folders\2ba4b09a-1223-aaaa-abcd-c2df238816d8\\journalPath=.sync_journal.db\n"
-        "0\\Folders\2ba4b09a-1223-aaaa-abcd-c2df238816d8\\localPath=/ownCloud/\n"
-        "0\\Folders\2ba4b09a-1223-aaaa-abcd-c2df238816d8\\paused=false\n"
+        "0\\Folders\\2ba4b09a-1223-aaaa-abcd-c2df238816d8\\ignoreHiddenFiles=true\n"
+        "0\\Folders\\2ba4b09a-1223-aaaa-abcd-c2df238816d8\\journalPath=.sync_journal.db\n"
+        "0\\Folders\\2ba4b09a-1223-aaaa-abcd-c2df238816d8\\localPath=/ownCloud/\n"
+        "0\\Folders\\2ba4b09a-1223-aaaa-abcd-c2df238816d8\\paused=false\n"
         "0\\Folders\\2ba4b09a-1223-aaaa-abcd-c2df238816d8\\priority=0\n"
         "0\\Folders\\2ba4b09a-1223-aaaa-abcd-c2df238816d8\\targetPath=/\n"
         "0\\Folders\\2ba4b09a-1223-aaaa-abcd-c2df238816d8\\version=13\n"
@@ -154,6 +154,12 @@ private slots:
         QStandardPaths::setTestModeEnabled(true);
     }
 
+    // Reset all static Migration state before every test so tests are independent.
+    void init()
+    {
+        Migration::resetForTesting();
+    }
+
     void testSetPhase()
     {
         Migration migration;
@@ -214,6 +220,114 @@ private slots:
         const auto afterUpgradeVersionNumber = MIRALL_VERSION_STRING;
         _configFile.setClientVersionString(afterUpgradeVersionNumber);
         QCOMPARE(_configFile.clientVersionString(), MIRALL_VERSION_STRING);
+    }
+
+    void testIsInProgress_notStarted()
+    {
+        Migration migration;
+        QCOMPARE(migration.phase(), Migration::Phase::NotStarted);
+        QCOMPARE(migration.isInProgress(), false);
+    }
+
+    void testIsInProgress_trueForMidPhases()
+    {
+        Migration migration;
+        migration.setPhase(Migration::Phase::SetupConfigFile);
+        QCOMPARE(migration.isInProgress(), true);
+
+        Migration::resetForTesting();
+        migration.setPhase(Migration::Phase::SetupUsers);
+        QCOMPARE(migration.isInProgress(), true);
+
+        Migration::resetForTesting();
+        migration.setPhase(Migration::Phase::SetupFolders);
+        QCOMPARE(migration.isInProgress(), true);
+    }
+
+    void testIsInProgress_falseWhenDone()
+    {
+        Migration migration;
+        migration.setPhase(Migration::Phase::Done);
+        QCOMPARE(migration.isInProgress(), false);
+    }
+
+    void testPhaseRollbackPrevented()
+    {
+        Migration migration;
+        migration.setPhase(Migration::Phase::Done);
+        migration.setPhase(Migration::Phase::SetupUsers);  // attempt rollback
+        QCOMPARE(migration.phase(), Migration::Phase::Done);
+    }
+
+    void testIsUpgrade_noSideEffects()
+    {
+        setupStandarConfig("1.0.0");
+        Migration migration;
+
+        // upgrading: current > previous
+        QCOMPARE(migration.isUpgrade(), true);
+        QCOMPARE(migration.isDowngrade(), false);
+        QCOMPARE(migration.versionChanged(), true);
+
+        // calling isDowngrade after isUpgrade must not corrupt the result
+        QCOMPARE(migration.isUpgrade(), true);
+
+        // upgradeType is not touched by isUpgrade/isDowngrade
+        QCOMPARE(migration.upgradeType(), Migration::UpgradeType::NoChange);
+    }
+
+    void testIsDowngrade_noSideEffects()
+    {
+        // simulate a downgrade: set previous version to a future version
+        setupStandardConfigFolder();
+        _configFile.setClientVersionString("99.0.0");
+
+        Migration migration;
+        QCOMPARE(migration.isDowngrade(), true);
+        QCOMPARE(migration.isUpgrade(), false);
+        QCOMPARE(migration.versionChanged(), true);
+
+        // upgradeType is not touched by isDowngrade
+        QCOMPARE(migration.upgradeType(), Migration::UpgradeType::NoChange);
+    }
+
+    void testVersionUnchanged()
+    {
+        setupStandardConfigFolder();
+        _configFile.setClientVersionString(MIRALL_VERSION_STRING);
+        _configFile.setClientPreviousVersionString(MIRALL_VERSION_STRING);
+
+        Migration migration;
+        QCOMPARE(migration.isUpgrade(), false);
+        QCOMPARE(migration.isDowngrade(), false);
+        QCOMPARE(migration.versionChanged(), false);
+    }
+
+    void testShouldTryToMigrate_trueOnUpgrade()
+    {
+        setupStandarConfig("1.0.0");
+        Migration migration;
+        QCOMPARE(migration.shouldTryToMigrate(), true);
+    }
+
+    void testShouldTryToMigrate_falseWhenVersionsMatch()
+    {
+        setupStandardConfigFolder();
+        _configFile.setClientVersionString(MIRALL_VERSION_STRING);
+        _configFile.setClientPreviousVersionString(MIRALL_VERSION_STRING);
+
+        Migration migration;
+        QCOMPARE(migration.shouldTryToMigrate(), false);
+    }
+
+    void testStaticStateSharedAcrossInstances()
+    {
+        Migration a;
+        a.setPhase(Migration::Phase::SetupUsers);
+
+        Migration b;
+        QCOMPARE(b.phase(), Migration::Phase::SetupUsers);
+        QCOMPARE(b.isInProgress(), true);
     }
 };
 
