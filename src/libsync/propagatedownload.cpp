@@ -1054,67 +1054,7 @@ void PropagateDownloadFile::deleteExistingFolder()
     }
 }
 
-namespace { // Anonymous namespace for the recall feature
-    static QString makeRecallFileName(const QString &fn)
-    {
-        QString recallFileName(fn);
-        // Add _recall-XXXX  before the extension.
-        int dotLocation = recallFileName.lastIndexOf('.');
-        // If no extension, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
-        if (dotLocation <= recallFileName.lastIndexOf('/') + 1) {
-            dotLocation = recallFileName.size();
-        }
-
-        QString timeString = QDateTime::currentDateTimeUtc().toString("yyyyMMdd-hhmmss");
-        recallFileName.insert(dotLocation, "_.sys.admin#recall#-" + timeString);
-
-        return recallFileName;
-    }
-
-    void handleRecallFile(const QString &filePath, const QString &folderPath, SyncJournalDb &journal)
-    {
-        qCDebug(lcPropagateDownload) << "handleRecallFile: " << filePath;
-
-        FileSystem::setFileHidden(filePath, true);
-
-        QFile file(filePath);
-        if (!file.open(QIODevice::ReadOnly)) {
-            qCWarning(lcPropagateDownload) << "Could not open recall file" << file.errorString();
-            return;
-        }
-        QFileInfo existingFile(filePath);
-        QDir baseDir = existingFile.dir();
-
-        while (!file.atEnd()) {
-            QByteArray line = file.readLine();
-            line.chop(1); // remove trailing \n
-
-            QString recalledFile = QDir::cleanPath(baseDir.filePath(line));
-            if (!recalledFile.startsWith(folderPath) || !recalledFile.startsWith(baseDir.path())) {
-                qCWarning(lcPropagateDownload) << "Ignoring recall of " << recalledFile;
-                continue;
-            }
-
-            // Path of the recalled file in the local folder
-            QString localRecalledFile = recalledFile.mid(folderPath.size());
-
-            SyncJournalFileRecord record;
-            if (!journal.getFileRecord(localRecalledFile, &record) || !record.isValid()) {
-                qCWarning(lcPropagateDownload) << "No db entry for recall of" << localRecalledFile;
-                continue;
-            }
-
-            qCInfo(lcPropagateDownload) << "Recalling" << localRecalledFile << "Checksum:" << record._checksumHeader;
-
-            QString targetPath = makeRecallFileName(recalledFile);
-
-            qCDebug(lcPropagateDownload) << "Copy recall file: " << recalledFile << " -> " << targetPath;
-            // Remove the target first, QFile::copy will not overwrite it.
-            FileSystem::remove(targetPath);
-            QFile::copy(recalledFile, targetPath);
-        }
-    }
-
+namespace {
     static void preserveGroupOwnership(const QString &fileName, const QFileInfo &fi)
     {
 #ifdef Q_OS_UNIX
@@ -1415,13 +1355,6 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
     propagator()->_journal->commit("download file start2");
 
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success, {}, ErrorCategory::NoError);
-
-    // handle the special recall file
-    if (!_item->_remotePerm.hasPermission(RemotePermissions::IsShared)
-        && (_item->_file == QLatin1String(".sys.admin#recall#")
-               || _item->_file.endsWith(QLatin1String("/.sys.admin#recall#")))) {
-        handleRecallFile(fn, propagator()->localPath(), *propagator()->_journal);
-    }
 
     const auto isLockOwnedByCurrentUser = _item->_lockOwnerId == propagator()->account()->davUser();
 
