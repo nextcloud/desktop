@@ -154,8 +154,10 @@ private slots:
         }
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("D/quota_blocked.txt")));
 
-        // Server side: now delete folder D.
-        fakeFolder.serverErrorPaths().clear();
+        // Server side: now delete folder D. Keep the quota error active so we verify
+        // that the file retries (and fails with a quota error) rather than being silently
+        // skipped by the blacklist backoff timer.
+        fakeFolder.serverErrorPaths().append(QStringLiteral("D/quota_blocked.txt"), 507);
         fakeFolder.remoteModifier().remove(QStringLiteral("D"));
         ItemCompletedSpy completeSpy(fakeFolder);
         fakeFolder.syncOnce();
@@ -168,11 +170,14 @@ private slots:
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("D/a1")));
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("D/a2")));
 
-        // The protected file must be reported with the quota specific error, not silently ignored.
+        // The file must be reported as a failed upload attempt, not silently ignored.
+        // With _ignoreDuration = 0 for quota errors, the file retries every sync and
+        // produces a real quota error instead of a "skipped due to earlier error" message.
         {
             const auto item = completeSpy.findItem(QStringLiteral("D/quota_blocked.txt"));
             QVERIFY(item);
-            QCOMPARE(item->_instruction, CSYNC_INSTRUCTION_ERROR);
+            QCOMPARE(item->_instruction, CSYNC_INSTRUCTION_NEW);
+            QVERIFY(item->_status == SyncFileItem::DetailError || item->_status == SyncFileItem::NormalError);
             QVERIFY(!item->_errorString.contains(QStringLiteral("skipped due to earlier error")));
         }
     }
