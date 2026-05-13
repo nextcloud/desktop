@@ -4192,7 +4192,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>Symbolické odkazy nie sú podporované pri synchronizácii.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="396"/>
+        <location filename="../src/libsync/discovery.cpp" line="395"/>
         <source>File is locked by another application.</source>
         <translation type="unfinished"/>
     </message>

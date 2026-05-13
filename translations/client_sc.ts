@@ -4172,7 +4172,7 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation>Is ligòngios simbòlicos non sunt suportados in sa sincronizatzione.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="396"/>
+        <location filename="../src/libsync/discovery.cpp" line="395"/>
         <source>File is locked by another application.</source>
         <translation type="unfinished"/>
     </message>

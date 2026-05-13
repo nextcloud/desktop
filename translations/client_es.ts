@@ -4192,7 +4192,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>Los enlaces simbólicos no están soportados en la sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="396"/>
+        <location filename="../src/libsync/discovery.cpp" line="395"/>
         <source>File is locked by another application.</source>
         <translation>El archivo está bloqueado por otra aplicación.</translation>
     </message>
@@ -5807,22 +5807,22 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="682"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
-        <translation type="unfinished"/>
+        <translation>Almacenamiento insuficiente en el servidor. El archivo requiere %1 pero solo hay %2 disponible.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="685"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
-        <translation type="unfinished"/>
+        <translation>Almacenamiento insuficiente en el servidor. El archivo requiere %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="688"/>
         <source>Insufficient storage on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Almacenamiento insuficiente en el servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>No hay espacio disponible en el servidor para algunas de las subidas.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="657"/>
@@ -6266,7 +6266,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="489"/>
         <source>macOS VFS for %1: An error was encountered.</source>
-        <translation type="unfinished"/>
+        <translation>macOS VFS para %1: Se encontró un error.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="526"/>

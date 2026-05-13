@@ -4175,7 +4175,7 @@ Dette er en ny, eksperimentell modus. Hvis du bestemmer deg for å bruke den, ve
         <translation>Symbolske lenker støttes ikke ved synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="396"/>
+        <location filename="../src/libsync/discovery.cpp" line="395"/>
         <source>File is locked by another application.</source>
         <translation type="unfinished"/>
     </message>

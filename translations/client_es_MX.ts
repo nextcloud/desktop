@@ -4176,7 +4176,7 @@ Este es un modo nuevo y experimental. Si decide usarlo, por favor informe cualqu
         <translation>Los enlaces simbólicos no están soportados en la sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="396"/>
+        <location filename="../src/libsync/discovery.cpp" line="395"/>
         <source>File is locked by another application.</source>
         <translation type="unfinished"/>
     </message>
