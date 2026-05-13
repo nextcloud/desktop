@@ -47,10 +47,27 @@
         ]
         },
         {
-            "name": "(RelWithDebInfo) Launch HiDriveNext",
+            "name": "(RelWithDebInfo) Launch IONOS HiDriveNext",
             "type": "cppvsdbg",
             "request": "launch",
             "program": "${workspaceFolder}/../build/win32-MSVC-x64/RelWithDebInfo/bin/ionos-hidrive-next.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+                {
+                    "name": "PATH",
+                    "value": "C:/CraftRoot/bin;C:/Craft64/bin;%PATH%"
+                },
+                { "name": "QML_IMPORT_TRACE", "value": "1" },
+                { "name": "QT_LOGGING_RULES", "value": "qt.qml.debug=true" }
+            ],
+        },
+        {
+            "name": "(RelWithDebInfo) Launch STRATO HiDriveNext",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/../build/win32-MSVC-x64/RelWithDebInfo/bin/strato-hidrive-next.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
