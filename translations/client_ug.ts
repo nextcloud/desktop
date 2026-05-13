@@ -4191,7 +4191,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ماس قەدەملىك سىمۋوللۇق ئۇلىنىشلارنى قوللىمايدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="396"/>
+        <location filename="../src/libsync/discovery.cpp" line="395"/>
         <source>File is locked by another application.</source>
         <translation type="unfinished"/>
     </message>

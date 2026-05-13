@@ -4192,7 +4192,7 @@ Ini adalah mode baru yang bersifat eksperimental. Jika Anda memutuskan untuk men
         <translation>Tautan simbolik tidak didukung dalam sinkronisasi.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="396"/>
+        <location filename="../src/libsync/discovery.cpp" line="395"/>
         <source>File is locked by another application.</source>
         <translation type="unfinished"/>
     </message>
