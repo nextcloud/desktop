@@ -132,8 +132,10 @@ public class MockRemoteItem: Equatable {
             ? NextcloudKit.shared.nkCommonInstance.rootFileName
             : trashbinOriginalLocation?.split(separator: "/").last?.toString() ?? name
         file.size = size
-        file.date = creationDate
+        file.creationDate = creationDate
+        file.date = modificationDate
         file.directory = isRoot ? false : directory
+        file.permissions = "RGDNVW"
         file.etag = versionIdentifier
         file.ocId = identifier
         file.fileId = identifier.replacingOccurrences(of: trashedItemIdSuffix, with: "")
