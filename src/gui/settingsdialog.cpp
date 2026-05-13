@@ -6,9 +6,11 @@
 
 #include "settingsdialog.h"
 
+#include "advancedsettings.h"
 #include "folderman.h"
 #include "theme.h"
 #include "generalsettings.h"
+#include "infosettings.h"
 #include "networksettings.h"
 #include "accountsettings.h"
 #include "configfile.h"
@@ -180,32 +182,21 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _actionGroup->setExclusive(true);
     connect(_actionGroup, &QActionGroup::triggered, this, &SettingsDialog::slotSwitchPage);
 
-    QAction *generalAction = createColorAwareAction(QLatin1String(":/client/theme/settings.svg"), tr("General"));
-    _actionGroup->addAction(generalAction);
-    _toolBar->addAction(generalAction);
-    auto *accountSpacer = new QWidget(this);
-    accountSpacer->setFixedHeight(16);
-    _toolBar->addWidget(accountSpacer);
-    _toolBar->addSeparator();
-    auto *generalSettings = new GeneralSettings;
-    _stack->addWidget(generalSettings);
     _stack->setStyleSheet(QStringLiteral("QStackedWidget { background: transparent; }"));
-
-    // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
-    connect(this, &SettingsDialog::styleChanged, generalSettings, &GeneralSettings::slotStyleChanged);
-
-#if defined(BUILD_UPDATER)
-    connect(AccountManager::instance(), &AccountManager::accountAdded, generalSettings, &GeneralSettings::loadUpdateChannelsList);
-    connect(AccountManager::instance(), &AccountManager::accountRemoved, generalSettings, &GeneralSettings::loadUpdateChannelsList);
-    connect(AccountManager::instance(), &AccountManager::capabilitiesChanged, generalSettings, &GeneralSettings::loadUpdateChannelsList);
-#endif
-
-    _actionGroupWidgets.insert(generalAction, generalSettings);
 
     const auto accountsList = AccountManager::instance()->accounts();
     for (const auto &account : accountsList) {
         accountAdded(account.data());
     }
+
+    auto *accountSpacer = new QWidget(this);
+    accountSpacer->setFixedHeight(16);
+    _firstNonAccountAction = _toolBar->addWidget(accountSpacer);
+    _toolBar->addSeparator();
+
+    addSettingsPage(QLatin1String(":/client/theme/settings.svg"), tr("General"), new GeneralSettings(this));
+    addSettingsPage(QLatin1String(":/client/theme/settings.svg"), tr("Advanced"), new AdvancedSettings(this));
+    addSettingsPage(QLatin1String(":/client/theme/info.svg"), tr("Info"), new InfoSettings(this), true);
 
     QTimer::singleShot(1, this, &SettingsDialog::showFirstPage);
 
@@ -302,9 +293,12 @@ void SettingsDialog::showFirstPage()
         _initialAccount = nullptr;
         return;
     }
-    QList<QAction *> actions = _toolBar->actions();
-    if (!actions.empty()) {
-        actions.first()->trigger();
+    const QList<QAction *> actions = _toolBar->actions();
+    for (auto *action : actions) {
+        if (_actionGroupWidgets.contains(action)) {
+            action->trigger();
+            return;
+        }
     }
 }
 
@@ -343,7 +337,11 @@ void SettingsDialog::accountAdded(AccountState *s)
         accountAction->setIconText(shortDisplayNameForSettings(s->account().data(), static_cast<int>(height * buttonSizeRatio)));
     }
 
-    _toolBar->addAction(accountAction);
+    if (_firstNonAccountAction) {
+        _toolBar->insertAction(_firstNonAccountAction, accountAction);
+    } else {
+        _toolBar->addAction(accountAction);
+    }
     auto accountSettings = new AccountSettings(s, this);
     QString objectName = QLatin1String("accountSettings_");
     objectName += s->account()->displayName();
@@ -448,6 +446,36 @@ void SettingsDialog::accountRemoved(AccountState *s)
     }
 }
 
+void SettingsDialog::addSettingsPage(const QString &iconPath, const QString &title, QWidget *settingsPage, bool updateChannelAware)
+{
+    auto *settingsAction = createColorAwareAction(iconPath, title);
+    _actionGroup->addAction(settingsAction);
+    _toolBar->addAction(settingsAction);
+
+    QString objectName = QLatin1String("settingsPage_");
+    objectName += title;
+    settingsPage->setObjectName(objectName);
+    _stack->addWidget(settingsPage);
+
+    if (auto *generalSettingsPage = qobject_cast<GeneralSettings *>(settingsPage)) {
+        connect(this, &SettingsDialog::styleChanged, generalSettingsPage, &GeneralSettings::slotStyleChanged);
+    } else if (auto *advancedSettingsPage = qobject_cast<AdvancedSettings *>(settingsPage)) {
+        connect(this, &SettingsDialog::styleChanged, advancedSettingsPage, &AdvancedSettings::slotStyleChanged);
+    } else if (auto *infoSettingsPage = qobject_cast<InfoSettings *>(settingsPage)) {
+        connect(this, &SettingsDialog::styleChanged, infoSettingsPage, &InfoSettings::slotStyleChanged);
+
+#if defined(BUILD_UPDATER)
+        if (updateChannelAware) {
+            connect(AccountManager::instance(), &AccountManager::accountAdded, infoSettingsPage, &InfoSettings::loadUpdateChannelsList);
+            connect(AccountManager::instance(), &AccountManager::accountRemoved, infoSettingsPage, &InfoSettings::loadUpdateChannelsList);
+            connect(AccountManager::instance(), &AccountManager::capabilitiesChanged, infoSettingsPage, &InfoSettings::loadUpdateChannelsList);
+        }
+#endif
+    }
+
+    _actionGroupWidgets.insert(settingsAction, settingsPage);
+}
+
 void SettingsDialog::customizeStyle()
 {
     if (_updatingStyle) {
@@ -468,7 +496,7 @@ void SettingsDialog::customizeStyle()
 
         /* Panels */
         "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
-        "#accountStatusPanel, #connectionSettingsPanel, #fileProviderPanel, #syncFoldersPanel {"
+        "#accountStatusPanel, #encryptionPanel, #fileProviderPanel, #syncFoldersPanel {"
         " background: palette(" BACKGROUND_PALETTE ");"
         " border-radius: 10px;"
         " margin: 0px;"

@@ -24,6 +24,7 @@ configure_file(${CMAKE_SOURCE_DIR}/theme.qrc.in ${CMAKE_SOURCE_DIR}/theme.qrc)
 set(theme_dir ${CMAKE_SOURCE_DIR}/theme)
 
 set(client_UI_SRCS
+    advancedsettings.ui
     accountsettings.ui
     conflictdialog.ui
     invalidfilenamedialog.ui
@@ -32,6 +33,7 @@ set(client_UI_SRCS
     folderwizardsourcepage.ui
     folderwizardtargetpage.ui
     generalsettings.ui
+    infosettings.ui
     legalnotice.ui
     ignorelisteditor.ui
     ignorelisttablewidget.ui
@@ -58,6 +60,8 @@ qt_add_resources(client_UI_SRCS ../../resources.qrc ${CMAKE_SOURCE_DIR}/theme.qr
 set(client_SRCS
     accountmanager.h
     accountmanager.cpp
+    advancedsettings.h
+    advancedsettings.cpp
     accountsettings.h
     accountsettings.cpp
     accountsetupfromcommandlinejob.h
@@ -104,6 +108,8 @@ set(client_SRCS
     folderwizard.cpp
     generalsettings.h
     generalsettings.cpp
+    infosettings.h
+    infosettings.cpp
     legalnotice.h
     legalnotice.cpp
     ignorelisteditor.h
@@ -136,6 +142,8 @@ set(client_SRCS
     selectivesyncdialog.cpp
     settingsdialog.h
     settingsdialog.cpp
+    settingspageutils.h
+    settingspageutils.cpp
     sharemanager.h
     sharemanager.cpp
     profilepagewidget.h

@@ -71,6 +71,7 @@ private:
     void customizeStyle();
     void requestStyleUpdate();
     void updateAccountAvatar(const Account *account);
+    void addSettingsPage(const QString &iconPath, const QString &title, QWidget *settingsPage, bool updateChannelAware = false);
 
     QAction *createColorAwareAction(const QString &iconName, const QString &fileName);
     QAction *createActionWithIcon(const QIcon &icon, const QString &text, const QString &iconPath = QString());
@@ -85,6 +86,7 @@ private:
 
     QToolBar *_toolBar;
     QStackedWidget *_stack = nullptr;
+    QAction *_firstNonAccountAction = nullptr;
 
 #if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
     QWidget *_windowDragHandle = nullptr;
