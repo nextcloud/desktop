@@ -160,6 +160,9 @@ static SyncJournalErrorBlacklistRecord createBlacklistEntry(
 
     if (item._httpErrorCode == 507) {
         entry._errorCategory = SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage;
+        // Quota can change at any time (user frees space, admin adjusts limits).
+        // Always retry on the next sync rather than backing off exponentially.
+        entry._ignoreDuration = 0;
     }
 
     return entry;
