@@ -4192,7 +4192,7 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <translation>Ní thacaítear le naisc siombalacha le linn sioncronaithe.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="396"/>
+        <location filename="../src/libsync/discovery.cpp" line="395"/>
         <source>File is locked by another application.</source>
         <translation>Tá an comhad faoi ghlas ag feidhmchlár eile.</translation>
     </message>

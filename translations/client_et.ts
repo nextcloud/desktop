@@ -848,9 +848,9 @@ The only advantage of disabling virtual file support is that the selective sync 
 This action will abort any currently running synchronization.</source>
         <translation>Selle tegevusega lülitad välja virtuaalsete failide toe. Mistõttu kõik kaustad, kus seni kehtis „Saadaval vaid võrgus“ tunnus kuuluvad kohesele allalaadimisele.
 
-Ainus eelis virtuaalsete failide toe väljalülitamisel on see, et valikuline sünkroniseerimine muutub jälle võimalikuks.
+Ainus eelis virtuaalsete failide toe väljalülitamisel on see, et valikuline sünkroonimine muutub jälle võimalikuks.
 
-Samuti katkevad kõik hetkel toimivad sünkroniseerimised.</translation>
+Samuti katkevad kõik hetkel toimivad sünkroonimised.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1008"/>
@@ -3070,7 +3070,7 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="241"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation>Kuna kasutusel on süsteemiülene automaatne käivitud, siis rakenduse automaatset käivitamist sisselogimisel ei saa välja lülitada.</translation>
+        <translation>Kuna kasutusel on süsteemiülene automaatne käivitus, siis rakenduse automaatset käivitamist sisselogimisel ei saa välja lülitada.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="376"/>
@@ -4191,7 +4191,7 @@ Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun
         <translation>Sümbollingid ei ole sünkroonimisel toetatud.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="396"/>
+        <location filename="../src/libsync/discovery.cpp" line="395"/>
         <source>File is locked by another application.</source>
         <translation>Fail on lukustatud muu rakenduse poolt.</translation>
     </message>
@@ -5806,22 +5806,22 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="682"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
-        <translation type="unfinished"/>
+        <translation>Serveris pole piisavalt andmeruumi. See fail vajab %1, aga vaid %2 on saadaval.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="685"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
-        <translation type="unfinished"/>
+        <translation>Serveris pole piisavalt andmeruumi. See fail vajab %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="688"/>
         <source>Insufficient storage on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Serveris pole piisavalt andmeruumi.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>Mõnede üleslaadimiste jaoks pole serveris piisavalt vaba andmeruumi.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="657"/>
@@ -6265,7 +6265,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="489"/>
         <source>macOS VFS for %1: An error was encountered.</source>
-        <translation type="unfinished"/>
+        <translation>macOS-i VFS %1 jaoks: Tekkis viga.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="526"/>

@@ -4192,7 +4192,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
         <translation>Sinchronizuojant simbolinės nuorodos nepalaikomos.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="396"/>
+        <location filename="../src/libsync/discovery.cpp" line="395"/>
         <source>File is locked by another application.</source>
         <translation>Failą užrakino kita programėlė.</translation>
     </message>
