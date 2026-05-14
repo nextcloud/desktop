@@ -139,9 +139,8 @@ private slots:
         fakeFolder.serverErrorPaths().clear();
         fakeFolder.serverErrorPaths().append(QStringLiteral("D/quota_blocked.txt"), 507);
 
-        // Server side: folder A is renamed to D. The quota blocked file was never on the
-        // server, so the blacklist entry path is still "A/quota_blocked.txt" while the
-        // local file moves to "D/" as the client follows the rename.
+        // Server renames A to D. The blacklist entry stays at "A/quota_blocked.txt" until
+        // the next sync updates it; the local file follows to "D/".
         fakeFolder.remoteModifier().rename(QStringLiteral("A"), QStringLiteral("D"));
         // Sync: local A is renamed to D; any upload attempt for D/quota_blocked.txt fails with 507.
         fakeFolder.syncOnce();
@@ -154,9 +153,7 @@ private slots:
         }
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("D/quota_blocked.txt")));
 
-        // Server side: now delete folder D. Keep the quota error active so we verify
-        // that the file retries (and fails with a quota error) rather than being silently
-        // skipped by the blacklist backoff timer.
+        // Server deletes folder D. Keep quota error active to verify the file retries.
         fakeFolder.serverErrorPaths().append(QStringLiteral("D/quota_blocked.txt"), 507);
         fakeFolder.remoteModifier().remove(QStringLiteral("D"));
         ItemCompletedSpy completeSpy(fakeFolder);
@@ -170,14 +167,12 @@ private slots:
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("D/a1")));
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("D/a2")));
 
-        // The file must be reported as a failed upload attempt, not silently ignored.
-        // With _ignoreDuration = 0 for quota errors, the file retries every sync and
-        // produces a real quota error instead of a "skipped due to earlier error" message.
+        // Must be reported as a failed upload, not silently ignored.
         {
             const auto item = completeSpy.findItem(QStringLiteral("D/quota_blocked.txt"));
             QVERIFY(item);
-            QCOMPARE(item->_instruction, CSYNC_INSTRUCTION_NEW);
-            QVERIFY(item->_status == SyncFileItem::DetailError || item->_status == SyncFileItem::NormalError);
+            QCOMPARE(item->_instruction, CSYNC_INSTRUCTION_ERROR);
+            QVERIFY(item->_status == SyncFileItem::SoftError || item->_status == SyncFileItem::NormalError);
             QVERIFY(!item->_errorString.contains(QStringLiteral("skipped due to earlier error")));
         }
     }
@@ -231,6 +226,52 @@ private slots:
             auto entry = fakeFolder.syncJournal().errorBlacklistEntry(QStringLiteral("A/quota_blocked.txt"));
             QVERIFY(!entry.isValid());
         }
+    }
+
+    // The storage full notification must fire in the same sync as a folder rename, not only when the upload is retried.
+    void testStorageNotificationEmittedOnParentFolderRename()
+    {
+        FileInfo initialState{QString{}, {
+            {QStringLiteral("A"), {
+                {QStringLiteral("small.txt"), 4},
+            }},
+        }};
+        FakeFolder fakeFolder{initialState};
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Block big.txt from uploading permanently (quota exceeded).
+        fakeFolder.localModifier().insert(QStringLiteral("A/big.txt"), 1000);
+        fakeFolder.setServerOverride([](QNetworkAccessManager::Operation op,
+                                        const QNetworkRequest &req,
+                                        QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::PutOperation
+                && req.url().path().contains(QLatin1String("big.txt"))) {
+                return new FakeErrorReply{op, req, nullptr, 507};
+            }
+            return nullptr;
+        });
+
+        QVERIFY(!fakeFolder.syncOnce());
+        {
+            auto entry = fakeFolder.syncJournal().errorBlacklistEntry(QStringLiteral("A/big.txt"));
+            QVERIFY(entry.isValid());
+            QCOMPARE(entry._errorCategory, SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage);
+        }
+
+        // Server renames A to B. The storage full notification must fire in this sync,
+        // not only after the next retry of the upload.
+        fakeFolder.remoteModifier().rename(QStringLiteral("A"), QStringLiteral("B"));
+        QSignalSpy storageSpy(&fakeFolder.syncEngine(), &SyncEngine::syncError);
+        fakeFolder.syncOnce();
+
+        const bool hadStorageNotification = std::any_of(storageSpy.begin(), storageSpy.end(),
+            [](const QList<QVariant> &args) {
+                return args.at(1).value<ErrorCategory>() == ErrorCategory::InsufficientRemoteStorage;
+            });
+        QVERIFY(hadStorageNotification);
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/big.txt")));
     }
 
     void issue1329()
