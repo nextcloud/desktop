@@ -1059,9 +1059,14 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
         } else {
             // we need to make a request to the server to know that the original file is deleted on the server
             _pendingAsyncJobs++;
+            // Mark this path as a pending rename check so that children blocked from upload
+            // because of quota errors inside a queued deleted-directory job do not cancel the
+            // parent's REMOVE instruction before rename detection can claim it.
+            _discoveryData->_pendingRenameSourcePaths.insert(originalPath);
             const auto job = new RequestEtagJob(_discoveryData->_account, _discoveryData->_remoteFolder + originalPath, this);
             connect(job, &RequestEtagJob::finishedWithResult, this, [=, this](const HttpResult<QByteArray> &etag) mutable {
                 _pendingAsyncJobs--;
+                _discoveryData->_pendingRenameSourcePaths.remove(originalPath);
                 QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
                 if (etag || etag.error().code != 404 ||
                     // Somehow another item claimed this original path, consider as if it existed
