@@ -1477,7 +1477,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         return;
     }
 
-    if (checkNewDeleteConflict(item)) {
+    if (checkNewDeleteConflict(item, localEntry.size)) {
         return;
     }
 
@@ -2521,13 +2521,13 @@ bool ProcessDirectoryJob::maybeRenameForWindowsCompatibility(const QString &abso
     return result;
 }
 
-bool ProcessDirectoryJob::checkNewDeleteConflict(const SyncFileItemPtr &item)
+bool ProcessDirectoryJob::checkNewDeleteConflict(const SyncFileItemPtr &item, int64_t localFileSize)
 {
     if (!_discoveryData->recursiveCheckForDeletedParents(item->_file)) {
         return false;
     }
 
-    // Deleting the local copy could result in permanent data loss if the file was never in the 
+    // Deleting the local copy could result in permanent data loss if the file was never in the
     // server and blocked from being uploaded by a quota error.
     // Protect it instead and let the user resolve the storage situation first.
     if (const auto blacklistEntry = _discoveryData->_statedb->errorBlacklistEntry(item->_file);
@@ -2548,6 +2548,31 @@ bool ProcessDirectoryJob::checkNewDeleteConflict(const SyncFileItemPtr &item)
         _childIgnored = true;
         emit _discoveryData->itemDiscovered(item);
         return true;
+    }
+
+    // No prior blacklist entry. For files blocked from upload due to a quota error in the same
+    // sync as the folder deletion, check the parent folder's last known quota from the DB.
+    if (!item->isDirectory() && localFileSize > 0 && _dirItem) {
+        SyncJournalFileRecord dirItemDbRecord;
+        if (_discoveryData->_statedb->getFileRecord(_dirItem->_file, &dirItemDbRecord)
+            && dirItemDbRecord.isValid()) {
+            const auto bytesAvailable = dirItemDbRecord._folderQuota.bytesAvailable;
+            if (bytesAvailable >= 0 && localFileSize > bytesAvailable) {
+                qCWarning(lcDisco) << "Not removing local file inside a remotely deleted folder: "
+                                      "file would exceed last known parent folder quota —"
+                                   << item->_file;
+                item->_instruction = CSYNC_INSTRUCTION_ERROR;
+                item->_status = SyncFileItem::SoftError;
+                item->_httpErrorCode = 507;
+                item->_errorString = tr("\"%1\" was not deleted because its latest changes were not synced "
+                                        "and your server quota was exceeded. "
+                                        "Please manage your storage and try syncing again.")
+                                         .arg(item->_file);
+                _childIgnored = true;
+                emit _discoveryData->itemDiscovered(item);
+                return true;
+            }
+        }
     }
 
     qCWarning(lcDisco) << "Removing local file inside a remotely deleted folder" << item->_file;

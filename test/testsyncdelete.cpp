@@ -191,6 +191,49 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
+    // A file blocked from upload due to a quota error is protected from local deletion even
+    // when the folder is deleted on the server in the same sync where the file was first added
+    // locally. No prior blacklist entry exists; the parent folder's last known DB quota is used.
+    void testQuotaBlockedFileProtectedInSameSyncAsParentFolderDeletion()
+    {
+        FileInfo initialState{QString{}, {
+            {QStringLiteral("A"), {
+                {QStringLiteral("small.txt"), 4},
+            }},
+        }};
+        // Skip the automatic initial sync so the quota is set before the first sync,
+        // ensuring the DB stores bytesAvailable=50 for folder A.
+        FakeFolder fakeFolder{initialState, {}, {}, false};
+
+        fakeFolder.remoteModifier().setFolderQuota(QStringLiteral("A"), FileInfo::FolderQuota{0, 50});
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Server deletes A and a large local file is added before the next sync,
+        // so no blacklist entry exists yet for the file.
+        fakeFolder.remoteModifier().remove(QStringLiteral("A"));
+        fakeFolder.localModifier().insert(QStringLiteral("A/big_file.txt"), 100); // 100 > 50
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+        fakeFolder.syncOnce();
+
+        // big_file.txt was never uploaded but exceeds the last known quota.
+        // It must be protected locally rather than silently deleted.
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/big_file.txt")));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A")));
+
+        // Previously synced sibling must be removed (trust the server deletion).
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/small.txt")));
+
+        // Must be reported as a quota error item.
+        {
+            const auto item = completeSpy.findItem(QStringLiteral("A/big_file.txt"));
+            QVERIFY(item);
+            QCOMPARE(item->_instruction, CSYNC_INSTRUCTION_ERROR);
+            QVERIFY(item->_status == SyncFileItem::SoftError || item->_status == SyncFileItem::NormalError);
+        }
+    }
+
     // Files blocked from upload because of quota errors must follow their parent folder through
     // multiple successive server side renames.
     void testQuotaBlockedFileFollowsParentFolderMove()
