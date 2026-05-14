@@ -6,8 +6,8 @@
 #include "infosettings.h"
 #include "ui_infosettings.h"
 
-#include "common/utility.h"
 #include "configfile.h"
+#include "guiutility.h"
 #include "legalnotice.h"
 #include "owncloudgui.h"
 #include "settingspageutils.h"
