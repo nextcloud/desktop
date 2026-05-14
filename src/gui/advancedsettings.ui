@@ -17,7 +17,7 @@
   <property name="windowTitle">
    <string notr="true">Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QVBoxLayout" name="pageLayout">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -33,168 +33,153 @@
    <property name="spacing">
     <number>12</number>
    </property>
-   <item row="0" column="0">
+   <item>
     <widget class="QGroupBox" name="advancedGroupBox">
      <property name="title">
       <string/>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <layout class="QVBoxLayout" name="largeFoldersLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <item>
-       <widget class="QLabel" name="advancedGroupBoxTitle">
-        <property name="font">
-         <font>
-          <bold>true</bold>
-         </font>
+       <layout class="QHBoxLayout" name="newFolderLimitRow">
+        <item>
+         <widget class="QLabel" name="newFolderLimitLabel">
+          <property name="text">
+           <string>Ask for confirmation before synchronizing new folders larger than</string>
+          </property>
+          <property name="buddy">
+           <cstring>newFolderLimitCheckBox</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="newFolderLimitSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="newFolderLimitSpinBox">
+          <property name="maximum">
+           <number>999999</number>
+          </property>
+          <property name="value">
+           <number>99</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string extracomment="Trailing part of &quot;Ask confirmation before syncing folder larger than&quot;">MB</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="OCC::SettingsSwitch" name="newFolderLimitCheckBox">
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QFrame" name="existingFolderLimitSeparator">
+        <property name="frameShape">
+         <enum>QFrame::Shape::HLine</enum>
         </property>
-        <property name="text">
-         <string>Advanced</string>
+        <property name="frameShadow">
+         <enum>QFrame::Shadow::Plain</enum>
         </property>
        </widget>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_4">
-        <property name="spacing">
-         <number>0</number>
+       <layout class="QHBoxLayout" name="existingFolderLimitRow">
+        <item>
+         <widget class="QLabel" name="existingFolderLimitLabel">
+          <property name="text">
+           <string>Notify when synchronised folders grow larger than specified limit</string>
+          </property>
+          <property name="buddy">
+           <cstring>existingFolderLimitCheckBox</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="existingFolderLimitSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="OCC::SettingsSwitch" name="existingFolderLimitCheckBox"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QFrame" name="stopExistingFolderNowBigSyncSeparator">
+        <property name="frameShape">
+         <enum>QFrame::Shape::HLine</enum>
         </property>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
-          <item>
-           <widget class="QCheckBox" name="newFolderLimitCheckBox">
-            <property name="text">
-             <string>Ask for confirmation before synchronizing new folders larger than</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer">
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Policy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>10</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QSpinBox" name="newFolderLimitSpinBox">
-            <property name="maximum">
-             <number>999999</number>
-            </property>
-            <property name="value">
-             <number>99</number>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string extracomment="Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; ">MB</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_5">
-          <item>
-           <spacer name="horizontalSpacer_3">
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Policy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>0</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="existingFolderLimitCheckBox">
-            <property name="text">
-             <string>Notify when synchronised folders grow larger than specified limit</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <item>
-           <spacer name="horizontalSpacer_5">
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Policy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>0</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="stopExistingFolderNowBigSyncCheckBox">
-            <property name="text">
-             <string>Automatically disable synchronisation of folders that overcome limit</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
+        <property name="frameShadow">
+         <enum>QFrame::Shadow::Plain</enum>
+        </property>
+       </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_8">
+       <layout class="QHBoxLayout" name="stopExistingFolderNowBigSyncRow">
         <item>
-         <widget class="QCheckBox" name="newExternalStorage">
+         <widget class="QLabel" name="stopExistingFolderNowBigSyncLabel">
           <property name="text">
-           <string>Ask for confirmation before synchronizing external storages</string>
+           <string>Automatically disable synchronisation of folders that overcome limit</string>
+          </property>
+          <property name="buddy">
+           <cstring>stopExistingFolderNowBigSyncCheckBox</cstring>
           </property>
          </widget>
         </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_trash">
         <item>
-         <widget class="QCheckBox" name="moveFilesToTrashCheckBox">
-          <property name="text">
-           <string>Move removed files to trash</string>
+         <spacer name="stopExistingFolderNowBigSyncSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
-         </widget>
+         </spacer>
+        </item>
+        <item>
+         <widget class="OCC::SettingsSwitch" name="stopExistingFolderNowBigSyncCheckBox"/>
         </item>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_10">
-        <item>
-         <widget class="QCheckBox" name="showInExplorerNavigationPaneCheckBox">
-          <property name="text">
-           <string>Show sync folders in &amp;Explorer's navigation pane</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="QFrame" name="remotePollIntervalSeparator">
+        <property name="frameShape">
+         <enum>QFrame::Shape::HLine</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Shadow::Plain</enum>
+        </property>
+       </widget>
       </item>
       <item>
-       <widget class="QWidget" name="horizontalLayoutWidget_remotePollInterval">
-        <layout class="QHBoxLayout" name="horizontalLayout_remotePollInterval">
+       <widget class="QWidget" name="horizontalLayoutWidget_remotePollInterval" native="true">
+        <layout class="QHBoxLayout" name="remotePollIntervalRow">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
          <item>
           <widget class="QLabel" name="remotePollIntervalLabel">
            <property name="text">
@@ -203,15 +188,19 @@
           </widget>
          </item>
          <item>
+          <spacer name="remotePollIntervalSpacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+          </spacer>
+         </item>
+         <item>
           <widget class="QSpinBox" name="remotePollIntervalSpinBox">
            <property name="minimum">
             <number>5</number>
            </property>
            <property name="maximum">
             <number>999999</number>
-           </property>
-           <property name="singleStep">
-            <number>1</number>
            </property>
           </widget>
          </item>
@@ -231,60 +220,167 @@
            </property>
           </widget>
          </item>
-         <item>
-          <spacer name="horizontalSpacer_remotePollInterval">
-           <property name="orientation">
-            <enum>Qt::Orientation::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
         </layout>
        </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="QPushButton" name="ignoredFilesButton">
-          <property name="text">
-           <string>Edit &amp;Ignored Files</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="debugArchiveButton">
-          <property name="text">
-           <string>Create Debug Archive</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_4">
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>555</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
       </item>
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
+    <widget class="QGroupBox" name="syncBehaviorGroupBox">
+     <property name="title">
+      <string/>
+     </property>
+     <layout class="QVBoxLayout" name="syncBehaviorLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="newExternalStorageRow">
+        <item>
+         <widget class="QLabel" name="newExternalStorageLabel">
+          <property name="text">
+           <string>Ask for confirmation before synchronizing external storages</string>
+          </property>
+          <property name="buddy">
+           <cstring>newExternalStorage</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="newExternalStorageSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="OCC::SettingsSwitch" name="newExternalStorage"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QFrame" name="moveFilesToTrashSeparator">
+        <property name="frameShape">
+         <enum>QFrame::Shape::HLine</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Shadow::Plain</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="moveFilesToTrashRow">
+        <item>
+         <widget class="QLabel" name="moveFilesToTrashLabel">
+          <property name="text">
+           <string>Move removed files to trash</string>
+          </property>
+          <property name="buddy">
+           <cstring>moveFilesToTrashCheckBox</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="moveFilesToTrashSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="OCC::SettingsSwitch" name="moveFilesToTrashCheckBox"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QFrame" name="showInExplorerNavigationPaneSeparator">
+        <property name="frameShape">
+         <enum>QFrame::Shape::HLine</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Shadow::Plain</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="showInExplorerNavigationPaneRowWidget" native="true">
+        <layout class="QHBoxLayout" name="showInExplorerNavigationPaneRow">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="showInExplorerNavigationPaneLabel">
+           <property name="text">
+            <string>Show sync folders in &amp;Explorer's navigation pane</string>
+           </property>
+           <property name="buddy">
+            <cstring>showInExplorerNavigationPaneCheckBox</cstring>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="showInExplorerNavigationPaneSpacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="OCC::SettingsSwitch" name="showInExplorerNavigationPaneCheckBox"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="advancedActionsGroupBox">
+     <property name="title">
+      <string/>
+     </property>
+     <layout class="QHBoxLayout" name="advancedActionsLayout">
+      <item>
+       <spacer name="advancedActionsSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="ignoredFilesButton">
+        <property name="text">
+         <string>Edit &amp;Ignored Files</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="debugArchiveButton">
+        <property name="text">
+         <string>Create Debug Archive</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Policy::MinimumExpanding</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
@@ -296,13 +392,22 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>OCC::SettingsSwitch</class>
+   <extends>QCheckBox</extends>
+   <header>settingsswitch.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>newFolderLimitCheckBox</tabstop>
   <tabstop>newFolderLimitSpinBox</tabstop>
   <tabstop>existingFolderLimitCheckBox</tabstop>
   <tabstop>stopExistingFolderNowBigSyncCheckBox</tabstop>
+  <tabstop>remotePollIntervalSpinBox</tabstop>
   <tabstop>newExternalStorage</tabstop>
   <tabstop>moveFilesToTrashCheckBox</tabstop>
+  <tabstop>showInExplorerNavigationPaneCheckBox</tabstop>
   <tabstop>ignoredFilesButton</tabstop>
   <tabstop>debugArchiveButton</tabstop>
  </tabstops>
@@ -315,12 +420,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>247</x>
-     <y>188</y>
+     <x>620</x>
+     <y>30</y>
     </hint>
     <hint type="destinationlabel">
-     <x>497</x>
-     <y>190</y>
+     <x>520</x>
+     <y>30</y>
     </hint>
    </hints>
   </connection>

@@ -17,7 +17,7 @@
   <property name="windowTitle">
    <string notr="true">Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QVBoxLayout" name="pageLayout">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -33,51 +33,107 @@
    <property name="spacing">
     <number>12</number>
    </property>
-   <item row="0" column="0">
+   <item>
     <widget class="QGroupBox" name="aboutAndUpdatesGroupBox">
      <property name="title">
       <string/>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <property name="bottomMargin">
-       <number>10</number>
-      </property>
-      <item>
-       <widget class="QLabel" name="aboutAndUpdatesGroupBoxTitle">
-        <property name="font">
-         <font>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Info</string>
-        </property>
-       </widget>
-      </item>
+     <layout class="QHBoxLayout" name="aboutLayout">
       <item>
        <widget class="QLabel" name="infoAndUpdatesLabel">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-          <horstretch>0</horstretch>
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+          <horstretch>1</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
         <property name="text">
          <string>Desktop client x.x.x</string>
         </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
-       <widget class="QFrame" name="updatesContainer">
+       <spacer name="aboutSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="usageDocumentationButton">
+        <property name="text">
+         <string>Usage Documentation</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="legalNoticeButton">
+        <property name="text">
+         <string>Legal Notice</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="updatesGroupBox">
+     <property name="title">
+      <string/>
+     </property>
+     <layout class="QVBoxLayout" name="updatesGroupBoxLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QWidget" name="updatesContainer" native="true">
         <layout class="QVBoxLayout" name="updatesLayout">
          <property name="leftMargin">
           <number>0</number>
          </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
          <property name="bottomMargin">
-          <number>1</number>
+          <number>0</number>
+         </property>
+         <property name="spacing">
+          <number>0</number>
          </property>
          <item>
-          <layout class="QHBoxLayout" name="updatesLayout_1">
+          <layout class="QHBoxLayout" name="updateInfoRow">
+           <item>
+            <widget class="QLabel" name="updateStateLabel">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+               <horstretch>1</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+             <property name="openExternalLinks">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="updateInfoSpacer">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+            </spacer>
+           </item>
            <item>
             <widget class="QLabel" name="updateChannelLabel">
              <property name="sizePolicy">
@@ -102,17 +158,45 @@
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="updateStateLabel">
+            <widget class="QPushButton" name="restoreUpdateChannelButton">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
-              <string/>
-             </property>
-             <property name="wordWrap">
-              <bool>true</bool>
-             </property>
-             <property name="openExternalLinks">
-              <bool>true</bool>
+              <string>Restore &amp;Default</string>
              </property>
             </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QFrame" name="updateControlsSeparator">
+           <property name="frameShape">
+            <enum>QFrame::Shape::HLine</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Shadow::Plain</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="updateControlsRow">
+           <item>
+            <widget class="QLabel" name="autoCheckForUpdatesLabel">
+             <property name="text">
+              <string>&amp;Automatically check for updates</string>
+             </property>
+             <property name="buddy">
+              <cstring>autoCheckForUpdatesCheckBox</cstring>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="updateControlsSpacer">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+            </spacer>
            </item>
            <item>
             <widget class="QPushButton" name="restartButton">
@@ -124,26 +208,6 @@
              </property>
              <property name="text">
               <string>&amp;Restart &amp;&amp; Update</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="updatesLayout_2">
-           <item>
-            <widget class="QCheckBox" name="autoCheckForUpdatesCheckBox">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>&amp;Automatically check for updates</string>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -161,71 +225,27 @@
             </widget>
            </item>
            <item>
-            <spacer name="horizontalSpacer_6">
-             <property name="orientation">
-              <enum>Qt::Orientation::Horizontal</enum>
+            <widget class="OCC::SettingsSwitch" name="autoCheckForUpdatesCheckBox">
+             <property name="checked">
+              <bool>true</bool>
              </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
+            </widget>
            </item>
           </layout>
          </item>
         </layout>
        </widget>
       </item>
-      <item>
-       <layout class="QHBoxLayout" name="infoContainer">
-        <item>
-         <widget class="QPushButton" name="usageDocumentationButton">
-          <property name="text">
-           <string>Usage Documentation</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="legalNoticeButton">
-          <property name="text">
-           <string>Legal Notice</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="restoreUpdateChannelButton">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string>Restore &amp;Default</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
-      </item>
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Policy::MinimumExpanding</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
@@ -237,13 +257,21 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>OCC::SettingsSwitch</class>
+   <extends>QCheckBox</extends>
+   <header>settingsswitch.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
-  <tabstop>restartButton</tabstop>
-  <tabstop>autoCheckForUpdatesCheckBox</tabstop>
-  <tabstop>updateButton</tabstop>
   <tabstop>usageDocumentationButton</tabstop>
   <tabstop>legalNoticeButton</tabstop>
+  <tabstop>updateChannel</tabstop>
   <tabstop>restoreUpdateChannelButton</tabstop>
+  <tabstop>restartButton</tabstop>
+  <tabstop>updateButton</tabstop>
+  <tabstop>autoCheckForUpdatesCheckBox</tabstop>
  </tabstops>
  <resources/>
  <connections/>

@@ -11,7 +11,6 @@
 #include "common/utility.h"
 #include "configfile.h"
 #include "owncloudgui.h"
-#include "settingspageutils.h"
 #include "theme.h"
 
 #include <QAbstractButton>
@@ -26,10 +25,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     , _ui(new Ui::GeneralSettings)
 {
     _ui->setupUi(this);
-
-    _ui->generalGroupBoxTitle->hide();
-
-    SettingsPageUtils::configureSwitchRows(this);
 
     connect(_ui->serverNotificationsCheckBox, &QAbstractButton::toggled,
         this, &GeneralSettings::slotToggleOptionalServerNotifications);
@@ -63,7 +58,11 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
 
     // OEM themes are not obliged to ship mono icons, so there is no point in offering an option.
-    _ui->monoIconsCheckBox->setVisible(Theme::instance()->monoIconsAvailable());
+    const auto monoIconsAvailable = Theme::instance()->monoIconsAvailable();
+    _ui->monoIconsCheckBox->setVisible(monoIconsAvailable);
+    _ui->monoIconsLabel->setVisible(monoIconsAvailable);
+    _ui->monoIconsRowWidget->setVisible(monoIconsAvailable);
+    _ui->startupSeparator->setVisible(monoIconsAvailable);
 
     customizeStyle();
 }
@@ -166,7 +165,6 @@ void GeneralSettings::slotStyleChanged()
 
 void GeneralSettings::customizeStyle()
 {
-    SettingsPageUtils::configureSwitchRows(this);
 }
 
 } // namespace OCC

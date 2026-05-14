@@ -19,7 +19,6 @@
 #include <QString>
 #include <QList>
 #include <QPalette>
-#include <QSizePolicy>
 #include <type_traits>
 
 constexpr auto BACKGROUND_ROLE =
@@ -47,15 +46,6 @@ NetworkSettings::NetworkSettings(const AccountPtr &account, QWidget *parent)
     _ui->downloadBox->setBackgroundRole(BACKGROUND_ROLE);
     _ui->uploadBox->setAutoFillBackground(true);
     _ui->uploadBox->setBackgroundRole(BACKGROUND_ROLE);
-    _ui->authRequiredcheckBox->setLayoutDirection(Qt::RightToLeft);
-    _ui->authRequiredcheckBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    _ui->authRequiredcheckBox->setStyleSheet(QStringLiteral(
-        "QCheckBox { padding: 8px 0px; border-bottom: 1px solid palette(mid); spacing: 8px; }"
-        "QCheckBox::indicator { width: 34px; height: 18px; border-radius: 9px; background: palette(mid); }"
-        "QCheckBox::indicator:checked { background: palette(highlight); }"
-        "QCheckBox::indicator:disabled { background: palette(button); }"
-    ));
-
     _ui->manualSettings->setVisible(_ui->manualProxyRadioButton->isChecked());
 
     _ui->proxyGroupBox->setVisible(!Theme::instance()->doNotUseProxy());

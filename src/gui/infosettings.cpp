@@ -10,7 +10,6 @@
 #include "guiutility.h"
 #include "legalnotice.h"
 #include "owncloudgui.h"
-#include "settingspageutils.h"
 #include "theme.h"
 
 #if defined(BUILD_UPDATER)
@@ -37,8 +36,6 @@ InfoSettings::InfoSettings(QWidget *parent)
 {
     _ui->setupUi(this);
 
-    _ui->aboutAndUpdatesGroupBoxTitle->hide();
-    SettingsPageUtils::configureSwitchRows(this);
     _ui->infoAndUpdatesLabel->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
     _ui->infoAndUpdatesLabel->setText(Theme::instance()->about());
     _ui->infoAndUpdatesLabel->setOpenExternalLinks(true);
@@ -102,8 +99,12 @@ void InfoSettings::slotUpdateInfo()
     const auto updater = Updater::instance();
     if (config.skipUpdateCheck() || !updater) {
         _ui->updatesContainer->setVisible(false);
+        _ui->updatesGroupBox->setVisible(false);
         return;
     }
+
+    _ui->updatesGroupBox->setVisible(true);
+    _ui->updatesContainer->setVisible(true);
 
     if (updater) {
         connect(_ui->updateButton,
@@ -314,8 +315,6 @@ void InfoSettings::slotStyleChanged()
 
 void InfoSettings::customizeStyle()
 {
-    SettingsPageUtils::configureSwitchRows(this);
-
     const auto aboutText = []() {
         auto aboutText = Theme::instance()->about();
         Theme::replaceLinkColorStringBackgroundAware(aboutText);
@@ -327,6 +326,7 @@ void InfoSettings::customizeStyle()
     slotUpdateInfo();
 #else
     _ui->updatesContainer->setVisible(false);
+    _ui->updatesGroupBox->setVisible(false);
 #endif
 }
 

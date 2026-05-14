@@ -142,8 +142,8 @@ set(client_SRCS
     selectivesyncdialog.cpp
     settingsdialog.h
     settingsdialog.cpp
-    settingspageutils.h
-    settingspageutils.cpp
+    settingsswitch.h
+    settingsswitch.cpp
     sharemanager.h
     sharemanager.cpp
     profilepagewidget.h

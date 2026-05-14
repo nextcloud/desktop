@@ -16,7 +16,6 @@
 #include "ignorelisteditor.h"
 #include "logger.h"
 #include "owncloudgui.h"
-#include "settingspageutils.h"
 #include "theme.h"
 #include "common/syncjournaldb.h"
 
@@ -231,9 +230,6 @@ AdvancedSettings::AdvancedSettings(QWidget *parent)
 {
     _ui->setupUi(this);
 
-    _ui->advancedGroupBoxTitle->hide();
-    SettingsPageUtils::configureSwitchRows(this);
-
     connect(_ui->newFolderLimitCheckBox, &QAbstractButton::toggled, this, &AdvancedSettings::saveMiscSettings);
     connect(_ui->newFolderLimitSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &AdvancedSettings::saveMiscSettings);
     connect(_ui->existingFolderLimitCheckBox, &QAbstractButton::toggled, this, &AdvancedSettings::saveMiscSettings);
@@ -241,30 +237,29 @@ AdvancedSettings::AdvancedSettings(QWidget *parent)
     connect(_ui->newExternalStorage, &QAbstractButton::toggled, this, &AdvancedSettings::saveMiscSettings);
     connect(_ui->moveFilesToTrashCheckBox, &QAbstractButton::toggled, this, &AdvancedSettings::saveMiscSettings);
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &AdvancedSettings::slotShowInExplorerNavigationPane);
-    connect(_ui->remotePollIntervalSpinBox, &QSpinBox::valueChanged, this, &AdvancedSettings::slotRemotePollIntervalChanged);
+    connect(_ui->remotePollIntervalSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &AdvancedSettings::slotRemotePollIntervalChanged);
     connect(_ui->ignoredFilesButton, &QAbstractButton::clicked, this, &AdvancedSettings::slotIgnoreFilesEditor);
     connect(_ui->debugArchiveButton, &QAbstractButton::clicked, this, &AdvancedSettings::slotCreateDebugArchive);
 
 #ifdef Q_OS_MACOS
-    QString txt = _ui->showInExplorerNavigationPaneCheckBox->text();
+    QString txt = _ui->showInExplorerNavigationPaneLabel->text();
     txt.replace(QString::fromLatin1("Explorer"), QString::fromLatin1("Finder"));
-    _ui->showInExplorerNavigationPaneCheckBox->setText(txt);
+    _ui->showInExplorerNavigationPaneLabel->setText(txt);
 #endif
 
 #ifdef Q_OS_WIN
     if (QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows10) {
         _ui->showInExplorerNavigationPaneCheckBox->setVisible(false);
+        _ui->showInExplorerNavigationPaneLabel->setVisible(false);
+        _ui->showInExplorerNavigationPaneRowWidget->setVisible(false);
+        _ui->showInExplorerNavigationPaneSeparator->setVisible(false);
     }
 #else
     _ui->showInExplorerNavigationPaneCheckBox->setVisible(false);
+    _ui->showInExplorerNavigationPaneLabel->setVisible(false);
+    _ui->showInExplorerNavigationPaneRowWidget->setVisible(false);
+    _ui->showInExplorerNavigationPaneSeparator->setVisible(false);
 #endif
-
-    int m0 = 0;
-    int m1 = 0;
-    int m2 = 0;
-    int m3 = 0;
-    _ui->horizontalLayout_3->getContentsMargins(&m0, &m1, &m2, &m3);
-    _ui->horizontalLayout_3->setContentsMargins(0, m1, m2, m3);
 
     loadMiscSettings();
 
@@ -416,6 +411,7 @@ void AdvancedSettings::updatePollIntervalVisibility()
     });
 
     _ui->horizontalLayoutWidget_remotePollInterval->setVisible(!pushAvailable);
+    _ui->remotePollIntervalSeparator->setVisible(!pushAvailable);
 }
 
 void AdvancedSettings::slotStyleChanged()
@@ -425,7 +421,6 @@ void AdvancedSettings::slotStyleChanged()
 
 void AdvancedSettings::customizeStyle()
 {
-    SettingsPageUtils::configureSwitchRows(this);
 }
 
 } // namespace OCC

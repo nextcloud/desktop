@@ -192,7 +192,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     auto *accountSpacer = new QWidget(this);
     accountSpacer->setFixedHeight(16);
     _firstNonAccountAction = _toolBar->addWidget(accountSpacer);
-    _toolBar->addSeparator();
 
     addSettingsPage(QLatin1String(":/client/theme/settings.svg"), tr("General"), new GeneralSettings(this));
     addSettingsPage(QLatin1String(":/client/theme/settings.svg"), tr("Advanced"), new AdvancedSettings(this));
@@ -495,15 +494,21 @@ void SettingsDialog::customizeStyle()
         "#settings_content, #settings_content_scroll { background: palette(window); border-radius: 12px; }"
 
         /* Panels */
-        "#generalGroupBox, #advancedGroupBox, #aboutAndUpdatesGroupBox,"
+        "#generalGroupBox, #notificationsGroupBox, #advancedGroupBox, #syncBehaviorGroupBox,"
+        "#advancedActionsGroupBox, #aboutAndUpdatesGroupBox, #updatesGroupBox,"
         "#accountStatusPanel, #encryptionPanel, #fileProviderPanel, #syncFoldersPanel {"
         " background: palette(" BACKGROUND_PALETTE ");"
         " border-radius: 10px;"
         " margin: 0px;"
         " padding: 6px;"
         " }"
-        "#generalGroupBoxTitle, #advancedGroupBoxTitle, #aboutAndUpdatesGroupBoxTitle {"
-        " margin-bottom: 6px;"
+        "#generalGroupBox QFrame, #notificationsGroupBox QFrame, #advancedGroupBox QFrame,"
+        "#syncBehaviorGroupBox QFrame, #updatesGroupBox QFrame {"
+        " color: palette(mid);"
+        " background: palette(mid);"
+        " border: none;"
+        " min-height: 1px;"
+        " max-height: 1px;"
         " }"
     ));
 
