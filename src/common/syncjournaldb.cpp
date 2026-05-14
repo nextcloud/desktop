@@ -2171,12 +2171,20 @@ SyncJournalErrorBlacklistRecord SyncJournalDb::errorBlacklistEntry(const QString
     return entry;
 }
 
-void SyncJournalDb::renameErrorBlacklistPaths(const QString &from, const QString &to)
+bool SyncJournalDb::renameErrorBlacklistPaths(const QString &from, const QString &to)
 {
     QMutexLocker locker(&_mutex);
     if (!checkConnect()) {
-        return;
+        return false;
     }
+
+    SqlQuery countQuery(_db);
+    countQuery.prepare("SELECT COUNT(*) FROM blacklist "
+                      "WHERE errorCategory = ?1 "
+                      "AND (path = ?2 OR (path > (?2 || '/') AND path < (?2 || '0')))");
+    countQuery.bindValue(1, SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage);
+    countQuery.bindValue(2, from);
+    const bool hasQuotaEntries = countQuery.exec() && countQuery.next().hasData && countQuery.intValue(0) > 0;
 
     // Update the exact folder entry and all entries whose path starts with "from/".
     // Uses the same range trick as IS_PREFIX_PATH_OR_EQUAL: '/' + 1 == '0'.
@@ -2189,6 +2197,8 @@ void SyncJournalDb::renameErrorBlacklistPaths(const QString &from, const QString
     if (!query.exec()) {
         sqlFail(QStringLiteral("renameErrorBlacklistPaths"), query);
     }
+
+    return hasQuotaEntries;
 }
 
 bool SyncJournalDb::deleteStaleErrorBlacklistEntries(const QSet<QString> &keep)
