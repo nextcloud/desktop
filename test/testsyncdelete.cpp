@@ -196,6 +196,43 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
+    // Files blocked from upload because of quota errors must retry on the next sync once quota is freed.
+    void testQuotaBlockedFileRetriesWhenQuotaResolved()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Add a new local file that will fail to upload due to quota (HTTP 507).
+        fakeFolder.localModifier().insert(QStringLiteral("A/quota_blocked.txt"), 100);
+        fakeFolder.serverErrorPaths().append(QStringLiteral("A/quota_blocked.txt"), 507);
+
+        QVERIFY(!fakeFolder.syncOnce());
+        {
+            auto entry = fakeFolder.syncJournal().errorBlacklistEntry(QStringLiteral("A/quota_blocked.txt"));
+            QVERIFY(entry.isValid());
+            QCOMPARE(entry._errorCategory, SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage);
+            // Must be 0 so the file retries on the very next sync rather than backing off.
+            QCOMPARE(entry._ignoreDuration, 0);
+        }
+        QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("A/quota_blocked.txt")));
+
+        // Quota freed, remove the server error.
+        fakeFolder.serverErrorPaths().clear();
+
+        // Next sync: file must retry immediately (ignoreDuration = 0) and upload.
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentRemoteState().find(QStringLiteral("A/quota_blocked.txt")));
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Blacklist entry must be cleared after a successful upload.
+        {
+            auto entry = fakeFolder.syncJournal().errorBlacklistEntry(QStringLiteral("A/quota_blocked.txt"));
+            QVERIFY(!entry.isValid());
+        }
+    }
+
     void issue1329()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
