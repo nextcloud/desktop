@@ -6,14 +6,14 @@
 #ifndef SETTINGSSWITCH_H
 #define SETTINGSSWITCH_H
 
-#include <QCheckBox>
+#include <QAbstractButton>
 #include <QSize>
 
 class QPaintEvent;
 
 namespace OCC {
 
-class SettingsSwitch : public QCheckBox
+class SettingsSwitch : public QAbstractButton
 {
     Q_OBJECT
 

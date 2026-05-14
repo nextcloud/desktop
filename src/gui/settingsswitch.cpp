@@ -8,17 +8,18 @@
 #include <QPainter>
 #include <QPalette>
 #include <QPaintEvent>
+#include <QPen>
 #include <QSizePolicy>
-#include <QString>
 
 namespace OCC {
 
 SettingsSwitch::SettingsSwitch(QWidget *parent)
-    : QCheckBox(parent)
+    : QAbstractButton(parent)
 {
+    setCheckable(true);
     setCursor(Qt::PointingHandCursor);
+    setFocusPolicy(Qt::StrongFocus);
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    setText(QString());
 }
 
 QSize SettingsSwitch::sizeHint() const
@@ -47,14 +48,16 @@ void SettingsSwitch::paintEvent(QPaintEvent *event)
     const auto y = (height() - trackHeight) / 2.0;
     const QRectF trackRect{x, y, trackWidth, trackHeight};
 
-    auto trackColor = isChecked() ? palette().highlight().color() : palette().color(QPalette::Mid);
-    auto knobColor = palette().color(QPalette::Base);
+    auto trackColor = isChecked() ? palette().highlight().color() : palette().color(QPalette::Button);
+    auto borderColor = isChecked() ? palette().highlight().color() : palette().color(QPalette::Mid);
+    auto knobColor = palette().color(QPalette::Light);
     if (!isEnabled()) {
         trackColor.setAlphaF(0.45);
+        borderColor.setAlphaF(0.45);
         knobColor.setAlphaF(0.65);
     }
 
-    painter.setPen(Qt::NoPen);
+    painter.setPen(borderColor);
     painter.setBrush(trackColor);
     painter.drawRoundedRect(trackRect, trackHeight / 2.0, trackHeight / 2.0);
 
@@ -64,7 +67,17 @@ void SettingsSwitch::paintEvent(QPaintEvent *event)
     const QRectF knobRect{knobX, trackRect.top() + margin, knobSize, knobSize};
 
     painter.setBrush(knobColor);
+    painter.setPen(Qt::NoPen);
     painter.drawEllipse(knobRect);
+
+    if (hasFocus()) {
+        auto focusColor = palette().highlight().color();
+        focusColor.setAlphaF(0.35);
+        QPen focusPen(focusColor, 2.0);
+        painter.setPen(focusPen);
+        painter.setBrush(Qt::NoBrush);
+        painter.drawRoundedRect(trackRect.adjusted(-2.0, -2.0, 2.0, 2.0), trackHeight / 2.0 + 2.0, trackHeight / 2.0 + 2.0);
+    }
 }
 
 } // namespace OCC

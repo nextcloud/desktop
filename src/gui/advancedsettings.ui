@@ -395,7 +395,7 @@
  <customwidgets>
   <customwidget>
    <class>OCC::SettingsSwitch</class>
-   <extends>QCheckBox</extends>
+   <extends>QAbstractButton</extends>
    <header>settingsswitch.h</header>
   </customwidget>
  </customwidgets>
