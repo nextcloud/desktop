@@ -384,6 +384,83 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/big.txt")));
     }
 
+    // After a file with error is protected from deletion, removing it locally must
+    // allow the parent folder (deleted on the server) to be cleaned up on the next sync.
+    void testQuotaProtectedFolderCleanedUpAfterLocalFileDeletion()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Quota block: upload fails with 507.
+        fakeFolder.localModifier().insert(QStringLiteral("A/quota_blocked.txt"), 100);
+        fakeFolder.serverErrorPaths().append(QStringLiteral("A/quota_blocked.txt"), 507);
+        QVERIFY(!fakeFolder.syncOnce());
+        fakeFolder.serverErrorPaths().clear();
+
+        // Server deletes folder A — file is protected locally.
+        fakeFolder.remoteModifier().remove(QStringLiteral("A"));
+        fakeFolder.syncOnce();
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/quota_blocked.txt")));
+
+        // User manually removes the quota-blocked file.
+        fakeFolder.localModifier().remove(QStringLiteral("A/quota_blocked.txt"));
+
+        // Next sync: folder A is empty and was deleted on the server — it must be removed locally.
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A")));
+    }
+
+    // Same as testQuotaProtectedFolderCleanedUpAfterLocalFileDeletion but with a nested
+    // folder (B/A) where the parent B remains on the server. Without invalidating B's cached
+    // etag after the protection sync, the next sync would hit ParentNotChanged for B and treat
+    // B/A as still present (via its DB record), permanently preventing cleanup.
+    void testQuotaProtectedNestedFolderCleanedUpAfterLocalFileDeletion()
+    {
+        // Start with a structure that has a nested subfolder B/A.
+        FileInfo initialState{QString{}, {
+            {QStringLiteral("B"), {
+                {QStringLiteral("A"), {
+                    {QStringLiteral("file1.txt"), 4},
+                    {QStringLiteral("file2.txt"), 4},
+                }},
+            }},
+        }};
+        FakeFolder fakeFolder{initialState};
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Add a file inside B/A that fails to upload due to quota (HTTP 507).
+        fakeFolder.localModifier().insert(QStringLiteral("B/A/quota_blocked.txt"), 100);
+        fakeFolder.serverErrorPaths().append(QStringLiteral("B/A/quota_blocked.txt"), 507);
+        QVERIFY(!fakeFolder.syncOnce());
+        {
+            auto entry = fakeFolder.syncJournal().errorBlacklistEntry(QStringLiteral("B/A/quota_blocked.txt"));
+            QVERIFY(entry.isValid());
+            QCOMPARE(entry._errorCategory, SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage);
+        }
+        fakeFolder.serverErrorPaths().clear();
+
+        // Server deletes subfolder B/A (parent B remains). The quota-blocked file must be
+        // protected locally even though B still exists and may have a cached etag.
+        fakeFolder.remoteModifier().remove(QStringLiteral("B/A"));
+        fakeFolder.syncOnce();
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/A/quota_blocked.txt")));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/A")));
+
+        // User manually deletes the quota-blocked file.
+        fakeFolder.localModifier().remove(QStringLiteral("B/A/quota_blocked.txt"));
+
+        // Next sync: B/A is empty and was deleted on the server.
+        // B's etag was invalidated during the protection sync so the client re-queries B from
+        // the server instead of relying on the stale DB cache (which would make B/A look present).
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("B/A")));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B")));
+    }
+
     void issue1329()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
