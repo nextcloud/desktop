@@ -794,43 +794,43 @@ Počkejte na příští synchronizaci a pak složku zašifrujte.</translation>
         <translation>Odstranit připojení synchronizace složky</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="962"/>
+        <location filename="../src/gui/accountsettings.cpp" line="968"/>
         <source>Grant access to sync folder</source>
         <translation>Udělit přístup k synchronizační složce</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="974"/>
+        <location filename="../src/gui/accountsettings.cpp" line="980"/>
         <source>Access Error</source>
         <translation>Chyba přístupu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="975"/>
+        <location filename="../src/gui/accountsettings.cpp" line="981"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
         <translation>K vybrané složce nebylo možné získat přístup. Prosím zkuste to znovu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="983"/>
+        <location filename="../src/gui/accountsettings.cpp" line="989"/>
         <source>Wrong Folder</source>
         <translation>Nesprávná složka</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="984"/>
+        <location filename="../src/gui/accountsettings.cpp" line="990"/>
         <source>Please select the original sync folder: %1</source>
         <translation>Vyberte původní synchronizační složku: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="993"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1002"/>
+        <location filename="../src/gui/accountsettings.cpp" line="999"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1008"/>
         <source>Bookmark Error</source>
         <translation>Chyba záložky</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="994"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1000"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
         <translation>Nebylo možné vytvořit záložku zabezpečení pro tuto složku. Zkuste to znovu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1003"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1009"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
         <translation>Nebylo možné přeložit záložku zabezpečení. Zkuste to znovu.</translation>
     </message>
@@ -908,7 +908,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <translation>%1 využito</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1422"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1428"/>
         <source>Connected to %1 (%2).</source>
         <translation>Připojeno k %1 (%2).</translation>
     </message>
@@ -933,7 +933,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <translation>Tento účet podporuje šifrování mezi koncovými body, ale je třeba ho nejprve nastavit.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1858"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1864"/>
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
         <translation>Integrace virtuálních souborů zatím ještě nepodporuje šifrování mezi koncovými body.</translation>
     </message>

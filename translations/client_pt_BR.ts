@@ -794,43 +794,43 @@ Aguarde a nova sincronização e criptografe-a.</translation>
         <translation>Remover conexão de sincronização de pasta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="962"/>
+        <location filename="../src/gui/accountsettings.cpp" line="968"/>
         <source>Grant access to sync folder</source>
         <translation>Conceder acesso à pasta de sincronização</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="974"/>
+        <location filename="../src/gui/accountsettings.cpp" line="980"/>
         <source>Access Error</source>
         <translation>Erro de acesso</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="975"/>
+        <location filename="../src/gui/accountsettings.cpp" line="981"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
         <translation>Não foi possível obter acesso à pasta selecionada. Tente novamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="983"/>
+        <location filename="../src/gui/accountsettings.cpp" line="989"/>
         <source>Wrong Folder</source>
         <translation>Pasta errada</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="984"/>
+        <location filename="../src/gui/accountsettings.cpp" line="990"/>
         <source>Please select the original sync folder: %1</source>
         <translation>Por favor, selecione a pasta de sincronização original: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="993"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1002"/>
+        <location filename="../src/gui/accountsettings.cpp" line="999"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1008"/>
         <source>Bookmark Error</source>
         <translation>Erro de marcador</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="994"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1000"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
         <translation>Não foi possível criar um marcador de segurança para a pasta. Tente novamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1003"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1009"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
         <translation>Não foi possível resolver o marcador de segurança. Tente novamente.</translation>
     </message>
@@ -908,7 +908,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <translation>%1 em uso</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1422"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1428"/>
         <source>Connected to %1 (%2).</source>
         <translation>Conectado a %1 (%2).</translation>
     </message>
@@ -933,7 +933,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <translation>Esta conta oferece suporte à criptografia de ponta-a-ponta, mas ela precisa ser configurada primeiro.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1858"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1864"/>
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
         <translation>A integração de arquivos virtuais ainda não suporta criptografia de ponta-a-ponta.</translation>
     </message>

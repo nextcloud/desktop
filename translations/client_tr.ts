@@ -794,43 +794,43 @@ Eşitlemenin tamamlanmasını bekleyip klasörü şifreleyin</translation>
         <translation>Klasör eşitleme bağlantısını sil</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="962"/>
+        <location filename="../src/gui/accountsettings.cpp" line="968"/>
         <source>Grant access to sync folder</source>
         <translation>Eşitleme klasörüne erişme izni ver</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="974"/>
+        <location filename="../src/gui/accountsettings.cpp" line="980"/>
         <source>Access Error</source>
         <translation>Erişim sorunu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="975"/>
+        <location filename="../src/gui/accountsettings.cpp" line="981"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
         <translation>Seçilmiş klasöre erişilemedi. Lütfen yeniden deneyin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="983"/>
+        <location filename="../src/gui/accountsettings.cpp" line="989"/>
         <source>Wrong Folder</source>
         <translation>Klasör yanlış</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="984"/>
+        <location filename="../src/gui/accountsettings.cpp" line="990"/>
         <source>Please select the original sync folder: %1</source>
         <translation>Lütfen özgün eşitleme klasörünü seçin: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="993"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1002"/>
+        <location filename="../src/gui/accountsettings.cpp" line="999"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1008"/>
         <source>Bookmark Error</source>
         <translation>Yer imi sorunu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="994"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1000"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
         <translation>Klasör için bir güvenlik yer imi oluşturulamadı. Lütfen yeniden deneyin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1003"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1009"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
         <translation>Güvenlik yer imi çözümlenemedi. Lütfen yeniden deneyin.</translation>
     </message>
@@ -908,7 +908,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <translation>%1 kullanılıyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1422"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1428"/>
         <source>Connected to %1 (%2).</source>
         <translation>%1 ile bağlı (%2).(</translation>
     </message>
@@ -933,7 +933,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <translation>Bu hesap uçtan uca şifrelemeyi destekler, ancak önce kurulması gerekir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1858"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1864"/>
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
         <translation>Sanal dosyalar bütünleştirmesi henüz uçtan uca eşitlemeyi desteklemiyor.</translation>
     </message>
