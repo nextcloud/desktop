@@ -191,6 +191,73 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
+    // Files blocked from upload because of quota errors must follow their parent folder through
+    // multiple successive server side renames.
+    void testQuotaBlockedFileFollowsParentFolderMove()
+    {
+        // Initial state: folder A with small.txt and empty sibling B.
+        FileInfo initialState{QString{}, {
+            {QStringLiteral("A"), {
+                {QStringLiteral("small.txt"), 4},
+            }},
+            {QStringLiteral("B"), {}},
+        }};
+        FakeFolder fakeFolder{initialState};
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Block big.txt from uploading permanently (507).
+        fakeFolder.localModifier().insert(QStringLiteral("A/big.txt"), 1000);
+        fakeFolder.setServerOverride([](QNetworkAccessManager::Operation op,
+                                        const QNetworkRequest &req,
+                                        QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::PutOperation
+                && req.url().path().contains(QLatin1String("big.txt"))) {
+                return new FakeErrorReply{op, req, nullptr, 507};
+            }
+            return nullptr;
+        });
+
+        QVERIFY(!fakeFolder.syncOnce());
+        {
+            auto entry = fakeFolder.syncJournal().errorBlacklistEntry(QStringLiteral("A/big.txt"));
+            QVERIFY(entry.isValid());
+            QCOMPARE(entry._errorCategory, SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage);
+        }
+        QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("A/big.txt")));
+
+        // Server: move A into B (server now has B/A). Client must follow the rename.
+        fakeFolder.remoteModifier().rename(QStringLiteral("A"), QStringLiteral("B/A"));
+        fakeFolder.syncOnce();
+
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/A")));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A")));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/A/big.txt")));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/A/small.txt")));
+        QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("B/A/big.txt")));
+
+        // Server: rename B/A to B/C.
+        fakeFolder.remoteModifier().rename(QStringLiteral("B/A"), QStringLiteral("B/C"));
+        fakeFolder.syncOnce();
+
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/C")));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("B/A")));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/C/big.txt")));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/C/small.txt")));
+        QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("B/C/big.txt")));
+
+        // Server: move B/C to root (C). Client must follow without creating a ghost B/C.
+        fakeFolder.remoteModifier().rename(QStringLiteral("B/C"), QStringLiteral("C"));
+        fakeFolder.syncOnce();
+
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("C/big.txt")));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("B/C")));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("B/C/big.txt")));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("C/small.txt")));
+        QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("C/big.txt")));
+    }
+
     // Files blocked from upload because of quota errors must retry on the next sync once quota is freed.
     void testQuotaBlockedFileRetriesWhenQuotaResolved()
     {

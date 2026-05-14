@@ -1589,6 +1589,22 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
             }
         }
     }
+
+    // For a DOWN rename where the directory itself succeeded (PropagateLocalRename
+    // ran OK) but one or more children had errors, still persist the renamed
+    // directory's path and fileId in the database. Without this record a
+    // subsequent server side rename of the same directory cannot be matched via
+    // fileId lookup, causing the client to treat it as a DELETE + NEW instead of
+    // following the move.
+    if (!_item->isEmpty()
+        && status != SyncFileItem::Success
+        && status != SyncFileItem::FatalError
+        && _item->_status == SyncFileItem::Success
+        && _item->_instruction == CSYNC_INSTRUCTION_RENAME
+        && _item->_direction == SyncFileItem::Down) {
+        propagator()->updateMetadata(*_item);
+    }
+
     _state = Finished;
     qCDebug(lcDirectory()) << "PropagateDirectory::slotSubJobsFinished" << "emit finished" << status;
     emit finished(status);
