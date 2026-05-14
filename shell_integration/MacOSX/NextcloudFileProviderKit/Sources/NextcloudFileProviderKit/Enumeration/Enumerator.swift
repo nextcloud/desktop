@@ -483,30 +483,25 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                         examinedChildFilesAndDeletedItems.formUnion(metadatas[1...].filter { !$0.directory }.map(\.ocId))
                     }
 
-                    // If the target is not in the updated metadatas then neither it, nor any of its kids have changed. So skip examining all of them.
-                    if !allUpdatedMetadatas.contains(where: { $0.ocId == target.ocId }) {
-                        logger.debug("Target has not changed. Skipping children.", [.url: itemRemoteUrl])
-                        let materialisedChildren = materializedItems.filter { $0.serverUrl.hasPrefix(itemRemoteUrl) }.map(\.ocId)
-                        examinedChildFilesAndDeletedItems.formUnion(materialisedChildren)
-                    }
-
-                    // OPTIMIZATION: For any child directories returned in this enumeration, if they haven't changed (etag matches database), mark them as examined so we don't enumerate them separately later.
+                    // Only skip unchanged child directories with no materialized descendants.
+                    // Lock changes don't propagate etags, so dirs with visible children must be enumerated.
                     if metadatas.count > 1 {
                         let childDirectories = metadatas[1...].filter(\.directory)
 
                         for childDir in childDirectories {
-                            // Check if this directory is in our materialized items list
-                            if let localItem = materializedItems.first(where: { $0.ocId == childDir.ocId }), localItem.etag == childDir.etag {
-                                // Directory hasn't changed, mark as examined to skip separate enumeration.
-                                logger.debug("Child directory etag unchanged, marking as examined.", [.name: childDir.fileName, .eTag: childDir.etag])
+                            guard let localItem = materializedItems.first(
+                                where: { $0.ocId == childDir.ocId }
+                            ), localItem.isInSameDatabaseStoreableRemoteState(childDir) else {
+                                continue
+                            }
+
+                            let hasMaterializedDescendants = materializedItems.contains {
+                                $0.ocId != localItem.ocId
+                                    && $0.serverUrl.hasPrefix(localItem.remotePath())
+                            }
+
+                            if !hasMaterializedDescendants {
                                 examinedChildFilesAndDeletedItems.insert(childDir.ocId)
-
-                                // Also mark any materialized children of this directory as examined.
-                                let grandChildren = materializedItems.filter {
-                                    $0.serverUrl.hasPrefix(localItem.remotePath())
-                                }
-
-                                examinedChildFilesAndDeletedItems.formUnion(grandChildren.map(\.ocId))
                             }
                         }
                     }

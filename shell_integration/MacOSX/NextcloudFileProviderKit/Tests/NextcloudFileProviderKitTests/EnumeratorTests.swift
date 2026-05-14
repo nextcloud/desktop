@@ -2022,4 +2022,87 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             )
         }
     }
+
+    func testLockChangeDetectedByRemoteStateComparison() {
+        var local = SendableItemMetadata(
+            ocId: "file1",
+            account: Self.account.ncKitAccount,
+            classFile: "",
+            contentType: "",
+            creationDate: Date(),
+            directory: false,
+            e2eEncrypted: false,
+            etag: "v1",
+            fileId: "file1",
+            fileName: "file.txt",
+            fileNameView: "file.txt",
+            ownerId: "",
+            ownerDisplayName: "",
+            path: "",
+            serverUrl: Self.account.davFilesUrl,
+            size: 0,
+            urlBase: Self.account.serverUrl,
+            user: Self.account.username,
+            userId: Self.account.id
+        )
+        var remote = local
+
+        XCTAssertTrue(local.isInSameDatabaseStoreableRemoteState(remote))
+
+        remote.lock = true
+        XCTAssertFalse(
+            local.isInSameDatabaseStoreableRemoteState(remote),
+            "A lock state change must be detected as a remote state difference"
+        )
+
+        local.lock = true
+        XCTAssertTrue(local.isInSameDatabaseStoreableRemoteState(remote))
+    }
+
+    func testLockTokenPreservedDuringTargetDepthRead() async throws {
+        let db = Self.dbManager.ncDatabase()
+        debugPrint(db)
+
+        let remoteFile = MockRemoteItem(
+            identifier: "lockTokenTestFile",
+            versionIdentifier: "V1",
+            name: "lockTokenTestFile.txt",
+            remotePath: Self.account.davFilesUrl + "/lockTokenTestFile.txt",
+            locked: true,
+            lockOwner: Self.account.username,
+            lockTimeOut: Date.now.advanced(by: 1_000_000),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        rootItem.children = [remoteFile]
+        remoteFile.parent = rootItem
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        var fileMetadata = remoteFile.toItemMetadata(account: Self.account)
+        fileMetadata.lockToken = "local-lock-token-123"
+        fileMetadata.downloaded = true
+        Self.dbManager.addItemMetadata(fileMetadata)
+
+        let (_, _, _, _, _, readError) = await Enumerator.readServerUrl(
+            Self.account.davFilesUrl + "/lockTokenTestFile.txt",
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            depth: .target,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertNil(readError)
+
+        let postRead = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "lockTokenTestFile"))
+        XCTAssertEqual(
+            postRead.lockToken,
+            "local-lock-token-123",
+            "lockToken must be preserved across target-depth reads"
+        )
+    }
 }
