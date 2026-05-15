@@ -597,6 +597,7 @@ public:
                 QToolButton::initStyleOption(option);
                 if (!option->text.isEmpty()) {
                     option->text.prepend(settingsNavigationIconTextSpacing);
+                    option->text.replace(QLatin1Char('\n'), QLatin1Char('\n') + settingsNavigationIconTextSpacing);
                 }
             }
         };
