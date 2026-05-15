@@ -27,9 +27,20 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QRegularExpression>
 #include <QUrl>
 
 namespace OCC {
+
+namespace {
+QString aboutTextForInfoPanel()
+{
+    auto aboutText = Theme::instance()->about();
+    Theme::replaceLinkColorStringBackgroundAware(aboutText);
+    aboutText.replace(QRegularExpression(QStringLiteral(R"( \(([^()]*)\)$)")), QStringLiteral("<br>(\\1)"));
+    return aboutText;
+}
+}
 
 InfoSettings::InfoSettings(QWidget *parent)
     : QWidget(parent)
@@ -38,7 +49,7 @@ InfoSettings::InfoSettings(QWidget *parent)
     _ui->setupUi(this);
 
     _ui->infoAndUpdatesLabel->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
-    _ui->infoAndUpdatesLabel->setText(Theme::instance()->about());
+    _ui->infoAndUpdatesLabel->setText(aboutTextForInfoPanel());
     _ui->infoAndUpdatesLabel->setOpenExternalLinks(true);
 
     connect(_ui->legalNoticeButton, &QPushButton::clicked, this, &InfoSettings::slotShowLegalNotice);
@@ -318,12 +329,7 @@ void InfoSettings::customizeStyle()
 {
     SettingsPanelStyle::apply(this);
 
-    const auto aboutText = []() {
-        auto aboutText = Theme::instance()->about();
-        Theme::replaceLinkColorStringBackgroundAware(aboutText);
-        return aboutText;
-    }();
-    _ui->infoAndUpdatesLabel->setText(aboutText);
+    _ui->infoAndUpdatesLabel->setText(aboutTextForInfoPanel());
 
 #if defined(BUILD_UPDATER)
     slotUpdateInfo();

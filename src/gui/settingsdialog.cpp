@@ -32,12 +32,15 @@
 #include <QWidgetAction>
 #include <QPainter>
 #include <QPainterPath>
+#include <QPaintEvent>
 #include <QPalette>
 #include <QQuickView>
 #include <QActionGroup>
 #include <QScopedValueRollback>
 #include <QScrollArea>
 #include <QSizePolicy>
+#include <QStyle>
+#include <QStyleOptionToolButton>
 #include <QTimer>
 #include <QMouseEvent>
 #include <QWindow>
@@ -103,6 +106,7 @@ constexpr auto TOOLBAR_CSS = QLatin1String(
 const float buttonSizeRatio = 1.618f; // golden ratio
 constexpr auto settingsDialogDefaultWidth = 950;
 constexpr auto settingsDialogDefaultHeight = 500;
+const auto settingsNavigationIconTextSpacing = QLatin1String("  ");
 
 /** display name with two lines that is displayed in the settings
  * If width is bigger than 0, the string will be ellided so it does not exceed that width
@@ -507,14 +511,14 @@ void SettingsDialog::customizeStyle()
         "#advancedActionsGroupBox, #aboutAndUpdatesGroupBox, #updatesGroupBox {"
         " background: palette(" BACKGROUND_PALETTE ");"
         " border: none;"
-        " border-radius: 7px;"
+        " border-radius: 12px;"
         " margin: 0px;"
         " padding: 0px;"
         " }"
         "#accountStatusPanel, #encryptionPanel, #fileProviderPanel, #syncFoldersPanel {"
         " background: palette(" BACKGROUND_PALETTE ");"
         " border: none;"
-        " border-radius: 7px;"
+        " border-radius: 12px;"
         " margin: 0px;"
         " padding: 6px;"
         " }"
@@ -570,7 +574,34 @@ public:
             return nullptr;
         }
 
-        auto *btn = new QToolButton(parent);
+        class SettingsNavigationButton : public QToolButton
+        {
+        public:
+            using QToolButton::QToolButton;
+
+        protected:
+            void paintEvent(QPaintEvent *event) override
+            {
+                Q_UNUSED(event)
+
+                QStyleOptionToolButton option;
+                initStyleOption(&option);
+
+                QPainter painter(this);
+                style()->drawComplexControl(QStyle::CC_ToolButton, &option, &painter, this);
+            }
+
+        private:
+            void initStyleOption(QStyleOptionToolButton *option) const
+            {
+                QToolButton::initStyleOption(option);
+                if (!option->text.isEmpty()) {
+                    option->text.prepend(settingsNavigationIconTextSpacing);
+                }
+            }
+        };
+
+        auto *btn = new SettingsNavigationButton(parent);
         QString objectName = QLatin1String("settingsdialog_toolbutton_");
         objectName += text();
         btn->setObjectName(objectName);

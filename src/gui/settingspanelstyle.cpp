@@ -19,9 +19,9 @@
 
 namespace {
 constexpr auto rowLeftMargin = 12;
-constexpr auto rowTopMargin = 6;
+constexpr auto rowTopMargin = 12;
 constexpr auto rowRightMargin = 12;
-constexpr auto rowBottomMargin = 6;
+constexpr auto rowBottomMargin = 12;
 constexpr auto rowSpacing = 8;
 constexpr auto compactControlHeight = 20;
 
