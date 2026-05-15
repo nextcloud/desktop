@@ -195,7 +195,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _firstNonAccountAction = _toolBar->addWidget(accountSpacer);
 
     addSettingsPage(QLatin1String(":/client/theme/settings.svg"), tr("General"), new GeneralSettings(this));
-    addSettingsPage(QLatin1String(":/client/theme/settings.svg"), tr("Advanced"), new AdvancedSettings(this));
+    addSettingsPage(QLatin1String(":/client/theme/advanced.svg"), tr("Advanced"), new AdvancedSettings(this));
     addSettingsPage(QLatin1String(":/client/theme/info.svg"), tr("Info"), new InfoSettings(this), true);
 
     QTimer::singleShot(1, this, &SettingsDialog::showFirstPage);
@@ -523,14 +523,6 @@ void SettingsDialog::customizeStyle()
         "#aboutAndUpdatesGroupBox QLabel, #updatesGroupBox QLabel {"
         " margin: 0px;"
         " padding: 0px;"
-        " }"
-        "#generalGroupBox QPushButton, #notificationsGroupBox QPushButton,"
-        "#advancedGroupBox QPushButton, #syncBehaviorGroupBox QPushButton,"
-        "#advancedActionsGroupBox QPushButton, #aboutAndUpdatesGroupBox QPushButton,"
-        "#updatesGroupBox QPushButton {"
-        " min-height: 18px;"
-        " max-height: 20px;"
-        " padding: 1px 10px;"
         " }"
         "#advancedGroupBox QSpinBox, #updatesGroupBox QComboBox {"
         " min-height: 18px;"

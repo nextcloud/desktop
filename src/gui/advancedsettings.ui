@@ -55,13 +55,6 @@
          </widget>
         </item>
         <item>
-         <spacer name="newFolderLimitSpacer">
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-         </spacer>
-        </item>
-        <item>
          <widget class="QSpinBox" name="newFolderLimitSpinBox">
           <property name="maximum">
            <number>999999</number>
@@ -77,6 +70,13 @@
            <string extracomment="Trailing part of &quot;Ask confirmation before syncing folder larger than&quot;">MB</string>
           </property>
          </widget>
+        </item>
+        <item>
+         <spacer name="newFolderLimitSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+         </spacer>
         </item>
         <item>
          <widget class="OCC::SettingsSwitch" name="newFolderLimitCheckBox">
@@ -184,16 +184,9 @@
           <widget class="QLabel" name="remotePollIntervalLabel">
            <property name="text">
             <string>Server poll interval</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="remotePollIntervalSpacer">
-           <property name="orientation">
-            <enum>Qt::Orientation::Horizontal</enum>
-           </property>
-          </spacer>
-         </item>
+          </property>
+         </widget>
+        </item>
          <item>
           <widget class="QSpinBox" name="remotePollIntervalSpinBox">
            <property name="minimum">
@@ -219,6 +212,13 @@
             <set>Qt::TextInteractionFlag::LinksAccessibleByKeyboard|Qt::TextInteractionFlag::LinksAccessibleByMouse</set>
            </property>
           </widget>
+         </item>
+         <item>
+          <spacer name="remotePollIntervalSpacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+          </spacer>
          </item>
         </layout>
        </widget>

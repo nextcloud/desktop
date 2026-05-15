@@ -11,7 +11,6 @@
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QLayout>
-#include <QPushButton>
 #include <QSizePolicy>
 #include <QSpinBox>
 #include <QString>
@@ -19,10 +18,10 @@
 #include <QWidget>
 
 namespace {
-constexpr auto rowLeftMargin = 10;
-constexpr auto rowTopMargin = 3;
-constexpr auto rowRightMargin = 8;
-constexpr auto rowBottomMargin = 3;
+constexpr auto rowLeftMargin = 12;
+constexpr auto rowTopMargin = 6;
+constexpr auto rowRightMargin = 12;
+constexpr auto rowBottomMargin = 6;
 constexpr auto rowSpacing = 8;
 constexpr auto compactControlHeight = 20;
 
@@ -67,13 +66,6 @@ void applySeparator(QFrame *separator)
     separator->setFixedHeight(1);
 }
 
-void applyCompactButton(QPushButton *button)
-{
-    button->setMinimumHeight(compactControlHeight);
-    button->setMaximumHeight(compactControlHeight);
-    button->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
-}
-
 void applyCompactSpinBox(QSpinBox *spinBox)
 {
     spinBox->setMinimumHeight(compactControlHeight);
@@ -92,7 +84,7 @@ void apply(QWidget *root)
 
     const auto panels = root->findChildren<QGroupBox *>();
     for (auto *panel : panels) {
-        applyPanelLayout(panel->layout());
+        applyLayout(panel->layout());
 
         const auto layouts = panel->findChildren<QLayout *>();
         for (auto *layout : layouts) {
@@ -106,11 +98,6 @@ void apply(QWidget *root)
             if (isSeparator(frame)) {
                 applySeparator(frame);
             }
-        }
-
-        const auto buttons = panel->findChildren<QPushButton *>();
-        for (auto *button : buttons) {
-            applyCompactButton(button);
         }
 
         const auto spinBoxes = panel->findChildren<QSpinBox *>();
