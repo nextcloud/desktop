@@ -10,6 +10,7 @@
 #include "guiutility.h"
 #include "legalnotice.h"
 #include "owncloudgui.h"
+#include "settingspanelstyle.h"
 #include "theme.h"
 
 #if defined(BUILD_UPDATER)
@@ -315,6 +316,8 @@ void InfoSettings::slotStyleChanged()
 
 void InfoSettings::customizeStyle()
 {
+    SettingsPanelStyle::apply(this);
+
     const auto aboutText = []() {
         auto aboutText = Theme::instance()->about();
         Theme::replaceLinkColorStringBackgroundAware(aboutText);

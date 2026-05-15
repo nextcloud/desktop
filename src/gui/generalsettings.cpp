@@ -11,6 +11,7 @@
 #include "common/utility.h"
 #include "configfile.h"
 #include "owncloudgui.h"
+#include "settingspanelstyle.h"
 #include "theme.h"
 
 #include <QAbstractButton>
@@ -87,10 +88,13 @@ void GeneralSettings::loadMiscSettings()
 
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
     _ui->serverNotificationsCheckBox->setChecked(cfgFile.optionalServerNotifications());
+    _ui->chatNotificationsLabel->setEnabled(cfgFile.optionalServerNotifications());
     _ui->chatNotificationsCheckBox->setEnabled(cfgFile.optionalServerNotifications());
     _ui->chatNotificationsCheckBox->setChecked(cfgFile.showChatNotifications());
+    _ui->callNotificationsLabel->setEnabled(cfgFile.optionalServerNotifications());
     _ui->callNotificationsCheckBox->setEnabled(cfgFile.optionalServerNotifications());
     _ui->callNotificationsCheckBox->setChecked(cfgFile.showCallNotifications());
+    _ui->quotaWarningNotificationsLabel->setEnabled(cfgFile.optionalServerNotifications());
     _ui->quotaWarningNotificationsCheckBox->setEnabled(cfgFile.optionalServerNotifications());
     _ui->quotaWarningNotificationsCheckBox->setChecked(cfgFile.showQuotaWarningNotifications());
 }
@@ -138,8 +142,11 @@ void GeneralSettings::slotToggleLaunchOnStartup(bool enable)
 void GeneralSettings::slotToggleOptionalServerNotifications(bool enable)
 {
     ConfigFile().setOptionalServerNotifications(enable);
+    _ui->chatNotificationsLabel->setEnabled(enable);
     _ui->chatNotificationsCheckBox->setEnabled(enable);
+    _ui->callNotificationsLabel->setEnabled(enable);
     _ui->callNotificationsCheckBox->setEnabled(enable);
+    _ui->quotaWarningNotificationsLabel->setEnabled(enable);
     _ui->quotaWarningNotificationsCheckBox->setEnabled(enable);
 }
 
@@ -165,6 +172,7 @@ void GeneralSettings::slotStyleChanged()
 
 void GeneralSettings::customizeStyle()
 {
+    SettingsPanelStyle::apply(this);
 }
 
 } // namespace OCC

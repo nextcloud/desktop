@@ -32,6 +32,7 @@
 #include <QWidgetAction>
 #include <QPainter>
 #include <QPainterPath>
+#include <QPalette>
 #include <QQuickView>
 #include <QActionGroup>
 #include <QScopedValueRollback>
@@ -484,6 +485,14 @@ void SettingsDialog::customizeStyle()
     const QScopedValueRollback<bool> updatingStyle(_updatingStyle, true);
     _toolBar->setStyleSheet(TOOLBAR_CSS);
 
+    auto separatorColor = palette().color(QPalette::Mid);
+    separatorColor.setAlpha(48);
+    const auto separatorCss = QStringLiteral("rgba(%1, %2, %3, %4)")
+        .arg(separatorColor.red())
+        .arg(separatorColor.green())
+        .arg(separatorColor.blue())
+        .arg(separatorColor.alpha());
+
     setStyleSheet(QStringLiteral(
         "#Settings { background: palette(window); border-radius: 0; }"
 
@@ -495,25 +504,50 @@ void SettingsDialog::customizeStyle()
 
         /* Panels */
         "#generalGroupBox, #notificationsGroupBox, #advancedGroupBox, #syncBehaviorGroupBox,"
-        "#advancedActionsGroupBox, #aboutAndUpdatesGroupBox, #updatesGroupBox,"
+        "#advancedActionsGroupBox, #aboutAndUpdatesGroupBox, #updatesGroupBox {"
+        " background: palette(" BACKGROUND_PALETTE ");"
+        " border: none;"
+        " border-radius: 7px;"
+        " margin: 0px;"
+        " padding: 0px;"
+        " }"
         "#accountStatusPanel, #encryptionPanel, #fileProviderPanel, #syncFoldersPanel {"
         " background: palette(" BACKGROUND_PALETTE ");"
-        " border-radius: 10px;"
+        " border: none;"
+        " border-radius: 7px;"
         " margin: 0px;"
         " padding: 6px;"
+        " }"
+        "#generalGroupBox QLabel, #notificationsGroupBox QLabel, #advancedGroupBox QLabel,"
+        "#syncBehaviorGroupBox QLabel, #advancedActionsGroupBox QLabel,"
+        "#aboutAndUpdatesGroupBox QLabel, #updatesGroupBox QLabel {"
+        " margin: 0px;"
+        " padding: 0px;"
+        " }"
+        "#generalGroupBox QPushButton, #notificationsGroupBox QPushButton,"
+        "#advancedGroupBox QPushButton, #syncBehaviorGroupBox QPushButton,"
+        "#advancedActionsGroupBox QPushButton, #aboutAndUpdatesGroupBox QPushButton,"
+        "#updatesGroupBox QPushButton {"
+        " min-height: 18px;"
+        " max-height: 20px;"
+        " padding: 1px 10px;"
+        " }"
+        "#advancedGroupBox QSpinBox, #updatesGroupBox QComboBox {"
+        " min-height: 18px;"
+        " max-height: 20px;"
         " }"
         "#startupSeparator, #serverNotificationsSeparator, #chatNotificationsSeparator,"
         "#callNotificationsSeparator, #existingFolderLimitSeparator,"
         "#stopExistingFolderNowBigSyncSeparator, #remotePollIntervalSeparator,"
         "#moveFilesToTrashSeparator, #showInExplorerNavigationPaneSeparator,"
         "#updateControlsSeparator {"
-        " color: palette(mid);"
-        " background: palette(mid);"
+        " color: %1;"
+        " background: %1;"
         " border: none;"
         " min-height: 1px;"
         " max-height: 1px;"
         " }"
-    ));
+    ).arg(separatorCss));
 
     const auto &allActions = _actionGroup->actions();
     for (const auto a : allActions) {

@@ -5,11 +5,13 @@
 
 #include "settingsswitch.h"
 
+#include <QColor>
 #include <QPainter>
 #include <QPalette>
 #include <QPaintEvent>
 #include <QPen>
 #include <QSizePolicy>
+#include <QtGlobal>
 
 namespace OCC {
 
@@ -48,16 +50,20 @@ void SettingsSwitch::paintEvent(QPaintEvent *event)
     const auto y = (height() - trackHeight) / 2.0;
     const QRectF trackRect{x, y, trackWidth, trackHeight};
 
+#ifdef Q_OS_MACOS
+    auto trackColor = isChecked() ? QColor(52, 120, 246) : QColor(209, 209, 214);
+#else
     auto trackColor = isChecked() ? palette().highlight().color() : palette().color(QPalette::Button);
-    auto borderColor = isChecked() ? palette().highlight().color() : palette().color(QPalette::Mid);
-    auto knobColor = palette().color(QPalette::Light);
+#endif
+    auto knobColor = QColor(255, 255, 255);
+    auto knobShadowColor = QColor(0, 0, 0, 38);
     if (!isEnabled()) {
-        trackColor.setAlphaF(0.45);
-        borderColor.setAlphaF(0.45);
-        knobColor.setAlphaF(0.65);
+        trackColor.setAlphaF(isChecked() ? 0.45 : 0.35);
+        knobColor.setAlphaF(0.8);
+        knobShadowColor.setAlphaF(0.08);
     }
 
-    painter.setPen(borderColor);
+    painter.setPen(Qt::NoPen);
     painter.setBrush(trackColor);
     painter.drawRoundedRect(trackRect, trackHeight / 2.0, trackHeight / 2.0);
 
@@ -65,6 +71,10 @@ void SettingsSwitch::paintEvent(QPaintEvent *event)
         ? trackRect.right() - margin - knobSize
         : trackRect.left() + margin;
     const QRectF knobRect{knobX, trackRect.top() + margin, knobSize, knobSize};
+
+    painter.setBrush(knobShadowColor);
+    painter.setPen(Qt::NoPen);
+    painter.drawEllipse(knobRect.translated(0.0, 0.6));
 
     painter.setBrush(knobColor);
     painter.setPen(Qt::NoPen);

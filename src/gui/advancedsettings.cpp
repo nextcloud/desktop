@@ -16,6 +16,7 @@
 #include "ignorelisteditor.h"
 #include "logger.h"
 #include "owncloudgui.h"
+#include "settingspanelstyle.h"
 #include "theme.h"
 #include "common/syncjournaldb.h"
 
@@ -38,6 +39,7 @@
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QLoggingCategory>
+#include <QLabel>
 #include <QMessageBox>
 #include <QOperatingSystemVersion>
 #include <QScopedValueRollback>
@@ -230,6 +232,10 @@ AdvancedSettings::AdvancedSettings(QWidget *parent)
 {
     _ui->setupUi(this);
 
+    auto *advancedActionsLabel = new QLabel(tr("Advanced"), this);
+    advancedActionsLabel->setObjectName(QLatin1String("advancedActionsLabel"));
+    _ui->advancedActionsLayout->insertWidget(0, advancedActionsLabel);
+
     connect(_ui->newFolderLimitCheckBox, &QAbstractButton::toggled, this, &AdvancedSettings::saveMiscSettings);
     connect(_ui->newFolderLimitSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &AdvancedSettings::saveMiscSettings);
     connect(_ui->existingFolderLimitCheckBox, &QAbstractButton::toggled, this, &AdvancedSettings::saveMiscSettings);
@@ -298,8 +304,10 @@ void AdvancedSettings::loadMiscSettings()
     _ui->newFolderLimitCheckBox->setChecked(newFolderLimit.first);
     _ui->newFolderLimitSpinBox->setValue(newFolderLimit.second);
     _ui->existingFolderLimitCheckBox->setEnabled(_ui->newFolderLimitCheckBox->isChecked());
+    _ui->existingFolderLimitLabel->setEnabled(_ui->newFolderLimitCheckBox->isChecked());
     _ui->existingFolderLimitCheckBox->setChecked(_ui->newFolderLimitCheckBox->isChecked() && cfgFile.notifyExistingFoldersOverLimit());
     _ui->stopExistingFolderNowBigSyncCheckBox->setEnabled(_ui->existingFolderLimitCheckBox->isChecked());
+    _ui->stopExistingFolderNowBigSyncLabel->setEnabled(_ui->existingFolderLimitCheckBox->isChecked());
     _ui->stopExistingFolderNowBigSyncCheckBox->setChecked(_ui->existingFolderLimitCheckBox->isChecked() && cfgFile.stopSyncingExistingFoldersOverLimit());
 
     const auto interval = cfgFile.remotePollInterval();
@@ -326,7 +334,9 @@ void AdvancedSettings::saveMiscSettings()
     cfgFile.setStopSyncingExistingFoldersOverLimit(stopSyncingExistingFoldersOverLimit);
 
     _ui->existingFolderLimitCheckBox->setEnabled(newFolderLimitEnabled);
+    _ui->existingFolderLimitLabel->setEnabled(newFolderLimitEnabled);
     _ui->stopExistingFolderNowBigSyncCheckBox->setEnabled(existingFolderLimitEnabled);
+    _ui->stopExistingFolderNowBigSyncLabel->setEnabled(existingFolderLimitEnabled);
 }
 
 void AdvancedSettings::slotShowInExplorerNavigationPane(bool checked)
@@ -421,6 +431,7 @@ void AdvancedSettings::slotStyleChanged()
 
 void AdvancedSettings::customizeStyle()
 {
+    SettingsPanelStyle::apply(this);
 }
 
 } // namespace OCC

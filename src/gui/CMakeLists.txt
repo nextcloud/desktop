@@ -142,6 +142,8 @@ set(client_SRCS
     selectivesyncdialog.cpp
     settingsdialog.h
     settingsdialog.cpp
+    settingspanelstyle.h
+    settingspanelstyle.cpp
     settingsswitch.h
     settingsswitch.cpp
     sharemanager.h
