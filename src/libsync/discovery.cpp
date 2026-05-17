@@ -99,8 +99,15 @@ void ProcessDirectoryJob::start()
     // can find and protect quota-blocked files (not in DB) inside them. Under
     // ParentNotChanged those files are invisible and would be deleted by the propagator
     // along with the folder even though they were never uploaded.
+    // Only force NormalQuery when the directory actually exists on disk. If it is
+    // already gone (e.g. deleted by a previous interrupted sync), forcing NormalQuery
+    // would trigger a fatal "Directory not found" error from startAsyncLocalQuery()
+    // and abort the sync instead of letting the normal stale-entry cleanup proceed.
     if (_queryLocal == ParentNotChanged && _dirItem && _dirItem->_instruction == CSYNC_INSTRUCTION_REMOVE) {
-        _queryLocal = NormalQuery;
+        const QString localPath = _discoveryData->_localDir + _currentFolder._local;
+        if (QDir(localPath).exists()) {
+            _queryLocal = NormalQuery;
+        }
     }
 
     if (_queryLocal == NormalQuery) {
