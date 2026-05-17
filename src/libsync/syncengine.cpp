@@ -481,6 +481,16 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
     // check for blacklisting of this item.
     // if the item is on blacklist, the instruction was set to ERROR
     checkErrorBlacklisting(*item);
+
+    // When discovery protects a file from deletion because of a quota error, emit the storage
+    // full notification so the sync status shows as error. checkErrorBlacklisting only does this
+    // when a blacklist entry already exists; in the same sync as the folder deletion there is no
+    // entry yet, so we check here unconditionally.
+    if (item->_instruction == CSYNC_INSTRUCTION_ERROR
+        && item->_httpErrorCode == 507) {
+        slotInsufficientRemoteStorage();
+    }
+
     _needsUpdate = true;
 
     // Insert sorted
