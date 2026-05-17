@@ -2230,6 +2230,11 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
                 const auto slashPos = _dirItem->_file.lastIndexOf(QLatin1Char('/'));
                 const auto parentPath = slashPos >= 0 ? _dirItem->_file.left(slashPos) : QString();
                 _discoveryData->_statedb->schedulePathForRemoteDiscovery(parentPath.toUtf8());
+                // Clear the folder's own DB record so the next sync treats it as a new local
+                // folder rather than a server deleted one. Without this, once all protected files
+                // inside it are removed by the user, the empty folder would be deleted locally
+                // on the next sync because the DB record still points to a server side deletion.
+                _discoveryData->_statedb->deleteFileRecord(_dirItem->_file, false);
             }
         }
         emit finished();

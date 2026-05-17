@@ -384,9 +384,11 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/big.txt")));
     }
 
-    // After a file with error is protected from deletion, removing it locally must
-    // allow the parent folder (deleted on the server) to be cleaned up on the next sync.
-    void testQuotaProtectedFolderCleanedUpAfterLocalFileDeletion()
+    // After a file blocked from upload because of quota errors is protected from deletion inside a
+    // server deleted folder, the client must keep the folder locally even after the user removes
+    // the file. The folder's DB record is cleared during the protection sync so the next sync
+    // treats it as a new local folder rather than a server deleted one.
+    void testQuotaProtectedFolderKeptAfterLocalFileDeletion()
     {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
 
@@ -404,19 +406,19 @@ private slots:
         fakeFolder.syncOnce();
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/quota_blocked.txt")));
 
-        // User manually removes the quota-blocked file.
+        // User manually removes the file blocked from upload because of quota errors.
         fakeFolder.localModifier().remove(QStringLiteral("A/quota_blocked.txt"));
 
-        // Next sync: folder A is empty and was deleted on the server — it must be removed locally.
+        // Next sync: folder A is empty but must remain locally — the client must not delete it.
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A")));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A")));
     }
 
-    // Same as testQuotaProtectedFolderCleanedUpAfterLocalFileDeletion but with a nested
-    // folder (B/A) where the parent B remains on the server. Without invalidating B's cached
-    // etag after the protection sync, the next sync would hit ParentNotChanged for B and treat
-    // B/A as still present (via its DB record), permanently preventing cleanup.
-    void testQuotaProtectedNestedFolderCleanedUpAfterLocalFileDeletion()
+    // Same as testQuotaProtectedFolderKeptAfterLocalFileDeletion but with a nested folder (B/A)
+    // where the parent B remains on the server. Without invalidating B's cached etag after the
+    // protection sync, the next sync would hit ParentNotChanged for B and treat B/A as still
+    // present via its DB record, preventing the folder from being treated as new local.
+    void testQuotaProtectedNestedFolderKeptAfterLocalFileDeletion()
     {
         // Start with a structure that has a nested subfolder B/A.
         FileInfo initialState{QString{}, {
@@ -443,21 +445,22 @@ private slots:
         }
         fakeFolder.serverErrorPaths().clear();
 
-        // Server deletes subfolder B/A (parent B remains). The quota-blocked file must be
-        // protected locally even though B still exists and may have a cached etag.
+        // Server deletes subfolder B/A (parent B remains). The file blocked from upload because
+        // of quota errors must be protected locally even though B still exists and may have a
+        // cached etag.
         fakeFolder.remoteModifier().remove(QStringLiteral("B/A"));
         fakeFolder.syncOnce();
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/A/quota_blocked.txt")));
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/A")));
 
-        // User manually deletes the quota-blocked file.
+        // User manually deletes the file blocked from upload because of quota errors.
         fakeFolder.localModifier().remove(QStringLiteral("B/A/quota_blocked.txt"));
 
-        // Next sync: B/A is empty and was deleted on the server.
+        // Next sync: B/A is empty but must remain locally.
         // B's etag was invalidated during the protection sync so the client re-queries B from
-        // the server instead of relying on the stale DB cache (which would make B/A look present).
+        // the server instead of relying on the stale DB cache.
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("B/A")));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/A")));
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B")));
     }
 
