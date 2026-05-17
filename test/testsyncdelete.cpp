@@ -301,6 +301,99 @@ private slots:
         QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("C/big.txt")));
     }
 
+    // After a server side folder rename, if the renamed folder is then deleted on the server,
+    // files inside it that were blocked from upload because of quota errors must still be
+    // protected from local deletion. The blacklist path is updated during the rename sync, so
+    // the subsequent deletion sync must find the entry at the new path.
+    void testQuotaBlockedFileProtectedAfterFolderRenameAndDelete()
+    {
+        FileInfo initialState{QString{}, {
+            {QStringLiteral("A"), {
+                {QStringLiteral("small.txt"), 4},
+            }},
+            {QStringLiteral("B"), {}},
+        }};
+        FakeFolder fakeFolder{initialState};
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Block big.txt from uploading permanently (507) regardless of its path.
+        // This simulates a server where storage is genuinely full.
+        fakeFolder.localModifier().insert(QStringLiteral("A/big.txt"), 1000);
+        fakeFolder.setServerOverride([](QNetworkAccessManager::Operation op,
+                                        const QNetworkRequest &req,
+                                        QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::PutOperation
+                && req.url().path().contains(QLatin1String("big.txt"))) {
+                return new FakeErrorReply{op, req, nullptr, 507};
+            }
+            return nullptr;
+        });
+        QVERIFY(!fakeFolder.syncOnce());
+        {
+            auto entry = fakeFolder.syncJournal().errorBlacklistEntry(QStringLiteral("A/big.txt"));
+            QVERIFY(entry.isValid());
+            QCOMPARE(entry._errorCategory, SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage);
+        }
+
+        // Server moves A into B. Client must follow and keep big.txt at the new path.
+        fakeFolder.remoteModifier().rename(QStringLiteral("A"), QStringLiteral("B/A"));
+        fakeFolder.syncOnce();
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/A/big.txt")));
+        {
+            auto entry = fakeFolder.syncJournal().errorBlacklistEntry(QStringLiteral("B/A/big.txt"));
+            QVERIFY(entry.isValid());
+            QCOMPARE(entry._errorCategory, SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage);
+        }
+
+        // Server deletes B/A. big.txt must be protected from local deletion.
+        fakeFolder.remoteModifier().remove(QStringLiteral("B/A"));
+        QVERIFY(!fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/A/big.txt")));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("B/A/small.txt")));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B")));
+    }
+
+    // Same as above but rename and delete happen between client syncs so the client never sees B/A on server.
+    void testQuotaBlockedFileProtectedAfterFolderRenameAndDeleteInOnePoll()
+    {
+        FileInfo initialState{QString{}, {
+            {QStringLiteral("A"), {
+                {QStringLiteral("small.txt"), 4},
+            }},
+            {QStringLiteral("B"), {}},
+        }};
+        FakeFolder fakeFolder{initialState};
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeFolder.localModifier().insert(QStringLiteral("A/big.txt"), 1000);
+        fakeFolder.setServerOverride([](QNetworkAccessManager::Operation op,
+                                        const QNetworkRequest &req,
+                                        QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::PutOperation
+                && req.url().path().contains(QLatin1String("big.txt"))) {
+                return new FakeErrorReply{op, req, nullptr, 507};
+            }
+            return nullptr;
+        });
+        QVERIFY(!fakeFolder.syncOnce());
+        {
+            auto entry = fakeFolder.syncJournal().errorBlacklistEntry(QStringLiteral("A/big.txt"));
+            QVERIFY(entry.isValid());
+            QCOMPARE(entry._errorCategory, SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage);
+        }
+
+        // Server renames A to B/A and then immediately deletes B/A before the client polls again.
+        fakeFolder.remoteModifier().rename(QStringLiteral("A"), QStringLiteral("B/A"));
+        fakeFolder.remoteModifier().remove(QStringLiteral("B/A"));
+
+        // big.txt must survive: it was never uploaded and A is gone from server entirely.
+        QVERIFY(!fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/big.txt")));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/small.txt")));
+    }
+
     // Files blocked from upload because of quota errors must retry on the next sync once quota is freed.
     void testQuotaBlockedFileRetriesWhenQuotaResolved()
     {
