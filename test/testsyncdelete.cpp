@@ -453,7 +453,10 @@ private slots:
             QCOMPARE(entry._errorCategory, SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage);
         }
 
-        // Server deletes A again. big.txt must still be protected.
+        // Server deletes A again. The real client uses DatabaseAndFilesystem with no local paths
+        // (server-triggered sync, no local changes). The fix in startAsync() must force NormalQuery
+        // for A's subdirectory job so that big.txt is discovered and checkNewDeleteConflict fires.
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
         fakeFolder.remoteModifier().remove(QStringLiteral("A"));
         QVERIFY(!fakeFolder.syncOnce());
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/big.txt")));
