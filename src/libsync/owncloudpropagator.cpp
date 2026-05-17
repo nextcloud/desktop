@@ -158,7 +158,7 @@ static SyncJournalErrorBlacklistRecord createBlacklistEntry(
         entry._ignoreDuration = 0;
     }
 
-    if (item._httpErrorCode == 507) {
+    if (item._isQuotaError || item._httpErrorCode == 507) {
         entry._errorCategory = SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage;
         // Quota can change at any time (user frees space, admin adjusts limits).
         // Always retry on the next sync rather than backing off exponentially.
@@ -177,11 +177,11 @@ void blacklistUpdate(SyncJournalDb *journal, SyncFileItem &item)
     SyncJournalErrorBlacklistRecord oldEntry = journal->errorBlacklistEntry(item._file);
 
     bool mayBlacklist =
-        item._errorMayBeBlacklisted // explicitly flagged for blacklisting
+        item._isQuotaError // quota errors always get an InsufficientRemoteStorage entry
         || ((item._status == SyncFileItem::NormalError
                 || item._status == SyncFileItem::SoftError
                 || item._status == SyncFileItem::DetailError)
-               && item._httpErrorCode != 0 // or non-local error
+               && item._httpErrorCode != 0 // non-local error
                );
 
     // No new entry? Possibly remove the old one, then done.
