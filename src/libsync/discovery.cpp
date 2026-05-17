@@ -95,6 +95,13 @@ void ProcessDirectoryJob::start()
             qCDebug(lcDisco) << "adjusted discovery policy" << _currentFolder._server << _queryServer << _currentFolder._local << _queryLocal;
         }
     }
+    // Deleted directories must always scan local files so that checkNewDeleteConflict
+    // can find and protect quota-blocked files (not in DB) inside them. Under
+    // ParentNotChanged those files are invisible and would be deleted by the propagator
+    // along with the folder even though they were never uploaded.
+    if (_queryLocal == ParentNotChanged && _dirItem && _dirItem->_instruction == CSYNC_INSTRUCTION_REMOVE) {
+        _queryLocal = NormalQuery;
+    }
 
     if (_queryLocal == NormalQuery) {
         startAsyncLocalQuery();
