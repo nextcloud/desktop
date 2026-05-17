@@ -394,6 +394,71 @@ private slots:
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/small.txt")));
     }
 
+    // After the client restarts following a protection event, a subsequent server-side deletion of
+    // the same folder must still protect quota-blocked files. The protection relies on the blacklist
+    // entry surviving the restart sync (where the folder is re-created via MKDIR) and then being
+    // found again when the folder is deleted a second time.
+    void testQuotaBlockedFileProtectedAfterClientRestart()
+    {
+        FileInfo initialState{QString{}, {
+            {QStringLiteral("A"), {
+                {QStringLiteral("small.txt"), 4},
+            }},
+        }};
+        FakeFolder fakeFolder{initialState};
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeFolder.localModifier().insert(QStringLiteral("A/big.txt"), 1000);
+        fakeFolder.setServerOverride([](QNetworkAccessManager::Operation op,
+                                        const QNetworkRequest &req,
+                                        QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::PutOperation
+                && req.url().path().contains(QLatin1String("big.txt"))) {
+                return new FakeErrorReply{op, req, nullptr, 507};
+            }
+            return nullptr;
+        });
+        QVERIFY(!fakeFolder.syncOnce());
+        {
+            auto entry = fakeFolder.syncJournal().errorBlacklistEntry(QStringLiteral("A/big.txt"));
+            QVERIFY(entry.isValid());
+            QCOMPARE(entry._errorCategory, SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage);
+        }
+
+        // Server deletes A. Protection kicks in: big.txt survives, A's DB record is cleared.
+        fakeFolder.remoteModifier().remove(QStringLiteral("A"));
+        QVERIFY(!fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/big.txt")));
+
+        // Simulate client restart: next sync re-creates A on the server via MKDIR,
+        // then big.txt upload fails again because storage is still full.
+        QVERIFY(!fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentRemoteState().find(QStringLiteral("A")));
+        {
+            auto entry = fakeFolder.syncJournal().errorBlacklistEntry(QStringLiteral("A/big.txt"));
+            QVERIFY(entry.isValid());
+            QCOMPARE(entry._errorCategory, SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage);
+        }
+
+        // Simulate a quiet sync after the client restart: nothing changed locally so the real
+        // client uses DatabaseAndFilesystem with an empty path set. A uses ParentNotChanged
+        // which skips local discovery, so big.txt (not in DB) never appears in _syncItems.
+        // deleteStaleErrorBlacklistEntries must not prune its InsufficientRemoteStorage entry.
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        fakeFolder.syncOnce();
+        {
+            auto entry = fakeFolder.syncJournal().errorBlacklistEntry(QStringLiteral("A/big.txt"));
+            QVERIFY(entry.isValid());
+            QCOMPARE(entry._errorCategory, SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage);
+        }
+
+        // Server deletes A again. big.txt must still be protected.
+        fakeFolder.remoteModifier().remove(QStringLiteral("A"));
+        QVERIFY(!fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/big.txt")));
+    }
+
     // Files blocked from upload because of quota errors must retry on the next sync once quota is freed.
     void testQuotaBlockedFileRetriesWhenQuotaResolved()
     {

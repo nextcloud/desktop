@@ -2210,7 +2210,7 @@ bool SyncJournalDb::deleteStaleErrorBlacklistEntries(const QSet<QString> &keep)
     }
 
     SqlQuery query(_db);
-    query.prepare("SELECT path FROM blacklist");
+    query.prepare("SELECT path, errorCategory FROM blacklist");
 
     if (!query.exec()) {
         return false;
@@ -2220,9 +2220,14 @@ bool SyncJournalDb::deleteStaleErrorBlacklistEntries(const QSet<QString> &keep)
 
     while (query.next().hasData) {
         const QString file = query.stringValue(0);
-        if (!keep.contains(file)) {
-            superfluousPaths.append(file);
+        const auto errorCategory = static_cast<SyncJournalErrorBlacklistRecord::Category>(query.intValue(1));
+        // Never prune quota entries: the file was never uploaded and may not appear in
+        // _syncItems during a ParentNotChanged sync. The entry is removed by blacklistUpdate
+        // when the upload eventually succeeds, or when the user manually removes the file.
+        if (keep.contains(file) || errorCategory == SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage) {
+            continue;
         }
+        superfluousPaths.append(file);
     }
 
     SqlQuery delQuery(_db);
