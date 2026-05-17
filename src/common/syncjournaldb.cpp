@@ -2189,22 +2189,24 @@ bool SyncJournalDb::renameErrorBlacklistPaths(const QString &from, const QString
 
     countQuery->bindValue(1, SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage);
     countQuery->bindValue(2, from);
-    const bool hasQuotaEntries = countQuery->exec() && countQuery->next().hasData && countQuery->intValue(0) > 0;
 
-    // Update the exact folder entry and all entries whose path starts with "from/".
-    // Uses the same range trick as IS_PREFIX_PATH_OR_EQUAL: '/' + 1 == '0'.
-    const auto query = _queryManager.get(PreparedSqlQueryManager::RenameErrorBlacklistUpdateQuery,
-                                        QByteArrayLiteral("UPDATE blacklist "
-                                                        "SET path = ?2 || substr(path, length(?1) + 1) "
-                                                        "WHERE path == ?1 OR (path > (?1 || '/') AND path < (?1 || '0'))"),
-                                        _db);
-    if (!query) {
-        return false;
-    }
-    query->bindValue(1, from);
-    query->bindValue(2, to);
-    if (!query->exec()) {
-        sqlFail(QStringLiteral("renameErrorBlacklistPaths"), *query);
+    const bool hasQuotaEntries = countQuery->exec() && countQuery->next().hasData && countQuery->intValue(0) > 0;
+    if (hasQuotaEntries) {
+        // Update the exact folder entry and all entries whose path starts with "from/".
+        // Uses the same range trick as IS_PREFIX_PATH_OR_EQUAL: '/' + 1 == '0'.
+        const auto query = _queryManager.get(PreparedSqlQueryManager::RenameErrorBlacklistUpdateQuery,
+                                            QByteArrayLiteral("UPDATE blacklist "
+                                                            "SET path = ?2 || substr(path, length(?1) + 1) "
+                                                            "WHERE path == ?1 OR (path > (?1 || '/') AND path < (?1 || '0'))"),
+                                            _db);
+        if (!query) {
+            return false;
+        }
+        query->bindValue(1, from);
+        query->bindValue(2, to);
+        if (!query->exec()) {
+            sqlFail(QStringLiteral("renameErrorBlacklistPaths"), *query);
+        }
     }
 
     return hasQuotaEntries;
