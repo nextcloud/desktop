@@ -1250,11 +1250,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             }
 
             item->_status = SyncFileItem::Status::NormalError;
-            // Mark as a quota error so blacklistUpdate writes an InsufficientRemoteStorage entry.
-            // Without this, _httpErrorCode would be 0 and blacklistUpdate would not create an
-            // entry, leaving the file unprotected by checkNewDeleteConflict if the remote parent
-            // folder is deleted before the quota situation is resolved.
-            item->_httpErrorCode = 507;
+            // Flag as a quota error so blacklistUpdate writes an InsufficientRemoteStorage entry,
+            // which checkNewDeleteConflict uses to protect the file if its parent folder is later
+            // deleted on the server before the quota situation is resolved.
+            item->_isQuotaError = true;
             _discoveryData->_anotherSyncNeeded = true;
             _discoveryData->_filesNeedingScheduledSync.insert(path._original, delayIntervalForSyncRetryForFilesExceedQuotaSeconds);
         }
@@ -2557,9 +2556,7 @@ bool ProcessDirectoryJob::checkNewDeleteConflict(const SyncFileItemPtr &item, in
                            << item->_file;
         item->_instruction = CSYNC_INSTRUCTION_ERROR;
         item->_status = SyncFileItem::SoftError;
-        // Keep _httpErrorCode at 507 so blacklistUpdate recreates the InsufficientRemoteStorage
-        // entry if the ignore duration later expires.
-        item->_httpErrorCode = 507;
+        item->_isQuotaError = true;
         item->_errorString = tr("%1 could not be removed: it has unsynced changes due to full server storage. "
                                 "Please manage your files and try syncing again.")
                                  .arg(item->_file);
@@ -2582,7 +2579,7 @@ bool ProcessDirectoryJob::checkNewDeleteConflict(const SyncFileItemPtr &item, in
                                    << item->_file;
                 item->_instruction = CSYNC_INSTRUCTION_ERROR;
                 item->_status = SyncFileItem::SoftError;
-                item->_httpErrorCode = 507;
+                item->_isQuotaError = true;
                 item->_errorString = tr("\"%1\" was not deleted because its latest changes were not synced "
                                         "and your server quota was exceeded. "
                                         "Please manage your storage and try syncing again.")
