@@ -469,11 +469,11 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     </message>
     <message>
       <source>Login_URL</source>
-      <translation>http://id.ionos.co.uk</translation>
+      <translation>http://id.ionos.com</translation>
     </message>
     <message>
       <source>Login_URL_STRATO</source>
-      <translation>http://id.strato.co.uk</translation>
+      <translation>http://id.strato.com</translation>
     </message>
   </context>
   <context>
