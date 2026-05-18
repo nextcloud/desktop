@@ -328,7 +328,11 @@ Application::Application(int &argc, char **argv)
     setupLogging();
     setupTranslations();
 #ifdef IONOS_BUILD
+#ifdef STRATO_WL_BUILD
+    _theme->setOverrideServerUrl(QCoreApplication::translate("OCC::Theme", "Login_URL_STRATO"));
+#else
     _theme->setOverrideServerUrl(QCoreApplication::translate("OCC::Theme", "Login_URL"));
+#endif
 #endif
 
     // try to migrate legacy accounts and folders from a previous client version

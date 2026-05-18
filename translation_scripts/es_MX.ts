@@ -476,6 +476,10 @@ Los objetos cuyo borrado esté permitido se eliminarán si impiden que se borre 
       <source>Login_URL</source>
       <translation>http://id.ionos.mx</translation>
     </message>
+    <message>
+      <source>Login_URL_STRATO</source>
+      <translation>http://id.strato.mx</translation>
+    </message>
   </context>
   <context>
     <name>OCC::UpdateE2eeFolderMetadataJob</name>

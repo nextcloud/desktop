@@ -471,6 +471,10 @@ Items where deletion is allowed will be deleted if they prevent a directory from
       <source>Login_URL</source>
       <translation>http://id.ionos.it</translation>
     </message>
+    <message>
+      <source>Login_URL_STRATO</source>
+      <translation>http://id.strato.it</translation>
+    </message>
   </context>
   <context>
     <name>OCC::UpdateE2eeFolderMetadataJob</name>

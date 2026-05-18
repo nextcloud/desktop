@@ -471,6 +471,10 @@ Objekte, die gelöscht werden dürfen, werden gelöscht, wenn sie das Löschen e
       <source>Login_URL</source>
       <translation>http://id.ionos.de</translation>
     </message>
+    <message>
+      <source>Login_URL_STRATO</source>
+      <translation>http://id.strato.de</translation>
+    </message>
   </context>
   <context>
     <name>OCC::UpdateE2eeFolderMetadataJob</name>
