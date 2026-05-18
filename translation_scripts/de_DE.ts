@@ -467,6 +467,10 @@ Objekte, die gelöscht werden dürfen, werden gelöscht, wenn sie das Löschen e
       <source>easy/0118</source>
       <translation>easy/0148</translation>
     </message>
+    <message>
+      <source>Login_URL</source>
+      <translation>http://id.ionos.de</translation>
+    </message>
   </context>
   <context>
     <name>OCC::UpdateE2eeFolderMetadataJob</name>

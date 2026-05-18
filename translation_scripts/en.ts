@@ -467,6 +467,10 @@ Items where deletion is allowed will be deleted if they prevent a directory from
       <source>easy/0118</source>
       <translation>easy/0108</translation>
     </message>
+    <message>
+      <source>Login_URL</source>
+      <translation>http://id.ionos.co.uk</translation>
+    </message>
   </context>
   <context>
     <name>OCC::UpdateE2eeFolderMetadataJob</name>

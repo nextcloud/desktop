@@ -467,6 +467,10 @@ Objecten die verwijderd mogen worden, worden verwijderd als ze zouden verhindere
       <source>easy/0118</source>
       <translation>easy/0108</translation>
     </message>
+    <message>
+      <source>Login_URL</source>
+      <translation>http://id.ionos.de</translation>
+    </message>
   </context>
   <context>
     <name>OCC::UpdateE2eeFolderMetadataJob</name>
