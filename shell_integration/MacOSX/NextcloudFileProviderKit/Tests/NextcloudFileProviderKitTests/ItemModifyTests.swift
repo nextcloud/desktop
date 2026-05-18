@@ -157,6 +157,75 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         )
     }
 
+    /// Real Nextcloud servers echo the upload's `X-OC-Mtime` back via a
+    /// `Last-Modified` IMF-fixdate, which collapses to 1 s precision. APFS stores
+    /// sub-second mtimes, so if the file provider trusted the server's response
+    /// the returned `Item.contentModificationDate` would drift down by hundreds
+    /// of milliseconds — and AppKit/NSDocument-based editors (Xcode, TextEdit)
+    /// would interpret that drift as "the item has been changed on disk by
+    /// another application" right after their own save.
+    /// Regression test for that scenario: configure the mock to truncate the
+    /// upload response date to 1 s precision, save a sub-second mtime, and
+    /// verify the resulting `Item` and the persisted metadata both preserve the
+    /// exact local value rather than the truncated one.
+    func testModifyFilePreservesLocalContentModificationDateWhenServerTruncates() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.uploadResponseMtimeTruncation = 1.0
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let newContents = "Hello, New World!".data(using: .utf8)
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("modify-precise-mtime")
+        try newContents?.write(to: newContentsUrl)
+
+        // Pick a sub-second value the mock will truncate down to `…17.000`.
+        let preciseLocalMtime = Date(timeIntervalSince1970: 1_747_564_337.456789)
+        var targetItemMetadata = SendableItemMetadata(value: itemMetadata)
+        targetItemMetadata.date = preciseLocalMtime
+        targetItemMetadata.size = try Int64(XCTUnwrap(newContents?.count))
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let targetItem = Item(
+            metadata: targetItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItemMaybe, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(error)
+        let modifiedItem = try XCTUnwrap(modifiedItemMaybe)
+
+        XCTAssertEqual(modifiedItem.contentModificationDate, preciseLocalMtime)
+
+        // Belt-and-braces: also confirm we did *not* take the mock server's
+        // truncated value. If this is ever equal to the precise value the test
+        // is moot, so guard against that too.
+        let truncatedResponse = Date(
+            timeIntervalSince1970: preciseLocalMtime.timeIntervalSince1970.rounded(.down)
+        )
+        XCTAssertNotEqual(truncatedResponse, preciseLocalMtime)
+        XCTAssertNotEqual(modifiedItem.contentModificationDate, truncatedResponse)
+
+        let persisted = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
+        XCTAssertEqual(persisted.date, preciseLocalMtime)
+    }
+
     /// Modify-path counterpart of `testCreateFileRefusedByQuotaReportsToMainApp`: the extension
     /// must surface a per-item + per-folder summary report to the main app over XPC when an
     /// already-uploaded file is rewritten with content the server can no longer accept.
