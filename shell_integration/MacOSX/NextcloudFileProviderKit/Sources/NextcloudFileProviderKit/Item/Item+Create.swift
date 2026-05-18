@@ -15,6 +15,7 @@ public extension Item {
         itemTemplate: NSFileProviderItem?,
         remotePath: String,
         parentItemIdentifier: NSFileProviderItemIdentifier,
+        parentKeepDownloaded: Bool,
         domain: NSFileProviderDomain? = nil,
         account: Account,
         remoteInterface: RemoteInterface,
@@ -94,6 +95,7 @@ public extension Item {
         }
 
         directory.downloaded = true
+        directory.keepDownloaded = parentKeepDownloaded
         dbManager.addItemMetadata(directory)
 
         let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: directory.contentType)
@@ -117,6 +119,7 @@ public extension Item {
         localPath: String,
         itemTemplate: NSFileProviderItem,
         parentItemRemotePath: String,
+        parentKeepDownloaded: Bool,
         domain: NSFileProviderDomain? = nil,
         account: Account,
         remoteInterface: RemoteInterface,
@@ -221,6 +224,7 @@ public extension Item {
             status: Status.normal.rawValue,
             downloaded: true,
             uploaded: true,
+            keepDownloaded: parentKeepDownloaded,
             urlBase: account.serverUrl,
             user: account.username,
             userId: account.id
@@ -488,9 +492,21 @@ public extension Item {
         let parentItemIdentifier = itemTemplate.parentItemIdentifier
         var parentItemRemotePath: String
         var parentItemRelativePath: String
+        // Inherit the parent's "Always keep downloaded" flag so a newly-created
+        // descendant displays the same Finder overlay decoration and exposes the
+        // same context-menu actions as the siblings the recursive enable in
+        // `Item.set(keepDownloaded:domain:)` already pinned. Checking only the
+        // immediate parent is sufficient because that recursive enable sets the
+        // flag on every then-known descendant of the pinned ancestor.
+        let parentKeepDownloaded: Bool
 
-        // TODO: Deduplicate
         if parentItemIdentifier == .rootContainer {
+            // Mirrors the lookup `Item.rootContainer(...)` uses to merge persisted
+            // per-item toggles onto the synthesised root metadata: the root
+            // container can itself be pinned.
+            parentKeepDownloaded = dbManager
+                .itemMetadata(ocId: NSFileProviderItemIdentifier.rootContainer.rawValue)?
+                .keepDownloaded ?? false
             parentItemRemotePath = account.davFilesUrl
             parentItemRelativePath = "/"
         } else {
@@ -506,6 +522,7 @@ public extension Item {
                 )
                 return (nil, NSFileProviderError(.cannotSynchronize))
             }
+            parentKeepDownloaded = parentItemMetadata.keepDownloaded
             parentItemRemotePath = parentItemMetadata.remotePath()
             parentItemRelativePath = parentItemRemotePath.replacingOccurrences(
                 of: account.davFilesUrl, with: ""
@@ -566,6 +583,7 @@ public extension Item {
                 itemTemplate: itemTemplate,
                 remotePath: newServerUrlFileName,
                 parentItemIdentifier: parentItemIdentifier,
+                parentKeepDownloaded: parentKeepDownloaded,
                 domain: domain,
                 account: account,
                 remoteInterface: remoteInterface,
@@ -665,6 +683,7 @@ public extension Item {
             localPath: fileNameLocalPath,
             itemTemplate: itemTemplate,
             parentItemRemotePath: parentItemRemotePath,
+            parentKeepDownloaded: parentKeepDownloaded,
             domain: domain,
             account: account,
             remoteInterface: remoteInterface,
