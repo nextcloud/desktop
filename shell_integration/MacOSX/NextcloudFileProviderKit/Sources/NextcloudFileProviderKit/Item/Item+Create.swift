@@ -205,8 +205,13 @@ public extension Item {
             account: account.ncKitAccount,
             classFile: "", // Placeholder as not set in original code
             contentType: contentType,
-            creationDate: Date(), // Default as not set in original code
-            date: date ?? Date(),
+            // Prefer the locally-known dates the system handed us (and which we
+            // just sent to the server) over the second-precision values echoed
+            // back in the PUT response. Aligning these with what's on disk keeps
+            // NSDocument-style editors from seeing the file as "changed by
+            // another application" right after they save it.
+            creationDate: (itemTemplate.creationDate as? Date) ?? date ?? Date(),
+            date: (itemTemplate.contentModificationDate as? Date) ?? date ?? Date(),
             directory: false,
             e2eEncrypted: false, // Default as not set in original code
             etag: etag ?? "",

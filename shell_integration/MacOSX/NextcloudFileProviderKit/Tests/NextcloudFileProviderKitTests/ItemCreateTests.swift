@@ -136,6 +136,118 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(createdItem.isUploaded)
     }
 
+    /// Regression test for the same root cause as
+    /// `testModifyFilePreservesLocalContentModificationDateWhenServerTruncates`,
+    /// but on the create path: when the server truncates the upload-response
+    /// mtime to 1 s precision, the returned `Item.creationDate` and
+    /// `Item.contentModificationDate` must reflect the template's sub-second
+    /// values rather than the truncated server response.
+    func testCreateFilePreservesLocalDatesWhenServerTruncates() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.uploadResponseMtimeTruncation = 1.0
+
+        let preciseCreationDate = Date(timeIntervalSince1970: 1_747_564_300.123456)
+        let preciseMtime = Date(timeIntervalSince1970: 1_747_564_337.456789)
+
+        var fileItemMetadata = SendableItemMetadata(
+            ocId: "file-precise-dates", fileName: "file-precise-dates", account: Self.account
+        )
+        fileItemMetadata.classFile = NKTypeClassFile.document.rawValue
+        fileItemMetadata.creationDate = preciseCreationDate
+        fileItemMetadata.date = preciseMtime
+
+        let tempUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("file-precise-dates")
+        try Data("Hello, precise dates!".utf8).write(to: tempUrl)
+
+        let fileItemTemplate = Item(
+            metadata: fileItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let (createdItemMaybe, error) = await Item.create(
+            basedOn: fileItemTemplate,
+            contents: tempUrl,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        XCTAssertNil(error)
+        let createdItem = try XCTUnwrap(createdItemMaybe)
+
+        XCTAssertEqual(createdItem.creationDate, preciseCreationDate)
+        XCTAssertEqual(createdItem.contentModificationDate, preciseMtime)
+
+        let truncatedMtime = Date(
+            timeIntervalSince1970: preciseMtime.timeIntervalSince1970.rounded(.down)
+        )
+        XCTAssertNotEqual(truncatedMtime, preciseMtime)
+        XCTAssertNotEqual(createdItem.contentModificationDate, truncatedMtime)
+
+        let dbItem = try XCTUnwrap(
+            Self.dbManager.itemMetadata(ocId: createdItem.itemIdentifier.rawValue)
+        )
+        XCTAssertEqual(dbItem.creationDate, preciseCreationDate)
+        XCTAssertEqual(dbItem.date, preciseMtime)
+    }
+
+    /// Defensive coverage for the secondary fallback: if the system passes a
+    /// template whose `creationDate` / `contentModificationDate` are nil (an
+    /// `NSFileProviderItem` not built from one of our `Item` instances), the
+    /// fix must fall through to the server's response date rather than
+    /// silently substituting `Date()` (the previous behaviour, which would
+    /// anchor the new metadata to the current wall clock for no good reason).
+    func testCreateFileFallsBackToServerDateWhenTemplateHasNilDates() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        let template: NSFileProviderItem = MockFileProviderItem(
+            identifier: .init("file-nil-dates"),
+            filename: "file-nil-dates",
+            isUploaded: false
+        )
+        // MockFileProviderItem doesn't declare creationDate / contentModificationDate, so
+        // both flow through the @objc-optional protocol's default-nil. That's exactly the
+        // shape this test wants: an item from outside our `Item` type where the system
+        // simply didn't furnish those fields.
+        XCTAssertNil(template.creationDate ?? nil, "Test setup expects template.creationDate to be nil")
+        XCTAssertNil(template.contentModificationDate ?? nil, "Test setup expects template.contentModificationDate to be nil")
+
+        let tempUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("file-nil-dates")
+        try Data("Hello, nil dates!".utf8).write(to: tempUrl)
+
+        let beforeUpload = Date()
+        let (createdItemMaybe, error) = await Item.create(
+            basedOn: template,
+            contents: tempUrl,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let afterUpload = Date()
+        XCTAssertNil(error)
+        let createdItem = try XCTUnwrap(createdItemMaybe)
+
+        // The mock echoes the (defaulted-to-now) mtime back as the response,
+        // so the resulting dates should equal the server-derived value rather
+        // than a second invocation of `Date()` taken after the response. We
+        // can't pin to an exact value (the mock initialises with `Date()` when
+        // the template hands it nil), but it must land within the upload
+        // window — and `creationDate` and `contentModificationDate` must agree
+        // with each other.
+        let creationDate = try XCTUnwrap(createdItem.creationDate)
+        let modificationDate = try XCTUnwrap(createdItem.contentModificationDate)
+        XCTAssertEqual(creationDate, modificationDate, "Both dates should derive from the same server response value")
+        XCTAssertGreaterThanOrEqual(creationDate, beforeUpload)
+        XCTAssertLessThanOrEqual(creationDate, afterUpload)
+    }
+
     func testCreateFileIntoFolder() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
