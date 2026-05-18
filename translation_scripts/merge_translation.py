@@ -525,6 +525,7 @@ def run_lupdate(ts_files, mode="default"):
 if __name__ == "__main__":
     ts_files = [r"..\translations\client_de.ts"
                 , r"..\translations\client_es.ts"
+                , r"..\translations\client_es_MX.ts"
                 , r"..\translations\client_fr.ts"
                 , r"..\translations\client_it.ts"
                 , r"..\translations\client_nl.ts"
@@ -534,6 +535,7 @@ if __name__ == "__main__":
     
     diff_files = [r".\de_DE.ts"
                   , r".\es.ts"
+                  , r".\es_MX.ts"
                   , r".\fr.ts"
                   , r".\it.ts"
                   , r".\nl.ts"
