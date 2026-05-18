@@ -828,4 +828,283 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: lockFileMetadata.ocId))
         XCTAssertFalse(targetRemote.locked)
     }
+
+    ///
+    /// A new file created in a folder the user marked "Always keep downloaded"
+    /// must inherit that flag so the Finder overlay decoration matches its
+    /// siblings; see nextcloud/desktop #10018.
+    ///
+    func testCreateFileInheritsKeepDownloadedFromPinnedParentFolder() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        var folderItemMetadata = SendableItemMetadata(
+            ocId: "pinned-folder-id", fileName: "pinned-folder", account: Self.account
+        )
+        folderItemMetadata.directory = true
+        folderItemMetadata.classFile = NKTypeClassFile.directory.rawValue
+        folderItemMetadata.serverUrl = Self.account.davFilesUrl
+
+        let folderItemTemplate = Item(
+            metadata: folderItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let (createdFolderItemMaybe, folderError) = await Item.create(
+            basedOn: folderItemTemplate,
+            contents: nil,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        XCTAssertNil(folderError)
+        let createdFolderItem = try XCTUnwrap(createdFolderItemMaybe)
+
+        // Mimic the user toggling "Always keep downloaded" on the parent folder.
+        _ = try Self.dbManager.set(keepDownloaded: true, for: createdFolderItem.metadata)
+
+        var fileItemMetadata = SendableItemMetadata(
+            ocId: "child-file-id", fileName: "child.md", account: Self.account
+        )
+        fileItemMetadata.classFile = NKTypeClassFile.document.rawValue
+        fileItemMetadata.serverUrl = Self.account.davFilesUrl + "/pinned-folder"
+
+        let fileItemTemplate = Item(
+            metadata: fileItemMetadata,
+            parentItemIdentifier: createdFolderItem.itemIdentifier,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("child.md")
+        try Data("Hello world".utf8).write(to: tempUrl)
+
+        let (createdFileItemMaybe, fileError) = await Item.create(
+            basedOn: fileItemTemplate,
+            contents: tempUrl,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        XCTAssertNil(fileError)
+        let createdFileItem = try XCTUnwrap(createdFileItemMaybe)
+
+        XCTAssertTrue(createdFileItem.metadata.keepDownloaded)
+        XCTAssertEqual(createdFileItem.contentPolicy, .downloadEagerlyAndKeepDownloaded)
+        let decoration = try XCTUnwrap(createdFileItem.decorations?.first)
+        XCTAssertTrue(decoration.rawValue.hasSuffix(".keep-downloaded"))
+
+        let dbItem = try XCTUnwrap(
+            Self.dbManager.itemMetadata(ocId: createdFileItem.itemIdentifier.rawValue)
+        )
+        XCTAssertTrue(dbItem.keepDownloaded)
+    }
+
+    ///
+    /// Control case for ``testCreateFileInheritsKeepDownloadedFromPinnedParentFolder``:
+    /// when the parent is not pinned, the new file must not be pinned either.
+    ///
+    func testCreateFileDoesNotInheritKeepDownloadedWhenParentNotPinned() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        var folderItemMetadata = SendableItemMetadata(
+            ocId: "unpinned-folder-id", fileName: "unpinned-folder", account: Self.account
+        )
+        folderItemMetadata.directory = true
+        folderItemMetadata.classFile = NKTypeClassFile.directory.rawValue
+        folderItemMetadata.serverUrl = Self.account.davFilesUrl
+
+        let folderItemTemplate = Item(
+            metadata: folderItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let (createdFolderItemMaybe, folderError) = await Item.create(
+            basedOn: folderItemTemplate,
+            contents: nil,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        XCTAssertNil(folderError)
+        let createdFolderItem = try XCTUnwrap(createdFolderItemMaybe)
+        XCTAssertFalse(createdFolderItem.metadata.keepDownloaded)
+
+        var fileItemMetadata = SendableItemMetadata(
+            ocId: "unpinned-child-file-id", fileName: "child.md", account: Self.account
+        )
+        fileItemMetadata.classFile = NKTypeClassFile.document.rawValue
+        fileItemMetadata.serverUrl = Self.account.davFilesUrl + "/unpinned-folder"
+
+        let fileItemTemplate = Item(
+            metadata: fileItemMetadata,
+            parentItemIdentifier: createdFolderItem.itemIdentifier,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let tempUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("child-unpinned.md")
+        try Data("Hello world".utf8).write(to: tempUrl)
+
+        let (createdFileItemMaybe, fileError) = await Item.create(
+            basedOn: fileItemTemplate,
+            contents: tempUrl,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        XCTAssertNil(fileError)
+        let createdFileItem = try XCTUnwrap(createdFileItemMaybe)
+
+        XCTAssertFalse(createdFileItem.metadata.keepDownloaded)
+        XCTAssertEqual(createdFileItem.contentPolicy, .inherited)
+        XCTAssertNil(createdFileItem.decorations)
+    }
+
+    ///
+    /// The same inheritance rule applies when the newly-created item is itself
+    /// a folder — its descendants will derive their flag from it once the user
+    /// drops files inside.
+    ///
+    func testCreateFolderInheritsKeepDownloadedFromPinnedParentFolder() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        var parentMetadata = SendableItemMetadata(
+            ocId: "pinned-parent-id", fileName: "pinned-parent", account: Self.account
+        )
+        parentMetadata.directory = true
+        parentMetadata.classFile = NKTypeClassFile.directory.rawValue
+        parentMetadata.serverUrl = Self.account.davFilesUrl
+
+        let parentTemplate = Item(
+            metadata: parentMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let (createdParentMaybe, parentError) = await Item.create(
+            basedOn: parentTemplate,
+            contents: nil,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        XCTAssertNil(parentError)
+        let createdParent = try XCTUnwrap(createdParentMaybe)
+
+        _ = try Self.dbManager.set(keepDownloaded: true, for: createdParent.metadata)
+
+        var childFolderMetadata = SendableItemMetadata(
+            ocId: "child-folder-id", fileName: "child-folder", account: Self.account
+        )
+        childFolderMetadata.directory = true
+        childFolderMetadata.classFile = NKTypeClassFile.directory.rawValue
+        childFolderMetadata.serverUrl = Self.account.davFilesUrl + "/pinned-parent"
+
+        let childFolderTemplate = Item(
+            metadata: childFolderMetadata,
+            parentItemIdentifier: createdParent.itemIdentifier,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let (createdChildFolderMaybe, childFolderError) = await Item.create(
+            basedOn: childFolderTemplate,
+            contents: nil,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        XCTAssertNil(childFolderError)
+        let createdChildFolder = try XCTUnwrap(createdChildFolderMaybe)
+
+        XCTAssertTrue(createdChildFolder.metadata.keepDownloaded)
+        XCTAssertEqual(createdChildFolder.contentPolicy, .downloadEagerlyAndKeepDownloaded)
+        let decoration = try XCTUnwrap(createdChildFolder.decorations?.first)
+        XCTAssertTrue(decoration.rawValue.hasSuffix(".keep-downloaded"))
+
+        let dbItem = try XCTUnwrap(
+            Self.dbManager.itemMetadata(ocId: createdChildFolder.itemIdentifier.rawValue)
+        )
+        XCTAssertTrue(dbItem.keepDownloaded)
+    }
+
+    ///
+    /// If the root container itself has been pinned (the user marked "Always
+    /// keep downloaded" on the domain's root), top-level new items must also
+    /// inherit the flag — this exercises the rootContainer branch of the
+    /// parent-resolution code path.
+    ///
+    func testCreateFileInheritsKeepDownloadedFromPinnedRootContainer() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        // Seed the root-container row with `keepDownloaded = true`. The
+        // ``Item.create`` parent-resolution looks this up via
+        // ``FilesDatabaseManager.itemMetadata(ocId:)`` keyed on
+        // ``NSFileProviderItemIdentifier.rootContainer``.
+        var rootContainerMetadata = SendableItemMetadata(
+            ocId: NSFileProviderItemIdentifier.rootContainer.rawValue,
+            fileName: "/",
+            account: Self.account
+        )
+        rootContainerMetadata.directory = true
+        rootContainerMetadata.classFile = NKTypeClassFile.directory.rawValue
+        rootContainerMetadata.serverUrl = Self.account.davFilesUrl
+        rootContainerMetadata.keepDownloaded = true
+        Self.dbManager.addItemMetadata(rootContainerMetadata)
+
+        var fileItemMetadata = SendableItemMetadata(
+            ocId: "top-level-file-id", fileName: "top-level.md", account: Self.account
+        )
+        fileItemMetadata.classFile = NKTypeClassFile.document.rawValue
+        fileItemMetadata.serverUrl = Self.account.davFilesUrl
+
+        let fileItemTemplate = Item(
+            metadata: fileItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let tempUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("top-level.md")
+        try Data("Hello world".utf8).write(to: tempUrl)
+
+        let (createdFileItemMaybe, fileError) = await Item.create(
+            basedOn: fileItemTemplate,
+            contents: tempUrl,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        XCTAssertNil(fileError)
+        let createdFileItem = try XCTUnwrap(createdFileItemMaybe)
+
+        XCTAssertTrue(createdFileItem.metadata.keepDownloaded)
+        XCTAssertEqual(createdFileItem.contentPolicy, .downloadEagerlyAndKeepDownloaded)
+        let decoration = try XCTUnwrap(createdFileItem.decorations?.first)
+        XCTAssertTrue(decoration.rawValue.hasSuffix(".keep-downloaded"))
+    }
 }
