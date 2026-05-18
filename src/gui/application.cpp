@@ -327,6 +327,9 @@ Application::Application(int &argc, char **argv)
 
     setupLogging();
     setupTranslations();
+#ifdef IONOS_BUILD
+    _theme->setOverrideServerUrl(QCoreApplication::translate("OCC::Theme", "Login_URL"));
+#endif
 
     // try to migrate legacy accounts and folders from a previous client version
     // only copy the settings and check what should be skipped

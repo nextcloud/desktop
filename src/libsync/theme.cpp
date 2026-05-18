@@ -466,7 +466,7 @@ Theme::Theme()
 #ifdef APPLICATION_SERVER_URL_ENFORCE
     _forceOverrideServerUrl = true;
 #endif
-#ifdef APPLICATION_SERVER_URL
+#if defined(APPLICATION_SERVER_URL) && !defined(IONOS_BUILD)
     setOverrideServerUrl(QString::fromUtf8(APPLICATION_SERVER_URL));
 #endif
 }

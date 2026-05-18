@@ -391,7 +391,7 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
     if (id == WizardCommon::Page_ServerSetup) {
         emit clearPendingRequests();
         #ifdef APPLICATION_SERVER_URL_ENFORCE
-            _setupPage->setServerUrl(APPLICATION_SERVER_URL);
+            _setupPage->setServerUrl(Theme::instance()->overrideServerUrl());
             _setupPage->initializePage();
             button(QWizard::BackButton)->setHidden(true);
         #endif
