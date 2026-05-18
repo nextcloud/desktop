@@ -697,18 +697,18 @@ QString ConfigFile::defaultUpdateChannel() const
     if (serverHasValidSubscription() && !isBranded) {
         if (const auto serverChannel = desktopEnterpriseChannel();
             validUpdateChannels().contains(serverChannel)) {
-            qCWarning(lcConfigFile()) << "Default update channel is" << serverChannel << "because that is the desktop enterprise channel returned by the server.";
+            qCInfo(lcConfigFile()) << "Default update channel is" << serverChannel << "because that is the desktop enterprise channel returned by the server.";
             return serverChannel;
         }
     }
 
     if (const auto currentVersionSuffix = Theme::instance()->versionSuffix();
         validUpdateChannels().contains(currentVersionSuffix) && !isBranded) {
-        qCWarning(lcConfigFile()) << "Default update channel is" << currentVersionSuffix << "because of the version suffix of the current client.";
+        qCInfo(lcConfigFile()) << "Default update channel is" << currentVersionSuffix << "because of the version suffix of the current client.";
         return currentVersionSuffix;
     }
 
-    qCWarning(lcConfigFile()) << "Default update channel is" << UpdateChannel::defaultUpdateChannel().toString();
+    qCInfo(lcConfigFile()) << "Default update channel is" << UpdateChannel::defaultUpdateChannel().toString();
     return UpdateChannel::defaultUpdateChannel().toString();
 }
 
