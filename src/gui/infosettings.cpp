@@ -315,9 +315,9 @@ void InfoSettings::slotRestoreUpdateChannel()
 
 void InfoSettings::slotShowLegalNotice()
 {
-    auto notice = new LegalNotice();
-    notice->exec();
-    delete notice;
+    auto notice = new LegalNotice(this);
+    notice->setAttribute(Qt::WA_DeleteOnClose);
+    notice->open();
 }
 
 void InfoSettings::slotStyleChanged()

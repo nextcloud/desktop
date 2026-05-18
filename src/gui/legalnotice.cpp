@@ -10,11 +10,12 @@
 namespace OCC {
 
 
-LegalNotice::LegalNotice(QDialog *parent)
+LegalNotice::LegalNotice(QWidget *parent)
     : QDialog(parent)
     , _ui(new Ui::LegalNotice)
 {
     _ui->setupUi(this);
+    setWindowTitle({});
 
     connect(_ui->closeButton, &QPushButton::clicked, this, &LegalNotice::accept);
 

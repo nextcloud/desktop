@@ -128,8 +128,8 @@ void IgnoreListTableWidget::slotAddPattern()
 {
     auto okClicked = false;
     const auto pattern = QInputDialog::getText(this,
-                                               tr("Add Ignore Pattern"),
-                                               tr("Add a new ignore pattern:"),
+                                               {},
+                                               {},
                                                QLineEdit::Normal,
                                                {},
                                                &okClicked);
