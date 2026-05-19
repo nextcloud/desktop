@@ -47,6 +47,17 @@ public:
     void reconnectAll();
 
     /**
+     * @brief Reconcile registered file provider domain display names with the current account state.
+     *
+     * For every registered domain whose `displayName` no longer matches the owning account's
+     * `Account::shortcutName()` (e.g. the legacy U+2024-escaped form left over from the prior
+     * fix for #7979, or a stale `prettyName()` snapshot), re-register the domain in place so the
+     * macOS-side metadata catches up. Safe to call on every launch — a no-op when names already
+     * match.
+     */
+    void reconcileDomainDisplayNames();
+
+    /**
      * @brief Remove a file provider domain independent from an account.
      * @return The path to the location where preserved dirty user data is stored, or an empty QString if none.
      */

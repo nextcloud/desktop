@@ -60,6 +60,7 @@ public:
 
         if (Mac::FileProvider::available()) {
             restoreMissingDomains();
+            Mac::FileProvider::instance()->domainManager()->reconcileDomainDisplayNames();
             Mac::FileProvider::instance()->domainManager()->reconnectAll();
             Mac::FileProvider::instance()->configureXPC();
         } else {
