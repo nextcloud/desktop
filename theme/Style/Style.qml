@@ -52,9 +52,13 @@ QtObject {
     property int trayModalHeight: 490
     property int trayAccountPopupWidth: variableSize(300)
     property int trayAccountPopupRowHeight: variableSize(44)
+    property int trayAccountPopupTopPadding: 4
     property int trayAccountPopupActionHeight: variableSize(26)
     property int trayAccountPopupActionVerticalPadding: 8
     property int trayAccountPopupAvatarSize: variableSize(30)
+    property int trayAccountPopupHoverMargin: 5
+    property int trayAccountPopupAccountHoverVerticalMargin: 4
+    property int trayAccountPopupHoverRadius: 5
     property int trayAccountPopupRowPadding: 12
     property int trayAccountPopupRowSpacing: 10
     property real trayAccountPopupRowHoverOpacity: 0.07

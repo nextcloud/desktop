@@ -68,6 +68,11 @@ Window {
             width: parent.width
             spacing: 0
 
+            Item {
+                width: parent.width
+                height: Style.trayAccountPopupTopPadding
+            }
+
             Repeater {
                 model: UserModel
 
@@ -86,26 +91,17 @@ Window {
 
                     background: Item {
                         Rectangle {
-                            visible: index !== 0
-                            anchors.fill: parent
-                            color: accountRow.hovered ? root.rowHoverColor : "transparent"
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.top: parent.top
+                            anchors.bottom: parent.bottom
+                            anchors.leftMargin: Style.trayAccountPopupHoverMargin
+                            anchors.rightMargin: Style.trayAccountPopupHoverMargin
+                            anchors.topMargin: Style.trayAccountPopupAccountHoverVerticalMargin
+                            anchors.bottomMargin: Style.trayAccountPopupAccountHoverVerticalMargin
+                            radius: Style.trayAccountPopupHoverRadius
+                            color: accountRow.hovered ? palette.highlight : "transparent"
                             Behavior on color { ColorAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
-                        }
-
-                        Item {
-                            visible: index === 0
-                            anchors.fill: parent
-                            clip: true
-
-                            Rectangle {
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                anchors.top: parent.top
-                                height: parent.height + Style.trayWindowRadius
-                                radius: Style.trayWindowRadius
-                                color: accountRow.hovered ? root.rowHoverColor : "transparent"
-                                Behavior on color { ColorAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
-                            }
                         }
                     }
 
@@ -140,7 +136,7 @@ Window {
                                 font.pixelSize: Style.trayAccountPopupPrimaryFontSize
                                 font.weight: Font.DemiBold
                                 elide: Text.ElideRight
-                                color: palette.windowText
+                                color: accountRow.hovered ? palette.highlightedText : palette.windowText
                             }
 
                             Label {
@@ -148,7 +144,7 @@ Window {
                                 text: model.server
                                 font.pixelSize: Style.trayAccountPopupSecondaryFontSize
                                 elide: Text.ElideRight
-                                color: palette.windowText
+                                color: accountRow.hovered ? palette.highlightedText : palette.windowText
                                 opacity: 0.6
                             }
                         }
@@ -164,8 +160,8 @@ Window {
                         Label {
                             text: "›"
                             font.pixelSize: Style.trayAccountPopupChevronFontSize
-                            color: palette.windowText
-                            opacity: 0.35
+                            color: accountRow.hovered ? palette.highlightedText : palette.windowText
+                            opacity: accountRow.hovered ? 1.0 : 0.35
                         }
                     }
 
@@ -201,15 +197,24 @@ Window {
                 padding: 0
                 leftPadding: Style.trayAccountPopupRowPadding
 
-                background: Rectangle {
-                    color: addAccountRow.hovered ? root.rowHoverColor : "transparent"
-                    Behavior on color { ColorAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
+                background: Item {
+                    Rectangle {
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.leftMargin: Style.trayAccountPopupHoverMargin
+                        anchors.rightMargin: Style.trayAccountPopupHoverMargin
+                        radius: Style.trayAccountPopupHoverRadius
+                        color: addAccountRow.hovered ? palette.highlight : "transparent"
+                        Behavior on color { ColorAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
+                    }
                 }
 
                 contentItem: Label {
                     text: qsTr("Add account")
                     font.pixelSize: Style.trayAccountPopupPrimaryFontSize
-                    color: palette.windowText
+                    color: addAccountRow.hovered ? palette.highlightedText : palette.windowText
                     verticalAlignment: Text.AlignVCenter
                 }
 
@@ -232,15 +237,24 @@ Window {
                 padding: 0
                 leftPadding: Style.trayAccountPopupRowPadding
 
-                background: Rectangle {
-                    color: settingsRow.hovered ? root.rowHoverColor : "transparent"
-                    Behavior on color { ColorAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
+                background: Item {
+                    Rectangle {
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.leftMargin: Style.trayAccountPopupHoverMargin
+                        anchors.rightMargin: Style.trayAccountPopupHoverMargin
+                        radius: Style.trayAccountPopupHoverRadius
+                        color: settingsRow.hovered ? palette.highlight : "transparent"
+                        Behavior on color { ColorAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
+                    }
                 }
 
                 contentItem: Label {
                     text: qsTr("Settings")
                     font.pixelSize: Style.trayAccountPopupPrimaryFontSize
-                    color: palette.windowText
+                    color: settingsRow.hovered ? palette.highlightedText : palette.windowText
                     verticalAlignment: Text.AlignVCenter
                 }
 
@@ -264,26 +278,23 @@ Window {
                 leftPadding: Style.trayAccountPopupRowPadding
 
                 background: Item {
-                    Item {
-                        anchors.fill: parent
-                        clip: true
-
-                        Rectangle {
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.bottom: parent.bottom
-                            height: parent.height + Style.trayWindowRadius
-                            radius: Style.trayWindowRadius
-                            color: quitRow.hovered ? root.rowHoverColor : "transparent"
-                            Behavior on color { ColorAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
-                        }
+                    Rectangle {
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.leftMargin: Style.trayAccountPopupHoverMargin
+                        anchors.rightMargin: Style.trayAccountPopupHoverMargin
+                        radius: Style.trayAccountPopupHoverRadius
+                        color: quitRow.hovered ? palette.highlight : "transparent"
+                        Behavior on color { ColorAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
                     }
                 }
 
                 contentItem: Label {
                     text: qsTr("Quit")
                     font.pixelSize: Style.trayAccountPopupPrimaryFontSize
-                    color: palette.windowText
+                    color: quitRow.hovered ? palette.highlightedText : palette.windowText
                     verticalAlignment: Text.AlignVCenter
                 }
 
