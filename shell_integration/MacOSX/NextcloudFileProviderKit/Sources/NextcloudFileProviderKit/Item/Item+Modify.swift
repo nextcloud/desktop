@@ -212,7 +212,12 @@ public extension Item {
         var newMetadata =
             dbManager.setStatusForItemMetadata(updatedMetadata, status: .normal) ?? SendableItemMetadata(value: updatedMetadata)
 
-        newMetadata.date = date ?? Date()
+        // Prefer the mtime we just handed to the server (and which is on disk)
+        // over the truncated, second-precision value the PUT response carries
+        // in `Last-Modified`. Aligning `metadata.date` with what's on disk keeps
+        // NSDocument-style editors (Xcode, TextEdit, …) from seeing the file as
+        // "changed by another application" right after they save it.
+        newMetadata.date = newContentModificationDate ?? date ?? metadata.date
         newMetadata.etag = etag ?? metadata.etag
         newMetadata.ocId = ocId
         newMetadata.size = size ?? 0
