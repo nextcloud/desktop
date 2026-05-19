@@ -11,6 +11,8 @@ import Qt5Compat.GraphicalEffects
 import Style
 import com.nextcloud.desktopclient
 
+// Keep behavior and layout aligned with src/gui/macOS/trayaccountpopup_mac.mm.
+
 Window {
     id: root
 
@@ -51,6 +53,15 @@ Window {
         border.width: Style.trayWindowBorderWidth
         border.color: palette.dark
         clip: true
+        layer.enabled: true
+        layer.effect: OpacityMask {
+            maskSource: Rectangle {
+                width: popupContainer.width
+                height: popupContainer.height
+                radius: popupContainer.radius
+                visible: false
+            }
+        }
 
         Column {
             id: contentColumn
@@ -172,6 +183,43 @@ Window {
                 color: palette.dark
             }
 
+            Item {
+                width: parent.width
+                height: Style.trayAccountPopupActionVerticalPadding
+            }
+
+            ItemDelegate {
+                id: addAccountRow
+                visible: Systray.enableAddAccount
+                width: root.width
+                height: visible ? Style.trayAccountPopupActionHeight : 0
+                hoverEnabled: true
+                topInset: 0
+                leftInset: 0
+                rightInset: 0
+                bottomInset: 0
+                padding: 0
+                leftPadding: Style.trayAccountPopupRowPadding
+
+                background: Rectangle {
+                    color: addAccountRow.hovered ? root.rowHoverColor : "transparent"
+                    Behavior on color { ColorAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
+                }
+
+                contentItem: Label {
+                    text: qsTr("Add account")
+                    font.pixelSize: Style.trayAccountPopupPrimaryFontSize
+                    color: palette.windowText
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                onClicked: {
+                    root._closing = true
+                    Systray.hideWindow()
+                    Systray.openAccountWizard()
+                }
+            }
+
             ItemDelegate {
                 id: settingsRow
                 width: root.width
@@ -243,6 +291,11 @@ Window {
                     root._closing = true
                     Systray.shutdown()
                 }
+            }
+
+            Item {
+                width: parent.width
+                height: Style.trayAccountPopupActionVerticalPadding
             }
         }
     }

@@ -50,10 +50,11 @@ QtObject {
     property int trayHorizontalMargin: 10
     property int trayModalWidth: 380
     property int trayModalHeight: 490
-    property int trayAccountPopupWidth: variableSize(340)
-    property int trayAccountPopupRowHeight: variableSize(56)
-    property int trayAccountPopupActionHeight: variableSize(36)
-    property int trayAccountPopupAvatarSize: variableSize(34)
+    property int trayAccountPopupWidth: variableSize(300)
+    property int trayAccountPopupRowHeight: variableSize(44)
+    property int trayAccountPopupActionHeight: variableSize(26)
+    property int trayAccountPopupActionVerticalPadding: 8
+    property int trayAccountPopupAvatarSize: variableSize(30)
     property int trayAccountPopupRowPadding: 12
     property int trayAccountPopupRowSpacing: 10
     property real trayAccountPopupRowHoverOpacity: 0.07

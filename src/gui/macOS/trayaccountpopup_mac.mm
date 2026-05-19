@@ -10,13 +10,19 @@
 
 #import <Cocoa/Cocoa.h>
 
-static const CGFloat kPopupWidth   = 340.0;
-static const CGFloat kRowHeight    = 64.0;
-static const CGFloat kAvatarSize   = 40.0;
-static const CGFloat kActionHeight = 38.0;
+// Keep behavior and layout aligned with src/gui/tray/TrayAccountPopup.qml.
+
+static const CGFloat kPopupWidth   = 300.0;
+static const CGFloat kRowHeight    = 48.0;
+static const CGFloat kAvatarSize   = 34.0;
+static const CGFloat kActionHeight = 26.0;
+static const CGFloat kActionVerticalPadding = 8.0;
 static const CGFloat kCornerRadius = 14.0;
 static const CGFloat kHPad         = 14.0;
 static const CGFloat kVPad         = 12.0;
+static const CGFloat kScreenEdgePadding = 8.0;
+static const CGFloat kStatusItemLeadingOffset = 3.0;
+static const CGFloat kStatusItemVerticalOffset = 2.0;
 
 static NSImage *nsImageFromQImage(const QImage &qimg)
 {
@@ -37,6 +43,55 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
     NSImage *img = [[NSImage alloc] initWithSize:NSMakeSize(rgba.width(), rgba.height())];
     [img addRepresentation:rep];
     return img;
+}
+
+static NSImage *whiteSymbolImage(NSString *symbolName, CGFloat pointSize)
+{
+    NSImage *symbol = [[NSImage imageWithSystemSymbolName:symbolName accessibilityDescription:nil]
+        imageWithSymbolConfiguration:[NSImageSymbolConfiguration configurationWithPointSize:pointSize weight:NSFontWeightBold]];
+    NSImage *tintedSymbol = [[NSImage alloc] initWithSize:symbol.size];
+
+    [tintedSymbol lockFocus];
+    const NSRect symbolRect = NSMakeRect(0.0, 0.0, symbol.size.width, symbol.size.height);
+    [symbol drawInRect:symbolRect
+              fromRect:NSZeroRect
+             operation:NSCompositingOperationSourceOver
+              fraction:1.0
+        respectFlipped:YES
+                 hints:nil];
+    [NSColor.whiteColor set];
+    NSRectFillUsingOperation(symbolRect, NSCompositingOperationSourceIn);
+    [tintedSymbol unlockFocus];
+
+    return tintedSymbol;
+}
+
+static NSImage *syncStatusImage(BOOL syncOk)
+{
+    const CGFloat imageSize = 18.0;
+    const CGFloat circleSize = 16.0;
+    const NSRect imageRect = NSMakeRect(0.0, 0.0, imageSize, imageSize);
+    const NSRect circleRect = NSMakeRect((imageSize - circleSize) / 2.0,
+                                         (imageSize - circleSize) / 2.0,
+                                         circleSize,
+                                         circleSize);
+    NSImage *image = [[NSImage alloc] initWithSize:imageRect.size];
+
+    [image lockFocus];
+    [(syncOk ? NSColor.systemGreenColor : NSColor.systemBlueColor) setFill];
+    [[NSBezierPath bezierPathWithOvalInRect:circleRect] fill];
+
+    NSString *symbolName = syncOk ? @"checkmark" : @"arrow.triangle.2.circlepath";
+    NSImage *symbol = whiteSymbolImage(symbolName, 10);
+    [symbol drawInRect:NSMakeRect(4.0, 4.0, 10.0, 10.0)
+              fromRect:NSZeroRect
+             operation:NSCompositingOperationSourceOver
+              fraction:1.0
+        respectFlipped:YES
+                 hints:nil];
+    [image unlockFocus];
+
+    return image;
 }
 
 @interface NCHoverView : NSView
@@ -131,6 +186,26 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
 
 @end
 
+@interface NCSpacerView : NSView
+- (instancetype)initWithHeight:(CGFloat)height;
+@end
+
+@implementation NCSpacerView
+
+- (instancetype)initWithHeight:(CGFloat)height
+{
+    self = [super init];
+    if (!self) return nil;
+    self.translatesAutoresizingMaskIntoConstraints = NO;
+    [NSLayoutConstraint activateConstraints:@[
+        [self.heightAnchor constraintEqualToConstant:height],
+        [self.widthAnchor constraintEqualToConstant:kPopupWidth],
+    ]];
+    return self;
+}
+
+@end
+
 @interface NCTrayPopup : NSPanel <NCAccountRowDelegate>
 - (void)populate;
 @end
@@ -153,14 +228,27 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
     self.backgroundColor = NSColor.clearColor;
     self.opaque = NO;
 
+    NSView *container = [[NSView alloc] init];
+    container.wantsLayer = YES;
+    container.layer.cornerRadius = kCornerRadius;
+    container.layer.masksToBounds = YES;
+    self.contentView = container;
+
     NSVisualEffectView *vev = [[NSVisualEffectView alloc] init];
-    vev.material = NSVisualEffectMaterialHUDWindow;
+    vev.material = NSVisualEffectMaterialMenu;
     vev.blendingMode = NSVisualEffectBlendingModeBehindWindow;
     vev.state = NSVisualEffectStateActive;
     vev.wantsLayer = YES;
     vev.layer.cornerRadius = kCornerRadius;
     vev.layer.masksToBounds = YES;
-    self.contentView = vev;
+    vev.translatesAutoresizingMaskIntoConstraints = NO;
+    [container addSubview:vev];
+    [NSLayoutConstraint activateConstraints:@[
+        [vev.topAnchor constraintEqualToAnchor:container.topAnchor],
+        [vev.leadingAnchor constraintEqualToAnchor:container.leadingAnchor],
+        [vev.trailingAnchor constraintEqualToAnchor:container.trailingAnchor],
+        [vev.bottomAnchor constraintEqualToAnchor:container.bottomAnchor],
+    ]];
 
     _stack = [NSStackView stackViewWithViews:@[]];
     _stack.orientation = NSUserInterfaceLayoutOrientationVertical;
@@ -217,10 +305,7 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
     serverLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
     NSImageView *statusView = [[NSImageView alloc] init];
-    NSString *symbol = syncOk ? @"checkmark.circle.fill" : @"arrow.triangle.2.circlepath";
-    statusView.image = [[NSImage imageWithSystemSymbolName:symbol accessibilityDescription:nil]
-        imageWithSymbolConfiguration:[NSImageSymbolConfiguration configurationWithPointSize:16 weight:NSFontWeightMedium]];
-    statusView.contentTintColor = syncOk ? NSColor.systemGreenColor : NSColor.systemBlueColor;
+    statusView.image = syncStatusImage(syncOk);
     statusView.translatesAutoresizingMaskIntoConstraints = NO;
 
     NSImageView *chevron = [[NSImageView alloc] init];
@@ -242,7 +327,7 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
         [avatarView.heightAnchor constraintEqualToConstant:kAvatarSize],
 
         [nameLabel.leadingAnchor constraintEqualToAnchor:avatarView.trailingAnchor constant:10],
-        [nameLabel.topAnchor constraintEqualToAnchor:row.topAnchor constant:kVPad],
+        [nameLabel.topAnchor constraintEqualToAnchor:row.topAnchor constant:9],
         [nameLabel.trailingAnchor constraintLessThanOrEqualToAnchor:statusView.leadingAnchor constant:-8],
 
         [serverLabel.leadingAnchor constraintEqualToAnchor:nameLabel.leadingAnchor],
@@ -288,8 +373,16 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
     sep.translatesAutoresizingMaskIntoConstraints = NO;
     [_stack addArrangedSubview:sep];
     [sep.widthAnchor constraintEqualToConstant:kPopupWidth].active = YES;
+    [_stack addArrangedSubview:[[NCSpacerView alloc] initWithHeight:kActionVerticalPadding]];
 
     __unsafe_unretained NCTrayPopup *weakSelf = self;
+    if (OCC::Systray::instance()->enableAddAccount()) {
+        [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:@"Add account" action:^{
+            [weakSelf orderOut:nil];
+            OCC::Systray::instance()->setIsOpen(false);
+            OCC::Systray::instance()->openAccountWizard();
+        }]];
+    }
     [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:@"Settings" action:^{
         [weakSelf orderOut:nil];
         OCC::Systray::instance()->setIsOpen(false);
@@ -298,11 +391,13 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
     [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:@"Quit" action:^{
         OCC::Systray::instance()->shutdown();
     }]];
+    [_stack addArrangedSubview:[[NCSpacerView alloc] initWithHeight:kActionVerticalPadding]];
 
     [self.contentView layoutSubtreeIfNeeded];
     NSRect frame = self.frame;
     frame.size.height = _stack.fittingSize.height;
     [self setFrame:frame display:NO];
+    [self invalidateShadow];
 }
 
 - (void)onAccountRowClicked:(int)index
@@ -327,23 +422,35 @@ void showMacOSTrayPopup(const QRect &iconRect)
 
     [s_popup populate];
 
-    NSScreen *screen = NSScreen.screens.firstObject;
+    NSPoint iconPoint = NSMakePoint(iconRect.x(), iconRect.y());
+    NSScreen *screen = nil;
+    for (NSScreen *candidate in NSScreen.screens) {
+        if (NSPointInRect(iconPoint, candidate.frame)) {
+            screen = candidate;
+            break;
+        }
+    }
+    if (!screen) {
+        screen = NSScreen.screens.firstObject;
+    }
+
     const CGFloat screenH = screen.frame.size.height;
     const CGFloat popupW  = s_popup.frame.size.width;
     const CGFloat popupH  = s_popup.frame.size.height;
+    const NSRect visibleFrame = screen.visibleFrame;
 
     CGFloat x, y;
     if (iconRect.isValid()) {
-        x = iconRect.x() + (iconRect.width() - popupW) / 2.0;
-        y = screenH - iconRect.bottom() - popupH;
+        x = iconRect.x() - kStatusItemLeadingOffset;
+        y = screenH - iconRect.bottom() - popupH - kStatusItemVerticalOffset;
     } else {
-        const NSRect visible = screen.visibleFrame;
-        x = visible.origin.x + visible.size.width - popupW - 8;
-        y = visible.origin.y + visible.size.height - popupH;
+        x = NSMaxX(visibleFrame) - popupW - kScreenEdgePadding;
+        y = NSMaxY(visibleFrame) - popupH;
     }
 
-    const CGFloat xMax = screen.frame.size.width - popupW - 8;
-    x = x < 8 ? 8 : (x > xMax ? xMax : x);
+    const CGFloat xMin = NSMinX(visibleFrame) + kScreenEdgePadding;
+    const CGFloat xMax = NSMaxX(visibleFrame) - popupW - kScreenEdgePadding;
+    x = x < xMin ? xMin : (x > xMax ? xMax : x);
 
     [s_popup setFrameOrigin:NSMakePoint(x, y)];
 #pragma clang diagnostic push
