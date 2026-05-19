@@ -26,6 +26,8 @@ private final class CapturingAppProxy: NSObject, AppProtocol {
         _: String, path _: String, remoteItemPath _: String, withDomainIdentifier _: String
     ) {}
 
+    func openItemInBrowser(_: String, remoteItemPath _: String, forDomainIdentifier _: String) {}
+
     func reportSyncStatus(_: String, forDomainIdentifier _: String) {}
 
     func reportItemExcluded(
