@@ -9,6 +9,7 @@
 #include "accountfwd.h"
 #include "capabilities.h"
 #include "clientsideencryptionjobs.h"
+#include "common/remotepermissions.h"
 #include "common/utility.h"
 #include "configfile.h"
 #include "cookiejar.h"
@@ -1287,6 +1288,11 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
                                           newEntry);
         if (newEntry.isDirectory) {
             newEntry.size = 0;
+        }
+
+        if (!newEntry.remotePerm.isNull() && !newEntry.remotePerm.hasPermission(RemotePermissions::CanRead)) {
+            qCWarning(lcAccount()) << "skip non-readable item" << absoluteItemPathName;
+            return;
         }
 
         promise->emplaceResult(itemFileName, itemFileName.toStdWString(), absoluteItemPathName, newEntry);
