@@ -35,10 +35,14 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     ui->setupUi(this);
 
-    setStyleSheet(QStringLiteral("QWidget#globalIgnoreSettingsPanelContents, QWidget#ignoredPatternsPanelContents { background: palette(" BACKGROUND_PALETTE "); }"));
+    setStyleSheet(QStringLiteral("QFrame#globalIgnoreSettingsPanel, QFrame#ignoredPatternsPanel, QWidget#globalIgnoreSettingsPanelContents, QWidget#ignoredPatternsPanelContents { background: palette(" BACKGROUND_PALETTE "); }"));
+    ui->globalIgnoreSettingsPanel->setAutoFillBackground(true);
+    ui->globalIgnoreSettingsPanel->setAttribute(Qt::WA_StyledBackground, true);
     ui->globalIgnoreSettingsPanelContents->setAutoFillBackground(true);
     ui->globalIgnoreSettingsPanelContents->setAttribute(Qt::WA_StyledBackground, true);
     ui->globalIgnoreSettingsPanelContents->setContentsMargins(0, 0, 0, 0);
+    ui->ignoredPatternsPanel->setAutoFillBackground(true);
+    ui->ignoredPatternsPanel->setAttribute(Qt::WA_StyledBackground, true);
     ui->ignoredPatternsPanelContents->setAutoFillBackground(true);
     ui->ignoredPatternsPanelContents->setAttribute(Qt::WA_StyledBackground, true);
     ui->ignoredPatternsPanelContents->setContentsMargins(0, 0, 0, 0);
