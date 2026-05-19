@@ -16,7 +16,7 @@ endif()
 
 # Icon switch: if branding is done, use the neutral state icons
 set(STATE_SUBDIR "")
-if(APPLICATION_NAME STREQUAL "Nextcloud")
+if(APPLICATION_NAME STREQUAL "Nextcloud" OR APPLICATION_NAME STREQUAL "NextcloudDev")
     set(STATE_SUBDIR "nextcloud/")
 endif()
 
