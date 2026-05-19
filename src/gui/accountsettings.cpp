@@ -60,14 +60,6 @@
 
 using namespace Qt::StringLiterals;
 
-#ifdef Q_OS_WIN
-    // "light" looks too bright on dark mode on Windows only
-    #define BACKGROUND_PALETTE "alternate-base"
-#else
-    // ...and "alternate-base" looks too bright on macOS only.  On Linux/Plasma either one looked fine ...
-    #define BACKGROUND_PALETTE "light"
-#endif
-
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "macOS/fileprovider.h"
 #endif
@@ -190,15 +182,14 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     const auto delegate = new FolderStatusDelegate;
     delegate->setParent(this);
 
-    setStyleSheet("QWidget#syncFoldersPanelContents, QWidget#connectionSettingsPanelContents, QWidget#fileProviderPanelContents { background: palette(" BACKGROUND_PALETTE "); }"_L1);
-    _ui->syncFoldersPanelContents->setAutoFillBackground(true);
-    _ui->syncFoldersPanelContents->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->syncFoldersPanelContents->setAutoFillBackground(false);
+    _ui->syncFoldersPanelContents->setAttribute(Qt::WA_StyledBackground, false);
     _ui->syncFoldersPanelContents->setContentsMargins(0, 0, 0, 0);
-    _ui->fileProviderPanelContents->setAutoFillBackground(true);
-    _ui->fileProviderPanelContents->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->fileProviderPanelContents->setAutoFillBackground(false);
+    _ui->fileProviderPanelContents->setAttribute(Qt::WA_StyledBackground, false);
     _ui->fileProviderPanelContents->setContentsMargins(0, 0, 0, 0);
-    _ui->connectionSettingsPanelContents->setAutoFillBackground(true);
-    _ui->connectionSettingsPanelContents->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->connectionSettingsPanelContents->setAutoFillBackground(false);
+    _ui->connectionSettingsPanelContents->setAttribute(Qt::WA_StyledBackground, false);
     _ui->connectionSettingsPanelContents->setContentsMargins(0, 0, 0, 0);
 
     // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
@@ -209,8 +200,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->_folderList->setAttribute(Qt::WA_StyledBackground, false);
     _ui->_folderList->viewport()->setAutoFillBackground(false);
     _ui->_folderList->viewport()->setAttribute(Qt::WA_StyledBackground, false);
-    _ui->_folderList->setStyleSheet(QStringLiteral("QTreeView { background: transparent; border: none; }"));
-    _ui->_folderList->viewport()->setStyleSheet(QStringLiteral("background: transparent;"));
     _ui->_folderList->setItemDelegate(delegate);
     _ui->_folderList->setModel(_model);
     _ui->_folderList->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
