@@ -324,6 +324,71 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(itemD.userInfo?["displayEvict"] as? Bool, true)
     }
 
+    func testItemUserInfoDisplayOpenInBrowserBareMetadata() {
+        // A bare item without a fileId and not yet uploaded has no server-side
+        // counterpart, so "Open in browser" must be hidden. This covers freshly
+        // created items pre-server-roundtrip as well as ignored items.
+        let metadata = SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
+
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertEqual(item.userInfo?["displayOpenInBrowser"] as? Bool, false)
+    }
+
+    func testItemUserInfoDisplayOpenInBrowserUploadedItem() {
+        // An uploaded item with a numeric fileId is the canonical case the
+        // "Open in browser" action targets: PROPFIND for the private link can
+        // resolve to a web URL the main app opens via QDesktopServices.
+        var metadata = SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
+        metadata.fileId = "42"
+        metadata.uploaded = true
+
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertEqual(item.userInfo?["displayOpenInBrowser"] as? Bool, true)
+
+        // Cross-check the activation rule from `FileProviderExt/Info.plist` so
+        // an accidental rename of the userInfo key would fail this test rather
+        // than silently break the context menu entry.
+        let fileproviderItems = ["fileproviderItems": [item]]
+        let activationPredicate = NSPredicate(
+            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayOpenInBrowser == true ).@count > 0"
+        )
+        XCTAssertTrue(activationPredicate.evaluate(with: fileproviderItems))
+    }
+
+    func testItemUserInfoDisplayOpenInBrowserLockFileOfLocalOrigin() {
+        // Lock files of local origin are placeholders not present on the
+        // server, so "Open in browser" would resolve to nothing. Keep them
+        // hidden even when a synthetic fileId is set.
+        var metadata = SendableItemMetadata(ocId: "test-id", fileName: ".~lock.doc#", account: Self.account)
+        metadata.fileId = "42"
+        metadata.uploaded = true
+        metadata.isLockFileOfLocalOrigin = true
+
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertEqual(item.userInfo?["displayOpenInBrowser"] as? Bool, false)
+    }
+
     func testItemUserInfoDisplayShare() {
         var metadata =
             SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)

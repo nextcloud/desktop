@@ -62,6 +62,7 @@
 #endif
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
+#include "libsync/networkjobs.h"
 #include "macOS/fileprovider.h"
 #include "macOS/fileproviderdomainmanager.h"
 #include "macOS/fileproviderservice.h"
@@ -123,6 +124,7 @@ ownCloudGui::ownCloudGui(Application *parent)
 #ifdef BUILD_FILE_PROVIDER_MODULE
     connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::syncStateChanged, this, &ownCloudGui::slotComputeOverallSyncStatus);
     connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::showFileActionsDialog, _tray.data(), &Systray::slotShowFileProviderFileActionsDialog);
+    connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::openItemInBrowserRequested, this, &ownCloudGui::slotOpenItemInBrowserFromFileProvider);
 #endif
 
     connect(Logger::instance(), &Logger::guiLog, this, &ownCloudGui::slotShowTrayMessage);
@@ -775,5 +777,35 @@ void ownCloudGui::slotShowFileActionsDialog(const QString &localPath) const
 {
     _tray->showFileActionsDialog(localPath);
 }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+void ownCloudGui::slotOpenItemInBrowserFromFileProvider(const QString &fileId, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier)
+{
+    const auto accountState = AccountManager::instance()->accountFromFileProviderDomainIdentifier(fileProviderDomainIdentifier);
+    if (!accountState) {
+        qCWarning(lcOwnCloudGui) << "Cannot open item in browser: no account state for domain identifier" << fileProviderDomainIdentifier;
+        return;
+    }
+
+    const auto account = accountState->account();
+    if (!account) {
+        qCWarning(lcOwnCloudGui) << "Cannot open item in browser: no account for domain identifier" << fileProviderDomainIdentifier;
+        return;
+    }
+
+    // Reuse the same helper the classic sync uses for `SocketApi::command_OPEN_PRIVATE_LINK`:
+    // a PROPFIND for the server-side `privatelink` property, falling back to the deprecated
+    // link assembled from the numeric file id. The callback may run with an empty URL when
+    // both lookups fail (see `fetchPrivateLinkUrl` in libsync/networkjobs.cpp) — guard against
+    // calling `openBrowser` with an empty URL in that case.
+    fetchPrivateLinkUrl(account, remoteItemPath, fileId.toUtf8(), this, [](const QString &url) {
+        if (url.isEmpty()) {
+            qCWarning(lcOwnCloudGui) << "Cannot open item in browser: no private link URL resolved.";
+            return;
+        }
+        Utility::openBrowser(url);
+    });
+}
+#endif
 
 } // end namespace

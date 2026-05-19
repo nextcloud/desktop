@@ -69,6 +69,14 @@
 				<key>NSExtensionFileProviderActionName</key>
 				<string>File actions</string>
 			</dict>
+			<dict>
+				<key>NSExtensionFileProviderActionActivationRule</key>
+				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayOpenInBrowser == true ).@count == 0</string>
+				<key>NSExtensionFileProviderActionIdentifier</key>
+				<string>com.nextcloud.desktopclient.FileProviderExt.OpenInBrowserAction</string>
+				<key>NSExtensionFileProviderActionName</key>
+				<string>Open in browser</string>
+			</dict>
 		</array>
 		<key>NSExtensionFileProviderAllowsContextualMenuDownloadEntry</key>
 		<false/>

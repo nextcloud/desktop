@@ -69,6 +69,19 @@ signals:
     void showFileActionsDialog(const QString &fileId, const QString &localFile, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier);
 
     /**
+     * @brief Emitted when a file provider extension requests to open an item's page in the user's web browser.
+     *
+     * The connected slot resolves the per-item private link via `fetchPrivateLinkUrl`
+     * and opens the resulting URL via `Utility::openBrowser`, matching the classic-sync
+     * "Open in browser" entry. See nextcloud/desktop#10025.
+     *
+     * @param fileId The **numeric** server file id (WebDAV `fileid`). Not the ocId.
+     * @param remoteItemPath The server-side path of the item, used for the PROPFIND that resolves the private link.
+     * @param fileProviderDomainIdentifier The file provider domain identifier for the account that owns the item.
+     */
+    void openItemInBrowserRequested(const QString &fileId, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier);
+
+    /**
      * @brief Emitted when a file provider extension reports an item it refused to sync (for now: macOS bundles).
      *
      * Consumers (e.g. `OCC::User`) surface the item in the systray's activity view — the same

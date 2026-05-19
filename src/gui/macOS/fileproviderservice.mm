@@ -55,6 +55,29 @@ Q_LOGGING_CATEGORY(lcMacFileProviderService, "nextcloud.gui.macfileproviderservi
                               Q_ARG(QString, domainId));
 }
 
+- (void)openItemInBrowser:(NSString *)fileId
+           remoteItemPath:(NSString *)remoteItemPath
+      forDomainIdentifier:(NSString *)domainIdentifier
+{
+    qCDebug(OCC::lcMacFileProviderService) << "Should open item in browser with fileId:"
+                                           << fileId
+                                           << "remote item path:"
+                                           << remoteItemPath
+                                           << "domain identifier:"
+                                           << domainIdentifier;
+
+    const auto qFileId = QString::fromNSString(fileId);
+    const auto qRemoteItemPath = QString::fromNSString(remoteItemPath);
+    const auto domainId = QString::fromNSString(domainIdentifier);
+
+    // The XPC callback may arrive on a non-main thread; use a queued connection so observers
+    // running on the GUI thread (e.g. `OwncloudGui`) receive the signal there.
+    QMetaObject::invokeMethod(_service, "openItemInBrowserRequested", Qt::QueuedConnection,
+                              Q_ARG(QString, qFileId),
+                              Q_ARG(QString, qRemoteItemPath),
+                              Q_ARG(QString, domainId));
+}
+
 - (void)reportItemExcludedFromSync:(NSString *)relativePath
                           fileName:(NSString *)fileName
                             reason:(NSString *)reason
