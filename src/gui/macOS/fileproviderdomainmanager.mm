@@ -309,6 +309,51 @@ public:
     }
 
     /**
+     * @brief Update every registered domain's display name to match its account's `shortcutName()`.
+     *
+     * Walks every registered `NSFileProviderDomain`, looks up its owning account, and if the
+     * domain's `displayName` differs from `account->shortcutName()` re-registers the domain
+     * in place by calling `addDomain:` again with the same identifier. macOS replaces the
+     * registration, keeping the on-disk data intact.
+     */
+    void reconcileDomainDisplayNames()
+    {
+        qCInfo(lcMacFileProviderDomainManager) << "Reconciling file provider domain display names...";
+
+        const auto domains = getDomains();
+        const auto accountManager = AccountManager::instance();
+
+        for (NSFileProviderDomain * const domain : domains) {
+            const auto domainId = QString::fromNSString(domain.identifier);
+            const auto accountState = accountManager->accountFromFileProviderDomainIdentifier(domainId);
+
+            if (!accountState || !accountState->account()) {
+                // Orphan domain — not owned by any current account. `removeOrphanedDomains()`
+                // in the settings controller is responsible for cleanup; nothing to do here.
+                continue;
+            }
+
+            const auto currentDisplayName = QString::fromNSString(domain.displayName);
+            const auto desiredDisplayName = accountState->account()->shortcutName();
+
+            if (currentDisplayName == desiredDisplayName) {
+                continue;
+            }
+
+            qCInfo(lcMacFileProviderDomainManager) << "Updating display name for domain"
+                                                   << domainId
+                                                   << "from" << currentDisplayName
+                                                   << "to" << desiredDisplayName;
+
+            NSFileProviderDomain * const updatedDomain = [[NSFileProviderDomain alloc] initWithIdentifier:domain.identifier displayName:desiredDisplayName.toNSString()];
+            updatedDomain.supportsSyncingTrash = YES;
+            addDomain(updatedDomain);
+        }
+
+        qCInfo(lcMacFileProviderDomainManager) << "Finished reconciling file provider domain display names.";
+    }
+
+    /**
      * @brief Remove all file provider domains one by one and also their associated data.
      */
     void removeAllDomains()
@@ -333,6 +378,13 @@ public:
 
         const auto accountId = account->userIdAtHostWithPort();
         const auto existingDomainId = account->fileProviderDomainIdentifier();
+        // Use `<server>[:port] - <user>` ordering so the trailing token is the user. This avoids
+        // LaunchServices treating the file provider root folder as a bundle when the server's TLD
+        // matches a recognised package extension like ".app" (see issues #7979 / #9684).
+        // Domains registered with a stale display name (e.g. the legacy U+2024-escaped form, or
+        // a name from before `prettyName()` was updated) are normalised on launch by
+        // `reconcileDomainDisplayNames()`.
+        const auto domainDisplayName = account->shortcutName();
 
         if (!existingDomainId.isEmpty()) {
             const auto domains = getDomains();
@@ -350,10 +402,6 @@ public:
         }
 
         const auto domainId = QUuid::createUuid().toString(QUuid::WithoutBraces);
-        // Replace dots with one-dot leader (U+2024) to prevent Finder from treating
-        // folders as bundles when the display name contains extensions like ".app"
-        auto domainDisplayName = account->displayName();
-        domainDisplayName.replace('.', QChar(0x2024));
         NSFileProviderDomain * const domain = [[NSFileProviderDomain alloc] initWithIdentifier:domainId.toNSString() displayName:domainDisplayName.toNSString()];
         domain.supportsSyncingTrash = YES;
         addDomain(domain);
@@ -475,6 +523,15 @@ void FileProviderDomainManager::reconnectAll()
     }
 
     d->reconnectAll();
+}
+
+void FileProviderDomainManager::reconcileDomainDisplayNames()
+{
+    if (!d) {
+        return;
+    }
+
+    d->reconcileDomainDisplayNames();
 }
 
 QString FileProviderDomainManager::removeDomain(NSFileProviderDomain *domain)
