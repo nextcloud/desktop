@@ -93,6 +93,9 @@ ownCloudGui::ownCloudGui(Application *parent)
     _tray->setIcon(Theme::instance()->folderOfflineIcon(/*systray?*/ true));
 
     _tray->show();
+#ifdef Q_OS_MACOS
+    preventTrayIconRemoval();
+#endif
 
     connect(_tray.data(), &QSystemTrayIcon::activated,
         this, &ownCloudGui::slotTrayClicked);
@@ -506,6 +509,9 @@ void ownCloudGui::hideAndShowTray()
 {
     _tray->hide();
     _tray->show();
+#ifdef Q_OS_MACOS
+    preventTrayIconRemoval();
+#endif
 }
 
 void ownCloudGui::slotShowTrayMessage(const QString &title, const QString &msg)

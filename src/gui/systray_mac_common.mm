@@ -43,4 +43,13 @@ bool osXInDarkMode()
     return [osxMode containsString:@"Dark"];
 }
 
+void preventTrayIconRemoval()
+{
+    // Clears the bit on every status item owned by this process. The client
+    // only creates one; if a second item is ever added, this needs a filter.
+    for (NSStatusItem * const item in NSStatusBar.systemStatusBar.statusItems) {
+        item.behavior &= ~NSStatusItemBehaviorRemovalAllowed;
+    }
+}
+
 }
