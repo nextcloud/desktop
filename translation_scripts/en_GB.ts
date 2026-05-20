@@ -187,7 +187,7 @@ Should the accounts be imported?</translation>
     </message>
     <message>
       <source>ExpandMemory-Link_STRATO</source>
-      <translation>https://wl.hidrive.com/easy/0057</translation>
+      <translation>https://static.hidrive.com/next/1046</translation>
     </message>
     <message>
       <source>Storage space %1% occupied</source>
@@ -453,11 +453,11 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <name>OCC::Theme</name>
     <message>
       <source>Help-Link</source>
-      <translation>easy/0108</translation>
+      <translation>https://wl.hidrive.com/easy/0108</translation>
     </message>
     <message>
       <source>Help-Link_STRATO</source>
-      <translation>easy/0108</translation>
+      <translation>https://static.hidrive.com/next/1016</translation>
     </message>
     <message>
       <source>Login_URL</source>
@@ -473,7 +473,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     </message>
     <message>
       <source>Privacy-Link_STRATO</source>
-      <translation>https://wl.hidrive.com/easy/0005</translation>
+      <translation>https://static.hidrive.com/next/1006</translation>
     </message>
     <message>
       <source>LegalNotice-Link</source>
@@ -481,7 +481,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     </message>
     <message>
       <source>LegalNotice-Link_STRATO</source>
-      <translation>https://wl.hidrive.com/easy/0004</translation>
+      <translation>https://static.hidrive.com/next/1026</translation>
     </message>
     <message>
       <source>OpenSource-Link</source>
@@ -489,7 +489,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     </message>
     <message>
       <source>OpenSource-Link_STRATO</source>
-      <translation>https://wl.hidrive.com/easy/0006</translation>
+      <translation> https://static.hidrive.com/next/1031</translation>
     </message>
     <message>
       <source>MoreInformation-Link</source>
@@ -497,7 +497,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     </message>
     <message>
       <source>MoreInformation-Link_STRATO</source>
-      <translation>https://wl.hidrive.com/easy/0007</translation>
+      <translation>https://static.hidrive.com/next/1016</translation>
     </message>
   </context>
   <context>

@@ -184,11 +184,11 @@ Should the accounts be imported?</source>
     </message>
     <message>
       <source>ExpandMemory-Link</source>
-      <translation>https://wl.hidrive.com/easy/0087</translation>
+      <translation>https://wl.hidrive.com/easy/0067</translation>
     </message>
     <message>
       <source>ExpandMemory-Link_STRATO</source>
-      <translation>https://wl.hidrive.com/easy/0087</translation>
+      <translation>https://static.hidrive.com/next/1043</translation>
     </message>
     <message>
       <source>Storage space %1% occupied</source>
@@ -458,11 +458,11 @@ Los objetos cuyo borrado esté permitido se eliminarán si impiden que se borre 
     <name>OCC::Theme</name>
     <message>
       <source>Help-Link</source>
-      <translation>easy/0118</translation>
+      <translation>https://wl.hidrive.com/easy/0118</translation>
     </message>
     <message>
       <source>Help-Link_STRATO</source>
-      <translation>easy/0118</translation>
+      <translation>https://static.hidrive.com/next/1013</translation>
     </message>
     <message>
       <source>Login_URL</source>
@@ -478,7 +478,7 @@ Los objetos cuyo borrado esté permitido se eliminarán si impiden que se borre 
     </message>
     <message>
       <source>Privacy-Link_STRATO</source>
-      <translation>https://wl.hidrive.com/easy/0015</translation>
+      <translation>https://static.hidrive.com/next/1003</translation>
     </message>
     <message>
       <source>LegalNotice-Link</source>
@@ -486,15 +486,15 @@ Los objetos cuyo borrado esté permitido se eliminarán si impiden que se borre 
     </message>
     <message>
       <source>LegalNotice-Link_STRATO</source>
-      <translation>https://wl.hidrive.com/easy/0014</translation>
+      <translation>https://static.hidrive.com/next/1023</translation>
     </message>
     <message>
       <source>OpenSource-Link</source>
-      <translation>https://wl.hidrive.com/easy/0006</translation>
+      <translation>https://wl.hidrive.com/easy/0016</translation>
     </message>
     <message>
       <source>OpenSource-Link_STRATO</source>
-      <translation>https://wl.hidrive.com/easy/0006</translation>
+      <translation> https://static.hidrive.com/next/1031</translation>
     </message>
     <message>
       <source>MoreInformation-Link</source>
@@ -502,7 +502,7 @@ Los objetos cuyo borrado esté permitido se eliminarán si impiden que se borre 
     </message>
     <message>
       <source>MoreInformation-Link_STRATO</source>
-      <translation>https://wl.hidrive.com/easy/0017</translation>
+      <translation>https://static.hidrive.com/next/1013</translation>
     </message>
   </context>
   <context>

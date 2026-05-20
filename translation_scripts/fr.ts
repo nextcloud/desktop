@@ -190,11 +190,11 @@ Doivent-ils être importés ?</translation>
     </message>
     <message>
       <source>ExpandMemory-Link</source>
-      <translation>https://wl.hidrive.com/easy/0057</translation>
+      <translation>https://wl.hidrive.com/easy/0077</translation>
     </message>
     <message>
       <source>ExpandMemory-Link_STRATO</source>
-      <translation>https://wl.hidrive.com/easy/0057</translation>
+      <translation>https://static.hidrive.com/next/1042</translation>
     </message>
     <message>
       <source>Storage space %1% occupied</source>
@@ -460,11 +460,11 @@ Les objets autorisés à être supprimés le seront s'ils empêchent la suppress
     <name>OCC::Theme</name>
     <message>
       <source>Help-Link</source>
-      <translation>easy/0128</translation>
+      <translation>https://wl.hidrive.com/easy/0128</translation>
     </message>
     <message>
       <source>Help-Link_STRATO</source>
-      <translation>easy/0128</translation>
+      <translation>https://static.hidrive.com/next/1012</translation>
     </message>
     <message>
       <source>Login_URL</source>
@@ -480,7 +480,7 @@ Les objets autorisés à être supprimés le seront s'ils empêchent la suppress
     </message>
     <message>
       <source>Privacy-Link_STRATO</source>
-      <translation>https://wl.hidrive.com/easy/0025</translation>
+      <translation>https://static.hidrive.com/next/1002</translation>
     </message>
     <message>
       <source>LegalNotice-Link</source>
@@ -488,15 +488,15 @@ Les objets autorisés à être supprimés le seront s'ils empêchent la suppress
     </message>
     <message>
       <source>LegalNotice-Link_STRATO</source>
-      <translation>https://wl.hidrive.com/easy/0024</translation>
+      <translation>https://static.hidrive.com/next/1022</translation>
     </message>
     <message>
       <source>OpenSource-Link</source>
-      <translation>https://wl.hidrive.com/easy/0006</translation>
+      <translation>https://wl.hidrive.com/easy/0026</translation>
     </message>
     <message>
       <source>OpenSource-Link_STRATO</source>
-      <translation>https://wl.hidrive.com/easy/0006</translation>
+      <translation> https://static.hidrive.com/next/1031</translation>
     </message>
     <message>
       <source>MoreInformation-Link</source>
@@ -504,7 +504,7 @@ Les objets autorisés à être supprimés le seront s'ils empêchent la suppress
     </message>
     <message>
       <source>MoreInformation-Link_STRATO</source>
-      <translation>https://wl.hidrive.com/easy/0027</translation>
+      <translation>https://static.hidrive.com/next/1012</translation>
     </message>
   </context>
   <context>
