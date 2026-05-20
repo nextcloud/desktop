@@ -40,6 +40,15 @@ constexpr int InitialTrayWaitSeconds = 1;
 constexpr int XfceTrayMaxAttempts = 30;
 constexpr int DelayedTrayRetryMs = 10'000;
 
+QByteArray currentDesktopSession()
+{
+    auto desktopSession = qgetenv("XDG_CURRENT_DESKTOP").toLower();
+    if (desktopSession.isEmpty()) {
+        desktopSession = qgetenv("DESKTOP_SESSION").toLower();
+    }
+    return desktopSession;
+}
+
 void warnSystray()
 {
     QMessageBox::critical(
@@ -184,10 +193,7 @@ int main(int argc, char **argv)
             qCInfo(lcApplication) << "System tray is not available, waiting...";
             Utility::sleep(InitialTrayWaitSeconds);
 
-            auto desktopSession = qgetenv("XDG_CURRENT_DESKTOP").toLower();
-            if (desktopSession.isEmpty()) {
-                desktopSession = qgetenv("DESKTOP_SESSION").toLower();
-            }
+            const auto desktopSession = currentDesktopSession();
             if (desktopSession == "xfce") {
                 int attempts = 0;
                 while (!QSystemTrayIcon::isSystemTrayAvailable()) {
