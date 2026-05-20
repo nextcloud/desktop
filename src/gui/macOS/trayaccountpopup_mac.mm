@@ -28,6 +28,16 @@ static const CGFloat kHoverMargin = 5.0;
 static const CGFloat kHoverRadius = 5.0;
 static const CGFloat kAccountHoverVerticalMargin = 4.0;
 
+static NSColor *hoverColor()
+{
+    NSAppearanceName appearanceName = [NSApp.effectiveAppearance bestMatchFromAppearancesWithNames:@[
+        NSAppearanceNameAqua,
+        NSAppearanceNameDarkAqua,
+    ]];
+    const BOOL isDarkMode = [appearanceName isEqualToString:NSAppearanceNameDarkAqua];
+    return [(isDarkMode ? NSColor.whiteColor : NSColor.blackColor) colorWithAlphaComponent:0.08];
+}
+
 static NSImage *nsImageFromQImage(const QImage &qimg)
 {
     if (qimg.isNull()) return nil;
@@ -143,27 +153,21 @@ static NSImage *syncStatusImage(BOOL syncOk)
 @interface NCAccountRow : NCHoverView
 @property (nonatomic, assign) int userIndex;
 @property (nonatomic, assign) id<NCAccountRowDelegate> popupDelegate;
-- (instancetype)initWithNameLabel:(NSTextField *)nameLabel serverLabel:(NSTextField *)serverLabel;
 @end
 
 @implementation NCAccountRow {
     NSView *_hoverView;
-    NSTextField *_nameLabel;
-    NSTextField *_serverLabel;
 }
 
-- (instancetype)initWithNameLabel:(NSTextField *)nameLabel serverLabel:(NSTextField *)serverLabel
+- (instancetype)init
 {
     self = [super init];
     if (!self) return nil;
     self.layer.backgroundColor = CGColorGetConstantColor(kCGColorClear);
 
-    _nameLabel = nameLabel;
-    _serverLabel = serverLabel;
-
     _hoverView = [[NSView alloc] init];
     _hoverView.wantsLayer = YES;
-    _hoverView.layer.backgroundColor = NSColor.selectedContentBackgroundColor.CGColor;
+    _hoverView.layer.backgroundColor = hoverColor().CGColor;
     _hoverView.layer.cornerRadius = kHoverRadius;
     _hoverView.hidden = YES;
     [self addSubview:_hoverView];
@@ -179,15 +183,11 @@ static NSImage *syncStatusImage(BOOL syncOk)
 - (void)mouseEntered:(NSEvent *)event
 {
     _hoverView.hidden = NO;
-    _nameLabel.textColor = NSColor.selectedMenuItemTextColor;
-    _serverLabel.textColor = NSColor.selectedMenuItemTextColor;
 }
 
 - (void)mouseExited:(NSEvent *)event
 {
     _hoverView.hidden = YES;
-    _nameLabel.textColor = NSColor.labelColor;
-    _serverLabel.textColor = NSColor.secondaryLabelColor;
 }
 
 - (void)mouseUp:(NSEvent *)event
@@ -204,7 +204,6 @@ static NSImage *syncStatusImage(BOOL syncOk)
 @implementation NCActionRow {
     dispatch_block_t _action;
     NSView *_hoverView;
-    NSTextField *_label;
 }
 
 - (instancetype)initWithTitle:(NSString *)title action:(dispatch_block_t)action
@@ -216,20 +215,20 @@ static NSImage *syncStatusImage(BOOL syncOk)
 
     _hoverView = [[NSView alloc] init];
     _hoverView.wantsLayer = YES;
-    _hoverView.layer.backgroundColor = NSColor.selectedContentBackgroundColor.CGColor;
+    _hoverView.layer.backgroundColor = hoverColor().CGColor;
     _hoverView.layer.cornerRadius = kHoverRadius;
     _hoverView.hidden = YES;
     [self addSubview:_hoverView];
 
-    _label = [NSTextField labelWithString:title];
-    _label.font = [NSFont systemFontOfSize:13];
-    _label.textColor = NSColor.labelColor;
-    _label.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:_label];
+    NSTextField *label = [NSTextField labelWithString:title];
+    label.font = [NSFont systemFontOfSize:13];
+    label.textColor = NSColor.labelColor;
+    label.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:label];
 
     [NSLayoutConstraint activateConstraints:@[
-        [_label.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:kHPad],
-        [_label.centerYAnchor constraintEqualToAnchor:self.centerYAnchor],
+        [label.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:kHPad],
+        [label.centerYAnchor constraintEqualToAnchor:self.centerYAnchor],
         [self.heightAnchor constraintEqualToConstant:kActionHeight],
         [self.widthAnchor constraintEqualToConstant:kPopupWidth],
     ]];
@@ -245,13 +244,11 @@ static NSImage *syncStatusImage(BOOL syncOk)
 - (void)mouseEntered:(NSEvent *)event
 {
     _hoverView.hidden = NO;
-    _label.textColor = NSColor.selectedMenuItemTextColor;
 }
 
 - (void)mouseExited:(NSEvent *)event
 {
     _hoverView.hidden = YES;
-    _label.textColor = NSColor.labelColor;
 }
 
 - (void)mouseUp:(NSEvent *)event
@@ -375,7 +372,7 @@ static NSImage *syncStatusImage(BOOL syncOk)
     serverLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     serverLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
-    NCAccountRow *row = [[NCAccountRow alloc] initWithNameLabel:nameLabel serverLabel:serverLabel];
+    NCAccountRow *row = [[NCAccountRow alloc] init];
     row.userIndex = index;
     row.popupDelegate = self;
 

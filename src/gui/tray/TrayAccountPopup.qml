@@ -17,10 +17,9 @@ Window {
     id: root
 
     readonly property bool hasAccounts: UserModel && UserModel.count > 0
-    readonly property color rowHoverColor: Qt.rgba(root.palette.windowText.r,
-                                                   root.palette.windowText.g,
-                                                   root.palette.windowText.b,
-                                                   Style.trayAccountPopupRowHoverOpacity)
+    readonly property color rowHoverColor: Style.darkMode
+                                               ? Qt.rgba(1, 1, 1, Style.trayAccountPopupRowHoverOpacity)
+                                               : Qt.rgba(0, 0, 0, Style.trayAccountPopupRowHoverOpacity)
 
     width: Style.trayAccountPopupWidth
     height: contentColumn.height
@@ -100,7 +99,7 @@ Window {
                             anchors.topMargin: Style.trayAccountPopupAccountHoverVerticalMargin
                             anchors.bottomMargin: Style.trayAccountPopupAccountHoverVerticalMargin
                             radius: Style.trayAccountPopupHoverRadius
-                            color: accountRow.hovered ? palette.highlight : "transparent"
+                            color: accountRow.hovered ? root.rowHoverColor : "transparent"
                             Behavior on color { ColorAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
                         }
                     }
@@ -130,21 +129,21 @@ Window {
                             Layout.fillWidth: true
                             spacing: 1
 
-                            Label {
+                            EnforcedPlainTextLabel {
                                 Layout.fillWidth: true
                                 text: model.name
                                 font.pixelSize: Style.trayAccountPopupPrimaryFontSize
                                 font.weight: Font.DemiBold
                                 elide: Text.ElideRight
-                                color: accountRow.hovered ? palette.highlightedText : palette.windowText
+                                color: palette.windowText
                             }
 
-                            Label {
+                            EnforcedPlainTextLabel {
                                 Layout.fillWidth: true
                                 text: model.server
                                 font.pixelSize: Style.trayAccountPopupSecondaryFontSize
                                 elide: Text.ElideRight
-                                color: accountRow.hovered ? palette.highlightedText : palette.windowText
+                                color: palette.windowText
                                 opacity: 0.6
                             }
                         }
@@ -157,11 +156,11 @@ Window {
                                                 Style.trayAccountPopupSyncIconSize)
                         }
 
-                        Label {
+                        EnforcedPlainTextLabel {
                             text: "›"
                             font.pixelSize: Style.trayAccountPopupChevronFontSize
-                            color: accountRow.hovered ? palette.highlightedText : palette.windowText
-                            opacity: accountRow.hovered ? 1.0 : 0.35
+                            color: palette.windowText
+                            opacity: 0.35
                         }
                     }
 
@@ -206,15 +205,15 @@ Window {
                         anchors.leftMargin: Style.trayAccountPopupHoverMargin
                         anchors.rightMargin: Style.trayAccountPopupHoverMargin
                         radius: Style.trayAccountPopupHoverRadius
-                        color: addAccountRow.hovered ? palette.highlight : "transparent"
+                        color: addAccountRow.hovered ? root.rowHoverColor : "transparent"
                         Behavior on color { ColorAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
                     }
                 }
 
-                contentItem: Label {
+                contentItem: EnforcedPlainTextLabel {
                     text: qsTr("Add account")
                     font.pixelSize: Style.trayAccountPopupPrimaryFontSize
-                    color: addAccountRow.hovered ? palette.highlightedText : palette.windowText
+                    color: palette.windowText
                     verticalAlignment: Text.AlignVCenter
                 }
 
@@ -246,15 +245,15 @@ Window {
                         anchors.leftMargin: Style.trayAccountPopupHoverMargin
                         anchors.rightMargin: Style.trayAccountPopupHoverMargin
                         radius: Style.trayAccountPopupHoverRadius
-                        color: settingsRow.hovered ? palette.highlight : "transparent"
+                        color: settingsRow.hovered ? root.rowHoverColor : "transparent"
                         Behavior on color { ColorAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
                     }
                 }
 
-                contentItem: Label {
+                contentItem: EnforcedPlainTextLabel {
                     text: qsTr("Settings")
                     font.pixelSize: Style.trayAccountPopupPrimaryFontSize
-                    color: settingsRow.hovered ? palette.highlightedText : palette.windowText
+                    color: palette.windowText
                     verticalAlignment: Text.AlignVCenter
                 }
 
@@ -286,15 +285,15 @@ Window {
                         anchors.leftMargin: Style.trayAccountPopupHoverMargin
                         anchors.rightMargin: Style.trayAccountPopupHoverMargin
                         radius: Style.trayAccountPopupHoverRadius
-                        color: quitRow.hovered ? palette.highlight : "transparent"
+                        color: quitRow.hovered ? root.rowHoverColor : "transparent"
                         Behavior on color { ColorAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
                     }
                 }
 
-                contentItem: Label {
+                contentItem: EnforcedPlainTextLabel {
                     text: qsTr("Quit")
                     font.pixelSize: Style.trayAccountPopupPrimaryFontSize
-                    color: quitRow.hovered ? palette.highlightedText : palette.windowText
+                    color: palette.windowText
                     verticalAlignment: Text.AlignVCenter
                 }
 
