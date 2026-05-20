@@ -1,3 +1,100 @@
+# start.sh — Local Debug Builds
+
+> **This script is for local development only.** While it technically contains signing and installer packaging code, those paths are not maintained for release use. For production signing, notarization, and installer creation use [mac_craft.sh](#mac_craftsh) instead.
+
+`start.sh` compiles the client from source using CMake and Ninja, deploys it into a product directory via `mac-crafter`, and immediately launches it for testing — all in one step. It is the primary entry point for a developer working locally on the IONOS HiDrive Next macOS client.
+
+---
+
+## Usage
+
+```bash
+./start.sh -a <ARCHITECTURE> -b <BUILD_DIR> [options]
+```
+
+`-a` and `-b` are always required.
+
+### Options
+
+| Flag | Argument | Description |
+|------|----------|-------------|
+| `-a` | `<ARCHITECTURE>` | Target CPU architecture — `arm64` or `x86_64` (required) |
+| `-b` | `<BUILD_DIR>` | Build output directory (required) |
+| `-s` | `<CODE_SIGN_IDENTITY>` | Local signing identity — use your personal **Apple Development** cert. If omitted, signing is skipped |
+| `-c` | | Clean rebuild — wipe the build directory before building |
+| `-f` | | Build the FileProvider extension |
+| `-o` | | Build as an OSX bundle (`.app`) instead of a standalone binary |
+| `-r` | | Launch the app automatically after the build completes |
+| `-u` | | Download and integrate Sparkle (only meaningful on clean rebuilds) |
+| `-m` | | Skip `macdeployqt` |
+
+### Recommended local build workflow
+
+This is the standard way to build the client locally.
+
+**First build — always do a clean build:**
+```bash
+./start.sh -b ~/repos/build/desktop -a "x86_64" -f -m -o -r -c
+```
+
+**All subsequent builds — omit `-c`:**
+```bash
+./start.sh -b ~/repos/build/desktop -a "x86_64" -f -m -o -r
+```
+
+Skipping `-c` reuses the existing build directory, so only changed files are recompiled — this is significantly faster.
+
+### The `-m` flag and starting the app
+
+`-m` skips `macdeployqt`, which copies all Qt frameworks and plugins into the `.app` bundle. This makes the build much faster, but has an important consequence:
+
+| | With `-m` (recommended for dev) | Without `-m` |
+|---|---|---|
+| Build time | Fast | Very long |
+| Start from Finder | **Does not work** — Qt dependencies are missing inside the bundle | Works |
+| Start via `-r` | Works — `launch_app` sets the required library paths | Works |
+
+**When using `-m`, the easiest way to start the app is `-r`**, which sets all required Craft library paths before launching.
+
+Alternatively, you can set the paths manually in your terminal and launch from there:
+
+```bash
+export CRAFT="$HOME/Craft64"
+export DYLD_LIBRARY_PATH="$CRAFT/lib"
+export DYLD_FRAMEWORK_PATH="$CRAFT/lib"
+export QT_PLUGIN_PATH="$CRAFT/plugins"
+export QT_QPA_PLATFORM_PLUGIN_PATH="$CRAFT/plugins/platforms"
+export QML2_IMPORT_PATH="$CRAFT/qml"
+"$HOME/repos/build/desktop/bin/IONOS HiDrive Next.app/Contents/MacOS/IONOS HiDrive Next"
+```
+
+## What it does
+
+1. Kills any running instance of the client
+2. Runs `cmake` to configure the build (always reconfigures)
+3. Runs `ninja install` to build and deploy into `<BUILD_DIR>/product`
+4. If `-s` is omitted — opens the product directory in Finder; launches the app if `-r` is set
+5. If `-s` is provided — signs frameworks, plugins, and the `.app` bundle with the given identity, then verifies the TeamIdentifier
+
+## What it does NOT do (use mac_craft.sh instead)
+
+The script contains `-i` (installer packaging) and notarization code, but these are **not suitable for release builds**:
+
+* The installer call (`create_mac.sh`) has the IONOS team ID hardcoded
+* The notarization step also uses a hardcoded IONOS keychain profile
+* No white-label / STRATO support
+
+For anything that produces a deliverable — signing a release build, building an installer, notarizing, or creating a Sparkle archive — use **mac_craft.sh**.
+
+## Requirements
+
+* macOS with Xcode tools installed
+* Craft64 installed at `~/Craft64`
+* `cmake`, `ninja`, `ccache`
+* Optionally: a personal **Apple Development** certificate for local signing
+
+---
+
 # mac_craft.sh
 
 This script automates the build and signing process for the **IONOS HiDrive Next** and **STRATO HiDrive Next** macOS client installers. It takes an existing `.pkg` package, optionally patches team identifiers, resigns the app, reassembles the installer, notarizes it with Apple, and finally creates a **Sparkle update package** for distribution.

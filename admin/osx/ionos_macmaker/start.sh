@@ -20,23 +20,34 @@ sign_folder_content(){
 
 export -f sign_folder_content
 
+launch_app() {
+  export CRAFT="$HOME/Craft64"
+  export DYLD_LIBRARY_PATH="$CRAFT/lib"
+  export DYLD_FRAMEWORK_PATH="$CRAFT/lib"
+  export QT_PLUGIN_PATH="$CRAFT/plugins"
+  export QT_QPA_PLATFORM_PLUGIN_PATH="$CRAFT/plugins/platforms"
+  export QML2_IMPORT_PATH="$CRAFT/qml"
+  "$BUILD_DIR/bin/IONOS HiDrive Next.app/Contents/MacOS/IONOS HiDrive Next"
+}
+
 # This script is used to build the Mac OS X version of the IONOS client.
 set -xe
 
 # Parse the command line arguments
-while getopts "a:b:s:cifoum" opt; do
+while getopts "a:b:s:cifoumr" opt; do
   case ${opt} in
     a ) ARCHITECTURE=$OPTARG ;;
-    b )BUILD_DIR=$OPTARG;;
-    s )CODE_SIGN_IDENTITY=$OPTARG ;;
-    c )CLEAN_REBUILD=true ;;
-    i )PACKAGE_INSTALLER=true ;;
-    f )BUILD_FILEPROVIDER=true ;;
-    o )OSX_BUNDLE=true ;;
-    u )BUILD_UPDATER=true ;;
-    m )SKIP_MACDEPLOY=true ;;
+    b ) BUILD_DIR=$OPTARG ;;
+    s ) CODE_SIGN_IDENTITY=$OPTARG ;;
+    c ) CLEAN_REBUILD=true ;;
+    i ) PACKAGE_INSTALLER=true ;;
+    f ) BUILD_FILEPROVIDER=true ;;
+    o ) OSX_BUNDLE=true ;;
+    u ) BUILD_UPDATER=true ;;
+    m ) SKIP_MACDEPLOY=true ;;
+    r ) RUN_AFTER_BUILD=true ;;
     \? )
-      echo "Usage: start.sh [-b <build_dir>] [-s <code_sign_identity>] [-c] [-i]"
+      echo "Usage: start.sh -a <architecture> -b <build_dir> [-s <code_sign_identity>] [-c] [-f] [-i] [-m] [-o] [-r] [-u]"
       exit 1
       ;;
   esac
@@ -111,8 +122,8 @@ fi
 
 # Nach Zeile ~133, vor dem eigentlichen Build-Befehl (ninja/cmake --build)
 # QML-Ressourcen invalidieren damit Änderungen erkannt werden
-find "$BUILD_DIR" -name "*.qmlc" -delete
-find "$BUILD_DIR" -name "qrc_*.cpp" -delete
+# find "$BUILD_DIR" -name "*.qmlc" -delete
+# find "$BUILD_DIR" -name "qrc_*.cpp" -delete
 
 # Build the client
 # Only reconfigure if this is a clean build or no CMakeCache exists yet
@@ -146,20 +157,11 @@ ninja -C $BUILD_DIR install -v
 # Sign the client
 # CODE_SIGN_IDENTITY="Developer ID Application: IONOS SE (5TDLCVD243)"
 
-# Check if CODE_SIGN_IDENTITY is set, if not exit
+# Check if CODE_SIGN_IDENTITY is set, if not skip signing
 if [ -z "$CODE_SIGN_IDENTITY" ]; then
-  echo "Code sign identity not set. Exiting."
+  echo "Code sign identity not set. Skipping signing."
   open $PRODUCT_DIR
-
-  export CRAFT="$HOME/Craft64"
-
-  export DYLD_LIBRARY_PATH="$CRAFT/lib"
-  export DYLD_FRAMEWORK_PATH="$CRAFT/lib"
-  export QT_PLUGIN_PATH="$CRAFT/plugins"
-  export QT_QPA_PLATFORM_PLUGIN_PATH="$CRAFT/plugins/platforms"
-  export QML2_IMPORT_PATH="$CRAFT/qml"
-
-  $BUILD_DIR/bin/IONOS\ HiDrive\ Next.app/Contents/MacOS/IONOS\ HiDrive\ Next
+  [ "$RUN_AFTER_BUILD" == "true" ] && launch_app
   exit 0
 fi
 
@@ -194,6 +196,7 @@ fi
 if [ -z "$PACKAGE_INSTALLER" ]; then
   echo "Installer packaging not enabled. Exiting."
   open $PRODUCT_DIR
+  [ "$RUN_AFTER_BUILD" == "true" ] && launch_app
   exit 0
 fi
 
@@ -221,13 +224,4 @@ xcrun stapler staple $PACKAGE_FILENAME
 xcrun stapler validate $PACKAGE_FILENAME
 
 open $PRODUCT_DIR
-
-export CRAFT="$HOME/Craft64"
-
-export DYLD_LIBRARY_PATH="$CRAFT/lib"
-export DYLD_FRAMEWORK_PATH="$CRAFT/lib"
-export QT_PLUGIN_PATH="$CRAFT/plugins"
-export QT_QPA_PLATFORM_PLUGIN_PATH="$CRAFT/plugins/platforms"
-export QML2_IMPORT_PATH="$CRAFT/qml"
-
-$BUILD_DIR/bin/IONOS\ HiDrive\ Next.app/Contents/MacOS/IONOS\ HiDrive\ Next
+[ "$RUN_AFTER_BUILD" == "true" ] && launch_app
