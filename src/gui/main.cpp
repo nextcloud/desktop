@@ -159,24 +159,30 @@ int main(int argc, char **argv)
     Q_INIT_RESOURCE(resources);
     Q_INIT_RESOURCE(theme);
 
-    // OpenSSL 1.1.0: No explicit initialisation or de-initialisation is necessary.
 #ifdef Q_OS_MACOS
     Mac::CocoaInitializer cocoaInit; // RIIA
 #endif
 
+    // Prevent context losses / corrruptions with some OpenGL drivers (#4340)
     auto surfaceFormat = QSurfaceFormat::defaultFormat();
     surfaceFormat.setOption(QSurfaceFormat::ResetNotification);
     QSurfaceFormat::setDefaultFormat(surfaceFormat);
 
+    // Native text rendering is believed to be less blurry (#2409);
+    // may cause pixelation with advanced features (e.g. text transformation).
+    // https://doc.qt.io/qt-6/qquickwindow.html#TextRenderType-enum
     QQuickWindow::setTextRenderType(QQuickWindow::NativeTextRendering);
 
+    // Default styling (i.e. for Linux + UNIX)
     auto qmlStyle = QStringLiteral("Fusion");
     auto widgetsStyle = QStringLiteral("");
 
 #if defined Q_OS_MACOS
     qmlStyle = QStringLiteral("macOS");
+    widgetsStyle = QStringLiteral("");
 #elif defined Q_OS_WIN
-    if (const auto osVersion = QOperatingSystemVersion::current().version(); osVersion < QOperatingSystemVersion::Windows11.version()) {
+    const auto osVersion = QOperatingSystemVersion::current().version(); 
+    if (osVersion < QOperatingSystemVersion::Windows11.version()) {
         // Use the older Qt Quick Controls style on pre-Windows 11 systems.
         qmlStyle = QStringLiteral("Universal");
         widgetsStyle = QStringLiteral("Fusion");
