@@ -996,6 +996,8 @@ void Application::parseOptions(const QStringList &options)
         } else if (option == QStringLiteral("--set-language")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
                 _setLanguage = it.next();
+            } else {
+                showHint("Invalid language passed to --set-language");
             }
         }
 #if !DISABLE_ACCOUNT_MIGRATION
