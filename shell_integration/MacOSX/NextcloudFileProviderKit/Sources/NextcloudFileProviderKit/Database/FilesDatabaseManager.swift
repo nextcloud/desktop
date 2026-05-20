@@ -212,6 +212,36 @@ public final class FilesDatabaseManager: Sendable {
             .toUnmanagedResults()
     }
 
+    ///
+    /// Resolve the parent's "Always keep downloaded" flag for a metadata
+    /// that is about to be persisted as a fresh row.
+    ///
+    /// Mirrors the inheritance applied to locally-created items in
+    /// `Item+Create.swift` so a sibling appearing via remote enumeration
+    /// acquires the same `contentPolicy` and Finder overlay without the user
+    /// having to re-toggle the parent (#10054).
+    ///
+    /// Checking only the immediate parent is sufficient: the recursive
+    /// enable in `Item.set(keepDownloaded:domain:)` sets the flag on every
+    /// then-known descendant of the pinned ancestor, so every intermediate
+    /// directory between the pin root and this new item is itself pinned.
+    ///
+    /// Falls back to the root container when no parent row exists at the
+    /// item's `serverUrl` — items directly under the user's home are stored
+    /// against a synthesised root keyed by ocId, not by serverUrl/fileName.
+    ///
+    func inheritedKeepDownloaded(for metadata: SendableItemMetadata) -> Bool {
+        if let parent = parentDirectoryMetadataForItem(metadata) {
+            return parent.keepDownloaded
+        }
+
+        if let root = itemMetadata(ocId: NSFileProviderItemIdentifier.rootContainer.rawValue) {
+            return root.keepDownloaded
+        }
+
+        return false
+    }
+
     private func processItemMetadatasToDelete(
         existingMetadatas: Results<RealmItemMetadata>,
         updatedMetadatas: [SendableItemMetadata]
@@ -272,6 +302,9 @@ public final class FilesDatabaseManager: Sendable {
                 }
 
             } else { // This is a new metadata
+                // Inherit the parent's "Always keep downloaded" flag so a file surfacing here via remote enumeration acquires the same pin as its already-pinned siblings (#10054).
+                updatedMetadata.keepDownloaded = inheritedKeepDownloaded(for: updatedMetadata)
+
                 returningNewMetadatas.append(updatedMetadata)
 
                 logger.debug("Created new item metadata during update.", [.item: updatedMetadata.ocId])
@@ -374,6 +407,8 @@ public final class FilesDatabaseManager: Sendable {
                     }
                 } else {
                     logger.info("Depth 1 read target is new: \(readTargetMetadata.ocId)")
+                    // Inherit from the parent so a directory appearing here via remote enumeration (e.g. created on the server while the user already pinned its parent) picks up the same pin as siblings (#10054).
+                    readTargetMetadata.keepDownloaded = inheritedKeepDownloaded(for: readTargetMetadata)
                     metadatasToCreate.insert(readTargetMetadata, at: 0)
                 }
             }
@@ -522,6 +557,7 @@ public final class FilesDatabaseManager: Sendable {
                     && !$0.deleted
                     && !$0.isLockFileOfLocalOrigin
             }
+
             if logicalCandidates.count == 1, let existing = logicalCandidates.first {
                 toWrite.downloaded = existing.downloaded
                 toWrite.keepDownloaded = existing.keepDownloaded
@@ -531,6 +567,13 @@ public final class FilesDatabaseManager: Sendable {
                 }
 
                 toWrite.lockToken = existing.lockToken
+            } else {
+                // No prior row at this ocId or logical address: this is a
+                // genuinely new item. Inherit the parent's "Always keep
+                // downloaded" flag so a file surfacing here via remote
+                // enumeration acquires the same pin as its already-pinned
+                // siblings (#10054).
+                toWrite.keepDownloaded = inheritedKeepDownloaded(for: metadata)
             }
         }
 

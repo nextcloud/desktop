@@ -212,7 +212,15 @@ extension Enumerator {
                 metadata.lockToken = existing?.lockToken
                 let updatedItems: [SendableItemMetadata] = isNew ? [] : [metadata]
                 metadata.downloaded = existing?.downloaded == true
-                metadata.keepDownloaded = existing?.keepDownloaded == true
+
+                if let existing {
+                    metadata.keepDownloaded = existing.keepDownloaded
+                } else {
+                    // Genuinely new item: inherit the parent's pin so the
+                    // overlay and `contentPolicy` match its siblings (#10054).
+                    metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
+                }
+
                 dbManager.addItemMetadata(metadata)
                 return ([metadata], newItems, updatedItems, [], nextPage, nil)
             }
@@ -228,7 +236,15 @@ extension Enumerator {
             metadata.lockToken = existing?.lockToken
             metadata.visitedDirectory = existing?.visitedDirectory == true
             metadata.downloaded = existing?.downloaded == true
-            metadata.keepDownloaded = existing?.keepDownloaded == true
+
+            if let existing {
+                metadata.keepDownloaded = existing.keepDownloaded
+            } else {
+                // Genuinely new item: inherit the parent's pin so the
+                // overlay and `contentPolicy` match its siblings (#10054).
+                metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
+            }
+
             dbManager.addItemMetadata(metadata)
 
             return ([metadata], newMetadatas, updatedMetadatas, [], nextPage, nil)
