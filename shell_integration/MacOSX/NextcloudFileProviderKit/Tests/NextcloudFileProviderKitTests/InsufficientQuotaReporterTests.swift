@@ -28,6 +28,8 @@ private final class CapturingAppProxy: NSObject, AppProtocol {
 
     func openItemInBrowser(_: String, remoteItemPath _: String, forDomainIdentifier _: String) {}
 
+    func copyInternalLink(forItem _: String, remoteItemPath _: String, forDomainIdentifier _: String) {}
+
     func reportSyncStatus(_: String, forDomainIdentifier _: String) {}
 
     func reportItemExcluded(

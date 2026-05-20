@@ -76,6 +76,42 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                 completionHandler(nil)
 
                 return Progress()
+            case .copyInternalLink:
+                guard let itemIdentifier = itemIdentifiers.first else {
+                    logger.error("Failed to get first item identifier for copy internal link action.")
+                    completionHandler(NSFileProviderError(.noSuchItem))
+                    return Progress()
+                }
+
+                guard let dbManager else {
+                    logger.error("Cannot fetch metadata for copy internal link action due to database manager not being available.", [.item: itemIdentifier])
+                    completionHandler(NSFileProviderError(.cannotSynchronize))
+                    return Progress()
+                }
+
+                guard let metadata = dbManager.itemMetadata(itemIdentifier) else {
+                    logger.error("Failed to get metadata for copy internal link action.", [.item: itemIdentifier])
+                    completionHandler(NSFileProviderError(.noSuchItem))
+                    return Progress()
+                }
+
+                // The numeric file id is required to build the deprecated
+                // fallback URL the main app uses when PROPFIND for the
+                // server-side `privatelink` property is unavailable. Without
+                // it, the main app would have nothing to copy. Matches the
+                // equivalent guard in `case .openInBrowser`.
+                guard !metadata.fileId.isEmpty else {
+                    logger.error("Cannot copy internal link because the metadata has no fileId.", [.item: itemIdentifier])
+                    completionHandler(NSFileProviderError(.noSuchItem))
+                    return Progress()
+                }
+
+                let domainIdentifier = domain.identifier.rawValue
+                logger.info("Telling main app to copy internal link.", [.item: metadata.path, .domain: domainIdentifier])
+                app?.copyInternalLink(forItem: metadata.fileId, remoteItemPath: metadata.path, forDomainIdentifier: domainIdentifier)
+                completionHandler(nil)
+
+                return Progress()
             case .keepDownloaded:
                 return performKeepDownloadedAction(keepDownloaded: true, onItemsWithIdentifiers: itemIdentifiers, completionHandler: completionHandler)
             case .evictAutomatically:

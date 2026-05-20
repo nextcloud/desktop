@@ -114,6 +114,22 @@ public slots:
      * @param fileProviderDomainIdentifier The file provider domain identifier for the account that owns the item.
      */
     void slotOpenItemInBrowserFromFileProvider(const QString &fileId, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier);
+
+    /**
+     * @brief Copy an item's Nextcloud internal link to the clipboard on behalf of the macOS file provider extension.
+     *
+     * Resolves the per-item private link via `fetchPrivateLinkUrl` (PROPFIND for
+     * the server-side `privatelink` property, falling back to the deprecated link
+     * built from the numeric file id) and writes it to `QGuiApplication::clipboard()`.
+     * Surfaces a notification through the existing systray afterwards. Mirrors
+     * the classic-sync entry exposed by `SocketApi::command_COPY_PRIVATE_LINK`.
+     * See nextcloud/desktop#10024.
+     *
+     * @param fileId The numeric server file id (WebDAV `fileid`). Not the ocId.
+     * @param remoteItemPath The server-side path of the item.
+     * @param fileProviderDomainIdentifier The file provider domain identifier for the account that owns the item.
+     */
+    void slotCopyInternalLinkFromFileProvider(const QString &fileId, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier);
 #endif
     void slotNewAccountWizard();
 

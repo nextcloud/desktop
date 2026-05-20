@@ -40,10 +40,12 @@
 #include "cloudproviders/cloudprovidermanager.h"
 #endif
 
-#include <QQmlApplicationEngine>
+#include <QClipboard>
 #include <QDesktopServices>
 #include <QDir>
+#include <QGuiApplication>
 #include <QMessageBox>
+#include <QQmlApplicationEngine>
 #include <QSignalMapper>
 #ifdef WITH_LIBCLOUDPROVIDERS
 #include <QtDBus/QDBusConnection>
@@ -125,6 +127,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::syncStateChanged, this, &ownCloudGui::slotComputeOverallSyncStatus);
     connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::showFileActionsDialog, _tray.data(), &Systray::slotShowFileProviderFileActionsDialog);
     connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::openItemInBrowserRequested, this, &ownCloudGui::slotOpenItemInBrowserFromFileProvider);
+    connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::copyInternalLinkRequested, this, &ownCloudGui::slotCopyInternalLinkFromFileProvider);
 #endif
 
     connect(Logger::instance(), &Logger::guiLog, this, &ownCloudGui::slotShowTrayMessage);
@@ -804,6 +807,46 @@ void ownCloudGui::slotOpenItemInBrowserFromFileProvider(const QString &fileId, c
             return;
         }
         Utility::openBrowser(url);
+    });
+}
+
+void ownCloudGui::slotCopyInternalLinkFromFileProvider(const QString &fileId, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier)
+{
+    const auto accountState = AccountManager::instance()->accountFromFileProviderDomainIdentifier(fileProviderDomainIdentifier);
+
+    if (!accountState) {
+        qCWarning(lcOwnCloudGui) << "Cannot copy internal link: no account state for domain identifier" << fileProviderDomainIdentifier;
+        return;
+    }
+
+    const auto account = accountState->account();
+
+    if (!account) {
+        qCWarning(lcOwnCloudGui) << "Cannot copy internal link: no account for domain identifier" << fileProviderDomainIdentifier;
+        return;
+    }
+
+    // Reuse the same helper the classic sync uses for `SocketApi::command_COPY_PRIVATE_LINK`:
+    // a PROPFIND for the server-side `privatelink` property, falling back to the deprecated
+    // link assembled from the numeric file id. The callback may run with an empty URL when
+    // both lookups fail (see `fetchPrivateLinkUrl` in libsync/networkjobs.cpp); guard against
+    // writing an empty string to the clipboard in that case. Capturing `this` is safe because
+    // `fetchPrivateLinkUrl` parents the underlying job to `this` and silently drops the
+    // callback if `this` is destroyed first; `_tray` is a `QPointer<Systray>` and degrades
+    // to null cleanly if the tray was torn down between fetch and callback.
+    fetchPrivateLinkUrl(account, remoteItemPath, fileId.toUtf8(), this, [this](const QString &url) {
+        if (url.isEmpty()) {
+            qCWarning(lcOwnCloudGui) << "Cannot copy internal link: no private link URL resolved.";
+            return;
+        }
+
+        QGuiApplication::clipboard()->setText(url);
+
+        if (_tray) {
+            _tray->showMessage(tr("Internal link copied"),
+                               tr("The internal link has been copied to the clipboard."),
+                               QSystemTrayIcon::Information);
+        }
     });
 }
 #endif

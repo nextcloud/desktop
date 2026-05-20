@@ -77,6 +77,14 @@
 				<key>NSExtensionFileProviderActionName</key>
 				<string>Open in browser</string>
 			</dict>
+			<dict>
+				<key>NSExtensionFileProviderActionActivationRule</key>
+				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayCopyInternalLink == true ).@count &gt; 0</string>
+				<key>NSExtensionFileProviderActionIdentifier</key>
+				<string>com.nextcloud.desktopclient.FileProviderExt.CopyInternalLinkAction</string>
+				<key>NSExtensionFileProviderActionName</key>
+				<string>Copy internal link</string>
+			</dict>
 		</array>
 		<key>NSExtensionFileProviderAllowsContextualMenuDownloadEntry</key>
 		<false/>
