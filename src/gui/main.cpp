@@ -91,8 +91,7 @@ int handleRunningInstance(Application &app)
 
 void handleSystemTrayAvailability(Application &app)
 {
-    // We can't call isSystemTrayAvailable with appmenu-qt5 because it hides the system tray
-    // (issue #4693)
+    // Skip this check with appmenu-qt5 because that platform theme hides the system tray (#4693)
     if (qgetenv("QT_QPA_PLATFORMTHEME") == "appmenu-qt5") {
         return;
     }
@@ -129,6 +128,7 @@ void handleSystemTrayAvailability(Application &app)
             app.showMainDialog();
             QTimer::singleShot(DelayedTrayRetryMs, &app, &Application::tryTrayAgain);
         } else {
+            // Ubuntu desktops may operate acceptably without reporting a traditional tray here.
             qCInfo(lcApplication) << "System tray still not available, but assuming it's fine on 'ubuntu' desktop";
         }
     }
@@ -142,13 +142,17 @@ int main(int argc, char **argv)
 #ifdef Q_OS_LINUX
     const auto appImagePath = qEnvironmentVariable("APPIMAGE");
     const auto runningInsideAppImage = !appImagePath.isNull() && QFile::exists(appImagePath);
+
     if (runningInsideAppImage) {
+        // Work around rendering issues seen when the client runs from an AppImage.
         qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--disable-gpu-compositing");
     }
 #endif
 
 #ifdef Q_OS_WIN
+    // Avoid loading DLLs from the current working directory.
     SetDllDirectory(L"");
+    // Ensure bundled QML modules are found when launching from the install directory.
     qputenv("QML_IMPORT_PATH", (QDir::currentPath() + QStringLiteral("/qml")).toLatin1());
 #endif
 
@@ -173,18 +177,20 @@ int main(int argc, char **argv)
     qmlStyle = QStringLiteral("macOS");
 #elif defined Q_OS_WIN
     if (const auto osVersion = QOperatingSystemVersion::current().version(); osVersion < QOperatingSystemVersion::Windows11.version()) {
+        // Use the older Qt Quick Controls style on pre-Windows 11 systems.
         qmlStyle = QStringLiteral("Universal");
         widgetsStyle = QStringLiteral("Fusion");
         if (qEnvironmentVariableIsEmpty("QT_QUICK_CONTROLS_UNIVERSAL_THEME")) {
-            // initialise theme with the light/dark mode setting from the OS
+            // Initialise theme with the light/dark mode setting from the OS.
             qputenv("QT_QUICK_CONTROLS_UNIVERSAL_THEME", "System");
         }
 
         if (osVersion < QOperatingSystemVersion::Windows10_1809.version() && qEnvironmentVariableIsEmpty("QT_QPA_PLATFORM")) {
-            // for Windows Server 2016 to display text as expected, see #8064
+            // Work around DirectWrite-related text rendering issues on older Windows versions like Server 2016 (#8064).
             qputenv("QT_QPA_PLATFORM", "windows:nodirectwrite");
         }
     } else {
+        // Match newer Windows styling more closely on Windows 11 and later.
         qmlStyle = QStringLiteral("FluentWinUI3");
         widgetsStyle = QStringLiteral("windows11");
     }
