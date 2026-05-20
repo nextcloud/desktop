@@ -967,7 +967,7 @@ void Application::parseOptions(const QStringList &options)
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
                 _overrideLocalDir = it.next();
             } else {
-                showHint("Invalid URL passed to --overridelocaldir");
+                showHint("Invalid path passed to --overridelocaldir");
             }
         } else if (option == QStringLiteral("--set-language")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
