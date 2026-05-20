@@ -974,7 +974,6 @@ void Application::parseOptions(const QStringList &options)
                     && QUrl::fromUserInput(overrideUrl).isValid();
                 if (!isUrlValid) {
                     showHint("Invalid URL passed to --overrideserverurl");
-                    shouldExit = true;
                 } else {
                     _overrideServerUrl = overrideUrl;
                 }
@@ -1016,14 +1015,10 @@ void Application::parseOptions(const QStringList &options)
             if (!AccountSetupCommandLineManager::instance()->parseCommandlineOption(option, it, errorMessage)) {
                 if (!errorMessage.isEmpty()) {
                     showHint(errorMessage.toStdString());
-                    return;
                 }
                 showHint("Unrecognized option '" + option.toStdString() + "'");
             }
         }
-    }
-    if (shouldExit) {
-        std::exit(0);
     }
 }
 
