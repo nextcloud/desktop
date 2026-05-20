@@ -35,6 +35,11 @@
 
 using namespace OCC;
 
+namespace {
+constexpr int InitialTrayWaitSeconds = 1;
+constexpr int XfceTrayMaxAttempts = 30;
+constexpr int DelayedTrayRetryMs = 10'000;
+
 void warnSystray()
 {
     QMessageBox::critical(
@@ -47,6 +52,7 @@ void warnSystray()
             .arg(Theme::instance()->appNameGUI()),
         QMessageBox::Ok
     );
+}
 }
 
 int main(int argc, char **argv)
@@ -176,7 +182,7 @@ int main(int argc, char **argv)
             // (eg boot time) then we show the settings dialog if there is still no systemtray.
             // On XFCE however, we show a message box with explainaition how to install a systemtray.
             qCInfo(lcApplication) << "System tray is not available, waiting...";
-            Utility::sleep(1);
+            Utility::sleep(InitialTrayWaitSeconds);
 
             auto desktopSession = qgetenv("XDG_CURRENT_DESKTOP").toLower();
             if (desktopSession.isEmpty()) {
@@ -186,7 +192,7 @@ int main(int argc, char **argv)
                 int attempts = 0;
                 while (!QSystemTrayIcon::isSystemTrayAvailable()) {
                     attempts++;
-                    if (attempts >= 30) {
+                    if (attempts >= XfceTrayMaxAttempts) {
                         qCWarning(lcApplication) << "System tray unavailable (xfce)";
                         warnSystray();
                         break;
@@ -201,7 +207,7 @@ int main(int argc, char **argv)
                 if (desktopSession != "ubuntu") {
                     qCInfo(lcApplication) << "System tray still not available, showing window and trying again later";
                     app.showMainDialog();
-                    QTimer::singleShot(10000, &app, &Application::tryTrayAgain);
+                    QTimer::singleShot(DelayedTrayRetryMs, &app, &Application::tryTrayAgain);
                 } else {
                     qCInfo(lcApplication) << "System tray still not available, but assuming it's fine on 'ubuntu' desktop";
                 }
