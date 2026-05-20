@@ -527,6 +527,101 @@ import OSLog
 
         logger.debug("Signalling enumerators.")
         notifyChange()
+
+        // Also nudge the root container so its enumerator's `enumerateChanges(for:from:)` is
+        // invoked shortly after the extension starts. Best-effort: when no enumerator is
+        // active for the root container at signal time, the framework debounces the signal
+        // and the call is effectively a no-op. The reliable refresh of cached
+        // `NSFileProviderItem` snapshots after an extension version bump happens via
+        // ``refreshFrameworkCacheIfExtensionVersionChanged`` below; this signal just shortens
+        // the path on launches where Finder is already actively viewing the root.
+        manager.signalEnumerator(for: .rootContainer) { error in
+            if error != nil {
+                self.logger.error("Failed to signal root container enumerator after account setup.", [.error: error?.localizedDescription])
+            }
+        }
+
+        refreshFrameworkCacheIfExtensionVersionChanged()
+    }
+
+    ///
+    /// On the first launch after the extension bundle's `CFBundleShortVersionString` changes, walk every non-deleted item in the database and call `NSFileProviderManager.requestModification(of: [.lastUsedDate], forItemWithIdentifier:)` for each.
+    ///
+    /// Each `requestModification` schedules a `modifyItem(…)` call from the framework into this extension. Our `modifyItem` builds a fresh ``Item`` from the database row and returns it via the completion handler — and the fresh `Item`'s ``Item/itemVersion`` carries a `metadataVersion` that embeds the current extension version (see ``Item/itemVersion``). The framework compares that against its cached `metadataVersion` (which was derived under the previous extension version), detects the mismatch, and writes the fresh snapshot — including the freshly computed `userInfo` keys, `contentPolicy`, `fileSystemFlags`, etc. — into its cache.
+    ///
+    /// Without this iteration, only items in the working set get their cached snapshots refreshed after a version bump (via the version-tagged sync anchor in ``Enumerator``). Placeholder children of containers Finder isn't actively enumerating — the bulk of items in a fresh sync — would otherwise keep their pre-upgrade snapshots until the user actively interacts with them. The same `requestModification(of: [.lastUsedDate], …)` nudge is used by ``Item/signalKeepDownloaded`` for individual keep-downloaded toggles.
+    ///
+    /// The current bundle version is persisted to ``FileProviderDomainDefaults/lastSeenExtensionVersion`` only after the iteration has finished issuing every nudge, so an interrupted launch redoes the work on the next start rather than skipping items.
+    ///
+    /// See nextcloud/desktop#10065.
+    ///
+    private func refreshFrameworkCacheIfExtensionVersionChanged() {
+        guard let manager else {
+            logger.error("Cannot refresh framework cache because the file provider manager is not available.")
+            return
+        }
+
+        guard let dbManager else {
+            logger.error("Cannot refresh framework cache because the database manager is not available.")
+            return
+        }
+
+        guard let ncAccount else {
+            logger.error("Cannot refresh framework cache because the account is not set up.")
+            return
+        }
+
+        let bundle = Bundle(for: type(of: self))
+
+        guard let currentVersion = bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String, currentVersion.isEmpty == false else {
+            logger.error("Cannot refresh framework cache because the extension bundle has no CFBundleShortVersionString.")
+            return
+        }
+
+        let lastSeenVersion = config.lastSeenExtensionVersion
+
+        guard currentVersion != lastSeenVersion else {
+            logger.debug("Extension version \"\(currentVersion)\" unchanged since last launch. Skipping framework cache refresh.")
+            return
+        }
+
+        let items = dbManager
+            .itemMetadatas(account: ncAccount.ncKitAccount)
+            .filter { metadata in
+                !metadata.deleted
+                    && metadata.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue
+                    && metadata.ocId != NSFileProviderItemIdentifier.trashContainer.rawValue
+            }
+
+        logger.info("Extension version changed from \"\(lastSeenVersion ?? "<nil>")\" to \"\(currentVersion)\". Requesting metadata refresh for \(items.count) item(s).")
+
+        // Fire-and-forget: each `requestModification` returns quickly after scheduling the
+        // framework's modifyItem call. Sequential awaits keep the request-queue throughput
+        // predictable and avoid spawning one Swift `Task` per database row (which for large
+        // synced sets would be wasteful even if the system-level queue would coalesce them).
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+
+            for metadata in items {
+                let identifier = NSFileProviderItemIdentifier(metadata.ocId)
+
+                do {
+                    try await manager.requestModification(of: [.lastUsedDate], forItemWithIdentifier: identifier)
+                } catch {
+                    logger.error("Failed to request modification on item for framework cache refresh after extension version bump.", [.item: identifier, .error: error.localizedDescription])
+                }
+            }
+
+            // Persist the new version once every nudge has been issued — even if some of
+            // them errored. The next launch under the same version will skip this work; the
+            // small subset of items that errored will refresh through normal user-interaction
+            // paths (item(for:), explicit enumeration) once Finder touches them, because the
+            // `metadataVersion` comparison still detects the mismatch on those paths.
+            config.lastSeenExtensionVersion = currentVersion
+            logger.info("Framework cache refresh completed after extension version bump.", [.account: ncAccount])
+        }
     }
 
     ///

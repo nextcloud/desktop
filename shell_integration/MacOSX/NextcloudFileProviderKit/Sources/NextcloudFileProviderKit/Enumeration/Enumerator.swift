@@ -18,7 +18,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     let domain: NSFileProviderDomain?
     let dbManager: FilesDatabaseManager
 
-    private let currentAnchor = NSFileProviderSyncAnchor(ISO8601DateFormatter().string(from: Date()).data(using: .utf8)!)
+    private let currentAnchor = Enumerator.syncAnchor(at: Date())
     private let pageItemCount: Int
     let logger: FileProviderLogger
     let account: Account
@@ -224,6 +224,30 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     public func enumerateChanges(for observer: NSFileProviderChangeObserver, from anchor: NSFileProviderSyncAnchor) {
         logger.debug("Enumerating changes (anchor: \(String(data: anchor.rawValue, encoding: .utf8) ?? "")).", [.url: serverUrl])
 
+        // Version-tagged anchor check — applies to every container, not just the working set.
+        // The framework persists per-container anchors and replays them on subsequent
+        // `enumerateChanges` calls. An anchor that doesn't parse as the version-tagged format
+        // (older builds wrote just the ISO8601 date) or whose embedded version doesn't match the
+        // running extension is treated as expired so the framework drops cached
+        // `NSFileProviderItem` snapshots in that container and re-enumerates them. The fresh
+        // `Item` objects then carry up-to-date `userInfo`, `contentPolicy`, etc.
+        //
+        // See nextcloud/desktop#10065.
+
+        guard let parsed = Self.parseSyncAnchor(anchor) else {
+            logger.info("Sync anchor is not in the expected version-tagged format. Returning syncAnchorExpired so the framework re-enumerates this container and refreshes cached NSFileProviderItem snapshots. See nextcloud/desktop#10065.", [.item: enumeratedItemIdentifier])
+            observer.finishEnumeratingWithError(NSFileProviderError(.syncAnchorExpired))
+            return
+        }
+
+        let runningVersion = Self.currentExtensionVersion()
+
+        guard parsed.version == runningVersion else {
+            logger.info("Sync anchor's embedded extension version \"\(parsed.version)\" does not match the running extension version \"\(runningVersion)\". Returning syncAnchorExpired so the framework re-enumerates this container and refreshes cached NSFileProviderItem snapshots. See nextcloud/desktop#10065.", [.item: enumeratedItemIdentifier])
+            observer.finishEnumeratingWithError(NSFileProviderError(.syncAnchorExpired))
+            return
+        }
+
         /*
          If this is an enumerator for the working set, then:
 
@@ -235,15 +259,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         if enumeratedItemIdentifier == .workingSet {
             logger.debug("Enumerating changes in working set.", [.account: account])
 
-            let formatter = ISO8601DateFormatter()
-
-            guard let anchorDateString = String(data: anchor.rawValue, encoding: .utf8),
-                  let date = formatter.date(from: anchorDateString)
-            else {
-                logger.error("Could not parse sync anchor \"\(anchor.rawValue)\".")
-                observer.finishEnumeratingWithError(NSFileProviderError(.syncAnchorExpired))
-                return
-            }
+            let date = parsed.date
 
             Task {
                 await checkMaterializedItemsOnServer()
@@ -751,5 +767,52 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         }
         // Provide it to the caller method so it can ingest it into the database and fix future errs
         return metadata
+    }
+
+    // MARK: - Version-tagged sync anchor
+
+    ///
+    /// Build a sync anchor that encodes the running extension bundle's `CFBundleShortVersionString` alongside the given timestamp.
+    ///
+    /// The same format is used for every container the extension enumerates (working set, root container, sub-directories, trash) so the framework's per-container persisted anchors all carry the version. On the next call to ``enumerateChanges(for:from:)`` the embedded version is compared against the running extension — any mismatch (including anchors persisted by builds older than this change, which carried only the ISO8601 date) is rejected with `NSFileProviderError(.syncAnchorExpired)`. That causes the framework to drop its cached sync state for that container and re-enumerate it via ``enumerateItems(for:startingAt:)``, so the fresh ``Item`` objects we hand back carry up-to-date `userInfo`, `contentPolicy`, and any other `NSFileProviderItem` properties whose derivation changed between app versions.
+    ///
+    /// See nextcloud/desktop#10065.
+    ///
+    public static func syncAnchor(at date: Date) -> NSFileProviderSyncAnchor {
+        let raw = "\(currentExtensionVersion())|\(ISO8601DateFormatter().string(from: date))"
+        // Force-unwrap is safe: an ASCII version string and an ISO8601 date both encode cleanly to UTF-8.
+        return NSFileProviderSyncAnchor(raw.data(using: .utf8)!)
+    }
+
+    ///
+    /// Parse a sync anchor produced by ``syncAnchor(at:)``.
+    ///
+    /// Returns `nil` for anchors that are not in the expected `"<version>|<ISO8601-date>"` format — including anchors persisted by builds older than #10065 that carried only the ISO8601 date. The caller treats `nil` as an expired anchor.
+    ///
+    private static func parseSyncAnchor(_ anchor: NSFileProviderSyncAnchor) -> (version: String, date: Date)? {
+        guard let raw = String(data: anchor.rawValue, encoding: .utf8) else {
+            return nil
+        }
+
+        let parts = raw.split(separator: "|", maxSplits: 1, omittingEmptySubsequences: false)
+
+        guard parts.count == 2 else {
+            return nil
+        }
+
+        guard let date = ISO8601DateFormatter().date(from: String(parts[1])) else {
+            return nil
+        }
+
+        return (String(parts[0]), date)
+    }
+
+    ///
+    /// The running extension bundle's `CFBundleShortVersionString`, or the empty string when none is available — e.g. unit-test hosts without a versioned `Info.plist`.
+    ///
+    /// The empty-string fallback compares equal across calls inside the same process, so test anchors round-trip cleanly through ``syncAnchor(at:)`` and ``parseSyncAnchor(_:)`` without triggering the version-mismatch branch.
+    ///
+    private static func currentExtensionVersion() -> String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
     }
 }

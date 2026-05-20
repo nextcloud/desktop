@@ -622,9 +622,10 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         let tenMinutesAgo = Date().addingTimeInterval(-600)
         let now = Date()
 
-        // Create a sync anchor from our date.
-        let formatter = ISO8601DateFormatter()
-        let anchor = try NSFileProviderSyncAnchor(XCTUnwrap(formatter.string(from: anchorDate).data(using: .utf8)))
+        // Build a version-tagged sync anchor at the chosen date. The same helper is used by the
+        // production code, so the anchor round-trips cleanly through `enumerateChanges` without
+        // tripping the syncAnchorExpired branch added for nextcloud/desktop#10065.
+        let anchor = Enumerator.syncAnchor(at: anchorDate)
 
         // Setup remote interface with the items we're testing
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
@@ -744,10 +745,10 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         childFolderMetadata.etag = remoteChildFolder.versionIdentifier
         Self.dbManager.addItemMetadata(childFolderMetadata)
 
-        // Create a sync anchor from before now
+        // Create a sync anchor from before now using the production helper so it carries the
+        // version prefix expected by the syncAnchorExpired check (nextcloud/desktop#10065).
         let anchorDate = Date().addingTimeInterval(-300) // 5 minutes ago
-        let formatter = ISO8601DateFormatter()
-        let anchor = try NSFileProviderSyncAnchor(XCTUnwrap(formatter.string(from: anchorDate).data(using: .utf8)))
+        let anchor = Enumerator.syncAnchor(at: anchorDate)
 
         // Update sync times to be after the anchor (so they would be checked)
         let now = Date()
