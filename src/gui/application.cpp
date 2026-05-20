@@ -961,7 +961,7 @@ void Application::parseOptions(const QStringList &options)
                 showHint("Missing value for --logdir");
             }
         } else if (isOption(option, "--logexpire")) {
-            if if (hasNextValue()) {
+            if (hasNextValue()) {
                 bool ok = false;
                 const auto logExpire = it.next().toInt(&ok);
                 if (!ok) {
