@@ -99,6 +99,22 @@ public slots:
     void slotShowShareDialog(const QString &localPath) const;
     void slotShowFileActivityDialog(const QString &localPath) const;
     void slotShowFileActionsDialog(const QString &localPath) const;
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    /**
+     * @brief Open an item's web page in the user's browser on behalf of the macOS file provider extension.
+     *
+     * Resolves the per-item private link via `fetchPrivateLinkUrl` (PROPFIND for
+     * the server-side `privatelink` property, falling back to the deprecated link
+     * built from the numeric file id) and opens it via `Utility::openBrowser`.
+     * Mirrors the classic-sync entry exposed by `SocketApi::command_OPEN_PRIVATE_LINK`.
+     * See nextcloud/desktop#10025.
+     *
+     * @param fileId The numeric server file id (WebDAV `fileid`). Not the ocId.
+     * @param remoteItemPath The server-side path of the item.
+     * @param fileProviderDomainIdentifier The file provider domain identifier for the account that owns the item.
+     */
+    void slotOpenItemInBrowserFromFileProvider(const QString &fileId, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier);
+#endif
     void slotNewAccountWizard();
 
 private slots:

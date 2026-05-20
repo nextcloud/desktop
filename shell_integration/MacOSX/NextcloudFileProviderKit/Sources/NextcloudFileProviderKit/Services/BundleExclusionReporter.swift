@@ -19,11 +19,11 @@ import NextcloudFileProviderXPC
 /// provider boundary and the user is informed politely instead of being left with a partial
 /// sync.
 ///
-public enum BundleExclusionReporter {
+enum BundleExclusionReporter {
     ///
     /// Localized human-readable reason shown to the user in the activity view.
     ///
-    public static func reasonText() -> String {
+    static func reasonText() -> String {
         NSLocalizedString(
             "BundleExclusion.Reason",
             bundle: .module,
@@ -43,7 +43,7 @@ public enum BundleExclusionReporter {
     ///   - appProxy: The cached `id<AppProtocol>` proxy held by the running `FileProviderExtension`. May be `nil` (e.g. main app not running) — in which case the report is dropped silently.
     ///   - log: The logger used for diagnostic output.
     ///
-    public static func report(
+    static func report(
         relativePath: String,
         fileName: String,
         domainIdentifier: NSFileProviderDomainIdentifier,

@@ -211,6 +211,21 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         // unpin signal was still queued (#9891).
         userInfoDict["displayEvict"] = metadata.downloaded && !metadata.keepDownloaded
 
+        // Gate the "Open in browser" context menu action on items that have a
+        // server-side counterpart whose private link the main app can resolve.
+        // This excludes:
+        // - the root and trash pseudo-containers (no fileId, no web page),
+        // - lock files of local origin (placeholders not present on the server),
+        // - ignored items and freshly-created items that have not been
+        //   uploaded yet (`uploaded == false` ⇒ no server-side record).
+        // The numeric `fileId` check is defensive — a successfully uploaded
+        // item should always carry one, and `fetchPrivateLinkUrl` requires it
+        // for the deprecated fallback URL. See nextcloud/desktop#10025.
+        userInfoDict["displayOpenInBrowser"] = ![.rootContainer, .trashContainer].contains(itemIdentifier)
+            && !metadata.isLockFileOfLocalOrigin
+            && metadata.uploaded
+            && !metadata.fileId.isEmpty
+
         // https://docs.nextcloud.com/server/latest/developer_manual/client_apis/WebDAV/basic.html
         if metadata.permissions.uppercased().contains("R") /* Shareable */, ![.rootContainer, .trashContainer].contains(itemIdentifier) {
             userInfoDict["displayShare"] = true

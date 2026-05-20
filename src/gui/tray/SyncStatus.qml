@@ -103,7 +103,8 @@ RowLayout {
         visible: !activityModel.hasSyncConflicts &&
                  !syncStatus.syncing &&
                  !syncStatus.needsSandboxReapproval &&
-                 NC.UserModel.currentUser.hasLocalFolder &&
+                 (NC.UserModel.currentUser.hasLocalFolder ||
+                  (Qt.platform.os === "osx" && NC.UserModel.currentUser.hasFileProvider)) &&
                  NC.UserModel.currentUser.isConnected
         enabled: visible
         onClicked: {

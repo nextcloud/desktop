@@ -336,6 +336,12 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
 #ifdef BUILD_FILE_PROVIDER_MODULE
     connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::itemExcludedFromSync,
             this, &User::slotFileProviderItemExcludedFromSync);
+    connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::insufficientQuotaForItem,
+            this, &User::slotFileProviderInsufficientQuotaForItem);
+    connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::insufficientQuotaSummary,
+            this, &User::slotFileProviderInsufficientQuotaSummary);
+    connect(_activityModel, &ActivityListModel::fileProviderRetryUploadsRequested,
+            this, &User::slotFileProviderRetryUploads);
 #endif
 }
 
@@ -609,6 +615,9 @@ void User::slotCheckExpiredActivities()
     // Bundle-exclusion entries inherit the same expiration cycle as other activity errors. Once
     // their entries are pruned above, allow the same paths to surface again on the next drop.
     _reportedExcludedBundles.clear();
+    // Same lifecycle for quota dedup state: once the per-item activity rows have aged out of
+    // the list, allow the same files to re-surface on the next quota event.
+    _reportedQuotaItems.clear();
 #endif
 }
 
@@ -645,6 +654,124 @@ void User::slotFileProviderItemExcludedFromSync(const QString &domainIdentifier,
     }
 
     qCInfo(lcActivity) << "Surfaced bundle-exclusion in activity view for" << fileName << "in domain" << domainIdentifier;
+}
+
+void User::slotFileProviderInsufficientQuotaForItem(const QString &domainIdentifier, const QString &relativePath, const QString &fileName, qint64 fileBytes, qint64 availableBytes)
+{
+    const auto reportedAccount = AccountManager::instance()->accountFromFileProviderDomainIdentifier(domainIdentifier);
+    if (!reportedAccount || reportedAccount != _account) {
+        return;
+    }
+
+    // The system retries failing createItem/modifyItem operations transparently, so a single
+    // user-visible refusal can produce many `reportInsufficientQuotaForItem` calls. Dedupe
+    // per (domain, relativePath) so the activity list shows one row per affected file rather
+    // than one per retry. See https://github.com/nextcloud/desktop/issues/9598.
+    const auto dedupKey = domainIdentifier + QLatin1Char('|') + relativePath;
+    if (_reportedQuotaItems.contains(dedupKey)) {
+        qCDebug(lcActivity) << "Suppressing duplicate quota-item entry for" << relativePath << "in domain" << domainIdentifier;
+        return;
+    }
+    _reportedQuotaItems.insert(dedupKey);
+
+    Activity activity;
+    activity._type = Activity::SyncFileItemType;
+    activity._syncFileItemStatus = SyncFileItem::DetailError;
+    activity._subject = tr("“%1” was not synchronized").arg(fileName);
+    if (fileBytes >= 0 && availableBytes >= 0) {
+        activity._message = tr("Insufficient storage on the server. The file requires %1 but only %2 are available.")
+            .arg(Utility::octetsToString(fileBytes), Utility::octetsToString(availableBytes));
+    } else if (fileBytes >= 0) {
+        activity._message = tr("Insufficient storage on the server. The file requires %1.")
+            .arg(Utility::octetsToString(fileBytes));
+    } else {
+        activity._message = tr("Insufficient storage on the server.");
+    }
+    activity._link = relativePath;
+    activity._file = fileName; // also stashed so the retry sweep can recompute the activity id
+    const auto currentDateTime = QDateTime::currentDateTime();
+    activity._dateTime = QDateTime::fromString(currentDateTime.toString(), Qt::ISODate);
+    activity._expireAtMsecs = currentDateTime.addMSecs(activityDefaultExpirationTimeMsecs).toMSecsSinceEpoch();
+    activity._accName = _account->account()->displayName();
+    activity._folder = domainIdentifier; // payload used by the per-domain sweep on retry click
+    activity._id = ActivityListModel::fileProviderQuotaItemActivityId(domainIdentifier, relativePath, fileName);
+
+    _activityModel->addErrorToActivityList(activity, ActivityListModel::ErrorType::SyncError);
+
+    if (!_expiredActivitiesCheckTimer.isActive()) {
+        _expiredActivitiesCheckTimer.start(expiredActivitiesCheckIntervalMsecs);
+    }
+
+    qCInfo(lcActivity) << "Surfaced insufficient-quota item in activity view for" << fileName << "in domain" << domainIdentifier;
+}
+
+void User::slotFileProviderInsufficientQuotaSummary(const QString &domainIdentifier)
+{
+    const auto reportedAccount = AccountManager::instance()->accountFromFileProviderDomainIdentifier(domainIdentifier);
+    if (!reportedAccount || reportedAccount != _account) {
+        return;
+    }
+
+    if (_reportedQuotaSummaryDomains.contains(domainIdentifier)) {
+        qCDebug(lcActivity) << "Suppressing duplicate quota-summary entry for domain" << domainIdentifier;
+        return;
+    }
+    _reportedQuotaSummaryDomains.insert(domainIdentifier);
+
+    Activity activity;
+    activity._type = Activity::SyncResultType;
+    activity._syncResultStatus = SyncResult::Error;
+    activity._subject = tr("There is insufficient space available on the server for some uploads.");
+    // Surface the file provider domain's user-visible root path so the activity entry shows
+    // the affected folder, matching the layout classic sync produces in `User::slotAddError`
+    // where `activity._message = folderInstance->shortGuiLocalPath()`.
+    const auto domainPath = Mac::FileProvider::instance()->domainManager()->userVisibleUrlForDomainIdentifier(domainIdentifier);
+    activity._message = !domainPath.isEmpty() ? domainPath : domainIdentifier;
+    activity._link = domainIdentifier; // payload for the retry handler
+
+    const auto currentDateTime = QDateTime::currentDateTime();
+    activity._dateTime = QDateTime::fromString(currentDateTime.toString(), Qt::ISODate);
+    activity._expireAtMsecs = currentDateTime.addMSecs(activityDefaultExpirationTimeMsecs).toMSecsSinceEpoch();
+    activity._accName = _account->account()->displayName();
+    activity._folder = domainIdentifier; // makes the summary sweepable by the same per-domain key
+    activity._id = ActivityListModel::fileProviderQuotaSummaryActivityId(domainIdentifier);
+
+    ActivityLink retry;
+    retry._label = tr("Retry all uploads");
+    retry._link = domainIdentifier;
+    retry._verb = ActivityLink::FileProviderRetryUploadsVerb;
+    retry._primary = true;
+    activity._links.append(retry);
+
+    _activityModel->addErrorToActivityList(activity, ActivityListModel::ErrorType::SyncError);
+
+    if (!_expiredActivitiesCheckTimer.isActive()) {
+        _expiredActivitiesCheckTimer.start(expiredActivitiesCheckIntervalMsecs);
+    }
+
+    qCInfo(lcActivity) << "Surfaced insufficient-quota summary in activity view for domain" << domainIdentifier;
+}
+
+void User::slotFileProviderRetryUploads(const QString &domainIdentifier)
+{
+    qCInfo(lcActivity) << "User requested retry of file provider uploads for domain" << domainIdentifier;
+
+    // Ask the system to drop the cached `.insufficientQuota` error against affected items
+    // and re-enumerate the working set so retries kick in. Per Apple's documentation for
+    // `signalErrorResolved(_:completionHandler:)`, this is the correct way to clear a
+    // previously-returned error before requesting a re-evaluation.
+    Mac::FileProvider::instance()->domainManager()->clearInsufficientQuotaErrorAndEnumerate(domainIdentifier);
+
+    // Re-arm dedupe so the next quota event for this domain produces a fresh summary entry
+    // and fresh per-item entries (one per affected file, not one per retry).
+    _reportedQuotaSummaryDomains.remove(domainIdentifier);
+    const auto domainPrefix = domainIdentifier + QLatin1Char('|');
+    QMutableSetIterator<QString> it(_reportedQuotaItems);
+    while (it.hasNext()) {
+        if (it.next().startsWith(domainPrefix)) {
+            it.remove();
+        }
+    }
 }
 #endif
 
@@ -1776,7 +1903,28 @@ void User::slotAssistantRequestError(const QString &context, int statusCode)
 
 void User::forceSyncNow() const
 {
-    FolderMan::instance()->forceSyncForFolder(getFolder());
+    if (const auto folder = getFolder()) {
+        FolderMan::instance()->forceSyncForFolder(folder);
+        return;
+    }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    if (hasFileProvider() && _account && _account->account()) {
+        const auto fileProvider = Mac::FileProvider::instance();
+        if (fileProvider && fileProvider->domainManager()) {
+            // No classic Folder exists for this account — it is managed by the macOS File
+            // Provider Extension. Per Apple's documented pattern, on-demand sync is requested
+            // by signalling the working-set enumerator; the OS then drives the extension's
+            // `enumerator(for: .workingSet)` → `enumerateChanges()` flow, which performs the
+            // actual remote reconciliation. See nextcloud/desktop#9909.
+            fileProvider->domainManager()->signalEnumeratorChanged(_account->account().data());
+            return;
+        }
+    }
+#endif
+
+    qCWarning(lcActivity) << "forceSyncNow: no folder and no file provider domain to sync for"
+                          << (_account ? _account->account()->displayName() : QStringLiteral("<no account>"));
 }
 
 void User::slotAccountCapabilitiesChangedRefreshGroupFolders()

@@ -455,4 +455,90 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
             "A sibling outside the pinned folder must not inherit keepDownloaded."
         )
     }
+
+    ///
+    /// End-to-end regression for #9923: a paginated read that lands on
+    /// already-pinned descendants must not silently clear their flag. Before
+    /// the fix, the bulk write at the end of
+    /// ``Enumerator.handlePagedReadResults`` used ``addItemMetadata`` which
+    /// replaces rows wholesale via Realm's `update: .all`, dropping every
+    /// local-only field — including ``keepDownloaded``. The user's pin walk
+    /// runs without pagination, but the OS-driven `enumerateItems` that
+    /// follows uses pagination, so a recently-pinned subtree was reliably
+    /// undone.
+    ///
+    func testPaginatedReadDoesNotClobberRecursivelyPinnedDescendants() throws {
+        // Pin the seeded tree the way `Item.set(keepDownloaded:domain:)` does.
+        let folderMetadata = try seedTree()
+        _ = try Self.dbManager.set(keepDownloaded: true, for: folderMetadata)
+        for child in Self.dbManager.childItems(directoryMetadata: folderMetadata) {
+            _ = try Self.dbManager.set(keepDownloaded: true, for: child)
+        }
+
+        // Build NKFiles with ocIds matching the seeded rows so the
+        // preservation lookup hits. The `MockRemoteItem` parent chain
+        // provides the right `serverUrl` on each `NKFile`.
+        let parent = MockRemoteItem(
+            identifier: "files-parent",
+            name: "files",
+            remotePath: "https://cloud.example.com/files",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        let folderMock = MockRemoteItem(
+            identifier: "folder-1",
+            name: "documents",
+            remotePath: "https://cloud.example.com/files/documents",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        folderMock.parent = parent
+        let directChildMock = MockRemoteItem(
+            identifier: "direct-child-file",
+            name: "report.pdf",
+            remotePath: "https://cloud.example.com/files/documents/report.pdf",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        directChildMock.parent = folderMock
+        let subfolderMock = MockRemoteItem(
+            identifier: "subfolder-1",
+            name: "nested",
+            remotePath: "https://cloud.example.com/files/documents/nested",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        subfolderMock.parent = folderMock
+
+        // Simulate the page-0 paginated PROPFIND response Finder would issue
+        // for the pinned folder.
+        let (_, error) = Enumerator.handlePagedReadResults(
+            files: [folderMock.toNKFile(), directChildMock.toNKFile(), subfolderMock.toNKFile()],
+            pageIndex: 0,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(error)
+
+        // Both directly re-enumerated descendants and the deeper file
+        // (untouched by this PROPFIND but pinned in step 1) must remain
+        // pinned after the paginated overwrite.
+        for ocId in ["folder-1", "direct-child-file", "subfolder-1", "deep-file"] {
+            let stored = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: ocId))
+            XCTAssertTrue(
+                stored.keepDownloaded,
+                "\(ocId) must remain pinned after a paginated read overwrites the row (#9923)."
+            )
+        }
+    }
 }

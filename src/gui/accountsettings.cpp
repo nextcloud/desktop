@@ -60,14 +60,6 @@
 
 using namespace Qt::StringLiterals;
 
-#ifdef Q_OS_WIN
-    // "light" looks too bright on dark mode on Windows only
-    #define BACKGROUND_PALETTE "alternate-base"
-#else
-    // ...and "alternate-base" looks too bright on macOS only.  On Linux/Plasma either one looked fine ...
-    #define BACKGROUND_PALETTE "light"
-#endif
-
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "macOS/fileprovider.h"
 #endif
@@ -190,24 +182,24 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     const auto delegate = new FolderStatusDelegate;
     delegate->setParent(this);
 
-    setStyleSheet("QWidget#syncFoldersPanelContents, QWidget#connectionSettingsPanelContents, QWidget#fileProviderPanelContents { background: palette(" BACKGROUND_PALETTE "); }"_L1);
-    _ui->syncFoldersPanelContents->setAutoFillBackground(true);
-    _ui->syncFoldersPanelContents->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->syncFoldersPanelContents->setAutoFillBackground(false);
+    _ui->syncFoldersPanelContents->setAttribute(Qt::WA_StyledBackground, false);
     _ui->syncFoldersPanelContents->setContentsMargins(0, 0, 0, 0);
-    _ui->fileProviderPanelContents->setAutoFillBackground(true);
-    _ui->fileProviderPanelContents->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->fileProviderPanelContents->setAutoFillBackground(false);
+    _ui->fileProviderPanelContents->setAttribute(Qt::WA_StyledBackground, false);
     _ui->fileProviderPanelContents->setContentsMargins(0, 0, 0, 0);
-    _ui->connectionSettingsPanelContents->setAutoFillBackground(true);
-    _ui->connectionSettingsPanelContents->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->connectionSettingsPanelContents->setAutoFillBackground(false);
+    _ui->connectionSettingsPanelContents->setAttribute(Qt::WA_StyledBackground, false);
     _ui->connectionSettingsPanelContents->setContentsMargins(0, 0, 0, 0);
 
     // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
     connect(this, &AccountSettings::styleChanged, delegate, &FolderStatusDelegate::slotStyleChanged);
 
     _ui->_folderList->header()->hide();
-    _ui->_folderList->setAutoFillBackground(true);
-    _ui->_folderList->setAttribute(Qt::WA_StyledBackground, true);
-    _ui->_folderList->setStyleSheet(QStringLiteral("QTreeView { background: palette(" BACKGROUND_PALETTE "); }"));
+    _ui->_folderList->setAutoFillBackground(false);
+    _ui->_folderList->setAttribute(Qt::WA_StyledBackground, false);
+    _ui->_folderList->viewport()->setAutoFillBackground(false);
+    _ui->_folderList->viewport()->setAttribute(Qt::WA_StyledBackground, false);
     _ui->_folderList->setItemDelegate(delegate);
     _ui->_folderList->setModel(_model);
     _ui->_folderList->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
@@ -216,21 +208,27 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     new ToolTipUpdater(_ui->_folderList);
 
 #if defined(BUILD_FILE_PROVIDER_MODULE)
-    const auto fileProviderPanelContents = _ui->fileProviderPanelContents;
-    const auto fpSettingsLayout = new QVBoxLayout(fileProviderPanelContents);
-    const auto fpAccountUserIdAtHost = _accountState->account()->userIdAtHostWithPort();
-    const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
-    const auto fpSettingsWidget = fpSettingsController->settingsViewWidget(fpAccountUserIdAtHost, fileProviderPanelContents,
-                                                                           QQuickWidget::SizeRootObjectToView);
-    fpSettingsLayout->setContentsMargins(0, 0, 0, 0);
-    fpSettingsLayout->setSpacing(0);
-    
-    fpSettingsWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    if (const auto fpSettingsWidgetLayout = fpSettingsWidget->layout()) {
-        fpSettingsWidgetLayout->setContentsMargins(0, 0, 0, 0);
+    if (Mac::FileProvider::available()) {
+        const auto fileProviderPanelContents = _ui->fileProviderPanelContents;
+        const auto fpSettingsLayout = new QVBoxLayout(fileProviderPanelContents);
+        const auto fpAccountUserIdAtHost = _accountState->account()->userIdAtHostWithPort();
+        const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
+        const auto fpSettingsWidget = fpSettingsController->settingsViewWidget(fpAccountUserIdAtHost, fileProviderPanelContents,
+                                                                               QQuickWidget::SizeRootObjectToView);
+        fpSettingsLayout->setContentsMargins(0, 0, 0, 0);
+        fpSettingsLayout->setSpacing(0);
+
+        fpSettingsWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        if (const auto fpSettingsWidgetLayout = fpSettingsWidget->layout()) {
+            fpSettingsWidgetLayout->setContentsMargins(0, 0, 0, 0);
+        }
+        fpSettingsLayout->addWidget(fpSettingsWidget, 1);
+        fileProviderPanelContents->setLayout(fpSettingsLayout);
+    } else {
+        // macOS 13 Ventura: the file provider feature is unsupported there.
+        // This branch can be removed once Ventura is no longer supported.
+        _ui->fileProviderPanel->setVisible(false);
     }
-    fpSettingsLayout->addWidget(fpSettingsWidget, 1);
-    fileProviderPanelContents->setLayout(fpSettingsLayout);
 #else
     _ui->fileProviderPanel->setVisible(false);
 #endif

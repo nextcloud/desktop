@@ -202,6 +202,22 @@ public slots:
     /// account's activity view. Connected from `Mac::FileProviderService::itemExcludedFromSync`.
     /// Tracked at https://github.com/nextcloud/desktop/issues/9827.
     void slotFileProviderItemExcludedFromSync(const QString &domainIdentifier, const QString &relativePath, const QString &fileName, const QString &reason);
+
+    /// Surface a single item refused by the server quota as a per-item entry in the activity
+    /// view. Connected from `Mac::FileProviderService::insufficientQuotaForItem`.
+    /// See https://github.com/nextcloud/desktop/issues/9598.
+    void slotFileProviderInsufficientQuotaForItem(const QString &domainIdentifier, const QString &relativePath, const QString &fileName, qint64 fileBytes, qint64 availableBytes);
+
+    /// Surface a per-folder summary entry for an insufficient-quota event in the activity
+    /// view. Carries a "Retry all uploads" button. Connected from
+    /// `Mac::FileProviderService::insufficientQuotaSummary`.
+    void slotFileProviderInsufficientQuotaSummary(const QString &domainIdentifier);
+
+    /// Trigger when the user clicks "Retry all uploads" on a per-folder quota summary.
+    /// Calls `NSFileProviderManager.signalErrorResolved(_:)` followed by
+    /// `signalEnumerator(for: .workingSet)` for the affected domain so the system retries
+    /// previously refused uploads.
+    void slotFileProviderRetryUploads(const QString &domainIdentifier);
 #endif
 
 private slots:
@@ -259,6 +275,18 @@ private:
     /// Rate-limit per relativePath so repeated bundle drops don't spam the activity view.
     /// Cleared by the existing `_expiredActivitiesCheckTimer` tick.
     QSet<QString> _reportedExcludedBundles;
+
+    /// Per-domain dedup for the file provider quota summary entry. Cleared on
+    /// "Retry all uploads" click so a fresh quota event re-emits the summary.
+    QSet<QString> _reportedQuotaSummaryDomains;
+
+    /// Per-(domain, relativePath) dedup for the file provider quota item entries. Without
+    /// this, every system-driven retry of the failing createItem/modifyItem produces a new
+    /// "X was not synchronized" row in the activity list. Keys are
+    /// `domainIdentifier + "|" + relativePath`. Cleared wholesale on the existing expiry
+    /// timer tick (so once an entry naturally expires it can re-surface) and per-domain on
+    /// "Retry all uploads" click.
+    QSet<QString> _reportedQuotaItems;
 #endif
     QMimeDatabase _mimeDb;
 

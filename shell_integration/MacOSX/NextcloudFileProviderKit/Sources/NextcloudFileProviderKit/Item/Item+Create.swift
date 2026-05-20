@@ -16,6 +16,7 @@ public extension Item {
         itemTemplate: NSFileProviderItem?,
         remotePath: String,
         parentItemIdentifier: NSFileProviderItemIdentifier,
+        parentKeepDownloaded: Bool,
         domain: NSFileProviderDomain? = nil,
         account: Account,
         remoteInterface: RemoteInterface,
@@ -95,6 +96,7 @@ public extension Item {
         }
 
         directory.downloaded = true
+        directory.keepDownloaded = parentKeepDownloaded
         dbManager.addItemMetadata(directory)
 
         let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: directory.contentType)
@@ -118,12 +120,14 @@ public extension Item {
         localPath: String,
         itemTemplate: NSFileProviderItem,
         parentItemRemotePath: String,
+        parentKeepDownloaded: Bool,
         domain: NSFileProviderDomain? = nil,
         account: Account,
         remoteInterface: RemoteInterface,
         forcedChunkSize: Int?,
         progress: Progress,
         dbManager: FilesDatabaseManager,
+        appProxy: (any AppProtocol)? = nil,
         log: any FileProviderLogging
     ) async -> (Item?, Error?) {
         let logger = FileProviderLogger(category: "Item", log: log)
@@ -162,13 +166,23 @@ public extension Item {
                     received ocId: \(ocId ?? "empty")
                 """
             )
-            return await (nil, error.fileProviderError(
-                handlingCollisionAgainstItemInRemotePath: remotePath,
-                dbManager: dbManager,
-                remoteInterface: remoteInterface,
-                log: log
-            ))
+
+            // Surface the quota refusal in the main app's activity view (per-item entry +
+            // per-folder summary with a "Retry all uploads" button), matching the parity
+            // classic sync provides via `User::slotAddError(InsufficientRemoteStorage)` and
+            // `User::slotAddErrorToGui`. See nextcloud/desktop#9598.
+            if error.isGoingOverQuotaError {
+                let relativePath = remotePath.replacingOccurrences(of: account.davFilesUrl, with: "")
+                let fileBytes = (try? FileManager.default.attributesOfItem(atPath: localPath)[.size] as? Int64) ?? itemTemplate.documentSize??.int64Value
+                InsufficientQuotaReporter.reportItem(relativePath: relativePath, fileName: itemTemplate.filename, fileBytes: fileBytes, availableBytes: nil, domainIdentifier: domain?.identifier, appProxy: appProxy, log: log)
+                await InsufficientQuotaReporter.reportSummary(domainIdentifier: domain?.identifier, appProxy: appProxy, log: log)
+            }
+
+            return await (nil, error.fileProviderError(handlingCollisionAgainstItemInRemotePath: remotePath, dbManager: dbManager, remoteInterface: remoteInterface, log: log))
         }
+
+        // Re-arm the per-domain dedup so a future quota event can surface a fresh summary.
+        await InsufficientQuotaReporter.clearSummaryDedup(domainIdentifier: domain?.identifier)
 
         logger.info(
             """
@@ -203,8 +217,13 @@ public extension Item {
             account: account.ncKitAccount,
             classFile: "", // Placeholder as not set in original code
             contentType: contentType,
-            creationDate: Date(), // Default as not set in original code
-            date: date ?? Date(),
+            // Prefer the locally-known dates the system handed us (and which we
+            // just sent to the server) over the second-precision values echoed
+            // back in the PUT response. Aligning these with what's on disk keeps
+            // NSDocument-style editors from seeing the file as "changed by
+            // another application" right after they save it.
+            creationDate: (itemTemplate.creationDate as? Date) ?? date ?? Date(),
+            date: (itemTemplate.contentModificationDate as? Date) ?? date ?? Date(),
             directory: false,
             e2eEncrypted: false, // Default as not set in original code
             etag: etag ?? "",
@@ -222,6 +241,7 @@ public extension Item {
             status: Status.normal.rawValue,
             downloaded: true,
             uploaded: true,
+            keepDownloaded: parentKeepDownloaded,
             urlBase: account.serverUrl,
             user: account.username,
             userId: account.id
@@ -285,9 +305,21 @@ public extension Item {
         let parentItemIdentifier = itemTemplate.parentItemIdentifier
         var parentItemRemotePath: String
         var parentItemRelativePath: String
+        // Inherit the parent's "Always keep downloaded" flag so a newly-created
+        // descendant displays the same Finder overlay decoration and exposes the
+        // same context-menu actions as the siblings the recursive enable in
+        // `Item.set(keepDownloaded:domain:)` already pinned. Checking only the
+        // immediate parent is sufficient because that recursive enable sets the
+        // flag on every then-known descendant of the pinned ancestor.
+        let parentKeepDownloaded: Bool
 
-        // TODO: Deduplicate
         if parentItemIdentifier == .rootContainer {
+            // Mirrors the lookup `Item.rootContainer(...)` uses to merge persisted
+            // per-item toggles onto the synthesised root metadata: the root
+            // container can itself be pinned.
+            parentKeepDownloaded = dbManager
+                .itemMetadata(ocId: NSFileProviderItemIdentifier.rootContainer.rawValue)?
+                .keepDownloaded ?? false
             parentItemRemotePath = account.davFilesUrl
             parentItemRelativePath = "/"
         } else {
@@ -303,6 +335,7 @@ public extension Item {
                 )
                 return (nil, NSFileProviderError(.cannotSynchronize))
             }
+            parentKeepDownloaded = parentItemMetadata.keepDownloaded
             parentItemRemotePath = parentItemMetadata.remotePath()
             parentItemRelativePath = parentItemRemotePath.replacingOccurrences(
                 of: account.davFilesUrl, with: ""
@@ -381,6 +414,7 @@ public extension Item {
                 itemTemplate: itemTemplate,
                 remotePath: newServerUrlFileName,
                 parentItemIdentifier: parentItemIdentifier,
+                parentKeepDownloaded: parentKeepDownloaded,
                 domain: domain,
                 account: account,
                 remoteInterface: remoteInterface,
@@ -395,12 +429,14 @@ public extension Item {
             localPath: fileNameLocalPath,
             itemTemplate: itemTemplate,
             parentItemRemotePath: parentItemRemotePath,
+            parentKeepDownloaded: parentKeepDownloaded,
             domain: domain,
             account: account,
             remoteInterface: remoteInterface,
             forcedChunkSize: forcedChunkSize,
             progress: progress,
             dbManager: dbManager,
+            appProxy: appProxy,
             log: log
         )
     }

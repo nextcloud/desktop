@@ -237,7 +237,7 @@ bool OwncloudWizard::needsToAcceptTermsOfService() const
 bool OwncloudWizard::useVirtualFileSyncByDefault() const
 {
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    return true;
+    return Mac::FileProvider::available();
 #else
     return false;
 #endif

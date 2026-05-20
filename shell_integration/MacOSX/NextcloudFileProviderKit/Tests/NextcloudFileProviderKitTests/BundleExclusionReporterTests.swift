@@ -30,6 +30,10 @@ private final class CapturingAppProxy: NSObject, AppProtocol {
         presentedFileActions.append(fileId)
     }
 
+    /// Unused by these tests but required for protocol conformance — see
+    /// `FileProviderExtensionOpenInBrowserTests` for the dedicated coverage.
+    func openItemInBrowser(_: String, remoteItemPath _: String, forDomainIdentifier _: String) {}
+
     func reportSyncStatus(_ status: String, forDomainIdentifier _: String) {
         reportedSyncStatuses.append(status)
     }
@@ -49,6 +53,18 @@ private final class CapturingAppProxy: NSObject, AppProtocol {
             )
         )
     }
+
+    /// Unused by these tests but required for protocol conformance — see
+    /// `InsufficientQuotaReporterTests` for the dedicated coverage.
+    func reportInsufficientQuota(
+        forItem _: String,
+        fileName _: String,
+        fileBytes _: NSNumber?,
+        availableBytes _: NSNumber?,
+        forDomainIdentifier _: String
+    ) {}
+
+    func reportInsufficientQuotaSummary(forDomainIdentifier _: String) {}
 }
 
 final class BundleExclusionReporterTests: XCTestCase {

@@ -794,43 +794,43 @@ Oota kuni sünkroniseerimine lõppeb ja seejärel krüpti.</translation>
         <translation>Eemalda kausta sünkroniseerimine</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="962"/>
+        <location filename="../src/gui/accountsettings.cpp" line="968"/>
         <source>Grant access to sync folder</source>
         <translation>Luba ligipääs sünkroonimiskaustale</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="974"/>
+        <location filename="../src/gui/accountsettings.cpp" line="980"/>
         <source>Access Error</source>
         <translation>Ligipääsuviga</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="975"/>
+        <location filename="../src/gui/accountsettings.cpp" line="981"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
         <translation>Valitud kaustale ligipääsu tagamine ei õnnestunud. Palun proovi uuesti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="983"/>
+        <location filename="../src/gui/accountsettings.cpp" line="989"/>
         <source>Wrong Folder</source>
         <translation>Vale kaust</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="984"/>
+        <location filename="../src/gui/accountsettings.cpp" line="990"/>
         <source>Please select the original sync folder: %1</source>
         <translation>Palun vali algne sünkroonimiskaust: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="993"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1002"/>
+        <location filename="../src/gui/accountsettings.cpp" line="999"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1008"/>
         <source>Bookmark Error</source>
         <translation>Järjehoidjaga seotud viga</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="994"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1000"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
         <translation>Kaustale turvajärjehoidja lisamine ei õnnestunud. Palun proovi uuesti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1003"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1009"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
         <translation>Kaustale turvajärjehoidja tuvastamine ei õnnestunud. Palun proovi uuesti.</translation>
     </message>
@@ -848,9 +848,9 @@ The only advantage of disabling virtual file support is that the selective sync 
 This action will abort any currently running synchronization.</source>
         <translation>Selle tegevusega lülitad välja virtuaalsete failide toe. Mistõttu kõik kaustad, kus seni kehtis „Saadaval vaid võrgus“ tunnus kuuluvad kohesele allalaadimisele.
 
-Ainus eelis virtuaalsete failide toe väljalülitamisel on see, et valikuline sünkroniseerimine muutub jälle võimalikuks.
+Ainus eelis virtuaalsete failide toe väljalülitamisel on see, et valikuline sünkroonimine muutub jälle võimalikuks.
 
-Samuti katkevad kõik hetkel toimivad sünkroniseerimised.</translation>
+Samuti katkevad kõik hetkel toimivad sünkroonimised.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1008"/>
@@ -908,7 +908,7 @@ Samuti katkevad kõik hetkel toimivad sünkroniseerimised.</translation>
         <translation>%1 kasutusel</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1422"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1428"/>
         <source>Connected to %1 (%2).</source>
         <translation>Ühendatud serveriga %1 (%2).</translation>
     </message>
@@ -933,7 +933,7 @@ Samuti katkevad kõik hetkel toimivad sünkroniseerimised.</translation>
         <translation>See kasutajakonto võimaldab läbiva krüptimise kasutamist, aga ta peab olema esmalt seadistatud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1858"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1864"/>
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
         <translation>Virtuaalsete failide lõiming veel ei toeta läbivat krüptimist.</translation>
     </message>
@@ -3070,7 +3070,7 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="241"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation>Kuna kasutusel on süsteemiülene automaatne käivitud, siis rakenduse automaatset käivitamist sisselogimisel ei saa välja lülitada.</translation>
+        <translation>Kuna kasutusel on süsteemiülene automaatne käivitus, siis rakenduse automaatset käivitamist sisselogimisel ei saa välja lülitada.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="376"/>
@@ -4191,7 +4191,7 @@ Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun
         <translation>Sümbollingid ei ole sünkroonimisel toetatud.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="396"/>
+        <location filename="../src/libsync/discovery.cpp" line="395"/>
         <source>File is locked by another application.</source>
         <translation>Fail on lukustatud muu rakenduse poolt.</translation>
     </message>
@@ -5798,9 +5798,30 @@ Veateade serveri päringuvastuses: %2</translation>
         <translation><numerusform>%n teavitus</numerusform><numerusform>%n teavitust</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="632"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="641"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="680"/>
         <source>“%1” was not synchronized</source>
         <translation>„%1“ jäi sünkroonimata</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="682"/>
+        <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
+        <translation>Serveris pole piisavalt andmeruumi. See fail vajab %1, aga vaid %2 on saadaval.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="685"/>
+        <source>Insufficient storage on the server. The file requires %1.</source>
+        <translation>Serveris pole piisavalt andmeruumi. See fail vajab %1.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="688"/>
+        <source>Insufficient storage on the server.</source>
+        <translation>Serveris pole piisavalt andmeruumi.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
+        <source>There is insufficient space available on the server for some uploads.</source>
+        <translation>Mõnede üleslaadimiste jaoks pole serveris piisavalt vaba andmeruumi.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="657"/>
@@ -5857,7 +5878,7 @@ Veateade serveri päringuvastuses: %2</translation>
         <translation>Saadan sinu päringut…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1576"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1703"/>
         <source>Sending your request …</source>
         <translation>Saadan sinu päringut…</translation>
     </message>
@@ -6240,6 +6261,11 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="460"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFS %1 jaoks: Tekkis viga.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="489"/>
+        <source>macOS VFS for %1: An error was encountered.</source>
+        <translation>macOS-i VFS %1 jaoks: Tekkis viga.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="526"/>

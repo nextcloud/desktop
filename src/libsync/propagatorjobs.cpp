@@ -349,7 +349,10 @@ void PropagateLocalRename::start()
     const auto targetFile = propagator()->fullLocalPath(_item->_renameTarget);
     const auto originalFile = propagator()->fullLocalPath(_item->_originalFile);
 
-    const auto fileAlreadyMoved = (!FileSystem::fileExists(originalFile) || !FileSystem::fileExists(existingFile))&& FileSystem::fileExists(targetFile);
+    const auto origExists = FileSystem::fileExists(originalFile);
+    const auto existingExists = FileSystem::fileExists(existingFile);
+    const auto targetExists = FileSystem::fileExists(targetFile);
+    const auto fileAlreadyMoved = (!origExists || !existingExists) && targetExists;
     auto pinState = OCC::PinState::Unspecified;
     if (!fileAlreadyMoved) {
         auto pinStateResult = vfs->pinState(propagator()->adjustRenamedPath(_item->_file));
@@ -361,9 +364,9 @@ void PropagateLocalRename::start()
     // if the file is a file underneath a moved dir, the _item->file is equal
     // to _item->renameTarget and the file is not moved as a result.
     qCDebug(lcPropagateLocalRename) << _item->_file << _item->_renameTarget << _item->_originalFile << previousNameInDb << (fileAlreadyMoved ? "original file has already moved" : "original file is still there");
-    qCDebug(lcPropagateLocalRename()) << (FileSystem::fileExists(originalFile) ? "original file exists" : "original file is missing") << originalFile << _item->_originalFile;
-    qCDebug(lcPropagateLocalRename()) << (FileSystem::fileExists(existingFile) ? "existing file exists" : "existing file is missing") << existingFile << previousNameInDb;
-    Q_ASSERT(FileSystem::fileExists(propagator()->fullLocalPath(_item->_originalFile)) || FileSystem::fileExists(existingFile));
+    qCDebug(lcPropagateLocalRename()) << (origExists ? "original file exists" : "original file is missing") << originalFile << _item->_originalFile;
+    qCDebug(lcPropagateLocalRename()) << (existingExists ? "existing file exists" : "existing file is missing") << existingFile << previousNameInDb;
+    Q_ASSERT(origExists || existingExists);
     if (_item->_file != _item->_renameTarget) {
         propagator()->reportProgress(*_item, 0);
         qCDebug(lcPropagateLocalRename) << "MOVE " << existingFile << " => " << targetFile;

@@ -281,15 +281,20 @@ void SyncStatusSummary::onFileProviderDomainSyncStateChanged(const AccountPtr &a
     switch (state) {
     case SyncResult::Success:
     case SyncResult::SyncPrepare:
-        // Success should only be shown if all folders were fine
+        // The domain is healthy again, so it no longer counts towards the "some files
+        // couldn't be synced" header.
         _fileProviderDomainsWithErrors.erase(account->userIdAtHostWithPort());
         break;
     case SyncResult::Error:
     case SyncResult::SetupError:
     case SyncResult::Problem:
     case SyncResult::Undefined:
-        _fileProviderDomainsWithErrors.erase(account->userIdAtHostWithPort());
-        state = SyncResult::Success;
+        // Mark this domain as failing so `setSyncState`'s `Success` branch correctly gates
+        // the "All synced!" header on `_fileProviderDomainsWithErrors.empty()`. The previous
+        // inversion erased the domain and forced `state = Success`, which is why the header
+        // showed "Everything synchronized!" while the tray icon was red. See
+        // https://github.com/nextcloud/desktop/issues/9598.
+        _fileProviderDomainsWithErrors.insert(account->userIdAtHostWithPort());
         break;
     case SyncResult::SyncRunning:
     case SyncResult::NotYetStarted:
@@ -297,7 +302,7 @@ void SyncStatusSummary::onFileProviderDomainSyncStateChanged(const AccountPtr &a
     case SyncResult::SyncAbortRequested:
         break;
     }
-        
+
     setSyncState(state);
 }
 #endif

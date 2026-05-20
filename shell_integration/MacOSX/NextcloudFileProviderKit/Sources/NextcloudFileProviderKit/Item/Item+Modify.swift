@@ -102,7 +102,8 @@ public extension Item {
         forcedChunkSize: Int?,
         domain: NSFileProviderDomain?,
         progress: Progress,
-        dbManager: FilesDatabaseManager
+        dbManager: FilesDatabaseManager,
+        appProxy: (any AppProtocol)? = nil
     ) async -> (Item?, Error?) {
         let ocId = itemIdentifier.rawValue
 
@@ -170,15 +171,25 @@ public extension Item {
             metadata.status = Status.uploadError.rawValue
             metadata.sessionError = error.errorDescription
             dbManager.addItemMetadata(metadata)
+
+            // Surface the quota refusal in the main app's activity view (per-item entry +
+            // per-folder summary with a "Retry all uploads" button), matching the parity
+            // classic sync provides via `User::slotAddError(InsufficientRemoteStorage)` and
+            // `User::slotAddErrorToGui`. See nextcloud/desktop#9598.
+            if error.isGoingOverQuotaError {
+                let relativePath = remotePath.replacingOccurrences(of: account.davFilesUrl, with: "")
+                let fileBytes = (try? FileManager.default.attributesOfItem(atPath: newContents.path)[.size] as? Int64) ?? documentSize?.int64Value
+                InsufficientQuotaReporter.reportItem(relativePath: relativePath, fileName: filename, fileBytes: fileBytes, availableBytes: nil, domainIdentifier: domain?.identifier, appProxy: appProxy, log: logger.log)
+                await InsufficientQuotaReporter.reportSummary(domainIdentifier: domain?.identifier, appProxy: appProxy, log: logger.log)
+            }
+
             // Moving should be done before uploading and should catch collisions already, but,
             // it is painless to check here too just in case
-            return await (nil, error.fileProviderError(
-                handlingCollisionAgainstItemInRemotePath: remotePath,
-                dbManager: dbManager,
-                remoteInterface: remoteInterface,
-                log: logger.log
-            ))
+            return await (nil, error.fileProviderError(handlingCollisionAgainstItemInRemotePath: remotePath, dbManager: dbManager, remoteInterface: remoteInterface, log: logger.log))
         }
+
+        // Re-arm the per-domain dedup so a future quota event can surface a fresh summary.
+        await InsufficientQuotaReporter.clearSummaryDedup(domainIdentifier: domain?.identifier)
 
         logger.info(
             """
@@ -201,7 +212,12 @@ public extension Item {
         var newMetadata =
             dbManager.setStatusForItemMetadata(updatedMetadata, status: .normal) ?? SendableItemMetadata(value: updatedMetadata)
 
-        newMetadata.date = date ?? Date()
+        // Prefer the mtime we just handed to the server (and which is on disk)
+        // over the truncated, second-precision value the PUT response carries
+        // in `Last-Modified`. Aligning `metadata.date` with what's on disk keeps
+        // NSDocument-style editors (Xcode, TextEdit, …) from seeing the file as
+        // "changed by another application" right after they save it.
+        newMetadata.date = newContentModificationDate ?? date ?? metadata.date
         newMetadata.etag = etag ?? metadata.etag
         newMetadata.ocId = ocId
         newMetadata.size = size ?? 0
@@ -484,7 +500,8 @@ public extension Item {
                 forcedChunkSize: forcedChunkSize,
                 domain: domain,
                 progress: progress,
-                dbManager: dbManager
+                dbManager: dbManager,
+                appProxy: appProxy
             )
 
             guard contentError == nil, let contentModifiedItem else {

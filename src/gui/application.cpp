@@ -39,6 +39,7 @@
 #include "shellextensionsserver.h"
 #elif defined(Q_OS_MACOS)
 #include "macOS/fileprovider.h"
+#include "macOS/fileprovidersettingscontroller.h"
 #include "macOS/findersyncxpc.h"
 #include "macOS/findersyncservice.h"
 #endif
@@ -496,7 +497,15 @@ Application::Application(int &argc, char **argv)
 
 #if defined(BUILD_FILE_PROVIDER_MODULE)
     Mac::FileProvider::instance();
-    Mac::FileProvider::instance()->configureXPC();
+    if (Mac::FileProvider::available()) {
+        Mac::FileProvider::instance()->configureXPC();
+    } else {
+        // macOS 13 Ventura: instantiating the settings controller triggers the
+        // one-time cleanup that gracefully tears down any pre-existing VFS
+        // domains. The check (and this branch) can be removed once Ventura is
+        // no longer supported.
+        Mac::FileProviderSettingsController::instance();
+    }
 #endif
 
 #if defined(Q_OS_MACOS)
