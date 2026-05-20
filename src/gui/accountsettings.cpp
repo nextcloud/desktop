@@ -1620,7 +1620,12 @@ void AccountSettings::slotHideSelectiveSyncWidget()
 
 void AccountSettings::slotExpandMemoryClicked()
 {
-     QDesktopServices::openUrl(QUrl(tr("https://wl.hidrive.com/easy/0057")));
+    #ifdef STRATO_WL_BUILD
+        QDesktopServices::openUrl(QUrl(QCoreApplication::translate("OCC::Theme", "ExpandMemory-Link_STRATO")));
+    #else
+        QDesktopServices::openUrl(QUrl(QCoreApplication::translate("OCC::Theme", "ExpandMemory-Link")));
+    #endif
+     
 }
 
 void AccountSettings::slotSelectiveSyncChanged(const QModelIndex &topLeft,

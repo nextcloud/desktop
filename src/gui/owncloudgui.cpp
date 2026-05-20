@@ -717,7 +717,11 @@ void ownCloudGui::slotOpenOwnCloud()
 
 void ownCloudGui::slotHelp()
 {
-    QDesktopServices::openUrl(QUrl(Theme::instance()->helpUrl()));
+    #ifdef STRATO_WL_BUILD
+        QDesktopServices::openUrl(QUrl(QCoreApplication::translate("OCC::Theme", "Help-Link_STRATO")));
+    #else
+        QDesktopServices::openUrl(QUrl(QCoreApplication::translate("OCC::Theme", "Help-Link")));
+    #endif
 }
 
 void ownCloudGui::raiseDialog(QWidget *raiseWidget)

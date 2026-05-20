@@ -262,7 +262,12 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     // connect(_ui->legalNoticeButton, &QPushButton::clicked, this, &GeneralSettings::slotShowLegalNotice);
 
     connect(_ui->usageDocumentationButton, &QPushButton::clicked, this, []() {
-        Utility::openBrowser(QUrl(Theme::instance()->helpUrl()));
+        #ifdef STRATO_WL_BUILD
+            Utility::openBrowser(QUrl(QCoreApplication::translate("OCC::Theme", "Help-Link_STRATO")));
+        #else
+            Utility::openBrowser(QUrl(QCoreApplication::translate("OCC::Theme", "Help-Link")));
+        #endif
+        
     });
 
     loadMiscSettings();
@@ -372,22 +377,38 @@ void GeneralSettings::connectToTracking()
 
 void GeneralSettings::slotOpenMoreInformationLink()
 {
-    QDesktopServices::openUrl(QUrl(tr("https://wl.hidrive.com/easy/0007")));
+    #ifdef STRATO_WL_BUILD
+        QDesktopServices::openUrl(QUrl(QCoreApplication::translate("OCC::Theme", "MoreInformation-Link_STRATO")));
+    #else
+        QDesktopServices::openUrl(QUrl(QCoreApplication::translate("OCC::Theme", "MoreInformation-Link")));
+    #endif
 }
 
 void GeneralSettings::slotOpenLegalNoticeLink()
 {
-    QDesktopServices::openUrl(QUrl(tr("https://wl.hidrive.com/easy/0004")));
+    #ifdef STRATO_WL_BUILD
+        QDesktopServices::openUrl(QUrl(QCoreApplication::translate("OCC::Theme", "LegalNotice-Link_STRATO")));
+    #else
+        QDesktopServices::openUrl(QUrl(QCoreApplication::translate("OCC::Theme", "LegalNotice-Link")));
+    #endif
 }
 
 void GeneralSettings::slotOpenOpenSourceLink()
 {
-    QDesktopServices::openUrl(QUrl(tr("https://wl.hidrive.com/easy/0006")));
+    #ifdef STRATO_WL_BUILD
+        QDesktopServices::openUrl(QUrl(QCoreApplication::translate("OCC::Theme", "OpenSource-Link_STRATO")));
+    #else
+        QDesktopServices::openUrl(QUrl(QCoreApplication::translate("OCC::Theme", "OpenSource-Link")));
+    #endif
 }
 
 void GeneralSettings::slotOpenPrivacyLink()
 {
-    QDesktopServices::openUrl(QUrl(tr("https://wl.hidrive.com/easy/0005")));
+    #ifdef STRATO_WL_BUILD
+        QDesktopServices::openUrl(QUrl(QCoreApplication::translate("OCC::Theme", "Privacy-Link_STRATO")));
+    #else
+        QDesktopServices::openUrl(QUrl(QCoreApplication::translate("OCC::Theme", "Privacy-Link")));
+    #endif
 }
 
 QSize GeneralSettings::sizeHint() const
