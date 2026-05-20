@@ -153,6 +153,8 @@ int main(int argc, char **argv)
     // Avoid loading DLLs from the current working directory.
     SetDllDirectory(L"");
     // Ensure bundled QML modules are found when launching from the install directory.
+    // FIXME: confirm the use of currentPath() is intentional here; seems like it
+    // should be based on the executable path instead (to get install directory)?
     qputenv("QML_IMPORT_PATH", (QDir::currentPath() + QStringLiteral("/qml")).toLatin1());
 #endif
 
