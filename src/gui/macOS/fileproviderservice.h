@@ -82,6 +82,21 @@ signals:
     void openItemInBrowserRequested(const QString &fileId, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier);
 
     /**
+     * @brief Emitted when a file provider extension asks the main app to copy the internal link for an item to the user's clipboard.
+     *
+     * The connected slot resolves the per-item private link via `fetchPrivateLinkUrl`,
+     * writes the resulting URL to `QGuiApplication::clipboard()`, and surfaces a
+     * system notification through the existing systray. Mirrors the classic-sync
+     * "Copy internal link" entry exposed by `SocketApi::command_COPY_PRIVATE_LINK`.
+     * See nextcloud/desktop#10024.
+     *
+     * @param fileId The **numeric** server file id (WebDAV `fileid`). Not the ocId.
+     * @param remoteItemPath The server-side path of the item, used for the PROPFIND that resolves the private link.
+     * @param fileProviderDomainIdentifier The file provider domain identifier for the account that owns the item.
+     */
+    void copyInternalLinkRequested(const QString &fileId, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier);
+
+    /**
      * @brief Emitted when a file provider extension reports an item it refused to sync (for now: macOS bundles).
      *
      * Consumers (e.g. `OCC::User`) surface the item in the systray's activity view — the same

@@ -12,6 +12,15 @@ extension NSFileProviderExtensionActionIdentifier {
     }
 
     ///
+    /// Custom action to copy the selected item's Nextcloud internal link to the user's pasteboard.
+    ///
+    /// The raw value must be maintained manually and redundantly in the custom actions of the file provider extension target declared at build time.
+    ///
+    static var copyInternalLink: NSFileProviderExtensionActionIdentifier {
+        NSFileProviderExtensionActionIdentifier("\(prefix)CopyInternalLinkAction")
+    }
+
+    ///
     /// Custom action to evict a materialized item.
     ///
     /// The raw value must be maintained manually and redundantly in the custom actions of the file provider extension target declared at build time.

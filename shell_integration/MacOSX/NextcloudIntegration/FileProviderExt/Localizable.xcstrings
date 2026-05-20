@@ -397,6 +397,18 @@
         }
       }
     },
+    "Copy internal link" : {
+      "comment" : "Context menu item label.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy internal link"
+          }
+        }
+      }
+    },
     "File actions" : {
       "comment" : "Context menu item label.",
       "extractionState" : "manual",

@@ -226,6 +226,19 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             && metadata.uploaded
             && !metadata.fileId.isEmpty
 
+        // Gate the "Copy internal link" context menu action on the same
+        // preconditions as "Open in browser": both actions resolve the same
+        // per-item private link via PROPFIND (with the deprecated
+        // `/index.php/f/<fileId>` URL as fallback), so they share server-side
+        // requirements. A dedicated flag — rather than reusing
+        // `displayOpenInBrowser` — keeps future divergence (e.g. excluding
+        // certain item types from the clipboard but not the browser, or vice
+        // versa) a one-line change. See nextcloud/desktop#10024.
+        userInfoDict["displayCopyInternalLink"] = ![.rootContainer, .trashContainer].contains(itemIdentifier)
+            && !metadata.isLockFileOfLocalOrigin
+            && metadata.uploaded
+            && !metadata.fileId.isEmpty
+
         // https://docs.nextcloud.com/server/latest/developer_manual/client_apis/WebDAV/basic.html
         if metadata.permissions.uppercased().contains("R") /* Shareable */, ![.rootContainer, .trashContainer].contains(itemIdentifier) {
             userInfoDict["displayShare"] = true
