@@ -909,8 +909,6 @@ void Application::parseOptions(const QStringList &options)
         it.next();
     }
 
-    bool shouldExit = false;
-
     // parse options; if help or bad option exit
     while (it.hasNext()) {
         QString option = it.next();
@@ -934,6 +932,7 @@ void Application::parseOptions(const QStringList &options)
         } else if (option == QLatin1String("--background")) {
             _backgroundMode = true;
         } else if (option == QLatin1String("--reverse")) {
+            // FIXME: This is current implemented as a toggle, but help text suggests it should set RTL
             setLayoutDirection(layoutDirection() == Qt::LeftToRight ? Qt::RightToLeft : Qt::LeftToRight);
         } else if (option == QLatin1String("--debug")) {
             _logDebug = true;
@@ -954,7 +953,12 @@ void Application::parseOptions(const QStringList &options)
             }
         } else if (option == QLatin1String("--logexpire")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
-                _logExpire = it.next().toInt();
+                bool ok = false;
+                const auto logExpire = it.next().toInt(&ok);
+                if (!ok) {
+                    showHint("Invalid expiration value passed to --logexpire");
+                }
+                _logExpire = logExpire;
             } else {
                 showHint("Log expiration not specified");
             }
@@ -970,27 +974,29 @@ void Application::parseOptions(const QStringList &options)
         } else if (option == QStringLiteral("--overrideserverurl")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
                 const auto overrideUrl = it.next();
-                const auto isUrlValid = (overrideUrl.startsWith(QStringLiteral("http://")) || overrideUrl.startsWith(QStringLiteral("https://")))
+                const auto isUrlValid =
+                    (overrideUrl.startsWith(QStringLiteral("http://"))
+                     || overrideUrl.startsWith(QStringLiteral("https://")))
                     && QUrl::fromUserInput(overrideUrl).isValid();
                 if (!isUrlValid) {
                     showHint("Invalid URL passed to --overrideserverurl");
-                } else {
-                    _overrideServerUrl = overrideUrl;
                 }
+                _overrideServerUrl = overrideUrl;
             } else {
-                showHint("Invalid URL passed to --overrideserverurl");
+                showHint("Missing value for --overrideserverurl");
             }
         } else if (option == QStringLiteral("--overridelocaldir")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+                // FIXME: validate specified path
                 _overrideLocalDir = it.next();
             } else {
-                showHint("Invalid path passed to --overridelocaldir");
+                showHint("Missing value for --overridelocaldir");
             }
         } else if (option == QStringLiteral("--set-language")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
                 _setLanguage = it.next();
             } else {
-                showHint("Invalid language passed to --set-language");
+                showHint("Missing value for --set-language");
             }
 
         // Special startup handlers
@@ -1002,7 +1008,8 @@ void Application::parseOptions(const QStringList &options)
             _editFileLocallyUrl = QUrl::fromUserInput(option);
             if (!_editFileLocallyUrl.isValid()) {
                 _editFileLocallyUrl.clear();
-                const auto errorParsingLocalFileEditingUrl = QStringLiteral("The supplied url for local file editing '%1' is invalid!").arg(option);
+                const auto errorParsingLocalFileEditingUrl =
+                    QStringLiteral("The supplied url for local file editing '%1' is invalid!").arg(option);
                 qCInfo(lcApplication) << errorParsingLocalFileEditingUrl;
                 showHint(errorParsingLocalFileEditingUrl.toStdString());
             }
