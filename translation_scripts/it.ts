@@ -182,7 +182,11 @@ Should the accounts be imported?</source>
       <translation>Forza ora la sincronizzazione</translation>
     </message>
     <message>
-      <source>https://wl.hidrive.com/easy/0057</source>
+      <source>ExpandMemory-Link</source>
+      <translation>https://wl.hidrive.com/easy/0067</translation>
+    </message>
+    <message>
+      <source>ExpandMemory-Link_STRATO</source>
       <translation>https://wl.hidrive.com/easy/0067</translation>
     </message>
     <message>
@@ -360,22 +364,6 @@ Alternatively, you can restore all deleted files by downloading them from the se
       <translation>disposizioni in materia di protezione dei dati</translation>
     </message>
     <message>
-      <source>https://wl.hidrive.com/easy/0004</source>
-      <translation>https://wl.hidrive.com/easy/0034</translation>
-    </message>
-    <message>
-      <source>https://wl.hidrive.com/easy/0005</source>
-      <translation>https://wl.hidrive.com/easy/0035</translation>
-    </message>
-    <message>
-      <source>https://wl.hidrive.com/easy/0006</source>
-      <translation>https://wl.hidrive.com/easy/0006</translation>
-    </message>
-    <message>
-      <source>https://wl.hidrive.com/easy/0007</source>
-      <translation>https://wl.hidrive.com/easy/0037</translation>
-    </message>
-    <message>
       <source>More Information</source>
       <translation>Ulteriori informazioni</translation>
     </message>
@@ -464,7 +452,11 @@ Items where deletion is allowed will be deleted if they prevent a directory from
   <context>
     <name>OCC::Theme</name>
     <message>
-      <source>easy/0118</source>
+      <source>Help-Link</source>
+      <translation>easy/0138</translation>
+    </message>
+    <message>
+      <source>Help-Link_STRATO</source>
       <translation>easy/0138</translation>
     </message>
     <message>
@@ -474,6 +466,38 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
       <source>Login_URL_STRATO</source>
       <translation>http://id.strato.it</translation>
+    </message>
+    <message>
+      <source>Privacy-Link</source>
+      <translation>https://wl.hidrive.com/easy/0035</translation>
+    </message>
+    <message>
+      <source>Privacy-Link_STRATO</source>
+      <translation>https://wl.hidrive.com/easy/0035</translation>
+    </message>
+    <message>
+      <source>LegalNotice-Link</source>
+      <translation>https://wl.hidrive.com/easy/0034</translation>
+    </message>
+    <message>
+      <source>LegalNotice-Link_STRATO</source>
+      <translation>https://wl.hidrive.com/easy/0034</translation>
+    </message>
+    <message>
+      <source>OpenSource-Link</source>
+      <translation>https://wl.hidrive.com/easy/0006</translation>
+    </message>
+    <message>
+      <source>OpenSource-Link_STRATO</source>
+      <translation>https://wl.hidrive.com/easy/0006</translation>
+    </message>
+    <message>
+      <source>MoreInformation-Link</source>
+      <translation>https://wl.hidrive.com/easy/0037</translation>
+    </message>
+    <message>
+      <source>MoreInformation-Link_STRATO</source>
+      <translation>https://wl.hidrive.com/easy/0037</translation>
     </message>
   </context>
   <context>

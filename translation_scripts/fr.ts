@@ -189,7 +189,11 @@ Doivent-ils être importés ?</translation>
       <translation>Forcer la synchronisation maintenant</translation>
     </message>
     <message>
-      <source>https://wl.hidrive.com/easy/0057</source>
+      <source>ExpandMemory-Link</source>
+      <translation>https://wl.hidrive.com/easy/0057</translation>
+    </message>
+    <message>
+      <source>ExpandMemory-Link_STRATO</source>
       <translation>https://wl.hidrive.com/easy/0057</translation>
     </message>
     <message>
@@ -367,22 +371,6 @@ Vous pouvez également restaurer tous les fichiers supprimés en les télécharg
       <translation>Protection des données</translation>
     </message>
     <message>
-      <source>https://wl.hidrive.com/easy/0004</source>
-      <translation>https://wl.hidrive.com/easy/0024</translation>
-    </message>
-    <message>
-      <source>https://wl.hidrive.com/easy/0005</source>
-      <translation>https://wl.hidrive.com/easy/0025</translation>
-    </message>
-    <message>
-      <source>https://wl.hidrive.com/easy/0006</source>
-      <translation>https://wl.hidrive.com/easy/0006</translation>
-    </message>
-    <message>
-      <source>https://wl.hidrive.com/easy/0007</source>
-      <translation>https://wl.hidrive.com/easy/0027</translation>
-    </message>
-    <message>
       <source>More Information</source>
       <translation>Plus d’informations</translation>
     </message>
@@ -471,7 +459,11 @@ Les objets autorisés à être supprimés le seront s'ils empêchent la suppress
   <context>
     <name>OCC::Theme</name>
     <message>
-      <source>easy/0118</source>
+      <source>Help-Link</source>
+      <translation>easy/0128</translation>
+    </message>
+    <message>
+      <source>Help-Link_STRATO</source>
       <translation>easy/0128</translation>
     </message>
     <message>
@@ -481,6 +473,38 @@ Les objets autorisés à être supprimés le seront s'ils empêchent la suppress
     <message>
       <source>Login_URL_STRATO</source>
       <translation>http://id.strato.fr</translation>
+    </message>
+    <message>
+      <source>Privacy-Link</source>
+      <translation>https://wl.hidrive.com/easy/0025</translation>
+    </message>
+    <message>
+      <source>Privacy-Link_STRATO</source>
+      <translation>https://wl.hidrive.com/easy/0025</translation>
+    </message>
+    <message>
+      <source>LegalNotice-Link</source>
+      <translation>https://wl.hidrive.com/easy/0024</translation>
+    </message>
+    <message>
+      <source>LegalNotice-Link_STRATO</source>
+      <translation>https://wl.hidrive.com/easy/0024</translation>
+    </message>
+    <message>
+      <source>OpenSource-Link</source>
+      <translation>https://wl.hidrive.com/easy/0006</translation>
+    </message>
+    <message>
+      <source>OpenSource-Link_STRATO</source>
+      <translation>https://wl.hidrive.com/easy/0006</translation>
+    </message>
+    <message>
+      <source>MoreInformation-Link</source>
+      <translation>https://wl.hidrive.com/easy/0027</translation>
+    </message>
+    <message>
+      <source>MoreInformation-Link_STRATO</source>
+      <translation>https://wl.hidrive.com/easy/0027</translation>
     </message>
   </context>
   <context>

@@ -182,7 +182,11 @@ Moeten de accounts worden geïmporteerd?</translation>
       <translation>Synchronisatie nu forceren</translation>
     </message>
     <message>
-      <source>https://wl.hidrive.com/easy/0057</source>
+      <source>ExpandMemory-Link</source>
+      <translation>https://wl.hidrive.com/easy/0097</translation>
+    </message>
+    <message>
+      <source>ExpandMemory-Link_STRATO</source>
       <translation>https://wl.hidrive.com/easy/0097</translation>
     </message>
     <message>
@@ -360,22 +364,6 @@ U kunt ook alle verwijderde bestanden herstellen door ze van de server te downlo
       <translation>Gegevensbescherming</translation>
     </message>
     <message>
-      <source>https://wl.hidrive.com/easy/0004</source>
-      <translation>https://wl.hidrive.com/easy/0054</translation>
-    </message>
-    <message>
-      <source>https://wl.hidrive.com/easy/0005</source>
-      <translation>https://wl.hidrive.com/easy/0055</translation>
-    </message>
-    <message>
-      <source>https://wl.hidrive.com/easy/0006</source>
-      <translation>https://wl.hidrive.com/easy/0006</translation>
-    </message>
-    <message>
-      <source>https://wl.hidrive.com/easy/0007</source>
-      <translation>https://wl.hidrive.com/easy/0057</translation>
-    </message>
-    <message>
       <source>More Information</source>
       <translation>Meer informatie</translation>
     </message>
@@ -464,7 +452,11 @@ Objecten die verwijderd mogen worden, worden verwijderd als ze zouden verhindere
   <context>
     <name>OCC::Theme</name>
     <message>
-      <source>easy/0118</source>
+      <source>Help-Link</source>
+      <translation>easy/0108</translation>
+    </message>
+    <message>
+      <source>Help-Link_STRATO</source>
       <translation>easy/0108</translation>
     </message>
     <message>
@@ -474,6 +466,38 @@ Objecten die verwijderd mogen worden, worden verwijderd als ze zouden verhindere
     <message>
       <source>Login_URL_STRATO</source>
       <translation>http://id.strato.de</translation>
+    </message>
+    <message>
+      <source>LegalNotice-Link</source>
+      <translation>https://wl.hidrive.com/easy/0054</translation>
+    </message>
+    <message>
+      <source>LegalNotice-Link_STRATO</source>
+      <translation>https://wl.hidrive.com/easy/0054</translation>
+    </message>
+    <message>
+      <source>Privacy-Link</source>
+      <translation>https://wl.hidrive.com/easy/0055</translation>
+    </message>
+    <message>
+      <source>Privacy-Link_STRATO</source>
+      <translation>https://wl.hidrive.com/easy/0055</translation>
+    </message>
+    <message>
+      <source>OpenSource-Link</source>
+      <translation>https://wl.hidrive.com/easy/0006</translation>
+    </message>
+    <message>
+      <source>OpenSource-Link_STRATO</source>
+      <translation>https://wl.hidrive.com/easy/0006</translation>
+    </message>
+    <message>
+      <source>MoreInformation-Link</source>
+      <translation>https://wl.hidrive.com/easy/0057</translation>
+    </message>
+    <message>
+      <source>MoreInformation-Link_STRATO</source>
+      <translation>https://wl.hidrive.com/easy/0057</translation>
     </message>
   </context>
   <context>
