@@ -3,20 +3,22 @@
 
 # This script is used to build the Mac OS X version of the IONOS client.
 # Parse the command line arguments
-while getopts "b:p:s:n:k:civtu" opt; do
+while getopts "b:p:s:n:k:q:civtuw" opt; do
   case ${opt} in
     b )REL_BASE_DIR=$OPTARG;;
     p )REL_PATH_TO_PKG=$OPTARG ;;
     s )IONOS_TEAM_IDENTIFIER=$OPTARG ;;
     n )NC_TEAM_IDENTIFIER=$OPTARG ;;
     k )SPARKLE_KEY=$OPTARG ;;   # not used
+    q )KEYCHAIN_PROFILE_OVERRIDE=$OPTARG ;;
     c )CLEAN_REBUILD=true ;;
     i )PACKAGE_INSTALLER=true ;;
-    v )VERBOSE=true ;; 
+    v )VERBOSE=true ;;
     t )TEAM_PATCHING=true ;;
     u )BUILD_UPDATER=true ;;
+    w )USE_STRATO=true ;;
     \? )
-      echo "Usage: mac_craft.sh [-b <REL_BASE_DIR>] [-p <REL_PATH_TO_PKG>] [-s <IONOS_TEAM_IDENTIFIER>] [-n <NC_TEAM_IDENTIFIER>] [-k <SPARKLE_KEY>] [-c CLEAN_REBUILD] [-i PACKAGE_INSTALLER] [-v VERBOSE] [-t TEAM_PATCHING] [-u BUILD_UPDATER]"
+      echo "Usage: mac_craft.sh [-b <REL_BASE_DIR>] [-p <REL_PATH_TO_PKG>] [-s <IONOS_TEAM_IDENTIFIER>] [-n <NC_TEAM_IDENTIFIER>] [-k <SPARKLE_KEY>] [-q <KEYCHAIN_PROFILE>] [-c CLEAN_REBUILD] [-i PACKAGE_INSTALLER] [-v VERBOSE] [-t TEAM_PATCHING] [-u BUILD_UPDATER] [-w USE_STRATO]"
       exit 1
       ;;
   esac
@@ -54,10 +56,22 @@ PATH_TO_PKG="$( realpath "$REL_PATH_TO_PKG")"
 
 PKG_FULLNAME=$(basename "$PATH_TO_PKG")
 PKG_FILENAME="${PKG_FULLNAME%.pkg}"
-PRODUCT_NAME="IONOS HiDrive Next"
-UNDERSCORE_PRODUCT_NAME="IONOS_HiDrive_Next"
+if [ "$USE_STRATO" = true ]; then
+  PRODUCT_NAME="STRATO HiDrive Next"
+  UNDERSCORE_PRODUCT_NAME="STRATO_HiDrive_Next"
+  CODE_SIGN_IDENTITY="STRATO AG ($IONOS_TEAM_IDENTIFIER)"
+  KEYCHAIN_PROFILE="STRATO AG HiDrive Next"
+else
+  PRODUCT_NAME="IONOS HiDrive Next"
+  UNDERSCORE_PRODUCT_NAME="IONOS_HiDrive_Next"
+  CODE_SIGN_IDENTITY="IONOS SE ($IONOS_TEAM_IDENTIFIER)"
+  KEYCHAIN_PROFILE="IONOS SE HiDrive Next"
+fi
 
-CODE_SIGN_IDENTITY="IONOS SE ($IONOS_TEAM_IDENTIFIER)"
+if [ -n "$KEYCHAIN_PROFILE_OVERRIDE" ]; then
+  KEYCHAIN_PROFILE="$KEYCHAIN_PROFILE_OVERRIDE"
+fi
+
 INSTALLER_CERT="Developer ID Installer: $CODE_SIGN_IDENTITY"
 APPLICATION_CERT="Developer ID Application: $CODE_SIGN_IDENTITY"
 
@@ -199,7 +213,7 @@ productsign --timestamp --sign "$INSTALLER_CERT" $INSTALLER_PKG.unsigned "$PACKA
 
 # catch the output of the notarytool command
 OUTPUT=$(xcrun notarytool submit --wait "$PACKAGE_PATH"\
-  --keychain-profile "IONOS SE HiDrive Next")
+  --keychain-profile "$KEYCHAIN_PROFILE")
 
 SUBMISSION_STATUS=$(echo $OUTPUT | grep -o 'status: [^ ]*' | cut -d ' ' -f 2)
 
