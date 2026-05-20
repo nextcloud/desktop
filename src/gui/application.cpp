@@ -909,70 +909,79 @@ void Application::parseOptions(const QStringList &options)
         it.next();
     }
 
+    const auto hasNextValue = [&it]() {
+        return it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"));
+    };
+
+    const auto isOption = [](const QString &option, const char *name, const char *shortName = nullptr) {
+        return option == QLatin1String(name)
+            || (shortName && option == QLatin1String(shortName));
+    };
+    
     // parse options; if help or bad option exit
     while (it.hasNext()) {
         QString option = it.next();
 
         // Help / version / exit-related
-        if (option == QLatin1String("--help") || option == QLatin1String("-h")) {
+        if (isOption(option, "--help", "-h")) {
             setHelp();
             break;
-        } else if (option == QLatin1String("--version") || option == QLatin1String("-v")) {
+        } else if (isOption(option, "--version", "-v")) {
             _versionOnly = true;
-        } else if (option == QLatin1String("--quit") || option == QLatin1String("-q")) {
+        } else if (isOption(option, "--quit", "-q")) {
             _quitInstance = true;
 
         // Simple boolean toggles
-        } else if (option == QLatin1String("--logwindow") || option == QLatin1String("-l")) {
+        } else if (isOption(option, "--logwindow", "-l")) {
             _showLogWindow = true;
-        } else if (option == QLatin1String("--logflush")) {
+        } else if (isOption(option, "--logflush")) {
             _logFlush = true;
-        } else if (option == QLatin1String("--logdebug")) {
+        } else if (isOption(option, "--logdebug")) {
             _logDebug = true;
-        } else if (option == QLatin1String("--background")) {
+        } else if (isOption(option, "--background")) {
             _backgroundMode = true;
-        } else if (option == QLatin1String("--reverse")) {
+        } else if (isOption(option, "--reverse")) {
             // FIXME: This is current implemented as a toggle, but help text suggests it should set RTL
             setLayoutDirection(layoutDirection() == Qt::LeftToRight ? Qt::RightToLeft : Qt::LeftToRight);
-        } else if (option == QLatin1String("--debug")) {
+        } else if (isOption(option, "--debug")) {
             _logDebug = true;
             _debugMode = true;
 
         // Value options
-        } else if (option == QLatin1String("--logfile")) {
-            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+        } else if (isOption(option, "--logfile")) {
+            if (hasNextValue()) {
                 _logFile = it.next();
             } else {
-                showHint("Log file not specified");
+                showHint("Missing value for --logfile");
             }
-        } else if (option == QLatin1String("--logdir")) {
-            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+        } else if (isOption(option, "--logdir")) {
+            if (hasNextValue()) {
                 _logDir = it.next();
             } else {
-                showHint("Log dir not specified");
+                showHint("Missing value for --logdir");
             }
-        } else if (option == QLatin1String("--logexpire")) {
-            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+        } else if (isOption(option, "--logexpire")) {
+            if if (hasNextValue()) {
                 bool ok = false;
                 const auto logExpire = it.next().toInt(&ok);
                 if (!ok) {
-                    showHint("Invalid expiration value passed to --logexpire");
+                    showHint("Invalid value passed to --logexpire");
                 }
                 _logExpire = logExpire;
             } else {
-                showHint("Log expiration not specified");
+                showHint("Missing value for --logexpire");
             }
-        } else if (option == QLatin1String("--confdir")) {
-            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+        } else if (isOption(option, "--confdir")) {
+            if (hasNextValue()) {
                 QString confDir = it.next();
                 if (!ConfigFile::setConfDir(confDir)) {
                     showHint("Invalid path passed to --confdir");
                 }
             } else {
-                showHint("Path for confdir not specified");
+                showHint("Missing value for --confdir");
             }
-        } else if (option == QStringLiteral("--overrideserverurl")) {
-            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+        } else if (isOption(option, "--overrideserverurl")) {
+            if (hasNextValue()) {
                 const auto overrideUrl = it.next();
                 const auto isUrlValid =
                     (overrideUrl.startsWith(QStringLiteral("http://"))
@@ -985,15 +994,15 @@ void Application::parseOptions(const QStringList &options)
             } else {
                 showHint("Missing value for --overrideserverurl");
             }
-        } else if (option == QStringLiteral("--overridelocaldir")) {
-            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+        } else if (isOption(option, "--overridelocaldir")) {
+            if (hasNextValue()) {
                 // FIXME: validate specified path
                 _overrideLocalDir = it.next();
             } else {
                 showHint("Missing value for --overridelocaldir");
             }
-        } else if (option == QStringLiteral("--set-language")) {
-            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+        } else if (isOption(option, "--set-language")) {
+            if (hasNextValue()) {
                 _setLanguage = it.next();
             } else {
                 showHint("Missing value for --set-language");
@@ -1014,7 +1023,7 @@ void Application::parseOptions(const QStringList &options)
                 showHint(errorParsingLocalFileEditingUrl.toStdString());
             }
 #if !DISABLE_ACCOUNT_MIGRATION
-        } else if (option == QStringLiteral("--forcelegacyconfigimport")) {
+        } else if (isOption(option, "--forcelegacyconfigimport")) {
             AccountManager::instance()->setForceLegacyImport(true);
 #endif
         } else {
