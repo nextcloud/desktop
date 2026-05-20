@@ -62,6 +62,32 @@ void warnSystray()
         QMessageBox::Ok
     );
 }
+
+int handleRunningInstance(Application &app)
+{
+    if (!app.isRunning()) {
+        return 1;
+    }
+
+    qCInfo(lcApplication) << "Already running, exiting...";
+    if (app.isSessionRestored()) {
+        // This call is mirrored with the one in Application::slotParseMessage
+        qCInfo(lcApplication) << "Session was restored, don't notify app!";
+        return -1;
+    }
+
+    const QStringList args = app.arguments();
+    if (args.size() > 1) {
+        const QString msg = args.join(QLatin1String("|"));
+        if (!app.sendMessage(QLatin1String("MSG_PARSEOPTIONS:") + msg)) {
+            return -1;
+        }
+    } else if (!app.backgroundMode() && !app.sendMessage(QLatin1String("MSG_SHOWMAINDIALOG"))) {
+        return -1;
+    }
+
+    return 0;
+}
 }
 
 int main(int argc, char **argv)
@@ -163,23 +189,8 @@ int main(int argc, char **argv)
 #endif
 
     // if the application is already running, notify it.
-    if (app.isRunning()) {
-        qCInfo(lcApplication) << "Already running, exiting...";
-        if (app.isSessionRestored()) {
-            // This call is mirrored with the one in Application::slotParseMessage
-            qCInfo(lcApplication) << "Session was restored, don't notify app!";
-            return -1;
-        }
-
-        QStringList args = app.arguments();
-        if (args.size() > 1) {
-            QString msg = args.join(QLatin1String("|"));
-            if (!app.sendMessage(QLatin1String("MSG_PARSEOPTIONS:") + msg))
-                return -1;
-        } else if (!app.backgroundMode() && !app.sendMessage(QLatin1String("MSG_SHOWMAINDIALOG"))) {
-            return -1;
-        }
-        return 0;
+    if (const auto runningInstanceResult = handleRunningInstance(app); runningInstanceResult <= 0) {
+        return runningInstanceResult;
     }
 
     // We can't call isSystemTrayAvailable with appmenu-qt5 begause it hides the systemtray
