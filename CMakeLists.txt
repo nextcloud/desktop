@@ -227,7 +227,11 @@ if(OWNCLOUD_5XX_NO_BLACKLIST)
 endif()
 
 if(APPLE)
-  set( SOCKETAPI_TEAM_IDENTIFIER_PREFIX "5TDLCVD243." CACHE STRING "SocketApi prefix (including a following dot) that must match the codesign key's TeamIdentifier/Organizational Unit" )
+  if(APPLICATION_NAME STREQUAL "STRATO HiDrive Next")
+    set( SOCKETAPI_TEAM_IDENTIFIER_PREFIX "6UU53QCET7." CACHE STRING "SocketApi prefix (including a following dot) that must match the codesign key's TeamIdentifier/Organizational Unit" )
+  else()
+    set( SOCKETAPI_TEAM_IDENTIFIER_PREFIX "5TDLCVD243." CACHE STRING "SocketApi prefix (including a following dot) that must match the codesign key's TeamIdentifier/Organizational Unit" )
+  endif()
 endif()
 
 if(BUILD_CLIENT)
