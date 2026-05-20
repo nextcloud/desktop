@@ -904,23 +904,42 @@ void Application::slotParseMessage(const QByteArray &message)
 void Application::parseOptions(const QStringList &options)
 {
     QStringListIterator it(options);
-    // skip file name;
+    // skip file name
     if (it.hasNext()) {
         it.next();
     }
 
     bool shouldExit = false;
 
-    //parse options; if help or bad option exit
+    // parse options; if help or bad option exit
     while (it.hasNext()) {
         QString option = it.next();
+
+        // Help / version / exit-related
         if (option == QLatin1String("--help") || option == QLatin1String("-h")) {
             setHelp();
             break;
+        } else if (option == QLatin1String("--version") || option == QLatin1String("-v")) {
+            _versionOnly = true;
         } else if (option == QLatin1String("--quit") || option == QLatin1String("-q")) {
             _quitInstance = true;
+
+        // Simple boolean toggles
         } else if (option == QLatin1String("--logwindow") || option == QLatin1String("-l")) {
             _showLogWindow = true;
+        } else if (option == QLatin1String("--logflush")) {
+            _logFlush = true;
+        } else if (option == QLatin1String("--logdebug")) {
+            _logDebug = true;
+        } else if (option == QLatin1String("--background")) {
+            _backgroundMode = true;
+        } else if (option == QLatin1String("--reverse")) {
+            setLayoutDirection(layoutDirection() == Qt::LeftToRight ? Qt::RightToLeft : Qt::LeftToRight);
+        } else if (option == QLatin1String("--debug")) {
+            _logDebug = true;
+            _debugMode = true;
+
+        // Value options
         } else if (option == QLatin1String("--logfile")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
                 _logFile = it.next();
@@ -939,10 +958,6 @@ void Application::parseOptions(const QStringList &options)
             } else {
                 showHint("Log expiration not specified");
             }
-        } else if (option == QLatin1String("--logflush")) {
-            _logFlush = true;
-        } else if (option == QLatin1String("--logdebug")) {
-            _logDebug = true;
         } else if (option == QLatin1String("--confdir")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
                 QString confDir = it.next();
@@ -951,27 +966,6 @@ void Application::parseOptions(const QStringList &options)
                 }
             } else {
                 showHint("Path for confdir not specified");
-            }
-        } else if (option == QLatin1String("--debug")) {
-            _logDebug = true;
-            _debugMode = true;
-        } else if (option == QLatin1String("--background")) {
-            _backgroundMode = true;
-        } else if (option == QLatin1String("--version") || option == QLatin1String("-v")) {
-            _versionOnly = true;
-        } else if (option == QLatin1String("--reverse")) {
-            setLayoutDirection(layoutDirection() == Qt::LeftToRight ? Qt::RightToLeft : Qt::LeftToRight);
-        } else if (option.endsWith(QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX))) {
-            // virtual file, open it after the Folder were created (if the app is not terminated)
-            QTimer::singleShot(0, this, [this, option] { openVirtualFile(option); });
-        } else if (option.startsWith(QStringLiteral(APPLICATION_URI_HANDLER_SCHEME "://open"))) {
-            // see the section Local file editing of the Architecture page of the user documentation
-            _editFileLocallyUrl = QUrl::fromUserInput(option);
-            if (!_editFileLocallyUrl.isValid()) {
-                _editFileLocallyUrl.clear();
-                const auto errorParsingLocalFileEditingUrl = QStringLiteral("The supplied url for local file editing '%1' is invalid!").arg(option);
-                qCInfo(lcApplication) << errorParsingLocalFileEditingUrl;
-                showHint(errorParsingLocalFileEditingUrl.toStdString());
             }
         } else if (option == QStringLiteral("--overrideserverurl")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
@@ -999,13 +993,25 @@ void Application::parseOptions(const QStringList &options)
             } else {
                 showHint("Invalid language passed to --set-language");
             }
-        }
+
+        // Special startup handlers
+        } else if (option.endsWith(QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX))) {
+            // virtual file, open it after the Folder were created (if the app is not terminated)
+            QTimer::singleShot(0, this, [this, option] { openVirtualFile(option); });
+        } else if (option.startsWith(QStringLiteral(APPLICATION_URI_HANDLER_SCHEME "://open"))) {
+            // see the section Local file editing of the Architecture page of the user documentation
+            _editFileLocallyUrl = QUrl::fromUserInput(option);
+            if (!_editFileLocallyUrl.isValid()) {
+                _editFileLocallyUrl.clear();
+                const auto errorParsingLocalFileEditingUrl = QStringLiteral("The supplied url for local file editing '%1' is invalid!").arg(option);
+                qCInfo(lcApplication) << errorParsingLocalFileEditingUrl;
+                showHint(errorParsingLocalFileEditingUrl.toStdString());
+            }
 #if !DISABLE_ACCOUNT_MIGRATION
-        else if (option == QStringLiteral("--forcelegacyconfigimport")) {
+        } else if (option == QStringLiteral("--forcelegacyconfigimport")) {
             AccountManager::instance()->setForceLegacyImport(true);
-        }
 #endif
-        else {
+        } else {
             QString errorMessage;
             if (!AccountSetupCommandLineManager::instance()->parseCommandlineOption(option, it, errorMessage)) {
                 if (!errorMessage.isEmpty()) {
