@@ -88,7 +88,54 @@ int handleRunningInstance(Application &app)
 
     return 0;
 }
+
+void handleSystemTrayAvailability(Application &app)
+{
+    // We can't call isSystemTrayAvailable with appmenu-qt5 because it hides the system tray
+    // (issue #4693)
+    if (qgetenv("QT_QPA_PLATFORMTHEME") == "appmenu-qt5") {
+        return;
+    }
+
+    if (QSystemTrayIcon::isSystemTrayAvailable()) {
+        return;
+    }
+
+    // If the system tray is not there, we will wait one second for it to maybe start
+    // (e.g. boot time) then we show the settings dialog if there is still no system tray.
+    // On XFCE however, we show a message box with explanation how to install a system tray.
+    qCInfo(lcApplication) << "System tray is not available, waiting...";
+    Utility::sleep(InitialTrayWaitSeconds);
+
+    const auto desktopSession = currentDesktopSession();
+    if (desktopSession == "xfce") {
+        int attempts = 0;
+        while (!QSystemTrayIcon::isSystemTrayAvailable()) {
+            attempts++;
+            if (attempts >= XfceTrayMaxAttempts) {
+                qCWarning(lcApplication) << "System tray unavailable (xfce)";
+                warnSystray();
+                break;
+            }
+            Utility::sleep(InitialTrayWaitSeconds);
+        }
+    }
+
+    if (QSystemTrayIcon::isSystemTrayAvailable()) {
+        app.tryTrayAgain();
+    } else if (!app.backgroundMode() && !AccountManager::instance()->accounts().isEmpty()) {
+        if (desktopSession != "ubuntu") {
+            qCInfo(lcApplication) << "System tray still not available, showing window and trying again later";
+            app.showMainDialog();
+            QTimer::singleShot(DelayedTrayRetryMs, &app, &Application::tryTrayAgain);
+        } else {
+            qCInfo(lcApplication) << "System tray still not available, but assuming it's fine on 'ubuntu' desktop";
+        }
+    }
 }
+}
+
+// ----------------------------------------------------------------------------------
 
 int main(int argc, char **argv)
 {
@@ -193,44 +240,7 @@ int main(int argc, char **argv)
         return runningInstanceResult;
     }
 
-    // We can't call isSystemTrayAvailable with appmenu-qt5 begause it hides the systemtray
-    // (issue #4693)
-    if (qgetenv("QT_QPA_PLATFORMTHEME") != "appmenu-qt5")
-    {
-        if (!QSystemTrayIcon::isSystemTrayAvailable()) {
-            // If the systemtray is not there, we will wait one second for it to maybe start
-            // (eg boot time) then we show the settings dialog if there is still no systemtray.
-            // On XFCE however, we show a message box with explainaition how to install a systemtray.
-            qCInfo(lcApplication) << "System tray is not available, waiting...";
-            Utility::sleep(InitialTrayWaitSeconds);
-
-            const auto desktopSession = currentDesktopSession();
-            if (desktopSession == "xfce") {
-                int attempts = 0;
-                while (!QSystemTrayIcon::isSystemTrayAvailable()) {
-                    attempts++;
-                    if (attempts >= XfceTrayMaxAttempts) {
-                        qCWarning(lcApplication) << "System tray unavailable (xfce)";
-                        warnSystray();
-                        break;
-                    }
-                    Utility::sleep(1);
-                }
-            }
-
-            if (QSystemTrayIcon::isSystemTrayAvailable()) {
-                app.tryTrayAgain();
-            } else if (!app.backgroundMode() && !AccountManager::instance()->accounts().isEmpty()) {
-                if (desktopSession != "ubuntu") {
-                    qCInfo(lcApplication) << "System tray still not available, showing window and trying again later";
-                    app.showMainDialog();
-                    QTimer::singleShot(DelayedTrayRetryMs, &app, &Application::tryTrayAgain);
-                } else {
-                    qCInfo(lcApplication) << "System tray still not available, but assuming it's fine on 'ubuntu' desktop";
-                }
-            }
-        }
-    }
+    handleSystemTrayAvailability(app);
 
     return app.exec();
 }
