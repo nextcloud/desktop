@@ -35,16 +35,26 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     ui->setupUi(this);
 
-    setStyleSheet(QStringLiteral("QFrame#globalIgnoreSettingsPanel, QFrame#ignoredPatternsPanel, QWidget#globalIgnoreSettingsPanelContents, QWidget#ignoredPatternsPanelContents { background: palette(" BACKGROUND_PALETTE "); }"));
+    setStyleSheet(QStringLiteral(
+        "QFrame#globalIgnoreSettingsPanel, QFrame#ignoredPatternsPanel {"
+        " background: palette(" BACKGROUND_PALETTE ");"
+        " border: none;"
+        " border-radius: 12px;"
+        " margin: 0px;"
+        " padding: 6px;"
+        " }"
+        "QWidget#globalIgnoreSettingsPanelContents, QWidget#ignoredPatternsPanelContents {"
+        " background: transparent;"
+        " }"));
     ui->globalIgnoreSettingsPanel->setAutoFillBackground(true);
     ui->globalIgnoreSettingsPanel->setAttribute(Qt::WA_StyledBackground, true);
-    ui->globalIgnoreSettingsPanelContents->setAutoFillBackground(true);
-    ui->globalIgnoreSettingsPanelContents->setAttribute(Qt::WA_StyledBackground, true);
+    ui->globalIgnoreSettingsPanelContents->setAutoFillBackground(false);
+    ui->globalIgnoreSettingsPanelContents->setAttribute(Qt::WA_StyledBackground, false);
     ui->globalIgnoreSettingsPanelContents->setContentsMargins(0, 0, 0, 0);
     ui->ignoredPatternsPanel->setAutoFillBackground(true);
     ui->ignoredPatternsPanel->setAttribute(Qt::WA_StyledBackground, true);
-    ui->ignoredPatternsPanelContents->setAutoFillBackground(true);
-    ui->ignoredPatternsPanelContents->setAttribute(Qt::WA_StyledBackground, true);
+    ui->ignoredPatternsPanelContents->setAutoFillBackground(false);
+    ui->ignoredPatternsPanelContents->setAttribute(Qt::WA_StyledBackground, false);
     ui->ignoredPatternsPanelContents->setContentsMargins(0, 0, 0, 0);
 
     ConfigFile cfgFile;
