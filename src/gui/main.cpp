@@ -89,6 +89,7 @@ int handleRunningInstance(Application &app)
     return 0;
 }
 
+// May block - depending on tray availability
 void handleSystemTrayAvailability(Application &app)
 {
     // Skip this check with appmenu-qt5 because that platform theme hides the system tray (#4693)
@@ -165,7 +166,7 @@ int main(int argc, char **argv)
     Mac::CocoaInitializer cocoaInit; // RIIA
 #endif
 
-    // Prevent context losses / corrruptions with some OpenGL drivers (#4340)
+    // Prevent context losses / corruptions with some OpenGL drivers (#4340)
     auto surfaceFormat = QSurfaceFormat::defaultFormat();
     surfaceFormat.setOption(QSurfaceFormat::ResetNotification);
     QSurfaceFormat::setDefaultFormat(surfaceFormat);
