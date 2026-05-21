@@ -469,11 +469,11 @@ Objekt där radering är tillåten raderas om de förhindrar att en katalog tas 
     </message>
     <message>
       <source>Login_URL</source>
-      <translation>https://storage.ionos.com/index.php/login/v2</translation>
+      <translation>https://storage.ionos.com</translation>
     </message>
     <message>
       <source>Login_URL_STRATO</source>
-      <translation>https://storage.ionos.com/index.php/login/v2</translation>
+      <translation>https://storage.ionos.com</translation>
     </message>
     <message>
       <source>Privacy-Link</source>

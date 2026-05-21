@@ -465,11 +465,11 @@ Objekte, die gelöscht werden dürfen, werden gelöscht, wenn sie das Löschen e
     </message>
     <message>
       <source>Login_URL</source>
-      <translation>https://storage.ionos.de/index.php/login/v2</translation>
+      <translation>https://storage.ionos.de</translation>
     </message>
     <message>
       <source>Login_URL_STRATO</source>
-      <translation>https://storage.ionos.de/index.php/login/v2</translation>
+      <translation>https://storage.ionos.de</translation>
     </message>
     <message>
       <source>Privacy-Link</source>

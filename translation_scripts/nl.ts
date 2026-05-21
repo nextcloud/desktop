@@ -465,11 +465,11 @@ Objecten die verwijderd mogen worden, worden verwijderd als ze zouden verhindere
     </message>
     <message>
       <source>Login_URL</source>
-      <translation>https://storage.ionos.com/index.php/login/v2</translation>
+      <translation>https://storage.ionos.com</translation>
     </message>
     <message>
       <source>Login_URL_STRATO</source>
-      <translation>https://storage.ionos.com/index.php/login/v2</translation>
+      <translation>https://storage.ionos.com</translation>
     </message>
     <message>
       <source>LegalNotice-Link</source>
