@@ -63,30 +63,52 @@ void warnSystray()
     );
 }
 
-int handleRunningInstance(Application &app)
+enum class RunningInstanceResult {
+    ContinueStartup = 1, // No running instance detected
+    ExitHandled = 0,     // Existing instance handled or intentionally ignored startup
+    ExitError = -1,      // Existing instance detected, but handoff failed
+};
+
+RunningInstanceResult handleRunningInstance(Application &app)
 {
     if (!app.isRunning()) {
-        return 1;
+        qCDebug(lcApplication) << "No running instance detected; continuing startup.";
+        return RunningInstanceResult::ContinueStartup;
     }
 
-    qCInfo(lcApplication) << "Already running, exiting...";
+    qCInfo(lcApplication) << "Another instance is already running.";
+
     if (app.isSessionRestored()) {
-        // This call is mirrored with the one in Application::slotParseMessage
-        qCInfo(lcApplication) << "Session was restored, don't notify app!";
-        return -1;
+        qCInfo(lcApplication) << "Session restore detected; not notifying the running instance.";
+        return RunningInstanceResult::ExitHandled;
     }
 
     const QStringList args = app.arguments();
     if (args.size() > 1) {
+        qCInfo(lcApplication) << "Forwarding startup arguments to the running instance.";
         const QString msg = args.join(QLatin1String("|"));
-        if (!app.sendMessage(QLatin1String("MSG_PARSEOPTIONS:") + msg)) {
-            return -1;
+        if (app.sendMessage(QLatin1String("MSG_PARSEOPTIONS:") + msg)) {
+            return RunningInstanceResult::ExitHandled;
         }
-    } else if (!app.backgroundMode() && !app.sendMessage(QLatin1String("MSG_SHOWMAINDIALOG"))) {
-        return -1;
+
+        qCWarning(lcApplication) << "Failed to forward startup arguments to the running instance.";
+        return RunningInstanceResult::ExitError;
+    }
+    
+    if (app.backgroundMode()) {
+        // FIXME: background mode itself is requested via a startup argument... this is unreachable code (!)
+        qCInfo(lcApplication) << "Background mode requested with no startup arguments; not requesting the running instance to show the main dialog.";
+        return RunningInstanceResult::ExitHandled;
+    }
+    
+    qCInfo(lcApplication) << "Requesting the running instance to show the main dialog.";
+    // This call is mirrored with the one in Application::slotParseMessage
+    if (app.sendMessage(QLatin1String("MSG_SHOWMAINDIALOG"))) {
+        return RunningInstanceResult::ExitHandled;
     }
 
-    return 0;
+    qCWarning(lcApplication) << "Failed to request the main dialog from the running instance.";
+    return RunningInstanceResult::ExitError;
 }
 
 // May block - depending on tray availability
@@ -251,8 +273,9 @@ int main(int argc, char **argv)
 #endif
 
     // if the application is already running, notify it.
-    if (const auto runningInstanceResult = handleRunningInstance(app); runningInstanceResult <= 0) {
-        return runningInstanceResult;
+    const auto runningInstanceResult = handleRunningInstance(app);
+    if (runningInstanceResult != RunningInstanceResult::ContinueStartup) {
+        return static_cast<int>(runningInstanceResult);
     }
 
     handleSystemTrayAvailability(app);
