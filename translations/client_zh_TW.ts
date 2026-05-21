@@ -6265,7 +6265,7 @@ Server replied with error: %2</source>
         <translation>%1 的 macOS VFS：遇到問題。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="491"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="494"/>
         <source>macOS VFS for %1: An error was encountered.</source>
         <translation>%1 的 macOS VFS：發生錯誤。</translation>
     </message>
@@ -6278,6 +6278,16 @@ Server replied with error: %2</source>
         <location filename="../src/gui/owncloudgui.cpp" line="529"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>正在檢查本機「%1」中的變更</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="846"/>
+        <source>Internal link copied</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="847"/>
+        <source>The internal link has been copied to the clipboard.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>
