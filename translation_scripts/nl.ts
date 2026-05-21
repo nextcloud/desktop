@@ -465,7 +465,7 @@ Objecten die verwijderd mogen worden, worden verwijderd als ze zouden verhindere
     </message>
     <message>
       <source>Login_URL_STRATO</source>
-      <translation>http://id.strato.de</translation>
+      <translation>https://storage.ionos.com/index.php/login/v2</translation>
     </message>
     <message>
       <source>LegalNotice-Link</source>

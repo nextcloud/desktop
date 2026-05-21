@@ -470,7 +470,7 @@ Los objetos cuyo borrado esté permitido se eliminarán si impiden que se borre 
     </message>
     <message>
       <source>Login_URL_STRATO</source>
-      <translation>http://id.strato.es</translation>
+      <translation>https://storage.ionos.es/index.php/login/v2</translation>
     </message>
     <message>
       <source>Privacy-Link</source>

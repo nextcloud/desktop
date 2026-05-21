@@ -465,7 +465,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     </message>
     <message>
       <source>Login_URL_STRATO</source>
-      <translation>http://id.strato.com</translation>
+      <translation>https://storage.ionos.com/index.php/login/v2</translation>
     </message>
     <message>
       <source>Privacy-Link</source>

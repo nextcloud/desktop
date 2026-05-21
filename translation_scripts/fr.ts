@@ -472,7 +472,7 @@ Les objets autorisés à être supprimés le seront s'ils empêchent la suppress
     </message>
     <message>
       <source>Login_URL_STRATO</source>
-      <translation>http://id.strato.fr</translation>
+      <translation>https://storage.ionos.fr/index.php/login/v2</translation>
     </message>
     <message>
       <source>Privacy-Link</source>
