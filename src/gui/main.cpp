@@ -42,11 +42,20 @@ constexpr int DelayedTrayRetryMs = 10'000;
 
 QByteArray currentDesktopSession()
 {
-    auto desktopSession = qgetenv("XDG_CURRENT_DESKTOP").toLower();
-    if (desktopSession.isEmpty()) {
-        desktopSession = qgetenv("DESKTOP_SESSION").toLower();
+    const auto xdgCurrentDesktopEnv = qgetenv("XDG_CURRENT_DESKTOP");
+    const auto desktopSessionEnv = qgetenv("DESKTOP_SESSION");
+
+    effective = xdgCurrentDesktopEnv.toLower();
+    if (effective.isEmpty()) {
+        effective = desktopSessionEnv.toLower();
     }
-    return desktopSession;
+
+    qCInfo(lcApplication) << "Tray availability check:"
+                      << "XDG_CURRENT_DESKTOP=" << xdgCurrentDesktopEnv
+                      << "DESKTOP_SESSION=" << desktopSessionEnv
+                      << "effective=" << effective;
+
+    return effective;
 }
 
 void warnSystray()
@@ -123,38 +132,48 @@ void handleSystemTrayAvailability(Application &app)
         return;
     }
 
+    const auto desktopSession = currentDesktopSession();
+    
     // If the system tray is not there, we will wait one second for it to maybe start
     // (e.g. boot time) then we show the settings dialog if there is still no system tray.
     // On XFCE however, we show a message box with explanation how to install a system tray.
+
     qCInfo(lcApplication) << "System tray is not available, waiting...";
     Utility::sleep(InitialTrayWaitSeconds);
 
-    const auto desktopSession = currentDesktopSession();
-    if (desktopSession == "xfce") {
+    if (desktopSession == "xfce") { // FIXME: This seems too strict; XDG_CURRENT_DESKTOP can be a composite
         int attempts = 0;
-        while (!QSystemTrayIcon::isSystemTrayAvailable()) {
-            attempts++;
-            if (attempts >= XfceTrayMaxAttempts) {
-                qCWarning(lcApplication) << "System tray unavailable (xfce)";
-                warnSystray();
-                break;
-            }
+        // NOTE: This loop can block for up to 30 more seconds after the initial sleep (!)
+        while (!QSystemTrayIcon::isSystemTrayAvailable() && attempts < XfceTrayMaxAttempts) {
+            ++attempts;
             Utility::sleep(InitialTrayWaitSeconds);
+        }
+
+        if (!QSystemTrayIcon::isSystemTrayAvailable()) {
+            qCWarning(lcApplication) << "System tray unavailable even after waiting 30s (xfce detected)";
+            warnSystray();
+            break;
         }
     }
 
     if (QSystemTrayIcon::isSystemTrayAvailable()) {
         app.tryTrayAgain();
-    } else if (!app.backgroundMode() && !AccountManager::instance()->accounts().isEmpty()) {
-        if (desktopSession != "ubuntu") {
-            qCInfo(lcApplication) << "System tray still not available, showing window and trying again later";
-            app.showMainDialog();
-            QTimer::singleShot(DelayedTrayRetryMs, &app, &Application::tryTrayAgain);
-        } else {
-            // Ubuntu desktops may operate acceptably without reporting a traditional tray here.
-            qCInfo(lcApplication) << "System tray still not available, but assuming it's fine on 'ubuntu' desktop";
-        }
+        return;
     }
+
+    if (app.backgroundMode() || AccountManager::instance()->accounts().isEmpty()) {
+        return;
+    }
+
+    if (desktopSession == "ubuntu")) { // FIXME: This seems too strict; XDG_CURRENT_DESKTOP can be a composite (e.g. "ubuntu:gnome")
+        // Ubuntu desktops may operate acceptably without reporting a traditional tray here.
+        qCInfo(lcApplication) << "System tray still not available, but assuming it's fine on Ubuntu-like desktop";
+        return;
+    }
+
+    qCInfo(lcApplication) << "System tray still not available, showing window and trying again later";
+    app.showMainDialog();
+    QTimer::singleShot(DelayedTrayRetryMs, &app, &Application::tryTrayAgain);
 }
 }
 
