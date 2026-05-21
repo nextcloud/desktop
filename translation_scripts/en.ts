@@ -30,6 +30,10 @@
       <translation>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href='https://wl.hidrive.com/easy/0005'&gt;privacy policy&lt;/a&gt;.</translation>
     </message>
     <message>
+      <source>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href='https://wl.hidrive.com/easy/0005'&gt;privacy policy&lt;/a&gt;._STRATO</source>
+      <translation>This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. &lt;br/&gt; &lt;br/&gt;Information on data processing and more can be found in our &lt;a href='https://static.hidrive.com/next/1006'&gt;privacy policy&lt;/a&gt;.</translation>
+    </message>
+    <message>
       <source>This helps us to optimize the software and to better identify system crashes and unexpected errors.</source>
       <translation>This helps us to optimize the software and to better identify system crashes and unexpected errors.</translation>
     </message>

@@ -50,7 +50,11 @@ namespace OCC{
 #endif
 
         _ui->logoLabel->setPixmap(Theme::hidpiFileName(dataProtectionLogo));
-        _ui->descriptionLabel->setText(tr("This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. <br/> <br/>Information on data processing and more can be found in our <a href='https://wl.hidrive.com/easy/0005'>privacy policy</a>."));
+#ifdef STRATO_WL_BUILD
+    _ui->descriptionLabel->setText(tr("This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. <br/> <br/>Information on data processing and more can be found in our <a href='https://wl.hidrive.com/easy/0005'>privacy policy</a>._STRATO"));
+#else
+    _ui->descriptionLabel->setText(tr("This application uses tracking technologies. By clicking on Agree, you accept the processing of your anonymized data. You can adjust your choices at any time via the settings. <br/> <br/>Information on data processing and more can be found in our <a href='https://wl.hidrive.com/easy/0005'>privacy policy</a>."));
+#endif
         _ui->descriptionLabel->setOpenExternalLinks(true);
         _ui->descriptionLabel->setTextFormat(Qt::RichText);
 
