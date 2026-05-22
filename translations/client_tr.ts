@@ -395,7 +395,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="89"/>
         <source>Create folder</source>
-        <translation>Klasör ekle</translation>
+        <translation>Klasör oluştur</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="109"/>
@@ -448,7 +448,7 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="503"/>
         <source>Ask Assistant …</source>
-        <translation type="unfinished"/>
+        <translation>Yardımcıya sor…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="503"/>
@@ -735,7 +735,7 @@ Eşitlemenin tamamlanmasını bekleyip klasörü şifreleyin</translation>
         <location filename="../src/gui/accountsettings.cpp" line="613"/>
         <location filename="../src/gui/accountsettings.cpp" line="683"/>
         <source>Create new folder</source>
-        <translation>Klasör ekle</translation>
+        <translation>Yeni klasör oluştur</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="619"/>
@@ -2379,7 +2379,7 @@ Bir yanlışlık varsa, silinen tüm dosyaları sunucudan indirerek geri yükley
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
         <source>Create new folder</source>
-        <translation>Klasör ekle</translation>
+        <translation>Yeni klasör oluştur</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
@@ -2399,7 +2399,7 @@ Bir yanlışlık varsa, silinen tüm dosyaları sunucudan indirerek geri yükley
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="71"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation>Bir klasör eklenemedi! Yazma izinlerinizi denetleyin.</translation>
+        <translation>Bir klasör oluşturulamadı! Yazma izinlerinizi denetleyin.</translation>
     </message>
 </context>
 <context>
@@ -2552,7 +2552,7 @@ Uzman kullanıcılar için: Bu sorun, bir klasörde bulunan birden fazla eşitle
     <message>
         <location filename="../src/gui/folderman.cpp" line="418"/>
         <source>Please open the app settings to grant access to the sync folders.</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme klasörlerine erişme izni vermek için uygulama ayarlarını açın.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1866"/>
@@ -2572,7 +2572,7 @@ Uzman kullanıcılar için: Bu sorun, bir klasörde bulunan birden fazla eşitle
         <location filename="../src/gui/folderstatusdelegate.cpp" line="313"/>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="455"/>
         <source>Grant access</source>
-        <translation type="unfinished"/>
+        <translation>Erişme izni ver</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="272"/>
@@ -2611,7 +2611,7 @@ Uzman kullanıcılar için: Bu sorun, bir klasörde bulunan birden fazla eşitle
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
         <source>Due to recent security improvements, the client no longer has access to the folder. Your approval is required one time to restore access. Please select the synchronization folder root.</source>
-        <translation type="unfinished"/>
+        <translation>Son güvenlik iyileştirmeleri nedeniyle, istemcinin artık klasöre erişimi yok. Yeniden erişim vermek için bir kez onay vermelisiniz. Lütfen eşitleme klasörünü seçin.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
@@ -2794,17 +2794,17 @@ Uzman kullanıcılar için: Bu sorun, bir klasörde bulunan birden fazla eşitle
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="217"/>
         <source>Create Remote Folder</source>
-        <translation>Uzak klasör ekle</translation>
+        <translation>Uzak klasör oluştur</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="218"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
-        <translation>&quot;%1&quot; altına eklenecek yeni klasörün adını yazın:</translation>
+        <translation>&quot;%1&quot; altında oluşturulacak yeni klasörün adını yazın:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="247"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>Klasör %1 üzerine eklendi.</translation>
+        <translation>Klasör %1 üzerinde oluşturuldu.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="257"/>
@@ -2814,7 +2814,7 @@ Uzman kullanıcılar için: Bu sorun, bir klasörde bulunan birden fazla eşitle
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="259"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation>%1 üzerine klasör eklenemedi. Lütfen el ile denetleyin.</translation>
+        <translation>Klasör %1 üzerinde oluşturulamadı. Lütfen el ile denetleyin.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="277"/>
@@ -3151,12 +3151,12 @@ Sürümler hemen düşürülemez: Kararlı sürümünden Enterprise sürüme ge�
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="673"/>
         <source>Login Item Requires Approval</source>
-        <translation type="unfinished"/>
+        <translation>Oturum açma ögesinin onaylanması gerekli</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="674"/>
         <source>The login item has been registered but needs your approval to become active. Please open System Settings → General → Login Items and enable %1 there.</source>
-        <translation type="unfinished"/>
+        <translation>Oturum açma ögesi kaydedildi ancak etkin olması için onay vermelisiniz. Sistem ayarları → Genel → Oturum açma ögeleri bölümüne giderek %1 etkinleştirin.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="666"/>
@@ -3471,7 +3471,7 @@ Silme izni verildiğinde bir klasörün silinmesini engelleyen ögeler silinir. 
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="46"/>
         <source>&lt;p&gt;Copyright 2017-2026 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Telif hakları 2017-2026 Nextcloud GmbH&lt;br /&gt;Telif hakları 2012-2023 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="49"/>
@@ -4192,7 +4192,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/discovery.cpp" line="395"/>
         <source>File is locked by another application.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya şu anda başka bir uygulama tarafından kilitlenmiş</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="391"/>
@@ -4514,7 +4514,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/libsync/owncloudpropagator.cpp" line="233"/>
         <source>%1. Restoration failed: %2</source>
         <comment>%1 is the generic error string, the file restoration error (%2) will be appended here</comment>
-        <translation type="unfinished"/>
+        <translation>%1. Geri yüklenemedi: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="233"/>
@@ -4793,7 +4793,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/libsync/propagateuploadng.cpp" line="364"/>
         <source>File is locked preventing syncing it</source>
         <comment>Generic warning message when a locked file cannot be synced</comment>
-        <translation type="unfinished"/>
+        <translation>Dosya kilitli olduğundan eşitlenemiyor</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="451"/>
@@ -4839,7 +4839,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/libsync/propagateuploadv1.cpp" line="141"/>
         <source>File is locked preventing syncing it</source>
         <comment>Generic warning message when a locked file cannot be synced</comment>
-        <translation type="unfinished"/>
+        <translation>Dosya kilitli olduğundan eşitlenemiyor</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="228"/>
@@ -4987,7 +4987,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="573"/>
         <source>%1 day</source>
-        <translation type="unfinished"/>
+        <translation>%1 gün</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="573"/>
@@ -5120,7 +5120,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1041"/>
         <source>Select new location …</source>
-        <translation>Yeni konum seçin …</translation>
+        <translation>Yeni konum seçin…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1118"/>
@@ -5518,12 +5518,12 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="165"/>
         <source>Reauthorization required</source>
-        <translation type="unfinished"/>
+        <translation>Yeniden izin verilmesi gerekli</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="166"/>
         <source>Please grant access to your sync folders</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme klasörlerinize erişme izni verin</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="179"/>
@@ -5800,27 +5800,27 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="641"/>
         <location filename="../src/gui/tray/usermodel.cpp" line="680"/>
         <source>“%1” was not synchronized</source>
-        <translation type="unfinished"/>
+        <translation>“%1” eşitlenmemiş</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="682"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu üzerinde yeterli depolama alanı yok. Dosya için %1 gerekli ancak yalnızca %2 kullanılabilir.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="685"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu üzerinde yeterli depolama alanı yok. Dosya için %1 gerekli.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="688"/>
         <source>Insufficient storage on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu üzerinde yeterli depolama alanı yok.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu üzerinde bazı yüklemeleri kaydetmek için yeterli alan yok.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="657"/>
@@ -5879,7 +5879,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1703"/>
         <source>Sending your request …</source>
-        <translation type="unfinished"/>
+        <translation>İsteğiniz gönderiliyor...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1580"/>
@@ -6064,7 +6064,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="39"/>
         <source>Could not be downloaded</source>
-        <translation type="unfinished"/>
+        <translation>İndirilemedi</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="61"/>
@@ -6264,7 +6264,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="494"/>
         <source>macOS VFS for %1: An error was encountered.</source>
-        <translation type="unfinished"/>
+        <translation>%1 için macOS VFS: Bir sorun çıktı.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="526"/>
@@ -6279,12 +6279,12 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="846"/>
         <source>Internal link copied</source>
-        <translation type="unfinished"/>
+        <translation>İç bağlantı kopyalandı</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="847"/>
         <source>The internal link has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>İç bağlantı panoya kopyalandı.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>
@@ -6545,7 +6545,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="793"/>
         <source>You created %1</source>
-        <translation>%1 ögesini eklediniz</translation>
+        <translation>%1 oluşturdunuz</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="795"/>
@@ -6908,7 +6908,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="143"/>
         <source>Open settings</source>
-        <translation type="unfinished"/>
+        <translation>Ayarları aç</translation>
     </message>
 </context>
 <context>
@@ -6952,7 +6952,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
         <source>Open local or team folders</source>
-        <translation type="unfinished"/>
+        <translation>Yerel ya da takım klasörlerini aç</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
@@ -6962,7 +6962,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
         <source>Open team folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot; takım klasörünü aç</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="187"/>
@@ -6980,7 +6980,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="66"/>
         <source>Open local or team folders</source>
-        <translation type="unfinished"/>
+        <translation>Yerel ya da takım klasörlerini aç</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="101"/>
@@ -7285,7 +7285,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="25"/>
         <source>Virtual file created</source>
-        <translation>Sanal dosya eklendi</translation>
+        <translation>Sanal dosya oluşturuldu</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="27"/>

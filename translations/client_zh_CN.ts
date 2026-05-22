@@ -346,7 +346,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="343"/>
         <source>Could not remove folder &quot;%1&quot;</source>
-        <translation>无法删除文件夹 &quot;%1&quot;</translation>
+        <translation>无法移除文件夹 &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
@@ -364,7 +364,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="76"/>
         <source>Switch to your browser to connect your account</source>
-        <translation>切换到你的浏览器连接你的帐户 </translation>
+        <translation>切换到你的浏览器连接你的账号</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="229"/>
@@ -382,7 +382,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose …</source>
-        <translation>选择(&amp;C)…</translation>
+        <translation>&amp;选择…</translation>
     </message>
 </context>
 <context>
@@ -6270,12 +6270,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="846"/>
         <source>Internal link copied</source>
-        <translation type="unfinished"/>
+        <translation>内部链接已复制</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="847"/>
         <source>The internal link has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>内部链接已复制到剪贴板</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>

@@ -96,7 +96,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="138"/>
         <source>Syncing %1 of %2</source>
-        <translation>Sünkroniseerin: %1 / %2</translation>
+        <translation>Sünkroonin: %1 / %2</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="145"/>
@@ -163,7 +163,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="278"/>
         <source>Quit sync client</source>
-        <translation>Välju sünkroniseerimiskliendist</translation>
+        <translation>Välju sünkroonimiskliendist</translation>
     </message>
 </context>
 <context>
@@ -707,8 +707,8 @@ Kas sa tahaksid läbiva krüptimise nüüd kasutusele võtta?</translation>
         <location filename="../src/gui/accountsettings.cpp" line="437"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
-        <translation>Kausta krüptimine koos siuga pole võimalik. Tõsta failid sealt ajutiselt välja.
-Oota kuni sünkroniseerimine lõppeb ja seejärel krüpti.</translation>
+        <translation>Kausta krüptimine koos sisuga pole võimalik. Tõsta failid sealt ajutiselt välja.
+Oota kuni sünkroonimine lõppeb ja seejärel krüpti.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="461"/>
@@ -1597,7 +1597,7 @@ Samuti katkevad kõik hetkel toimivad sünkroonimised.</translation>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="14"/>
         <source>Sync Conflict</source>
-        <translation>Sünkroniseerimiskonflikt</translation>
+        <translation>Sünkroonimiskonflikt</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
@@ -6280,12 +6280,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="846"/>
         <source>Internal link copied</source>
-        <translation type="unfinished"/>
+        <translation>Sisemine link on kopeeritud</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="847"/>
         <source>The internal link has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Sisemine link on kopeeritud lõikelauale</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>
