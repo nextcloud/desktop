@@ -11,6 +11,7 @@
 #include "tray/usermodel.h"
 
 #include <QSystemTrayIcon>
+#include <QQuickWindow>
 #include <QQmlNetworkAccessManagerFactory>
 #include <QStringListModel>
 
@@ -18,7 +19,6 @@ class QScreen;
 class QQmlApplicationEngine;
 class QQuickWindow;
 class QWindow;
-class QQuickWindow;
 class QGuiApplication;
 
 namespace OCC {
@@ -57,6 +57,8 @@ double menuBarThickness();
 class Systray : public QSystemTrayIcon
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
 
     Q_PROPERTY(QString windowTitle READ windowTitle CONSTANT)
     Q_PROPERTY(bool useNormalWindow READ useNormalWindow CONSTANT)
@@ -68,6 +70,13 @@ class Systray : public QSystemTrayIcon
 public:
     static Systray *instance();
     ~Systray() override = default;
+
+    static Systray *create(QQmlEngine *, QJSEngine *)
+    {
+        auto _instance = instance();
+	QQmlEngine::setObjectOwnership(_instance, QJSEngine::CppOwnership);
+        return _instance;
+    }
 
     enum class TaskBarPosition { Bottom, Left, Top, Right };
     Q_ENUM(TaskBarPosition);

@@ -5,7 +5,6 @@
 
 import QtQuick
 import QtQuick.Window
-import Style
 import com.nextcloud.desktopclient
 import QtQuick.Layouts
 import QtQuick.Controls

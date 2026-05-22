@@ -5,7 +5,6 @@
 
 import QtQuick
 
-import Style
 import "../tray"
 
 EnforcedPlainTextLabel {

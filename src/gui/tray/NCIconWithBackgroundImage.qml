@@ -4,7 +4,6 @@
  */
 
 import QtQuick
-import Style
 
 Image {
     id: root

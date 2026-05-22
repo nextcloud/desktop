@@ -7,7 +7,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Qt5Compat.GraphicalEffects
-import Style
+import com.nextcloud.desktopclient
 
 HeaderButton {
     id: root

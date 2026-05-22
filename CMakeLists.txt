@@ -10,6 +10,7 @@ if(APPLE)
     set(CMAKE_OSX_DEPLOYMENT_TARGET "13.0" CACHE STRING "Minimum OSX deployment version")
 endif()
 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED 20)
 
@@ -93,6 +94,7 @@ include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(ECMMarkNonGuiExecutable)
 include(ECMSetupVersion)
+include(ECMQmlModule)
 
 #include(KDECompilerSettings NO_POLICY_SCOPE)
 include(ECMEnableSanitizers)

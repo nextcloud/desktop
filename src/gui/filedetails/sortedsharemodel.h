@@ -6,6 +6,7 @@
 #pragma once
 
 #include <QSortFilterProxyModel>
+#include <qqmlregistration.h>
 #include "sharemodel.h"
 
 namespace OCC {
@@ -13,6 +14,7 @@ namespace OCC {
 class SortedShareModel : public QSortFilterProxyModel
 {
     Q_OBJECT
+    QML_ELEMENT
 
 public:
     explicit SortedShareModel(QObject *parent = nullptr);

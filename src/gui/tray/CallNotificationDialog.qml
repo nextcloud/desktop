@@ -5,7 +5,6 @@
 
 import QtQuick
 import QtQuick.Window
-import Style
 import com.nextcloud.desktopclient
 import QtQuick.Layouts
 import QtMultimedia
@@ -156,7 +155,7 @@ ApplicationWindow {
                     cache: true
 
                     source: root.usingUserAvatar ? root.talkNotificationData.userAvatar :
-                                                   Style.darkMode ? root.talkIcon + palette.windowText : root.talkIcon + Style.ncBlue
+                                                   Theme.darkMode ? root.talkIcon + palette.windowText : root.talkIcon + Style.ncBlue
                     sourceSize.width: Style.accountAvatarSize
                     sourceSize.height: Style.accountAvatarSize
 

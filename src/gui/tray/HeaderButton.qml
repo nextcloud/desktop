@@ -11,7 +11,6 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 // Custom qml modules are in /theme (and included by resources.qrc)
-import Style
 import com.nextcloud.desktopclient
 
 Button {

@@ -24,6 +24,8 @@ class FileProviderSettingsController : public QObject
     Q_OBJECT
     Q_PROPERTY(bool isOperationInProgress READ isOperationInProgress NOTIFY operationInProgressChanged)
     Q_PROPERTY(QString operationMessage READ operationMessage NOTIFY operationMessageChanged)
+    QML_ELEMENT
+    QML_SINGLETON
 
 public:
     static FileProviderSettingsController *instance();
@@ -47,6 +49,13 @@ signals:
     void operationInProgressChanged();
     void operationMessageChanged();
     void vfsEnabledForAccountChanged(const QString &userIdAtHost);
+
+    static FileProviderSettingsController *create(QQmlEngine *, QJSEngine *engine)
+    {
+        auto _instance = Theme::instance();
+	QQmlEngine::setObjectOwnership(_instance, QJSEngine::CppOwnership);
+        return _instance;
+    }
 
 public slots:
     void setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled, const bool showInformationDialog = true);

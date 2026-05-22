@@ -8,7 +8,6 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import com.nextcloud.desktopclient
-import Style
 
 TextField {
     id: root

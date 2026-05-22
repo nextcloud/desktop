@@ -6,6 +6,7 @@
 #pragma once
 
 #include <QSortFilterProxyModel>
+#include <qqmlregistration.h>
 
 namespace OCC {
 
@@ -14,6 +15,7 @@ class ActivityListModel;
 class SortedActivityListModel : public QSortFilterProxyModel
 {
     Q_OBJECT
+    QML_ELEMENT
 
 public:
     explicit SortedActivityListModel(QObject *parent = nullptr);
