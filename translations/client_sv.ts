@@ -6281,12 +6281,12 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="846"/>
         <source>Internal link copied</source>
-        <translation type="unfinished"/>
+        <translation>Intern länk kopierad</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="847"/>
         <source>The internal link has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Den interna länken har kopierats till urklipp.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>

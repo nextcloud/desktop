@@ -6281,12 +6281,12 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="846"/>
         <source>Internal link copied</source>
-        <translation type="unfinished"/>
+        <translation>Link interno copiado</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="847"/>
         <source>The internal link has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>O link interno foi copiado para a área de transferência</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>

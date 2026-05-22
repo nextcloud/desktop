@@ -4987,7 +4987,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="748"/>
         <source>Secure file drop link</source>
-        <translation>Varno pošiljanje daottek</translation>
+        <translation>Varno pošiljanje datotek</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="748"/>
