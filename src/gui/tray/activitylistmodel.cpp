@@ -904,11 +904,12 @@ QVariant ActivityListModel::convertLinkToActionButton(const OCC::ActivityLink &a
 
     const auto isReplyIconApplicable = activityLink._verb == QStringLiteral("REPLY");
 
-    const QString replyButtonPath = QStringLiteral("image://svgimage-custom-color/reply.svg");
-
     if (isReplyIconApplicable) {
-        activityLinkCopy._imageSource = QString(replyButtonPath + "/");
-        activityLinkCopy._imageSourceHovered = QString(replyButtonPath + "/");
+        using namespace Qt::StringLiterals;
+
+        const auto replyButtonPath = u"image://svgimage-custom-color/reply.svg/"_s;
+        activityLinkCopy._imageSource = replyButtonPath;
+        activityLinkCopy._imageSourceHovered = replyButtonPath;
     }
 
     return QVariant::fromValue(activityLinkCopy);
