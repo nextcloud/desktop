@@ -91,7 +91,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="133"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation>Sünkroniseerin: %1 / %2 (jäänud %3)</translation>
+        <translation>Sünkroonin: %1 / %2 (jäänud %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="138"/>
@@ -106,7 +106,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="148"/>
         <source>Syncing %1</source>
-        <translation>Sünkroniseerin: %1</translation>
+        <translation>Sünkroonin: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="169"/>
@@ -1196,7 +1196,7 @@ Samuti katkevad kõik hetkel toimivad sünkroonimised.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="177"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation>Mõned seadistused on seadistatud selle kliendi versioonis %1  ning kasutavad funktsionaalsust, mis pole hetkel saadaval.&lt;br&gt;&lt;br&gt;Jätkamine tähendab neis &lt;b&gt;%2 seadistusi&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Praegune seadistuste fail on juba varundatud siia: &lt;i&gt;%3&lt;/i&gt;.</translation>
+        <translation>Mõned seadistused on seadistatud selle kliendi versioonis %1  ning kasutavad funktsionaalsust, mis pole hetkel saadaval.&lt;br&gt;&lt;br&gt;Jätkamine tähendab neid &lt;b&gt;%2 seadistusi&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Praegune seadistuste fail on juba varundatud siia: &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="183"/>
@@ -3245,7 +3245,7 @@ Kui võtad selle kasutusele, siis eelmise versiooni juurde ei ole võimalik otse
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
         <source>Global Ignore Settings</source>
-        <translation>Üldised ignoreerimise seaded</translation>
+        <translation>Üldised eiramise seadistused</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
@@ -3615,7 +3615,7 @@ Palun arvesta, et käsurealt lisatud logimistingimused on alati primaarsed nende
     <message>
         <location filename="../src/gui/networksettings.ui" line="45"/>
         <source>Proxy Settings</source>
-        <translation>Proksiserveri seaded</translation>
+        <translation>Proksiserveri seadistused</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="77"/>
@@ -3989,7 +3989,7 @@ Palun arvesta, et käsurealt lisatud logimistingimused on alati primaarsed nende
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="534"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Kohalik kaust %1 on juba olemas. Valmistan selle ette sünkroniseerimiseks.</translation>
+        <translation>Kohalik kaust %1 on juba olemas. Valmistan selle ette sünkroonimiseks.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="537"/>
