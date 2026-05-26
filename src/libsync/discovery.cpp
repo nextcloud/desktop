@@ -249,7 +249,7 @@ void ProcessDirectoryJob::process()
         processFile(std::move(path), e.localEntry, e.serverEntry, e.dbEntry);
     }
     _discoveryData->_listExclusiveFiles.clear();
-    QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
+    QMetaObject::invokeMethod(_discoveryData, &DiscoveryPhase::scheduleMoreJobs, Qt::QueuedConnection);
 }
 
 bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &entries, const std::map<QString, Entries> &allEntries, const bool isHidden, const bool isBlacklisted)
@@ -698,7 +698,7 @@ void ProcessDirectoryJob::postProcessServerNew(const SyncFileItemPtr &item,
                                                         if (!result) {
                                                             processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
                                                         }
-                                                        QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
+                                                        QMetaObject::invokeMethod(_discoveryData, &DiscoveryPhase::scheduleMoreJobs, Qt::QueuedConnection);
                                                     });
         return;
     }
@@ -1062,7 +1062,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
             const auto job = new RequestEtagJob(_discoveryData->_account, _discoveryData->_remoteFolder + originalPath, this);
             connect(job, &RequestEtagJob::finishedWithResult, this, [=, this](const HttpResult<QByteArray> &etag) mutable {
                 _pendingAsyncJobs--;
-                QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
+                QMetaObject::invokeMethod(_discoveryData, &DiscoveryPhase::scheduleMoreJobs, Qt::QueuedConnection);
                 if (etag || etag.error().code != 404 ||
                     // Somehow another item claimed this original path, consider as if it existed
                     _discoveryData->isRenamed(originalPath)) {
@@ -1713,7 +1713,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             }
             processFileFinalize(item, path, item->isDirectory(), NormalQuery, recurseQueryServer);
             _pendingAsyncJobs--;
-            QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
+            QMetaObject::invokeMethod(_discoveryData, &DiscoveryPhase::scheduleMoreJobs, Qt::QueuedConnection);
         });
         job->start();
         return;
@@ -2193,7 +2193,7 @@ void ProcessDirectoryJob::subJobFinished()
     int count = _runningJobs.removeAll(job);
     ASSERT(count == 1);
     job->deleteLater();
-    QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
+    QMetaObject::invokeMethod(_discoveryData, &DiscoveryPhase::scheduleMoreJobs, Qt::QueuedConnection);
 }
 
 int ProcessDirectoryJob::processSubJobs(int nbJobs)
