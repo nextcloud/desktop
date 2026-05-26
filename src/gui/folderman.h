@@ -80,7 +80,7 @@ public:
     };
 
     ~FolderMan() override;
-    static FolderMan *instance();
+    static FolderMan *instance() { return _instance; }
 
     int setupFolders();
     int setupFoldersMigration();
