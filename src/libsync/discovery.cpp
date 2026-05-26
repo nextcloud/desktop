@@ -303,9 +303,10 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
     }
 
     const auto &localName = entries.localEntry.name;
-    const auto splitName = localName.split('.');
-    const auto &baseName = splitName.first();
-    const auto extension = splitName.size() > 1 ? splitName.last() : QString();
+    const auto firstDotIndex = localName.indexOf(QLatin1Char('.'));
+    const auto lastDotIndex = localName.lastIndexOf(QLatin1Char('.'));
+    const auto baseName = firstDotIndex >= 0 ? QStringView(localName).left(firstDotIndex) : QStringView(localName);
+    const auto extension = lastDotIndex >= 0 ? QStringView(localName).mid(lastDotIndex + 1) : QStringView();
     const auto accountCaps = _discoveryData->_account->capabilities();
     const auto forbiddenFilenames = accountCaps.forbiddenFilenames();
     const auto forbiddenBasenames = accountCaps.forbiddenFilenameBasenames();
