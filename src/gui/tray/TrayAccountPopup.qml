@@ -175,7 +175,8 @@ Window {
             Rectangle {
                 width: parent.width
                 height: Style.trayWindowBorderWidth
-                color: palette.dark
+                color: palette.mid
+                opacity: Style.darkMode ? 1.0 : 0.5
             }
 
             Item {
