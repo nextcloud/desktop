@@ -978,13 +978,14 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(updatedMetadata.downloaded, "downloaded should be retained when keepExistingDownloadState is true")
     }
 
-    func testKeepDownloadedNotSetForNewMetadata() throws {
+    func testKeepDownloadedNotInheritedWhenNoPinnedAncestor() throws {
         let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
 
-        // Create completely new metadata (not existing in database)
+        // Create completely new metadata (not existing in database) with no
+        // pinned ancestor: neither a parent row nor a pinned root container.
         var newMetadata = SendableItemMetadata(ocId: "new-item", fileName: "new.txt", account: account)
         newMetadata.etag = "initial-etag"
-        newMetadata.keepDownloaded = false // Should remain false for new items
+        newMetadata.keepDownloaded = false
 
         let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
             account: account.ncKitAccount,
@@ -997,11 +998,94 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(result.updatedMetadatas?.isEmpty, true, "Should not update any metadata")
 
         let createdMetadata = try XCTUnwrap(result.newMetadatas?.first)
-        XCTAssertFalse(createdMetadata.keepDownloaded, "keepDownloaded should remain false for new items")
+        XCTAssertFalse(createdMetadata.keepDownloaded, "keepDownloaded should remain false when no pinned ancestor exists")
 
         // Verify in database
         let dbMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "new-item"))
-        XCTAssertFalse(dbMetadata.keepDownloaded, "keepDownloaded should be false in database for new items")
+        XCTAssertFalse(dbMetadata.keepDownloaded, "keepDownloaded should be false in database when no pinned ancestor exists")
+    }
+
+    func testKeepDownloadedInheritedFromPinnedParentForNewMetadata() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+
+        // Parent folder under the user's home, pinned.
+        var parentFolder = SendableItemMetadata(ocId: "pinned-parent", fileName: "pinned", account: account)
+        parentFolder.directory = true
+        parentFolder.uploaded = true
+        parentFolder.keepDownloaded = true
+        parentFolder.etag = "parent-etag"
+
+        Self.dbManager.addItemMetadata(parentFolder)
+
+        // New child appearing remotely inside the pinned folder. Its
+        // `serverUrl` is the parent's full path. `keepDownloaded` starts
+        // `false`, mirroring what `NKFile.toItemMetadata()` produces.
+        let parentRemotePath = account.davFilesUrl + "/pinned"
+        var newChild = SendableItemMetadata(ocId: "fresh-child", fileName: "child.txt", account: account)
+        newChild.serverUrl = parentRemotePath
+        newChild.etag = "child-etag"
+        newChild.keepDownloaded = false
+
+        let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: account.ncKitAccount,
+            serverUrl: parentRemotePath,
+            updatedMetadatas: [parentFolder, newChild],
+            keepExistingDownloadState: true
+        )
+
+        let createdChild = try XCTUnwrap(result.newMetadatas?.first(where: { $0.ocId == "fresh-child" }))
+        XCTAssertTrue(createdChild.keepDownloaded, "keepDownloaded should be inherited from pinned parent for new items")
+
+        let dbChild = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "fresh-child"))
+        XCTAssertTrue(dbChild.keepDownloaded, "Inherited keepDownloaded should be persisted to the database")
+    }
+
+    func testAddItemMetadataPreservingLocalState_InheritsPinnedParentForNewItem() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+
+        // Pinned parent folder.
+        var parentFolder = SendableItemMetadata(ocId: "preserving-parent", fileName: "pinned", account: account)
+        parentFolder.directory = true
+        parentFolder.uploaded = true
+        parentFolder.keepDownloaded = true
+
+        Self.dbManager.addItemMetadata(parentFolder)
+
+        // Fresh child inside the pinned folder, exactly as it would arrive
+        // from `NKFile.toItemMetadata()` (keepDownloaded = false).
+        var freshChild = SendableItemMetadata(ocId: "preserving-child", fileName: "child.txt", account: account)
+        freshChild.serverUrl = account.davFilesUrl + "/pinned"
+        freshChild.keepDownloaded = false
+
+        let written = Self.dbManager.addItemMetadataPreservingLocalState(freshChild)
+
+        XCTAssertTrue(written.keepDownloaded, "keepDownloaded should be inherited from pinned parent on first insert")
+
+        let dbChild = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "preserving-child"))
+        XCTAssertTrue(dbChild.keepDownloaded, "Inherited keepDownloaded should be persisted to the database")
+    }
+
+    func testAddItemMetadataPreservingLocalState_DoesNotInheritFromUnpinnedParent() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+
+        // Unpinned parent folder.
+        var parentFolder = SendableItemMetadata(ocId: "unpinned-parent", fileName: "regular", account: account)
+        parentFolder.directory = true
+        parentFolder.uploaded = true
+        parentFolder.keepDownloaded = false
+
+        Self.dbManager.addItemMetadata(parentFolder)
+
+        var freshChild = SendableItemMetadata(ocId: "unpinned-child", fileName: "child.txt", account: account)
+        freshChild.serverUrl = account.davFilesUrl + "/regular"
+        freshChild.keepDownloaded = false
+
+        let written = Self.dbManager.addItemMetadataPreservingLocalState(freshChild)
+
+        XCTAssertFalse(written.keepDownloaded, "keepDownloaded should remain false when parent is not pinned")
+
+        let dbChild = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "unpinned-child"))
+        XCTAssertFalse(dbChild.keepDownloaded, "Unpinned parent must not flip the child's keepDownloaded in the database")
     }
 
     func testKeepDownloadedRetainedWithMultipleItems() throws {

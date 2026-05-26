@@ -5,13 +5,9 @@
 import OSLog
 
 extension FileProviderExtension: NSFileProviderCustomAction {
-    public func performAction(
-        identifier actionIdentifier: NSFileProviderExtensionActionIdentifier,
-        onItemsWithIdentifiers itemIdentifiers: [NSFileProviderItemIdentifier],
-        completionHandler: @Sendable @escaping ((any Error)?) -> Void
-    ) -> Progress {
-        switch actionIdentifier.rawValue {
-            case "com.nextcloud.desktopclient.FileProviderExt.FileActionsAction":
+    public func performAction(identifier actionIdentifier: NSFileProviderExtensionActionIdentifier, onItemsWithIdentifiers itemIdentifiers: [NSFileProviderItemIdentifier], completionHandler: @Sendable @escaping ((any Error)?) -> Void) -> Progress {
+        switch actionIdentifier {
+            case .fileActions:
                 guard let itemIdentifier = itemIdentifiers.first else {
                     logger.error("Failed to get first item identifier for file actions action.")
                     completionHandler(NSFileProviderError(.noSuchItem))
@@ -45,11 +41,82 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                 }
 
                 return Progress()
-            case "com.nextcloud.desktopclient.FileProviderExt.KeepDownloadedAction":
+            case .openInBrowser:
+                guard let itemIdentifier = itemIdentifiers.first else {
+                    logger.error("Failed to get first item identifier for open in browser action.")
+                    completionHandler(NSFileProviderError(.noSuchItem))
+                    return Progress()
+                }
+
+                guard let dbManager else {
+                    logger.error("Cannot fetch metadata for open in browser action due to database manager not being available.", [.item: itemIdentifier])
+                    completionHandler(NSFileProviderError(.cannotSynchronize))
+                    return Progress()
+                }
+
+                guard let metadata = dbManager.itemMetadata(itemIdentifier) else {
+                    logger.error("Failed to get metadata for open in browser action.", [.item: itemIdentifier])
+                    completionHandler(NSFileProviderError(.noSuchItem))
+                    return Progress()
+                }
+
+                // The numeric file id is required to build the deprecated
+                // fallback URL the main app uses when PROPFIND for the
+                // server-side `privatelink` property is unavailable. Without
+                // it, the main app would have nothing to open.
+                guard !metadata.fileId.isEmpty else {
+                    logger.error("Cannot open item in browser because the metadata has no fileId.", [.item: itemIdentifier])
+                    completionHandler(NSFileProviderError(.noSuchItem))
+                    return Progress()
+                }
+
+                let domainIdentifier = domain.identifier.rawValue
+                logger.info("Telling main app to open item in browser.", [.item: metadata.path, .domain: domainIdentifier])
+                app?.openItemInBrowser(metadata.fileId, remoteItemPath: metadata.path, forDomainIdentifier: domainIdentifier)
+                completionHandler(nil)
+
+                return Progress()
+            case .copyInternalLink:
+                guard let itemIdentifier = itemIdentifiers.first else {
+                    logger.error("Failed to get first item identifier for copy internal link action.")
+                    completionHandler(NSFileProviderError(.noSuchItem))
+                    return Progress()
+                }
+
+                guard let dbManager else {
+                    logger.error("Cannot fetch metadata for copy internal link action due to database manager not being available.", [.item: itemIdentifier])
+                    completionHandler(NSFileProviderError(.cannotSynchronize))
+                    return Progress()
+                }
+
+                guard let metadata = dbManager.itemMetadata(itemIdentifier) else {
+                    logger.error("Failed to get metadata for copy internal link action.", [.item: itemIdentifier])
+                    completionHandler(NSFileProviderError(.noSuchItem))
+                    return Progress()
+                }
+
+                // The numeric file id is required to build the deprecated
+                // fallback URL the main app uses when PROPFIND for the
+                // server-side `privatelink` property is unavailable. Without
+                // it, the main app would have nothing to copy. Matches the
+                // equivalent guard in `case .openInBrowser`.
+                guard !metadata.fileId.isEmpty else {
+                    logger.error("Cannot copy internal link because the metadata has no fileId.", [.item: itemIdentifier])
+                    completionHandler(NSFileProviderError(.noSuchItem))
+                    return Progress()
+                }
+
+                let domainIdentifier = domain.identifier.rawValue
+                logger.info("Telling main app to copy internal link.", [.item: metadata.path, .domain: domainIdentifier])
+                app?.copyInternalLink(forItem: metadata.fileId, remoteItemPath: metadata.path, forDomainIdentifier: domainIdentifier)
+                completionHandler(nil)
+
+                return Progress()
+            case .keepDownloaded:
                 return performKeepDownloadedAction(keepDownloaded: true, onItemsWithIdentifiers: itemIdentifiers, completionHandler: completionHandler)
-            case "com.nextcloud.desktopclient.FileProviderExt.AutoEvictAction":
+            case .evictAutomatically:
                 return performKeepDownloadedAction(keepDownloaded: false, onItemsWithIdentifiers: itemIdentifiers, completionHandler: completionHandler)
-            case "com.nextcloud.desktopclient.FileProviderExt.EvictAction":
+            case .evict:
                 return performEvictAction(onItemsWithIdentifiers: itemIdentifiers, completionHandler: completionHandler)
             default:
                 logger.error("Unsupported action: \(actionIdentifier.rawValue)")
