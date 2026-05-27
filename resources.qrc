@@ -22,6 +22,7 @@
         <file>src/gui/filedetails/ShareeSearchField.qml</file>
         <file>src/gui/filedetails/ShareView.qml</file>
         <file>src/gui/tray/MainWindow.qml</file>
+        <file>src/gui/tray/TrayAccountPopup.qml</file>
         <file>src/gui/tray/UserLine.qml</file>
         <file>src/gui/tray/HeaderButton.qml</file>
         <file>src/gui/tray/SyncStatus.qml</file>

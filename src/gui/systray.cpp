@@ -128,6 +128,15 @@ void Systray::create()
         } else {
             _trayWindow.reset(qobject_cast<QQuickWindow*>(trayWindowComponent.create()));
         }
+
+#ifndef Q_OS_MACOS
+        QQmlComponent popupComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/tray/TrayAccountPopup.qml"));
+        if (popupComponent.isError()) {
+            qCWarning(lcSystray) << popupComponent.errorString();
+        } else {
+            _popupWindow.reset(qobject_cast<QQuickWindow*>(popupComponent.create()));
+        }
+#endif
     }
     hideWindow();
     emit activated(QSystemTrayIcon::ActivationReason::Unknown);
@@ -137,11 +146,33 @@ void Systray::create()
 
 void Systray::showWindow(WindowPosition position)
 {
-    if(isOpen() || !_trayWindow) {
+    if (isOpen()) {
         return;
     }
 
-    if(position == WindowPosition::Center) {
+#ifdef Q_OS_MACOS
+    if (!useNormalWindow()) {
+        showMacOSTrayPopup(geometry());
+        setIsOpen(true);
+        UserModel::instance()->fetchCurrentActivityModel();
+        return;
+    }
+#else
+    if (!useNormalWindow() && _popupWindow) {
+        positionWindowAtTray(_popupWindow.data());
+        _popupWindow->show();
+        _popupWindow->raise();
+        _popupWindow->requestActivate();
+        setIsOpen(true);
+        return;
+    }
+#endif
+
+    if (!_trayWindow) {
+        return;
+    }
+
+    if (position == WindowPosition::Center) {
         positionWindowAtScreenCenter(_trayWindow.data());
     } else {
         positionWindowAtTray(_trayWindow.data());
@@ -151,18 +182,63 @@ void Systray::showWindow(WindowPosition position)
     _trayWindow->requestActivate();
 
     setIsOpen(true);
-
     UserModel::instance()->fetchCurrentActivityModel();
 }
 
 void Systray::hideWindow()
 {
-    if(!isOpen() || !_trayWindow) {
+    if (!isOpen()) {
+        return;
+    }
+
+#ifdef Q_OS_MACOS
+    if (!useNormalWindow()) {
+        hideMacOSTrayPopup();
+        if (_trayWindow) {
+            _trayWindow->hide();
+        }
+        setIsOpen(false);
+        return;
+    }
+#else
+    if (!useNormalWindow()) {
+        if (_popupWindow) {
+            _popupWindow->hide();
+        }
+        if (_trayWindow) {
+            _trayWindow->hide();
+        }
+        setIsOpen(false);
+        return;
+    }
+#endif
+
+    if (!_trayWindow) {
         return;
     }
 
     _trayWindow->hide();
     setIsOpen(false);
+}
+
+void Systray::showQMLWindow()
+{
+    if (!_trayWindow) {
+        return;
+    }
+#ifdef Q_OS_MACOS
+    hideMacOSTrayPopup();
+#else
+    if (_popupWindow) {
+        _popupWindow->hide();
+    }
+#endif
+    positionWindowAtTray(_trayWindow.data());
+    _trayWindow->show();
+    _trayWindow->raise();
+    _trayWindow->requestActivate();
+    setIsOpen(true);
+    UserModel::instance()->fetchCurrentActivityModel();
 }
 
 void Systray::setupContextMenu()
