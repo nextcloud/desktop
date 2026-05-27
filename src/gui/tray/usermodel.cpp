@@ -2197,6 +2197,14 @@ QImage UserModel::avatarById(const int id) const
     return (*foundUserByIdIter)->avatar();
 }
 
+QImage UserModel::avatarForRow(const int row) const
+{
+    if (row < 0 || row >= _users.size()) {
+        return {};
+    }
+    return _users[row]->avatar();
+}
+
 QString UserModel::currentUserServer()
 {
     if (_currentUserId < 0 || _currentUserId >= _users.size())
