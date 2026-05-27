@@ -448,7 +448,7 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="503"/>
         <source>Ask Assistant …</source>
-        <translation type="unfinished"/>
+        <translation>Zapytaj Asystenta …</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="503"/>
@@ -4195,7 +4195,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/discovery.cpp" line="395"/>
         <source>File is locked by another application.</source>
-        <translation type="unfinished"/>
+        <translation>Plik jest zablokowany przez inną aplikację.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="391"/>
@@ -4796,7 +4796,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <location filename="../src/libsync/propagateuploadng.cpp" line="364"/>
         <source>File is locked preventing syncing it</source>
         <comment>Generic warning message when a locked file cannot be synced</comment>
-        <translation type="unfinished"/>
+        <translation>Plik jest zablokowany, co uniemożliwia jego synchronizację</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="451"/>
@@ -4842,7 +4842,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <location filename="../src/libsync/propagateuploadv1.cpp" line="141"/>
         <source>File is locked preventing syncing it</source>
         <comment>Generic warning message when a locked file cannot be synced</comment>
-        <translation type="unfinished"/>
+        <translation>Plik jest zablokowany, co uniemożliwia jego synchronizację</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="228"/>
@@ -4990,7 +4990,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="573"/>
         <source>%1 day</source>
-        <translation type="unfinished"/>
+        <translation>%1 dzień</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="573"/>
@@ -5803,27 +5803,27 @@ Serwer odpowiedział błędem: %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="641"/>
         <location filename="../src/gui/tray/usermodel.cpp" line="680"/>
         <source>“%1” was not synchronized</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot; nie został zsynchronizowany</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="682"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
-        <translation type="unfinished"/>
+        <translation>Niewystarczająca ilość miejsca na serwerze. Plik wymaga %1, ale dostępne jest tylko %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="685"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
-        <translation type="unfinished"/>
+        <translation>Niewystarczająca ilość miejsca na serwerze. Plik wymaga %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="688"/>
         <source>Insufficient storage on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Niewystarczająca ilość miejsca na serwerze</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>Na serwerze nie ma wystarczającej ilości miejsca dla części przesyłanych plików.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="657"/>
@@ -5882,7 +5882,7 @@ Serwer odpowiedział błędem: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1703"/>
         <source>Sending your request …</source>
-        <translation type="unfinished"/>
+        <translation>Wysyłanie Twojego żądania …</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1580"/>
@@ -6267,7 +6267,7 @@ Serwer odpowiedział błędem: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="494"/>
         <source>macOS VFS for %1: An error was encountered.</source>
-        <translation type="unfinished"/>
+        <translation>macOS VFS dla %1: wystąpił błąd.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="526"/>
@@ -6282,12 +6282,12 @@ Serwer odpowiedział błędem: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="846"/>
         <source>Internal link copied</source>
-        <translation type="unfinished"/>
+        <translation>Skopiowano link wewnętrzny</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="847"/>
         <source>The internal link has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Link wewnętrzny został skopiowany do schowka.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>
@@ -6943,6 +6943,24 @@ Serwer odpowiedział błędem: %2</translation>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="76"/>
         <source>Switch to your browser to accept the terms of service</source>
         <translation>Przejdź do swojej przeglądarki, aby zaakceptować warunki korzystania z usługi</translation>
+    </message>
+</context>
+<context>
+    <name>TrayAccountPopup</name>
+    <message>
+        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="215"/>
+        <source>Add account</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="255"/>
+        <source>Settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="295"/>
+        <source>Quit</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

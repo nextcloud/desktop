@@ -5525,50 +5525,50 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="183"/>
+        <location filename="../src/gui/systray.cpp" line="259"/>
         <source>Add account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="185"/>
+        <location filename="../src/gui/systray.cpp" line="261"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="188"/>
-        <location filename="../src/gui/systray.cpp" line="198"/>
+        <location filename="../src/gui/systray.cpp" line="264"/>
+        <location filename="../src/gui/systray.cpp" line="274"/>
         <source>Pause sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="189"/>
-        <location filename="../src/gui/systray.cpp" line="204"/>
+        <location filename="../src/gui/systray.cpp" line="265"/>
+        <location filename="../src/gui/systray.cpp" line="280"/>
         <source>Resume sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="190"/>
+        <location filename="../src/gui/systray.cpp" line="266"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="191"/>
+        <location filename="../src/gui/systray.cpp" line="267"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="192"/>
+        <location filename="../src/gui/systray.cpp" line="268"/>
         <source>Exit %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="198"/>
+        <location filename="../src/gui/systray.cpp" line="274"/>
         <source>Pause sync for all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="204"/>
+        <location filename="../src/gui/systray.cpp" line="280"/>
         <source>Resume sync for all</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5820,32 +5820,32 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2383"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2391"/>
         <source>Confirm Account Removal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2384"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2392"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2388"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2396"/>
         <source>Remove connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2389"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2397"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2475"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2483"/>
         <source>Leave share</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2475"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2483"/>
         <source>Remove account</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6868,6 +6868,24 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="76"/>
         <source>Switch to your browser to accept the terms of service</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TrayAccountPopup</name>
+    <message>
+        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="215"/>
+        <source>Add account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="255"/>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="295"/>
+        <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
