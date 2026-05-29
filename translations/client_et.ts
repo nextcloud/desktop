@@ -4674,7 +4674,7 @@ Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="274"/>
         <source>Error writing metadata to the database: %1</source>
-        <translation>Viga metainfo salvestamisel andmebaasi: %1</translation>
+        <translation>Viga metaandmete salvestamisel andmebaasi: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="277"/>
@@ -6343,7 +6343,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="360"/>
         <source>Ask before syncing folders larger than</source>
-        <translation>Küsi enne luba, kui plaanid sünkroniseerida kaustu, mis on suuremad kui</translation>
+        <translation>Küsi enne luba, kui plaanid sünkroonida kaustu, mis on suuremad kui</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="432"/>
@@ -6363,7 +6363,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="631"/>
         <source>Erase local folder and start a clean sync</source>
-        <translation>Kustuta kohaliku kausta sisu ja alusta sünkroniseerimist tühja kaustaga</translation>
+        <translation>Kustuta kohaliku kausta sisu ja alusta sünkroonimist tühja kaustaga</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="386"/>
@@ -6948,17 +6948,17 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayAccountPopup.qml" line="215"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Lisa kasutajakonto</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayAccountPopup.qml" line="255"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Seadistused</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayAccountPopup.qml" line="295"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Välju</translation>
     </message>
 </context>
 <context>

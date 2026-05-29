@@ -6949,17 +6949,17 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayAccountPopup.qml" line="215"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Añadir cuenta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayAccountPopup.qml" line="255"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Configuración</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayAccountPopup.qml" line="295"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Salir</translation>
     </message>
 </context>
 <context>

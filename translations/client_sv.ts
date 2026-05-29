@@ -6949,17 +6949,17 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayAccountPopup.qml" line="215"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Lägg till konto</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayAccountPopup.qml" line="255"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Inställningar</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayAccountPopup.qml" line="295"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Avsluta</translation>
     </message>
 </context>
 <context>
