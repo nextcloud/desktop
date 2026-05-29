@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="29"/>
         <source>Open %1 locally</source>
-        <translation>Открыть «%1» на ПК</translation>
+        <translation>Открыть %1 локально</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="35"/>
@@ -5804,22 +5804,22 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="682"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
-        <translation type="unfinished"/>
+        <translation>Недостаточно места на сервере. Файл требует %1, но доступны только %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="685"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
-        <translation type="unfinished"/>
+        <translation>Недостаточно места на сервере. Для файла требуется%1.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="688"/>
         <source>Insufficient storage on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Недостаточно места на сервере.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>На сервере недостаточно места для некоторых загрузок.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="657"/>
@@ -6263,7 +6263,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="494"/>
         <source>macOS VFS for %1: An error was encountered.</source>
-        <translation type="unfinished"/>
+        <translation>macOS VFS для %1: произошла ошибка.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="526"/>
@@ -6278,12 +6278,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="846"/>
         <source>Internal link copied</source>
-        <translation type="unfinished"/>
+        <translation>Внутренняя ссылка скопирована</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="847"/>
         <source>The internal link has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Внутренняя ссылка скопирована в буфер обмена.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>
@@ -6946,17 +6946,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayAccountPopup.qml" line="215"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Добавить учётную запись</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayAccountPopup.qml" line="255"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Настройки</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayAccountPopup.qml" line="295"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Выход</translation>
     </message>
 </context>
 <context>
