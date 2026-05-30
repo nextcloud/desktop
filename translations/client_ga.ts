@@ -6949,17 +6949,17 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/TrayAccountPopup.qml" line="215"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Cuir cuntas leis</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayAccountPopup.qml" line="255"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Socruithe</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayAccountPopup.qml" line="295"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Scoir</translation>
     </message>
 </context>
 <context>
