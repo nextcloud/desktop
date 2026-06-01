@@ -109,6 +109,20 @@ Signed-off-by: Random J Developer <random@developer.example.org>
 
 Contributors can sign automatically with `git commit -s` after configuring `user.name` and `user.email`.
 
+## c++ Specifics
+
+The following details are important and only relevant when working on the desktop client parts written in c++ language.
+
+You should never use std::iostream for input or output handling and rather use Qt QLoggingCategory and related classes.
+
+All logging categories starts with nextcloud identifier.
+
+Our c++ code is using a pattern known as almost always auto when you should almost always not use explicit data types and rather use the auto keyword.
+
+Our c++ code should can make use of c++ 20 standard features.
+
+We do not use c++ modules and rather use standard include of headers.
+
 ## macOS Specifics
 
 The following details are important and only relevant when working on the desktop client on macOS.
