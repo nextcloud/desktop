@@ -247,7 +247,7 @@ QByteArray E2eeDecryptor::decryptPrivateKeyFromFile() const
     auto normalised = _options.passphrase;
     normalised.remove(QLatin1Char(' '));
     normalised = normalised.toLower();
-    const auto passphraseBytes = normalised.toLocal8Bit();
+    const auto passphraseBytes = normalised.toUtf8();
 
     // Try three PBKDF2 variants in order, stopping on the first success.
     const auto tryDecrypt = [&](const QByteArray &derivedKey) -> QByteArray {
@@ -453,7 +453,8 @@ E2eeDecryptor::ParsedMetadata E2eeDecryptor::parseMetadata(const QByteArray &met
 
     const auto cipherTextFull = metadataObj[QStringLiteral("ciphertext")].toString().toLocal8Bit();
     // The ciphertext field may be "base64data|base64iv" – take only the part before '|'
-    const auto cipherTextPart = cipherTextFull.split('|').at(0);
+    const auto parts = cipherTextFull.split('|');
+    const auto cipherTextPart = parts.value(0);
     const auto cipherTextBinary = QByteArray::fromBase64(cipherTextPart);
 
     const auto plaintext = EncryptionHelper::decryptThenUnGzipData(binaryMetadataKey, cipherTextBinary, nonce);
