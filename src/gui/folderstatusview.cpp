@@ -33,4 +33,14 @@ QRect FolderStatusView::visualRect(const QModelIndex &index) const
     return rect;
 }
 
+void FolderStatusView::keyboardSearch(const QString &search)
+{
+    QTreeView::keyboardSearch(search);
+
+    const auto index = currentIndex();
+    if (index.isValid()) {
+        scrollTo(index, QAbstractItemView::EnsureVisible);
+    }
+}
+
 } // namespace OCC
