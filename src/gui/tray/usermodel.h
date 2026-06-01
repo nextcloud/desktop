@@ -340,6 +340,7 @@ public:
 
     [[nodiscard]]  QImage avatarById(const int id) const;
     [[nodiscard]] QImage avatarForRow(int row) const;
+    [[nodiscard]] QImage syncStatusIconForRow(int row) const;
 
     [[nodiscard]] User *currentUser() const;
     [[nodiscard]] User *findUserForAccount(AccountState *account) const;

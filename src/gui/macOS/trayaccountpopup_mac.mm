@@ -59,54 +59,6 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
     return img;
 }
 
-static NSImage *whiteSymbolImage(NSString *symbolName, CGFloat pointSize)
-{
-    NSImage *symbol = [[NSImage imageWithSystemSymbolName:symbolName accessibilityDescription:nil]
-        imageWithSymbolConfiguration:[NSImageSymbolConfiguration configurationWithPointSize:pointSize weight:NSFontWeightBold]];
-    NSImage *tintedSymbol = [[NSImage alloc] initWithSize:symbol.size];
-
-    [tintedSymbol lockFocus];
-    const NSRect symbolRect = NSMakeRect(0.0, 0.0, symbol.size.width, symbol.size.height);
-    [symbol drawInRect:symbolRect
-              fromRect:NSZeroRect
-             operation:NSCompositingOperationSourceOver
-              fraction:1.0
-        respectFlipped:YES
-                 hints:nil];
-    [NSColor.whiteColor set];
-    NSRectFillUsingOperation(symbolRect, NSCompositingOperationSourceIn);
-    [tintedSymbol unlockFocus];
-
-    return tintedSymbol;
-}
-
-static NSImage *syncStatusImage(BOOL syncOk)
-{
-    const CGFloat imageSize = 18.0;
-    const CGFloat circleSize = 16.0;
-    const NSRect imageRect = NSMakeRect(0.0, 0.0, imageSize, imageSize);
-    const NSRect circleRect = NSMakeRect((imageSize - circleSize) / 2.0,
-                                         (imageSize - circleSize) / 2.0,
-                                         circleSize,
-                                         circleSize);
-    NSImage *image = [[NSImage alloc] initWithSize:imageRect.size];
-
-    [image lockFocus];
-    [(syncOk ? NSColor.systemGreenColor : NSColor.systemBlueColor) setFill];
-    [[NSBezierPath bezierPathWithOvalInRect:circleRect] fill];
-
-    NSString *symbolName = syncOk ? @"checkmark" : @"arrow.triangle.2.circlepath";
-    NSImage *symbol = whiteSymbolImage(symbolName, 10);
-    [symbol drawInRect:NSMakeRect(4.0, 4.0, 10.0, 10.0)
-              fromRect:NSZeroRect
-             operation:NSCompositingOperationSourceOver
-              fraction:1.0
-        respectFlipped:YES
-                 hints:nil];
-    [image unlockFocus];
-
-    return image;
-}
 
 @interface NCHoverView : NSView
 @end
@@ -349,7 +301,7 @@ static NSImage *syncStatusImage(BOOL syncOk)
                              name:(NSString *)name
                            server:(NSString *)server
                            avatar:(NSImage *)avatar
-                           syncOk:(BOOL)syncOk
+                  syncStatusImage:(NSImage *)syncStatusImage
 {
     NSImageView *avatarView = [[NSImageView alloc] init];
     avatarView.image = avatar != nil ? avatar : [NSImage imageWithSystemSymbolName:@"person.circle.fill"
@@ -377,7 +329,7 @@ static NSImage *syncStatusImage(BOOL syncOk)
     row.popupDelegate = self;
 
     NSImageView *statusView = [[NSImageView alloc] init];
-    statusView.image = syncStatusImage(syncOk);
+    statusView.image = syncStatusImage;
     statusView.translatesAutoresizingMaskIntoConstraints = NO;
 
     NSImageView *chevron = [[NSImageView alloc] init];
@@ -436,9 +388,9 @@ static NSImage *syncStatusImage(BOOL syncOk)
         const QModelIndex idx = model->index(i);
         NSString *name   = model->data(idx, OCC::UserModel::NameRole).toString().toNSString();
         NSString *server = model->data(idx, OCC::UserModel::ServerRole).toString().toNSString();
-        const bool syncOk = model->data(idx, OCC::UserModel::SyncStatusOkRole).toBool();
         NSImage *avatar = nsImageFromQImage(model->avatarForRow(i));
-        [_stack addArrangedSubview:[self makeRowForIndex:i name:name server:server avatar:avatar syncOk:syncOk]];
+        NSImage *syncStatus = nsImageFromQImage(model->syncStatusIconForRow(i));
+        [_stack addArrangedSubview:[self makeRowForIndex:i name:name server:server avatar:avatar syncStatusImage:syncStatus]];
     }
 
     NSBox *sep = [[NSBox alloc] init];
