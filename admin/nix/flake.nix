@@ -20,8 +20,7 @@
           };
 
           inherit (pkgs.lib.lists) optional optionals;
-          inherit (pkgs.lib.strings) hasPrefix optionalString;
-          isARM = hasPrefix "aarch64" system;
+          inherit (pkgs.lib.strings) optionalString;
 
           buildMacOSSymlinks = pkgs.runCommand "nextcloud-build-symlinks" {} ''
             mkdir -p $out/bin
@@ -53,9 +52,6 @@
 
             libsForQt5.karchive
             libsForQt5.qtkeychain
-          ] ++ optionals (!isARM) [
-            # Qt WebEngine not available on ARM
-            qt5.qtwebengine
           ] ++ optionals stdenv.isLinux [
             inotify-tools
             libcloudproviders

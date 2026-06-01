@@ -54,7 +54,6 @@ set(client_UI_SRCS
     mnemonicdialog.ui
     vfsdownloaderrordialog.ui
     wizard/flow2authwidget.ui
-    wizard/webview.ui
 )
 
 qt_add_resources(client_UI_SRCS ../../resources.qrc ${CMAKE_SOURCE_DIR}/theme.qrc)
@@ -253,13 +252,6 @@ if (NOT DISABLE_ACCOUNT_MIGRATION)
         legacyaccountselectiondialog.h
         legacyaccountselectiondialog.cpp
     )
-endif()
-
-if (WITH_WEBENGINE)
-  list(APPEND client_SRCS
-    wizard/webview.h
-    wizard/webview.cpp
-  )
 endif()
 
 IF(BUILD_UPDATER)
@@ -548,10 +540,6 @@ set_property(SOURCE
 foreach(FILE IN LISTS client_UI_SRCS)
 	set_property(SOURCE ${FILE} PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
 endforeach()
-
-if(WITH_WEBENGINE)
-    target_link_libraries(nextcloudCore PUBLIC Qt::WebEngineWidgets Qt::WebEngineCore)
-endif()
 
 set_target_properties(nextcloudCore
   PROPERTIES
