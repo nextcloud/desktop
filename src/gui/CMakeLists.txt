@@ -208,6 +208,16 @@ set(client_SRCS
     filedetails/sortedsharemodel.cpp
     governance/governancenetworkjob.h
     governance/governancenetworkjob.cpp
+    governance/getgovernancelabels.h
+    governance/getgovernancelabels.cpp
+    governance/getavailablegovernancelabels.h
+    governance/getavailablegovernancelabels.cpp
+    governance/applygovernancelabel.h
+    governance/applygovernancelabel.cpp
+    governance/deletegovernancelabel.h
+    governance/deletegovernancelabel.cpp
+    governance/typedgovernancenetworkjob.h
+    governance/typedgovernancenetworkjob.cpp
     tray/svgimageprovider.h
     tray/svgimageprovider.cpp
     tray/syncstatussummary.h
