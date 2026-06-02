@@ -794,43 +794,43 @@ Počkajte na novú synchronizáciu a potom ho zašifrujte.</translation>
         <translation>Odstrániť prepojenie synchronizácie priečinka</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="968"/>
+        <location filename="../src/gui/accountsettings.cpp" line="960"/>
         <source>Grant access to sync folder</source>
         <translation>Povoliť prístup na synchronizačný priečinok</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="980"/>
+        <location filename="../src/gui/accountsettings.cpp" line="972"/>
         <source>Access Error</source>
         <translation>Prístupová chyba</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="981"/>
+        <location filename="../src/gui/accountsettings.cpp" line="973"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
         <translation>Nie je možné získať prístup k vybranému priečinku. Skúste to prosím znova.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="989"/>
+        <location filename="../src/gui/accountsettings.cpp" line="981"/>
         <source>Wrong Folder</source>
         <translation>Nesprávny priečinok</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="990"/>
+        <location filename="../src/gui/accountsettings.cpp" line="982"/>
         <source>Please select the original sync folder: %1</source>
         <translation>Prosím, vyberte pôvodnú synchronizačnú zložku: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="999"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1008"/>
+        <location filename="../src/gui/accountsettings.cpp" line="991"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1000"/>
         <source>Bookmark Error</source>
         <translation>Chyba záložky</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1000"/>
+        <location filename="../src/gui/accountsettings.cpp" line="992"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
         <translation>Nepodarilo sa vytvoriť bezpečnostnú záložku pre priečinok. Skúste to prosím znova.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1009"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1001"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
         <translation>Nepodarilo sa vyriešiť bezpečnostnú záložku. Skúste to znova.</translation>
     </message>
@@ -908,7 +908,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
         <translation>%1 sa používa</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1428"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1420"/>
         <source>Connected to %1 (%2).</source>
         <translation>Pripojené k %1 (%2).</translation>
     </message>
@@ -933,7 +933,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
         <translation>Tento účet podporuje šifrovanie end-to-end, ale je potrebné ho najprv nastaviť.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1864"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1856"/>
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
         <translation>Integrácia virtuálnych súborov zatiaľ nepodporuje šifrovanie od konca ku koncu.</translation>
     </message>
@@ -1315,23 +1315,23 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
 <context>
     <name>OCC::BulkPropagatorDownloadJob</name>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="143"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="79"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Súbor %1 sa nedá stiahnuť kvôli konfliktu názvov súborov v miestnom úložisku!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="165"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="101"/>
         <source>Unable to update metadata of new file %1.</source>
         <comment>error with update metadata of new Win VFS file</comment>
         <translation>Nemožno aktualizovať metadata nového súboru %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="188"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="124"/>
         <source>Error updating metadata: %1</source>
         <translation>Chyba pri aktualizácii metadát: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="191"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="127"/>
         <source>The file %1 is currently in use</source>
         <translation>Súbor %1 je momentálne používa</translation>
     </message>
@@ -1370,7 +1370,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="398"/>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="745"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="734"/>
         <source>Local file changed during sync.</source>
         <translation>Lokálny súbor bol zmenený počas synchronizácie.</translation>
     </message>
@@ -1390,12 +1390,12 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
         <translation>Súbor %1 sa v súčasnosti používa</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="727"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="716"/>
         <source>The local file was removed during sync.</source>
         <translation>Lokálny súbor bol odstránený počas synchronizácie.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="775"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="764"/>
         <source>Restoration failed: %1</source>
         <translation>Obnovenie zlyhalo: %1</translation>
     </message>
@@ -4187,7 +4187,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="383"/>
+        <location filename="../src/libsync/discovery.cpp" line="382"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Symbolické odkazy nie sú podporované pri synchronizácii.</translation>
     </message>
@@ -4197,205 +4197,205 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="392"/>
+        <location filename="../src/libsync/discovery.cpp" line="391"/>
         <source>File is listed on the ignore list.</source>
         <translation>Súbor je zapísaný na zozname ignorovaných.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="396"/>
+        <location filename="../src/libsync/discovery.cpp" line="395"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>Názvy súborov končiacich bodkou nie sú na tomto súborovom systéme podporované.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="408"/>
+        <location filename="../src/libsync/discovery.cpp" line="407"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>Názvy priečinkov obsahujúce znak &quot;%1&quot; nie sú na tomto súborovom systéme podporované.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="409"/>
+        <location filename="../src/libsync/discovery.cpp" line="408"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>Názvy súborov obsahujúce znak &quot;%1&quot; nie sú na tomto súborovom systéme podporované.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="412"/>
+        <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>Folder name contains at least one invalid character</source>
         <translation>Názov priečinka obsahuje aspoň jeden neplatný znak</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="413"/>
+        <location filename="../src/libsync/discovery.cpp" line="412"/>
         <source>File name contains at least one invalid character</source>
         <translation>Názov súboru obsahuje nepovolený znak</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="416"/>
+        <location filename="../src/libsync/discovery.cpp" line="415"/>
         <source>Folder name is a reserved name on this file system.</source>
         <translation>Názov priečinka je rezervované meno v tomto súborovom systéme.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="417"/>
+        <location filename="../src/libsync/discovery.cpp" line="416"/>
         <source>File name is a reserved name on this file system.</source>
         <translation>Názov súboru je rezervovaný názov v tomto súborovom systéme.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="423"/>
+        <location filename="../src/libsync/discovery.cpp" line="422"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Názov súboru obsahuje medzery na konci.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="426"/>
-        <location filename="../src/libsync/discovery.cpp" line="433"/>
-        <location filename="../src/libsync/discovery.cpp" line="440"/>
-        <location filename="../src/libsync/discovery.cpp" line="482"/>
+        <location filename="../src/libsync/discovery.cpp" line="425"/>
+        <location filename="../src/libsync/discovery.cpp" line="432"/>
+        <location filename="../src/libsync/discovery.cpp" line="439"/>
+        <location filename="../src/libsync/discovery.cpp" line="481"/>
         <source>Cannot be renamed or uploaded.</source>
         <translation>Nemôže byť premenované alebo narhrané.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="430"/>
+        <location filename="../src/libsync/discovery.cpp" line="429"/>
         <source>Filename contains leading spaces.</source>
         <translation>Názov súboru obsahuje medzery na začiatku.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="437"/>
+        <location filename="../src/libsync/discovery.cpp" line="436"/>
         <source>Filename contains leading and trailing spaces.</source>
         <translation>Názov súboru obsahuje medzery na začiatku a na konci.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="444"/>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
         <source>Filename is too long.</source>
         <translation>Meno súboru je veľmi dlhé.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="448"/>
+        <location filename="../src/libsync/discovery.cpp" line="447"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>Súbor/priečinok je ignorovaný, pretože je skrytý</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="451"/>
+        <location filename="../src/libsync/discovery.cpp" line="450"/>
         <source>Stat failed.</source>
         <translation>Nepodarilo sa získať informácie o súbore.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="454"/>
+        <location filename="../src/libsync/discovery.cpp" line="453"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Konflikt: Prevzatá verzia zo servera, lokálna kópia premenovaná a neodovzdaná.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="458"/>
+        <location filename="../src/libsync/discovery.cpp" line="457"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
         <translation>Konflikt názvov: Serverový súbor bol stiahnutý a premenovaný, aby sa predišlo konfliktu.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="462"/>
+        <location filename="../src/libsync/discovery.cpp" line="461"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>Názov súboru nemôže byť na tomto súborovom systéme enkódovaný.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="465"/>
+        <location filename="../src/libsync/discovery.cpp" line="464"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>Súbor je na tomto serveri na čiernej listine.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="468"/>
+        <location filename="../src/libsync/discovery.cpp" line="467"/>
         <source>Reason: the entire filename is forbidden.</source>
         <translation>Dôvod: celý názov súboru je zakázaný.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="471"/>
+        <location filename="../src/libsync/discovery.cpp" line="470"/>
         <source>Reason: the filename has a forbidden base name (filename start).</source>
         <translation>Dôvod: meno súboru obsahuje zakázaný názov (začiatok názvu súboru).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="474"/>
+        <location filename="../src/libsync/discovery.cpp" line="473"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
         <translation>Dôvod: súbor obsahuje zakázanú príponu (.%1).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="477"/>
+        <location filename="../src/libsync/discovery.cpp" line="476"/>
         <source>Reason: the filename contains a forbidden character (%1).</source>
         <translation>Dôvod: meno súboru obsahuje zakázaný znak (%1).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="623"/>
+        <location filename="../src/libsync/discovery.cpp" line="622"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>Prípona súboru je rezervovaná pre virtuálne súbory.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="788"/>
+        <location filename="../src/libsync/discovery.cpp" line="787"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>Priečinok nie je prístupný na serveri.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="789"/>
+        <location filename="../src/libsync/discovery.cpp" line="788"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>Súbor nie je prístupný na serveri.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1202"/>
+        <location filename="../src/libsync/discovery.cpp" line="1201"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Chyba pri synchronizácii z dôvodu neplatného času poslednej zmeny</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1218"/>
+        <location filename="../src/libsync/discovery.cpp" line="1217"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>Nahrávanie %1 presahuje %2 voľného miesta v osobných súboroch.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1221"/>
+        <location filename="../src/libsync/discovery.cpp" line="1220"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>Nahrávanie %1 presahuje %2 voľného miesta v priečinku %3.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1237"/>
+        <location filename="../src/libsync/discovery.cpp" line="1236"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Súbor sa nepodarilo nahrať, pretože je otvorený v &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1287"/>
+        <location filename="../src/libsync/discovery.cpp" line="1286"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Chyba pri mazaní záznamu o súbore %1 z databázy</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1575"/>
-        <location filename="../src/libsync/discovery.cpp" line="2048"/>
+        <location filename="../src/libsync/discovery.cpp" line="1574"/>
+        <location filename="../src/libsync/discovery.cpp" line="2047"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Presunuté do neplatného cieľa, obnovujem</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1903"/>
+        <location filename="../src/libsync/discovery.cpp" line="1902"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Nie je možné upraviť šifrovanú položku, pretože vybratý certifikát nie je platný.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1972"/>
+        <location filename="../src/libsync/discovery.cpp" line="1971"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorované podľa nastavenia &quot;vybrať čo synchronizovať&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2006"/>
+        <location filename="../src/libsync/discovery.cpp" line="2005"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Nie je dovolené, lebo nemáte oprávnenie pridávať podpriečinky do tohto priečinka</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2012"/>
+        <location filename="../src/libsync/discovery.cpp" line="2011"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Nie je možné, pretože nemáte oprávnenie pridávať súbory do tohto priečinka</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2026"/>
+        <location filename="../src/libsync/discovery.cpp" line="2025"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Nie je dovolené tento súbor nahrať, pretože je na serveri iba na čítanie, obnovujem</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2062"/>
+        <location filename="../src/libsync/discovery.cpp" line="2061"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Nie je dovolené odstrániť, obnovujem</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2233"/>
+        <location filename="../src/libsync/discovery.cpp" line="2232"/>
         <source>Error while reading the database</source>
         <translation>Chyba pri čítaní z databáze</translation>
     </message>
@@ -4453,7 +4453,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="515"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1370"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1310"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Nie je možné vymazať záznam o súbore %1 z lokálnej DB</translation>
     </message>
@@ -4483,29 +4483,29 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>Prebratý súbor je prázdny napriek tomu, že server oznámil, že mal mať %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1204"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1218"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1144"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1158"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
         <translation>Súbor %1 má neplatný čas poslednej zmeny nahlásený serverom. Neukladajte si to.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1291"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1231"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>Súbor %1 bol stiahnutý, ale došlo k kolízii názvov lokálnych súborov!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1402"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1342"/>
         <source>Error updating metadata: %1</source>
         <translation>Chyba pri aktualizácii metadát: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1405"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1345"/>
         <source>The file %1 is currently in use</source>
         <translation>Súbor %1 sa v súčasnosti používa</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="494"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1320"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1260"/>
         <source>File has changed since discovery</source>
         <translation>Súbor sa medzitým zmenil</translation>
     </message>
@@ -4763,12 +4763,12 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>Nemožno nahrať položku s neplatnými znakmi.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="828"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="817"/>
         <source>Error updating metadata: %1</source>
         <translation>Chyba pri aktualizácii metadát: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="831"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="820"/>
         <source>The file %1 is currently in use</source>
         <translation>Súbor %1 sa v súčasnosti používa</translation>
     </message>
@@ -6264,7 +6264,7 @@ Server odpovedal chybou: %2</translation>
         <translation>macOS VFS pre %1: Vyskytol sa problém.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="489"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="494"/>
         <source>macOS VFS for %1: An error was encountered.</source>
         <translation type="unfinished"/>
     </message>
@@ -6277,6 +6277,16 @@ Server odpovedal chybou: %2</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="529"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>Kontrolujú sa zmeny v lokálnom &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="846"/>
+        <source>Internal link copied</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="847"/>
+        <source>The internal link has been copied to the clipboard.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>
@@ -6932,6 +6942,24 @@ Server odpovedal chybou: %2</translation>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="76"/>
         <source>Switch to your browser to accept the terms of service</source>
         <translation>Ak chcete prijať zmluvné podmienky, prejdite do prehliadača</translation>
+    </message>
+</context>
+<context>
+    <name>TrayAccountPopup</name>
+    <message>
+        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="215"/>
+        <source>Add account</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="255"/>
+        <source>Settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="295"/>
+        <source>Quit</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

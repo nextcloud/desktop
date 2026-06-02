@@ -1903,7 +1903,28 @@ void User::slotAssistantRequestError(const QString &context, int statusCode)
 
 void User::forceSyncNow() const
 {
-    FolderMan::instance()->forceSyncForFolder(getFolder());
+    if (const auto folder = getFolder()) {
+        FolderMan::instance()->forceSyncForFolder(folder);
+        return;
+    }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    if (hasFileProvider() && _account && _account->account()) {
+        const auto fileProvider = Mac::FileProvider::instance();
+        if (fileProvider && fileProvider->domainManager()) {
+            // No classic Folder exists for this account — it is managed by the macOS File
+            // Provider Extension. Per Apple's documented pattern, on-demand sync is requested
+            // by signalling the working-set enumerator; the OS then drives the extension's
+            // `enumerator(for: .workingSet)` → `enumerateChanges()` flow, which performs the
+            // actual remote reconciliation. See nextcloud/desktop#9909.
+            fileProvider->domainManager()->signalEnumeratorChanged(_account->account().data());
+            return;
+        }
+    }
+#endif
+
+    qCWarning(lcActivity) << "forceSyncNow: no folder and no file provider domain to sync for"
+                          << (_account ? _account->account()->displayName() : QStringLiteral("<no account>"));
 }
 
 void User::slotAccountCapabilitiesChangedRefreshGroupFolders()
@@ -2174,6 +2195,24 @@ QImage UserModel::avatarById(const int id) const
     }
 
     return (*foundUserByIdIter)->avatar();
+}
+
+QImage UserModel::avatarForRow(const int row) const
+{
+    if (row < 0 || row >= _users.size()) {
+        return {};
+    }
+    return _users[row]->avatar();
+}
+
+QImage UserModel::syncStatusIconForRow(const int row) const
+{
+    if (row < 0 || row >= _users.size()) {
+        return {};
+    }
+    const auto url = _users[row]->syncStatusIcon();
+    const auto resourcePath = QStringLiteral(":") + url.path();
+    return QIcon(resourcePath).pixmap(18, 18).toImage();
 }
 
 QString UserModel::currentUserServer()

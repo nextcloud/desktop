@@ -339,6 +339,8 @@ public:
     [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
     [[nodiscard]]  QImage avatarById(const int id) const;
+    [[nodiscard]] QImage avatarForRow(int row) const;
+    [[nodiscard]] QImage syncStatusIconForRow(int row) const;
 
     [[nodiscard]] User *currentUser() const;
     [[nodiscard]] User *findUserForAccount(AccountState *account) const;

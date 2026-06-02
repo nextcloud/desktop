@@ -48,6 +48,9 @@ void sendOsXTalkNotification(const QString &title, const QString &message, const
 #endif
 void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window);
 double menuBarThickness();
+void showMacOSTrayPopup(const QRect &iconRect);
+void hideMacOSTrayPopup();
+void showMacOSQMLWindow();
 #endif
 
 /**
@@ -143,6 +146,7 @@ public slots:
 
     void showWindow(OCC::Systray::WindowPosition position = OCC::Systray::WindowPosition::Default);
     void hideWindow();
+    void showQMLWindow();
 
     void setSyncIsPaused(const bool syncIsPaused);
     void setIsOpen(const bool isOpen);
@@ -208,6 +212,9 @@ private:
     std::unique_ptr<QQmlApplicationEngine> _trayEngine;
     QPointer<QMenu> _contextMenu;
     QSharedPointer<QQuickWindow> _trayWindow;
+#ifndef Q_OS_MACOS
+    QSharedPointer<QQuickWindow> _popupWindow;
+#endif
 
     AccessManagerFactory _accessManagerFactory;
 
