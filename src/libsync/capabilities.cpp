@@ -13,6 +13,8 @@
 #include <QVersionNumber>
 #include <QDebug>
 
+using namespace Qt::StringLiterals;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcServerCapabilities, "nextcloud.sync.server.capabilities", QtInfoMsg)
@@ -532,6 +534,11 @@ DirectEditor* Capabilities::getDirectEditorForOptionalMimetype(const QMimeType &
     }
 
     return nullptr;
+}
+
+bool Capabilities::governanceAvailable() const
+{
+    return _capabilities.contains(u"governance"_s);
 }
 
 
