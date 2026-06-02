@@ -3,6 +3,7 @@
 
 @preconcurrency import FileProvider
 import Foundation
+import NextcloudFileProviderKit
 
 public class MockChangeObserver: NSObject, NSFileProviderChangeObserver {
     public var changedItems: [any NSFileProviderItemProtocol] = []
@@ -33,11 +34,7 @@ public class MockChangeObserver: NSObject, NSFileProviderChangeObserver {
     }
 
     public func enumerateChanges(from anchor: NSFileProviderSyncAnchor =
-        .init(
-            ISO8601DateFormatter()
-                .string(from: Date(timeIntervalSince1970: 1))
-                .data(using: .utf8)!
-        )) async throws
+        Enumerator.syncAnchor(at: Date(timeIntervalSince1970: 1))) async throws
     {
         enumerator.enumerateChanges?(for: self, from: anchor)
         while !isComplete {

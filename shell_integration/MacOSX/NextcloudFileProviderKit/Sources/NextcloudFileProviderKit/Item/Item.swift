@@ -69,10 +69,23 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
     }
 
     public var itemVersion: NSFileProviderItemVersion {
-        NSFileProviderItemVersion(
-            contentVersion: metadata.etag.data(using: .utf8)!,
-            metadataVersion: metadata.etag.data(using: .utf8)!
-        )
+        // `metadataVersion` embeds the running extension's `CFBundleShortVersionString`
+        // alongside the server etag so the framework's cached snapshot is detected as stale
+        // after any extension update that changes how `userInfo` / `contentPolicy` /
+        // `fileSystemFlags` / etc. are derived from `metadata`. Without the extension-version
+        // component, an item whose server etag is unchanged would carry the same
+        // `metadataVersion` we previously handed the framework, the framework would treat
+        // its cached snapshot as still valid, and the new derivations would never reach the
+        // system — leaving e.g. the `displayOpenInBrowser` / `displayCopyInternalLink`
+        // userInfo keys missing on items enumerated by older builds. `contentVersion` stays
+        // bare-etag because the file content itself didn't change across the upgrade and
+        // bumping it would force the framework to re-download every materialised file.
+        //
+        // See nextcloud/desktop#10065.
+        let extensionVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
+        let metadataVersionString = "\(metadata.etag)|\(extensionVersion)"
+
+        return NSFileProviderItemVersion(contentVersion: metadata.etag.data(using: .utf8)!, metadataVersion: metadataVersionString.data(using: .utf8)!)
     }
 
     public var filename: String {
