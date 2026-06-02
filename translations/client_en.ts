@@ -5820,32 +5820,32 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2391"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2401"/>
         <source>Confirm Account Removal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2392"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2402"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2396"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2406"/>
         <source>Remove connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2397"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2407"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2483"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2493"/>
         <source>Leave share</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2483"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2493"/>
         <source>Remove account</source>
         <translation type="unfinished"></translation>
     </message>
