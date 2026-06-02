@@ -207,6 +207,8 @@ set(client_SRCS
     filedetails/shareemodel.cpp
     filedetails/sortedsharemodel.h
     filedetails/sortedsharemodel.cpp
+    governance/governancenetworkjob.h
+    governance/governancenetworkjob.cpp
     tray/svgimageprovider.h
     tray/svgimageprovider.cpp
     tray/syncstatussummary.h
