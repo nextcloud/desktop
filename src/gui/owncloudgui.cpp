@@ -12,6 +12,7 @@
 #include "application.h"
 #include "callstatechecker.h"
 #include "emojimodel.h"
+#include "notificationsoundplayer.h"
 #include "fileactivitylistmodel.h"
 #include "folderman.h"
 #include "guiutility.h"
@@ -142,6 +143,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<SortedActivityListModel>("com.nextcloud.desktopclient", 1, 0, "SortedActivityListModel");
     qmlRegisterType<WheelHandler>("com.nextcloud.desktopclient", 1, 0, "WheelHandler");
     qmlRegisterType<CallStateChecker>("com.nextcloud.desktopclient", 1, 0, "CallStateChecker");
+    qmlRegisterType<NotificationSoundPlayer>("com.nextcloud.desktopclient", 1, 0, "NotificationSoundPlayer");
     qmlRegisterType<Quick::DateFieldBackend>("com.nextcloud.desktopclient", 1, 0, "DateFieldBackend");
     qmlRegisterType<FileDetails>("com.nextcloud.desktopclient", 1, 0, "FileDetails");
     qmlRegisterType<ShareModel>("com.nextcloud.desktopclient", 1, 0, "ShareModel");
