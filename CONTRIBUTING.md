@@ -50,7 +50,7 @@ s
 
 For the full policy including autonomous agent rules, security reports, and beginner issues, read the [AI Contribution Policy](https://github.com/nextcloud/.github/blob/master/AI_POLICY.md).
 
-### Sign your work
+## Sign your work
 
 We use the Developer Certificate of Origin (DCO) as an additional safeguard
 for the Nextcloud project. This is a well established and widely used
@@ -68,6 +68,9 @@ commit automatically with `git commit -s`. You can also use git [aliases](https:
 like `git config --global alias.ci 'commit -s'`. Now you can commit with
 `git ci` and the commit will be signed.
 
+## Apply a license
+
+In case you are not sure how to add or update the license header correctly please have a look at [contribute/HowToApplyALicense.md](https://github.com/nextcloud/server/blob/master/contribute/HowToApplyALicense.md).
 
 ## Translations
 
