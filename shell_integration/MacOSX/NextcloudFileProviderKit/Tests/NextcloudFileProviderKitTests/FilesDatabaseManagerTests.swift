@@ -25,6 +25,20 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(Self.dbManager, "FilesDatabaseManager should be initialized")
     }
 
+    func testContainsAnyItemMetadataFileIds() throws {
+        let metadata = RealmItemMetadata()
+        metadata.ocId = UUID().uuidString
+        metadata.fileId = "11915767"
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            realm.add(metadata)
+        }
+
+        XCTAssertTrue(Self.dbManager.containsAnyItemMetadata(fileIds: ["11915767", "13347012"]))
+        XCTAssertFalse(Self.dbManager.containsAnyItemMetadata(fileIds: ["13347012"]))
+    }
+
     func testAnyItemMetadatasForAccount() throws {
         // Insert test data
         let expected = true
