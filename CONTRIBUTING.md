@@ -34,6 +34,22 @@ Please read the [Contribution Guide](https://nextcloud.com/contribute/) to get
 started and follow the [Coding Style](https://github.com/nextcloud/desktop/wiki/Coding-Style)
 when writing new code.
 
+## AI-assisted contributions
+
+Nextcloud allows contributions made with the help of AI tools. You are the author of everything you submit - AI assistance does not change that responsibility.
+
+* **Disclosure:** Declare AI tool use in the PR description and add an `Assisted-by: AGENT_NAME:MODEL_VERSION` git trailer to each affected commit.
+
+* **Accountability:** You must be able to explain, defend, and modify every line you submit. If a reviewer asks why something works a certain way, "the AI wrote it" is not an answer.
+
+* **Communication:** PR descriptions, review comments, and issue reports must be written in your own words. This applies throughout the review process - passing reviewer feedback to an AI and posting whatever comes out is not acceptable.
+
+* **Quality:** AI output must be quality assured by the human, i.e. reviewed, cleaned up, and tested before submission. New features must be tested on a live instance by you, not by an agent. Code that has never been executed, or that shifts debugging work onto maintainers, will not be accepted.
+s
+* **Licensing:** Ensure AI-generated code contains no material incompatible with the license of the repository you are contributing to.
+
+For the full policy including autonomous agent rules, security reports, and beginner issues, read the [AI Contribution Policy](https://github.com/nextcloud/.github/blob/master/AI_POLICY.md).
+
 ### Sign your work
 
 We use the Developer Certificate of Origin (DCO) as an additional safeguard
