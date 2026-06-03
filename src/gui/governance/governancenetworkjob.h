@@ -6,11 +6,15 @@
 #ifndef GOVERNANCENETWORKJOB_H
 #define GOVERNANCENETWORKJOB_H
 
+#include "accountfwd.h"
+
 #include <QObject>
 #include <QQmlEngine>
 
 namespace OCC
 {
+
+class OcsGovernanceJob;
 
 class GovernanceNetworkJob : public QObject
 {
@@ -48,7 +52,8 @@ public:
 
     Q_ENUM(ApiVersion)
 
-    explicit GovernanceNetworkJob(QObject *parent = nullptr);
+    explicit GovernanceNetworkJob(AccountPtr account,
+                                  QObject *parent = nullptr);
 
     [[nodiscard]] ApiVersion apiVersion() const;
 
@@ -62,7 +67,8 @@ public:
 
     void setCustomEntityType(const QString &newCustomEntityType);
 
-    QString entityId() const;
+    [[nodiscard]] QString entityId() const;
+
     void setEntityId(const QString &newEntityId);
 
 Q_SIGNALS:
@@ -74,7 +80,33 @@ Q_SIGNALS:
 
     void entityIdChanged();
 
+    void finished();
+
+protected:
+    void setOcsGovernanceJob(QPointer<OcsGovernanceJob> newJob)
+    {
+        _ocsGovernanceJob = newJob;
+    }
+
+    [[nodiscard]] QPointer<OcsGovernanceJob> ocsGovernanceJob() const
+    {
+        return _ocsGovernanceJob;
+    }
+
+    [[nodiscard]] AccountPtr account() const
+    {
+        return _account;
+    }
+
+    [[nodiscard]] virtual QString buildPath() const;
+
+    [[nodiscard]] QString apiVersionAsString() const;
+
+    [[nodiscard]] QString entityTypeAsString() const;
+
 private:
+    AccountPtr _account;
+
     ApiVersion _apiVersion = ApiVersion::Version_1;
 
     EntityType _entityType = EntityType::Files;
@@ -82,6 +114,8 @@ private:
     QString _customEntityType;
 
     QString _entityId;
+
+    QPointer<OcsGovernanceJob> _ocsGovernanceJob;
 };
 
 } // namespace OCC

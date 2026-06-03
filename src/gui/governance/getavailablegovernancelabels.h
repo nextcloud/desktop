@@ -7,8 +7,10 @@
 #define GETAVAILABLEGOVERNANCELABELS_H
 
 #include "typedgovernancenetworkjob.h"
+
 #include <QObject>
 #include <QQmlEngine>
+#include <QJsonDocument>
 
 namespace OCC
 {
@@ -19,11 +21,19 @@ class GetAvailableGovernanceLabels : public OCC::TypedGovernanceNetworkJob
     QML_ELEMENT
 
 public:
-    explicit GetAvailableGovernanceLabels(QObject *parent = nullptr);
+    explicit GetAvailableGovernanceLabels(AccountPtr account,
+                                          QObject *parent = nullptr);
 
 Q_SIGNALS:
 
-private:
+public Q_SLOTS:
+    void start();
+
+protected:
+    [[nodiscard]] QString buildPath() const override;
+
+private Q_SLOTS:
+    void jobDone(QJsonDocument reply, int statusCode);
 };
 
 } // namespace OCC
