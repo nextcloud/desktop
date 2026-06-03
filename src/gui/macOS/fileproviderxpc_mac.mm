@@ -215,6 +215,25 @@ bool FileProviderXPC::fileProviderDomainHasDirtyUserData(const QString &fileProv
     return hasDirtyUserData;
 }
 
+bool FileProviderXPC::processFileIdsChanged(const QString &fileProviderDomainIdentifier, const QList<qint64> &fileIds) const
+{
+    const auto service = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(fileProviderDomainIdentifier);
+
+    if (service == nil) {
+        qCWarning(lcFileProviderXPC) << "Could not get service for file provider domain" << fileProviderDomainIdentifier;
+        return false;
+    }
+
+    NSMutableArray<NSNumber *> *const nsFileIds = [NSMutableArray arrayWithCapacity:fileIds.size()];
+
+    for (const auto fileId : fileIds) {
+        [nsFileIds addObject:@(fileId)];
+    }
+
+    [service processFileIdsChanged:nsFileIds];
+    return true;
+}
+
 void FileProviderXPC::setIgnoreList() const
 {
     ExcludedFiles ignoreList;
