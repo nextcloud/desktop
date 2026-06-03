@@ -6,19 +6,28 @@
 #ifndef DELETEGOVERNANCELABEL_H
 #define DELETEGOVERNANCELABEL_H
 
-#include "typedgovernancenetworkjob.h"
+#include "typedwithlabelidgovernancenetworkjob.h"
+
 #include <QObject>
 #include <QQmlEngine>
+#include <QJsonDocument>
 
 namespace OCC
 {
 
-class DeleteGovernanceLabel : public OCC::TypedGovernanceNetworkJob
+class DeleteGovernanceLabel : public OCC::TypedWithLabelIdGovernanceNetworkJob
 {
     Q_OBJECT
     QML_ELEMENT
 public:
-    explicit DeleteGovernanceLabel(QObject *parent = nullptr);
+    explicit DeleteGovernanceLabel(AccountPtr account,
+                                   QObject *parent = nullptr);
+
+public Q_SLOTS:
+    void start();
+
+private Q_SLOTS:
+    void jobDone(QJsonDocument reply, int statusCode);
 };
 
 } // namespace OCC
