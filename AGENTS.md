@@ -70,12 +70,41 @@ SPDX-License-Identifier: GPL-2.0-or-later
 
 Avoid creating source files that implement multiple types; instead, place each type in its own dedicated source file.
 
-
 ## Commit and Pull Request Guidelines
 
-- **Commits**: Follow Conventional Commits format. Use `feat: ...`, `fix: ...`, or `refactor: ...` as appropriate in the commit message prefix.
-- Include a short summary of what changed. *Example:* `fix: prevent crash on empty todo title`.
-- **Pull Request**: When the agent creates a PR, it should include a description summarizing the changes and why they were made. If a GitHub issue exists, reference it (e.g., “Closes #123”).
+### Commit format
+
+Use [Conventional Commits](https://www.conventionalcommits.org) for all commit messages:
+
+```
+<type>(<scope>): <short description>
+
+[optional body]
+
+Assisted-by: AGENT_NAME:MODEL_VERSION
+```
+
+- Use `feat: ...`, `fix: ...`, or `refactor: ...` as appropriate in the commit message prefix.
+- Include a short summary of what changed. *Example:* `fix: prevent crash on empty todo title`. If a GitHub issue exists, reference it (e.g., “Closes #123”).
+
+Example:
+```
+feat(files_sharing): allow sharing with contacts
+
+Closes #123.
+
+Assisted-by: ClaudeCode:claude-sonnet-4-6
+```
+
+### Developer Certificate of Origin (DCO)
+
+The project uses the DCO as an additional safeguard. Only the human contributor may add the `Signed-off-by` trailer - agents must not add it:
+
+```
+Signed-off-by: Random J Developer <random@developer.example.org>
+```
+
+Contributors can sign automatically with `git commit -s` after configuring `user.name` and `user.email`.
 
 ## macOS Specifics
 
