@@ -5,11 +5,13 @@
 
 #include "typedgovernancenetworkjob.h"
 
+using namespace Qt::StringLiterals;
+
 namespace OCC
 {
 
-TypedGovernanceNetworkJob::TypedGovernanceNetworkJob(QObject *parent)
-    : OCC::GovernanceNetworkJob{parent}
+TypedGovernanceNetworkJob::TypedGovernanceNetworkJob(AccountPtr account, QObject *parent)
+    : OCC::GovernanceNetworkJob{account, parent}
 {
 }
 
@@ -26,6 +28,26 @@ void TypedGovernanceNetworkJob::setLabelType(LabelType newLabelType)
 
     _labelType = newLabelType;
     Q_EMIT labelTypeChanged();
+}
+
+QString TypedGovernanceNetworkJob::labelTypeAsString() const
+{
+    auto result = QString{};
+
+    switch (_labelType)
+    {
+    case LabelType::Sensitivity:
+        result = u"sensitivity"_s;
+        break;
+    case LabelType::Retention:
+        result = u"retention"_s;
+        break;
+    case LabelType::Hold:
+        result = u"hold"_s;
+        break;
+    }
+
+    return result;
 }
 
 } // namespace OCC

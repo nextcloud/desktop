@@ -5,11 +5,14 @@
 
 #include "governancenetworkjob.h"
 
+using namespace Qt::StringLiterals;
+
 namespace OCC
 {
 
-GovernanceNetworkJob::GovernanceNetworkJob(QObject *parent)
+GovernanceNetworkJob::GovernanceNetworkJob(AccountPtr account, QObject *parent)
     : QObject{parent}
+    , _account{account}
 {
 }
 
@@ -71,6 +74,45 @@ void GovernanceNetworkJob::setEntityId(const QString &newEntityId)
 
     _entityId = newEntityId;
     Q_EMIT entityIdChanged();
+}
+
+QString GovernanceNetworkJob::buildPath() const
+{
+    return u"/ocs/v2.php/apps/governance/%1/labels/%2/%3"_s.arg(apiVersionAsString(), entityTypeAsString(), entityId());
+}
+
+QString GovernanceNetworkJob::apiVersionAsString() const
+{
+    auto result = QString{};
+
+    switch (_apiVersion)
+    {
+    case ApiVersion::Version_1:
+        result = u"v1"_s;
+        break;
+    }
+
+    return result;
+}
+
+QString GovernanceNetworkJob::entityTypeAsString() const
+{
+    auto result = QString{};
+
+    switch (_entityType)
+    {
+    case EntityType::Files:
+        result = u"FILES"_s;
+        break;
+    case EntityType::Mails:
+        result = u"MAILS"_s;
+        break;
+    case EntityType::Custom:
+        result = _customEntityType;
+        break;
+    }
+
+    return result;
 }
 
 } // namespace OCC

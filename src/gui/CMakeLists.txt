@@ -218,6 +218,10 @@ set(client_SRCS
     governance/deletegovernancelabel.cpp
     governance/typedgovernancenetworkjob.h
     governance/typedgovernancenetworkjob.cpp
+    governance/ocsgovernancejob.h
+    governance/ocsgovernancejob.cpp
+    governance/typedwithlabelidgovernancenetworkjob.h
+    governance/typedwithlabelidgovernancenetworkjob.cpp
     tray/svgimageprovider.h
     tray/svgimageprovider.cpp
     tray/syncstatussummary.h
