@@ -5,12 +5,35 @@
 
 #include "getgovernancelabels.h"
 
+#include "ocsgovernancejob.h"
+
 namespace OCC
 {
 
-GetGovernanceLabels::GetGovernanceLabels(QObject *parent)
-    : OCC::GovernanceNetworkJob{parent}
+GetGovernanceLabels::GetGovernanceLabels(AccountPtr account, QObject *parent)
+    : OCC::GovernanceNetworkJob{account, parent}
 {
+}
+
+void GetGovernanceLabels::start()
+{
+    setOcsGovernanceJob(QPointer<OcsGovernanceJob>{new OcsGovernanceJob{account()}});
+
+    connect(ocsGovernanceJob().data(), &OcsJob::jobFinished,
+            this, &GetGovernanceLabels::jobDone);
+
+    ocsGovernanceJob()->setPath(buildPath());
+    ocsGovernanceJob()->setMethod("GET");
+
+    ocsGovernanceJob()->start();
+}
+
+void GetGovernanceLabels::jobDone(QJsonDocument reply, int statusCode)
+{
+    Q_UNUSED(reply)
+    Q_UNUSED(statusCode)
+
+    Q_EMIT finished();
 }
 
 } // namespace OCC
