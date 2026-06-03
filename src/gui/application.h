@@ -115,7 +115,7 @@ protected slots:
 private:
     void setHelp();
 
-    void handleEditLocallyFromOptions();
+    void handleUriFromOptions();
 
     AccountManager::AccountsRestoreResult restoreLegacyAccount();
     void setupConfigFile();
@@ -153,7 +153,7 @@ private:
     bool _userTriggeredConnect = false;
     bool _debugMode = false;
     bool _backgroundMode = false;
-    QUrl _editFileLocallyUrl;
+    QUrl _uriSchemeUrl;
 
     ClientProxy _proxy;
 

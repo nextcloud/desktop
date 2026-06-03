@@ -8,7 +8,6 @@
 #include "abstractnetworkjob.h"
 #include "account.h"
 #include "config.h"
-#include "configfile.h"
 #include "guiutility.h"
 #include "networkjobs.h"
 #include "theme.h"
@@ -21,16 +20,23 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 
+#include <chrono>
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFlow2auth, "nextcloud.sync.credentials.flow2auth", QtInfoMsg)
 
+namespace {
+constexpr auto loginFlowV2PollInterval = std::chrono::seconds(1);
+}
 
 Flow2Auth::Flow2Auth(Account *account, QObject *parent)
     : QObject(parent)
     , _account(account)
 {
-    _pollTimer.setInterval(1000);
+    _pollTimer.setInterval(static_cast<int>(
+        std::chrono::duration_cast<std::chrono::milliseconds>(loginFlowV2PollInterval).count()));
+    _pollTimer.setTimerType(Qt::PreciseTimer);
     QObject::connect(&_pollTimer, &QTimer::timeout, this, &Flow2Auth::slotPollTimerTimeout);
 }
 
@@ -117,10 +123,12 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
         _pollToken = pollToken;
         _pollEndpoint = pollEndpoint;
 
-        // Start polling
-        std::chrono::milliseconds polltime = ConfigFile().remotePollInterval();
-        qCInfo(lcFlow2auth) << "setting remote poll timer interval to" << polltime.count() << "msec";
-        _secondsInterval = (polltime.count() / 1000);
+        // Start polling. Login Flow v2 is an interactive handshake, so use a
+        // short interval instead of the global remote sync poll interval.
+        qCInfo(lcFlow2auth) << "setting login flow v2 poll timer interval to"
+                            << std::chrono::duration_cast<std::chrono::milliseconds>(loginFlowV2PollInterval).count()
+                            << "msec";
+        _secondsInterval = loginFlowV2PollInterval.count();
         _secondsLeft = _secondsInterval;
         emit statusChanged(PollStatus::statusPollCountdown, _secondsLeft);
 
