@@ -8,8 +8,8 @@
 #include "common/utility.h"
 #include "account.h"
 #include "creds/webflowcredentials.h"
+#include "guiutility.h"
 #include "networkjobs.h"
-#include "wizard/owncloudwizardcommon.h"
 #include "theme.h"
 #include "linklabel.h"
 
@@ -30,7 +30,7 @@ Flow2AuthWidget::Flow2AuthWidget(QWidget *parent)
 {
     _ui.setupUi(this);
 
-    WizardCommon::initErrorLabel(_ui.errorLabel);
+    Utility::initErrorLabel(_ui.errorLabel);
     _ui.errorLabel->setTextFormat(Qt::RichText);
 
     connect(_ui.openLinkButton, &QPushButton::clicked, this, &Flow2AuthWidget::slotOpenBrowser);
@@ -216,7 +216,7 @@ void Flow2AuthWidget::customizeStyle()
 
     _ui.copyLinkButton->setText(tr("Copy Link"));
 
-    WizardCommon::customizeHintLabel(_ui.statusLabel);
+    Utility::customizeHintLabel(_ui.statusLabel);
 }
 
 } // namespace OCC

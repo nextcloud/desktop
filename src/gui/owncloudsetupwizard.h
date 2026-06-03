@@ -9,22 +9,13 @@
 
 #include <QObject>
 #include <QWidget>
-#include <QProcess>
-#include <QNetworkReply>
 #include <QPointer>
 
-#include "accountfwd.h"
-#include "theme.h"
-#include "networkjobs.h"
-
-#include "wizard/wizardproxysettingsdialog.h"
+class QQuickWindow;
 
 namespace OCC {
 
-class AccountState;
-class TermsOfServiceChecker;
-
-class OwncloudWizard;
+class AccountWizardController;
 
 /**
  * @brief The OwncloudSetupWizard class
@@ -42,41 +33,13 @@ signals:
     // overall dialog close signal.
     void ownCloudWizardDone(int);
 
-private slots:
-    void slotCheckServer(const QUrl &serverURL, const OCC::WizardProxySettingsDialog::WizardProxySettings &proxySettings);
-    void slotSystemProxyLookupDone(const QNetworkProxy &proxy);
-
-    void slotFindServer();
-    void slotFindServerBehindRedirect();
-    void slotFoundServer(const QUrl &, const QJsonObject &);
-    void slotNoServerFound(QNetworkReply *reply);
-    void slotNoServerFoundTimeout(const QUrl &url);
-
-    void slotDetermineAuthType();
-
-    void slotConnectToOCUrl(const QString &);
-    void slotAuthError();
-
-    void slotCreateLocalAndRemoteFolders(const QString &, const QString &);
-    void slotRemoteFolderExists(QNetworkReply *);
-    void slotCreateRemoteFolderFinished(QNetworkReply *reply);
-    void slotAssistantFinished(int);
-    void slotSkipFolderConfiguration();
-
 private:
     explicit OwncloudSetupWizard(QObject *parent = nullptr);
     ~OwncloudSetupWizard() override;
-    void startWizard();
-    void testOwnCloudConnect();
-    void createRemoteFolder();
-    void finalizeSetup(bool);
-    bool ensureStartFromScratch(const QString &localFolder);
-    AccountState *applyAccountChanges();
-    bool checkDowngradeAdvised(QNetworkReply *reply);
+    bool startQmlWizard();
 
-    OwncloudWizard *_ocWizard = nullptr;
-    QString _initLocalFolder;
-    QString _remoteFolder;
+    AccountWizardController *_qmlController = nullptr;
+    QPointer<QQuickWindow> _qmlWizardWindow;
 };
 }
 
