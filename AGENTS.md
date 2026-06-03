@@ -59,14 +59,17 @@ All contributions generated or assisted by this agent must fully comply with:
 
 ## General Guidance
 
-Every new file needs to get a SPDX header in the first rows according to this template. 
-The year in the first line must be replaced with the year when the file is created (for example, 2026 for files first added in 2026).
-The commenting signs need to be used depending on the file type.
+### License headers
+
+Every new file must include the correct SPDX license header. For AGPL-2.0-or-later (the default for this repository):
 
 ```plaintext
 SPDX-FileCopyrightText: <YEAR> Nextcloud GmbH and Nextcloud contributors
 SPDX-License-Identifier: GPL-2.0-or-later
 ```
+The commenting signs need to be used depending on the file type.
+
+See [HowToApplyALicense.md](https://github.com/nextcloud/server/blob/master/contribute/HowToApplyALicense.md) for details on per-language formats. AI-generated code must not include material from sources incompatible with AGPL-2.0-or-later.
 
 Avoid creating source files that implement multiple types; instead, place each type in its own dedicated source file.
 
