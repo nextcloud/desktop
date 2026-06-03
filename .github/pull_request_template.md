@@ -29,3 +29,5 @@ https://en.wikipedia.org/wiki/Developer_Certificate_of_Origin
 
 ## AI (if applicable)
 - [ ] The content of this PR was partly or fully generated using AI
+  - [ ] I have read the [guidelines for AI-assisted contributions](https://github.com/nextcloud/desktop/blob/master/CONTRIBUTING.md#ai-assisted-contributions).
+  - [ ] I have read Nextcloud's [AI Contribution Policy](https://github.com/nextcloud/.github/blob/master/AI_POLICY.md).
