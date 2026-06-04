@@ -230,8 +230,22 @@ bool FileProviderXPC::processFileIdsChanged(const QString &fileProviderDomainIde
         [nsFileIds addObject:@(fileId)];
     }
 
-    [service processFileIdsChanged:nsFileIds];
-    return true;
+    __block auto processed = false;
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    [service processFileIdsChanged:nsFileIds completionHandler:^(BOOL didProcess) {
+        processed = didProcess;
+        dispatch_semaphore_signal(semaphore);
+    }];
+
+    const auto waitResult = dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
+
+    if (waitResult != 0) {
+        qCWarning(lcFileProviderXPC) << "Timed out while forwarding file ID changes to file provider domain"
+                                     << fileProviderDomainIdentifier;
+        return false;
+    }
+
+    return processed;
 }
 
 void FileProviderXPC::setIgnoreList() const
