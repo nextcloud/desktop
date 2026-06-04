@@ -774,6 +774,23 @@ void SocketApi::command_FILE_ACTIONS(const QString &localFile, SocketListener *l
     processFileActionsRequest(localFile);
 }
 
+void SocketApi::command_FILES_GOVERNANCE_LABELS(const QString &localFile, SocketListener *listener)
+{
+    Q_UNUSED(listener);
+
+    auto fileData = FileData::get(localFile);
+    if (!fileData.folder) {
+        qCWarning(lcSocketApi) << "Unknown path" << localFile;
+        return;
+    }
+
+    auto record = fileData.journalRecord();
+    if (!record.isValid())
+        return;
+
+    emit governanceLabelsCommandReceived(fileData.folder->accountState()->account(), fileData.localPath, QString::fromLatin1(record._fileId));
+}
+
 // don't pull the share manager into socketapi unittests
 #ifndef OWNCLOUD_TEST
 
@@ -1275,6 +1292,15 @@ void SocketApi::sendLockFileInfoMenuEntries(const QFileInfo &fileInfo,
     }
 }
 
+void SocketApi::sendFilesGovernanceLabelsMenuOptions(const QFileInfo &fileInfo,
+                                                     const FileData &fileData,
+                                                     SocketListener *listener)
+{
+    if (!FileSystem::isDir(fileInfo.absoluteFilePath()) && fileData.folder->accountState()->account()->capabilities().governanceAvailable()) {
+        listener->sendMessage(QLatin1String("MENU_ITEM:FILES_GOVERNANCE_LABELS::") + tr("Apply labels"));
+    }
+}
+
 SocketApi::FileData SocketApi::FileData::get(const QString &localFile)
 {
     FileData data;
@@ -1393,6 +1419,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         const auto rootE2eeFolderFlag = isE2eEncryptedRootFolder ? SharingContextItemRootEncryptedFolderFlag::RootEncryptedFolder : SharingContextItemRootEncryptedFolderFlag::NonRootEncryptedFolder;
         sendSharingContextMenuOptions(fileData, listener, itemEncryptionFlag, rootE2eeFolderFlag);
         sendFileActionsContextMenuOptions(fileData, listener);
+        sendFilesGovernanceLabelsMenuOptions(fileInfo, fileData, listener);
 
         // Conflict files get conflict resolution actions
         bool isConflict = Utility::isConflictFile(fileData.folderRelativePath);

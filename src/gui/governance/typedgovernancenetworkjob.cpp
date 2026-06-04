@@ -10,8 +10,8 @@ using namespace Qt::StringLiterals;
 namespace OCC
 {
 
-TypedGovernanceNetworkJob::TypedGovernanceNetworkJob(AccountPtr account, QObject *parent)
-    : OCC::GovernanceNetworkJob{account, parent}
+TypedGovernanceNetworkJob::TypedGovernanceNetworkJob(QObject *parent)
+    : OCC::GovernanceNetworkJob{parent}
 {
 }
 
