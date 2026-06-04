@@ -21,8 +21,7 @@ class TypedWithLabelIdGovernanceNetworkJob : public OCC::TypedGovernanceNetworkJ
     Q_PROPERTY(QString labelId READ labelId WRITE setLabelId NOTIFY labelIdChanged FINAL)
 
 public:
-    explicit TypedWithLabelIdGovernanceNetworkJob(AccountPtr account,
-                                                  QObject *parent = nullptr);
+    explicit TypedWithLabelIdGovernanceNetworkJob(QObject *parent = nullptr);
 
     [[nodiscard]] QString labelId() const;
 

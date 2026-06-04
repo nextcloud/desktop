@@ -20,8 +20,7 @@ class GetGovernanceLabels : public OCC::GovernanceNetworkJob
     Q_OBJECT
     QML_ELEMENT
 public:
-    explicit GetGovernanceLabels(AccountPtr account,
-                                 QObject *parent = nullptr);
+    explicit GetGovernanceLabels(QObject *parent = nullptr);
 
 public Q_SLOTS:
     void start();

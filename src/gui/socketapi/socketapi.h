@@ -10,6 +10,7 @@
 #include "common/syncfilestatus.h"
 #include "common/syncjournalfilerecord.h"
 #include "syncfileitem.h"
+#include "accountfwd.h"
 
 #include "config.h"
 
@@ -72,6 +73,7 @@ signals:
     void shareCommandReceived(const QString &localPath);
     void fileActivityCommandReceived(const QString &localPath);
     void fileActionsCommandReceived(const QString &localPath);
+    void governanceLabelsCommandReceived(OCC::AccountPtr account, const QString &filePath, const QString &fileId);
 
 private slots:
     void slotNewConnection();
@@ -140,6 +142,7 @@ private:
     Q_INVOKABLE void command_LOCK_FILE(const QString &localFile, OCC::SocketListener *listener);
     Q_INVOKABLE void command_UNLOCK_FILE(const QString &localFile, OCC::SocketListener *listener);
     Q_INVOKABLE void command_FILE_ACTIONS(const QString &localFile, OCC::SocketListener *listener);
+    Q_INVOKABLE void command_FILES_GOVERNANCE_LABELS(const QString &localFile, OCC::SocketListener *listener);
 
     void setFileLock(const QString &localFile, const SyncFileItem::LockStatus lockState) const;
 
@@ -167,6 +170,8 @@ private:
                                      const FileData &fileData,
                                      const SocketListener* const listener,
                                      const SyncJournalFileRecord &record) const;
+
+    void sendFilesGovernanceLabelsMenuOptions(const QFileInfo &fileInfo, const FileData &fileData, SocketListener *listener);
 
     /** Send the list of menu item. (added in version 1.1)
      * argument is a list of files for which the menu should be shown, separated by '\x1e'

@@ -462,6 +462,9 @@ Application::Application(int &argc, char **argv)
     connect(FolderMan::instance()->socketApi(), &SocketApi::shareCommandReceived,
         _gui.data(), &ownCloudGui::slotShowShareDialog);
 
+    connect(FolderMan::instance()->socketApi(), &SocketApi::governanceLabelsCommandReceived,
+            _gui.data(), &ownCloudGui::slotShowGovernanceLabelsDialog);
+
     connect(FolderMan::instance()->socketApi(), &SocketApi::fileActivityCommandReceived,
         _gui.data(), &ownCloudGui::slotShowFileActivityDialog);
 

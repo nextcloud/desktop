@@ -21,8 +21,7 @@ class GetAvailableGovernanceLabels : public OCC::TypedGovernanceNetworkJob
     QML_ELEMENT
 
 public:
-    explicit GetAvailableGovernanceLabels(AccountPtr account,
-                                          QObject *parent = nullptr);
+    explicit GetAvailableGovernanceLabels(QObject *parent = nullptr);
 
 Q_SIGNALS:
 

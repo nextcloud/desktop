@@ -20,8 +20,7 @@ class ApplyGovernanceLabel : public OCC::TypedWithLabelIdGovernanceNetworkJob
     Q_OBJECT
     QML_ELEMENT
 public:
-    explicit ApplyGovernanceLabel(AccountPtr account,
-                                  QObject *parent = nullptr);
+    explicit ApplyGovernanceLabel(QObject *parent = nullptr);
 
 public Q_SLOTS:
     void start();

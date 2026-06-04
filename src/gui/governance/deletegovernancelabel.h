@@ -20,8 +20,7 @@ class DeleteGovernanceLabel : public OCC::TypedWithLabelIdGovernanceNetworkJob
     Q_OBJECT
     QML_ELEMENT
 public:
-    explicit DeleteGovernanceLabel(AccountPtr account,
-                                   QObject *parent = nullptr);
+    explicit DeleteGovernanceLabel(QObject *parent = nullptr);
 
 public Q_SLOTS:
     void start();

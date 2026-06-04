@@ -21,8 +21,7 @@ class TypedGovernanceNetworkJob : public GovernanceNetworkJob
     Q_PROPERTY(LabelType labelType READ labelType WRITE setLabelType NOTIFY labelTypeChanged FINAL)
 
 public:
-    TypedGovernanceNetworkJob(AccountPtr account,
-                              QObject *parent = nullptr);
+    TypedGovernanceNetworkJob(QObject *parent = nullptr);
 
     [[nodiscard]] LabelType labelType() const;
 
