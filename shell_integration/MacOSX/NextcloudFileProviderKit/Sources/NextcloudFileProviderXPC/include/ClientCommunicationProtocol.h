@@ -34,7 +34,8 @@
  * An empty array represents a legacy notification without file IDs and must trigger a refresh.
  * Otherwise, the extension refreshes only if at least one file ID belongs to locally known metadata.
  */
-- (void)processFileIdsChanged:(NSArray<NSNumber *> *)fileIds;
+- (void)processFileIdsChanged:(NSArray<NSNumber *> *)fileIds
+             completionHandler:(void(^)(BOOL processed))completionHandler;
 
 @end
 
