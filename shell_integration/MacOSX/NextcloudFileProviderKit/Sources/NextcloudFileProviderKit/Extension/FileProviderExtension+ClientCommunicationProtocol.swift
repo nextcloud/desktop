@@ -45,4 +45,37 @@ extension FileProviderExtension: ClientCommunicationProtocol {
         ignoredFiles = IgnoredFilesMatcher(ignoreList: ignoreList, log: log)
         logger.info("Ignore list updated.")
     }
+
+    public func processFileIdsChanged(_ fileIds: [NSNumber], completionHandler: ((Bool) -> Void)?) {
+        guard let completionHandler else {
+            logger.error("Cannot process file ID changes, completion handler is nil.")
+            return
+        }
+
+        guard fileIds.isEmpty == false else {
+            logger.info("Received file change notification without file IDs. Signalling enumerator.")
+            notifyChange()
+            completionHandler(true)
+            return
+        }
+
+        guard let dbManager else {
+            logger.info("Received file ID changes before database setup. Signalling enumerator.")
+            notifyChange()
+            completionHandler(true)
+            return
+        }
+
+        let changedFileIds = Set(fileIds.map(\.stringValue))
+
+        guard dbManager.containsAnyItemMetadata(fileIds: changedFileIds) else {
+            logger.debug("Ignoring file ID changes because no locally known metadata matched.")
+            completionHandler(true)
+            return
+        }
+
+        logger.info("Received file ID changes for locally known metadata. Signalling enumerator.")
+        notifyChange()
+        completionHandler(true)
+    }
 }
