@@ -60,7 +60,17 @@ extension NextcloudKit: RemoteInterface {
                 requestHandler: requestHandler,
                 taskHandler: taskHandler,
                 progressHandler: progressHandler
-            ) { account, ocId, etag, date, size, response, nkError in
+            ) { account, response, nkError in
+                let allHeaderFields = response?.response?.allHeaderFields
+                let ocId = self.nkCommonInstance.findHeader("oc-fileid", allHeaderFields: allHeaderFields)
+                let etag = self.nkCommonInstance.normalizedETag(self.nkCommonInstance.findHeader("oc-etag", allHeaderFields: allHeaderFields))
+                let date = self.nkCommonInstance.findHeader("date", allHeaderFields: allHeaderFields)?.parsedDate(using: "EEE, dd MMM y HH:mm:ss zzz")
+                var size: Int64 = 0
+
+                if let value = allHeaderFields?["Content-Length"] as? String {
+                    size = Int64(value) ?? 0
+                }
+
                 continuation.resume(returning: (
                     account,
                     ocId,
