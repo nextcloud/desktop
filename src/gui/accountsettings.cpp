@@ -274,6 +274,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
         this, &AccountSettings::slotFolderListClicked);
     connect(_ui->_folderList, &QTreeView::expanded, this, &AccountSettings::refreshSelectiveSyncStatus);
     connect(_ui->_folderList, &QTreeView::collapsed, this, &AccountSettings::refreshSelectiveSyncStatus);
+    connect(_ui->_folderList, &QTreeView::expanded, _ui->_folderList, &QWidget::updateGeometry);
+    connect(_ui->_folderList, &QTreeView::collapsed, _ui->_folderList, &QWidget::updateGeometry);
     connect(_ui->selectiveSyncNotification, &QLabel::linkActivated,
         this, &AccountSettings::slotLinkActivated);
     connect(_model, &FolderStatusModel::suggestExpand, _ui->_folderList, &QTreeView::expand);

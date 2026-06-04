@@ -9,6 +9,7 @@ import QtQuick.Layouts
 import QtQuick.Window
 import com.nextcloud.desktopclient
 import Style
+import "../../tray"
 
 ApplicationWindow {
     id: root

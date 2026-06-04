@@ -32,7 +32,6 @@ Page {
     rightPadding: 0
     topPadding: 12 // Style.standardSpacing is 10, the QtWidgets layout uses 12.  set it here as well to avoid a rough cutoff
     bottomPadding: 12
-    // 1. Tell the Page how tall it actually is
     implicitHeight: rootColumn.implicitHeight + topPadding + bottomPadding
 
     ColumnLayout {
@@ -40,13 +39,19 @@ Page {
 
         anchors.left: parent.left
         anchors.right: parent.right
+        anchors.top: parent.top
         spacing: Style.standardSpacing
 
         RowLayout {
+            id: virtualFilesLayout
+
             Layout.fillWidth: true
+            Layout.leftMargin: 12
+            Layout.rightMargin: 12
 
             EnforcedPlainTextLabel {
                 Layout.fillWidth: true
+                Layout.preferredWidth: Math.max(0, virtualFilesLayout.width - vfsEnabledCheckBox.width - virtualFilesLayout.spacing)
                 horizontalAlignment: Text.AlignLeft
                 wrapMode: Text.WordWrap
                 text: qsTr("Virtual files appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. Virtual files and classic sync can not be used at the same time.")
@@ -54,8 +59,58 @@ Page {
             Switch {
                 id: vfsEnabledCheckBox
                 Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                Layout.preferredWidth: 36
+                Layout.preferredHeight: 20
+                implicitWidth: 36
+                implicitHeight: 20
+                leftPadding: 0
+                rightPadding: 0
+                topPadding: 0
+                bottomPadding: 0
                 checked: root.controller.vfsEnabledForAccount(root.accountUserIdAtHost)
                 onClicked: root.controller.setVfsEnabledForAccount(root.accountUserIdAtHost, checked)
+
+                indicator: Rectangle {
+                    readonly property color enabledTrackColor: vfsEnabledCheckBox.checked ? "#3478f6" : "#d1d1d6"
+                    readonly property real disabledTrackAlpha: vfsEnabledCheckBox.checked ? 0.45 : 0.35
+
+                    implicitWidth: 36
+                    implicitHeight: 20
+                    x: 0
+                    y: parent.height / 2 - height / 2
+                    radius: height / 2
+                    color: Qt.rgba(enabledTrackColor.r, enabledTrackColor.g, enabledTrackColor.b, vfsEnabledCheckBox.enabled ? 1.0 : disabledTrackAlpha)
+
+                    Rectangle {
+                        width: 16
+                        height: 16
+                        x: vfsEnabledCheckBox.checked ? parent.width - width - 2 : 2
+                        y: 2.6
+                        radius: width / 2
+                        color: vfsEnabledCheckBox.enabled ? "#26000000" : "#14000000"
+                    }
+
+                    Rectangle {
+                        width: 16
+                        height: 16
+                        x: vfsEnabledCheckBox.checked ? parent.width - width - 2 : 2
+                        y: 2
+                        radius: width / 2
+                        color: "#ffffff"
+                        opacity: vfsEnabledCheckBox.enabled ? 1.0 : 0.8
+                    }
+
+                    Rectangle {
+                        anchors.fill: parent
+                        anchors.margins: -2
+                        radius: height / 2
+                        color: "transparent"
+                        border.width: vfsEnabledCheckBox.activeFocus ? 2 : 0
+                        border.color: Qt.rgba(palette.highlight.r, palette.highlight.g, palette.highlight.b, 0.35)
+                    }
+                }
+
+                contentItem: Item {}
             }
         }
     }

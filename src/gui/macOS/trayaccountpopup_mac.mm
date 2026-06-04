@@ -6,6 +6,7 @@
 #include "systray.h"
 #include "tray/usermodel.h"
 
+#include <QCoreApplication>
 #include <QImage>
 
 #import <Cocoa/Cocoa.h>
@@ -57,6 +58,11 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
     NSImage *img = [[NSImage alloc] initWithSize:NSMakeSize(rgba.width(), rgba.height())];
     [img addRepresentation:rep];
     return img;
+}
+
+static NSString *translatedTrayPopupString(const char *sourceText)
+{
+    return QCoreApplication::translate("TrayAccountPopup", sourceText).toNSString();
 }
 
 
@@ -402,18 +408,18 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
 
     __unsafe_unretained NCTrayPopup *weakSelf = self;
     if (OCC::Systray::instance()->enableAddAccount()) {
-        [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:@"Add account" action:^{
+        [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:translatedTrayPopupString("Add account") action:^{
             [weakSelf orderOut:nil];
             OCC::Systray::instance()->setIsOpen(false);
             OCC::Systray::instance()->openAccountWizard();
         }]];
     }
-    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:@"Settings" action:^{
+    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:translatedTrayPopupString("Settings") action:^{
         [weakSelf orderOut:nil];
         OCC::Systray::instance()->setIsOpen(false);
         OCC::Systray::instance()->openSettings();
     }]];
-    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:@"Quit" action:^{
+    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:translatedTrayPopupString("Quit") action:^{
         OCC::Systray::instance()->shutdown();
     }]];
     [_stack addArrangedSubview:[[NCSpacerView alloc] initWithHeight:kActionVerticalPadding]];
