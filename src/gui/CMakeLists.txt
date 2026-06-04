@@ -409,15 +409,6 @@ if ((APPLICATION_ICON_SET MATCHES "PNG")
   file(TOUCH "${theme_dir}/colored/${APPLICATION_ICON_NAME}-icon.svg")
 endif()
 
-if(APPLE)
-  set(MACOS_SIDEBAR_ICON_SVG "${theme_dir}/colored/${APPLICATION_ICON_NAME}-sidebar.svg")
-  generate_sized_png_from_svg(${MACOS_SIDEBAR_ICON_SVG} 16)
-  generate_sized_png_from_svg(${MACOS_SIDEBAR_ICON_SVG} 32)
-  generate_sized_png_from_svg(${MACOS_SIDEBAR_ICON_SVG} 64)
-  generate_sized_png_from_svg(${MACOS_SIDEBAR_ICON_SVG} 128)
-  generate_sized_png_from_svg(${MACOS_SIDEBAR_ICON_SVG} 256)
-endif()
-
 if(WIN32)
   set(STARTMENU_ICON_SVG "${theme_dir}/colored/${APPLICATION_ICON_NAME}-w10startmenu.svg")
   generate_sized_png_from_svg(${STARTMENU_ICON_SVG} 70)
@@ -444,11 +435,14 @@ endif()
 file(GLOB OWNCLOUD_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon*")
 
 if(APPLE)
-    file(GLOB_RECURSE OWNCLOUD_SIDEBAR_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-sidebar*")
-    MESSAGE(STATUS "OWNCLOUD_SIDEBAR_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_SIDEBAR_ICONS}")
+    include(CompileAppleIconComposer)
+    compile_apple_icon_composer(
+        "${CMAKE_SOURCE_DIR}/theme/colored/AppIcon.icon"
+        "${CMAKE_CURRENT_BINARY_DIR}/AppIconCompiled"
+        APP_ICON)
+else()
+    ecm_add_app_icon(APP_ICON ICONS "${OWNCLOUD_ICONS}" OUTFILE_BASENAME "${APPLICATION_ICON_NAME}")
 endif()
-
-ecm_add_app_icon(APP_ICON ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASENAME "${APPLICATION_ICON_NAME}")
 
 if(WIN32 AND EXISTS ${APP_ICON_WIN_FOLDER_SVG})
     get_filename_component(output_icon_name_win ${APP_ICON_WIN_FOLDER_SVG} NAME_WLE)
@@ -565,7 +559,7 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     )
 else()
     # set(CMAKE_INSTALL_PREFIX ".") # Examples use /Applications. hurmpf.
-    set(MACOSX_BUNDLE_ICON_FILE "${APPLICATION_ICON_NAME}.icns")
+    set(MACOSX_BUNDLE_ICON_FILE "AppIcon")
 
     # we must add MACOSX_BUNDLE only if building a bundle
     add_executable(nextcloud WIN32 MACOSX_BUNDLE main.cpp ${APP_ICON})

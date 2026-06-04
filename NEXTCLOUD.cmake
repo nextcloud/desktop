@@ -22,11 +22,6 @@ set( APPLICATION_VENDOR     "Nextcloud GmbH" )
 set( APPLICATION_UPDATE_URL "https://updates.nextcloud.org/client/" CACHE STRING "URL for updater" )
 set( APPLICATION_HELP_URL   "" CACHE STRING "URL for the help menu" )
 
-if(APPLE AND (APPLICATION_NAME STREQUAL "Nextcloud" OR NEXTCLOUD_DEV) AND EXISTS "${CMAKE_SOURCE_DIR}/theme/colored/Nextcloud-macOS-icon.svg")
-    set( APPLICATION_ICON_NAME "Nextcloud-macOS" )
-    message("Using macOS-specific application icon: ${APPLICATION_ICON_NAME}")
-endif()
-
 set( APPLICATION_ICON_SET   "SVG" )
 set( APPLICATION_SERVER_URL "" CACHE STRING "URL for the server to use. If entered, the UI field will be pre-filled with it" )
 set( APPLICATION_SERVER_URL_ENFORCE ON ) # If set and APPLICATION_SERVER_URL is defined, the server can only connect to the pre-defined URL
