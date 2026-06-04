@@ -12,8 +12,8 @@ using namespace Qt::StringLiterals;
 namespace OCC
 {
 
-GetAvailableGovernanceLabels::GetAvailableGovernanceLabels(AccountPtr account, QObject *parent)
-    : OCC::TypedGovernanceNetworkJob{account, parent}
+GetAvailableGovernanceLabels::GetAvailableGovernanceLabels(QObject *parent)
+    : OCC::TypedGovernanceNetworkJob{parent}
 {
 }
 
@@ -34,6 +34,8 @@ void GetAvailableGovernanceLabels::jobDone(QJsonDocument reply, int statusCode)
 {
     Q_UNUSED(reply)
     Q_UNUSED(statusCode)
+
+    qCInfo(lcGovernance) << reply;
 
     Q_EMIT finished();
 }

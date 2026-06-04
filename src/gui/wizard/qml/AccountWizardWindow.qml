@@ -8,6 +8,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Window
 import com.nextcloud.desktopclient
+import "../../tray"
 import Style
 import "../../tray"
 

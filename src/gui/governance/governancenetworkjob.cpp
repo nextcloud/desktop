@@ -5,14 +5,15 @@
 
 #include "governancenetworkjob.h"
 
+Q_LOGGING_CATEGORY(lcGovernance, "nextcloud.gui.governance", QtInfoMsg)
+
 using namespace Qt::StringLiterals;
 
 namespace OCC
 {
 
-GovernanceNetworkJob::GovernanceNetworkJob(AccountPtr account, QObject *parent)
+GovernanceNetworkJob::GovernanceNetworkJob(QObject *parent)
     : QObject{parent}
-    , _account{account}
 {
 }
 
@@ -113,6 +114,16 @@ QString GovernanceNetworkJob::entityTypeAsString() const
     }
 
     return result;
+}
+
+void GovernanceNetworkJob::setAccount(AccountPtr newAccount)
+{
+    if (_account == newAccount) {
+        return;
+    }
+
+    _account = newAccount;
+    Q_EMIT accountChanged();
 }
 
 } // namespace OCC
