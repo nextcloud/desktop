@@ -10,8 +10,8 @@
 namespace OCC
 {
 
-ApplyGovernanceLabel::ApplyGovernanceLabel(AccountPtr account, QObject *parent)
-    : OCC::TypedWithLabelIdGovernanceNetworkJob{account, parent}
+ApplyGovernanceLabel::ApplyGovernanceLabel(QObject *parent)
+    : OCC::TypedWithLabelIdGovernanceNetworkJob{parent}
 {
 }
 
@@ -32,6 +32,9 @@ void ApplyGovernanceLabel::jobDone(QJsonDocument reply, int statusCode)
 {
     Q_UNUSED(reply)
     Q_UNUSED(statusCode)
+
+    qCInfo(lcGovernance) << reply;
+
 
     Q_EMIT finished();
 }

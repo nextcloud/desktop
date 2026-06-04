@@ -10,8 +10,8 @@
 namespace OCC
 {
 
-GetGovernanceLabels::GetGovernanceLabels(AccountPtr account, QObject *parent)
-    : OCC::GovernanceNetworkJob{account, parent}
+GetGovernanceLabels::GetGovernanceLabels(QObject *parent)
+    : OCC::GovernanceNetworkJob{parent}
 {
 }
 
@@ -32,6 +32,9 @@ void GetGovernanceLabels::jobDone(QJsonDocument reply, int statusCode)
 {
     Q_UNUSED(reply)
     Q_UNUSED(statusCode)
+
+    qCInfo(lcGovernance) << reply;
+
 
     Q_EMIT finished();
 }
