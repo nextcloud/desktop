@@ -448,7 +448,7 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="503"/>
         <source>Ask Assistant …</source>
-        <translation type="unfinished"/>
+        <translation>Preguntar ao asistente …</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="503"/>
@@ -796,43 +796,43 @@ Agarde a nova sincronización e logo cífreo.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="960"/>
         <source>Grant access to sync folder</source>
-        <translation type="unfinished"/>
+        <translation>Conceder acceso á carpeta de sincronización</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="972"/>
         <source>Access Error</source>
-        <translation type="unfinished"/>
+        <translation>Erro de Acceso</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="973"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posible obter acceso á carpeta seleccionada. Téntao de novo.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="981"/>
         <source>Wrong Folder</source>
-        <translation type="unfinished"/>
+        <translation>Carpeta Incorrecta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="982"/>
         <source>Please select the original sync folder: %1</source>
-        <translation type="unfinished"/>
+        <translation>Selecciona a carpeta de sincronización orixinal: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="991"/>
         <location filename="../src/gui/accountsettings.cpp" line="1000"/>
         <source>Bookmark Error</source>
-        <translation type="unfinished"/>
+        <translation>Erro de Marcador</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="992"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posible crear un marcador de seguridade para a carpeta. Téntao de novo.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1001"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posible resolver o marcador de seguridade. Téntao de novo.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1000"/>
@@ -935,7 +935,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1856"/>
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
-        <translation type="unfinished"/>
+        <translation>A integración de ficheiros virtuais aínda non admite o cifrado de extremo a extremo.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1757"/>
@@ -2554,7 +2554,7 @@ Para usuarios avanzados: este problema pode estar relacionado con varios ficheir
     <message>
         <location filename="../src/gui/folderman.cpp" line="418"/>
         <source>Please open the app settings to grant access to the sync folders.</source>
-        <translation type="unfinished"/>
+        <translation>Abre os axustes da aplicación para conceder acceso ás carpetas de sincronización.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1866"/>
@@ -2574,7 +2574,7 @@ Para usuarios avanzados: este problema pode estar relacionado con varios ficheir
         <location filename="../src/gui/folderstatusdelegate.cpp" line="313"/>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="455"/>
         <source>Grant access</source>
-        <translation type="unfinished"/>
+        <translation>Conceder acceso</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="272"/>
@@ -2613,7 +2613,7 @@ Para usuarios avanzados: este problema pode estar relacionado con varios ficheir
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
         <source>Due to recent security improvements, the client no longer has access to the folder. Your approval is required one time to restore access. Please select the synchronization folder root.</source>
-        <translation type="unfinished"/>
+        <translation>Debido a melloras recentes de seguridade, o cliente xa non ten acceso á carpeta. A túa aprobación é necesaria unha vez para restaurar o acceso. Selecciona o directorio raíz da carpeta de sincronización.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
@@ -3152,12 +3152,12 @@ Non é posíbel reverter as versións inmediatamente: cambiar de estábel a empr
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="673"/>
         <source>Login Item Requires Approval</source>
-        <translation type="unfinished"/>
+        <translation>O Elemento de Inicio de Sesión Require Aprobación</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="674"/>
         <source>The login item has been registered but needs your approval to become active. Please open System Settings → General → Login Items and enable %1 there.</source>
-        <translation type="unfinished"/>
+        <translation>O elemento de inicio de sesión foi rexistrado pero necesita a túa aprobación para activarse. Abre Axustes do Sistema → Xeral → Elementos de inicio de sesión e activa %1 alí.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="666"/>
@@ -3472,7 +3472,7 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se retir
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="46"/>
         <source>&lt;p&gt;Copyright 2017-2026 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright 2017-2026 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="49"/>
@@ -4193,7 +4193,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="395"/>
         <source>File is locked by another application.</source>
-        <translation type="unfinished"/>
+        <translation>O ficheiro está bloqueado por outra aplicación.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="391"/>
@@ -4515,7 +4515,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <location filename="../src/libsync/owncloudpropagator.cpp" line="233"/>
         <source>%1. Restoration failed: %2</source>
         <comment>%1 is the generic error string, the file restoration error (%2) will be appended here</comment>
-        <translation type="unfinished"/>
+        <translation>%1. Fallou a restauración: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="233"/>
@@ -4794,7 +4794,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <location filename="../src/libsync/propagateuploadng.cpp" line="364"/>
         <source>File is locked preventing syncing it</source>
         <comment>Generic warning message when a locked file cannot be synced</comment>
-        <translation type="unfinished"/>
+        <translation>O ficheiro está bloqueado e impide a súa sincronización</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="451"/>
@@ -4840,7 +4840,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <location filename="../src/libsync/propagateuploadv1.cpp" line="141"/>
         <source>File is locked preventing syncing it</source>
         <comment>Generic warning message when a locked file cannot be synced</comment>
-        <translation type="unfinished"/>
+        <translation>O ficheiro está bloqueado e impide a súa sincronización</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="228"/>
@@ -4988,7 +4988,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="573"/>
         <source>%1 day</source>
-        <translation type="unfinished"/>
+        <translation>%1 día</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="573"/>
@@ -5519,12 +5519,12 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="165"/>
         <source>Reauthorization required</source>
-        <translation type="unfinished"/>
+        <translation>Reautorización necesaria</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="166"/>
         <source>Please grant access to your sync folders</source>
-        <translation type="unfinished"/>
+        <translation>Concede acceso ás túas carpetas de sincronización</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="179"/>
@@ -5801,27 +5801,27 @@ O servidor respondeu co erro: %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="641"/>
         <location filename="../src/gui/tray/usermodel.cpp" line="680"/>
         <source>“%1” was not synchronized</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot; non foi sincronizado</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="682"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
-        <translation type="unfinished"/>
+        <translation>Almacenamento insuficiente no servidor. O ficheiro require %1 pero só hai %2 dispoñibles.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="685"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
-        <translation type="unfinished"/>
+        <translation>Almacenamento insuficiente no servidor. O ficheiro require %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="688"/>
         <source>Insufficient storage on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Almacenamento insuficiente no servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>Non hai espazo suficiente dispoñible no servidor para algunhas subidas.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="657"/>
@@ -5880,7 +5880,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1703"/>
         <source>Sending your request …</source>
-        <translation type="unfinished"/>
+        <translation>Enviando a túa solicitude …</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1580"/>
@@ -6065,7 +6065,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="39"/>
         <source>Could not be downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Non se puido descargar</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="61"/>
@@ -6265,7 +6265,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="494"/>
         <source>macOS VFS for %1: An error was encountered.</source>
-        <translation type="unfinished"/>
+        <translation>macOS VFS para %1: Produciuse un erro.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="526"/>
@@ -6280,12 +6280,12 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="846"/>
         <source>Internal link copied</source>
-        <translation type="unfinished"/>
+        <translation>Ligazón interna copiada</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="847"/>
         <source>The internal link has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>A ligazón interna copiouse ao portapapeis.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>
@@ -6909,7 +6909,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="143"/>
         <source>Open settings</source>
-        <translation type="unfinished"/>
+        <translation>Abrir os axustes</translation>
     </message>
 </context>
 <context>
@@ -6944,6 +6944,24 @@ O servidor respondeu co erro: %2</translation>
     </message>
 </context>
 <context>
+    <name>TrayAccountPopup</name>
+    <message>
+        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="215"/>
+        <source>Add account</source>
+        <translation>Engadir conta</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="255"/>
+        <source>Settings</source>
+        <translation>Axustes</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="295"/>
+        <source>Quit</source>
+        <translation>Saír</translation>
+    </message>
+</context>
+<context>
     <name>TrayFoldersMenuButton</name>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
@@ -6953,7 +6971,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
         <source>Open local or team folders</source>
-        <translation type="unfinished"/>
+        <translation>Abrir carpetas locais ou de equipo</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
@@ -6963,7 +6981,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
         <source>Open team folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Abrir a carpeta de equipo &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="187"/>
@@ -6981,7 +6999,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="66"/>
         <source>Open local or team folders</source>
-        <translation type="unfinished"/>
+        <translation>Abrir carpetas locais ou de equipo</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="101"/>

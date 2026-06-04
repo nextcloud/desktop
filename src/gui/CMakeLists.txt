@@ -39,20 +39,12 @@ set(client_UI_SRCS
     ignorelisttablewidget.ui
     networksettings.ui
     sslerrordialog.ui
-    addcertificatedialog.ui
     passwordinputdialog.ui
     proxyauthdialog.ui
     mnemonicdialog.ui
     vfsdownloaderrordialog.ui
     wizard/flow2authwidget.ui
-    wizard/owncloudadvancedsetuppage.ui
-    wizard/owncloudconnectionmethoddialog.ui
-    wizard/owncloudhttpcredspage.ui
-    wizard/owncloudsetupnocredspage.ui
-    wizard/termsofservicecheckwidget.ui
     wizard/webview.ui
-    wizard/welcomepage.ui
-    wizard/proxysettings.ui
 )
 
 qt_add_resources(client_UI_SRCS ../../resources.qrc ${CMAKE_SOURCE_DIR}/theme.qrc)
@@ -166,8 +158,6 @@ set(client_SRCS
     vfsdownloaderrordialog.cpp
     accountstate.h
     accountstate.cpp
-    addcertificatedialog.h
-    addcertificatedialog.cpp
     authenticationdialog.h
     authenticationdialog.cpp
     proxyauthhandler.h
@@ -235,36 +225,12 @@ set(client_SRCS
     creds/webflowcredentials.cpp
     creds/webflowcredentialsdialog.h
     creds/webflowcredentialsdialog.cpp
-    wizard/abstractcredswizardpage.h
-    wizard/abstractcredswizardpage.cpp
-    wizard/owncloudadvancedsetuppage.h
-    wizard/owncloudadvancedsetuppage.cpp
-    wizard/owncloudconnectionmethoddialog.h
-    wizard/owncloudconnectionmethoddialog.cpp
-    wizard/owncloudhttpcredspage.h
-    wizard/owncloudhttpcredspage.cpp
-    wizard/flow2authcredspage.h
-    wizard/flow2authcredspage.cpp
+    wizard/accountwizardcontroller.h
+    wizard/accountwizardcontroller.cpp
     wizard/flow2authwidget.h
     wizard/flow2authwidget.cpp
-    wizard/owncloudsetuppage.h
-    wizard/owncloudsetuppage.cpp
-    wizard/termsofservicecheckwidget.h
-    wizard/termsofservicecheckwidget.cpp
-    wizard/termsofservicewizardpage.h
-    wizard/termsofservicewizardpage.cpp
-    wizard/owncloudwizardcommon.h
-    wizard/owncloudwizardcommon.cpp
-    wizard/owncloudwizard.h
-    wizard/owncloudwizard.cpp
-    wizard/slideshow.h
-    wizard/slideshow.cpp
-    wizard/welcomepage.h
-    wizard/welcomepage.cpp
     wizard/linklabel.h
     wizard/linklabel.cpp
-    wizard/wizardproxysettingsdialog.h
-    wizard/wizardproxysettingsdialog.cpp
     integration/fileactionsmodel.h
     integration/fileactionsmodel.cpp
     )
@@ -278,8 +244,6 @@ endif()
 
 if (WITH_WEBENGINE)
   list(APPEND client_SRCS
-    wizard/webviewpage.h
-    wizard/webviewpage.cpp
     wizard/webview.h
     wizard/webview.cpp
   )

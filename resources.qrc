@@ -60,6 +60,18 @@
         <file>src/gui/ResolveConflictsDialog.qml</file>
         <file>src/gui/ConflictDelegate.qml</file>
         <file>src/gui/ConflictItemFileInfo.qml</file>
+        <file>src/gui/wizard/qml/AccountWizardWindow.qml</file>
+        <file>src/gui/wizard/qml/AdvancedOptionsDialog.qml</file>
+        <file>src/gui/wizard/qml/BasicAuthPage.qml</file>
+        <file>src/gui/wizard/qml/BrowserAuthPage.qml</file>
+        <file>src/gui/wizard/qml/ClientCertificateDialog.qml</file>
+        <file>src/gui/wizard/qml/OptionRow.qml</file>
+        <file>src/gui/wizard/qml/ProxySettingsDialog.qml</file>
+        <file>src/gui/wizard/qml/ServerPage.qml</file>
+        <file>src/gui/wizard/qml/SyncOptionsPage.qml</file>
+        <file>src/gui/wizard/qml/WizardButton.qml</file>
+        <file>src/gui/wizard/qml/WizardDialogFrame.qml</file>
+        <file>src/gui/wizard/qml/WizardTextField.qml</file>
         <file>src/gui/macOS/ui/FileProviderSettings.qml</file>
         <file>src/gui/macOS/ui/FileProviderFileDelegate.qml</file>
         <file>src/gui/integration/FileActionsWindow.qml</file>

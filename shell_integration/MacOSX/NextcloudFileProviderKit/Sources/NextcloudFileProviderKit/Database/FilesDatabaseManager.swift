@@ -129,6 +129,11 @@ public final class FilesDatabaseManager: Sendable {
         itemMetadata(ocId: identifier.rawValue)
     }
 
+    /// Return whether metadata exists for any numeric WebDAV file ID received from notify-push.
+    public func containsAnyItemMetadata(fileIds: Set<String>) -> Bool {
+        itemMetadatas.contains { fileIds.contains($0.fileId) }
+    }
+
     ///
     /// Look up the item metadata by its account identifier and remote address.
     ///

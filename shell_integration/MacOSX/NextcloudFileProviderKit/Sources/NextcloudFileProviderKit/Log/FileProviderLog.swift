@@ -151,6 +151,7 @@ public actor FileProviderLog: FileProviderLogging {
         }
 
         self.logsDirectory = logsDirectory
+
         debugLoggingObservation = UserDefaults.standard.observe(\.debugLoggingEnabled, options: [.new]) { [weak self] _, _ in
             Task { [weak self] in
                 await self?.reloadDebugLoggingEnabled()

@@ -238,6 +238,8 @@ public:
     [[nodiscard]] QString desktopEnterpriseChannel() const;
     void setDesktopEnterpriseChannel(const QString &channel);
 
+    [[nodiscard]] bool hasDesktopEnterpriseChannel() const;
+
     /// Enforce a specific language used for the UI
     [[nodiscard]] QString language() const;
     void setLanguage(const QString &language);

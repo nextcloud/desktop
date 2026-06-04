@@ -2205,6 +2205,16 @@ QImage UserModel::avatarForRow(const int row) const
     return _users[row]->avatar();
 }
 
+QImage UserModel::syncStatusIconForRow(const int row) const
+{
+    if (row < 0 || row >= _users.size()) {
+        return {};
+    }
+    const auto url = _users[row]->syncStatusIcon();
+    const auto resourcePath = QStringLiteral(":") + url.path();
+    return QIcon(resourcePath).pixmap(18, 18).toImage();
+}
+
 QString UserModel::currentUserServer()
 {
     if (_currentUserId < 0 || _currentUserId >= _users.size())

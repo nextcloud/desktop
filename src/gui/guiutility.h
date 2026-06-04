@@ -11,7 +11,11 @@
 #include <QUrl>
 #include <QWidget>
 
+#include <functional>
+
 #include "common/pinstate.h"
+
+class QLabel;
 
 namespace OCC {
 namespace Utility {
@@ -40,6 +44,15 @@ namespace Utility {
 
     /** Translated text for "free up local space" (and unpinning the item) */
     QString vfsFreeSpaceActionText();
+
+    /** Ask before enabling an experimental virtual files mode. */
+    void askExperimentalVirtualFilesFeature(QWidget *receiver, const std::function<void(bool enable)> &callback);
+
+    /** Apply the standard inline error label styling used by setup dialogs. */
+    void initErrorLabel(QLabel *errorLabel);
+
+    /** Dim a hint label while preserving its current palette. */
+    void customizeHintLabel(QLabel *label);
 
 } // namespace Utility
 } // namespace OCC

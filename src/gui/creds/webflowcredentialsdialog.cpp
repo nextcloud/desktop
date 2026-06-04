@@ -9,8 +9,8 @@
 
 #include "theme.h"
 #include "application.h"
+#include "guiutility.h"
 #include "owncloudgui.h"
-#include "wizard/owncloudwizardcommon.h"
 
 #ifdef WITH_WEBENGINE
 #include "wizard/webview.h"
@@ -74,7 +74,7 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlo
     _errorLabel->hide();
     _containerLayout->addWidget(_errorLabel);
 
-    WizardCommon::initErrorLabel(_errorLabel);
+    Utility::initErrorLabel(_errorLabel);
 
     _layout->addLayout(_containerLayout);
     setLayout(_layout);

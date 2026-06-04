@@ -154,6 +154,7 @@
 		<file>theme/colored/folder@2x.png</file>
 		<file>theme/colored/wizard-files.png</file>
 		<file>theme/colored/wizard-files@2x.png</file>
+		<file>theme/colored/wizard-files.svg</file>
 		<file>theme/colored/wizard-groupware.png</file>
 		<file>theme/colored/wizard-groupware@2x.png</file>
 		<file>theme/colored/wizard-nextcloud.png</file>
@@ -214,6 +215,7 @@
 		<file>theme/black/user.svg</file>
 		<file>theme/black/wizard-files.png</file>
 		<file>theme/black/wizard-files@2x.png</file>
+		<file>theme/black/wizard-files.svg</file>
 		<file>theme/black/wizard-groupware.png</file>
 		<file>theme/black/wizard-groupware@2x.png</file>
 		<file>theme/black/wizard-groupware.svg</file>
@@ -254,6 +256,7 @@
 		<file>theme/white/user.svg</file>
 		<file>theme/white/wizard-files.png</file>
 		<file>theme/white/wizard-files@2x.png</file>
+		<file>theme/white/wizard-files.svg</file>
 		<file>theme/white/wizard-groupware.png</file>
 		<file>theme/white/wizard-groupware@2x.png</file>
 		<file>theme/white/wizard-groupware.svg</file>
@@ -287,6 +290,7 @@
 		<file>theme/reply.svg</file>
 		<file>theme/magnifying-glass.svg</file>
 		<file>theme/external.svg</file>
+		<file>theme/globe.svg</file>
 		<file>theme/delete.svg</file>
 		<file>theme/send.svg</file>
 		<file>theme/talk-app.svg</file>
