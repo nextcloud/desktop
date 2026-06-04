@@ -10,6 +10,10 @@
 
 #include <QObject>
 #include <QQmlEngine>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(lcGovernance)
+
 
 namespace OCC
 {
@@ -20,6 +24,8 @@ class GovernanceNetworkJob : public QObject
 {
     Q_OBJECT
     QML_ELEMENT
+
+    Q_PROPERTY(AccountPtr account READ account WRITE setAccount NOTIFY accountChanged FINAL)
 
     Q_PROPERTY(ApiVersion apiVersion READ apiVersion WRITE setApiVersion NOTIFY apiVersionChanged FINAL)
 
@@ -52,8 +58,7 @@ public:
 
     Q_ENUM(ApiVersion)
 
-    explicit GovernanceNetworkJob(AccountPtr account,
-                                  QObject *parent = nullptr);
+    explicit GovernanceNetworkJob(QObject *parent = nullptr);
 
     [[nodiscard]] ApiVersion apiVersion() const;
 
@@ -71,6 +76,8 @@ public:
 
     void setEntityId(const QString &newEntityId);
 
+    void setAccount(AccountPtr newAccount);
+
 Q_SIGNALS:
     void apiVersionChanged();
 
@@ -81,6 +88,8 @@ Q_SIGNALS:
     void entityIdChanged();
 
     void finished();
+
+    void accountChanged();
 
 protected:
     void setOcsGovernanceJob(QPointer<OcsGovernanceJob> newJob)
