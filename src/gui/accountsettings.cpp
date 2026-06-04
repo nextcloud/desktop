@@ -33,7 +33,6 @@
 #include "encryptfolderjob.h"
 #include "syncresult.h"
 #include "ignorelisttablewidget.h"
-#include "wizard/owncloudwizard.h"
 #include "networksettings.h"
 #include "ui_mnemonicdialog.h"
 
@@ -1031,7 +1030,7 @@ void AccountSettings::slotEnableVfsCurrentFolder()
         return;
     }
 
-    OwncloudWizard::askExperimentalVirtualFilesFeature(this, [folder, this](bool enable) {
+    Utility::askExperimentalVirtualFilesFeature(this, [folder, this](bool enable) {
         if (!enable || !folder) {
             return;
         }
