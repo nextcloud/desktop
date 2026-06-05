@@ -151,6 +151,7 @@ void OwncloudSetupWizard::finish(int result)
     }
 
     _finished = true;
+    Systray::instance()->setIsOpen(false);
     emit ownCloudWizardDone(result);
     if (_qmlWizardWindow) {
         _qmlWizardWindow->deleteLater();
