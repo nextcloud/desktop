@@ -1,5 +1,100 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ja_JP">
 <context>
+    <name>AccountWizardWindow</name>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="145"/>
+        <source>Secure connection failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="158"/>
+        <source>Connect to %1?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="168"/>
+        <source>The secure connection failed. You can retry without encryption, or add a client certificate and try again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="169"/>
+        <source>The secure connection failed. You can add a client certificate and try again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="181"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="247"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="249"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="191"/>
+        <source>Connect without TLS</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="200"/>
+        <source>Use client certificate</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="250"/>
+        <source>Back</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="264"/>
+        <source>Set up later</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="275"/>
+        <source>Advanced</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="284"/>
+        <source>Sign up</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="294"/>
+        <source>Self-host</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="307"/>
+        <source>Proxy settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="328"/>
+        <source>Copy link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="361"/>
+        <source>Open</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="363"/>
+        <source>Connect</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="365"/>
+        <source>Done</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="367"/>
+        <source>Log in</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ActivityItem</name>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="29"/>
@@ -54,6 +149,81 @@
     </message>
 </context>
 <context>
+    <name>AdvancedOptionsDialog</name>
+    <message>
+        <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="24"/>
+        <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="35"/>
+        <source>Advanced options</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="44"/>
+        <source>Ask before syncing folders larger than</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="62"/>
+        <source>Large folder threshold</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="64"/>
+        <source>%1 MB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="71"/>
+        <source>Ask before syncing external storage</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="90"/>
+        <source>Done</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>BasicAuthPage</name>
+    <message>
+        <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="27"/>
+        <source>Connect public share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="27"/>
+        <source>Enter credentials</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="37"/>
+        <source>Enter the share password if the link is password protected.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="38"/>
+        <source>Enter the username and password for this server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="50"/>
+        <source>Username</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="60"/>
+        <source>Password</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>BrowserAuthPage</name>
+    <message>
+        <location filename="../src/gui/wizard/qml/BrowserAuthPage.qml" line="38"/>
+        <source>Switch to your browser</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>CallNotificationDialog</name>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="166"/>
@@ -74,6 +244,45 @@
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="242"/>
         <source>Decline Talk call notification</source>
         <translation>トークの呼び出しに応答しない</translation>
+    </message>
+</context>
+<context>
+    <name>ClientCertificateDialog</name>
+    <message>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="25"/>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="36"/>
+        <source>Client certificate</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="44"/>
+        <source>Select a PKCS#12 certificate file and enter its password.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="57"/>
+        <source>Certificate file</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="63"/>
+        <source>Choose</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="70"/>
+        <source>Certificate password</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="94"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="104"/>
+        <source>Connect</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1126,6 +1335,214 @@ This action will abort any currently running synchronization.</source>
     </message>
 </context>
 <context>
+    <name>OCC::AccountWizardController</name>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="235"/>
+        <source>Will require local storage</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="617"/>
+        <source>Proxy settings are incomplete.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="624"/>
+        <source>Server address does not seem to be valid</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="645"/>
+        <source>Username must not be empty.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="651"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="974"/>
+        <source>Checking account access</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="729"/>
+        <source>Checking server address</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="794"/>
+        <source>Preparing browser login</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="815"/>
+        <source>Invalid URL</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="817"/>
+        <source>Failed to connect to %1 at %2:
+%3</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="833"/>
+        <source>Timeout while trying to connect to %1 at %2.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="854"/>
+        <source>This server requires legacy browser authentication. Enter app-password credentials instead.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="932"/>
+        <source>Unable to open the Browser, please copy the link to your Browser.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="953"/>
+        <source>Waiting for authorization</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="957"/>
+        <source>Polling for authorization</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="961"/>
+        <source>Starting authorization</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="965"/>
+        <source>Link copied to clipboard.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1020"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1050"/>
+        <source>There was an invalid response to an authenticated WebDAV request</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1037"/>
+        <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1045"/>
+        <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1063"/>
+        <source>Account connected.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1138"/>
+        <source>Will require %1 of storage</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1288"/>
+        <source>%1 free space</source>
+        <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1306"/>
+        <source>There isn&apos;t enough free space in the local folder!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1322"/>
+        <source>Please choose a local sync folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1391"/>
+        <source>Could not create local folder %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1409"/>
+        <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and try again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1421"/>
+        <source>Checking remote folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1467"/>
+        <source>No remote folder specified!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1476"/>
+        <source>Error: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1481"/>
+        <source>Creating remote folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1500"/>
+        <source>The folder creation resulted in HTTP error code %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1502"/>
+        <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1504"/>
+        <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1528"/>
+        <source>Account setup failed while creating the sync folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1555"/>
+        <source>Could not create the sync folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1627"/>
+        <source>Local Sync Folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1878"/>
+        <source>Select a certificate</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1880"/>
+        <source>Certificate files (*.p12 *.pfx)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1888"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1908"/>
+        <source>Could not access the selected certificate file.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1924"/>
+        <source>Could not load certificate. Maybe wrong password?</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::ActivityListModel</name>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="478"/>
@@ -1141,54 +1558,6 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="605"/>
         <source>Network error occurred: client will retry syncing.</source>
         <translation>ネットワークエラーが発生しました：クライアントは同期を再試行します。</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::AddCertificateDialog</name>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
-        <source>SSL client certificate authentication</source>
-        <translation>SSLクライアント証明書認証</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
-        <source>This server probably requires a SSL client certificate.</source>
-        <translation>おそらく、このサーバーにはSSLクライアント証明書が必要です。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
-        <source>Certificate &amp; Key (pkcs12):</source>
-        <translation>証明書と鍵 (pkcs12) :</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
-        <source>Certificate password:</source>
-        <translation>証明書のパスワード:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
-        <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation>設定ファイルにコピーが保存されるため、暗号化されたpkcs12バンドルを使用することを強くお勧めします。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
-        <source>Browse …</source>
-        <translation>閲覧 ...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.cpp" line="28"/>
-        <source>Select a certificate</source>
-        <translation>証明書を選択</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.cpp" line="28"/>
-        <source>Certificate files (*.p12 *.pfx)</source>
-        <translation>証明書ファイル (*.p12 *.pfx)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.cpp" line="44"/>
-        <source>Could not access the selected certificate file.</source>
-        <translation>選択した証明書ファイルにアクセスできませんでした。</translation>
     </message>
 </context>
 <context>
@@ -3787,379 +4156,12 @@ Note that using any logging command line options will override this setting.</so
     </message>
 </context>
 <context>
-    <name>OCC::OwncloudAdvancedSetupPage</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="66"/>
-        <source>Connect</source>
-        <translation>接続</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="103"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="283"/>
-        <source>(experimental)</source>
-        <translation>(試験的)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="118"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="285"/>
-        <source>Use &amp;virtual files instead of downloading content immediately %1</source>
-        <translation>コンテンツをすぐにダウンロードする代わりに &amp;仮想ファイルを使用する %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="277"/>
-        <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation>仮想ファイルは、ローカルフォルダーのWindowsルートパーティションではサポートされていません。ドライブレターの下の有効なサブフォルダを選択してください。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="318"/>
-        <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
-        <translation>%1 のフォルダー &quot;%2&quot; はローカルフォルダー &quot;%3&quot; と同期しています</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="321"/>
-        <source>Sync the folder &quot;%1&quot;</source>
-        <translation>&quot;%1&quot; フォルダーを同期</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="326"/>
-        <source>Warning: The local folder is not empty. Pick a resolution!</source>
-        <translation>警告: ローカルフォルダーは空ではありません。対処法を選択してください！</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="339"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="657"/>
-        <source>%1 free space</source>
-        <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
-        <translation>空き容量 %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="427"/>
-        <source>Virtual files are not supported at the selected location</source>
-        <translation>選択した場所では仮想ファイルはサポートされていません</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="490"/>
-        <source>Local Sync Folder</source>
-        <translation>ローカル同期フォルダー</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="533"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="574"/>
-        <source>(%1)</source>
-        <translation>(%1)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="600"/>
-        <source>There isn&apos;t enough free space in the local folder!</source>
-        <translation>ローカルフォルダーに十分な空き容量がありません。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="655"/>
-        <source>In Finder&apos;s &quot;Locations&quot; sidebar section</source>
-        <translation>Finderのサイドバーの&quot;場所&quot;セクション</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::OwncloudConnectionMethodDialog</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="14"/>
-        <source>Connection failed</source>
-        <translation>接続に失敗</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;指定された安全なサーバーアドレスに接続できませんでした。どのように進めますか？&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
-        <source>Select a different URL</source>
-        <translation>異なるURLを選択</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
-        <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation>HTTP経由で暗号化せずに再度行う(安全でない)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
-        <source>Configure client-side TLS certificate</source>
-        <translation>クライアントサイドTLS証明書を設定</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="24"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;安全なサーバーアドレス &lt;em&gt;%1&lt;/em&gt; に接続できませんでした。どのように進めますか？&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::OwncloudHttpCredsPage</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="39"/>
-        <source>&amp;Email</source>
-        <translation>メール(&amp;E)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="49"/>
-        <source>Connect to %1</source>
-        <translation>%1 に接続中</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="50"/>
-        <source>Enter user credentials</source>
-        <translation>ユーザー資格情報を入力</translation>
-    </message>
-</context>
-<context>
     <name>OCC::OwncloudPropagator</name>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="966"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1043"/>
         <source>Impossible to get modification time for file in conflict %1</source>
         <translation>競合しているファイル %1 の修正日時を取得できません</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::OwncloudSetupPage</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="94"/>
-        <source>The link to your %1 web interface when you open it in the browser.</source>
-        <comment>%1 will be replaced with the application name</comment>
-        <translation>%1 のWeb画面をブラウザーで開くときのURL</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="254"/>
-        <source>&amp;Next &gt;</source>
-        <translation>次(&amp;N) &gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="314"/>
-        <source>Server address does not seem to be valid</source>
-        <translation>サーバーアドレスは有効なさそうです</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="426"/>
-        <source>Could not load certificate. Maybe wrong password?</source>
-        <translation>証明書を読み込めませんでした。 パスワードが間違っていますか？</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::OwncloudSetupWizard</name>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="290"/>
-        <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;正常に %1 へ接続されました：%2 バージョン %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="322"/>
-        <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation>%2 の %1 に接続に失敗:&lt;br/&gt;%3</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="340"/>
-        <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation>%2 の %1 へ接続を試みた際にタイムアウトしました。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="471"/>
-        <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation>サーバーによってアクセスが拒否されています。適切なアクセス権があるか検証するには、&lt;a href=&quot;%1&quot;&gt;ここをクリック&lt;/a&gt;してブラウザーでサービスにアクセスしてください。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="320"/>
-        <source>Invalid URL</source>
-        <translation>無効なURL</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="367"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="390"/>
-        <source>Trying to connect to %1 at %2 …</source>
-        <translation>%2 の %1 へ接続を試みています…</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="457"/>
-        <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation>サーバーへの認証リクエストは &quot;%1&quot; へリダイレクトされました。URLが正しくありません。サーバーが間違って設定されています。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="480"/>
-        <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation>認証済みの WebDAV 要求に対する無効な応答がありました</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="534"/>
-        <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>ローカルの同期フォルダー %1 はすでに存在するため、同期の設定をしてください。&lt;br/&gt;&lt;br/&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="537"/>
-        <source>Creating local sync folder %1 …</source>
-        <translation>ローカル同期フォルダー %1 を作成中…</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="541"/>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="543"/>
-        <source>failed.</source>
-        <translation>失敗。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="545"/>
-        <source>Could not create local folder %1</source>
-        <translation>ローカルフォルダー %1 を作成できませんでした</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="605"/>
-        <source>No remote folder specified!</source>
-        <translation>リモートフォルダーが指定されていません！</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="611"/>
-        <source>Error: %1</source>
-        <translation>エラー: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="624"/>
-        <source>creating folder on Nextcloud: %1</source>
-        <translation>Nextcloud上にフォルダーを作成中：%1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="629"/>
-        <source>Remote folder %1 created successfully.</source>
-        <translation>リモートフォルダー %1 は正常に生成されました。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="644"/>
-        <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>リモートフォルダー %1 はすでに存在します。同期のために接続しています。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="646"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="648"/>
-        <source>The folder creation resulted in HTTP error code %1</source>
-        <translation>フォルダーの作成はHTTPのエラーコード %1 で終了しました</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="650"/>
-        <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>指定された資格情報が間違っているため、リモートフォルダーの作成に失敗しました！&lt;br/&gt;前に戻って資格情報を確認してください。&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="654"/>
-        <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;おそらく資格情報が間違っているため、リモートフォルダーの作成に失敗しました。&lt;/font&gt;&lt;br/&gt;前に戻り、資格情報をチェックしてください。&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="659"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="660"/>
-        <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation>リモートフォルダー %1 の作成がエラーで失敗しました。&lt;tt&gt;%2&lt;/tt&gt;.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="674"/>
-        <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation>%1 からリモートディレクトリ %2 への同期接続を設定しました。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="679"/>
-        <source>Successfully connected to %1!</source>
-        <translation>%1への接続に成功しました！</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="686"/>
-        <source>Connection to %1 could not be established. Please check again.</source>
-        <translation>%1 への接続を確立できませんでした。もう一度確認してください。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="699"/>
-        <source>Folder rename failed</source>
-        <translation>フォルダー名の変更に失敗しました。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="700"/>
-        <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>フォルダーまたはその中のファイルが別のプログラムで開かれているため、フォルダーを削除およびバックアップできません。フォルダーまたはファイルを閉じて、再試行を押すか、セットアップをキャンセルしてください。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="732"/>
-        <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;ファイルプロバイダベースのアカウント %1 は正常に作成されました！&lt;/b&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="774"/>
-        <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;ローカルの同期フォルダー %1 は正常に作成されました！&lt;/b&gt;&lt;/font&gt;</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::OwncloudWizard</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="99"/>
-        <source>Add %1 account</source>
-        <translation>アカウント「%1」 を追加</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="103"/>
-        <source>Skip folders configuration</source>
-        <translation>フォルダー設定をスキップ</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="104"/>
-        <source>Cancel</source>
-        <translation>キャンセル</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="105"/>
-        <source>Proxy Settings</source>
-        <comment>Proxy Settings button text in new account wizard</comment>
-        <translation>プロキシ設定</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="107"/>
-        <source>Next</source>
-        <comment>Next button text in new account wizard</comment>
-        <translation>次へ</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="108"/>
-        <source>Back</source>
-        <comment>Next button text in new account wizard</comment>
-        <translation>戻る</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="512"/>
-        <source>Enable experimental feature?</source>
-        <translation>試験的な機能を有効化しますか?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="513"/>
-        <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
-
-The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
-
-Switching to this mode will abort any currently running synchronization.
-
-This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>&quot;仮想ファイル&quot; モードを有効にした場合、最初にファイルがダウンロードされません。同期ダウンロードされる代わりに、サーバー上に存在するファイルごとにローカルに小さな ”%1&quot; ファイルが作成されます。これらのファイルを実行した時やコンテキストメニューを使用するとコンテンツをダウンロードできます。
-
-仮想ファイルモードは、選択同期モードとどちらかの排他利用です。現在選択されていないフォルダーはオンライン専用フォルダーに変換され、選択同期モードの設定はリセットされます。
-
-このモードに切り替えると、現在実行中の同期は中止されます。
-
-これは新しい機能で、実験モードです。使用していて問題があったら報告をお願いします。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="527"/>
-        <source>Enable experimental placeholder mode</source>
-        <translation>試験的なプレースホルダーモードを有効にする</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="528"/>
-        <source>Stay safe</source>
-        <translation>セキュリティーを確保</translation>
     </message>
 </context>
 <context>
@@ -5651,34 +5653,6 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
-    <name>OCC::TermsOfServiceCheckWidget</name>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="125"/>
-        <source>Waiting for terms to be accepted</source>
-        <translation>条件が受け入れられるのを待っています</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="131"/>
-        <source>Polling</source>
-        <translation>ポーリング</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="137"/>
-        <source>Link copied to clipboard.</source>
-        <translation>リンクをクリップボードにコピーしました。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="178"/>
-        <source>Open Browser</source>
-        <translation>ブラウザーを開く</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="180"/>
-        <source>Copy Link</source>
-        <translation>リンクをコピー</translation>
-    </message>
-</context>
-<context>
     <name>OCC::Theme</name>
     <message>
         <location filename="../src/libsync/theme.cpp" line="449"/>
@@ -6128,83 +6102,6 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
-    <name>OCC::WelcomePage</name>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.ui" line="20"/>
-        <source>Form</source>
-        <translation>フォーム</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
-        <source>Log in</source>
-        <translation>ログイン</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
-        <source>Sign up with provider</source>
-        <translation>他のサービスでサインアップ</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.cpp" line="59"/>
-        <source>Keep your data secure and under your control</source>
-        <translation>データをセキュアに、あなたの元で管理します</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.cpp" line="60"/>
-        <source>Secure collaboration &amp; file exchange</source>
-        <translation>セキュアに共同作業とファイル交換</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.cpp" line="61"/>
-        <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation>使いやすいウェブメール、予定表と連絡先</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.cpp" line="62"/>
-        <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation>画面共有、オンライン会議とWeb会議</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.cpp" line="102"/>
-        <source>Host your own server</source>
-        <translation>自分のサーバーを構築する</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::WizardProxySettingsDialog</name>
-    <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="23"/>
-        <source>Proxy Settings</source>
-        <comment>Dialog window title for proxy settings</comment>
-        <translation>プロキシ設定</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25"/>
-        <source>Hostname of proxy server</source>
-        <translation>プロキシサーバーのホスト名</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26"/>
-        <source>Username for proxy server</source>
-        <translation>プロキシサーバーのユーザー名</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="27"/>
-        <source>Password for proxy server</source>
-        <translation>プロキシサーバーのパスワード</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="29"/>
-        <source>HTTP(S) proxy</source>
-        <translation>HTTP(S)プロキシ</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="30"/>
-        <source>SOCKS5 proxy</source>
-        <translation>SOCKS5プロキシ</translation>
-    </message>
-</context>
-<context>
     <name>OCC::ownCloudGui</name>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="381"/>
@@ -6263,7 +6160,7 @@ Server replied with error: %2</source>
         <translation>macOS VFS for %1: 問題が発生しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="494"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="496"/>
         <source>macOS VFS for %1: An error was encountered.</source>
         <translation>%1用の macOS VFS：エラーが発生しました。</translation>
     </message>
@@ -6278,12 +6175,12 @@ Server replied with error: %2</source>
         <translation>ローカル &quot;%1&quot; での変更を確認中 </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="846"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="848"/>
         <source>Internal link copied</source>
         <translation>内部リンクをコピーしました</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="847"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="849"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation>内部リンクがクリップボードにコピーされました。</translation>
     </message>
@@ -6309,151 +6206,82 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
-    <name>OwncloudAdvancedSetupPage</name>
+    <name>ProxySettingsDialog</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="98"/>
-        <source>Username</source>
-        <translation>ユーザー名</translation>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="36"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="78"/>
+        <source>Proxy settings</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="116"/>
-        <source>Local Folder</source>
-        <translation>ローカルフォルダー</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="135"/>
-        <source>Choose different folder</source>
-        <translation>他のフォルダーを選択</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="228"/>
-        <source>Server address</source>
-        <translation>サーバーアドレス</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
-        <source>Sync Logo</source>
-        <translation>同期ロゴ</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
-        <source>Synchronize everything from server</source>
-        <translation>サーバーからすべてのファイルを同期する</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="360"/>
-        <source>Ask before syncing folders larger than</source>
-        <translation>指定された容量以上のフォルダーは同期前に確認</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="432"/>
-        <source>Ask before syncing external storages</source>
-        <translation>外部ストレージを同期する前に確認</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="612"/>
-        <source>Keep local data</source>
-        <translation>ローカルデータを保持</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="628"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;チェックした場合、ローカルフォルダー内に存在するコンテンツはサーバーからクリーンな同期を開始するために削除されます。&lt;/p&gt;&lt;p&gt;もしローカルのコンテンツをサーバーのフォルダーにアップロードするなら、チェックしないでください。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="631"/>
-        <source>Erase local folder and start a clean sync</source>
-        <translation>ローカルフォルダーを消去して、クリーン同期を開始します</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="386"/>
-        <source>MB</source>
-        <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
-        <translation>MB</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="475"/>
-        <source>Choose what to sync</source>
-        <translation>同期フォルダーを選択</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="77"/>
-        <source>&amp;Local Folder</source>
-        <translation>ローカルフォルダー(&amp;L)</translation>
-    </message>
-</context>
-<context>
-    <name>OwncloudHttpCredsPage</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="73"/>
-        <source>&amp;Username</source>
-        <translation>ユーザー名(&amp;U)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="83"/>
-        <source>&amp;Password</source>
-        <translation>パスワード(&amp;P)</translation>
-    </message>
-</context>
-<context>
-    <name>OwncloudSetupPage</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>
-        <source>Logo</source>
-        <translation>ロゴ</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="182"/>
-        <source>Server address</source>
-        <translation>サーバーアドレス</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="261"/>
-        <source>This is the link to your %1 web interface when you open it in the browser.</source>
-        <translation>これは、%1 のWeb画面をブラウザーで開くときのURLです。</translation>
-    </message>
-</context>
-<context>
-    <name>ProxySettings</name>
-    <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="14"/>
-        <source>Form</source>
-        <translation>フォーム</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="29"/>
-        <source>Proxy Settings</source>
-        <translation>プロキシ設定</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="35"/>
-        <source>Manually specify proxy</source>
-        <translation>手動でプロキシを指定</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="91"/>
-        <source>Host</source>
-        <translation>ホスト</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="142"/>
-        <source>Proxy server requires authentication</source>
-        <translation>認証が必要なプロキシサーバー</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="205"/>
-        <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation>注: プロキシ設定は、ローカルホストのアカウントには影響しません</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="230"/>
-        <source>Use system proxy</source>
-        <translation>システムのプロキシを利用</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="237"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="86"/>
         <source>No proxy</source>
-        <translation>プロキシを利用しない</translation>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="96"/>
+        <source>Use system proxy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="106"/>
+        <source>Manually specify proxy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="121"/>
+        <source>HTTP(S) proxy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="121"/>
+        <source>SOCKS5 proxy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="125"/>
+        <source>Proxy type</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="136"/>
+        <source>Hostname of proxy server</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="148"/>
+        <source>Proxy port</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="157"/>
+        <source>Proxy server requires authentication</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="173"/>
+        <source>Username for proxy server</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="180"/>
+        <source>Password for proxy server</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="189"/>
+        <source>Note: proxy settings have no effects for accounts on localhost</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="206"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="213"/>
+        <source>Done</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -6739,6 +6567,29 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
+    <name>ServerPage</name>
+    <message>
+        <location filename="../src/gui/wizard/qml/ServerPage.qml" line="29"/>
+        <source>Log in to %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ServerPage.qml" line="38"/>
+        <source>Enter the link to your %1 web interface from the browser or the link to a folder shared with you.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ServerPage.qml" line="182"/>
+        <source>Log in</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ServerPage.qml" line="197"/>
+        <source>Server address</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ShareDelegate</name>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="182"/>
@@ -6890,6 +6741,54 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
+    <name>SyncOptionsPage</name>
+    <message>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
+        <source>Virtual files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="91"/>
+        <source>Download files on-demand</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="99"/>
+        <source>Synchronize everything</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="108"/>
+        <source>Choose what to sync</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="122"/>
+        <source>Local sync folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="156"/>
+        <source>Choose</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="191"/>
+        <source>Warning: The local folder is not empty. Pick a resolution!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="200"/>
+        <source>Keep local data</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="208"/>
+        <source>Erase local folder and start a clean sync</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>SyncStatus</name>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="99"/>
@@ -6923,24 +6822,6 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="57"/>
         <source>Send reply to chat message</source>
         <translation>チャットメッセージに返信</translation>
-    </message>
-</context>
-<context>
-    <name>TermsOfServiceCheckWidget</name>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="26"/>
-        <source>Terms of Service</source>
-        <translation>サービス利用規約</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="47"/>
-        <source>Logo</source>
-        <translation>ロゴ</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="76"/>
-        <source>Switch to your browser to accept the terms of service</source>
-        <translation>ブラウザを切り替えて利用規約に同意する</translation>
     </message>
 </context>
 <context>
@@ -7523,6 +7404,718 @@ Server replied with error: %2</source>
         <location filename="../src/gui/guiutility.cpp" line="102"/>
         <source>Free up local space</source>
         <translation>ローカル領域の確保</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="130"/>
+        <source>Enable experimental feature?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="131"/>
+        <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
+
+The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
+
+Switching to this mode will abort any currently running synchronization.
+
+This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="146"/>
+        <source>Enable experimental placeholder mode</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="147"/>
+        <source>Stay safe</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OCC::AddCertificateDialog</name>
+    <message>
+        <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
+        <source>SSL client certificate authentication</source>
+        <translation>SSLクライアント証明書認証</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
+        <source>This server probably requires a SSL client certificate.</source>
+        <translation>おそらく、このサーバーにはSSLクライアント証明書が必要です。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
+        <source>Certificate &amp; Key (pkcs12):</source>
+        <translation>証明書と鍵 (pkcs12) :</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
+        <source>Browse …</source>
+        <translation>閲覧 ...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
+        <source>Certificate password:</source>
+        <translation>証明書のパスワード:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
+        <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
+        <translation>設定ファイルにコピーが保存されるため、暗号化されたpkcs12バンドルを使用することを強くお勧めします。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/addcertificatedialog.cpp" line="28"/>
+        <source>Select a certificate</source>
+        <translation>証明書を選択</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/addcertificatedialog.cpp" line="28"/>
+        <source>Certificate files (*.p12 *.pfx)</source>
+        <translation>証明書ファイル (*.p12 *.pfx)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/addcertificatedialog.cpp" line="44"/>
+        <source>Could not access the selected certificate file.</source>
+        <translation>選択した証明書ファイルにアクセスできませんでした。</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::OwncloudAdvancedSetupPage</name>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="66"/>
+        <source>Connect</source>
+        <translation>接続</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="103"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="283"/>
+        <source>(experimental)</source>
+        <translation>(試験的)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="118"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="285"/>
+        <source>Use &amp;virtual files instead of downloading content immediately %1</source>
+        <translation>コンテンツをすぐにダウンロードする代わりに &amp;仮想ファイルを使用する %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="277"/>
+        <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
+        <translation>仮想ファイルは、ローカルフォルダーのWindowsルートパーティションではサポートされていません。ドライブレターの下の有効なサブフォルダを選択してください。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="318"/>
+        <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
+        <translation>%1 のフォルダー &quot;%2&quot; はローカルフォルダー &quot;%3&quot; と同期しています</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="321"/>
+        <source>Sync the folder &quot;%1&quot;</source>
+        <translation>&quot;%1&quot; フォルダーを同期</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="326"/>
+        <source>Warning: The local folder is not empty. Pick a resolution!</source>
+        <translation>警告: ローカルフォルダーは空ではありません。対処法を選択してください！</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="339"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="657"/>
+        <source>%1 free space</source>
+        <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
+        <translation>空き容量 %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="427"/>
+        <source>Virtual files are not supported at the selected location</source>
+        <translation>選択した場所では仮想ファイルはサポートされていません</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="490"/>
+        <source>Local Sync Folder</source>
+        <translation>ローカル同期フォルダー</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="533"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="574"/>
+        <source>(%1)</source>
+        <translation>(%1)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="600"/>
+        <source>There isn&apos;t enough free space in the local folder!</source>
+        <translation>ローカルフォルダーに十分な空き容量がありません。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="655"/>
+        <source>In Finder&apos;s &quot;Locations&quot; sidebar section</source>
+        <translation>Finderのサイドバーの&quot;場所&quot;セクション</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::OwncloudConnectionMethodDialog</name>
+    <message>
+        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="14"/>
+        <source>Connection failed</source>
+        <translation>接続に失敗</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;指定された安全なサーバーアドレスに接続できませんでした。どのように進めますか？&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
+        <source>Select a different URL</source>
+        <translation>異なるURLを選択</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
+        <source>Retry unencrypted over HTTP (insecure)</source>
+        <translation>HTTP経由で暗号化せずに再度行う(安全でない)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
+        <source>Configure client-side TLS certificate</source>
+        <translation>クライアントサイドTLS証明書を設定</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="24"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;安全なサーバーアドレス &lt;em&gt;%1&lt;/em&gt; に接続できませんでした。どのように進めますか？&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::OwncloudHttpCredsPage</name>
+    <message>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="39"/>
+        <source>&amp;Email</source>
+        <translation>メール(&amp;E)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="49"/>
+        <source>Connect to %1</source>
+        <translation>%1 に接続中</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="50"/>
+        <source>Enter user credentials</source>
+        <translation>ユーザー資格情報を入力</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::OwncloudSetupPage</name>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="94"/>
+        <source>The link to your %1 web interface when you open it in the browser.</source>
+        <comment>%1 will be replaced with the application name</comment>
+        <translation>%1 のWeb画面をブラウザーで開くときのURL</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="254"/>
+        <source>&amp;Next &gt;</source>
+        <translation>次(&amp;N) &gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="314"/>
+        <source>Server address does not seem to be valid</source>
+        <translation>サーバーアドレスは有効なさそうです</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="426"/>
+        <source>Could not load certificate. Maybe wrong password?</source>
+        <translation>証明書を読み込めませんでした。 パスワードが間違っていますか？</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::OwncloudSetupWizard</name>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="290"/>
+        <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
+        <translation>&lt;font color=&quot;green&quot;&gt;正常に %1 へ接続されました：%2 バージョン %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="320"/>
+        <source>Invalid URL</source>
+        <translation>無効なURL</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="322"/>
+        <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
+        <translation>%2 の %1 に接続に失敗:&lt;br/&gt;%3</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="340"/>
+        <source>Timeout while trying to connect to %1 at %2.</source>
+        <translation>%2 の %1 へ接続を試みた際にタイムアウトしました。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="367"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="390"/>
+        <source>Trying to connect to %1 at %2 …</source>
+        <translation>%2 の %1 へ接続を試みています…</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="457"/>
+        <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
+        <translation>サーバーへの認証リクエストは &quot;%1&quot; へリダイレクトされました。URLが正しくありません。サーバーが間違って設定されています。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="471"/>
+        <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
+        <translation>サーバーによってアクセスが拒否されています。適切なアクセス権があるか検証するには、&lt;a href=&quot;%1&quot;&gt;ここをクリック&lt;/a&gt;してブラウザーでサービスにアクセスしてください。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="480"/>
+        <source>There was an invalid response to an authenticated WebDAV request</source>
+        <translation>認証済みの WebDAV 要求に対する無効な応答がありました</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="534"/>
+        <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation>ローカルの同期フォルダー %1 はすでに存在するため、同期の設定をしてください。&lt;br/&gt;&lt;br/&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="537"/>
+        <source>Creating local sync folder %1 …</source>
+        <translation>ローカル同期フォルダー %1 を作成中…</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="541"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="543"/>
+        <source>failed.</source>
+        <translation>失敗。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="545"/>
+        <source>Could not create local folder %1</source>
+        <translation>ローカルフォルダー %1 を作成できませんでした</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="605"/>
+        <source>No remote folder specified!</source>
+        <translation>リモートフォルダーが指定されていません！</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="611"/>
+        <source>Error: %1</source>
+        <translation>エラー: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="624"/>
+        <source>creating folder on Nextcloud: %1</source>
+        <translation>Nextcloud上にフォルダーを作成中：%1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="629"/>
+        <source>Remote folder %1 created successfully.</source>
+        <translation>リモートフォルダー %1 は正常に生成されました。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="644"/>
+        <source>The remote folder %1 already exists. Connecting it for syncing.</source>
+        <translation>リモートフォルダー %1 はすでに存在します。同期のために接続しています。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="646"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="648"/>
+        <source>The folder creation resulted in HTTP error code %1</source>
+        <translation>フォルダーの作成はHTTPのエラーコード %1 で終了しました</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="650"/>
+        <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
+        <translation>指定された資格情報が間違っているため、リモートフォルダーの作成に失敗しました！&lt;br/&gt;前に戻って資格情報を確認してください。&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="654"/>
+        <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;おそらく資格情報が間違っているため、リモートフォルダーの作成に失敗しました。&lt;/font&gt;&lt;br/&gt;前に戻り、資格情報をチェックしてください。&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="659"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="660"/>
+        <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
+        <translation>リモートフォルダー %1 の作成がエラーで失敗しました。&lt;tt&gt;%2&lt;/tt&gt;.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="674"/>
+        <source>A sync connection from %1 to remote directory %2 was set up.</source>
+        <translation>%1 からリモートディレクトリ %2 への同期接続を設定しました。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="679"/>
+        <source>Successfully connected to %1!</source>
+        <translation>%1への接続に成功しました！</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="686"/>
+        <source>Connection to %1 could not be established. Please check again.</source>
+        <translation>%1 への接続を確立できませんでした。もう一度確認してください。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="699"/>
+        <source>Folder rename failed</source>
+        <translation>フォルダー名の変更に失敗しました。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="700"/>
+        <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
+        <translation>フォルダーまたはその中のファイルが別のプログラムで開かれているため、フォルダーを削除およびバックアップできません。フォルダーまたはファイルを閉じて、再試行を押すか、セットアップをキャンセルしてください。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="732"/>
+        <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;ファイルプロバイダベースのアカウント %1 は正常に作成されました！&lt;/b&gt;&lt;/font&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="774"/>
+        <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;ローカルの同期フォルダー %1 は正常に作成されました！&lt;/b&gt;&lt;/font&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::OwncloudWizard</name>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="99"/>
+        <source>Add %1 account</source>
+        <translation>アカウント「%1」 を追加</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="103"/>
+        <source>Skip folders configuration</source>
+        <translation>フォルダー設定をスキップ</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="104"/>
+        <source>Cancel</source>
+        <translation>キャンセル</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="105"/>
+        <source>Proxy Settings</source>
+        <comment>Proxy Settings button text in new account wizard</comment>
+        <translation>プロキシ設定</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="107"/>
+        <source>Next</source>
+        <comment>Next button text in new account wizard</comment>
+        <translation>次へ</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="108"/>
+        <source>Back</source>
+        <comment>Next button text in new account wizard</comment>
+        <translation>戻る</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="512"/>
+        <source>Enable experimental feature?</source>
+        <translation>試験的な機能を有効化しますか?</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="513"/>
+        <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
+
+The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
+
+Switching to this mode will abort any currently running synchronization.
+
+This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
+        <translation>&quot;仮想ファイル&quot; モードを有効にした場合、最初にファイルがダウンロードされません。同期ダウンロードされる代わりに、サーバー上に存在するファイルごとにローカルに小さな ”%1&quot; ファイルが作成されます。これらのファイルを実行した時やコンテキストメニューを使用するとコンテンツをダウンロードできます。
+
+仮想ファイルモードは、選択同期モードとどちらかの排他利用です。現在選択されていないフォルダーはオンライン専用フォルダーに変換され、選択同期モードの設定はリセットされます。
+
+このモードに切り替えると、現在実行中の同期は中止されます。
+
+これは新しい機能で、実験モードです。使用していて問題があったら報告をお願いします。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="527"/>
+        <source>Enable experimental placeholder mode</source>
+        <translation>試験的なプレースホルダーモードを有効にする</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="528"/>
+        <source>Stay safe</source>
+        <translation>セキュリティーを確保</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::TermsOfServiceCheckWidget</name>
+    <message>
+        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="125"/>
+        <source>Waiting for terms to be accepted</source>
+        <translation>条件が受け入れられるのを待っています</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="131"/>
+        <source>Polling</source>
+        <translation>ポーリング</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="137"/>
+        <source>Link copied to clipboard.</source>
+        <translation>リンクをクリップボードにコピーしました。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="178"/>
+        <source>Open Browser</source>
+        <translation>ブラウザーを開く</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="180"/>
+        <source>Copy Link</source>
+        <translation>リンクをコピー</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::WelcomePage</name>
+    <message>
+        <location filename="../src/gui/wizard/welcomepage.ui" line="20"/>
+        <source>Form</source>
+        <translation>フォーム</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
+        <source>Log in</source>
+        <translation>ログイン</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
+        <source>Sign up with provider</source>
+        <translation>他のサービスでサインアップ</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/welcomepage.cpp" line="59"/>
+        <source>Keep your data secure and under your control</source>
+        <translation>データをセキュアに、あなたの元で管理します</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/welcomepage.cpp" line="60"/>
+        <source>Secure collaboration &amp; file exchange</source>
+        <translation>セキュアに共同作業とファイル交換</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/welcomepage.cpp" line="61"/>
+        <source>Easy-to-use web mail, calendaring &amp; contacts</source>
+        <translation>使いやすいウェブメール、予定表と連絡先</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/welcomepage.cpp" line="62"/>
+        <source>Screensharing, online meetings &amp; web conferences</source>
+        <translation>画面共有、オンライン会議とWeb会議</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/welcomepage.cpp" line="102"/>
+        <source>Host your own server</source>
+        <translation>自分のサーバーを構築する</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::WizardProxySettingsDialog</name>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="23"/>
+        <source>Proxy Settings</source>
+        <comment>Dialog window title for proxy settings</comment>
+        <translation>プロキシ設定</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25"/>
+        <source>Hostname of proxy server</source>
+        <translation>プロキシサーバーのホスト名</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26"/>
+        <source>Username for proxy server</source>
+        <translation>プロキシサーバーのユーザー名</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="27"/>
+        <source>Password for proxy server</source>
+        <translation>プロキシサーバーのパスワード</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="29"/>
+        <source>HTTP(S) proxy</source>
+        <translation>HTTP(S)プロキシ</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="30"/>
+        <source>SOCKS5 proxy</source>
+        <translation>SOCKS5プロキシ</translation>
+    </message>
+</context>
+<context>
+    <name>OwncloudAdvancedSetupPage</name>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="77"/>
+        <source>&amp;Local Folder</source>
+        <translation>ローカルフォルダー(&amp;L)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="98"/>
+        <source>Username</source>
+        <translation>ユーザー名</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="116"/>
+        <source>Local Folder</source>
+        <translation>ローカルフォルダー</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="135"/>
+        <source>Choose different folder</source>
+        <translation>他のフォルダーを選択</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="228"/>
+        <source>Server address</source>
+        <translation>サーバーアドレス</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
+        <source>Sync Logo</source>
+        <translation>同期ロゴ</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
+        <source>Synchronize everything from server</source>
+        <translation>サーバーからすべてのファイルを同期する</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="360"/>
+        <source>Ask before syncing folders larger than</source>
+        <translation>指定された容量以上のフォルダーは同期前に確認</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="386"/>
+        <source>MB</source>
+        <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
+        <translation>MB</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="432"/>
+        <source>Ask before syncing external storages</source>
+        <translation>外部ストレージを同期する前に確認</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="475"/>
+        <source>Choose what to sync</source>
+        <translation>同期フォルダーを選択</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="612"/>
+        <source>Keep local data</source>
+        <translation>ローカルデータを保持</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="628"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;チェックした場合、ローカルフォルダー内に存在するコンテンツはサーバーからクリーンな同期を開始するために削除されます。&lt;/p&gt;&lt;p&gt;もしローカルのコンテンツをサーバーのフォルダーにアップロードするなら、チェックしないでください。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="631"/>
+        <source>Erase local folder and start a clean sync</source>
+        <translation>ローカルフォルダーを消去して、クリーン同期を開始します</translation>
+    </message>
+</context>
+<context>
+    <name>OwncloudHttpCredsPage</name>
+    <message>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="73"/>
+        <source>&amp;Username</source>
+        <translation>ユーザー名(&amp;U)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="83"/>
+        <source>&amp;Password</source>
+        <translation>パスワード(&amp;P)</translation>
+    </message>
+</context>
+<context>
+    <name>OwncloudSetupPage</name>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>
+        <source>Logo</source>
+        <translation>ロゴ</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="182"/>
+        <source>Server address</source>
+        <translation>サーバーアドレス</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="261"/>
+        <source>This is the link to your %1 web interface when you open it in the browser.</source>
+        <translation>これは、%1 のWeb画面をブラウザーで開くときのURLです。</translation>
+    </message>
+</context>
+<context>
+    <name>ProxySettings</name>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="14"/>
+        <source>Form</source>
+        <translation>フォーム</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="29"/>
+        <source>Proxy Settings</source>
+        <translation>プロキシ設定</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="35"/>
+        <source>Manually specify proxy</source>
+        <translation>手動でプロキシを指定</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="91"/>
+        <source>Host</source>
+        <translation>ホスト</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="142"/>
+        <source>Proxy server requires authentication</source>
+        <translation>認証が必要なプロキシサーバー</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="205"/>
+        <source>Note: proxy settings have no effects for accounts on localhost</source>
+        <translation>注: プロキシ設定は、ローカルホストのアカウントには影響しません</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="230"/>
+        <source>Use system proxy</source>
+        <translation>システムのプロキシを利用</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="237"/>
+        <source>No proxy</source>
+        <translation>プロキシを利用しない</translation>
+    </message>
+</context>
+<context>
+    <name>TermsOfServiceCheckWidget</name>
+    <message>
+        <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="26"/>
+        <source>Terms of Service</source>
+        <translation>サービス利用規約</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="47"/>
+        <source>Logo</source>
+        <translation>ロゴ</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="76"/>
+        <source>Switch to your browser to accept the terms of service</source>
+        <translation>ブラウザを切り替えて利用規約に同意する</translation>
     </message>
 </context>
 <context>
