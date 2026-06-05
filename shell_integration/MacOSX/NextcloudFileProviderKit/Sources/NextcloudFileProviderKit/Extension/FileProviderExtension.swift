@@ -502,7 +502,7 @@ import OSLog
 
     // MARK: - Helper functions
 
-    func signalEnumerator(completionHandler: @escaping (_ error: Error?) -> Void) {
+    func signalEnumerator(completionHandler: @Sendable @escaping (_ error: Error?) -> Void) {
         guard let manager else {
             logger.error("Cannot get file provider manager for domain. Cannot signal enumerator.")
             return

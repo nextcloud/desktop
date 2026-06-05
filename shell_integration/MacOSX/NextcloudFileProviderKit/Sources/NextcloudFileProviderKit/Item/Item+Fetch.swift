@@ -66,7 +66,7 @@ public extension Item {
                 } else {
                     let identifier = NSFileProviderItemIdentifier(metadata.ocId)
 
-                    let (_, _, _, _, _, _, error) = await remoteInterface.downloadAsync(
+                    let (_, _, error) = await remoteInterface.downloadAsync(
                         serverUrlFileName: remotePath,
                         fileNameLocalPath: childLocalPath,
                         account: account.ncKitAccount,
@@ -176,7 +176,7 @@ public extension Item {
             }
 
         } else {
-            let (_, _, _, _, _, _, error) = await remoteInterface.downloadAsync(
+            let (_, _, error) = await remoteInterface.downloadAsync(
                 serverUrlFileName: serverUrlFileName,
                 fileNameLocalPath: localPath.path,
                 account: account.ncKitAccount,
