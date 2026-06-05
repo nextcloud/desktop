@@ -1,5 +1,100 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ar">
 <context>
+    <name>AccountWizardWindow</name>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="145"/>
+        <source>Secure connection failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="158"/>
+        <source>Connect to %1?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="168"/>
+        <source>The secure connection failed. You can retry without encryption, or add a client certificate and try again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="169"/>
+        <source>The secure connection failed. You can add a client certificate and try again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="181"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="247"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="249"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="191"/>
+        <source>Connect without TLS</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="200"/>
+        <source>Use client certificate</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="250"/>
+        <source>Back</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="264"/>
+        <source>Set up later</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="275"/>
+        <source>Advanced</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="284"/>
+        <source>Sign up</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="294"/>
+        <source>Self-host</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="307"/>
+        <source>Proxy settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="328"/>
+        <source>Copy link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="361"/>
+        <source>Open</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="363"/>
+        <source>Connect</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="365"/>
+        <source>Done</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="367"/>
+        <source>Log in</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ActivityItem</name>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="29"/>
@@ -54,6 +149,81 @@
     </message>
 </context>
 <context>
+    <name>AdvancedOptionsDialog</name>
+    <message>
+        <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="24"/>
+        <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="35"/>
+        <source>Advanced options</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="44"/>
+        <source>Ask before syncing folders larger than</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="62"/>
+        <source>Large folder threshold</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="64"/>
+        <source>%1 MB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="71"/>
+        <source>Ask before syncing external storage</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="90"/>
+        <source>Done</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>BasicAuthPage</name>
+    <message>
+        <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="27"/>
+        <source>Connect public share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="27"/>
+        <source>Enter credentials</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="37"/>
+        <source>Enter the share password if the link is password protected.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="38"/>
+        <source>Enter the username and password for this server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="50"/>
+        <source>Username</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="60"/>
+        <source>Password</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>BrowserAuthPage</name>
+    <message>
+        <location filename="../src/gui/wizard/qml/BrowserAuthPage.qml" line="38"/>
+        <source>Switch to your browser</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>CallNotificationDialog</name>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="166"/>
@@ -74,6 +244,45 @@
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="242"/>
         <source>Decline Talk call notification</source>
         <translation>إشعارٌ بالرّفض على اتصالٍ عبر تطبيق المحادثة Talk</translation>
+    </message>
+</context>
+<context>
+    <name>ClientCertificateDialog</name>
+    <message>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="25"/>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="36"/>
+        <source>Client certificate</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="44"/>
+        <source>Select a PKCS#12 certificate file and enter its password.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="57"/>
+        <source>Certificate file</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="63"/>
+        <source>Choose</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="70"/>
+        <source>Certificate password</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="94"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="104"/>
+        <source>Connect</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1121,6 +1330,214 @@ This action will abort any currently running synchronization.</source>
     </message>
 </context>
 <context>
+    <name>OCC::AccountWizardController</name>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="235"/>
+        <source>Will require local storage</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="617"/>
+        <source>Proxy settings are incomplete.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="624"/>
+        <source>Server address does not seem to be valid</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="645"/>
+        <source>Username must not be empty.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="651"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="974"/>
+        <source>Checking account access</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="729"/>
+        <source>Checking server address</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="794"/>
+        <source>Preparing browser login</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="815"/>
+        <source>Invalid URL</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="817"/>
+        <source>Failed to connect to %1 at %2:
+%3</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="833"/>
+        <source>Timeout while trying to connect to %1 at %2.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="854"/>
+        <source>This server requires legacy browser authentication. Enter app-password credentials instead.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="932"/>
+        <source>Unable to open the Browser, please copy the link to your Browser.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="953"/>
+        <source>Waiting for authorization</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="957"/>
+        <source>Polling for authorization</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="961"/>
+        <source>Starting authorization</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="965"/>
+        <source>Link copied to clipboard.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1020"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1050"/>
+        <source>There was an invalid response to an authenticated WebDAV request</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1037"/>
+        <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1045"/>
+        <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1063"/>
+        <source>Account connected.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1138"/>
+        <source>Will require %1 of storage</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1288"/>
+        <source>%1 free space</source>
+        <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1306"/>
+        <source>There isn&apos;t enough free space in the local folder!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1322"/>
+        <source>Please choose a local sync folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1391"/>
+        <source>Could not create local folder %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1409"/>
+        <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and try again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1421"/>
+        <source>Checking remote folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1467"/>
+        <source>No remote folder specified!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1476"/>
+        <source>Error: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1481"/>
+        <source>Creating remote folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1500"/>
+        <source>The folder creation resulted in HTTP error code %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1502"/>
+        <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1504"/>
+        <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1528"/>
+        <source>Account setup failed while creating the sync folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1555"/>
+        <source>Could not create the sync folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1627"/>
+        <source>Local Sync Folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1878"/>
+        <source>Select a certificate</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1880"/>
+        <source>Certificate files (*.p12 *.pfx)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1888"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1908"/>
+        <source>Could not access the selected certificate file.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1924"/>
+        <source>Could not load certificate. Maybe wrong password?</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::ActivityListModel</name>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="478"/>
@@ -1136,54 +1553,6 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="605"/>
         <source>Network error occurred: client will retry syncing.</source>
         <translation>حدث خطأ في الشبكة: سوف يحاول العميل إعادة المزامنة.</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::AddCertificateDialog</name>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
-        <source>SSL client certificate authentication</source>
-        <translation>مصادقة شهادة SSL للعميل client.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
-        <source>This server probably requires a SSL client certificate.</source>
-        <translation>ربما يتطلب هذا الخادم شهادة عميل SSL.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
-        <source>Certificate &amp; Key (pkcs12):</source>
-        <translation>الشهادة والمفتاح (pkcs12):</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
-        <source>Certificate password:</source>
-        <translation>كلمة سر الشهادة:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
-        <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation>يوصى بشدة باستخدام حزمة pkcs12 المشفرة حيث سيتم تخزين نسخة في ملف التكوين.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
-        <source>Browse …</source>
-        <translation>تصفّح …</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.cpp" line="28"/>
-        <source>Select a certificate</source>
-        <translation>إختر شهادةً</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.cpp" line="28"/>
-        <source>Certificate files (*.p12 *.pfx)</source>
-        <translation>ملفات الشهادات (* .p12 * .pfx)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.cpp" line="44"/>
-        <source>Could not access the selected certificate file.</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3771,376 +4140,12 @@ Note that using any logging command line options will override this setting.</so
     </message>
 </context>
 <context>
-    <name>OCC::OwncloudAdvancedSetupPage</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="66"/>
-        <source>Connect</source>
-        <translation>اتصال</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="103"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="283"/>
-        <source>(experimental)</source>
-        <translation>(تجريبي)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="118"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="285"/>
-        <source>Use &amp;virtual files instead of downloading content immediately %1</source>
-        <translation>إستخدم &amp;الملفات_الظاهرية بدلاً عن تنزيل المحتوى فورًا 1%</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="277"/>
-        <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation>الملفات الظاهرية virtual files غير مدعومة في حالة استخدام جذور تقسيمات ويندوز Windows partition roots كمجلدات محلّية. الرجاء اختيار مجلد فرعي صالح ضمن حرف محرك الأقراص.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="318"/>
-        <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
-        <translation>%1 مجلد &quot;%2&quot; تمّت مزامنته مع المجلد المحلي &quot;%3&quot;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="321"/>
-        <source>Sync the folder &quot;%1&quot;</source>
-        <translation>مزامنة المجلد &quot;%1&quot;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="326"/>
-        <source>Warning: The local folder is not empty. Pick a resolution!</source>
-        <translation>تحذير: المجلد المحلي ليس فارغاً. حدّد خيارك!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="339"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="657"/>
-        <source>%1 free space</source>
-        <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
-        <translation>المساحة المتاحة 1%</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="427"/>
-        <source>Virtual files are not supported at the selected location</source>
-        <translation>الملفات الافتراضية غير مدعومة في الموضع المُحدَّد</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="490"/>
-        <source>Local Sync Folder</source>
-        <translation>مجلد المزامنة المحلية</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="533"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="574"/>
-        <source>(%1)</source>
-        <translation>(1%)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="600"/>
-        <source>There isn&apos;t enough free space in the local folder!</source>
-        <translation>لا توجد مساحة كافية في المجلد المحلي!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="655"/>
-        <source>In Finder&apos;s &quot;Locations&quot; sidebar section</source>
-        <translation>في قسم &quot;المواقع&quot; في الشريط الجانبي للباحث</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::OwncloudConnectionMethodDialog</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="14"/>
-        <source>Connection failed</source>
-        <translation>فشل الاتصال</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;فشل الاتصال بعنوان الخادم الآمن المحدد. كيف تريد المتابعة؟ &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
-        <source>Select a different URL</source>
-        <translation>حدد عنوان URL مختلفًا</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
-        <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation>إعادة المحاولة بدون تشفير عبر بروتوكول نHTTP (غير آمن)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
-        <source>Configure client-side TLS certificate</source>
-        <translation>تكوين شهادة المفتاح العام &quot;TLS&quot; من جانب العميل</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="24"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;فشل الاتصال بعنوان الخادم الآمن &lt;em&gt; 1%&lt;/em&gt;. كيف تريد المتابعة؟&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::OwncloudHttpCredsPage</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="39"/>
-        <source>&amp;Email</source>
-        <translation>&amp; بريد إلكتروني</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="49"/>
-        <source>Connect to %1</source>
-        <translation>الاتصال بـ 1%</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="50"/>
-        <source>Enter user credentials</source>
-        <translation>أدخل بيانات اعتماد المستخدم</translation>
-    </message>
-</context>
-<context>
     <name>OCC::OwncloudPropagator</name>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="966"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1043"/>
         <source>Impossible to get modification time for file in conflict %1</source>
         <translation>يستحيل الحصول على وقت تعديل file in conflict الملف المتعارض 1%</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::OwncloudSetupPage</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="94"/>
-        <source>The link to your %1 web interface when you open it in the browser.</source>
-        <comment>%1 will be replaced with the application name</comment>
-        <translation>الرابط لواجهة الويب الخاصة بك %1 عندما تفتحه في المُستعرِض.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="254"/>
-        <source>&amp;Next &gt;</source>
-        <translation>&amp; التالي&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="314"/>
-        <source>Server address does not seem to be valid</source>
-        <translation>عنوان الخادم يبدو غير صحيح</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="426"/>
-        <source>Could not load certificate. Maybe wrong password?</source>
-        <translation>تعذّر تحميل الشهادة. هل يمكن أن يكون السبب كلمة مرور غير صحيحة؟</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::OwncloudSetupWizard</name>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="290"/>
-        <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;تم الاتصال بنجاح بـ 1%:2% الإصدار 3% (4%)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="322"/>
-        <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation>فشل الاتصال بـ 1% على 2%:&lt;br/&gt;3%</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="340"/>
-        <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation>تجاوز المهلة المتوقعة للتوصيل مع %1 في %2.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="471"/>
-        <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation>الوصول محظور من قبل الخادم. للتحقق من أن لديك حق الوصول المناسب،&lt;a href=&quot;%1&quot;&gt;انقر هنا &lt;/a&gt;من أجل الوصول إلى الخدمة من خلال متصفحك.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="320"/>
-        <source>Invalid URL</source>
-        <translation>عنوان URL غير صالح</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="367"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="390"/>
-        <source>Trying to connect to %1 at %2 …</source>
-        <translation>محاولة التوصيل مع %1 في %2 ...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="457"/>
-        <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation>تمّت إعادة توجيه الطلب المصادق عليه إلى الخادوم إلى &quot;%1&quot;. عنوان URL تالف، وقد تم تكوين الخادوم بشكل خاطئ.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="480"/>
-        <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation>كانت هناك استجابة غير صالحة لطلب WebDAV المصادق عليه</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="534"/>
-        <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>مجلد المزامنة المحلي 1% موجود بالفعل، قم بإعداده للمزامنة.&lt;br/&gt;&lt;br/&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="537"/>
-        <source>Creating local sync folder %1 …</source>
-        <translation>جارٍ إنشاء مجلد المزامنة المحلي٪ 1 ...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="541"/>
-        <source>OK</source>
-        <translation>تم</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="543"/>
-        <source>failed.</source>
-        <translation>أخفق.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="545"/>
-        <source>Could not create local folder %1</source>
-        <translation>تعذر إنشاء المجلد المحلي 1%</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="605"/>
-        <source>No remote folder specified!</source>
-        <translation>لم يتم تحديد مجلد بعيد!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="611"/>
-        <source>Error: %1</source>
-        <translation>خطأ: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="624"/>
-        <source>creating folder on Nextcloud: %1</source>
-        <translation>إنشاء مجلد على النكست كلاود: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="629"/>
-        <source>Remote folder %1 created successfully.</source>
-        <translation>تم إنشاء المجلد البعيد٪ 1 بنجاح.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="644"/>
-        <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>المجلد البعيد 1% موجود بالفعل. جاري ربطه للمزامنة.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="646"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="648"/>
-        <source>The folder creation resulted in HTTP error code %1</source>
-        <translation>نتج عن إنشاء المجلد رمز خطأ 1% لبروتوكول HTTP</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="650"/>
-        <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>عملية إنشاء مجلد قَصِِي remote فشلت بسبب أن حيثيّات الدخول credentials المُعطاة خاطئة!&lt;br/&gt;رجاءً، عُد و تحقّق من حيثيات دخولك.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="654"/>
-        <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;يحتمل أن يكون فشل إنشاء مجلد عن بعد ناتج عن أن بيانات الاعتماد المقدمة خاطئة. &lt;/font&gt;&lt;br/&gt;يُرجى الرجوع والتحقق من بيانات الاعتماد الخاصة بك.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="659"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="660"/>
-        <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation>فشل إنشاء المجلد البعيد 1% بسبب الخطأ &lt;tt&gt;2%&lt;/tt&gt;.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="674"/>
-        <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation>تم تنصيب اتصال مزامنة من 1% إلى الدليل البعيد 2%.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="679"/>
-        <source>Successfully connected to %1!</source>
-        <translation>تم الاتصال بنجاح بـ 1%!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="686"/>
-        <source>Connection to %1 could not be established. Please check again.</source>
-        <translation>تعذر إنشاء الاتصال بـ 1%. يرجى التحقق مرة أخرى.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="699"/>
-        <source>Folder rename failed</source>
-        <translation>فشلت إعادة تسمية المجلد</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="700"/>
-        <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>لا يمكن إزالة المجلد وعمل نسخة احتياطية منه لأن المجلد أو الملف الموجود فيه مفتوح في برنامج آخر. الرجاء إغلاق المجلد أو الملف، والضغط على إعادة المحاولة أو إلغاء الإعداد.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="732"/>
-        <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;حساب يعتمد على مُزوِّد الملف  %1 تم إنشاؤه بنجاحٍ!&lt;/b&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="774"/>
-        <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;تم إنشاء مجلد المزامنة المحلي٪ 1 بنجاح!&lt;/b&gt;&lt;/font&gt;</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::OwncloudWizard</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="99"/>
-        <source>Add %1 account</source>
-        <translation>إضافة %1 حساب</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="103"/>
-        <source>Skip folders configuration</source>
-        <translation>تخطي تكوين المجلدات</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="104"/>
-        <source>Cancel</source>
-        <translation>إلغاء</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="105"/>
-        <source>Proxy Settings</source>
-        <comment>Proxy Settings button text in new account wizard</comment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="107"/>
-        <source>Next</source>
-        <comment>Next button text in new account wizard</comment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="108"/>
-        <source>Back</source>
-        <comment>Next button text in new account wizard</comment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="512"/>
-        <source>Enable experimental feature?</source>
-        <translation>تمكين خاصية تجريبية؟</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="513"/>
-        <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
-
-The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
-
-Switching to this mode will abort any currently running synchronization.
-
-This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>عند تمكين وضع &quot;الملفات الافتراضية&quot; virtual folders، لن يتم تنزيل أي ملفات في البداية. بدلاً من ذلك، سيتم إنشاء ملف &quot;٪ 1&quot; صغير لكل ملف موجود على الخادوم. يمكن تنزيل المحتويات عن طريق تشغيل هذه الملفات أو باستخدام قائمة السياق الخاصة بها. 
-يعد وضع الملفات الافتراضية حصريًا بشكل متبادل مع المزامنة الانتقائية. ستتم ترجمة المجلدات غير المحددة حاليًا إلى مجلدات على الإنترنت فقط وستتم إعادة تعيين إعدادات المزامنة الانتقائية. 
-سيؤدي التبديل إلى هذا الوضع إلى إجهاض أي مزامنة قيد التشغيل حاليًا. 
-هذا وضع تجريبي جديد. إذا قررت استخدامه ، فيرجى الإبلاغ عن أي مشكلات تطرأ.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="527"/>
-        <source>Enable experimental placeholder mode</source>
-        <translation>تفعيل وضع العنصر النائب placeholder mode التجريبي</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="528"/>
-        <source>Stay safe</source>
-        <translation>إبق آمنا</translation>
     </message>
 </context>
 <context>
@@ -5630,34 +5635,6 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
-    <name>OCC::TermsOfServiceCheckWidget</name>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="125"/>
-        <source>Waiting for terms to be accepted</source>
-        <translation>في انتظار قبول شروط الخدمة</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="131"/>
-        <source>Polling</source>
-        <translation>تصويت</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="137"/>
-        <source>Link copied to clipboard.</source>
-        <translation>تمّ نسخ الرابط إلى الحافظة.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="178"/>
-        <source>Open Browser</source>
-        <translation>إفتَح المتصفح</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="180"/>
-        <source>Copy Link</source>
-        <translation>إنسَخ الرابط</translation>
-    </message>
-</context>
-<context>
     <name>OCC::Theme</name>
     <message>
         <location filename="../src/libsync/theme.cpp" line="449"/>
@@ -6107,83 +6084,6 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
-    <name>OCC::WelcomePage</name>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.ui" line="20"/>
-        <source>Form</source>
-        <translation>نموذج</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
-        <source>Log in</source>
-        <translation>تسجيل الدخول</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
-        <source>Sign up with provider</source>
-        <translation>سجّل نفسك مع المُزوّد</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.cpp" line="59"/>
-        <source>Keep your data secure and under your control</source>
-        <translation>إحتفظ ببياناتك آمنة و تحت سيطرتك</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.cpp" line="60"/>
-        <source>Secure collaboration &amp; file exchange</source>
-        <translation>تعاون و تبادل ملفات مُؤمّن </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.cpp" line="61"/>
-        <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation>بريد إلكتروني سهل الاستعمال، و تقويم و جهات اتصال</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.cpp" line="62"/>
-        <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation>مشاركة الشاشة، و الاجتماع على الخط، و المؤتمرات على الويب</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.cpp" line="102"/>
-        <source>Host your own server</source>
-        <translation>قم باستضافة الخادم الخاص بك</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::WizardProxySettingsDialog</name>
-    <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="23"/>
-        <source>Proxy Settings</source>
-        <comment>Dialog window title for proxy settings</comment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25"/>
-        <source>Hostname of proxy server</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26"/>
-        <source>Username for proxy server</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="27"/>
-        <source>Password for proxy server</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="29"/>
-        <source>HTTP(S) proxy</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="30"/>
-        <source>SOCKS5 proxy</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>OCC::ownCloudGui</name>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="381"/>
@@ -6242,7 +6142,7 @@ Server replied with error: %2</source>
         <translation>macOS VFSلـ %1: وَاجَهَ مشكلةً.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="494"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="496"/>
         <source>macOS VFS for %1: An error was encountered.</source>
         <translation type="unfinished"/>
     </message>
@@ -6257,12 +6157,12 @@ Server replied with error: %2</source>
         <translation>التحقّق من التغييرات في &apos;%1&apos; المحلي</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="846"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="848"/>
         <source>Internal link copied</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="847"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="849"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation type="unfinished"/>
     </message>
@@ -6288,150 +6188,81 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
-    <name>OwncloudAdvancedSetupPage</name>
+    <name>ProxySettingsDialog</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="98"/>
-        <source>Username</source>
-        <translation>اسم المستخدم</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="116"/>
-        <source>Local Folder</source>
-        <translation>مُجلّد محلي</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="135"/>
-        <source>Choose different folder</source>
-        <translation>إختر مُجلّداً آخر</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="228"/>
-        <source>Server address</source>
-        <translation>عنوان الخادم</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
-        <source>Sync Logo</source>
-        <translation>شعار المزامنة</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
-        <source>Synchronize everything from server</source>
-        <translation>قم بمزامنة كل شيء مع الخادم</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="360"/>
-        <source>Ask before syncing folders larger than</source>
-        <translation>إسأل قبل مزامنة ملفات أكبر من </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="432"/>
-        <source>Ask before syncing external storages</source>
-        <translation>إسأل قبل مزامنة وحدات تخزين خارجية</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="612"/>
-        <source>Keep local data</source>
-        <translation>إحتفظ بالبيانات المحلية</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="628"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;إذا تم تحديد هذا المربع ، فسيتم محو المحتوى الموجود في المجلد المحلي لبدء مزامنة جديدة نظيفة من الخادم. &lt;/p&gt;&lt;p&gt;لا تحدد هذا إذا كان يجب رفع المحتوى المحلي إلى مجلد الخوادم.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="631"/>
-        <source>Erase local folder and start a clean sync</source>
-        <translation>إمحُ المجلد المحلي و ابدأ مزامنة نظيفة</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="386"/>
-        <source>MB</source>
-        <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
-        <translation>ميغا بايت</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="475"/>
-        <source>Choose what to sync</source>
-        <translation>إختر ما تريد مزامنته</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="77"/>
-        <source>&amp;Local Folder</source>
-        <translation>&amp; مجلد محلي</translation>
-    </message>
-</context>
-<context>
-    <name>OwncloudHttpCredsPage</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="73"/>
-        <source>&amp;Username</source>
-        <translation>&amp;اسم المستخدم</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="83"/>
-        <source>&amp;Password</source>
-        <translation>&amp;كلمة المرور</translation>
-    </message>
-</context>
-<context>
-    <name>OwncloudSetupPage</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>
-        <source>Logo</source>
-        <translation>الشعار</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="182"/>
-        <source>Server address</source>
-        <translation>عنوان الخادم</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="261"/>
-        <source>This is the link to your %1 web interface when you open it in the browser.</source>
-        <translation>هذا هو الرابط إلى واجهة الويب %1 الخاصة بك عندما تفتحها في المُتصفّح</translation>
-    </message>
-</context>
-<context>
-    <name>ProxySettings</name>
-    <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="14"/>
-        <source>Form</source>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="36"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="78"/>
+        <source>Proxy settings</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="29"/>
-        <source>Proxy Settings</source>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="86"/>
+        <source>No proxy</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="35"/>
-        <source>Manually specify proxy</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="91"/>
-        <source>Host</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="142"/>
-        <source>Proxy server requires authentication</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="205"/>
-        <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="230"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="96"/>
         <source>Use system proxy</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="237"/>
-        <source>No proxy</source>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="106"/>
+        <source>Manually specify proxy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="121"/>
+        <source>HTTP(S) proxy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="121"/>
+        <source>SOCKS5 proxy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="125"/>
+        <source>Proxy type</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="136"/>
+        <source>Hostname of proxy server</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="148"/>
+        <source>Proxy port</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="157"/>
+        <source>Proxy server requires authentication</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="173"/>
+        <source>Username for proxy server</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="180"/>
+        <source>Password for proxy server</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="189"/>
+        <source>Note: proxy settings have no effects for accounts on localhost</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="206"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="213"/>
+        <source>Done</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -6718,6 +6549,29 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
+    <name>ServerPage</name>
+    <message>
+        <location filename="../src/gui/wizard/qml/ServerPage.qml" line="29"/>
+        <source>Log in to %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ServerPage.qml" line="38"/>
+        <source>Enter the link to your %1 web interface from the browser or the link to a folder shared with you.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ServerPage.qml" line="182"/>
+        <source>Log in</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/ServerPage.qml" line="197"/>
+        <source>Server address</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ShareDelegate</name>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="182"/>
@@ -6869,6 +6723,54 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
+    <name>SyncOptionsPage</name>
+    <message>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
+        <source>Virtual files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="91"/>
+        <source>Download files on-demand</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="99"/>
+        <source>Synchronize everything</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="108"/>
+        <source>Choose what to sync</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="122"/>
+        <source>Local sync folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="156"/>
+        <source>Choose</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="191"/>
+        <source>Warning: The local folder is not empty. Pick a resolution!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="200"/>
+        <source>Keep local data</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="208"/>
+        <source>Erase local folder and start a clean sync</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>SyncStatus</name>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="99"/>
@@ -6902,24 +6804,6 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="57"/>
         <source>Send reply to chat message</source>
         <translation>أرسل ردّاً على رسالة الدردشة</translation>
-    </message>
-</context>
-<context>
-    <name>TermsOfServiceCheckWidget</name>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="26"/>
-        <source>Terms of Service</source>
-        <translation>شروط الخدمة</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="47"/>
-        <source>Logo</source>
-        <translation>الشعار</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="76"/>
-        <source>Switch to your browser to accept the terms of service</source>
-        <translation>بدِّل إلى مُتصفِّحِك لقبول شروط الخدمة</translation>
     </message>
 </context>
 <context>
@@ -7502,6 +7386,715 @@ Server replied with error: %2</source>
         <location filename="../src/gui/guiutility.cpp" line="102"/>
         <source>Free up local space</source>
         <translation>قم بتحرير المساحة المحلية</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="130"/>
+        <source>Enable experimental feature?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="131"/>
+        <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
+
+The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
+
+Switching to this mode will abort any currently running synchronization.
+
+This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="146"/>
+        <source>Enable experimental placeholder mode</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="147"/>
+        <source>Stay safe</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OCC::AddCertificateDialog</name>
+    <message>
+        <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
+        <source>SSL client certificate authentication</source>
+        <translation>مصادقة شهادة SSL للعميل client.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
+        <source>This server probably requires a SSL client certificate.</source>
+        <translation>ربما يتطلب هذا الخادم شهادة عميل SSL.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
+        <source>Certificate &amp; Key (pkcs12):</source>
+        <translation>الشهادة والمفتاح (pkcs12):</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
+        <source>Browse …</source>
+        <translation>تصفّح …</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
+        <source>Certificate password:</source>
+        <translation>كلمة سر الشهادة:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
+        <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
+        <translation>يوصى بشدة باستخدام حزمة pkcs12 المشفرة حيث سيتم تخزين نسخة في ملف التكوين.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/addcertificatedialog.cpp" line="28"/>
+        <source>Select a certificate</source>
+        <translation>إختر شهادةً</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/addcertificatedialog.cpp" line="28"/>
+        <source>Certificate files (*.p12 *.pfx)</source>
+        <translation>ملفات الشهادات (* .p12 * .pfx)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/addcertificatedialog.cpp" line="44"/>
+        <source>Could not access the selected certificate file.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OCC::OwncloudAdvancedSetupPage</name>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="66"/>
+        <source>Connect</source>
+        <translation>اتصال</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="103"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="283"/>
+        <source>(experimental)</source>
+        <translation>(تجريبي)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="118"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="285"/>
+        <source>Use &amp;virtual files instead of downloading content immediately %1</source>
+        <translation>إستخدم &amp;الملفات_الظاهرية بدلاً عن تنزيل المحتوى فورًا 1%</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="277"/>
+        <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
+        <translation>الملفات الظاهرية virtual files غير مدعومة في حالة استخدام جذور تقسيمات ويندوز Windows partition roots كمجلدات محلّية. الرجاء اختيار مجلد فرعي صالح ضمن حرف محرك الأقراص.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="318"/>
+        <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
+        <translation>%1 مجلد &quot;%2&quot; تمّت مزامنته مع المجلد المحلي &quot;%3&quot;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="321"/>
+        <source>Sync the folder &quot;%1&quot;</source>
+        <translation>مزامنة المجلد &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="326"/>
+        <source>Warning: The local folder is not empty. Pick a resolution!</source>
+        <translation>تحذير: المجلد المحلي ليس فارغاً. حدّد خيارك!</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="339"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="657"/>
+        <source>%1 free space</source>
+        <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
+        <translation>المساحة المتاحة 1%</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="427"/>
+        <source>Virtual files are not supported at the selected location</source>
+        <translation>الملفات الافتراضية غير مدعومة في الموضع المُحدَّد</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="490"/>
+        <source>Local Sync Folder</source>
+        <translation>مجلد المزامنة المحلية</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="533"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="574"/>
+        <source>(%1)</source>
+        <translation>(1%)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="600"/>
+        <source>There isn&apos;t enough free space in the local folder!</source>
+        <translation>لا توجد مساحة كافية في المجلد المحلي!</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="655"/>
+        <source>In Finder&apos;s &quot;Locations&quot; sidebar section</source>
+        <translation>في قسم &quot;المواقع&quot; في الشريط الجانبي للباحث</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::OwncloudConnectionMethodDialog</name>
+    <message>
+        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="14"/>
+        <source>Connection failed</source>
+        <translation>فشل الاتصال</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;فشل الاتصال بعنوان الخادم الآمن المحدد. كيف تريد المتابعة؟ &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
+        <source>Select a different URL</source>
+        <translation>حدد عنوان URL مختلفًا</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
+        <source>Retry unencrypted over HTTP (insecure)</source>
+        <translation>إعادة المحاولة بدون تشفير عبر بروتوكول نHTTP (غير آمن)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
+        <source>Configure client-side TLS certificate</source>
+        <translation>تكوين شهادة المفتاح العام &quot;TLS&quot; من جانب العميل</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="24"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;فشل الاتصال بعنوان الخادم الآمن &lt;em&gt; 1%&lt;/em&gt;. كيف تريد المتابعة؟&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::OwncloudHttpCredsPage</name>
+    <message>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="39"/>
+        <source>&amp;Email</source>
+        <translation>&amp; بريد إلكتروني</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="49"/>
+        <source>Connect to %1</source>
+        <translation>الاتصال بـ 1%</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="50"/>
+        <source>Enter user credentials</source>
+        <translation>أدخل بيانات اعتماد المستخدم</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::OwncloudSetupPage</name>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="94"/>
+        <source>The link to your %1 web interface when you open it in the browser.</source>
+        <comment>%1 will be replaced with the application name</comment>
+        <translation>الرابط لواجهة الويب الخاصة بك %1 عندما تفتحه في المُستعرِض.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="254"/>
+        <source>&amp;Next &gt;</source>
+        <translation>&amp; التالي&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="314"/>
+        <source>Server address does not seem to be valid</source>
+        <translation>عنوان الخادم يبدو غير صحيح</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="426"/>
+        <source>Could not load certificate. Maybe wrong password?</source>
+        <translation>تعذّر تحميل الشهادة. هل يمكن أن يكون السبب كلمة مرور غير صحيحة؟</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::OwncloudSetupWizard</name>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="290"/>
+        <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
+        <translation>&lt;font color=&quot;green&quot;&gt;تم الاتصال بنجاح بـ 1%:2% الإصدار 3% (4%)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="320"/>
+        <source>Invalid URL</source>
+        <translation>عنوان URL غير صالح</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="322"/>
+        <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
+        <translation>فشل الاتصال بـ 1% على 2%:&lt;br/&gt;3%</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="340"/>
+        <source>Timeout while trying to connect to %1 at %2.</source>
+        <translation>تجاوز المهلة المتوقعة للتوصيل مع %1 في %2.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="367"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="390"/>
+        <source>Trying to connect to %1 at %2 …</source>
+        <translation>محاولة التوصيل مع %1 في %2 ...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="457"/>
+        <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
+        <translation>تمّت إعادة توجيه الطلب المصادق عليه إلى الخادوم إلى &quot;%1&quot;. عنوان URL تالف، وقد تم تكوين الخادوم بشكل خاطئ.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="471"/>
+        <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
+        <translation>الوصول محظور من قبل الخادم. للتحقق من أن لديك حق الوصول المناسب،&lt;a href=&quot;%1&quot;&gt;انقر هنا &lt;/a&gt;من أجل الوصول إلى الخدمة من خلال متصفحك.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="480"/>
+        <source>There was an invalid response to an authenticated WebDAV request</source>
+        <translation>كانت هناك استجابة غير صالحة لطلب WebDAV المصادق عليه</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="534"/>
+        <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation>مجلد المزامنة المحلي 1% موجود بالفعل، قم بإعداده للمزامنة.&lt;br/&gt;&lt;br/&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="537"/>
+        <source>Creating local sync folder %1 …</source>
+        <translation>جارٍ إنشاء مجلد المزامنة المحلي٪ 1 ...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="541"/>
+        <source>OK</source>
+        <translation>تم</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="543"/>
+        <source>failed.</source>
+        <translation>أخفق.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="545"/>
+        <source>Could not create local folder %1</source>
+        <translation>تعذر إنشاء المجلد المحلي 1%</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="605"/>
+        <source>No remote folder specified!</source>
+        <translation>لم يتم تحديد مجلد بعيد!</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="611"/>
+        <source>Error: %1</source>
+        <translation>خطأ: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="624"/>
+        <source>creating folder on Nextcloud: %1</source>
+        <translation>إنشاء مجلد على النكست كلاود: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="629"/>
+        <source>Remote folder %1 created successfully.</source>
+        <translation>تم إنشاء المجلد البعيد٪ 1 بنجاح.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="644"/>
+        <source>The remote folder %1 already exists. Connecting it for syncing.</source>
+        <translation>المجلد البعيد 1% موجود بالفعل. جاري ربطه للمزامنة.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="646"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="648"/>
+        <source>The folder creation resulted in HTTP error code %1</source>
+        <translation>نتج عن إنشاء المجلد رمز خطأ 1% لبروتوكول HTTP</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="650"/>
+        <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
+        <translation>عملية إنشاء مجلد قَصِِي remote فشلت بسبب أن حيثيّات الدخول credentials المُعطاة خاطئة!&lt;br/&gt;رجاءً، عُد و تحقّق من حيثيات دخولك.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="654"/>
+        <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;يحتمل أن يكون فشل إنشاء مجلد عن بعد ناتج عن أن بيانات الاعتماد المقدمة خاطئة. &lt;/font&gt;&lt;br/&gt;يُرجى الرجوع والتحقق من بيانات الاعتماد الخاصة بك.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="659"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="660"/>
+        <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
+        <translation>فشل إنشاء المجلد البعيد 1% بسبب الخطأ &lt;tt&gt;2%&lt;/tt&gt;.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="674"/>
+        <source>A sync connection from %1 to remote directory %2 was set up.</source>
+        <translation>تم تنصيب اتصال مزامنة من 1% إلى الدليل البعيد 2%.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="679"/>
+        <source>Successfully connected to %1!</source>
+        <translation>تم الاتصال بنجاح بـ 1%!</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="686"/>
+        <source>Connection to %1 could not be established. Please check again.</source>
+        <translation>تعذر إنشاء الاتصال بـ 1%. يرجى التحقق مرة أخرى.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="699"/>
+        <source>Folder rename failed</source>
+        <translation>فشلت إعادة تسمية المجلد</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="700"/>
+        <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
+        <translation>لا يمكن إزالة المجلد وعمل نسخة احتياطية منه لأن المجلد أو الملف الموجود فيه مفتوح في برنامج آخر. الرجاء إغلاق المجلد أو الملف، والضغط على إعادة المحاولة أو إلغاء الإعداد.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="732"/>
+        <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;حساب يعتمد على مُزوِّد الملف  %1 تم إنشاؤه بنجاحٍ!&lt;/b&gt;&lt;/font&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="774"/>
+        <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;تم إنشاء مجلد المزامنة المحلي٪ 1 بنجاح!&lt;/b&gt;&lt;/font&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::OwncloudWizard</name>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="99"/>
+        <source>Add %1 account</source>
+        <translation>إضافة %1 حساب</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="103"/>
+        <source>Skip folders configuration</source>
+        <translation>تخطي تكوين المجلدات</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="104"/>
+        <source>Cancel</source>
+        <translation>إلغاء</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="105"/>
+        <source>Proxy Settings</source>
+        <comment>Proxy Settings button text in new account wizard</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="107"/>
+        <source>Next</source>
+        <comment>Next button text in new account wizard</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="108"/>
+        <source>Back</source>
+        <comment>Next button text in new account wizard</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="512"/>
+        <source>Enable experimental feature?</source>
+        <translation>تمكين خاصية تجريبية؟</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="513"/>
+        <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
+
+The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
+
+Switching to this mode will abort any currently running synchronization.
+
+This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
+        <translation>عند تمكين وضع &quot;الملفات الافتراضية&quot; virtual folders، لن يتم تنزيل أي ملفات في البداية. بدلاً من ذلك، سيتم إنشاء ملف &quot;٪ 1&quot; صغير لكل ملف موجود على الخادوم. يمكن تنزيل المحتويات عن طريق تشغيل هذه الملفات أو باستخدام قائمة السياق الخاصة بها. 
+يعد وضع الملفات الافتراضية حصريًا بشكل متبادل مع المزامنة الانتقائية. ستتم ترجمة المجلدات غير المحددة حاليًا إلى مجلدات على الإنترنت فقط وستتم إعادة تعيين إعدادات المزامنة الانتقائية. 
+سيؤدي التبديل إلى هذا الوضع إلى إجهاض أي مزامنة قيد التشغيل حاليًا. 
+هذا وضع تجريبي جديد. إذا قررت استخدامه ، فيرجى الإبلاغ عن أي مشكلات تطرأ.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="527"/>
+        <source>Enable experimental placeholder mode</source>
+        <translation>تفعيل وضع العنصر النائب placeholder mode التجريبي</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="528"/>
+        <source>Stay safe</source>
+        <translation>إبق آمنا</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::TermsOfServiceCheckWidget</name>
+    <message>
+        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="125"/>
+        <source>Waiting for terms to be accepted</source>
+        <translation>في انتظار قبول شروط الخدمة</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="131"/>
+        <source>Polling</source>
+        <translation>تصويت</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="137"/>
+        <source>Link copied to clipboard.</source>
+        <translation>تمّ نسخ الرابط إلى الحافظة.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="178"/>
+        <source>Open Browser</source>
+        <translation>إفتَح المتصفح</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="180"/>
+        <source>Copy Link</source>
+        <translation>إنسَخ الرابط</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::WelcomePage</name>
+    <message>
+        <location filename="../src/gui/wizard/welcomepage.ui" line="20"/>
+        <source>Form</source>
+        <translation>نموذج</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
+        <source>Log in</source>
+        <translation>تسجيل الدخول</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
+        <source>Sign up with provider</source>
+        <translation>سجّل نفسك مع المُزوّد</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/welcomepage.cpp" line="59"/>
+        <source>Keep your data secure and under your control</source>
+        <translation>إحتفظ ببياناتك آمنة و تحت سيطرتك</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/welcomepage.cpp" line="60"/>
+        <source>Secure collaboration &amp; file exchange</source>
+        <translation>تعاون و تبادل ملفات مُؤمّن </translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/welcomepage.cpp" line="61"/>
+        <source>Easy-to-use web mail, calendaring &amp; contacts</source>
+        <translation>بريد إلكتروني سهل الاستعمال، و تقويم و جهات اتصال</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/welcomepage.cpp" line="62"/>
+        <source>Screensharing, online meetings &amp; web conferences</source>
+        <translation>مشاركة الشاشة، و الاجتماع على الخط، و المؤتمرات على الويب</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/welcomepage.cpp" line="102"/>
+        <source>Host your own server</source>
+        <translation>قم باستضافة الخادم الخاص بك</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::WizardProxySettingsDialog</name>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="23"/>
+        <source>Proxy Settings</source>
+        <comment>Dialog window title for proxy settings</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25"/>
+        <source>Hostname of proxy server</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26"/>
+        <source>Username for proxy server</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="27"/>
+        <source>Password for proxy server</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="29"/>
+        <source>HTTP(S) proxy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="30"/>
+        <source>SOCKS5 proxy</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OwncloudAdvancedSetupPage</name>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="77"/>
+        <source>&amp;Local Folder</source>
+        <translation>&amp; مجلد محلي</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="98"/>
+        <source>Username</source>
+        <translation>اسم المستخدم</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="116"/>
+        <source>Local Folder</source>
+        <translation>مُجلّد محلي</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="135"/>
+        <source>Choose different folder</source>
+        <translation>إختر مُجلّداً آخر</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="228"/>
+        <source>Server address</source>
+        <translation>عنوان الخادم</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
+        <source>Sync Logo</source>
+        <translation>شعار المزامنة</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
+        <source>Synchronize everything from server</source>
+        <translation>قم بمزامنة كل شيء مع الخادم</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="360"/>
+        <source>Ask before syncing folders larger than</source>
+        <translation>إسأل قبل مزامنة ملفات أكبر من </translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="386"/>
+        <source>MB</source>
+        <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
+        <translation>ميغا بايت</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="432"/>
+        <source>Ask before syncing external storages</source>
+        <translation>إسأل قبل مزامنة وحدات تخزين خارجية</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="475"/>
+        <source>Choose what to sync</source>
+        <translation>إختر ما تريد مزامنته</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="612"/>
+        <source>Keep local data</source>
+        <translation>إحتفظ بالبيانات المحلية</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="628"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;إذا تم تحديد هذا المربع ، فسيتم محو المحتوى الموجود في المجلد المحلي لبدء مزامنة جديدة نظيفة من الخادم. &lt;/p&gt;&lt;p&gt;لا تحدد هذا إذا كان يجب رفع المحتوى المحلي إلى مجلد الخوادم.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="631"/>
+        <source>Erase local folder and start a clean sync</source>
+        <translation>إمحُ المجلد المحلي و ابدأ مزامنة نظيفة</translation>
+    </message>
+</context>
+<context>
+    <name>OwncloudHttpCredsPage</name>
+    <message>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="73"/>
+        <source>&amp;Username</source>
+        <translation>&amp;اسم المستخدم</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="83"/>
+        <source>&amp;Password</source>
+        <translation>&amp;كلمة المرور</translation>
+    </message>
+</context>
+<context>
+    <name>OwncloudSetupPage</name>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>
+        <source>Logo</source>
+        <translation>الشعار</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="182"/>
+        <source>Server address</source>
+        <translation>عنوان الخادم</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="261"/>
+        <source>This is the link to your %1 web interface when you open it in the browser.</source>
+        <translation>هذا هو الرابط إلى واجهة الويب %1 الخاصة بك عندما تفتحها في المُتصفّح</translation>
+    </message>
+</context>
+<context>
+    <name>ProxySettings</name>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="29"/>
+        <source>Proxy Settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="35"/>
+        <source>Manually specify proxy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="91"/>
+        <source>Host</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="142"/>
+        <source>Proxy server requires authentication</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="205"/>
+        <source>Note: proxy settings have no effects for accounts on localhost</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="230"/>
+        <source>Use system proxy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="237"/>
+        <source>No proxy</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>TermsOfServiceCheckWidget</name>
+    <message>
+        <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="26"/>
+        <source>Terms of Service</source>
+        <translation>شروط الخدمة</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="47"/>
+        <source>Logo</source>
+        <translation>الشعار</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="76"/>
+        <source>Switch to your browser to accept the terms of service</source>
+        <translation>بدِّل إلى مُتصفِّحِك لقبول شروط الخدمة</translation>
     </message>
 </context>
 <context>
