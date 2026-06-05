@@ -259,7 +259,7 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
     self.contentView = container;
 
     NSVisualEffectView *vev = [[NSVisualEffectView alloc] init];
-    vev.material = NSVisualEffectMaterialMenu;
+    vev.material = NSVisualEffectMaterialHUDWindow;
     vev.blendingMode = NSVisualEffectBlendingModeBehindWindow;
     vev.state = NSVisualEffectStateActive;
     vev.wantsLayer = YES;
@@ -393,11 +393,13 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
         [_stack addArrangedSubview:[self makeRowForIndex:i name:name server:server avatar:avatar syncStatusImage:syncStatus]];
     }
 
-    NSBox *sep = [[NSBox alloc] init];
-    sep.boxType = NSBoxSeparator;
-    sep.translatesAutoresizingMaskIntoConstraints = NO;
-    [_stack addArrangedSubview:sep];
-    [sep.widthAnchor constraintEqualToConstant:kPopupWidth].active = YES;
+    if (model->rowCount() > 0) {
+        NSBox *sep = [[NSBox alloc] init];
+        sep.boxType = NSBoxSeparator;
+        sep.translatesAutoresizingMaskIntoConstraints = NO;
+        [_stack addArrangedSubview:sep];
+        [sep.widthAnchor constraintEqualToConstant:kPopupWidth].active = YES;
+    }
     [_stack addArrangedSubview:[[NCSpacerView alloc] initWithHeight:kActionVerticalPadding]];
 
     __unsafe_unretained NCTrayPopup *weakSelf = self;

@@ -8,7 +8,6 @@
 #include "abstractnetworkjob.h"
 #include "account.h"
 #include "config.h"
-#include "configfile.h"
 #include "guiutility.h"
 #include "networkjobs.h"
 #include "theme.h"
@@ -25,12 +24,15 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFlow2auth, "nextcloud.sync.credentials.flow2auth", QtInfoMsg)
 
+namespace {
+constexpr auto loginFlowPollIntervalSeconds = 1LL;
+}
 
 Flow2Auth::Flow2Auth(Account *account, QObject *parent)
     : QObject(parent)
     , _account(account)
 {
-    _pollTimer.setInterval(1000);
+    _pollTimer.setInterval(static_cast<int>(loginFlowPollIntervalSeconds * 1000));
     QObject::connect(&_pollTimer, &QTimer::timeout, this, &Flow2Auth::slotPollTimerTimeout);
 }
 
@@ -118,9 +120,8 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
         _pollEndpoint = pollEndpoint;
 
         // Start polling
-        std::chrono::milliseconds polltime = ConfigFile().remotePollInterval();
-        qCInfo(lcFlow2auth) << "setting remote poll timer interval to" << polltime.count() << "msec";
-        _secondsInterval = (polltime.count() / 1000);
+        qCInfo(lcFlow2auth) << "setting login flow poll timer interval to" << _pollTimer.interval() << "msec";
+        _secondsInterval = loginFlowPollIntervalSeconds;
         _secondsLeft = _secondsInterval;
         emit statusChanged(PollStatus::statusPollCountdown, _secondsLeft);
 
@@ -193,6 +194,7 @@ void Flow2Auth::slotPollTimerTimeout()
 
             // Failed: poll again
             _secondsLeft = _secondsInterval;
+            emit statusChanged(PollStatus::statusPollCountdown, _secondsLeft);
             _isBusy = false;
             return;
         }

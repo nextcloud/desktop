@@ -32,8 +32,6 @@ Dialog {
     padding: 24
     header: null
     footer: null
-    Accessible.role: Accessible.Dialog
-    Accessible.name: qsTr("Proxy settings")
 
     onOpened: loadFromController()
 
@@ -73,6 +71,8 @@ Dialog {
         id: contentLayout
 
         spacing: 14
+        Accessible.role: Accessible.Dialog
+        Accessible.name: qsTr("Proxy settings")
 
         EnforcedPlainTextLabel {
             text: qsTr("Proxy settings")
