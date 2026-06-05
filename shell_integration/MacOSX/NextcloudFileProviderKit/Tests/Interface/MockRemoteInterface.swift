@@ -1034,23 +1034,19 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         progressHandler _: @escaping (_ progress: Progress) -> Void = { _ in }
     ) async -> (
         account: String,
-        etag: String?,
-        date: Date?,
-        length: Int64,
-        headers: [AnyHashable: any Sendable]?,
-        afError: AFError?,
+        response: AFDownloadResponse<URL?>?,
         nkError: NKError
     ) {
         guard let serverUrlFileName = serverUrlFileName as? String ?? (serverUrlFileName as? URL)?.absoluteString else {
-            return (account, nil, nil, 0, nil, nil, .urlError)
+            return (account, nil, .urlError)
         }
 
         guard let account = mockedAccounts[account] else {
-            return (account, nil, nil, 0, nil, nil, .urlError)
+            return (account, nil, .urlError)
         }
 
         guard let item = item(remotePath: serverUrlFileName, account: account.ncKitAccount) else {
-            return (account.ncKitAccount, nil, nil, 0, nil, nil, .urlError)
+            return (account.ncKitAccount, nil, .urlError)
         }
 
         let localUrl = URL(fileURLWithPath: fileNameLocalPath)
@@ -1066,18 +1062,10 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             }
         } catch {
             print("Could not write item data: \(error)")
-            return (account.ncKitAccount, nil, nil, 0, nil, nil, .urlError)
+            return (account.ncKitAccount, nil, .urlError)
         }
 
-        return (
-            account.ncKitAccount,
-            item.versionIdentifier,
-            item.creationDate as Date,
-            item.size,
-            nil,
-            nil,
-            .success
-        )
+        return (account.ncKitAccount, nil, .success)
     }
 
     public func enumerate(
