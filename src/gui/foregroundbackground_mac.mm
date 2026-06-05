@@ -10,11 +10,11 @@ bool ForegroundBackground::eventFilter(QObject * /*obj*/, QEvent *event)
 {
     if (event->type() == QEvent::Show) {
         ToForeground();
-        return true;
+        return false;
     }
     if (event->type() == QEvent::Close) {
         ToBackground();
-        return true;
+        return false;
     }
     return false;
 }
