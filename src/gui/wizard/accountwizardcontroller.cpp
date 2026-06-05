@@ -59,6 +59,17 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcAccountWizardController, "nextcloud.gui.accountwizardcontroller", QtInfoMsg)
 
+namespace {
+
+bool localFolderContainsData(const QString &localSyncFolder)
+{
+    const auto localFolder = QDir(localSyncFolder);
+    return localFolder.exists()
+        && !localFolder.entryList(QDir::AllEntries | QDir::Hidden | QDir::System | QDir::NoDotAndDotDot).isEmpty();
+}
+
+}
+
 AccountWizardController::AccountWizardController(QObject *parent)
     : QObject(parent)
 {
@@ -199,6 +210,11 @@ bool AccountWizardController::busy() const
     return _busy;
 }
 
+bool AccountWizardController::authPolling() const
+{
+    return _authPolling;
+}
+
 QString AccountWizardController::errorText() const
 {
     return _errorText;
@@ -251,24 +267,9 @@ QString AccountWizardController::localSyncFolderError() const
     return _localSyncFolderError;
 }
 
-bool AccountWizardController::localSyncFolderWarning() const
-{
-    return _localSyncFolderWarning;
-}
-
 QString AccountWizardController::localSyncFolderFreeSpace() const
 {
     return _localSyncFolderFreeSpace;
-}
-
-bool AccountWizardController::localSyncFolderHasExistingData() const
-{
-    return _localSyncFolderHasExistingData;
-}
-
-bool AccountWizardController::syncFromScratch() const
-{
-    return _syncFromScratch;
 }
 
 bool AccountWizardController::localSyncFolderRequired() const
@@ -932,10 +933,12 @@ void AccountWizardController::slotFlow2AuthResult(Flow2Auth::Result result, cons
         setErrorText(tr("Unable to open the Browser, please copy the link to your Browser."));
         break;
     case Flow2Auth::Error:
+        setAuthPolling(false);
         setBusy(false);
         setErrorText(errorString);
         break;
     case Flow2Auth::LoggedIn:
+        setAuthPolling(false);
         connectToAuthenticatedAccount(_account->url().toString(), user, appPassword);
         break;
     }
@@ -949,18 +952,23 @@ void AccountWizardController::slotFlow2StatusChanged(Flow2Auth::PollStatus statu
 
     switch (status) {
     case Flow2Auth::statusPollCountdown:
+        Q_UNUSED(secondsLeft)
+        setAuthPolling(true);
         setBusy(false);
-        setAuthStatusText(tr("Waiting for authorization") + QStringLiteral("… (%1)").arg(secondsLeft));
+        setAuthStatusText(tr("Waiting for authorization") + QStringLiteral("…"));
         break;
     case Flow2Auth::statusPollNow:
-        setBusy(true);
-        setAuthStatusText(tr("Polling for authorization") + QStringLiteral("…"));
+        setAuthPolling(true);
+        setBusy(false);
+        setAuthStatusText(tr("Waiting for authorization") + QStringLiteral("…"));
         break;
     case Flow2Auth::statusFetchToken:
+        setAuthPolling(false);
         setBusy(true);
         setAuthStatusText(tr("Starting authorization") + QStringLiteral("…"));
         break;
     case Flow2Auth::statusCopyLinkToClipboard:
+        setAuthPolling(true);
         setBusy(false);
         setAuthStatusText(tr("Link copied to clipboard."));
         break;
@@ -1177,7 +1185,7 @@ void AccountWizardController::finish()
 
     if (localSyncFolderRequired()) {
         validateLocalSyncFolder();
-        if (!_localSyncFolderValid || !ensureStartFromScratch() || !ensureLocalSyncFolder()) {
+        if (!_localSyncFolderValid || !ensureLocalSyncFolder()) {
             return;
         }
     }
@@ -1239,25 +1247,28 @@ void AccountWizardController::clearOneShotOverrides()
 
 void AccountWizardController::initialiseLocalSyncFolder()
 {
-    QString localFolder = Theme::instance()->defaultClientFolder();
-    if (!QDir(localFolder).isAbsolute()) {
-#ifdef Q_OS_MACOS
-        localFolder = Utility::getRealHomeDirectory() + QLatin1Char('/') + localFolder;
-#else
-        localFolder = QDir::homePath() + QLatin1Char('/') + localFolder;
-#endif
-    }
-
     ConfigFile cfg;
     const auto overrideLocalDir = !cfg.overrideLocalDir().isEmpty();
+    _localSyncFolderOverride = overrideLocalDir;
+    QString localFolder;
     if (overrideLocalDir) {
         localFolder = cfg.overrideLocalDir();
+    } else {
+#ifndef Q_OS_MACOS
+        localFolder = Theme::instance()->defaultClientFolder();
+        if (!QDir(localFolder).isAbsolute()) {
+            localFolder = QDir::homePath() + QLatin1Char('/') + localFolder;
+        }
+#endif
     }
 
     const auto strategy = overrideLocalDir
         ? FolderMan::GoodPathStrategy::AllowOverrideExistingPath
         : FolderMan::GoodPathStrategy::AllowOnlyNewPath;
-    setLocalSyncFolder(FolderMan::instance()->findGoodPathForNewSyncFolder(localFolder, localFolderServerUrl(), strategy), overrideLocalDir);
+    setLocalSyncFolder(localFolder.isEmpty()
+        ? QString{}
+        : FolderMan::instance()->findGoodPathForNewSyncFolder(localFolder, localFolderServerUrl(), strategy),
+        overrideLocalDir);
 }
 
 void AccountWizardController::setLocalSyncFolder(const QString &localSyncFolder, bool selectedByUser)
@@ -1275,12 +1286,40 @@ void AccountWizardController::setLocalSyncFolder(const QString &localSyncFolder,
     validateLocalSyncFolder();
 }
 
+void AccountWizardController::promptForInitialLocalSyncFolderIfNeeded()
+{
+#ifdef Q_OS_MACOS
+    if (_initialLocalSyncFolderPromptShown
+        || _localSyncFolderSelected
+        || _currentStep != SyncOptionsStep
+        || !localSyncFolderRequired()) {
+        return;
+    }
+
+    _initialLocalSyncFolderPromptShown = true;
+    QTimer::singleShot(0, this, [this] {
+        if (_currentStep != SyncOptionsStep || _localSyncFolderSelected || !localSyncFolderRequired()) {
+            return;
+        }
+
+        _localSyncFolderPickerOpen = true;
+        validateLocalSyncFolder();
+        const auto selectedFolder = openLocalSyncFolderDialog(true);
+        _localSyncFolderPickerOpen = false;
+        if (!selectedFolder.isEmpty()) {
+            setLocalSyncFolder(selectedFolder, true);
+        } else {
+            validateLocalSyncFolder();
+        }
+    });
+#endif
+}
+
 void AccountWizardController::validateLocalSyncFolder()
 {
     const auto oldCanFinish = canFinish();
     const auto folderRequired = localSyncFolderRequired();
     auto localSyncFolderFreeSpace = QString{};
-    auto localSyncFolderHasExistingData = false;
 
     if (folderRequired) {
         const auto freeBytes = availableLocalSpace();
@@ -1288,61 +1327,49 @@ void AccountWizardController::validateLocalSyncFolder()
             localSyncFolderFreeSpace = tr("%1 free space", "%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB")
                 .arg(Utility::octetsToString(freeBytes));
         }
-
-        const QDir localFolder(_localSyncFolder);
-        localSyncFolderHasExistingData = localFolder.exists()
-            && !localFolder.entryList(QDir::AllEntries | QDir::NoDotAndDotDot).isEmpty();
     }
 
-    const auto pathValidity = FolderMan::instance()->checkPathValidityForNewFolder(_localSyncFolder, localFolderServerUrl());
-    auto localSyncFolderError = pathValidity.second;
-    auto localSyncFolderWarning = folderRequired
-        && !localSyncFolderError.isEmpty()
-        && pathValidity.first == FolderMan::PathValidityResult::ErrorNonEmptyFolder;
+    auto localSyncFolderError = FolderMan::instance()->checkPathValidityForNewFolder(_localSyncFolder, localFolderServerUrl()).second;
 
     const auto neededBytes = requiredLocalSpace();
     const auto freeBytes = availableLocalSpace();
-    if (folderRequired && (localSyncFolderError.isEmpty() || localSyncFolderWarning) && neededBytes >= 0 && freeBytes >= 0 && freeBytes <= neededBytes) {
+    if (folderRequired && localSyncFolderError.isEmpty() && neededBytes >= 0 && freeBytes >= 0 && freeBytes <= neededBytes) {
         localSyncFolderError = tr("There isn't enough free space in the local folder!");
-        localSyncFolderWarning = false;
     }
 
 #ifndef BUILD_FILE_PROVIDER_MODULE
-    if (folderRequired && _syncMode == VirtualFiles && (localSyncFolderError.isEmpty() || localSyncFolderWarning)) {
+    if (folderRequired && _syncMode == VirtualFiles && localSyncFolderError.isEmpty()) {
         const auto availability = Vfs::checkAvailability(FolderDefinition::prepareLocalPath(_localSyncFolder), bestAvailableVfsMode());
         if (!availability) {
             localSyncFolderError = availability.error();
-            localSyncFolderWarning = false;
         }
     }
 #endif
 
 #ifdef Q_OS_MACOS
-    if (folderRequired && !_localSyncFolderSelected) {
+    if (folderRequired && _localSyncFolderPickerOpen) {
+        localSyncFolderError.clear();
+    }
+    if (folderRequired && !_localSyncFolderSelected && !_localSyncFolderPickerOpen) {
         localSyncFolderError = tr("Please choose a local sync folder.");
-        localSyncFolderWarning = false;
     }
 #endif
-    const auto localSyncFolderValid = !folderRequired || localSyncFolderError.isEmpty() || localSyncFolderWarning;
+    if (folderRequired && _localSyncFolderSelected && !_localSyncFolderOverride && localSyncFolderError.isEmpty()) {
+        if (localFolderContainsData(_localSyncFolder)) {
+            localSyncFolderError = tr("Please choose an empty local sync folder.");
+        }
+    }
+    const auto localSyncFolderValid = !folderRequired
+        || (!_localSyncFolderPickerOpen && localSyncFolderError.isEmpty());
 
     if (_localSyncFolderFreeSpace != localSyncFolderFreeSpace) {
         _localSyncFolderFreeSpace = localSyncFolderFreeSpace;
         emit localSyncFolderFreeSpaceChanged();
     }
 
-    if (_localSyncFolderHasExistingData != localSyncFolderHasExistingData) {
-        _localSyncFolderHasExistingData = localSyncFolderHasExistingData;
-        emit localSyncFolderHasExistingDataChanged();
-    }
-
     if (_localSyncFolderError != localSyncFolderError) {
         _localSyncFolderError = localSyncFolderError;
         emit localSyncFolderErrorChanged();
-    }
-
-    if (_localSyncFolderWarning != localSyncFolderWarning) {
-        _localSyncFolderWarning = localSyncFolderWarning;
-        emit localSyncFolderWarningChanged();
     }
 
     if (_localSyncFolderValid != localSyncFolderValid) {
@@ -1360,8 +1387,14 @@ qint64 AccountWizardController::availableLocalSpace() const
     }
 
     const auto localFolder = FolderDefinition::prepareLocalPath(_localSyncFolder);
-    const auto path = !QDir(localFolder).exists() && localFolder.contains(QDir::homePath())
-        ? QDir::homePath()
+    const auto homePath =
+#ifdef Q_OS_MACOS
+        Utility::getRealHomeDirectory();
+#else
+        QDir::homePath();
+#endif
+    const auto path = !QDir(localFolder).exists() && localFolder.contains(homePath)
+        ? homePath
         : localFolder;
     const QStorageInfo storage(QDir::toNativeSeparators(path));
     return storage.isValid() ? storage.bytesAvailable() : -1;
@@ -1395,22 +1428,6 @@ bool AccountWizardController::ensureLocalSyncFolder()
 
     FileSystem::setFolderMinimumPermissions(localFolder);
     Utility::setupFavLink(localFolder);
-    return true;
-}
-
-bool AccountWizardController::ensureStartFromScratch()
-{
-    if (!_syncFromScratch || !_localSyncFolderHasExistingData) {
-        return true;
-    }
-
-    const auto localFolder = FolderDefinition::prepareLocalPath(_localSyncFolder);
-    if (!FolderMan::instance()->startFromScratch(localFolder)) {
-        setErrorText(tr("Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and try again."));
-        return false;
-    }
-
-    validateLocalSyncFolder();
     return true;
 }
 
@@ -1610,12 +1627,30 @@ void AccountWizardController::setSyncMode(int syncMode)
     if (oldCanFinish != canFinish()) {
         emit canFinishChanged();
     }
+    promptForInitialLocalSyncFolderIfNeeded();
 }
 
 void AccountWizardController::chooseLocalSyncFolder()
 {
+    const auto selectedFolder = openLocalSyncFolderDialog(false);
+    if (selectedFolder.isEmpty()) {
+        return;
+    }
+
+    _localSyncFolderOverride = false;
+    setLocalSyncFolder(selectedFolder, true);
+}
+
+QString AccountWizardController::openLocalSyncFolderDialog(bool initialSelection) const
+{
     QString startFolder = _localSyncFolder;
-    if (startFolder.isEmpty()) {
+    if (initialSelection) {
+#ifdef Q_OS_MACOS
+        startFolder = Utility::getRealHomeDirectory();
+#else
+        startFolder = QDir::homePath();
+#endif
+    } else if (startFolder.isEmpty()) {
 #ifdef Q_OS_MACOS
         startFolder = Utility::getRealHomeDirectory();
 #else
@@ -1623,15 +1658,10 @@ void AccountWizardController::chooseLocalSyncFolder()
 #endif
     }
 
-    const auto selectedFolder = QFileDialog::getExistingDirectory(nullptr,
+    return QFileDialog::getExistingDirectory(nullptr,
         tr("Local Sync Folder"),
         startFolder,
         QFileDialog::ShowDirsOnly);
-    if (selectedFolder.isEmpty()) {
-        return;
-    }
-
-    setLocalSyncFolder(selectedFolder, true);
 }
 
 void AccountWizardController::openSelectiveSync()
@@ -1682,16 +1712,6 @@ void AccountWizardController::openAdvancedOptions()
     }
 }
 
-void AccountWizardController::setSyncFromScratch(bool syncFromScratch)
-{
-    if (_syncFromScratch == syncFromScratch) {
-        return;
-    }
-
-    _syncFromScratch = syncFromScratch;
-    emit syncFromScratchChanged();
-}
-
 void AccountWizardController::setAskBeforeLargeFolders(bool ask)
 {
     if (_askBeforeLargeFolders == ask) {
@@ -1727,6 +1747,7 @@ void AccountWizardController::setCurrentStep(Step step)
     }
     _currentStep = step;
     emit currentStepChanged();
+    promptForInitialLocalSyncFolderIfNeeded();
 }
 
 void AccountWizardController::setBusy(bool busy)
@@ -1736,6 +1757,15 @@ void AccountWizardController::setBusy(bool busy)
     }
     _busy = busy;
     emit busyChanged();
+}
+
+void AccountWizardController::setAuthPolling(bool authPolling)
+{
+    if (_authPolling == authPolling) {
+        return;
+    }
+    _authPolling = authPolling;
+    emit authPollingChanged();
 }
 
 void AccountWizardController::setErrorText(const QString &errorText)
@@ -1835,6 +1865,7 @@ void AccountWizardController::discardFlow2Auth()
     if (oldAuth) {
         oldAuth->deleteLater();
     }
+    setAuthPolling(false);
 }
 
 bool AccountWizardController::handleSecureConnectionFailure(QNetworkReply *reply, bool retryHttpOnly)

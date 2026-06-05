@@ -426,6 +426,7 @@ void WebFlowCredentials::fetchFromKeychainHelper() {
                                           _keychainMigration,
                                           this);
     job->setAppName(_appName);
+    job->setEntryNotFoundExpected(true);
     connect(job, &KeychainChunk::ReadJob::finished, this, &WebFlowCredentials::slotReadClientCertPEMJobDone);
     job->start();
 }
@@ -446,6 +447,7 @@ void WebFlowCredentials::slotReadClientCertPEMJobDone(KeychainChunk::ReadJob *re
                                           _keychainMigration,
                                           this);
     job->setAppName(_appName);
+    job->setEntryNotFoundExpected(true);
     connect(job, &KeychainChunk::ReadJob::finished, this, &WebFlowCredentials::slotReadClientKeyPEMJobDone);
     job->start();
 }
@@ -468,7 +470,7 @@ void WebFlowCredentials::slotReadClientKeyPEMJobDone(KeychainChunk::ReadJob *rea
             qCWarning(lcWebFlowCredentials) << "Could not load SSL key into Qt!";
         }
         clientKeyPEM.clear();
-    } else {
+    } else if (readJob->error() != QKeychain::Error::EntryNotFound) {
         qCWarning(lcWebFlowCredentials) << "Unable to read client key" << readJob->errorString();
     }
 
@@ -487,6 +489,7 @@ void WebFlowCredentials::readSingleClientCaCertPEM()
                                               _keychainMigration,
                                               this);
         job->setAppName(_appName);
+        job->setEntryNotFoundExpected(true);
         connect(job, &KeychainChunk::ReadJob::finished, this, &WebFlowCredentials::slotReadClientCaCertsPEMJobDone);
         job->start();
     } else {
@@ -509,8 +512,7 @@ void WebFlowCredentials::slotReadClientCaCertsPEMJobDone(KeychainChunk::ReadJob 
             readSingleClientCaCertPEM();
             return;
         } else {
-            if (readJob->error() != QKeychain::Error::EntryNotFound ||
-                ((readJob->error() == QKeychain::Error::EntryNotFound) && _clientSslCaCertificates.count() == 0)) {
+            if (readJob->error() != QKeychain::Error::EntryNotFound) {
                 qCWarning(lcWebFlowCredentials) << "Unable to read client CA cert slot" << QString::number(_clientSslCaCertificates.count()) << readJob->errorString();
             }
         }

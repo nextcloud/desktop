@@ -28,8 +28,11 @@ class ForegroundBackground : public QObject
 
 public:
 
-   ForegroundBackground() = default;
-   ~ForegroundBackground() = default;
+    explicit ForegroundBackground(QObject *parent = nullptr)
+        : QObject(parent)
+    {
+    }
+    ~ForegroundBackground() = default;
 
     /**
     * @brief EventFilter catches events that should trigger ForegroundBackground

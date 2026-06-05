@@ -227,22 +227,24 @@ void ownCloudGui::slotOpenMainDialog()
 
 void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
 {
-    if (reason == QSystemTrayIcon::DoubleClick && UserModel::instance()->currentUser()->hasLocalFolder()) {
-        UserModel::instance()->openCurrentAccountLocalFolder();
+    const auto currentUser = UserModel::instance()->currentUser();
+    if (reason == QSystemTrayIcon::DoubleClick && currentUser && currentUser->hasLocalFolder()) {
+        currentUser->openLocalFolder();
     } else if (reason == QSystemTrayIcon::Trigger) {
-        if (OwncloudSetupWizard::bringWizardToFrontIfVisible()) {
+        if (AccountManager::instance()->accounts().isEmpty()) {
+            if (_tray->isOpen()) {
+                _tray->hideWindow();
+            } else {
+                _tray->showWindow();
+            }
+        } else if (OwncloudSetupWizard::bringWizardToFrontIfVisible()) {
             // brought wizard to front
         } else if (_tray->raiseDialogs()) {
             // Brings dialogs hidden by other apps to front, returns true if any raised
         } else if (_tray->isOpen()) {
             _tray->hideWindow();
         } else {
-            if (AccountManager::instance()->accounts().isEmpty()) {
-                this->slotOpenSettingsDialog();
-            } else {
-                _tray->showWindow();
-            }
-
+            _tray->showWindow();
         }
     }
     // FIXME: Also make sure that any auto updater dialogue https://github.com/owncloud/client/issues/5613
@@ -630,7 +632,7 @@ void ownCloudGui::slotNewAccountWizard()
         return;
     }
 #endif
-    OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)));
+    OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)), nullptr, true);
 }
 
 void ownCloudGui::slotShowGuiMessage(const QString &title, const QString &message)
