@@ -4,94 +4,94 @@
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="145"/>
         <source>Secure connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Saugus ryšys nepavyko</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="158"/>
         <source>Connect to %1?</source>
-        <translation type="unfinished"/>
+        <translation>Prisijungti prie %1?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="168"/>
         <source>The secure connection failed. You can retry without encryption, or add a client certificate and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Saugus ryšys nepavyko. Galite bandyti dar kartą be šifravimo arba pridėti kliento sertifikatą ir bandyti dar kartą.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="169"/>
         <source>The secure connection failed. You can add a client certificate and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Saugus ryšys nepavyko. Galite pridėti kliento sertifikatą ir bandyti dar kartą.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="181"/>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="247"/>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="249"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Atsisakyti</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="191"/>
         <source>Connect without TLS</source>
-        <translation type="unfinished"/>
+        <translation>Prisijunkite be TLS</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="200"/>
         <source>Use client certificate</source>
-        <translation type="unfinished"/>
+        <translation>Naudokite kliento sertifikatą</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="250"/>
         <source>Back</source>
-        <translation type="unfinished"/>
+        <translation>Atgal</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="264"/>
         <source>Set up later</source>
-        <translation type="unfinished"/>
+        <translation>Nustatykite vėliau</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="275"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Išplėstiniai</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="284"/>
         <source>Sign up</source>
-        <translation type="unfinished"/>
+        <translation>Užsiregistruoti</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="294"/>
         <source>Self-host</source>
-        <translation type="unfinished"/>
+        <translation>Priegloba savo serveryje</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="307"/>
         <source>Proxy settings</source>
-        <translation type="unfinished"/>
+        <translation>Tarpinio serverio nustatymai</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="328"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Kopijuoti nuorodą</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="361"/>
         <source>Open</source>
-        <translation type="unfinished"/>
+        <translation>Atverti</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="363"/>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>Prisijungti</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="365"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Atlikta</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="367"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Prisijungti</translation>
     </message>
 </context>
 <context>
@@ -154,32 +154,32 @@
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="24"/>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="35"/>
         <source>Advanced options</source>
-        <translation type="unfinished"/>
+        <translation>Išplėstinės parinktys</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="44"/>
         <source>Ask before syncing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Prieš sinchronizuodami aplankus, kurių dydis didesnis nei</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="62"/>
         <source>Large folder threshold</source>
-        <translation type="unfinished"/>
+        <translation>Didelis aplanko slenkstis</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="64"/>
         <source>%1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%1 MB</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="71"/>
         <source>Ask before syncing external storage</source>
-        <translation type="unfinished"/>
+        <translation>Paklauskite prieš sinchronizuojant išorinę saugyklą</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="90"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Atlikta</translation>
     </message>
 </context>
 <context>
@@ -187,32 +187,32 @@
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="27"/>
         <source>Connect public share</source>
-        <translation type="unfinished"/>
+        <translation>Prijunkite viešą bendrinimą</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="27"/>
         <source>Enter credentials</source>
-        <translation type="unfinished"/>
+        <translation>Įrašykite prisijungimo duomenis</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="37"/>
         <source>Enter the share password if the link is password protected.</source>
-        <translation type="unfinished"/>
+        <translation>Įveskite bendrinimo slaptažodį, jei nuoroda yra apsaugota slaptažodžiu.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="38"/>
         <source>Enter the username and password for this server.</source>
-        <translation type="unfinished"/>
+        <translation>Įveskite šio serverio vartotojo vardą ir slaptažodį.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="50"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Vartotojo vardas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="60"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Slaptažodis</translation>
     </message>
 </context>
 <context>
@@ -220,7 +220,7 @@
     <message>
         <location filename="../src/gui/wizard/qml/BrowserAuthPage.qml" line="38"/>
         <source>Switch to your browser</source>
-        <translation type="unfinished"/>
+        <translation>Perjunkite į savo naršyklę</translation>
     </message>
 </context>
 <context>
@@ -252,37 +252,37 @@
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="25"/>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="36"/>
         <source>Client certificate</source>
-        <translation type="unfinished"/>
+        <translation>Kliento sertifikatas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="44"/>
         <source>Select a PKCS#12 certificate file and enter its password.</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinkite PKCS#12 sertifikato failą ir įveskite jo slaptažodį.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="57"/>
         <source>Certificate file</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikato failas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="63"/>
         <source>Choose</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinkti</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="70"/>
         <source>Certificate password</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikato slaptažodis</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="94"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Atsisakyti</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="104"/>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>Prisijungti</translation>
     </message>
 </context>
 <context>
@@ -1339,207 +1339,208 @@ Vienintelis virtualių failų palaikymo išjungimo privalumas yra tai, kad vėl 
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="235"/>
         <source>Will require local storage</source>
-        <translation type="unfinished"/>
+        <translation>Reikės vietinės saugyklos</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="617"/>
         <source>Proxy settings are incomplete.</source>
-        <translation type="unfinished"/>
+        <translation>Tarpinio serverio nustatymai nepilni</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="624"/>
         <source>Server address does not seem to be valid</source>
-        <translation type="unfinished"/>
+        <translation>Atrodo, kad serverio adresas yra neteisingas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="645"/>
         <source>Username must not be empty.</source>
-        <translation type="unfinished"/>
+        <translation>Vartotojo vardas negali būti tuščias.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="651"/>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="974"/>
         <source>Checking account access</source>
-        <translation type="unfinished"/>
+        <translation>Tikrinama prieiga prie paskyros</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="729"/>
         <source>Checking server address</source>
-        <translation type="unfinished"/>
+        <translation>Tikrinamas serverio adresas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="794"/>
         <source>Preparing browser login</source>
-        <translation type="unfinished"/>
+        <translation>Naršyklės prisijungimo parengimas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="815"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>Neteisingas URL</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="817"/>
         <source>Failed to connect to %1 at %2:
 %3</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko prisijungti prie %1 - %2:
+%3</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="833"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Baigėsi skirtasis laikas bandant prisijungti prie %1 - %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="854"/>
         <source>This server requires legacy browser authentication. Enter app-password credentials instead.</source>
-        <translation type="unfinished"/>
+        <translation>Šiam serveriui reikalinga senoji naršyklės autentifikacija. Vietoj to įveskite programėlės slaptažodžio prisijungimo duomenis.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="932"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyksta atidaryti naršyklės, nukopijuokite nuorodą į naršyklę.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="953"/>
         <source>Waiting for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Laukiama autorizacijos</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="957"/>
         <source>Polling for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Autorizavimo užklausa</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="961"/>
         <source>Starting authorization</source>
-        <translation type="unfinished"/>
+        <translation>Pradedamas autorizavimas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="965"/>
         <source>Link copied to clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Nuoroda nukopijuota į iškarpinę.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1020"/>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1050"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation type="unfinished"/>
+        <translation>Į autentifikuotą „WebDAV“ užklausą buvo pateiktas neteisingas atsakymas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1037"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>Autentifikuota užklausa serveriui buvo nukreipta į „%1“. URL yra blogas, serveris yra netinkamai sukonfigūruotas.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1045"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
-        <translation type="unfinished"/>
+        <translation>Serveris draudžia prieigą. Norėdami patikrinti, ar turite tinkamą prieigą, atidarykite paslaugą naršyklėje.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1063"/>
         <source>Account connected.</source>
-        <translation type="unfinished"/>
+        <translation>Paskyra prijungta.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1138"/>
         <source>Will require %1 of storage</source>
-        <translation type="unfinished"/>
+        <translation>Reikės %1 vietos saugojimui</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1288"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
-        <translation type="unfinished"/>
+        <translation>%1 laisvos vietos</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1306"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Vietiniame aplanke nėra pakankamai laisvos vietos!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1322"/>
         <source>Please choose a local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinkite vietinį sinchronizavimo aplanką.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1391"/>
         <source>Could not create local folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko sukurti vietinio aplanko %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1409"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyksta pašalinti aplanko ir sukurti atsarginės kopijos, nes aplankas arba jame esantis failas yra atidarytas kitoje programoje. Uždarykite aplanką arba failą ir bandykite dar kartą.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1421"/>
         <source>Checking remote folder</source>
-        <translation type="unfinished"/>
+        <translation>Tikrinamas nuotolinis aplankas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1467"/>
         <source>No remote folder specified!</source>
-        <translation type="unfinished"/>
+        <translation>Nenurodytas nuotolinis aplankas!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1476"/>
         <source>Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Klaida: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1481"/>
         <source>Creating remote folder</source>
-        <translation type="unfinished"/>
+        <translation>Tikrinamas nuotolinis aplankas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1500"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation type="unfinished"/>
+        <translation>Aplanko sukūrimas sąlygojo HTTP klaidos kodą %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1502"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko sukurti nuotolinio aplanko, nes įvesti prisijungimo duomenys yra neteisingi. Grįžkite atgal ir patikrinkite savo prisijungimo duomenis.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1504"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko sukurti aplanko %1, klaida &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1528"/>
         <source>Account setup failed while creating the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Kuriant sinchronizavimo aplanką, paskyros nustatymas nepavyko.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1555"/>
         <source>Could not create the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko sukurti sinchronizavimo aplanko.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1627"/>
         <source>Local Sync Folder</source>
-        <translation type="unfinished"/>
+        <translation>Vietinis sinchronizavimo aplankas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1878"/>
         <source>Select a certificate</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinkite sertifikatą</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1880"/>
         <source>Certificate files (*.p12 *.pfx)</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikatų failai (*.p12 *.pfx)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1888"/>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1908"/>
         <source>Could not access the selected certificate file.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko pasiekti pasirinkto sertifikato failo.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1924"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko įkelti sertifikato. Galbūt neteisingas slaptažodis?</translation>
     </message>
 </context>
 <context>
@@ -3239,7 +3240,7 @@ Pažengusiems vartotojams: ši problema gali būti susijusi su keliais sinchroni
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="189"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>Iš serverio negauta „E-Tag“ žyma, patikrinkite įgaliotąjį serverį/tinklų sietuvą.</translation>
+        <translation>Iš serverio negauta „E-Tag“ žyma, patikrinkite tarpinį serverį/tinklų sietuvą.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="196"/>
@@ -3985,12 +3986,12 @@ Atkreipkite dėmesį, kad naudojant bet kurias žurnalo įrašymo komandinės ei
     <message>
         <location filename="../src/gui/networksettings.ui" line="45"/>
         <source>Proxy Settings</source>
-        <translation>Įgaliotojo serverio nustatymai</translation>
+        <translation>Tarinio serverio nustatymai</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="77"/>
         <source>Use system proxy</source>
-        <translation>Naudoti sistemos įgaliotąjį serverį</translation>
+        <translation>Naudoti sistemos tarpinį serverį</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="136"/>
@@ -4075,12 +4076,12 @@ Atkreipkite dėmesį, kad naudojant bet kurias žurnalo įrašymo komandinės ei
     <message>
         <location filename="../src/gui/networksettings.cpp" line="40"/>
         <source>HTTP(S) proxy</source>
-        <translation>HTTP(S) įgaliotasis serveris</translation>
+        <translation>HTTP(S) tarpinis serveris</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="41"/>
         <source>SOCKS5 proxy</source>
-        <translation>SOCKS5 įgaliotasis serveris</translation>
+        <translation>SOCKS5 tarpinis serveris</translation>
     </message>
 </context>
 <context>
@@ -4881,12 +4882,12 @@ Atkreipkite dėmesį, kad naudojant bet kurias žurnalo įrašymo komandinės ei
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="36"/>
         <source>Proxy:</source>
-        <translation>Įgaliotasis serveris:</translation>
+        <translation>Tarpnis serveris:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation>Įgaliotasis serveris reikalauja naudotojo vardo ir slaptažodžio.</translation>
+        <translation>Tarpinis serveris reikalauja vartotojo vardo ir slaptažodžio.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
@@ -5333,7 +5334,7 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="207"/>
         <source>Certificate information:</source>
-        <translation>Liudijimo informacija:</translation>
+        <translation>Sertifikato informacija:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="236"/>
@@ -5358,7 +5359,7 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="79"/>
         <source>Untrusted Certificate</source>
-        <translation>Nepatikimas liudijimas</translation>
+        <translation>Nepatikimas sertifikatas</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="152"/>
@@ -6212,77 +6213,77 @@ Serveris atsakė su klaida: %2</translation>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="36"/>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="78"/>
         <source>Proxy settings</source>
-        <translation type="unfinished"/>
+        <translation>Tarpinio serverio nustatymai</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="86"/>
         <source>No proxy</source>
-        <translation type="unfinished"/>
+        <translation>Nėra tarpinio serverio</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="96"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>Naudoti sistemos tarpinį serverį</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="106"/>
         <source>Manually specify proxy</source>
-        <translation type="unfinished"/>
+        <translation>Rankiniu būdu nurodyti tarpinį serverį</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="121"/>
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished"/>
+        <translation>HTTP(S) tarpinis serveris</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="121"/>
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished"/>
+        <translation>SOCKS5 tarpinis serveris</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="125"/>
         <source>Proxy type</source>
-        <translation type="unfinished"/>
+        <translation>Tarpinio serverio tipas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="136"/>
         <source>Hostname of proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Tarpinio serverio pavadinimas </translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="148"/>
         <source>Proxy port</source>
-        <translation type="unfinished"/>
+        <translation>Tarpinio serverio prievadas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="157"/>
         <source>Proxy server requires authentication</source>
-        <translation type="unfinished"/>
+        <translation>Tarpinis serveris reikalauja autentifikavimo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="173"/>
         <source>Username for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Prisijungimo vardas prie tarpinio serverio</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="180"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Slaptažodis prisijungimui prie tarpinio serverio</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="189"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Pastaba: proxy nustatymai neturi jokios įtakos paskyroms, esančioms „localhost“</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="206"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Atsisakyti</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="213"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Atlikta</translation>
     </message>
 </context>
 <context>
@@ -6572,22 +6573,22 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="29"/>
         <source>Log in to %1</source>
-        <translation type="unfinished"/>
+        <translation>Prisijungti prie %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="38"/>
         <source>Enter the link to your %1 web interface from the browser or the link to a folder shared with you.</source>
-        <translation type="unfinished"/>
+        <translation>Įveskite nuorodą į jūsų %1 žiniatinklio sąsają iš naršyklės arba nuorodą į su jumis bendrinamą aplanką.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="182"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Prisijungti</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="197"/>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>Serverio adresas</translation>
     </message>
 </context>
 <context>
@@ -6746,47 +6747,47 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>Virtual files</source>
-        <translation type="unfinished"/>
+        <translation>Virtualūs failai</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="91"/>
         <source>Download files on-demand</source>
-        <translation type="unfinished"/>
+        <translation>Atsisiųsti failus pagal pareikalavimą</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="99"/>
         <source>Synchronize everything</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizuoti viską</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="108"/>
         <source>Choose what to sync</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinkite ką sinchronizuoti</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="122"/>
         <source>Local sync folder</source>
-        <translation type="unfinished"/>
+        <translation>Vietinis sinchronizavimo aplankas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="156"/>
         <source>Choose</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinkti</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="191"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
-        <translation type="unfinished"/>
+        <translation>Įspėjimas: vietinis aplankas nėra tuščias. Pasirinkite sprendimo būdą!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="200"/>
         <source>Keep local data</source>
-        <translation type="unfinished"/>
+        <translation>Palikti vietinius duomenis</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="208"/>
         <source>Erase local folder and start a clean sync</source>
-        <translation type="unfinished"/>
+        <translation>Ištrinkite vietinį aplanką ir pradėkite sinchronizavimą iš naujo</translation>
     </message>
 </context>
 <context>
@@ -7409,7 +7410,7 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="130"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Įjungti eksperimentinę ypatybę?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="131"/>
@@ -7420,17 +7421,23 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Kai įjungtas „virtualių failų“ režimas, iš pradžių failai nebus atsisiunčiami. Vietoj to, kiekvienam serveryje esančiam failui bus sukurtas nedidelis „%1“ failas. Turinį galima atsisiųsti paleidus šiuos failus arba pasinaudojus jų kontekstiniu meniu.
+
+„Virtualių failų“ režimas yra nesuderinamas su selektyviąja sinchronizacija. Šiuo metu nepasirinkti aplankai bus perkelti į tik internete esančius aplankus, o jūsų selektyviosios sinchronizacijos nustatymai bus iš naujo nustatyti.
+
+Perėjus į šį režimą, bus nutraukta bet kokia šiuo metu vykdoma sinchronizacija.
+
+Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome pranešti apie bet kokias iškilusias problemas.</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="146"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>Įjungti eksperimentinį vietos laikiklio režimą</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="147"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Išlikite saugūs</translation>
     </message>
 </context>
 <context>
@@ -7448,7 +7455,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12):</source>
-        <translation>Liudijimas ir raktas (pkcs12):</translation>
+        <translation>Sertifikatas ir raktas (pkcs12):</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
@@ -7458,7 +7465,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
         <source>Certificate password:</source>
-        <translation>Liudijimo slaptažodis:</translation>
+        <translation>Sertifikato slaptažodis:</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
@@ -7473,7 +7480,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="28"/>
         <source>Certificate files (*.p12 *.pfx)</source>
-        <translation>Liudijimo failai (*.p12 *.pfx)</translation>
+        <translation>Sertifikato failai (*.p12 *.pfx)</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="44"/>
@@ -7602,7 +7609,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="50"/>
         <source>Enter user credentials</source>
-        <translation>Įrašykite prisijungimo duomenis</translation>
+        <translation>Įrašykite vartotojo prisijungimo duomenis</translation>
     </message>
 </context>
 <context>
@@ -7626,7 +7633,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="426"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation>Nepavyko įkelti liudijimo. Galbūt, neteisingas slaptažodis?</translation>
+        <translation>Nepavyko įkelti sertifikato. Galbūt, neteisingas slaptažodis?</translation>
     </message>
 </context>
 <context>
@@ -7742,7 +7749,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="659"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="660"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation>Nepavyko sukurti aplanko %1 serveryje, klaida &lt;tt&gt;%2&lt;/tt&gt;.</translation>
+        <translation>Nepavyko sukurti aplanko %1, klaida &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="674"/>
@@ -8004,7 +8011,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="432"/>
         <source>Ask before syncing external storages</source>
-        <translation>Prieš sinchronizuojant išorines saugyklas, paklauskite</translation>
+        <translation>Paklauskite prieš sinchronizuojant išorines saugyklas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="475"/>

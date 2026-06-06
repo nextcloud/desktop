@@ -4,12 +4,12 @@
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="145"/>
         <source>Secure connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Falha na conexão segura</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="158"/>
         <source>Connect to %1?</source>
-        <translation type="unfinished"/>
+        <translation>Conectar-se a %1?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="168"/>
@@ -26,37 +26,37 @@
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="247"/>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="249"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="191"/>
         <source>Connect without TLS</source>
-        <translation type="unfinished"/>
+        <translation>Conectar-se sem TLS</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="200"/>
         <source>Use client certificate</source>
-        <translation type="unfinished"/>
+        <translation>Usar certificado de cliente</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="250"/>
         <source>Back</source>
-        <translation type="unfinished"/>
+        <translation>Voltar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="264"/>
         <source>Set up later</source>
-        <translation type="unfinished"/>
+        <translation>Configurar mais tarde</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="275"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Avançado</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="284"/>
         <source>Sign up</source>
-        <translation type="unfinished"/>
+        <translation>Cadastrar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="294"/>
@@ -66,32 +66,32 @@
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="307"/>
         <source>Proxy settings</source>
-        <translation type="unfinished"/>
+        <translation>Configurações do proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="328"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Copiar link</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="361"/>
         <source>Open</source>
-        <translation type="unfinished"/>
+        <translation>Abrir</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="363"/>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>Conectar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="365"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Concluído</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="367"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Entrar</translation>
     </message>
 </context>
 <context>
@@ -154,7 +154,7 @@
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="24"/>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="35"/>
         <source>Advanced options</source>
-        <translation type="unfinished"/>
+        <translation>Opções avançadas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="44"/>
@@ -169,7 +169,7 @@
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="64"/>
         <source>%1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%1 MB</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="71"/>
@@ -179,7 +179,7 @@
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="90"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Concluído</translation>
     </message>
 </context>
 <context>
@@ -207,12 +207,12 @@
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="50"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Nome de usuário</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="60"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Senha</translation>
     </message>
 </context>
 <context>
@@ -252,7 +252,7 @@
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="25"/>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="36"/>
         <source>Client certificate</source>
-        <translation type="unfinished"/>
+        <translation>Certificado de cliente</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="44"/>
@@ -262,27 +262,27 @@
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="57"/>
         <source>Certificate file</source>
-        <translation type="unfinished"/>
+        <translation>Arquivo do certificado</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="63"/>
         <source>Choose</source>
-        <translation type="unfinished"/>
+        <translation>Escolher</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="70"/>
         <source>Certificate password</source>
-        <translation type="unfinished"/>
+        <translation>Senha do certificado</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="94"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="104"/>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>Conectar</translation>
     </message>
 </context>
 <context>
@@ -1375,7 +1375,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="815"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>URL inválido</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="817"/>
@@ -1401,7 +1401,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="953"/>
         <source>Waiting for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Aguardando autorização</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="957"/>
@@ -1437,7 +1437,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1063"/>
         <source>Account connected.</source>
-        <translation type="unfinished"/>
+        <translation>Conta conectada.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1138"/>
@@ -1483,12 +1483,12 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1476"/>
         <source>Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Erro: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1481"/>
         <source>Creating remote folder</source>
-        <translation type="unfinished"/>
+        <translation>Criando pasta remota</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1500"/>
@@ -6212,62 +6212,62 @@ Servidor respondeu com erro: %2</translation>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="36"/>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="78"/>
         <source>Proxy settings</source>
-        <translation type="unfinished"/>
+        <translation>Configurações do proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="86"/>
         <source>No proxy</source>
-        <translation type="unfinished"/>
+        <translation>Sem proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="96"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>Usar proxy do sistema</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="106"/>
         <source>Manually specify proxy</source>
-        <translation type="unfinished"/>
+        <translation>Configurar proxy manualmente</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="121"/>
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished"/>
+        <translation>Proxy HTTP(S)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="121"/>
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished"/>
+        <translation>Proxy SOCKS5</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="125"/>
         <source>Proxy type</source>
-        <translation type="unfinished"/>
+        <translation>Tipo do proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="136"/>
         <source>Hostname of proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Nome do host do servidor proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="148"/>
         <source>Proxy port</source>
-        <translation type="unfinished"/>
+        <translation>Porta do proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="157"/>
         <source>Proxy server requires authentication</source>
-        <translation type="unfinished"/>
+        <translation>O servidor proxy requer autenticação</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="173"/>
         <source>Username for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Nome de usuário do servidor proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="180"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Senha do servidor proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="189"/>
@@ -6277,12 +6277,12 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="206"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="213"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Concluído</translation>
     </message>
 </context>
 <context>
@@ -6572,7 +6572,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="29"/>
         <source>Log in to %1</source>
-        <translation type="unfinished"/>
+        <translation>Entrar em %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="38"/>
@@ -6582,12 +6582,12 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="182"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Entrar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="197"/>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>Endereço do servidor</translation>
     </message>
 </context>
 <context>
@@ -6746,7 +6746,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>Virtual files</source>
-        <translation type="unfinished"/>
+        <translation>Arquivos virtuais</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="91"/>
@@ -6756,7 +6756,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="99"/>
         <source>Synchronize everything</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizar tudo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="108"/>
@@ -6771,7 +6771,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="156"/>
         <source>Choose</source>
-        <translation type="unfinished"/>
+        <translation>Escolher</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="191"/>
@@ -6781,7 +6781,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="200"/>
         <source>Keep local data</source>
-        <translation type="unfinished"/>
+        <translation>Manter dados locais</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="208"/>
