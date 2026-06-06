@@ -4,94 +4,94 @@
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="145"/>
         <source>Secure connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Turvalise ühenduse loomine ei õnnestunud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="158"/>
         <source>Connect to %1?</source>
-        <translation type="unfinished"/>
+        <translation>Kas ühendad teenusega %1?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="168"/>
         <source>The secure connection failed. You can retry without encryption, or add a client certificate and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Turvalise ühenduse loomine ei õnnestunud. Sa võid ühendada ilma krüptimiseta või lisada kliendisertifikaadi ja siis uuesti proovida.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="169"/>
         <source>The secure connection failed. You can add a client certificate and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Turvalise ühenduse loomine ei õnnestunud. Sa võid  lisada kliendisertifikaadi ja siis uuesti proovida.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="181"/>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="247"/>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="249"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Katkesta</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="191"/>
         <source>Connect without TLS</source>
-        <translation type="unfinished"/>
+        <translation>Ühenda ilma TLS-i kasutamata</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="200"/>
         <source>Use client certificate</source>
-        <translation type="unfinished"/>
+        <translation>Kasuta kliendisertifikaati</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="250"/>
         <source>Back</source>
-        <translation type="unfinished"/>
+        <translation>Tagasi</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="264"/>
         <source>Set up later</source>
-        <translation type="unfinished"/>
+        <translation>Seadista hiljem</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="275"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Täiendavad seadistused</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="284"/>
         <source>Sign up</source>
-        <translation type="unfinished"/>
+        <translation>Liitu teenusega</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="294"/>
         <source>Self-host</source>
-        <translation type="unfinished"/>
+        <translation>Pane oma server püsti</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="307"/>
         <source>Proxy settings</source>
-        <translation type="unfinished"/>
+        <translation>Proksiserveri seadistused</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="328"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Kopeeri link</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="361"/>
         <source>Open</source>
-        <translation type="unfinished"/>
+        <translation>Ava</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="363"/>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>Ühenda</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="365"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Valmis</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="367"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Logi sisse</translation>
     </message>
 </context>
 <context>
@@ -154,32 +154,32 @@
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="24"/>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="35"/>
         <source>Advanced options</source>
-        <translation type="unfinished"/>
+        <translation>Täiendavad valikud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="44"/>
         <source>Ask before syncing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Küsi enne luba, kui plaanid sünkroonida kaustu, mis on suuremad kui</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="62"/>
         <source>Large folder threshold</source>
-        <translation type="unfinished"/>
+        <translation>Suurte kaustade lävend</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="64"/>
         <source>%1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%1 MB</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="71"/>
         <source>Ask before syncing external storage</source>
-        <translation type="unfinished"/>
+        <translation>Küsi kinnitust enne kaustade sünkroniseerimist, mis asuvad välises andmeruumis</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="90"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Valmis</translation>
     </message>
 </context>
 <context>
@@ -202,17 +202,17 @@
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="38"/>
         <source>Enter the username and password for this server.</source>
-        <translation type="unfinished"/>
+        <translation>Sisesta selle serveri jaoks kasutajanimi ja salasõna.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="50"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Kasutajanimi</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="60"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Salasõna</translation>
     </message>
 </context>
 <context>
@@ -220,7 +220,7 @@
     <message>
         <location filename="../src/gui/wizard/qml/BrowserAuthPage.qml" line="38"/>
         <source>Switch to your browser</source>
-        <translation type="unfinished"/>
+        <translation>Vaata nüüd oma veebibrauserisse</translation>
     </message>
 </context>
 <context>
@@ -252,7 +252,7 @@
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="25"/>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="36"/>
         <source>Client certificate</source>
-        <translation type="unfinished"/>
+        <translation>Kliendisertifikaat</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="44"/>
