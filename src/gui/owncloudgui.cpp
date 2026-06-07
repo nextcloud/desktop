@@ -231,14 +231,14 @@ void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
     if (reason == QSystemTrayIcon::DoubleClick && currentUser && currentUser->hasLocalFolder()) {
         currentUser->openLocalFolder();
     } else if (reason == QSystemTrayIcon::Trigger) {
-        if (AccountManager::instance()->accounts().isEmpty()) {
+        if (OwncloudSetupWizard::bringWizardToFrontIfVisible()) {
+            // brought wizard to front
+        } else if (AccountManager::instance()->accounts().isEmpty()) {
             if (_tray->isOpen()) {
                 _tray->hideWindow();
             } else {
                 _tray->showWindow();
             }
-        } else if (OwncloudSetupWizard::bringWizardToFrontIfVisible()) {
-            // brought wizard to front
         } else if (_tray->raiseDialogs()) {
             // Brings dialogs hidden by other apps to front, returns true if any raised
         } else if (_tray->isOpen()) {

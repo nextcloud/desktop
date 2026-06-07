@@ -25,7 +25,7 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcFlow2auth, "nextcloud.sync.credentials.flow2auth", QtInfoMsg)
 
 namespace {
-constexpr auto loginFlowPollIntervalSeconds = 1LL;
+constexpr auto loginFlowPollIntervalSeconds = 3LL;
 }
 
 Flow2Auth::Flow2Auth(Account *account, QObject *parent)

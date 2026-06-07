@@ -65,7 +65,7 @@ bool localFolderContainsData(const QString &localSyncFolder)
 {
     const auto localFolder = QDir(localSyncFolder);
     return localFolder.exists()
-        && !localFolder.entryList(QDir::AllEntries | QDir::Hidden | QDir::System | QDir::NoDotAndDotDot).isEmpty();
+        && !localFolder.entryList(QDir::AllEntries | QDir::NoDotAndDotDot).isEmpty();
 }
 
 }

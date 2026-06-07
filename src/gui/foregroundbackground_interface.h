@@ -32,7 +32,7 @@ public:
         : QObject(parent)
     {
     }
-    ~ForegroundBackground() = default;
+    ~ForegroundBackground() override = default;
 
     /**
     * @brief EventFilter catches events that should trigger ForegroundBackground
