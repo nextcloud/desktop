@@ -20,7 +20,8 @@ For the latest stable and recommended version, please refer to [the official dow
 You can find [the user, administration and developer manuals for the desktop client](https://docs.nextcloud.com/#desktop) on our central documentation site.
 
 ## Contributing 🫴
-:v: Please read the [Code of Conduct](https://nextcloud.com/community/code-of-conduct/). This document offers some guidance to ensure Nextcloud participants can cooperate effectively in a positive and inspiring atmosphere and to explain how together we can strengthen and support each other.
+- Make sure to follow our [guidelines for contributing](https://github.com/nextcloud/desktop/blob/98690b1e9141f2c602c9b4583c1f9ed16b95a309/CONTRIBUTING.md) to this repository.
+- Don't forget to read our [Code of Conduct](https://nextcloud.com/community/code-of-conduct/). This document offers some guidance to ensure Nextcloud participants can cooperate effectively in a positive and inspiring atmosphere and to explain how together we can strengthen and support each other.
 
 ## Join the team 👪
 There are many ways to contribute, of which development is only one! Find out [how to get involved](https://nextcloud.com/contribute/), including as a translator, designer, tester, helping others, and much more! 😍
