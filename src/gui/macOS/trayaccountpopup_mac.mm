@@ -259,7 +259,7 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
     self.contentView = container;
 
     NSVisualEffectView *vev = [[NSVisualEffectView alloc] init];
-    vev.material = NSVisualEffectMaterialMenu;
+    vev.material = NSVisualEffectMaterialHUDWindow;
     vev.blendingMode = NSVisualEffectBlendingModeBehindWindow;
     vev.state = NSVisualEffectStateActive;
     vev.wantsLayer = YES;
@@ -393,27 +393,29 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
         [_stack addArrangedSubview:[self makeRowForIndex:i name:name server:server avatar:avatar syncStatusImage:syncStatus]];
     }
 
-    NSBox *sep = [[NSBox alloc] init];
-    sep.boxType = NSBoxSeparator;
-    sep.translatesAutoresizingMaskIntoConstraints = NO;
-    [_stack addArrangedSubview:sep];
-    [sep.widthAnchor constraintEqualToConstant:kPopupWidth].active = YES;
+    if (model->rowCount() > 0) {
+        NSBox *sep = [[NSBox alloc] init];
+        sep.boxType = NSBoxSeparator;
+        sep.translatesAutoresizingMaskIntoConstraints = NO;
+        [_stack addArrangedSubview:sep];
+        [sep.widthAnchor constraintEqualToConstant:kPopupWidth].active = YES;
+    }
     [_stack addArrangedSubview:[[NCSpacerView alloc] initWithHeight:kActionVerticalPadding]];
 
     __unsafe_unretained NCTrayPopup *weakSelf = self;
     if (OCC::Systray::instance()->enableAddAccount()) {
-        [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:@"Add account" action:^{
+        [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:OCC::Systray::tr("Add account").toNSString() action:^{
             [weakSelf orderOut:nil];
             OCC::Systray::instance()->setIsOpen(false);
             OCC::Systray::instance()->openAccountWizard();
         }]];
     }
-    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:@"Settings" action:^{
+    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:OCC::Systray::tr("Settings").toNSString() action:^{
         [weakSelf orderOut:nil];
         OCC::Systray::instance()->setIsOpen(false);
         OCC::Systray::instance()->openSettings();
     }]];
-    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:@"Quit" action:^{
+    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:OCC::Systray::tr("Quit").toNSString() action:^{
         OCC::Systray::instance()->shutdown();
     }]];
     [_stack addArrangedSubview:[[NCSpacerView alloc] initWithHeight:kActionVerticalPadding]];

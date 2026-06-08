@@ -45,7 +45,9 @@ Item {
         }
 
         RowLayout {
-            visible: root.controller.busy && root.controller.authStatusText !== ""
+            id: activityIndicatorRow
+
+            visible: root.controller.busy || root.controller.authPolling
             Layout.fillWidth: true
             spacing: 8
 
@@ -54,7 +56,7 @@ Item {
             }
 
             NCBusyIndicator {
-                running: root.controller.busy
+                running: activityIndicatorRow.visible
                 visible: running
                 Layout.preferredWidth: 20
                 Layout.preferredHeight: 20

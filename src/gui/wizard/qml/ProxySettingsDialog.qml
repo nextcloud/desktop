@@ -32,8 +32,6 @@ Dialog {
     padding: 24
     header: null
     footer: null
-    Accessible.role: Accessible.Dialog
-    Accessible.name: qsTr("Proxy settings")
 
     onOpened: loadFromController()
 
@@ -49,7 +47,9 @@ Dialog {
 
     function applyToController() {
         root.controller.proxyMode = draftProxyMode
-        root.controller.manualProxyType = draftManualProxyType
+        if (draftProxyMode === 2) {
+            root.controller.manualProxyType = draftManualProxyType
+        }
         root.controller.proxyHost = draftProxyHost
         root.controller.proxyPort = draftProxyPort
         root.controller.proxyAuthenticationRequired = draftProxyAuthenticationRequired
@@ -73,6 +73,8 @@ Dialog {
         id: contentLayout
 
         spacing: 14
+        Accessible.role: Accessible.Dialog
+        Accessible.name: qsTr("Proxy settings")
 
         EnforcedPlainTextLabel {
             text: qsTr("Proxy settings")

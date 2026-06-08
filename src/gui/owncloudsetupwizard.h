@@ -26,7 +26,7 @@ class OwncloudSetupWizard : public QObject
     Q_OBJECT
 public:
     /** Run the wizard */
-    static void runWizard(QObject *obj, const char *amember, QWidget *parent = nullptr);
+    static void runWizard(QObject *obj, const char *amember, QWidget *parent = nullptr, bool forceRestart = false);
     static bool bringWizardToFrontIfVisible();
 
 signals:
@@ -37,9 +37,11 @@ private:
     explicit OwncloudSetupWizard(QObject *parent = nullptr);
     ~OwncloudSetupWizard() override;
     bool startQmlWizard();
+    void finish(int result);
 
     AccountWizardController *_qmlController = nullptr;
     QPointer<QQuickWindow> _qmlWizardWindow;
+    bool _finished = false;
 };
 }
 

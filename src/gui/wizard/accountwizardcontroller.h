@@ -45,6 +45,7 @@ class AccountWizardController : public QObject
     Q_PROPERTY(QStringList overrideServerNames READ overrideServerNames NOTIFY overrideServerSelectionChanged)
     Q_PROPERTY(int overrideServerIndex READ overrideServerIndex WRITE setOverrideServerIndex NOTIFY overrideServerSelectionChanged)
     Q_PROPERTY(bool busy READ busy NOTIFY busyChanged)
+    Q_PROPERTY(bool authPolling READ authPolling NOTIFY authPollingChanged)
     Q_PROPERTY(QString errorText READ errorText NOTIFY errorTextChanged)
     Q_PROPERTY(QUrl loginUrl READ loginUrl NOTIFY loginUrlChanged)
     Q_PROPERTY(QString authStatusText READ authStatusText NOTIFY authStatusTextChanged)
@@ -55,10 +56,7 @@ class AccountWizardController : public QObject
     Q_PROPERTY(QString localSyncFolder READ localSyncFolder NOTIFY localSyncFolderChanged)
     Q_PROPERTY(QString localSyncFolderDisplay READ localSyncFolderDisplay NOTIFY localSyncFolderChanged)
     Q_PROPERTY(QString localSyncFolderError READ localSyncFolderError NOTIFY localSyncFolderErrorChanged)
-    Q_PROPERTY(bool localSyncFolderWarning READ localSyncFolderWarning NOTIFY localSyncFolderWarningChanged)
     Q_PROPERTY(QString localSyncFolderFreeSpace READ localSyncFolderFreeSpace NOTIFY localSyncFolderFreeSpaceChanged)
-    Q_PROPERTY(bool localSyncFolderHasExistingData READ localSyncFolderHasExistingData NOTIFY localSyncFolderHasExistingDataChanged)
-    Q_PROPERTY(bool syncFromScratch READ syncFromScratch WRITE setSyncFromScratch NOTIFY syncFromScratchChanged)
     Q_PROPERTY(bool localSyncFolderRequired READ localSyncFolderRequired NOTIFY localSyncFolderRequiredChanged)
     Q_PROPERTY(SyncMode syncMode READ syncMode NOTIFY syncModeChanged)
     Q_PROPERTY(bool canFinish READ canFinish NOTIFY canFinishChanged)
@@ -123,6 +121,7 @@ public:
     [[nodiscard]] int overrideServerIndex() const;
     void setOverrideServerIndex(int index);
     [[nodiscard]] bool busy() const;
+    [[nodiscard]] bool authPolling() const;
     [[nodiscard]] QString errorText() const;
     [[nodiscard]] QUrl loginUrl() const;
     [[nodiscard]] QString authStatusText() const;
@@ -133,10 +132,7 @@ public:
     [[nodiscard]] QString localSyncFolder() const;
     [[nodiscard]] QString localSyncFolderDisplay() const;
     [[nodiscard]] QString localSyncFolderError() const;
-    [[nodiscard]] bool localSyncFolderWarning() const;
     [[nodiscard]] QString localSyncFolderFreeSpace() const;
-    [[nodiscard]] bool localSyncFolderHasExistingData() const;
-    [[nodiscard]] bool syncFromScratch() const;
     [[nodiscard]] bool localSyncFolderRequired() const;
     [[nodiscard]] SyncMode syncMode() const;
     [[nodiscard]] bool canFinish() const;
@@ -198,7 +194,6 @@ public:
     Q_INVOKABLE void chooseLocalSyncFolder();
     Q_INVOKABLE void openSelectiveSync();
     Q_INVOKABLE void openAdvancedOptions();
-    Q_INVOKABLE void setSyncFromScratch(bool syncFromScratch);
     Q_INVOKABLE void setAskBeforeLargeFolders(bool ask);
     Q_INVOKABLE void setLargeFolderThresholdMb(int thresholdMb);
     Q_INVOKABLE void setAskBeforeExternalStorage(bool ask);
@@ -215,6 +210,7 @@ signals:
     void serverUrlEditableChanged();
     void overrideServerSelectionChanged();
     void busyChanged();
+    void authPollingChanged();
     void errorTextChanged();
     void loginUrlChanged();
     void authStatusTextChanged();
@@ -224,10 +220,7 @@ signals:
     void syncEverythingDescriptionChanged();
     void localSyncFolderChanged();
     void localSyncFolderErrorChanged();
-    void localSyncFolderWarningChanged();
     void localSyncFolderFreeSpaceChanged();
-    void localSyncFolderHasExistingDataChanged();
-    void syncFromScratchChanged();
     void localSyncFolderRequiredChanged();
     void syncModeChanged();
     void canFinishChanged();
@@ -274,19 +267,21 @@ private:
     void clearOneShotOverrides();
     void initialiseLocalSyncFolder();
     void setLocalSyncFolder(const QString &localSyncFolder, bool selectedByUser = false);
+    void promptForInitialLocalSyncFolderIfNeeded();
     void validateLocalSyncFolder();
     [[nodiscard]] qint64 availableLocalSpace() const;
     [[nodiscard]] qint64 requiredLocalSpace() const;
     [[nodiscard]] bool ensureLocalSyncFolder();
-    [[nodiscard]] bool ensureStartFromScratch();
     void startRemoteFolderCheck();
     void createRemoteFolder();
     void completeRemoteFolderCheck();
     [[nodiscard]] bool createSyncFolder(AccountState *accountState);
+    [[nodiscard]] QString openLocalSyncFolderDialog(bool initialSelection) const;
     [[nodiscard]] QUrl localFolderServerUrl() const;
     [[nodiscard]] QString sanitizedRemoteFolderEntityPath() const;
     void setCurrentStep(Step step);
     void setBusy(bool busy);
+    void setAuthPolling(bool authPolling);
     void setErrorText(const QString &errorText);
     void setLoginUrl(const QUrl &loginUrl);
     void setAuthStatusText(const QString &authStatusText);
@@ -325,6 +320,7 @@ private:
     QStringList _overrideServerUrls;
     int _overrideServerIndex = -1;
     bool _busy = false;
+    bool _authPolling = false;
     QString _errorText;
     QUrl _loginUrl;
     QString _authStatusText;
@@ -335,11 +331,11 @@ private:
     QString _localSyncFolder;
     QString _localSyncFolderError;
     QString _localSyncFolderFreeSpace;
-    bool _localSyncFolderWarning = false;
-    bool _localSyncFolderHasExistingData = false;
-    bool _syncFromScratch = false;
     bool _localSyncFolderValid = false;
     bool _localSyncFolderSelected = false;
+    bool _localSyncFolderOverride = false;
+    bool _initialLocalSyncFolderPromptShown = false;
+    bool _localSyncFolderPickerOpen = false;
     SyncMode _syncMode = SyncEverything;
     bool _needsSyncOptions = false;
     bool _askBeforeLargeFolders = true;

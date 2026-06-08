@@ -177,6 +177,21 @@ private slots:
         QVERIFY(controller.proxySettingsValid());
     }
 
+    void manualProxyTypeDoesNotSelectManualProxy()
+    {
+        AccountWizardController controller;
+
+        controller.setProxyMode(0);
+        controller.setManualProxyType(0);
+        QCOMPARE(controller.proxyMode(), 0);
+        QVERIFY(controller.proxySettingsValid());
+
+        controller.setProxyMode(1);
+        controller.setManualProxyType(1);
+        QCOMPARE(controller.proxyMode(), 1);
+        QVERIFY(controller.proxySettingsValid());
+    }
+
     void advancedSafeguardsEmitChanges()
     {
         AccountWizardController controller;
