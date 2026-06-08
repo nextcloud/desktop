@@ -402,6 +402,10 @@ int AccountWizardController::manualProxyType() const
 
 void AccountWizardController::setManualProxyType(int manualProxyType)
 {
+    if (_proxySettings._proxyType != QNetworkProxy::HttpProxy && _proxySettings._proxyType != QNetworkProxy::Socks5Proxy) {
+        return;
+    }
+
     const auto proxyType = manualProxyType == 1 ? QNetworkProxy::Socks5Proxy : QNetworkProxy::HttpProxy;
     if (_proxySettings._proxyType == proxyType) {
         return;

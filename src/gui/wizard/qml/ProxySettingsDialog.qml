@@ -47,7 +47,9 @@ Dialog {
 
     function applyToController() {
         root.controller.proxyMode = draftProxyMode
-        root.controller.manualProxyType = draftManualProxyType
+        if (draftProxyMode === 2) {
+            root.controller.manualProxyType = draftManualProxyType
+        }
         root.controller.proxyHost = draftProxyHost
         root.controller.proxyPort = draftProxyPort
         root.controller.proxyAuthenticationRequired = draftProxyAuthenticationRequired
