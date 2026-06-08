@@ -870,106 +870,83 @@ private slots:
 
     void testDiscoveryUsesCorrectQuotaSource()
     {
-        //setup sync folder
+        // Verifies that the discovery-phase quota check uses the FRESH
+        // PROPFIND value (from the current sync cycle) rather than the
+        // stale value persisted in the journal DB from a previous cycle.
+
         FakeFolder fakeFolder{FileInfo{}};
 
-        // create folder
         const QString folderA("A");
         fakeFolder.localModifier().mkdir(folderA);
         fakeFolder.remoteModifier().mkdir(folderA);
         fakeFolder.remoteModifier().setFolderQuota(folderA, {0, 500});
 
-        // sync folderA
+        // Initial sync — folder A is created, DB stores quota = 500
         ItemCompletedSpy syncSpy(fakeFolder);
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(syncSpy.findItem(folderA)->_status, SyncFileItem::Status::NoStatus);
 
-        // check db quota for folderA - bytesAvailable is 500
         SyncJournalFileRecord recordFolderA;
         QVERIFY(fakeFolder.syncJournal().getFileRecord(folderA, &recordFolderA));
         QCOMPARE(recordFolderA._folderQuota.bytesAvailable, 500);
 
-        // add fileNameA to folderA - size < quota in db
+        // ── Case 1: upload succeeds when size < fresh PROPFIND quota ──
         const QString fileNameA("A/A.data");
         fakeFolder.localModifier().insert(fileNameA, 200);
 
-        // set different quota for folderA - remote change does not change etag yet
-        fakeFolder.remoteModifier().setFolderQuota(folderA, {0, 0});
-
-        // sync filenameA - size == quota => success
         syncSpy.clear();
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(syncSpy.findItem(fileNameA)->_status, SyncFileItem::Status::Success);
 
-        // add smallFile to folderA - size < quota in db
-        const QString smallFile("A/smallFile.data");
-        fakeFolder.localModifier().insert(smallFile, 100);
+        // ── Case 2: fresh PROPFIND value (0) wins over stale DB (500) ──
+        // Reduce quota to 0 without invalidating the etag.  The DB still
+        // holds 500, but the root PROPFIND now returns 0 for folder A.
+        // A new file must be blocked proactively.
+        fakeFolder.remoteModifier().setFolderQuota(folderA, {0, 0});
 
-        // sync smallFile - size < quota in db => success => update quota in db
+        const QString fileBlocked("A/blocked.data");
+        fakeFolder.localModifier().insert(fileBlocked, 100);
+
         syncSpy.clear();
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(syncSpy.findItem(smallFile)->_status, SyncFileItem::Status::Success);
+        QVERIFY(!fakeFolder.syncOnce());
+        QCOMPARE(syncSpy.findItem(fileBlocked)->_status, SyncFileItem::Status::DetailError);
 
-        // create remoteFileA - size > bytes available
+        // ── Case 3: downloads are not affected by upload quota ──
         const QString remoteFileA("A/remoteA.data");
         fakeFolder.remoteModifier().insert(remoteFileA, 200);
 
-        // sync remoteFile - it is a download
         syncSpy.clear();
-        QVERIFY(fakeFolder.syncOnce());
+        // Sync still fails overall (blocked.data remains blocked), but the
+        // download of remoteFileA must succeed independently.
+        QVERIFY(!fakeFolder.syncOnce());
         QCOMPARE(syncSpy.findItem(remoteFileA)->_status, SyncFileItem::Status::Success);
+        QCOMPARE(syncSpy.findItem(fileBlocked)->_status, SyncFileItem::Status::DetailError);
 
-        // check db quota for folderA - bytesAvailable have changed to 0 due to new PROPFIND
-        QVERIFY(fakeFolder.syncJournal().getFileRecord(folderA, &recordFolderA));
-        QCOMPARE(recordFolderA._folderQuota.bytesAvailable, 0);
-
-        // create local fileNameB - size < quota in db
-        const QString fileNameB("A/B.data");
-        fakeFolder.localModifier().insert(fileNameB, 0);
-
-        // set different quota for folderA - remote change does not change etag yet
+        // ── Case 4: after quota increase, previously blocked file uploads ──
         fakeFolder.remoteModifier().setFolderQuota(folderA, {500, 600});
 
-        // sync fileNameB - size < quota in db => success
         syncSpy.clear();
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(syncSpy.findItem(fileNameB)->_status, SyncFileItem::Status::Success);
+        QCOMPARE(syncSpy.findItem(fileBlocked)->_status, SyncFileItem::Status::Success);
 
-        // create remoteFileB - it is a download
-        const QString remoteFileB("A/remoteB.data");
-        fakeFolder.remoteModifier().insert(remoteFileA, 100);
-
-        // create local fileNameC - size < quota in db
-        const QString fileNameC("A/C.data");
-        fakeFolder.localModifier().insert(fileNameC, 0);
-
-        // sync filenameC - size < quota in db => success
-        syncSpy.clear();
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(syncSpy.findItem(fileNameC)->_status, SyncFileItem::Status::Success);
-
-        // check db quota for folderA - bytesAvailable have changed to 600 due to new PROPFIND
+        // DB now reflects the fresh PROPFIND value (600)
         QVERIFY(fakeFolder.syncJournal().getFileRecord(folderA, &recordFolderA));
         QCOMPARE(recordFolderA._folderQuota.bytesAvailable, 600);
 
-        QCOMPARE(syncSpy.findItem(remoteFileB)->_status, SyncFileItem::Status::NoStatus);
-
-        // create local fileNameD - size > quota in db
+        // ── Case 5: file exceeding fresh quota is blocked ──
         const QString fileNameD("A/D.data");
         fakeFolder.localModifier().insert(fileNameD, 700);
 
-        // sync fileNameD - size > quota in db => error
         syncSpy.clear();
         QVERIFY(!fakeFolder.syncOnce());
-        QCOMPARE(syncSpy.findItem(fileNameD)->_status, SyncFileItem::Status::NormalError);
+        QCOMPARE(syncSpy.findItem(fileNameD)->_status, SyncFileItem::Status::DetailError);
 
-        // create local fileNameE - size < quota in db
+        // ── Case 6: file within quota succeeds even while another is blocked ──
         const QString fileNameE("A/E.data");
         fakeFolder.localModifier().insert(fileNameE, 400);
 
-        // sync fileNameE - size < quota in db => success
         syncSpy.clear();
-        QVERIFY(!fakeFolder.syncOnce());
+        QVERIFY(!fakeFolder.syncOnce()); // fileNameD still blocked
         QCOMPARE(syncSpy.findItem(fileNameE)->_status, SyncFileItem::Status::Success);
     }
 

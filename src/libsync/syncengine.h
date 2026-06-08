@@ -363,6 +363,8 @@ private:
 
     void finishSync();
 
+    void seedPropagatorQuota();
+
     [[nodiscard]] bool shouldRestartSync() const;
 
     bool handleMassDeletion();
