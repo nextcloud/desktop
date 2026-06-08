@@ -404,18 +404,18 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
 
     __unsafe_unretained NCTrayPopup *weakSelf = self;
     if (OCC::Systray::instance()->enableAddAccount()) {
-        [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:@"Add account" action:^{
+        [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:OCC::Systray::tr("Add account").toNSString() action:^{
             [weakSelf orderOut:nil];
             OCC::Systray::instance()->setIsOpen(false);
             OCC::Systray::instance()->openAccountWizard();
         }]];
     }
-    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:@"Settings" action:^{
+    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:OCC::Systray::tr("Settings").toNSString() action:^{
         [weakSelf orderOut:nil];
         OCC::Systray::instance()->setIsOpen(false);
         OCC::Systray::instance()->openSettings();
     }]];
-    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:@"Quit" action:^{
+    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:OCC::Systray::tr("Quit").toNSString() action:^{
         OCC::Systray::instance()->shutdown();
     }]];
     [_stack addArrangedSubview:[[NCSpacerView alloc] initWithHeight:kActionVerticalPadding]];
