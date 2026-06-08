@@ -142,8 +142,6 @@ ApplicationWindow {
         y: Math.round((root.height - height) / 2)
         header: null
         footer: null
-        Accessible.role: Accessible.Dialog
-        Accessible.name: qsTr("Secure connection failed")
 
         background: Rectangle {
             radius: 12
@@ -154,6 +152,8 @@ ApplicationWindow {
             id: secureConnectionContent
 
             spacing: 14
+            Accessible.role: Accessible.Dialog
+            Accessible.name: qsTr("Secure connection failed")
 
             EnforcedPlainTextLabel {
                 text: qsTr("Connect to %1?").arg(secureConnectionFailureDialog.host)
@@ -174,22 +174,33 @@ ApplicationWindow {
                 wrapMode: Text.WordWrap
             }
 
-            RowLayout {
-                Layout.fillWidth: true
+            ColumnLayout {
+                id: secureConnectionButtonColumn
+
+                readonly property int buttonWidth: Math.min(secureConnectionContent.width,
+                    Math.max(cancelButton.implicitWidth, withoutTlsButton.implicitWidth, clientCertificateButton.implicitWidth))
+
+                Layout.alignment: Qt.AlignHCenter
                 Layout.topMargin: 8
+                spacing: 8
 
                 WizardButton {
+                    id: cancelButton
+
+                    primary: true
                     text: qsTr("Cancel")
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.preferredWidth: secureConnectionButtonColumn.buttonWidth
                     onClicked: secureConnectionFailureDialog.close()
                 }
 
-                Item {
-                    Layout.fillWidth: true
-                }
-
                 WizardButton {
+                    id: withoutTlsButton
+
                     visible: secureConnectionFailureDialog.retryHttpOnly
                     text: qsTr("Connect without TLS")
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.preferredWidth: secureConnectionButtonColumn.buttonWidth
                     onClicked: {
                         secureConnectionFailureDialog.close()
                         root.controller.retrySecureConnectionWithoutTls()
@@ -197,8 +208,11 @@ ApplicationWindow {
                 }
 
                 WizardButton {
-                    primary: true
+                    id: clientCertificateButton
+
                     text: qsTr("Use client certificate")
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.preferredWidth: secureConnectionButtonColumn.buttonWidth
                     onClicked: {
                         secureConnectionFailureDialog.close()
                         root.controller.useClientCertificateForSecureConnection()

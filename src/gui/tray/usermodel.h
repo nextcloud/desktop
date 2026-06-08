@@ -323,6 +323,7 @@ class UserModel : public QAbstractListModel
     Q_OBJECT
     Q_PROPERTY(User* currentUser READ currentUser NOTIFY currentUserChanged)
     Q_PROPERTY(int currentUserId READ currentUserId WRITE setCurrentUserId NOTIFY currentUserChanged)
+    Q_PROPERTY(int count READ count NOTIFY countChanged)
     Q_PROPERTY(bool hasSyncErrors READ hasSyncErrors NOTIFY syncErrorUsersChanged)
     Q_PROPERTY(int syncErrorUserCount READ syncErrorUserCount NOTIFY syncErrorUsersChanged)
     Q_PROPERTY(int firstSyncErrorUserId READ firstSyncErrorUserId NOTIFY syncErrorUsersChanged)
@@ -347,6 +348,7 @@ public:
     [[nodiscard]] int findUserIdForAccount(AccountState *account) const;
 
     Q_INVOKABLE int numUsers();
+    [[nodiscard]] int count() const;
     Q_INVOKABLE QString currentUserServer();
     [[nodiscard]] int currentUserId() const;
 
@@ -384,6 +386,7 @@ public:
 signals:
     void addAccount();
     void currentUserChanged();
+    void countChanged();
     void syncErrorUsersChanged();
 
 public slots:

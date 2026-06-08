@@ -173,8 +173,9 @@ Window {
             }
 
             Rectangle {
+                visible: root.hasAccounts
                 width: parent.width
-                height: Style.trayWindowBorderWidth
+                height: visible ? Style.trayWindowBorderWidth : 0
                 color: palette.mid
                 opacity: Style.darkMode ? 1.0 : 0.5
             }

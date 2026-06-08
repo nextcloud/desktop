@@ -8,7 +8,12 @@
 
 #include "folderman.h"
 #include "systray.h"
+#include "theme.h"
 #include "wizard/accountwizardcontroller.h"
+
+#ifdef Q_OS_MACOS
+#include "foregroundbackground_interface.h"
+#endif
 
 #include <QDialog>
 #include <QLoggingCategory>
@@ -35,8 +40,17 @@ OwncloudSetupWizard::~OwncloudSetupWizard()
 
 static QPointer<OwncloudSetupWizard> owncloudSetupWizard = nullptr;
 
-void OwncloudSetupWizard::runWizard(QObject *obj, const char *amember, QWidget *parent)
+void OwncloudSetupWizard::runWizard(QObject *obj, const char *amember, QWidget *parent, bool forceRestart)
 {
+    if (!owncloudSetupWizard.isNull()) {
+        if (forceRestart) {
+            owncloudSetupWizard->finish(QDialog::Rejected);
+        } else {
+            bringWizardToFrontIfVisible();
+            return;
+        }
+    }
+
     if (!owncloudSetupWizard.isNull()) {
         bringWizardToFrontIfVisible();
         return;
@@ -57,7 +71,14 @@ void OwncloudSetupWizard::runWizard(QObject *obj, const char *amember, QWidget *
 
 bool OwncloudSetupWizard::bringWizardToFrontIfVisible()
 {
-    if (owncloudSetupWizard.isNull() || !owncloudSetupWizard->_qmlWizardWindow) {
+    if (owncloudSetupWizard.isNull()
+        || !owncloudSetupWizard->_qmlWizardWindow
+        || owncloudSetupWizard->_finished) {
+        return false;
+    }
+
+    if (!owncloudSetupWizard->_qmlWizardWindow->isVisible()) {
+        owncloudSetupWizard->finish(QDialog::Rejected);
         return false;
     }
 
@@ -95,25 +116,49 @@ bool OwncloudSetupWizard::startQmlWizard()
         return false;
     }
 
+    _qmlWizardWindow->setIcon(Theme::instance()->applicationIcon());
+
+#ifdef Q_OS_MACOS
+    auto *fgbg = new ForegroundBackground(this);
+    _qmlWizardWindow->installEventFilter(fgbg);
+#endif
+
 #if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
     _qmlWizardWindow->setFlag(Qt::ExpandedClientAreaHint, true);
     _qmlWizardWindow->setFlag(Qt::NoTitleBarBackgroundHint, true);
 #endif
 
-    connect(_qmlController, &AccountWizardController::finished, this, [this](int result) {
-        emit ownCloudWizardDone(result);
-        if (_qmlWizardWindow) {
-            _qmlWizardWindow->deleteLater();
-            _qmlWizardWindow.clear();
+    connect(_qmlController, &AccountWizardController::finished, this, &OwncloudSetupWizard::finish);
+    connect(_qmlWizardWindow, &QQuickWindow::visibleChanged, this, [this](bool visible) {
+        if (!visible) {
+            finish(QDialog::Rejected);
         }
-        owncloudSetupWizard.clear();
-        deleteLater();
+    });
+    connect(_qmlWizardWindow, &QObject::destroyed, this, [this] {
+        finish(QDialog::Rejected);
     });
 
     _qmlWizardWindow->show();
     _qmlWizardWindow->raise();
     _qmlWizardWindow->requestActivate();
     return true;
+}
+
+void OwncloudSetupWizard::finish(int result)
+{
+    if (_finished) {
+        return;
+    }
+
+    _finished = true;
+    Systray::instance()->setIsOpen(false);
+    emit ownCloudWizardDone(result);
+    if (_qmlWizardWindow) {
+        _qmlWizardWindow->deleteLater();
+        _qmlWizardWindow.clear();
+    }
+    owncloudSetupWizard.clear();
+    deleteLater();
 }
 
 } // namespace OCC

@@ -20,8 +20,6 @@ Dialog {
     padding: 24
     header: null
     footer: null
-    Accessible.role: Accessible.Dialog
-    Accessible.name: qsTr("Advanced options")
 
     background: Rectangle {
         radius: 12
@@ -30,6 +28,8 @@ Dialog {
 
     contentItem: ColumnLayout {
         spacing: 14
+        Accessible.role: Accessible.Dialog
+        Accessible.name: qsTr("Advanced options")
 
         EnforcedPlainTextLabel {
             text: qsTr("Advanced options")

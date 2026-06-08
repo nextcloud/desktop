@@ -31,6 +31,7 @@
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "gui/macOS/fileprovider.h"
 #include "gui/macOS/fileproviderservice.h"
+#include "gui/macOS/fileprovidersettingscontroller.h"
 #endif
 
 #include <QtCore>
@@ -167,6 +168,7 @@ SyncStatusInfo syncStatusForAccount(const OCC::AccountStatePtr &accountState)
         return {OCC::Theme::instance()->offline(), false};
     }
 
+    auto hasConfiguredSyncSource = false;
     bool hasError = false;
     bool hasWarning = false;
     bool hasPaused = false;
@@ -176,6 +178,7 @@ SyncStatusInfo syncStatusForAccount(const OCC::AccountStatePtr &accountState)
             continue;
         }
 
+        hasConfiguredSyncSource = true;
         const auto state = determineSyncStatus(folder->syncResult());
 
         switch (state) {
@@ -201,6 +204,37 @@ SyncStatusInfo syncStatusForAccount(const OCC::AccountStatePtr &accountState)
         }
     }
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    const auto account = accountState->account();
+    const auto userIdAtHostWithPort = account->userIdAtHostWithPort();
+    if (OCC::Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(userIdAtHostWithPort)) {
+        hasConfiguredSyncSource = true;
+
+        const auto fileProviderStatus = OCC::Mac::FileProvider::instance()->service()->latestReceivedSyncStatusForAccount(account);
+        switch (fileProviderStatus) {
+        case OCC::SyncResult::Error:
+        case OCC::SyncResult::SetupError:
+            hasError = true;
+            break;
+        case OCC::SyncResult::Problem:
+            hasWarning = true;
+            break;
+        case OCC::SyncResult::Paused:
+            hasPaused = true;
+            break;
+        case OCC::SyncResult::SyncPrepare:
+        case OCC::SyncResult::SyncRunning:
+        case OCC::SyncResult::SyncAbortRequested:
+            hasSyncing = true;
+            break;
+        case OCC::SyncResult::Success:
+        case OCC::SyncResult::NotYetStarted:
+        case OCC::SyncResult::Undefined:
+            break;
+        }
+    }
+#endif
+
     if (hasError) {
         return {OCC::Theme::instance()->error(), false};
     }
@@ -212,6 +246,9 @@ SyncStatusInfo syncStatusForAccount(const OCC::AccountStatePtr &accountState)
     }
     if (hasSyncing) {
         return {OCC::Theme::instance()->sync(), false};
+    }
+    if (!hasConfiguredSyncSource) {
+        return {OCC::Theme::instance()->pause(), false};
     }
 
     return {OCC::Theme::instance()->ok(), true};
@@ -377,6 +414,12 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     updateSyncStatus();
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
+    connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::syncStateChanged,
+            this, [this](const OCC::AccountPtr &account, OCC::SyncResult::Status) {
+        if (account == _account->account()) {
+            updateSyncStatus();
+        }
+    });
     connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::itemExcludedFromSync,
             this, &User::slotFileProviderItemExcludedFromSync);
     connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::insufficientQuotaForItem,
@@ -2194,6 +2237,11 @@ int UserModel::numUsers()
     return _users.size();
 }
 
+int UserModel::count() const
+{
+    return rowCount();
+}
+
 int UserModel::currentUserId() const
 {
     return _currentUserId;
@@ -2282,7 +2330,8 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
     }
 
     if (!containsUser) {
-        int row = rowCount();
+        const auto row = rowCount();
+        const auto selectAddedUser = isCurrent || (_currentUserId < 0 && !_init);
         beginInsertRows(QModelIndex(), row, row);
 
         User *u = new User(user, isCurrent);
@@ -2313,14 +2362,18 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
         });
 
         _users << u;
-        if (isCurrent || (_currentUserId < 0 && !_init)) {
-            setCurrentUserId(_users.size() - 1);
-        }
 
         endInsertRows();
+        emit countChanged();
+
+        if (selectAddedUser) {
+            setCurrentUserId(_users.size() - 1);
+        } else {
+            emit currentUserChanged();
+        }
+
         ConfigFile cfg;
         u->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
-        emit currentUserChanged();
     }
 
     updateSyncErrorUsers();
@@ -2465,6 +2518,7 @@ void UserModel::removeAccount(const int id)
     beginRemoveRows(QModelIndex(), id, id);
     _users.removeAt(id);
     endRemoveRows();
+    emit countChanged();
 
     if (_users.size() <= 1) {
         setCurrentUserId(_users.size() - 1);

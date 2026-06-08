@@ -135,9 +135,7 @@ Item {
                     Layout.preferredHeight: 36
                     radius: 6
                     border.width: 1
-                    border.color: root.controller.localSyncFolderError === ""
-                        ? Style.wizardRowBorder
-                        : root.controller.localSyncFolderWarning ? Style.wizardWarningBorder : Style.wizardErrorBorder
+                    border.color: root.controller.localSyncFolderError === "" ? Style.wizardRowBorder : Style.wizardErrorBorder
                     color: Style.wizardRowBackground
 
                     EnforcedPlainTextLabel {
@@ -173,44 +171,11 @@ Item {
             EnforcedPlainTextLabel {
                 visible: root.controller.localSyncFolderError !== ""
                 text: root.controller.localSyncFolderError
-                color: root.controller.localSyncFolderWarning ? Style.wizardWarningText : Style.wizardErrorText
+                color: Style.wizardErrorText
                 font.pixelSize: Style.pixelSize
                 Layout.fillWidth: true
                 wrapMode: Text.WordWrap
                 maximumLineCount: 2
-            }
-
-            ColumnLayout {
-                visible: root.controller.localSyncFolderHasExistingData
-                    && root.controller.canUseClassicSync
-                    && root.controller.localSyncFolderRequired
-                Layout.fillWidth: true
-                spacing: 2
-
-                EnforcedPlainTextLabel {
-                    text: qsTr("Warning: The local folder is not empty. Pick a resolution!")
-                    color: root.primaryTextColor
-                    font.pixelSize: Style.pixelSize
-                    font.bold: true
-                    Layout.fillWidth: true
-                    wrapMode: Text.WordWrap
-                }
-
-                RadioButton {
-                    text: qsTr("Keep local data")
-                    checked: !root.controller.syncFromScratch
-                    font.pixelSize: Style.pixelSize
-                    onClicked: root.controller.setSyncFromScratch(false)
-                    Layout.fillWidth: true
-                }
-
-                RadioButton {
-                    text: qsTr("Erase local folder and start a clean sync")
-                    checked: root.controller.syncFromScratch
-                    font.pixelSize: Style.pixelSize
-                    onClicked: root.controller.setSyncFromScratch(true)
-                    Layout.fillWidth: true
-                }
             }
         }
 

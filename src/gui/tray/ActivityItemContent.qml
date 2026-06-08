@@ -173,6 +173,7 @@ RowLayout {
                     width: Style.activityListButtonWidth
                     height: Style.activityListButtonHeight
 
+                    icon.name: 'view-more-symbolic'
                     icon.source: "image://svgimage-custom-color/more.svg/" + palette.buttonText
                     icon.width: Style.activityListButtonIconSize
                     icon.height: Style.activityListButtonIconSize
@@ -216,6 +217,7 @@ RowLayout {
                     width: Style.activityListButtonWidth
                     height: Style.activityListButtonHeight
 
+                    icon.name: 'dialog-close-symbolic'
                     icon.source: "image://svgimage-custom-color/clear.svg/" + palette.buttonText
                     icon.width: Style.activityListButtonIconSize
                     icon.height: Style.activityListButtonIconSize

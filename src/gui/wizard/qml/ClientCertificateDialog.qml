@@ -21,8 +21,6 @@ Dialog {
     padding: 24
     header: null
     footer: null
-    Accessible.role: Accessible.Dialog
-    Accessible.name: qsTr("Client certificate")
 
     background: Rectangle {
         radius: 12
@@ -31,6 +29,8 @@ Dialog {
 
     contentItem: ColumnLayout {
         spacing: 14
+        Accessible.role: Accessible.Dialog
+        Accessible.name: qsTr("Client certificate")
 
         EnforcedPlainTextLabel {
             text: qsTr("Client certificate")
