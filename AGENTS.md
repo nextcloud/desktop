@@ -61,7 +61,7 @@ All contributions generated or assisted by this agent must fully comply with:
 
 ### License headers
 
-Every new file must include the correct SPDX license header. For AGPL-2.0-or-later (the default for this repository):
+Every new file must include the correct SPDX license header. For GPL-2.0-or-later (the default for this repository):
 
 ```plaintext
 SPDX-FileCopyrightText: <YEAR> Nextcloud GmbH and Nextcloud contributors
