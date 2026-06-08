@@ -1033,7 +1033,7 @@ void AccountWizardController::slotAuthError(QNetworkReply *reply)
     if (!redirectUrl.isEmpty()) {
         auto adjustedRedirectUrl = redirectUrl;
         auto path = adjustedRedirectUrl.path();
-        const auto expectedPath = u'/' + _account->davPath();
+        const auto expectedPath = QString{u'/' + _account->davPath()};
         if (path.endsWith(expectedPath)) {
             path.chop(expectedPath.size());
             adjustedRedirectUrl.setPath(path);
