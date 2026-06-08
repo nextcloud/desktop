@@ -26,13 +26,14 @@ Q_LOGGING_CATEGORY(lcFlow2auth, "nextcloud.sync.credentials.flow2auth", QtInfoMs
 
 namespace {
 constexpr auto loginFlowPollIntervalSeconds = 3LL;
+constexpr auto pollTimerIntervalMilliseconds = 1000;
 }
 
 Flow2Auth::Flow2Auth(Account *account, QObject *parent)
     : QObject(parent)
     , _account(account)
 {
-    _pollTimer.setInterval(static_cast<int>(loginFlowPollIntervalSeconds * 1000));
+    _pollTimer.setInterval(pollTimerIntervalMilliseconds);
     QObject::connect(&_pollTimer, &QTimer::timeout, this, &Flow2Auth::slotPollTimerTimeout);
 }
 
