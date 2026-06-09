@@ -319,9 +319,12 @@ add_definitions(-D_UNICODE)
 if( WIN32 )
 add_definitions( -D__USE_MINGW_ANSI_STDIO=1 )
 add_definitions( -DNOMINMAX )
-# Get APIs from from Vista onwards.
-add_definitions(-D_WIN32_WINNT=0x0601)
-add_definitions(-DWINVER=0x0601)
+# Target Windows 10 or later, matching the documented supported runtime
+# (see README). NTDDI_VERSION is already on Windows 10 2004 (19041), so
+# the previous Windows 7 values for WINVER / _WIN32_WINNT were merely
+# stale — bringing them in line unlocks Win8+ APIs like XAudio2.
+add_definitions(-D_WIN32_WINNT=0x0A00)
+add_definitions(-DWINVER=0x0A00)
 add_definitions(-DNTDDI_VERSION=0x0A000004)
     if( MSVC )
     # Use automatic overload for suitable CRT safe-functions
