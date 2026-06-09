@@ -97,11 +97,6 @@ FolderMan::FolderMan(QObject *parent)
     connect(this, &FolderMan::folderListChanged, this, &FolderMan::slotSetupPushNotifications);
 }
 
-FolderMan *FolderMan::instance()
-{
-    return _instance;
-}
-
 FolderMan::~FolderMan()
 {
     qDeleteAll(_folderMap);
