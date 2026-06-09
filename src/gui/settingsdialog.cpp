@@ -593,7 +593,7 @@ public:
             }
 
         private:
-            void initStyleOption(QStyleOptionToolButton *option) const
+            void initStyleOption(QStyleOptionToolButton *option) const override
             {
                 QToolButton::initStyleOption(option);
                 if (!option->text.isEmpty()) {

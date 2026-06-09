@@ -7,11 +7,9 @@
 
 #include <QColor>
 #include <QPainter>
-#include <QPalette>
 #include <QPaintEvent>
 #include <QPen>
 #include <QSizePolicy>
-#include <QtGlobal>
 
 namespace OCC {
 
@@ -26,7 +24,7 @@ SettingsSwitch::SettingsSwitch(QWidget *parent)
 
 QSize SettingsSwitch::sizeHint() const
 {
-    return {36, 20};
+    return {30, 16};
 }
 
 QSize SettingsSwitch::minimumSizeHint() const
@@ -38,10 +36,10 @@ void SettingsSwitch::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event)
 
-    constexpr qreal trackWidth = 36.0;
-    constexpr qreal trackHeight = 20.0;
-    constexpr qreal margin = 2.0;
-    constexpr qreal knobSize = trackHeight - 2.0 * margin;
+    constexpr qreal trackWidth = 30.0;
+    constexpr qreal trackHeight = 16.0;
+    constexpr qreal knobMargin = 3.0;
+    constexpr qreal knobSize = 10.0;
 
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
@@ -50,11 +48,7 @@ void SettingsSwitch::paintEvent(QPaintEvent *event)
     const auto y = (height() - trackHeight) / 2.0;
     const QRectF trackRect{x, y, trackWidth, trackHeight};
 
-#ifdef Q_OS_MACOS
-    auto trackColor = isChecked() ? QColor(52, 120, 246) : QColor(209, 209, 214);
-#else
-    auto trackColor = isChecked() ? palette().highlight().color() : palette().color(QPalette::Button);
-#endif
+    auto trackColor = isChecked() ? QColor(0, 103, 158) : QColor(107, 107, 107);
     auto knobColor = QColor(255, 255, 255);
     auto knobShadowColor = QColor(0, 0, 0, 38);
     if (!isEnabled()) {
@@ -67,10 +61,11 @@ void SettingsSwitch::paintEvent(QPaintEvent *event)
     painter.setBrush(trackColor);
     painter.drawRoundedRect(trackRect, trackHeight / 2.0, trackHeight / 2.0);
 
-    const auto knobX = isChecked()
-        ? trackRect.right() - margin - knobSize
-        : trackRect.left() + margin;
-    const QRectF knobRect{knobX, trackRect.top() + margin, knobSize, knobSize};
+    const auto knobCenterY = trackRect.center().y();
+    const auto knobCenterX = isChecked()
+        ? trackRect.right() - knobMargin - knobSize / 2.0
+        : trackRect.left() + knobMargin + knobSize / 2.0;
+    const QRectF knobRect{knobCenterX - knobSize / 2.0, knobCenterY - knobSize / 2.0, knobSize, knobSize};
 
     painter.setBrush(knobShadowColor);
     painter.setPen(Qt::NoPen);
@@ -86,7 +81,8 @@ void SettingsSwitch::paintEvent(QPaintEvent *event)
         QPen focusPen(focusColor, 2.0);
         painter.setPen(focusPen);
         painter.setBrush(Qt::NoBrush);
-        painter.drawRoundedRect(trackRect.adjusted(-2.0, -2.0, 2.0, 2.0), trackHeight / 2.0 + 2.0, trackHeight / 2.0 + 2.0);
+        const auto focusRect = trackRect.adjusted(1.0, 1.0, -1.0, -1.0);
+        painter.drawRoundedRect(focusRect, focusRect.height() / 2.0, focusRect.height() / 2.0);
     }
 }
 
