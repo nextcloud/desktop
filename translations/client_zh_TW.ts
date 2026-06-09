@@ -2,94 +2,94 @@
 <context>
     <name>AccountWizardWindow</name>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="145"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="156"/>
         <source>Secure connection failed</source>
         <translation>安全連線失敗</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="158"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="159"/>
         <source>Connect to %1?</source>
         <translation>連線至 %1？</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="168"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="169"/>
         <source>The secure connection failed. You can retry without encryption, or add a client certificate and try again.</source>
         <translation>安全連線失敗。您可以嘗試不使用加密重新連線，或新增客戶端憑證後再試一次。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="169"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="170"/>
         <source>The secure connection failed. You can add a client certificate and try again.</source>
         <translation>安全連線失敗。您可以新增客戶端憑證後再試一次。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="181"/>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="247"/>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="249"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="191"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="262"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="264"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="191"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="201"/>
         <source>Connect without TLS</source>
         <translation>不使用 TLS</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="200"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="213"/>
         <source>Use client certificate</source>
         <translation>使用客戶端憑證</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="250"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="265"/>
         <source>Back</source>
         <translation>返回</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="264"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="279"/>
         <source>Set up later</source>
         <translation>稍後設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="275"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="290"/>
         <source>Advanced</source>
         <translation>進階</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="284"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="299"/>
         <source>Sign up</source>
         <translation>註冊</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="294"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="309"/>
         <source>Self-host</source>
         <translation>自架</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="307"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="322"/>
         <source>Proxy settings</source>
         <translation>代理伺服器設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="328"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="343"/>
         <source>Copy link</source>
         <translation>複製連結</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="361"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="376"/>
         <source>Open</source>
         <translation>開啟</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="363"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="378"/>
         <source>Connect</source>
         <translation>連線</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="365"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="380"/>
         <source>Done</source>
         <translation>完成</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="367"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="382"/>
         <source>Log in</source>
         <translation>登入</translation>
     </message>
@@ -151,7 +151,7 @@
 <context>
     <name>AdvancedOptionsDialog</name>
     <message>
-        <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="24"/>
+        <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="32"/>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="35"/>
         <source>Advanced options</source>
         <translation>進階選項</translation>
@@ -249,7 +249,7 @@
 <context>
     <name>ClientCertificateDialog</name>
     <message>
-        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="25"/>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="33"/>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="36"/>
         <source>Client certificate</source>
         <translation>客戶端憑證</translation>
@@ -1338,208 +1338,204 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::AccountWizardController</name>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="235"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="251"/>
         <source>Will require local storage</source>
         <translation>將需要本機儲存空間</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="617"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="622"/>
         <source>Proxy settings are incomplete.</source>
         <translation>代理伺服器設定不完整。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="624"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="629"/>
         <source>Server address does not seem to be valid</source>
         <translation>似乎是無效的伺服器位址</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="645"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="650"/>
         <source>Username must not be empty.</source>
         <translation>使用者名稱不能為空。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="651"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="974"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="656"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="986"/>
         <source>Checking account access</source>
         <translation>正在檢查帳號存取權</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="729"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="734"/>
         <source>Checking server address</source>
         <translation>正在檢查伺服器位址</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="794"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="799"/>
         <source>Preparing browser login</source>
         <translation>正在準備瀏覽器登入</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="815"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="820"/>
         <source>Invalid URL</source>
         <translation>無效的 URL</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="817"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="822"/>
         <source>Failed to connect to %1 at %2:
 %3</source>
         <translation>無法連線至在 %2 的 %1：
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="833"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="838"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>嘗試連線至在 %2 的 %1 逾時。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="854"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="859"/>
         <source>This server requires legacy browser authentication. Enter app-password credentials instead.</source>
         <translation>此伺服器需要使用舊版瀏覽器進行驗證。請改為輸入應用程式密碼。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="932"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="937"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>無法開啟瀏覽器，請複製連結到您的瀏覽器。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="953"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="962"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="967"/>
         <source>Waiting for authorization</source>
         <translation>等待授權</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="957"/>
-        <source>Polling for authorization</source>
-        <translation>正在輪詢授權</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="961"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="972"/>
         <source>Starting authorization</source>
         <translation>開始授權</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="965"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="977"/>
         <source>Link copied to clipboard.</source>
         <translation>連結已複製到剪貼簿。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1020"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1050"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1032"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1062"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>伺服器回應 WebDAV 認證請求無效</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1037"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1049"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>對伺服器的已認證請求會被重新導向至「%1」。URL 不良，伺服器組態有誤。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1045"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1057"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
         <translation>伺服器禁止存取。若要確認您是否具備適當的存取權限，請在瀏覽器中開啟該服務。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1063"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1075"/>
         <source>Account connected.</source>
         <translation>已連結帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1138"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1150"/>
         <source>Will require %1 of storage</source>
         <translation>將會佔用 %1 的儲存空間</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1288"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1331"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 剩餘空間</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1306"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1341"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>本機資料夾沒有足夠的剩餘空間！</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1322"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1358"/>
         <source>Please choose a local sync folder.</source>
         <translation>請選擇本機同步資料夾。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1391"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1363"/>
+        <source>Please choose an empty local sync folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1428"/>
         <source>Could not create local folder %1</source>
         <translation>無法建立本機資料夾 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1409"/>
-        <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and try again.</source>
-        <translation>無法移除與備份此資料夾，因為有其他的程式正在使用該資料夾或其中的檔案。請關閉使用中的資料夾或檔案並重試。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1421"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1442"/>
         <source>Checking remote folder</source>
         <translation>正在檢查遠端資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1467"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1488"/>
         <source>No remote folder specified!</source>
         <translation>未指定遠端資料夾！</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1476"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1497"/>
         <source>Error: %1</source>
         <translation>錯誤：%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1481"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1502"/>
         <source>Creating remote folder</source>
         <translation>正在建立遠端資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1500"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1521"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>資料夾建立結果為 HTTP 錯誤碼 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1502"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1523"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
         <translation>遠端資料夾建立失敗，原因是提供的憑證不正確。請返回並檢查您的憑證。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1504"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1525"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>遠端資料夾 %1 建立失敗，錯誤為 &lt;tt&gt;%2&lt;/tt&gt;。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1528"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1549"/>
         <source>Account setup failed while creating the sync folder.</source>
         <translation>建立同步資料夾時，帳號設定失敗。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1555"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1576"/>
         <source>Could not create the sync folder.</source>
         <translation>無法建立同步資料夾。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1627"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1666"/>
         <source>Local Sync Folder</source>
         <translation>本機同步資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1878"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1913"/>
         <source>Select a certificate</source>
         <translation>選取憑證</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1880"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1915"/>
         <source>Certificate files (*.p12 *.pfx)</source>
         <translation>憑證檔案 (*.p12 *.pfx)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1888"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1908"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1923"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1943"/>
         <source>Could not access the selected certificate file.</source>
         <translation>無法存取選定的憑證檔。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1924"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1959"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>無法載入憑證。可能是密碼錯了？</translation>
     </message>
@@ -2783,6 +2779,11 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>無法重設資料夾狀態</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="427"/>
+        <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
+        <translation>發現較舊的同步處理日誌「%1」，但無法移除。請確認沒有應用程式正在使用它。</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1459"/>
         <source> (backup)</source>
         <translation> （備份）</translation>
@@ -2791,11 +2792,6 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/folderman.cpp" line="1464"/>
         <source> (backup %1)</source>
         <translation> （備份 %1）</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="427"/>
-        <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>發現較舊的同步處理日誌「%1」，但無法移除。請確認沒有應用程式正在使用它。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1803"/>
@@ -5775,28 +5771,28 @@ Server replied with error: %2</source>
         <translation><numerusform>%n 個通知</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="641"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="680"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="684"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="723"/>
         <source>“%1” was not synchronized</source>
         <translation>「%1」未同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="682"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="725"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
         <translation>伺服器儲存空間不足。檔案需要 %1 但僅有 %2。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="685"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="728"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
         <translation>伺服器儲存空間不足。檔案需要 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="688"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="731"/>
         <source>Insufficient storage on the server.</source>
         <translation>伺服器儲存空間不足。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="767"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>伺服器上的可用空間不足以容納某些要上傳的檔案。</translation>
     </message>
@@ -5855,7 +5851,7 @@ Server replied with error: %2</source>
         <translation>正在傳送您的請求……</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1703"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1746"/>
         <source>Sending your request …</source>
         <translation>正在傳送您的請求……</translation>
     </message>
@@ -6163,7 +6159,7 @@ Server replied with error: %2</source>
         <translation>%1 的 macOS VFS：遇到問題。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="496"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="494"/>
         <source>macOS VFS for %1: An error was encountered.</source>
         <translation>%1 的 macOS VFS：發生錯誤。</translation>
     </message>
@@ -6178,12 +6174,12 @@ Server replied with error: %2</source>
         <translation>正在檢查本機「%1」中的變更</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="848"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="846"/>
         <source>Internal link copied</source>
         <translation>已複製內部連結</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="849"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="847"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation>內部連結已複製到剪貼簿。</translation>
     </message>
@@ -6211,78 +6207,78 @@ Server replied with error: %2</source>
 <context>
     <name>ProxySettingsDialog</name>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="36"/>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="78"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="77"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="80"/>
         <source>Proxy settings</source>
         <translation>代理伺服器設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="86"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="88"/>
         <source>No proxy</source>
         <translation>沒有代理伺服器</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="96"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="98"/>
         <source>Use system proxy</source>
         <translation>使用系統代理伺服器</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="106"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="108"/>
         <source>Manually specify proxy</source>
         <translation>手動指定代理伺服器</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="121"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="123"/>
         <source>HTTP(S) proxy</source>
         <translation>HTTP(S) 代理伺服器</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="121"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="123"/>
         <source>SOCKS5 proxy</source>
         <translation>SOCKS5 代理伺服器</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="125"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="127"/>
         <source>Proxy type</source>
         <translation>代理伺服器類型</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="136"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="138"/>
         <source>Hostname of proxy server</source>
         <translation>代理伺服器的主機名稱</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="148"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="150"/>
         <source>Proxy port</source>
         <translation>代理伺服器連接埠</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="157"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="159"/>
         <source>Proxy server requires authentication</source>
         <translation>代理伺服器需要驗證</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="173"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="175"/>
         <source>Username for proxy server</source>
         <translation>代理伺服器使用者名稱</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="180"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="182"/>
         <source>Password for proxy server</source>
         <translation>代理伺服器密碼</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="189"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="191"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
         <translation>注意：代理伺服器設定對於在 localhost 的帳號無效</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="206"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="208"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="213"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="215"/>
         <source>Done</source>
         <translation>完成</translation>
     </message>
@@ -6579,17 +6575,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="38"/>
         <source>Enter the link to your %1 web interface from the browser or the link to a folder shared with you.</source>
-        <translation type="unfinished"/>
+        <translation>請在瀏覽器中輸入 %1 網頁介面的連結，或輸入與您分享的資料夾連結。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="182"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>登入</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="197"/>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>伺服器位址</translation>
     </message>
 </context>
 <context>
@@ -6748,47 +6744,32 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>Virtual files</source>
-        <translation type="unfinished"/>
+        <translation>虛擬檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="91"/>
         <source>Download files on-demand</source>
-        <translation type="unfinished"/>
+        <translation>隨選下載檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="99"/>
         <source>Synchronize everything</source>
-        <translation type="unfinished"/>
+        <translation>同步所有內容</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="108"/>
         <source>Choose what to sync</source>
-        <translation type="unfinished"/>
+        <translation>選擇同步項目</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="122"/>
         <source>Local sync folder</source>
-        <translation type="unfinished"/>
+        <translation>本機同步資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="156"/>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="154"/>
         <source>Choose</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="191"/>
-        <source>Warning: The local folder is not empty. Pick a resolution!</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="200"/>
-        <source>Keep local data</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="208"/>
-        <source>Erase local folder and start a clean sync</source>
-        <translation type="unfinished"/>
+        <translation>選擇</translation>
     </message>
 </context>
 <context>
@@ -6830,17 +6811,17 @@ Server replied with error: %2</source>
 <context>
     <name>TrayAccountPopup</name>
     <message>
-        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="215"/>
+        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="216"/>
         <source>Add account</source>
         <translation>新增帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="255"/>
+        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="256"/>
         <source>Settings</source>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="295"/>
+        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="296"/>
         <source>Quit</source>
         <translation>離開</translation>
     </message>
@@ -7411,7 +7392,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="130"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>啟用實驗性功能？</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="131"/>
@@ -7422,17 +7403,23 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>啟用「虛擬檔案」模式時，起先不會下載任何檔案。其作法是，會為伺服器上存在的每個檔案，先建立一個小型的「%1」檔案。您可以透過執行這些檔案，或使用檔案的右鍵情境選單來下載內容。
+
+虛擬檔案模式與選擇性同步是互斥的。目前未選取的資料夾，將會被轉換為僅線上使用的資料夾，而您選擇性的同步設定會被重設。
+
+切換到此模式後，會中止目前執行中的任何同步。
+
+這是一種新的、實驗性模式。如果您決定要使用它，請協助回報遇到的任何問題。</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="146"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>啟用實驗性的佔位檔模式</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="147"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>保護安全</translation>
     </message>
 </context>
 <context>
