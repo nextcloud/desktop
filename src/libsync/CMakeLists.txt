@@ -112,6 +112,8 @@ set(libsync_SRCS
     propagatedownloadencrypted.cpp
     sharing/feature.h
     sharing/feature.cpp
+    sharing/share.h
+    sharing/share.cpp
     sharing/sharetype.h
     sharing/sharetype.cpp
     sharing/sharingmanager.h

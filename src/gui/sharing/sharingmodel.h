@@ -10,6 +10,8 @@
 
 #include "accountstate.h"
 
+#include "sharing/share.h"
+
 namespace OCC::Gui::Sharing {
 
 class SharingModel : public QAbstractListModel
@@ -52,6 +54,7 @@ Q_SIGNALS:
 
 private:
     AccountState *_accountState = nullptr;
+    QSharedPointer<OCC::Sharing::Share> _share = nullptr;
     QVariantMap _fieldValues;
 };
 

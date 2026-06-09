@@ -5,30 +5,21 @@
 
 #include "sharingmanager.h"
 
-#include <algorithm>
-#include <QSet>
+#include <QJsonDocument>
+#include <QJsonObject>
+
+#include "networkjobs.h"
+#include "share.h"
 
 using namespace Qt::StringLiterals;
 
 using namespace OCC::Sharing;
 
+const QLatin1String SharingManager::SOURCE_TYPE_NODE = "OCA\\Files\\Sharing\\Source\\NodeShareSourceType"_L1;
+
 namespace
 {
-template<class T>
-void parseTypes(const QVariantMap &capability, const QString &key, QMap<QString, QSharedPointer<T>> &typeMap) {
-    const auto propertyList = capability.value(key).toList();
-
-    typeMap.clear();
-    for (const auto &typeObject  : propertyList) {
-        const auto object = typeObject.toMap();
-        auto typeInstance = T::fromCapability(object);
-        if (!typeInstance) {
-            continue;
-        }
-
-        typeMap.insert(typeInstance->type(), typeInstance);
-    }
-};
+    constexpr auto SHARING_V1_BASE = "/ocs/v2.php/apps/sharing/api/v1"_L1;
 }
 
 SharingManager::SharingManager(AccountPtr account, QObject *parent)
@@ -52,56 +43,6 @@ void SharingManager::updateFromCapabilities(const QVariantMap &capabilities)
     if (const auto property = capability.value("api_versions"_L1); property.isValid() && property.canConvert<QStringList>()) {
         _apiVersions = property.value<QStringList>();
     }
-
-    parseTypes(capability, "source_types"_L1, _sourceTypes);
-    parseTypes(capability, "recipient_types"_L1, _recipientTypes);
-    parseTypes(capability, "features"_L1, _features);
-}
-
-QList<QSharedPointer<Feature>> SharingManager::availableFeatures(const QStringList &sourceTypes, const QStringList &recipientTypes) const
-{
-    QList<QSharedPointer<Feature>> features;
-
-    const auto sourceTypesSet = QSet(sourceTypes.cbegin(), sourceTypes.cend());
-    const auto recipientTypesSet = QSet(recipientTypes.cbegin(), recipientTypes.cend());
-
-    for (const auto &feature : std::as_const(_features)) {
-        if (const auto compatibleSourceTypes = feature->compatibleSourceTypes();
-            !sourceTypesSet.intersects(QSet(compatibleSourceTypes.cbegin(), compatibleSourceTypes.cend()))) {
-            continue;
-        }
-        if (const auto compatibleRecipientTypes = feature->compatibleRecipientTypes();
-            !recipientTypesSet.intersects(QSet(compatibleRecipientTypes.cbegin(), compatibleRecipientTypes.cend()))) {
-            continue;
-        }
-
-        features.append(feature);
-    }
-
-    return features;
-}
-
-bool SharingManager::isFeatureAvailable(const QString &feature, const QStringList &sourceTypes, const QStringList &recipientTypes) const
-{
-    if (!_features.contains(feature)) {
-        return false;
-    }
-    const auto featureObject = _features.value(feature);
-
-    const auto sourceTypesSet = QSet(sourceTypes.cbegin(), sourceTypes.cend());
-    const auto recipientTypesSet = QSet(recipientTypes.cbegin(), recipientTypes.cend());
-
-    if (const auto compatibleSourceTypes = featureObject->compatibleSourceTypes();
-        !sourceTypesSet.intersects(QSet(compatibleSourceTypes.cbegin(), compatibleSourceTypes.cend()))) {
-        return false;
-    }
-
-    if (const auto compatibleRecipientTypes = featureObject->compatibleRecipientTypes();
-        !recipientTypesSet.intersects(QSet(compatibleRecipientTypes.cbegin(), compatibleRecipientTypes.cend()))) {
-        return false;
-    }
-
-    return true;
 }
 
 bool SharingManager::isAvailable() const
@@ -119,19 +60,63 @@ void SharingManager::setAvailable(bool available)
     Q_EMIT availableChanged();
 }
 
-QMap<QString, QSharedPointer<ShareType>> SharingManager::sourceTypes() const
+QFuture<QSharedPointer<Share>> SharingManager::createShare(QPromise<QSharedPointer<Share>> *promise)
 {
-    return _sourceTypes;
+    auto future = promise->future();
+
+    auto job = new JsonApiJob(_account, SHARING_V1_BASE % "/share"_L1, this);
+    job->setVerb(SimpleApiJob::Verb::Post);
+    connect(job, &OCC::JsonApiJob::jsonReceived, this, [&promise](const QJsonDocument &json, int statusCode) -> void {
+        qCritical() << "request finished with code" << statusCode << "data" << json;
+        promise->start();
+        auto share = Share::fromJson(json);
+        promise->emplaceResult(share);
+        qCritical() << "promise finished, share id:" << share->id();
+        promise->finish();
+    });
+    job->start();
+
+    return future;
 }
 
-QMap<QString, QSharedPointer<ShareType>> SharingManager::recipientTypes() const
+OCC::JsonApiJob *SharingManager::createShareJob(QObject *parent)
 {
-    return _recipientTypes;
+    // TODO: use promises?
+    auto job = new JsonApiJob(_account, SHARING_V1_BASE % "/share"_L1, parent);
+    job->setVerb(SimpleApiJob::Verb::Post);
+    return job;
 }
 
-QMap<QString, QSharedPointer<Feature>> SharingManager::features() const
+OCC::JsonApiJob *SharingManager::createAddSourceJob(QSharedPointer<Share> share, const QString &fileId, QObject *parent)
 {
-    return _features;
+    // TODO: use promises?
+    auto job = new JsonApiJob(_account, SHARING_V1_BASE % "/share/%1/source"_L1.arg(share->id()), parent);
+    job->setVerb(SimpleApiJob::Verb::Post);
+
+    QJsonObject dataObject;
+    dataObject.insert("class"_L1, SOURCE_TYPE_NODE);
+    dataObject.insert("value"_L1, fileId);
+    QJsonDocument body;
+    body.setObject(dataObject);
+    job->setBody(body);
+
+    return job;
+}
+
+OCC::JsonApiJob *SharingManager::createAddRecipientJob(QSharedPointer<Share> share, QObject *parent)
+{
+    // TODO: use promises?
+    auto job = new JsonApiJob(_account, SHARING_V1_BASE % "/share/%1/recipient"_L1.arg(share->id()), parent);
+    job->setVerb(SimpleApiJob::Verb::Post);
+
+    QJsonObject dataObject;
+    dataObject.insert("class"_L1, "OC\\Core\\Sharing\\Recipient\\GroupShareRecipientType"_L1);
+    dataObject.insert("value"_L1, "admin"_L1);
+    QJsonDocument body;
+    body.setObject(dataObject);
+    job->setBody(body);
+
+    return job;
 }
 
 OCC::JsonApiJob *SharingManager::createSearchJob(const QString &query, int64_t offset, int64_t limit, QObject *parent)

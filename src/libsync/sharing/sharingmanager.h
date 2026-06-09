@@ -7,14 +7,14 @@
 
 #include <QVariantMap>
 #include <QStringList>
+#include <QFuture>
 
 #include "accountfwd.h"
 #include "networkjobs.h"
 
-#include "sharetype.h"
-#include "feature.h"
-
 namespace OCC::Sharing {
+
+class Share;
 
 class SharingManager : public QObject
 {
@@ -23,26 +23,27 @@ class SharingManager : public QObject
     Q_PROPERTY(bool available READ isAvailable NOTIFY availableChanged)
 
 public:
+    static const QLatin1String SOURCE_TYPE_NODE;
+
     explicit SharingManager(AccountPtr account, QObject *parent = nullptr);
 
     void updateFromCapabilities(const QVariantMap &capabilities);
-
-    [[nodiscard]] Q_INVOKABLE QList<QSharedPointer<Feature>> availableFeatures(const QStringList &sourceTypes, const QStringList &recipientTypes) const;
-    [[nodiscard]] Q_INVOKABLE bool isFeatureAvailable(const QString &feature, const QStringList &sourceTypes, const QStringList &recipientTypes) const;
 
     /**
      * \brief Whether the new sharing system is available (announced via capabilities).
      */
     [[nodiscard]] bool isAvailable() const;
 
-    [[nodiscard]] QMap<QString, QSharedPointer<ShareType>> sourceTypes() const;
-    [[nodiscard]] QMap<QString, QSharedPointer<ShareType>> recipientTypes() const;
-    [[nodiscard]] QMap<QString, QSharedPointer<Feature>> features() const;
-
+    QFuture<QSharedPointer<Share>> createShare(QPromise<QSharedPointer<Share>> *promise);
+    JsonApiJob *createShareJob(QObject *parent);
+    JsonApiJob *createAddSourceJob(QSharedPointer<Share> share, const QString &fileId, QObject *parent);
+    JsonApiJob *createAddRecipientJob(QSharedPointer<Share> share, QObject *parent);
     JsonApiJob *createSearchJob(const QString &query, int64_t offset, int64_t limit, QObject *parent);
 
 Q_SIGNALS:
     void availableChanged();
+    void shareReceived(QSharedPointer<Share> share);
+    void shareJsonReceived(const QJsonDocument &json);
 
 private:
     AccountPtr _account;
@@ -50,9 +51,6 @@ private:
     bool _available = false;
 
     QStringList _apiVersions;
-    QMap<QString, QSharedPointer<ShareType>> _sourceTypes;
-    QMap<QString, QSharedPointer<ShareType>> _recipientTypes;
-    QMap<QString, QSharedPointer<Feature>> _features;
 
     void setAvailable(bool available);
 };
