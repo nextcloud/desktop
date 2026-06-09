@@ -11,13 +11,81 @@
 #include "clientsideencryptionjobs.h"
 #include "clientsideencryption.h"
 
+#include <QJsonArray>
+#include <QJsonDocument>
 #include <QLoggingCategory>
 #include <QNetworkReply>
+#include <algorithm>
 
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFetchAndUploadE2eeFolderMetadataJob, "nextcloud.sync.propagator.encryptedfoldermetadatahandler", QtInfoMsg)
 
+}
+
+namespace {
+constexpr auto counterStoreKeyPrefix = "e2ee_metadata_counter:";
+constexpr auto keyChecksumsStoreKeyPrefix = "e2ee_metadata_key_checksums:";
+
+QString normalizeStorePath(const QString &path)
+{
+    const auto normalized = OCC::Utility::noLeadingSlashPath(OCC::Utility::noTrailingSlashPath(path));
+    return normalized.isEmpty() ? QStringLiteral("/") : normalized;
+}
+
+QString counterStoreKey(const QString &folderPath)
+{
+    return QString::fromLatin1(counterStoreKeyPrefix) + normalizeStorePath(folderPath);
+}
+
+QString keyChecksumsStoreKey(const QString &rootPath)
+{
+    return QString::fromLatin1(keyChecksumsStoreKeyPrefix) + normalizeStorePath(rootPath);
+}
+
+QString rootKeyPath(const OCC::RootEncryptedFolderInfo &rootEncryptedFolderInfo, const QString &folderFullRemotePath)
+{
+    const auto normalizedRoot = normalizeStorePath(rootEncryptedFolderInfo.path);
+    if (normalizedRoot == QStringLiteral("/")) {
+        return normalizeStorePath(folderFullRemotePath);
+    }
+    return normalizedRoot;
+}
+
+QSet<QByteArray> parseKeyChecksums(const QString &value)
+{
+    if (value.isEmpty()) {
+        return {};
+    }
+    const auto doc = QJsonDocument::fromJson(value.toUtf8());
+    if (!doc.isArray()) {
+        return {};
+    }
+    QSet<QByteArray> checksums;
+    for (const auto &entry : doc.array()) {
+        const auto checksum = entry.toString().toUtf8();
+        if (!checksum.isEmpty()) {
+            checksums.insert(checksum);
+        }
+    }
+    return checksums;
+}
+
+QString serializeKeyChecksums(const QSet<QByteArray> &checksums)
+{
+    if (checksums.isEmpty()) {
+        return {};
+    }
+    auto sortedChecksums = checksums.values();
+    std::sort(sortedChecksums.begin(), sortedChecksums.end());
+    QJsonArray array;
+    for (const auto &checksum : sortedChecksums) {
+        if (!checksum.isEmpty()) {
+            array.push_back(QString::fromUtf8(checksum));
+        }
+    }
+    return QString::fromUtf8(QJsonDocument(array).toJson(QJsonDocument::Compact));
+}
 }
 
 namespace OCC {
@@ -44,6 +112,22 @@ EncryptedFolderMetadataHandler::EncryptedFolderMetadataHandler(const AccountPtr 
 void EncryptedFolderMetadataHandler::fetchMetadata(const FetchMode fetchMode)
 {
     _fetchMode = fetchMode;
+    if (_journalDb) {
+        const auto storedCounter = _journalDb->keyValueStoreGetInt(counterStoreKey(_folderFullRemotePath), -1);
+        if (storedCounter >= 0) {
+            const auto storedCounterValue = static_cast<quint64>(storedCounter);
+            if (_rootEncryptedFolderInfo.counter < storedCounterValue) {
+                _rootEncryptedFolderInfo.counter = storedCounterValue;
+            }
+        }
+
+        const auto storedChecksumsRaw =
+            _journalDb->keyValueStoreGetString(keyChecksumsStoreKey(rootKeyPath(_rootEncryptedFolderInfo, _folderFullRemotePath)));
+        const auto storedChecksums = parseKeyChecksums(storedChecksumsRaw);
+        if (!storedChecksums.isEmpty()) {
+            _rootEncryptedFolderInfo.keyChecksums.unite(storedChecksums);
+        }
+    }
     fetchFolderEncryptedId();
 }
 
@@ -189,6 +273,21 @@ void EncryptedFolderMetadataHandler::slotMetadataReceived(const QJsonDocument &j
             qCWarning(lcFetchAndUploadE2eeFolderMetadataJob) << "Error parsing or decrypting metadata for folder" << _folderFullRemotePath;
             emit fetchFinished(-1, tr("Error parsing or decrypting metadata."));
             return;
+        }
+        if (_journalDb) {
+            const auto counterValue = metadata->counter();
+            if (counterValue > 0) {
+                _journalDb->keyValueStoreSet(counterStoreKey(_folderFullRemotePath), static_cast<qulonglong>(counterValue));
+            }
+            const auto keyChecksums = metadata->keyChecksums();
+            if (!keyChecksums.isEmpty()) {
+                const auto rootPath = rootKeyPath(_rootEncryptedFolderInfo, _folderFullRemotePath);
+                _journalDb->keyValueStoreSet(keyChecksumsStoreKey(rootPath), serializeKeyChecksums(keyChecksums));
+            }
+        }
+        _rootEncryptedFolderInfo.counter = metadata->counter();
+        if (!metadata->keyChecksums().isEmpty()) {
+            _rootEncryptedFolderInfo.keyChecksums = metadata->keyChecksums();
         }
         _folderMetadata = metadata;
         emit fetchFinished(200);

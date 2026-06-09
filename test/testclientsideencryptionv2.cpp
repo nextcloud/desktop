@@ -5,6 +5,7 @@
 #include "syncenginetestutils.h"
 #include "clientsideencryption.h"
 #include "foldermetadata.h"
+#include "common/checksums.h"
 #include <QtTest>
 
 using namespace OCC;
@@ -411,6 +412,99 @@ private slots:
             }
         }
         QVERIFY(isFirstUserPresentAndCanDecrypt);
+    }
+
+    void testRejectsKeyChecksumRemoval()
+    {
+        QScopedPointer<FolderMetadata> metadata(new FolderMetadata(_account, "/", FolderMetadata::FolderType::Root));
+        QSignalSpy metadataSetupCompleteSpy(metadata.data(), &FolderMetadata::setupComplete);
+        metadataSetupCompleteSpy.wait();
+        QCOMPARE(metadataSetupCompleteSpy.count(), 1);
+        QVERIFY(metadata->isValid());
+
+        FolderMetadata::EncryptedFile encryptedFile;
+        encryptedFile.encryptionKey = EncryptionHelper::generateRandom(16);
+        encryptedFile.encryptedFilename = EncryptionHelper::generateRandomFilename();
+        encryptedFile.originalFilename = "fakefile.txt";
+        encryptedFile.mimetype = "application/octet-stream";
+        encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
+        metadata->addEncryptedFile(encryptedFile);
+
+        QVERIFY(metadata->addUser(_secondAccount->davUser(), _secondAccount->e2e()->getCertificate(), FolderMetadata::CertificateType::SoftwareNextcloudCertificate));
+
+        const auto previousChecksums = metadata->keyChecksums();
+        QVERIFY(previousChecksums.size() > 1);
+
+        const auto currentChecksum = calcSha256(metadata->metadataKeyForEncryption());
+        QVERIFY(previousChecksums.contains(currentChecksum));
+
+        auto reducedChecksums = previousChecksums;
+        for (const auto &checksum : previousChecksums) {
+            if (checksum != currentChecksum) {
+                reducedChecksums.remove(checksum);
+                break;
+            }
+        }
+        QCOMPARE(reducedChecksums.size(), previousChecksums.size() - 1);
+
+        metadata->_keyChecksums = reducedChecksums;
+
+        const auto tamperedMetadata = metadata->encryptedMetadata();
+        const auto tamperedSignature = metadata->metadataSignature();
+        QVERIFY(!tamperedMetadata.isEmpty());
+        QVERIFY(!tamperedSignature.isEmpty());
+
+        auto tamperedMetadataCopy = tamperedMetadata;
+        tamperedMetadataCopy.replace("\"", "\\\"");
+        const QJsonDocument ocsDoc = QJsonDocument::fromJson(
+            QStringLiteral("{\"ocs\": {\"data\": {\"meta-data\": \"%1\"}}}").arg(QString::fromUtf8(tamperedMetadataCopy)).toUtf8());
+
+        const auto rootInfo = RootEncryptedFolderInfo(QStringLiteral("/"),
+                                                      metadata->metadataKeyForEncryption(),
+                                                      metadata->metadataKeyForEncryption(),
+                                                      previousChecksums);
+
+        QScopedPointer<FolderMetadata> metadataFromJson(new FolderMetadata(_account, "/", ocsDoc.toJson(), rootInfo, tamperedSignature));
+        QSignalSpy metadataSetupExistingCompleteSpy(metadataFromJson.data(), &FolderMetadata::setupComplete);
+        metadataSetupExistingCompleteSpy.wait();
+        QCOMPARE(metadataSetupExistingCompleteSpy.count(), 1);
+        QVERIFY(!metadataFromJson->isValid());
+    }
+
+    void testRejectsCounterRollback()
+    {
+        QScopedPointer<FolderMetadata> metadata(new FolderMetadata(_account, "/", FolderMetadata::FolderType::Root));
+        QSignalSpy metadataSetupCompleteSpy(metadata.data(), &FolderMetadata::setupComplete);
+        metadataSetupCompleteSpy.wait();
+        QCOMPARE(metadataSetupCompleteSpy.count(), 1);
+        QVERIFY(metadata->isValid());
+
+        FolderMetadata::EncryptedFile encryptedFile;
+        encryptedFile.encryptionKey = EncryptionHelper::generateRandom(16);
+        encryptedFile.encryptedFilename = EncryptionHelper::generateRandomFilename();
+        encryptedFile.originalFilename = "fakefile.txt";
+        encryptedFile.mimetype = "application/octet-stream";
+        encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
+        metadata->addEncryptedFile(encryptedFile);
+
+        const auto encryptedMetadata = metadata->encryptedMetadata();
+        const auto signature = metadata->metadataSignature();
+        QVERIFY(!encryptedMetadata.isEmpty());
+        QVERIFY(!signature.isEmpty());
+
+        auto encryptedMetadataCopy = encryptedMetadata;
+        encryptedMetadataCopy.replace("\"", "\\\"");
+        const QJsonDocument ocsDoc = QJsonDocument::fromJson(
+            QStringLiteral("{\"ocs\": {\"data\": {\"meta-data\": \"%1\"}}}").arg(QString::fromUtf8(encryptedMetadataCopy)).toUtf8());
+
+        const auto previousCounter = metadata->newCounter() + 1;
+        const auto rootInfo = RootEncryptedFolderInfo(QStringLiteral("/"), {}, {}, metadata->keyChecksums(), previousCounter);
+
+        QScopedPointer<FolderMetadata> metadataFromJson(new FolderMetadata(_account, "/", ocsDoc.toJson(), rootInfo, signature));
+        QSignalSpy metadataSetupExistingCompleteSpy(metadataFromJson.data(), &FolderMetadata::setupComplete);
+        metadataSetupExistingCompleteSpy.wait();
+        QCOMPARE(metadataSetupExistingCompleteSpy.count(), 1);
+        QVERIFY(!metadataFromJson->isValid());
     }
 };
 
