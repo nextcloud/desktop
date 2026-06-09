@@ -111,6 +111,7 @@ QtObject {
     property int smallSpacing: 5
     property int extraSmallSpacing: 2
     property int extraExtraSmallSpacing: 1
+    readonly property int fileProviderSettingsPadding: 12
 
     property int iconButtonWidth: 36
     property int standardPrimaryButtonHeight: 40

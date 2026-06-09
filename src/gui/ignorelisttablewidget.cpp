@@ -8,6 +8,7 @@
 
 #include "folderman.h"
 
+#include <QDialog>
 #include <QFile>
 #include <QInputDialog>
 #include <QLineEdit>
@@ -126,15 +127,19 @@ void IgnoreListTableWidget::slotWriteIgnoreFile(const QString &file)
 
 void IgnoreListTableWidget::slotAddPattern()
 {
-    auto okClicked = false;
-    const auto pattern = QInputDialog::getText(this,
-                                               {},
-                                               {},
-                                               QLineEdit::Normal,
-                                               {},
-                                               &okClicked);
+    auto dialog = QInputDialog(this);
+    dialog.setWindowTitle(tr("Add Ignore Pattern"));
+    dialog.setLabelText(tr("Add a new ignore pattern:"));
+    dialog.setInputMode(QInputDialog::TextInput);
+    dialog.setTextEchoMode(QLineEdit::Normal);
+    dialog.setWindowModality(Qt::WindowModal);
+    dialog.setWindowFlag(Qt::Sheet);
 
-    if (!okClicked || pattern.isEmpty())
+    if (dialog.exec() != QDialog::Accepted)
+        return;
+
+    const auto pattern = dialog.textValue();
+    if (pattern.isEmpty())
         return;
 
     addPattern(pattern, false, false);

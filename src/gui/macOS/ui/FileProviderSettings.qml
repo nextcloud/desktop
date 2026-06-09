@@ -30,8 +30,8 @@ Page {
 
     leftPadding: 0
     rightPadding: 0
-    topPadding: 12 // Style.standardSpacing is 10, the QtWidgets layout uses 12.  set it here as well to avoid a rough cutoff
-    bottomPadding: 12
+    topPadding: Style.fileProviderSettingsPadding // Style.standardSpacing is 10, the QtWidgets layout uses 12.  set it here as well to avoid a rough cutoff
+    bottomPadding: Style.fileProviderSettingsPadding
     implicitHeight: rootColumn.implicitHeight + topPadding + bottomPadding
 
     ColumnLayout {
@@ -46,8 +46,8 @@ Page {
             id: virtualFilesLayout
 
             Layout.fillWidth: true
-            Layout.leftMargin: 12
-            Layout.rightMargin: 12
+            Layout.leftMargin: Style.fileProviderSettingsPadding
+            Layout.rightMargin: Style.fileProviderSettingsPadding
 
             EnforcedPlainTextLabel {
                 Layout.fillWidth: true
