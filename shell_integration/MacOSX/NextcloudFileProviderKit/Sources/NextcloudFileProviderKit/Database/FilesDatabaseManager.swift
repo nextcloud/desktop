@@ -34,6 +34,7 @@ public final class FilesDatabaseManager: Sendable {
     private static let schemaVersion = SchemaVersion.addedIsLockFileOfLocalOriginToRealmItemMetadata
     let logger: FileProviderLogger
     let account: Account
+    public let recentRenames = RecentRenameTracker()
 
     var itemMetadatas: Results<RealmItemMetadata> {
         ncDatabase().objects(RealmItemMetadata.self)

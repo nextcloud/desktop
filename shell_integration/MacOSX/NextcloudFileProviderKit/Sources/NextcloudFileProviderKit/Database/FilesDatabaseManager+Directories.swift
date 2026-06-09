@@ -123,6 +123,7 @@ public extension FilesDatabaseManager {
         }
 
         renameItemMetadata(ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName)
+        recentRenames.record(oldPath: oldDirectoryServerUrl, newOcId: ocId)
         logger.debug("Renamed root renaming directory from \"\(oldDirectoryServerUrl)\" to \"\(newDirectoryServerUrl)\".", [.item: ocId])
 
         do {

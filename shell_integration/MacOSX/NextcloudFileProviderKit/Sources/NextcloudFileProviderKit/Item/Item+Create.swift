@@ -26,6 +26,17 @@ public extension Item {
     ) async -> (Item?, Error?) {
         let logger = FileProviderLogger(category: "Item", log: log)
 
+        // If this path was recently renamed away, the creation request is most likely an
+        // editor (e.g. LibreOffice) that has not received the path-change notification and
+        // is trying to recreate the old folder. Refuse the creation so no duplicate folder
+        // appears on the server. Returning the renamed item here would cause macOS to treat
+        // that item as being at the old path, undoing the rename — so an error is correct.
+        // See nextcloud/desktop#9987.
+        if dbManager.recentRenames.ocId(for: remotePath) != nil {
+            logger.info("Path was recently renamed. Refusing creation to prevent duplicate folder.", [.url: remotePath])
+            return (nil, NSFileProviderError(.cannotSynchronize))
+        }
+
         let (_, _, _, createError) = await remoteInterface.createFolder(
             remotePath: remotePath, account: account, options: .init(), taskHandler: { task in
                 if let domain, let itemTemplate {

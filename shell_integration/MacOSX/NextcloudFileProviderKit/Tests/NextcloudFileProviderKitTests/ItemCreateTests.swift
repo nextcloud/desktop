@@ -1221,4 +1221,97 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         let decoration = try XCTUnwrap(createdFileItem.decorations?.first)
         XCTAssertTrue(decoration.rawValue.hasSuffix(".keep-downloaded"))
     }
+
+    // MARK: - Duplicate-folder mitigation (nextcloud/desktop#9987)
+
+    func testRecentRenameTrackerRecordsAndReturnsOcId() {
+        let tracker = RecentRenameTracker(ttl: 60)
+        let path = "https://cloud.example.com/files/old-folder"
+        tracker.record(oldPath: path, newOcId: "folder-ocid")
+        XCTAssertEqual(tracker.ocId(for: path), "folder-ocid")
+    }
+
+    func testRecentRenameTrackerReturnsNilForUnknownPath() {
+        let tracker = RecentRenameTracker(ttl: 60)
+        XCTAssertNil(tracker.ocId(for: "https://cloud.example.com/files/unknown"))
+    }
+
+    func testRecentRenameTrackerExpiry() {
+        let tracker = RecentRenameTracker(ttl: -1) // already expired
+        tracker.record(oldPath: "https://cloud.example.com/files/old", newOcId: "some-id")
+        XCTAssertNil(tracker.ocId(for: "https://cloud.example.com/files/old"),
+                     "Expired entries must not be returned.")
+    }
+
+    func testRenameDirectoryAndPropagatePopulatesRecentRenames() throws {
+        let dir = RealmItemMetadata()
+        dir.ocId = "rrt-dir"
+        dir.account = "TestAccount"
+        dir.serverUrl = "https://cloud.example.com/files"
+        dir.fileName = "old-name"
+        dir.directory = true
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write { realm.add(dir) }
+
+        _ = Self.dbManager.renameDirectoryAndPropagateToChildren(
+            ocId: "rrt-dir",
+            newServerUrl: "https://cloud.example.com/files",
+            newFileName: "new-name"
+        )
+
+        XCTAssertEqual(
+            Self.dbManager.recentRenames.ocId(for: "https://cloud.example.com/files/old-name"),
+            "rrt-dir",
+            "renameDirectoryAndPropagateToChildren must populate recentRenames with the old path."
+        )
+    }
+
+    /// When a folder is renamed on the server and an editor (e.g. LibreOffice) tries to
+    /// recreate the old folder name, createNewFolder must refuse the creation rather than
+    /// issue a MKCOL. Returning the existing renamed item would cause macOS to re-associate
+    /// its identifier with the old path, undoing the rename. An error is the correct response:
+    /// it prevents the duplicate without disturbing the renamed item's location.
+    func testCreateFolderRefusesWhenPathWasRecentlyRenamed() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        // "2026" was renamed to "2026-renamed". Register the rename in the cache.
+        let oldPath = Self.account.davFilesUrl + "/2026"
+        Self.dbManager.recentRenames.record(oldPath: oldPath, newOcId: "dir-ocid")
+
+        // Editor tries to create "2026" (the old name).
+        var oldFolderMeta = SendableItemMetadata(
+            ocId: "tmp-create-id", fileName: "2026", account: Self.account
+        )
+        oldFolderMeta.directory = true
+        oldFolderMeta.classFile = NKTypeClassFile.directory.rawValue
+
+        let itemTemplate = Item(
+            metadata: oldFolderMeta,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (createdItem, error) = await Item.create(
+            basedOn: itemTemplate,
+            contents: nil,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertNil(createdItem, "No item must be returned for a recently renamed path.")
+        XCTAssertEqual(
+            (error as? NSFileProviderError)?.code, .cannotSynchronize,
+            "Creation at a recently renamed path must fail with cannotSynchronize."
+        )
+        XCTAssertFalse(
+            rootItem.children.contains(where: { $0.name == "2026" }),
+            "No '2026' folder must have been created on the server."
+        )
+    }
 }
