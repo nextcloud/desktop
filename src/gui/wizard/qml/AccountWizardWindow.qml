@@ -11,6 +11,8 @@ import com.nextcloud.desktopclient
 import Style
 import "../../tray"
 
+import "../../tray"
+
 ApplicationWindow {
     id: root
 

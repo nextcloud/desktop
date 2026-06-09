@@ -19,7 +19,8 @@
     <key>CFBundleExecutable</key>
     <string>@APPLICATION_NAME@</string>
     <key>CFBundleIconFile</key>
-    <string>@APPLICATION_ICON_NAME@.icns</string>
+    <string>@MACOSX_BUNDLE_ICON_FILE@</string>
+    @MACOSX_BUNDLE_ICON_NAME_BLOCK@
     <key>CFBundleIdentifier</key>
     <string>@APPLICATION_REV_DOMAIN@</string>
     <key>CFBundleInfoDictionaryVersion</key>
