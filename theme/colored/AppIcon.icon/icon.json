@@ -20,6 +20,7 @@
       "layers" : [
         {
           "image-name" : "Nextcloud-logo-white.svg",
+          "reference" : "Nextcloud-logo-white",
           "name" : "Nextcloud-logo-white",
           "position" : {
             "scale" : 6.8,
