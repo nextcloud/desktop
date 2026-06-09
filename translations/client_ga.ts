@@ -2,94 +2,94 @@
 <context>
     <name>AccountWizardWindow</name>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="145"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="156"/>
         <source>Secure connection failed</source>
         <translation>Theip ar an nasc slán</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="158"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="159"/>
         <source>Connect to %1?</source>
         <translation>Ceangail le %1?</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="168"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="169"/>
         <source>The secure connection failed. You can retry without encryption, or add a client certificate and try again.</source>
         <translation>Theip ar an nasc slán. Is féidir leat iarracht eile a dhéanamh gan chriptiú, nó teastas cliaint a chur leis agus iarracht eile a dhéanamh.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="169"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="170"/>
         <source>The secure connection failed. You can add a client certificate and try again.</source>
         <translation>Theip ar an nasc slán. Is féidir leat teastas cliaint a chur leis agus iarracht eile a dhéanamh.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="181"/>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="247"/>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="249"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="191"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="262"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="264"/>
         <source>Cancel</source>
         <translation>Cealaigh</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="191"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="201"/>
         <source>Connect without TLS</source>
         <translation>Ceangail gan TLS</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="200"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="213"/>
         <source>Use client certificate</source>
         <translation>Úsáid teastas cliaint</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="250"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="265"/>
         <source>Back</source>
         <translation>Ar ais</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="264"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="279"/>
         <source>Set up later</source>
         <translation>Socraigh níos déanaí</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="275"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="290"/>
         <source>Advanced</source>
         <translation>Ardleibhéil</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="284"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="299"/>
         <source>Sign up</source>
         <translation>Cláraigh</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="294"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="309"/>
         <source>Self-host</source>
         <translation>Féin-óstach</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="307"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="322"/>
         <source>Proxy settings</source>
         <translation>Socruithe seachfhreastalaí</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="328"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="343"/>
         <source>Copy link</source>
         <translation>Cóipeáil nasc</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="361"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="376"/>
         <source>Open</source>
         <translation>Oscail</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="363"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="378"/>
         <source>Connect</source>
         <translation>Ceangail</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="365"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="380"/>
         <source>Done</source>
         <translation>Déanta</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="367"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="382"/>
         <source>Log in</source>
         <translation>Logáil isteach</translation>
     </message>
@@ -151,7 +151,7 @@
 <context>
     <name>AdvancedOptionsDialog</name>
     <message>
-        <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="24"/>
+        <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="32"/>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="35"/>
         <source>Advanced options</source>
         <translation>Roghanna ardleibhéil</translation>
@@ -249,7 +249,7 @@
 <context>
     <name>ClientCertificateDialog</name>
     <message>
-        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="25"/>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="33"/>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="36"/>
         <source>Client certificate</source>
         <translation>Teastas cliant</translation>
@@ -1337,208 +1337,204 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
 <context>
     <name>OCC::AccountWizardController</name>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="235"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="251"/>
         <source>Will require local storage</source>
         <translation>Beidh stóráil áitiúil ag teastáil</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="617"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="622"/>
         <source>Proxy settings are incomplete.</source>
         <translation>Tá socruithe seachfhreastalaí neamhiomlán.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="624"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="629"/>
         <source>Server address does not seem to be valid</source>
         <translation>Ní cosúil go bhfuil seoladh an fhreastalaí bailí</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="645"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="650"/>
         <source>Username must not be empty.</source>
         <translation>Ní féidir ainm úsáideora a bheith folamh.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="651"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="974"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="656"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="986"/>
         <source>Checking account access</source>
         <translation>Rochtain ar chuntas seiceála</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="729"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="734"/>
         <source>Checking server address</source>
         <translation>Ag seiceáil seoladh an fhreastalaí</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="794"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="799"/>
         <source>Preparing browser login</source>
         <translation>Logáil isteach brabhsálaí á ullmhú</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="815"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="820"/>
         <source>Invalid URL</source>
         <translation>URL neamhbhailí</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="817"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="822"/>
         <source>Failed to connect to %1 at %2:
 %3</source>
         <translation>Theip ar cheangal le %1 ag %2:
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="833"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="838"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Teorainn ama ag teacht isteach agus iarracht á déanamh ceangal le %1 ag %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="854"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="859"/>
         <source>This server requires legacy browser authentication. Enter app-password credentials instead.</source>
         <translation>Éilíonn an freastalaí seo fíordheimhniú seanbhrabhsálaí. Cuir isteach dintiúir pasfhocal an aip ina ionad.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="932"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="937"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>Ní féidir an Brabhsálaí a oscailt, cóipeáil an nasc chuig do Bhrabhsálaí le do thoil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="953"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="962"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="967"/>
         <source>Waiting for authorization</source>
         <translation>Ag fanacht le húdarú</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="957"/>
-        <source>Polling for authorization</source>
-        <translation>Vótaíocht le haghaidh údaraithe</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="961"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="972"/>
         <source>Starting authorization</source>
         <translation>Údarú tosaithe</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="965"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="977"/>
         <source>Link copied to clipboard.</source>
         <translation>Nasc cóipeáilte chuig an ghearrthaisce.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1020"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1050"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1032"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1062"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>Bhí freagra neamhbhailí ann ar iarratas fíordheimhnithe WebDAV</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1037"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1049"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>Atreoraíodh an iarratas fíordheimhnithe chuig an bhfreastalaí chuig &quot;%1&quot;. Tá an URL lochtach, tá an freastalaí míchumraithe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1045"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1057"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
         <translation>Rochtain toirmiscthe ag an bhfreastalaí. Chun a fhíorú go bhfuil rochtain cheart agat, oscail an tseirbhís i do bhrabhsálaí.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1063"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1075"/>
         <source>Account connected.</source>
         <translation>Cuntas ceangailte.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1138"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1150"/>
         <source>Will require %1 of storage</source>
         <translation>Beidh %1 stórais ag teastáil</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1288"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1331"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 spás saor</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1306"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1341"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Níl dóthain spáis shaor sa bhfillteán áitiúil!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1322"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1358"/>
         <source>Please choose a local sync folder.</source>
         <translation>Roghnaigh fillteán sioncrónaithe áitiúil le do thoil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1391"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1363"/>
+        <source>Please choose an empty local sync folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1428"/>
         <source>Could not create local folder %1</source>
         <translation>Níorbh fhéidir fillteán áitiúil %1 a chruthú</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1409"/>
-        <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and try again.</source>
-        <translation>Ní féidir an fillteán a bhaint ná cúltaca a dhéanamh de mar go bhfuil an fillteán nó comhad ann oscailte i gclár eile. Dún an fillteán nó an comhad agus déan iarracht arís.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1421"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1442"/>
         <source>Checking remote folder</source>
         <translation>Ag seiceáil fillteán cianda</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1467"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1488"/>
         <source>No remote folder specified!</source>
         <translation>Níor sonraíodh aon fhillteán cianda!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1476"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1497"/>
         <source>Error: %1</source>
         <translation>Earráid: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1481"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1502"/>
         <source>Creating remote folder</source>
         <translation>Ag cruthú fillteáin iargúlta</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1500"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1521"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Mar thoradh ar chruthú fillteáin, tháinig cód earráide HTTP %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1502"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1523"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
         <translation>Theip ar chruthú fillteáin iargúlta mar gheall ar na dintiúir a cuireadh ar fáil mícheart. Téigh ar ais agus seiceáil do dhintiúir le do thoil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1504"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1525"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Theip ar chruthú fillteáin iargúlta %1 le hearráid &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1528"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1549"/>
         <source>Account setup failed while creating the sync folder.</source>
         <translation>Theip ar shocrú cuntais agus an fillteán sioncrónaithe á chruthú.heip ar shocrú cuntais agus an fillteán sioncrónaithe á chruthú.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1555"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1576"/>
         <source>Could not create the sync folder.</source>
         <translation>Níorbh fhéidir an fillteán sioncrónaithe a chruthú.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1627"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1666"/>
         <source>Local Sync Folder</source>
         <translation>Fillteán Sioncrónaithe Áitiúil</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1878"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1913"/>
         <source>Select a certificate</source>
         <translation>Roghnaigh teastas</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1880"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1915"/>
         <source>Certificate files (*.p12 *.pfx)</source>
         <translation>Comhaid teastais (*.p12 *.pfx)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1888"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1908"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1923"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1943"/>
         <source>Could not access the selected certificate file.</source>
         <translation>Níorbh fhéidir rochtain a fháil ar an gcomhad teastais roghnaithe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1924"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1959"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Níorbh fhéidir an teastas a luchtú. B’fhéidir go bhfuil an focal faire mícheart?</translation>
     </message>
@@ -2782,6 +2778,11 @@ De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n
         <translation>Níorbh fhéidir staid an fhillteáin a athshocrú</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="427"/>
+        <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
+        <translation>Fuarthas sean dialann sioncronaithe &quot;% 1&quot;, ach níorbh fhéidir é a bhaint. Cinntigh le do thoil nach bhfuil aon fheidhmchlár á úsáid faoi láthair.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1459"/>
         <source> (backup)</source>
         <translation>(cúltaca)</translation>
@@ -2790,11 +2791,6 @@ De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n
         <location filename="../src/gui/folderman.cpp" line="1464"/>
         <source> (backup %1)</source>
         <translation>(cúltaca % 1)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="427"/>
-        <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>Fuarthas sean dialann sioncronaithe &quot;% 1&quot;, ach níorbh fhéidir é a bhaint. Cinntigh le do thoil nach bhfuil aon fheidhmchlár á úsáid faoi láthair.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1803"/>
@@ -5774,28 +5770,28 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation><numerusform>%n fógra</numerusform><numerusform>%n fógraí</numerusform><numerusform>%n fógraí</numerusform><numerusform>%n fógraí</numerusform><numerusform>%n fógraí</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="641"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="680"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="684"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="723"/>
         <source>“%1” was not synchronized</source>
         <translation>Níor sioncrónaíodh “%1”</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="682"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="725"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
         <translation>Stóráil neamhleor ar an bhfreastalaí. Éilíonn an comhad %1 ach níl ach %2 ar fáil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="685"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="728"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
         <translation>Stóráil neamhleor ar an bhfreastalaí. Teastaíonn %1 don chomhad.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="688"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="731"/>
         <source>Insufficient storage on the server.</source>
         <translation>Stóráil neamhleor ar an bhfreastalaí.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="767"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Níl dóthain spáis ar fáil ar an bhfreastalaí le haghaidh roinnt uaslódálacha.</translation>
     </message>
@@ -5854,7 +5850,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Ag seoladh d’iarratais…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1703"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1746"/>
         <source>Sending your request …</source>
         <translation>Ag seoladh d’iarratais …</translation>
     </message>
@@ -6162,7 +6158,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>macOS VFS le haghaidh % 1: Thángthas ar fhadhb.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="496"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="494"/>
         <source>macOS VFS for %1: An error was encountered.</source>
         <translation>macOS VFS do %1: Tharla earráid.</translation>
     </message>
@@ -6177,12 +6173,12 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Ag seiceáil le haghaidh athruithe i logánta &quot;% 1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="848"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="846"/>
         <source>Internal link copied</source>
         <translation>Nasc inmheánach cóipeáilte</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="849"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="847"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation>Tá an nasc inmheánach cóipeáilte chuig an ghearrthaisce.</translation>
     </message>
@@ -6210,78 +6206,78 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
 <context>
     <name>ProxySettingsDialog</name>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="36"/>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="78"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="77"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="80"/>
         <source>Proxy settings</source>
         <translation>Socruithe seachfhreastalaí</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="86"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="88"/>
         <source>No proxy</source>
         <translation>Gan seachfhreastalaí</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="96"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="98"/>
         <source>Use system proxy</source>
         <translation>Úsáid seachfhreastalaí córais</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="106"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="108"/>
         <source>Manually specify proxy</source>
         <translation>Sonraigh seachfhreastalaí de láimh</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="121"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="123"/>
         <source>HTTP(S) proxy</source>
         <translation>Seachfhreastalaí HTTP(S)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="121"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="123"/>
         <source>SOCKS5 proxy</source>
         <translation>Seachfhreastalaí SOCKS5</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="125"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="127"/>
         <source>Proxy type</source>
         <translation>Cineál seachfhreastalaí</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="136"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="138"/>
         <source>Hostname of proxy server</source>
         <translation>Ainm óstach an fhreastalaí seachfhreastalaí</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="148"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="150"/>
         <source>Proxy port</source>
         <translation>Port seachfhreastalaí</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="157"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="159"/>
         <source>Proxy server requires authentication</source>
         <translation>Éilíonn freastalaí seachfhreastalaí fíordheimhniú</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="173"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="175"/>
         <source>Username for proxy server</source>
         <translation>Ainm úsáideora don fhreastalaí seachfhreastalaí</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="180"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="182"/>
         <source>Password for proxy server</source>
         <translation>Pasfhocal don fhreastalaí seachfhreastalaí</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="189"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="191"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
         <translation>Nóta: níl aon tionchar ag socruithe seachfhreastalaí ar chuntais ar an óstach áitiúil</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="206"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="208"/>
         <source>Cancel</source>
         <translation>Cealaigh</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="213"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="215"/>
         <source>Done</source>
         <translation>Déanta</translation>
     </message>
@@ -6770,24 +6766,9 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Fillteán sioncrónaithe áitiúil</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="156"/>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="154"/>
         <source>Choose</source>
         <translation>Roghnaigh</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="191"/>
-        <source>Warning: The local folder is not empty. Pick a resolution!</source>
-        <translation>Rabhadh: Níl an fillteán áitiúil folamh. Roghnaigh réiteach!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="200"/>
-        <source>Keep local data</source>
-        <translation>Coinnigh sonraí áitiúla</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="208"/>
-        <source>Erase local folder and start a clean sync</source>
-        <translation>Scrios an fillteán áitiúil agus cuir tús le sioncrónú glan</translation>
     </message>
 </context>
 <context>
@@ -6829,17 +6810,17 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
 <context>
     <name>TrayAccountPopup</name>
     <message>
-        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="215"/>
+        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="216"/>
         <source>Add account</source>
         <translation>Cuir cuntas leis</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="255"/>
+        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="256"/>
         <source>Settings</source>
         <translation>Socruithe</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="295"/>
+        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="296"/>
         <source>Quit</source>
         <translation>Scoir</translation>
     </message>

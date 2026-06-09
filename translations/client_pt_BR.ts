@@ -2,94 +2,94 @@
 <context>
     <name>AccountWizardWindow</name>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="145"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="156"/>
         <source>Secure connection failed</source>
         <translation>Falha na conexão segura</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="158"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="159"/>
         <source>Connect to %1?</source>
         <translation>Conectar-se a %1?</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="168"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="169"/>
         <source>The secure connection failed. You can retry without encryption, or add a client certificate and try again.</source>
         <translation>A conexão segura falhou. Você pode tentar novamente sem criptografia ou adicionar um certificado de cliente e tentar novamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="169"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="170"/>
         <source>The secure connection failed. You can add a client certificate and try again.</source>
         <translation>A conexão segura falhou. Você pode adicionar um certificado de cliente e tentar novamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="181"/>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="247"/>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="249"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="191"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="262"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="264"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="191"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="201"/>
         <source>Connect without TLS</source>
         <translation>Conectar-se sem TLS</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="200"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="213"/>
         <source>Use client certificate</source>
         <translation>Usar certificado de cliente</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="250"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="265"/>
         <source>Back</source>
         <translation>Voltar</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="264"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="279"/>
         <source>Set up later</source>
         <translation>Configurar mais tarde</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="275"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="290"/>
         <source>Advanced</source>
         <translation>Avançado</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="284"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="299"/>
         <source>Sign up</source>
         <translation>Cadastrar</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="294"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="309"/>
         <source>Self-host</source>
         <translation>Auto-hospedagem</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="307"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="322"/>
         <source>Proxy settings</source>
         <translation>Configurações do proxy</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="328"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="343"/>
         <source>Copy link</source>
         <translation>Copiar link</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="361"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="376"/>
         <source>Open</source>
         <translation>Abrir</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="363"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="378"/>
         <source>Connect</source>
         <translation>Conectar</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="365"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="380"/>
         <source>Done</source>
         <translation>Concluído</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="367"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="382"/>
         <source>Log in</source>
         <translation>Entrar</translation>
     </message>
@@ -151,7 +151,7 @@
 <context>
     <name>AdvancedOptionsDialog</name>
     <message>
-        <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="24"/>
+        <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="32"/>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="35"/>
         <source>Advanced options</source>
         <translation>Opções avançadas</translation>
@@ -249,7 +249,7 @@
 <context>
     <name>ClientCertificateDialog</name>
     <message>
-        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="25"/>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="33"/>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="36"/>
         <source>Client certificate</source>
         <translation>Certificado de cliente</translation>
@@ -1337,208 +1337,204 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
 <context>
     <name>OCC::AccountWizardController</name>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="235"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="251"/>
         <source>Will require local storage</source>
         <translation>Será necessário armazenamento local.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="617"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="622"/>
         <source>Proxy settings are incomplete.</source>
         <translation>As configurações de proxy estão incompletas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="624"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="629"/>
         <source>Server address does not seem to be valid</source>
         <translation>O endereço do servidor parece não ser válido.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="645"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="650"/>
         <source>Username must not be empty.</source>
         <translation>O nome de usuário não pode estar vazio.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="651"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="974"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="656"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="986"/>
         <source>Checking account access</source>
         <translation>Acesso à conta corrente</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="729"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="734"/>
         <source>Checking server address</source>
         <translation>Verificando o endereço do servidor</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="794"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="799"/>
         <source>Preparing browser login</source>
         <translation>Preparando login no navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="815"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="820"/>
         <source>Invalid URL</source>
         <translation>URL inválido</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="817"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="822"/>
         <source>Failed to connect to %1 at %2:
 %3</source>
         <translation>Falha ao conectar-se a %1 para %2:
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="833"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="838"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Tempo limite excedido ao tentar conectar-se a %1 para %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="854"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="859"/>
         <source>This server requires legacy browser authentication. Enter app-password credentials instead.</source>
         <translation>Este servidor requer autenticação legada do navegador. Em vez disso, insira as credenciais de senha do aplicativo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="932"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="937"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>Não foi possível abrir o navegador. Copie o link para o seu navegador.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="953"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="962"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="967"/>
         <source>Waiting for authorization</source>
         <translation>Aguardando autorização</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="957"/>
-        <source>Polling for authorization</source>
-        <translation>Votação para autorização</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="961"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="972"/>
         <source>Starting authorization</source>
         <translation>Autorização inicial</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="965"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="977"/>
         <source>Link copied to clipboard.</source>
         <translation>Link copiado para a área de transferência.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1020"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1050"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1032"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1062"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>Houve uma resposta inválida para uma solicitação WebDAV autenticada.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1037"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1049"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>A solicitação autenticada ao servidor foi redirecionada para &quot;%1&quot;. O URL está incorreto, o servidor está mal configurado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1045"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1057"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
         <translation>Acesso proibido pelo servidor. Para verificar se você tem acesso adequado, abra o serviço no seu navegador.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1063"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1075"/>
         <source>Account connected.</source>
         <translation>Conta conectada.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1138"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1150"/>
         <source>Will require %1 of storage</source>
         <translation>Será necessário %1 de armazenamento</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1288"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1331"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 espaço livre</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1306"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1341"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Não há espaço livre suficiente na pasta local!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1322"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1358"/>
         <source>Please choose a local sync folder.</source>
         <translation>Por favor, selecione uma pasta de sincronização local.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1391"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1363"/>
+        <source>Please choose an empty local sync folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1428"/>
         <source>Could not create local folder %1</source>
         <translation>Não foi possível criar a pasta local. %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1409"/>
-        <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and try again.</source>
-        <translation>Não foi possível remover e fazer backup da pasta porque a pasta ou um arquivo dentro dela está aberto em outro programa. Feche a pasta ou o arquivo e tente novamente.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1421"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1442"/>
         <source>Checking remote folder</source>
         <translation>Verificando pasta remota</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1467"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1488"/>
         <source>No remote folder specified!</source>
         <translation>Nenhuma pasta remota especificada!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1476"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1497"/>
         <source>Error: %1</source>
         <translation>Erro: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1481"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1502"/>
         <source>Creating remote folder</source>
         <translation>Criando pasta remota</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1500"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1521"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>A criação da pasta resultou em um código de erro HTTP. %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1502"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1523"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
         <translation>A criação da pasta remota falhou porque as credenciais fornecidas estão incorretas. Por favor, verifique suas credenciais novamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1504"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1525"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>A criação da pasta remota %1 falhou com o erro &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1528"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1549"/>
         <source>Account setup failed while creating the sync folder.</source>
         <translation>A configuração da conta falhou durante a criação da pasta de sincronização.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1555"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1576"/>
         <source>Could not create the sync folder.</source>
         <translation>Não foi possível criar a pasta de sincronização.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1627"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1666"/>
         <source>Local Sync Folder</source>
         <translation>Pasta de Sincronização Local</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1878"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1913"/>
         <source>Select a certificate</source>
         <translation>Selecione um certificado</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1880"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1915"/>
         <source>Certificate files (*.p12 *.pfx)</source>
         <translation>Arquivos de certificado (*.p12 *.pfx)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1888"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1908"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1923"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1943"/>
         <source>Could not access the selected certificate file.</source>
         <translation>Não foi possível acessar o arquivo de certificado selecionado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1924"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1959"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Não foi possível carregar o certificado. Talvez a senha esteja incorreta?</translation>
     </message>
@@ -2782,6 +2778,11 @@ Como alternativa, você pode restaurar todos os arquivos excluídos baixando-os 
         <translation>Não foi possível redefinir o estado da pasta</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="427"/>
+        <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
+        <translation>Um antigo log de dados de sincronização &quot;%1&quot; foi encontrado, mas não pôde ser removido. Certifique-se de que nenhum aplicativo o esteja usando no momento. </translation>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1459"/>
         <source> (backup)</source>
         <translation> (backup)</translation>
@@ -2790,11 +2791,6 @@ Como alternativa, você pode restaurar todos os arquivos excluídos baixando-os 
         <location filename="../src/gui/folderman.cpp" line="1464"/>
         <source> (backup %1)</source>
         <translation> (backup %1)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="427"/>
-        <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>Um antigo log de dados de sincronização &quot;%1&quot; foi encontrado, mas não pôde ser removido. Certifique-se de que nenhum aplicativo o esteja usando no momento. </translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1803"/>
@@ -5774,28 +5770,28 @@ Servidor respondeu com erro: %2</translation>
         <translation><numerusform>%n notificação</numerusform><numerusform>%n de notificações</numerusform><numerusform>%n notificações</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="641"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="680"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="684"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="723"/>
         <source>“%1” was not synchronized</source>
         <translation>&quot;%1&quot; não estava sincronizado</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="682"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="725"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
         <translation>Espaço de armazenamento insuficiente no servidor. O arquivo ocupa %1, mas há apenas %2 disponíveis.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="685"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="728"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
         <translation>Espaço de armazenamento insuficiente no servidor. O arquivo ocupa %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="688"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="731"/>
         <source>Insufficient storage on the server.</source>
         <translation>Espaço de armazenamento insuficiente no servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="767"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Não há espaço suficiente no servidor para alguns uploads.</translation>
     </message>
@@ -5854,7 +5850,7 @@ Servidor respondeu com erro: %2</translation>
         <translation>Enviando sua solicitação…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1703"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1746"/>
         <source>Sending your request …</source>
         <translation>Enviando sua solicitação …</translation>
     </message>
@@ -6162,7 +6158,7 @@ Servidor respondeu com erro: %2</translation>
         <translation>macOS VFS para %1: foi encontrado um problema.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="496"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="494"/>
         <source>macOS VFS for %1: An error was encountered.</source>
         <translation>macOS VFS para %1: Ocorreu um erro.</translation>
     </message>
@@ -6177,12 +6173,12 @@ Servidor respondeu com erro: %2</translation>
         <translation>Verificando alterações na pasta local &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="848"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="846"/>
         <source>Internal link copied</source>
         <translation>Link interno copiado</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="849"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="847"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation>O link interno foi copiado para a área de transferência</translation>
     </message>
@@ -6210,78 +6206,78 @@ Servidor respondeu com erro: %2</translation>
 <context>
     <name>ProxySettingsDialog</name>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="36"/>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="78"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="77"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="80"/>
         <source>Proxy settings</source>
         <translation>Configurações do proxy</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="86"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="88"/>
         <source>No proxy</source>
         <translation>Sem proxy</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="96"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="98"/>
         <source>Use system proxy</source>
         <translation>Usar proxy do sistema</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="106"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="108"/>
         <source>Manually specify proxy</source>
         <translation>Configurar proxy manualmente</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="121"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="123"/>
         <source>HTTP(S) proxy</source>
         <translation>Proxy HTTP(S)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="121"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="123"/>
         <source>SOCKS5 proxy</source>
         <translation>Proxy SOCKS5</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="125"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="127"/>
         <source>Proxy type</source>
         <translation>Tipo do proxy</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="136"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="138"/>
         <source>Hostname of proxy server</source>
         <translation>Nome do host do servidor proxy</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="148"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="150"/>
         <source>Proxy port</source>
         <translation>Porta do proxy</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="157"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="159"/>
         <source>Proxy server requires authentication</source>
         <translation>O servidor proxy requer autenticação</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="173"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="175"/>
         <source>Username for proxy server</source>
         <translation>Nome de usuário do servidor proxy</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="180"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="182"/>
         <source>Password for proxy server</source>
         <translation>Senha do servidor proxy</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="189"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="191"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
         <translation>Observação: as configurações de proxy não têm efeito para contas em localhost.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="206"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="208"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="213"/>
+        <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="215"/>
         <source>Done</source>
         <translation>Concluído</translation>
     </message>
@@ -6770,24 +6766,9 @@ Servidor respondeu com erro: %2</translation>
         <translation>Pasta de sincronização local</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="156"/>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="154"/>
         <source>Choose</source>
         <translation>Escolher</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="191"/>
-        <source>Warning: The local folder is not empty. Pick a resolution!</source>
-        <translation>Aviso: A pasta local não está vazia. Escolha uma resolução!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="200"/>
-        <source>Keep local data</source>
-        <translation>Manter dados locais</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="208"/>
-        <source>Erase local folder and start a clean sync</source>
-        <translation>Apague a pasta local e inicie uma sincronização limpa.</translation>
     </message>
 </context>
 <context>
@@ -6829,17 +6810,17 @@ Servidor respondeu com erro: %2</translation>
 <context>
     <name>TrayAccountPopup</name>
     <message>
-        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="215"/>
+        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="216"/>
         <source>Add account</source>
         <translation>Adicionar conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="255"/>
+        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="256"/>
         <source>Settings</source>
         <translation>Configurações</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="295"/>
+        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="296"/>
         <source>Quit</source>
         <translation>Sair</translation>
     </message>
