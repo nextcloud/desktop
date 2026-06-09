@@ -177,7 +177,6 @@ FileTagModel *FileDetails::fileTagModel() const
 void FileDetails::updateFileTagModel()
 {
     const auto localPath = _fileRecord.path();
-    const auto relPath = localPath.mid(_folder->cleanPath().length() + 1);
     QString serverPath = _folder->remotePathTrailingSlash() + _fileRecord.path();
  
     if (const auto vfsMode = _folder->vfs().mode(); _fileRecord.isVirtualFile() && vfsMode == Vfs::WithSuffix) {
@@ -186,7 +185,7 @@ void FileDetails::updateFileTagModel()
         }
     }
 
-    _fileTagModel = std::make_unique<FileTagModel>(relPath, _folder->accountState()->account());
+    _fileTagModel = std::make_unique<FileTagModel>(serverPath, _folder->accountState()->account());
     Q_EMIT fileTagModelChanged();
 }
 
