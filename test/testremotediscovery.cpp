@@ -37,6 +37,18 @@ struct MissingPermissionsPropfindReply : FakePropfindReply {
     }
 };
 
+// Reply that queues its own deletion so it fires inside LsColJob::finished()'s processEvents().
+struct FakePropfindReplyWithPendingDeletion : FakePropfindReply {
+    FakePropfindReplyWithPendingDeletion(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op,
+                                         const QNetworkRequest &request, QObject *parent)
+        : FakePropfindReply(remoteRootFileInfo, op, request, parent)
+    {
+        // respond() is queued before this timer, so it fires first; the deletion fires
+        // inside LsColJob::finished()'s processEvents() call.
+        QTimer::singleShot(0, this, &QObject::deleteLater);
+    }
+};
+
 
 enum ErrorKind : int {
     // Lower code are corresponding to HTML error code
@@ -220,6 +232,45 @@ private slots:
         QCOMPARE(completeSpy.findItem("intValue")->_folderQuota.bytesAvailable, expectedValue);
         QCOMPARE(completeSpy.findItem("unlimited")->_folderQuota.bytesAvailable, -3);
         QCOMPARE(completeSpy.findItem("invalidValue")->_folderQuota.bytesAvailable, -1);
+    }
+
+    // Regression: processEvents() inside LsColJob::finished() must not run before reply()
+    // is read. A pending deleteLater() draining during processEvents() zeros the QPointer
+    // and caused a SIGSEGV at reply()->request().url().path() (address 0x8).
+    void testLsColJobDoesNotCrashWhenReplyIsDeletedDuringProcessEvents()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.remoteModifier().mkdir("B/sub");
+
+        const auto errorFolder = QStringLiteral("dav/files/admin/B");
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op,
+                                         const QNetworkRequest &req,
+                                         QIODevice *) -> QNetworkReply * {
+            if (req.attribute(QNetworkRequest::CustomVerbAttribute).toString() == QStringLiteral("PROPFIND")
+                && req.url().path().endsWith(errorFolder)) {
+                return new FakePropfindReplyWithPendingDeletion(fakeFolder.remoteModifier(), op, req, nullptr);
+            }
+            return nullptr;
+        });
+
+        // The sync must complete without crashing. Discovery of B will fail gracefully
+        // because finishedWithoutError is still emitted before processEvents() runs.
+        QVERIFY(fakeFolder.syncOnce());
+        // Items under A and C must have synced normally.
+        QVERIFY(fakeFolder.currentLocalState().find("A"));
+        QVERIFY(fakeFolder.currentLocalState().find("C"));
+    }
+
+    // Verifies normal listing succeeds when the reply stays alive throughout.
+    void testLsColJobSucceedsNormally()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.remoteModifier().insert("A/newfile.txt");
+
+        // Normal sync with no overrides: all PROPFIND replies remain alive.
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentLocalState().find("A/newfile.txt"));
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 };
 

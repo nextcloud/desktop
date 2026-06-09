@@ -555,18 +555,16 @@ bool LsColJob::finished()
         connect(&parser, &LsColXMLParser::finishedWithoutError,
             this, &LsColJob::finishedWithoutError);
 
-        // bool LsColXMLParser::parse takes a while, let's process some events in attempt to make UI more responsive
-        // from https://doc.qt.io/qt-5/qcoreapplication.html#processEvents-1 
-        // "You can call this function occasionally when your program is busy doing a long operation (e.g. copying a file)."
-        // we should not abuse this function, as it affects QObject instances lifetime (when children are getting deleted or when deleteLater is called)
-        // one reason I had to remove ability for LsColJob to have parent, which, otherwise, leads to a crash later
-        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-
-        QString expectedPath = reply()->request().url().path(); // something like "/owncloud/remote.php/dav/folder"
+        const auto expectedPath = reply()->request().url().path(); // something like "/owncloud/remote.php/dav/folder"
         if (!parser.parse(reply()->readAll(), &_folderInfos, expectedPath)) {
             // XML parse error
             emit finishedWithError(reply());
         }
+
+        // processEvents is called AFTER all reply() accesses. A pending deleteLater()
+        // processed inside it can zero the QPointer and caused a SIGSEGV when it was
+        // placed before the reply reads. Do not abuse: it affects QObject lifetimes.
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
     } else {
         // wrong content type, wrong HTTP code or any other network error
         emit finishedWithError(reply());
