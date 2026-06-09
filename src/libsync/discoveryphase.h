@@ -246,15 +246,17 @@ class DiscoveryPhase : public QObject
     [[nodiscard]] bool notifyExistingFolderOverLimit() const;
 
     void checkFolderSizeLimit(const QString &path,
+			      int64_t folderSize,
 			      const std::function<void(bool)> callback);
 
     // Check if the new folder should be deselected or not.
     // May be async. "Return" via the callback, true if the item is blacklisted
     void checkSelectiveSyncNewFolder(const QString &path,
                                      const RemotePermissions rp,
+                                     int64_t folderSize,
                                      const std::function<void(bool)> callback);
 
-    void checkSelectiveSyncExistingFolder(const QString &path);
+    void checkSelectiveSyncExistingFolder(const QString &path, int64_t folderSize);
 
     /** Given an original path, return the target path obtained when renaming is done.
      *

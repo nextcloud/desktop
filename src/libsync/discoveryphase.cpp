@@ -61,32 +61,22 @@ bool DiscoveryPhase::notifyExistingFolderOverLimit() const
     return activeFolderSizeLimit() && ConfigFile().notifyExistingFoldersOverLimit();
 }
 
-void DiscoveryPhase::checkFolderSizeLimit(const QString &path, const std::function<void(bool)> completionCallback)
+void DiscoveryPhase::checkFolderSizeLimit(const QString &path, int64_t folderSize, const std::function<void(bool)> completionCallback)
 {
     if (!activeFolderSizeLimit()) {
         // no limit, everything is allowed;
         return completionCallback(false);
     }
 
-    // do a PROPFIND to know the size of this folder
-    const auto propfindJob = new PropfindJob(_account, _remoteFolder + path, this);
-    propfindJob->setProperties(QList<QByteArray>() << "resourcetype"
-                                                   << "http://owncloud.org/ns:size");
-
-    connect(propfindJob, &PropfindJob::finishedWithError, this, [=] {
-        return completionCallback(false);
-    });
-    connect(propfindJob, &PropfindJob::result, this, [=, this](const QVariantMap &values) {
-        const auto result = values.value(QLatin1String("size")).toLongLong();
-        const auto limit = _syncOptions._newBigFolderSizeLimit;
-        qCDebug(lcDiscovery) << "Folder size check complete for" << path << "result:" << result << "limit:" << limit;
-        return completionCallback(result >= limit);
-    });
-    propfindJob->start();
+    // Use the folder size already obtained from the LsColJob PROPFIND response
+    const auto limit = _syncOptions._newBigFolderSizeLimit;
+    qCDebug(lcDiscovery) << "Folder size check complete for" << path << "result:" << folderSize << "limit:" << limit;
+    return completionCallback(folderSize >= limit);
 }
 
 void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path,
                                                  const RemotePermissions remotePerm,
+                                                 int64_t folderSize,
                                                  const std::function<void(bool)> callback)
 {
     if (_syncOptions._confirmExternalStorage && _syncOptions._vfs->mode() == Vfs::Off
@@ -111,7 +101,7 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path,
         return callback(false);
     }
 
-    checkFolderSizeLimit(path, [this, path, callback](const bool bigFolder) {
+    checkFolderSizeLimit(path, folderSize, [this, path, callback](const bool bigFolder) {
         if (bigFolder) {
             // we tell the UI there is a new folder
             emit newBigFolder(path, false);
@@ -125,7 +115,7 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path,
     });
 }
 
-void DiscoveryPhase::checkSelectiveSyncExistingFolder(const QString &path)
+void DiscoveryPhase::checkSelectiveSyncExistingFolder(const QString &path, int64_t folderSize)
 {
     // If no size limit is enforced, or if is in whitelist (explicitly allowed) or in blacklist (explicitly disallowed), do nothing.
     if (!notifyExistingFolderOverLimit() || SyncJournalDb::findPathInSelectiveSyncList(_selectiveSyncWhiteList, path)
@@ -133,7 +123,7 @@ void DiscoveryPhase::checkSelectiveSyncExistingFolder(const QString &path)
         return;
     }
 
-    checkFolderSizeLimit(path, [this, path](const bool bigFolder) {
+    checkFolderSizeLimit(path, folderSize, [this, path](const bool bigFolder) {
         if (bigFolder) {
             // Notify the user and prompt for response.
             emit existingFolderNowBig(path);
