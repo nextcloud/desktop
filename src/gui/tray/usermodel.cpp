@@ -57,6 +57,8 @@ constexpr qint64 activityDefaultExpirationTimeMsecs = 1000 * 60 * 10;
 constexpr qint64 assistantPollIntervalMsecs = 2000;
 constexpr int assistantSuccessMinStatusCode = 200;
 constexpr int assistantSuccessMaxStatusCode = 300;
+constexpr auto debugCallNotificationEnvVar = "NEXTCLOUD_DEBUG_CALL_NOTIFICATION";
+constexpr auto debugCallNotificationAvatarEnvVar = "NEXTCLOUD_DEBUG_CALL_NOTIFICATION_AVATAR_URL";
 
 QString assistantTaskTypeIdFromResponse(const QJsonDocument &json)
 {
@@ -269,6 +271,47 @@ bool isSyncStatusError(const OCC::SyncResult::Status status)
         return false;
     }
     return false;
+}
+
+bool showDebugCallNotification(const OCC::AccountStatePtr &account)
+{
+    if (!qEnvironmentVariableIsSet(debugCallNotificationEnvVar)) {
+        return false;
+    }
+
+    const auto systray = OCC::Systray::instance();
+    if (!systray || !account || !account->account()) {
+        return true;
+    }
+
+    OCC::Activity activity;
+    activity._id = -QDateTime::currentMSecsSinceEpoch();
+    activity._objectType = QStringLiteral("call");
+    activity._subject = QStringLiteral("Iva Horn would like to talk with you");
+    activity._shouldNotify = true;
+    activity._dateTime = QDateTime::currentDateTime();
+    activity._accName = account->account()->displayName();
+    activity._talkNotificationData.conversationToken = QStringLiteral("debug-call");
+
+    const auto avatarUrl = qEnvironmentVariable(debugCallNotificationAvatarEnvVar);
+    if (!avatarUrl.isEmpty()) {
+        activity._talkNotificationData.userAvatar = avatarUrl;
+    } else if (!account->account()->url().isEmpty() && !account->account()->davUser().isEmpty()) {
+        activity._talkNotificationData.userAvatar = account->account()->url().toString()
+            + QStringLiteral("/index.php/avatar/")
+            + account->account()->davUser()
+            + QStringLiteral("/128");
+    }
+
+    OCC::ActivityLink answer;
+    answer._label = QObject::tr("Answer");
+    answer._verb = "WEB";
+    answer._link = account->account()->url().toString();
+    answer._primary = true;
+    activity._links.append(answer);
+
+    systray->createCallDialog(activity, account);
+    return true;
 }
 
 } // namespace
@@ -942,6 +985,11 @@ void User::slotRefreshUserStatus()
 
 void User::slotRefreshNotifications()
 {
+    static auto debugCallNotificationShown = false;
+    if (!debugCallNotificationShown) {
+        debugCallNotificationShown = showDebugCallNotification(_account);
+    }
+
     // start a server notification handler if no notification requests
     // are running
     if (_notificationRequestsRunning == 0) {

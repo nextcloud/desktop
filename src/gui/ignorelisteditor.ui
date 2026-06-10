@@ -13,36 +13,137 @@
   <property name="windowTitle">
    <string>Ignored Files Editor</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_3">
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>Global Ignore Settings</string>
+  <layout class="QVBoxLayout" name="dialogLayout">
+   <item>
+    <widget class="QFrame" name="globalIgnoreSettingsPanel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="syncHiddenFilesCheckBox">
-        <property name="text">
-         <string>Sync hidden files</string>
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <layout class="QVBoxLayout" name="globalIgnoreSettingsPanelLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+      </property>
+      <item>
+       <widget class="QLabel" name="globalIgnoreSettingsPanelTitle">
+        <property name="font">
+         <font>
+          <bold>true</bold>
+         </font>
         </property>
+        <property name="text">
+         <string>Global Ignore Settings</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="globalIgnoreSettingsPanelContents" native="true">
+        <layout class="QVBoxLayout" name="globalIgnoreSettingsLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="syncHiddenFilesRow">
+           <item>
+            <widget class="QLabel" name="syncHiddenFilesLabel">
+             <property name="text">
+              <string>Sync hidden files</string>
+             </property>
+             <property name="buddy">
+              <cstring>syncHiddenFilesCheckBox</cstring>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="syncHiddenFilesSpacer">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="OCC::SettingsSwitch" name="syncHiddenFilesCheckBox"/>
+           </item>
+          </layout>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="title">
-      <string>Files Ignored by Patterns</string>
+   <item>
+    <widget class="QFrame" name="ignoredPatternsPanel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>1</verstretch>
+      </sizepolicy>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="IgnoreListTableWidget" name="ignoreTableWidget" native="true"/>
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <layout class="QVBoxLayout" name="ignoredPatternsPanelLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+      </property>
+      <item>
+       <widget class="QLabel" name="ignoredPatternsPanelTitle">
+        <property name="font">
+         <font>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Files Ignored by Patterns</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="ignoredPatternsPanelContents" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>1</verstretch>
+         </sizepolicy>
+        </property>
+        <layout class="QVBoxLayout" name="ignoredPatternsLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="IgnoreListTableWidget" name="ignoreTableWidget" native="true"/>
+         </item>
+        </layout>
+       </widget>
       </item>
      </layout>
     </widget>
    </item>
-   <item row="4" column="0">
+   <item>
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::RestoreDefaults</set>
@@ -57,6 +158,11 @@
    <extends>QWidget</extends>
    <header>ignorelisttablewidget.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>OCC::SettingsSwitch</class>
+   <extends>QAbstractButton</extends>
+   <header>settingsswitch.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

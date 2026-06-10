@@ -39,6 +39,7 @@
 #include <cmath>
 
 #include <QDesktopServices>
+#include <QDialog>
 #include <QDialogButtonBox>
 #include <QDir>
 #include <QListWidgetItem>
@@ -56,6 +57,7 @@
 #include <QPushButton>
 #include <QStyle>
 #include <QFileDialog>
+#include <QFrame>
 
 using namespace Qt::StringLiterals;
 
@@ -176,6 +178,31 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 {
     _ui->setupUi(this);
 
+    _encryptionPanel = new QFrame(this);
+    _encryptionPanel->setObjectName(QLatin1String("encryptionPanel"));
+    _encryptionPanel->setFrameShape(QFrame::NoFrame);
+    _encryptionPanel->setAttribute(Qt::WA_StyledBackground, true);
+    auto *encryptionPanelLayout = new QVBoxLayout(_encryptionPanel);
+    encryptionPanelLayout->setContentsMargins(0, 0, 0, 0);
+    encryptionPanelLayout->setSpacing(0);
+    _ui->accountStatusLayout->removeWidget(_ui->encryptionMessage);
+    encryptionPanelLayout->addWidget(_ui->encryptionMessage);
+
+    auto *connectionSettingsButton = new QPushButton(tr("Connection settings"), _ui->accountStatus);
+    connectionSettingsButton->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
+    _ui->gridLayout_2->addWidget(connectionSettingsButton, 0, 2, Qt::AlignRight | Qt::AlignVCenter);
+    connect(connectionSettingsButton, &QPushButton::clicked, this, &AccountSettings::showConnectionSettingsDialog);
+
+    _ui->verticalLayout_2->removeWidget(_ui->accountStatusPanel);
+    _ui->verticalLayout_2->removeWidget(_ui->fileProviderPanel);
+    _ui->verticalLayout_2->removeWidget(_ui->syncFoldersPanel);
+    _ui->verticalLayout_2->removeWidget(_ui->connectionSettingsPanel);
+    _ui->connectionSettingsPanel->hide();
+    _ui->verticalLayout_2->insertWidget(0, _ui->fileProviderPanel);
+    _ui->verticalLayout_2->insertWidget(1, _ui->syncFoldersPanel);
+    _ui->verticalLayout_2->insertWidget(2, _encryptionPanel);
+    _ui->verticalLayout_2->insertWidget(3, _ui->accountStatusPanel);
+
     _model->setAccountState(_accountState);
     _model->setParent(this);
     const auto delegate = new FolderStatusDelegate;
@@ -232,17 +259,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->fileProviderPanel->setVisible(false);
 #endif
 
-    const auto connectionSettingsPanelContents = _ui->connectionSettingsPanelContents;
-    const auto connectionSettingsLayout = new QVBoxLayout(connectionSettingsPanelContents);
-    const auto networkSettings = new NetworkSettings(_accountState->account(), connectionSettingsPanelContents);
-    if (const auto networkSettingsLayout = networkSettings->layout()) {
-        networkSettingsLayout->setContentsMargins(0, 0, 0, 0);
-    }
-    connectionSettingsLayout->setContentsMargins(0, 0, 0, 0);
-    connectionSettingsLayout->setSpacing(0);
-    connectionSettingsLayout->addWidget(networkSettings, 1);
-    connectionSettingsPanelContents->setLayout(connectionSettingsLayout);
-    
     const auto mouseCursorChanger = new MouseCursorChanger(this);
     mouseCursorChanger->folderList = _ui->_folderList;
     mouseCursorChanger->model = _model;
@@ -258,6 +274,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
         this, &AccountSettings::slotFolderListClicked);
     connect(_ui->_folderList, &QTreeView::expanded, this, &AccountSettings::refreshSelectiveSyncStatus);
     connect(_ui->_folderList, &QTreeView::collapsed, this, &AccountSettings::refreshSelectiveSyncStatus);
+    connect(_ui->_folderList, &QTreeView::expanded, _ui->_folderList, &QWidget::updateGeometry);
+    connect(_ui->_folderList, &QTreeView::collapsed, _ui->_folderList, &QWidget::updateGeometry);
     connect(_ui->selectiveSyncNotification, &QLabel::linkActivated,
         this, &AccountSettings::slotLinkActivated);
     connect(_model, &FolderStatusModel::suggestExpand, _ui->_folderList, &QTreeView::expand);
@@ -309,6 +327,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->encryptionMessageLabel->setOpenExternalLinks(true);
     _ui->encryptionMessageButtonsLayout->addStretch();
     setEncryptionMessageIcon({});
+    setEncryptionPanelVisible(_ui->encryptionMessage->isVisible());
 
     _ui->connectLabel->setText(tr("No account configured."));
 
@@ -346,7 +365,7 @@ void AccountSettings::slotE2eEncryptionMnemonicReady()
 
     _ui->encryptionMessageLabel->setText(tr("Encryption is set-up. Remember to <b>Encrypt</b> a folder to end-to-end encrypt any new files added to it."));
     setEncryptionMessageIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/lock.svg")));
-    _ui->encryptionMessage->show();
+    setEncryptionPanelVisible(true);
 }
 
 void AccountSettings::slotE2eEncryptionGenerateKeys()
@@ -1277,6 +1296,30 @@ void AccountSettings::showConnectionLabel(const QString &message, QStringList er
     _ui->accountStatus->setVisible(!message.isEmpty());
 }
 
+void AccountSettings::showConnectionSettingsDialog()
+{
+    auto *dialog = new QDialog(this);
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->setWindowTitle(tr("Connection settings"));
+
+    auto *layout = new QVBoxLayout(dialog);
+    layout->setContentsMargins(12, 12, 12, 12);
+    layout->setSpacing(12);
+
+    auto *networkSettings = new NetworkSettings(_accountState->account(), dialog);
+    if (auto *networkSettingsLayout = networkSettings->layout()) {
+        networkSettingsLayout->setContentsMargins(0, 0, 0, 0);
+    }
+    layout->addWidget(networkSettings);
+
+    auto *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, dialog);
+    connect(buttonBox, &QDialogButtonBox::rejected, dialog, &QDialog::reject);
+    layout->addWidget(buttonBox);
+
+    dialog->resize(networkSettings->sizeHint());
+    dialog->open();
+}
+
 void AccountSettings::slotEnableCurrentFolder(bool terminate)
 {
     const auto alias = selectedFolderAlias();
@@ -1495,7 +1538,7 @@ void AccountSettings::checkClientSideEncryptionState()
         << "Client Side Encryption" << accountsState()->account()->capabilities().clientSideEncryptionAvailable();
 
     if (_accountState->account()->capabilities().clientSideEncryptionAvailable()) {
-        _ui->encryptionMessage->show();
+        setEncryptionPanelVisible(true);
     }
 }
 
@@ -1858,10 +1901,18 @@ void AccountSettings::setupE2eEncryptionMessage()
 #endif
     _ui->encryptionMessageLabel->setText(encryptionMessage);
     setEncryptionMessageIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/info.svg")));
-    _ui->encryptionMessage->hide();
+    setEncryptionPanelVisible(false);
 
     auto *const actionSetupE2e = addActionToEncryptionMessage(tr("Set up encryption"), e2EeUiActionSetupEncryptionId);
     connect(actionSetupE2e, &QAction::triggered, this, &AccountSettings::slotE2eEncryptionGenerateKeys);
+}
+
+void AccountSettings::setEncryptionPanelVisible(bool visible)
+{
+    _ui->encryptionMessage->setVisible(visible);
+    if (_encryptionPanel) {
+        _encryptionPanel->setVisible(visible);
+    }
 }
 
 void AccountSettings::setEncryptionMessageIcon(const QIcon &icon)

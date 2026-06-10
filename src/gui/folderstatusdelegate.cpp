@@ -17,6 +17,7 @@
 #include <QApplication>
 #include <QMouseEvent>
 #include <QStyleFactory>
+#include <QAbstractItemView>
 
 inline static QFont makeAliasFont(const QFont &normalFont)
 {
@@ -154,7 +155,16 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
             opt.state |= QStyle::State_Raised;
         }
         opt.text = addFolderText();
-        opt.rect = addButtonRect(option.rect, option.direction);
+        auto buttonArea = option.rect;
+        auto *view = qobject_cast<const QAbstractItemView *>(option.widget);
+        if (!view && option.widget) {
+            view = qobject_cast<const QAbstractItemView *>(option.widget->parentWidget());
+        }
+        if (view) {
+            buttonArea.setLeft(view->viewport()->rect().left());
+            buttonArea.setWidth(view->viewport()->width());
+        }
+        opt.rect = addButtonRect(buttonArea, option.direction);
         painter->save();
         painter->setFont(qApp->font("QPushButton"));
         QApplication::style()->drawControl(QStyle::CE_PushButton, &opt, painter, option.widget);

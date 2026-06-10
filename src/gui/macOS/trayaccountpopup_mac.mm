@@ -20,7 +20,6 @@ static const CGFloat kActionHeight = 26.0;
 static const CGFloat kActionVerticalPadding = 8.0;
 static const CGFloat kCornerRadius = 14.0;
 static const CGFloat kHPad         = 14.0;
-static const CGFloat kVPad         = 12.0;
 static const CGFloat kScreenEdgePadding = 8.0;
 static const CGFloat kStatusItemLeadingOffset = 3.0;
 static const CGFloat kStatusItemVerticalOffset = 2.0;
@@ -58,7 +57,6 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
     [img addRepresentation:rep];
     return img;
 }
-
 
 @interface NCHoverView : NSView
 @end

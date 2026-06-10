@@ -9,6 +9,7 @@
 #include <QDir>
 #include <QList>
 #include <QQmlApplicationEngine>
+#include <QQuickItem>
 #include <QUrl>
 #include <QMessageBox>
 
@@ -355,6 +356,9 @@ QQuickWidget *FileProviderSettingsController::settingsViewWidget(const QString &
     settingsViewWidget->setResizeMode(resizeMode);
     settingsViewWidget->setSource(QUrl(fpSettingsQmlPath));
     settingsViewWidget->rootObject()->setProperty(fpAccountUserIdAtHostProp, accountUserIdAtHost);
+    QObject::connect(settingsViewWidget->rootObject(), &QQuickItem::implicitHeightChanged, settingsViewWidget, [settingsViewWidget] {
+        settingsViewWidget->updateGeometry();
+    });
     return settingsViewWidget;
 }
 
