@@ -12,7 +12,7 @@ on:
 
 jobs:
   Lint:
-    runs-on: macos-latest
+    runs-on: macos-26
 
     defaults:
       run:
@@ -25,7 +25,7 @@ jobs:
         run: swiftformat --lint . --reporter github-actions-log
 
   Tests:
-    runs-on: macos-latest
+    runs-on: macos-26
 
     defaults:
       run:
