@@ -50,7 +50,7 @@
 #include <algorithm>
 #include <chrono>
 
-Q_LOGGING_CATEGORY(lcAdvancedSettings, "com.nextcloud.settings.advanced")
+Q_LOGGING_CATEGORY(lcAdvancedSettings, "nextcloud.settings.advanced")
 
 namespace {
 struct ZipEntry {
