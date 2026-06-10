@@ -51,4 +51,27 @@ if(NOT BUILD_LIBRARIES_ONLY)
       install(FILES $<TARGET_PDB_FILE:nextcloudcmd> DESTINATION bin OPTIONAL)
     endif()
   endif()
+
+  add_executable(nextcloud-e2ee-verify
+      e2ee_verify_metadata.cpp)
+  ecm_mark_nongui_executable(nextcloud-e2ee-verify)
+
+  target_link_libraries(nextcloud-e2ee-verify
+      Qt::Core
+      Qt::Network
+      OpenSSL::Crypto
+      ZLIB::ZLIB)
+
+  target_compile_definitions(nextcloud-e2ee-verify PRIVATE OPENSSL_SUPPRESS_DEPRECATED)
+
+  if(BUILD_OWNCLOUD_OSX_BUNDLE)
+    set_target_properties(nextcloud-e2ee-verify PROPERTIES
+      RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_DIRECTORY}/${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS")
+  else()
+    set_target_properties(nextcloud-e2ee-verify PROPERTIES
+      RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY})
+
+    install(TARGETS nextcloud-e2ee-verify
+      RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+  endif()
 endif()
