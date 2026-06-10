@@ -210,9 +210,13 @@ struct Build: AsyncParsableCommand {
             craftOptions.append("\(craftBlueprintName).forceOverrideServerUrl=\(forceOverrideServerUrl ? "True" : "False")")
         }
         
+        // Always pass devMode explicitly (like buildFileProviderModule above) so that
+        // dropping --dev reliably overrides any value KDE Craft has persisted from a
+        // previous build, keeping the app name in sync with what signing expects.
+        craftOptions.append("\(craftBlueprintName).devMode=\(dev ? "True" : "False")")
+
         if dev {
             appName += "Dev"
-            craftOptions.append("\(craftBlueprintName).devMode=True")
         }
         
         if disableAutoUpdater == false {
@@ -378,12 +382,28 @@ struct Build: AsyncParsableCommand {
                 .appendingPathComponent("shell_integration")
                 .appendingPathComponent("MacOSX")
 
-            let entitlements: [String: URL] = [
+            var entitlements: [String: URL] = [
                 "\(appName).app": appEntitlements,
-                "FileProviderExt.appex": entitlementsDirectory.appendingPathComponent("FileProviderExt.entitlements"),
-                "FileProviderUIExt.appex": entitlementsDirectory.appendingPathComponent("FileProviderUIExt.entitlements"),
                 "FinderSyncExt.appex": entitlementsDirectory.appendingPathComponent("FinderSyncExt.entitlements"),
             ]
+
+            // The File Provider extension and its UI extension -- and their entitlement
+            // manifests -- are only produced by CMake when BUILD_FILE_PROVIDER_MODULE is
+            // enabled (see shell_integration/MacOSX/CMakeLists.txt). Reference them only
+            // when the manifests are present, so a build without --build-file-provider-module
+            // does not reference non-existent files.
+            let fileProviderEntitlements = [
+                "FileProviderExt.appex": entitlementsDirectory.appendingPathComponent("FileProviderExt.entitlements"),
+                "FileProviderUIExt.appex": entitlementsDirectory.appendingPathComponent("FileProviderUIExt.entitlements"),
+            ]
+
+            for (bundleName, manifest) in fileProviderEntitlements {
+                if FileManager.default.fileExists(atPath: manifest.path) {
+                    entitlements[bundleName] = manifest
+                } else {
+                    Log.info("Skipping \(bundleName): entitlement manifest not present (File Provider module not built).")
+                }
+            }
 
             for file in entitlements.values {
                 if FileManager.default.fileExists(atPath: file.path) {
