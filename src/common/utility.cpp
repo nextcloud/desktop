@@ -312,7 +312,7 @@ QString Utility::durationToDescriptiveString2(quint64 msecs)
         return firstPart;
     }
 
-    return QCoreApplication::translate("Utility", "%1 %2").arg(firstPart, periods[p + 1].description(secondPartNum));
+    return QStringLiteral("%1 %2").arg(firstPart, periods[p + 1].description(secondPartNum));
 }
 
 QString Utility::durationToDescriptiveString1(quint64 msecs)
