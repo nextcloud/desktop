@@ -54,11 +54,11 @@ Q_LOGGING_CATEGORY(lcMacFinderSyncService, "nextcloud.gui.macfindersyncservice",
     // in the lambda, which executes asynchronously after this method returns.
     // Do NOT autorelease: the autorelease pool drains on the XPC thread before the
     // lambda fires on Qt's main thread, which would leave a dangling pointer.
-    auto copiedHandler = [completionHandler copy];
+    void (^copiedHandler)(NSString *, NSError *) = [completionHandler copy];
 
     // Use QMetaObject::invokeMethod to call on the correct thread
     QMetaObject::invokeMethod(socketApi, [service = _service, qPath, copiedHandler]() {
-        auto handler = (void(^)(NSString *, NSError *))copiedHandler;
+        auto handler = copiedHandler;
         // Get file status via FinderSyncService helper (which has friend access to FileData)
         const auto [hasFolder, statusString] = service->getFileStatus(qPath);
 
@@ -140,11 +140,11 @@ Q_LOGGING_CATEGORY(lcMacFinderSyncService, "nextcloud.gui.macfindersyncservice",
     // in the lambda, which executes asynchronously after this method returns.
     // Do NOT autorelease: the autorelease pool drains on the XPC thread before the
     // lambda fires on Qt's main thread, which would leave a dangling pointer.
-    auto copiedHandler = [completionHandler copy];
+    void (^copiedHandler)(NSArray<NSDictionary *> *, NSError *) = [completionHandler copy];
 
     // Marshal to SocketApi's thread — command handlers touch core Qt/FolderMan state
     QMetaObject::invokeMethod(socketApi, [service = _service, qPaths, copiedHandler]() {
-        auto handler = (void(^)(NSArray<NSDictionary *> *, NSError *))copiedHandler;
+        auto handler = copiedHandler;
         // Get menu items from SocketApi via FinderSyncService helper
         const auto qMenuItems = service->getMenuItems(qPaths);
 
@@ -222,11 +222,11 @@ Q_LOGGING_CATEGORY(lcMacFinderSyncService, "nextcloud.gui.macfindersyncservice",
     // in the lambda, which executes asynchronously after this method returns.
     // Do NOT autorelease: the autorelease pool drains on the XPC thread before the
     // lambda fires on Qt's main thread, which would leave a dangling pointer.
-    auto copiedHandler = [completionHandler copy];
+    void (^copiedHandler)(NSError *) = [completionHandler copy];
 
     // Use QMetaObject::invokeMethod to execute the command on SocketApi's thread
     QMetaObject::invokeMethod(socketApi, [socketApi, qCommand, qPaths, copiedHandler]() {
-        auto handler = (void(^)(NSError *))copiedHandler;
+        auto handler = copiedHandler;
         // Build the command method name (e.g., "SHARE" -> "command_SHARE")
         const QString methodName = QStringLiteral("command_%1").arg(qCommand);
 
