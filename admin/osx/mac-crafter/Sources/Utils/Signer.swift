@@ -54,6 +54,11 @@ enum Signer: Signing {
             .appendingPathComponent("Contents")
             .appendingPathComponent("PlugIns")
 
+        guard FileManager.default.fileExists(atPath: pluginsLocation.path) else {
+            Log.info("No PlugIns directory found, skipping extension signing")
+            return []
+        }
+
         Log.info("Looking for extensions in \(pluginsLocation.path)")
         var items = try FileManager.default.contentsOfDirectory(at: pluginsLocation, includingPropertiesForKeys: nil)
         
