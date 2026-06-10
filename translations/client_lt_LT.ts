@@ -2,94 +2,94 @@
 <context>
     <name>AccountWizardWindow</name>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="156"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="158"/>
         <source>Secure connection failed</source>
         <translation>Saugus ryšys nepavyko</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="159"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="161"/>
         <source>Connect to %1?</source>
         <translation>Prisijungti prie %1?</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="169"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="171"/>
         <source>The secure connection failed. You can retry without encryption, or add a client certificate and try again.</source>
         <translation>Saugus ryšys nepavyko. Galite bandyti dar kartą be šifravimo arba pridėti kliento sertifikatą ir bandyti dar kartą.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="170"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="172"/>
         <source>The secure connection failed. You can add a client certificate and try again.</source>
         <translation>Saugus ryšys nepavyko. Galite pridėti kliento sertifikatą ir bandyti dar kartą.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="191"/>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="262"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="193"/>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="264"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="266"/>
         <source>Cancel</source>
         <translation>Atsisakyti</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="201"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="203"/>
         <source>Connect without TLS</source>
         <translation>Prisijunkite be TLS</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="213"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="215"/>
         <source>Use client certificate</source>
         <translation>Naudokite kliento sertifikatą</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="265"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="267"/>
         <source>Back</source>
         <translation>Atgal</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="279"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="281"/>
         <source>Set up later</source>
         <translation>Nustatykite vėliau</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="290"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="292"/>
         <source>Advanced</source>
         <translation>Išplėstiniai</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="299"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="301"/>
         <source>Sign up</source>
         <translation>Užsiregistruoti</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="309"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="311"/>
         <source>Self-host</source>
         <translation>Priegloba savo serveryje</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="322"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="324"/>
         <source>Proxy settings</source>
         <translation>Tarpinio serverio nustatymai</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="343"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="345"/>
         <source>Copy link</source>
         <translation>Kopijuoti nuorodą</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="376"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="378"/>
         <source>Open</source>
         <translation>Atverti</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="378"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="380"/>
         <source>Connect</source>
         <translation>Prisijungti</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="380"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="382"/>
         <source>Done</source>
         <translation>Atlikta</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="382"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="384"/>
         <source>Log in</source>
         <translation>Prisijungti</translation>
     </message>
@@ -1460,7 +1460,7 @@ Vienintelis virtualių failų palaikymo išjungimo privalumas yra tai, kad vėl 
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1363"/>
         <source>Please choose an empty local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinkite tuščią vietinio sinchronizavimo aplanką.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1428"/>
