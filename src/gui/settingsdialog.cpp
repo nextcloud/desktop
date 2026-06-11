@@ -450,7 +450,7 @@ void SettingsDialog::accountRemoved(AccountState *s)
     }
 }
 
-void SettingsDialog::addSettingsPage(const QString &iconPath, const QString &title, QWidget *settingsPage, bool updateChannelAware)
+void SettingsDialog::addSettingsPage(const QString &iconPath, const QString &title, QWidget *settingsPage, [[maybe_unused]] bool updateChannelAware)
 {
     auto *settingsAction = createColorAwareAction(iconPath, title);
     _actionGroup->addAction(settingsAction);
