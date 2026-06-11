@@ -149,10 +149,6 @@ public:
     [[nodiscard]] bool moveToTrash() const;
     void setMoveToTrash(bool);
 
-    /** If we should force loginflow v2 */
-    [[nodiscard]] bool forceLoginV2() const;
-    void setForceLoginV2(bool);
-
     [[nodiscard]] bool showMainDialogAsNormalWindow() const;
 
     static bool setConfDir(const QString &value);
