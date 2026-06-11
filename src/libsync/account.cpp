@@ -20,7 +20,6 @@
 #include "updatechannel.h"
 #include "version.h"
 
-#include "deletejob.h"
 #include "lockfilejobs.h"
 
 #include "common/syncjournaldb.h"
@@ -960,18 +959,13 @@ void Account::deleteAppPassword()
 
 void Account::deleteAppToken()
 {
-    const auto deleteAppTokenJob = new DeleteJob(sharedFromThis(), QStringLiteral("/ocs/v2.php/core/apppassword"));
-    connect(deleteAppTokenJob, &DeleteJob::finishedSignal, this, [this]() {
-        if (const auto deleteJob = qobject_cast<DeleteJob *>(QObject::sender())) {
-            const auto httpCode = deleteJob->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-            if (httpCode != 200) {
-                qCWarning(lcAccount) << "AppToken remove failed for user: " << displayName() << " with code: " << httpCode;
-            } else {
-                qCInfo(lcAccount) << "AppToken for user: " << displayName() << " has been removed.";
-            }
+    const auto deleteAppTokenJob = new SimpleApiJob(sharedFromThis(), QStringLiteral("/ocs/v2.php/core/apppassword"));
+    deleteAppTokenJob->setVerb(SimpleApiJob::Verb::Delete);
+    connect(deleteAppTokenJob, &SimpleApiJob::resultReceived, this, [this](const int httpCode) {
+        if (httpCode != 200) {
+            qCWarning(lcAccount) << "AppToken remove failed for user: " << displayName() << " with code: " << httpCode;
         } else {
-            Q_ASSERT(false);
-            qCWarning(lcAccount) << "The sender is not a DeleteJob instance.";
+            qCInfo(lcAccount) << "AppToken for user: " << displayName() << " has been removed.";
         }
     });
     deleteAppTokenJob->start();
