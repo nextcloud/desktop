@@ -100,6 +100,12 @@
             "value" : "Hesap verileri kullanılamıyor. Veriler yüklenemedi!"
           }
         },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akkaunt maʼlumotlari mavjud emas, maʼlumotlarni qayta yuklab boʻlmaydi!"
+          }
+        },
         "zh_HK" : {
           "stringUnit" : {
             "state" : "translated",
@@ -190,6 +196,12 @@
             "value" : "アップロードと編集を許可"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sireg asali akked usiẓreg"
+          }
+        },
         "lt_LT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -218,6 +230,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yüklemeye ve düzenlemeye izin ver"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yuklash va tahrirlashga ruxsat berish"
           }
         },
         "zh_HK" : {
@@ -296,6 +314,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "認証中…"
+          }
+        },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Asesteb…"
           }
         },
         "lt_LT" : {
@@ -392,6 +416,12 @@
             "value" : "Katkesta"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لغو"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -434,6 +464,12 @@
             "value" : "გაუქმება"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semmet"
+          }
+        },
         "lt_LT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -464,6 +500,12 @@
             "value" : "Cancelar"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отменить"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -474,6 +516,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İptal"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bekor qilish"
           }
         },
         "zh_HK" : {
@@ -586,7 +634,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eklemeyi iptal et simgesi"
+            "value" : "Oluşturmayı iptal et simgesi"
           }
         },
         "zh_HK" : {
@@ -786,6 +834,12 @@
             "value" : "閉じる"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mdel"
+          }
+        },
         "lt_LT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -820,6 +874,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kapat"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yopish"
           }
         },
         "zh_HK" : {
@@ -1161,6 +1221,12 @@
             "value" : "Hesap geçersiz olduğundan yeterlilikler alınamadı."
           }
         },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akkaunt yaroqsiz bo'lgani uchun imkoniyatlarni olib bo'lmadi."
+          }
+        },
         "zh_HK" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1272,6 +1338,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ögenin tanımlayıcısı alınamadı, herhangi bir paylaşım alınamadı."
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identifikatorni olib bo'lmadi, ulashuvga erishilmadi."
           }
         },
         "zh_HK" : {
@@ -1387,6 +1459,12 @@
             "value" : "Bilinmeyen öge kilitlenemedi…"
           }
         },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noma'lum elementni qulflab bo'lmadi…"
+          }
+        },
         "zh_HK" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1500,6 +1578,12 @@
             "value" : "Veriler yeniden yüklenemedi: %@, yeniden deneyecek."
           }
         },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maʼlumotlarni qayta yuklab boʻlmadi: %@, qayta urinib koʻraman."
+          }
+        },
         "zh_HK" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1584,10 +1668,16 @@
             "value" : "新しい共有を作成する"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Snlufu-d beṭṭu amaynut"
+          }
+        },
         "lt_LT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sukurti naują viešinį"
+            "value" : "Sukurti naują bendrinimą"
           }
         },
         "pl" : {
@@ -1611,7 +1701,13 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Yeni paylaşım ekle"
+            "value" : "Yeni paylaşım oluştur"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yangi ulashish yarating"
           }
         },
         "zh_HK" : {
@@ -1706,6 +1802,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "წაშლა"
+          }
+        },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kkes"
           }
         },
         "lt_LT" : {
@@ -1959,6 +2061,12 @@
             "value" : "無視する"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zgel-it"
+          }
+        },
         "lt_LT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1993,6 +2101,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yok say"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rad etish"
           }
         },
         "zh_HK" : {
@@ -2220,6 +2334,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-posta ile paylaş"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elektron pochta orqali ulashish"
           }
         },
         "zh_HK" : {
@@ -2532,6 +2652,12 @@
             "value" : "新しいパスワードを入力"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sekcem-d awal n uɛeddi amaynut"
+          }
+        },
         "lt_LT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2560,6 +2686,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yeni parolayı yazın"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yangi parolni kiriting"
           }
         },
         "zh_HK" : {
@@ -2675,6 +2807,12 @@
             "value" : "Eklenirken sorun çıktı: %@"
           }
         },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xatolik: %@"
+          }
+        },
         "zh_HK" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2788,6 +2926,12 @@
             "value" : "Paylaşımlar alınırken sorun çıktı: %@"
           }
         },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ holatlarni olishda xatolik yuz berdi"
+          }
+        },
         "zh_HK" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2899,6 +3043,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sunucu kapasitesi alınırken sorun çıktı: %@"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Server sozlamalarini olishda xatolik: %@"
           }
         },
         "zh_HK" : {
@@ -3021,6 +3171,12 @@
             "value" : "Geçerlilik sonu tarihi"
           }
         },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tugash muddati"
+          }
+        },
         "zh_HK" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3132,6 +3288,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dosya hizmeti sağlayıcısı eklentisinden ayrıntılar alınamadı. Yeniden deneniyor."
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fayl provayderi kengaytmasidan ma'lumotlarni olishda xatolik yuz berdi. Qayta urinilmoqda."
           }
         },
         "zh_HK" : {
@@ -3246,6 +3408,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Birleşik bulut paylaşımı"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Federatsiyalangan bulutli ulashish"
           }
         },
         "zh_HK" : {
@@ -3588,6 +3756,12 @@
             "value" : "\"%@\" dosyası kilitlendi!"
           }
         },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%@\" fayli qulflandi!"
+          }
+        },
         "zh_HK" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3698,6 +3872,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "\"%@\" dosyasının kilidi açıldı!"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%@\" fayli qulfdan chiqarildi!"
           }
         },
         "zh_HK" : {
@@ -3868,6 +4048,12 @@
             "value" : "Jagamine grupile"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Group share"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3932,6 +4118,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Grup paylaşımı"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guruh ulashishi"
           }
         },
         "zh_HK" : {
@@ -4250,6 +4442,12 @@
             "value" : "ダウンロードを隠す"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ffer asader"
+          }
+        },
         "lt_LT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4284,6 +4482,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İndirme gizlensin"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yuklab olishni yashirish"
           }
         },
         "zh_HK" : {
@@ -4590,6 +4794,12 @@
             "value" : "最終更新: %@"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taẓrigt taneggarut: %@"
+          }
+        },
         "lt_LT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4618,6 +4828,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Son değişiklik: %@"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oxirgi o'zgartirish: %@"
           }
         },
         "zh_HK" : {
@@ -4960,6 +5176,12 @@
             "value" : "NextcloudKit kopyası ya da hesap kullanılamıyor. Paylaşımlar alınamadı!"
           }
         },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NextcloudKit nusxasi yoki hisobi mavjud emas, ulashishlarni olib bo'lmaydi!"
+          }
+        },
         "zh_HK" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5071,6 +5293,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Öge adresi yok. Veriler yeniden yüklenemedi!"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element URL manzili yo'q, ma'lumotlarni qayta yuklab bo'lmaydi!"
           }
         },
         "zh_HK" : {
@@ -5187,6 +5415,12 @@
             "value" : "Alıcıya not"
           }
         },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Qabul qiluvchi uchun eslatma"
+          }
+        },
         "zh_HK" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5299,6 +5533,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Parola koruması"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parol bilan himoya qilish"
           }
         },
         "zh_HK" : {
@@ -5420,6 +5660,12 @@
             "value" : "Herkese açık bağlantı kopyalandı simgesi"
           }
         },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ommaviy havola nusxalandi belgisi"
+          }
+        },
         "zh_HK" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5532,6 +5778,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Herkese açık bağlantı paylaşımı"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ommaviy havola ulashish"
           }
         },
         "zh_HK" : {
@@ -5737,6 +5989,12 @@
             "value" : "保存する"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sekles"
+          }
+        },
         "lt_LT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5771,6 +6029,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kaydet"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saqlash"
           }
         },
         "zh_HK" : {
@@ -5886,6 +6150,12 @@
             "value" : "Sunucu paylaşımları desteklemiyor."
           }
         },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Server ulashishlarni qo'llab-quvvatlamaydi."
+          }
+        },
         "zh_HK" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5946,6 +6216,12 @@
             "value" : "Jagamise silt"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "برچسب اشتراک‌گذاری"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6004,6 +6280,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Paylaşım etiketi"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yorliqni ulashish"
           }
         },
         "zh_HK" : {
@@ -6090,6 +6372,12 @@
             "value" : "共有オプション"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tixtiṛiyin n beṭṭu"
+          }
+        },
         "lt_LT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6118,6 +6406,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Paylaşım seçenekleri"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ulashish imkoniyatlari"
           }
         },
         "zh_HK" : {
@@ -7175,6 +7469,12 @@
             "value" : "不明な項目"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aferdis arussin"
+          }
+        },
         "lt_LT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7514,6 +7814,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "不明なサイズ"
+          }
+        },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiddi tarussint"
           }
         },
         "lt_LT" : {
