@@ -1460,7 +1460,7 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1363"/>
         <source>Please choose an empty local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh fillteán sioncrónaithe áitiúil folamh le do thoil.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1428"/>
@@ -1555,6 +1555,96 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="605"/>
         <source>Network error occurred: client will retry syncing.</source>
         <translation>Tharla earráid líonra: bainfidh an cliant triail as sioncronú arís.</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::AdvancedSettings</name>
+    <message>
+        <location filename="../src/gui/advancedsettings.ui" line="50"/>
+        <source>Ask for confirmation before synchronizing new folders larger than</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.ui" line="70"/>
+        <source>MB</source>
+        <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot;</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.ui" line="105"/>
+        <source>Notify when synchronised folders grow larger than specified limit</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.ui" line="139"/>
+        <source>Automatically disable synchronisation of folders that overcome limit</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.ui" line="186"/>
+        <source>Server poll interval</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.ui" line="203"/>
+        <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.ui" line="243"/>
+        <source>Ask for confirmation before synchronizing external storages</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.ui" line="277"/>
+        <source>Move removed files to trash</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.ui" line="324"/>
+        <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.ui" line="363"/>
+        <source>Edit &amp;Ignored Files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.ui" line="370"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="367"/>
+        <source>Create Debug Archive</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.cpp" line="235"/>
+        <source>Advanced</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.cpp" line="369"/>
+        <source>Zip Archives</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.cpp" line="382"/>
+        <source>Failed to Access File</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.cpp" line="383"/>
+        <source>Could not access the selected location. Please try again or choose a different location.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.cpp" line="392"/>
+        <source>Debug Archive Created</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.cpp" line="393"/>
+        <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2391,7 +2481,7 @@ Féadfaidh sé seo a bheith ina fhadhb le do leabharlanna OpenSSL.</translation>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mimetype, e.g text/plain files</comment>
         <extracomment>TRANSLATOR Placeholder contains file MIME type</extracomment>
-        <translation>No file actions were returned by the server for %1 files.</translation>
+        <translation>Níor thug an freastalaí aon ghníomhartha comhaid ar ais do %1 comhad.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="372"/>
@@ -3282,22 +3372,6 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
         <translation>Taispeáin Freastalaí &amp; Fógraí</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="74"/>
-        <source>Advanced</source>
-        <translation>Casta</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="123"/>
-        <source>MB</source>
-        <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
-        <translation>MB</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="190"/>
-        <source>Ask for confirmation before synchronizing external storages</source>
-        <translation>Iarr deimhniú sula ndéantar stórais sheachtracha a shioncronú</translation>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
         <source>&amp;Launch on System Startup</source>
         <translation>&amp;Seol ar Thosú an Chórais</translation>
@@ -3318,14 +3392,20 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
         <translation>Úsáid &amp;Deilbhíní Monacrómacha</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="64"/>
-        <source>Show &amp;Quota Warning Notifications</source>
-        <translation>Taispeáin Fógraí Rabhaidh &amp;Cuóta</translation>
+        <location filename="../src/gui/generalsettings.ui" line="74"/>
+        <source>Advanced</source>
+        <translation>Casta</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="87"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
         <translation>Iarr deimhniú sula ndéantar fillteáin nua atá níos mó ná a shioncronú</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="123"/>
+        <source>MB</source>
+        <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
+        <translation>MB</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="150"/>
@@ -3336,6 +3416,11 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
         <location filename="../src/gui/generalsettings.ui" line="177"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
         <translation>Díchumasaigh go huathoibríoch sioncrónú fillteán a sháraíonn teorainn</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="190"/>
+        <source>Ask for confirmation before synchronizing external storages</source>
+        <translation>Iarr deimhniú sula ndéantar stórais sheachtracha a shioncronú</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="201"/>
@@ -3384,6 +3469,11 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
         <translation>Nuashonraigh cainéal</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="385"/>
+        <source>&amp;Restart &amp;&amp; Update</source>
+        <translation>&amp;Atosaigh &amp;&amp; Nuashonraigh</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="402"/>
         <source>&amp;Automatically check for updates</source>
         <translation>Seiceáil go huathoibríoch le haghaidh nuashonruithe</translation>
@@ -3409,9 +3499,9 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
         <translation>Athchóirigh &amp;Réamhshocrú</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="385"/>
-        <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>&amp;Atosaigh &amp;&amp; Nuashonraigh</translation>
+        <location filename="../src/gui/generalsettings.ui" line="64"/>
+        <source>Show &amp;Quota Warning Notifications</source>
+        <translation>Taispeáin Fógraí Rabhaidh &amp;Cuóta</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="216"/>
@@ -3685,6 +3775,120 @@ Scriosfar míreanna a gceadaítear iad a scriosadh má chuireann siad cosc ​�
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="132"/>
         <source>Add a new ignore pattern:</source>
         <translation>Cuir patrún neamhairde nua leis:</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::InfoSettings</name>
+    <message>
+        <location filename="../src/gui/infosettings.ui" line="51"/>
+        <source>Desktop client x.x.x</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/infosettings.ui" line="74"/>
+        <source>Usage Documentation</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/infosettings.ui" line="81"/>
+        <source>Legal Notice</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/infosettings.ui" line="152"/>
+        <source>Update channel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/infosettings.ui" line="172"/>
+        <source>Restore &amp;Default</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/infosettings.ui" line="193"/>
+        <source>&amp;Automatically check for updates</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/infosettings.ui" line="216"/>
+        <source>&amp;Restart &amp;&amp; Update</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/infosettings.ui" line="229"/>
+        <source>Check Now</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/infosettings.cpp" line="103"/>
+        <source>Restore to &amp;%1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/infosettings.cpp" line="144"/>
+        <location filename="../src/gui/infosettings.cpp" line="170"/>
+        <source>Connected to an enterprise system. Update channel (%1) cannot be changed.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/infosettings.cpp" line="201"/>
+        <source>stable</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/infosettings.cpp" line="205"/>
+        <source>beta</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/infosettings.cpp" line="209"/>
+        <source>daily</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/infosettings.cpp" line="213"/>
+        <source>enterprise</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/infosettings.cpp" line="248"/>
+        <source>- beta: contains versions with new features that may not be tested thoroughly
+- daily: contains versions created daily only for testing and development
+
+Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
+        <comment>list of available update channels to non enterprise users and downgrading warning</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/infosettings.cpp" line="253"/>
+        <source>- enterprise: contains stable versions for customers.
+
+Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
+        <comment>list of available update channels to enterprise users and downgrading warning</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/infosettings.cpp" line="260"/>
+        <source>Changing update channel?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/infosettings.cpp" line="261"/>
+        <source>The channel determines which upgrades will be offered to install:
+- stable: contains tested versions considered reliable
+</source>
+        <comment>starts list of available update channels, stable is always available</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/infosettings.cpp" line="267"/>
+        <source>Change update channel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/infosettings.cpp" line="268"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4965,6 +5169,16 @@ Tabhair faoi deara go sárófar an socrú seo trí úsáid a bhaint as aon rogha
         <translation>Ginearálta</translation>
     </message>
     <message>
+        <location filename="../src/gui/settingsdialog.cpp" line="202"/>
+        <source>Advanced</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/settingsdialog.cpp" line="203"/>
+        <source>Info</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/settingsdialog.cpp" line="229"/>
         <source>Account</source>
         <translation>Cuntas</translation>
@@ -5770,28 +5984,28 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation><numerusform>%n fógra</numerusform><numerusform>%n fógraí</numerusform><numerusform>%n fógraí</numerusform><numerusform>%n fógraí</numerusform><numerusform>%n fógraí</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="684"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="723"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="727"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="766"/>
         <source>“%1” was not synchronized</source>
         <translation>Níor sioncrónaíodh “%1”</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="725"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="768"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
         <translation>Stóráil neamhleor ar an bhfreastalaí. Éilíonn an comhad %1 ach níl ach %2 ar fáil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="728"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="771"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
         <translation>Stóráil neamhleor ar an bhfreastalaí. Teastaíonn %1 don chomhad.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="731"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="774"/>
         <source>Insufficient storage on the server.</source>
         <translation>Stóráil neamhleor ar an bhfreastalaí.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="767"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="810"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Níl dóthain spáis ar fáil ar an bhfreastalaí le haghaidh roinnt uaslódálacha.</translation>
     </message>
@@ -5850,7 +6064,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Ag seoladh d’iarratais…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1746"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1794"/>
         <source>Sending your request …</source>
         <translation>Ag seoladh d’iarratais …</translation>
     </message>
@@ -6358,6 +6572,11 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <location filename="../src/gui/generalsettings.cpp" line="226"/>
         <source>Could not move debug archive to selected location!</source>
         <translation>Níorbh fhéidir cartlann dífhabhtaithe a bhogadh go dtí an suíomh roghnaithe!</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="307"/>
+        <source>Answer</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="789"/>
