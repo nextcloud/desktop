@@ -23,6 +23,8 @@ void GetAvailableGovernanceLabels::start()
 
     connect(ocsGovernanceJob().data(), &OcsJob::jobFinished,
             this, &GetAvailableGovernanceLabels::jobDone);
+    connect(ocsGovernanceJob().data(), &OcsJob::ocsError,
+            this, &GetAvailableGovernanceLabels::finishedWitherror);
 
     ocsGovernanceJob()->setPath(buildPath());
     ocsGovernanceJob()->setMethod("GET");
@@ -30,14 +32,9 @@ void GetAvailableGovernanceLabels::start()
     ocsGovernanceJob()->start();
 }
 
-void GetAvailableGovernanceLabels::jobDone(QJsonDocument reply, int statusCode)
+void GetAvailableGovernanceLabels::jobDone(QJsonDocument reply, [[maybe_unused]] int statusCode)
 {
-    Q_UNUSED(reply)
-    Q_UNUSED(statusCode)
-
-    qCInfo(lcGovernance) << reply;
-
-    Q_EMIT finished();
+    Q_EMIT finished(reply);
 }
 
 QString GetAvailableGovernanceLabels::buildPath() const
