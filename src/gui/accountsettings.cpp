@@ -34,10 +34,12 @@
 #include "syncresult.h"
 #include "ignorelisttablewidget.h"
 #include "networksettings.h"
+#include "tray/usermodel.h"
 #include "ui_mnemonicdialog.h"
 
 #include <cmath>
 
+#include <QColor>
 #include <QDesktopServices>
 #include <QDialog>
 #include <QDialogButtonBox>
@@ -197,11 +199,13 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->verticalLayout_2->removeWidget(_ui->fileProviderPanel);
     _ui->verticalLayout_2->removeWidget(_ui->syncFoldersPanel);
     _ui->verticalLayout_2->removeWidget(_ui->connectionSettingsPanel);
+    _ui->verticalLayout_2->removeWidget(_ui->accountActionsPanel);
     _ui->connectionSettingsPanel->hide();
     _ui->verticalLayout_2->insertWidget(0, _ui->fileProviderPanel);
     _ui->verticalLayout_2->insertWidget(1, _ui->syncFoldersPanel);
     _ui->verticalLayout_2->insertWidget(2, _encryptionPanel);
     _ui->verticalLayout_2->insertWidget(3, _ui->accountStatusPanel);
+    _ui->verticalLayout_2->insertWidget(4, _ui->accountActionsPanel);
 
     _model->setAccountState(_accountState);
     _model->setParent(this);
@@ -217,6 +221,12 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->connectionSettingsPanelContents->setAutoFillBackground(false);
     _ui->connectionSettingsPanelContents->setAttribute(Qt::WA_StyledBackground, false);
     _ui->connectionSettingsPanelContents->setContentsMargins(0, 0, 0, 0);
+    _ui->accountActionsPanelContents->setAutoFillBackground(false);
+    _ui->accountActionsPanelContents->setAttribute(Qt::WA_StyledBackground, false);
+    _ui->accountActionsPanelContents->setContentsMargins(0, 0, 0, 0);
+
+    connect(_ui->_toggleSignInOutButton, &QPushButton::clicked, this, &AccountSettings::slotToggleSignInState);
+    connect(_ui->_removeAccountButton, &QPushButton::clicked, this, &AccountSettings::slotRemoveAccount);
 
     // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
     connect(this, &AccountSettings::styleChanged, delegate, &FolderStatusDelegate::slotStyleChanged);
@@ -420,12 +430,34 @@ QString AccountSettings::selectedFolderAlias() const
 
 void AccountSettings::slotToggleSignInState()
 {
-    if (_accountState->isSignedOut()) {
+    const auto userModel = UserModel::instance();
+    const auto userId = userModel->findUserIdForAccount(_accountState);
+    if (userId >= 0) {
+        if (_accountState->isConnected()) {
+            userModel->logout(userId);
+        } else {
+            userModel->login(userId);
+        }
+        return;
+    }
+
+    if (_accountState->isConnected()) {
+        _accountState->signOutByUi();
+    } else {
         _accountState->account()->resetRejectedCertificates();
         _accountState->signIn();
-    } else {
-        _accountState->signOutByUi();
     }
+}
+
+void AccountSettings::slotRemoveAccount()
+{
+    const auto userModel = UserModel::instance();
+    const auto userId = userModel->findUserIdForAccount(_accountState);
+    if (userId < 0) {
+        return;
+    }
+
+    userModel->removeAccount(userId);
 }
 
 void AccountSettings::doExpand()
@@ -1504,6 +1536,8 @@ void AccountSettings::slotAccountStateChanged()
                                 .arg(Utility::escape(Theme::instance()->appNameGUI())));
     }
 
+    _ui->_toggleSignInOutButton->setText(state == AccountState::Connected ? tr("Log out") : tr("Log in"));
+
     /* Allow to expand the item if the account is connected. */
     _ui->_folderList->setItemsExpandable(state == AccountState::Connected);
 
@@ -1821,6 +1855,27 @@ void AccountSettings::customizeStyle()
     auto msg = _ui->connectLabel->text();
     Theme::replaceLinkColorStringBackgroundAware(msg);
     _ui->connectLabel->setText(msg);
+
+    const auto destructiveTextColor = Theme::instance()->darkMode() ? QColor(0xffdad6) : QColor(0xba1a1a);
+    const auto destructiveBorderColor = Theme::instance()->darkMode() ? QColor(0xffb4ab) : QColor(0xba1a1a);
+    const auto destructiveBackgroundColor = Theme::instance()->darkMode() ? QColor(0x2d1514) : QColor(0xfffff4f2);
+    const auto destructiveHoverBackgroundColor = Theme::instance()->darkMode() ? QColor(0x3b1b1a) : QColor(0xffffe4df);
+    const auto destructivePressedBackgroundColor = Theme::instance()->darkMode() ? QColor(0x4a221f) : QColor(0xffffd6cf);
+    _ui->_removeAccountButton->setStyleSheet(QString::fromLatin1(
+        "QPushButton#_removeAccountButton {"
+        " color: %1;"
+        " background-color: %2;"
+        " border: 1px solid %3;"
+        " border-radius: 4px;"
+        " padding: 4px 10px;"
+        "}"
+        "QPushButton#_removeAccountButton:hover { background-color: %4; }"
+        "QPushButton#_removeAccountButton:pressed { background-color: %5; }")
+        .arg(destructiveTextColor.name(),
+            destructiveBackgroundColor.name(),
+            destructiveBorderColor.name(),
+            destructiveHoverBackgroundColor.name(),
+            destructivePressedBackgroundColor.name()));
 }
 
 void AccountSettings::setupE2eEncryption()
