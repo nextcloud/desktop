@@ -785,6 +785,8 @@ void AccountManager::removeAccountState(OCC::AccountState *account, AccountRemov
     _accounts.erase(it);
 
     if (removalMode == AccountRemovalMode::ForgetSensitiveData) {
+        account->account()->deleteAppToken();
+
         // Forget account credentials, cookies
         account->account()->credentials()->forgetSensitiveData();
         QFile::remove(account->account()->cookieJarPath());
@@ -796,8 +798,6 @@ void AccountManager::removeAccountState(OCC::AccountState *account, AccountRemov
     if (removalMode == AccountRemovalMode::ForgetSensitiveData) {
         // Forget E2E keys
         account->account()->e2e()->forgetSensitiveData();
-
-        account->account()->deleteAppToken();
     }
 
     // clean up config from subscriptions and enterprise channel

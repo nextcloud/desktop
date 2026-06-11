@@ -2512,7 +2512,6 @@ void UserModel::removeAccount(const int id)
         return;
     }
 
-    _users[id]->logout();
     _users[id]->removeAccount();
 
     beginRemoveRows(QModelIndex(), id, id);
