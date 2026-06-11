@@ -11,6 +11,7 @@
 #include <QObject>
 #include <QQmlEngine>
 #include <QLoggingCategory>
+#include <QJsonDocument>
 
 Q_DECLARE_LOGGING_CATEGORY(lcGovernance)
 
@@ -87,7 +88,9 @@ Q_SIGNALS:
 
     void entityIdChanged();
 
-    void finished();
+    void finished(QJsonDocument reply);
+
+    void finishedWitherror(int errorCode, const QString &errorMessage);
 
     void accountChanged();
 
