@@ -80,7 +80,7 @@ Q_LOGGING_CATEGORY(lcFinderSyncXPC, "nextcloud.gui.macos.findersync.xpc", QtInfo
             NSString *clientTeamId = ((__bridge NSDictionary *)clientInfo)[@"teamid"];
             if (![expectedTeamId isEqualToString:clientTeamId]) {
                 qCWarning(OCC::Mac::lcFinderSyncXPC) << "Rejecting XPC connection from untrusted client, team:"
-                                                      << QString::fromNSString(clientTeamId ?: @"(none)");
+                                                      << QString::fromNSString(clientTeamId ? clientTeamId : @"(none)");
                 CFRelease(clientInfo);
                 CFRelease(clientCode);
                 return NO;
