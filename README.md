@@ -42,10 +42,10 @@ If you find any bugs or have any suggestion for improvement, please
 > For contributors on macOS, see the [macOS development guide](./doc/macOS-development.md).
 
 > [!NOTE]  
-> Find the system requirements and instructions on [how to work on Windows with KDE Craft](https://github.com/nextcloud/desktop-client-blueprints/) on our [desktop client blueprints repository](https://github.com/nextcloud/desktop-client-blueprints/).
+> Find the system requirements and instructions on [how to work with KDE Craft in our desktop client blueprints repository](https://github.com/nextcloud/craft-blueprints-nextcloud/).
 
 ### System requirements
-- [Windows 10, Windows 11](https://github.com/nextcloud/desktop-client-blueprints/), macOS 13 Ventura (or newer) or Linux
+- Windows 10, Windows 11, macOS 13 Ventura (or newer) or Linux
 - [🔽 Inkscape (to generate icons)](https://inkscape.org/release/)
 - Developer tools: cmake, clang/gcc/g++:
 - Qt6 since 3.14, Qt5 for earlier versions
