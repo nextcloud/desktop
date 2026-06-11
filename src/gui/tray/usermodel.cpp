@@ -2062,7 +2062,7 @@ void User::slotQuotaChanged(const int64_t &usedBytes, const int64_t &availableBy
 
     const auto percent = (double)usedBytes / (double)total * 100.0;
     const auto percentInt = qMin(qRound(percent), 100);
-    qCDebug(lcActivity) << tr("Quota is updated; %1 percent of the total space is used.").arg(QString::number(percentInt));
+    qCDebug(lcActivity) << "Quota updated:" << percentInt << "% used";
 
     int thresholdPassed = 0;
     if (_lastQuotaPercent < 80 && percentInt >= 80) {
