@@ -21,6 +21,8 @@ void ApplyGovernanceLabel::start()
 
     connect(ocsGovernanceJob().data(), &OcsJob::jobFinished,
             this, &ApplyGovernanceLabel::jobDone);
+    connect(ocsGovernanceJob().data(), &OcsJob::ocsError,
+            this, &ApplyGovernanceLabel::finishedWithError);
 
     ocsGovernanceJob()->setPath(buildPath());
     ocsGovernanceJob()->setMethod("POST");
@@ -28,15 +30,9 @@ void ApplyGovernanceLabel::start()
     ocsGovernanceJob()->start();
 }
 
-void ApplyGovernanceLabel::jobDone(QJsonDocument reply, int statusCode)
+void ApplyGovernanceLabel::jobDone(QJsonDocument reply, [[maybe_unused]] int statusCode)
 {
-    Q_UNUSED(reply)
-    Q_UNUSED(statusCode)
-
-    qCInfo(lcGovernance) << reply;
-
-
-    Q_EMIT finished();
+    Q_EMIT finished(reply);
 }
 
 } // namespace OCC
