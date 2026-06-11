@@ -21,6 +21,8 @@ void ApplyGovernanceLabel::start()
 
     connect(ocsGovernanceJob().data(), &OcsJob::jobFinished,
             this, &ApplyGovernanceLabel::jobDone);
+    connect(ocsGovernanceJob().data(), &OcsJob::ocsError,
+            this, &ApplyGovernanceLabel::finishedWitherror);
 
     ocsGovernanceJob()->setPath(buildPath());
     ocsGovernanceJob()->setMethod("POST");
@@ -34,7 +36,6 @@ void ApplyGovernanceLabel::jobDone(QJsonDocument reply, int statusCode)
     Q_UNUSED(statusCode)
 
     qCInfo(lcGovernance) << reply;
-
 
     Q_EMIT finished();
 }

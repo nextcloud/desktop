@@ -89,6 +89,8 @@ Q_SIGNALS:
 
     void finished();
 
+    void finishedWitherror(int errorCode, const QString &errorMessage);
+
     void accountChanged();
 
 protected:

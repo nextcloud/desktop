@@ -21,6 +21,8 @@ void DeleteGovernanceLabel::start()
 
     connect(ocsGovernanceJob().data(), &OcsJob::jobFinished,
             this, &DeleteGovernanceLabel::jobDone);
+    connect(ocsGovernanceJob().data(), &OcsJob::ocsError,
+            this, &DeleteGovernanceLabel::ocsError);
 
     ocsGovernanceJob()->setPath(buildPath());
     ocsGovernanceJob()->setMethod("DELETE");
@@ -35,6 +37,16 @@ void DeleteGovernanceLabel::jobDone(QJsonDocument reply, int statusCode)
 
     qCInfo(lcGovernance) << reply;
 
+
+    Q_EMIT finished();
+}
+
+void DeleteGovernanceLabel::ocsError(int statusCode, const QString &message)
+{
+    Q_UNUSED(message)
+    Q_UNUSED(statusCode)
+
+    qCInfo(lcGovernance) << message;
 
     Q_EMIT finished();
 }

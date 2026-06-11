@@ -23,6 +23,8 @@ void GetAvailableGovernanceLabels::start()
 
     connect(ocsGovernanceJob().data(), &OcsJob::jobFinished,
             this, &GetAvailableGovernanceLabels::jobDone);
+    connect(ocsGovernanceJob().data(), &OcsJob::ocsError,
+            this, &GetAvailableGovernanceLabels::finishedWitherror);
 
     ocsGovernanceJob()->setPath(buildPath());
     ocsGovernanceJob()->setMethod("GET");

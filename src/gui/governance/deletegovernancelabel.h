@@ -27,6 +27,8 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void jobDone(QJsonDocument reply, int statusCode);
+
+    void ocsError(int statusCode, const QString &message);
 };
 
 } // namespace OCC
