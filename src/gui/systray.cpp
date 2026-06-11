@@ -18,6 +18,10 @@
 #include "callstatechecker.h"
 #include "guiutility.h"
 
+#ifdef Q_OS_MACOS
+#include "foregroundbackground_interface.h"
+#endif
+
 #include <QCursor>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
@@ -239,6 +243,81 @@ void Systray::showQMLWindow()
     _trayWindow->requestActivate();
     setIsOpen(true);
     UserModel::instance()->fetchCurrentActivityModel();
+}
+
+void Systray::showUserStatusWindow(int userIndex)
+{
+    const auto userModel = UserModel::instance();
+    if (!userModel || userIndex < 0 || userIndex >= userModel->rowCount()) {
+        qCWarning(lcSystray) << "Invalid user index for user status window:" << userIndex;
+        return;
+    }
+
+    const auto userModelIndex = userModel->index(userIndex);
+    if (!userModel->isUserConnected(userIndex)
+        || !userModel->data(userModelIndex, UserModel::ServerHasUserStatusRole).toBool()) {
+        qCDebug(lcSystray) << "Not opening user status window for disconnected or unsupported account:" << userIndex;
+        return;
+    }
+
+    hideWindow();
+
+    if (!_trayEngine) {
+        qCWarning(lcSystray) << "Could not open user status window as no tray engine was available";
+        return;
+    }
+
+    if (_userStatusWindow) {
+        _userStatusWindow->setProperty("userIndex", userIndex);
+        positionWindowAtScreenCenter(_userStatusWindow.data());
+        _userStatusWindow->show();
+        _userStatusWindow->raise();
+        _userStatusWindow->requestActivate();
+        return;
+    }
+
+    const QVariantMap initialProperties{
+        {"userIndex", userIndex},
+    };
+    QQmlComponent userStatusWindowComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/UserStatusWindow.qml"));
+
+    if (userStatusWindowComponent.isError()) {
+        qCWarning(lcSystray) << userStatusWindowComponent.errorString();
+        qCWarning(lcSystray) << userStatusWindowComponent.errors();
+        return;
+    }
+
+    const auto createdObject = userStatusWindowComponent.createWithInitialProperties(initialProperties);
+    const auto window = qobject_cast<QQuickWindow *>(createdObject);
+    if (!window) {
+        qCWarning(lcSystray) << "User status window resulted in creation of object that was not a window!";
+        if (createdObject) {
+            createdObject->deleteLater();
+        }
+        return;
+    }
+
+    _userStatusWindow = window;
+    _userStatusWindow->setIcon(Theme::instance()->applicationIcon());
+
+#ifdef Q_OS_MACOS
+    auto *fgbg = new ForegroundBackground(this);
+    _userStatusWindow->installEventFilter(fgbg);
+#endif
+
+#if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+    _userStatusWindow->setFlag(Qt::ExpandedClientAreaHint, true);
+    _userStatusWindow->setFlag(Qt::NoTitleBarBackgroundHint, true);
+#endif
+
+    connect(_userStatusWindow.data(), &QObject::destroyed, this, [this] {
+        _userStatusWindow = nullptr;
+    });
+
+    positionWindowAtScreenCenter(_userStatusWindow.data());
+    _userStatusWindow->show();
+    _userStatusWindow->raise();
+    _userStatusWindow->requestActivate();
 }
 
 void Systray::setupContextMenu()

@@ -1,6 +1,9 @@
 <RCC>
     <qresource prefix="/qml">
         <file>src/gui/UserStatusMessageView.qml</file>
+        <file>src/gui/UserStatusWindow.qml</file>
+        <file>src/gui/UserStatusWindowStatusRow.qml</file>
+        <file>src/gui/UserStatusWindowPredefinedStatusRow.qml</file>
         <file>src/gui/UserStatusSelectorPage.qml</file>
         <file>src/gui/EmojiPicker.qml</file>
         <file>src/gui/UserStatusSelectorButton.qml</file>
