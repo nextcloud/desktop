@@ -11,7 +11,7 @@ public actor FileProviderLogMock: FileProviderLogging {
     let logger: Logger
 
     public init() {
-        logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "FileProviderLogMock")
+        logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "com.nextcloud.NextcloudFileProviderKit.tests", category: "FileProviderLogMock")
     }
 
     public func write(category _: String, level _: OSLogType, message: String, details _: [FileProviderLogDetailKey: (any Sendable)?], file _: StaticString, function _: StaticString, line _: UInt) {

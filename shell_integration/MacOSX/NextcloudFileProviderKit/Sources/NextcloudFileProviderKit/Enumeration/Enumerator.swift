@@ -497,7 +497,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
 
                             let hasMaterializedDescendants = materializedItems.contains {
                                 $0.ocId != localItem.ocId
-                                    && $0.serverUrl.hasPrefix(localItem.remotePath())
+                                    && $0.serverUrl.hasPrefix(localItem.remotePath() + "/")
                             }
 
                             if !hasMaterializedDescendants {
