@@ -7122,11 +7122,6 @@ Server replied with error: %2</source>
             <numerusform>%n seconds</numerusform>
         </translation>
     </message>
-    <message>
-        <location filename="../src/common/utility.cpp" line="315"/>
-        <source>%1 %2</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ValidateChecksumHeader</name>
