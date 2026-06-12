@@ -237,6 +237,12 @@ bool DiscoveryPhase::recursiveCheckForDeletedParents(const QString &itemPath) co
             continue;
         }
 
+        // Async 404 in flight: rename source candidate, not a confirmed deletion.
+        if (_pendingRenameSourcePaths.contains(currentParentFolder)) {
+            qCDebug(lcDiscovery()) << "deleted parent is a pending rename candidate, skipping" << currentParentFolder;
+            continue;
+        }
+
         qCDebug(lcDiscovery()) << "deleted parent found";
         result = true;
         break;

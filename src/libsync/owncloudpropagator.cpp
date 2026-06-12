@@ -158,8 +158,11 @@ static SyncJournalErrorBlacklistRecord createBlacklistEntry(
         entry._ignoreDuration = 0;
     }
 
-    if (item._httpErrorCode == 507) {
+    if (item._isQuotaError || item._httpErrorCode == 507) {
         entry._errorCategory = SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage;
+        // Quota can change at any time (user frees space, admin adjusts limits).
+        // Always retry on the next sync rather than backing off exponentially.
+        entry._ignoreDuration = 0;
     }
 
     return entry;
@@ -174,11 +177,11 @@ void blacklistUpdate(SyncJournalDb *journal, SyncFileItem &item)
     SyncJournalErrorBlacklistRecord oldEntry = journal->errorBlacklistEntry(item._file);
 
     bool mayBlacklist =
-        item._errorMayBeBlacklisted // explicitly flagged for blacklisting
+        item._isQuotaError // quota errors always get an InsufficientRemoteStorage entry
         || ((item._status == SyncFileItem::NormalError
                 || item._status == SyncFileItem::SoftError
                 || item._status == SyncFileItem::DetailError)
-               && item._httpErrorCode != 0 // or non-local error
+               && item._httpErrorCode != 0 // non-local error
                );
 
     // No new entry? Possibly remove the old one, then done.
@@ -1586,6 +1589,22 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
             }
         }
     }
+
+    // For a DOWN rename where the directory itself succeeded (PropagateLocalRename
+    // ran OK) but one or more children had errors, still persist the renamed
+    // directory's path and fileId in the database. Without this record a
+    // subsequent server side rename of the same directory cannot be matched via
+    // fileId lookup, causing the client to treat it as a DELETE + NEW instead of
+    // following the move.
+    if (!_item->isEmpty()
+        && status != SyncFileItem::Success
+        && status != SyncFileItem::FatalError
+        && _item->_status == SyncFileItem::Success
+        && _item->_instruction == CSYNC_INSTRUCTION_RENAME
+        && _item->_direction == SyncFileItem::Down) {
+        propagator()->updateMetadata(*_item);
+    }
+
     _state = Finished;
     qCDebug(lcDirectory()) << "PropagateDirectory::slotSubJobsFinished" << "emit finished" << status;
     emit finished(status);
