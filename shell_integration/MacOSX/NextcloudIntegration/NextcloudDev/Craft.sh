@@ -38,4 +38,5 @@ swift run mac-crafter \
     --build-file-provider-module \
     --code-sign-identity="Apple Development" \
     --without-web-engine \
+    --build-tests \
     "$DESKTOP_CLIENT_PROJECT_ROOT"
