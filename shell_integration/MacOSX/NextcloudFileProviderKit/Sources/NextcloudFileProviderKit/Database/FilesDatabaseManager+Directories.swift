@@ -17,7 +17,10 @@ public extension FilesDatabaseManager {
     func childItems(directoryMetadata: SendableItemMetadata) -> [SendableItemMetadata] {
         let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
         return itemMetadatas
-            .where { $0.serverUrl.starts(with: directoryServerUrl) }
+            .where {
+                $0.serverUrl == directoryServerUrl ||
+                    $0.serverUrl.starts(with: directoryServerUrl + "/")
+            }
             .toUnmanagedResults()
     }
 
@@ -37,7 +40,10 @@ public extension FilesDatabaseManager {
     func childItemCount(directoryMetadata: SendableItemMetadata) -> Int {
         let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
         return itemMetadatas
-            .where { $0.serverUrl.starts(with: directoryServerUrl) }
+            .where {
+                $0.serverUrl == directoryServerUrl ||
+                    $0.serverUrl.starts(with: directoryServerUrl + "/")
+            }
             .count
     }
 
@@ -84,7 +90,8 @@ public extension FilesDatabaseManager {
         var deletedMetadatas: [SendableItemMetadata] = [directoryMetadataCopy]
 
         let results = itemMetadatas.where {
-            $0.account == directoryAccount && $0.serverUrl.starts(with: directoryUrlPath)
+            $0.account == directoryAccount &&
+                ($0.serverUrl == directoryUrlPath || $0.serverUrl.starts(with: directoryUrlPath + "/"))
         }
 
         for result in results {
@@ -119,7 +126,7 @@ public extension FilesDatabaseManager {
         let newDirectoryServerUrl = newServerUrl + "/" + newFileName
         let childItemResults = itemMetadatas.where {
             $0.account == directoryMetadata.account &&
-                $0.serverUrl.starts(with: oldDirectoryServerUrl)
+                ($0.serverUrl == oldDirectoryServerUrl || $0.serverUrl.starts(with: oldDirectoryServerUrl + "/"))
         }
 
         renameItemMetadata(ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName)
@@ -151,7 +158,7 @@ public extension FilesDatabaseManager {
         return itemMetadatas
             .where {
                 $0.account == directoryMetadata.account &&
-                    $0.serverUrl.starts(with: newDirectoryServerUrl)
+                    ($0.serverUrl == newDirectoryServerUrl || $0.serverUrl.starts(with: newDirectoryServerUrl + "/"))
             }
             .toUnmanagedResults()
     }
