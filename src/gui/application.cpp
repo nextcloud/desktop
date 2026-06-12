@@ -228,6 +228,9 @@ Mac::FinderSyncXPC *Application::finderSyncXPC() const
 Application::Application(int &argc, char **argv)
     : QApplication{argc, argv}
     , _gui(nullptr)
+#if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+    , _dbusService{KDBusService::StartupOption::Unique}
+#endif
     , _theme(Theme::instance())
 {
     _startedAt.start();
@@ -275,9 +278,15 @@ Application::Application(int &argc, char **argv)
         return;
     }
 
+#if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+    if (!_dbusService.isRegistered()) {
+        return;
+    }
+#else
     if (!_singleApp.isPrimaryInstance()) {
         return;
     }
+#endif
 
     if (!ConfigFile().exists()) {
         setApplicationName(_theme->appNameGUI());
@@ -398,6 +407,8 @@ Application::Application(int &argc, char **argv)
 
 #ifdef Q_OS_MACOS
     connect(&_singleApp, &OCC::SingleInstanceManager::messageReceived, this, &Application::slotParseMessage);
+#elif defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+    connect(&_dbusService, &KDBusService::activateRequested, this, &Application::slotActivateRequestedMessage);
 #else
     connect(&_singleApp, &KDSingleApplication::messageReceived, this, &Application::slotParseMessage);
 #endif
@@ -626,6 +637,43 @@ void Application::setupAccountsAndFolders()
     qCWarning(lcApplication) << accountsListSize << "account(s) migrated:" << prettyNamesList(accounts);
 }
 
+void Application::showMainDialogRemoteCommand()
+{
+    qCInfo(lcApplication) << "Running for" << _startedAt.elapsed() / 1000.0 << "sec";
+    if (_startedAt.elapsed() < 10 * 1000) {
+        // This call is mirrored with the one in int main()
+        qCWarning(lcApplication) << "Ignoring MSG_SHOWMAINDIALOG, possibly double-invocation of client via session restore and auto start";
+        return;
+    }
+
+           // Show the main dialog only if there is at least one account configured
+    if (!AccountManager::instance()->accounts().isEmpty()) {
+        showMainDialog();
+    } else {
+        _gui->slotNewAccountWizard();
+    }
+}
+
+void Application::parseOptionsRemoteCommand(const QStringList &options)
+{
+    _showLogWindow = false;
+    parseOptions(options);
+    setupLogging();
+    if (_showLogWindow) {
+        _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
+    }
+    if (_quitInstance) {
+        qApp->quit();
+    }
+
+    handleEditLocallyFromOptions();
+
+    if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
+        AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
+    }
+    AccountSetupCommandLineManager::destroy();
+}
+
 void Application::setupConfigFile()
 {
     // Migrate from version <= 2.4
@@ -843,37 +891,20 @@ void Application::slotParseMessage(const QByteArray &message)
     if (msg.startsWith(QLatin1String("MSG_PARSEOPTIONS:"))) {
         const int lengthOfMsgPrefix = 17;
         const auto options = msg.mid(lengthOfMsgPrefix).split(QLatin1Char{'|'});
-        _showLogWindow = false;
-        parseOptions(options);
-        setupLogging();
-        if (_showLogWindow) {
-            _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
-        }
-        if (_quitInstance) {
-            qApp->quit();
-        }
-
-        handleEditLocallyFromOptions();
-
-        if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
-            AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
-        }
-        AccountSetupCommandLineManager::destroy();
-
+        parseOptionsRemoteCommand(options);
     } else if (msg.startsWith(QLatin1String("MSG_SHOWMAINDIALOG"))) {
-        qCInfo(lcApplication) << "Running for" << _startedAt.elapsed() / 1000.0 << "sec";
-        if (_startedAt.elapsed() < 10 * 1000) {
-            // This call is mirrored with the one in int main()
-            qCWarning(lcApplication) << "Ignoring MSG_SHOWMAINDIALOG, possibly double-invocation of client via session restore and auto start";
-            return;
-        }
+        showMainDialogRemoteCommand();
+    }
+}
 
-        // Show the main dialog only if there is at least one account configured
-        if (!AccountManager::instance()->accounts().isEmpty()) {
-            showMainDialog();
-        } else {
-            _gui->slotNewAccountWizard();
-        }
+void Application::slotActivateRequestedMessage(const QStringList &arguments, const QString &workingDirectory)
+{
+    Q_UNUSED(workingDirectory)
+
+    if (arguments.size() == 1) {
+        showMainDialogRemoteCommand();
+    } else {
+        parseOptionsRemoteCommand(arguments);
     }
 }
 
@@ -1049,12 +1080,22 @@ void Application::showVersion()
 
 bool Application::isRunning() const
 {
+#if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+    return false;
+#else
     return !_singleApp.isPrimaryInstance();
+#endif
 }
 
 bool Application::sendMessage(const QString &message)
 {
+#if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+    Q_UNUSED(message)
+
+    return true;
+#else
     return _singleApp.sendMessage(message.toLatin1());
+#endif
 }
 
 void Application::showHint(std::string errorHint)
