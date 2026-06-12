@@ -25,6 +25,12 @@ public extension Item {
     ) async -> (Item?, Error?) {
         let logger = FileProviderLogger(category: "Item", log: log)
 
+        // Note: when a parent folder is renamed on another client and an editor has a file open
+        // inside it, the editor may recreate the old folder here, producing a server-side duplicate.
+        // NSFilePresenter callbacks are only delivered when the writer uses NSFileCoordinator.
+        // It is not confirmed whether the File Provider daemon already does this internally when
+        // processing didUpdate renames. If it does not, wrapping rename propagation in an
+        // NSFileCoordinator coordinated write would notify registered presenters.
         let (_, _, _, createError) = await remoteInterface.createFolder(
             remotePath: remotePath, account: account, options: .init(), taskHandler: { task in
                 if let domain, let itemTemplate {
