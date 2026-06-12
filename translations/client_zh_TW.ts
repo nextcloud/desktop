@@ -1563,89 +1563,89 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="50"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>每當要同步的新資料夾超過大小限制時先詢問確認</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="70"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>MB</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="105"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation type="unfinished"/>
+        <translation>每當同步資料夾的大小超過指定限制時發出通知</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="139"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation type="unfinished"/>
+        <translation>自動停用超出限制的資料夾同步</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="186"/>
         <source>Server poll interval</source>
-        <translation type="unfinished"/>
+        <translation>伺服器輪詢間隔</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="203"/>
         <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
-        <translation type="unfinished"/>
+        <translation>秒（若&lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;客戶端推播&lt;/a&gt;不可用）</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="243"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>在與外部儲存空間同步前先詢問確認</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="277"/>
         <source>Move removed files to trash</source>
-        <translation type="unfinished"/>
+        <translation>將移除的檔案移動到垃圾桶</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="324"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
-        <translation type="unfinished"/>
+        <translation>在檔案管理程式的導覽面板中顯示同步資料夾(&amp;E)</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="363"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>編輯忽略的檔案(&amp;I)</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="370"/>
         <location filename="../src/gui/advancedsettings.cpp" line="367"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>建立除錯封存檔</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="235"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>進階</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="369"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>ZIP 封存檔</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="382"/>
         <source>Failed to Access File</source>
-        <translation type="unfinished"/>
+        <translation>無法存取檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="383"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
-        <translation type="unfinished"/>
+        <translation>無法存取選定的位置。請再試一次或選擇其他位置。</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="392"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>已建立除錯封存檔</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="393"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
-        <translation type="unfinished"/>
+        <translation>請在分享前刪除敏感資訊！已於 %1 建立除錯封存檔</translation>
     </message>
 </context>
 <context>
@@ -3783,73 +3783,73 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/infosettings.ui" line="51"/>
         <source>Desktop client x.x.x</source>
-        <translation type="unfinished"/>
+        <translation>桌面客戶端 x.x.x</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
         <source>Usage Documentation</source>
-        <translation type="unfinished"/>
+        <translation>用法說明文件</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="81"/>
         <source>Legal Notice</source>
-        <translation type="unfinished"/>
+        <translation>法律聲明</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="152"/>
         <source>Update channel</source>
-        <translation type="unfinished"/>
+        <translation>更新頻道</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="172"/>
         <source>Restore &amp;Default</source>
-        <translation type="unfinished"/>
+        <translation>還原為預設值(&amp;D)</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="193"/>
         <source>&amp;Automatically check for updates</source>
-        <translation type="unfinished"/>
+        <translation>自動檢查更新(&amp;A)</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="216"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>重新啟動並更新(&amp;R)</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="229"/>
         <source>Check Now</source>
-        <translation type="unfinished"/>
+        <translation>立刻檢查</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="103"/>
         <source>Restore to &amp;%1</source>
-        <translation type="unfinished"/>
+        <translation>還原至 &amp;%1</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="144"/>
         <location filename="../src/gui/infosettings.cpp" line="170"/>
         <source>Connected to an enterprise system. Update channel (%1) cannot be changed.</source>
-        <translation type="unfinished"/>
+        <translation>已連結至企業系統。無法變更更新頻道 (%1)。</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="201"/>
         <source>stable</source>
-        <translation type="unfinished"/>
+        <translation>穩定版</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="205"/>
         <source>beta</source>
-        <translation type="unfinished"/>
+        <translation>測試版</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="209"/>
         <source>daily</source>
-        <translation type="unfinished"/>
+        <translation>每日</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="213"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>企業版</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="248"/>
@@ -3858,7 +3858,10 @@ Items where deletion is allowed will be deleted if they prevent a directory from
 
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
         <comment>list of available update channels to non enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- 測試：包含可能未經徹底測試的的新功能版本
+- 每日：包含每日建立的版本，僅用於測試與開發
+
+無法立即降級版本：從測試版變更為穩定版必須等待新的穩定版本才能更新。</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="253"/>
@@ -3866,12 +3869,14 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
         <comment>list of available update channels to enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- 企業：包含供客戶使用的穩定版本。
+
+無法立即降級版本：從穩定版變更為企業版必須等待新的企業版本才能更新。</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="260"/>
         <source>Changing update channel?</source>
-        <translation type="unfinished"/>
+        <translation>變更更新頻道？</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="261"/>
@@ -3879,17 +3884,19 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 - stable: contains tested versions considered reliable
 </source>
         <comment>starts list of available update channels, stable is always available</comment>
-        <translation type="unfinished"/>
+        <translation>頻道是用來決定哪些升級可供安裝：
+- 穩定：包含被認為可靠的經測試版本
+</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="267"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>變更更新頻道</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="268"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -5172,12 +5179,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="202"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>進階</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="203"/>
         <source>Info</source>
-        <translation type="unfinished"/>
+        <translation>Info</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="229"/>
@@ -6577,7 +6584,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="307"/>
         <source>Answer</source>
-        <translation type="unfinished"/>
+        <translation>答案</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="789"/>
@@ -7337,11 +7344,6 @@ Server replied with error: %2</source>
         <location filename="../src/common/utility.cpp" line="291"/>
         <source>%n second(s)</source>
         <translation><numerusform>%n秒</numerusform></translation>
-    </message>
-    <message>
-        <location filename="../src/common/utility.cpp" line="315"/>
-        <source>%1 %2</source>
-        <translation>%1 %2</translation>
     </message>
 </context>
 <context>

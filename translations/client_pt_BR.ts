@@ -1460,7 +1460,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1363"/>
         <source>Please choose an empty local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Escolha uma pasta de sincronização local vazia.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1428"/>
@@ -1562,23 +1562,23 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="50"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Peça confirmação antes de sincronizar novas pastas com tamanho superior a</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="70"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>MB</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="105"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation type="unfinished"/>
+        <translation>Notificar quando as pastas sincronizadas ultrapassarem o limite especificado</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="139"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation type="unfinished"/>
+        <translation>Desativar automaticamente a sincronização de pastas que excedam o limite</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="186"/>
@@ -1603,48 +1603,48 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="324"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar pastas sincronizadas no painel de navegação do &amp;Explorer</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="363"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Editar arquivos &amp;Ignorados</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="370"/>
         <location filename="../src/gui/advancedsettings.cpp" line="367"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Criar arquivo de depuração</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="235"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Avançado</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="369"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Arquivos ZIP</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="382"/>
         <source>Failed to Access File</source>
-        <translation type="unfinished"/>
+        <translation>Falha ao acessar o arquivo</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="383"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível acessar o local selecionado. Tente novamente ou escolha um local diferente.</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="392"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Arquivo de depuração criado</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="393"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Oculte as informações consideradas confidenciais antes de compartilhá-las! Arquivo de depuração criado em %1</translation>
     </message>
 </context>
 <context>
@@ -3782,22 +3782,22 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem a remoç
     <message>
         <location filename="../src/gui/infosettings.ui" line="51"/>
         <source>Desktop client x.x.x</source>
-        <translation type="unfinished"/>
+        <translation>Cliente de desktop x.x.x</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
         <source>Usage Documentation</source>
-        <translation type="unfinished"/>
+        <translation>Documentação de uso</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="81"/>
         <source>Legal Notice</source>
-        <translation type="unfinished"/>
+        <translation>Aviso legal</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="152"/>
         <source>Update channel</source>
-        <translation type="unfinished"/>
+        <translation>Canal de atualizações</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="172"/>
@@ -3807,17 +3807,17 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem a remoç
     <message>
         <location filename="../src/gui/infosettings.ui" line="193"/>
         <source>&amp;Automatically check for updates</source>
-        <translation type="unfinished"/>
+        <translation>Verificar atualizações &amp;Automaticamente</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="216"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Reiniciar &amp;&amp; atualizar</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="229"/>
         <source>Check Now</source>
-        <translation type="unfinished"/>
+        <translation>Verificar agora</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="103"/>
@@ -3888,7 +3888,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/infosettings.cpp" line="268"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -5171,12 +5171,12 @@ Observe que o uso de qualquer opção de logs na linha de comandos substituirá 
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="202"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Avançado</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="203"/>
         <source>Info</source>
-        <translation type="unfinished"/>
+        <translation>Informação</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="229"/>
@@ -6576,7 +6576,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="307"/>
         <source>Answer</source>
-        <translation type="unfinished"/>
+        <translation>Resposta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="789"/>
@@ -7336,11 +7336,6 @@ Servidor respondeu com erro: %2</translation>
         <location filename="../src/common/utility.cpp" line="291"/>
         <source>%n second(s)</source>
         <translation><numerusform>%n segundo</numerusform><numerusform>%n de segundos</numerusform><numerusform>%n segundos</numerusform></translation>
-    </message>
-    <message>
-        <location filename="../src/common/utility.cpp" line="315"/>
-        <source>%1 %2</source>
-        <translation>%1 %2</translation>
     </message>
 </context>
 <context>
