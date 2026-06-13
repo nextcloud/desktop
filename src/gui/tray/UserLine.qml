@@ -219,42 +219,6 @@ AbstractButton {
                     Accessible.onPressAction: statusMessageButton.clicked()
                }
 
-                MenuItem {
-                    id: logInOutButton
-                    enabled: model.canLogout
-                    text: model.isConnected ? qsTr("Log out") : qsTr("Log in")
-                    width: parent.width
-                    font.pixelSize: Style.topLinePixelSize
-                    hoverEnabled: true
-
-                    onClicked: {
-                        if (model.isConnected) {
-                            UserModel.logout(index)
-                        } else {
-                            UserModel.login(index)
-                        }
-                        accountMenu.close()
-                    }
-
-                    Accessible.role: Accessible.Button
-                    Accessible.name: text
-                    Accessible.onPressAction: logInOutButton.clicked()
-               }
-
-                MenuItem {
-                    id: removeAccountButton
-                    text: model.removeAccountText
-                    font.pixelSize: Style.topLinePixelSize
-                    hoverEnabled: true
-                    onClicked: {
-                        UserModel.removeAccount(index)
-                        accountMenu.close()
-                    }
-
-                    Accessible.role: Accessible.Button
-                    Accessible.name: text
-                    Accessible.onPressAction: removeAccountButton.clicked()
-               }
             }
         }
     }
