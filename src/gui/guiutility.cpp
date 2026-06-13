@@ -149,6 +149,10 @@ void Utility::askExperimentalVirtualFilesFeature(QWidget *receiver, const std::f
     case Vfs::XAttr:
     case Vfs::Off:
         Q_UNREACHABLE();
+    default:
+        // Unhandled VFS mode - don't show the dialog
+        callback(false);
+        return;
     }
 
     QObject::connect(msgBox, &QMessageBox::accepted, receiver, [callback, msgBox, acceptButton] {
