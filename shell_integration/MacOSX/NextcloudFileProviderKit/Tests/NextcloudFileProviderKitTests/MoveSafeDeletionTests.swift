@@ -23,9 +23,20 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
         log: FileProviderLogMock()
     )
 
+    /// Retains the in-memory Realm for the whole test. Without a live reference the
+    /// store is deallocated once a synchronous write returns, so data written before
+    /// an `await` vanishes when the enumerator reopens the Realm on another thread.
+    private var keepAliveRealm: Realm?
+
     override func setUp() {
         super.setUp()
         Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+        keepAliveRealm = Self.dbManager.ncDatabase()
+    }
+
+    override func tearDown() {
+        keepAliveRealm = nil
+        super.tearDown()
     }
 
     func testDeleteDirectorySkipsChildrenWithPendingUpload() throws {

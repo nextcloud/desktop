@@ -330,6 +330,144 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(remoteItem.data, originalRemoteData)
     }
 
+    /// When the server returns 404 during an upload (the parent folder was renamed
+    /// on another client while the file was open), the extension must:
+    ///   - clear the stale lock token so the next attempt goes without an If: header
+    ///   - return cannotSynchronize, not noSuchItem — the file still exists at a new path
+    ///
+    /// Regression test for the race condition described in nextcloud/desktop#9987.
+    func testModifyWith404ClearsLockTokenAndReturnsCannotSynchronize() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.uploadError = NKError(statusCode: 404, fallbackDescription: "Not Found")
+
+        var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        itemMetadata.lockToken = "opaquelocktoken:stale-token-from-old-path"
+        itemMetadata.uploaded = true
+        itemMetadata.downloaded = true
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("modify-404-test")
+        try "Updated content".write(to: newContentsUrl, atomically: true, encoding: .utf8)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(modifiedItem)
+        XCTAssertEqual(
+            (error as? NSFileProviderError)?.code, .cannotSynchronize,
+            "404 during modify must surface as cannotSynchronize, not noSuchItem"
+        )
+        let updatedMetadata = Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)
+        XCTAssertNil(
+            updatedMetadata?.lockToken,
+            "Lock token must be cleared when the upload path is gone"
+        )
+    }
+
+    func testModifyWith412ClearsLockToken() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.uploadError = NKError(statusCode: 412, fallbackDescription: "Precondition Failed")
+
+        var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        itemMetadata.lockToken = "opaquelocktoken:stale-token"
+        itemMetadata.uploaded = true
+        itemMetadata.downloaded = true
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("modify-412-test")
+        try "Updated content".write(to: newContentsUrl, atomically: true, encoding: .utf8)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(modifiedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        let updatedMetadata = Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)
+        XCTAssertNil(updatedMetadata?.lockToken, "Stale lock token must be cleared on 412.")
+    }
+
+    func testModifyWith423ClearsLockToken() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.uploadError = NKError(statusCode: 423, fallbackDescription: "Locked")
+
+        var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        itemMetadata.lockToken = "opaquelocktoken:stale-token"
+        itemMetadata.uploaded = true
+        itemMetadata.downloaded = true
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("modify-423-test")
+        try "Updated content".write(to: newContentsUrl, atomically: true, encoding: .utf8)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(modifiedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        let updatedMetadata = Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)
+        XCTAssertNil(updatedMetadata?.lockToken, "Stale lock token must be cleared on 423.")
+    }
+
     func testModifyFolder() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
