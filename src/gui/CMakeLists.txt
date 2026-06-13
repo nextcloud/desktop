@@ -220,6 +220,8 @@ set(client_SRCS
     tray/unifiedsearchresult.cpp
     tray/unifiedsearchresultslistmodel.h
     tray/trayimageprovider.cpp
+    tray/trayaccountappsmodel.h
+    tray/trayaccountappsmodel.cpp
     tray/unifiedsearchresultslistmodel.cpp
     tray/usermodel.h
     tray/usermodel.cpp

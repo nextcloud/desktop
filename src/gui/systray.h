@@ -147,6 +147,7 @@ public slots:
     void showWindow(OCC::Systray::WindowPosition position = OCC::Systray::WindowPosition::Default);
     void hideWindow();
     void showQMLWindow();
+    void showUserStatusWindow(int userIndex);
 
     void setSyncIsPaused(const bool syncIsPaused);
     void setIsOpen(const bool isOpen);
@@ -212,6 +213,7 @@ private:
     std::unique_ptr<QQmlApplicationEngine> _trayEngine;
     QPointer<QMenu> _contextMenu;
     QSharedPointer<QQuickWindow> _trayWindow;
+    QPointer<QQuickWindow> _userStatusWindow;
 #ifndef Q_OS_MACOS
     QSharedPointer<QQuickWindow> _popupWindow;
 #endif

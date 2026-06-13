@@ -98,6 +98,7 @@ void UserStatusSelectorModel::reset()
             &UserStatusSelectorModel::onMessageCleared);
     }
     _userStatusConnector = nullptr;
+    _setUserStatusOperations.clear();
 }
 
 void UserStatusSelectorModel::init()
@@ -126,6 +127,18 @@ void UserStatusSelectorModel::init()
 
 void UserStatusSelectorModel::onUserStatusSet()
 {
+    auto operation = SetUserStatusOperation::Message;
+    if (!_setUserStatusOperations.empty()) {
+        operation = _setUserStatusOperations.front();
+        _setUserStatusOperations.pop_front();
+    } else if (!_finishOnOnlineStatusSet) {
+        return;
+    }
+
+    if (operation == SetUserStatusOperation::OnlineStatus && !_finishOnOnlineStatusSet) {
+        return;
+    }
+
     emit finished();
 }
 
@@ -156,6 +169,9 @@ void UserStatusSelectorModel::onError(UserStatusConnector::Error error)
         return;
 
     case UserStatusConnector::Error::CouldNotSetUserStatus:
+        if (!_setUserStatusOperations.empty()) {
+            _setUserStatusOperations.pop_front();
+        }
         setError(tr("Could not set status. Make sure you are connected to the server."));
         return;
 
@@ -178,6 +194,21 @@ void UserStatusSelectorModel::clearError()
     setError("");
 }
 
+bool UserStatusSelectorModel::finishOnOnlineStatusSet() const
+{
+    return _finishOnOnlineStatusSet;
+}
+
+void UserStatusSelectorModel::setFinishOnOnlineStatusSet(bool finishOnOnlineStatusSet)
+{
+    if (_finishOnOnlineStatusSet == finishOnOnlineStatusSet) {
+        return;
+    }
+
+    _finishOnOnlineStatusSet = finishOnOnlineStatusSet;
+    emit finishOnOnlineStatusSetChanged();
+}
+
 void UserStatusSelectorModel::setOnlineStatus(UserStatus::OnlineStatus status)
 {
     if (!_userStatusConnector || status == _userStatus.state()) {
@@ -185,6 +216,7 @@ void UserStatusSelectorModel::setOnlineStatus(UserStatus::OnlineStatus status)
     }
 
     _userStatus.setState(status);
+    _setUserStatusOperations.push_back(SetUserStatusOperation::OnlineStatus);
     _userStatusConnector->setUserStatus(_userStatus);
     emit userStatusChanged();
 }
@@ -307,6 +339,7 @@ void UserStatusSelectorModel::setUserStatus()
     }
 
     clearError();
+    _setUserStatusOperations.push_back(SetUserStatusOperation::Message);
     _userStatusConnector->setUserStatus(_userStatus);
 }
 

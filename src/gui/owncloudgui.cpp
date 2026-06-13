@@ -34,6 +34,7 @@
 #include "filedetails/sortedsharemodel.h"
 #include "tray/sortedactivitylistmodel.h"
 #include "tray/syncstatussummary.h"
+#include "tray/trayaccountappsmodel.h"
 #include "tray/unifiedsearchresultslistmodel.h"
 #include "integration/fileactionsmodel.h"
 #include "filesystem.h"
@@ -171,6 +172,7 @@ ownCloudGui::ownCloudGui(Application *parent)
 
     qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "UserModel", UserModel::instance());
     qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "UserAppsModel", UserAppsModel::instance());
+    qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "TrayAccountAppsModel", TrayAccountAppsModel::instance());
     qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "Theme", Theme::instance());
     qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "Systray", Systray::instance());
 
