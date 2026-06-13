@@ -689,12 +689,25 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
     QString errorString = job->errorStringParsingBody(&replyContent);
     qCWarning(lcPropagateUpload) << replyContent; // display the XML error in the debug
 
-    if (_item->_httpErrorCode == 412) {
-        // Precondition Failed: Either an etag or a checksum mismatch.
+    if (_item->_httpErrorCode == 412 || _item->_httpErrorCode == 423) {
+        // 412 or 423 can mean a stale lock token after the path moved under a renamed
+        // parent. Clear it so the next sync does not retry with an invalid token.
+        if (!_item->_lockToken.isEmpty()) {
+            SyncJournalFileRecord record;
+            if (propagator()->_journal->getFileRecord(_item->_file, &record) && record.isValid()) {
+                record._lockstate._lockToken.clear();
+                record._lockstate._locked = false;
+                if (const auto result = propagator()->_journal->setFileRecord(record); !result) {
+                    qCWarning(lcPropagateUpload) << "Failed to clear stale lock token for" << _item->_file << result.error();
+                }
+            }
+            _item->_lockToken.clear();
+            _item->_locked = SyncFileItem::LockStatus::UnlockedItem;
+        }
 
-        // Maybe the bad etag is in the database, we need to clear the
-        // parent folder etag so we won't read from DB next sync.
-        propagator()->_journal->schedulePathForRemoteDiscovery(_item->_file);
+        if (_item->_httpErrorCode == 412) {
+            propagator()->_journal->schedulePathForRemoteDiscovery(_item->_file);
+        }
         propagator()->_anotherSyncNeeded = true;
     }
 

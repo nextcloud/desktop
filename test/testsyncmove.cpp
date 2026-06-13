@@ -9,6 +9,7 @@
  */
 
 #include <QtTest>
+#include <QFile>
 #include "common/result.h"
 #include "syncenginetestutils.h"
 #include <syncengine.h>
@@ -1422,6 +1423,115 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         qDebug() << fakeFolder.currentLocalState();
+    }
+    // PropagateLocalRename must clear the lock token and locked state.
+    void testLockTokenClearedOnServerInitiatedRename()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.remoteModifier().mkdir("D");
+        fakeFolder.remoteModifier().insert("D/file.txt", 64);
+        QVERIFY(fakeFolder.syncOnce());
+
+        // Inject a stale lock token directly into the journal.
+        {
+            SyncJournalFileRecord record;
+            QVERIFY(fakeFolder.syncJournal().getFileRecord(QByteArray("D/file.txt"), &record));
+            record._lockstate._locked = true;
+            record._lockstate._lockOwnerType = static_cast<qint64>(SyncFileItem::LockOwnerType::TokenLock);
+            record._lockstate._lockToken = QStringLiteral("stale-token");
+            QVERIFY(fakeFolder.syncJournal().setFileRecord(record));
+        }
+
+        // Server renames D -> D2, applied locally via PropagateLocalRename.
+        fakeFolder.remoteModifier().rename("D", "D2");
+        QVERIFY(fakeFolder.syncOnce());
+
+        // Child record at the new path must have its lock state cleared.
+        SyncJournalFileRecord moved;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QByteArray("D2/file.txt"), &moved));
+        QVERIFY(moved.isValid());
+        QVERIFY(moved._lockstate._lockToken.isEmpty());
+        QVERIFY(!moved._lockstate._locked);
+    }
+
+    // PropagateRemoteMove must clear the locked state.
+    void testLockedStateClearedOnClientInitiatedRename()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.remoteModifier().mkdir("D");
+        fakeFolder.remoteModifier().insert("D/file.txt", 64);
+        QVERIFY(fakeFolder.syncOnce());
+
+        // Mark the file as locked on the server so discovery reports it as locked.
+        fakeFolder.remoteModifier().modifyLockState(
+            QStringLiteral("D/file.txt"), FileModifier::LockState::FileLocked,
+            static_cast<int>(SyncFileItem::LockOwnerType::UserLock),
+            QStringLiteral("User"), QStringLiteral("userId"),
+            QStringLiteral("editor"), 1234567890, 3600);
+        QVERIFY(fakeFolder.syncOnce()); // Journal now has _locked = true for D/file.txt.
+
+        // Client renames D -> D2.
+        fakeFolder.localModifier().rename("D", "D2");
+        QVERIFY(fakeFolder.syncOnce());
+
+        // Locked state must be cleared in the new record.
+        SyncJournalFileRecord moved;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QByteArray("D2/file.txt"), &moved));
+        QVERIFY(moved.isValid());
+        QVERIFY(!moved._lockstate._locked);
+    }
+
+    // A 412 upload error must schedule rediscovery.
+    void testUpload412SchedulesRediscovery()
+    {
+        FakeFolder fakeFolder{FileInfo{QString{}, {FileInfo{QStringLiteral("D"), {{"file.txt", 64}}}}}};
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.localModifier().appendByte("D/file.txt");
+        fakeFolder.serverErrorPaths().append("D/file.txt", 412);
+        QVERIFY(!fakeFolder.syncOnce()); // Upload fails with 412.
+
+        // After clearing the error, the next sync must succeed.
+        fakeFolder.serverErrorPaths().clear();
+        [[maybe_unused]] const auto blacklistWiped = fakeFolder.syncJournal().wipeErrorBlacklist();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    // A 412 or 423 upload error must clear the whole lock state, not just the token.
+    void testUpload423ClearsStaleLockState()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.remoteModifier().mkdir("D");
+        fakeFolder.remoteModifier().insert("D/file.txt", 64);
+        fakeFolder.remoteModifier().modifyLockState(
+            QStringLiteral("D/file.txt"), FileModifier::LockState::FileLocked,
+            static_cast<int>(SyncFileItem::LockOwnerType::TokenLock),
+            QStringLiteral("user"), QStringLiteral("userId"),
+            QStringLiteral("editor"), 1234567890, 3600);
+        fakeFolder.remoteModifier().find(QStringLiteral("D/file.txt"))->lockToken = QStringLiteral("stale-token");
+        QVERIFY(fakeFolder.syncOnce());
+
+        // Discovery stored the lock token and locked state.
+        SyncJournalFileRecord locked;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QByteArray("D/file.txt"), &locked));
+        QVERIFY(locked._lockstate._locked);
+        QCOMPARE(locked._lockstate._lockToken, QStringLiteral("stale-token"));
+
+        // The lock made the local file read only on download; make it writable so a
+        // local change can trigger an upload the server then rejects with 423.
+        QVERIFY(QFile::setPermissions(fakeFolder.localPath() + QStringLiteral("D/file.txt"),
+                                      QFile::ReadOwner | QFile::WriteOwner));
+        fakeFolder.localModifier().appendByte("D/file.txt");
+        fakeFolder.serverErrorPaths().append("D/file.txt", 423);
+        QVERIFY(fakeFolder.syncOnce()); // 423 is a soft error, so the run completes.
+
+        // Both the token and the locked flag must be cleared.
+        SyncJournalFileRecord cleared;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QByteArray("D/file.txt"), &cleared));
+        QVERIFY(cleared.isValid());
+        QVERIFY(cleared._lockstate._lockToken.isEmpty());
+        QVERIFY(!cleared._lockstate._locked);
     }
 };
 

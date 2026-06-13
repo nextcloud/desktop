@@ -223,6 +223,7 @@ public:
     char contentChar = 'W';
     LockState lockState = LockState::FileUnlocked;
     int lockType = 0;
+    QString lockToken;
     QString lockOwner;
     QString lockOwnerId;
     QString lockEditorId;
