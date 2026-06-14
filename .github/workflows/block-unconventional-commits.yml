@@ -10,7 +10,7 @@ name: Block unconventional commits
 
 on:
   pull_request:
-    types: [opened, ready_for_review, reopened, synchronize, closed]
+    types: [opened, reopened, synchronize, ready_for_review, closed]
 
 permissions:
   contents: read
@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   block-unconventional-commits:
-    if: ${{ github.event.action != 'closed' }}
+    if: ${{ github.event.action != 'closed' && !github.event.pull_request.draft }}
     name: Block unconventional commits
 
     runs-on: ubuntu-latest-low

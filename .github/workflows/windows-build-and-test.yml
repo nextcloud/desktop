@@ -3,7 +3,7 @@
 name: Windows Build and Test
 on:
   pull_request:
-    types: [opened, synchronize, reopened, closed]
+    types: [opened, reopened, synchronize, ready_for_review, closed]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   build:
-    if: ${{ github.event.action != 'closed' }}
+    if: ${{ github.event.action != 'closed' && !github.event.pull_request.draft }}
     name: Windows Build and Test
     runs-on: windows-2022
     env:

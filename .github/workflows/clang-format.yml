@@ -3,7 +3,7 @@
 name: Clang Format Checker
 on:
   pull_request:
-    types: [opened, synchronize, reopened, closed]
+    types: [opened, reopened, synchronize, ready_for_review, closed]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}

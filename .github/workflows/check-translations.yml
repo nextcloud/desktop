@@ -4,7 +4,7 @@ name: Check translations
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, closed]
+    types: [opened, reopened, synchronize, ready_for_review, closed]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -15,7 +15,7 @@ permissions: read-all
 
 jobs:
   checkGermanTranslations:
-    if: ${{ github.event.action != 'closed' }}
+    if: ${{ github.event.action != 'closed' && !github.event.pull_request.draft }}
     runs-on: ubuntu-latest
     
     steps:
@@ -25,7 +25,7 @@ jobs:
           [[ $(grep "Benötigt keine Übersetzung" translations/client_de.ts -c) -gt 0 ]] && exit 1 || exit 0
 
   checkTranslations:
-    if: ${{ github.event.action != 'closed' }}
+    if: ${{ github.event.action != 'closed' && !github.event.pull_request.draft }}
     runs-on: ubuntu-latest
     container: ghcr.io/nextcloud/continuous-integration-translations-desktop:latest
 

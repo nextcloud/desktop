@@ -3,7 +3,7 @@
 name: Linux Clang compilation and tests
 on:
   pull_request:
-    types: [opened, synchronize, reopened, closed]
+    types: [opened, reopened, synchronize, ready_for_review, closed]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   build:
-    if: ${{ github.event.action != 'closed' }}
+    if: ${{ github.event.action != 'closed' && !github.event.pull_request.draft }}
     name: Linux Clang compilation and tests
     runs-on: ubuntu-latest
     container: ghcr.io/nextcloud/continuous-integration-client-qt6:client-sid-6.10.2-4
