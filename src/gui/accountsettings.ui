@@ -456,18 +456,6 @@
      </property>
      <layout class="QVBoxLayout" name="accountActionsPanelLayout">
       <item>
-       <widget class="QLabel" name="accountActionsPanelTitle">
-        <property name="font">
-         <font>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Account actions</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QWidget" name="accountActionsPanelContents" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">

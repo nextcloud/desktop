@@ -516,7 +516,7 @@ void SettingsDialog::customizeStyle()
         " margin: 0px;"
         " padding: 0px;"
         " }"
-        "#accountStatusPanel, #encryptionPanel, #fileProviderPanel, #syncFoldersPanel {"
+        "#accountStatusPanel, #encryptionPanel, #fileProviderPanel, #syncFoldersPanel, #accountActionsPanel {"
         " background: palette(" BACKGROUND_PALETTE ");"
         " border: none;"
         " border-radius: 12px;"
