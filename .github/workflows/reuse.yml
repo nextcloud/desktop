@@ -9,13 +9,16 @@
 
 name: REUSE Compliance Check
 
-on: [pull_request]
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
 
 permissions:
   contents: read
 
 jobs:
   reuse-compliance-check:
+    if: ${{ !github.event.pull_request.draft }}
     runs-on: ubuntu-latest-low
     steps:
       - name: Checkout
