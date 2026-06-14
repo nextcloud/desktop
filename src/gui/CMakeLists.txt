@@ -20,6 +20,16 @@ if(APPLICATION_NAME STREQUAL "Nextcloud" OR APPLICATION_NAME STREQUAL "Nextcloud
     set(STATE_SUBDIR "nextcloud/")
 endif()
 
+# Embed the call-notification ringtone only on platforms that actually play
+# it. macOS (AVAudioPlayer) and Windows (XAudio2) read the WAV from the
+# extracted QRC cache. The Linux libcanberra backend plays the XDG
+# "phone-incoming-call" sound-theme event by id and never reads this file,
+# so embedding it on Linux just bloats the binary by ~900 KB.
+if(APPLE OR WIN32)
+    set(CALL_NOTIFICATION_WAV_FILE_ENTRY "<file>theme/call-notification.wav</file>")
+else()
+    set(CALL_NOTIFICATION_WAV_FILE_ENTRY "")
+endif()
 configure_file(${CMAKE_SOURCE_DIR}/theme.qrc.in ${CMAKE_SOURCE_DIR}/theme.qrc)
 set(theme_dir ${CMAKE_SOURCE_DIR}/theme)
 
@@ -68,6 +78,9 @@ set(client_SRCS
     caseclashfilenamedialog.cpp
     callstatechecker.h
     callstatechecker.cpp
+    notificationsoundplayer.h
+    notificationsoundplayer.cpp
+    notificationsoundplayer_p.h
     conflictdialog.h
     conflictdialog.cpp
     conflictsolver.h
@@ -263,6 +276,7 @@ endif()
 IF( APPLE )
     list(APPEND client_SRCS cocoainitializer_mac.mm)
     list(APPEND client_SRCS systray_mac_common.mm)
+    list(APPEND client_SRCS notificationsoundplayer_mac.mm)
     list(APPEND client_SRCS macOS/trayaccountpopup_mac.mm)
     list(APPEND client_SRCS macOS/singleinstancemanager_mac.mm)
 
@@ -325,12 +339,13 @@ IF( APPLE )
 ENDIF()
 
 IF( NOT WIN32 AND NOT APPLE )
-    set(client_SRCS ${client_SRCS} folderwatcher_linux.cpp)
+    set(client_SRCS ${client_SRCS} folderwatcher_linux.cpp notificationsoundplayer_linux.cpp)
 ENDIF()
 IF( WIN32 )
     set(client_SRCS
         ${client_SRCS}
         folderwatcher_win.cpp
+        notificationsoundplayer_win.cpp
         navigationpanehelper.h
         navigationpanehelper.cpp
         shellextensionsserver.cpp
@@ -516,6 +531,10 @@ if(KF6GuiAddons_FOUND)
   add_definitions(-DHAVE_KGUIADDONS)
 endif()
 
+if(KF6DBusAddons_FOUND)
+    target_link_libraries(nextcloudCore PUBLIC KF6::DBusAddons)
+endif()
+
 add_subdirectory(socketapi)
 
 # skip unity inclusion for files which cause problems with a CMake unity build
@@ -653,6 +672,22 @@ if( UNIX AND NOT APPLE )
     find_package(Qt${QT_VERSION_MAJOR} ${REQUIRED_QT_VERSION} COMPONENTS DBus)
     target_link_libraries(nextcloudCore PUBLIC Qt::DBus)
     target_compile_definitions(nextcloudCore PUBLIC "USE_FDO_NOTIFICATIONS")
+
+    # libcanberra is the freedesktop event-sound API used to play the
+    # incoming-call ringtone. If the dev package is missing, we fall back to
+    # a no-op backend so the build still succeeds; distro packaging should
+    # treat libcanberra as a soft runtime dependency.
+    find_package(PkgConfig)
+    if(PkgConfig_FOUND)
+        pkg_check_modules(CANBERRA IMPORTED_TARGET libcanberra)
+    endif()
+    if(CANBERRA_FOUND)
+        target_link_libraries(nextcloudCore PRIVATE PkgConfig::CANBERRA)
+        target_compile_definitions(nextcloudCore PRIVATE HAVE_LIBCANBERRA)
+    else()
+        message(STATUS "libcanberra not found; notification sounds will be silent on this build")
+    endif()
+    target_compile_definitions(nextcloudCore PRIVATE NEXTCLOUD_HAS_NATIVE_SOUND_BACKEND)
 endif()
 
 if (APPLE)
@@ -661,6 +696,13 @@ if (APPLE)
     else()
         target_link_libraries(nextcloudCore PUBLIC "-framework UserNotifications")
     endif()
+    target_link_libraries(nextcloudCore PRIVATE "-framework AVFoundation" "-framework Foundation")
+    target_compile_definitions(nextcloudCore PRIVATE NEXTCLOUD_HAS_NATIVE_SOUND_BACKEND)
+endif()
+
+if (WIN32)
+    target_link_libraries(nextcloudCore PRIVATE xaudio2)
+    target_compile_definitions(nextcloudCore PRIVATE NEXTCLOUD_HAS_NATIVE_SOUND_BACKEND)
 endif()
 
 install(TARGETS nextcloud

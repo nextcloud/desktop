@@ -228,22 +228,22 @@
 <context>
     <name>CallNotificationDialog</name>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="166"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="165"/>
         <source>Talk notification caller avatar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="225"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="224"/>
         <source>Answer Talk call notification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="232"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="231"/>
         <source>Decline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="242"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="241"/>
         <source>Decline Talk call notification</source>
         <translation type="unfinished"></translation>
     </message>
@@ -688,22 +688,22 @@
 <context>
     <name>OCC::Account</name>
     <message>
-        <location filename="../src/libsync/account.cpp" line="228"/>
+        <location filename="../src/libsync/account.cpp" line="227"/>
         <source>Public Share Link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1073"/>
+        <location filename="../src/libsync/account.cpp" line="1067"/>
         <source>File %1 is already locked by %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1075"/>
+        <location filename="../src/libsync/account.cpp" line="1069"/>
         <source>Lock operation on %1 failed with error %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1077"/>
+        <location filename="../src/libsync/account.cpp" line="1071"/>
         <source>Unlock operation on %1 failed with error %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1638,46 +1638,46 @@ This action will abort any currently running synchronization.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="607"/>
+        <location filename="../src/gui/application.cpp" line="618"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="608"/>
+        <location filename="../src/gui/application.cpp" line="619"/>
         <source>1 account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="610"/>
+        <location filename="../src/gui/application.cpp" line="621"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="611"/>
+        <location filename="../src/gui/application.cpp" line="622"/>
         <source>1 folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="613"/>
+        <location filename="../src/gui/application.cpp" line="624"/>
         <source>Legacy import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="614"/>
+        <location filename="../src/gui/application.cpp" line="625"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="697"/>
+        <location filename="../src/gui/application.cpp" line="745"/>
         <source>Error accessing the configuration file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="698"/>
+        <location filename="../src/gui/application.cpp" line="746"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5813,12 +5813,12 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2595"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2594"/>
         <source>Leave share</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2595"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2594"/>
         <source>Remove account</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6016,103 +6016,103 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="410"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="412"/>
         <source>Please sign in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="501"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="503"/>
         <source>There are no sync folders configured.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="391"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="393"/>
         <source>Disconnected from %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="277"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="279"/>
         <source>Unsupported Server Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="278"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="280"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="290"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="292"/>
         <source>Terms of service</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="291"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="293"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="481"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="483"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="485"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="487"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="488"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="490"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="491"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="493"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="494"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="496"/>
         <source>macOS VFS for %1: An error was encountered.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="560"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="562"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="563"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="565"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="846"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="848"/>
         <source>Internal link copied</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="847"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="849"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="394"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="396"/>
         <source>Disconnected from accounts:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="396"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="398"/>
         <source>Account %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="414"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="416"/>
         <source>Account synchronization is disabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="580"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="582"/>
         <source>%1 (%2, %3)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6199,7 +6199,7 @@ Server replied with error: %2</source>
 <context>
     <name>QObject</name>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="427"/>
+        <location filename="../src/common/utility.cpp" line="398"/>
         <source>%nd</source>
         <comment>delay in days after an activity</comment>
         <translation>
@@ -6208,12 +6208,12 @@ Server replied with error: %2</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="431"/>
+        <location filename="../src/common/utility.cpp" line="402"/>
         <source>in the future</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="436"/>
+        <location filename="../src/common/utility.cpp" line="407"/>
         <source>%nh</source>
         <comment>delay in hours after an activity</comment>
         <translation>
@@ -6222,18 +6222,18 @@ Server replied with error: %2</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="442"/>
+        <location filename="../src/common/utility.cpp" line="413"/>
         <source>now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="444"/>
+        <location filename="../src/common/utility.cpp" line="415"/>
         <source>1min</source>
         <comment>one minute after activity date and time</comment>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="447"/>
+        <location filename="../src/common/utility.cpp" line="418"/>
         <source>%nmin</source>
         <comment>delay in minutes after an activity</comment>
         <translation type="unfinished">
@@ -6242,7 +6242,7 @@ Server replied with error: %2</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="451"/>
+        <location filename="../src/common/utility.cpp" line="422"/>
         <source>Some time ago</source>
         <translation type="unfinished"></translation>
     </message>

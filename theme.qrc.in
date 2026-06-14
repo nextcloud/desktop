@@ -295,7 +295,7 @@
 		<file>theme/send.svg</file>
 		<file>theme/talk-app.svg</file>
 		<file>theme/chevron-double-up.svg</file>
-		<file>theme/call-notification.wav</file>
+		@CALL_NOTIFICATION_WAV_FILE_ENTRY@
   		<file>theme/info.svg</file>
 		<file>theme/file-open.svg</file>
 		<file>theme/backup.svg</file>
