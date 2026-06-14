@@ -4,10 +4,11 @@ name: clang-tidy-review
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, reopened, synchronize, ready_for_review]
 
 jobs:
   clang-tidy:
+    if: ${{ !github.event.pull_request.draft }}
     runs-on: ubuntu-latest
     container: ghcr.io/nextcloud/continuous-integration-client-qt6:client-sid-6.10.2-2
     steps:
