@@ -24,9 +24,9 @@ ApplicationWindow {
     LayoutMirroring.enabled: Application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
 
-    width: 500
+    width: 560
     height: compactHeight
-    minimumWidth: 480
+    minimumWidth: 540
     minimumHeight: compactHeight
     title: ""
     flags: Qt.Window
@@ -302,6 +302,7 @@ ApplicationWindow {
                 textSuffix: "\u2197"
                 Layout.fillWidth: true
                 Layout.preferredWidth: 1
+                Layout.minimumWidth: implicitWidth
                 onClicked: root.controller.openSignup()
             },
 
@@ -312,6 +313,7 @@ ApplicationWindow {
                 textSuffix: "\u2197"
                 Layout.fillWidth: true
                 Layout.preferredWidth: 1
+                Layout.minimumWidth: implicitWidth
                 onClicked: root.controller.openSelfHostedServerGuide()
             },
 
@@ -324,8 +326,8 @@ ApplicationWindow {
                 text: qsTr("Proxy settings")
                 font.pixelSize: Style.pixelSize + 3
                 font.weight: Font.Medium
-                Layout.fillWidth: true
-                Layout.preferredWidth: 1
+                Layout.preferredWidth: implicitWidth
+                Layout.minimumWidth: implicitWidth
                 Layout.preferredHeight: 36
                 onClicked: root.controller.openProxySettings()
             },

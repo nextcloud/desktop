@@ -17,6 +17,7 @@
 
 #include <QDialog>
 #include <QLoggingCategory>
+#include <QMouseEvent>
 #include <QQmlApplicationEngine>
 #include <QQmlComponent>
 #include <QQuickWindow>
@@ -25,6 +26,40 @@
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcWizard, "nextcloud.gui.wizard", QtInfoMsg)
+
+#if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+class AccountWizardWindowDragHandle : public QObject
+{
+public:
+    explicit AccountWizardWindowDragHandle(QQuickWindow *window, QObject *parent = nullptr)
+        : QObject(parent)
+        , _window(window)
+    {
+    }
+
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override
+    {
+        if (!_window || event->type() != QEvent::MouseButtonPress) {
+            return QObject::eventFilter(watched, event);
+        }
+
+        const auto *mouseEvent = static_cast<QMouseEvent *>(event);
+        if (mouseEvent->button() == Qt::LeftButton && mouseEvent->position().y() <= dragHandleHeight) {
+            if (_window->startSystemMove()) {
+                return true;
+            }
+        }
+
+        return QObject::eventFilter(watched, event);
+    }
+
+private:
+    static constexpr auto dragHandleHeight = 28.0;
+
+    QPointer<QQuickWindow> _window;
+};
+#endif
 
 OwncloudSetupWizard::OwncloudSetupWizard(QObject *parent)
     : QObject(parent)
@@ -71,6 +106,18 @@ void OwncloudSetupWizard::runWizard(QObject *obj, const char *amember, QWidget *
 
 bool OwncloudSetupWizard::bringWizardToFrontIfVisible()
 {
+    if (!isWizardVisible()) {
+        return false;
+    }
+
+    owncloudSetupWizard->_qmlWizardWindow->show();
+    owncloudSetupWizard->_qmlWizardWindow->raise();
+    owncloudSetupWizard->_qmlWizardWindow->requestActivate();
+    return true;
+}
+
+bool OwncloudSetupWizard::isWizardVisible()
+{
     if (owncloudSetupWizard.isNull()
         || !owncloudSetupWizard->_qmlWizardWindow
         || owncloudSetupWizard->_finished) {
@@ -82,9 +129,6 @@ bool OwncloudSetupWizard::bringWizardToFrontIfVisible()
         return false;
     }
 
-    owncloudSetupWizard->_qmlWizardWindow->show();
-    owncloudSetupWizard->_qmlWizardWindow->raise();
-    owncloudSetupWizard->_qmlWizardWindow->requestActivate();
     return true;
 }
 
@@ -126,6 +170,7 @@ bool OwncloudSetupWizard::startQmlWizard()
 #if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
     _qmlWizardWindow->setFlag(Qt::ExpandedClientAreaHint, true);
     _qmlWizardWindow->setFlag(Qt::NoTitleBarBackgroundHint, true);
+    _qmlWizardWindow->installEventFilter(new AccountWizardWindowDragHandle(_qmlWizardWindow, this));
 #endif
 
     connect(_qmlController, &AccountWizardController::finished, this, &OwncloudSetupWizard::finish);

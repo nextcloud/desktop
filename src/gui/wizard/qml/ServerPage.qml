@@ -177,7 +177,8 @@ Item {
 
                 WizardButton {
                     primary: true
-                    Layout.preferredWidth: 76
+                    Layout.preferredWidth: implicitWidth
+                    Layout.minimumWidth: implicitWidth
                     enabled: !root.controller.busy
                     text: qsTr("Log in")
                     onClicked: root.controller.submitServerUrl()

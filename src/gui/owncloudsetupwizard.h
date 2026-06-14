@@ -27,6 +27,7 @@ class OwncloudSetupWizard : public QObject
 public:
     /** Run the wizard */
     static void runWizard(QObject *obj, const char *amember, QWidget *parent = nullptr, bool forceRestart = false);
+    static bool isWizardVisible();
     static bool bringWizardToFrontIfVisible();
 
 signals:

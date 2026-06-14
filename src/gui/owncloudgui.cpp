@@ -233,8 +233,12 @@ void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
     if (reason == QSystemTrayIcon::DoubleClick && currentUser && currentUser->hasLocalFolder()) {
         currentUser->openLocalFolder();
     } else if (reason == QSystemTrayIcon::Trigger) {
-        if (OwncloudSetupWizard::bringWizardToFrontIfVisible()) {
-            // brought wizard to front
+        if (OwncloudSetupWizard::isWizardVisible()) {
+            if (_tray->isOpen()) {
+                _tray->hideWindow();
+            } else {
+                _tray->showWindow();
+            }
         } else if (AccountManager::instance()->accounts().isEmpty()) {
             slotNewAccountWizard();
         } else if (_tray->raiseDialogs()) {
