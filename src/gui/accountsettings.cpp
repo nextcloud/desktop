@@ -430,6 +430,10 @@ QString AccountSettings::selectedFolderAlias() const
 
 void AccountSettings::slotToggleSignInState()
 {
+    if (_accountState->account()->isPublicShareLink()) {
+        return;
+    }
+
     const auto userModel = UserModel::instance();
     const auto userId = userModel->findUserIdForAccount(_accountState);
     if (userId >= 0) {
@@ -1539,7 +1543,13 @@ void AccountSettings::slotAccountStateChanged()
                                 .arg(Utility::escape(Theme::instance()->appNameGUI())));
     }
 
+    const auto isPublicShareLink = _accountState->account()->isPublicShareLink();
+    _ui->_toggleSignInOutButton->setVisible(!isPublicShareLink);
     _ui->_toggleSignInOutButton->setText(state == AccountState::Connected ? tr("Log out") : tr("Log in"));
+    _ui->_removeAccountButton->setText(isPublicShareLink ? tr("Leave share") : tr("Remove account"));
+    _ui->accountActionsDescription->setText(isPublicShareLink
+            ? tr("Remove this public share connection from the client.")
+            : tr("Log out, log back in, or remove this account from the client."));
 
     /* Allow to expand the item if the account is connected. */
     _ui->_folderList->setItemsExpandable(state == AccountState::Connected);
