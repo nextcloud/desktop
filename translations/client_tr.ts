@@ -4,22 +4,22 @@
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="158"/>
         <source>Secure connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Güvenli bağlantı kurulamadı</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="161"/>
         <source>Connect to %1?</source>
-        <translation type="unfinished"/>
+        <translation>%1 ile bağlantı kurulsun mu?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="171"/>
         <source>The secure connection failed. You can retry without encryption, or add a client certificate and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Güvenli bağlantı kurulamadı. Şifreleme olmadan veya bir istemci sertifikası ekleyerek yeniden deneyebilirsiniz.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="172"/>
         <source>The secure connection failed. You can add a client certificate and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Güvenli bağlantı kurulamadı. Bir istemci sertifikası ekleyerek yeniden deneyebilirsiniz.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="193"/>
@@ -31,12 +31,12 @@
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="203"/>
         <source>Connect without TLS</source>
-        <translation type="unfinished"/>
+        <translation>TLS olmadan bağlantı kurulsun</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="215"/>
         <source>Use client certificate</source>
-        <translation type="unfinished"/>
+        <translation>İstemci sertifikası kullanılsın </translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="267"/>
@@ -46,7 +46,7 @@
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="281"/>
         <source>Set up later</source>
-        <translation type="unfinished"/>
+        <translation>Daha sonra kur</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="292"/>
@@ -56,22 +56,22 @@
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="301"/>
         <source>Sign up</source>
-        <translation type="unfinished"/>
+        <translation>Hesap aç</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="311"/>
         <source>Self-host</source>
-        <translation>Kişisel-sunucu</translation>
+        <translation>Özel sunucu</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="324"/>
         <source>Proxy settings</source>
-        <translation type="unfinished"/>
+        <translation>Vekil sunucu ayarları</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="345"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantıyı kopyala</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="378"/>
@@ -86,12 +86,12 @@
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="382"/>
         <source>Done</source>
-        <translation>Tamamla</translation>
+        <translation>Tamam</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="384"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Oturum aç</translation>
     </message>
 </context>
 <context>
@@ -154,32 +154,32 @@
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="32"/>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="35"/>
         <source>Advanced options</source>
-        <translation type="unfinished"/>
+        <translation>Gelişmiş ayarlar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="44"/>
         <source>Ask before syncing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Şundan büyük klasörlerin eşitlenmesi için onay istensin</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="62"/>
         <source>Large folder threshold</source>
-        <translation type="unfinished"/>
+        <translation>Büyük klasör eşiği</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="64"/>
         <source>%1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%1 MB</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="71"/>
         <source>Ask before syncing external storage</source>
-        <translation type="unfinished"/>
+        <translation>Dış depolama aygıtı eşitlemesi için onay istensin</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="90"/>
         <source>Done</source>
-        <translation>Tamamla</translation>
+        <translation>Tamam</translation>
     </message>
 </context>
 <context>
@@ -187,22 +187,22 @@
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="27"/>
         <source>Connect public share</source>
-        <translation type="unfinished"/>
+        <translation>Herkese açık paylaşıma bağlan</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="27"/>
         <source>Enter credentials</source>
-        <translation type="unfinished"/>
+        <translation>Kimlik doğrulama bilgilerini yazın</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="37"/>
         <source>Enter the share password if the link is password protected.</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantı parola korumalı ise paylaşım parolasını yazın.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="38"/>
         <source>Enter the username and password for this server.</source>
-        <translation type="unfinished"/>
+        <translation>Bu sunucunun kullanıcı adını ve parolasını yazın.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="50"/>
@@ -220,7 +220,7 @@
     <message>
         <location filename="../src/gui/wizard/qml/BrowserAuthPage.qml" line="38"/>
         <source>Switch to your browser</source>
-        <translation type="unfinished"/>
+        <translation>Tarayıcınıza geçin</translation>
     </message>
 </context>
 <context>
@@ -252,27 +252,27 @@
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="33"/>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="36"/>
         <source>Client certificate</source>
-        <translation type="unfinished"/>
+        <translation>İstemci sertifikası</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="44"/>
         <source>Select a PKCS#12 certificate file and enter its password.</source>
-        <translation type="unfinished"/>
+        <translation>Bir PKCS#12 sertifika dosyası seçin ve parolasını yazın.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="57"/>
         <source>Certificate file</source>
-        <translation type="unfinished"/>
+        <translation>Sertifika dosyası</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="63"/>
         <source>Choose</source>
-        <translation>Seç</translation>
+        <translation>Seçin</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="70"/>
         <source>Certificate password</source>
-        <translation type="unfinished"/>
+        <translation>Sertifika parolası</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="94"/>
@@ -282,7 +282,7 @@
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="104"/>
         <source>Connect</source>
-        <translation>Bağla</translation>
+        <translation>Bağlan</translation>
     </message>
 </context>
 <context>
@@ -1302,203 +1302,204 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="251"/>
         <source>Will require local storage</source>
-        <translation type="unfinished"/>
+        <translation>Yerel depolama alanı gerekecek</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="622"/>
         <source>Proxy settings are incomplete.</source>
-        <translation type="unfinished"/>
+        <translation>Vekil sunucu ayarları eksik.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="629"/>
         <source>Server address does not seem to be valid</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu adresi geçersiz gibi görünüyor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="650"/>
         <source>Username must not be empty.</source>
-        <translation type="unfinished"/>
+        <translation>Kullanıcı adı boş olmamalıdır.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="656"/>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="986"/>
         <source>Checking account access</source>
-        <translation type="unfinished"/>
+        <translation>Hesap erişimi denetleniyor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="734"/>
         <source>Checking server address</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu adresi denetleniyor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="799"/>
         <source>Preparing browser login</source>
-        <translation type="unfinished"/>
+        <translation>Tarayıcı oturumu açılıyor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="820"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>Adres geçersiz</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="822"/>
         <source>Failed to connect to %1 at %2:
 %3</source>
-        <translation type="unfinished"/>
+        <translation>%1 ile %2 zamanında bağlantı kurulamadı:
+%3</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="838"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ile %2 zamanında bağlantı kurulurken zaman aşımı.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="859"/>
         <source>This server requires legacy browser authentication. Enter app-password credentials instead.</source>
-        <translation type="unfinished"/>
+        <translation>Bu sunucu için eski tarayıcı kimlik doğrulaması gerekiyor. Bunun yerine uygulama parolası kimlik doğrulama bilgilerini yazın.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="937"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation type="unfinished"/>
+        <translation>Tarayıcı açılamadı. Lütfen bağlantıyı kopyalayıp tarayıcınıza yapıştırın.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="962"/>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="967"/>
         <source>Waiting for authorization</source>
-        <translation type="unfinished"/>
+        <translation>İzin verilmesi bekleniyor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="972"/>
         <source>Starting authorization</source>
-        <translation type="unfinished"/>
+        <translation>İzin vermeye başlanıyor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="977"/>
         <source>Link copied to clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantı panoya kopyalandı.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1032"/>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1062"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation type="unfinished"/>
+        <translation>Kimliği doğrulanmış bir WebDAV isteğine geçersiz bir yanıt verildi</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1049"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucuya yapılan kimlik doğrulama isteği &quot;%1&quot; adresine yönlendirildi. Adres ya da sunucu yapılandırması hatalı.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1057"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
-        <translation type="unfinished"/>
+        <translation>Erişim sunucu tarafından engellendi. Erişme izninizin uygun olduğunu doğrulamak için hizmeti tarayıcınızda açın.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1075"/>
         <source>Account connected.</source>
-        <translation type="unfinished"/>
+        <translation>Hesap bağlandı.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1150"/>
         <source>Will require %1 of storage</source>
-        <translation type="unfinished"/>
+        <translation>%1 depolama alanı gerekecek</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1331"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
-        <translation type="unfinished"/>
+        <translation>%1 boş alan</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1341"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Yerel klasörde yeterli boş alan yok!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1358"/>
         <source>Please choose a local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen bir yerel eşitleme klasörü seçin.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1363"/>
         <source>Please choose an empty local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen boş bir yerel eşitleme klasörü seçin.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1428"/>
         <source>Could not create local folder %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 yerel klasörü oluşturulamadı</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1442"/>
         <source>Checking remote folder</source>
-        <translation type="unfinished"/>
+        <translation>Uzak klasör denetleniyor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1488"/>
         <source>No remote folder specified!</source>
-        <translation type="unfinished"/>
+        <translation>Uzak klasör belirtilmemiş!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1497"/>
         <source>Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Hata: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1502"/>
         <source>Creating remote folder</source>
-        <translation type="unfinished"/>
+        <translation>Uzak klasör oluşturuluyor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1521"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation type="unfinished"/>
+        <translation>Klasör oluşturma işlemi %1 HTTP hata kodu ile sonuçlandı</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1523"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
-        <translation type="unfinished"/>
+        <translation>Geçersiz kimlik doğrulama bilgileri nedeniyle uzak klasör oluşturulamadı. Lütfen geri giderek kimlik doğrulama bilgilerinizi denetleyin.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1525"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>%1 uzak klasörü &lt;tt&gt;%2&lt;/tt&gt; hatası nedeniyle oluşturulamadı.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1549"/>
         <source>Account setup failed while creating the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme klasörü oluşturulurken hesap kurulumu tamamlanamadı.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1576"/>
         <source>Could not create the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme klasörü oluşturulamadı.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1666"/>
         <source>Local Sync Folder</source>
-        <translation type="unfinished"/>
+        <translation>Yerel eşitleme klasörü</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1913"/>
         <source>Select a certificate</source>
-        <translation type="unfinished"/>
+        <translation>Bir sertifika seçin</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1915"/>
         <source>Certificate files (*.p12 *.pfx)</source>
-        <translation type="unfinished"/>
+        <translation>Sertifika dosyaları (*.p12 *.pfx)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1923"/>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1943"/>
         <source>Could not access the selected certificate file.</source>
-        <translation type="unfinished"/>
+        <translation>Seçilmiş sertifika dosyasına erişilemedi.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1959"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation type="unfinished"/>
+        <translation>Sertifika yüklenemedi. Parola yanlış olabilir mi?</translation>
     </message>
 </context>
 <context>
@@ -1524,89 +1525,89 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="50"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Şu boyuttan büyük yeni klasörlerin eşitlenmesi için onay istensin</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="70"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>MB</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="105"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation type="unfinished"/>
+        <translation>Klasörler eşitlenirken belirtilen sınır aşılırsa bildirilsin</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="139"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation type="unfinished"/>
+        <translation>Sınırı aşan klasörlerin eşitlenmesi otomatik olarak durdurulsun</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="186"/>
         <source>Server poll interval</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu sorgulama sıklığı</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="203"/>
         <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
-        <translation type="unfinished"/>
+        <translation>saniye (&lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;İstemci itmesi&lt;/a&gt; kullanılamıyorsa)</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="243"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Dış depolama aygıtları ile eşitleme için onay istensin</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="277"/>
         <source>Move removed files to trash</source>
-        <translation type="unfinished"/>
+        <translation>Silinen dosyalar çöpe atılsın</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="324"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Eşitleme klasörleri gezgin panosunda görüntülensin</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="363"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Yok sayılan &amp;dosyaları düzenle</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="370"/>
         <location filename="../src/gui/advancedsettings.cpp" line="367"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Hata ayıklama arşivi oluştur</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="235"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Gelişmiş</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="369"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Zip arşivleri</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="382"/>
         <source>Failed to Access File</source>
-        <translation type="unfinished"/>
+        <translation>Dosyaya erişilemedi</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="383"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
-        <translation type="unfinished"/>
+        <translation>Seçilmiş konuma erişilemedi. Lütfen yeniden deneyin ya da başka bir konum seçin.</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="392"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Hata ayıklama arşivi oluşturuldu</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="393"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşmadan önce önemli olan bilgileri sansürleyin! Hata ayıklama arşivi %1 konumunda oluşturuldu</translation>
     </message>
 </context>
 <context>
@@ -3574,7 +3575,7 @@ Sürümler hemen düşürülemez: Kararlı sürümünden Enterprise sürüme ge�
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="754"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
-        <translation>Seçilmiş konuma erişilemedi. Lütfe yeniden deneyin ya da başka bir konum seçin.</translation>
+        <translation>Seçilmiş konuma erişilemedi. Lütfen yeniden deneyin ya da başka bir konum seçin.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="763"/>
@@ -3727,73 +3728,73 @@ Silme izni verildiğinde bir klasörün silinmesini engelleyen ögeler silinir. 
     <message>
         <location filename="../src/gui/infosettings.ui" line="51"/>
         <source>Desktop client x.x.x</source>
-        <translation type="unfinished"/>
+        <translation>Bilgisayar istemcisi x.x.x</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
         <source>Usage Documentation</source>
-        <translation type="unfinished"/>
+        <translation>Kullanım belgeleri</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="81"/>
         <source>Legal Notice</source>
-        <translation type="unfinished"/>
+        <translation>Yasal bildirim</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="152"/>
         <source>Update channel</source>
-        <translation type="unfinished"/>
+        <translation>Güncelleme kanalı</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="172"/>
         <source>Restore &amp;Default</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Varsayılanları geri yükle</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="193"/>
         <source>&amp;Automatically check for updates</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Güncellemeler otomatik olarak denetlensin</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="216"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Yeniden başlat ve güncelle</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="229"/>
         <source>Check Now</source>
-        <translation type="unfinished"/>
+        <translation>Şimdi denetle</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="103"/>
         <source>Restore to &amp;%1</source>
-        <translation type="unfinished"/>
+        <translation>&amp;%1 üzerine geri yükle</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="144"/>
         <location filename="../src/gui/infosettings.cpp" line="170"/>
         <source>Connected to an enterprise system. Update channel (%1) cannot be changed.</source>
-        <translation type="unfinished"/>
+        <translation>Kurumsal bir sisteme bağlı. Güncelleme kanalı (%1) değiştirilemez.</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="201"/>
         <source>stable</source>
-        <translation type="unfinished"/>
+        <translation>Kararlı</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="205"/>
         <source>beta</source>
-        <translation type="unfinished"/>
+        <translation>Beta</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="209"/>
         <source>daily</source>
-        <translation type="unfinished"/>
+        <translation>Günlük</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="213"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>Kurumsal</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="248"/>
@@ -3802,7 +3803,10 @@ Silme izni verildiğinde bir klasörün silinmesini engelleyen ögeler silinir. 
 
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
         <comment>list of available update channels to non enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- Beta: Kapsamlı denenmemiş ancak yeni özellikler bulunan sürümler
+- Günlük: Yalnızca deneme ve geliştirme için günlük olarak oluşturulan sürümler
+
+Sürümler hemen düşürülemez: Beta sürümünden Kararlı sürüme geçmek için yeni bir kararlı sürümün yayınlanması beklenmelidir.</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="253"/>
@@ -3810,12 +3814,14 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
         <comment>list of available update channels to enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- Kurumsal: Ücret ödeyen müşteriler için kararlı sürümler
+
+Sürümler hemen düşürülemez: Kararlı sürümünden Kurumsal sürüme geçmek için yeni bir kararlı sürümün yayınlanması beklenmelidir.</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="260"/>
         <source>Changing update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Güncelleme kanalı değiştirilsin mi?</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="261"/>
@@ -3823,17 +3829,19 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 - stable: contains tested versions considered reliable
 </source>
         <comment>starts list of available update channels, stable is always available</comment>
-        <translation type="unfinished"/>
+        <translation>Güncelleme kanalı, kurulum için sunulacak istemci güncellemelerini belirler:
+- Kararlı: Güvenilir sayılan denenmiş sürümler
+</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="267"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Güncelleme kanalını değiştir</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="268"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>İptal</translation>
     </message>
 </context>
 <context>
@@ -5103,12 +5111,12 @@ Komut satırından verilen günlük komutlarının bu ayarın yerine geçeceğin
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="202"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Gelişmiş</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="203"/>
         <source>Info</source>
-        <translation type="unfinished"/>
+        <translation>Bilgiler</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="335"/>
@@ -6338,67 +6346,67 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="77"/>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="80"/>
         <source>Proxy settings</source>
-        <translation type="unfinished"/>
+        <translation>Vekil sunucu ayarları</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="88"/>
         <source>No proxy</source>
-        <translation type="unfinished"/>
+        <translation>Vekil sunucu yok</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="98"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>Sistem vekil sunucusu kullanılsın</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="108"/>
         <source>Manually specify proxy</source>
-        <translation type="unfinished"/>
+        <translation>Vekil sunucuyu el ile ayarlayın</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="123"/>
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished"/>
+        <translation>HTTP(S) vekil sunucu</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="123"/>
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished"/>
+        <translation>SOCKS5 vekil sunucu</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="127"/>
         <source>Proxy type</source>
-        <translation type="unfinished"/>
+        <translation>Vekil sunucu türü</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="138"/>
         <source>Hostname of proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Vekil sunucu adı</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="150"/>
         <source>Proxy port</source>
-        <translation type="unfinished"/>
+        <translation>Vekil sunucu bağlantı noktası</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="159"/>
         <source>Proxy server requires authentication</source>
-        <translation type="unfinished"/>
+        <translation>Vekil sunucu için kimlik doğrulaması gerekiyor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="175"/>
         <source>Username for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Vekil sunucu kullanıcı adı</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="182"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Vekil sunucu parolası</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="191"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Not: Vekil sunucu ayarları localhost üzerindeki hesaplar için uygulanmaz</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="208"/>
@@ -6408,7 +6416,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="215"/>
         <source>Done</source>
-        <translation>Tamamla</translation>
+        <translation>Tamam</translation>
     </message>
 </context>
 <context>
@@ -6494,7 +6502,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="307"/>
         <source>Answer</source>
-        <translation type="unfinished"/>
+        <translation>Yanıt</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1304"/>
@@ -6706,22 +6714,22 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="29"/>
         <source>Log in to %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 üzerinde oturum aç</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="38"/>
         <source>Enter the link to your %1 web interface from the browser or the link to a folder shared with you.</source>
-        <translation type="unfinished"/>
+        <translation>Tarayıcıdan %1 internet arayüzü bağlantısını veya sizinle paylaşılan bir klasörün bağlantısını yazın.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="182"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Oturum aç</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="197"/>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu adresi</translation>
     </message>
 </context>
 <context>
@@ -6880,32 +6888,32 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>Virtual files</source>
-        <translation type="unfinished"/>
+        <translation>Sanal dosyalar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="91"/>
         <source>Download files on-demand</source>
-        <translation type="unfinished"/>
+        <translation>Dosyaları gerek duyulduğunda indir</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="99"/>
         <source>Synchronize everything</source>
-        <translation type="unfinished"/>
+        <translation>Her şeyi eşitle</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="108"/>
         <source>Choose what to sync</source>
-        <translation type="unfinished"/>
+        <translation>Eşitlenecek ögeleri seçin</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="122"/>
         <source>Local sync folder</source>
-        <translation type="unfinished"/>
+        <translation>Yerel eşitleme klasörü</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="154"/>
         <source>Choose</source>
-        <translation>Seç</translation>
+        <translation>Seçin</translation>
     </message>
 </context>
 <context>
@@ -7523,7 +7531,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="130"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Deneysel özellikler açılsın mı?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="131"/>
@@ -7534,17 +7542,23 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;Sanal dosyalar&quot; kipi açıldığında, başlangıçta hiçbir dosya indirilmez. Onun yerine sunucudaki her dosya için küçük bir &quot;%1&quot; dosyası oluşturulur. Bu dosyalar yürütülerek ya da sağ tık menüsü kullanılarak dosyaların içeriği indirilebilir.
+
+Sanal dosya kipinde karşılıklı ayrıcalıklı seçmeli eşitleme yapılır. Şu anda seçilmemiş klasörler yalnızca çevrim içi klasörlere çevrilir ve seçmeli eşitleme ayarlarınız sıfırlanır.
+
+Bu kipe geçildiğinde yürütülmekte olan eşitleme işlemleri iptal edilir.
+
+Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karşılaşabileceğiniz sorunları bize bildirin.</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="146"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>Deneysel yer belirtici kipi kullanılsın</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="147"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Güvende kalın</translation>
     </message>
 </context>
 <context>
