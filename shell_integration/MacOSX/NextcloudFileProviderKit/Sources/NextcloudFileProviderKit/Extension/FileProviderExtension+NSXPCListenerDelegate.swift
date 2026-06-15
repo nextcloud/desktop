@@ -33,8 +33,13 @@ extension FileProviderExtension: NSXPCListenerDelegate {
             logger.info("Succeeded to cast remote object proxy, adopting it!")
             app = appService
 
-            // Initial status report as soon as the app service is available.
-            updatedSyncStateReporting(oldActions: Set<UUID>())
+            // Force a fresh status report as soon as the app service is available. The app needs
+            // the current state on launch (typically idle, i.e. "all good"); without it the tray
+            // popover falls back to the misleading "Some files could not be synced!" message.
+            // This must NOT go through `updatedSyncStateReporting(oldActions:)`: that is
+            // edge-triggered and bails when sync activity has not changed, which is precisely the
+            // idle case we need to report here. See https://github.com/nextcloud/desktop/issues/10053.
+            reportCurrentSyncState()
         } else {
             logger.error("Failed to cast remote object proxy to AppProtocol!")
             app = nil

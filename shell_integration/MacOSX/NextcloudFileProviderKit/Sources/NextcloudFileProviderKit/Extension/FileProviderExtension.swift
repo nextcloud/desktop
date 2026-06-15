@@ -813,4 +813,31 @@ import OSLog
 
         app?.reportSyncStatus(argument, forDomainIdentifier: domain.identifier.rawValue)
     }
+
+    /// Reports the extension's current synchronization state to the app unconditionally.
+    ///
+    /// Unlike ``updatedSyncStateReporting(oldActions:)``, which is edge-triggered and deliberately
+    /// bails when sync activity has not changed, this always emits a report. The main app opens an
+    /// XPC connection to the extension on launch; at that point it needs the current resting state
+    /// — typically idle, i.e. "all good" — otherwise it falls back to the misleading
+    /// "Some files could not be synced!" message. See
+    /// https://github.com/nextcloud/desktop/issues/10053.
+    func reportCurrentSyncState() {
+        actionsLock.lock()
+        let syncing = !syncActions.isEmpty
+        let failed = !errorActions.isEmpty
+        actionsLock.unlock()
+
+        let argument = if syncing {
+            "SYNC_STARTED"
+        } else if failed {
+            "SYNC_FAILED"
+        } else {
+            "SYNC_FINISHED"
+        }
+
+        logger.debug("Reporting current synchronization state on request.", [.name: argument])
+
+        app?.reportSyncStatus(argument, forDomainIdentifier: domain.identifier.rawValue)
+    }
 }
