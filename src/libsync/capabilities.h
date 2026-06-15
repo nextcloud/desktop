@@ -50,6 +50,7 @@ public:
     [[nodiscard]] int shareRemoteExpireDateDays() const;
     [[nodiscard]] bool shareResharing() const;
     [[nodiscard]] int shareDefaultPermissions() const;
+    [[nodiscard]] bool unifiedSharingAvailable() const;
     [[nodiscard]] bool chunkingNg() const;
     [[nodiscard]] qint64 maxChunkSize() const;
     [[nodiscard]] int maxConcurrentChunkUploads() const;

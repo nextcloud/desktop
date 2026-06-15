@@ -16,16 +16,16 @@ import Style
 Loader {
     id: instantiator
     required property var model
-    required property var accountState
+    required property var account
 
     sourceComponent: switch (model.type) {
-        case SharingModel.Switch:
+        case PropertyModel.Switch:
             return switchComponent;
-        case SharingModel.TextField:
+        case PropertyModel.TextField:
             return textFieldComponent;
-        case SharingModel.TextArea:
+        case PropertyModel.TextArea:
             return textAreaComponent;
-        case SharingModel.RecipientsField:
+        case PropertyModel.RecipientsField:
             return recipientsFieldComponent;
         default:
             return unknownItem;
@@ -103,7 +103,7 @@ Loader {
                 // no placeholderText on SearchField, really?
 
                 suggestionModel: RecipientSearchModel {
-                    accountState: instantiator.accountState
+                    account: instantiator.account
                     query: searchField.text
                 }
                 textRole: "query"

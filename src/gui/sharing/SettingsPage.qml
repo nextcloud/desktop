@@ -16,11 +16,9 @@ import Style
 Page {
     id: root
 
-    property var accountState
-    property QtObject sharingManager
     property string localPath: ""
     property string shortLocalPath: ""
-    required property SharingModel sharingModel
+    required property SharingController sharingController
     required property list<string> recipientTypes
 
     title: qsTr("Sharing settings")
@@ -41,15 +39,18 @@ Page {
                 id: propertyList
                 clip: true
 
-                model: SharingFilterModel {
-                    filterType: SharingFilterModel.Settings
-                    sourceModel: root.sharingModel
-                    recipientTypes: root.recipientTypes
+                // model: SharingFilterModel {
+                //     filterType: SharingFilterModel.Settings
+                //     sourceModel: root.sharingModel
+                //     recipientTypes: root.recipientTypes
+                // }
+                model: PropertyModel {
+                    share: root.sharingController.share
                 }
 
 
                 delegate: FieldDelegate {
-                    accountState: root.accountState
+                    account: root.sharingController.account
                     width: propertyList.contentItem.width
                 }
             }
