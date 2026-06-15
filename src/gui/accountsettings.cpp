@@ -437,19 +437,19 @@ void AccountSettings::slotToggleSignInState()
     const auto userModel = UserModel::instance();
     const auto userId = userModel->findUserIdForAccount(_accountState);
     if (userId >= 0) {
-        if (_accountState->isConnected()) {
-            userModel->logout(userId);
-        } else {
+        if (_accountState->isSignedOut()) {
             userModel->login(userId);
+        } else {
+            userModel->logout(userId);
         }
         return;
     }
 
-    if (_accountState->isConnected()) {
-        _accountState->signOutByUi();
-    } else {
+    if (_accountState->isSignedOut()) {
         _accountState->account()->resetRejectedCertificates();
         _accountState->signIn();
+    } else {
+        _accountState->signOutByUi();
     }
 }
 
@@ -1545,7 +1545,7 @@ void AccountSettings::slotAccountStateChanged()
 
     const auto isPublicShareLink = _accountState->account()->isPublicShareLink();
     _ui->_toggleSignInOutButton->setVisible(!isPublicShareLink);
-    _ui->_toggleSignInOutButton->setText(state == AccountState::Connected ? tr("Log out") : tr("Log in"));
+    _ui->_toggleSignInOutButton->setText(_accountState->isSignedOut() ? tr("Log in") : tr("Log out"));
     _ui->_removeAccountButton->setText(isPublicShareLink ? tr("Leave share") : tr("Remove account"));
     _ui->accountActionsDescription->setText(isPublicShareLink
             ? tr("Remove this public share connection from the client.")
