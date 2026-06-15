@@ -3,9 +3,10 @@
 name: QML Label component check
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, reopened, synchronize, ready_for_review]
 jobs:
   build:
+    if: ${{ !github.event.pull_request.draft }}
     name: QML Label component check
     runs-on: ubuntu-latest
     steps:

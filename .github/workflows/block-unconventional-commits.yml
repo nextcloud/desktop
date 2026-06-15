@@ -10,7 +10,7 @@ name: Block unconventional commits
 
 on:
   pull_request:
-    types: [opened, ready_for_review, reopened, synchronize]
+    types: [opened, reopened, synchronize, ready_for_review]
 
 permissions:
   contents: read
@@ -21,6 +21,7 @@ concurrency:
 
 jobs:
   block-unconventional-commits:
+    if: ${{ !github.event.pull_request.draft }}
     name: Block unconventional commits
 
     runs-on: ubuntu-latest-low
@@ -34,4 +35,3 @@ jobs:
       - uses: webiny/action-conventional-commits@7f91b1595ca1951cdb671ddc9f07a49081ec5b69 # v1.4.2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-

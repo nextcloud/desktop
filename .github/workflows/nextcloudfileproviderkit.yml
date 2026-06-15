@@ -9,9 +9,11 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
+    types: [opened, reopened, synchronize, ready_for_review]
 
 jobs:
   Lint:
+    if: ${{ github.event_name != 'pull_request' || !github.event.pull_request.draft }}
     runs-on: macos-26
 
     defaults:
@@ -25,6 +27,7 @@ jobs:
         run: swiftformat --lint . --reporter github-actions-log
 
   Tests:
+    if: ${{ github.event_name != 'pull_request' || !github.event.pull_request.draft }}
     runs-on: macos-26
 
     defaults:

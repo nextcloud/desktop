@@ -5,10 +5,11 @@ name: macOS CI
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, reopened, synchronize, ready_for_review]
 
 jobs:
   setup_craft:
+    if: ${{ !github.event.pull_request.draft }}
     name: Set up Craft and install dependencies
     timeout-minutes: 60
     runs-on: macos-15
@@ -91,6 +92,7 @@ jobs:
 
 
   build:
+    if: ${{ !github.event.pull_request.draft }}
     name: Build and test ${{ matrix.buildFileProviderModule == 'True' && 'File Provider' || 'classic' }} client
     needs: setup_craft
     strategy:

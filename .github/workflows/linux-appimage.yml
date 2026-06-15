@@ -3,10 +3,11 @@
 name: Linux Appimage Package
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, reopened, synchronize, ready_for_review]
 
 jobs:
   build:
+    if: ${{ !github.event.pull_request.draft }}
     name: Linux Appimage Package
     runs-on: ubuntu-latest
     container: ghcr.io/nextcloud/continuous-integration-client-appimage-qt6:client-appimage-el8-6.10.2-4
