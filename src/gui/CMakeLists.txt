@@ -222,6 +222,8 @@ set(client_SRCS
     governance/ocsgovernancejob.cpp
     governance/typedwithlabelidgovernancenetworkjob.h
     governance/typedwithlabelidgovernancenetworkjob.cpp
+    governance/governancelabelinfo.h
+    governance/governancelabelinfo.cpp
     tray/svgimageprovider.h
     tray/svgimageprovider.cpp
     tray/syncstatussummary.h
