@@ -587,6 +587,10 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// exercising the locally-known-mtime fallback in the production code.
     public var uploadReturnsNilDate: Bool = false
 
+    /// When set, every upload call returns this error immediately without touching the mock tree.
+    /// Use this to simulate server-side upload rejections (e.g. 404 path gone, 507 quota).
+    public var uploadError: NKError?
+
     /// Handler to track enumerate calls
     public var enumerateCallHandler: ((String, EnumerateDepth, Bool, [String], Data?, Account, NKRequestOptions, @escaping (URLSessionTask) -> Void) -> Void)?
 
@@ -760,6 +764,10 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         response: HTTPURLResponse?,
         remoteError: NKError
     ) {
+        if let uploadError {
+            return (account.ncKitAccount, nil, nil, nil, 0, nil, uploadError)
+        }
+
         var itemName: String
         do {
             itemName = try name(from: remotePath)
