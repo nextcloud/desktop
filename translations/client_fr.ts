@@ -122,7 +122,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="206"/>
         <source>File actions</source>
-        <translation>Actions sur les fichiers</translation>
+        <translation>Actions sur le fichier</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="229"/>
@@ -5272,7 +5272,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1144"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1207"/>
         <source>File actions</source>
-        <translation>Actions sur les fichiers</translation>
+        <translation>Actions sur le fichier</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1145"/>
