@@ -33,6 +33,7 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QPaintEvent>
+#include <QShowEvent>
 #include <QPalette>
 #include <QQuickView>
 #include <QActionGroup>
@@ -45,6 +46,12 @@
 #include <QMouseEvent>
 #include <QWindow>
 #include <QtGlobal>
+#include <QScreen>
+#include <QGuiApplication>
+
+#ifdef Q_OS_MACOS
+#include "nativetitlebar_mac.h"
+#endif
 
 using namespace Qt::StringLiterals;
 
@@ -133,35 +140,10 @@ QString shortDisplayNameForSettings(OCC::Account *account, int width)
 
 namespace OCC {
 
-class WindowDragHandle : public QWidget
-{
-public:
-    using QWidget::QWidget;
-
-protected:
-    void mousePressEvent(QMouseEvent *event) override
-    {
-        if (event->button() == Qt::LeftButton) {
-            if (const auto *window = this->window(); window && window->windowHandle()) {
-                window->windowHandle()->startSystemMove();
-                event->accept();
-                return;
-            }
-        }
-
-        QWidget::mousePressEvent(event);
-    }
-};
-
 SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     : QDialog(parent)
     , _gui(gui)
 {
-#if defined(Q_OS_MACOS)
-    setWindowFlag(Qt::ExpandedClientAreaHint, true);
-    setWindowFlag(Qt::NoTitleBarBackgroundHint, true);
-#endif
-
     ConfigFile cfg;
 
     setupUi();
@@ -218,8 +200,19 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     customizeStyle();
 
-    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
-    setWindowFlag(Qt::Window, true);
+    // Close + minimize, but no zoom/full-screen button (full screen makes no sense for Settings).
+    setWindowFlags(Qt::Window
+        | Qt::CustomizeWindowHint
+        | Qt::WindowTitleHint
+        | Qt::WindowSystemMenuHint
+        | Qt::WindowMinimizeButtonHint
+        | Qt::WindowCloseButtonHint);
+
+    // Open centered on screen by default; restoreGeometry() overrides this when a position was saved.
+    adjustSize();
+    if (const auto *const targetScreen = QGuiApplication::primaryScreen()) {
+        move(targetScreen->availableGeometry().center() - rect().center());
+    }
     cfg.restoreGeometry(this);
 }
 
@@ -230,19 +223,6 @@ SettingsDialog::~SettingsDialog()
 QWidget* SettingsDialog::currentPage()
 {
     return _stack->currentWidget();
-}
-
-// close event is not being called here
-void SettingsDialog::resizeEvent(QResizeEvent *event)
-{
-    QDialog::resizeEvent(event);
-
-#if defined(Q_OS_MACOS)
-    if (_windowDragHandle) {
-        _windowDragHandle->setGeometry(0, 0, width(), _windowDragHandle->height());
-        _windowDragHandle->raise();
-    }
-#endif
 }
 
 void SettingsDialog::reject()
@@ -259,6 +239,20 @@ void SettingsDialog::accept()
     QDialog::accept();
 }
 
+void SettingsDialog::showEvent(QShowEvent *event)
+{
+    QDialog::showEvent(event);
+
+#ifdef Q_OS_MACOS
+    // Style the title bar once the native window actually exists. Doing it earlier (e.g. from the
+    // constructor via winId()) doesn't stick, because Qt recreates the NSWindow when the dialog is
+    // shown, resetting the title-bar separator to its default.
+    if (auto *const handle = windowHandle()) {
+        styleNativeTitleBar(handle, /*hideTitleText=*/false);
+    }
+#endif
+}
+
 void SettingsDialog::changeEvent(QEvent *e)
 {
     switch (e->type()) {
@@ -269,6 +263,12 @@ void SettingsDialog::changeEvent(QEvent *e)
 
         // Notify the other widgets (Dark-/Light-Mode switching)
         emit styleChanged();
+#ifdef Q_OS_MACOS
+        // macOS resets title-bar styling across appearance changes; re-apply it.
+        if (auto *const handle = windowHandle()) {
+            styleNativeTitleBar(handle, /*hideTitleText=*/false);
+        }
+#endif
         break;
     case QEvent::ActivationChange:
         if(isActiveWindow())
@@ -688,14 +688,6 @@ void SettingsDialog::setupUi()
     mainLayout->addWidget(contentScroll);
     mainLayout->setStretch(0, 0);
     mainLayout->setStretch(1, 1);
-
-#if defined(Q_OS_MACOS)
-    _windowDragHandle = new WindowDragHandle(this);
-    _windowDragHandle->setObjectName(QLatin1String("settings_window_drag_handle"));
-    _windowDragHandle->setFixedHeight(28);
-    _windowDragHandle->setGeometry(0, 0, width(), _windowDragHandle->height());
-    _windowDragHandle->raise();
-#endif
 }
 
 } // namespace OCC

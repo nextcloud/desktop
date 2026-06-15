@@ -324,6 +324,9 @@ IF( APPLE )
     list(APPEND client_SRCS foregroundbackground_mac.mm)
     list(APPEND client_SRCS foregroundbackground_cocoa.mm)
 
+    list(APPEND client_SRCS nativetitlebar_mac.h)
+    list(APPEND client_SRCS nativetitlebar_mac.mm)
+
     if(SPARKLE_FOUND AND BUILD_UPDATER)
         # Define this, we need to check in updater.cpp
         add_definitions(-DHAVE_SPARKLE)

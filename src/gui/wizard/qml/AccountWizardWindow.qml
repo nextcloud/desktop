@@ -24,15 +24,19 @@ ApplicationWindow {
     LayoutMirroring.enabled: Application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
 
-    width: 500
+    width: 600
     height: compactHeight
-    minimumWidth: 480
+    minimumWidth: 600
     minimumHeight: compactHeight
     title: ""
+    // Explicit decoration set so macOS disables the green zoom/full-screen button (no maximize or
+    // full-screen hint) — full screen makes no sense for this window — while keeping a normal,
+    // draggable native title bar with close and minimize.
     flags: Qt.Window
         | Qt.CustomizeWindowHint
         | Qt.WindowTitleHint
         | Qt.WindowSystemMenuHint
+        | Qt.WindowMinimizeButtonHint
         | Qt.WindowCloseButtonHint
     color: Style.wizardWindowBackground
     palette.window: Style.wizardWindowBackground
