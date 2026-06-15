@@ -23,11 +23,7 @@ int SharingModel::rowCount(const QModelIndex &parent) const
         return 0;
     }
 
-    // TODO: cache this after setting accountstate
-    const auto sharing = accountState()->account()->sharing();
-    // const auto features = sharing->features().values();
-    // return features.size() + 1; // TODO: +1 for the special feature at the beginning for the recipients
-    return 1;
+    return _share->properties().size();
 }
 
 QVariant SharingModel::data(const QModelIndex &index, int role) const
@@ -36,42 +32,49 @@ QVariant SharingModel::data(const QModelIndex &index, int role) const
         return {};
     }
 
-    if (index.row() == 0) {
-        // special feature for the recipients search
-        switch (role) {
-        case LabelRole:
-            return "Add people"_L1;
-        case PropertyRole:
-            return "recipients"_L1;
-        case TypeRole:
-            return FieldTypes::RecipientsField;
-        case PlaceholderRole:
-            return "Name, team, email, or federated cloud ID"_L1;
-        case ValueRole:
-            return _fieldValues.value("recipients"_L1).toList(); // TODO
-        default:
-            return {};
-        }
-    }
+    // // if (index.row() == 0) {
+    // //     // special feature for the recipients search
+    // //     switch (role) {
+    // //     case LabelRole:
+    // //         return "Add people"_L1;
+    // //     case PropertyRole:
+    // //         return "recipients"_L1;
+    // //     case TypeRole:
+    // //         return FieldTypes::RecipientsField;
+    // //     case PlaceholderRole:
+    // //         return "Name, team, email, or federated cloud ID"_L1;
+    // //     case ValueRole:
+    // //         return _fieldValues.value("recipients"_L1).toList(); // TODO
+    // //     default:
+    // //         return {};
+    // //     }
+    // // }
+    // //
+    // // TODO: cache this after setting accountstate
+    // const auto sharing = accountState()->account()->sharing();
+    // // const auto features = sharing->features().values();
+    // // const auto feature = features.at(index.row() - 1); // TODO: -1 to adjust the special feature for searching
+    //
 
-    // TODO: cache this after setting accountstate
-    const auto sharing = accountState()->account()->sharing();
-    // const auto features = sharing->features().values();
-    // const auto feature = features.at(index.row() - 1); // TODO: -1 to adjust the special feature for searching
+    const auto properties = _share->properties();
+    const auto property = properties.at(index.row());
 
     switch (role) {
     case LabelRole:
-        return "lol";
-        // return feature->type();
+        return property->displayName();
     case PropertyRole:
-        return u"prop%1"_s.arg(QString::number(index.row()));
+        return property->className();
     case TypeRole:
-        return static_cast<FieldTypes>(index.row() % 3);
+        if (property->className() == "string"_L1) {
+            return FieldTypes::TextField;
+        }
+        // TODO: date etc.
+        return FieldTypes::TextField;
     case PlaceholderRole:
-        return u"Placeholder for row %1"_s.arg(QString::number(index.row()));
+        return property->hint();
     case ValueRole:
         // return _fieldValues.value(feature->type());
-        return "";
+        return property->value();
     default:
         return {};
     }
@@ -79,6 +82,7 @@ QVariant SharingModel::data(const QModelIndex &index, int role) const
 
 bool SharingModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
+    return false;
     if (!_accountState) {
         qCritical() << "no accountState, but setData called with" << index << value << role;
         return false;
@@ -145,28 +149,17 @@ void SharingModel::setAccountState(AccountState *accountState)
         qCritical() << "share id:" << _share->id();
         endResetModel();
 
-        _share->addSource("8"_L1);
-        // TODO: do not hardcode file id
-        auto job = _accountState->account()->sharing()->createAddSourceJob(_share, "8"_L1, this);
-        connect(job, &OCC::JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json, int statusCode) -> void {
+        connect(_share.get(), &OCC::Sharing::Share::propertiesChanged, this, [this]() -> void {
             beginResetModel();
-            qCritical() << "request finished with code" << statusCode << "data" << json;
-            _share->updateFromJson(json);
-            qCritical() << "share id:" << _share->id();
             endResetModel();
-
-            // TODO: do not hardcode file id
-            auto job = _accountState->account()->sharing()->createAddRecipientJob(_share, this);
-            connect(job, &OCC::JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json, int statusCode) -> void {
-                beginResetModel();
-                qCritical() << "request finished with code" << statusCode << "data" << json;
-                _share->updateFromJson(json);
-                qCritical() << "share id:" << _share->id();
-                endResetModel();
-            });
-            job->start();
         });
-        job->start();
+
+        _share->addSource("8"_L1);
     });
     job->start();
+}
+
+void SharingModel::addRecipient(const QString &type, const QString &value)
+{
+    _share->addRecipient(type, value);
 }

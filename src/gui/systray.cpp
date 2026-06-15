@@ -707,15 +707,14 @@ void Systray::createFileDetailsDialog(const QString &localPath)
         return;
     }
 
-    const QVariantMap initialProperties{
-        {"accountState", QVariant::fromValue(folder->accountState())},
-        {"localPath", localPath},
-        {"sharingManager", QVariant::fromValue(folder->accountState()->account()->sharing())},
-    };
-
-    if (folder->accountState()->account()->sharing()->isAvailable()) {
+    if (folder->accountState()->account()->capabilities().unifiedSharingAvailable()) {
         // we have a server with the new unified sharing system, let's show the new fancy one
         // TODO: reduce code duplication
+
+        const QVariantMap initialProperties{
+            {"account", QVariant::fromValue(folder->accountState()->account())},
+            {"localPath", localPath},
+        };
 
         QQmlComponent fileDetailsDialog(trayEngine(), "com.nextcloud.desktopclient.sharing"_L1, "ShareDialog"_L1);
 
@@ -740,6 +739,11 @@ void Systray::createFileDetailsDialog(const QString &localPath)
 
         return;
     }
+
+    const QVariantMap initialProperties{
+        {"accountState", QVariant::fromValue(folder->accountState())},
+        {"localPath", localPath},
+    };
 
     QQmlComponent fileDetailsDialog(trayEngine(), QStringLiteral("qrc:/qml/src/gui/filedetails/FileDetailsWindow.qml"));
 
