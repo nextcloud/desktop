@@ -99,7 +99,6 @@ public:
         FolderUpdateInvalidEncryptionStatus,
         FileUpdateInvalidEncryptionStatus,
         HasFileIdQuery,
-        RenameErrorBlacklistCountQuery,
         RenameErrorBlacklistUpdateQuery,
 
         PreparedQueryCount

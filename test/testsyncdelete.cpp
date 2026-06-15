@@ -215,6 +215,7 @@ private slots:
         fakeFolder.localModifier().insert(QStringLiteral("A/big_file.txt"), 100); // 100 > 50
 
         ItemCompletedSpy completeSpy(fakeFolder);
+        QSignalSpy storageSpy(&fakeFolder.syncEngine(), &SyncEngine::syncError);
         fakeFolder.syncOnce();
 
         // big_file.txt was never uploaded but exceeds the last known quota.
@@ -232,6 +233,14 @@ private slots:
             QCOMPARE(item->_instruction, CSYNC_INSTRUCTION_ERROR);
             QVERIFY(item->_status == SyncFileItem::SoftError || item->_status == SyncFileItem::NormalError);
         }
+
+        // The storage full notification must fire even though no upload was attempted
+        // and there is no blacklist entry yet for the file.
+        const bool hadStorageNotification = std::any_of(storageSpy.begin(), storageSpy.end(),
+            [](const QList<QVariant> &args) {
+                return args.at(1).value<ErrorCategory>() == ErrorCategory::InsufficientRemoteStorage;
+            });
+        QVERIFY(hadStorageNotification);
     }
 
     // Files blocked from upload because of quota errors must follow their parent folder through

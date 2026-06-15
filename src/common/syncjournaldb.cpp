@@ -2178,38 +2178,26 @@ bool SyncJournalDb::renameErrorBlacklistPaths(const QString &from, const QString
         return false;
     }
 
-    const auto countQuery = _queryManager.get(PreparedSqlQueryManager::RenameErrorBlacklistCountQuery, 
-                                            QByteArrayLiteral("SELECT COUNT(*) FROM blacklist "
-                                                            "WHERE errorCategory = ?1 "
-                                                            "AND (path = ?2 OR (path > (?2 || '/') AND path < (?2 || '0')))"),
-                                            _db);
-    if (!countQuery) {
+    // Move the exact folder entry and all entries whose path starts with "from/".
+    // Uses the same range trick as IS_PREFIX_PATH_OR_EQUAL: '/' + 1 == '0'.
+    // Scoped to quota entries so the returned count reflects only protected files.
+    const auto query = _queryManager.get(PreparedSqlQueryManager::RenameErrorBlacklistUpdateQuery,
+                                        QByteArrayLiteral("UPDATE blacklist "
+                                                        "SET path = ?2 || substr(path, length(?1) + 1) "
+                                                        "WHERE errorCategory = ?3 "
+                                                        "AND (path == ?1 OR (path > (?1 || '/') AND path < (?1 || '0')))"),
+                                        _db);
+    if (!query) {
         return false;
     }
-
-    countQuery->bindValue(1, SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage);
-    countQuery->bindValue(2, from);
-
-    const bool hasQuotaEntries = countQuery->exec() && countQuery->next().hasData && countQuery->intValue(0) > 0;
-    if (hasQuotaEntries) {
-        // Update the exact folder entry and all entries whose path starts with "from/".
-        // Uses the same range trick as IS_PREFIX_PATH_OR_EQUAL: '/' + 1 == '0'.
-        const auto query = _queryManager.get(PreparedSqlQueryManager::RenameErrorBlacklistUpdateQuery,
-                                            QByteArrayLiteral("UPDATE blacklist "
-                                                            "SET path = ?2 || substr(path, length(?1) + 1) "
-                                                            "WHERE path == ?1 OR (path > (?1 || '/') AND path < (?1 || '0'))"),
-                                            _db);
-        if (!query) {
-            return false;
-        }
-        query->bindValue(1, from);
-        query->bindValue(2, to);
-        if (!query->exec()) {
-            sqlFail(QStringLiteral("renameErrorBlacklistPaths"), *query);
-        }
+    query->bindValue(1, from);
+    query->bindValue(2, to);
+    query->bindValue(3, SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage);
+    if (!query->exec()) {
+        return sqlFail(QStringLiteral("renameErrorBlacklistPaths"), *query);
     }
 
-    return hasQuotaEntries;
+    return query->numRowsAffected() > 0;
 }
 
 bool SyncJournalDb::deleteStaleErrorBlacklistEntries(const QSet<QString> &keep)

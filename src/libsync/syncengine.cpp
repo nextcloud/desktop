@@ -487,7 +487,7 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
     // when a blacklist entry already exists; in the same sync as the folder deletion there is no
     // entry yet, so we check here unconditionally.
     if (item->_instruction == CSYNC_INSTRUCTION_ERROR
-        && item->_httpErrorCode == 507) {
+        && item->_isQuotaError) {
         slotInsufficientRemoteStorage();
     }
 
