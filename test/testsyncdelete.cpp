@@ -243,6 +243,41 @@ private slots:
         QVERIFY(hadStorageNotification);
     }
 
+    // Discovery determines the file exceeds the folder quota (no 507, no upload attempt),
+    // which seeds the InsufficientRemoteStorage entry. A later server side deletion of the
+    // parent must then protect the file via that entry.
+    void testQuotaBlockedDuringDiscoveryProtectedFromLaterDeletion()
+    {
+        FileInfo initialState{QString{}, {
+            {QStringLiteral("A"), {
+                {QStringLiteral("small.txt"), 4},
+            }},
+        }};
+        // Skip the automatic initial sync so the quota is set before the first sync,
+        // ensuring the DB stores bytesAvailable=50 for folder A.
+        FakeFolder fakeFolder{initialState, {}, {}, false};
+        fakeFolder.remoteModifier().setFolderQuota(QStringLiteral("A"), FileInfo::FolderQuota{0, 50});
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Too big for the 50 byte quota: blocked during discovery, never uploaded, no 507.
+        fakeFolder.localModifier().insert(QStringLiteral("A/big.txt"), 100);
+        QVERIFY(!fakeFolder.syncOnce());
+        {
+            const auto entry = fakeFolder.syncJournal().errorBlacklistEntry(QStringLiteral("A/big.txt"));
+            QVERIFY(entry.isValid());
+            QCOMPARE(entry._errorCategory, SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage);
+        }
+        QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("A/big.txt")));
+
+        // Server deletes A on a later sync: the discovery seeded entry must protect big.txt.
+        fakeFolder.remoteModifier().remove(QStringLiteral("A"));
+        fakeFolder.syncOnce();
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/big.txt")));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A")));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/small.txt")));
+    }
+
     // Files blocked from upload because of quota errors must follow their parent folder through
     // multiple successive server side renames.
     void testQuotaBlockedFileFollowsParentFolderMove()
