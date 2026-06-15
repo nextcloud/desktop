@@ -123,7 +123,7 @@ bool OwncloudSetupWizard::startQmlWizard()
     _qmlWizardWindow->installEventFilter(fgbg);
 #endif
 
-#if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+#if defined(Q_OS_MACOS)
     _qmlWizardWindow->setFlag(Qt::ExpandedClientAreaHint, true);
     _qmlWizardWindow->setFlag(Qt::NoTitleBarBackgroundHint, true);
 #endif

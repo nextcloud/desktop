@@ -88,7 +88,7 @@ private:
     QStackedWidget *_stack = nullptr;
     QAction *_firstNonAccountAction = nullptr;
 
-#if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+#if defined(Q_OS_MACOS)
     QWidget *_windowDragHandle = nullptr;
 #endif
 
