@@ -157,7 +157,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     : QDialog(parent)
     , _gui(gui)
 {
-#if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+#if defined(Q_OS_MACOS)
     setWindowFlag(Qt::ExpandedClientAreaHint, true);
     setWindowFlag(Qt::NoTitleBarBackgroundHint, true);
 #endif
@@ -237,7 +237,7 @@ void SettingsDialog::resizeEvent(QResizeEvent *event)
 {
     QDialog::resizeEvent(event);
 
-#if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+#if defined(Q_OS_MACOS)
     if (_windowDragHandle) {
         _windowDragHandle->setGeometry(0, 0, width(), _windowDragHandle->height());
         _windowDragHandle->raise();
@@ -689,7 +689,7 @@ void SettingsDialog::setupUi()
     mainLayout->setStretch(0, 0);
     mainLayout->setStretch(1, 1);
 
-#if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+#if defined(Q_OS_MACOS)
     _windowDragHandle = new WindowDragHandle(this);
     _windowDragHandle->setObjectName(QLatin1String("settings_window_drag_handle"));
     _windowDragHandle->setFixedHeight(28);
