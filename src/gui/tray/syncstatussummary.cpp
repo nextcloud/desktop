@@ -207,6 +207,15 @@ void SyncStatusSummary::setSyncState(const SyncResult::Status state)
     switch (state) {
     case SyncResult::Success:
     case SyncResult::SyncPrepare:
+    case SyncResult::Undefined:
+        // `Undefined` reaches this point only via the file provider path, before the extension has
+        // reported a concrete state (e.g. right after a fresh launch). It means "no status yet",
+        // not "a sync failed", so render it as the optimistic resting state rather than the
+        // misleading "Some files could not be synced!". This mirrors how the menu bar icon
+        // (`ownCloudGui::slotComputeOverallSyncStatus`) and the per-account icons (`UserModel`)
+        // already bucket `Undefined` as idle. The extension is additionally forced to report its
+        // real state once the app connects. See https://github.com/nextcloud/desktop/issues/10053.
+        //
         // Success should only be shown if all folders were fine
         if (!folderErrors()
 #ifdef BUILD_FILE_PROVIDER_MODULE
@@ -248,7 +257,6 @@ void SyncStatusSummary::setSyncState(const SyncResult::Status state)
         setSyncIcon(Theme::instance()->pause());
         break;
     case SyncResult::Problem:
-    case SyncResult::Undefined:
         setSyncing(false);
         setTotalFiles(0);
         setSyncStatusString(tr("Some files could not be synced!"));
@@ -295,6 +303,13 @@ void SyncStatusSummary::onFileProviderDomainSyncStateChanged(const AccountPtr &a
     case SyncResult::NotYetStarted:
     case SyncResult::Paused:
     case SyncResult::SyncAbortRequested:
+    case SyncResult::Undefined:
+        // `Undefined` means the extension has not reported a concrete state yet (e.g. right after
+        // launch). It is not an error, so leave `_fileProviderDomainsWithErrors` untouched: a
+        // previously reported real error stays recorded, while a freshly configured domain simply
+        // stays out of the error set. The matching `setSyncState` branch then renders it as the
+        // optimistic resting state instead of the misleading warning. See
+        // https://github.com/nextcloud/desktop/issues/10053.
         break;
     }
         
