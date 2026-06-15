@@ -24,9 +24,9 @@ ApplicationWindow {
     LayoutMirroring.enabled: Application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
 
-    width: 560
+    width: 600
     height: compactHeight
-    minimumWidth: 540
+    minimumWidth: 600
     minimumHeight: compactHeight
     title: ""
     flags: Qt.Window
