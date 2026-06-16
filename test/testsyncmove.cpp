@@ -9,6 +9,7 @@
  */
 
 #include <QtTest>
+#include <QFile>
 #include "common/result.h"
 #include "syncenginetestutils.h"
 #include <syncengine.h>
