@@ -13,6 +13,7 @@
 
 #ifdef Q_OS_MACOS
 #include "foregroundbackground_interface.h"
+#include "nativetitlebar_mac.h"
 #endif
 
 #include <QDialog>
@@ -123,11 +124,6 @@ bool OwncloudSetupWizard::startQmlWizard()
     _qmlWizardWindow->installEventFilter(fgbg);
 #endif
 
-#if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
-    _qmlWizardWindow->setFlag(Qt::ExpandedClientAreaHint, true);
-    _qmlWizardWindow->setFlag(Qt::NoTitleBarBackgroundHint, true);
-#endif
-
     connect(_qmlController, &AccountWizardController::finished, this, &OwncloudSetupWizard::finish);
     connect(_qmlWizardWindow, &QQuickWindow::visibleChanged, this, [this](bool visible) {
         if (!visible) {
@@ -141,6 +137,17 @@ bool OwncloudSetupWizard::startQmlWizard()
     _qmlWizardWindow->show();
     _qmlWizardWindow->raise();
     _qmlWizardWindow->requestActivate();
+
+#ifdef Q_OS_MACOS
+    styleNativeTitleBar(_qmlWizardWindow, /*hideTitleText=*/true);
+    // Re-apply when the window colour changes (e.g. the macOS light/dark switch) so the title bar
+    // keeps matching the body. Updating it in the same synchronous step lets the system appearance
+    // cross-fade animate the title bar together with the window content.
+    connect(_qmlWizardWindow, &QQuickWindow::colorChanged, this, [this] {
+        styleNativeTitleBar(_qmlWizardWindow, /*hideTitleText=*/true);
+    });
+#endif
+
     return true;
 }
 
