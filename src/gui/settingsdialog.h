@@ -61,7 +61,7 @@ protected:
     void reject() override;
     void accept() override;
     void changeEvent(QEvent *) override;
-    void resizeEvent(QResizeEvent *event) override;
+    void showEvent(QShowEvent *event) override;
 
 private slots:
     void accountAdded(OCC::AccountState *);
@@ -87,10 +87,6 @@ private:
     QToolBar *_toolBar;
     QStackedWidget *_stack = nullptr;
     QAction *_firstNonAccountAction = nullptr;
-
-#if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
-    QWidget *_windowDragHandle = nullptr;
-#endif
 
     ownCloudGui *_gui;
     bool _styleUpdatePending = false;
