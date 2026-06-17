@@ -93,3 +93,19 @@ void OcsSharingJob::searchRecipients(const QString &query, int64_t offset, int64
     start();
 }
 
+void OcsSharingJob::setPermission(const QString &permissionClass, bool enabled)
+{
+    if (_shareId.isEmpty()) {
+        qCWarning(lcOcsSharingJob) << "setPermission called without a shareId, not starting job";
+        Q_EMIT jobFinished({}, 0);
+        return;
+    }
+
+    setPath(SHARING_V1_BASE % "/share/%1/enabled"_L1.arg(_shareId));
+    setVerb("PUT"_ba);
+
+    addParam("class"_L1, permissionClass);
+    addParam("enabled"_L1, enabled ? "true"_L1 : "false"_L1);
+
+    start();
+}

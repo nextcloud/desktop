@@ -9,6 +9,8 @@ target_sources(nextcloudGuiSharing
     ocssharingjob.cpp
     permission.h
     permission.cpp
+    permissionmodel.h
+    permissionmodel.cpp
     property.h
     property.cpp
     propertymodel.h
