@@ -692,18 +692,20 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
 
     if (_item->_httpErrorCode == LockFileJob::PRECONDITION_FAILED_ERROR_CODE
         || _item->_httpErrorCode == LockFileJob::LOCKED_HTTP_ERROR_CODE) {
-        if (!_item->_lockToken.isEmpty()) {
-            SyncJournalFileRecord record;
-            if (propagator()->_journal->getFileRecord(_item->_file, &record) && record.isValid()) {
-                record._lockstate._lockToken.clear();
-                record._lockstate._locked = false;
-                if (const auto result = propagator()->_journal->setFileRecord(record); !result) {
-                    qCWarning(lcPropagateUpload) << "Failed to clear stale lock token for" << _item->_file << result.error();
-                }
+        // Clear any stale lock token from the journal. The token may be absent from
+        // _item when the file was discovered via local (not remote) discovery, so
+        // check the DB record directly rather than guarding on _item->_lockToken.
+        SyncJournalFileRecord record;
+        if (propagator()->_journal->getFileRecord(_item->_file, &record) && record.isValid()
+            && !record._lockstate._lockToken.isEmpty()) {
+            record._lockstate._lockToken.clear();
+            record._lockstate._locked = false;
+            if (const auto result = propagator()->_journal->setFileRecord(record); !result) {
+                qCWarning(lcPropagateUpload) << "Failed to clear stale lock token for" << _item->_file << result.error();
             }
-            _item->_lockToken.clear();
-            _item->_locked = SyncFileItem::LockStatus::UnlockedItem;
         }
+        _item->_lockToken.clear();
+        _item->_locked = SyncFileItem::LockStatus::UnlockedItem;
         propagator()->_anotherSyncNeeded = true;
         if (_item->_httpErrorCode == LockFileJob::PRECONDITION_FAILED_ERROR_CODE) {
             propagator()->_journal->schedulePathForRemoteDiscovery(_item->_file);
