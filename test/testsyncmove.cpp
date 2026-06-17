@@ -1490,9 +1490,15 @@ private slots:
     // A 412 or 423 upload error must clear the whole lock state, not just the token.
     void testUpload423ClearsStaleLockState()
     {
+        // FakeFolder default-constructs with performInitialSync=true, so the DB is
+        // already populated with D/file.txt before seedStaleLock runs.
         FakeFolder fakeFolder{FileInfo{QString{}, {FileInfo{QStringLiteral("D"), {{"file.txt", 64}}}}}};
         seedStaleLock(fakeFolder, "D/file.txt");
         fakeFolder.localModifier().appendByte("D/file.txt");
+        fakeFolder.serverErrorPaths().append("D/file.txt", 423);
+        // 423 → FileLocked in commonErrorHandling (which clears the DB lock), but
+        // FileLocked is swallowed by PropagatorCompositeJob so the overall sync
+        // reports success.
         QVERIFY(fakeFolder.syncOnce());
 
         SyncJournalFileRecord cleared;
