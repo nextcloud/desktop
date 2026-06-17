@@ -36,16 +36,50 @@ Page {
             contentHeight: availableHeight
             rightPadding: ScrollBar.vertical.policy == ScrollBar.AlwaysOn ? ScrollBar.vertical.width + Style.standardSpacing : 0
 
-            RecipientSearchField {
-                id: searchField
-                Layout.fillWidth: true
-                account: root.sharingController.account
+            ColumnLayout {
+                RecipientSearchField {
+                    id: searchField
+                    Layout.fillWidth: true
+                    account: root.sharingController.account
 
-                onRecipientSelected: (recipientType, recipientValue) => {
-                    root.sharingController.addRecipient(recipientType, recipientValue)
+                    onRecipientSelected: (recipientType, recipientValue) => {
+                        root.sharingController.addRecipient(recipientType, recipientValue)
+                    }
                 }
-            }
 
+                Repeater {
+                    id: permissionsList
+                    Layout.fillWidth: true
+
+                    model: PermissionModel {
+                        share: root.sharingController.share
+                    }
+
+                    delegate: ItemDelegate {
+                        // Layout.fillWidth: true
+
+                        required property var model
+                        RowLayout {
+                            Layout.fillWidth: true
+                            Label {
+                                text: model.label
+                                Layout.fillWidth: true
+                            }
+                            Switch {
+                                Component.onCompleted: checked = model.enabled ?? false
+                                onCheckedChanged: {
+                                    if (model.enabled === checked) {
+                                        return;
+                                    }
+                                    // model.enabled = checked
+                                    root.sharingController.setPermission(model.className, checked)
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
 
             ListView {
                 id: propertyList
