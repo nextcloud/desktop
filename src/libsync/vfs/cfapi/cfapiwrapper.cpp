@@ -572,9 +572,10 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
         return;
     }
     const auto remoteSyncRootPath = vfs->params().remotePath; // with leading slash
-    const auto serverPath = QString{remoteSyncRootPath + pathString.mid(rootPath.length() + 1)}.mid(1);
+    const auto relativeLocalPath = pathString.mid(rootPath.length() + 1);
+    const auto serverPath = QString{remoteSyncRootPath + relativeLocalPath}.mid(1);
 
-    qCDebug(lcCfApiWrapper) << "fetch placeholder:" << path << serverPath << requestId;
+    qCDebug(lcCfApiWrapper) << "fetch placeholder:" << path << serverPath << relativeLocalPath << requestId;
 
     QEventLoop localEventLoop;
 
@@ -615,7 +616,7 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
 
     auto newPlaceholdersResult = 0;
     const auto invokeFinalizeResult = QMetaObject::invokeMethod(vfs,
-                                                                [&newPlaceholdersResult, vfs, &newEntries, &serverPath] () -> int { return vfs->finalizeNewPlaceholders(newEntries, serverPath); },
+                                                                [&newPlaceholdersResult, vfs, &newEntries, &relativeLocalPath] () -> int { return vfs->finalizeNewPlaceholders(newEntries, relativeLocalPath); },
                                                                 Qt::BlockingQueuedConnection,
                                                                 qReturnArg(newPlaceholdersResult));
     if (!invokeFinalizeResult) {
