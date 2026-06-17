@@ -302,30 +302,31 @@ void PropagateRemoteMove::finalize()
     }
 
     if (_item->isDirectory()) {
+        QVector<SyncJournalFileRecord> childRecords;
         const auto dbQueryResult = propagator()->_journal->getFilesBelowPath(
-            _item->_originalFile.toUtf8(), [this](const SyncJournalFileRecord &record) {
-                const auto oldPath = QString::fromUtf8(record._path);
-                auto newPath = oldPath;
-                newPath.replace(0, _item->_originalFile.length(), _item->_renameTarget);
-
-                if (oldPath == newPath) {
-                    return;
-                }
-
-                if (!propagator()->_journal->deleteFileRecord(oldPath)) {
-                    qCWarning(lcPropagateRemoteMove) << "could not delete child record" << oldPath;
-                    return;
-                }
-
-                const auto newItem = SyncFileItem::fromSyncJournalFileRecord(record);
-                newItem->_file = newPath;
-                newItem->_lockToken.clear();
-                newItem->_locked = SyncFileItem::LockStatus::UnlockedItem;
-                propagator()->updateMetadata(*newItem);
+            _item->_originalFile.toUtf8(), [&childRecords](const SyncJournalFileRecord &record) {
+                childRecords.append(record);
             });
         if (!dbQueryResult) {
             done(SyncFileItem::FatalError, tr("Failed to propagate directory rename in hierarchy"), ErrorCategory::GenericError);
             return;
+        }
+        for (const auto &record : std::as_const(childRecords)) {
+            const auto oldPath = QString::fromUtf8(record._path);
+            auto newPath = oldPath;
+            newPath.replace(0, _item->_originalFile.length(), _item->_renameTarget);
+            if (oldPath == newPath) {
+                continue;
+            }
+            if (!propagator()->_journal->deleteFileRecord(oldPath)) {
+                qCWarning(lcPropagateRemoteMove) << "could not delete child record" << oldPath;
+                continue;
+            }
+            const auto childItem = SyncFileItem::fromSyncJournalFileRecord(record);
+            childItem->_file = newPath;
+            childItem->_lockToken.clear();
+            childItem->_locked = SyncFileItem::LockStatus::UnlockedItem;
+            propagator()->updateMetadata(*childItem);
         }
         propagator()->_renamedDirectories.insert(_item->_file, _item->_renameTarget);
         if (!adjustSelectiveSync(propagator()->_journal, _item->_file, _item->_renameTarget)) {
