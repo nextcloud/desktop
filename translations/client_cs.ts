@@ -2,94 +2,94 @@
 <context>
     <name>AccountWizardWindow</name>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="158"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="162"/>
         <source>Secure connection failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="161"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="165"/>
         <source>Connect to %1?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="171"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="175"/>
         <source>The secure connection failed. You can retry without encryption, or add a client certificate and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="172"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="176"/>
         <source>The secure connection failed. You can add a client certificate and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="193"/>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="264"/>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="266"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="197"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="268"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="270"/>
         <source>Cancel</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="203"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="207"/>
         <source>Connect without TLS</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="215"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="219"/>
         <source>Use client certificate</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="267"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="271"/>
         <source>Back</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="281"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="285"/>
         <source>Set up later</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="292"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="296"/>
         <source>Advanced</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="301"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="305"/>
         <source>Sign up</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="311"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="315"/>
         <source>Self-host</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="324"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="328"/>
         <source>Proxy settings</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="345"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="349"/>
         <source>Copy link</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="378"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="382"/>
         <source>Open</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="380"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="384"/>
         <source>Connect</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="382"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="386"/>
         <source>Done</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="384"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="388"/>
         <source>Log in</source>
         <translation type="unfinished"/>
     </message>
@@ -777,7 +777,7 @@ Chcete ho naimportovat?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="429"/>
         <location filename="../src/gui/accountsettings.cpp" line="191"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1303"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1306"/>
         <source>Connection settings</source>
         <translation>Nastavení spojení</translation>
     </message>
@@ -788,8 +788,8 @@ Chcete ho naimportovat?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="311"/>
-        <location filename="../src/gui/accountsettings.cpp" line="944"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1129"/>
+        <location filename="../src/gui/accountsettings.cpp" line="947"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1132"/>
         <source>Cancel</source>
         <translation>Storno</translation>
     </message>
@@ -950,78 +950,78 @@ Počkejte na příští synchronizaci a pak složku zašifrujte.</translation>
         <translation>Vypnout podporu pro virtuální soubory …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="774"/>
+        <location filename="../src/gui/accountsettings.cpp" line="777"/>
         <source>Enable virtual file support %1 …</source>
         <translation>Zapnout podporu pro virtuální soubory %1 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="774"/>
+        <location filename="../src/gui/accountsettings.cpp" line="777"/>
         <source>(experimental)</source>
         <translation> (experimentální)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="876"/>
+        <location filename="../src/gui/accountsettings.cpp" line="879"/>
         <source>Folder creation failed</source>
         <translation>Vytvoření složky se nezdařilo</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="936"/>
+        <location filename="../src/gui/accountsettings.cpp" line="939"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Potvrdit odstranění připojení synchronizace složky</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="943"/>
+        <location filename="../src/gui/accountsettings.cpp" line="946"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Odstranit připojení synchronizace složky</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="978"/>
+        <location filename="../src/gui/accountsettings.cpp" line="981"/>
         <source>Grant access to sync folder</source>
         <translation>Udělit přístup k synchronizační složce</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="990"/>
+        <location filename="../src/gui/accountsettings.cpp" line="993"/>
         <source>Access Error</source>
         <translation>Chyba přístupu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="991"/>
+        <location filename="../src/gui/accountsettings.cpp" line="994"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
         <translation>K vybrané složce nebylo možné získat přístup. Prosím zkuste to znovu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="999"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1002"/>
         <source>Wrong Folder</source>
         <translation>Nesprávná složka</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1000"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1003"/>
         <source>Please select the original sync folder: %1</source>
         <translation>Vyberte původní synchronizační složku: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1009"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1018"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1012"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1021"/>
         <source>Bookmark Error</source>
         <translation>Chyba záložky</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1010"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1013"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
         <translation>Nebylo možné vytvořit záložku zabezpečení pro tuto složku. Zkuste to znovu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1019"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1022"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
         <translation>Nebylo možné přeložit záložku zabezpečení. Zkuste to znovu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1120"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1123"/>
         <source>Disable virtual file support?</source>
         <translation>Vypnout podporu pro virtuální soubory?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1121"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1124"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as &quot;available online only&quot; will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -1034,118 +1034,118 @@ Jediná výhoda vypnutí podpory virtuálních souborů je v tom, že bude opět
 Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1128"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1131"/>
         <source>Disable support</source>
         <translation>Vypnout podporu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1215"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1218"/>
         <source>End-to-end encryption mnemonic</source>
         <translation>Mnemotechnická fráze pro šifrování mezi koncovými body</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1217"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1220"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
         <translation>Pro ochranu vaší kryptografické identity ji šifrujeme pomocí mnemotechnické fráze, tvořené 12 slovy ze slovníku. Poznamenejte si ji někam bezpečně. Bude potřebná pro nastavení synchronizace šifrovaných složek s vašimi dalšími zařízeními.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1242"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1245"/>
         <source>Forget the end-to-end encryption on this device</source>
         <translation>Zapomenout na tomto zařízení šifrování mezi koncovými body</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1243"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1246"/>
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
         <translation>Chcete zapomenout nastavení šifrování mezi koncovými body pro %1 na tomto zařízení?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1244"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1247"/>
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
         <translation>Zapomenutí šifrování mezi koncovými body odebere citlivá data a veškeré šifrované soubory z tohoto zařízení.&lt;br&gt;Nicméně, šifrované soubory zůstanou na serveru a všech ostatních zařízeních, pokud jsou  taková nastavena.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1349"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1352"/>
         <source>Sync Running</source>
         <translation>Probíhá synchronizace</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1350"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1353"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Právě probíhá operace synchronizace.&lt;br/&gt;Přejete si ji ukončit?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1422"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1425"/>
         <source>%1 in use</source>
         <translation>%1 využito</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1462"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1465"/>
         <source>Connected to %1 (%2).</source>
         <translation>Připojeno k %1 (%2).</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1682"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1685"/>
         <source>Migrate certificate to a new one</source>
         <translation>Přestěhovat certifikát na nový</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1789"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1792"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Jsou zde složky, jejichž velikost přesáhla %1MB: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1837"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1840"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
         <translation>Šifrování mezi koncovými body pro tento účet bylo inicializováno z jiného zařízení.&lt;br&gt;Zadejte neopakující se mnemotechnickou abyste měli šifrované složky synchronizované i na tomto zařízení.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1898"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1900"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1901"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1903"/>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
         <translation>Tento účet podporuje šifrování mezi koncovými body, ale je třeba ho nejprve nastavit.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1898"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1901"/>
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
         <translation>Integrace virtuálních souborů zatím ještě nepodporuje šifrování mezi koncovými body.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1906"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1909"/>
         <source>Set up encryption</source>
         <translation>Nastavit šifrování</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1460"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1463"/>
         <source>Connected to %1.</source>
         <translation>Připojeno k %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1468"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1471"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Server %1 je dočasně nedostupný.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1471"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1474"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Na serveru %1 v tuto chvíli probíhá údržba.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1477"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1480"/>
         <source>Signed out from %1.</source>
         <translation>Odhlášeno z %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1776"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1779"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Tyto složky nebyly synchronizovány, protože jsou příliš velké:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1777"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1780"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Tyto složky nebyly synchronizovány, protože se nacházejí na externích úložištích:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1778"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1781"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Tyto složky nebyly synchronizovány, protože jsou příliš velké, nebo se nacházejí na externích úložištích:</translation>
     </message>
@@ -1166,57 +1166,57 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <translation>Pozastavit synchronizaci</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="877"/>
+        <location filename="../src/gui/accountsettings.cpp" line="880"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Nedaří se vytvořit místní složku &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="937"/>
+        <location filename="../src/gui/accountsettings.cpp" line="940"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Opravdu chcete zastavit synchronizaci složky &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Poznámka:&lt;/b&gt; Toto &lt;b&gt;neodstraní&lt;/b&gt; žádné soubory.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1415"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1418"/>
         <source>%1 of %2 in use</source>
         <translation>Využito %1 z %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1451"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1454"/>
         <source>%1 as %2</source>
         <translation>%1 jako %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1458"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1461"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Verze serveru %1 není podporována! Pokračujte jen na vlastní nebezpečí.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1474"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1477"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
         <translation>Server %1 je v tuto chvíli přesměrováván, nebo se vaše připojení nachází za zachycujícím (captive) portálem.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1480"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1483"/>
         <source>Connecting to %1 …</source>
         <translation>Připojování k %1 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1484"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1487"/>
         <source>Unable to connect to %1.</source>
         <translation>Nedaří se připojit k %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1489"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1492"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Chyba nastavení serveru: %1 na %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1498"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1501"/>
         <source>You need to accept the terms of service at %1.</source>
         <translation>Je třeba přijmout všeobecné podmínky u %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1503"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1506"/>
         <source>No %1 connection configured.</source>
         <translation>Nenastaveno žádné připojení k %1.</translation>
     </message>
@@ -5091,23 +5091,23 @@ Poznamenejme, že použití jakékoli volby příkazového řádku má před tí
         <translation>Nastavení</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="178"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="160"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
         <translation>Nastavení %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="201"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="183"/>
         <source>General</source>
         <translation>Obecné</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="202"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="184"/>
         <source>Advanced</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="203"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="185"/>
         <source>Info</source>
         <translation type="unfinished"/>
     </message>
@@ -6715,12 +6715,12 @@ Server odpověděl chybou: %2</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ServerPage.qml" line="182"/>
+        <location filename="../src/gui/wizard/qml/ServerPage.qml" line="181"/>
         <source>Log in</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ServerPage.qml" line="197"/>
+        <location filename="../src/gui/wizard/qml/ServerPage.qml" line="196"/>
         <source>Server address</source>
         <translation type="unfinished"/>
     </message>
