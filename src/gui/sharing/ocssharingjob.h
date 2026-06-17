@@ -32,6 +32,8 @@ public:
 
     void searchRecipients(const QString &query, int64_t offset, int64_t limit);
 
+    void setPermission(const QString &permissionClass, bool enabled);
+
 Q_SIGNALS:
     void shareCreated(QPointer<Share> share);
 
