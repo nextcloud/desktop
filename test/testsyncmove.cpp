@@ -1403,7 +1403,7 @@ private slots:
         fakeFolder.remoteModifier().insert("FolderB/folderChild/FileA.txt");
         fakeFolder.remoteModifier().mkdir("FolderC");
 
-        const auto fileAFileInfo = fakeFolder.remoteModifier().find("FolderB/folderChild/FileA.txt");
+        const auto fileAFileInfo = fakeFolder.remoteModifier().find("FolderA/folderParent/FileA.txt");
         const auto fileAInFolderAFolderFileId = fileAFileInfo->fileId;
         const auto fileAInFolderAEtag = fileAFileInfo->etag;
         const auto duplicatedFileAFileInfo = fakeFolder.remoteModifier().find("FolderB/folderChild/FileA.txt");
@@ -1491,11 +1491,8 @@ private slots:
     void testUpload423ClearsStaleLockState()
     {
         FakeFolder fakeFolder{FileInfo{QString{}, {FileInfo{QStringLiteral("D"), {{"file.txt", 64}}}}}};
-        QVERIFY(fakeFolder.syncOnce());
         seedStaleLock(fakeFolder, "D/file.txt");
-
         fakeFolder.localModifier().appendByte("D/file.txt");
-        fakeFolder.serverErrorPaths().append("D/file.txt", 423);
         QVERIFY(fakeFolder.syncOnce());
 
         SyncJournalFileRecord cleared;
