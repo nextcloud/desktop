@@ -86,6 +86,27 @@ void SharingController::addRecipient(const QString &recipientType, const QString
     job->addRecipient(recipientType, recipientValue);
 }
 
+void SharingController::setPermission(const QString &permissionClass, bool enabled)
+{
+    if (!_account) {
+        qCWarning(lcSharingController) << "attempted to set permission without an account set";
+        return;
+    }
+
+    if (!_share) {
+        qCWarning(lcSharingController) << "attempted to set permission without a share";
+        return;
+    }
+
+    const auto job = new OcsSharingJob(_account, _share->id());
+    connect(job, &OcsSharingJob::jobFinished, this, [this](const QJsonDocument &json, int statusCode) -> void {
+        qCDebug(lcSharingController).nospace() << "permissions updated"
+            << " id=" << _share->id();
+        _share->updateFromJson(json);
+    });
+    job->setPermission(permissionClass, enabled);
+}
+
 void SharingController::addSourceAfterCreation(const QString &fileId)
 {
     const auto job = new OcsSharingJob(_account, _share->id());
