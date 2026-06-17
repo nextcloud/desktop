@@ -47,6 +47,20 @@ void OcsSharingJob::createShare()
     start();
 }
 
+void OcsSharingJob::destroyShare()
+{
+    if (_shareId.isEmpty()) {
+        qCWarning(lcOcsSharingJob) << "destroyShare called without a shareId, not starting job";
+        Q_EMIT jobFinished({}, 0);
+        return;
+    }
+
+    setPath(SHARING_V1_BASE % "/share/%1"_L1.arg(_shareId));
+    setVerb("DELETE"_ba);
+    addPassStatusCode(204);
+    start();
+}
+
 void OcsSharingJob::addSource(const QString &fileId)
 {
     if (_shareId.isEmpty()) {
@@ -74,6 +88,23 @@ void OcsSharingJob::addRecipient(const QString &recipientType, const QString &re
 
     setPath(SHARING_V1_BASE % "/share/%1/recipient"_L1.arg(_shareId));
     setVerb("POST"_ba);
+
+    addParam("class"_L1, recipientType);
+    addParam("value"_L1, recipientValue);
+
+    start();
+}
+
+void OcsSharingJob::removeRecipient(const QString &recipientType, const QString &recipientValue)
+{
+    if (_shareId.isEmpty()) {
+        qCWarning(lcOcsSharingJob) << "removeRecipient called without a shareId, not starting job";
+        Q_EMIT jobFinished({}, 0);
+        return;
+    }
+
+    setPath(SHARING_V1_BASE % "/share/%1/recipient"_L1.arg(_shareId));
+    setVerb("DELETE"_ba);
 
     addParam("class"_L1, recipientType);
     addParam("value"_L1, recipientValue);

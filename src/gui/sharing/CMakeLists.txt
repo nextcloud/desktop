@@ -19,12 +19,8 @@ target_sources(nextcloudGuiSharing
     recipientsearchmodel.cpp
     share.h
     share.cpp
-    # sharingfiltermodel.h
-    # sharingfiltermodel.cpp
     sharingcontroller.h
     sharingcontroller.cpp
-    # sharingmodel.h
-    # sharingmodel.cpp
 )
 
 ecm_add_qml_module(nextcloudGuiSharing
