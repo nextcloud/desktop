@@ -1898,7 +1898,7 @@ QAction *AccountSettings::addActionToEncryptionMessage(const QString &actionTitl
 void AccountSettings::setupE2eEncryptionMessage()
 {
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    const auto encryptionMessage = tr("This account supports end-to-end encryption, but it needs to be set up first.") + QStringLiteral(" ") + tr("The virtual files integration does not support end-to-end encryption yet.");
+    const auto encryptionMessage = tr("This account supports end-to-end encryption, but it needs to be set up first.") + QStringLiteral(" ") + tr("The File Provider extension does not support end-to-end encryption yet.");
 #else
     const auto encryptionMessage = tr("This account supports end-to-end encryption, but it needs to be set up first.");
 #endif
