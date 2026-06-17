@@ -191,6 +191,16 @@ ApplicationWindow {
 
                 checkable: true
                 ButtonGroup.group: shareType
+                enabled: false // TODO: figure out why link shares don't work
+
+                onCheckedChanged: {
+                    const parameters = ["OC\\Core\\Sharing\\Recipient\\TokenShareRecipientType", qsTr("Link share")]
+                    if (checked) {
+                        sharingController.addRecipient(...parameters)
+                        return
+                    }
+                    sharingController.removeRecipient(...parameters)
+                }
             }
         }
 
