@@ -34,6 +34,8 @@ public:
     Q_INVOKABLE void createShare(const QString &fileId);
     Q_INVOKABLE void addRecipient(const QString &recipientType, const QString &recipientValue);
 
+    Q_INVOKABLE void setPermission(const QString &permissionClass, bool enabled);
+
 Q_SIGNALS:
     void accountChanged();
     void shareChanged();
