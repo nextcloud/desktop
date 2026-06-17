@@ -2,94 +2,94 @@
 <context>
     <name>AccountWizardWindow</name>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="158"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="162"/>
         <source>Secure connection failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="161"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="165"/>
         <source>Connect to %1?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="171"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="175"/>
         <source>The secure connection failed. You can retry without encryption, or add a client certificate and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="172"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="176"/>
         <source>The secure connection failed. You can add a client certificate and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="193"/>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="264"/>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="266"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="197"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="268"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="270"/>
         <source>Cancel</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="203"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="207"/>
         <source>Connect without TLS</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="215"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="219"/>
         <source>Use client certificate</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="267"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="271"/>
         <source>Back</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="281"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="285"/>
         <source>Set up later</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="292"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="296"/>
         <source>Advanced</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="301"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="305"/>
         <source>Sign up</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="311"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="315"/>
         <source>Self-host</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="324"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="328"/>
         <source>Proxy settings</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="345"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="349"/>
         <source>Copy link</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="378"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="382"/>
         <source>Open</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="380"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="384"/>
         <source>Connect</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="382"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="386"/>
         <source>Done</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="384"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="388"/>
         <source>Log in</source>
         <translation type="unfinished"/>
     </message>
@@ -776,7 +776,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="429"/>
         <location filename="../src/gui/accountsettings.cpp" line="191"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1303"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1306"/>
         <source>Connection settings</source>
         <translation>ئۇلىنىش تەڭشىكى</translation>
     </message>
@@ -787,8 +787,8 @@ Should the account be imported?</source>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="311"/>
-        <location filename="../src/gui/accountsettings.cpp" line="944"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1129"/>
+        <location filename="../src/gui/accountsettings.cpp" line="947"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1132"/>
         <source>Cancel</source>
         <translation>بىكار قىلىش</translation>
     </message>
@@ -949,78 +949,78 @@ Wait for the new sync, then encrypt it.</source>
         <translation>مەۋھۇم ھۆججەت قوللاشنى چەكلەڭ…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="774"/>
+        <location filename="../src/gui/accountsettings.cpp" line="777"/>
         <source>Enable virtual file support %1 …</source>
         <translation>مەۋھۇم ھۆججەت قوللاشنى قوزغىتىڭ%1…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="774"/>
+        <location filename="../src/gui/accountsettings.cpp" line="777"/>
         <source>(experimental)</source>
         <translation>(تەجرىبە)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="876"/>
+        <location filename="../src/gui/accountsettings.cpp" line="879"/>
         <source>Folder creation failed</source>
         <translation>ھۆججەت قىسقۇچ قۇرۇش مەغلۇب بولدى</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="936"/>
+        <location filename="../src/gui/accountsettings.cpp" line="939"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>ھۆججەت قىسقۇچ ماسقەدەملەشنى ئۆچۈرۈڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="943"/>
+        <location filename="../src/gui/accountsettings.cpp" line="946"/>
         <source>Remove Folder Sync Connection</source>
         <translation>ھۆججەت قىسقۇچ ئۇلىنىشىنى ئۆچۈرۈڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="978"/>
+        <location filename="../src/gui/accountsettings.cpp" line="981"/>
         <source>Grant access to sync folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="990"/>
+        <location filename="../src/gui/accountsettings.cpp" line="993"/>
         <source>Access Error</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="991"/>
+        <location filename="../src/gui/accountsettings.cpp" line="994"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="999"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1002"/>
         <source>Wrong Folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1000"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1003"/>
         <source>Please select the original sync folder: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1009"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1018"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1012"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1021"/>
         <source>Bookmark Error</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1010"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1013"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1019"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1022"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1120"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1123"/>
         <source>Disable virtual file support?</source>
         <translation>مەۋھۇم ھۆججەت قوللاشنى چەكلەمسىز؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1121"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1124"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as &quot;available online only&quot; will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -1033,118 +1033,118 @@ This action will abort any currently running synchronization.</source>
 بۇ ھەرىكەت نۆۋەتتە ئىجرا بولۇۋاتقان ماس قەدەمنى ئەمەلدىن قالدۇرىدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1128"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1131"/>
         <source>Disable support</source>
         <translation>قوللاشنى چەكلەڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1215"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1218"/>
         <source>End-to-end encryption mnemonic</source>
         <translation>ئاخىرىدىن ئاخىرىغىچە مەخپىيلەشتۈرۈش</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1217"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1220"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
         <translation>شىفىرلىق كىملىكىڭىزنى قوغداش ئۈچۈن، بىز ئۇنى 12 سۆزلۈكتىن تەركىب تاپقان خاتىرە دەپتىرى بىلەن شىفىرلايمىز. ئۇنى خاتىرىلەپ قويۇپ بىخەتەر ساقلاڭ. باشقا ئۈسكۈنىلىرىڭىزدىكى شىفىرلانغان قىسقۇچلارنىڭ ماسلىشىشىنى تەڭشەش ئۈچۈن بۇ كېرەك بولىدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1242"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1245"/>
         <source>Forget the end-to-end encryption on this device</source>
         <translation>بۇ ئۈسكۈنىدىكى باشتىن-ئاخىر شىفىرلاشنى ئۇنتۇپ قالىڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1243"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1246"/>
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
         <translation>بۇ ئۈسكۈنىدىكى %1 نىڭ باشتىن-ئاخىر شىفىرلاش تەڭشەكلىرىنى ئۇنتۇپ قالماقچىمۇسىز؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1244"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1247"/>
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
         <translation>باشتىن-ئاخىر شىفىرلاشنى ئۇنتۇپ قالسىڭىز، بۇ ئۈسكۈنىدىكى مۇھىم سانلىق مەلۇماتلار ۋە بارلىق شىفىرلانغان ھۆججەتلەر ئۆچۈرۈلىدۇ.&lt;br&gt;قانداقلا بولمىسۇن، ئەگەر تەڭشەلگەن بولسا، شىفىرلانغان ھۆججەتلەر مۇلازىمېتىردا ۋە باشقا بارلىق ئۈسكۈنىلىرىڭىزدە ساقلىنىپ قالىدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1349"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1352"/>
         <source>Sync Running</source>
         <translation>ماسقەدەملەش</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1350"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1353"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>ماسقەدەملەش مەشغۇلاتى ئىجرا بولۇۋاتىدۇ. &lt;br/&gt; ئۇنى ئاخىرلاشتۇرماقچىمۇ؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1422"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1425"/>
         <source>%1 in use</source>
         <translation>ئىشلىتىلىۋاتقان%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1462"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1465"/>
         <source>Connected to %1 (%2).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1682"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1685"/>
         <source>Migrate certificate to a new one</source>
         <translation>گۇۋاھنامىنى يېڭىسىغا يۆتكەش</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1789"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1792"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>چوڭلۇقى%1MB دىن ئېشىپ كەتكەن قىسقۇچلار بار:%2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1837"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1840"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
         <translation>بۇ ھېساباتتا باشقا بىر ئۈسكۈنىدە باشتىن-ئاخىر شىفىرلاش باشلاندى.&lt;br&gt;شىفىرلانغان قىسقۇچلارنىڭ بۇ ئۈسكۈنىدە ماسلىشىشى ئۈچۈن بىردىنبىر خاتىرە دەپتىرىنى كىرگۈزۈڭ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1898"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1900"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1901"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1903"/>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
         <translation>بۇ ھېسابات باشتىن-ئاخىر شىفىرلاشنى قوللايدۇ، ئەمما ئالدى بىلەن ئۇنى تەڭشەش كېرەك.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1898"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1901"/>
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1906"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1909"/>
         <source>Set up encryption</source>
         <translation>مەخپىيلەشتۈرۈشنى تەڭشەڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1460"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1463"/>
         <source>Connected to %1.</source>
         <translation> %1 گە ئۇلاندى.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1468"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1471"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>مۇلازىمېتىر %1 نى ۋاقتىنچە ئىشلەتكىلى بولمايدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1471"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1474"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>مۇلازىمېتىر %1 ھازىر ئاسراش ھالىتىدە.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1477"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1480"/>
         <source>Signed out from %1.</source>
         <translation> %1 دىن چېكىنىپ چىقتى.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1776"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1779"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>بەك چوڭ بولغاچقا ماسقەدەملەنمىگەن ھۆججەت قىسقۇچلار بار: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1777"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1780"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>سىرتقى ساقلانما بولغاچقا ماسقەدەملەنمىگەن ھۆججەت قىسقۇچلار بار: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1778"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1781"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>ماس كېلىدىغان ھۆججەت قىسقۇچلار بار ، چۈنكى ئۇلار بەك چوڭ ياكى تاشقى دۇكانلار: </translation>
     </message>
@@ -1165,57 +1165,57 @@ This action will abort any currently running synchronization.</source>
         <translation>ماسقەدەملەشنى توختىتىڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="877"/>
+        <location filename="../src/gui/accountsettings.cpp" line="880"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt; يەرلىك ھۆججەت قىسقۇچنى قۇرالمىدى &lt;i&gt; %1 &lt;/i&gt;. &lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="937"/>
+        <location filename="../src/gui/accountsettings.cpp" line="940"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt; راستىنلا &lt;i&gt; %1 &lt;/i&gt; ھۆججەت قىسقۇچنى ماسقەدەملەشنى توختاتماقچىمۇ؟ &lt;/p&gt; &lt;p&gt; &lt;b&gt; ئەسكەرتىش: &lt;/b&gt; بۇ &lt;b&gt; ئەمەس &lt;/b&gt; ئۆچۈرۈلىدۇ ھۆججەتلەر. &lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1415"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1418"/>
         <source>%1 of %2 in use</source>
         <translation>ئىشلىتىلىۋاتقان %2 نىڭ%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1451"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1454"/>
         <source>%1 as %2</source>
         <translation> %1 as%2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1458"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1461"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>مۇلازىمېتىر نۇسخىسى %1 قوللىمايدۇ! ئۆزىڭىزنىڭ خەتىرىگە قاراپ ئىلگىرىلەڭ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1474"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1477"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
         <translation>مۇلازىمېتىر %1 نۆۋەتتە قايتا نىشانلىنىۋاتىدۇ ، ياكى ئۇلىنىشىڭىز تۇتۇلغان پورتنىڭ ئارقىسىدا.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1480"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1483"/>
         <source>Connecting to %1 …</source>
         <translation> %1 گە ئۇلىنىۋاتىدۇ…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1484"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1487"/>
         <source>Unable to connect to %1.</source>
         <translation> %1 گە ئۇلىنالمىدى.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1489"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1492"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>مۇلازىمېتىر سەپلەش خاتالىقى: %2 دىكى%1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1498"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1501"/>
         <source>You need to accept the terms of service at %1.</source>
         <translation>سىز %1 دىكى مۇلازىمەت شەرتلىرىنى قوبۇل قىلىشىڭىز كېرەك.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1503"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1506"/>
         <source>No %1 connection configured.</source>
         <translation> %1 ئۇلىنىش سەپلەنمىدى.</translation>
     </message>
@@ -5091,23 +5091,23 @@ Note that using any logging command line options will override this setting.</so
         <translation>تەڭشەك</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="178"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="160"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
         <translation> %1 تەڭشەك</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="201"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="183"/>
         <source>General</source>
         <translation>ئۇمۇمىي</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="202"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="184"/>
         <source>Advanced</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="203"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="185"/>
         <source>Info</source>
         <translation type="unfinished"/>
     </message>
@@ -6715,12 +6715,12 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ServerPage.qml" line="182"/>
+        <location filename="../src/gui/wizard/qml/ServerPage.qml" line="181"/>
         <source>Log in</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ServerPage.qml" line="197"/>
+        <location filename="../src/gui/wizard/qml/ServerPage.qml" line="196"/>
         <source>Server address</source>
         <translation type="unfinished"/>
     </message>
