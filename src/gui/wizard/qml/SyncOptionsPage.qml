@@ -87,7 +87,7 @@ Item {
             OptionRow {
                 Layout.fillWidth: true
                 visible: root.controller.canUseVirtualFiles
-                title: qsTr("Virtual files")
+                title: root.controller.isUsingFileProvider ? qsTr("File Provider") : qsTr("Virtual files")
                 description: qsTr("Download files on-demand")
                 selected: root.controller.syncMode === AccountWizardController.VirtualFiles
                 onClicked: root.controller.setSyncMode(AccountWizardController.VirtualFiles)
