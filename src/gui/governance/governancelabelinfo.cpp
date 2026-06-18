@@ -8,8 +8,4 @@
 namespace OCC
 {
 
-GOvernanceLabelInfo::GOvernanceLabelInfo()
-{
-}
-
 } // namespace OCC
