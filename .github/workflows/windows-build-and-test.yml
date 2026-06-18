@@ -3,9 +3,10 @@
 name: Windows Build and Test
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, reopened, synchronize, ready_for_review]
 jobs:
   build:
+    if: ${{ !github.event.pull_request.draft }}
     name: Windows Build and Test
     runs-on: windows-2022
     env:
@@ -31,8 +32,8 @@ jobs:
               if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
           }
           
-          craft --add-blueprint-repository "https://github.com/nextcloud/craft-blueprints-kde.git|master|"
-          craft --add-blueprint-repository "https://github.com/nextcloud/desktop-client-blueprints.git|master|"
+          craft --add-blueprint-repository "https://github.com/nextcloud/craft-blueprints-kde.git|stable-34.0|"
+          craft --add-blueprint-repository "https://github.com/nextcloud/craft-blueprints-nextcloud.git|stable-34.0|"
           craft craft
           craft --install-deps nextcloud-client
           

@@ -18,6 +18,10 @@
 #include <KDSingleApplication>
 #endif
 
+#if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+#include <KDBusService>
+#endif
+
 #include <QApplication>
 #include <QPointer>
 #include <QQueue>
@@ -105,6 +109,7 @@ signals:
 
 protected slots:
     void slotParseMessage(const QByteArray &msg);
+    void slotActivateRequestedMessage(const QStringList &arguments, const QString &workingDirectory);
     void slotCheckConnection();
     void slotCleanup();
     void slotAccountStateAdded(OCC::AccountState *accountState);
@@ -121,6 +126,9 @@ private:
     void setupConfigFile();
     void setupAccountsAndFolders();
 
+    void showMainDialogRemoteCommand();
+    void parseOptionsRemoteCommand(const QStringList &options);
+
     /**
      * Maybe a newer version of the client was used with this config file:
      * if so, backup, confirm with user and remove the config that can't be read.
@@ -131,6 +139,8 @@ private:
 
 #ifdef Q_OS_MACOS
     OCC::SingleInstanceManager _singleApp;
+#elif defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+    KDBusService _dbusService;
 #else
     KDSingleApplication _singleApp;
 #endif

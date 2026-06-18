@@ -12,6 +12,7 @@
 #include "application.h"
 #include "callstatechecker.h"
 #include "emojimodel.h"
+#include "notificationsoundplayer.h"
 #include "fileactivitylistmodel.h"
 #include "folderman.h"
 #include "guiutility.h"
@@ -143,6 +144,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<SortedActivityListModel>("com.nextcloud.desktopclient", 1, 0, "SortedActivityListModel");
     qmlRegisterType<WheelHandler>("com.nextcloud.desktopclient", 1, 0, "WheelHandler");
     qmlRegisterType<CallStateChecker>("com.nextcloud.desktopclient", 1, 0, "CallStateChecker");
+    qmlRegisterType<NotificationSoundPlayer>("com.nextcloud.desktopclient", 1, 0, "NotificationSoundPlayer");
     qmlRegisterType<Quick::DateFieldBackend>("com.nextcloud.desktopclient", 1, 0, "DateFieldBackend");
     qmlRegisterType<FileDetails>("com.nextcloud.desktopclient", 1, 0, "FileDetails");
     qmlRegisterType<ShareModel>("com.nextcloud.desktopclient", 1, 0, "ShareModel");
@@ -233,10 +235,13 @@ void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
     if (reason == QSystemTrayIcon::DoubleClick && currentUser && currentUser->hasLocalFolder()) {
         currentUser->openLocalFolder();
     } else if (reason == QSystemTrayIcon::Trigger) {
-        if (OwncloudSetupWizard::bringWizardToFrontIfVisible()) {
-            // brought wizard to front
-        } else if (AccountManager::instance()->accounts().isEmpty()) {
-            slotNewAccountWizard();
+        if (AccountManager::instance()->accounts().isEmpty()) {
+            // Without a configured account the tray icon drives the setup wizard
+            // directly: open it, or bring the existing one back to front instead
+            // of opening a second wizard.
+            if (!OwncloudSetupWizard::bringWizardToFrontIfVisible()) {
+                slotNewAccountWizard();
+            }
         } else if (_tray->raiseDialogs()) {
             // Brings dialogs hidden by other apps to front, returns true if any raised
         } else if (_tray->isOpen()) {

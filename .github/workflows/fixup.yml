@@ -10,7 +10,7 @@ name: Block fixup and squash commits
 
 on:
   pull_request:
-    types: [opened, ready_for_review, reopened, synchronize]
+    types: [opened, reopened, synchronize, ready_for_review]
 
 permissions:
   contents: read
@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   commit-message-check:
-    if: github.event.pull_request.draft == false
+    if: ${{ !github.event.pull_request.draft }}
 
     permissions:
       pull-requests: write
