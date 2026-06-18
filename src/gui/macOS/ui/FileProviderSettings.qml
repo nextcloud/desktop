@@ -20,7 +20,7 @@ Page {
     property var controller: FileProviderSettingsController
     property string accountUserIdAtHost: ""
 
-    title: qsTr("Virtual files settings")
+    title: qsTr("File provider settings")
 
     background: Rectangle {
         color: palette.light
@@ -54,7 +54,7 @@ Page {
                 Layout.preferredWidth: Math.max(0, virtualFilesLayout.width - vfsEnabledCheckBox.width - virtualFilesLayout.spacing)
                 horizontalAlignment: Text.AlignLeft
                 wrapMode: Text.WordWrap
-                text: qsTr("Virtual files appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. Virtual files and classic sync can not be used at the same time.")
+                text: qsTr("File Provider items appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. It is not possible to have a File Provider and classic sync Finder integration enabled simultaneously.")
             }
             Switch {
                 id: vfsEnabledCheckBox
