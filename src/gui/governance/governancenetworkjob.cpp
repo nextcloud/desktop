@@ -5,24 +5,24 @@
 
 #include "governancenetworkjob.h"
 
-Q_LOGGING_CATEGORY(lcGovernance, "nextcloud.gui.governance", QtInfoMsg)
-
 using namespace Qt::StringLiterals;
 
 namespace OCC
 {
+
+Q_LOGGING_CATEGORY(lcGovernanceNetwork, "nextcloud.gui.governance.network", QtInfoMsg)
 
 GovernanceNetworkJob::GovernanceNetworkJob(QObject *parent)
     : QObject{parent}
 {
 }
 
-GovernanceNetworkJob::ApiVersion GovernanceNetworkJob::apiVersion() const
+Governance::ApiVersion GovernanceNetworkJob::apiVersion() const
 {
     return _apiVersion;
 }
 
-void GovernanceNetworkJob::setApiVersion(ApiVersion newApiVersion)
+void GovernanceNetworkJob::setApiVersion(Governance::ApiVersion newApiVersion)
 {
     if (_apiVersion == newApiVersion) {
         return;
@@ -32,12 +32,12 @@ void GovernanceNetworkJob::setApiVersion(ApiVersion newApiVersion)
     Q_EMIT apiVersionChanged();
 }
 
-GovernanceNetworkJob::EntityType GovernanceNetworkJob::entityType() const
+Governance::EntityType GovernanceNetworkJob::entityType() const
 {
     return _entityType;
 }
 
-void GovernanceNetworkJob::setEntityType(EntityType newEntityType)
+void GovernanceNetworkJob::setEntityType(Governance::EntityType newEntityType)
 {
     if (_entityType == newEntityType) {
         return;
@@ -88,8 +88,11 @@ QString GovernanceNetworkJob::apiVersionAsString() const
 
     switch (_apiVersion)
     {
-    case ApiVersion::Version_1:
+    case Governance::ApiVersion::Version_1:
         result = u"v1"_s;
+        break;
+    case Governance::ApiVersion::Invalid:
+        result = u"invalid"_s;
         break;
     }
 
@@ -102,15 +105,47 @@ QString GovernanceNetworkJob::entityTypeAsString() const
 
     switch (_entityType)
     {
-    case EntityType::Files:
+    case Governance::EntityType::Files:
         result = u"FILES"_s;
         break;
-    case EntityType::Mails:
+    case Governance::EntityType::Mails:
         result = u"MAILS"_s;
         break;
-    case EntityType::Custom:
+    case Governance::EntityType::Custom:
         result = _customEntityType;
         break;
+    }
+
+    return result;
+}
+
+bool GovernanceNetworkJob::checkParameters() const
+{
+    auto result = true;
+
+    if (!_account) {
+        result = false;
+        return result;
+    }
+
+    if (_apiVersion == Governance::ApiVersion::Invalid) {
+        result = false;
+        return result;
+    }
+
+    if (_entityType != Governance::EntityType::Files) {
+        result = false;
+        return result;
+    }
+
+    if (_entityType == Governance::EntityType::Custom && _customEntityType.isEmpty()) {
+        result = false;
+        return result;
+    }
+
+    if (_entityId.isEmpty()) {
+        result = false;
+        return result;
     }
 
     return result;

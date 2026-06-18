@@ -13,6 +13,11 @@
 #include "governance/deletegovernancelabel.h"
 #include "governance/getavailablegovernancelabels.h"
 #include "governance/getgovernancelabels.h"
+#include "governance/governancelabelslistmodel.h"
+#include "governance/governancetypes.h"
+
+#include <QAbstractItemModelTester>
+#include <QTest>
 
 using namespace OCC;
 using namespace Qt::StringLiterals;
@@ -331,8 +336,8 @@ private slots:
 
         myJob.setAccount(fakeFolder.account());
         myJob.setEntityId(u"1"_s);
-        myJob.setEntityType(ApplyGovernanceLabel::EntityType::Files);
-        myJob.setLabelType(ApplyGovernanceLabel::LabelType::Sensitivity);
+        myJob.setEntityType(Governance::EntityType::Files);
+        myJob.setLabelType(Governance::LabelType::Sensitivity);
         myJob.setLabelId(u"1"_s);
 
         myJob.start();
@@ -358,8 +363,8 @@ private slots:
 
         myJob.setAccount(fakeFolder.account());
         myJob.setEntityId(u"1"_s);
-        myJob.setEntityType(DeleteGovernanceLabel::EntityType::Files);
-        myJob.setLabelType(DeleteGovernanceLabel::LabelType::Sensitivity);
+        myJob.setEntityType(Governance::EntityType::Files);
+        myJob.setLabelType(Governance::LabelType::Sensitivity);
         myJob.setLabelId(u"1"_s);
 
         myJob.start();
@@ -385,8 +390,8 @@ private slots:
 
         myJob.setAccount(fakeFolder.account());
         myJob.setEntityId(u"117"_s);
-        myJob.setEntityType(GetAvailableGovernanceLabels::EntityType::Files);
-        myJob.setLabelType(GetAvailableGovernanceLabels::LabelType::Sensitivity);
+        myJob.setEntityType(Governance::EntityType::Files);
+        myJob.setLabelType(Governance::LabelType::Sensitivity);
 
         myJob.start();
 
@@ -411,8 +416,8 @@ private slots:
 
         myJob.setAccount(fakeFolder.account());
         myJob.setEntityId(u"117117"_s);
-        myJob.setEntityType(GetAvailableGovernanceLabels::EntityType::Files);
-        myJob.setLabelType(GetAvailableGovernanceLabels::LabelType::Sensitivity);
+        myJob.setEntityType(Governance::EntityType::Files);
+        myJob.setLabelType(Governance::LabelType::Sensitivity);
 
         myJob.start();
 
@@ -437,9 +442,9 @@ private slots:
 
         myJob.setAccount(fakeFolder.account());
         myJob.setEntityId(u"117"_s);
-        myJob.setEntityType(GetAvailableGovernanceLabels::EntityType::Custom);
+        myJob.setEntityType(Governance::EntityType::Custom);
         myJob.setCustomEntityType(u"FILEStdytf"_s);
-        myJob.setLabelType(GetAvailableGovernanceLabels::LabelType::Sensitivity);
+        myJob.setLabelType(Governance::LabelType::Sensitivity);
 
         myJob.start();
 
@@ -464,7 +469,7 @@ private slots:
 
         myJob.setAccount(fakeFolder.account());
         myJob.setEntityId(u"117"_s);
-        myJob.setEntityType(GetGovernanceLabels::EntityType::Files);
+        myJob.setEntityType(Governance::EntityType::Files);
 
         myJob.start();
 
@@ -489,7 +494,7 @@ private slots:
 
         myJob.setAccount(fakeFolder.account());
         myJob.setEntityId(u"117117"_s);
-        myJob.setEntityType(GetGovernanceLabels::EntityType::Files);
+        myJob.setEntityType(Governance::EntityType::Files);
 
         myJob.start();
 
@@ -514,7 +519,7 @@ private slots:
 
         myJob.setAccount(fakeFolder.account());
         myJob.setEntityId(u"117"_s);
-        myJob.setEntityType(GetGovernanceLabels::EntityType::Custom);
+        myJob.setEntityType(Governance::EntityType::Custom);
         myJob.setCustomEntityType(u"FILEStdytf"_s);
 
         myJob.start();
@@ -522,6 +527,66 @@ private slots:
         finishedWithErrorSpy.wait();
         QCOMPARE(finishedSpy.count(), 0);
         QCOMPARE(finishedWithErrorSpy.count(), 1);
+    }
+
+    void testGovernanceLabelListModel_setData()
+    {
+        GovernanceLabelsListModel myModel;
+        QAbstractItemModelTester myModelTester(&myModel);
+
+        const auto replyJson = R"json(
+{
+  "ocs": {
+    "meta": {
+      "status": "ok",
+      "statuscode": 200,
+      "message": "OK"
+    },
+    "data": [
+      {
+        "id": "91785883351310337",
+        "name": "Test Sensitivity",
+        "priority": 0,
+        "description": "This is a long description",
+        "color": "bf4040",
+        "scopes": [
+          "FILES"
+        ]
+      }
+    ]
+  }
+}
+            )json"_ba;
+
+        const auto replyData = QJsonDocument::fromJson(replyJson);
+
+        myModel.setAvailableLabelsJsonData(replyData);
+
+        QCOMPARE(myModel.rowCount(), 1);
+        const auto labelIndex = myModel.index(0);
+        QVERIFY(labelIndex.isValid());
+        QCOMPARE(myModel.data(labelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::IdRole)), u"91785883351310337"_s);
+        QCOMPARE(myModel.data(labelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::NameRole)), u"Test Sensitivity"_s);
+        QCOMPARE(myModel.data(labelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::PriorityRole)), 0);
+        QCOMPARE(myModel.data(labelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::DescriptionRole)), u"This is a long description"_s);
+        QCOMPARE(myModel.data(labelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::ColorRole)), u"bf4040"_s);
+        QCOMPARE(myModel.data(labelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::ScopesRole)).toStringList(), QStringList{u"FILES"_s});
+    }
+
+    void testGovernanceLabelListModel_refreshData()
+    {
+        GovernanceLabelsListModel myModel;
+        QAbstractItemModelTester myModelTester(&myModel);
+        QSignalSpy modelRefreshDataSignalSpy(&myModel, &GovernanceLabelsListModel::refreshData);
+
+        myModel.setEntityId(u"117"_s);
+        myModel.setLabelType(Governance::LabelType::Sensitivity);
+
+        QVERIFY(modelRefreshDataSignalSpy.wait());
+        QCOMPARE(modelRefreshDataSignalSpy.count(), 1);
+        QCOMPARE(modelRefreshDataSignalSpy.at(0).count(), 2);
+        QCOMPARE(modelRefreshDataSignalSpy.at(0).at(0).value<OCC::Governance::LabelType>(), OCC::Governance::LabelType::Sensitivity);
+        QCOMPARE(modelRefreshDataSignalSpy.at(0).at(1), u"117"_s);
     }
 };
 

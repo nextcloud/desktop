@@ -35,4 +35,20 @@ QString TypedWithLabelIdGovernanceNetworkJob::buildPath() const
     return u"/ocs/v2.php/apps/governance/%1/labels/%2/%3/%4/%5"_s.arg(apiVersionAsString(), entityTypeAsString(), entityId(), labelId(), labelTypeAsString());
 }
 
+bool TypedWithLabelIdGovernanceNetworkJob::checkParameters() const
+{
+    auto result = TypedGovernanceNetworkJob::checkParameters();
+
+    if (!result) {
+        return result;
+    }
+
+    if (_labelId.isEmpty()) {
+        result = false;
+        return result;
+    }
+
+    return result;
+}
+
 } // namespace OCC

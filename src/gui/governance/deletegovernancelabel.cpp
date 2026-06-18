@@ -13,10 +13,22 @@ namespace OCC
 DeleteGovernanceLabel::DeleteGovernanceLabel(QObject *parent)
     : OCC::TypedWithLabelIdGovernanceNetworkJob{parent}
 {
+    connect(this, &DeleteGovernanceLabel::apiVersionChanged, this, &DeleteGovernanceLabel::initialize);
+    connect(this, &DeleteGovernanceLabel::entityTypeChanged, this, &DeleteGovernanceLabel::initialize);
+    connect(this, &DeleteGovernanceLabel::customEntityTypeChanged, this, &DeleteGovernanceLabel::initialize);
+    connect(this, &DeleteGovernanceLabel::entityIdChanged, this, &DeleteGovernanceLabel::initialize);
+    connect(this, &DeleteGovernanceLabel::accountChanged, this, &DeleteGovernanceLabel::initialize);
+    connect(this, &DeleteGovernanceLabel::labelTypeChanged, this, &DeleteGovernanceLabel::initialize);
+    connect(this, &DeleteGovernanceLabel::labelIdChanged, this, &DeleteGovernanceLabel::initialize);
 }
 
 void DeleteGovernanceLabel::start()
 {
+    if (!checkParameters()) {
+        Q_EMIT finishedWithError(500, {});
+        return;
+    }
+
     setOcsGovernanceJob(QPointer<OcsGovernanceJob>{new OcsGovernanceJob{account()}});
 
     connect(ocsGovernanceJob().data(), &OcsJob::jobFinished,
@@ -33,6 +45,13 @@ void DeleteGovernanceLabel::start()
 void DeleteGovernanceLabel::jobDone(QJsonDocument reply, [[maybe_unused]] int statusCode)
 {
     Q_EMIT finished(reply);
+}
+
+void DeleteGovernanceLabel::initialize()
+{
+    if (checkParameters()) {
+        start();
+    }
 }
 
 } // namespace OCC

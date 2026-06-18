@@ -6,6 +6,7 @@
 #ifndef GOVERNANCENETWORKJOB_H
 #define GOVERNANCENETWORKJOB_H
 
+#include "governancetypes.h"
 #include "accountfwd.h"
 
 #include <QObject>
@@ -13,11 +14,10 @@
 #include <QLoggingCategory>
 #include <QJsonDocument>
 
-Q_DECLARE_LOGGING_CATEGORY(lcGovernance)
-
-
 namespace OCC
 {
+
+Q_DECLARE_LOGGING_CATEGORY(lcGovernanceNetwork)
 
 class OcsGovernanceJob;
 
@@ -28,46 +28,24 @@ class GovernanceNetworkJob : public QObject
 
     Q_PROPERTY(AccountPtr account READ account WRITE setAccount NOTIFY accountChanged FINAL)
 
-    Q_PROPERTY(ApiVersion apiVersion READ apiVersion WRITE setApiVersion NOTIFY apiVersionChanged FINAL)
+    Q_PROPERTY(Governance::ApiVersion apiVersion READ apiVersion WRITE setApiVersion NOTIFY apiVersionChanged FINAL)
 
-    Q_PROPERTY(EntityType entityType READ entityType WRITE setEntityType NOTIFY entityTypeChanged FINAL)
+    Q_PROPERTY(Governance::EntityType entityType READ entityType WRITE setEntityType NOTIFY entityTypeChanged FINAL)
 
     Q_PROPERTY(QString customEntityType READ customEntityType WRITE setCustomEntityType NOTIFY customEntityTypeChanged FINAL)
 
     Q_PROPERTY(QString entityId READ entityId WRITE setEntityId NOTIFY entityIdChanged FINAL)
 
 public:
-    enum class EntityType {
-        Files,
-        Mails,
-        Custom,
-    };
-
-    Q_ENUM(EntityType)
-
-    enum class LabelType {
-        Sensitivity,
-        Retention,
-        Hold,
-    };
-
-    Q_ENUM(LabelType)
-
-    enum class ApiVersion {
-        Version_1,
-    };
-
-    Q_ENUM(ApiVersion)
-
     explicit GovernanceNetworkJob(QObject *parent = nullptr);
 
-    [[nodiscard]] ApiVersion apiVersion() const;
+    [[nodiscard]] Governance::ApiVersion apiVersion() const;
 
-    void setApiVersion(ApiVersion newApiVersion);
+    void setApiVersion(Governance::ApiVersion newApiVersion);
 
-    [[nodiscard]] EntityType entityType() const;
+    [[nodiscard]] Governance::EntityType entityType() const;
 
-    void setEntityType(EntityType newEntityType);
+    void setEntityType(Governance::EntityType newEntityType);
 
     [[nodiscard]] QString customEntityType() const;
 
@@ -116,12 +94,14 @@ protected:
 
     [[nodiscard]] QString entityTypeAsString() const;
 
+    [[nodiscard]] virtual bool checkParameters() const;
+
 private:
     AccountPtr _account;
 
-    ApiVersion _apiVersion = ApiVersion::Version_1;
+    Governance::ApiVersion _apiVersion = Governance::ApiVersion::Version_1;
 
-    EntityType _entityType = EntityType::Files;
+    Governance::EntityType _entityType = Governance::EntityType::Files;
 
     QString _customEntityType;
 

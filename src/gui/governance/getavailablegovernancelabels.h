@@ -28,11 +28,15 @@ Q_SIGNALS:
 public Q_SLOTS:
     void start();
 
+    void start(OCC::Governance::LabelType labelType, const QString &entityId);
+
 protected:
     [[nodiscard]] QString buildPath() const override;
 
 private Q_SLOTS:
     void jobDone(QJsonDocument reply, int statusCode);
+
+    void initialize();
 };
 
 } // namespace OCC

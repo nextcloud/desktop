@@ -64,6 +64,10 @@ ApplicationWindow {
 
         labelType: GovernanceNetworkJob.Sensitivity
         entityId: governanceLabelsDialog.fileId
+
+        onFinished: function(reply) {
+            labelsModel.setAvailableLabelsJsonData(reply)
+        }
     }
 
     GetAvailableGovernanceLabels {
@@ -92,6 +96,17 @@ ApplicationWindow {
         entityId: governanceLabelsDialog.fileId
     }
 
+    GovernanceLabelsListModel {
+        id: labelsModel
+
+        entityId: governanceLabelsDialog.fileId
+        labelType: GovernanceNetworkJob.Sensitivity
+
+        onRefreshData: function(labelType, entityId) {
+            getAvailableGovernanceLabelsForSensitivity.start(labelType, entityId)
+        }
+    }
+
     ColumnLayout {
         anchors.fill: parent
         anchors.leftMargin: 10
@@ -101,42 +116,33 @@ ApplicationWindow {
         spacing: 15
         z: 2
 
-        Button {
-            text: 'Apply governance label'
-            onClicked: applyGovernanceLabel.start()
+        EnforcedPlainTextLabel {
+            text: 'Sensitivity label:'
+
+            font.pixelSize: Style.pixelSize + 2
         }
 
-        Button {
-            text: 'Delete governance label'
-            onClicked: deleteGovernanceLabel.start()
-        }
+        ComboBox {
+            id: selectedNewSensitivityLabel
 
-        Button {
-            text: 'Get available governance labels for sensitivity'
-            onClicked: getAvailableGovernanceLabelsForSensitivity.start()
-        }
+            font.pixelSize: Style.pixelSize + 2
+            Accessible.role: Accessible.ComboBox
+            Accessible.name: qsTr("Select sensitivity label")
 
-        Button {
-            text: 'Get available governance labels for retention'
-            onClicked: getAvailableGovernanceLabelsForRetention.start()
-        }
-
-        Button {
-            text: 'Get available governance labels for legal hold'
-            onClicked: getAvailableGovernanceLabelsForHold.start()
-        }
-
-        Button {
-            text: 'Get governance labels'
-            onClicked: getGovernanceLabels.start()
+            model: labelsModel
         }
 
         DialogButtonBox {
             Layout.fillWidth: true
 
             Button {
-                text: qsTr("Close")
-                DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+                text: qsTr("Apply")
+                DialogButtonBox.buttonRole: DialogButtonBox.ApplyRole
+            }
+
+            Button {
+                text: qsTr("Cancel")
+                DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
             }
 
             onAccepted: function() {
