@@ -3,9 +3,10 @@
 name: Windows Build and Test
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, reopened, synchronize, ready_for_review]
 jobs:
   build:
+    if: ${{ !github.event.pull_request.draft }}
     name: Windows Build and Test
     runs-on: windows-2022
     env:

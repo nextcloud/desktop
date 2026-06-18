@@ -400,8 +400,8 @@ void FileProviderSettingsController::setVfsEnabledForAccount(const QString &user
 
                 if (setEnabled && showInformationDialog) {
                     QMessageBox::information(nullptr,
-                                             controller->tr("Virtual files enabled"),
-                                             controller->tr("Virtual files have been enabled for this account.\n\n"
+                                             controller->tr("File Provider enabled"),
+                                             controller->tr("File Provider has been enabled for this account.\n\n"
                                                             "Your files are now accessible in Finder under the \"Locations\" section."));
                 }
             }

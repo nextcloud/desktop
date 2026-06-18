@@ -156,7 +156,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Virtual files</string>
+         <string>File Provider</string>
         </property>
        </widget>
       </item>

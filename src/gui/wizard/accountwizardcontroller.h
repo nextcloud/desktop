@@ -61,6 +61,7 @@ class AccountWizardController : public QObject
     Q_PROPERTY(SyncMode syncMode READ syncMode NOTIFY syncModeChanged)
     Q_PROPERTY(bool canFinish READ canFinish NOTIFY canFinishChanged)
     Q_PROPERTY(bool canUseVirtualFiles READ canUseVirtualFiles CONSTANT)
+    Q_PROPERTY(bool isUsingFileProvider READ isUsingFileProvider CONSTANT)
     Q_PROPERTY(bool canUseClassicSync READ canUseClassicSync CONSTANT)
     Q_PROPERTY(bool needsSyncOptions READ needsSyncOptions NOTIFY needsSyncOptionsChanged)
     Q_PROPERTY(bool canSkipFolderConfiguration READ canSkipFolderConfiguration CONSTANT)
@@ -137,6 +138,7 @@ public:
     [[nodiscard]] SyncMode syncMode() const;
     [[nodiscard]] bool canFinish() const;
     [[nodiscard]] bool canUseVirtualFiles() const;
+    [[nodiscard]] bool isUsingFileProvider() const;
     [[nodiscard]] bool canUseClassicSync() const;
     [[nodiscard]] bool needsSyncOptions() const;
     [[nodiscard]] bool canSkipFolderConfiguration() const;
