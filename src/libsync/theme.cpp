@@ -62,6 +62,14 @@ bool shouldPreferSvg()
     return QByteArray(APPLICATION_ICON_SET).toUpper() == QByteArrayLiteral("SVG");
 }
 
+constexpr QRgb darkDestructiveActionTextColor = 0xffdad6;
+constexpr QRgb lightDestructiveActionTextColor = 0xba1a1a;
+
+QColor destructiveActionColor(const bool darkMode, const QRgb darkColor, const QRgb lightColor)
+{
+    return QColor(darkMode ? darkColor : lightColor);
+}
+
 #ifdef Q_OS_WIN
 bool isWindows11OrGreater() {
     return QOperatingSystemVersion::current().version() >= QOperatingSystemVersion::Windows11.version();
@@ -1033,6 +1041,11 @@ bool Theme::disableVirtualFilesSyncFolder() const
 QColor Theme::defaultColor()
 {
     return QColor{NEXTCLOUD_BACKGROUND_COLOR};
+}
+
+QColor Theme::destructiveActionTextColor() const
+{
+    return destructiveActionColor(darkMode(), darkDestructiveActionTextColor, lightDestructiveActionTextColor);
 }
 
 void Theme::connectToPaletteSignal() const

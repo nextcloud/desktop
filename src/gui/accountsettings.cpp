@@ -434,17 +434,6 @@ void AccountSettings::slotToggleSignInState()
         return;
     }
 
-    const auto userModel = UserModel::instance();
-    const auto userId = userModel->findUserIdForAccount(_accountState);
-    if (userId >= 0) {
-        if (_accountState->isSignedOut()) {
-            userModel->login(userId);
-        } else {
-            userModel->logout(userId);
-        }
-        return;
-    }
-
     if (_accountState->isSignedOut()) {
         _accountState->account()->resetRejectedCertificates();
         _accountState->signIn();
@@ -1869,26 +1858,11 @@ void AccountSettings::customizeStyle()
     Theme::replaceLinkColorStringBackgroundAware(msg);
     _ui->connectLabel->setText(msg);
 
-    const auto destructiveTextColor = Theme::instance()->darkMode() ? QColor(0xffdad6) : QColor(0xba1a1a);
-    const auto destructiveBorderColor = Theme::instance()->darkMode() ? QColor(0xffb4ab) : QColor(0xba1a1a);
-    const auto destructiveBackgroundColor = Theme::instance()->darkMode() ? QColor(0x2d1514) : QColor(0xfffff4f2);
-    const auto destructiveHoverBackgroundColor = Theme::instance()->darkMode() ? QColor(0x3b1b1a) : QColor(0xffffe4df);
-    const auto destructivePressedBackgroundColor = Theme::instance()->darkMode() ? QColor(0x4a221f) : QColor(0xffffd6cf);
+    const auto theme = Theme::instance();
+    const auto destructiveTextColor = theme->destructiveActionTextColor();
     _ui->_removeAccountButton->setStyleSheet(QString::fromLatin1(
-        "QPushButton#_removeAccountButton {"
-        " color: %1;"
-        " background-color: %2;"
-        " border: 1px solid %3;"
-        " border-radius: 4px;"
-        " padding: 4px 10px;"
-        "}"
-        "QPushButton#_removeAccountButton:hover { background-color: %4; }"
-        "QPushButton#_removeAccountButton:pressed { background-color: %5; }")
-        .arg(destructiveTextColor.name(),
-            destructiveBackgroundColor.name(),
-            destructiveBorderColor.name(),
-            destructiveHoverBackgroundColor.name(),
-            destructivePressedBackgroundColor.name()));
+        "QPushButton#_removeAccountButton:enabled { color: %1; }")
+        .arg(destructiveTextColor.name()));
 }
 
 void AccountSettings::setupE2eEncryption()
