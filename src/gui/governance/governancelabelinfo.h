@@ -12,11 +12,9 @@
 namespace OCC
 {
 
-struct GOvernanceLabelInfo
+struct GovernanceLabelInfo
 {
 public:
-    GOvernanceLabelInfo();
-
     QString _id;
 
     QString _name;

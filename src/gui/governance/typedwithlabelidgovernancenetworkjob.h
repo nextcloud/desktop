@@ -33,6 +33,8 @@ signals:
 protected:
     [[nodiscard]] QString buildPath() const override;
 
+    [[nodiscard]] bool checkParameters() const override;
+
 private:
     QString _labelId;
 };
