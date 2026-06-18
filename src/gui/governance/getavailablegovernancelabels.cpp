@@ -15,10 +15,29 @@ namespace OCC
 GetAvailableGovernanceLabels::GetAvailableGovernanceLabels(QObject *parent)
     : OCC::TypedGovernanceNetworkJob{parent}
 {
+    connect(this, &GetAvailableGovernanceLabels::apiVersionChanged, this, &GetAvailableGovernanceLabels::initialize);
+    connect(this, &GetAvailableGovernanceLabels::entityTypeChanged, this, &GetAvailableGovernanceLabels::initialize);
+    connect(this, &GetAvailableGovernanceLabels::customEntityTypeChanged, this, &GetAvailableGovernanceLabels::initialize);
+    connect(this, &GetAvailableGovernanceLabels::entityIdChanged, this, &GetAvailableGovernanceLabels::initialize);
+    connect(this, &GetAvailableGovernanceLabels::accountChanged, this, &GetAvailableGovernanceLabels::initialize);
+    connect(this, &GetAvailableGovernanceLabels::labelTypeChanged, this, &GetAvailableGovernanceLabels::initialize);
+}
+
+void GetAvailableGovernanceLabels::start(Governance::LabelType labelType, const QString &entityId)
+{
+    setLabelType(labelType);
+    setEntityId(entityId);
+
+    start();
 }
 
 void GetAvailableGovernanceLabels::start()
 {
+    if (!checkParameters()) {
+        Q_EMIT finishedWitherror(500, {});
+        return;
+    }
+
     setOcsGovernanceJob(QPointer<OcsGovernanceJob>{new OcsGovernanceJob{account()}});
 
     connect(ocsGovernanceJob().data(), &OcsJob::jobFinished,
@@ -35,6 +54,13 @@ void GetAvailableGovernanceLabels::start()
 void GetAvailableGovernanceLabels::jobDone(QJsonDocument reply, [[maybe_unused]] int statusCode)
 {
     Q_EMIT finished(reply);
+}
+
+void GetAvailableGovernanceLabels::initialize()
+{
+    if (checkParameters()) {
+        start();
+    }
 }
 
 QString GetAvailableGovernanceLabels::buildPath() const

@@ -15,12 +15,12 @@ TypedGovernanceNetworkJob::TypedGovernanceNetworkJob(QObject *parent)
 {
 }
 
-GovernanceNetworkJob::LabelType TypedGovernanceNetworkJob::labelType() const
+Governance::LabelType TypedGovernanceNetworkJob::labelType() const
 {
     return _labelType;
 }
 
-void TypedGovernanceNetworkJob::setLabelType(LabelType newLabelType)
+void TypedGovernanceNetworkJob::setLabelType(Governance::LabelType newLabelType)
 {
     if (_labelType == newLabelType) {
         return;
@@ -36,15 +36,34 @@ QString TypedGovernanceNetworkJob::labelTypeAsString() const
 
     switch (_labelType)
     {
-    case LabelType::Sensitivity:
+    case Governance::LabelType::Sensitivity:
         result = u"sensitivity"_s;
         break;
-    case LabelType::Retention:
+    case Governance::LabelType::Retention:
         result = u"retention"_s;
         break;
-    case LabelType::Hold:
+    case Governance::LabelType::Hold:
         result = u"hold"_s;
         break;
+    case Governance::LabelType::Invalid:
+        result = u"invalid"_s;
+        break;
+    }
+
+    return result;
+}
+
+bool TypedGovernanceNetworkJob::checkParameters() const
+{
+    auto result = GovernanceNetworkJob::checkParameters();
+
+    if (!result) {
+        return result;
+    }
+
+    if (_labelType == Governance::LabelType::Invalid) {
+        result = false;
+        return result;
     }
 
     return result;

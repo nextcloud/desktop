@@ -18,14 +18,14 @@ class TypedGovernanceNetworkJob : public GovernanceNetworkJob
     Q_OBJECT
     QML_ELEMENT
 
-    Q_PROPERTY(LabelType labelType READ labelType WRITE setLabelType NOTIFY labelTypeChanged FINAL)
+    Q_PROPERTY(Governance::LabelType labelType READ labelType WRITE setLabelType NOTIFY labelTypeChanged FINAL)
 
 public:
     TypedGovernanceNetworkJob(QObject *parent = nullptr);
 
-    [[nodiscard]] LabelType labelType() const;
+    [[nodiscard]] Governance::LabelType labelType() const;
 
-    void setLabelType(LabelType newLabelType);
+    void setLabelType(Governance::LabelType newLabelType);
 
 Q_SIGNALS:
     void labelTypeChanged();
@@ -33,8 +33,10 @@ Q_SIGNALS:
 protected:
     [[nodiscard]] QString labelTypeAsString() const;
 
+    [[nodiscard]] bool checkParameters() const override;
+
 private:
-    LabelType _labelType;
+    Governance::LabelType _labelType = Governance::LabelType::Invalid;
 };
 
 } // namespace OCC

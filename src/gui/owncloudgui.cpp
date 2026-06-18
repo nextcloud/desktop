@@ -40,6 +40,7 @@
 #include "governance/deletegovernancelabel.h"
 #include "governance/getavailablegovernancelabels.h"
 #include "governance/getgovernancelabels.h"
+#include "governance/governancelabelslistmodel.h"
 #include "filesystem.h"
 
 #ifdef WITH_LIBCLOUDPROVIDERS
@@ -160,6 +161,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<DeleteGovernanceLabel>("com.nextcloud.desktopclient", 1, 0, "DeleteGovernanceLabel");
     qmlRegisterType<GetAvailableGovernanceLabels>("com.nextcloud.desktopclient", 1, 0, "GetAvailableGovernanceLabels");
     qmlRegisterType<GetGovernanceLabels>("com.nextcloud.desktopclient", 1, 0, "GetGovernanceLabels");
+    qmlRegisterType<GovernanceLabelsListModel>("com.nextcloud.desktopclient", 1, 0, "GovernanceLabelsListModel");
 
     qmlRegisterUncreatableType<QAbstractItemModel>("com.nextcloud.desktopclient", 1, 0, "QAbstractItemModel", "QAbstractItemModel");
     qmlRegisterUncreatableType<Activity>("com.nextcloud.desktopclient", 1, 0, "activity", "Activity");
