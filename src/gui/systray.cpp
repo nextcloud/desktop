@@ -23,7 +23,9 @@
 #endif
 
 #include <QCursor>
+#include <QEvent>
 #include <QGuiApplication>
+#include <QMouseEvent>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickWindow>
@@ -45,6 +47,59 @@
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcSystray, "nextcloud.gui.systray")
+
+namespace {
+#if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+constexpr auto macOSWindowDragHandleHeight = 28;
+
+class QuickWindowDragHandle : public QObject
+{
+public:
+    explicit QuickWindowDragHandle(QQuickWindow *window)
+        : QObject(window)
+        , _window(window)
+    {
+    }
+
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override
+    {
+        if (!_window || event->type() != QEvent::MouseButtonPress) {
+            return QObject::eventFilter(watched, event);
+        }
+
+        const auto *mouseEvent = static_cast<QMouseEvent *>(event);
+        if (mouseEvent->button() != Qt::LeftButton) {
+            return QObject::eventFilter(watched, event);
+        }
+
+        const auto windowPosition = _window->mapFromGlobal(mouseEvent->globalPosition().toPoint());
+        if (windowPosition.y() < 0 || windowPosition.y() > macOSWindowDragHandleHeight) {
+            return QObject::eventFilter(watched, event);
+        }
+
+        if (_window->startSystemMove()) {
+            event->accept();
+            return true;
+        }
+
+        return QObject::eventFilter(watched, event);
+    }
+
+private:
+    QPointer<QQuickWindow> _window;
+};
+
+void configureMacOSExpandedQuickWindow(QQuickWindow *window)
+{
+    window->setFlag(Qt::ExpandedClientAreaHint, true);
+    window->setFlag(Qt::NoTitleBarBackgroundHint, true);
+
+    auto *dragHandle = new QuickWindowDragHandle(window);
+    window->installEventFilter(dragHandle);
+}
+#endif
+}
 
 Systray *Systray::_instance = nullptr;
 
@@ -245,6 +300,159 @@ void Systray::showQMLWindow()
     UserModel::instance()->fetchCurrentActivityModel();
 }
 
+void Systray::showActivitiesWindow(int userIndex)
+{
+    const auto userModel = UserModel::instance();
+    if (!userModel) {
+        return;
+    }
+
+    const auto targetUserId = userIndex >= 0 ? userIndex : userModel->currentUserId();
+    const auto user = userModel->user(targetUserId);
+    if (!user) {
+        qCWarning(lcSystray) << "Invalid user index for activities window:" << targetUserId;
+        return;
+    }
+
+    hideWindow();
+
+    if (!_trayEngine) {
+        qCWarning(lcSystray) << "Could not open activities window as no tray engine was available";
+        return;
+    }
+
+    const auto windowKey = user->account()->id();
+
+    if (const auto existingWindow = _activitiesWindows.value(windowKey)) {
+        positionWindowAtScreenCenter(existingWindow.data());
+        existingWindow->show();
+        existingWindow->raise();
+        existingWindow->requestActivate();
+        userModel->fetchActivityModel(targetUserId);
+        return;
+    }
+
+    const QVariantMap initialProperties{
+        {"userIndex", targetUserId},
+        {"currentUser", QVariant::fromValue(user)},
+        {"activityModel", QVariant::fromValue(user->getActivityModel())},
+    };
+    QQmlComponent activitiesWindowComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/ActivitiesWindow.qml"));
+
+    if (activitiesWindowComponent.isError()) {
+        qCWarning(lcSystray) << activitiesWindowComponent.errorString();
+        qCWarning(lcSystray) << activitiesWindowComponent.errors();
+        return;
+    }
+
+    const auto createdObject = activitiesWindowComponent.createWithInitialProperties(initialProperties);
+    const auto window = qobject_cast<QQuickWindow *>(createdObject);
+    if (!window) {
+        qCWarning(lcSystray) << "Activities window resulted in creation of object that was not a window!";
+        if (createdObject) {
+            createdObject->deleteLater();
+        }
+        return;
+    }
+
+    _activitiesWindows.insert(windowKey, window);
+    window->setIcon(Theme::instance()->applicationIcon());
+
+#ifdef Q_OS_MACOS
+    auto *fgbg = new ForegroundBackground(this);
+    window->installEventFilter(fgbg);
+#endif
+
+#if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+    configureMacOSExpandedQuickWindow(window);
+#endif
+
+    connect(window, &QObject::destroyed, this, [this, windowKey] {
+        _activitiesWindows.remove(windowKey);
+    });
+
+    positionWindowAtScreenCenter(window);
+    window->show();
+    window->raise();
+    window->requestActivate();
+    userModel->fetchActivityModel(targetUserId);
+}
+
+void Systray::showAssistantWindow(int userIndex)
+{
+    const auto userModel = UserModel::instance();
+    if (!userModel) {
+        return;
+    }
+
+    const auto targetUserId = userIndex >= 0 ? userIndex : userModel->currentUserId();
+    const auto user = userModel->user(targetUserId);
+    if (!user || !user->isNcAssistantEnabled()) {
+        qCWarning(lcSystray) << "Not opening assistant window for account without assistant support:" << targetUserId;
+        return;
+    }
+
+    hideWindow();
+
+    if (!_trayEngine) {
+        qCWarning(lcSystray) << "Could not open assistant window as no tray engine was available";
+        return;
+    }
+
+    const auto windowKey = user->account()->id();
+
+    if (const auto existingWindow = _assistantWindows.value(windowKey)) {
+        positionWindowAtScreenCenter(existingWindow.data());
+        existingWindow->show();
+        existingWindow->raise();
+        existingWindow->requestActivate();
+        return;
+    }
+
+    const QVariantMap initialProperties{
+        {"userIndex", targetUserId},
+        {"currentUser", QVariant::fromValue(user)},
+    };
+    QQmlComponent assistantWindowComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/AssistantWindow.qml"));
+
+    if (assistantWindowComponent.isError()) {
+        qCWarning(lcSystray) << assistantWindowComponent.errorString();
+        qCWarning(lcSystray) << assistantWindowComponent.errors();
+        return;
+    }
+
+    const auto createdObject = assistantWindowComponent.createWithInitialProperties(initialProperties);
+    const auto window = qobject_cast<QQuickWindow *>(createdObject);
+    if (!window) {
+        qCWarning(lcSystray) << "Assistant window resulted in creation of object that was not a window!";
+        if (createdObject) {
+            createdObject->deleteLater();
+        }
+        return;
+    }
+
+    _assistantWindows.insert(windowKey, window);
+    window->setIcon(Theme::instance()->applicationIcon());
+
+#ifdef Q_OS_MACOS
+    auto *fgbg = new ForegroundBackground(this);
+    window->installEventFilter(fgbg);
+#endif
+
+#if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+    configureMacOSExpandedQuickWindow(window);
+#endif
+
+    connect(window, &QObject::destroyed, this, [this, windowKey] {
+        _assistantWindows.remove(windowKey);
+    });
+
+    positionWindowAtScreenCenter(window);
+    window->show();
+    window->raise();
+    window->requestActivate();
+}
+
 void Systray::showUserStatusWindow(int userIndex)
 {
     const auto userModel = UserModel::instance();
@@ -306,8 +514,7 @@ void Systray::showUserStatusWindow(int userIndex)
 #endif
 
 #if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
-    _userStatusWindow->setFlag(Qt::ExpandedClientAreaHint, true);
-    _userStatusWindow->setFlag(Qt::NoTitleBarBackgroundHint, true);
+    configureMacOSExpandedQuickWindow(_userStatusWindow.data());
 #endif
 
     connect(_userStatusWindow.data(), &QObject::destroyed, this, [this] {
@@ -794,6 +1001,21 @@ bool Systray::useNormalWindow() const
 bool Systray::isOpen() const
 {
     return _isOpen;
+}
+
+bool Systray::isActivitySurfaceVisible() const
+{
+    if (isOpen()) {
+        return true;
+    }
+
+    for (auto it = _activitiesWindows.cbegin(); it != _activitiesWindows.cend(); ++it) {
+        if (it.value() && it.value()->isVisible()) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 bool Systray::enableAddAccount() const

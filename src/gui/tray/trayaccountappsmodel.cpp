@@ -28,6 +28,16 @@ TrayAccountAppsModel::TrayAccountAppsModel(QObject *parent)
 
 void TrayAccountAppsModel::setUserId(const int userId)
 {
+    const auto apps = appsForUserId(userId);
+    if (_userId == userId && _apps == apps) {
+        return;
+    }
+
+    _userId = userId;
+    if (_apps == apps) {
+        return;
+    }
+
     const auto oldCount = _apps.size();
 
     if (!_apps.isEmpty()) {
@@ -36,22 +46,30 @@ void TrayAccountAppsModel::setUserId(const int userId)
         endRemoveRows();
     }
 
+    if (!apps.isEmpty()) {
+        beginInsertRows(QModelIndex(), 0, apps.size() - 1);
+        _apps = apps;
+        endInsertRows();
+    }
+
+    if (_apps.size() != oldCount) {
+        emit countChanged();
+    }
+}
+
+AccountAppList TrayAccountAppsModel::appsForUserId(const int userId) const
+{
     const auto accounts = AccountManager::instance()->accounts();
     if (userId < 0 || userId >= accounts.size()) {
-        if (oldCount != _apps.size()) {
-            emit countChanged();
-        }
-        return;
+        return {};
     }
 
     const auto account = accounts.at(userId);
     if (!account) {
-        if (oldCount != _apps.size()) {
-            emit countChanged();
-        }
-        return;
+        return {};
     }
 
+    auto apps = AccountAppList{};
     const auto allApps = account->appList();
     const auto talkApp = account->findApp(QStringLiteral("spreed"));
     const auto assistantEnabled = account->account()->capabilities().ncAssistantEnabled();
@@ -61,14 +79,10 @@ void TrayAccountAppsModel::setUserId(const int userId)
             continue;
         }
 
-        beginInsertRows(QModelIndex(), _apps.size(), _apps.size());
-        _apps << app;
-        endInsertRows();
+        apps << app;
     }
 
-    if (_apps.size() != oldCount) {
-        emit countChanged();
-    }
+    return apps;
 }
 
 void TrayAccountAppsModel::openAppUrl(const QUrl &url)

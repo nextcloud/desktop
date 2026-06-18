@@ -12,6 +12,7 @@
 
 #include <QSystemTrayIcon>
 #include <QQmlNetworkAccessManagerFactory>
+#include <QHash>
 #include <QStringListModel>
 
 class QScreen;
@@ -90,6 +91,7 @@ public:
     [[nodiscard]] bool syncIsPaused() const;
     [[nodiscard]] bool anySyncFolders() const;
     [[nodiscard]] bool isOpen() const;
+    [[nodiscard]] bool isActivitySurfaceVisible() const;
 
     [[nodiscard]] bool enableAddAccount() const;
 
@@ -147,6 +149,8 @@ public slots:
     void showWindow(OCC::Systray::WindowPosition position = OCC::Systray::WindowPosition::Default);
     void hideWindow();
     void showQMLWindow();
+    void showActivitiesWindow(int userIndex = -1);
+    void showAssistantWindow(int userIndex = -1);
     void showUserStatusWindow(int userIndex);
 
     void setSyncIsPaused(const bool syncIsPaused);
@@ -213,6 +217,8 @@ private:
     std::unique_ptr<QQmlApplicationEngine> _trayEngine;
     QPointer<QMenu> _contextMenu;
     QSharedPointer<QQuickWindow> _trayWindow;
+    QHash<QString, QPointer<QQuickWindow>> _activitiesWindows;
+    QHash<QString, QPointer<QQuickWindow>> _assistantWindows;
     QPointer<QQuickWindow> _userStatusWindow;
 #ifndef Q_OS_MACOS
     QSharedPointer<QQuickWindow> _popupWindow;

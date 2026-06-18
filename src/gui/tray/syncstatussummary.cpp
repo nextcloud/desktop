@@ -88,11 +88,16 @@ bool SyncStatusSummary::reloadNeeded(AccountState *accountState) const
 
 void SyncStatusSummary::load()
 {
-    const auto currentUser = UserModel::instance()->currentUser();
-    if (!currentUser) {
+    loadForUser(UserModel::instance()->currentUser());
+}
+
+void SyncStatusSummary::loadForUser(User *user)
+{
+    if (!user) {
         return;
     }
-    setAccountState(currentUser->accountState());
+
+    setAccountState(user->accountState());
     clearFolderErrors();
     connectToFoldersProgress(FolderMan::instance()->map());
     initSyncState();

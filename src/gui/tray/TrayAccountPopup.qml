@@ -4,9 +4,8 @@
  */
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Basic
 import QtQuick.Layouts
-import QtQuick.Window
 import Qt5Compat.GraphicalEffects
 
 import Style
@@ -18,6 +17,10 @@ import com.nextcloud.desktopclient as NC
 Window {
     id: root
 
+    property bool _closing: false
+    property bool _hadFocusSinceShow: false
+    property var activeAccountActionsMenu: null
+
     readonly property bool hasAccounts: UserModel && UserModel.count > 0
     readonly property color rowHoverColor: Style.darkMode
                                                ? Qt.rgba(1, 1, 1, Style.trayAccountPopupRowHoverOpacity)
@@ -28,13 +31,11 @@ Window {
     color: "transparent"
     flags: Qt.Tool | Qt.FramelessWindowHint | Qt.NoDropShadowWindowHint
 
-    property bool _closing: false
-    property bool _hadFocusSinceShow: false
-    property var activeAccountActionsMenu: null
-
     onVisibleChanged: {
         if (visible) {
             _hadFocusSinceShow = false
+        } else {
+            closeActiveTraySubmenus()
         }
     }
 
@@ -54,6 +55,10 @@ Window {
         activeAccountActionsMenu = null
     }
 
+    function closeActiveTraySubmenus() {
+        closeActiveAccountActionsMenu()
+    }
+
     function translatedAskAssistantText() {
         return qsTranslate("MainWindow", "Ask Assistant\u00A0…")
     }
@@ -66,7 +71,7 @@ Window {
         border.width: Style.trayWindowBorderWidth
         border.color: palette.dark
         clip: true
-        layer.enabled: true
+        layer.enabled: root.visible
         layer.effect: OpacityMask {
             maskSource: Rectangle {
                 width: popupContainer.width
@@ -89,35 +94,32 @@ Window {
             Repeater {
                 model: UserModel
 
-                delegate: ItemDelegate {
-                    id: accountRow
+                delegate: Column {
+                    id: accountDelegate
                     readonly property int userId: model.id
                     readonly property int onlineStatus: model.status
                     readonly property bool onlineStatusEnabled: model.isConnected && model.serverHasUserStatus
                     readonly property string statusIcon: model.statusIcon
                     readonly property string statusMessage: model.statusMessage
-                    readonly property bool menuHighlighted: hovered || accountActionsMenu.opened
+                    readonly property var recentActivities: model.recentActivities ? model.recentActivities : []
+                    readonly property var trayNotifications: model.trayNotifications ? model.trayNotifications : []
+                    readonly property var accountAlert: model.accountAlert ? model.accountAlert : ({})
+                    readonly property string accountAlertTitle: accountAlert.title ? accountAlert.title : ""
+                    readonly property bool hasAccountAlert: accountAlertTitle !== ""
+                    readonly property bool assistantEnabled: model.assistantEnabled
 
                     width: root.width
-                    height: Style.trayAccountPopupRowHeight
-                    hoverEnabled: true
-                    topInset: 0
-                    leftInset: 0
-                    rightInset: 0
-                    bottomInset: 0
-                    padding: 0
-                    leftPadding: Style.trayAccountPopupRowPadding
-                    rightPadding: Style.trayAccountPopupRowPadding
+                    height: accountRow.height + accountAlertBox.height
+                    spacing: 0
 
                     function openActivities() {
                         root._closing = true
-                        UserModel.currentUserId = accountRow.userId
-                        Systray.showQMLWindow()
+                        Systray.showActivitiesWindow(accountDelegate.userId)
                     }
 
                     function openLocalFolder() {
                         root._closing = true
-                        UserModel.currentUserId = accountRow.userId
+                        UserModel.currentUserId = accountDelegate.userId
                         Systray.hideWindow()
                         if (UserModel.currentUser && UserModel.currentUser.hasLocalFolder) {
                             UserModel.openCurrentAccountLocalFolder()
@@ -126,6 +128,11 @@ Window {
                                    && UserModel.currentUser.hasFileProvider) {
                             UserModel.openCurrentAccountFileProviderDomain()
                         }
+                    }
+
+                    function openAssistant() {
+                        root._closing = true
+                        Systray.showAssistantWindow(accountDelegate.userId)
                     }
 
                     function currentStatusText() {
@@ -147,33 +154,48 @@ Window {
                     }
 
                     function currentStatusLabelText() {
-                        var message = statusMessage.trim()
+                        const message = statusMessage.trim()
                         return message !== "" ? message : currentStatusText()
                     }
 
                     function openAccountActionsMenu() {
-                        TrayAccountAppsModel.setUserId(accountRow.userId)
+                        TrayAccountAppsModel.setUserId(accountDelegate.userId)
+                        UserModel.fetchActivityPreview(accountDelegate.userId)
                         root.closeActiveAccountActionsMenu()
 
-                        var rightAlignedX = Math.max(Style.trayAccountPopupHoverMargin,
-                                                     accountRow.width - accountActionsMenu.width - Style.trayAccountPopupHoverMargin)
-                        var leftAlignedX = Style.trayAccountPopupHoverMargin
-                        var rowPosition = accountRow.mapToItem(popupContainer, 0, 0)
-                        var screenLeft = root.screen && root.screen.virtualX !== undefined ? root.screen.virtualX : root.x
-                        var screenWidth = root.screen && root.screen.width !== undefined ? root.screen.width : root.width
-                        var screenRight = screenLeft + screenWidth
-                        var rightAlignedScreenRight = root.x + rowPosition.x + rightAlignedX + accountActionsMenu.width
+                        const rightAlignedX = Math.max(Style.trayAccountPopupHoverMargin,
+                                                       accountRow.width - accountActionsMenu.width - Style.trayAccountPopupHoverMargin)
+                        const leftAlignedX = Style.trayAccountPopupHoverMargin
+                        const rowPosition = accountRow.mapToItem(popupContainer, 0, 0)
+                        const screenLeft = root.screen ? root.screen.virtualX : root.x
+                        const screenWidth = root.screen ? root.screen.width : root.width
+                        const screenRight = screenLeft + screenWidth
+                        const rightAlignedScreenRight = root.x + rowPosition.x + rightAlignedX + accountActionsMenu.width
 
-                        var menuX = rightAlignedScreenRight > screenRight - Style.trayAccountPopupHoverMargin
-                                    && root.x + rowPosition.x + leftAlignedX >= screenLeft + Style.trayAccountPopupHoverMargin
-                                    ? leftAlignedX
-                                    : rightAlignedX
+                        const menuX = rightAlignedScreenRight > screenRight - Style.trayAccountPopupHoverMargin
+                                      && root.x + rowPosition.x + leftAlignedX >= screenLeft + Style.trayAccountPopupHoverMargin
+                                      ? leftAlignedX
+                                      : rightAlignedX
 
                         accountActionsMenu.popup(accountRow,
                                                  menuX,
                                                  Style.trayAccountPopupAccountHoverVerticalMargin)
                         root.activeAccountActionsMenu = accountActionsMenu
                     }
+
+                    ItemDelegate {
+                        id: accountRow
+
+                        width: root.width
+                        height: Style.trayAccountPopupRowHeight
+                        hoverEnabled: true
+                        topInset: 0
+                        leftInset: 0
+                        rightInset: 0
+                        bottomInset: 0
+                        padding: 0
+                        leftPadding: Style.trayAccountPopupRowPadding
+                        rightPadding: Style.trayAccountPopupRowPadding
 
                     onHoveredChanged: {
                         if (hovered && !accountActionsMenu.opened) {
@@ -192,18 +214,24 @@ Window {
                             anchors.topMargin: Style.trayAccountPopupAccountHoverVerticalMargin
                             anchors.bottomMargin: Style.trayAccountPopupAccountHoverVerticalMargin
                             radius: Style.trayAccountPopupHoverRadius
-                            color: accountRow.menuHighlighted ? root.rowHoverColor : "transparent"
-                            Behavior on color { ColorAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
+                            visible: opacity > 0
+                            color: root.rowHoverColor
+                            opacity: accountRow.hovered || accountActionsMenu.opened ? 1.0 : 0.0
+                            Behavior on opacity { NumberAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
                         }
                     }
 
                     AutoSizingMenu {
                         id: accountActionsMenu
 
+                        property var activeNotificationActionsMenu: null
+
+                        width: Style.trayAccountActionsMenuWidth
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
                         height: implicitHeight
                         onClosed: {
                             appsMenu.close()
+                            closeNotificationActionsMenu()
                             if (root.activeAccountActionsMenu === accountActionsMenu) {
                                 root.activeAccountActionsMenu = null
                             }
@@ -215,28 +243,61 @@ Window {
                             }
                         }
 
+                        function closeNotificationActionsMenu() {
+                            if (activeNotificationActionsMenu && activeNotificationActionsMenu.opened) {
+                                activeNotificationActionsMenu.close()
+                            }
+                            activeNotificationActionsMenu = null
+                        }
+
+                        function closeSubmenus() {
+                            closeAppsMenu()
+                            closeNotificationActionsMenu()
+                        }
+
+                        MenuItem {
+                            id: userStatusHeader
+
+                            enabled: false
+                            text: qsTr("User status")
+                            font.pixelSize: Style.trayAccountPopupSecondaryFontSize
+                            font.weight: Font.DemiBold
+                            hoverEnabled: false
+                            background: Item {}
+                            contentItem: EnforcedPlainTextLabel {
+                                text: userStatusHeader.text
+                                font: userStatusHeader.font
+                                color: palette.windowText
+                                opacity: 0.7
+                                elide: Text.ElideRight
+                            }
+
+                            Accessible.role: Accessible.StaticText
+                            Accessible.name: text
+                        }
+
                         MenuItem {
                             id: statusButton
 
-                            enabled: accountRow.onlineStatusEnabled
-                            text: accountRow.currentStatusLabelText()
+                            enabled: accountDelegate.onlineStatusEnabled
+                            text: accountDelegate.currentStatusLabelText()
                             font.pixelSize: Style.trayAccountPopupPrimaryFontSize
                             hoverEnabled: true
                             onHoveredChanged: {
                                 if (hovered) {
-                                    accountActionsMenu.closeAppsMenu()
+                                    accountActionsMenu.closeSubmenus()
                                 }
                             }
                             contentItem: RowLayout {
                                 spacing: 8
 
                                 Image {
-                                    Layout.preferredWidth: Style.trayAccountPopupSyncIconSize + Style.trayFolderStatusIndicatorSizeOffset
-                                    Layout.preferredHeight: Style.trayAccountPopupSyncIconSize + Style.trayFolderStatusIndicatorSizeOffset
+                                    Layout.preferredWidth: Style.trayAccountPopupSyncIconSize
+                                    Layout.preferredHeight: Style.trayAccountPopupSyncIconSize
                                     visible: statusButton.enabled
-                                    source: statusButton.enabled ? accountRow.statusIcon : ""
-                                    sourceSize.width: Style.trayAccountPopupSyncIconSize + Style.trayFolderStatusIndicatorSizeOffset
-                                    sourceSize.height: Style.trayAccountPopupSyncIconSize + Style.trayFolderStatusIndicatorSizeOffset
+                                    source: statusButton.enabled ? accountDelegate.statusIcon : ""
+                                    sourceSize.width: Style.trayAccountPopupSyncIconSize
+                                    sourceSize.height: Style.trayAccountPopupSyncIconSize
                                     cache: false
                                 }
 
@@ -250,12 +311,15 @@ Window {
                             }
                             onClicked: {
                                 root._closing = true
-                                Systray.showUserStatusWindow(accountRow.userId)
+                                Systray.showUserStatusWindow(accountDelegate.userId)
                             }
 
                             Accessible.role: Accessible.Button
                             Accessible.name: text
                             Accessible.onPressAction: statusButton.clicked()
+                        }
+
+                        MenuSeparator {
                         }
 
                         MenuItem {
@@ -266,10 +330,10 @@ Window {
                             hoverEnabled: true
                             onHoveredChanged: {
                                 if (hovered) {
-                                    accountActionsMenu.closeAppsMenu()
+                                    accountActionsMenu.closeSubmenus()
                                 }
                             }
-                            onClicked: accountRow.openLocalFolder()
+                            onClicked: accountDelegate.openLocalFolder()
 
                             Accessible.role: Accessible.Button
                             Accessible.name: text
@@ -279,39 +343,22 @@ Window {
                         MenuItem {
                             id: assistantButton
 
-                            enabled: false
+                            visible: accountDelegate.assistantEnabled
+                            enabled: accountDelegate.assistantEnabled
+                            height: visible ? implicitHeight : 0
                             text: root.translatedAskAssistantText()
                             font.pixelSize: Style.trayAccountPopupPrimaryFontSize
                             hoverEnabled: true
                             onHoveredChanged: {
                                 if (hovered) {
-                                    accountActionsMenu.closeAppsMenu()
+                                    accountActionsMenu.closeSubmenus()
                                 }
                             }
+                            onClicked: accountDelegate.openAssistant()
 
                             Accessible.role: Accessible.Button
                             Accessible.name: text
-                        }
-
-                        MenuSeparator {
-                        }
-
-                        MenuItem {
-                            id: activitiesButton
-
-                            text: qsTranslate("FileDetailsPage", "Activity")
-                            font.pixelSize: Style.trayAccountPopupPrimaryFontSize
-                            hoverEnabled: true
-                            onHoveredChanged: {
-                                if (hovered) {
-                                    accountActionsMenu.closeAppsMenu()
-                                }
-                            }
-                            onClicked: accountRow.openActivities()
-
-                            Accessible.role: Accessible.Button
-                            Accessible.name: text
-                            Accessible.onPressAction: activitiesButton.clicked()
+                            Accessible.onPressAction: assistantButton.clicked()
                         }
 
                         MenuItem {
@@ -326,7 +373,8 @@ Window {
                                 if (!enabled) {
                                     return
                                 }
-                                TrayAccountAppsModel.setUserId(accountRow.userId)
+                                accountActionsMenu.closeNotificationActionsMenu()
+                                TrayAccountAppsModel.setUserId(accountDelegate.userId)
                                 if (!appsMenu.opened) {
                                     appsMenu.popup(appsButton, appsButton.width, 0)
                                 }
@@ -341,7 +389,10 @@ Window {
                             onClicked: openAppsMenu()
 
                             background: Rectangle {
-                                color: appsButton.hovered || appsMenu.opened ? root.rowHoverColor : "transparent"
+                                visible: opacity > 0
+                                color: root.rowHoverColor
+                                opacity: appsButton.hovered || appsMenu.opened ? 1.0 : 0.0
+                                Behavior on opacity { NumberAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
                             }
 
                             contentItem: RowLayout {
@@ -379,10 +430,37 @@ Window {
                                 delegate: MenuItem {
                                     id: appEntry
 
-                                    text: "  " + model.appName
+                                    text: model.appName
                                     font.pixelSize: Style.trayAccountPopupPrimaryFontSize
-                                    icon.source: "image://tray-image-provider/" + model.appIconUrl
-                                    icon.color: palette.windowText
+
+                                    function appIconSource() {
+                                        if (!model.appIconUrl || model.appIconUrl === "") {
+                                            return ""
+                                        }
+                                        return "image://tray-image-provider/" + model.appIconUrl + "/" + palette.windowText
+                                    }
+
+                                    contentItem: RowLayout {
+                                        spacing: 8
+
+                                        Image {
+                                            Layout.preferredWidth: Style.trayAccountPopupSyncIconSize
+                                            Layout.preferredHeight: Style.trayAccountPopupSyncIconSize
+                                            source: appEntry.appIconSource()
+                                            sourceSize.width: Style.trayAccountPopupSyncIconSize
+                                            sourceSize.height: Style.trayAccountPopupSyncIconSize
+                                            fillMode: Image.PreserveAspectFit
+                                        }
+
+                                        EnforcedPlainTextLabel {
+                                            Layout.fillWidth: true
+                                            text: appEntry.text
+                                            font: appEntry.font
+                                            color: palette.windowText
+                                            elide: Text.ElideRight
+                                        }
+                                    }
+
                                     onTriggered: {
                                         root._closing = true
                                         appsMenu.close()
@@ -397,6 +475,364 @@ Window {
                                 }
                             }
                         }
+
+                        MenuSeparator {
+                        }
+
+                        MenuItem {
+                            id: notificationsHeader
+
+                            visible: accountDelegate.trayNotifications.length > 0
+                            height: visible ? implicitHeight : 0
+                            enabled: false
+                            text: qsTr("Notifications")
+                            font.pixelSize: Style.trayAccountPopupSecondaryFontSize
+                            font.weight: Font.DemiBold
+                            hoverEnabled: false
+                            background: Item {}
+                            contentItem: EnforcedPlainTextLabel {
+                                text: notificationsHeader.text
+                                font: notificationsHeader.font
+                                color: palette.windowText
+                                opacity: 0.7
+                                elide: Text.ElideRight
+                            }
+
+                            Accessible.role: Accessible.StaticText
+                            Accessible.name: text
+                        }
+
+                        Repeater {
+                            model: accountDelegate.trayNotifications
+
+                            delegate: MenuItem {
+                                id: notificationRow
+
+                                required property var modelData
+
+                                readonly property var notificationActions: modelData.actions ? modelData.actions : []
+                                readonly property bool hasNotificationActions: notificationActions.length > 0
+                                readonly property string rowDateTime: modelData.dateTime ? modelData.dateTime : ""
+
+                                text: modelData.title
+                                height: Style.trayAccountPopupPreviewActionHeight
+                                font.pixelSize: Style.trayAccountPopupPrimaryFontSize
+                                hoverEnabled: true
+
+                                function iconSource() {
+                                    if (!modelData.icon || modelData.icon === "") {
+                                        return "image://svgimage-custom-color/activity.svg/" + palette.windowText
+                                    }
+                                    return modelData.icon + "/" + palette.windowText
+                                }
+
+                                function openNotification() {
+                                    accountActionsMenu.closeSubmenus()
+                                    if (modelData.opensSettings === true) {
+                                        root._closing = true
+                                        accountActionsMenu.close()
+                                        Systray.hideWindow()
+                                        Systray.openSettings()
+                                        return
+                                    }
+                                    accountDelegate.openActivities()
+                                }
+
+                                function openNotificationActionsMenu() {
+                                    if (!hasNotificationActions) {
+                                        return
+                                    }
+                                    if (accountActionsMenu.activeNotificationActionsMenu
+                                            && accountActionsMenu.activeNotificationActionsMenu !== notificationActionsMenu) {
+                                        accountActionsMenu.activeNotificationActionsMenu.close()
+                                    }
+                                    if (!notificationActionsMenu.opened) {
+                                        notificationActionsMenu.popup(notificationRow, notificationRow.width, 0)
+                                    }
+                                    accountActionsMenu.activeNotificationActionsMenu = notificationActionsMenu
+                                }
+
+                                onHoveredChanged: {
+                                    if (hovered) {
+                                        accountActionsMenu.closeAppsMenu()
+                                        if (hasNotificationActions) {
+                                            openNotificationActionsMenu()
+                                        } else {
+                                            accountActionsMenu.closeNotificationActionsMenu()
+                                        }
+                                    }
+                                }
+
+                                onClicked: openNotification()
+
+                                background: Rectangle {
+                                    visible: opacity > 0
+                                    color: root.rowHoverColor
+                                    opacity: notificationRow.hovered || notificationActionsMenu.opened ? 1.0 : 0.0
+                                    Behavior on opacity { NumberAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
+                                }
+
+                                contentItem: RowLayout {
+                                    spacing: 8
+
+                                    Image {
+                                        Layout.preferredWidth: Style.trayAccountPopupSyncIconSize
+                                        Layout.preferredHeight: Style.trayAccountPopupSyncIconSize
+                                        Layout.alignment: Qt.AlignVCenter
+                                        source: notificationRow.iconSource()
+                                        sourceSize.width: Style.trayAccountPopupSyncIconSize
+                                        sourceSize.height: Style.trayAccountPopupSyncIconSize
+                                    }
+
+                                    ColumnLayout {
+                                        Layout.fillWidth: true
+                                        Layout.alignment: Qt.AlignVCenter
+                                        spacing: 0
+
+                                        EnforcedPlainTextLabel {
+                                            Layout.fillWidth: true
+                                            text: notificationRow.text
+                                            font: notificationRow.font
+                                            color: palette.windowText
+                                            elide: Text.ElideRight
+                                            wrapMode: Text.Wrap
+                                            maximumLineCount: 2
+                                        }
+
+                                        EnforcedPlainTextLabel {
+                                            Layout.fillWidth: true
+                                            text: notificationRow.rowDateTime
+                                            font.pixelSize: Style.trayAccountPopupSecondaryFontSize
+                                            color: palette.windowText
+                                            opacity: 0.65
+                                            horizontalAlignment: Text.AlignLeft
+                                            elide: Text.ElideRight
+                                            visible: text !== ""
+                                        }
+                                    }
+
+                                    EnforcedPlainTextLabel {
+                                        Layout.alignment: Qt.AlignVCenter
+                                        visible: notificationRow.hasNotificationActions
+                                        text: "›"
+                                        font.pixelSize: Style.trayAccountPopupChevronFontSize
+                                        color: palette.windowText
+                                        opacity: 0.35
+                                    }
+                                }
+
+                                AutoSizingMenu {
+                                    id: notificationActionsMenu
+
+                                    closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
+                                    onClosed: {
+                                        if (accountActionsMenu.activeNotificationActionsMenu === notificationActionsMenu) {
+                                            accountActionsMenu.activeNotificationActionsMenu = null
+                                        }
+                                    }
+
+                                    Repeater {
+                                        model: notificationRow.notificationActions
+
+                                        delegate: MenuItem {
+                                            id: notificationActionMenuItem
+
+                                            required property var modelData
+
+                                            text: modelData.label
+                                            font.pixelSize: Style.trayAccountPopupPrimaryFontSize
+                                            onTriggered: {
+                                                const activityIndex = notificationRow.modelData.activityIndex
+                                                const actionIndex = modelData.actionIndex
+                                                notificationActionsMenu.close()
+                                                if (modelData.actionType === "dismiss") {
+                                                    UserModel.dismissNotification(accountDelegate.userId, activityIndex)
+                                                    return
+                                                }
+                                                if (modelData.actionType === "openActivities") {
+                                                    accountDelegate.openActivities()
+                                                    return
+                                                }
+                                                root._closing = true
+                                                accountActionsMenu.close()
+                                                Systray.hideWindow()
+                                                UserModel.triggerNotificationAction(accountDelegate.userId, activityIndex, actionIndex)
+                                            }
+
+                                            Accessible.role: Accessible.MenuItem
+                                            Accessible.name: text
+                                            Accessible.onPressAction: notificationActionMenuItem.triggered()
+                                        }
+                                    }
+                                }
+
+                                Accessible.role: Accessible.Button
+                                Accessible.name: text
+                                Accessible.onPressAction: notificationRow.clicked()
+                            }
+                        }
+
+                        MenuSeparator {
+                            visible: accountDelegate.trayNotifications.length > 0
+                            height: visible ? Style.trayAccountPopupCompactSeparatorHeight : 0
+                        }
+
+                        MenuItem {
+                            id: lastActivitiesHeader
+
+                            enabled: false
+                            text: qsTr("Recent activity")
+                            font.pixelSize: Style.trayAccountPopupSecondaryFontSize
+                            font.weight: Font.DemiBold
+                            hoverEnabled: false
+                            background: Item {}
+                            contentItem: EnforcedPlainTextLabel {
+                                text: lastActivitiesHeader.text
+                                font: lastActivitiesHeader.font
+                                color: palette.windowText
+                                opacity: 0.7
+                                elide: Text.ElideRight
+                            }
+
+                            Accessible.role: Accessible.StaticText
+                            Accessible.name: text
+                        }
+
+                        Repeater {
+                            model: accountDelegate.recentActivities
+
+                            delegate: MenuItem {
+                                id: recentActivityRow
+
+                                required property var modelData
+
+                                readonly property string rowDateTime: modelData.dateTime ? modelData.dateTime : ""
+                                readonly property string rowSubtitle: modelData.subtitle ? modelData.subtitle : ""
+
+                                enabled: true
+                                text: modelData.title
+                                height: rowSubtitle !== "" ? Style.trayAccountPopupDetailedPreviewActionHeight
+                                                           : Style.trayAccountPopupPreviewActionHeight
+                                font.pixelSize: Style.trayAccountPopupPrimaryFontSize
+                                hoverEnabled: true
+                                background: Rectangle {
+                                    visible: opacity > 0
+                                    color: root.rowHoverColor
+                                    opacity: recentActivityRow.hovered ? 1.0 : 0.0
+                                    Behavior on opacity { NumberAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
+                                }
+
+                                function iconSource() {
+                                    if (!modelData.icon || modelData.icon === "") {
+                                        return "image://svgimage-custom-color/activity.svg/" + palette.windowText
+                                    }
+                                    return modelData.icon + "/" + palette.windowText
+                                }
+
+                                contentItem: RowLayout {
+                                    spacing: 8
+
+                                    Image {
+                                        Layout.preferredWidth: Style.trayAccountPopupSyncIconSize
+                                        Layout.preferredHeight: Style.trayAccountPopupSyncIconSize
+                                        Layout.alignment: Qt.AlignVCenter
+                                        source: recentActivityRow.iconSource()
+                                        sourceSize.width: Style.trayAccountPopupSyncIconSize
+                                        sourceSize.height: Style.trayAccountPopupSyncIconSize
+                                    }
+
+                                    ColumnLayout {
+                                        Layout.fillWidth: true
+                                        Layout.alignment: Qt.AlignVCenter
+                                        spacing: 0
+
+                                        EnforcedPlainTextLabel {
+                                            Layout.fillWidth: true
+                                            text: recentActivityRow.text
+                                            font: recentActivityRow.font
+                                            font.weight: Font.DemiBold
+                                            color: palette.windowText
+                                            elide: Text.ElideRight
+                                            maximumLineCount: 1
+                                        }
+
+                                        EnforcedPlainTextLabel {
+                                            Layout.fillWidth: true
+                                            text: recentActivityRow.rowSubtitle
+                                            font.pixelSize: Style.trayAccountPopupPrimaryFontSize
+                                            color: palette.windowText
+                                            opacity: 0.7
+                                            elide: Text.ElideRight
+                                            maximumLineCount: 1
+                                            visible: text !== ""
+                                        }
+
+                                        EnforcedPlainTextLabel {
+                                            Layout.fillWidth: true
+                                            text: recentActivityRow.rowDateTime
+                                            font.pixelSize: Style.trayAccountPopupSecondaryFontSize
+                                            color: palette.windowText
+                                            opacity: 0.65
+                                            horizontalAlignment: Text.AlignLeft
+                                            elide: Text.ElideRight
+                                            visible: text !== ""
+                                        }
+                                    }
+                                }
+
+                                onHoveredChanged: {
+                                    if (hovered) {
+                                        accountActionsMenu.closeSubmenus()
+                                    }
+                                }
+
+                                onClicked: accountDelegate.openActivities()
+
+                                Accessible.role: Accessible.Button
+                                Accessible.name: text
+                                Accessible.onPressAction: recentActivityRow.clicked()
+                            }
+                        }
+
+                        MenuItem {
+                            id: noRecentActivitiesRow
+
+                            visible: accountDelegate.recentActivities.length === 0
+                            height: visible ? implicitHeight : 0
+                            enabled: false
+                            text: qsTr("No recent activity")
+                            font.pixelSize: Style.trayAccountPopupPrimaryFontSize
+                            hoverEnabled: false
+                            background: Item {}
+                            contentItem: EnforcedPlainTextLabel {
+                                text: noRecentActivitiesRow.text
+                                font: noRecentActivitiesRow.font
+                                color: palette.windowText
+                                opacity: 0.7
+                                elide: Text.ElideRight
+                            }
+
+                            Accessible.role: Accessible.StaticText
+                            Accessible.name: text
+                        }
+
+                        MenuItem {
+                            id: moreActivitiesButton
+
+                            text: qsTr("More activity…")
+                            font.pixelSize: Style.trayAccountPopupPrimaryFontSize
+                            hoverEnabled: true
+                            onHoveredChanged: {
+                                if (hovered) {
+                                    accountActionsMenu.closeSubmenus()
+                                }
+                            }
+                            onClicked: accountDelegate.openActivities()
+
+                            Accessible.role: Accessible.Button
+                            Accessible.name: text
+                            Accessible.onPressAction: moreActivitiesButton.clicked()
+                        }
                     }
 
                     contentItem: RowLayout {
@@ -409,7 +845,7 @@ Window {
                                 : (Style.darkMode ? "image://avatars/fallbackWhite" : "image://avatars/fallbackBlack")
                             fillMode: Image.PreserveAspectCrop
                             cache: false
-                            layer.enabled: true
+                            layer.enabled: visible && status === Image.Ready
                             layer.effect: OpacityMask {
                                 maskSource: Rectangle {
                                     width: Style.trayAccountPopupAvatarSize
@@ -460,9 +896,104 @@ Window {
                     }
 
                     onClicked: {
-                        accountRow.openActivities()
+                        accountDelegate.openActivities()
                     }
                 }
+
+                    ItemDelegate {
+                        id: accountAlertBox
+
+                        visible: accountDelegate.hasAccountAlert
+                        width: root.width
+                        height: visible ? Math.max(Style.trayAccountPopupActionHeight,
+                                                   accountAlertLabel.implicitHeight
+                                                   + (2 * Style.trayAccountPopupAccountHoverVerticalMargin)) : 0
+                        hoverEnabled: true
+                        topInset: 0
+                        leftInset: 0
+                        rightInset: 0
+                        bottomInset: 0
+                        padding: 0
+                        leftPadding: Style.trayAccountPopupRowPadding
+                        rightPadding: Style.trayAccountPopupRowPadding
+
+                        background: Item {}
+
+                        contentItem: RowLayout {
+                            spacing: Style.trayAccountPopupRowSpacing
+
+                            Item {
+                                Layout.preferredWidth: Style.trayAccountPopupAvatarSize
+                                Layout.fillHeight: true
+                            }
+
+                            EnforcedPlainTextLabel {
+                                id: accountAlertLabel
+
+                                Layout.fillWidth: true
+                                Layout.alignment: Qt.AlignVCenter
+                                text: accountDelegate.accountAlertTitle
+                                font.pixelSize: Style.trayAccountPopupSecondaryFontSize
+                                font.weight: Font.DemiBold
+                                color: palette.windowText
+                                wrapMode: Text.WordWrap
+                                maximumLineCount: 2
+                                elide: Text.ElideRight
+                            }
+
+                            Button {
+                                id: accountAlertResolveButton
+
+                                Layout.alignment: Qt.AlignVCenter
+                                Layout.preferredWidth: Math.max(implicitWidth, 82)
+                                Layout.preferredHeight: Style.trayAccountPopupActionHeight
+                                text: qsTr("Resolve")
+                                font.pixelSize: Style.trayAccountPopupPrimaryFontSize
+                                onClicked: accountDelegate.openActivities()
+
+                                background: Rectangle {
+                                    radius: Style.mediumRoundedButtonRadius
+                                    color: accountAlertResolveButton.hovered || accountAlertResolveMouseArea.containsMouse ? palette.mid : palette.button
+                                    border.color: palette.mid
+                                    border.width: Style.trayWindowBorderWidth
+                                }
+
+                                contentItem: EnforcedPlainTextLabel {
+                                    text: accountAlertResolveButton.text
+                                    font: accountAlertResolveButton.font
+                                    color: palette.buttonText
+                                    horizontalAlignment: Text.AlignHCenter
+                                    verticalAlignment: Text.AlignVCenter
+                                    elide: Text.ElideRight
+                                }
+
+                                MouseArea {
+                                    id: accountAlertResolveMouseArea
+
+                                    anchors.fill: parent
+                                    hoverEnabled: true
+                                    cursorShape: Qt.PointingHandCursor
+                                    onClicked: accountDelegate.openActivities()
+                                }
+
+                                Accessible.role: Accessible.Button
+                                Accessible.name: text
+                                Accessible.onPressAction: accountAlertResolveButton.clicked()
+                            }
+                        }
+
+                        onHoveredChanged: {
+                            if (hovered) {
+                                root.closeActiveAccountActionsMenu()
+                            }
+                        }
+
+                        onClicked: accountDelegate.openActivities()
+
+                        Accessible.role: Accessible.Button
+                        Accessible.name: accountDelegate.accountAlertTitle
+                        Accessible.onPressAction: accountAlertBox.clicked()
+                    }
             }
 
             Rectangle {
@@ -500,8 +1031,10 @@ Window {
                         anchors.leftMargin: Style.trayAccountPopupHoverMargin
                         anchors.rightMargin: Style.trayAccountPopupHoverMargin
                         radius: Style.trayAccountPopupHoverRadius
-                        color: addAccountRow.hovered ? root.rowHoverColor : "transparent"
-                        Behavior on color { ColorAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
+                        visible: opacity > 0
+                        color: root.rowHoverColor
+                        opacity: addAccountRow.hovered ? 1.0 : 0.0
+                        Behavior on opacity { NumberAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
                     }
                 }
 
@@ -514,7 +1047,7 @@ Window {
 
                 onHoveredChanged: {
                     if (hovered) {
-                        root.closeActiveAccountActionsMenu()
+                        root.closeActiveTraySubmenus()
                     }
                 }
 
@@ -546,8 +1079,10 @@ Window {
                         anchors.leftMargin: Style.trayAccountPopupHoverMargin
                         anchors.rightMargin: Style.trayAccountPopupHoverMargin
                         radius: Style.trayAccountPopupHoverRadius
-                        color: settingsRow.hovered ? root.rowHoverColor : "transparent"
-                        Behavior on color { ColorAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
+                        visible: opacity > 0
+                        color: root.rowHoverColor
+                        opacity: settingsRow.hovered ? 1.0 : 0.0
+                        Behavior on opacity { NumberAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
                     }
                 }
 
@@ -560,7 +1095,7 @@ Window {
 
                 onHoveredChanged: {
                     if (hovered) {
-                        root.closeActiveAccountActionsMenu()
+                        root.closeActiveTraySubmenus()
                     }
                 }
 
@@ -592,8 +1127,10 @@ Window {
                         anchors.leftMargin: Style.trayAccountPopupHoverMargin
                         anchors.rightMargin: Style.trayAccountPopupHoverMargin
                         radius: Style.trayAccountPopupHoverRadius
-                        color: quitRow.hovered ? root.rowHoverColor : "transparent"
-                        Behavior on color { ColorAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
+                        visible: opacity > 0
+                        color: root.rowHoverColor
+                        opacity: quitRow.hovered ? 1.0 : 0.0
+                        Behavior on opacity { NumberAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
                     }
                 }
 
@@ -606,7 +1143,7 @@ Window {
 
                 onHoveredChanged: {
                     if (hovered) {
-                        root.closeActiveAccountActionsMenu()
+                        root.closeActiveTraySubmenus()
                     }
                 }
 

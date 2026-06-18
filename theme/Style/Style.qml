@@ -81,9 +81,13 @@ QtObject {
     property int trayModalWidth: 380
     property int trayModalHeight: 490
     property int trayAccountPopupWidth: variableSize(300)
+    property int trayAccountActionsMenuWidth: variableSize(340)
     property int trayAccountPopupRowHeight: variableSize(44)
     property int trayAccountPopupTopPadding: 4
     property int trayAccountPopupActionHeight: variableSize(26)
+    property int trayAccountPopupPreviewActionHeight: variableSize(52)
+    property int trayAccountPopupDetailedPreviewActionHeight: variableSize(58)
+    property int trayAccountPopupCompactSeparatorHeight: variableSize(5)
     property int trayAccountPopupActionVerticalPadding: 8
     property int trayAccountPopupAvatarSize: variableSize(30)
     property int trayAccountPopupHoverMargin: 5
@@ -117,6 +121,29 @@ QtObject {
     property int standardPrimaryButtonHeight: 40
     readonly property int smallIconSize: 16
     readonly property int extraSmallIconSize: 8
+
+    readonly property int wizardWindowMargin: 24
+    readonly property int wizardWindowTopMargin: standardSpacing
+    readonly property int wizardFooterButtonHeight: iconButtonWidth
+    readonly property int wizardFooterSpacing: trayAccountPopupActionVerticalPadding
+    readonly property int wizardSectionSpacing: trayAccountPopupRowPadding
+    readonly property int wizardDialogMaximumWidth: 420
+    readonly property int wizardDialogSpacing: wizardSectionSpacing + extraSmallSpacing
+    readonly property int wizardDialogRadius: wizardSectionSpacing
+    readonly property int wizardBodyFontPixelSize: pixelSize + extraSmallSpacing
+    readonly property int wizardHeaderSpacing: trayAccountPopupActionVerticalPadding
+    readonly property int wizardHeaderRowSpacing: trayAccountPopupRowSpacing
+    readonly property int wizardHeaderLabelSpacing: extraExtraSmallSpacing
+    readonly property int wizardHeaderAvatarSize: trayAccountPopupAvatarSize
+    readonly property int wizardHeaderTitleFontPixelSize: pixelSize + trayAccountPopupActionVerticalPadding
+    readonly property int wizardHeaderAccountNameFontPixelSize: topLinePixelSize
+    readonly property int wizardHeaderAccountServerFontPixelSize: subLinePixelSize
+    readonly property int wizardStandaloneWindowMinimumWidth: 520
+    readonly property int wizardStandaloneWindowMinimumHeight: 420
+    readonly property int activitiesWindowWidth: 680
+    readonly property int activitiesWindowHeight: 700
+    readonly property int assistantWindowWidth: 640
+    readonly property int assistantWindowHeight: 620
 
     property int minActivityHeight: variableSize(32)
 

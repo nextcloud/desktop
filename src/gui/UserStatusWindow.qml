@@ -4,8 +4,7 @@
  */
 
 import QtQuick
-import QtQuick.Controls
-import QtQuick.Controls.Basic as BasicControls
+import QtQuick.Controls.Basic
 import QtQuick.Layouts
 
 import com.nextcloud.desktopclient as NC
@@ -174,7 +173,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     spacing: 8
 
-                    BasicControls.Button {
+                    Button {
                         id: emojiButton
 
                         readonly property string fallbackEmoji: "😀"
@@ -198,7 +197,8 @@ ApplicationWindow {
                         }
 
                         background: Rectangle {
-                            color: emojiButton.hovered ? Style.wizardRowBackground : "transparent"
+                            visible: emojiButton.hovered || emojiButton.activeFocus
+                            color: Style.wizardRowBackground
                         }
                     }
 
@@ -214,7 +214,7 @@ ApplicationWindow {
                     }
                 }
 
-                BasicControls.Popup {
+                Popup {
                     id: emojiPopup
 
                     width: 420
@@ -292,7 +292,7 @@ ApplicationWindow {
                         wrapMode: Text.Wrap
                     }
 
-                    BasicControls.ComboBox {
+                    ComboBox {
                         id: clearAtComboBox
 
                         Layout.fillWidth: true

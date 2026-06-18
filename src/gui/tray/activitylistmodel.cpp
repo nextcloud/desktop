@@ -27,11 +27,371 @@
 #include <QJsonDocument>
 #include <QLoggingCategory>
 
+#include <algorithm>
+
 using namespace Qt::StringLiterals;
 
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcActivity, "nextcloud.gui.activity", QtInfoMsg)
+
+namespace {
+struct RecentActivityPreviewItem {
+    int row = -1;
+    Activity activity;
+};
+
+struct RichSubjectPreviewParameter {
+    QString key;
+    QString type;
+    QString label;
+};
+
+struct RecentActivityPreviewText {
+    QString title;
+    QString subtitle;
+};
+
+struct ActivityActionMetadata {
+    int actionIndex = -1;
+    ActivityLink link;
+};
+
+bool isSyncIssue(const Activity &activity)
+{
+    if (activity._type == Activity::SyncResultType) {
+        return true;
+    }
+
+    if (activity._type != Activity::SyncFileItemType) {
+        return false;
+    }
+
+    return activity._syncFileItemStatus != SyncFileItem::NoStatus
+        && activity._syncFileItemStatus != SyncFileItem::Success;
+}
+
+bool isRecentActivityPreviewCandidate(const Activity &activity)
+{
+    switch (activity._type) {
+    case Activity::ActivityType:
+        return true;
+    case Activity::SyncFileItemType:
+        return !isSyncIssue(activity);
+    case Activity::NotificationType:
+    case Activity::OpenSettingsNotificationType:
+    case Activity::SyncResultType:
+    case Activity::DummyFetchingActivityType:
+    case Activity::DummyMoreActivitiesAvailableType:
+        return false;
+    }
+    return false;
+}
+
+bool isNotificationPreviewCandidate(const Activity &activity)
+{
+    return activity._type == Activity::NotificationType
+        || activity._type == Activity::OpenSettingsNotificationType;
+}
+
+bool isDismissableActivity(const Activity &activity)
+{
+    return !activity._links.isEmpty()
+        && activity._syncFileItemStatus != SyncFileItem::FileNameClash
+        && activity._syncFileItemStatus != SyncFileItem::Conflict
+        && activity._syncFileItemStatus != SyncFileItem::FileNameInvalid
+        && activity._syncFileItemStatus != SyncFileItem::FileNameInvalidOnServer;
+}
+
+QVector<ActivityActionMetadata> activityActionMetadata(const Activity &activity, const int maximumActionIndex = -1)
+{
+    auto actions = QVector<ActivityActionMetadata>{};
+    actions.reserve(activity._links.size());
+
+    for (auto i = 0; i < activity._links.size(); ++i) {
+        if (maximumActionIndex >= 0 && i > maximumActionIndex) {
+            break;
+        }
+
+        const auto &activityLink = activity._links.at(i);
+
+        // Use the isDismissable model role to present custom dismiss button if needed.
+        // Also don't show "View chat" for talk activities, default action will open chat anyway.
+        const auto isUseCustomDeleteAction = activityLink._verb == QByteArrayLiteral("DELETE")
+            && activity._objectType != QStringLiteral("remote_share");
+        const auto isTalkWebAction = activityLink._verb == QByteArrayLiteral("WEB")
+            && activity._objectType == QStringLiteral("chat");
+        if (isUseCustomDeleteAction || isTalkWebAction || activityLink._label.isEmpty()) {
+            continue;
+        }
+
+        actions.push_back({i, activityLink});
+    }
+
+    return actions;
+}
+
+QVariantMap notificationPreviewAction(const QString &label, const QString &actionType, const int actionIndex = -1, const QByteArray &verb = {})
+{
+    auto action = QVariantMap{
+        {QStringLiteral("label"), label},
+        {QStringLiteral("actionType"), actionType},
+        {QStringLiteral("actionIndex"), actionIndex},
+    };
+
+    if (!verb.isEmpty()) {
+        action.insert(QStringLiteral("verb"), QString::fromUtf8(verb.constData(), verb.size()));
+    }
+
+    return action;
+}
+
+QVariantList notificationPreviewActions(const Activity &activity)
+{
+    auto actions = QVariantList{};
+
+    if (isDismissableActivity(activity)) {
+        actions.push_back(notificationPreviewAction(
+            QCoreApplication::translate("ActivityItemContent", "Dismiss"),
+            QStringLiteral("dismiss"),
+            -1,
+            QByteArrayLiteral("DELETE")));
+    }
+
+    for (const auto &action : activityActionMetadata(activity)) {
+        const auto &link = action.link;
+
+        actions.push_back(notificationPreviewAction(
+            link._label,
+            link._verb == QByteArrayLiteral("REPLY") ? QStringLiteral("openActivities") : QStringLiteral("trigger"),
+            action.actionIndex,
+            link._verb));
+    }
+
+    return actions;
+}
+
+QString compactPathLabel(const QString &path)
+{
+    const auto trimmedPath = path.trimmed();
+    if (trimmedPath.isEmpty()) {
+        return {};
+    }
+
+    const auto fileName = QFileInfo(trimmedPath).fileName();
+    return fileName.isEmpty() || fileName == "."_L1 ? trimmedPath : fileName;
+}
+
+QString normalizedPreviewText(QString text)
+{
+    text.replace(QRegularExpression(QStringLiteral("\\s+")), QStringLiteral(" "));
+    return text.trimmed();
+}
+
+QString activitySubjectText(const Activity &activity)
+{
+    if (!activity._subjectDisplay.isEmpty()) {
+        return activity._subjectDisplay;
+    }
+    return activity._subject;
+}
+
+QString richSubjectParameterLabel(const Activity::RichSubjectParameter &parameter)
+{
+    return compactPathLabel(!parameter.path.isEmpty() ? parameter.path : parameter.name);
+}
+
+QVector<RichSubjectPreviewParameter> richSubjectPreviewParameters(const QVariantMap &parameters)
+{
+    auto previewParameters = QVector<RichSubjectPreviewParameter>{};
+    previewParameters.reserve(parameters.size());
+
+    for (auto it = parameters.cbegin(); it != parameters.cend(); ++it) {
+        const auto parameter = it.value().value<Activity::RichSubjectParameter>();
+        const auto label = richSubjectParameterLabel(parameter);
+        if (label.isEmpty()) {
+            continue;
+        }
+
+        previewParameters.push_back({it.key(), parameter.type, label});
+    }
+
+    return previewParameters;
+}
+
+RichSubjectPreviewParameter firstRichSubjectPreviewParameterByType(
+    const QVector<RichSubjectPreviewParameter> &parameters,
+    const QStringList &types)
+{
+    for (const auto &type : types) {
+        for (const auto &parameter : parameters) {
+            if (parameter.type == type) {
+                return parameter;
+            }
+        }
+    }
+    return {};
+}
+
+RichSubjectPreviewParameter firstRichSubjectPreviewObjectParameter(const Activity &activity)
+{
+    const auto parameters = richSubjectPreviewParameters(activity._subjectRichParameters);
+    const auto fileParameter = firstRichSubjectPreviewParameterByType(parameters, {
+        QStringLiteral("file"),
+        QStringLiteral("files"),
+    });
+    if (!fileParameter.label.isEmpty()) {
+        return fileParameter;
+    }
+
+    const auto objectParameter = firstRichSubjectPreviewParameterByType(parameters, {
+        QStringLiteral("event"),
+        QStringLiteral("calendar-event"),
+        QStringLiteral("task"),
+        QStringLiteral("todo"),
+        QStringLiteral("deck-card"),
+        QStringLiteral("deck-board"),
+    });
+    if (!objectParameter.label.isEmpty()) {
+        return objectParameter;
+    }
+
+    for (const auto &parameter : parameters) {
+        if (parameter.type != "user"_L1 && parameter.type != "calendar"_L1) {
+            return parameter;
+        }
+    }
+
+    for (const auto &parameter : parameters) {
+        if (parameter.type != "user"_L1) {
+            return parameter;
+        }
+    }
+
+    return {};
+}
+
+QString subjectWithoutRichParameter(const Activity &activity, const QString &parameterKey)
+{
+    if (activity._subjectRich.isEmpty() || parameterKey.isEmpty()) {
+        return activitySubjectText(activity);
+    }
+
+    auto displayString = activity._subjectRich;
+    for (auto it = activity._subjectRichParameters.cbegin(); it != activity._subjectRichParameters.cend(); ++it) {
+        const auto parameter = it.value().value<Activity::RichSubjectParameter>();
+        const auto replacement = it.key() == parameterKey ? QString{} : parameter.name;
+        displayString.replace(QStringLiteral("{%1}").arg(it.key()), replacement);
+    }
+
+    return normalizedPreviewText(displayString);
+}
+
+RecentActivityPreviewText recentActivityPreviewText(const Activity &activity)
+{
+    auto title = QString{};
+    auto subtitle = QString{};
+    auto richParameter = RichSubjectPreviewParameter{};
+
+    for (const auto &preview : activity._previews) {
+        title = compactPathLabel(preview._filename);
+        if (!title.isEmpty()) {
+            break;
+        }
+    }
+
+    if (title.isEmpty()) {
+        richParameter = firstRichSubjectPreviewObjectParameter(activity);
+        title = richParameter.label;
+    }
+
+    if (title.isEmpty()) {
+        for (const auto &candidate : {activity._objectName, activity._file, activity._renamedFile}) {
+            title = compactPathLabel(candidate);
+            if (!title.isEmpty()) {
+                break;
+            }
+        }
+    }
+
+    if (activity._type == Activity::SyncFileItemType) {
+        subtitle = !activity._message.isEmpty() ? activity._message : activitySubjectText(activity);
+    } else {
+        subtitle = subjectWithoutRichParameter(activity, richParameter.key);
+    }
+
+    if (title.isEmpty()) {
+        title = activitySubjectText(activity);
+        subtitle = activity._message;
+    }
+
+    if (subtitle == title) {
+        subtitle = activity._message;
+    }
+
+    return {title, subtitle};
+}
+
+QString compactNotificationTitle(const Activity &activity)
+{
+    if (!activity._subjectDisplay.isEmpty()) {
+        return activity._subjectDisplay;
+    }
+    if (!activity._subject.isEmpty()) {
+        return activity._subject;
+    }
+    return activity._message;
+}
+
+QString recentActivitySystemIconName(const Activity &activity)
+{
+    switch (activity._type) {
+    case Activity::NotificationType:
+    case Activity::OpenSettingsNotificationType:
+        return QStringLiteral("bell");
+    case Activity::SyncResultType:
+        return QStringLiteral("exclamationmark.triangle");
+    case Activity::SyncFileItemType:
+        if (activity._syncFileItemStatus == SyncFileItem::NormalError
+            || activity._syncFileItemStatus == SyncFileItem::FatalError
+            || activity._syncFileItemStatus == SyncFileItem::DetailError
+            || activity._syncFileItemStatus == SyncFileItem::BlacklistedError) {
+            return QStringLiteral("exclamationmark.triangle");
+        }
+        if (activity._syncFileItemStatus == SyncFileItem::SoftError
+            || activity._syncFileItemStatus == SyncFileItem::Conflict
+            || activity._syncFileItemStatus == SyncFileItem::Restoration
+            || activity._syncFileItemStatus == SyncFileItem::FileLocked
+            || activity._syncFileItemStatus == SyncFileItem::FileNameInvalid
+            || activity._syncFileItemStatus == SyncFileItem::FileNameInvalidOnServer
+            || activity._syncFileItemStatus == SyncFileItem::FileNameClash) {
+            return QStringLiteral("exclamationmark.triangle");
+        }
+        if (activity._fileAction == "file_deleted"_L1) {
+            return QStringLiteral("trash");
+        }
+        if (activity._fileAction == "file_renamed"_L1) {
+            return QStringLiteral("pencil");
+        }
+        return QStringLiteral("doc");
+    case Activity::ActivityType:
+        if (activity._objectType == "chat"_L1 || activity._objectType == "room"_L1 || activity._objectType == "call"_L1) {
+            return QStringLiteral("message");
+        }
+        if (activity._objectType == "calendar"_L1) {
+            return QStringLiteral("calendar");
+        }
+        if (activity._fileAction == "file_deleted"_L1) {
+            return QStringLiteral("trash");
+        }
+        return QStringLiteral("doc");
+    case Activity::DummyFetchingActivityType:
+    case Activity::DummyMoreActivitiesAvailableType:
+        return QStringLiteral("clock");
+    }
+    return QStringLiteral("doc");
+}
+}
 
 ActivityListModel::ActivityListModel(QObject *parent)
     : QAbstractListModel(parent)
@@ -400,10 +760,124 @@ int ActivityListModel::rowCount(const QModelIndex &parent) const
     return _finalList.count();
 }
 
+QVariantList ActivityListModel::recentActivityPreviewData(const int limit) const
+{
+    if (limit == 5) {
+        return _recentActivityPreviewData;
+    }
+
+    return buildRecentActivityPreviewData(limit);
+}
+
+QVariantList ActivityListModel::notificationPreviewData() const
+{
+    return _notificationPreviewData;
+}
+
+QVariantList ActivityListModel::buildRecentActivityPreviewData(const int limit) const
+{
+    if (limit <= 0) {
+        return {};
+    }
+
+    auto candidates = QVector<RecentActivityPreviewItem>{};
+    candidates.reserve(_finalList.size());
+
+    for (auto row = 0; row < _finalList.size(); ++row) {
+        const auto activity = _finalList.at(row);
+        if (isRecentActivityPreviewCandidate(activity)) {
+            candidates.push_back({row, activity});
+        }
+    }
+
+    std::stable_sort(candidates.begin(), candidates.end(), [](const auto &left, const auto &right) {
+        return left.activity._dateTime > right.activity._dateTime;
+    });
+
+    auto recentActivities = QVariantList{};
+    for (const auto &candidate : std::as_const(candidates)) {
+        const auto previewText = recentActivityPreviewText(candidate.activity);
+        if (previewText.title.isEmpty()) {
+            continue;
+        }
+
+        const auto modelIndex = index(candidate.row);
+        recentActivities.push_back(QVariantMap{
+            {QStringLiteral("title"), previewText.title},
+            {QStringLiteral("subtitle"), previewText.subtitle},
+            {QStringLiteral("icon"), data(modelIndex, IconRole).toString()},
+            {QStringLiteral("systemIconName"), recentActivitySystemIconName(candidate.activity)},
+            {QStringLiteral("dateTime"), data(modelIndex, PointInTimeRole).toString()},
+            {QStringLiteral("activityIndex"), candidate.row},
+        });
+
+        if (recentActivities.size() >= limit) {
+            break;
+        }
+    }
+
+    return recentActivities;
+}
+
+QVariantList ActivityListModel::buildNotificationPreviewData() const
+{
+    auto candidates = QVector<RecentActivityPreviewItem>{};
+    candidates.reserve(_finalList.size());
+
+    for (auto row = 0; row < _finalList.size(); ++row) {
+        const auto activity = _finalList.at(row);
+        if (isNotificationPreviewCandidate(activity)) {
+            candidates.push_back({row, activity});
+        }
+    }
+
+    std::stable_sort(candidates.begin(), candidates.end(), [](const auto &left, const auto &right) {
+        return left.activity._dateTime > right.activity._dateTime;
+    });
+
+    auto notifications = QVariantList{};
+    for (const auto &candidate : std::as_const(candidates)) {
+        const auto title = compactNotificationTitle(candidate.activity);
+        if (title.isEmpty()) {
+            continue;
+        }
+
+        const auto modelIndex = index(candidate.row);
+        const auto actions = notificationPreviewActions(candidate.activity);
+        notifications.push_back(QVariantMap{
+            {QStringLiteral("title"), title},
+            {QStringLiteral("icon"), data(modelIndex, IconRole).toString()},
+            {QStringLiteral("systemIconName"), recentActivitySystemIconName(candidate.activity)},
+            {QStringLiteral("dateTime"), data(modelIndex, PointInTimeRole).toString()},
+            {QStringLiteral("activityIndex"), candidate.row},
+            {QStringLiteral("opensSettings"), candidate.activity._type == Activity::OpenSettingsNotificationType},
+            {QStringLiteral("canDismiss"), isDismissableActivity(candidate.activity)},
+            {QStringLiteral("actions"), actions},
+        });
+    }
+
+    return notifications;
+}
+
+void ActivityListModel::refreshPreviewData()
+{
+    const auto recentActivityPreviewData = buildRecentActivityPreviewData(5);
+    if (_recentActivityPreviewData != recentActivityPreviewData) {
+        _recentActivityPreviewData = recentActivityPreviewData;
+        emit recentActivityPreviewDataChanged();
+    }
+
+    const auto notificationPreviewData = buildNotificationPreviewData();
+    if (_notificationPreviewData != notificationPreviewData) {
+        _notificationPreviewData = notificationPreviewData;
+        emit notificationPreviewDataChanged();
+    }
+}
+
 bool ActivityListModel::canFetchMore(const QModelIndex &) const
 {
     // We need to be connected to be able to fetch more
-    if (_accountState && _accountState->isConnected() && Systray::instance()->isOpen()) {
+    if (_accountState && _accountState->isConnected() && Systray::instance()->isActivitySurfaceVisible()) {
         // If the fetching is reported to be done or we are currently fetching we can't fetch more
         if (!_doneFetching && !currentlyFetching()) {
             return true;
@@ -568,8 +1042,9 @@ void ActivityListModel::addEntriesToActivityList(const ActivityList &activityLis
         }
     }
     endInsertRows();
-
     setHasSyncConflicts(!_conflictsList.isEmpty());
+    refreshPreviewData();
+    emit activityListChanged();
 }
 
 void ActivityListModel::accountStateHasChanged()
@@ -646,6 +1121,7 @@ void ActivityListModel::removeActivityFromActivityList(int row)
 void ActivityListModel::removeActivityFromActivityList(const Activity &activity)
 {
     const auto index = _finalList.indexOf(activity);
+    const auto activityWasRemoved = index != -1;
     if (index != -1) {
         beginRemoveRows({}, index, index);
         _finalList.removeAt(index);
@@ -670,6 +1146,12 @@ void ActivityListModel::removeActivityFromActivityList(const Activity &activity)
         if (notificationErrorsListIndex != -1) {
             _notificationErrorsLists.removeAt(notificationErrorsListIndex);
         }
+    }
+
+    if (activityWasRemoved) {
+        setHasSyncConflicts(!_conflictsList.isEmpty());
+        refreshPreviewData();
+        emit activityListChanged();
     }
 }
 
@@ -940,24 +1422,14 @@ QVariantList ActivityListModel::convertLinksToActionButtons(const Activity &acti
 {
     QVariantList customList;
 
-    for (int i = 0; i < activity._links.size() && static_cast<quint32>(i) <= maxActionButtons(); ++i) {
-        const auto activityLink = activity._links[i];
-
-        // Use the isDismissable model role to present custom dismiss button if needed
-        // Also don't show "View chat" for talk activities, default action will open chat anyway
-        const auto isUseCustomDeleteAction = activityLink._verb == "DELETE"
-            && activity._objectType != QStringLiteral("remote_share");
-        if (isUseCustomDeleteAction || (activityLink._verb == "WEB" && activity._objectType == "chat")) {
-            continue;
-        }
-
-        customList << ActivityListModel::convertLinkToActionButton(activityLink);
+    for (const auto &action : activityActionMetadata(activity, maxActionButtons())) {
+        customList << ActivityListModel::convertLinkToActionButton(action.link, action.actionIndex);
     }
 
     return customList;
 }
 
-QVariant ActivityListModel::convertLinkToActionButton(const OCC::ActivityLink &activityLink)
+QVariant ActivityListModel::convertLinkToActionButton(const OCC::ActivityLink &activityLink, const int actionIndex)
 {
     auto activityLinkCopy = activityLink;
 
@@ -970,7 +1442,15 @@ QVariant ActivityListModel::convertLinkToActionButton(const OCC::ActivityLink &a
         activityLinkCopy._imageSourceHovered = QString(replyButtonPath + "/");
     }
 
-    return QVariant::fromValue(activityLinkCopy);
+    return QVariantMap{
+        {QStringLiteral("actionIndex"), actionIndex},
+        {QStringLiteral("imageSource"), activityLinkCopy._imageSource},
+        {QStringLiteral("imageSourceHovered"), activityLinkCopy._imageSourceHovered},
+        {QStringLiteral("label"), activityLinkCopy._label},
+        {QStringLiteral("link"), activityLinkCopy._link},
+        {QStringLiteral("primary"), activityLinkCopy._primary},
+        {QStringLiteral("verb"), QString::fromUtf8(activityLinkCopy._verb.constData(), activityLinkCopy._verb.size())},
+    };
 }
 
 QVariantList ActivityListModel::convertLinksToMenuEntries(const Activity &activity)
@@ -1033,6 +1513,9 @@ void ActivityListModel::slotRemoveAccount()
     _doneFetching = false;
     _currentItem = 0;
     _showMoreActivitiesAvailableEntry = false;
+    setHasSyncConflicts(false);
+    refreshPreviewData();
+    emit activityListChanged();
 }
 
 void ActivityListModel::setReplyMessageSent(const int activityIndex, const QString &message)

@@ -16,6 +16,7 @@
 #include <QPointer>
 #include <QTimer>
 #include <QVector>
+#include <QVariantMap>
 
 #include "accountfwd.h"
 #include "accountmanager.h"
@@ -75,6 +76,9 @@ class User : public QObject
     Q_PROPERTY(QString featuredAppIcon READ featuredAppIcon NOTIFY featuredAppChanged)
     Q_PROPERTY(QString featuredAppAccessibleName READ featuredAppAccessibleName NOTIFY featuredAppChanged)
     Q_PROPERTY(QString avatar READ avatarUrl NOTIFY avatarChanged)
+    Q_PROPERTY(QVariantList recentActivities READ recentActivities NOTIFY recentActivitiesChanged)
+    Q_PROPERTY(QVariantList trayNotifications READ trayNotifications NOTIFY trayNotificationsChanged)
+    Q_PROPERTY(QVariantMap accountAlert READ accountAlert NOTIFY accountAlertChanged)
     Q_PROPERTY(QUrl syncStatusIcon READ syncStatusIcon NOTIFY syncStatusChanged)
     Q_PROPERTY(bool syncStatusOk READ syncStatusOk NOTIFY syncStatusChanged)
     Q_PROPERTY(bool isConnected READ isConnected NOTIFY accountStateChanged)
@@ -116,6 +120,9 @@ public:
     [[nodiscard]] bool isFeaturedAppEnabled() const;
     [[nodiscard]] QString featuredAppIcon() const;
     [[nodiscard]] QString featuredAppAccessibleName() const;
+    [[nodiscard]] QVariantList recentActivities() const;
+    [[nodiscard]] QVariantList trayNotifications() const;
+    [[nodiscard]] QVariantMap accountAlert() const;
     [[nodiscard]] bool serverHasUserStatus() const;
     [[nodiscard]] AccountApp *talkApp() const;
     [[nodiscard]] bool hasActivities() const;
@@ -154,6 +161,9 @@ signals:
     void hasLocalFolderChanged();
     void featuredAppChanged();
     void avatarChanged();
+    void recentActivitiesChanged();
+    void trayNotificationsChanged();
+    void accountAlertChanged();
     void accountStateChanged();
     void statusChanged();
     void desktopNotificationsAllowedChanged();
@@ -186,6 +196,7 @@ public slots:
     void slotBuildIncomingCallDialogs(const OCC::ActivityList &list);
     void slotRefreshNotifications();
     void slotRefreshActivitiesInitial();
+    void slotRefreshActivityPreview();
     void slotRefreshActivities();
     void slotRefresh();
     void slotRefreshUserStatus();
@@ -194,6 +205,7 @@ public slots:
     void slotRebuildNavigationAppList();
     void slotSendReplyMessage(const int activityIndex, const QString &conversationToken, const QString &message, const QString &replyTo);
     void forceSyncNow() const;
+    void openServer() const;
     void slotAccountCapabilitiesChangedRefreshGroupFolders();
     void slotFetchGroupFolders();
 
@@ -251,6 +263,8 @@ private:
     bool isActivityOfCurrentAccount(const Folder *folder) const;
     [[nodiscard]] bool isUnsolvableConflict(const SyncFileItemPtr &item) const;
     void updateSyncStatus();
+    [[nodiscard]] QVariantMap buildAccountAlert() const;
+    void refreshAccountAlert();
 
     bool notificationAlreadyShown(const qint64 notificationId);
     bool canShowNotification(const qint64 notificationId);
@@ -261,12 +275,14 @@ private:
     bool _isCurrentUser;
     ActivityListModel *_activityModel;
     UnifiedSearchResultsListModel *_unifiedSearchResultsModel;
+    QVariantMap _accountAlert;
     
     QVariantList _trayFolderInfos;
 
     QTimer _expiredActivitiesCheckTimer;
     QTimer _notificationCheckTimer;
     QHash<AccountState *, QElapsedTimer> _timeSinceLastCheck;
+    QElapsedTimer _timeSinceLastActivityPreviewCheck;
 
     QElapsedTimer _guiLogTimer;
     QSet<qint64> _notifiedNotifications;
@@ -344,6 +360,7 @@ public:
     [[nodiscard]] QImage syncStatusIconForRow(int row) const;
 
     [[nodiscard]] User *currentUser() const;
+    [[nodiscard]] User *user(int id) const;
     [[nodiscard]] User *findUserForAccount(AccountState *account) const;
     [[nodiscard]] int findUserIdForAccount(AccountState *account) const;
 
@@ -379,6 +396,10 @@ public:
         RemoveAccountTextRole,
         SyncStatusIconRole,
         SyncStatusOkRole,
+        RecentActivitiesRole,
+        AssistantEnabledRole,
+        TrayNotificationsRole,
+        AccountAlertRole,
     };
 
     [[nodiscard]] AccountAppList appList() const;
@@ -391,6 +412,10 @@ signals:
 
 public slots:
     void fetchCurrentActivityModel();
+    Q_INVOKABLE void fetchActivityModel(int id);
+    Q_INVOKABLE void fetchActivityPreview(int id);
+    Q_INVOKABLE void dismissNotification(int id, int activityIndex);
+    Q_INVOKABLE void triggerNotificationAction(int id, int activityIndex, int actionIndex);
     void openCurrentAccountLocalFolder();
 #ifdef BUILD_FILE_PROVIDER_MODULE
     void openCurrentAccountFileProviderDomain();

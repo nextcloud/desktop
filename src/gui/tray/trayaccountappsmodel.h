@@ -44,7 +44,10 @@ protected:
 private:
     explicit TrayAccountAppsModel(QObject *parent = nullptr);
 
+    [[nodiscard]] AccountAppList appsForUserId(int userId) const;
+
     static TrayAccountAppsModel *_instance;
+    int _userId = -1;
     AccountAppList _apps;
 };
 
