@@ -215,6 +215,39 @@ bool FileProviderXPC::fileProviderDomainHasDirtyUserData(const QString &fileProv
     return hasDirtyUserData;
 }
 
+bool FileProviderXPC::processFileIdsChanged(const QString &fileProviderDomainIdentifier, const QList<qint64> &fileIds) const
+{
+    const auto service = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(fileProviderDomainIdentifier);
+
+    if (service == nil) {
+        qCWarning(lcFileProviderXPC) << "Could not get service for file provider domain" << fileProviderDomainIdentifier;
+        return false;
+    }
+
+    NSMutableArray<NSNumber *> *const nsFileIds = [NSMutableArray arrayWithCapacity:fileIds.size()];
+
+    for (const auto fileId : fileIds) {
+        [nsFileIds addObject:@(fileId)];
+    }
+
+    __block auto processed = false;
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    [service processFileIdsChanged:nsFileIds completionHandler:^(BOOL didProcess) {
+        processed = didProcess;
+        dispatch_semaphore_signal(semaphore);
+    }];
+
+    const auto waitResult = dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
+
+    if (waitResult != 0) {
+        qCWarning(lcFileProviderXPC) << "Timed out while forwarding file ID changes to file provider domain"
+                                     << fileProviderDomainIdentifier;
+        return false;
+    }
+
+    return processed;
+}
+
 void FileProviderXPC::setIgnoreList() const
 {
     ExcludedFiles ignoreList;
