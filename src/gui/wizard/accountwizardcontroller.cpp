@@ -306,6 +306,15 @@ bool AccountWizardController::canUseVirtualFiles() const
 #endif
 }
 
+bool AccountWizardController::isUsingFileProvider() const
+{
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    return Mac::FileProvider::available();
+#else
+    return false;
+#endif
+}
+
 bool AccountWizardController::canUseClassicSync() const
 {
     return !Theme::instance()->enforceVirtualFilesSyncFolder() || !canUseVirtualFiles();
