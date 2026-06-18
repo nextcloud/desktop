@@ -1526,89 +1526,89 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="50"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Попросите подтверждение перед синхронизацией новых папок размером более</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="70"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Мб</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="105"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation type="unfinished"/>
+        <translation>Уведомлять, когда размер синхронизированных папок превышает указанный предел</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="139"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation type="unfinished"/>
+        <translation>Автоматически отключать синхронизацию папок, превышающих лимит</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="186"/>
         <source>Server poll interval</source>
-        <translation type="unfinished"/>
+        <translation>Интервал опроса сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="203"/>
         <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
-        <translation type="unfinished"/>
+        <translation>секунд (если &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; недоступен)</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="243"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Запросите подтверждение перед синхронизацией внешних хранилищ</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="277"/>
         <source>Move removed files to trash</source>
-        <translation type="unfinished"/>
+        <translation>Переместить удалённые файлы в корзину</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="324"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
-        <translation type="unfinished"/>
+        <translation>Показывать папки синхронизации на панели навигации &amp;Explorer</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="363"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Редактировать &amp;игнорируемые файлы</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="370"/>
         <location filename="../src/gui/advancedsettings.cpp" line="367"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Создать архив отладки</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="235"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Расширенные</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="369"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Zip Архивы</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="382"/>
         <source>Failed to Access File</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось получить доступ к файлу</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="383"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось получить доступ к выбранному местоположению. Пожалуйста, повторите попытку или выберите другое местоположение.</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="392"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Архив отладки создан</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="393"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Отредактируйте информацию, считающуюся конфиденциальной, прежде чем делиться ею! Архив отладки создан по адресу %1</translation>
     </message>
 </context>
 <context>
@@ -3729,73 +3729,73 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/infosettings.ui" line="51"/>
         <source>Desktop client x.x.x</source>
-        <translation type="unfinished"/>
+        <translation>Настольный клиент x.x.x</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
         <source>Usage Documentation</source>
-        <translation type="unfinished"/>
+        <translation>Документация по использованию</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="81"/>
         <source>Legal Notice</source>
-        <translation type="unfinished"/>
+        <translation>Официальное уведомление</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="152"/>
         <source>Update channel</source>
-        <translation type="unfinished"/>
+        <translation>Канал обновления</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="172"/>
         <source>Restore &amp;Default</source>
-        <translation type="unfinished"/>
+        <translation>Восстановить &amp;умолчания</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="193"/>
         <source>&amp;Automatically check for updates</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Автоматически проверять наличие обновлений</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="216"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Перезапустить &amp;&amp; Обновить</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="229"/>
         <source>Check Now</source>
-        <translation type="unfinished"/>
+        <translation>Проверить сейчас</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="103"/>
         <source>Restore to &amp;%1</source>
-        <translation type="unfinished"/>
+        <translation>Восстановить в &amp;%1</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="144"/>
         <location filename="../src/gui/infosettings.cpp" line="170"/>
         <source>Connected to an enterprise system. Update channel (%1) cannot be changed.</source>
-        <translation type="unfinished"/>
+        <translation>Подключен к корпоративной системе. Канал обновления (%1) изменить нельзя.</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="201"/>
         <source>stable</source>
-        <translation type="unfinished"/>
+        <translation>стабильный</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="205"/>
         <source>beta</source>
-        <translation type="unfinished"/>
+        <translation>бета</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="209"/>
         <source>daily</source>
-        <translation type="unfinished"/>
+        <translation>ежедневный</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="213"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>энтерпрайз</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="248"/>
@@ -3804,7 +3804,10 @@ Items where deletion is allowed will be deleted if they prevent a directory from
 
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
         <comment>list of available update channels to non enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- бета-версия: содержит версии с новыми функциями, которые не могут быть тщательно протестированы.
+- ежедневный: содержит версии, создаваемые ежедневно только для тестирования и разработки.
+
+Понизить версию сразу невозможно: переход с бета-версии на стабильную означает ожидание новой стабильной версии.</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="253"/>
@@ -3812,12 +3815,14 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
         <comment>list of available update channels to enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- энтерпрайз: содержит стабильные версии для клиентов.
+
+Понизить версию сразу невозможно: переход со стабильной версии на корпоративную означает ожидание новой корпоративной версии.</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="260"/>
         <source>Changing update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Изменить канал обновления?</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="261"/>
@@ -3825,17 +3830,18 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 - stable: contains tested versions considered reliable
 </source>
         <comment>starts list of available update channels, stable is always available</comment>
-        <translation type="unfinished"/>
+        <translation>Канал определяет, какие обновления будут предложены к установке:
+- стабильный: содержит проверенные версии, считающиеся надежными</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="267"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Изменить канал обновления</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="268"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -5105,12 +5111,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="184"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Расширенные</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="185"/>
         <source>Info</source>
-        <translation type="unfinished"/>
+        <translation>Инфо</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="335"/>
@@ -6496,7 +6502,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="307"/>
         <source>Answer</source>
-        <translation type="unfinished"/>
+        <translation>Ответ</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1304"/>

@@ -399,13 +399,13 @@
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="41"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="162"/>
         <source>Resume sync for all</source>
-        <translation>Reprendre la synchronisation pour tous</translation>
+        <translation>Reprendre la synchronisation pour tout</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="41"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="162"/>
         <source>Pause sync for all</source>
-        <translation>Mettre en pause la synchronisation pour tous</translation>
+        <translation>Mettre en pause la synchronisation pour tout</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="143"/>
