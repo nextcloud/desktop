@@ -70,32 +70,56 @@ namespace {
 
     static const char optionsC[] =
         "Options:\n"
+        "\n"
+        "General options:\n"
         "  --help, -h                 : show this help screen.\n"
-        "  --version, -v              : show version information.\n"
-        "  -q --quit                  : quit the running instance\n"
+        "  --version, -v              : show client version/build details.\n"
+        "  --quit, -q                 : quit the running instance.\n"
+        "  --background               : launch the client in the background.\n"
+        "  --reverse                  : use a reverse layout direction.\n"
+        "\n"
+        "Logging options:\n"
         "  --logwindow, -l            : open a window to show log output.\n"
-        "  --logfile <filename>       : write log output to file <filename>.\n"
-        "  --logdir <name>            : write each sync log output in a new file\n"
-        "                               in folder <name>.\n"
-        "  --logexpire <hours>        : removes logs older than <hours> hours.\n"
-        "                               (to be used with --logdir)\n"
-        "  --logflush                 : flush the log file after every write.\n"
+        "  --logfile <filename>       : write sync logs to the specified filename.\n"
+        "  --logdir <dir>             : write sync logs for each run to a new file\n"
+        "                               in the specified directory.\n"
+        "  --logexpire <hours>        : delete sync logs older than the specified\n"
+        "                               number of hours (to be used with --logdir).\n"
+        "                               Default: 24 hours.\n"
+        "  --logflush                 : flush the sync log file after every write.\n"
         "  --logdebug                 : also output debug-level messages in the log.\n"
-        "  --confdir <dirname>        : Use the given configuration folder.\n"
-        "  --background               : launch the application in the background.\n"
-        "  --overrideserverurl        : specify a server URL to use for the force override to be used in the account setup wizard.\n"
-        "  --overridelocaldir         : specify a local dir to be used in the account setup wizard.\n"
-        "  --userid                   : userId (username as on the server) to pass when creating an account via command-line.\n"
-        "  --apppassword              : appPassword to pass when creating an account via command-line.\n"
-        "  --set-language <lang>      : specify a language to use for the client, regardless of the OS language.\n"
-        "  --localdirpath             : (optional) path where to create a local sync folder when creating an account via command-line.\n"
-        "  --isvfsenabled             : whether to set a VFS or non-VFS folder (1 for 'yes' or 0 for 'no') when creating an account via command-line.\n"
-        "  --remotedirpath            : (optional) path to a remote subfolder when creating an account via command-line.\n"
-        "  --serverurl                : a server URL to use when creating an account via command-line.\n"
+        "\n"
+        "Configuration options:\n"
+        "  --confdir <dir>            : override the default client configuration\n"
+        "                               directory.\n"
+        "  --set-language <lang>      : use this language for the client, regardless\n"
+        "                               of the OS language.\n"
+        "  --debug                    : enable debug mode and debug-level logging.\n"
 #if !DISABLE_ACCOUNT_MIGRATION
-        "  --forcelegacyconfigimport  : forcefully import account configurations from legacy clients (if available).\n"
+        "  --forcelegacyconfigimport  : forcefully import account configurations from\n"
+        "                               legacy clients (if available).\n"
 #endif
-        "  --reverse            : use a reverse layout direction.\n";
+        "\n"
+        "Account setup wizard options:\n"
+        "  --overrideserverurl <url>  : server URL used by the interactive account\n"
+        "                               setup wizard.\n"
+        "  --overridelocaldir <dir>   : local directory used by the interactive\n"
+        "                               account setup wizard.\n"
+        "\n"
+        "Non-interactive account provisioning options:\n"
+        "  --serverurl <url>          : server URL to use during non-interactive\n"
+        "                               account provisioning.\n"
+        "  --userid <userid>          : server-side user ID to use during\n"
+        "                               non-interactive account provisioning.\n"
+        "  --apppassword <pass>       : server-side app password to use during\n"
+        "                               non-interactive account provisioning.\n"
+        "  --localdirpath <dir>       : local sync directory to use during\n"
+        "                               non-interactive account provisioning.\n"
+        "  --remotedirpath <dir>      : server-side directory to set up for syncing\n"
+        "                               during non-interactive account provisioning.\n"
+        "  --isvfsenabled <0|1>       : toggle virtual files support (1 = yes,\n"
+        "                               0 = no) during non-interactive account\n"
+        "                               provisioning.\n";
 
     QString applicationTrPath()
     {
@@ -911,63 +935,111 @@ void Application::slotActivateRequestedMessage(const QStringList &arguments, con
 void Application::parseOptions(const QStringList &options)
 {
     QStringListIterator it(options);
-    // skip file name;
+    // skip file name
     if (it.hasNext()) {
         it.next();
     }
 
-    bool shouldExit = false;
+    const auto hasNextValue = [&it]() {
+        return it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"));
+    };
 
-    //parse options; if help or bad option exit
+    const auto isOption = [](const QString &option, const char *name, const char *shortName = nullptr) {
+        return option == QLatin1String(name)
+            || (shortName && option == QLatin1String(shortName));
+    };
+    
+    // parse options; if help or bad option exit
     while (it.hasNext()) {
         QString option = it.next();
-        if (option == QLatin1String("--help") || option == QLatin1String("-h")) {
+
+        // Help / version / exit-related
+        if (isOption(option, "--help", "-h")) {
             setHelp();
             break;
-        } else if (option == QLatin1String("--quit") || option == QLatin1String("-q")) {
+        } else if (isOption(option, "--version", "-v")) {
+            _versionOnly = true;
+        } else if (isOption(option, "--quit", "-q")) {
             _quitInstance = true;
-        } else if (option == QLatin1String("--logwindow") || option == QLatin1String("-l")) {
+
+        // Simple boolean toggles
+        } else if (isOption(option, "--logwindow", "-l")) {
             _showLogWindow = true;
-        } else if (option == QLatin1String("--logfile")) {
-            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+        } else if (isOption(option, "--logflush")) {
+            _logFlush = true;
+        } else if (isOption(option, "--logdebug")) {
+            _logDebug = true;
+        } else if (isOption(option, "--background")) {
+            _backgroundMode = true;
+        } else if (isOption(option, "--reverse")) {
+            // FIXME: This is current implemented as a toggle, but help text suggests it should set RTL
+            setLayoutDirection(layoutDirection() == Qt::LeftToRight ? Qt::RightToLeft : Qt::LeftToRight);
+        } else if (isOption(option, "--debug")) {
+            _logDebug = true;
+            _debugMode = true;
+
+        // Value options
+        } else if (isOption(option, "--logfile")) {
+            if (hasNextValue()) {
                 _logFile = it.next();
             } else {
-                showHint("Log file not specified");
+                showHint("Missing value for --logfile");
             }
-        } else if (option == QLatin1String("--logdir")) {
-            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+        } else if (isOption(option, "--logdir")) {
+            if (hasNextValue()) {
                 _logDir = it.next();
             } else {
-                showHint("Log dir not specified");
+                showHint("Missing value for --logdir");
             }
-        } else if (option == QLatin1String("--logexpire")) {
-            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
-                _logExpire = it.next().toInt();
+        } else if (isOption(option, "--logexpire")) {
+            if (hasNextValue()) {
+                bool ok = false;
+                const auto logExpire = it.next().toInt(&ok);
+                if (!ok) {
+                    showHint("Invalid value passed to --logexpire");
+                }
+                _logExpire = logExpire;
             } else {
-                showHint("Log expiration not specified");
+                showHint("Missing value for --logexpire");
             }
-        } else if (option == QLatin1String("--logflush")) {
-            _logFlush = true;
-        } else if (option == QLatin1String("--logdebug")) {
-            _logDebug = true;
-        } else if (option == QLatin1String("--confdir")) {
-            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+        } else if (isOption(option, "--confdir")) {
+            if (hasNextValue()) {
                 QString confDir = it.next();
                 if (!ConfigFile::setConfDir(confDir)) {
                     showHint("Invalid path passed to --confdir");
                 }
             } else {
-                showHint("Path for confdir not specified");
+                showHint("Missing value for --confdir");
             }
-        } else if (option == QLatin1String("--debug")) {
-            _logDebug = true;
-            _debugMode = true;
-        } else if (option == QLatin1String("--background")) {
-            _backgroundMode = true;
-        } else if (option == QLatin1String("--version") || option == QLatin1String("-v")) {
-            _versionOnly = true;
-        } else if (option == QLatin1String("--reverse")) {
-            setLayoutDirection(layoutDirection() == Qt::LeftToRight ? Qt::RightToLeft : Qt::LeftToRight);
+        } else if (isOption(option, "--overrideserverurl")) {
+            if (hasNextValue()) {
+                const auto overrideUrl = it.next();
+                const auto isUrlValid =
+                    (overrideUrl.startsWith(QStringLiteral("http://"))
+                     || overrideUrl.startsWith(QStringLiteral("https://")))
+                    && QUrl::fromUserInput(overrideUrl).isValid();
+                if (!isUrlValid) {
+                    showHint("Invalid URL passed to --overrideserverurl");
+                }
+                _overrideServerUrl = overrideUrl;
+            } else {
+                showHint("Missing value for --overrideserverurl");
+            }
+        } else if (isOption(option, "--overridelocaldir")) {
+            if (hasNextValue()) {
+                // FIXME: validate specified path
+                _overrideLocalDir = it.next();
+            } else {
+                showHint("Missing value for --overridelocaldir");
+            }
+        } else if (isOption(option, "--set-language")) {
+            if (hasNextValue()) {
+                _setLanguage = it.next();
+            } else {
+                showHint("Missing value for --set-language");
+            }
+
+        // Special startup handlers
         } else if (option.endsWith(QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX))) {
             // virtual file, open it after the Folder were created (if the app is not terminated)
             QTimer::singleShot(0, this, [this, option] { openVirtualFile(option); });
@@ -976,53 +1048,24 @@ void Application::parseOptions(const QStringList &options)
             _editFileLocallyUrl = QUrl::fromUserInput(option);
             if (!_editFileLocallyUrl.isValid()) {
                 _editFileLocallyUrl.clear();
-                const auto errorParsingLocalFileEditingUrl = QStringLiteral("The supplied url for local file editing '%1' is invalid!").arg(option);
+                const auto errorParsingLocalFileEditingUrl =
+                    QStringLiteral("The supplied url for local file editing '%1' is invalid!").arg(option);
                 qCInfo(lcApplication) << errorParsingLocalFileEditingUrl;
                 showHint(errorParsingLocalFileEditingUrl.toStdString());
             }
-        } else if (option == QStringLiteral("--overrideserverurl")) {
-            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
-                const auto overrideUrl = it.next();
-                const auto isUrlValid = (overrideUrl.startsWith(QStringLiteral("http://")) || overrideUrl.startsWith(QStringLiteral("https://")))
-                    && QUrl::fromUserInput(overrideUrl).isValid();
-                if (!isUrlValid) {
-                    showHint("Invalid URL passed to --overrideserverurl");
-                    shouldExit = true;
-                } else {
-                    _overrideServerUrl = overrideUrl;
-                }
-            } else {
-                showHint("Invalid URL passed to --overrideserverurl");
-            }
-        } else if (option == QStringLiteral("--overridelocaldir")) {
-            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
-                _overrideLocalDir = it.next();
-            } else {
-                showHint("Invalid URL passed to --overridelocaldir");
-            }
-        } else if (option == QStringLiteral("--set-language")) {
-            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
-                _setLanguage = it.next();
-            }
-        }
 #if !DISABLE_ACCOUNT_MIGRATION
-        else if (option == QStringLiteral("--forcelegacyconfigimport")) {
+        } else if (isOption(option, "--forcelegacyconfigimport")) {
             AccountManager::instance()->setForceLegacyImport(true);
-        }
 #endif
-        else {
+        } else {
             QString errorMessage;
             if (!AccountSetupCommandLineManager::instance()->parseCommandlineOption(option, it, errorMessage)) {
                 if (!errorMessage.isEmpty()) {
                     showHint(errorMessage.toStdString());
-                    return;
                 }
                 showHint("Unrecognized option '" + option.toStdString() + "'");
             }
         }
-    }
-    if (shouldExit) {
-        std::exit(0);
     }
 }
 
