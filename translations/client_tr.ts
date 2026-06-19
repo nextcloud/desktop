@@ -521,13 +521,23 @@
     <name>FileProviderSettings</name>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
+        <source>File provider settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
         <source>Virtual files settings</source>
         <translation>Sanal dosyalar ayarları</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="57"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
         <source>Virtual files appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. Virtual files and classic sync can not be used at the same time.</source>
         <translation>Sanal dosyalar normal dosyalar gibi görünür, ancak yerel depolama alanı kullanmaz. Dosyayı açtığınızda içeriği otomatik olarak indirilir. Sanal dosyalar ile klasik eşitleme aynı anda kullanılamaz.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="57"/>
+        <source>File Provider items appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. It is not possible to have a File Provider and classic sync Finder integration enabled simultaneously.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -745,11 +755,6 @@ Hesap içe aktarılsın mı?</translation>
 <context>
     <name>OCC::AccountSettings</name>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="159"/>
-        <source>Virtual files</source>
-        <translation>Sanal dosyalar</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.ui" line="205"/>
         <source>Classic sync</source>
         <translation>Klasik eşitleme</translation>
@@ -785,6 +790,16 @@ Hesap içe aktarılsın mı?</translation>
         <location filename="../src/gui/accountsettings.ui" line="324"/>
         <source>Apply</source>
         <translation>Uygula</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="159"/>
+        <source>File Provider</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="159"/>
+        <source>Virtual files</source>
+        <translation>Sanal dosyalar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="311"/>
@@ -1105,9 +1120,14 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <translation>Bu hesap uçtan uca şifrelemeyi destekler, ancak önce kurulması gerekir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1901"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1859"/>
         <source>The virtual files integration does not support end-to-end encryption yet.</source>
         <translation>Sanal dosyalar bütünleştirmesi henüz uçtan uca eşitlemeyi desteklemiyor.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1901"/>
+        <source>The File Provider extension does not support end-to-end encryption yet.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1909"/>
@@ -1305,199 +1325,199 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <translation>Yerel depolama alanı gerekecek</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="622"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="631"/>
         <source>Proxy settings are incomplete.</source>
         <translation>Vekil sunucu ayarları eksik.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="629"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="638"/>
         <source>Server address does not seem to be valid</source>
         <translation>Sunucu adresi geçersiz gibi görünüyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="650"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="659"/>
         <source>Username must not be empty.</source>
         <translation>Kullanıcı adı boş olmamalıdır.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="656"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="986"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="665"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="995"/>
         <source>Checking account access</source>
         <translation>Hesap erişimi denetleniyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="734"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="743"/>
         <source>Checking server address</source>
         <translation>Sunucu adresi denetleniyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="799"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="808"/>
         <source>Preparing browser login</source>
         <translation>Tarayıcı oturumu açılıyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="820"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="829"/>
         <source>Invalid URL</source>
         <translation>Adres geçersiz</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="822"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="831"/>
         <source>Failed to connect to %1 at %2:
 %3</source>
         <translation>%1 ile %2 zamanında bağlantı kurulamadı:
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="838"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="847"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>%1 ile %2 zamanında bağlantı kurulurken zaman aşımı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="859"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="868"/>
         <source>This server requires legacy browser authentication. Enter app-password credentials instead.</source>
         <translation>Bu sunucu için eski tarayıcı kimlik doğrulaması gerekiyor. Bunun yerine uygulama parolası kimlik doğrulama bilgilerini yazın.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="937"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="946"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>Tarayıcı açılamadı. Lütfen bağlantıyı kopyalayıp tarayıcınıza yapıştırın.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="962"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="967"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="971"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="976"/>
         <source>Waiting for authorization</source>
         <translation>İzin verilmesi bekleniyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="972"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="981"/>
         <source>Starting authorization</source>
         <translation>İzin vermeye başlanıyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="977"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="986"/>
         <source>Link copied to clipboard.</source>
         <translation>Bağlantı panoya kopyalandı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1032"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1062"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1041"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1071"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>Kimliği doğrulanmış bir WebDAV isteğine geçersiz bir yanıt verildi</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1049"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1058"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>Sunucuya yapılan kimlik doğrulama isteği &quot;%1&quot; adresine yönlendirildi. Adres ya da sunucu yapılandırması hatalı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1057"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1066"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
         <translation>Erişim sunucu tarafından engellendi. Erişme izninizin uygun olduğunu doğrulamak için hizmeti tarayıcınızda açın.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1075"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1084"/>
         <source>Account connected.</source>
         <translation>Hesap bağlandı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1150"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1159"/>
         <source>Will require %1 of storage</source>
         <translation>%1 depolama alanı gerekecek</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1331"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1340"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 boş alan</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1341"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1350"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Yerel klasörde yeterli boş alan yok!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1358"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1367"/>
         <source>Please choose a local sync folder.</source>
         <translation>Lütfen bir yerel eşitleme klasörü seçin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1363"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1372"/>
         <source>Please choose an empty local sync folder.</source>
         <translation>Lütfen boş bir yerel eşitleme klasörü seçin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1428"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1437"/>
         <source>Could not create local folder %1</source>
         <translation>%1 yerel klasörü oluşturulamadı</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1442"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1451"/>
         <source>Checking remote folder</source>
         <translation>Uzak klasör denetleniyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1488"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1497"/>
         <source>No remote folder specified!</source>
         <translation>Uzak klasör belirtilmemiş!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1497"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1506"/>
         <source>Error: %1</source>
         <translation>Hata: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1502"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1511"/>
         <source>Creating remote folder</source>
         <translation>Uzak klasör oluşturuluyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1521"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1530"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Klasör oluşturma işlemi %1 HTTP hata kodu ile sonuçlandı</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1523"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1532"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
         <translation>Geçersiz kimlik doğrulama bilgileri nedeniyle uzak klasör oluşturulamadı. Lütfen geri giderek kimlik doğrulama bilgilerinizi denetleyin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1525"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1534"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>%1 uzak klasörü &lt;tt&gt;%2&lt;/tt&gt; hatası nedeniyle oluşturulamadı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1549"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1558"/>
         <source>Account setup failed while creating the sync folder.</source>
         <translation>Eşitleme klasörü oluşturulurken hesap kurulumu tamamlanamadı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1576"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1585"/>
         <source>Could not create the sync folder.</source>
         <translation>Eşitleme klasörü oluşturulamadı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1666"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1675"/>
         <source>Local Sync Folder</source>
         <translation>Yerel eşitleme klasörü</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1913"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1922"/>
         <source>Select a certificate</source>
         <translation>Bir sertifika seçin</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1915"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1924"/>
         <source>Certificate files (*.p12 *.pfx)</source>
         <translation>Sertifika dosyaları (*.p12 *.pfx)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1923"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1943"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1932"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1952"/>
         <source>Could not access the selected certificate file.</source>
         <translation>Seçilmiş sertifika dosyasına erişilemedi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1959"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1968"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Sertifika yüklenemedi. Parola yanlış olabilir mi?</translation>
     </message>
@@ -6889,6 +6909,11 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>Virtual files</source>
         <translation>Sanal dosyalar</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
+        <source>File Provider</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="91"/>
