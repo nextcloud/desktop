@@ -522,7 +522,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
         <source>File provider settings</source>
-        <translation type="unfinished"/>
+        <translation>Налаштування провайдера файлів</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
@@ -794,7 +794,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="159"/>
         <source>File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Провайдер файлів</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="159"/>
@@ -1126,7 +1126,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1901"/>
         <source>The File Provider extension does not support end-to-end encryption yet.</source>
-        <translation type="unfinished"/>
+        <translation>Розширення провайдера файлів не підтримує наскрізне шифрування.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1909"/>
@@ -6910,7 +6910,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Провайдер файлів</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="91"/>

@@ -522,7 +522,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
         <source>File provider settings</source>
-        <translation type="unfinished"/>
+        <translation>Dateianbieter-Einstellungen</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
@@ -537,7 +537,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="57"/>
         <source>File Provider items appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. It is not possible to have a File Provider and classic sync Finder integration enabled simultaneously.</source>
-        <translation type="unfinished"/>
+        <translation>Dateianbieter-Elemente erscheinen wie normale Dateien, nutzen jedoch keinen lokalen Speicherplatz. Der Inhalt wird beim Öffnen der Datei automatisch heruntergeladen. Dateianbieter und klassische Synchronisierung können nicht gleichzeitig verwendet werden.</translation>
     </message>
 </context>
 <context>
@@ -794,7 +794,7 @@ Soll das Konto importiert werden?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="159"/>
         <source>File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Dateianbieter</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="159"/>
@@ -1127,7 +1127,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1901"/>
         <source>The File Provider extension does not support end-to-end encryption yet.</source>
-        <translation type="unfinished"/>
+        <translation>Die Dateianbieter-Erweiterung unterstützt keine Ende-zu-Ende-Verschlüsselung.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1909"/>
@@ -6913,7 +6913,7 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Dateianbieter</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="91"/>

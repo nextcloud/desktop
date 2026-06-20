@@ -522,7 +522,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
         <source>File provider settings</source>
-        <translation type="unfinished"/>
+        <translation>Configurações do provedor de arquivos</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
@@ -537,7 +537,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="57"/>
         <source>File Provider items appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. It is not possible to have a File Provider and classic sync Finder integration enabled simultaneously.</source>
-        <translation type="unfinished"/>
+        <translation>Os itens do Provedor de arquivos aparecem como arquivos comuns, mas não ocupam espaço de armazenamento local. O conteúdo é baixado automaticamente quando você abre o arquivo. Não é possível ter o Provedor de arquivos e a integração clássica de sincronização com o Finder ativados simultaneamente.</translation>
     </message>
 </context>
 <context>
@@ -794,7 +794,7 @@ A conta deve ser importada?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="159"/>
         <source>File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Provedor de arquivos</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="159"/>
@@ -1127,7 +1127,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1901"/>
         <source>The File Provider extension does not support end-to-end encryption yet.</source>
-        <translation type="unfinished"/>
+        <translation>A extensão Provedor de arquivos ainda não está compatível com a criptografia de ponta-a-ponta.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1909"/>
@@ -6914,7 +6914,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Provedor de arquivos</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="91"/>
