@@ -522,7 +522,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
         <source>File provider settings</source>
-        <translation type="unfinished"/>
+        <translation>Failų teikėjo nustatymai</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
@@ -537,7 +537,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="57"/>
         <source>File Provider items appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. It is not possible to have a File Provider and classic sync Finder integration enabled simultaneously.</source>
-        <translation type="unfinished"/>
+        <translation>Failų teikėjo elementai atrodo kaip įprasti failai, tačiau jie neužima vietinės saugyklos vietos. Turinys atsisiunčiamas automatiškai, kai atidarote failą. Failų teikėjo ir klasikinės sinchronizacijos „Finder“ integracijos negalima įjungti vienu metu.</translation>
     </message>
 </context>
 <context>
@@ -794,7 +794,7 @@ Ar paskyrą reikėtų importuoti?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="159"/>
         <source>File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Failų teikėjas</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="159"/>
@@ -1127,7 +1127,7 @@ Vienintelis virtualių failų palaikymo išjungimo privalumas yra tai, kad vėl 
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1901"/>
         <source>The File Provider extension does not support end-to-end encryption yet.</source>
-        <translation type="unfinished"/>
+        <translation>Failų teikėjo plėtinys dar nepalaiko ištisinio šifravimo.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1909"/>
@@ -1488,7 +1488,7 @@ Vienintelis virtualių failų palaikymo išjungimo privalumas yra tai, kad vėl 
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1558"/>
         <source>Account setup failed while creating the sync folder.</source>
-        <translation>Kuriant sinchronizavimo aplanką, paskyros nustatymas nepavyko.</translation>
+        <translation>Kuriant sinchronizavimo aplanką, paskyros sąranka nepavyko.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1585"/>
@@ -6915,7 +6915,7 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Failų teikėjas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="91"/>
