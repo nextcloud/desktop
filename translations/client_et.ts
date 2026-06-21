@@ -4178,7 +4178,7 @@ Palun arvesta, et käsurealt lisatud logimistingimused on alati primaarsed nende
     <message>
         <location filename="../src/gui/networksettings.ui" line="310"/>
         <source>Download Bandwidth</source>
-        <translation>Allalaadimise ülekandekiirus</translation>
+        <translation>Ribalaius allalaadimisel</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="328"/>
@@ -4216,7 +4216,7 @@ Palun arvesta, et käsurealt lisatud logimistingimused on alati primaarsed nende
     <message>
         <location filename="../src/gui/networksettings.ui" line="384"/>
         <source>Upload Bandwidth</source>
-        <translation>Üleslaadimise ülekandekiirus</translation>
+        <translation>Ribalaius üleslaadimisel</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="39"/>
@@ -4336,7 +4336,7 @@ Palun arvesta, et käsurealt lisatud logimistingimused on alati primaarsed nende
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="35"/>
         <source>Please enter a password for your share:</source>
-        <translation>Palun sisesta jaosmeedia puhul kasutatav salasõna:</translation>
+        <translation>Palun sisesta jagamise puhul kasutatav salasõna:</translation>
     </message>
 </context>
 <context>
