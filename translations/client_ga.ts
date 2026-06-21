@@ -522,7 +522,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
         <source>File provider settings</source>
-        <translation type="unfinished"/>
+        <translation>Socruithe soláthraí comhad</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
@@ -537,7 +537,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="57"/>
         <source>File Provider items appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. It is not possible to have a File Provider and classic sync Finder integration enabled simultaneously.</source>
-        <translation type="unfinished"/>
+        <translation>Breathnaíonn míreanna Soláthraí Comhad cosúil le comhaid rialta, ach ní úsáideann siad spás stórála áitiúil. Íoslódálann an t-ábhar go huathoibríoch nuair a osclaíonn tú an comhad. Ní féidir comhtháthú Soláthraí Comhad agus Aimsitheoir sioncrónaithe clasaiceach a bheith cumasaithe ag an am céanna.</translation>
     </message>
 </context>
 <context>
@@ -794,7 +794,7 @@ Ar cheart an cuntas a allmhairiú?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="159"/>
         <source>File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Soláthraí Comhad</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="159"/>
@@ -1127,7 +1127,7 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1901"/>
         <source>The File Provider extension does not support end-to-end encryption yet.</source>
-        <translation type="unfinished"/>
+        <translation>Ní thacaíonn síneadh an Soláthraí Comhad le criptiú ó cheann ceann go ceann go fóill.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1909"/>
@@ -6914,7 +6914,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Soláthraí Comhad</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="91"/>
