@@ -37,7 +37,6 @@
 #include <QPalette>
 #include <QQuickView>
 #include <QActionGroup>
-#include <QColor>
 #include <QScopedValueRollback>
 #include <QScrollArea>
 #include <QSizePolicy>
@@ -56,21 +55,15 @@
 
 using namespace Qt::StringLiterals;
 
+#ifdef Q_OS_WIN
+    // "light" looks too bright on dark mode on Windows only
+    #define BACKGROUND_PALETTE "alternate-base"
+#else
+    // ...and "alternate-base" looks too bright on macOS only.  On Linux/Plasma either one looked fine ...
+    #define BACKGROUND_PALETTE "light"
+#endif
+
 namespace {
-QString cssColor(const QColor &color)
-{
-    return QStringLiteral("rgba(%1, %2, %3, %4)")
-        .arg(color.red())
-        .arg(color.green())
-        .arg(color.blue())
-        .arg(color.alpha());
-}
-
-QColor settingsBackgroundColor(const QColor &panelColor)
-{
-    return OCC::Theme::isDarkColor(panelColor) ? panelColor.lighter(115) : panelColor.darker(108);
-}
-
 class CurrentPageSizeStackedWidget : public QStackedWidget
 {
 public:
@@ -255,8 +248,7 @@ void SettingsDialog::showEvent(QShowEvent *event)
     // constructor via winId()) doesn't stick, because Qt recreates the NSWindow when the dialog is
     // shown, resetting the title-bar separator to its default.
     if (auto *const handle = windowHandle()) {
-        const auto titleBarColor = settingsBackgroundColor(palette().color(QPalette::Window));
-        styleNativeTitleBar(handle, /*hideTitleText=*/false, titleBarColor);
+        styleNativeTitleBar(handle, /*hideTitleText=*/false, palette().color(QPalette::Window));
     }
 #endif
 }
@@ -274,8 +266,7 @@ void SettingsDialog::changeEvent(QEvent *e)
 #ifdef Q_OS_MACOS
         // macOS resets title-bar styling across appearance changes; re-apply it.
         if (auto *const handle = windowHandle()) {
-            const auto titleBarColor = settingsBackgroundColor(palette().color(QPalette::Window));
-            styleNativeTitleBar(handle, /*hideTitleText=*/false, titleBarColor);
+            styleNativeTitleBar(handle, /*hideTitleText=*/false, palette().color(QPalette::Window));
         }
 #endif
         break;
@@ -500,32 +491,33 @@ void SettingsDialog::customizeStyle()
 
     auto separatorColor = palette().color(QPalette::Mid);
     separatorColor.setAlpha(48);
-    const auto separatorCss = cssColor(separatorColor);
-    const auto panelColor = palette().color(QPalette::Window);
-    const auto panelCss = cssColor(panelColor);
-    const auto settingsBackgroundCss = cssColor(settingsBackgroundColor(panelColor));
+    const auto separatorCss = QStringLiteral("rgba(%1, %2, %3, %4)")
+        .arg(separatorColor.red())
+        .arg(separatorColor.green())
+        .arg(separatorColor.blue())
+        .arg(separatorColor.alpha());
 
     setStyleSheet(QStringLiteral(
-        "#Settings { background: %1; border-radius: 0; }"
+        "#Settings { background: palette(window); border-radius: 0; }"
 
         /* Navigation */
-        "#settings_navigation_scroll { background: %2; border-radius: 12px; padding: 4px; }"
+        "#settings_navigation_scroll { background: palette(" BACKGROUND_PALETTE "); border-radius: 12px; padding: 4px; }"
         "#settings_navigation { background: transparent; border: none; padding: 0px; }"
 
         /* Content area */
-        "#settings_content, #settings_content_scroll { background: %1; border-radius: 12px; }"
+        "#settings_content, #settings_content_scroll { background: palette(window); border-radius: 12px; }"
 
         /* Panels */
         "#generalGroupBox, #notificationsGroupBox, #advancedGroupBox, #syncBehaviorGroupBox,"
         "#advancedActionsGroupBox, #aboutAndUpdatesGroupBox, #updatesGroupBox {"
-        " background: %2;"
+        " background: palette(" BACKGROUND_PALETTE ");"
         " border: none;"
         " border-radius: 12px;"
         " margin: 0px;"
         " padding: 0px;"
         " }"
         "#accountStatusPanel, #encryptionPanel, #fileProviderPanel, #syncFoldersPanel, #accountActionsPanel {"
-        " background: %2;"
+        " background: palette(" BACKGROUND_PALETTE ");"
         " border: none;"
         " border-radius: 12px;"
         " margin: 0px;"
@@ -546,13 +538,13 @@ void SettingsDialog::customizeStyle()
         "#stopExistingFolderNowBigSyncSeparator, #remotePollIntervalSeparator,"
         "#moveFilesToTrashSeparator, #showInExplorerNavigationPaneSeparator,"
         "#updateControlsSeparator {"
-        " color: %3;"
-        " background: %3;"
+        " color: %1;"
+        " background: %1;"
         " border: none;"
         " min-height: 1px;"
         " max-height: 1px;"
         " }"
-    ).arg(settingsBackgroundCss, panelCss, separatorCss));
+    ).arg(separatorCss));
 
     const auto &allActions = _actionGroup->actions();
     for (const auto a : allActions) {
