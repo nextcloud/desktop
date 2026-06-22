@@ -713,12 +713,12 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="1069"/>
         <source>Lock operation on %1 failed with error %2</source>
-        <translation>„%1“ lukustamisel tekkis viga: %2</translation>
+        <translation>„%1“ faili lukustamisel tekkis viga: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="1071"/>
         <source>Unlock operation on %1 failed with error %2</source>
-        <translation>„%1“ lukustuse eemaldamisel tekkis viga: %2</translation>
+        <translation>„%1“ faili lukustuse eemaldamisel tekkis viga: %2</translation>
     </message>
 </context>
 <context>
@@ -749,7 +749,7 @@ Kas peaksin selle kasutajakonto importima?</translation>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="371"/>
         <source>Could not import accounts from legacy client configuration.</source>
-        <translation>Ei õnnestunud importida kasutajakontosid rakenduse vanast pärandversioonist seadistustest.</translation>
+        <translation>Ei õnnestunud importida kasutajakontosid rakenduse vana pärandversiooni seadistustest.</translation>
     </message>
 </context>
 <context>
@@ -1537,7 +1537,7 @@ Samuti katkevad kõik hetkel toimivad sünkroonimised.</translation>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="614"/>
         <source>Network error occurred: client will retry syncing.</source>
-        <translation>Tekkis võrguühenduse viga: klient proovin sünkroniseerimist uuesti.</translation>
+        <translation>Tekkis võrguühenduse viga: klient proovib sünkroonimist uuesti.</translation>
     </message>
 </context>
 <context>
@@ -1887,7 +1887,7 @@ Samuti katkevad kõik hetkel toimivad sünkroonimised.</translation>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it generates a case clash conflict with an existing file on this system.</source>
-        <translation>Faili sünkroniseerimine polnud võimalik, sest failinimega tekib siin seadmes või arvutis konflikt suur- ja väiketehtede kasutuse kontekstis.</translation>
+        <translation>Faili sünkroonimine polnud võimalik, sest failinimega tekib siin seadmes või arvutis konflikt suur- ja väiketehtede kasutuse kontekstis.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="36"/>
@@ -2287,7 +2287,7 @@ Samuti katkevad kõik hetkel toimivad sünkroonimised.</translation>
         <location filename="../src/gui/editlocallyjob.cpp" line="174"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="407"/>
         <source>An error occurred trying to synchronise the file to edit locally.</source>
-        <translation>Enne faili muutmist kohalikus seadmes vajalikul sünkroniseerimisel tekkis viga.</translation>
+        <translation>Kohalikus seadmes faili muutmiseks vajalikul sünkroonimisel tekkis viga.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="358"/>
@@ -2736,7 +2736,7 @@ See võib olla seotud kasutatavate OpenSSl-i teekidega.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="1567"/>
         <source>Would you like to stop syncing this folder?</source>
-        <translation>Kas sa soovid selle kausta sünkroniseerimise lõpetada?</translation>
+        <translation>Kas sa soovid selle kausta sünkroonimise lõpetada?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1642"/>
@@ -3367,7 +3367,7 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
     <message>
         <location filename="../src/gui/generalsettings.ui" line="126"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation>Küsi kinnitust enne kaustade sünkroniseerimist, mis on suuremad, kui</translation>
+        <translation>Küsi kinnitust enne kaustade sünkroonimist, mis on suuremad, kui</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="162"/>
@@ -3383,7 +3383,7 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
     <message>
         <location filename="../src/gui/generalsettings.ui" line="216"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation>Lülita sünkroniseerimine automaatselt välja, kui kausta maht ületab lubatud piiri</translation>
+        <translation>Lülita sünkroonimine automaatselt välja, kui kausta maht ületab lubatud piiri</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
@@ -3899,7 +3899,7 @@ Kui võtad selle kasutusele, siis eelmise versiooni juurde ei ole võimalik otse
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="92"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on this system.</source>
-        <translation>„%1“ faili sünkroniseerimine polnud võimalik, sest failinimes leidub tähemärke, mis siin arvutis/seadmes pole lubatud.</translation>
+        <translation>„%1“ faili sünkroonimine polnud võimalik, sest failinimes leidub tähemärke, mis siin arvutis/seadmes pole lubatud.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="93"/>
@@ -6706,7 +6706,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="55"/>
         <source>Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.</source>
-        <translation>Vali, kas soovid talletada kohalikku versiooni, serveri versiooni või mõlemat. Kui valid mõlemat, lisatakse kohaliku faili nime lõppu number.</translation>
+        <translation>Vali, kas soovid talletada kohalikku versiooni, serveri versiooni või mõlemat. Kui valid mõlemad, lisatakse kohaliku faili nime lõppu number.</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="71"/>
@@ -6770,7 +6770,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="208"/>
         <source>Edit share</source>
-        <translation>Muuda jaosmeediat</translation>
+        <translation>Muuda jagamist</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="282"/>

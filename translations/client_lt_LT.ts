@@ -469,7 +469,7 @@
     <message>
         <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="88"/>
         <source>Discovering the certificates stored on your USB token</source>
-        <translation>USB rakte saugomų sertifikatų peržiūra</translation>
+        <translation>Ieškomi sertifikatai, esantys jūsų USB žymenyje</translation>
     </message>
 </context>
 <context>
@@ -2008,7 +2008,7 @@ Vienintelis virtualių failų palaikymo išjungimo privalumas yra tai, kad vėl 
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1178"/>
         <source>Enter Certificate USB Token PIN:</source>
-        <translation>Įveskite sertifikato USB prieigos rakto PIN kodą:</translation>
+        <translation>Įveskite sertifikato USB žymens PIN kodą:</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1196"/>
@@ -2018,7 +2018,7 @@ Vienintelis virtualių failų palaikymo išjungimo privalumas yra tai, kad vėl 
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1197"/>
         <source>Login to the token failed after providing the user PIN. It may be invalid or wrong. Please try again!</source>
-        <translation>Prisijungti prie prieigos rakto nepavyko įvedus vartotojo PIN kodą. Jis gali būti negaliojantis arba neteisingas. Bandykite dar kartą!</translation>
+        <translation>Prisijungti prie žymens nepavyko įvedus vartotojo PIN kodą. Jis gali būti negaliojantis arba neteisingas. Bandykite dar kartą!</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="2263"/>
