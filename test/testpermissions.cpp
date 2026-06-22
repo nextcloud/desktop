@@ -297,9 +297,12 @@ private slots:
         currentLocalState = fakeFolder.currentLocalState();
 
         //6.
-        // The file should not exist on the remote, and not be there
-        QVERIFY(!currentLocalState.find("readonlyDirectory_PERM_MG_/newFile_PERM_GWDNV_.data"));
+        // The file cannot be uploaded to the read-only folder, but it MUST be kept locally:
+        // it is local-only data and silently deleting it would lose it (issues #7797/#10099).
+        QVERIFY(currentLocalState.find("readonlyDirectory_PERM_MG_/newFile_PERM_GWDNV_.data"));
         QVERIFY(!fakeFolder.currentRemoteState().find("readonlyDirectory_PERM_MG_/newFile_PERM_GWDNV_.data"));
+        // Remove the kept local-only file so the following sections can compare local and remote.
+        removeReadOnly("readonlyDirectory_PERM_MG_/newFile_PERM_GWDNV_.data");
         // Both side should still be the same
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
@@ -379,7 +382,8 @@ private slots:
         QVERIFY(currentLocalState.find("readonlyDirectory_PERM_MG_/subdir_PERM_CKG_" ));
         // including contents
         QVERIFY(currentLocalState.find("readonlyDirectory_PERM_MG_/subdir_PERM_CKG_/subsubdir_PERM_CKDNVG_/normalFile_PERM_GWVND_.data" ));
-        // new no longer exists
+        // new no longer exists: it was a move of an existing (server-side) item into a read-only
+        // folder, so the local copy is cleaned up while its data is restored at the source above.
         QVERIFY(!currentLocalState.find("readonlyDirectory_PERM_MG_/newname_PERM_CK_/subsubdir_PERM_CKDNVG_/normalFile_PERM_GWVND_.data" ));
         // but is not on server: should have been locally removed
         QVERIFY(!currentLocalState.find("readonlyDirectory_PERM_MG_/newname_PERM_CK_"));
@@ -559,6 +563,87 @@ private slots:
         QVERIFY(cls.find("zallowed/file"));
         QVERIFY(cls.find("zallowed/sub2"));
         QVERIFY(cls.find("zallowed/sub2/file"));
+    }
+
+    // A brand new local-only file dropped into a read-only folder cannot be uploaded.
+    // It must be ignored and kept on disk, not silently deleted, and a follow-up sync
+    // must be stable rather than looping (issues #7797/#10099).
+    void testNewLocalFileInReadOnlyFolderIsKept()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto &lm = fakeFolder.localModifier();
+        auto &rm = fakeFolder.remoteModifier();
+        rm.mkdir("readonly");
+        rm.insert("readonly/existing");
+        // No CanAddFile ('C') and no CanAddSubDirectories ('K'): nothing new may be created here.
+        setAllPerm(rm.find("readonly"), RemotePermissions::fromServerString("GWDNV"));
+        QVERIFY(fakeFolder.syncOnce());
+
+        // The user drops a new local-only file into the read-only folder.
+        lm.insert("readonly/newlocal", 42);
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+        QVERIFY(fakeFolder.syncOnce());
+
+        // It is a genuine new file (no remote counterpart) so it is ignored, never removed,
+        // and stays on disk. This is the move-branch's !isVirtualFile/IGNORE guard NOT firing.
+        QVERIFY(itemInstruction(completeSpy, "readonly/newlocal", CSYNC_INSTRUCTION_IGNORE));
+        QVERIFY(fakeFolder.currentLocalState().find("readonly/newlocal"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("readonly/newlocal"));
+
+        // The second sync must not loop: the file is still ignored+kept and no follow-up is requested.
+        completeSpy.clear();
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(itemInstruction(completeSpy, "readonly/newlocal", CSYNC_INSTRUCTION_IGNORE));
+        QVERIFY(fakeFolder.currentLocalState().find("readonly/newlocal"));
+        QCOMPARE(fakeFolder.syncEngine().isAnotherSyncNeeded(), NoFollowUpSync);
+    }
+
+    // A synced file moved into a read-only folder cannot land at its new location. The duplicate
+    // copy in the read-only folder must be cleaned up, while the original is restored from the
+    // server with its content byte-intact - the rejected move must never destroy data (#7797/#10099).
+    void testMoveSyncedFileIntoReadOnlyFolderRestoresContent()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        // Discovery order decides whether the restore lands on the first or a follow-up sync;
+        // pin it so the test is deterministic.
+        auto syncOpts = fakeFolder.syncEngine().syncOptions();
+        syncOpts._parallelNetworkJobs = 1;
+        fakeFolder.syncEngine().setSyncOptions(syncOpts);
+
+        auto &lm = fakeFolder.localModifier();
+        auto &rm = fakeFolder.remoteModifier();
+        rm.mkdir("allowed");
+        rm.insert("allowed/file", 200, 'X'); // distinctive content to prove it survives
+        rm.mkdir("readonly");
+        // No CanAddFile ('C') and no CanAddSubDirectories ('K'): nothing new may be created here.
+        setAllPerm(rm.find("readonly"), RemotePermissions::fromServerString("GWDNV"));
+        QVERIFY(fakeFolder.syncOnce());
+
+        // The user moves an already-synced file into the read-only folder.
+        lm.rename("allowed/file", "readonly/file");
+
+        QVERIFY(fakeFolder.syncOnce());
+        // The forbidden-move restore can need a follow-up sync to settle.
+        if (fakeFolder.syncEngine().isAnotherSyncNeeded() == ImmediateFollowUp) {
+            QVERIFY(fakeFolder.syncOnce());
+        }
+
+        // The duplicate in the read-only folder is cleaned up locally and never reaches the server.
+        QVERIFY(!fakeFolder.currentLocalState().find("readonly/file"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("readonly/file"));
+
+        // The original is restored with its content intact (size and bytes), not just its path.
+        auto localState = fakeFolder.currentLocalState();
+        auto *restored = localState.find("allowed/file");
+        QVERIFY(restored);
+        QCOMPARE(restored->size, qint64{200});
+        QCOMPARE(restored->contentChar, 'X');
+
+        // Local and remote agree on everything, content included, and the sync has settled.
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(fakeFolder.syncEngine().isAnotherSyncNeeded(), NoFollowUpSync);
     }
 
     void testParentMoveNotAllowedChildrenRestored()
