@@ -1,0 +1,22 @@
+{
+    "theme": {
+        "color": {
+            "documentation-intro-eyebrow": "rgba(255, 255, 255, 0.6)",
+            "documentation-intro-figure": "white",
+            "documentation-intro-fill": "#0082c9",
+            "documentation-intro-title": "white",
+            "fill": {
+                "dark": "#181818",
+                "light": "white"
+            },
+            "link": "#0082c9",
+            "text": {
+                "dark": "#D8D8D8",
+                "light": "#222222"
+            }
+        },
+        "typography": {
+            "html-font": "\"M1 PLUS 1\", \"Open Sans\", system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif"
+        }
+    }
+}

@@ -1,0 +1,16 @@
+/*
+ * libcsync -- a library to sync a directory with another
+ *
+ * SPDX-FileCopyrightText: 2006-2012 Andreas Schneider <asn@cryptomilk.org>
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
+#ifndef _CSYNC_VERSION_H
+#define _CSYNC_VERSION_H
+
+#define CSYNC_STRINGIFY(s) CSYNC_TOSTRING(s)
+#define CSYNC_TOSTRING(s) #s
+
+#define MIRALL_VERSION @MIRALL_VERSION@
+
+#endif // _CSYNC_VERSION_H

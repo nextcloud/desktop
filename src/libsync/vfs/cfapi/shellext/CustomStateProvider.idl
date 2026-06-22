@@ -1,0 +1,12 @@
+/*
+ * SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
+namespace CfApiShellExtensions
+{
+    runtimeclass CustomStateProvider : [default] Windows.Storage.Provider.IStorageProviderItemPropertySource
+    {
+        CustomStateProvider();
+    }
+}

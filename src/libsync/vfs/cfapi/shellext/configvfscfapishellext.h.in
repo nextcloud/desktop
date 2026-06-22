@@ -1,0 +1,11 @@
+/*
+ * SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
+#ifndef CONFIG_VFS_CFAPI_SHELLEXT_H
+#define CONFIG_VFS_CFAPI_SHELLEXT_H
+#cmakedefine CUSTOM_STATE_ICON_LOCKED_INDEX "@CUSTOM_STATE_ICON_LOCKED_INDEX@"
+#cmakedefine CUSTOM_STATE_ICON_SHARED_INDEX "@CUSTOM_STATE_ICON_SHARED_INDEX@"
+#cmakedefine CUSTOM_STATE_ICON_INDEX_OFFSET "@CUSTOM_STATE_ICON_INDEX_OFFSET@"
+#endif

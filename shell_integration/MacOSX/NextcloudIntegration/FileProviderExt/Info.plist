@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIcons</key>
+	<dict>
+		<key>CFBundlePrimaryIcon</key>
+		<dict>
+			<key>CFBundleSymbolName</key>
+			<string>cloud</string>
+		</dict>
+	</dict>
+	<key>CFBundleDisplayName</key>
+	<string>$(OC_APPLICATION_NAME) File Provider</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>NSExtension</key>
+	<dict>
+		<key>NSFileProviderDecorations</key>
+		<array>
+			<dict>
+				<key>Identifier</key>
+				<string>$(OC_APPLICATION_REV_DOMAIN).FileProviderExt.keep-downloaded</string>
+				<key>BadgeImageType</key>
+				<string>$(OC_APPLICATION_REV_DOMAIN).decoration.keep-downloaded</string>
+				<key>Category</key>
+				<string>Badge</string>
+				<key>Label</key>
+				<dict>
+					<key>NSStringFormat</key>
+					<string>Always keep downloaded</string>
+				</dict>
+			</dict>
+		</array>
+		<key>NSExtensionFileProviderActions</key>
+		<array>
+			<dict>
+				<key>NSExtensionFileProviderActionActivationRule</key>
+				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayKeepDownloaded == true ).@count &gt; 0</string>
+				<key>NSExtensionFileProviderActionIdentifier</key>
+				<string>com.nextcloud.desktopclient.FileProviderExt.KeepDownloadedAction</string>
+				<key>NSExtensionFileProviderActionName</key>
+				<string>Always keep downloaded</string>
+			</dict>
+			<dict>
+				<key>NSExtensionFileProviderActionActivationRule</key>
+				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayAllowAutoEvicting == true ).@count &gt; 0</string>
+				<key>NSExtensionFileProviderActionIdentifier</key>
+				<string>com.nextcloud.desktopclient.FileProviderExt.AutoEvictAction</string>
+				<key>NSExtensionFileProviderActionName</key>
+				<string>Allow automatic freeing up space</string>
+			</dict>
+			<dict>
+				<key>NSExtensionFileProviderActionActivationRule</key>
+				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayEvict == true ).@count &gt; 0</string>
+				<key>NSExtensionFileProviderActionIdentifier</key>
+				<string>com.nextcloud.desktopclient.FileProviderExt.EvictAction</string>
+				<key>NSExtensionFileProviderActionName</key>
+				<string>Remove download</string>
+			</dict>
+			<dict>
+				<key>NSExtensionFileProviderActionActivationRule</key>
+				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayFileActions == true ).@count &gt; 0</string>
+				<key>NSExtensionFileProviderActionIdentifier</key>
+				<string>com.nextcloud.desktopclient.FileProviderExt.FileActionsAction</string>
+				<key>NSExtensionFileProviderActionName</key>
+				<string>File actions</string>
+			</dict>
+			<dict>
+				<key>NSExtensionFileProviderActionActivationRule</key>
+				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayOpenInBrowser == true ).@count &gt; 0</string>
+				<key>NSExtensionFileProviderActionIdentifier</key>
+				<string>com.nextcloud.desktopclient.FileProviderExt.OpenInBrowserAction</string>
+				<key>NSExtensionFileProviderActionName</key>
+				<string>Open in browser</string>
+			</dict>
+			<dict>
+				<key>NSExtensionFileProviderActionActivationRule</key>
+				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayCopyInternalLink == true ).@count &gt; 0</string>
+				<key>NSExtensionFileProviderActionIdentifier</key>
+				<string>com.nextcloud.desktopclient.FileProviderExt.CopyInternalLinkAction</string>
+				<key>NSExtensionFileProviderActionName</key>
+				<string>Copy internal link</string>
+			</dict>
+		</array>
+		<key>NSExtensionFileProviderAllowsContextualMenuDownloadEntry</key>
+		<false/>
+		<key>NSExtensionFileProviderAllowsUserControlledEviction</key>
+		<false/>
+		<key>NSExtensionFileProviderDocumentGroup</key>
+		<string>$(DEVELOPMENT_TEAM).$(OC_APPLICATION_REV_DOMAIN)</string>
+		<key>NSExtensionFileProviderSupportsEnumeration</key>
+		<true/>
+		<key>NSExtensionPointIdentifier</key>
+		<string>com.apple.fileprovider-nonui</string>
+		<key>NSExtensionPrincipalClass</key>
+		<string>NextcloudFileProviderKit.FileProviderExtension</string>
+	</dict>
+</dict>
+</plist>

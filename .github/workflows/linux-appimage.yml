@@ -1,0 +1,33 @@
+# SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: GPL-2.0-or-later
+name: Linux Appimage Package
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+
+jobs:
+  build:
+    if: ${{ !github.event.pull_request.draft }}
+    name: Linux Appimage Package
+    runs-on: ubuntu-latest
+    container: ghcr.io/nextcloud/continuous-integration-client-appimage-qt6:client-appimage-el8-6.10.2-4
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          fetch-depth: 1
+
+      - name: Configure, compile and package
+        id: build-appimage
+        env:
+          PR_ID: ${{ github.event.number }}
+        run: |
+            BUILDNR=${GITHUB_RUN_ID} VERSION_SUFFIX=${GITHUB_HEAD_REF} BUILD_UPDATER=ON DESKTOP_CLIENT_ROOT=`pwd` EXECUTABLE_NAME=nextcloud QT_BASE_DIR=/root/linux-gcc-x86_64 /bin/bash -c "./admin/linux/build-appimage.sh"
+
+      - name: Upload AppImage artifact
+        id: upload-appimage
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: nextcloud-appimage-pr-${{ github.event.number }}
+          path: ${{ steps.build-appimage.outputs.APPIMAGE_NAME }}
+          overwrite: true
+          compression-level: 0 # squashfs is already compressed

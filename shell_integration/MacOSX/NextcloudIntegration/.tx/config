@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+[main]
+host = https://app.transifex.com
+# Complete mapping from language codes on Transifex to the ones configured in the Xcode project for those where the codes diverge.
+lang_map = bg_BG: bg, bn_BD: bn, cs_CZ: cs, cy_GB: cy, es_AR: es-AR, es_DO: es-DO, es_EC: es-EC, es_SV: es-SV, es_GT: es-GT, es_HN: es-HN, es_419: es-419, es_MX: es-MX, es_NI: es-NI, es_PA: es-PA, es_PY: es-PY, es_PE: es-PE, es_PR: es-PR, es_UY: es-UY, et_EE: et, fi_FI: fi, hi_IN: hi, hu_HU: hu, ja_JP: ja, ka_GE: ka, lt_LT: lt, ms_MY: ms, nb_NO: nb-NO, nn_NO: nn-NO, pt_BR: pt-BR, pt_PT: pt-PT, sk_SK: sk, th_TH: th, ur_PK: ur, zh_CN: zh-Hans, zh_HK: zh-HK, zh_TW: zh-Hant-TW, zu_ZA: zu
+
+[o:nextcloud:p:nextcloud:r:client-fileprovider]
+file_filter = FileProviderExt/Localizable.xcstrings
+source_file = FileProviderExt/Localizable.xcstrings
+source_lang = en
+type = XCSTRINGS
+
+[o:nextcloud:p:nextcloud:r:client-fileproviderui]
+file_filter = FileProviderUIExt/Localizable.xcstrings
+source_file = FileProviderUIExt/Localizable.xcstrings
+source_lang = en
+type = XCSTRINGS

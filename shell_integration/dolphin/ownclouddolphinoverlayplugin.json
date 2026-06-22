@@ -1,0 +1,8 @@
+{
+    "KPlugin": {
+        "Description": "Overlay icon for owncloud",
+        "ServiceTypes": [
+            "KOverlayIconPlugin"
+        ]
+    }
+}

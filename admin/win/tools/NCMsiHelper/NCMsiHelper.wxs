@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  - SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+  - SPDX-License-Identifier: GPL-2.0-or-later
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+
+        <?if $(var.Platform) = x64 ?>
+        <?define bitness = "64" ?>
+        <?else ?>
+        <?define bitness = "32" ?>
+        <?endif ?>
+
+        <Binary Id="NCMsiHelper" SourceFile="NCMsiHelper$(var.bitness).dll" />
+
+        <CustomAction Id="ExecNsisUninstaller"
+                    Return="ignore"
+                    BinaryKey="NCMsiHelper"
+                    DllEntry="ExecNsisUninstaller"
+                    Execute="deferred"
+                    Impersonate="no" />
+
+        <CustomAction Id="RemoveNavigationPaneEntries"
+                    Return="ignore"
+                    BinaryKey="NCMsiHelper"
+                    DllEntry="RemoveNavigationPaneEntries"
+                    Execute="deferred"
+                    Impersonate="yes" />
+
+    </Fragment>
+</Wix>

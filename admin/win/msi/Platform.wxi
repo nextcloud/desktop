@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  - SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+  - SPDX-License-Identifier: GPL-2.0-or-later
+-->
+<Include>
+
+    <!--
+        MSI packages are built either for x86 or x64, we use defines to maintain a single WiX script.
+
+        Some hints:
+        https://www.joyofsetup.com/2010/05/14/working-hard-or-hardly-working/
+        https://stackoverflow.com/questions/18628790/build-wix-3-6-project-targeting-x64
+        https://www.howtobuildsoftware.com/index.php/how-do/1oQ/wix-detect-if-32-or-64-bit-windows-and-define-var
+    -->
+
+    <?if $(var.Platform) = x64 ?>
+    <?define PlatformBitness = "(64-bit)" ?>
+    <?define PlatformWin64 = "yes" ?>
+    <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+    <?else ?>
+    <?define PlatformBitness = "(32-bit)" ?>
+    <?define PlatformWin64 = "no" ?>
+    <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+    <?endif ?>
+
+</Include>

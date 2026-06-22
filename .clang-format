@@ -1,0 +1,88 @@
+---
+# SPDX-FileCopyrightText: 2019 Christoph Cullmann <cullmann@kde.org>
+# SPDX-FileCopyrightText: 2019 Gernot Gebhard <gebhard@absint.com>
+#
+# SPDX-License-Identifier: MIT
+
+# This file got automatically created by ECM, do not edit
+# See https://clang.llvm.org/docs/ClangFormatStyleOptions.html for the config options
+# and https://community.kde.org/Policies/Frameworks_Coding_Style#Clang-format_automatic_code_formatting
+# for clang-format tips & tricks
+---
+Language: JavaScript
+DisableFormat: true
+---
+
+# Style for C++
+Language: Cpp
+
+# base is WebKit coding style: https://webkit.org/code-style-guidelines/
+# below are only things set that diverge from this style!
+BasedOnStyle: WebKit
+
+# enforce C++11 (e.g. for std::vector<std::vector<lala>>
+Standard: Cpp11
+
+# 4 spaces indent
+TabWidth: 4
+
+# 2 * 80 wide lines
+ColumnLimit: 160
+
+# sort includes inside line separated groups
+SortIncludes: true
+
+# break before braces on function, namespace and class definitions.
+BreakBeforeBraces: Linux
+
+# CrlInstruction *a;
+PointerAlignment: Right
+
+# horizontally aligns arguments after an open bracket.
+AlignAfterOpenBracket: Align
+
+# don't move all parameters to new line
+AllowAllParametersOfDeclarationOnNextLine: false
+
+# no single line functions
+AllowShortFunctionsOnASingleLine: None
+
+# always break before you encounter multi line strings
+AlwaysBreakBeforeMultilineStrings: true
+
+# don't move arguments to own lines if they are not all on the same
+BinPackArguments: false
+
+# don't move parameters to own lines if they are not all on the same
+BinPackParameters: false
+
+# In case we have an if statement with multiple lines the operator should be at the beginning of the line
+# but we do not want to break assignments
+BreakBeforeBinaryOperators: NonAssignment
+
+# format C++11 braced lists like function calls
+Cpp11BracedListStyle: true
+
+# do not put a space before C++11 braced lists
+SpaceBeforeCpp11BracedList: false
+
+# remove empty lines
+KeepEmptyLinesAtTheStartOfBlocks: false
+
+# no namespace indentation to keep indent level low
+NamespaceIndentation: None
+
+# we use template< without space.
+SpaceAfterTemplateKeyword: false
+
+# Always break after template declaration
+AlwaysBreakTemplateDeclarations: true
+
+# macros for which the opening brace stays attached.
+ForEachMacros: [ foreach, Q_FOREACH, BOOST_FOREACH, forever, Q_FOREVER, QBENCHMARK, QBENCHMARK_ONCE , wl_resource_for_each, wl_resource_for_each_safe ]
+
+# keep lambda formatting multi-line if not empty
+AllowShortLambdasOnASingleLine: Empty
+
+# We do not want clang-format to put all arguments on a new line
+AllowAllArgumentsOnNextLine: false

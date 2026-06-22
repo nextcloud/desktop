@@ -1,0 +1,44 @@
+<!--
+  - SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+  - SPDX-FileCopyrightText: 2014 ownCloud GmbH
+  - SPDX-License-Identifier: LGPL-2.1-or-later
+-->
+# Authors
+
+- alex-z <blackslayer4@gmail.com>
+- allexzander <blackslayer4@gmail.com>
+- Andreas Schneider <asn@cryptomilk.org>
+- asapelkin <asapelkin0x01@ya.ru>
+- Camila <hello@camila.codes>
+- Camila Ayres <hello@camila.codes>
+- Camila San <hello@camila.codes>
+- Christian Kamm <mail@ckamm.de>
+- Claudio Cambra <claudio.cambra@gmail.com>
+- Claudio Cambra <claudio.cambra@nextcloud.com>
+- Daniel Nicoletti <dantti12@gmail.com>
+- Dominik Schmidt <dev@dominik-schmidt.de>
+- Dominique Fuchs <32204802+DominiqueFuchs@users.noreply.github.com>
+- Dries Mys <dries.mys@my-dreams.be>
+- Felix Weilbach <felix.weilbach@nextcloud.com>
+- Guido Falsi <mad@madpilot.net>
+- Guido Falsi <madpilot@freebsd.org>
+- Hannah von Reth <hannah.vonreth@owncloud.com>
+- Hefee <hefee@netzguerilla.net>
+- Jocelyn Turcotte <jturcotte@woboq.com>
+- Jyrki Gadinger <nilsding@nilsding.org>
+- Kevin Ottens <kevin.ottens@nextcloud.com>
+- kevin147147 <kevintamool@gmail.com>
+- Klaas Freitag <kraft@freisturz.de>
+- Markus Goetz <markus@woboq.com>
+- Matthieu Gallien <matthieu.gallien@nextcloud.com>
+- Matthieu Gallien <matthieu_gallien@yahoo.fr>
+- Michael Schuster <48932272+misch7@users.noreply.github.com>
+- Michael Schuster <michael@schuster.ms>
+- Nicolas Fella <nicolas.fella@gmx.de>
+- Olivier Goffart <ogoffart@woboq.com>
+- Roeland Jago Douma <roeland@famdouma.nl>
+- Roeland Jago Douma <rullzer@users.noreply.github.com>
+- Samir Benmendil <me@rmz.io>
+- Stephan Beyer <s-beyer@gmx.net>
+- Tomaz Canabrava <tcanabrava@kde.org>
+- tomdereub <pbtom@lamonerie.net>

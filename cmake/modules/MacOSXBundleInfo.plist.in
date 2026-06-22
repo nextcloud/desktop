@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>NSPrincipalClass</key>
+    <string>NSApplication</string>
+    <key>LSMinimumSystemVersion</key>
+    <string>13.0</string>
+    <key>LSUIElement</key>
+    <true/>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>en</string>
+    <key>CFBundleAllowMixedLocalizations</key>
+    <true/>
+    <key>CFBundleLocalizations</key>
+    <array>
+@MACOSX_BUNDLE_LOCALIZATIONS@
+    </array>
+    <key>CFBundleExecutable</key>
+    <string>@APPLICATION_NAME@</string>
+    <key>CFBundleIconFile</key>
+    <string>@MACOSX_BUNDLE_ICON_FILE@</string>
+    @MACOSX_BUNDLE_ICON_NAME_BLOCK@
+    <key>CFBundleIdentifier</key>
+    <string>@APPLICATION_REV_DOMAIN@</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleLongVersionString</key>
+    <string>@APPLICATION_NAME_XML_ESCAPED@ @MIRALL_VERSION_STRING@</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleSignature</key>
+    <string>????</string>
+    <key>CFBundleVersion</key>
+    <string>@MIRALL_VERSION_FULL@</string>
+    <key>CFBundleShortVersionString</key>
+    <string>@MIRALL_VERSION_STRING@</string>
+    <key>NSHumanReadableCopyright</key>
+    <string>(C) 2014-2025 @APPLICATION_VENDOR_XML_ESCAPED@</string>
+    <key>NSSupportsAutomaticGraphicsSwitching</key>
+    <true/>
+    <key>NSRequiresAquaSystemAppearance</key>
+    <false/>
+    <key>SUShowReleaseNotes</key>
+    <false/>
+    <key>SUPublicDSAKeyFile</key>
+    <string>dsa_pub.pem</string>
+    <key>SUPublicEDKey</key>
+    <string>c3RcfDWDayvsYSZW8FhZN1UOJhvPVN30zleb4zOqbtU=</string>
+    <key>SUEnableInstallerLauncherService</key>
+    <true/>
+    <key>UTExportedTypeDeclarations</key>
+    <array>
+        <dict>
+            <key>UTTypeIdentifier</key>
+            <string>@APPLICATION_REV_DOMAIN@.VIRTUALFILE</string>
+            <key>UTTypeTagSpecification</key>
+            <dict>
+                <key>public.filename-extension</key>
+                <string>@APPLICATION_VIRTUALFILE_SUFFIX@</string>
+                <key>public.mime-type</key>
+                <string>application/octet-stream</string>
+            </dict>
+            <key>UTTypeConformsTo</key>
+            <array>
+                <string>public.data</string>
+            </array>
+        </dict>
+        <dict>
+            <key>UTTypeIdentifier</key>
+            <string>@APPLICATION_REV_DOMAIN@.decoration.keep-downloaded</string>
+            <key>UTTypeDescription</key>
+            <string>Always keep downloaded</string>
+            <key>UTTypeConformsTo</key>
+            <array>
+                <string>com.apple.icon-decoration.badge</string>
+            </array>
+            <key>UTTypeIconFile</key>
+            <string>KeepDownloaded.icns</string>
+        </dict>
+    </array>
+    <key>CFBundleDocumentTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeName</key>
+            <string>@APPLICATION_EXECUTABLE@ Download Virtual File</string>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>LSHandlerRank</key>
+            <string>Owner</string>
+            <key>LSItemContentTypes</key>
+            <array>
+                <string>@APPLICATION_REV_DOMAIN@.VIRTUALFILE</string>
+            </array>
+        </dict>
+    </array>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLName</key>
+            <string>@APPLICATION_NAME@ Edit Locally</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>@APPLICATION_URI_HANDLER_SCHEME@</string>
+            </array>
+        </dict>
+    </array>
+    <key>NCFPKAppGroupIdentifier</key>
+    <string>@DEVELOPMENT_TEAM@.@APPLICATION_REV_DOMAIN@</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+</dict>
+</plist>

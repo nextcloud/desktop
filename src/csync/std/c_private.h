@@ -1,0 +1,139 @@
+/*
+ * cynapses libc functions
+ *
+ * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2012 ownCloud GmbH
+ * SPDX-FileCopyrightText: 2012-2013 by Dominik Schmidt <dev@dominik-schmidt.de>
+ * SPDX-FileCopyrightText: 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
+ * SPDX-License-Identifier: LGPL-2.1-or-later
+ */
+
+#ifndef _C_PRIVATE_H
+#define _C_PRIVATE_H
+
+#include "config_csync.h"
+
+/* cross platform defines */
+#include "config_csync.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+
+#ifdef _WIN32
+#include <windows.h>
+#include <windef.h>
+#include <winbase.h>
+#include <wchar.h>
+#else
+#include <unistd.h>
+#endif
+
+#include <cerrno>
+
+#ifdef __MINGW32__
+#ifndef S_IRGRP
+#define S_IRGRP 0
+#endif
+#ifndef S_IROTH
+#define S_IROTH 0
+#endif
+#ifndef S_IXGRP
+#define S_IXGRP 0
+#endif
+#ifndef S_IXOTH
+#define S_IXOTH 0
+#endif
+
+#define S_IFSOCK 10000 /* dummy val on Win32 */
+#define S_IFLNK 10001  /* dummy val on Win32 */
+
+#define O_NOFOLLOW 0
+#define O_NOCTTY 0
+
+#define uid_t int
+#define gid_t int
+#define nlink_t int
+#define getuid() 0
+#define geteuid() 0
+#elif defined(_WIN32)
+typedef int mode_t;
+#else
+#include <fcntl.h>
+#endif
+
+
+#ifdef _WIN32
+using csync_stat_t = struct stat64;
+#define _FILE_OFFSET_BITS 64
+#else
+using csync_stat_t = struct stat;
+#endif
+
+#ifndef O_NOATIME
+#define O_NOATIME 0
+#endif
+
+#ifndef HAVE_LSTAT
+#define lstat _stat
+#endif
+
+/* tchar definitions for clean win32 filenames */
+#ifndef _UNICODE
+#define _UNICODE
+#endif
+
+#if defined _WIN32 && defined _UNICODE
+using mbchar_t = wchar_t;
+#define _topen           _wopen
+#define _tdirent         _wdirent
+#define _topendir        _wopendir
+#define _tclosedir       _wclosedir
+#define _treaddir        _wreaddir
+#define _trewinddir      _wrewinddir
+#define _ttelldir        _wtelldir
+#define _tseekdir        _wseekdir
+#define _tcreat          _wcreat
+#define _tstat           _wstat64
+#define _tfstat          _fstat64
+#define _tunlink         _wunlink
+#define _tmkdir(X,Y)     _wmkdir(X)
+#define _trmdir	         _wrmdir
+#define _tchmod          _wchmod
+#define _trewinddir      _wrewinddir
+#define _tchown(X, Y, Z)  0 /* no chown on Win32 */
+#define _tchdir          _wchdir
+#define _tgetcwd         _wgetcwd
+#else
+using mbchar_t = char;
+#define _tdirent       dirent
+#define _topen         open
+#define _topendir      opendir
+#define _tclosedir     closedir
+#define _treaddir      readdir
+#define _trewinddir    rewinddir
+#define _ttelldir      telldir
+#define _tseekdir      seekdir
+#define _tcreat        creat
+#define _tstat         lstat
+#define _tfstat        fstat
+#define _tunlink       unlink
+#define _tmkdir(X,Y)   mkdir(X,Y)
+#define _trmdir	       rmdir
+#define _tchmod        chmod
+#define _trewinddir    rewinddir
+#define _tchown(X,Y,Z) chown(X,Y,Z)
+#define _tchdir        chdir
+#define _tgetcwd       getcwd
+#endif
+
+/* FIXME: Implement TLS for OS X */
+#if defined(__GNUC__) && !defined(__APPLE__)
+# define CSYNC_THREAD __thread
+#elif defined(_MSC_VER)
+# define CSYNC_THREAD __declspec(thread)
+#else
+# define CSYNC_THREAD
+#endif
+
+#endif //_C_PRIVATE_H
+
+/* vim: set ft=c.doxygen ts=8 sw=2 et cindent: */

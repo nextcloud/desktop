@@ -1,0 +1,1 @@
+../../../shell_integration/MacOSX/NextcloudIntegration/FileProviderExt/Services/ClientCommunicationProtocol.h

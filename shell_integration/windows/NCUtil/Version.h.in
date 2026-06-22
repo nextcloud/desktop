@@ -1,0 +1,14 @@
+#pragma once
+
+// SPDX-FileCopyrightText: 2016 ownCloud GmbH
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+// This is the number that will end up in the version window of the DLLs.
+// Increment this version before committing a new build if you are today's shell_integration build master.
+#cmakedefine NCEXT_BUILD_NUM @NCEXT_BUILD_NUM@
+
+#define STRINGIZE2(s) #s
+#define STRINGIZE(s) STRINGIZE2(s)
+
+#cmakedefine NCEXT_VERSION @NCEXT_VERSION@
+#define NCEXT_VERSION_STRING STRINGIZE(NCEXT_VERSION)
