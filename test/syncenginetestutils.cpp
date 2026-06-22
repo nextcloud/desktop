@@ -463,6 +463,9 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
         xml.writeTextElement(ncUri, QStringLiteral("lock-owner-editor"), fileInfo.lockOwnerId);
         xml.writeTextElement(ncUri, QStringLiteral("lock-time"), QString::number(fileInfo.lockTime));
         xml.writeTextElement(ncUri, QStringLiteral("lock-timeout"), QString::number(fileInfo.lockTimeout));
+        if (!fileInfo.lockToken.isEmpty()) {
+            xml.writeTextElement(ncUri, QStringLiteral("lock-token"), fileInfo.lockToken);
+        }
         xml.writeTextElement(ncUri, QStringLiteral("is-encrypted"), fileInfo.isEncrypted ? QString::number(1) : QString::number(0));
         xml.writeTextElement(ncUri, QStringLiteral("metadata-files-live-photo"), fileInfo.isLivePhoto ? QString::number(1) : QString::number(0));
         buffer.write(fileInfo.extraDavProperties);

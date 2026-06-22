@@ -87,7 +87,7 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
         for (const auto &it : deleted) {
             if (!it.first.startsWith(propagator()->localPath()))
                 continue;
-            if (!deletedDir.isEmpty() && it.first.startsWith(deletedDir))
+            if (isPathInsideDeletedDir(it.first, deletedDir))
                 continue;
             if (it.second) {
                 deletedDir = it.first;
@@ -544,6 +544,8 @@ void PropagateLocalRename::start()
 
             const auto newItem = SyncFileItem::fromSyncJournalFileRecord(oldRecord);
             newItem->_file = newFileNameString;
+            newItem->_lockToken.clear();
+            newItem->_locked = SyncFileItem::LockStatus::UnlockedItem;
             const auto result = propagator()->updateMetadata(*newItem);
             if (!result) {
                 return;

@@ -9,9 +9,11 @@
  */
 
 #include <QtTest>
+#include <QFile>
 #include "common/result.h"
 #include "syncenginetestutils.h"
 #include <syncengine.h>
+#include <propagatorjobs.h>
 
 using namespace OCC;
 
@@ -973,7 +975,6 @@ private slots:
         } else {
             QWARN("Skipping Vfs::WindowsCfApi");
         }
-
 #endif
     }
 
@@ -1397,7 +1398,7 @@ private slots:
         fakeFolder.remoteModifier().insert("FolderB/folderChild/FileA.txt");
         fakeFolder.remoteModifier().mkdir("FolderC");
 
-        const auto fileAFileInfo = fakeFolder.remoteModifier().find("FolderB/folderChild/FileA.txt");
+        const auto fileAFileInfo = fakeFolder.remoteModifier().find("FolderA/folderParent/FileA.txt");
         const auto fileAInFolderAFolderFileId = fileAFileInfo->fileId;
         const auto fileAInFolderAEtag = fileAFileInfo->etag;
         const auto duplicatedFileAFileInfo = fakeFolder.remoteModifier().find("FolderB/folderChild/FileA.txt");
@@ -1422,6 +1423,127 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         qDebug() << fakeFolder.currentLocalState();
+    }
+    // PropagateLocalRename must clear the lock token and locked state.
+    void testLockTokenClearedOnServerInitiatedRename()
+    {
+        FakeFolder fakeFolder{FileInfo{QString{}, {FileInfo{QStringLiteral("D"), {{"file.txt", 64}}}}}};
+        QVERIFY(fakeFolder.syncOnce());
+        seedStaleLock(fakeFolder, "D/file.txt");
+
+        fakeFolder.remoteModifier().rename("D", "D2");
+        QVERIFY(fakeFolder.syncOnce());
+
+        SyncJournalFileRecord moved;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QByteArray("D2/file.txt"), &moved));
+        QVERIFY(moved.isValid());
+        QVERIFY(moved._lockstate._lockToken.isEmpty());
+        QVERIFY(!moved._lockstate._locked);
+
+        const auto oldState = fakeFolder.currentRemoteState();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), oldState);
+    }
+
+    // PropagateRemoteMove must clear the locked state.
+    void testLockedStateClearedOnClientInitiatedRename()
+    {
+        FakeFolder fakeFolder{FileInfo{QString{}, {FileInfo{QStringLiteral("D"), {{"file.txt", 64}}}}}};
+        QVERIFY(fakeFolder.syncOnce());
+        seedStaleLock(fakeFolder, "D/file.txt");
+
+        fakeFolder.localModifier().rename("D", "D2");
+        QVERIFY(fakeFolder.syncOnce());
+
+        SyncJournalFileRecord moved;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QByteArray("D2/file.txt"), &moved));
+        QVERIFY(moved.isValid());
+        QVERIFY(moved._lockstate._lockToken.isEmpty());
+        QVERIFY(!moved._lockstate._locked);
+
+        const auto oldState = fakeFolder.currentRemoteState();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), oldState);
+    }
+
+    // A 412 upload error must schedule rediscovery.
+    void testUpload412SchedulesRediscovery()
+    {
+        FakeFolder fakeFolder{FileInfo{QString{}, {FileInfo{QStringLiteral("D"), {{"file.txt", 64}}}}}};
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.localModifier().appendByte("D/file.txt");
+        fakeFolder.serverErrorPaths().append("D/file.txt", 412);
+        QVERIFY(!fakeFolder.syncOnce()); // Upload fails with 412.
+
+        // The 412 handler must invalidate the parent folder etag so the next sync
+        // rediscovers it instead of trusting the DB.
+        SyncJournalFileRecord parent;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QByteArray("D"), &parent));
+        QVERIFY(parent.isValid());
+        QCOMPARE(parent._etag, QByteArrayLiteral("_invalid_"));
+
+        // After clearing the error, the next sync must succeed.
+        fakeFolder.serverErrorPaths().clear();
+        [[maybe_unused]] const auto blacklistWiped = fakeFolder.syncJournal().wipeErrorBlacklist();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        const auto oldState = fakeFolder.currentRemoteState();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), oldState);
+    }
+
+    // A 412 or 423 upload error must clear the whole lock state, not just the token.
+    void testUpload423ClearsStaleLockState()
+    {
+        // FakeFolder default-constructs with performInitialSync=true, so the DB is
+        // already populated with D/file.txt before seedStaleLock runs.
+        FakeFolder fakeFolder{FileInfo{QString{}, {FileInfo{QStringLiteral("D"), {{"file.txt", 64}}}}}};
+        seedStaleLock(fakeFolder, "D/file.txt");
+        fakeFolder.localModifier().appendByte("D/file.txt");
+        fakeFolder.serverErrorPaths().append("D/file.txt", 423);
+        // 423 → FileLocked in commonErrorHandling (which clears the DB lock), but
+        // FileLocked is swallowed by PropagatorCompositeJob so the overall sync
+        // reports success.
+        QVERIFY(fakeFolder.syncOnce());
+
+        SyncJournalFileRecord cleared;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QByteArray("D/file.txt"), &cleared));
+        QVERIFY(cleared.isValid());
+        QVERIFY(cleared._lockstate._lockToken.isEmpty());
+        QVERIFY(!cleared._lockstate._locked);
+
+        fakeFolder.serverErrorPaths().clear();
+        const auto oldState = fakeFolder.currentLocalState();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentRemoteState(), oldState);
+    }
+
+    // The journal cleanup after a failed local remove must not treat a sibling as a
+    // child: "A/BC" is not inside "A/B".
+    void testDeletedDirPrefixDoesNotMatchSibling()
+    {
+        QVERIFY(isPathInsideDeletedDir(QStringLiteral("A/B/child.txt"), QStringLiteral("A/B")));
+        QVERIFY(isPathInsideDeletedDir(QStringLiteral("A/B/sub/child.txt"), QStringLiteral("A/B")));
+
+        // Sibling sharing the prefix must not be skipped.
+        QVERIFY(!isPathInsideDeletedDir(QStringLiteral("A/BC"), QStringLiteral("A/B")));
+        QVERIFY(!isPathInsideDeletedDir(QStringLiteral("A/BC/child.txt"), QStringLiteral("A/B")));
+
+        // The directory itself is not inside itself, and an empty deletedDir matches nothing.
+        QVERIFY(!isPathInsideDeletedDir(QStringLiteral("A/B"), QStringLiteral("A/B")));
+        QVERIFY(!isPathInsideDeletedDir(QStringLiteral("A/B/child.txt"), QString()));
+    }
+
+private:
+    static void seedStaleLock(FakeFolder &folder, const QByteArray &path)
+    {
+        SyncJournalFileRecord record;
+        QVERIFY(folder.syncJournal().getFileRecord(path, &record));
+        record._lockstate._locked = true;
+        record._lockstate._lockToken = QStringLiteral("stale-token");
+        QVERIFY(folder.syncJournal().setFileRecord(record));
     }
 };
 
