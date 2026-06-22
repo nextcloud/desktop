@@ -967,19 +967,14 @@ private slots:
         QTest::addColumn<Vfs::Mode>("vfsMode");
 
         QTest::newRow("Vfs::Off") << Vfs::Off;
-        if (isVfsPluginAvailable(Vfs::WithSuffix)) {
-            QTest::newRow("Vfs::WithSuffix") << Vfs::WithSuffix;
-        } else {
-            qWarning("Skipping Vfs::WithSuffix");
-        }
+        QTest::newRow("Vfs::WithSuffix") << Vfs::WithSuffix;
 #ifdef Q_OS_WIN32
         if (isVfsPluginAvailable(Vfs::WindowsCfApi))
         {
             QTest::newRow("Vfs::WindowsCfApi") << Vfs::WindowsCfApi;
         } else {
-            qWarning("Skipping Vfs::WindowsCfApi");
+            QWARN("Skipping Vfs::WindowsCfApi");
         }
-
 #endif
     }
 
