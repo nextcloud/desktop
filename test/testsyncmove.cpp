@@ -1439,6 +1439,10 @@ private slots:
         QVERIFY(moved.isValid());
         QVERIFY(moved._lockstate._lockToken.isEmpty());
         QVERIFY(!moved._lockstate._locked);
+
+        const auto oldState = fakeFolder.currentRemoteState();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), oldState);
     }
 
     // PropagateRemoteMove must clear the locked state.
@@ -1456,6 +1460,10 @@ private slots:
         QVERIFY(moved.isValid());
         QVERIFY(moved._lockstate._lockToken.isEmpty());
         QVERIFY(!moved._lockstate._locked);
+
+        const auto oldState = fakeFolder.currentRemoteState();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), oldState);
     }
 
     // A 412 upload error must schedule rediscovery.
@@ -1480,6 +1488,10 @@ private slots:
         [[maybe_unused]] const auto blacklistWiped = fakeFolder.syncJournal().wipeErrorBlacklist();
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        const auto oldState = fakeFolder.currentRemoteState();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), oldState);
     }
 
     // A 412 or 423 upload error must clear the whole lock state, not just the token.
@@ -1501,6 +1513,11 @@ private slots:
         QVERIFY(cleared.isValid());
         QVERIFY(cleared._lockstate._lockToken.isEmpty());
         QVERIFY(!cleared._lockstate._locked);
+
+        fakeFolder.serverErrorPaths().clear();
+        const auto oldState = fakeFolder.currentLocalState();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentRemoteState(), oldState);
     }
 
     // The journal cleanup after a failed local remove must not treat a sibling as a
