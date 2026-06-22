@@ -255,6 +255,37 @@ Window {
                             closeNotificationActionsMenu()
                         }
 
+                        function popupSubmenuForRow(menu, row) {
+                            const menuWidth = Math.max(menu.width, menu.implicitWidth)
+                            const menuHeight = Math.max(menu.height, menu.implicitHeight)
+                            const margin = Style.trayAccountPopupHoverMargin
+                            const rowPosition = row.mapToItem(popupContainer, 0, 0)
+                            const screenLeft = root.screen ? root.screen.virtualX : root.x
+                            const screenTop = root.screen ? root.screen.virtualY : root.y
+                            const screenRight = screenLeft + (root.screen ? root.screen.width : root.width)
+                            const screenBottom = screenTop + (root.screen ? root.screen.height : root.height)
+                            const rightAlignedX = row.width
+                            const leftAlignedX = -menuWidth
+                            const rightAlignedScreenRight = root.x + rowPosition.x + rightAlignedX + menuWidth
+                            const leftAlignedScreenLeft = root.x + rowPosition.x + leftAlignedX
+                            const menuX = rightAlignedScreenRight > screenRight - margin
+                                          && leftAlignedScreenLeft >= screenLeft + margin
+                                          ? leftAlignedX
+                                          : rightAlignedX
+
+                            let menuY = 0
+                            const screenY = root.y + rowPosition.y
+                            const bottomOverflow = screenY + menuHeight - (screenBottom - margin)
+                            if (bottomOverflow > 0) {
+                                menuY -= bottomOverflow
+                            }
+                            if (screenY + menuY < screenTop + margin) {
+                                menuY = screenTop + margin - screenY
+                            }
+
+                            menu.popup(row, menuX, menuY)
+                        }
+
                         MenuItem {
                             id: userStatusHeader
 
@@ -376,7 +407,7 @@ Window {
                                 accountActionsMenu.closeNotificationActionsMenu()
                                 TrayAccountAppsModel.setUserId(accountDelegate.userId)
                                 if (!appsMenu.opened) {
-                                    appsMenu.popup(appsButton, appsButton.width, 0)
+                                    accountActionsMenu.popupSubmenuForRow(appsMenu, appsButton)
                                 }
                             }
 
@@ -547,7 +578,7 @@ Window {
                                         accountActionsMenu.activeNotificationActionsMenu.close()
                                     }
                                     if (!notificationActionsMenu.opened) {
-                                        notificationActionsMenu.popup(notificationRow, notificationRow.width, 0)
+                                        accountActionsMenu.popupSubmenuForRow(notificationActionsMenu, notificationRow)
                                     }
                                     accountActionsMenu.activeNotificationActionsMenu = notificationActionsMenu
                                 }
@@ -804,12 +835,26 @@ Window {
                             font.pixelSize: Style.trayAccountPopupPrimaryFontSize
                             hoverEnabled: false
                             background: Item {}
-                            contentItem: EnforcedPlainTextLabel {
-                                text: noRecentActivitiesRow.text
-                                font: noRecentActivitiesRow.font
-                                color: palette.windowText
-                                opacity: 0.7
-                                elide: Text.ElideRight
+                            contentItem: RowLayout {
+                                spacing: 8
+
+                                Image {
+                                    Layout.preferredWidth: Style.trayAccountPopupSyncIconSize
+                                    Layout.preferredHeight: Style.trayAccountPopupSyncIconSize
+                                    Layout.alignment: Qt.AlignVCenter
+                                    source: "image://svgimage-custom-color/activity.svg/" + palette.windowText
+                                    sourceSize.width: Style.trayAccountPopupSyncIconSize
+                                    sourceSize.height: Style.trayAccountPopupSyncIconSize
+                                }
+
+                                EnforcedPlainTextLabel {
+                                    Layout.fillWidth: true
+                                    text: noRecentActivitiesRow.text
+                                    font: noRecentActivitiesRow.font
+                                    color: palette.windowText
+                                    opacity: 0.7
+                                    elide: Text.ElideRight
+                                }
                             }
 
                             Accessible.role: Accessible.StaticText

@@ -1148,6 +1148,7 @@ static NSView *compactAccountActionsSeparator()
     }
 
     __unsafe_unretained NCTrayPopup *weakOwner = owner;
+    __unsafe_unretained NCNotificationActionsPopup *weakSelf = self;
     [_stack addArrangedSubview:[[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kNotificationActionsPopupWidth]];
     for (const auto &actionVariant : actions) {
         const auto actionData = actionVariant.toMap();
@@ -1170,7 +1171,7 @@ static NSView *compactAccountActionsSeparator()
                                                                action:^{
             if (dismisses) {
                 OCC::UserModel::instance()->dismissNotification(userIndex, activityIndex);
-                [weakOwner closeAccountActionsPopup];
+                [weakSelf orderOut:nil];
                 return;
             }
             if (opensActivities) {
@@ -1392,6 +1393,9 @@ static NSView *compactAccountActionsSeparator()
 
 - (void)populateForUserIndex:(int)userIndex owner:(NCTrayPopup *)owner refreshActivities:(BOOL)refreshActivities
 {
+    const auto preserveTopEdge = [self isVisible];
+    const auto topEdge = NSMaxY(self.frame);
+
     _owner = owner;
     _userIndex = userIndex;
     [_appsPopup orderOut:nil];
@@ -1561,6 +1565,9 @@ static NSView *compactAccountActionsSeparator()
     NSRect frame = self.frame;
     frame.size.width = kAccountActionsPopupWidth;
     frame.size.height = _stack.fittingSize.height;
+    if (preserveTopEdge) {
+        frame.origin.y = topEdge - frame.size.height;
+    }
     [self setFrame:frame display:NO];
     [self invalidateShadow];
 
