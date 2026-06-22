@@ -1681,6 +1681,14 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             return;
         }
 
+        // The move target is in a read-only folder so it can't be uploaded, but its data is safe
+        // at the source (restored below). Emitting remnantReadOnlyFolderDiscovered() schedules this
+        // local copy for deletion at the end of the sync, removing the duplicate. A genuinely new
+        // local file never reaches this move branch and is kept by checkPermissions (#7797/#10099).
+        if (!localEntry.isVirtualFile && item->_instruction == CSYNC_INSTRUCTION_IGNORE) {
+            emit _discoveryData->remnantReadOnlyFolderDiscovered(item);
+        }
+
         // Here we know the new location can't be uploaded: must prevent the source delete.
         // Two cases: either the source item was already processed or not.
         auto wasDeletedOnClient = _discoveryData->findAndCancelDeletedJob(originalPath);
