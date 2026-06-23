@@ -15,6 +15,16 @@ namespace OCC {
 
 void styleNativeTitleBar(QWindow *window, bool hideTitleText)
 {
+    auto backgroundColor = QColor();
+    if (auto *const quickWindow = qobject_cast<QQuickWindow *>(window)) {
+        backgroundColor = quickWindow->color();
+    }
+
+    styleNativeTitleBar(window, hideTitleText, backgroundColor);
+}
+
+void styleNativeTitleBar(QWindow *window, bool hideTitleText, const QColor &backgroundColor)
+{
     if (!window) {
         return;
     }
@@ -37,22 +47,18 @@ void styleNativeTitleBar(QWindow *window, bool hideTitleText)
     nsWindow.titleVisibility = hideTitleText ? NSWindowTitleHidden : NSWindowTitleVisible;
     nsWindow.titlebarSeparatorStyle = NSTitlebarSeparatorStyleNone;
 
-    // Only a QQuickWindow exposes a flat fill colour we must mirror; widget windows already carry a
-    // matching NSWindow background. Interpret it in the display's colour space rather than sRGB:
-    // Qt composites the content without colour management, so an sRGB NSColor would be re-mapped
-    // through the display profile and drift from the body on wide-gamut screens.
-    if (auto *const quickWindow = qobject_cast<QQuickWindow *>(window)) {
-        const QColor color = quickWindow->color();
-        if (color.isValid()) {
-            NSColorSpace *const colorSpace = nsWindow.screen.colorSpace ?: NSColorSpace.sRGBColorSpace;
-            const CGFloat components[] = {
-                static_cast<CGFloat>(color.redF()),
-                static_cast<CGFloat>(color.greenF()),
-                static_cast<CGFloat>(color.blueF()),
-                static_cast<CGFloat>(color.alphaF()),
-            };
-            nsWindow.backgroundColor = [NSColor colorWithColorSpace:colorSpace components:components count:4];
-        }
+    // Interpret the content colour in the display's colour space rather than sRGB: Qt composites
+    // the content without colour management, so an sRGB NSColor would be re-mapped through the
+    // display profile and drift from the body on wide-gamut screens.
+    if (backgroundColor.isValid()) {
+        NSColorSpace *const colorSpace = nsWindow.screen.colorSpace ?: NSColorSpace.sRGBColorSpace;
+        const CGFloat components[] = {
+            static_cast<CGFloat>(backgroundColor.redF()),
+            static_cast<CGFloat>(backgroundColor.greenF()),
+            static_cast<CGFloat>(backgroundColor.blueF()),
+            static_cast<CGFloat>(backgroundColor.alphaF()),
+        };
+        nsWindow.backgroundColor = [NSColor colorWithColorSpace:colorSpace components:components count:4];
     }
 }
 

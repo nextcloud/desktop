@@ -6,6 +6,7 @@
 #ifndef NATIVETITLEBAR_MAC_H
 #define NATIVETITLEBAR_MAC_H
 
+class QColor;
 class QWindow;
 
 namespace OCC {
@@ -14,7 +15,7 @@ namespace OCC {
  * @brief Style a window's native macOS title bar so it blends into the window content.
  *
  * Keeps the native (draggable) title bar but makes its background transparent and removes the
- * separator hairline. For QQuickWindows the NSWindow background is matched to the window's colour
+ * separator hairline. The NSWindow background can be matched to the window content colour
  * (in the display's colour space) so the colour flows seamlessly through the title bar.
  *
  * Safe to call repeatedly — e.g. from a colorChanged signal or a changeEvent — so it survives macOS
@@ -25,6 +26,7 @@ namespace OCC {
  * @ingroup gui
  */
 void styleNativeTitleBar(QWindow *window, bool hideTitleText);
+void styleNativeTitleBar(QWindow *window, bool hideTitleText, const QColor &backgroundColor);
 
 }
 
