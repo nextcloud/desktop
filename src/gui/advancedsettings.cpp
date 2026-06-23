@@ -232,6 +232,22 @@ AdvancedSettings::AdvancedSettings(QWidget *parent)
 {
     _ui->setupUi(this);
 
+    _ui->newFolderLimitLabel->setWordWrap(true);
+    _ui->existingFolderLimitLabel->setWordWrap(true);
+    _ui->stopExistingFolderNowBigSyncLabel->setWordWrap(true);
+    _ui->labelInterval->setWordWrap(true);
+    _ui->newExternalStorageLabel->setWordWrap(true);
+    _ui->moveFilesToTrashLabel->setWordWrap(true);
+    _ui->showInExplorerNavigationPaneLabel->setWordWrap(true);
+
+    _ui->newFolderLimitRow->setStretch(0, 1);
+    _ui->existingFolderLimitRow->setStretch(0, 1);
+    _ui->stopExistingFolderNowBigSyncRow->setStretch(0, 1);
+    _ui->remotePollIntervalRow->setStretch(2, 1);
+    _ui->newExternalStorageRow->setStretch(0, 1);
+    _ui->moveFilesToTrashRow->setStretch(0, 1);
+    _ui->showInExplorerNavigationPaneRow->setStretch(0, 1);
+
     auto *advancedActionsLabel = new QLabel(tr("Advanced"), this);
     advancedActionsLabel->setObjectName(QLatin1String("advancedActionsLabel"));
     _ui->advancedActionsLayout->insertWidget(0, advancedActionsLabel);

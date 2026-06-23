@@ -34,10 +34,12 @@
 #include "syncresult.h"
 #include "ignorelisttablewidget.h"
 #include "networksettings.h"
+#include "tray/usermodel.h"
 #include "ui_mnemonicdialog.h"
 
 #include <cmath>
 
+#include <QColor>
 #include <QDesktopServices>
 #include <QDialog>
 #include <QDialogButtonBox>
@@ -197,11 +199,13 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->verticalLayout_2->removeWidget(_ui->fileProviderPanel);
     _ui->verticalLayout_2->removeWidget(_ui->syncFoldersPanel);
     _ui->verticalLayout_2->removeWidget(_ui->connectionSettingsPanel);
+    _ui->verticalLayout_2->removeWidget(_ui->accountActionsPanel);
     _ui->connectionSettingsPanel->hide();
     _ui->verticalLayout_2->insertWidget(0, _ui->fileProviderPanel);
     _ui->verticalLayout_2->insertWidget(1, _ui->syncFoldersPanel);
     _ui->verticalLayout_2->insertWidget(2, _encryptionPanel);
     _ui->verticalLayout_2->insertWidget(3, _ui->accountStatusPanel);
+    _ui->verticalLayout_2->insertWidget(4, _ui->accountActionsPanel);
 
     _model->setAccountState(_accountState);
     _model->setParent(this);
@@ -217,6 +221,12 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->connectionSettingsPanelContents->setAutoFillBackground(false);
     _ui->connectionSettingsPanelContents->setAttribute(Qt::WA_StyledBackground, false);
     _ui->connectionSettingsPanelContents->setContentsMargins(0, 0, 0, 0);
+    _ui->accountActionsPanelContents->setAutoFillBackground(false);
+    _ui->accountActionsPanelContents->setAttribute(Qt::WA_StyledBackground, false);
+    _ui->accountActionsPanelContents->setContentsMargins(0, 0, 0, 0);
+
+    connect(_ui->_toggleSignInOutButton, &QPushButton::clicked, this, &AccountSettings::slotToggleSignInState);
+    connect(_ui->_removeAccountButton, &QPushButton::clicked, this, &AccountSettings::slotRemoveAccount);
 
     // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
     connect(this, &AccountSettings::styleChanged, delegate, &FolderStatusDelegate::slotStyleChanged);
@@ -420,12 +430,27 @@ QString AccountSettings::selectedFolderAlias() const
 
 void AccountSettings::slotToggleSignInState()
 {
+    if (_accountState->account()->isPublicShareLink()) {
+        return;
+    }
+
     if (_accountState->isSignedOut()) {
         _accountState->account()->resetRejectedCertificates();
         _accountState->signIn();
     } else {
         _accountState->signOutByUi();
     }
+}
+
+void AccountSettings::slotRemoveAccount()
+{
+    const auto userModel = UserModel::instance();
+    const auto userId = userModel->findUserIdForAccount(_accountState);
+    if (userId < 0) {
+        return;
+    }
+
+    userModel->removeAccount(userId);
 }
 
 void AccountSettings::doExpand()
@@ -1507,6 +1532,14 @@ void AccountSettings::slotAccountStateChanged()
                                 .arg(Utility::escape(Theme::instance()->appNameGUI())));
     }
 
+    const auto isPublicShareLink = _accountState->account()->isPublicShareLink();
+    _ui->_toggleSignInOutButton->setVisible(!isPublicShareLink);
+    _ui->_toggleSignInOutButton->setText(_accountState->isSignedOut() ? tr("Log in") : tr("Log out"));
+    _ui->_removeAccountButton->setText(isPublicShareLink ? tr("Leave share") : tr("Remove account"));
+    _ui->accountActionsDescription->setText(isPublicShareLink
+            ? tr("Remove this public share connection from the client.")
+            : tr("Log out, log back in, or remove this account from the client."));
+
     /* Allow to expand the item if the account is connected. */
     _ui->_folderList->setItemsExpandable(state == AccountState::Connected);
 
@@ -1824,6 +1857,12 @@ void AccountSettings::customizeStyle()
     auto msg = _ui->connectLabel->text();
     Theme::replaceLinkColorStringBackgroundAware(msg);
     _ui->connectLabel->setText(msg);
+
+    const auto theme = Theme::instance();
+    const auto destructiveTextColor = theme->destructiveActionTextColor();
+    _ui->_removeAccountButton->setStyleSheet(QString::fromLatin1(
+        "QPushButton#_removeAccountButton:enabled { color: %1; }")
+        .arg(destructiveTextColor.name()));
 }
 
 void AccountSettings::setupE2eEncryption()
