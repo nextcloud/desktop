@@ -497,7 +497,7 @@ Window {
                                         appsMenu.close()
                                         accountActionsMenu.close()
                                         Systray.hideWindow()
-                                        TrayAccountAppsModel.openAppUrl(appUrl)
+                                        TrayAccountAppsModel.openAppUrl(model.appUrl)
                                     }
 
                                     Accessible.role: Accessible.MenuItem
@@ -780,7 +780,7 @@ Window {
                                         EnforcedPlainTextLabel {
                                             Layout.fillWidth: true
                                             text: recentActivityRow.text
-                                            font: recentActivityRow.font
+                                            font.pixelSize: recentActivityRow.font.pixelSize
                                             font.weight: Font.DemiBold
                                             color: palette.windowText
                                             elide: Text.ElideRight
@@ -1039,6 +1039,7 @@ Window {
                         Accessible.name: accountDelegate.accountAlertTitle
                         Accessible.onPressAction: accountAlertBox.clicked()
                     }
+                }
             }
 
             Rectangle {
