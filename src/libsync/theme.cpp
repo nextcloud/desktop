@@ -29,6 +29,10 @@
 #include <windows.h>
 #endif
 
+#ifdef Q_OS_MACOS
+#include "theme_mac.h"
+#endif
+
 #include "nextcloudtheme.h"
 
 #ifdef THEME_INCLUDE
@@ -256,6 +260,11 @@ QString Theme::configFileName() const
 
 QIcon Theme::applicationIcon() const
 {
+#ifdef Q_OS_MACOS
+    if (auto bundleIcon = loadAppIconFromBundle(); !bundleIcon.isNull()) {
+        return bundleIcon;
+    }
+#endif
     return themeIcon(QStringLiteral(APPLICATION_ICON_NAME "-icon"));
 }
 
@@ -871,12 +880,6 @@ QString Theme::customUserID() const
 }
 
 QString Theme::userIDHint() const
-{
-    return QString();
-}
-
-
-QString Theme::wizardUrlPostfix() const
 {
     return QString();
 }

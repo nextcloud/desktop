@@ -4,11 +4,53 @@
 @preconcurrency import FileProvider
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
+import NextcloudFileProviderXPC
 import NextcloudKit
 import RealmSwift
 import TestInterface
 import UniformTypeIdentifiers
 import XCTest
+
+/// Captures the quota XPC calls so tests can verify the extension informs the main app on
+/// quota refusals (per-item + per-folder summary). See nextcloud/desktop#9598.
+final class QuotaCapturingAppProxy: NSObject, AppProtocol {
+    struct ItemCapture: Equatable {
+        let fileName: String
+        let fileBytes: Int64?
+        let availableBytes: Int64?
+        let domainIdentifier: String
+    }
+
+    var capturedItems: [ItemCapture] = []
+    var capturedSummaryDomains: [String] = []
+
+    func presentFileActions(_: String, path _: String, remoteItemPath _: String, withDomainIdentifier _: String) {}
+    func openItemInBrowser(_: String, remoteItemPath _: String, forDomainIdentifier _: String) {}
+    func copyInternalLink(forItem _: String, remoteItemPath _: String, forDomainIdentifier _: String) {}
+    func reportSyncStatus(_: String, forDomainIdentifier _: String) {}
+    func reportItemExcluded(fromSync _: String, fileName _: String, reason _: String, forDomainIdentifier _: String) {}
+
+    func reportInsufficientQuota(
+        forItem _: String,
+        fileName: String,
+        fileBytes: NSNumber?,
+        availableBytes: NSNumber?,
+        forDomainIdentifier domainIdentifier: String
+    ) {
+        capturedItems.append(
+            ItemCapture(
+                fileName: fileName,
+                fileBytes: fileBytes?.int64Value,
+                availableBytes: availableBytes?.int64Value,
+                domainIdentifier: domainIdentifier
+            )
+        )
+    }
+
+    func reportInsufficientQuotaSummary(forDomainIdentifier domainIdentifier: String) {
+        capturedSummaryDomains.append(domainIdentifier)
+    }
+}
 
 final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
@@ -136,6 +178,247 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(createdItem.isUploaded)
     }
 
+    /// Regression test for the same root cause as
+    /// `testModifyFilePreservesLocalContentModificationDateWhenServerTruncates`,
+    /// but on the create path: when the server truncates the upload-response
+    /// mtime to 1 s precision, the returned `Item.creationDate` and
+    /// `Item.contentModificationDate` must reflect the template's sub-second
+    /// values rather than the truncated server response.
+    func testCreateFilePreservesLocalDatesWhenServerTruncates() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.uploadResponseMtimeTruncation = 1.0
+
+        let preciseCreationDate = Date(timeIntervalSince1970: 1_747_564_300.123456)
+        let preciseMtime = Date(timeIntervalSince1970: 1_747_564_337.456789)
+
+        var fileItemMetadata = SendableItemMetadata(
+            ocId: "file-precise-dates", fileName: "file-precise-dates", account: Self.account
+        )
+        fileItemMetadata.classFile = NKTypeClassFile.document.rawValue
+        fileItemMetadata.creationDate = preciseCreationDate
+        fileItemMetadata.date = preciseMtime
+
+        let tempUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("file-precise-dates")
+        try Data("Hello, precise dates!".utf8).write(to: tempUrl)
+
+        let fileItemTemplate = Item(
+            metadata: fileItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let (createdItemMaybe, error) = await Item.create(
+            basedOn: fileItemTemplate,
+            contents: tempUrl,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        XCTAssertNil(error)
+        let createdItem = try XCTUnwrap(createdItemMaybe)
+
+        XCTAssertEqual(createdItem.creationDate, preciseCreationDate)
+        XCTAssertEqual(createdItem.contentModificationDate, preciseMtime)
+
+        let truncatedMtime = Date(
+            timeIntervalSince1970: preciseMtime.timeIntervalSince1970.rounded(.down)
+        )
+        XCTAssertNotEqual(truncatedMtime, preciseMtime)
+        XCTAssertNotEqual(createdItem.contentModificationDate, truncatedMtime)
+
+        let dbItem = try XCTUnwrap(
+            Self.dbManager.itemMetadata(ocId: createdItem.itemIdentifier.rawValue)
+        )
+        XCTAssertEqual(dbItem.creationDate, preciseCreationDate)
+        XCTAssertEqual(dbItem.date, preciseMtime)
+    }
+
+    /// Defensive coverage for the secondary fallback: if the system passes a
+    /// template whose `creationDate` / `contentModificationDate` are nil (an
+    /// `NSFileProviderItem` not built from one of our `Item` instances), the
+    /// fix must fall through to the server's response date rather than
+    /// silently substituting `Date()` (the previous behaviour, which would
+    /// anchor the new metadata to the current wall clock for no good reason).
+    func testCreateFileFallsBackToServerDateWhenTemplateHasNilDates() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        let template: NSFileProviderItem = MockFileProviderItem(
+            identifier: .init("file-nil-dates"),
+            filename: "file-nil-dates",
+            isUploaded: false
+        )
+        // MockFileProviderItem doesn't declare creationDate / contentModificationDate, so
+        // both flow through the @objc-optional protocol's default-nil. That's exactly the
+        // shape this test wants: an item from outside our `Item` type where the system
+        // simply didn't furnish those fields.
+        XCTAssertNil(template.creationDate ?? nil, "Test setup expects template.creationDate to be nil")
+        XCTAssertNil(template.contentModificationDate ?? nil, "Test setup expects template.contentModificationDate to be nil")
+
+        let tempUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("file-nil-dates")
+        try Data("Hello, nil dates!".utf8).write(to: tempUrl)
+
+        let beforeUpload = Date()
+        let (createdItemMaybe, error) = await Item.create(
+            basedOn: template,
+            contents: tempUrl,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let afterUpload = Date()
+        XCTAssertNil(error)
+        let createdItem = try XCTUnwrap(createdItemMaybe)
+
+        // The mock echoes the (defaulted-to-now) mtime back as the response,
+        // so the resulting dates should equal the server-derived value rather
+        // than a second invocation of `Date()` taken after the response. We
+        // can't pin to an exact value (the mock initialises with `Date()` when
+        // the template hands it nil), but it must land within the upload
+        // window — and `creationDate` and `contentModificationDate` must agree
+        // with each other.
+        let creationDate = try XCTUnwrap(createdItem.creationDate)
+        let modificationDate = try XCTUnwrap(createdItem.contentModificationDate)
+        XCTAssertEqual(creationDate, modificationDate, "Both dates should derive from the same server response value")
+        XCTAssertGreaterThanOrEqual(creationDate, beforeUpload)
+        XCTAssertLessThanOrEqual(creationDate, afterUpload)
+    }
+
+    /// Pre-flight quota gate: when the parent's `quotaAvailableBytes` is below the local
+    /// file size, refuse the upload up-front with `.insufficientQuota` and never call
+    /// the remote upload endpoint. See nextcloud/desktop#9598.
+    func testCreateFileBlockedByInsufficientQuota() async throws {
+        rootItem.quotaAvailableBytes = 4 // less than the file we're about to upload
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        var fileItemMetadata = SendableItemMetadata(
+            ocId: "file-id", fileName: "file", account: Self.account
+        )
+        fileItemMetadata.classFile = NKTypeClassFile.document.rawValue
+
+        let tempUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("quota-blocked-create")
+        try Data("Hello world".utf8).write(to: tempUrl) // 11 bytes > 4 bytes available
+
+        let fileItemTemplate = Item(
+            metadata: fileItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let (createdItem, error) = await Item.create(
+            basedOn: fileItemTemplate,
+            contents: tempUrl,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertNil(createdItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .insufficientQuota)
+        // No upload was attempted: the file did not appear under the remote root.
+        XCTAssertNil(rootItem.children.first { $0.name == fileItemMetadata.fileName })
+    }
+
+    /// When an upload is refused by the pre-flight quota gate, the extension must inform the
+    /// main app via XPC so it can surface a per-item activity entry plus a per-folder summary
+    /// entry with a "Retry all uploads" button. See nextcloud/desktop#9598.
+    func testCreateFileRefusedByQuotaReportsToMainApp() async throws {
+        rootItem.quotaAvailableBytes = 4
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        var fileItemMetadata = SendableItemMetadata(
+            ocId: "file-id", fileName: "file-quota-report", account: Self.account
+        )
+        fileItemMetadata.classFile = NKTypeClassFile.document.rawValue
+
+        let tempUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("quota-report-create")
+        try Data("Hello world".utf8).write(to: tempUrl) // 11 bytes > 4 bytes available
+
+        let domain = NSFileProviderDomain(
+            identifier: NSFileProviderDomainIdentifier("test-domain-create"),
+            displayName: "test"
+        )
+        let proxy = QuotaCapturingAppProxy()
+
+        let fileItemTemplate = Item(
+            metadata: fileItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let (createdItem, error) = await Item.create(
+            basedOn: fileItemTemplate,
+            contents: tempUrl,
+            domain: domain,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            appProxy: proxy,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertNil(createdItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .insufficientQuota)
+
+        XCTAssertEqual(proxy.capturedItems.count, 1)
+        let itemCapture = try XCTUnwrap(proxy.capturedItems.first)
+        XCTAssertEqual(itemCapture.fileName, "file-quota-report")
+        XCTAssertEqual(itemCapture.domainIdentifier, "test-domain-create")
+        XCTAssertEqual(itemCapture.fileBytes, 11)
+
+        XCTAssertEqual(proxy.capturedSummaryDomains, ["test-domain-create"])
+    }
+
+    /// Negative `quotaAvailableBytes` (the default for accounts with no quota set) must
+    /// not trigger the new pre-flight gate; the upload proceeds normally.
+    func testCreateFileWithUnknownQuotaProceeds() async throws {
+        XCTAssertEqual(rootItem.quotaAvailableBytes, -1) // default sentinel
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        var fileItemMetadata = SendableItemMetadata(
+            ocId: "file-id", fileName: "file-no-quota", account: Self.account
+        )
+        fileItemMetadata.classFile = NKTypeClassFile.document.rawValue
+
+        let tempUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("quota-unknown-create")
+        try Data("Hello world".utf8).write(to: tempUrl)
+
+        let fileItemTemplate = Item(
+            metadata: fileItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let (createdItemMaybe, error) = await Item.create(
+            basedOn: fileItemTemplate,
+            contents: tempUrl,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertNil(error)
+        let createdItem = try XCTUnwrap(createdItemMaybe)
+        XCTAssertNotNil(rootItem.children.first { $0.identifier == createdItem.itemIdentifier.rawValue })
+    }
+
     func testCreateFileIntoFolder() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
@@ -225,13 +508,17 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(parentDbItem.uploaded)
     }
 
-    func testCreateBundle() async throws {
+    /// Verify that bundles are refused at the file provider boundary with `.excludedFromSync`
+    /// and that nothing is uploaded to the (mock) server. Replaces the previous
+    /// `testCreateBundle` test, which validated the now-removed recursive-mirror code path.
+    /// See https://github.com/nextcloud/desktop/issues/9827.
+    func testCreateBundleIsExcluded() async {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db)
 
         let keynoteBundleFilename = "test.key"
-
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
         var bundleItemMetadata = SendableItemMetadata(
             ocId: "keynotebundleid", fileName: keynoteBundleFilename, account: Self.account
         )
@@ -239,66 +526,6 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         bundleItemMetadata.serverUrl = Self.account.davFilesUrl
         bundleItemMetadata.classFile = NKTypeClassFile.directory.rawValue
         bundleItemMetadata.contentType = UTType.bundle.identifier
-
-        let fm = FileManager.default
-        let tempUrl = fm.temporaryDirectory.appendingPathComponent(keynoteBundleFilename)
-        try fm.createDirectory(at: tempUrl, withIntermediateDirectories: true, attributes: nil)
-        let keynoteIndexZipPath = tempUrl.appendingPathComponent("Index.zip")
-        try Data("This is a fake zip!".utf8).write(to: keynoteIndexZipPath)
-        let keynoteDataDir = tempUrl.appendingPathComponent("Data")
-        try fm.createDirectory(
-            at: keynoteDataDir, withIntermediateDirectories: true, attributes: nil
-        )
-        let keynoteMetadataDir = tempUrl.appendingPathComponent("Metadata")
-        try fm.createDirectory(
-            at: keynoteMetadataDir, withIntermediateDirectories: true, attributes: nil
-        )
-        let keynoteDocIdentifierPath =
-            keynoteMetadataDir.appendingPathComponent("DocumentIdentifier")
-        try Data("8B0C6C1F-4DA4-4DE8-8510-0C91FDCE7D01".utf8).write(to: keynoteDocIdentifierPath)
-        let keynoteBuildVersionPlistPath =
-            keynoteMetadataDir.appendingPathComponent("BuildVersionHistory.plist")
-        try Data(
-            """
-            <?xml version="1.0" encoding="UTF-8"?>
-            <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-            <plist version="1.0">
-            <array>
-                <string>Template: 35_DynamicWavesDark (14.1)</string>
-                <string>M14.1-7040.0.73-4</string>
-            </array>
-            </plist>
-            """
-            .utf8
-        ).write(to: keynoteBuildVersionPlistPath)
-        let keynotePropertiesPlistPath = keynoteMetadataDir.appendingPathComponent("Properties.plist")
-        try Data(
-            """
-            <?xml version="1.0" encoding="UTF-8"?>
-            <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-            <plist version="1.0">
-            <dict>
-                <key>revision</key>
-                <string>0::5B42B84E-6F62-4E53-9E71-7DD24FA7E2EA</string>
-                <key>documentUUID</key>
-                <string>8B0C6C1F-4DA4-4DE8-8510-0C91FDCE7D01</string>
-                <key>versionUUID</key>
-                <string>5B42B84E-6F62-4E53-9E71-7DD24FA7E2EA</string>
-                <key>privateUUID</key>
-                <string>637C846B-6146-40C2-8EF8-26996E598E49</string>
-                <key>isMultiPage</key>
-                <false/>
-                <key>stableDocumentUUID</key>
-                <string>8B0C6C1F-4DA4-4DE8-8510-0C91FDCE7D01</string>
-                <key>fileFormatVersion</key>
-                <string>14.1.1</string>
-                <key>shareUUID</key>
-                <string>8B0C6C1F-4DA4-4DE8-8510-0C91FDCE7D01</string>
-            </dict>
-            </plist>
-            """
-            .utf8
-        ).write(to: keynotePropertiesPlistPath)
 
         let bundleItemTemplate = Item(
             metadata: bundleItemMetadata,
@@ -308,10 +535,9 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             dbManager: Self.dbManager
         )
 
-        // TODO: Add fail test with no contents
-        let (createdBundleItemMaybe, bundleError) = await Item.create(
+        let (item, error) = await Item.create(
             basedOn: bundleItemTemplate,
-            contents: tempUrl,
+            contents: nil,
             account: Self.account,
             remoteInterface: remoteInterface,
             progress: Progress(),
@@ -319,57 +545,52 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock()
         )
 
-        let createdBundleItem = try XCTUnwrap(createdBundleItemMaybe)
+        // The exclusion path returns a placeholder item plus the system-recognised exclusion error.
+        XCTAssertNotNil(item)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .excludedFromSync)
 
-        XCTAssertNil(bundleError)
-        XCTAssertNotNil(createdBundleItem)
-        XCTAssertEqual(createdBundleItem.metadata.fileName, bundleItemMetadata.fileName)
-        XCTAssertEqual(createdBundleItem.metadata.directory, true)
-        XCTAssertTrue(createdBundleItem.isDownloaded)
-        XCTAssertTrue(createdBundleItem.isUploaded)
+        // Nothing should have reached the (mock) server.
+        XCTAssertNil(rootItem.children.first { $0.name == keynoteBundleFilename })
+    }
 
-        // Below: this is an upstream issue (which we should fix)
-        // XCTAssertTrue(createdBundleItem.contentType.conforms(to: .bundle))
+    /// Same expectation for `.app` (`com.apple.application-bundle`) — historically the most
+    /// problematic bundle type for our recursive-mirror approach because of internal symlinks.
+    func testCreateDotAppIsExcluded() async {
+        let db = Self.dbManager.ncDatabase()
+        debugPrint(db)
 
-        XCTAssertNotNil(rootItem.children.first { $0.name == bundleItemMetadata.name })
-        XCTAssertNotNil(
-            rootItem.children.first { $0.identifier == createdBundleItem.itemIdentifier.rawValue }
+        let appFilename = "Test.app"
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        var appMetadata = SendableItemMetadata(
+            ocId: "test-app-id", fileName: appFilename, account: Self.account
         )
-        let remoteItem = rootItem.children.first { $0.name == bundleItemMetadata.name }
-        XCTAssertTrue(remoteItem?.directory ?? false)
+        appMetadata.directory = true
+        appMetadata.serverUrl = Self.account.davFilesUrl
+        appMetadata.classFile = NKTypeClassFile.directory.rawValue
+        appMetadata.contentType = UTType.applicationBundle.identifier
 
-        let dbItem = try XCTUnwrap(
-            Self.dbManager.itemMetadata(ocId: createdBundleItem.itemIdentifier.rawValue)
+        let appItemTemplate = Item(
+            metadata: appMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
-        XCTAssertEqual(dbItem.fileName, bundleItemMetadata.fileName)
-        XCTAssertEqual(dbItem.fileNameView, bundleItemMetadata.fileNameView)
-        XCTAssertEqual(dbItem.directory, bundleItemMetadata.directory)
-        XCTAssertEqual(dbItem.serverUrl, bundleItemMetadata.serverUrl)
-        XCTAssertEqual(dbItem.ocId, createdBundleItem.itemIdentifier.rawValue)
-        XCTAssertEqual(
-            dbItem.etag, String(data: createdBundleItem.itemVersion.contentVersion, encoding: .utf8)
+
+        let (item, error) = await Item.create(
+            basedOn: appItemTemplate,
+            contents: nil,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
         )
-        XCTAssertTrue(dbItem.downloaded)
-        XCTAssertTrue(dbItem.uploaded)
 
-        let remoteBundleItem = rootItem.children.first { $0.name == keynoteBundleFilename }
-        XCTAssertNotNil(remoteBundleItem)
-        XCTAssertEqual(remoteBundleItem?.children.count, 3)
-
-        XCTAssertNotNil(remoteBundleItem?.children.first { $0.name == "Data" })
-        XCTAssertNotNil(remoteBundleItem?.children.first { $0.name == "Index.zip" })
-
-        let remoteMetadataItem = remoteBundleItem?.children.first { $0.name == "Metadata" }
-        XCTAssertNotNil(remoteMetadataItem)
-        XCTAssertEqual(remoteMetadataItem?.children.count, 3)
-        XCTAssertNotNil(remoteMetadataItem?.children.first { $0.name == "DocumentIdentifier" })
-        XCTAssertNotNil(remoteMetadataItem?.children.first { $0.name == "Properties.plist" })
-        XCTAssertNotNil(remoteMetadataItem?.children.first {
-            $0.name == "BuildVersionHistory.plist"
-        })
-
-        let childrenCount = Self.dbManager.childItemCount(directoryMetadata: dbItem)
-        XCTAssertEqual(childrenCount, 6) // Ensure all children recorded to database
+        XCTAssertNotNil(item)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .excludedFromSync)
+        XCTAssertNil(rootItem.children.first { $0.name == appFilename })
     }
 
     func testCreateFileChunked() async throws {
@@ -558,7 +779,6 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(createdItem?.isUploaded, false)
         XCTAssertEqual(createdItem?.isDownloaded, true)
         XCTAssertTrue(rootItem.children.isEmpty)
-        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: metadata.ocId))
     }
 
     func testCreateLockFileTriggersRemoteLockInsteadOfUpload() async {
@@ -721,5 +941,284 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(unwrappedError, NSFileProviderError(.excludedFromSync))
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: lockFileMetadata.ocId))
         XCTAssertFalse(targetRemote.locked)
+    }
+
+    ///
+    /// A new file created in a folder the user marked "Always keep downloaded"
+    /// must inherit that flag so the Finder overlay decoration matches its
+    /// siblings; see nextcloud/desktop #10018.
+    ///
+    func testCreateFileInheritsKeepDownloadedFromPinnedParentFolder() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        var folderItemMetadata = SendableItemMetadata(
+            ocId: "pinned-folder-id", fileName: "pinned-folder", account: Self.account
+        )
+        folderItemMetadata.directory = true
+        folderItemMetadata.classFile = NKTypeClassFile.directory.rawValue
+        folderItemMetadata.serverUrl = Self.account.davFilesUrl
+
+        let folderItemTemplate = Item(
+            metadata: folderItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let (createdFolderItemMaybe, folderError) = await Item.create(
+            basedOn: folderItemTemplate,
+            contents: nil,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        XCTAssertNil(folderError)
+        let createdFolderItem = try XCTUnwrap(createdFolderItemMaybe)
+
+        // Mimic the user toggling "Always keep downloaded" on the parent folder.
+        _ = try Self.dbManager.set(keepDownloaded: true, for: createdFolderItem.metadata)
+
+        var fileItemMetadata = SendableItemMetadata(
+            ocId: "child-file-id", fileName: "child.md", account: Self.account
+        )
+        fileItemMetadata.classFile = NKTypeClassFile.document.rawValue
+        fileItemMetadata.serverUrl = Self.account.davFilesUrl + "/pinned-folder"
+
+        let fileItemTemplate = Item(
+            metadata: fileItemMetadata,
+            parentItemIdentifier: createdFolderItem.itemIdentifier,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("child.md")
+        try Data("Hello world".utf8).write(to: tempUrl)
+
+        let (createdFileItemMaybe, fileError) = await Item.create(
+            basedOn: fileItemTemplate,
+            contents: tempUrl,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        XCTAssertNil(fileError)
+        let createdFileItem = try XCTUnwrap(createdFileItemMaybe)
+
+        XCTAssertTrue(createdFileItem.metadata.keepDownloaded)
+        XCTAssertEqual(createdFileItem.contentPolicy, .downloadEagerlyAndKeepDownloaded)
+        let decoration = try XCTUnwrap(createdFileItem.decorations?.first)
+        XCTAssertTrue(decoration.rawValue.hasSuffix(".keep-downloaded"))
+
+        let dbItem = try XCTUnwrap(
+            Self.dbManager.itemMetadata(ocId: createdFileItem.itemIdentifier.rawValue)
+        )
+        XCTAssertTrue(dbItem.keepDownloaded)
+    }
+
+    ///
+    /// Control case for ``testCreateFileInheritsKeepDownloadedFromPinnedParentFolder``:
+    /// when the parent is not pinned, the new file must not be pinned either.
+    ///
+    func testCreateFileDoesNotInheritKeepDownloadedWhenParentNotPinned() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        var folderItemMetadata = SendableItemMetadata(
+            ocId: "unpinned-folder-id", fileName: "unpinned-folder", account: Self.account
+        )
+        folderItemMetadata.directory = true
+        folderItemMetadata.classFile = NKTypeClassFile.directory.rawValue
+        folderItemMetadata.serverUrl = Self.account.davFilesUrl
+
+        let folderItemTemplate = Item(
+            metadata: folderItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let (createdFolderItemMaybe, folderError) = await Item.create(
+            basedOn: folderItemTemplate,
+            contents: nil,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        XCTAssertNil(folderError)
+        let createdFolderItem = try XCTUnwrap(createdFolderItemMaybe)
+        XCTAssertFalse(createdFolderItem.metadata.keepDownloaded)
+
+        var fileItemMetadata = SendableItemMetadata(
+            ocId: "unpinned-child-file-id", fileName: "child.md", account: Self.account
+        )
+        fileItemMetadata.classFile = NKTypeClassFile.document.rawValue
+        fileItemMetadata.serverUrl = Self.account.davFilesUrl + "/unpinned-folder"
+
+        let fileItemTemplate = Item(
+            metadata: fileItemMetadata,
+            parentItemIdentifier: createdFolderItem.itemIdentifier,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let tempUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("child-unpinned.md")
+        try Data("Hello world".utf8).write(to: tempUrl)
+
+        let (createdFileItemMaybe, fileError) = await Item.create(
+            basedOn: fileItemTemplate,
+            contents: tempUrl,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        XCTAssertNil(fileError)
+        let createdFileItem = try XCTUnwrap(createdFileItemMaybe)
+
+        XCTAssertFalse(createdFileItem.metadata.keepDownloaded)
+        XCTAssertEqual(createdFileItem.contentPolicy, .inherited)
+        XCTAssertNil(createdFileItem.decorations)
+    }
+
+    ///
+    /// The same inheritance rule applies when the newly-created item is itself
+    /// a folder — its descendants will derive their flag from it once the user
+    /// drops files inside.
+    ///
+    func testCreateFolderInheritsKeepDownloadedFromPinnedParentFolder() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        var parentMetadata = SendableItemMetadata(
+            ocId: "pinned-parent-id", fileName: "pinned-parent", account: Self.account
+        )
+        parentMetadata.directory = true
+        parentMetadata.classFile = NKTypeClassFile.directory.rawValue
+        parentMetadata.serverUrl = Self.account.davFilesUrl
+
+        let parentTemplate = Item(
+            metadata: parentMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let (createdParentMaybe, parentError) = await Item.create(
+            basedOn: parentTemplate,
+            contents: nil,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        XCTAssertNil(parentError)
+        let createdParent = try XCTUnwrap(createdParentMaybe)
+
+        _ = try Self.dbManager.set(keepDownloaded: true, for: createdParent.metadata)
+
+        var childFolderMetadata = SendableItemMetadata(
+            ocId: "child-folder-id", fileName: "child-folder", account: Self.account
+        )
+        childFolderMetadata.directory = true
+        childFolderMetadata.classFile = NKTypeClassFile.directory.rawValue
+        childFolderMetadata.serverUrl = Self.account.davFilesUrl + "/pinned-parent"
+
+        let childFolderTemplate = Item(
+            metadata: childFolderMetadata,
+            parentItemIdentifier: createdParent.itemIdentifier,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let (createdChildFolderMaybe, childFolderError) = await Item.create(
+            basedOn: childFolderTemplate,
+            contents: nil,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        XCTAssertNil(childFolderError)
+        let createdChildFolder = try XCTUnwrap(createdChildFolderMaybe)
+
+        XCTAssertTrue(createdChildFolder.metadata.keepDownloaded)
+        XCTAssertEqual(createdChildFolder.contentPolicy, .downloadEagerlyAndKeepDownloaded)
+        let decoration = try XCTUnwrap(createdChildFolder.decorations?.first)
+        XCTAssertTrue(decoration.rawValue.hasSuffix(".keep-downloaded"))
+
+        let dbItem = try XCTUnwrap(
+            Self.dbManager.itemMetadata(ocId: createdChildFolder.itemIdentifier.rawValue)
+        )
+        XCTAssertTrue(dbItem.keepDownloaded)
+    }
+
+    ///
+    /// If the root container itself has been pinned (the user marked "Always
+    /// keep downloaded" on the domain's root), top-level new items must also
+    /// inherit the flag — this exercises the rootContainer branch of the
+    /// parent-resolution code path.
+    ///
+    func testCreateFileInheritsKeepDownloadedFromPinnedRootContainer() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        // Seed the root-container row with `keepDownloaded = true`. The
+        // ``Item.create`` parent-resolution looks this up via
+        // ``FilesDatabaseManager.itemMetadata(ocId:)`` keyed on
+        // ``NSFileProviderItemIdentifier.rootContainer``.
+        var rootContainerMetadata = SendableItemMetadata(
+            ocId: NSFileProviderItemIdentifier.rootContainer.rawValue,
+            fileName: "/",
+            account: Self.account
+        )
+        rootContainerMetadata.directory = true
+        rootContainerMetadata.classFile = NKTypeClassFile.directory.rawValue
+        rootContainerMetadata.serverUrl = Self.account.davFilesUrl
+        rootContainerMetadata.keepDownloaded = true
+        Self.dbManager.addItemMetadata(rootContainerMetadata)
+
+        var fileItemMetadata = SendableItemMetadata(
+            ocId: "top-level-file-id", fileName: "top-level.md", account: Self.account
+        )
+        fileItemMetadata.classFile = NKTypeClassFile.document.rawValue
+        fileItemMetadata.serverUrl = Self.account.davFilesUrl
+
+        let fileItemTemplate = Item(
+            metadata: fileItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let tempUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("top-level.md")
+        try Data("Hello world".utf8).write(to: tempUrl)
+
+        let (createdFileItemMaybe, fileError) = await Item.create(
+            basedOn: fileItemTemplate,
+            contents: tempUrl,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        XCTAssertNil(fileError)
+        let createdFileItem = try XCTUnwrap(createdFileItemMaybe)
+
+        XCTAssertTrue(createdFileItem.metadata.keepDownloaded)
+        XCTAssertEqual(createdFileItem.contentPolicy, .downloadEagerlyAndKeepDownloaded)
+        let decoration = try XCTUnwrap(createdFileItem.decorations?.first)
+        XCTAssertTrue(decoration.rawValue.hasSuffix(".keep-downloaded"))
     }
 }

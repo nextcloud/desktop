@@ -536,6 +536,12 @@ int VfsCfApi::finalizeNewPlaceholders(const QList<PlaceholderCreateInfo> &newEnt
     const auto &journal = params().journal;
 
     for (const auto &entryInfo : newEntries) {
+        if (entryInfo.creationStatus == VirtualItemCreationStatus::Error ||
+            entryInfo.creationStatus == VirtualItemCreationStatus::Unknown) {
+            qCWarning(lcCfApi()) << "do not create DB record for virtual item not created" << entryInfo.fullPath;
+            continue;
+        }
+
         auto folderRecord = SyncJournalFileRecord{};
 
         folderRecord._checksumHeader = entryInfo.parsedProperties.checksumHeader;

@@ -19,7 +19,8 @@
     <key>CFBundleExecutable</key>
     <string>@APPLICATION_NAME@</string>
     <key>CFBundleIconFile</key>
-    <string>@APPLICATION_ICON_NAME@.icns</string>
+    <string>@MACOSX_BUNDLE_ICON_FILE@</string>
+    @MACOSX_BUNDLE_ICON_NAME_BLOCK@
     <key>CFBundleIdentifier</key>
     <string>@APPLICATION_REV_DOMAIN@</string>
     <key>CFBundleInfoDictionaryVersion</key>
@@ -46,6 +47,8 @@
     <string>dsa_pub.pem</string>
     <key>SUPublicEDKey</key>
     <string>c3RcfDWDayvsYSZW8FhZN1UOJhvPVN30zleb4zOqbtU=</string>
+    <key>SUEnableInstallerLauncherService</key>
+    <true/>
     <key>UTExportedTypeDeclarations</key>
     <array>
         <dict>
@@ -62,6 +65,18 @@
             <array>
                 <string>public.data</string>
             </array>
+        </dict>
+        <dict>
+            <key>UTTypeIdentifier</key>
+            <string>@APPLICATION_REV_DOMAIN@.decoration.keep-downloaded</string>
+            <key>UTTypeDescription</key>
+            <string>Always keep downloaded</string>
+            <key>UTTypeConformsTo</key>
+            <array>
+                <string>com.apple.icon-decoration.badge</string>
+            </array>
+            <key>UTTypeIconFile</key>
+            <string>KeepDownloaded.icns</string>
         </dict>
     </array>
     <key>CFBundleDocumentTypes</key>

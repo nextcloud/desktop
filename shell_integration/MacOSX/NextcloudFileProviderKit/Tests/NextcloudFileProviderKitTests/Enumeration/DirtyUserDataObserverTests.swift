@@ -6,7 +6,6 @@ import FileProvider
 import NextcloudFileProviderKitMocks
 import Testing
 
-@Suite("DirtyUserDataObserver Tests")
 struct DirtyUserDataObserverTests {
     let mockLog: FileProviderLogMock
 

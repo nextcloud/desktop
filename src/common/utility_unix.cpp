@@ -133,6 +133,11 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName,
     }
 }
 
+bool Utility::launchOnStartupRequiresApproval()
+{
+    return false;
+}
+
 bool Utility::hasDarkSystray()
 {
     return true;

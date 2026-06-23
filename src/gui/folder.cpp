@@ -1001,6 +1001,11 @@ bool Folder::pathIsIgnored(const QString &path) const
         return true;
     }
 
+    if (OCC::FileSystem::isFileLocked(path, OCC::FileSystem::LockMode::SharedRead)) {
+        qCDebug(lcFolder) << path << "is locked" << "skip syncing it";
+        return true;
+    }
+
 #ifndef OWNCLOUD_TEST
     if (isFileExcludedAbsolute(path) && !Utility::isConflictFile(path)) {
         qCDebug(lcFolder) << "* Ignoring file" << path;

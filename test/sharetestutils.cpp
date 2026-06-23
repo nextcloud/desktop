@@ -340,10 +340,10 @@ QNetworkReply *ShareTestHelper::handleSharePutOperation(const QNetworkAccessMana
                 auto requestKey = requestSplit.first();
                 auto requestValue = requestSplit.last();
 
-                     // We send expireDate without time but the server returns with time at 00:00:00
+                     // We send expireDate without time but the server returns with time at 23:59:59
                 if (requestKey == "expireDate") {
                     requestKey = "expiration";
-                    requestValue.append(" 00:00:00");
+                    requestValue.append(" 23:59:59");
                 }
 
                 shareObject.insert(QString(requestKey), QString(requestValue));

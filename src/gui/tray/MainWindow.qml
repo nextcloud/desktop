@@ -500,7 +500,7 @@ ApplicationWindow {
                 Layout.fillWidth: true
                 Layout.minimumWidth: 0
                 Layout.fillHeight: true
-                placeholderText: qsTr("Ask Assistant…")
+                placeholderText: qsTr("Ask Assistant\u00A0…")
                 enabled: UserModel.currentUser.isConnected && !UserModel.currentUser.assistantRequestInProgress
                 onAccepted: assistantInputContainer.submitQuestion()
 

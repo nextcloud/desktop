@@ -266,6 +266,7 @@ bool SparkleUpdater::autoUpdaterAllowed()
     // See https://github.com/owncloud/client/issues/2931
     NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
     NSString *expectedPath = [NSString stringWithFormat:@"/Applications/%@", [bundlePath lastPathComponent]];
+
     if (![expectedPath isEqualTo:bundlePath]) {
         qCWarning(lcUpdater) << "We are not in /Applications, won't check for update!";
         return false;
@@ -289,13 +290,25 @@ void SparkleUpdater::checkForUpdate()
 
 void SparkleUpdater::backgroundCheckForUpdate()
 {
-    const ConfigFile config;
-    if (autoUpdaterAllowed() && config.autoUpdateCheck()) {
-        qCInfo(OCC::lcUpdater) << "launching background check";
-        [_interface->updaterController.updater checkForUpdatesInBackground];
-    } else {
-        qCInfo(OCC::lcUpdater) << "not launching background check, auto updater not allowed or update check skipped in config";
+    if (!autoUpdaterAllowed()) {
+        qCInfo(OCC::lcUpdater) << "not launching background check, auto updater not allowed";
+        return;
     }
+
+    const ConfigFile config;
+
+    if (!config.autoUpdateCheck()) {
+        qCInfo(OCC::lcUpdater) << "not launching background check, update check skipped in config";
+        return;
+    }
+
+    if (!_interface->updaterController.updater.automaticallyChecksForUpdates) {
+        qCInfo(OCC::lcUpdater) << "not launching background check, automaticallyChecksForUpdates is disabled";
+        return;
+    }
+
+    qCInfo(OCC::lcUpdater) << "launching background check";
+    [_interface->updaterController.updater checkForUpdatesInBackground];
 }
 
 QString SparkleUpdater::statusString() const

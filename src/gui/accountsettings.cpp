@@ -33,13 +33,13 @@
 #include "encryptfolderjob.h"
 #include "syncresult.h"
 #include "ignorelisttablewidget.h"
-#include "wizard/owncloudwizard.h"
 #include "networksettings.h"
 #include "ui_mnemonicdialog.h"
 
 #include <cmath>
 
 #include <QDesktopServices>
+#include <QDialog>
 #include <QDialogButtonBox>
 #include <QDir>
 #include <QListWidgetItem>
@@ -57,16 +57,9 @@
 #include <QPushButton>
 #include <QStyle>
 #include <QFileDialog>
+#include <QFrame>
 
 using namespace Qt::StringLiterals;
-
-#ifdef Q_OS_WIN
-    // "light" looks too bright on dark mode on Windows only
-    #define BACKGROUND_PALETTE "alternate-base"
-#else
-    // ...and "alternate-base" looks too bright on macOS only.  On Linux/Plasma either one looked fine ...
-    #define BACKGROUND_PALETTE "light"
-#endif
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "macOS/fileprovider.h"
@@ -185,29 +178,54 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 {
     _ui->setupUi(this);
 
+    _encryptionPanel = new QFrame(this);
+    _encryptionPanel->setObjectName(QLatin1String("encryptionPanel"));
+    _encryptionPanel->setFrameShape(QFrame::NoFrame);
+    _encryptionPanel->setAttribute(Qt::WA_StyledBackground, true);
+    auto *encryptionPanelLayout = new QVBoxLayout(_encryptionPanel);
+    encryptionPanelLayout->setContentsMargins(0, 0, 0, 0);
+    encryptionPanelLayout->setSpacing(0);
+    _ui->accountStatusLayout->removeWidget(_ui->encryptionMessage);
+    encryptionPanelLayout->addWidget(_ui->encryptionMessage);
+
+    auto *connectionSettingsButton = new QPushButton(tr("Connection settings"), _ui->accountStatus);
+    connectionSettingsButton->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
+    _ui->gridLayout_2->addWidget(connectionSettingsButton, 0, 2, Qt::AlignRight | Qt::AlignVCenter);
+    connect(connectionSettingsButton, &QPushButton::clicked, this, &AccountSettings::showConnectionSettingsDialog);
+
+    _ui->verticalLayout_2->removeWidget(_ui->accountStatusPanel);
+    _ui->verticalLayout_2->removeWidget(_ui->fileProviderPanel);
+    _ui->verticalLayout_2->removeWidget(_ui->syncFoldersPanel);
+    _ui->verticalLayout_2->removeWidget(_ui->connectionSettingsPanel);
+    _ui->connectionSettingsPanel->hide();
+    _ui->verticalLayout_2->insertWidget(0, _ui->fileProviderPanel);
+    _ui->verticalLayout_2->insertWidget(1, _ui->syncFoldersPanel);
+    _ui->verticalLayout_2->insertWidget(2, _encryptionPanel);
+    _ui->verticalLayout_2->insertWidget(3, _ui->accountStatusPanel);
+
     _model->setAccountState(_accountState);
     _model->setParent(this);
     const auto delegate = new FolderStatusDelegate;
     delegate->setParent(this);
 
-    setStyleSheet("QWidget#syncFoldersPanelContents, QWidget#connectionSettingsPanelContents, QWidget#fileProviderPanelContents { background: palette(" BACKGROUND_PALETTE "); }"_L1);
-    _ui->syncFoldersPanelContents->setAutoFillBackground(true);
-    _ui->syncFoldersPanelContents->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->syncFoldersPanelContents->setAutoFillBackground(false);
+    _ui->syncFoldersPanelContents->setAttribute(Qt::WA_StyledBackground, false);
     _ui->syncFoldersPanelContents->setContentsMargins(0, 0, 0, 0);
-    _ui->fileProviderPanelContents->setAutoFillBackground(true);
-    _ui->fileProviderPanelContents->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->fileProviderPanelContents->setAutoFillBackground(false);
+    _ui->fileProviderPanelContents->setAttribute(Qt::WA_StyledBackground, false);
     _ui->fileProviderPanelContents->setContentsMargins(0, 0, 0, 0);
-    _ui->connectionSettingsPanelContents->setAutoFillBackground(true);
-    _ui->connectionSettingsPanelContents->setAttribute(Qt::WA_StyledBackground, true);
+    _ui->connectionSettingsPanelContents->setAutoFillBackground(false);
+    _ui->connectionSettingsPanelContents->setAttribute(Qt::WA_StyledBackground, false);
     _ui->connectionSettingsPanelContents->setContentsMargins(0, 0, 0, 0);
 
     // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
     connect(this, &AccountSettings::styleChanged, delegate, &FolderStatusDelegate::slotStyleChanged);
 
     _ui->_folderList->header()->hide();
-    _ui->_folderList->setAutoFillBackground(true);
-    _ui->_folderList->setAttribute(Qt::WA_StyledBackground, true);
-    _ui->_folderList->setStyleSheet(QStringLiteral("QTreeView { background: palette(" BACKGROUND_PALETTE "); }"));
+    _ui->_folderList->setAutoFillBackground(false);
+    _ui->_folderList->setAttribute(Qt::WA_StyledBackground, false);
+    _ui->_folderList->viewport()->setAutoFillBackground(false);
+    _ui->_folderList->viewport()->setAttribute(Qt::WA_StyledBackground, false);
     _ui->_folderList->setItemDelegate(delegate);
     _ui->_folderList->setModel(_model);
     _ui->_folderList->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
@@ -216,36 +234,31 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     new ToolTipUpdater(_ui->_folderList);
 
 #if defined(BUILD_FILE_PROVIDER_MODULE)
-    const auto fileProviderPanelContents = _ui->fileProviderPanelContents;
-    const auto fpSettingsLayout = new QVBoxLayout(fileProviderPanelContents);
-    const auto fpAccountUserIdAtHost = _accountState->account()->userIdAtHostWithPort();
-    const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
-    const auto fpSettingsWidget = fpSettingsController->settingsViewWidget(fpAccountUserIdAtHost, fileProviderPanelContents,
-                                                                           QQuickWidget::SizeRootObjectToView);
-    fpSettingsLayout->setContentsMargins(0, 0, 0, 0);
-    fpSettingsLayout->setSpacing(0);
-    
-    fpSettingsWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    if (const auto fpSettingsWidgetLayout = fpSettingsWidget->layout()) {
-        fpSettingsWidgetLayout->setContentsMargins(0, 0, 0, 0);
+    if (Mac::FileProvider::available()) {
+        const auto fileProviderPanelContents = _ui->fileProviderPanelContents;
+        const auto fpSettingsLayout = new QVBoxLayout(fileProviderPanelContents);
+        const auto fpAccountUserIdAtHost = _accountState->account()->userIdAtHostWithPort();
+        const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
+        const auto fpSettingsWidget = fpSettingsController->settingsViewWidget(fpAccountUserIdAtHost, fileProviderPanelContents,
+                                                                               QQuickWidget::SizeRootObjectToView);
+        fpSettingsLayout->setContentsMargins(0, 0, 0, 0);
+        fpSettingsLayout->setSpacing(0);
+
+        fpSettingsWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        if (const auto fpSettingsWidgetLayout = fpSettingsWidget->layout()) {
+            fpSettingsWidgetLayout->setContentsMargins(0, 0, 0, 0);
+        }
+        fpSettingsLayout->addWidget(fpSettingsWidget, 1);
+        fileProviderPanelContents->setLayout(fpSettingsLayout);
+    } else {
+        // macOS 13 Ventura: the file provider feature is unsupported there.
+        // This branch can be removed once Ventura is no longer supported.
+        _ui->fileProviderPanel->setVisible(false);
     }
-    fpSettingsLayout->addWidget(fpSettingsWidget, 1);
-    fileProviderPanelContents->setLayout(fpSettingsLayout);
 #else
     _ui->fileProviderPanel->setVisible(false);
 #endif
 
-    const auto connectionSettingsPanelContents = _ui->connectionSettingsPanelContents;
-    const auto connectionSettingsLayout = new QVBoxLayout(connectionSettingsPanelContents);
-    const auto networkSettings = new NetworkSettings(_accountState->account(), connectionSettingsPanelContents);
-    if (const auto networkSettingsLayout = networkSettings->layout()) {
-        networkSettingsLayout->setContentsMargins(0, 0, 0, 0);
-    }
-    connectionSettingsLayout->setContentsMargins(0, 0, 0, 0);
-    connectionSettingsLayout->setSpacing(0);
-    connectionSettingsLayout->addWidget(networkSettings, 1);
-    connectionSettingsPanelContents->setLayout(connectionSettingsLayout);
-    
     const auto mouseCursorChanger = new MouseCursorChanger(this);
     mouseCursorChanger->folderList = _ui->_folderList;
     mouseCursorChanger->model = _model;
@@ -261,6 +274,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
         this, &AccountSettings::slotFolderListClicked);
     connect(_ui->_folderList, &QTreeView::expanded, this, &AccountSettings::refreshSelectiveSyncStatus);
     connect(_ui->_folderList, &QTreeView::collapsed, this, &AccountSettings::refreshSelectiveSyncStatus);
+    connect(_ui->_folderList, &QTreeView::expanded, _ui->_folderList, &QWidget::updateGeometry);
+    connect(_ui->_folderList, &QTreeView::collapsed, _ui->_folderList, &QWidget::updateGeometry);
     connect(_ui->selectiveSyncNotification, &QLabel::linkActivated,
         this, &AccountSettings::slotLinkActivated);
     connect(_model, &FolderStatusModel::suggestExpand, _ui->_folderList, &QTreeView::expand);
@@ -312,6 +327,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->encryptionMessageLabel->setOpenExternalLinks(true);
     _ui->encryptionMessageButtonsLayout->addStretch();
     setEncryptionMessageIcon({});
+    setEncryptionPanelVisible(_ui->encryptionMessage->isVisible());
 
     _ui->connectLabel->setText(tr("No account configured."));
 
@@ -349,7 +365,7 @@ void AccountSettings::slotE2eEncryptionMnemonicReady()
 
     _ui->encryptionMessageLabel->setText(tr("Encryption is set-up. Remember to <b>Encrypt</b> a folder to end-to-end encrypt any new files added to it."));
     setEncryptionMessageIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/lock.svg")));
-    _ui->encryptionMessage->show();
+    setEncryptionPanelVisible(true);
 }
 
 void AccountSettings::slotE2eEncryptionGenerateKeys()
@@ -753,7 +769,10 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
     if (const auto mode = bestAvailableVfsMode();
         !Theme::instance()->disableVirtualFilesSyncFolder() &&
-        Theme::instance()->showVirtualFilesOption() && !folder->virtualFilesEnabled() && Vfs::checkAvailability(folder->path(), mode)) {
+        Theme::instance()->showVirtualFilesOption() &&
+        !folder->virtualFilesEnabled() &&
+        mode != Vfs::Off &&
+        Vfs::checkAvailability(folder->path(), mode)) {
         if (mode == Vfs::WindowsCfApi || ConfigFile().showExperimentalOptions()) {
             ac = menu->addAction(tr("Enable virtual file support %1 …").arg(mode == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
             // TODO: remove when UX decision is made
@@ -1033,7 +1052,7 @@ void AccountSettings::slotEnableVfsCurrentFolder()
         return;
     }
 
-    OwncloudWizard::askExperimentalVirtualFilesFeature(this, [folder, this](bool enable) {
+    Utility::askExperimentalVirtualFilesFeature(this, [folder, this](bool enable) {
         if (!enable || !folder) {
             return;
         }
@@ -1280,6 +1299,30 @@ void AccountSettings::showConnectionLabel(const QString &message, QStringList er
     _ui->accountStatus->setVisible(!message.isEmpty());
 }
 
+void AccountSettings::showConnectionSettingsDialog()
+{
+    auto *dialog = new QDialog(this);
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->setWindowTitle(tr("Connection settings"));
+
+    auto *layout = new QVBoxLayout(dialog);
+    layout->setContentsMargins(12, 12, 12, 12);
+    layout->setSpacing(12);
+
+    auto *networkSettings = new NetworkSettings(_accountState->account(), dialog);
+    if (auto *networkSettingsLayout = networkSettings->layout()) {
+        networkSettingsLayout->setContentsMargins(0, 0, 0, 0);
+    }
+    layout->addWidget(networkSettings);
+
+    auto *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, dialog);
+    connect(buttonBox, &QDialogButtonBox::rejected, dialog, &QDialog::reject);
+    layout->addWidget(buttonBox);
+
+    dialog->resize(networkSettings->sizeHint());
+    dialog->open();
+}
+
 void AccountSettings::slotEnableCurrentFolder(bool terminate)
 {
     const auto alias = selectedFolderAlias();
@@ -1498,7 +1541,7 @@ void AccountSettings::checkClientSideEncryptionState()
         << "Client Side Encryption" << accountsState()->account()->capabilities().clientSideEncryptionAvailable();
 
     if (_accountState->account()->capabilities().clientSideEncryptionAvailable()) {
-        _ui->encryptionMessage->show();
+        setEncryptionPanelVisible(true);
     }
 }
 
@@ -1823,16 +1866,24 @@ QAction *AccountSettings::addActionToEncryptionMessage(const QString &actionTitl
 void AccountSettings::setupE2eEncryptionMessage()
 {
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    const auto encryptionMessage = tr("This account supports end-to-end encryption, but it needs to be set up first.") + QStringLiteral(" ") + tr("The virtual files integration does not support end-to-end encryption yet.");
+    const auto encryptionMessage = tr("This account supports end-to-end encryption, but it needs to be set up first.") + QStringLiteral(" ") + tr("The File Provider extension does not support end-to-end encryption yet.");
 #else
     const auto encryptionMessage = tr("This account supports end-to-end encryption, but it needs to be set up first.");
 #endif
     _ui->encryptionMessageLabel->setText(encryptionMessage);
     setEncryptionMessageIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/info.svg")));
-    _ui->encryptionMessage->hide();
+    setEncryptionPanelVisible(false);
 
     auto *const actionSetupE2e = addActionToEncryptionMessage(tr("Set up encryption"), e2EeUiActionSetupEncryptionId);
     connect(actionSetupE2e, &QAction::triggered, this, &AccountSettings::slotE2eEncryptionGenerateKeys);
+}
+
+void AccountSettings::setEncryptionPanelVisible(bool visible)
+{
+    _ui->encryptionMessage->setVisible(visible);
+    if (_encryptionPanel) {
+        _encryptionPanel->setVisible(visible);
+    }
 }
 
 void AccountSettings::setEncryptionMessageIcon(const QIcon &icon)

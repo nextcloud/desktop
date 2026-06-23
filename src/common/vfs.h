@@ -32,11 +32,18 @@ class VfsPrivate;
 class SyncFileItem;
 using SyncFileItemPtr = QSharedPointer<SyncFileItem>;
 
+enum class VirtualItemCreationStatus {
+    Unknown,
+    Success,
+    Error,
+};
+
 struct OCSYNC_EXPORT PlaceholderCreateInfo {
     QString name;
     std::wstring stdWStringName;
     QString fullPath;
     RemoteInfo parsedProperties;
+    VirtualItemCreationStatus creationStatus = VirtualItemCreationStatus::Unknown;
 };
 
 /** Collection of parameters for initializing a Vfs instance. */

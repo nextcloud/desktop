@@ -1,0 +1,19 @@
+//  SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
+
+import FileProvider
+
+extension FileProviderExtension: ChangeNotificationInterface {
+    public func notifyChange() {
+        guard let fpManager = NSFileProviderManager(for: domain) else {
+            logger.error("Could not get file provider manager for domain \(domain.displayName), cannot notify changes")
+            return
+        }
+
+        fpManager.signalEnumerator(for: .workingSet) { error in
+            if error != nil {
+                self.logger.error("Error signalling enumerator for working set, received error: \(error!.localizedDescription)")
+            }
+        }
+    }
+}

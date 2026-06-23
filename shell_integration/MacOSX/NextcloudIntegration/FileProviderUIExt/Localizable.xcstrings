@@ -70,6 +70,18 @@
             "value" : "アカウントデータが利用できません。データを再読み込みできません！"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paskyros duomenų nėra, negalima atnaujinti duomenų!"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dane konta są niedostępne, nie można ponownie załadować danych!"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -86,6 +98,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hesap verileri kullanılamıyor. Veriler yüklenemedi!"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akkaunt maʼlumotlari mavjud emas, maʼlumotlarni qayta yuklab boʻlmaydi!"
           }
         },
         "zh_HK" : {
@@ -178,6 +196,24 @@
             "value" : "アップロードと編集を許可"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sireg asali akked usiẓreg"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leisti įkelti ir redaguoti"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zezwól na przesyłanie i edycję"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -194,6 +230,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yüklemeye ve düzenlemeye izin ver"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yuklash va tahrirlashga ruxsat berish"
           }
         },
         "zh_HK" : {
@@ -250,6 +292,12 @@
             "value" : "Autendin…"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Authentification…"
+          }
+        },
         "ga" : {
           "stringUnit" : {
             "state" : "translated",
@@ -266,6 +314,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "認証中…"
+          }
+        },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Asesteb…"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autentifikuojama…"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uwierzytelnianie..."
           }
         },
         "pt_BR" : {
@@ -350,6 +416,12 @@
             "value" : "Katkesta"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لغو"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -386,6 +458,18 @@
             "value" : "キャンセル"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გაუქმება"
+          }
+        },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semmet"
+          }
+        },
         "lt_LT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -398,10 +482,28 @@
             "value" : "–±–æ–ª–∏—É–ª–∞—Ö"
           }
         },
+        "mr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रद्द करा"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anuluj"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancelar"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отменить"
           }
         },
         "sw" : {
@@ -414,6 +516,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İptal"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bekor qilish"
           }
         },
         "zh_HK" : {
@@ -499,6 +607,18 @@
             "value" : "作成アイコンをキャンセル"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atšaukti kūrimo piktogramą"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anuluj tworzenie ikony"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -514,7 +634,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eklemeyi iptal et simgesi"
+            "value" : "Oluşturmayı iptal et simgesi"
           }
         },
         "zh_HK" : {
@@ -598,6 +718,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "丸の中のチェックマーク"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varnelė apskritime"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Znacznik wyboru w kółku"
           }
         },
         "pt_BR" : {
@@ -702,6 +834,12 @@
             "value" : "閉じる"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mdel"
+          }
+        },
         "lt_LT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -712,6 +850,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "–•–∞–∞—Ö"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zamknij"
           }
         },
         "pt_BR" : {
@@ -730,6 +874,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kapat"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yopish"
           }
         },
         "zh_HK" : {
@@ -814,6 +964,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "サーバーと通信中、ファイルをロック中…"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bendraujama su serveriu, užrakinamas failas…"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Komunikacja z serwerem, blokowanie pliku..."
           }
         },
         "pt_BR" : {
@@ -914,6 +1076,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "サーバーと通信中、ファイルのロック解除中…"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bendraujama su serveriu, atrakinamas failas…"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Komunikacja z serwerem, odblokowywanie pliku..."
           }
         },
         "pt_BR" : {
@@ -1017,6 +1191,18 @@
             "value" : "アカウントが無効なため、機能を取得できませんでした。"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nepavyko gauti teisių, nes paskyra yra negaliojanti."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie można pobrać możliwości, ponieważ konto jest nieprawidłowe."
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1033,6 +1219,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hesap geçersiz olduğundan yeterlilikler alınamadı."
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akkaunt yaroqsiz bo'lgani uchun imkoniyatlarni olib bo'lmadi."
           }
         },
         "zh_HK" : {
@@ -1118,6 +1310,18 @@
             "value" : "アイテムの識別子を取得できませんでした。共有を取得できません。"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nepavyko gauti elemento identifikatoriaus, negalima įsigyti bendrinimų."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie można uzyskać identyfikatora elementu, nie można pobrać udostępnień."
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1134,6 +1338,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ögenin tanımlayıcısı alınamadı, herhangi bir paylaşım alınamadı."
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identifikatorni olib bo'lmadi, ulashuvga erishilmadi."
           }
         },
         "zh_HK" : {
@@ -1225,6 +1435,12 @@
             "value" : "Nepavyko užrakinti nežinomo elemento…"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie można zablokować nieznanego elementu..."
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1241,6 +1457,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bilinmeyen öge kilitlenemedi…"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noma'lum elementni qulflab bo'lmadi…"
           }
         },
         "zh_HK" : {
@@ -1326,6 +1548,18 @@
             "value" : "データの再読み込みに失敗しました: %@、再試行します。"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nepavyko įkelti duomenų iš naujo: %@, bus bandoma dar kartą."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie można ponownie załadować danych: %@ ponawianie próby"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1342,6 +1576,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Veriler yeniden yüklenemedi: %@, yeniden deneyecek."
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maʼlumotlarni qayta yuklab boʻlmadi: %@, qayta urinib koʻraman."
           }
         },
         "zh_HK" : {
@@ -1428,10 +1668,22 @@
             "value" : "新しい共有を作成する"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Snlufu-d beṭṭu amaynut"
+          }
+        },
         "lt_LT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sukurti naują viešinį"
+            "value" : "Sukurti naują bendrinimą"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utwórz nowe udostępnienie"
           }
         },
         "pt_BR" : {
@@ -1449,7 +1701,13 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Yeni paylaşım ekle"
+            "value" : "Yeni paylaşım oluştur"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yangi ulashish yarating"
           }
         },
         "zh_HK" : {
@@ -1540,6 +1798,18 @@
             "value" : "削除"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "წაშლა"
+          }
+        },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kkes"
+          }
+        },
         "lt_LT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1550,6 +1820,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "–£—Å—Ç–≥–∞—Ö"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usuń"
           }
         },
         "pt_BR" : {
@@ -1568,6 +1844,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sil"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вилучити"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oʻchirish"
           }
         },
         "zh_HK" : {
@@ -1651,6 +1939,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ごみ箱アイコンを削除"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ištrinti šiukšliadėžės piktogramą"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikona usuwania do kosza"
           }
         },
         "pt_BR" : {
@@ -1761,10 +2061,28 @@
             "value" : "無視する"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zgel-it"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atmesti"
+          }
+        },
         "mn" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "–ê—Ä–∏–ª–≥–∞—Ö"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odrzuć"
           }
         },
         "pt_BR" : {
@@ -1783,6 +2101,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yok say"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rad etish"
           }
         },
         "zh_HK" : {
@@ -1866,6 +2190,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "文書記号"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dokumento simbolis"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol dokumentu"
           }
         },
         "pt_BR" : {
@@ -1970,6 +2306,18 @@
             "value" : "メール共有"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bendrinti el. paštu"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępnienie e-mail"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1986,6 +2334,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-posta ile paylaş"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elektron pochta orqali ulashish"
           }
         },
         "zh_HK" : {
@@ -2069,6 +2423,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "メール共有 (%@)"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El. pašto bendrinimas (%@)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępnienie e-mail (%@)"
           }
         },
         "pt_BR" : {
@@ -2170,6 +2536,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "メール共有アイコン"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El. pašto bendrinimo piktograma"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikona udostępnienia e-mail"
           }
         },
         "pt_BR" : {
@@ -2274,6 +2652,24 @@
             "value" : "新しいパスワードを入力"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sekcem-d awal n uɛeddi amaynut"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Įvesti naują slaptažodį"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wprowadź nowe hasło"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2290,6 +2686,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yeni parolayı yazın"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yangi parolni kiriting"
           }
         },
         "zh_HK" : {
@@ -2375,6 +2777,18 @@
             "value" : "作成中にエラーが発生しました: %@"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klaida kuriant: %@"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Błąd tworzenia: %@"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2391,6 +2805,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eklenirken sorun çıktı: %@"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xatolik: %@"
           }
         },
         "zh_HK" : {
@@ -2476,6 +2896,18 @@
             "value" : "共有の取得中にエラーが発生しました: %@"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klaida gaunant bendrinimus: %@"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Błąd pobierania udostępnień: %@"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2492,6 +2924,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Paylaşımlar alınırken sorun çıktı: %@"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ holatlarni olishda xatolik yuz berdi"
           }
         },
         "zh_HK" : {
@@ -2577,6 +3015,18 @@
             "value" : "サーバーの制限を取得中にエラーが発生しました: %@"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klaida gaunant serverio apribojimus: %@"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Błąd pobierania możliwości serwera: %@"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2593,6 +3043,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sunucu kapasitesi alınırken sorun çıktı: %@"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Server sozlamalarini olishda xatolik: %@"
           }
         },
         "zh_HK" : {
@@ -2679,10 +3135,22 @@
             "value" : "有効期限"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Galiojimo laikas"
+          }
+        },
         "mn" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Дуусах огноо"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data wygaśnięcia"
           }
         },
         "pt_BR" : {
@@ -2701,6 +3169,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Geçerlilik sonu tarihi"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tugash muddati"
           }
         },
         "zh_HK" : {
@@ -2786,6 +3260,18 @@
             "value" : "ファイルプロバイダー拡張機能から詳細を取得できませんでした。再試行します。"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nepavyko gauti informacijos iš failų teikėjo plėtinio. Bandoma dar kartą."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie udało się pobrać szczegółów z rozszerzenia File Provider. Ponawianie próby."
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2802,6 +3288,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dosya hizmeti sağlayıcısı eklentisinden ayrıntılar alınamadı. Yeniden deneniyor."
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fayl provayderi kengaytmasidan ma'lumotlarni olishda xatolik yuz berdi. Qayta urinilmoqda."
           }
         },
         "zh_HK" : {
@@ -2888,6 +3380,18 @@
             "value" : "クラウド連携共有"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Federuotas debesijos bendrinimas"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępnienie chmury federacyjnej"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2904,6 +3408,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Birleşik bulut paylaşımı"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Federatsiyalangan bulutli ulashish"
           }
         },
         "zh_HK" : {
@@ -2987,6 +3497,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "クラウド連携共有 (%@)"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Federuotas debesijos bendrinimas (%@)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępnienie chmury federacyjnej (%@)"
           }
         },
         "pt_BR" : {
@@ -3088,6 +3610,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "クラウド連携共有アイコン"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Federuoto debesijos bendrinimo piktograma"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikona udostępnienia chmury federacyjnej"
           }
         },
         "pt_BR" : {
@@ -3198,6 +3732,12 @@
             "value" : "Failas „%@“ užrakintas!"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plik \"%@\" zablokowany!"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3214,6 +3754,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "\"%@\" dosyası kilitlendi!"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%@\" fayli qulflandi!"
           }
         },
         "zh_HK" : {
@@ -3304,6 +3850,12 @@
             "value" : "Failas „%@“ atrakintas!"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plik \"%@\" odblokowany!"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3320,6 +3872,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "\"%@\" dosyasının kilidi açıldı!"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%@\" fayli qulfdan chiqarildi!"
           }
         },
         "zh_HK" : {
@@ -3406,6 +3964,18 @@
             "value" : "空き容量を増やす"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atlaisvinti vietos"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zwolnij miejsce"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3478,6 +4048,12 @@
             "value" : "Jagamine grupile"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Group share"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3502,10 +4078,22 @@
             "value" : "グループ共有"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grupės bendrinimas"
+          }
+        },
         "mn" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Бүлгийн хуваалцалт"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępnienie grupowe"
           }
         },
         "pt_BR" : {
@@ -3530,6 +4118,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Grup paylaşımı"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guruh ulashishi"
           }
         },
         "zh_HK" : {
@@ -3619,6 +4213,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "グループ共有（%@）"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grupės bendrinimas (%@)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępnienie grupowe (%@)"
           }
         },
         "pt_BR" : {
@@ -3720,6 +4326,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "グループ共有アイコン"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grupės bendrinimo piktograma"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikona udostępnienia grupowego"
           }
         },
         "pt_BR" : {
@@ -3824,10 +4442,28 @@
             "value" : "ダウンロードを隠す"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ffer asader"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slėpti atsisiuntimą"
+          }
+        },
         "mn" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Татаж авахыг нуух"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ukryj pobieranie"
           }
         },
         "pt_BR" : {
@@ -3846,6 +4482,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İndirme gizlensin"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yuklab olishni yashirish"
           }
         },
         "zh_HK" : {
@@ -3929,6 +4571,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "内部リンク共有アイコン"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vidinės nuorodos bendrinimo piktograma"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikona udostępnienia linkiem wewnętrznym"
           }
         },
         "pt_BR" : {
@@ -4032,6 +4686,18 @@
             "value" : "内部共有（ファイルへのアクセス権限が必要です）"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vidinis bendrinimas (reikalinga prieiga prie failo)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępnienie wewnętrzne (wymaga dostępu do pliku)"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4128,6 +4794,24 @@
             "value" : "最終更新: %@"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taẓrigt taneggarut: %@"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paskutinį kartą atnaujinta: %@"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ostatnia modyfikacja: %@"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4144,6 +4828,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Son değişiklik: %@"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oxirgi o'zgartirish: %@"
           }
         },
         "zh_HK" : {
@@ -4240,6 +4930,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Файл түгжих"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zablokuj plik"
           }
         },
         "pt_BR" : {
@@ -4343,6 +5039,12 @@
             "value" : "Užrakinamas failas „%@“…"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blokowanie pliku \"%@\"..."
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4444,6 +5146,18 @@
             "value" : "NextcloudKitインスタンスまたはアカウントが利用できません。共有を取得できません！"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "„NextcloudKit“ instancija arba paskyra nepasiekiama, negalima atsisiųsti bendrinimų!"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instancja lub konto NextcloudKit jest niedostępne, nie można pobrać udostępnień!"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4460,6 +5174,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "NextcloudKit kopyası ya da hesap kullanılamıyor. Paylaşımlar alınamadı!"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NextcloudKit nusxasi yoki hisobi mavjud emas, ulashishlarni olib bo'lmaydi!"
           }
         },
         "zh_HK" : {
@@ -4545,6 +5265,18 @@
             "value" : "アイテムURLがありません、データを再読み込みできません！"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nėra elemento URL, negalima įkelti duomenų!"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brak URL elementu, nie można ponownie załadować danych!"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4561,6 +5293,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Öge adresi yok. Veriler yeniden yüklenemedi!"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element URL manzili yo'q, ma'lumotlarni qayta yuklab bo'lmaydi!"
           }
         },
         "zh_HK" : {
@@ -4647,6 +5385,18 @@
             "value" : "受取人への注意"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pastaba gavėjui"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notatka dla odbiorcy"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4663,6 +5413,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alıcıya not"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Qabul qiluvchi uchun eslatma"
           }
         },
         "zh_HK" : {
@@ -4749,6 +5505,18 @@
             "value" : "パスワード保護"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apsaugoti slaptažodžiu"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chroń hasłem"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4765,6 +5533,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Parola koruması"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parol bilan himoya qilish"
           }
         },
         "zh_HK" : {
@@ -4856,6 +5630,18 @@
             "value" : "公開リンクがコピーされました アイコン"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viešos nuorodos nukopijavimo piktograma"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Publiczny link został skopiowany"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4872,6 +5658,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Herkese açık bağlantı kopyalandı simgesi"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ommaviy havola nusxalandi belgisi"
           }
         },
         "zh_HK" : {
@@ -4958,6 +5750,18 @@
             "value" : "公開リンクの共有"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viešas nuorodos bendrinimas"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępnienie publicznym linkiem"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4974,6 +5778,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Herkese açık bağlantı paylaşımı"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ommaviy havola ulashish"
           }
         },
         "zh_HK" : {
@@ -5057,6 +5867,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "公開リンク共有アイコン"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viešos nuorodos bendrinimo piktograma"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikona udostępnienia publicznym linkiem"
           }
         },
         "pt_BR" : {
@@ -5167,6 +5989,12 @@
             "value" : "保存する"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sekles"
+          }
+        },
         "lt_LT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5177,6 +6005,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "–•–∞–¥–≥–∞–ª–∞—Ö"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zapisz"
           }
         },
         "pt_BR" : {
@@ -5195,6 +6029,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kaydet"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saqlash"
           }
         },
         "zh_HK" : {
@@ -5280,6 +6120,18 @@
             "value" : "サーバーは共有をサポートしていません。"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Serveris nepalaiko bendrinimų."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Serwer nie obsługuje udostępnień"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5296,6 +6148,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sunucu paylaşımları desteklemiyor."
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Server ulashishlarni qo'llab-quvvatlamaydi."
           }
         },
         "zh_HK" : {
@@ -5358,6 +6216,12 @@
             "value" : "Jagamise silt"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "برچسب اشتراک‌گذاری"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5382,10 +6246,22 @@
             "value" : "共有ラベル"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bendrinti etiketę"
+          }
+        },
         "mn" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Хуваалцах шошго"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Etykieta udostępnienia"
           }
         },
         "pt_BR" : {
@@ -5404,6 +6280,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Paylaşım etiketi"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yorliqni ulashish"
           }
         },
         "zh_HK" : {
@@ -5490,6 +6372,24 @@
             "value" : "共有オプション"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tixtiṛiyin n beṭṭu"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bendrinimo parinktys"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opcje udostępniania"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5506,6 +6406,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Paylaşım seçenekleri"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ulashish imkoniyatlari"
           }
         },
         "zh_HK" : {
@@ -5590,6 +6496,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "共有先"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bendrinti gavėją"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odbiorca udostępnienia"
           }
         },
         "pt_BR" : {
@@ -5694,6 +6612,18 @@
             "value" : "会話の共有"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokalbių“ pokalbio bendrinimas"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępnienie rozmowy Talk"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5795,6 +6725,18 @@
             "value" : "会話の共有 (%@)"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "„Pokalbių“ pokalbio bendrinimas (%@)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępnienie rozmowy Talk (%@)"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5888,6 +6830,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "会話の共有"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "„Pokalbių“ pokalbio bendrinimo piktograma"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikona udostępnienia rozmowy Talk"
           }
         },
         "pt_BR" : {
@@ -5986,6 +6940,18 @@
             "value" : "チーム共有"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Komandos bendrinimas"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępnienie zespołowe"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6076,6 +7042,18 @@
             "value" : "チーム共有 (%@)"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Komandos bendrinimas (%@)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępnienie zespołowe (%@)"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6156,6 +7134,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "チーム共有アイコン"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Komandos bendrinimo piktograma"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikona udostępnienia zespołowego"
           }
         },
         "pt_BR" : {
@@ -6251,6 +7241,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "このファイルは共有できません。"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Šio failo negalima bendrinti."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tego pliku nie można udostępnić"
           }
         },
         "pt_BR" : {
@@ -6359,6 +7361,12 @@
             "value" : "Nepavyko gauti failo metaduomenų…"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie można pobrać metadanych pliku..."
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6461,10 +7469,22 @@
             "value" : "不明な項目"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aferdis arussin"
+          }
+        },
         "lt_LT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nežinomas elementas"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nieznany element"
           }
         },
         "pt_BR" : {
@@ -6567,6 +7587,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "変更日不明"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nežinoma modifikavimo data"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nieznana data modyfikacji"
           }
         },
         "pt_BR" : {
@@ -6676,6 +7708,18 @@
             "value" : "不明なシェア"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nežinomas bendrinimas"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nieznane udostępnienie"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6772,6 +7816,12 @@
             "value" : "不明なサイズ"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiddi tarussint"
+          }
+        },
         "lt_LT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6782,6 +7832,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Onbekende grootte"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nieznany rozmiar"
           }
         },
         "pt_BR" : {
@@ -6898,6 +7954,12 @@
             "value" : "Файл тайлах"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odblokuj plik"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7006,6 +8068,12 @@
             "value" : "Atrakinamas failas „%@“…"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odblokowywanie pliku \"%@\"..."
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7106,6 +8174,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ユーザー共有"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vartotojo bendrinimas"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępnienie użytkownikowi"
           }
         },
         "pt_BR" : {
@@ -7215,6 +8295,18 @@
             "value" : "ユーザー共有 (%@)"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vartotojo bendrinimas (%@)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępnienie użytkownikowi (%@)"
+          }
+        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7308,6 +8400,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ユーザー共有アイコン"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vartotojo bendrinimo piktograma"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikona udostępnienia użytkownikowi"
           }
         },
         "pt_BR" : {

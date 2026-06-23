@@ -17,6 +17,7 @@
 #include <QApplication>
 #include <QMouseEvent>
 #include <QStyleFactory>
+#include <QAbstractItemView>
 
 inline static QFont makeAliasFont(const QFont &normalFont)
 {
@@ -75,12 +76,33 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem &option,
     // this already includes the bottom margin
 
     // add some space for the message boxes.
-    int margin = fm.height() / 4;
+    const int margin = fm.height() / 4;
+    const int aliasMargin = aliasFm.height() / 2;
+    // Mirrors the inner text width used in paint()'s drawTextBox():
+    // box spans from (option.rect.left() + aliasMargin) to (option.rect.right() - margin),
+    // with an additional `margin` of inner padding on each side.
+    const int textWidth = qMax(1, option.rect.width() - aliasMargin - 3 * margin);
     for (auto role : {FolderConflictMsg, FolderErrorMsg, FolderInfoMsg}) {
         auto msgs = qvariant_cast<QStringList>(index.data(role));
-        if (!msgs.isEmpty()) {
-            h += margin + 2 * margin + msgs.count() * fm.height();
+        if (msgs.isEmpty()) {
+            continue;
         }
+        int textBlockHeight = 0;
+        for (const auto &msg : msgs) {
+            textBlockHeight += fm.boundingRect(QRect(0, 0, textWidth, 0),
+                                               Qt::TextWordWrap, msg).height();
+        }
+        h += margin + 2 * margin + textBlockHeight;
+    }
+
+    // add space for the "Grant access" button when sandbox re-approval is needed
+    if (index.data(FolderNeedsSandboxBookmark).toBool()) {
+        QFontMetrics buttonFm(qApp->font("QPushButton"));
+        QStyleOptionButton btnOpt;
+        btnOpt.text = tr("Grant access");
+        const auto btnSize = QApplication::style()->sizeFromContents(
+            QStyle::CT_PushButton, &btnOpt, buttonFm.size(Qt::TextSingleLine, btnOpt.text));
+        h += margin + btnSize.height();
     }
 
     return {0, h};
@@ -133,7 +155,16 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
             opt.state |= QStyle::State_Raised;
         }
         opt.text = addFolderText();
-        opt.rect = addButtonRect(option.rect, option.direction);
+        auto buttonArea = option.rect;
+        auto *view = qobject_cast<const QAbstractItemView *>(option.widget);
+        if (!view && option.widget) {
+            view = qobject_cast<const QAbstractItemView *>(option.widget->parentWidget());
+        }
+        if (view) {
+            buttonArea.setLeft(view->viewport()->rect().left());
+            buttonArea.setWidth(view->viewport()->width());
+        }
+        opt.rect = addButtonRect(buttonArea, option.direction);
         painter->save();
         painter->setFont(qApp->font("QPushButton"));
         QApplication::style()->drawControl(QStyle::CE_PushButton, &opt, painter, option.widget);
@@ -233,8 +264,23 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         auto rect = localPathRect;
         rect.setLeft(iconRect.left());
         rect.setTop(textBoxTop);
-        rect.setHeight(texts.count() * subFm.height() + 2 * margin);
         rect.setRight(option.rect.right() - margin);
+
+        const int innerWidth = qMax(1, rect.width() - 2 * margin);
+
+        // Pre-compute each message's wrapped height so the box fits the full,
+        // line-wrapped text instead of eliding with an ellipsis. This must stay
+        // in sync with the height reserved in sizeHint().
+        QList<int> messageHeights;
+        messageHeights.reserve(texts.size());
+        int totalTextHeight = 0;
+        for (const auto &eText : texts) {
+            const auto hMsg = subFm.boundingRect(QRect(0, 0, innerWidth, 0),
+                                                 Qt::TextWordWrap, eText).height();
+            messageHeights.append(hMsg);
+            totalTextHeight += hMsg;
+        }
+        rect.setHeight(totalTextHeight + 2 * margin);
 
         // save previous state to not mess up colours with the background (fixes issue: https://github.com/nextcloud/desktop/issues/1237)
         painter->save();
@@ -246,12 +292,15 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         painter->setFont(errorFont);
         QRect textRect(rect.left() + margin,
             rect.top() + margin,
-            rect.width() - 2 * margin,
-            subFm.height());
+            innerWidth,
+            0);
 
-        for (const auto &eText : texts) {
-            painter->drawText(QStyle::visualRect(option.direction, option.rect, textRect), textAlign, subFm.elidedText(eText, Qt::ElideRight, textRect.width()));
-            textRect.translate(0, textRect.height());
+        for (int i = 0; i < texts.size(); ++i) {
+            textRect.setHeight(messageHeights.at(i));
+            painter->drawText(QStyle::visualRect(option.direction, option.rect, textRect),
+                              textAlign | Qt::TextWordWrap,
+                              texts.at(i));
+            textRect.translate(0, messageHeights.at(i));
         }
         // restore previous state
         painter->restore();
@@ -265,6 +314,29 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     if (!errorTexts.isEmpty()) {
         drawTextBox(errorTexts, QColor(0xbb, 0x4d, 0x4d));
     }
+
+    // Paint "Grant access" button when sandbox re-approval is needed
+    if (index.data(FolderNeedsSandboxBookmark).toBool()) {
+        QStyleOptionButton btnOpt;
+        static_cast<QStyleOption &>(btnOpt) = option;
+        btnOpt.state |= QStyle::State_Raised;
+        btnOpt.text = tr("Grant access");
+
+        QFontMetrics buttonFm(qApp->font("QPushButton"));
+        const auto btnSize = QApplication::style()->sizeFromContents(
+            QStyle::CT_PushButton, &btnOpt, buttonFm.size(Qt::TextSingleLine, btnOpt.text));
+
+        QRect btnRect(iconRect.left(), textBoxTop, btnSize.width(), btnSize.height());
+
+        btnOpt.rect = QStyle::visualRect(option.direction, option.rect, btnRect);
+        painter->save();
+        painter->setFont(qApp->font("QPushButton"));
+        QApplication::style()->drawControl(QStyle::CE_PushButton, &btnOpt, painter, option.widget);
+        painter->restore();
+
+        textBoxTop = btnRect.bottom() + margin;
+    }
+
     if (!infoTexts.isEmpty()) {
         drawTextBox(infoTexts, QColor(0x4d, 0x4d, 0xba));
     }
@@ -384,6 +456,16 @@ QRect FolderStatusDelegate::addButtonRect(QRect within, Qt::LayoutDirection dire
     QSize size = QApplication::style()->sizeFromContents(QStyle::CT_PushButton, &opt, fm.size(Qt::TextSingleLine, opt.text));
     QRect r(QPoint(within.left(), within.top() + within.height() / 2 - size.height() / 2), size);
     return QStyle::visualRect(direction, within, r);
+}
+
+QRect FolderStatusDelegate::sandboxButtonRect(QRect errorBannerRect)
+{
+    QFontMetrics fm(qApp->font("QPushButton"));
+    QStyleOptionButton opt;
+    opt.text = tr("Grant access");
+    const auto size = QApplication::style()->sizeFromContents(
+        QStyle::CT_PushButton, &opt, fm.size(Qt::TextSingleLine, opt.text));
+    return QRect(QPoint(errorBannerRect.left(), errorBannerRect.bottom()), size);
 }
 
 QRect FolderStatusDelegate::errorsListRect(QRect within)

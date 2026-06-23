@@ -470,12 +470,16 @@ void SocketApi::slotRegisterPath(const QString &alias)
 
 void SocketApi::slotUnregisterPath(const QString &alias)
 {
-    if (!_registeredAliases.contains(alias))
+    if (!_registeredAliases.contains(alias)) {
         return;
+    }
 
-    Folder *f = FolderMan::instance()->folder(alias);
-    if (f)
-        broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"), removeTrailingSlash(f->path()), QString()), true);
+    auto folder = FolderMan::instance()->folder(alias);
+    if (folder) {
+        broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"),
+                                      removeTrailingSlash(folder->path()),
+                                      QString()));
+    }
 
     _registeredAliases.remove(alias);
 }
@@ -904,38 +908,6 @@ public:
     }
 };
 
-#endif
-
-void SocketApi::command_COPY_SECUREFILEDROP_LINK(const QString &localFile, SocketListener *)
-{
-    const auto fileData = FileData::get(localFile);
-    if (!fileData.folder) {
-        return;
-    }
-
-    const auto account = fileData.folder->accountState()->account();
-    const auto getOrCreatePublicLinkShareJob = new GetOrCreatePublicLinkShare(account, fileData.serverRelativePath, true, this);
-    connect(getOrCreatePublicLinkShareJob, &GetOrCreatePublicLinkShare::done, this, [](const QString &url) { copyUrlToClipboard(url); });
-    connect(getOrCreatePublicLinkShareJob, &GetOrCreatePublicLinkShare::error, this, [=, this]() { emit shareCommandReceived(fileData.localPath); });
-    getOrCreatePublicLinkShareJob->run();
-}
-
-// Windows Shell / Explorer pinning fallbacks, see issue: https://github.com/nextcloud/desktop/issues/1599
-#ifdef Q_OS_WIN
-void SocketApi::command_COPYASPATH(const QString &localFile, SocketListener *)
-{
-    setClipboardText(localFile);
-}
-
-void SocketApi::command_OPENNEWWINDOW(const QString &localFile, SocketListener *)
-{
-    QDesktopServices::openUrl(QUrl::fromLocalFile(localFile));
-}
-
-void SocketApi::command_OPEN(const QString &localFile, SocketListener *socketListener)
-{
-    command_OPENNEWWINDOW(localFile, socketListener);
-}
 #endif
 
 // Fetches the private link url asynchronously and then calls the target slot

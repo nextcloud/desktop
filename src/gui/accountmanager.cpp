@@ -767,6 +767,16 @@ AccountState *AccountManager::addAccount(const AccountPtr &newAccount)
 
 void AccountManager::deleteAccount(OCC::AccountState *account)
 {
+    removeAccountState(account, AccountRemovalMode::ForgetSensitiveData);
+}
+
+void AccountManager::removeAccountState(OCC::AccountState *account)
+{
+    removeAccountState(account, AccountRemovalMode::KeepSensitiveData);
+}
+
+void AccountManager::removeAccountState(OCC::AccountState *account, AccountRemovalMode removalMode)
+{
     const auto it = std::find(_accounts.begin(), _accounts.end(), account);
     if (it == _accounts.end()) {
         return;
@@ -774,17 +784,21 @@ void AccountManager::deleteAccount(OCC::AccountState *account)
     const auto copy = *it; // keep a reference to the shared pointer so it does not delete it just yet
     _accounts.erase(it);
 
-    // Forget account credentials, cookies
-    account->account()->credentials()->forgetSensitiveData();
-    QFile::remove(account->account()->cookieJarPath());
+    if (removalMode == AccountRemovalMode::ForgetSensitiveData) {
+        account->account()->deleteAppToken();
+
+        // Forget account credentials, cookies
+        account->account()->credentials()->forgetSensitiveData();
+        QFile::remove(account->account()->cookieJarPath());
+    }
 
     const auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     settings->remove(account->account()->id());
 
-    // Forget E2E keys
-    account->account()->e2e()->forgetSensitiveData();
-
-    account->account()->deleteAppToken();
+    if (removalMode == AccountRemovalMode::ForgetSensitiveData) {
+        // Forget E2E keys
+        account->account()->e2e()->forgetSensitiveData();
+    }
 
     // clean up config from subscriptions and enterprise channel
     updateServerHasValidSubscriptionConfig();

@@ -8,7 +8,6 @@ import QtQuick.Window
 import Style
 import com.nextcloud.desktopclient
 import QtQuick.Layouts
-import QtMultimedia
 import QtQuick.Controls
 import Qt5Compat.GraphicalEffects
 
@@ -68,7 +67,7 @@ ApplicationWindow {
         onStopNotifying: root.closeNotification()
     }
 
-    SoundEffect  {
+    NotificationSoundPlayer {
         id: ringSound
         source: root.ringtonePath
         loops: 9 // about 45 seconds of audio playing
@@ -217,7 +216,7 @@ ApplicationWindow {
                         Layout.preferredHeight: Style.callNotificationPrimaryButtonMinHeight
 
                         onClicked: {
-                            Qt.openUrlExternally(modelData.link);
+                            Systray.openUrlInBrowser(modelData.link);
                             root.closeNotification();
                         }
 

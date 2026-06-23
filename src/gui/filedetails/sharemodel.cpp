@@ -570,7 +570,7 @@ void ShareModel::slotSharedWithMeFetched(const QList<OCC::SharePtr> &shares)
             _sharedWithMeRemainingTimeString = daysToExpire > 1
                 ? tr("%1 days").arg(daysToExpire)
                 :  daysToExpire == 1
-                    ? tr("1 day")
+                    ? tr("%1 day").arg(daysToExpire)
                     : tr("Today");
             Q_EMIT sharedWithMeRemainingTimeStringChanged();
         }

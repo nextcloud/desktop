@@ -70,6 +70,12 @@ private slots:
 
     void testLaunchOnStartup()
     {
+#ifdef Q_OS_MACOS
+        // The macOS implementation uses SMAppService, which operates on the running app's
+        // system-level login item registration and requires a properly signed app bundle.
+        // Neither condition holds in a unit test runner, so this test is not applicable on macOS.
+        QSKIP("SMAppService-based launch-on-startup cannot be unit-tested outside a signed app bundle.");
+#endif
         QString postfix = QString::number(OCC::Utility::rand());
 
         const QString appName = QString::fromLatin1("testLaunchOnStartup.%1").arg(postfix);
@@ -122,24 +128,6 @@ private slots:
         QCOMPARE(durationToDescriptiveString1(current.msecsTo(current.addDays(2).addSecs(23*60*60))),
                  QStringLiteral("3 day(s)") );
 
-    }
-
-    void testVersionOfInstalledBinary()
-    {
-        if (isLinux()) {
-            // pass the cmd client from our build dir
-            // this is a bit inaccurate as it does not test the "real thing"
-            // but cmd and gui have the same --version handler by now
-            // and cmd works without X in CI
-            QString ver = versionOfInstalledBinary(QStringLiteral(OWNCLOUD_BIN_PATH  "/" APPLICATION_EXECUTABLE "cmd"));
-            qDebug() << "Version of installed Nextcloud: " << ver;
-            QVERIFY(!ver.isEmpty());
-
-            const QRegularExpression rx(QRegularExpression::anchoredPattern(APPLICATION_SHORTNAME R"( version \d+\.\d+\.\d+.*)"));
-            QVERIFY(rx.match(ver).hasMatch());
-        } else {
-            QVERIFY(versionOfInstalledBinary().isEmpty());
-        }
     }
 
     void testTimeAgo()

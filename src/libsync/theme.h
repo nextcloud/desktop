@@ -473,14 +473,6 @@ public:
     [[nodiscard]] QString userIDHint() const;
 
     /**
-     * @brief Postfix that will be enforced in a URL. e.g.
-     *        ".myhosting.com".
-     *
-     * @return An empty string, unless reimplemented
-     */
-    [[nodiscard]] QString wizardUrlPostfix() const;
-
-    /**
      * @brief String that will be shown as long as no text has been entered by the user.
      *
      * @return An empty string, unless reimplemented

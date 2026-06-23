@@ -96,14 +96,10 @@ public struct TestableRemoteInterface: RemoteInterface, @unchecked Sendable {
         progressHandler _: @escaping (_ progress: Progress) -> Void
     ) async -> (
         account: String,
-        etag: String?,
-        date: Date?,
-        length: Int64,
-        headers: [AnyHashable: any Sendable]?,
-        afError: AFError?,
+        response: AFDownloadResponse<URL?>?,
         nkError: NKError
     ) {
-        ("", nil, nil, 0, nil, nil, .invalidResponseError)
+        ("", nil, .invalidResponseError)
     }
 
     public func enumerate(

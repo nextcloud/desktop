@@ -25,6 +25,20 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(Self.dbManager, "FilesDatabaseManager should be initialized")
     }
 
+    func testContainsAnyItemMetadataFileIds() throws {
+        let metadata = RealmItemMetadata()
+        metadata.ocId = UUID().uuidString
+        metadata.fileId = "11915767"
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            realm.add(metadata)
+        }
+
+        XCTAssertTrue(Self.dbManager.containsAnyItemMetadata(fileIds: ["11915767", "13347012"]))
+        XCTAssertFalse(Self.dbManager.containsAnyItemMetadata(fileIds: ["13347012"]))
+    }
+
     func testAnyItemMetadatasForAccount() throws {
         // Insert test data
         let expected = true
@@ -978,13 +992,14 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(updatedMetadata.downloaded, "downloaded should be retained when keepExistingDownloadState is true")
     }
 
-    func testKeepDownloadedNotSetForNewMetadata() throws {
+    func testKeepDownloadedNotInheritedWhenNoPinnedAncestor() throws {
         let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
 
-        // Create completely new metadata (not existing in database)
+        // Create completely new metadata (not existing in database) with no
+        // pinned ancestor: neither a parent row nor a pinned root container.
         var newMetadata = SendableItemMetadata(ocId: "new-item", fileName: "new.txt", account: account)
         newMetadata.etag = "initial-etag"
-        newMetadata.keepDownloaded = false // Should remain false for new items
+        newMetadata.keepDownloaded = false
 
         let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
             account: account.ncKitAccount,
@@ -997,11 +1012,94 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(result.updatedMetadatas?.isEmpty, true, "Should not update any metadata")
 
         let createdMetadata = try XCTUnwrap(result.newMetadatas?.first)
-        XCTAssertFalse(createdMetadata.keepDownloaded, "keepDownloaded should remain false for new items")
+        XCTAssertFalse(createdMetadata.keepDownloaded, "keepDownloaded should remain false when no pinned ancestor exists")
 
         // Verify in database
         let dbMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "new-item"))
-        XCTAssertFalse(dbMetadata.keepDownloaded, "keepDownloaded should be false in database for new items")
+        XCTAssertFalse(dbMetadata.keepDownloaded, "keepDownloaded should be false in database when no pinned ancestor exists")
+    }
+
+    func testKeepDownloadedInheritedFromPinnedParentForNewMetadata() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+
+        // Parent folder under the user's home, pinned.
+        var parentFolder = SendableItemMetadata(ocId: "pinned-parent", fileName: "pinned", account: account)
+        parentFolder.directory = true
+        parentFolder.uploaded = true
+        parentFolder.keepDownloaded = true
+        parentFolder.etag = "parent-etag"
+
+        Self.dbManager.addItemMetadata(parentFolder)
+
+        // New child appearing remotely inside the pinned folder. Its
+        // `serverUrl` is the parent's full path. `keepDownloaded` starts
+        // `false`, mirroring what `NKFile.toItemMetadata()` produces.
+        let parentRemotePath = account.davFilesUrl + "/pinned"
+        var newChild = SendableItemMetadata(ocId: "fresh-child", fileName: "child.txt", account: account)
+        newChild.serverUrl = parentRemotePath
+        newChild.etag = "child-etag"
+        newChild.keepDownloaded = false
+
+        let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: account.ncKitAccount,
+            serverUrl: parentRemotePath,
+            updatedMetadatas: [parentFolder, newChild],
+            keepExistingDownloadState: true
+        )
+
+        let createdChild = try XCTUnwrap(result.newMetadatas?.first(where: { $0.ocId == "fresh-child" }))
+        XCTAssertTrue(createdChild.keepDownloaded, "keepDownloaded should be inherited from pinned parent for new items")
+
+        let dbChild = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "fresh-child"))
+        XCTAssertTrue(dbChild.keepDownloaded, "Inherited keepDownloaded should be persisted to the database")
+    }
+
+    func testAddItemMetadataPreservingLocalState_InheritsPinnedParentForNewItem() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+
+        // Pinned parent folder.
+        var parentFolder = SendableItemMetadata(ocId: "preserving-parent", fileName: "pinned", account: account)
+        parentFolder.directory = true
+        parentFolder.uploaded = true
+        parentFolder.keepDownloaded = true
+
+        Self.dbManager.addItemMetadata(parentFolder)
+
+        // Fresh child inside the pinned folder, exactly as it would arrive
+        // from `NKFile.toItemMetadata()` (keepDownloaded = false).
+        var freshChild = SendableItemMetadata(ocId: "preserving-child", fileName: "child.txt", account: account)
+        freshChild.serverUrl = account.davFilesUrl + "/pinned"
+        freshChild.keepDownloaded = false
+
+        let written = Self.dbManager.addItemMetadataPreservingLocalState(freshChild)
+
+        XCTAssertTrue(written.keepDownloaded, "keepDownloaded should be inherited from pinned parent on first insert")
+
+        let dbChild = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "preserving-child"))
+        XCTAssertTrue(dbChild.keepDownloaded, "Inherited keepDownloaded should be persisted to the database")
+    }
+
+    func testAddItemMetadataPreservingLocalState_DoesNotInheritFromUnpinnedParent() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+
+        // Unpinned parent folder.
+        var parentFolder = SendableItemMetadata(ocId: "unpinned-parent", fileName: "regular", account: account)
+        parentFolder.directory = true
+        parentFolder.uploaded = true
+        parentFolder.keepDownloaded = false
+
+        Self.dbManager.addItemMetadata(parentFolder)
+
+        var freshChild = SendableItemMetadata(ocId: "unpinned-child", fileName: "child.txt", account: account)
+        freshChild.serverUrl = account.davFilesUrl + "/regular"
+        freshChild.keepDownloaded = false
+
+        let written = Self.dbManager.addItemMetadataPreservingLocalState(freshChild)
+
+        XCTAssertFalse(written.keepDownloaded, "keepDownloaded should remain false when parent is not pinned")
+
+        let dbChild = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "unpinned-child"))
+        XCTAssertFalse(dbChild.keepDownloaded, "Unpinned parent must not flip the child's keepDownloaded in the database")
     }
 
     func testKeepDownloadedRetainedWithMultipleItems() throws {
@@ -1390,5 +1488,406 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         XCTAssertEqual(updatedIds.count, expectedUpdatedCount, "Should have \(expectedUpdatedCount) updated items, got \(updatedIds.count): \(updatedIds)")
         XCTAssertEqual(deletedIds.count, expectedDeletedCount, "Should have \(expectedDeletedCount) deleted items, got \(deletedIds.count): \(deletedIds)")
+    }
+
+    // MARK: - Logical-address deduplication
+
+    func testAddItemMetadataEvictsLogicalDuplicateWithDifferentOcId() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+
+        var rowA = SendableItemMetadata(ocId: "A", fileName: "shared.txt", account: account)
+        rowA.syncTime = Date(timeIntervalSince1970: 1000)
+        Self.dbManager.addItemMetadata(rowA)
+
+        var rowB = SendableItemMetadata(ocId: "B", fileName: "shared.txt", account: account)
+        rowB.syncTime = Date(timeIntervalSince1970: 2000)
+        Self.dbManager.addItemMetadata(rowB)
+
+        let storedA = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "A"))
+        XCTAssertTrue(storedA.deleted, "Logical duplicate with different ocId should be soft-deleted")
+        XCTAssertGreaterThan(storedA.syncTime, rowA.syncTime, "Eviction should bump syncTime")
+
+        let storedB = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "B"))
+        XCTAssertFalse(storedB.deleted, "Newly added row should not be deleted")
+    }
+
+    func testAddItemMetadataSameOcIdSameLogicalPathIsNormalUpsert() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+
+        var rowA = SendableItemMetadata(ocId: "A", fileName: "shared.txt", account: account)
+        rowA.etag = "v1"
+        Self.dbManager.addItemMetadata(rowA)
+
+        rowA.etag = "v2"
+        Self.dbManager.addItemMetadata(rowA)
+
+        let stored = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "A"))
+        XCTAssertFalse(stored.deleted, "Same-ocId upsert should not soft-delete the row")
+        XCTAssertEqual(stored.etag, "v2", "etag should be updated by the upsert")
+    }
+
+    func testDepth1ReadEvictsStaleLogicalSiblingOnFreshOcId() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+
+        var rootMetadata = SendableItemMetadata(ocId: "root", fileName: "", account: account)
+        rootMetadata.directory = true
+        rootMetadata.uploaded = true
+        Self.dbManager.addItemMetadata(rootMetadata)
+
+        // Seed an existing row at the target logical path with `uploaded == false`
+        // so the depth-1-read delete-on-update path will not consider it; only
+        // the new eviction code can remove it.
+        let realm = Self.dbManager.ncDatabase()
+        let oldRow = RealmItemMetadata()
+        oldRow.ocId = "oldOcId"
+        oldRow.account = account.ncKitAccount
+        oldRow.serverUrl = account.davFilesUrl
+        oldRow.fileName = "TOOLS and WORKFLOWS"
+        oldRow.directory = true
+        oldRow.uploaded = false
+        oldRow.syncTime = Date(timeIntervalSince1970: 1000)
+        try realm.write { realm.add(oldRow) }
+
+        var freshDir = SendableItemMetadata(ocId: "freshOcId", fileName: "TOOLS and WORKFLOWS", account: account)
+        freshDir.directory = true
+        freshDir.uploaded = true
+
+        _ = Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: account.ncKitAccount,
+            serverUrl: account.davFilesUrl,
+            updatedMetadatas: [rootMetadata, freshDir],
+            keepExistingDownloadState: true
+        )
+
+        let storedOld = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "oldOcId"))
+        XCTAssertTrue(storedOld.deleted, "Stale logical sibling should be soft-deleted by eviction")
+
+        let storedFresh = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "freshOcId"))
+        XCTAssertFalse(storedFresh.deleted, "Fresh ocId row should be persisted")
+    }
+
+    func testDepth1ReadDoesNotEvictInFlightSibling() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+
+        var rootMetadata = SendableItemMetadata(ocId: "root", fileName: "", account: account)
+        rootMetadata.directory = true
+        rootMetadata.uploaded = true
+        Self.dbManager.addItemMetadata(rootMetadata)
+
+        let realm = Self.dbManager.ncDatabase()
+        let inFlightRow = RealmItemMetadata()
+        inFlightRow.ocId = "uploading"
+        inFlightRow.account = account.ncKitAccount
+        inFlightRow.serverUrl = account.davFilesUrl
+        inFlightRow.fileName = "upload-in-progress.bin"
+        inFlightRow.uploaded = false
+        inFlightRow.status = Status.uploading.rawValue
+        try realm.write { realm.add(inFlightRow) }
+
+        var fresh = SendableItemMetadata(ocId: "freshOcId", fileName: "upload-in-progress.bin", account: account)
+        fresh.uploaded = true
+
+        _ = Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: account.ncKitAccount,
+            serverUrl: account.davFilesUrl,
+            updatedMetadatas: [rootMetadata, fresh],
+            keepExistingDownloadState: true
+        )
+
+        let storedInFlight = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "uploading"))
+        XCTAssertFalse(storedInFlight.deleted, "In-flight sibling should not be soft-deleted")
+
+        let storedFresh = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "freshOcId"))
+        XCTAssertFalse(storedFresh.deleted, "Fresh row should be inserted alongside the in-flight one")
+    }
+
+    func testStartupCleanupDeduplicatesSeededDuplicate() throws {
+        let testAccount = "TestAccount"
+        let testServerUrl = "https://example.com"
+        let fileName = "dup.txt"
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            let older = RealmItemMetadata()
+            older.ocId = "older"
+            older.account = testAccount
+            older.serverUrl = testServerUrl
+            older.fileName = fileName
+            older.syncTime = Date(timeIntervalSince1970: 1000)
+            realm.add(older)
+
+            let newer = RealmItemMetadata()
+            newer.ocId = "newer"
+            newer.account = testAccount
+            newer.serverUrl = testServerUrl
+            newer.fileName = fileName
+            newer.syncTime = Date(timeIntervalSince1970: 2000)
+            realm.add(newer)
+        }
+
+        let configuration = Realm.Configuration.defaultConfiguration
+        let manager = FilesDatabaseManager(
+            realmConfiguration: configuration,
+            account: Self.account,
+            databaseDirectory: makeDatabaseDirectory(),
+            fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"),
+            log: FileProviderLogMock()
+        )
+
+        let storedOlder = try XCTUnwrap(manager.itemMetadata(ocId: "older"))
+        XCTAssertTrue(storedOlder.deleted, "Older duplicate should be soft-deleted at startup")
+
+        let storedNewer = try XCTUnwrap(manager.itemMetadata(ocId: "newer"))
+        XCTAssertFalse(storedNewer.deleted, "Newer duplicate should be kept")
+    }
+
+    func testStartupCleanupTiebreakOnEqualSyncTime() throws {
+        let testAccount = "TestAccount"
+        let testServerUrl = "https://example.com"
+        let fileName = "tie.txt"
+        let sameTime = Date(timeIntervalSince1970: 5000)
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            let a = RealmItemMetadata()
+            a.ocId = "aa"
+            a.account = testAccount
+            a.serverUrl = testServerUrl
+            a.fileName = fileName
+            a.syncTime = sameTime
+            realm.add(a)
+
+            let b = RealmItemMetadata()
+            b.ocId = "bb"
+            b.account = testAccount
+            b.serverUrl = testServerUrl
+            b.fileName = fileName
+            b.syncTime = sameTime
+            realm.add(b)
+        }
+
+        let configuration = Realm.Configuration.defaultConfiguration
+        let manager = FilesDatabaseManager(
+            realmConfiguration: configuration,
+            account: Self.account,
+            databaseDirectory: makeDatabaseDirectory(),
+            fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"),
+            log: FileProviderLogMock()
+        )
+
+        let storedA = try XCTUnwrap(manager.itemMetadata(ocId: "aa"))
+        XCTAssertTrue(storedA.deleted, "Lexicographically smaller ocId loses the tiebreak")
+
+        let storedB = try XCTUnwrap(manager.itemMetadata(ocId: "bb"))
+        XCTAssertFalse(storedB.deleted, "Lexicographically greater ocId wins the tiebreak")
+    }
+
+    func testStartupCleanupNoOpWhenNoDuplicates() throws {
+        let testAccount = "TestAccount"
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            let a = RealmItemMetadata()
+            a.ocId = "one"
+            a.account = testAccount
+            a.serverUrl = "https://example.com"
+            a.fileName = "one.txt"
+            realm.add(a)
+
+            let b = RealmItemMetadata()
+            b.ocId = "two"
+            b.account = testAccount
+            b.serverUrl = "https://example.com"
+            b.fileName = "two.txt"
+            realm.add(b)
+
+            // Same fileName but different serverUrl — not a logical duplicate.
+            let c = RealmItemMetadata()
+            c.ocId = "three"
+            c.account = testAccount
+            c.serverUrl = "https://example.com/folder"
+            c.fileName = "one.txt"
+            realm.add(c)
+        }
+
+        let configuration = Realm.Configuration.defaultConfiguration
+        let manager = FilesDatabaseManager(
+            realmConfiguration: configuration,
+            account: Self.account,
+            databaseDirectory: makeDatabaseDirectory(),
+            fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"),
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertFalse(try XCTUnwrap(manager.itemMetadata(ocId: "one")).deleted)
+        XCTAssertFalse(try XCTUnwrap(manager.itemMetadata(ocId: "two")).deleted)
+        XCTAssertFalse(try XCTUnwrap(manager.itemMetadata(ocId: "three")).deleted)
+    }
+
+    func testStartupCleanupSkipsInTransitDuplicate() throws {
+        let testAccount = "TestAccount"
+        let testServerUrl = "https://example.com"
+        let fileName = "in-flight.bin"
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            let uploading = RealmItemMetadata()
+            uploading.ocId = "uploading"
+            uploading.account = testAccount
+            uploading.serverUrl = testServerUrl
+            uploading.fileName = fileName
+            uploading.status = Status.uploading.rawValue
+            uploading.syncTime = Date(timeIntervalSince1970: 5000)
+            realm.add(uploading)
+
+            let settled = RealmItemMetadata()
+            settled.ocId = "settled"
+            settled.account = testAccount
+            settled.serverUrl = testServerUrl
+            settled.fileName = fileName
+            settled.status = Status.normal.rawValue
+            settled.syncTime = Date(timeIntervalSince1970: 1000)
+            realm.add(settled)
+        }
+
+        let configuration = Realm.Configuration.defaultConfiguration
+        let manager = FilesDatabaseManager(
+            realmConfiguration: configuration,
+            account: Self.account,
+            databaseDirectory: makeDatabaseDirectory(),
+            fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"),
+            log: FileProviderLogMock()
+        )
+
+        let storedUploading = try XCTUnwrap(manager.itemMetadata(ocId: "uploading"))
+        XCTAssertFalse(storedUploading.deleted, "In-flight row must remain intact")
+
+        let storedSettled = try XCTUnwrap(manager.itemMetadata(ocId: "settled"))
+        XCTAssertFalse(storedSettled.deleted, "Settled row remains because it is the only writable winner")
+    }
+
+    func testEvictionRespectsLockFileOfLocalOrigin() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let fileName = "~$doc.docx"
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            let localLock = RealmItemMetadata()
+            localLock.ocId = "local-lock"
+            localLock.account = account.ncKitAccount
+            localLock.serverUrl = account.davFilesUrl
+            localLock.fileName = fileName
+            localLock.isLockFileOfLocalOrigin = true
+            realm.add(localLock)
+        }
+
+        let serverRow = SendableItemMetadata(ocId: "server-row", fileName: fileName, account: account)
+        Self.dbManager.addItemMetadata(serverRow)
+
+        let storedLocalLock = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "local-lock"))
+        XCTAssertFalse(storedLocalLock.deleted, "Lock file of local origin must not be evicted")
+
+        let storedServer = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "server-row"))
+        XCTAssertFalse(storedServer.deleted, "Server-side row is inserted alongside the lock file")
+    }
+
+    func testEvictedRowSurfacesInPendingWorkingSetChanges() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let anchor = Date()
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            let preExisting = RealmItemMetadata()
+            preExisting.ocId = "preExisting"
+            preExisting.account = account.ncKitAccount
+            preExisting.serverUrl = account.davFilesUrl
+            preExisting.fileName = "materialized.txt"
+            preExisting.downloaded = true // materialised
+            preExisting.syncTime = anchor.addingTimeInterval(-3600)
+            realm.add(preExisting)
+        }
+
+        var fresh = SendableItemMetadata(ocId: "fresh", fileName: "materialized.txt", account: account)
+        fresh.downloaded = true
+        fresh.syncTime = anchor.addingTimeInterval(60)
+        Self.dbManager.addItemMetadata(fresh)
+
+        let changes = Self.dbManager.pendingWorkingSetChanges(since: anchor)
+        XCTAssertTrue(
+            changes.deleted.contains { $0.ocId == "preExisting" },
+            "Evicted materialized row should surface in working-set deletions"
+        )
+    }
+
+    func testAddItemMetadataPreservingLocalStateFallsBackOnOcIdRotation() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+
+        var original = SendableItemMetadata(ocId: "originalOcId", fileName: "rotated.txt", account: account)
+        original.keepDownloaded = true
+        original.downloaded = true
+        Self.dbManager.addItemMetadata(original)
+
+        var rotated = SendableItemMetadata(ocId: "rotatedOcId", fileName: "rotated.txt", account: account)
+        rotated.keepDownloaded = false // fresh from server, no local state
+        rotated.downloaded = false
+
+        let merged = Self.dbManager.addItemMetadataPreservingLocalState(rotated)
+
+        XCTAssertTrue(merged.keepDownloaded, "Should carry over keepDownloaded across the ocId rotation")
+        XCTAssertTrue(merged.downloaded, "Should carry over downloaded across the ocId rotation")
+
+        let storedOriginal = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "originalOcId"))
+        XCTAssertTrue(storedOriginal.deleted, "Original row should be soft-deleted after rotation")
+
+        let storedRotated = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "rotatedOcId"))
+        XCTAssertFalse(storedRotated.deleted)
+        XCTAssertTrue(storedRotated.keepDownloaded, "Persisted row should reflect the merged state")
+        XCTAssertTrue(storedRotated.downloaded)
+    }
+
+    func testAddItemMetadataPreservingLocalStateFallbackDoesNotMergeWhenAlreadyDuplicated() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let fileName = "duped.txt"
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            let a1 = RealmItemMetadata()
+            a1.ocId = "A1"
+            a1.account = account.ncKitAccount
+            a1.serverUrl = account.davFilesUrl
+            a1.fileName = fileName
+            a1.keepDownloaded = true
+            a1.downloaded = true
+            a1.syncTime = Date(timeIntervalSince1970: 1000)
+            realm.add(a1)
+
+            let a2 = RealmItemMetadata()
+            a2.ocId = "A2"
+            a2.account = account.ncKitAccount
+            a2.serverUrl = account.davFilesUrl
+            a2.fileName = fileName
+            a2.keepDownloaded = true
+            a2.downloaded = true
+            a2.syncTime = Date(timeIntervalSince1970: 2000)
+            realm.add(a2)
+        }
+
+        var fresh = SendableItemMetadata(ocId: "B", fileName: fileName, account: account)
+        fresh.keepDownloaded = false
+        fresh.downloaded = false
+
+        let merged = Self.dbManager.addItemMetadataPreservingLocalState(fresh)
+
+        XCTAssertFalse(merged.keepDownloaded, "Should not merge state when the database is already duplicated")
+        XCTAssertFalse(merged.downloaded, "Should not merge state when the database is already duplicated")
+
+        let storedA1 = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "A1"))
+        XCTAssertTrue(storedA1.deleted, "Pre-existing duplicate A1 should be soft-deleted by eviction")
+
+        let storedA2 = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "A2"))
+        XCTAssertTrue(storedA2.deleted, "Pre-existing duplicate A2 should be soft-deleted by eviction")
+
+        let storedB = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "B"))
+        XCTAssertFalse(storedB.deleted)
     }
 }

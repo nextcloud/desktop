@@ -7,7 +7,7 @@
 
 [![REUSE status](https://api.reuse.software/badge/github.com/nextcloud/desktop)](https://api.reuse.software/info/github.com/nextcloud/desktop)
 
-The Nextcloud Desktop Client is an app to synchronize files from Nextcloud Server with your computer.
+The Nextcloud Desktop Client is an app to synchronize files from Nextcloud Server with your computer available for Windows, macOS and Linux.
 
 <p align="center">
     <img src="doc/images/main_dialog_christine.png" alt="Desktop Client on Windows" width="450">
@@ -16,8 +16,12 @@ The Nextcloud Desktop Client is an app to synchronize files from Nextcloud Serve
 ## Downloads 🚀
 For the latest stable and recommended version, please refer to [the official download page](https://nextcloud.com/install/#install-clients).
 
+## Help 🛟
+You can find [the user, administration and developer manuals for the desktop client](https://docs.nextcloud.com/#desktop) on our central documentation site.
+
 ## Contributing 🫴
-:v: Please read the [Code of Conduct](https://nextcloud.com/community/code-of-conduct/). This document offers some guidance to ensure Nextcloud participants can cooperate effectively in a positive and inspiring atmosphere and to explain how together we can strengthen and support each other.
+- Make sure to follow our [guidelines for contributing](https://github.com/nextcloud/desktop/blob/98690b1e9141f2c602c9b4583c1f9ed16b95a309/CONTRIBUTING.md) to this repository.
+- Don't forget to read our [Code of Conduct](https://nextcloud.com/community/code-of-conduct/). This document offers some guidance to ensure Nextcloud participants can cooperate effectively in a positive and inspiring atmosphere and to explain how together we can strengthen and support each other.
 
 ## Join the team 👪
 There are many ways to contribute, of which development is only one! Find out [how to get involved](https://nextcloud.com/contribute/), including as a translator, designer, tester, helping others, and much more! 😍
@@ -35,19 +39,13 @@ If you find any bugs or have any suggestion for improvement, please
 ## Bug fixing and development 🛠️
 
 > [!TIP]
-> For contributors on macOS, there is an [Xcode workspace](./Nextcloud%20Desktop%20Client.xcworkspace/) prepared for development.
-> See [the dedicated documentation](./doc/xcode-workspace.md) for further information.
-
-> [!TIP]
-> For building the client on macOS we have a tool called `mac-crafter`.
-> You will find more information about it in [its dedicated README](admin/osx/mac-crafter/README.md).
-> Also, please note the [README in the NextcloudIntegration project](shell_integration/MacOSX/NextcloudIntegration/README.md) which provides an even more convenient way to work on and build the desktop client on macOS by using Xcode.
+> For contributors on macOS, see the [macOS development guide](./doc/macOS-development.md).
 
 > [!NOTE]  
-> Find the system requirements and instructions on [how to work on Windows with KDE Craft](https://github.com/nextcloud/desktop-client-blueprints/) on our [desktop client blueprints repository](https://github.com/nextcloud/desktop-client-blueprints/).
+> Find the system requirements and instructions on [how to work with KDE Craft in our desktop client blueprints repository](https://github.com/nextcloud/craft-blueprints-nextcloud/).
 
 ### System requirements
-- [Windows 10, Windows 11](https://github.com/nextcloud/desktop-client-blueprints/), macOS 10.14 Mojave (or newer) or Linux
+- Windows 10, Windows 11, macOS 13 Ventura (or newer) or Linux
 - [🔽 Inkscape (to generate icons)](https://inkscape.org/release/)
 - Developer tools: cmake, clang/gcc/g++:
 - Qt6 since 3.14, Qt5 for earlier versions

@@ -72,6 +72,11 @@ public:
      */
     void setAppName(const QString &AppName);
 
+    /**
+     * Set whether missing keychain entries should be logged as warnings.
+     */
+    void setEntryNotFoundExpected(bool expected);
+
 #ifdef Q_OS_WIN
     /**
      * On Windows the credential keys aren't namespaced properly
@@ -92,6 +97,7 @@ protected:
     bool _insecureFallback = false;
     bool _autoDelete = true;
     bool _keychainMigration = false;
+    bool _entryNotFoundExpected = false;
 
     QKeychain::Error _error = QKeychain::NoError;
     QString _errorString;

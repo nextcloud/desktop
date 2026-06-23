@@ -71,7 +71,10 @@ void DiskFileModifier::insert(const QString &relativePath, qint64 size, char con
     if (!file.exists()) {
         QVERIFY(!file.exists());
     }
-    file.open(QFile::WriteOnly);
+    const auto openResult = file.open(QFile::WriteOnly);
+    if (!openResult) {
+        qWarning() << "error while opening the file" << relativePath << _rootDir.filePath(relativePath);
+    }
     QByteArray buf(1024, contentChar);
     for (int x = 0; x < size / buf.size(); ++x) {
         file.write(buf);
@@ -90,7 +93,10 @@ void DiskFileModifier::setContents(const QString &relativePath, char contentChar
     QFile file { _rootDir.filePath(relativePath) };
     QVERIFY(file.exists());
     qint64 size = file.size();
-    file.open(QFile::WriteOnly);
+    const auto openResult = file.open(QFile::WriteOnly);
+    if (!openResult) {
+        qWarning() << "error while opening the file" << relativePath << _rootDir.filePath(relativePath);
+    }
     file.write(QByteArray {}.fill(contentChar, size));
 }
 
@@ -98,7 +104,10 @@ void DiskFileModifier::appendByte(const QString &relativePath)
 {
     QFile file { _rootDir.filePath(relativePath) };
     QVERIFY(file.exists());
-    file.open(QFile::ReadWrite);
+    const auto openResult = file.open(QFile::ReadWrite);
+    if (!openResult) {
+        qWarning() << "error while opening the file" << relativePath << _rootDir.filePath(relativePath);
+    }
     QByteArray contents = file.read(1);
     file.seek(file.size());
     file.write(contents);
@@ -454,6 +463,9 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
         xml.writeTextElement(ncUri, QStringLiteral("lock-owner-editor"), fileInfo.lockOwnerId);
         xml.writeTextElement(ncUri, QStringLiteral("lock-time"), QString::number(fileInfo.lockTime));
         xml.writeTextElement(ncUri, QStringLiteral("lock-timeout"), QString::number(fileInfo.lockTimeout));
+        if (!fileInfo.lockToken.isEmpty()) {
+            xml.writeTextElement(ncUri, QStringLiteral("lock-token"), fileInfo.lockToken);
+        }
         xml.writeTextElement(ncUri, QStringLiteral("is-encrypted"), fileInfo.isEncrypted ? QString::number(1) : QString::number(0));
         xml.writeTextElement(ncUri, QStringLiteral("metadata-files-live-photo"), fileInfo.isLivePhoto ? QString::number(1) : QString::number(0));
         buffer.write(fileInfo.extraDavProperties);
@@ -1241,6 +1253,7 @@ void FakeQNAM::setServerVersion(const QString &version)
 
 FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo, const QString &remotePath, const bool performInitialSync)
     : _tempDirLocalPath(QFileInfo(_tempDir.path()).canonicalFilePath())
+    , _remotePath{remotePath}
     , _localModifier(_tempDirLocalPath)
     , _accountState(nullptr)
 {
@@ -1267,7 +1280,7 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInf
     _fakeQnam->setServerVersion(_serverVersion);
 
     _journalDb = std::make_unique<OCC::SyncJournalDb>(localPath() + QStringLiteral(".sync_test.db"));
-    _syncEngine = std::make_unique<OCC::SyncEngine>(_account, localPath(), OCC::SyncOptions{}, remotePath, _journalDb.get());
+    _syncEngine = std::make_unique<OCC::SyncEngine>(_account, localPath(), OCC::SyncOptions{}, _remotePath, _journalDb.get());
     // Ignore temporary files from the download. (This is in the default exclude list, but we don't load it)
     _syncEngine->excludedFiles().addManualExclude(u".~lock.*#"_s);
     _syncEngine->excludedFiles().addManualExclude(QStringLiteral("]*.~*"));
@@ -1302,7 +1315,7 @@ void FakeFolder::switchToVfs(QSharedPointer<OCC::Vfs> vfs)
 
     OCC::VfsSetupParams vfsParams;
     vfsParams.filesystemPath = localPath();
-    vfsParams.remotePath = QLatin1Char('/');
+    vfsParams.remotePath = _remotePath + u"/"_s;
     vfsParams.account = _account;
     vfsParams.journal = _journalDb.get();
     vfsParams.providerName = QStringLiteral("OC-TEST");
@@ -1455,7 +1468,10 @@ void FakeFolder::toDisk(QDir &dir, const FileInfo &templateFi)
             toDisk(subDir, child);
         } else {
             QFile file { dir.filePath(child.name) };
-            file.open(QFile::WriteOnly);
+            const auto openResult = file.open(QFile::WriteOnly);
+            if (!openResult) {
+                qWarning() << "error while opening the file" << child.name << dir.filePath(child.name);
+            }
             file.write(QByteArray {}.fill(child.contentChar, child.size));
             file.close();
             OCC::FileSystem::setModTime(file.fileName(), OCC::Utility::qDateTimeToTime_t(child.lastModified));
@@ -1474,7 +1490,10 @@ void FakeFolder::fromDisk(QDir &dir, FileInfo &templateFi)
             fromDisk(subDir, subFi);
         } else {
             QFile f { diskChild.filePath() };
-            f.open(QFile::ReadOnly);
+            const auto openResult = f.open(QFile::ReadOnly);
+            if (!openResult) {
+                qWarning() << "error while opening the file" << diskChild.filePath();
+            }
             auto content = f.read(1);
             if (content.size() == 0) {
                 qWarning() << "Empty file at:" << diskChild.filePath();

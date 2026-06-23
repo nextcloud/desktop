@@ -9,34 +9,37 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
+    types: [opened, reopened, synchronize, ready_for_review]
 
 jobs:
   Lint:
-    runs-on: macos-latest
+    if: ${{ github.event_name != 'pull_request' || !github.event.pull_request.draft }}
+    runs-on: macos-26
 
     defaults:
       run:
         working-directory: shell_integration/MacOSX/NextcloudFileProviderKit
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
       - name: SwiftFormat
         run: swiftformat --lint . --reporter github-actions-log
 
   Tests:
-    runs-on: macos-latest
+    if: ${{ github.event_name != 'pull_request' || !github.event.pull_request.draft }}
+    runs-on: macos-26
 
     defaults:
       run:
         working-directory: shell_integration/MacOSX/NextcloudFileProviderKit
 
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
     - uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1.7.0
       with:
         xcode-version: latest-stable
 
     - name: Run Tests
-      run: xcodebuild clean build test -scheme NextcloudFileProviderKit -destination "platform=macOS,name=My Mac"
+      run: xcodebuild clean build test -scheme NextcloudFileProviderKit-Package -destination "platform=macOS,name=My Mac"

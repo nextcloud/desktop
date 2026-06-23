@@ -47,6 +47,17 @@ public:
     void reconnectAll();
 
     /**
+     * @brief Reconcile registered file provider domain display names with the current account state.
+     *
+     * For every registered domain whose `displayName` no longer matches the owning account's
+     * `Account::shortcutName()` (e.g. the legacy U+2024-escaped form left over from the prior
+     * fix for #7979, or a stale `prettyName()` snapshot), re-register the domain in place so the
+     * macOS-side metadata catches up. Safe to call on every launch — a no-op when names already
+     * match.
+     */
+    void reconcileDomainDisplayNames();
+
+    /**
      * @brief Remove a file provider domain independent from an account.
      * @return The path to the location where preserved dirty user data is stored, or an empty QString if none.
      */
@@ -72,6 +83,25 @@ public:
      * @return The user-visible URL of the domain's root container, or an empty QString if not found.
      */
     [[nodiscard]] QString userVisibleUrlForDomainIdentifier(const QString &domainIdentifier) const;
+
+    /**
+     * @brief Open the system file viewer at the root container of a file provider domain.
+     * @param domainIdentifier The identifier of the file provider domain.
+     */
+    void openFileViewerForDomainIdentifier(const QString &domainIdentifier) const;
+
+    /**
+     * @brief Tell the system that the previously-returned `NSFileProviderError.insufficientQuota` error no longer applies and signal an enumeration of the working set so the system retries refused uploads.
+     *
+     * Implements the documented contract of
+     * `NSFileProviderManager.signalErrorResolved(_:completionHandler:)` followed by
+     * `signalEnumerator(for: .workingSet)`. Called from `User::slotFileProviderRetryUploads`
+     * when the user clicks the "Retry all uploads" button on the per-folder summary entry
+     * surfaced for nextcloud/desktop#9598.
+     *
+     * @param domainIdentifier The identifier of the affected file provider domain.
+     */
+    void clearInsufficientQuotaErrorAndEnumerate(const QString &domainIdentifier) const;
 
 public slots:
     /**

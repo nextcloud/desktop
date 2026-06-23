@@ -104,6 +104,11 @@ int main(int argc, char **argv)
 
     QQuickStyle::setStyle(qmlStyle);
 
+#if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+    QCoreApplication::setOrganizationDomain(QLatin1String(APPLICATION_REV_DOMAIN_DBUS));
+    QCoreApplication::setApplicationName(QLatin1String(APPLICATION_EXECUTABLE));
+#endif
+
     OCC::Application app(argc, argv);
 
     if (!widgetsStyle.isEmpty()) {

@@ -97,6 +97,7 @@ public final class FilesDatabaseManager: Sendable {
         do {
             _ = try Realm()
             logger.info("Successfully created Realm.")
+            cleanupPreexistingLogicalDuplicates()
         } catch {
             logger.fault("Error creating Realm: \(error)")
         }
@@ -126,6 +127,11 @@ public final class FilesDatabaseManager: Sendable {
 
     public func itemMetadata(_ identifier: NSFileProviderItemIdentifier) -> SendableItemMetadata? {
         itemMetadata(ocId: identifier.rawValue)
+    }
+
+    /// Return whether metadata exists for any numeric WebDAV file ID received from notify-push.
+    public func containsAnyItemMetadata(fileIds: Set<String>) -> Bool {
+        itemMetadatas.contains { fileIds.contains($0.fileId) }
     }
 
     ///
@@ -207,8 +213,41 @@ public final class FilesDatabaseManager: Sendable {
         account: String, underServerUrl serverUrl: String
     ) -> [SendableItemMetadata] {
         itemMetadatas
-            .where { $0.account == account && $0.serverUrl.starts(with: serverUrl) }
+            .where {
+                $0.account == account &&
+                    ($0.serverUrl == serverUrl || $0.serverUrl.starts(with: serverUrl + "/"))
+            }
             .toUnmanagedResults()
+    }
+
+    ///
+    /// Resolve the parent's "Always keep downloaded" flag for a metadata
+    /// that is about to be persisted as a fresh row.
+    ///
+    /// Mirrors the inheritance applied to locally-created items in
+    /// `Item+Create.swift` so a sibling appearing via remote enumeration
+    /// acquires the same `contentPolicy` and Finder overlay without the user
+    /// having to re-toggle the parent (#10054).
+    ///
+    /// Checking only the immediate parent is sufficient: the recursive
+    /// enable in `Item.set(keepDownloaded:domain:)` sets the flag on every
+    /// then-known descendant of the pinned ancestor, so every intermediate
+    /// directory between the pin root and this new item is itself pinned.
+    ///
+    /// Falls back to the root container when no parent row exists at the
+    /// item's `serverUrl` — items directly under the user's home are stored
+    /// against a synthesised root keyed by ocId, not by serverUrl/fileName.
+    ///
+    func inheritedKeepDownloaded(for metadata: SendableItemMetadata) -> Bool {
+        if let parent = parentDirectoryMetadataForItem(metadata) {
+            return parent.keepDownloaded
+        }
+
+        if let root = itemMetadata(ocId: NSFileProviderItemIdentifier.rootContainer.rawValue) {
+            return root.keepDownloaded
+        }
+
+        return false
     }
 
     private func processItemMetadatasToDelete(
@@ -238,10 +277,11 @@ public final class FilesDatabaseManager: Sendable {
         for var updatedMetadata in updatedMetadatas {
             if let existingMetadata = existingMetadatas.first(where: { $0.ocId == updatedMetadata.ocId }) {
                 if existingMetadata.status == Status.normal.rawValue, !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata) {
-                    if updatedMetadata.directory,
-                       updatedMetadata.serverUrl != existingMetadata.serverUrl ||
-                       updatedMetadata.fileName != existingMetadata.fileName
-                    {
+                    let pathChanged =
+                        updatedMetadata.serverUrl != existingMetadata.serverUrl ||
+                        updatedMetadata.fileName != existingMetadata.fileName
+
+                    if updatedMetadata.directory, pathChanged {
                         directoriesNeedingRename.append(updatedMetadata)
                     }
 
@@ -251,7 +291,7 @@ public final class FilesDatabaseManager: Sendable {
 
                     updatedMetadata.visitedDirectory = existingMetadata.visitedDirectory
                     updatedMetadata.keepDownloaded = existingMetadata.keepDownloaded
-                    updatedMetadata.lockToken = existingMetadata.lockToken
+                    updatedMetadata.lockToken = pathChanged ? nil : existingMetadata.lockToken
 
                     returningUpdatedMetadatas.append(updatedMetadata)
 
@@ -271,6 +311,9 @@ public final class FilesDatabaseManager: Sendable {
                 }
 
             } else { // This is a new metadata
+                // Inherit the parent's "Always keep downloaded" flag so a file surfacing here via remote enumeration acquires the same pin as its already-pinned siblings (#10054).
+                updatedMetadata.keepDownloaded = inheritedKeepDownloaded(for: updatedMetadata)
+
                 returningNewMetadatas.append(updatedMetadata)
 
                 logger.debug("Created new item metadata during update.", [.item: updatedMetadata.ocId])
@@ -373,11 +416,24 @@ public final class FilesDatabaseManager: Sendable {
                     }
                 } else {
                     logger.info("Depth 1 read target is new: \(readTargetMetadata.ocId)")
+                    // Inherit from the parent so a directory appearing here via remote enumeration (e.g. created on the server while the user already pinned its parent) picks up the same pin as siblings (#10054).
+                    readTargetMetadata.keepDownloaded = inheritedKeepDownloaded(for: readTargetMetadata)
                     metadatasToCreate.insert(readTargetMetadata, at: 0)
                 }
             }
 
             try database.write {
+                // Evict any logical-address duplicates before persisting fresh
+                // payloads, so an ocId rotation (or rename whose target collides
+                // with a third row) does not leave two non-deleted siblings at
+                // the same `(account, serverUrl, fileName)`.
+                for metadata in metadatasToCreate {
+                    evictLogicalDuplicates(of: metadata, in: database)
+                }
+                for metadata in metadatasToUpdate {
+                    evictLogicalDuplicates(of: metadata, in: database)
+                }
+
                 // Do not delete the metadatas that have been deleted
                 database.add(metadatasToDelete.map { RealmItemMetadata(value: $0) }, update: .modified)
                 database.add(metadatasToUpdate.map { RealmItemMetadata(value: $0) }, update: .modified)
@@ -439,12 +495,99 @@ public final class FilesDatabaseManager: Sendable {
 
         do {
             try database.write {
+                evictLogicalDuplicates(of: metadata, in: database)
                 database.add(RealmItemMetadata(value: metadata), update: .all)
                 logger.debug("Added item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl])
             }
         } catch {
             logger.error("Failed to add item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl, .error: error])
         }
+    }
+
+    ///
+    /// Add or replace `metadata` while carrying over local-only fields the
+    /// server payload cannot know about: ``keepDownloaded``, ``downloaded``,
+    /// ``visitedDirectory``, and ``lockToken``.
+    ///
+    /// Mirrors the preservation set applied by
+    /// ``processItemMetadatasToUpdate`` for non-paginated reads. Use this from
+    /// any code path that ingests fresh PROPFIND results (e.g. paginated
+    /// enumeration); plain ``addItemMetadata(_:)`` would otherwise overwrite
+    /// these fields back to their defaults via Realm's `update: .all`,
+    /// silently undoing user-visible state such as "Always keep downloaded"
+    /// (#9923).
+    ///
+    /// Returns the merged metadata that was persisted. Callers that report
+    /// items back to the file-provider framework MUST forward the returned
+    /// value rather than the input — otherwise the framework receives the
+    /// pre-merge defaults and renders the item as if the local-only state
+    /// (e.g. pinned-via-keep-downloaded) had been cleared.
+    ///
+    /// - Parameters:
+    ///   - metadata: The freshly-built metadata to persist.
+    ///   - preserveVisitedDirectory: When `false`, do not carry over
+    ///     ``visitedDirectory`` from the existing row. Callers that have just
+    ///     visited the directory in the current request should pass `false`
+    ///     and pre-set `metadata.visitedDirectory = true`, so the visit is
+    ///     recorded rather than overwritten by a stale `false` from the DB.
+    ///
+    @discardableResult
+    public func addItemMetadataPreservingLocalState(_ metadata: SendableItemMetadata, preserveVisitedDirectory: Bool = true) -> SendableItemMetadata {
+        var toWrite = metadata
+
+        let metadatas = ncDatabase().objects(RealmItemMetadata.self)
+
+        if let existing = metadatas.where({ $0.ocId == metadata.ocId }).first {
+            toWrite.downloaded = existing.downloaded
+            toWrite.keepDownloaded = existing.keepDownloaded
+
+            if preserveVisitedDirectory {
+                toWrite.visitedDirectory = existing.visitedDirectory
+            }
+
+            toWrite.lockToken = existing.lockToken
+        } else {
+            // The ocId lookup missed. Before falling back to defaults from the
+            // server payload, look for a single non-deleted, non-local-lock row
+            // at the same logical address — an ocId rotation (restore-from-
+            // trash, recreate during reconnect, upload finalizer assigning a
+            // new server-side ocId) leaves the local-only state on the previous
+            // row, and #9923's preservation contract would otherwise silently
+            // drop `keepDownloaded`, `downloaded`, `visitedDirectory`, and
+            // `lockToken`. Only carry over when exactly one candidate exists:
+            // multiple candidates mean the DB is already in the duplicated
+            // state and choosing one would risk merging from the row about to
+            // be evicted. Eviction in `addItemMetadata` will then prune the
+            // prior row in the same write that persists the fresh one.
+            let logicalCandidates = metadatas.where {
+                $0.account == metadata.account
+                    && $0.serverUrl == metadata.serverUrl
+                    && $0.fileName == metadata.fileName
+                    && !$0.deleted
+                    && !$0.isLockFileOfLocalOrigin
+            }
+
+            if logicalCandidates.count == 1, let existing = logicalCandidates.first {
+                toWrite.downloaded = existing.downloaded
+                toWrite.keepDownloaded = existing.keepDownloaded
+
+                if preserveVisitedDirectory {
+                    toWrite.visitedDirectory = existing.visitedDirectory
+                }
+
+                toWrite.lockToken = existing.lockToken
+            } else {
+                // No prior row at this ocId or logical address: this is a
+                // genuinely new item. Inherit the parent's "Always keep
+                // downloaded" flag so a file surfacing here via remote
+                // enumeration acquires the same pin as its already-pinned
+                // siblings (#10054).
+                toWrite.keepDownloaded = inheritedKeepDownloaded(for: metadata)
+            }
+        }
+
+        addItemMetadata(toWrite)
+        return toWrite
     }
 
     ///
@@ -509,6 +652,7 @@ public final class FilesDatabaseManager: Sendable {
                 itemMetadata.fileName = newFileName
                 itemMetadata.fileNameView = newFileName
                 itemMetadata.serverUrl = newServerUrl
+                itemMetadata.lockToken = nil
 
                 database.add(itemMetadata, update: .all)
 

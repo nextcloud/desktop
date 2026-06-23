@@ -514,7 +514,8 @@ void EditLocallyJob::disconnectFolderSignals()
 void EditLocallyJob::fileAlreadyLocked()
 {
     SyncJournalFileRecord rec;
-    Q_ASSERT(_folderForFile->journalDb()->getFileRecord(_relativePathToRemoteRoot, &rec));
+    const auto recordFetched = _folderForFile->journalDb()->getFileRecord(_relativePathToRemoteRoot, &rec);
+    Q_ASSERT(recordFetched);
     Q_ASSERT(rec.isValid());
     Q_ASSERT(rec._lockstate._locked);
 

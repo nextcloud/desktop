@@ -45,6 +45,8 @@ public:
 
 public slots:
     void showFirstPage();
+    void showAccount(OCC::AccountState *account);
+    void setInitialAccount(OCC::AccountState *account);
     void showIssuesList(OCC::AccountState *account);
     void slotSwitchPage(QAction *action);
     void slotAccountAvatarChanged();
@@ -59,7 +61,7 @@ protected:
     void reject() override;
     void accept() override;
     void changeEvent(QEvent *) override;
-    void resizeEvent(QResizeEvent *event) override;
+    void showEvent(QShowEvent *event) override;
 
 private slots:
     void accountAdded(OCC::AccountState *);
@@ -69,6 +71,7 @@ private:
     void customizeStyle();
     void requestStyleUpdate();
     void updateAccountAvatar(const Account *account);
+    void addSettingsPage(const QString &iconPath, const QString &title, QWidget *settingsPage, bool updateChannelAware = false);
 
     QAction *createColorAwareAction(const QString &iconName, const QString &fileName);
     QAction *createActionWithIcon(const QIcon &icon, const QString &text, const QString &iconPath = QString());
@@ -83,14 +86,12 @@ private:
 
     QToolBar *_toolBar;
     QStackedWidget *_stack = nullptr;
-
-#if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
-    QWidget *_windowDragHandle = nullptr;
-#endif
+    QAction *_firstNonAccountAction = nullptr;
 
     ownCloudGui *_gui;
     bool _styleUpdatePending = false;
     bool _updatingStyle = false;
+    OCC::AccountState *_initialAccount = nullptr;
 
     void setupUi();
 };

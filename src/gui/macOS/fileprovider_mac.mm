@@ -6,6 +6,7 @@
 #include "fileprovider.h"
 
 #include <QLoggingCategory>
+#include <QOperatingSystemVersion>
 
 #include "libsync/configfile.h"
 #include "gui/macOS/fileproviderxpc.h"
@@ -48,6 +49,11 @@ FileProvider *FileProvider::instance()
     return _instance;
 }
 
+bool FileProvider::available()
+{
+    return QOperatingSystemVersion::current() >= QOperatingSystemVersion::MacOSSonoma;
+}
+
 FileProvider::~FileProvider()
 {
     _instance = nullptr;
@@ -55,12 +61,23 @@ FileProvider::~FileProvider()
 
 void FileProvider::configureXPC()
 {
+    if (!available()) {
+        qCInfo(lcMacFileProvider) << "Skipping file provider XPC configuration on unsupported macOS version.";
+        return;
+    }
+
     _xpc = std::make_unique<FileProviderXPC>(new FileProviderXPC(this));
 
     if (_xpc) {
         qCInfo(lcMacFileProvider) << "Initialised file provider XPC.";
         _xpc->connectToFileProviderDomains();
         _xpc->authenticateFileProviderDomains();
+        // Push the ignore list immediately after authenticating — the extension
+        // treats a missing ignore list the same way it treats missing
+        // credentials (rejecting callbacks with `.notAuthenticated`) so the
+        // two must be injected together, not only when the user happens to
+        // open the ignore-list settings UI.
+        _xpc->setIgnoreList();
     } else {
         qCWarning(lcMacFileProvider) << "Could not initialise file provider XPC.";
     }

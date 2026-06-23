@@ -134,6 +134,23 @@ public slots:
     void setReplyMessageSent(const int activityIndex, const QString &message);
     void setCurrentItem(const int currentItem);
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    /// Stable activity `_id` for the per-domain insufficient-quota summary entry. Used by
+    /// both `OCC::User` (when constructing the entry) and this model (when removing it on
+    /// retry). See https://github.com/nextcloud/desktop/issues/9598.
+    [[nodiscard]] static qint64 fileProviderQuotaSummaryActivityId(const QString &domainIdentifier);
+
+    /// Stable activity `_id` for a per-item insufficient-quota entry. Identical hashing on
+    /// both producer and consumer keeps `removeFileProviderQuotaActivitiesForDomain(...)`
+    /// able to find rows it didn't author.
+    [[nodiscard]] static qint64 fileProviderQuotaItemActivityId(const QString &domainIdentifier, const QString &relativePath, const QString &fileName);
+
+    /// Remove the per-folder summary entry plus every per-item quota entry that belongs to
+    /// the given domain from the activity list. Called when the user clicks "Retry all
+    /// uploads" so the UI gives immediate feedback that the click did something.
+    void removeFileProviderQuotaActivitiesForDomain(const QString &domainIdentifier);
+#endif
+
 signals:
     void accountStateChanged();
     void hasSyncConflictsChanged();
@@ -145,6 +162,16 @@ signals:
     void interactiveActivityReceived();
 
     void showSettingsDialog();
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    /**
+     * @brief Emitted when the user clicks the "Retry all uploads" button on a file provider
+     * insufficient-quota summary entry. The argument is the file provider domain identifier;
+     * the slot in `OCC::User` calls `signalErrorResolved` + `signalEnumerator` for that domain.
+     * See https://github.com/nextcloud/desktop/issues/9598.
+     */
+    void fileProviderRetryUploadsRequested(const QString &domainIdentifier);
+#endif
 
 protected:
     [[nodiscard]] bool currentlyFetching() const;

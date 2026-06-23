@@ -16,6 +16,8 @@
 
 #include <QtTest>
 
+using namespace Qt::StringLiterals;
+
 namespace cfapi {
 using namespace OCC::CfApiWrapper;
 }
@@ -1583,6 +1585,74 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
     }
 
+    void syncFoldersOnDemandFromSubFolder()
+    {
+        FileInfo localRoot{u"first folder"_s, {}};
+        FileInfo remoteRoot{{}, {localRoot}};
+        FakeFolder fakeFolder {remoteRoot, localRoot, u"/first folder"_s};
+        auto vfs = setupVfs(fakeFolder);
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        const auto cleanup = [&]() {
+            completeSpy.clear();
+        };
+
+        cleanup();
+
+        fakeFolder.remoteModifier().insert("rootfile1");
+        fakeFolder.remoteModifier().insert("first folder/file1");
+        fakeFolder.remoteModifier().insert("first folder/file2");
+        fakeFolder.remoteModifier().insert("first folder/file3");
+        fakeFolder.remoteModifier().mkdir("first folder/second folder");
+        fakeFolder.remoteModifier().insert("first folder/second folder/second file1");
+        fakeFolder.remoteModifier().insert("first folder/second folder/second file2");
+        fakeFolder.remoteModifier().insert("first folder/second folder/second file3");
+        fakeFolder.remoteModifier().mkdir("first folder/second folder/third folder");
+        fakeFolder.remoteModifier().insert("first folder/second folder/third folder/third file1");
+        fakeFolder.remoteModifier().insert("first folder/second folder/third folder/third file2");
+        fakeFolder.remoteModifier().insert("first folder/second folder/third folder/third file3");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(completeSpy.size(), 4);
+        QVERIFY(itemInstruction(completeSpy, "file1", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "file2", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "file3", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "second folder", CSYNC_INSTRUCTION_NEW));
+
+        cleanup();
+
+        OCC::showInFileManager(fakeFolder.localPath() + "second folder");
+
+        QTest::qWait(5000);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        OCC::showInFileManager(fakeFolder.localPath() + "second folder");
+
+        QTest::qWait(5000);
+
+        const auto file3Info = fakeFolder.localModifier().find("second folder/second file3");
+        QVERIFY(file3Info.exists());
+        const auto secondFolderInfo = fakeFolder.localModifier().find("second folder/third folder");
+        QVERIFY(secondFolderInfo.exists());
+        const auto wrongFirstFolderInfo = fakeFolder.localModifier().find("second folder/second folder");
+        QVERIFY(!wrongFirstFolderInfo.exists());
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        OCC::showInFileManager(fakeFolder.localPath() + "second folder/third folder");
+
+        QTest::qWait(5000);
+
+        const auto secondFile3Info = fakeFolder.localModifier().find("second folder/third folder/third file3");
+        QVERIFY(secondFile3Info.exists());
+        const auto wrongSecondFolderInfo = fakeFolder.localModifier().find("second folder/third folder/third folder");
+        QVERIFY(!wrongSecondFolderInfo.exists());
+
+        QVERIFY(fakeFolder.syncOnce());
+    }
+
     void switchVfsOffWithOnDemandFolder()
     {
         FakeFolder fakeFolder{FileInfo{}};
@@ -1704,6 +1774,50 @@ private slots:
         QVERIFY(itemInstruction(completeSpy, "zdirectory/zsubdir/fileFromRoot.txt", CSYNC_INSTRUCTION_RENAME));
         QVERIFY(itemInstruction(completeSpy, "afileFromDirectory.txt", CSYNC_INSTRUCTION_RENAME));
         QVERIFY(itemInstruction(completeSpy, "afileFromSubdir.txt", CSYNC_INSTRUCTION_RENAME));
+    }
+
+
+    void testServer_caseClash_createConflict()
+    {
+        FakeFolder fakeFolder{ FileInfo{} };
+        setupVfs(fakeFolder);
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        const auto cleanup = [&]() {
+            completeSpy.clear();
+        };
+
+        cleanup();
+
+        fakeFolder.remoteModifier().mkdir("perso");
+        fakeFolder.remoteModifier().mkdir("perso/hello");
+        fakeFolder.remoteModifier().mkdir("perso/Hello");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(completeSpy.size(), 1);
+        QVERIFY(itemInstruction(completeSpy, "perso", CSYNC_INSTRUCTION_NEW));
+
+        cleanup();
+
+        OCC::showInFileManager(fakeFolder.localPath() + "perso");
+
+        QTest::qWait(5000);
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(completeSpy.size(), 0);
+
+        OCC::showInFileManager(fakeFolder.localPath() + "perso");
+
+        QTest::qWait(5000);
+
+        cleanup();
+        fakeFolder.syncOnce();
+        QCOMPARE(completeSpy.size(), 0);
+
+        cleanup();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(completeSpy.size(), 0);
     }
 };
 

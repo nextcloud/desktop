@@ -550,8 +550,9 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
         LsColJob::propertyMapToRemoteInfo(map,
                                           _account->serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
                                           result);
-        if (result.isDirectory)
+        if (result.isDirectory) {
             result.size = 0;
+        }
 
         _results.push_back(std::move(result));
     }

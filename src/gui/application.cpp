@@ -40,6 +40,7 @@
 #include "shellextensionsserver.h"
 #elif defined(Q_OS_MACOS)
 #include "macOS/fileprovider.h"
+#include "macOS/fileprovidersettingscontroller.h"
 #include "macOS/findersyncxpc.h"
 #include "macOS/findersyncservice.h"
 #endif
@@ -228,6 +229,9 @@ Mac::FinderSyncXPC *Application::finderSyncXPC() const
 Application::Application(int &argc, char **argv)
     : QApplication{argc, argv}
     , _gui(nullptr)
+#if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+    , _dbusService{KDBusService::StartupOption::Unique}
+#endif
     , _theme(Theme::instance())
 {
     _startedAt.start();
@@ -264,6 +268,27 @@ Application::Application(int &argc, char **argv)
     setApplicationName(_theme->appName());
     setWindowIcon(_theme->applicationIcon());
 
+    parseOptions(arguments());
+    //no need to waste time;
+    if (_helpOnly || _versionOnly) {
+        return;
+    }
+
+    if (_quitInstance) {
+        QTimer::singleShot(0, qApp, &QApplication::quit);
+        return;
+    }
+
+#if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+    if (!_dbusService.isRegistered()) {
+        return;
+    }
+#else
+    if (!_singleApp.isPrimaryInstance()) {
+        return;
+    }
+#endif
+
     if (!ConfigFile().exists()) {
         setApplicationName(_theme->appNameGUI());
         QString legacyDir = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + "/" + APPLICATION_CONFIG_NAME;
@@ -280,18 +305,18 @@ Application::Application(int &argc, char **argv)
                 confDir.chop(1);
             }
 
-            qCInfo(lcApplication) << "Migrating old config from" << legacyDir << "to" << confDir;
+            qCDebug(lcApplication) << "Migrating old config from" << legacyDir << "to" << confDir;
 
             if (!QFile::rename(legacyDir, confDir)) {
-                qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << legacyDir << "to" << confDir << ")";
+                qCDebug(lcApplication) << "Failed to move the old config directory to its new location (" << legacyDir << "to" << confDir << ")";
 
                 // Try to move the files one by one
                 if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
                     const QStringList filesList = QDir(legacyDir).entryList(QDir::Files);
-                    qCInfo(lcApplication) << "Will move the individual files" << filesList;
+                    qCDebug(lcApplication) << "Will move the individual files" << filesList;
                     for (const auto &name : filesList) {
                         if (!QFile::rename(legacyDir + "/" + name,  confDir + "/" + name)) {
-                            qCWarning(lcApplication) << "Fallback move of " << name << "also failed";
+                            qCDebug(lcApplication) << "Fallback move of " << name << "also failed";
                         }
                     }
                 }
@@ -314,21 +339,6 @@ Application::Application(int &argc, char **argv)
                 accountState->account()->setProxyType(QNetworkProxy::NoProxy);
             }
         }
-    }
-
-    parseOptions(arguments());
-    //no need to waste time;
-    if (_helpOnly || _versionOnly) {
-        return;
-    }
-
-    if (_quitInstance) {
-        QTimer::singleShot(0, qApp, &QApplication::quit);
-        return;
-    }
-
-    if (!_singleApp.isPrimaryInstance()) {
-        return;
     }
 
     setupLogging();
@@ -396,7 +406,13 @@ Application::Application(int &argc, char **argv)
     _shellExtensionsServer.reset(new ShellExtensionsServer);
 #endif
 
+#ifdef Q_OS_MACOS
+    connect(&_singleApp, &OCC::SingleInstanceManager::messageReceived, this, &Application::slotParseMessage);
+#elif defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+    connect(&_dbusService, &KDBusService::activateRequested, this, &Application::slotActivateRequestedMessage);
+#else
     connect(&_singleApp, &KDSingleApplication::messageReceived, this, &Application::slotParseMessage);
+#endif
 
     // create accounts and folders from a legacy desktop client or from the current config file
     setupAccountsAndFolders();
@@ -475,6 +491,18 @@ Application::Application(int &argc, char **argv)
 
     handleEditLocallyFromOptions();
 
+#ifdef Q_OS_MACOS
+    // If any sync folder needs sandbox reapproval after upgrading to v33+,
+    // automatically open the settings dialog on the first affected account
+    // so the user is guided to grant access as quickly as possible.
+    for (const auto &folder : FolderMan::instance()->map()) {
+        if (folder->needsSandboxBookmark()) {
+            QTimer::singleShot(0, _gui.data(), &ownCloudGui::slotShowSettingsForSandboxReapproval);
+            break;
+        }
+    }
+#endif
+
     if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
         AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
     }
@@ -482,7 +510,15 @@ Application::Application(int &argc, char **argv)
 
 #if defined(BUILD_FILE_PROVIDER_MODULE)
     Mac::FileProvider::instance();
-    Mac::FileProvider::instance()->configureXPC();
+    if (Mac::FileProvider::available()) {
+        Mac::FileProvider::instance()->configureXPC();
+    } else {
+        // macOS 13 Ventura: instantiating the settings controller triggers the
+        // one-time cleanup that gracefully tears down any pre-existing VFS
+        // domains. The check (and this branch) can be removed once Ventura is
+        // no longer supported.
+        Mac::FileProviderSettingsController::instance();
+    }
 #endif
 
 #if defined(Q_OS_MACOS)
@@ -604,6 +640,43 @@ void Application::setupAccountsAndFolders()
     qCWarning(lcApplication) << accountsListSize << "account(s) migrated:" << prettyNamesList(accounts);
 }
 
+void Application::showMainDialogRemoteCommand()
+{
+    qCInfo(lcApplication) << "Running for" << _startedAt.elapsed() / 1000.0 << "sec";
+    if (_startedAt.elapsed() < 10 * 1000) {
+        // This call is mirrored with the one in int main()
+        qCWarning(lcApplication) << "Ignoring MSG_SHOWMAINDIALOG, possibly double-invocation of client via session restore and auto start";
+        return;
+    }
+
+           // Show the main dialog only if there is at least one account configured
+    if (!AccountManager::instance()->accounts().isEmpty()) {
+        showMainDialog();
+    } else {
+        _gui->slotNewAccountWizard();
+    }
+}
+
+void Application::parseOptionsRemoteCommand(const QStringList &options)
+{
+    _showLogWindow = false;
+    parseOptions(options);
+    setupLogging();
+    if (_showLogWindow) {
+        _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
+    }
+    if (_quitInstance) {
+        qApp->quit();
+    }
+
+    handleEditLocallyFromOptions();
+
+    if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
+        AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
+    }
+    AccountSetupCommandLineManager::destroy();
+}
+
 void Application::setupConfigFile()
 {
     // Migrate from version <= 2.4
@@ -634,17 +707,17 @@ void Application::setupConfigFile()
         confDir.chop(1);
     }
 
-    qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
+    qCDebug(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
     if (!QFile::rename(oldDir, confDir)) {
-        qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << oldDir << "to" << confDir << ")";
+        qCDebug(lcApplication) << "Failed to move the old config directory to its new location (" << oldDir << "to" << confDir << ")";
 
         // Try to move the files one by one
         if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
             const QStringList filesList = QDir(oldDir).entryList(QDir::Files);
-            qCInfo(lcApplication) << "Will move the individual files" << filesList;
+            qCDebug(lcApplication) << "Will move the individual files" << filesList;
             for (const auto &name : filesList) {
                 if (!QFile::rename(oldDir + "/" + name,  confDir + "/" + name)) {
-                    qCWarning(lcApplication) << "Fallback move of " << name << "also failed";
+                    qCDebug(lcApplication) << "Fallback move of " << name << "also failed";
                 }
             }
         }
@@ -821,37 +894,20 @@ void Application::slotParseMessage(const QByteArray &message)
     if (msg.startsWith(QLatin1String("MSG_PARSEOPTIONS:"))) {
         const int lengthOfMsgPrefix = 17;
         const auto options = msg.mid(lengthOfMsgPrefix).split(QLatin1Char{'|'});
-        _showLogWindow = false;
-        parseOptions(options);
-        setupLogging();
-        if (_showLogWindow) {
-            _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
-        }
-        if (_quitInstance) {
-            qApp->quit();
-        }
-
-        handleEditLocallyFromOptions();
-
-        if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
-            AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
-        }
-        AccountSetupCommandLineManager::destroy();
-
+        parseOptionsRemoteCommand(options);
     } else if (msg.startsWith(QLatin1String("MSG_SHOWMAINDIALOG"))) {
-        qCInfo(lcApplication) << "Running for" << _startedAt.elapsed() / 1000.0 << "sec";
-        if (_startedAt.elapsed() < 10 * 1000) {
-            // This call is mirrored with the one in int main()
-            qCWarning(lcApplication) << "Ignoring MSG_SHOWMAINDIALOG, possibly double-invocation of client via session restore and auto start";
-            return;
-        }
+        showMainDialogRemoteCommand();
+    }
+}
 
-        // Show the main dialog only if there is at least one account configured
-        if (!AccountManager::instance()->accounts().isEmpty()) {
-            showMainDialog();
-        } else {
-            _gui->slotNewAccountWizard();
-        }
+void Application::slotActivateRequestedMessage(const QStringList &arguments, const QString &workingDirectory)
+{
+    Q_UNUSED(workingDirectory)
+
+    if (arguments.size() == 1) {
+        showMainDialogRemoteCommand();
+    } else {
+        parseOptionsRemoteCommand(arguments);
     }
 }
 
@@ -1027,12 +1083,22 @@ void Application::showVersion()
 
 bool Application::isRunning() const
 {
+#if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+    return false;
+#else
     return !_singleApp.isPrimaryInstance();
+#endif
 }
 
 bool Application::sendMessage(const QString &message)
 {
+#if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+    Q_UNUSED(message)
+
+    return true;
+#else
     return _singleApp.sendMessage(message.toLatin1());
+#endif
 }
 
 void Application::showHint(std::string errorHint)

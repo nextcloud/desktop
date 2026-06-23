@@ -387,9 +387,6 @@ QByteArray encryptPrivateKey(
 }
 
 QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
-    qCInfo(lcCse()) << "decryptStringSymmetric key: " << key;
-    qCInfo(lcCse()) << "decryptStringSymmetric data: " << data;
-
     const auto parts = splitCipherParts(data);
     if (parts.size() < 2) {
         qCInfo(lcCse()) << "Not enough parts found";
@@ -398,9 +395,6 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
 
     QByteArray cipherTXT64 = parts.at(0);
     QByteArray ivB64 = parts.at(1);
-
-    qCInfo(lcCse()) << "decryptStringSymmetric cipherTXT: " << cipherTXT64;
-    qCInfo(lcCse()) << "decryptStringSymmetric IV: " << ivB64;
 
     QByteArray cipherTXT = QByteArray::fromBase64(cipherTXT64);
     QByteArray iv = QByteArray::fromBase64(ivB64);
@@ -477,9 +471,6 @@ QByteArray extractPrivateKeySalt(const QByteArray &data)
 }
 
 QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data) {
-    qCInfo(lcCse()) << "decryptStringSymmetric key: " << key;
-    qCInfo(lcCse()) << "decryptStringSymmetric data: " << data;
-
     const auto parts = splitCipherParts(data);
     if (parts.size() < 2) {
         qCInfo(lcCse()) << "Not enough parts found";
@@ -488,9 +479,6 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
 
     QByteArray cipherTXT64 = parts.at(0);
     QByteArray ivB64 = parts.at(1);
-
-    qCInfo(lcCse()) << "decryptStringSymmetric cipherTXT: " << cipherTXT64;
-    qCInfo(lcCse()) << "decryptStringSymmetric IV: " << ivB64;
 
     QByteArray cipherTXT = QByteArray::fromBase64(cipherTXT64);
     QByteArray iv = QByteArray::fromBase64(ivB64);
@@ -2522,8 +2510,17 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
 bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& iv,
                                       QFile *input, QFile *output)
 {
-    input->open(QIODevice::ReadOnly);
-    output->open(QIODevice::WriteOnly);
+    const auto inputOpenResult = input->open(QIODevice::ReadOnly);
+    if (!inputOpenResult) {
+        qCWarning(lcCse()) << "Failed to open input file";
+        return false;
+    }
+
+    const auto outputOpenResult = output->open(QIODevice::WriteOnly);
+    if (!outputOpenResult) {
+        qCWarning(lcCse()) << "Failed to open output file";
+        return false;
+    }
 
     // Init
     CipherCtx ctx;

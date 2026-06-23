@@ -7,7 +7,7 @@ import Foundation
 import NextcloudFileProviderKitMocks
 import Testing
 
-@Suite struct EnumeratorPageResponseTests {
+struct EnumeratorPageResponseTests {
     private func createMockAFDataResponse(
         headers: [String: String]?,
         statusCode: Int = 200,

@@ -5,7 +5,7 @@
 
 #include "fileproviderxpc_mac_utils.h"
 
-#import "AppProtocol.h"
+#import "../../../shell_integration/MacOSX/NextcloudFileProviderKit/Sources/NextcloudFileProviderXPC/include/NextcloudFileProviderXPC.h"
 #import "fileprovider.h"
 
 #include <QLoggingCategory>

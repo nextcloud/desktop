@@ -16,14 +16,25 @@ endif()
 
 # Icon switch: if branding is done, use the neutral state icons
 set(STATE_SUBDIR "")
-if(APPLICATION_NAME STREQUAL "Nextcloud")
+if(APPLICATION_NAME STREQUAL "Nextcloud" OR APPLICATION_NAME STREQUAL "NextcloudDev")
     set(STATE_SUBDIR "nextcloud/")
 endif()
 
+# Embed the call-notification ringtone only on platforms that actually play
+# it. macOS (AVAudioPlayer) and Windows (XAudio2) read the WAV from the
+# extracted QRC cache. The Linux libcanberra backend plays the XDG
+# "phone-incoming-call" sound-theme event by id and never reads this file,
+# so embedding it on Linux just bloats the binary by ~900 KB.
+if(APPLE OR WIN32)
+    set(CALL_NOTIFICATION_WAV_FILE_ENTRY "<file>theme/call-notification.wav</file>")
+else()
+    set(CALL_NOTIFICATION_WAV_FILE_ENTRY "")
+endif()
 configure_file(${CMAKE_SOURCE_DIR}/theme.qrc.in ${CMAKE_SOURCE_DIR}/theme.qrc)
 set(theme_dir ${CMAKE_SOURCE_DIR}/theme)
 
 set(client_UI_SRCS
+    advancedsettings.ui
     accountsettings.ui
     conflictdialog.ui
     invalidfilenamedialog.ui
@@ -32,25 +43,18 @@ set(client_UI_SRCS
     folderwizardsourcepage.ui
     folderwizardtargetpage.ui
     generalsettings.ui
+    infosettings.ui
     legalnotice.ui
     ignorelisteditor.ui
     ignorelisttablewidget.ui
     networksettings.ui
     sslerrordialog.ui
-    addcertificatedialog.ui
     passwordinputdialog.ui
     proxyauthdialog.ui
     mnemonicdialog.ui
     vfsdownloaderrordialog.ui
     wizard/flow2authwidget.ui
-    wizard/owncloudadvancedsetuppage.ui
-    wizard/owncloudconnectionmethoddialog.ui
-    wizard/owncloudhttpcredspage.ui
-    wizard/owncloudsetupnocredspage.ui
-    wizard/termsofservicecheckwidget.ui
     wizard/webview.ui
-    wizard/welcomepage.ui
-    wizard/proxysettings.ui
 )
 
 qt_add_resources(client_UI_SRCS ../../resources.qrc ${CMAKE_SOURCE_DIR}/theme.qrc)
@@ -58,6 +62,8 @@ qt_add_resources(client_UI_SRCS ../../resources.qrc ${CMAKE_SOURCE_DIR}/theme.qr
 set(client_SRCS
     accountmanager.h
     accountmanager.cpp
+    advancedsettings.h
+    advancedsettings.cpp
     accountsettings.h
     accountsettings.cpp
     accountsetupfromcommandlinejob.h
@@ -72,6 +78,9 @@ set(client_SRCS
     caseclashfilenamedialog.cpp
     callstatechecker.h
     callstatechecker.cpp
+    notificationsoundplayer.h
+    notificationsoundplayer.cpp
+    notificationsoundplayer_p.h
     conflictdialog.h
     conflictdialog.cpp
     conflictsolver.h
@@ -106,6 +115,8 @@ set(client_SRCS
     folderwizard.cpp
     generalsettings.h
     generalsettings.cpp
+    infosettings.h
+    infosettings.cpp
     legalnotice.h
     legalnotice.cpp
     ignorelisteditor.h
@@ -138,6 +149,10 @@ set(client_SRCS
     selectivesyncdialog.cpp
     settingsdialog.h
     settingsdialog.cpp
+    settingspanelstyle.h
+    settingspanelstyle.cpp
+    settingsswitch.h
+    settingsswitch.cpp
     sharemanager.h
     sharemanager.cpp
     profilepagewidget.h
@@ -158,8 +173,6 @@ set(client_SRCS
     vfsdownloaderrordialog.cpp
     accountstate.h
     accountstate.cpp
-    addcertificatedialog.h
-    addcertificatedialog.cpp
     authenticationdialog.h
     authenticationdialog.cpp
     proxyauthhandler.h
@@ -227,38 +240,12 @@ set(client_SRCS
     creds/webflowcredentials.cpp
     creds/webflowcredentialsdialog.h
     creds/webflowcredentialsdialog.cpp
-    wizard/postfixlineedit.h
-    wizard/postfixlineedit.cpp
-    wizard/abstractcredswizardpage.h
-    wizard/abstractcredswizardpage.cpp
-    wizard/owncloudadvancedsetuppage.h
-    wizard/owncloudadvancedsetuppage.cpp
-    wizard/owncloudconnectionmethoddialog.h
-    wizard/owncloudconnectionmethoddialog.cpp
-    wizard/owncloudhttpcredspage.h
-    wizard/owncloudhttpcredspage.cpp
-    wizard/flow2authcredspage.h
-    wizard/flow2authcredspage.cpp
+    wizard/accountwizardcontroller.h
+    wizard/accountwizardcontroller.cpp
     wizard/flow2authwidget.h
     wizard/flow2authwidget.cpp
-    wizard/owncloudsetuppage.h
-    wizard/owncloudsetuppage.cpp
-    wizard/termsofservicecheckwidget.h
-    wizard/termsofservicecheckwidget.cpp
-    wizard/termsofservicewizardpage.h
-    wizard/termsofservicewizardpage.cpp
-    wizard/owncloudwizardcommon.h
-    wizard/owncloudwizardcommon.cpp
-    wizard/owncloudwizard.h
-    wizard/owncloudwizard.cpp
-    wizard/slideshow.h
-    wizard/slideshow.cpp
-    wizard/welcomepage.h
-    wizard/welcomepage.cpp
     wizard/linklabel.h
     wizard/linklabel.cpp
-    wizard/wizardproxysettingsdialog.h
-    wizard/wizardproxysettingsdialog.cpp
     integration/fileactionsmodel.h
     integration/fileactionsmodel.cpp
     )
@@ -272,8 +259,6 @@ endif()
 
 if (WITH_WEBENGINE)
   list(APPEND client_SRCS
-    wizard/webviewpage.h
-    wizard/webviewpage.cpp
     wizard/webview.h
     wizard/webview.cpp
   )
@@ -293,13 +278,16 @@ endif()
 IF( APPLE )
     list(APPEND client_SRCS cocoainitializer_mac.mm)
     list(APPEND client_SRCS systray_mac_common.mm)
+    list(APPEND client_SRCS notificationsoundplayer_mac.mm)
+    list(APPEND client_SRCS macOS/trayaccountpopup_mac.mm)
+    list(APPEND client_SRCS macOS/singleinstancemanager_mac.mm)
 
     list(APPEND client_SRCS systray_mac_usernotifications.mm)
 
     # FinderSync XPC is independent of File Provider — always built on macOS
     list(APPEND client_SRCS
-        macOS/FinderSyncProtocol.h
-        macOS/FinderSyncAppProtocol.h
+        ../../shell_integration/MacOSX/NextcloudIntegration/FinderSyncExt/Services/FinderSyncProtocol.h
+        ../../shell_integration/MacOSX/NextcloudIntegration/FinderSyncExt/Services/FinderSyncAppProtocol.h
         macOS/findersyncxpc.h
         macOS/findersyncxpc_mac.mm
         macOS/findersyncservice.h
@@ -308,8 +296,7 @@ IF( APPLE )
     if (BUILD_FILE_PROVIDER_MODULE)
         list(APPEND client_SRCS
             # XPC Protocol files from shell_integration/MacOSX/NextcloudIntegration/
-            macOS/AppProtocol.h
-            macOS/ClientCommunicationProtocol.h
+            ../../shell_integration/MacOSX/NextcloudFileProviderKit/Sources/NextcloudFileProviderXPC/include/NextcloudFileProviderXPC.h
             # End of XPC protocol files
             macOS/fileprovider.h
             macOS/fileprovider_mac.mm
@@ -339,6 +326,9 @@ IF( APPLE )
     list(APPEND client_SRCS foregroundbackground_mac.mm)
     list(APPEND client_SRCS foregroundbackground_cocoa.mm)
 
+    list(APPEND client_SRCS nativetitlebar_mac.h)
+    list(APPEND client_SRCS nativetitlebar_mac.mm)
+
     if(SPARKLE_FOUND AND BUILD_UPDATER)
         # Define this, we need to check in updater.cpp
         add_definitions(-DHAVE_SPARKLE)
@@ -354,12 +344,13 @@ IF( APPLE )
 ENDIF()
 
 IF( NOT WIN32 AND NOT APPLE )
-    set(client_SRCS ${client_SRCS} folderwatcher_linux.cpp)
+    set(client_SRCS ${client_SRCS} folderwatcher_linux.cpp notificationsoundplayer_linux.cpp)
 ENDIF()
 IF( WIN32 )
     set(client_SRCS
         ${client_SRCS}
         folderwatcher_win.cpp
+        notificationsoundplayer_win.cpp
         navigationpanehelper.h
         navigationpanehelper.cpp
         shellextensionsserver.cpp
@@ -448,15 +439,6 @@ if ((APPLICATION_ICON_SET MATCHES "PNG")
   file(TOUCH "${theme_dir}/colored/${APPLICATION_ICON_NAME}-icon.svg")
 endif()
 
-if(APPLE)
-  set(MACOS_SIDEBAR_ICON_SVG "${theme_dir}/colored/${APPLICATION_ICON_NAME}-sidebar.svg")
-  generate_sized_png_from_svg(${MACOS_SIDEBAR_ICON_SVG} 16)
-  generate_sized_png_from_svg(${MACOS_SIDEBAR_ICON_SVG} 32)
-  generate_sized_png_from_svg(${MACOS_SIDEBAR_ICON_SVG} 64)
-  generate_sized_png_from_svg(${MACOS_SIDEBAR_ICON_SVG} 128)
-  generate_sized_png_from_svg(${MACOS_SIDEBAR_ICON_SVG} 256)
-endif()
-
 if(WIN32)
   set(STARTMENU_ICON_SVG "${theme_dir}/colored/${APPLICATION_ICON_NAME}-w10startmenu.svg")
   generate_sized_png_from_svg(${STARTMENU_ICON_SVG} 70)
@@ -482,12 +464,15 @@ endif()
 
 file(GLOB OWNCLOUD_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon*")
 
-if(APPLE)
-    file(GLOB_RECURSE OWNCLOUD_SIDEBAR_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-sidebar*")
-    MESSAGE(STATUS "OWNCLOUD_SIDEBAR_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_SIDEBAR_ICONS}")
+if(APPLE AND MACOS_USE_ICON_COMPOSER)
+    include(CompileAppleIconComposer)
+    compile_apple_icon_composer(
+        "${CMAKE_SOURCE_DIR}/theme/colored/AppIcon.icon"
+        "${CMAKE_CURRENT_BINARY_DIR}/AppIconCompiled"
+        APP_ICON)
+else()
+    ecm_add_app_icon(APP_ICON ICONS "${OWNCLOUD_ICONS}" OUTFILE_BASENAME "${APPLICATION_ICON_NAME}")
 endif()
-
-ecm_add_app_icon(APP_ICON ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASENAME "${APPLICATION_ICON_NAME}")
 
 if(WIN32 AND EXISTS ${APP_ICON_WIN_FOLDER_SVG})
     get_filename_component(output_icon_name_win ${APP_ICON_WIN_FOLDER_SVG} NAME_WLE)
@@ -551,6 +536,10 @@ if(KF6GuiAddons_FOUND)
   add_definitions(-DHAVE_KGUIADDONS)
 endif()
 
+if(KF6DBusAddons_FOUND)
+    target_link_libraries(nextcloudCore PUBLIC KF6::DBusAddons)
+endif()
+
 add_subdirectory(socketapi)
 
 # skip unity inclusion for files which cause problems with a CMake unity build
@@ -604,7 +593,15 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     )
 else()
     # set(CMAKE_INSTALL_PREFIX ".") # Examples use /Applications. hurmpf.
-    set(MACOSX_BUNDLE_ICON_FILE "${APPLICATION_ICON_NAME}.icns")
+    if(MACOS_USE_ICON_COMPOSER)
+        set(MACOSX_BUNDLE_ICON_FILE "AppIcon")
+        # Modern Icon Composer path also publishes CFBundleIconName so Finder
+        # finds the asset in the bundle's Assets.car.
+        set(MACOSX_BUNDLE_ICON_NAME_BLOCK "<key>CFBundleIconName</key>\n    <string>AppIcon</string>")
+    else()
+        set(MACOSX_BUNDLE_ICON_FILE "${APPLICATION_ICON_NAME}.icns")
+        set(MACOSX_BUNDLE_ICON_NAME_BLOCK "")
+    endif()
 
     # we must add MACOSX_BUNDLE only if building a bundle
     add_executable(nextcloud WIN32 MACOSX_BUNDLE main.cpp ${APP_ICON})
@@ -680,6 +677,22 @@ if( UNIX AND NOT APPLE )
     find_package(Qt${QT_VERSION_MAJOR} ${REQUIRED_QT_VERSION} COMPONENTS DBus)
     target_link_libraries(nextcloudCore PUBLIC Qt::DBus)
     target_compile_definitions(nextcloudCore PUBLIC "USE_FDO_NOTIFICATIONS")
+
+    # libcanberra is the freedesktop event-sound API used to play the
+    # incoming-call ringtone. If the dev package is missing, we fall back to
+    # a no-op backend so the build still succeeds; distro packaging should
+    # treat libcanberra as a soft runtime dependency.
+    find_package(PkgConfig)
+    if(PkgConfig_FOUND)
+        pkg_check_modules(CANBERRA IMPORTED_TARGET libcanberra)
+    endif()
+    if(CANBERRA_FOUND)
+        target_link_libraries(nextcloudCore PRIVATE PkgConfig::CANBERRA)
+        target_compile_definitions(nextcloudCore PRIVATE HAVE_LIBCANBERRA)
+    else()
+        message(STATUS "libcanberra not found; notification sounds will be silent on this build")
+    endif()
+    target_compile_definitions(nextcloudCore PRIVATE NEXTCLOUD_HAS_NATIVE_SOUND_BACKEND)
 endif()
 
 if (APPLE)
@@ -688,6 +701,13 @@ if (APPLE)
     else()
         target_link_libraries(nextcloudCore PUBLIC "-framework UserNotifications")
     endif()
+    target_link_libraries(nextcloudCore PRIVATE "-framework AVFoundation" "-framework Foundation")
+    target_compile_definitions(nextcloudCore PRIVATE NEXTCLOUD_HAS_NATIVE_SOUND_BACKEND)
+endif()
+
+if (WIN32)
+    target_link_libraries(nextcloudCore PRIVATE xaudio2)
+    target_compile_definitions(nextcloudCore PRIVATE NEXTCLOUD_HAS_NATIVE_SOUND_BACKEND)
 endif()
 
 install(TARGETS nextcloud
@@ -740,6 +760,7 @@ if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
         -always-overwrite
         -executable="$<TARGET_FILE_DIR:nextcloud>/${cmd_NAME}"
         -libpath=${MACDEPLOYQT_LIB_DIR}
+        -libpath=${BIN_OUTPUT_DIRECTORY}
         ${NO_STRIP}
         COMMAND "${CMAKE_COMMAND}"
         -E rm -rf "${BIN_OUTPUT_DIRECTORY}/${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns/bearer"

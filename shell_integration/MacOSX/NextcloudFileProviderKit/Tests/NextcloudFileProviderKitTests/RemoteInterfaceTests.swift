@@ -10,7 +10,7 @@ import NextcloudKit
 import Testing
 @testable import TestInterface
 
-@Suite("RemoteInterface Extension Tests", .serialized)
+@Suite(.serialized)
 struct RemoteInterfaceExtensionTests {
     let testAccount = Account(user: "a1", id: "1", serverUrl: "example.com", password: "pass")
     let otherAccount = Account(user: "a2", id: "2", serverUrl: "example.com", password: "word")

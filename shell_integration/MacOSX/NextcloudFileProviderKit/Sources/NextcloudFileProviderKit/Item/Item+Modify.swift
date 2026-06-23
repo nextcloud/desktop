@@ -3,6 +3,7 @@
 
 @preconcurrency import FileProvider
 import Foundation
+import NextcloudFileProviderXPC
 import NextcloudKit
 
 public extension Item {
@@ -101,7 +102,8 @@ public extension Item {
         forcedChunkSize: Int?,
         domain: NSFileProviderDomain?,
         progress: Progress,
-        dbManager: FilesDatabaseManager
+        dbManager: FilesDatabaseManager,
+        appProxy: (any AppProtocol)? = nil
     ) async -> (Item?, Error?) {
         let ocId = itemIdentifier.rawValue
 
@@ -166,18 +168,59 @@ public extension Item {
                 """
             )
 
+            if error.isPreconditionFailedError || error.isLockedError {
+                logger.info("Clearing stale lock token after lock/precondition error.", [.item: itemIdentifier])
+                metadata.lockToken = nil
+                // Signal re-enumeration: if the parent was also renamed (causing the
+                // precondition failure), the working set check will update the path
+                // before the system retries.
+                if let domain, let manager = NSFileProviderManager(for: domain) {
+                    Task {
+                        try? await manager.signalEnumerator(for: .workingSet)
+                    }
+                }
+            }
+
+            // Remote path gone — parent renamed on another client while the file was
+            // open. Clear any stale lock token and signal the working set enumerator
+            // so the system discovers the new path before retrying. Return
+            // cannotSynchronize rather than noSuchItem: the file still exists on the
+            // server at a different location.
+            if error.isNotFoundError {
+                metadata.lockToken = nil
+                metadata.status = Status.uploadError.rawValue
+                metadata.sessionError = error.errorDescription
+                dbManager.addItemMetadata(metadata)
+                if let domain, let manager = NSFileProviderManager(for: domain) {
+                    Task {
+                        try? await manager.signalEnumerator(for: .workingSet)
+                    }
+                }
+                return (nil, NSFileProviderError(.cannotSynchronize))
+            }
+
             metadata.status = Status.uploadError.rawValue
             metadata.sessionError = error.errorDescription
             dbManager.addItemMetadata(metadata)
+
+            // Surface the quota refusal in the main app's activity view (per-item entry +
+            // per-folder summary with a "Retry all uploads" button), matching the parity
+            // classic sync provides via `User::slotAddError(InsufficientRemoteStorage)` and
+            // `User::slotAddErrorToGui`. See nextcloud/desktop#9598.
+            if error.isGoingOverQuotaError {
+                let relativePath = remotePath.replacingOccurrences(of: account.davFilesUrl, with: "")
+                let fileBytes = (try? FileManager.default.attributesOfItem(atPath: newContents.path)[.size] as? Int64) ?? documentSize?.int64Value
+                InsufficientQuotaReporter.reportItem(relativePath: relativePath, fileName: filename, fileBytes: fileBytes, availableBytes: nil, domainIdentifier: domain?.identifier, appProxy: appProxy, log: logger.log)
+                await InsufficientQuotaReporter.reportSummary(domainIdentifier: domain?.identifier, appProxy: appProxy, log: logger.log)
+            }
+
             // Moving should be done before uploading and should catch collisions already, but,
             // it is painless to check here too just in case
-            return await (nil, error.fileProviderError(
-                handlingCollisionAgainstItemInRemotePath: remotePath,
-                dbManager: dbManager,
-                remoteInterface: remoteInterface,
-                log: logger.log
-            ))
+            return await (nil, error.fileProviderError(handlingCollisionAgainstItemInRemotePath: remotePath, dbManager: dbManager, remoteInterface: remoteInterface, log: logger.log))
         }
+
+        // Re-arm the per-domain dedup so a future quota event can surface a fresh summary.
+        await InsufficientQuotaReporter.clearSummaryDedup(domainIdentifier: domain?.identifier)
 
         logger.info(
             """
@@ -200,7 +243,12 @@ public extension Item {
         var newMetadata =
             dbManager.setStatusForItemMetadata(updatedMetadata, status: .normal) ?? SendableItemMetadata(value: updatedMetadata)
 
-        newMetadata.date = date ?? Date()
+        // Prefer the mtime we just handed to the server (and which is on disk)
+        // over the truncated, second-precision value the PUT response carries
+        // in `Last-Modified`. Aligning `metadata.date` with what's on disk keeps
+        // NSDocument-style editors (Xcode, TextEdit, …) from seeing the file as
+        // "changed by another application" right after they save it.
+        newMetadata.date = newContentModificationDate ?? date ?? metadata.date
         newMetadata.etag = etag ?? metadata.etag
         newMetadata.ocId = ocId
         newMetadata.size = size ?? 0
@@ -228,309 +276,6 @@ public extension Item {
         return (modifiedItem, nil)
     }
 
-    private func modifyBundleOrPackageContents(
-        contents newContents: URL?,
-        remotePath: String,
-        forcedChunkSize: Int?,
-        domain: NSFileProviderDomain?,
-        progress: Progress,
-        dbManager: FilesDatabaseManager
-    ) async throws -> Item? {
-        guard let contents = newContents else {
-            logger.error(
-                """
-                Could not modify bundle or package contents as was provided nil contents url
-                    for item with ocID \(itemIdentifier.rawValue)
-                    (\(filename))
-                """
-            )
-            throw NSFileProviderError(.cannotSynchronize)
-        }
-
-        logger.debug(
-            """
-            Handling modified bundle/package/internal directory at:
-                \(contents.path)
-            """
-        )
-
-        func remoteErrorToThrow(_ error: NKError) -> Error {
-            error.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
-        }
-
-        // 1. Scan the remote contents of the bundle (recursively)
-        // 2. Create set of the found items
-        // 3. Upload new contents and get their paths post-upload
-        // 4. Delete remote items with paths not present in the new set
-        var allMetadatas = [SendableItemMetadata]()
-        var directoriesToRead = [remotePath]
-        while !directoriesToRead.isEmpty {
-            let remoteDirectoryPath = directoriesToRead.removeFirst()
-            let (metadatas, _, _, _, _, readError) = await Enumerator.readServerUrl(
-                remoteDirectoryPath,
-                account: account,
-                remoteInterface: remoteInterface,
-                dbManager: dbManager,
-                log: logger.log
-            )
-            // Important note -- the enumerator will import found items' metadata into the database.
-            // This is important for when we want to start deleting stale items and want to avoid trying
-            // to delete stale items that have already been deleted because the parent folder and all of
-            // its contents have been nuked already
-
-            if let readError {
-                logger.error(
-                    """
-                    Could not read server url for item with ocID
-                    \(itemIdentifier.rawValue)
-                    (\(filename)),
-                    received error: \(readError.errorDescription)
-                    """
-                )
-                throw remoteErrorToThrow(readError)
-            }
-            guard var metadatas else {
-                logger.error(
-                    """
-                    Could not read server url for item with ocID
-                        \(itemIdentifier.rawValue)
-                        (\(filename)),
-                        received nil metadatas
-                    """
-                )
-                throw NSFileProviderError(.serverUnreachable)
-            }
-
-            if !metadatas.isEmpty {
-                metadatas.removeFirst() // Remove bundle itself
-            }
-            allMetadatas.append(contentsOf: metadatas)
-
-            var childDirPaths = [String]()
-            for metadata in metadatas {
-                guard metadata.directory,
-                      metadata.ocId != itemIdentifier.rawValue
-                else { continue }
-                childDirPaths.append(remoteDirectoryPath + "/" + metadata.fileName)
-            }
-            directoriesToRead.append(contentsOf: childDirPaths)
-        }
-
-        var staleItems = [String: SendableItemMetadata]() // remote urls to metadata
-        for metadata in allMetadatas {
-            let remoteUrlPath = metadata.serverUrl + "/" + metadata.fileName
-            guard remoteUrlPath != remotePath else { continue }
-            staleItems[remoteUrlPath] = metadata
-        }
-
-        let attributesToFetch: Set<URLResourceKey> = [
-            .isDirectoryKey, .fileSizeKey, .creationDateKey, .contentModificationDateKey
-        ]
-        let fm = FileManager.default
-        guard let enumerator = fm.enumerator(
-            at: contents, includingPropertiesForKeys: Array(attributesToFetch)
-        ) else {
-            logger.error(
-                """
-                Could not create enumerator for contents of bundle or package
-                    at: \(contents.path)
-                """
-            )
-            throw NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable)
-        }
-
-        guard let enumeratorArray = enumerator.allObjects as? [URL] else {
-            logger.error(
-                """
-                Could not create enumerator array for contents of bundle or package
-                    at: \(contents.path)
-                """
-            )
-            throw NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable)
-        }
-
-        // Add one more total unit count to signify final reconciliation of bundle modify process
-        progress.totalUnitCount = Int64(enumeratorArray.count) + 1
-
-        let contentsPath = contents.path
-        let privatePrefix = "/private"
-        let privateContentsPath = contentsPath.hasPrefix(privatePrefix)
-        var remoteDirectoriesPaths = [remotePath]
-
-        for childUrl in enumeratorArray {
-            var childUrlPath = childUrl.path
-            if childUrlPath.hasPrefix(privatePrefix), !privateContentsPath {
-                childUrlPath.removeFirst(privatePrefix.count)
-            }
-            let childRelativePath = childUrlPath.replacingOccurrences(of: contents.path, with: "")
-            let childRemoteUrl = remotePath + childRelativePath
-            let childUrlAttributes = try childUrl.resourceValues(forKeys: attributesToFetch)
-            let childIsFolder = childUrlAttributes.isDirectory ?? false
-
-            // Do not re-create directories
-            if childIsFolder, !staleItems.keys.contains(childRemoteUrl) {
-                logger.debug(
-                    """
-                    Handling child bundle or package directory at: \(childUrlPath)
-                    """
-                )
-                let (_, _, _, createError) = await remoteInterface.createFolder(
-                    remotePath: childRemoteUrl,
-                    account: account,
-                    options: .init(),
-                    taskHandler: { task in
-                        if let domain {
-                            NSFileProviderManager(for: domain)?.register(
-                                task,
-                                forItemWithIdentifier: self.itemIdentifier,
-                                completionHandler: { _ in }
-                            )
-                        }
-                    }
-                )
-                // Don't error if there is a collision
-                guard createError == .success || createError.matchesCollisionError else {
-                    logger.error(
-                        """
-                        Could not create new bpi folder at: \(remotePath),
-                        received error: \(createError.errorCode)
-                        \(createError.errorDescription)
-                        """
-                    )
-                    throw remoteErrorToThrow(createError)
-                }
-                remoteDirectoriesPaths.append(childRemoteUrl)
-
-            } else if !childIsFolder {
-                logger.debug(
-                    """
-                    Handling child bundle or package file at: \(childUrlPath)
-                    """
-                )
-                let (_, _, _, _, error) = await upload(
-                    fileLocatedAt: childUrlPath,
-                    toRemotePath: childRemoteUrl,
-                    usingRemoteInterface: remoteInterface,
-                    withAccount: account,
-                    inChunksSized: forcedChunkSize,
-                    dbManager: dbManager,
-                    creationDate: childUrlAttributes.creationDate,
-                    modificationDate: childUrlAttributes.contentModificationDate,
-                    log: logger.log,
-                    requestHandler: { progress.setHandlersFromAfRequest($0) },
-                    taskHandler: { task in
-                        if let domain {
-                            NSFileProviderManager(for: domain)?.register(
-                                task,
-                                forItemWithIdentifier: self.itemIdentifier,
-                                completionHandler: { _ in }
-                            )
-                        }
-                    },
-                    progressHandler: { _ in }
-                )
-
-                guard error == .success else {
-                    logger.error(
-                        """
-                        Could not upload bpi file at: \(childUrlPath),
-                        received error: \(error.errorCode)
-                        \(error.errorDescription)
-                        """
-                    )
-                    throw remoteErrorToThrow(error)
-                }
-            }
-            staleItems.removeValue(forKey: childRemoteUrl)
-            progress.completedUnitCount += 1
-        }
-
-        for staleItem in staleItems {
-            let staleItemMetadata = staleItem.value
-            guard dbManager.itemMetadata(ocId: staleItemMetadata.ocId) != nil else { continue }
-
-            let (_, _, deleteError) = await remoteInterface.delete(
-                remotePath: staleItem.key,
-                account: account,
-                options: .init(),
-                taskHandler: { task in
-                    if let domain {
-                        NSFileProviderManager(for: domain)?.register(
-                            task,
-                            forItemWithIdentifier: self.itemIdentifier,
-                            completionHandler: { _ in }
-                        )
-                    }
-                }
-            )
-
-            guard deleteError == .success else {
-                logger.error(
-                    """
-                    Could not delete stale bpi item at: \(staleItem.key),
-                    received error: \(deleteError.errorCode)
-                    \(deleteError.errorDescription)
-                    """
-                )
-                throw remoteErrorToThrow(deleteError)
-            }
-
-            if staleItemMetadata.directory {
-                _ = dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: staleItemMetadata.ocId)
-            } else {
-                dbManager.deleteItemMetadata(ocId: staleItemMetadata.ocId)
-            }
-        }
-
-        for remoteDirectoryPath in remoteDirectoriesPaths {
-            // After everything, check into what the final state is of each folder now
-            let (_, _, _, _, _, readError) = await Enumerator.readServerUrl(
-                remoteDirectoryPath,
-                account: account,
-                remoteInterface: remoteInterface,
-                dbManager: dbManager,
-                log: logger.log
-            )
-
-            if let readError, readError != .success {
-                logger.error(
-                    """
-                    Could not read new bpi folder at: \(remotePath),
-                        received error: \(readError.errorDescription)
-                    """
-                )
-                throw remoteErrorToThrow(readError)
-            }
-        }
-
-        guard let bundleRootMetadata = dbManager.itemMetadata(
-            ocId: itemIdentifier.rawValue
-        ) else {
-            logger.error(
-                """
-                Could not find directory metadata for bundle or package at:
-                    \(contentsPath)
-                """
-            )
-            throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
-        }
-
-        progress.completedUnitCount += 1
-
-        let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: bundleRootMetadata.contentType)
-
-        return await Item(
-            metadata: bundleRootMetadata,
-            parentItemIdentifier: parentItemIdentifier,
-            account: account,
-            remoteInterface: remoteInterface,
-            dbManager: dbManager,
-            displayFileActions: displayFileActions,
-            remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
-            log: logger.log
-        )
-    }
-
     func modify(
         itemTarget: NSFileProviderItem,
         baseVersion: NSFileProviderItemVersion = NSFileProviderItemVersion(),
@@ -542,11 +287,35 @@ public extension Item {
         domain: NSFileProviderDomain? = nil,
         forcedChunkSize: Int? = nil,
         progress: Progress = .init(),
-        dbManager: FilesDatabaseManager
+        dbManager: FilesDatabaseManager,
+        appProxy: (any AppProtocol)? = nil
     ) async -> (Item?, Error?) {
         // For your own good: don't use "self" below here, it'll save you pain debugging when you do
         // refactors later on. Just use modifiedItem
         var modifiedItem = self
+
+        // Bundle/package modifications never reach the server in this build (see Item.create).
+        // We still see them on this code path for items that are already on disk locally — e.g.
+        // a previously-synced bundle that the user just edited. Refuse the modification, route
+        // through `modifyUnuploaded` (which returns `NSFileProviderError(.excludedFromSync)`),
+        // and surface the situation in the activity view.
+        // Tracked at https://github.com/nextcloud/desktop/issues/9827.
+
+        if isBundleOrPackage {
+            logger.info("Refusing to sync modification of bundle/package — feature not supported.", [.name: filename])
+
+            if let domain {
+                let relativePath = (metadata.serverUrl + "/" + metadata.fileName).replacingOccurrences(of: account.davFilesUrl, with: "")
+                BundleExclusionReporter.report(relativePath: relativePath, fileName: filename, domainIdentifier: domain.identifier, appProxy: appProxy, log: logger.log)
+            }
+
+            guard let modifiedIgnored = await modifyUnuploaded(itemTarget: itemTarget, baseVersion: baseVersion, changedFields: changedFields, contents: newContents, options: options, request: request, ignoredFiles: ignoredFiles, domain: domain, forcedChunkSize: forcedChunkSize, progress: progress, dbManager: dbManager) else {
+                logger.error("Unable to mark bundle as excluded.", [.name: filename])
+                return (nil, NSFileProviderError(.cannotSynchronize))
+            }
+
+            return (modifiedIgnored, NSFileProviderError(.excludedFromSync))
+        }
 
         guard metadata.classFile != "lock", !isLockFileName(metadata.fileName) else {
             return await modifiedItem.modifyLockFile(
@@ -616,7 +385,8 @@ public extension Item {
 
         let newParentItemIdentifier = itemTarget.parentItemIdentifier
         let isFolder = modifiedItem.contentType.conforms(to: .directory)
-        let bundleOrPackage = modifiedItem.contentType.conforms(to: .bundle) || modifiedItem.contentType.conforms(to: .package)
+        // Bundles/packages were short-circuited at the top of this function, so anything that
+        // makes it this far as a folder is a regular directory.
 
         if options.contains(.mayAlreadyExist) {
             // TODO: This needs to be properly handled with a check in the db
@@ -736,7 +506,7 @@ public extension Item {
             }
         }
 
-        guard !isFolder || bundleOrPackage else {
+        guard !isFolder else {
             logger.debug("System requested modification for folder of something other than folder name. This is not supported.", [.item: modifiedItem])
             return (modifiedItem, nil)
         }
@@ -752,34 +522,18 @@ public extension Item {
             let newCreationDate = itemTarget.creationDate ?? creationDate
             let newContentModificationDate =
                 itemTarget.contentModificationDate ?? contentModificationDate
-            var contentModifiedItem: Item?
-            var contentError: Error?
 
-            if bundleOrPackage {
-                do {
-                    contentModifiedItem = try await modifiedItem.modifyBundleOrPackageContents(
-                        contents: newContents,
-                        remotePath: newServerUrlFileName,
-                        forcedChunkSize: forcedChunkSize,
-                        domain: domain,
-                        progress: progress,
-                        dbManager: dbManager
-                    )
-                } catch {
-                    contentError = error
-                }
-            } else {
-                (contentModifiedItem, contentError) = await modifiedItem.modifyContents(
-                    contents: newContents,
-                    remotePath: newServerUrlFileName,
-                    newCreationDate: newCreationDate,
-                    newContentModificationDate: newContentModificationDate,
-                    forcedChunkSize: forcedChunkSize,
-                    domain: domain,
-                    progress: progress,
-                    dbManager: dbManager
-                )
-            }
+            let (contentModifiedItem, contentError) = await modifiedItem.modifyContents(
+                contents: newContents,
+                remotePath: newServerUrlFileName,
+                newCreationDate: newCreationDate,
+                newContentModificationDate: newContentModificationDate,
+                forcedChunkSize: forcedChunkSize,
+                domain: domain,
+                progress: progress,
+                dbManager: dbManager,
+                appProxy: appProxy
+            )
 
             guard contentError == nil, let contentModifiedItem else {
                 logger.error("Could not modify contents.", [.item: modifiedItem, .error: contentError])

@@ -18,7 +18,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     let domain: NSFileProviderDomain?
     let dbManager: FilesDatabaseManager
 
-    private let currentAnchor = NSFileProviderSyncAnchor(ISO8601DateFormatter().string(from: Date()).data(using: .utf8)!)
+    private let currentAnchor = Enumerator.syncAnchor(at: Date())
     private let pageItemCount: Int
     let logger: FileProviderLogger
     let account: Account
@@ -224,6 +224,30 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     public func enumerateChanges(for observer: NSFileProviderChangeObserver, from anchor: NSFileProviderSyncAnchor) {
         logger.debug("Enumerating changes (anchor: \(String(data: anchor.rawValue, encoding: .utf8) ?? "")).", [.url: serverUrl])
 
+        // Version-tagged anchor check — applies to every container, not just the working set.
+        // The framework persists per-container anchors and replays them on subsequent
+        // `enumerateChanges` calls. An anchor that doesn't parse as the version-tagged format
+        // (older builds wrote just the ISO8601 date) or whose embedded version doesn't match the
+        // running extension is treated as expired so the framework drops cached
+        // `NSFileProviderItem` snapshots in that container and re-enumerates them. The fresh
+        // `Item` objects then carry up-to-date `userInfo`, `contentPolicy`, etc.
+        //
+        // See nextcloud/desktop#10065.
+
+        guard let parsed = Self.parseSyncAnchor(anchor) else {
+            logger.info("Sync anchor is not in the expected version-tagged format. Returning syncAnchorExpired so the framework re-enumerates this container and refreshes cached NSFileProviderItem snapshots. See nextcloud/desktop#10065.", [.item: enumeratedItemIdentifier])
+            observer.finishEnumeratingWithError(NSFileProviderError(.syncAnchorExpired))
+            return
+        }
+
+        let runningVersion = Self.currentExtensionVersion()
+
+        guard parsed.version == runningVersion else {
+            logger.info("Sync anchor's embedded extension version \"\(parsed.version)\" does not match the running extension version \"\(runningVersion)\". Returning syncAnchorExpired so the framework re-enumerates this container and refreshes cached NSFileProviderItem snapshots. See nextcloud/desktop#10065.", [.item: enumeratedItemIdentifier])
+            observer.finishEnumeratingWithError(NSFileProviderError(.syncAnchorExpired))
+            return
+        }
+
         /*
          If this is an enumerator for the working set, then:
 
@@ -235,15 +259,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         if enumeratedItemIdentifier == .workingSet {
             logger.debug("Enumerating changes in working set.", [.account: account])
 
-            let formatter = ISO8601DateFormatter()
-
-            guard let anchorDateString = String(data: anchor.rawValue, encoding: .utf8),
-                  let date = formatter.date(from: anchorDateString)
-            else {
-                logger.error("Could not parse sync anchor \"\(anchor.rawValue)\".")
-                observer.finishEnumeratingWithError(NSFileProviderError(.syncAnchorExpired))
-                return
-            }
+            let date = parsed.date
 
             Task {
                 await checkMaterializedItemsOnServer()
@@ -458,13 +474,8 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
             if readError?.errorCode == 404 {
                 allDeletedMetadatas.append(materializedItem)
                 examinedItemIds.insert(materializedItem.ocId)
-
-                materializedItems.filter {
-                    $0.serverUrl.hasPrefix(itemRemoteUrl)
-                }.forEach {
-                    allDeletedMetadatas.append($0)
-                    examinedItemIds.insert($0.ocId)
-                }
+                // Children are not marked deleted here — they may have moved with their parent.
+                logger.debug("Parent returned 404; children will be checked individually.", [.url: itemRemoteUrl])
             } else if let readError, readError != .success {
                 logger.error("Finished remote change enumeration of materialized items with error.", [.error: readError])
                 return
@@ -483,30 +494,25 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                         examinedChildFilesAndDeletedItems.formUnion(metadatas[1...].filter { !$0.directory }.map(\.ocId))
                     }
 
-                    // If the target is not in the updated metadatas then neither it, nor any of its kids have changed. So skip examining all of them.
-                    if !allUpdatedMetadatas.contains(where: { $0.ocId == target.ocId }) {
-                        logger.debug("Target has not changed. Skipping children.", [.url: itemRemoteUrl])
-                        let materialisedChildren = materializedItems.filter { $0.serverUrl.hasPrefix(itemRemoteUrl) }.map(\.ocId)
-                        examinedChildFilesAndDeletedItems.formUnion(materialisedChildren)
-                    }
-
-                    // OPTIMIZATION: For any child directories returned in this enumeration, if they haven't changed (etag matches database), mark them as examined so we don't enumerate them separately later.
+                    // Only skip unchanged child directories with no materialized descendants.
+                    // Lock changes don't propagate etags, so dirs with visible children must be enumerated.
                     if metadatas.count > 1 {
                         let childDirectories = metadatas[1...].filter(\.directory)
 
                         for childDir in childDirectories {
-                            // Check if this directory is in our materialized items list
-                            if let localItem = materializedItems.first(where: { $0.ocId == childDir.ocId }), localItem.etag == childDir.etag {
-                                // Directory hasn't changed, mark as examined to skip separate enumeration.
-                                logger.debug("Child directory etag unchanged, marking as examined.", [.name: childDir.fileName, .eTag: childDir.etag])
+                            guard let localItem = materializedItems.first(
+                                where: { $0.ocId == childDir.ocId }
+                            ), localItem.isInSameDatabaseStoreableRemoteState(childDir) else {
+                                continue
+                            }
+
+                            let hasMaterializedDescendants = materializedItems.contains {
+                                $0.ocId != localItem.ocId
+                                    && $0.serverUrl.hasPrefix(localItem.remotePath() + "/")
+                            }
+
+                            if !hasMaterializedDescendants {
                                 examinedChildFilesAndDeletedItems.insert(childDir.ocId)
-
-                                // Also mark any materialized children of this directory as examined.
-                                let grandChildren = materializedItems.filter {
-                                    $0.serverUrl.hasPrefix(localItem.remotePath())
-                                }
-
-                                examinedChildFilesAndDeletedItems.formUnion(grandChildren.map(\.ocId))
                             }
                         }
                     }
@@ -520,21 +526,18 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
             }
         }
 
-        // Run a check to ensure files deleted in one location are not updated in another (e.g. when moved).
-        // The recursive scan provides us with updated/deleted metadatas only on a folder by folder basis; so we need to check we are not simultaneously marking a moved file as deleted and updated.
-        var checkedDeletedMetadatas = allDeletedMetadatas
+        // Catches moves across directories: items found at a new location (updated or new)
+        // should not be marked deleted at the old location.
+        let survivingOcIds = Set(allUpdatedMetadatas.map(\.ocId))
+            .union(allNewMetadatas.map(\.ocId))
 
-        for updatedMetadata in allUpdatedMetadatas {
-            guard let matchingDeletedMetadataIdx = checkedDeletedMetadatas.firstIndex(where: { $0.ocId == updatedMetadata.ocId }) else {
-                continue
-            }
-
-            checkedDeletedMetadatas.remove(at: matchingDeletedMetadataIdx)
-        }
-
-        allDeletedMetadatas = checkedDeletedMetadatas
+        allDeletedMetadatas.removeAll { survivingOcIds.contains($0.ocId) }
 
         for deletedMetadata in allDeletedMetadatas {
+            if deletedMetadata.status >= Status.inUpload.rawValue {
+                logger.info("Skipping deletion of item with pending upload.", [.item: deletedMetadata.ocId])
+                continue
+            }
             var deleteMarked = deletedMetadata
             deleteMarked.deleted = true
             deleteMarked.syncTime = Date()
@@ -651,7 +654,12 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         }
 
         // The file provider framework does not differentiate between newly added and updated items, hence the collections are merged.
-        let newAndUpdatedMetadatas: [SendableItemMetadata] = newMetadatas + updatedMetadatas
+        // Sort by remote path length (ascending) so parent directories are always reported before
+        // their children. Without this ordering, macOS may create the rename-destination folder to
+        // house a child item before it processes the parent directory rename, leaving both the old
+        // and new folder name visible on disk simultaneously.
+        let newAndUpdatedMetadatas: [SendableItemMetadata] = (newMetadatas + updatedMetadatas)
+            .sorted { $0.remotePath().count < $1.remotePath().count }
 
         let deletedFileProviderItemIdentifiers = Array(deletedMetadatas.map {
             NSFileProviderItemIdentifier($0.ocId)
@@ -756,5 +764,52 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         }
         // Provide it to the caller method so it can ingest it into the database and fix future errs
         return metadata
+    }
+
+    // MARK: - Version-tagged sync anchor
+
+    ///
+    /// Build a sync anchor that encodes the running extension bundle's `CFBundleShortVersionString` alongside the given timestamp.
+    ///
+    /// The same format is used for every container the extension enumerates (working set, root container, sub-directories, trash) so the framework's per-container persisted anchors all carry the version. On the next call to ``enumerateChanges(for:from:)`` the embedded version is compared against the running extension — any mismatch (including anchors persisted by builds older than this change, which carried only the ISO8601 date) is rejected with `NSFileProviderError(.syncAnchorExpired)`. That causes the framework to drop its cached sync state for that container and re-enumerate it via ``enumerateItems(for:startingAt:)``, so the fresh ``Item`` objects we hand back carry up-to-date `userInfo`, `contentPolicy`, and any other `NSFileProviderItem` properties whose derivation changed between app versions.
+    ///
+    /// See nextcloud/desktop#10065.
+    ///
+    public static func syncAnchor(at date: Date) -> NSFileProviderSyncAnchor {
+        let raw = "\(currentExtensionVersion())|\(ISO8601DateFormatter().string(from: date))"
+        // Force-unwrap is safe: an ASCII version string and an ISO8601 date both encode cleanly to UTF-8.
+        return NSFileProviderSyncAnchor(raw.data(using: .utf8)!)
+    }
+
+    ///
+    /// Parse a sync anchor produced by ``syncAnchor(at:)``.
+    ///
+    /// Returns `nil` for anchors that are not in the expected `"<version>|<ISO8601-date>"` format — including anchors persisted by builds older than #10065 that carried only the ISO8601 date. The caller treats `nil` as an expired anchor.
+    ///
+    private static func parseSyncAnchor(_ anchor: NSFileProviderSyncAnchor) -> (version: String, date: Date)? {
+        guard let raw = String(data: anchor.rawValue, encoding: .utf8) else {
+            return nil
+        }
+
+        let parts = raw.split(separator: "|", maxSplits: 1, omittingEmptySubsequences: false)
+
+        guard parts.count == 2 else {
+            return nil
+        }
+
+        guard let date = ISO8601DateFormatter().date(from: String(parts[1])) else {
+            return nil
+        }
+
+        return (String(parts[0]), date)
+    }
+
+    ///
+    /// The running extension bundle's `CFBundleShortVersionString`, or the empty string when none is available — e.g. unit-test hosts without a versioned `Info.plist`.
+    ///
+    /// The empty-string fallback compares equal across calls inside the same process, so test anchors round-trip cleanly through ``syncAnchor(at:)`` and ``parseSyncAnchor(_:)`` without triggering the version-mismatch branch.
+    ///
+    private static func currentExtensionVersion() -> String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
     }
 }

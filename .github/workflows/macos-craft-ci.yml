@@ -5,10 +5,11 @@ name: macOS CI
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, reopened, synchronize, ready_for_review]
 
 jobs:
   setup_craft:
+    if: ${{ !github.event.pull_request.draft }}
     name: Set up Craft and install dependencies
     timeout-minutes: 60
     runs-on: macos-15
@@ -24,13 +25,13 @@ jobs:
       CRAFT_MASTER_CONFIG: ${{ env.CRAFT_MASTER_CONFIG }}
       PYTHON_VERSION: ${{ env.PYTHON_VERSION }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 1
 
       - name: Discover cached Craft directories
         id: cache-craft-restore
-        uses: actions/cache/restore@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+        uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: |
             ${{ env.CRAFT_MASTER_LOCATION }}
@@ -66,8 +67,8 @@ jobs:
       - name: Add required blueprint repositories
         if: steps.cache-craft-restore.outputs.cache-hit != 'true'
         run: |
-          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c --add-blueprint-repository "https://github.com/nextcloud/craft-blueprints-kde.git|master|"
-          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c --add-blueprint-repository "https://github.com/nextcloud/desktop-client-blueprints.git|master|"
+          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c --add-blueprint-repository "https://github.com/nextcloud/craft-blueprints-kde.git|stable-34.0|"
+          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c --add-blueprint-repository "https://github.com/nextcloud/craft-blueprints-nextcloud.git|stable-34.0|"
 
       - name: Setup Craft
         if: steps.cache-craft-restore.outputs.cache-hit != 'true'
@@ -81,7 +82,7 @@ jobs:
 
       - name: Cache Craft directories
         if: steps.cache-craft-restore.outputs.cache-hit != 'true'
-        uses: actions/cache/save@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+        uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: |
             ${{ env.CRAFT_MASTER_LOCATION }}
@@ -91,6 +92,7 @@ jobs:
 
 
   build:
+    if: ${{ !github.event.pull_request.draft }}
     name: Build and test ${{ matrix.buildFileProviderModule == 'True' && 'File Provider' || 'classic' }} client
     needs: setup_craft
     strategy:
