@@ -2012,7 +2012,10 @@ std::pair<QByteArray, PKey> ClientSideEncryption::generateCSR(PKey keyPair,
     }
 
     // 3. set subject of x509 req
-    auto x509_name = X509_REQ_get_subject_name(x509_req);
+    auto x509_name = X509_NAME_new();
+    auto release_on_exit_x509_name = qScopeGuard([&] {
+        X509_NAME_free(x509_name);
+    });
 
     for(const auto& v : certParams) {
         ret = X509_NAME_add_entry_by_txt(x509_name, v.first,  MBSTRING_ASC, (const unsigned char*) v.second, -1, -1, 0);
@@ -2020,6 +2023,12 @@ std::pair<QByteArray, PKey> ClientSideEncryption::generateCSR(PKey keyPair,
             qCWarning(lcCse()) << "Error Generating the Certificate while adding" << v.first << v.second;
             return {result, std::move(keyPair)};
         }
+    }
+
+    ret = X509_REQ_set_subject_name(x509_req, x509_name);
+    if (ret != 1) {
+        qCWarning(lcCse()) << "Error setting the subject name on the certificate signing request";
+        return {result, std::move(keyPair)};
     }
 
     ret = X509_REQ_set_pubkey(x509_req, keyPair);
