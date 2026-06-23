@@ -147,6 +147,7 @@ public slots:
     void destroyDialog(QQuickWindow *window) const;
 
     void showWindow(OCC::Systray::WindowPosition position = OCC::Systray::WindowPosition::Default);
+    void showTrayPopup(OCC::Systray::WindowPosition position = OCC::Systray::WindowPosition::Default);
     void hideWindow();
     void showQMLWindow();
     void showActivitiesWindow(int userIndex = -1);
@@ -216,7 +217,6 @@ private:
 
     std::unique_ptr<QQmlApplicationEngine> _trayEngine;
     QPointer<QMenu> _contextMenu;
-    QSharedPointer<QQuickWindow> _trayWindow;
     QHash<QString, QPointer<QQuickWindow>> _activitiesWindows;
     QHash<QString, QPointer<QQuickWindow>> _assistantWindows;
     QPointer<QQuickWindow> _userStatusWindow;

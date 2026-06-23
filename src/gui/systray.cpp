@@ -156,7 +156,7 @@ Systray::Systray()
 
 #if defined(Q_OS_MACOS) || defined(Q_OS_WIN)
     connect(AccountManager::instance(), &AccountManager::accountAdded,
-        this, [this]{ showWindow(); });
+        this, [this]{ showTrayPopup(); });
 #else
     // Since the positioning of the QSystemTrayIcon is borked on non-Windows and non-macOS desktop environments,
     // we hardcode the position of the tray to be in the center when we add a new account from somewhere like
@@ -164,7 +164,7 @@ Systray::Systray()
     // is placed
 
     connect(AccountManager::instance(), &AccountManager::accountAdded,
-        this, [this]{ showWindow(WindowPosition::Center); });
+        this, [this]{ showTrayPopup(WindowPosition::Center); });
 #endif
 
     connect(FolderMan::instance(), &FolderMan::folderListChanged, this, &Systray::slotSyncFoldersChanged);
@@ -178,14 +178,6 @@ void Systray::create()
             _trayEngine->rootContext()->setContextProperty("activityModel", UserModel::instance()->currentActivityModel());
         } else {
             _trayEngine->rootContext()->setContextProperty("activityModel", &_fakeActivityModel);
-        }
-
-        QQmlComponent trayWindowComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/tray/MainWindow.qml"));
-
-        if(trayWindowComponent.isError()) {
-            qCWarning(lcSystray) << trayWindowComponent.errorString();
-        } else {
-            _trayWindow.reset(qobject_cast<QQuickWindow*>(trayWindowComponent.create()));
         }
 
 #ifndef Q_OS_MACOS
@@ -205,43 +197,42 @@ void Systray::create()
 
 void Systray::showWindow(WindowPosition position)
 {
+    Q_UNUSED(position)
+
+    showActivitiesWindow();
+}
+
+void Systray::showTrayPopup(WindowPosition position)
+{
     if (isOpen()) {
         return;
     }
 
-#ifdef Q_OS_MACOS
-    if (!useNormalWindow()) {
-        showMacOSTrayPopup(geometry());
-        setIsOpen(true);
-        UserModel::instance()->fetchCurrentActivityModel();
+    if (!isSystemTrayAvailable()) {
+        showActivitiesWindow();
         return;
     }
-#else
-    if (!useNormalWindow() && _popupWindow) {
-        positionWindowAtTray(_popupWindow.data());
-        _popupWindow->show();
-        _popupWindow->raise();
-        _popupWindow->requestActivate();
-        setIsOpen(true);
-        return;
-    }
-#endif
 
-    if (!_trayWindow) {
+#ifdef Q_OS_MACOS
+    showMacOSTrayPopup(geometry());
+    setIsOpen(true);
+    UserModel::instance()->fetchCurrentActivityModel();
+#else
+    if (!_popupWindow) {
+        showActivitiesWindow();
         return;
     }
 
     if (position == WindowPosition::Center) {
-        positionWindowAtScreenCenter(_trayWindow.data());
+        positionWindowAtScreenCenter(_popupWindow.data());
     } else {
-        positionWindowAtTray(_trayWindow.data());
+        positionWindowAtTray(_popupWindow.data());
     }
-    _trayWindow->show();
-    _trayWindow->raise();
-    _trayWindow->requestActivate();
-
+    _popupWindow->show();
+    _popupWindow->raise();
+    _popupWindow->requestActivate();
     setIsOpen(true);
-    UserModel::instance()->fetchCurrentActivityModel();
+#endif
 }
 
 void Systray::hideWindow()
@@ -251,53 +242,18 @@ void Systray::hideWindow()
     }
 
 #ifdef Q_OS_MACOS
-    if (!useNormalWindow()) {
-        hideMacOSTrayPopup();
-        if (_trayWindow) {
-            _trayWindow->hide();
-        }
-        setIsOpen(false);
-        return;
-    }
-#else
-    if (!useNormalWindow()) {
-        if (_popupWindow) {
-            _popupWindow->hide();
-        }
-        if (_trayWindow) {
-            _trayWindow->hide();
-        }
-        setIsOpen(false);
-        return;
-    }
-#endif
-
-    if (!_trayWindow) {
-        return;
-    }
-
-    _trayWindow->hide();
-    setIsOpen(false);
-}
-
-void Systray::showQMLWindow()
-{
-    if (!_trayWindow) {
-        return;
-    }
-#ifdef Q_OS_MACOS
     hideMacOSTrayPopup();
 #else
     if (_popupWindow) {
         _popupWindow->hide();
     }
 #endif
-    positionWindowAtTray(_trayWindow.data());
-    _trayWindow->show();
-    _trayWindow->raise();
-    _trayWindow->requestActivate();
-    setIsOpen(true);
-    UserModel::instance()->fetchCurrentActivityModel();
+    setIsOpen(false);
+}
+
+void Systray::showQMLWindow()
+{
+    showActivitiesWindow();
 }
 
 void Systray::showActivitiesWindow(int userIndex)
@@ -544,7 +500,7 @@ void Systray::setupContextMenu()
     if (AccountManager::instance()->accounts().isEmpty()) {
         _contextMenu->addAction(tr("Add account"), this, &Systray::openAccountWizard);
     } else {
-        _contextMenu->addAction(tr("Open %1 Desktop", "Open Nextcloud main window. Placeholer will be the application name. Please keep it.").arg(APPLICATION_NAME), this, [this]{ showWindow(); });
+        _contextMenu->addAction(tr("Open %1 Desktop", "Open Nextcloud main window. Placeholer will be the application name. Please keep it.").arg(APPLICATION_NAME), this, [this]{ showActivitiesWindow(); });
     }
 
     auto pauseAction = _contextMenu->addAction(tr("Pause sync"), this, &Systray::slotPauseAllFolders);
@@ -897,14 +853,8 @@ void Systray::createFileActionsDialogWithAccountState(const QString &localPath, 
 
 void Systray::presentShareViewInTray(const QString &localPath)
 {
-    const auto folder = FolderMan::instance()->folderForPath(localPath);
-    if (!folder) {
-        qCWarning(lcSystray) << "Could not open file details view in tray for" << localPath << "no responsible folder found";
-        return;
-    }
-    qCDebug(lcSystray) << "Opening file details view in tray for " << localPath;
-
-    Q_EMIT showFileDetails(folder->accountState(), localPath, FileDetailsPage::Sharing);
+    qCDebug(lcSystray) << "Opening file details dialog for " << localPath;
+    createShareDialog(localPath);
 }
 
 void Systray::presentFileActionsViewInSystray(const QString &localPath)

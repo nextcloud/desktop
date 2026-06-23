@@ -226,7 +226,7 @@ void ownCloudGui::slotOpenSettingsDialog()
 
 void ownCloudGui::slotOpenMainDialog()
 {
-    _tray->showWindow();
+    _tray->showActivitiesWindow();
 }
 
 void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
@@ -247,7 +247,7 @@ void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
         } else if (_tray->isOpen()) {
             _tray->hideWindow();
         } else {
-            _tray->showWindow();
+            _tray->showTrayPopup();
         }
     }
     // FIXME: Also make sure that any auto updater dialogue https://github.com/owncloud/client/issues/5613
