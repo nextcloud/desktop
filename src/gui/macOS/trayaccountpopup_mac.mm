@@ -156,26 +156,6 @@ static QString statusText(OCC::UserStatus::OnlineStatus status)
     return QCoreApplication::translate("UserStatusSetStatusView", "Online");
 }
 
-static QString trayFoldersMenuButtonText(const char *sourceText)
-{
-    return QCoreApplication::translate("TrayFoldersMenuButton", sourceText);
-}
-
-static QString mainWindowText(const char *sourceText)
-{
-    return QCoreApplication::translate("MainWindow", sourceText);
-}
-
-static QString trayWindowHeaderText(const char *sourceText)
-{
-    return QCoreApplication::translate("TrayWindowHeader", sourceText);
-}
-
-static QString trayAccountPopupText(const char *sourceText)
-{
-    return QCoreApplication::translate("TrayAccountPopup", sourceText);
-}
-
 static QString statusMenuText(OCC::UserStatus::OnlineStatus status, const QString &message)
 {
     const auto trimmedMessage = message.trimmed();
@@ -820,7 +800,7 @@ static QString statusMenuText(OCC::UserStatus::OnlineStatus status, const QStrin
     [self addSubview:label];
 
     auto resolveButton = [[[NCPointingHandButton alloc] init] autorelease];
-    resolveButton.title = trayAccountPopupText("Resolve").toNSString();
+    resolveButton.title = QCoreApplication::translate("TrayAccountPopup", "Resolve").toNSString();
     resolveButton.target = self;
     resolveButton.action = @selector(resolveButtonClicked:);
     resolveButton.bezelStyle = NSBezelStyleRounded;
@@ -1446,7 +1426,7 @@ static NSView *compactAccountActionsSeparator()
     const auto appsEnabled = appsModel->rowCount() > 0;
     const auto assistantEnabled = model->data(userModelIndex, OCC::UserModel::AssistantEnabledRole).toBool();
     [_stack addArrangedSubview:[[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kAccountActionsPopupWidth]];
-    [_stack addArrangedSubview:[[NCSectionHeaderRow alloc] initWithTitle:trayAccountPopupText("User status").toNSString()
+    [_stack addArrangedSubview:[[NCSectionHeaderRow alloc] initWithTitle:QCoreApplication::translate("TrayAccountPopup", "User status").toNSString()
                                                                   width:kAccountActionsPopupWidth]];
     [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:statusMenuText(status, statusMessage).toNSString()
                                                              icon:statusIcon
@@ -1458,7 +1438,7 @@ static NSView *compactAccountActionsSeparator()
         [weakSelf hideAppsPopup];
     }]];
     [_stack addArrangedSubview:accountActionsSeparator()];
-    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:trayFoldersMenuButtonText("Open local folder").toNSString()
+    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:QCoreApplication::translate("TrayFoldersMenuButton", "Open local folder").toNSString()
                                                             width:kAccountActionsPopupWidth
                                                           enabled:YES
                                                            action:^{
@@ -1467,7 +1447,7 @@ static NSView *compactAccountActionsSeparator()
         [weakSelf hideAppsPopup];
     }]];
     if (assistantEnabled) {
-        [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:mainWindowText("Ask Assistant\302\240\342\200\246").toNSString()
+        [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:QCoreApplication::translate("MainWindow", "Ask Assistant\302\240\342\200\246").toNSString()
                                                                 width:kAccountActionsPopupWidth
                                                               enabled:YES
                                                                action:^{
@@ -1476,7 +1456,7 @@ static NSView *compactAccountActionsSeparator()
             [weakSelf hideAppsPopup];
         }]];
     }
-    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:trayWindowHeaderText("More apps").toNSString()
+    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:QCoreApplication::translate("TrayWindowHeader", "More apps").toNSString()
                                                             icon:nil
                                                            width:kAccountActionsPopupWidth
                                                          enabled:appsEnabled
@@ -1489,7 +1469,7 @@ static NSView *compactAccountActionsSeparator()
 
     const auto trayNotifications = model->data(userModelIndex, OCC::UserModel::TrayNotificationsRole).toList();
     if (!trayNotifications.isEmpty()) {
-        [_stack addArrangedSubview:[[NCSectionHeaderRow alloc] initWithTitle:trayAccountPopupText("Notifications").toNSString()
+        [_stack addArrangedSubview:[[NCSectionHeaderRow alloc] initWithTitle:QCoreApplication::translate("TrayAccountPopup", "Notifications").toNSString()
                                                                       width:kAccountActionsPopupWidth]];
         for (const auto &trayNotification : trayNotifications) {
             const auto notificationData = trayNotification.toMap();
@@ -1524,11 +1504,11 @@ static NSView *compactAccountActionsSeparator()
         [_stack addArrangedSubview:compactAccountActionsSeparator()];
     }
 
-    [_stack addArrangedSubview:[[NCSectionHeaderRow alloc] initWithTitle:trayAccountPopupText("Recent activity").toNSString()
+    [_stack addArrangedSubview:[[NCSectionHeaderRow alloc] initWithTitle:QCoreApplication::translate("TrayAccountPopup", "Recent activity").toNSString()
                                                                   width:kAccountActionsPopupWidth]];
     const auto recentActivities = model->data(userModelIndex, OCC::UserModel::RecentActivitiesRole).toList();
     if (recentActivities.isEmpty()) {
-        [_stack addArrangedSubview:[[NCStaticInfoRow alloc] initWithTitle:trayAccountPopupText("No recent activity").toNSString()
+        [_stack addArrangedSubview:[[NCStaticInfoRow alloc] initWithTitle:QCoreApplication::translate("TrayAccountPopup", "No recent activity").toNSString()
                                                                      icon:systemSymbolImage(QStringLiteral("clock"), 14.0)
                                                                     width:kAccountActionsPopupWidth]];
     }
@@ -1550,7 +1530,7 @@ static NSView *compactAccountActionsSeparator()
             [weakSelf hideAppsPopup];
         }]];
     }
-    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:trayAccountPopupText("More activity\342\200\246").toNSString()
+    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:QCoreApplication::translate("TrayAccountPopup", "More activity\342\200\246").toNSString()
                                                             width:kAccountActionsPopupWidth
                                                           enabled:YES
                                                            action:^{
