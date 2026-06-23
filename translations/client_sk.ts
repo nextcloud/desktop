@@ -4336,7 +4336,7 @@ Upozorňujeme, že použitie akýchkoľvek príkazov pre logovanie z príkazové
 <context>
     <name>OCC::PollJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="142"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="143"/>
         <source>Invalid JSON reply from the poll URL</source>
         <translation>Neplatná JSON odpoveď z URL adresy</translation>
     </message>
@@ -4760,13 +4760,13 @@ Upozorňujeme, že použitie akýchkoľvek príkazov pre logovanie z príkazové
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="492"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="579"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="581"/>
         <source>Could not get file %1 from local DB</source>
         <translation>Nie je možné získať súbor %1 z lokálnej DB</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="505"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="566"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="568"/>
         <source>Error setting pin state</source>
         <translation>Chyba pri nastavovaní stavu pin-u</translation>
     </message>
@@ -4781,17 +4781,17 @@ Upozorňujeme, že použitie akýchkoľvek príkazov pre logovanie z príkazové
         <translation>Súbor %1 sa v súčasnosti používa</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="556"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="558"/>
         <source>Failed to propagate directory rename in hierarchy</source>
         <translation>Zlyhala propagácia premenovania adresára v hierarchii.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="561"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="563"/>
         <source>Failed to rename file</source>
         <translation>Nepodarilo sa premenovať súbor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="584"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="586"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Nie je možné vymazať záznam o súbore %1 z lokálnej DB</translation>
     </message>
@@ -4849,13 +4849,13 @@ Upozorňujeme, že použitie akýchkoľvek príkazov pre logovanie z príkazové
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="219"/>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="289"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="291"/>
         <source>Error updating metadata: %1</source>
         <translation>Chyba pri aktualizácii metadát: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="222"/>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="292"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="294"/>
         <source>The file %1 is currently in use</source>
         <translation>Súbor %1 sa v súčasnosti používa</translation>
     </message>
@@ -4875,12 +4875,12 @@ Upozorňujeme, že použitie akýchkoľvek príkazov pre logovanie z príkazové
         <translation>Nie je možné vymazať záznam o súbore %1 z lokálnej DB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="298"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="300"/>
         <source>Error setting pin state</source>
         <translation>Chyba pri nastavovaní stavu pin-u</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="305"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="307"/>
         <source>Error writing metadata to the database</source>
         <translation>Chyba pri zápise metadát do databázy</translation>
     </message>
@@ -4888,60 +4888,60 @@ Upozorňujeme, že použitie akýchkoľvek príkazov pre logovanie z príkazové
 <context>
     <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="280"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="281"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
         <translation>Súbor %1 nie je možné nahrať, pretože existuje iný súbor s rovnakým názvom, ktorý sa líši len veľkostou písmen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="335"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="411"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="424"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="336"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="412"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="425"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
         <translation>Súbor %1 má neplatný čas poslednej zmeny. Nenahrávajte ho na server.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="434"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="435"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>Lokálny súbor bol zmenený počas synchronizácie. Bude obnovený.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="445"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="446"/>
         <source>Local file changed during sync.</source>
         <translation>Lokálny súbor bol zmenený počas synchronizácie.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="455"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="456"/>
         <source>Failed to unlock encrypted folder.</source>
         <translation>Zlyhalo odomykanie zamknutého priečinka.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="729"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="743"/>
         <source>Unable to upload an item with invalid characters</source>
         <translation>Nemožno nahrať položku s neplatnými znakmi.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="817"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="831"/>
         <source>Error updating metadata: %1</source>
         <translation>Chyba pri aktualizácii metadát: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="820"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="834"/>
         <source>The file %1 is currently in use</source>
         <translation>Súbor %1 sa v súčasnosti používa</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="291"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="723"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="292"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="737"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>Nahranie %1 prekračuje kvótu, ktorá je pre priečinok nastavená</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="245"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="246"/>
         <source>Failed to upload encrypted file.</source>
         <translation>Zlyhalo nahrávanie šifrovaného súboru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="408"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="409"/>
         <source>File Removed (start upload) %1</source>
         <translation>Súbor odobratý (spustiť nahrávanie) %1</translation>
     </message>

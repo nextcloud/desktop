@@ -4336,7 +4336,7 @@ Nota che l&apos;utilizzo di qualsiasi opzione della riga di comando di registraz
 <context>
     <name>OCC::PollJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="142"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="143"/>
         <source>Invalid JSON reply from the poll URL</source>
         <translation>Risposta JSON non valida dall&apos;URL di richiesta</translation>
     </message>
@@ -4760,13 +4760,13 @@ Nota che l&apos;utilizzo di qualsiasi opzione della riga di comando di registraz
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="492"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="579"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="581"/>
         <source>Could not get file %1 from local DB</source>
         <translation>Impossibile ottenere il file %1 dal DB locale</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="505"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="566"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="568"/>
         <source>Error setting pin state</source>
         <translation>Errore durante l&apos;impostazione dello stato del PIN</translation>
     </message>
@@ -4781,17 +4781,17 @@ Nota che l&apos;utilizzo di qualsiasi opzione della riga di comando di registraz
         <translation>Il file %1 è attualmente in uso</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="556"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="558"/>
         <source>Failed to propagate directory rename in hierarchy</source>
         <translation>Impossibile propagare la rinomina della cartella nella gerarchia</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="561"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="563"/>
         <source>Failed to rename file</source>
         <translation>Rinominazione file non riuscita</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="584"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="586"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Impossibile eliminare il record del file %1 dal DB locale</translation>
     </message>
@@ -4849,13 +4849,13 @@ Nota che l&apos;utilizzo di qualsiasi opzione della riga di comando di registraz
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="219"/>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="289"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="291"/>
         <source>Error updating metadata: %1</source>
         <translation>Errore di invio dei metadati: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="222"/>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="292"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="294"/>
         <source>The file %1 is currently in use</source>
         <translation>Il file %1 è attualmente in uso</translation>
     </message>
@@ -4875,12 +4875,12 @@ Nota che l&apos;utilizzo di qualsiasi opzione della riga di comando di registraz
         <translation>Impossibile eliminare il record del file %1 dal DB locale</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="298"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="300"/>
         <source>Error setting pin state</source>
         <translation>Errore durante l&apos;impostazione dello stato del PIN</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="305"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="307"/>
         <source>Error writing metadata to the database</source>
         <translation>Errore durante la scrittura dei metadati nel database</translation>
     </message>
@@ -4888,60 +4888,60 @@ Nota che l&apos;utilizzo di qualsiasi opzione della riga di comando di registraz
 <context>
     <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="280"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="281"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
         <translation>Il file %1 non può essere caricato poiché esiste un altro file con lo stesso nome, ma con differenze tra maiuscole e minuscole</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="335"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="411"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="424"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="336"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="412"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="425"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
         <translation>Il file %1 ha un orario di modifica non valido. Non inviarlo sul server.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="434"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="435"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>Il file locale è stato modificato durante la sincronizzazione. Sarà ripristinato.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="445"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="446"/>
         <source>Local file changed during sync.</source>
         <translation>Un file locale è cambiato durante la sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="455"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="456"/>
         <source>Failed to unlock encrypted folder.</source>
         <translation>Sblocco della cartella cifrata non riuscito.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="729"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="743"/>
         <source>Unable to upload an item with invalid characters</source>
         <translation>Impossibile caricare un elemento con caratteri non validi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="817"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="831"/>
         <source>Error updating metadata: %1</source>
         <translation>Errore di invio dei metadati: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="820"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="834"/>
         <source>The file %1 is currently in use</source>
         <translation>Il file %1 è attualmente in uso</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="291"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="723"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="292"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="737"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>Il caricamento di %1 supera la quota per la cartella</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="245"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="246"/>
         <source>Failed to upload encrypted file.</source>
         <translation>Caricamento del file cifrato non riuscito.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="408"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="409"/>
         <source>File Removed (start upload) %1</source>
         <translation>File rimosso (avvio caricamento) %1</translation>
     </message>

@@ -4335,7 +4335,7 @@ Imajte na umu da će uporaba bilo koje opcije naredbenog retka u vezi sa zapisim
 <context>
     <name>OCC::PollJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="142"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="143"/>
         <source>Invalid JSON reply from the poll URL</source>
         <translation>Neispravan JSON odgovor iz URL-a ankete</translation>
     </message>
@@ -4759,13 +4759,13 @@ Imajte na umu da će uporaba bilo koje opcije naredbenog retka u vezi sa zapisim
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="492"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="579"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="581"/>
         <source>Could not get file %1 from local DB</source>
         <translation>Nije moguće dohvatiti datoteku %1 iz lokalne baze</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="505"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="566"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="568"/>
         <source>Error setting pin state</source>
         <translation>Pogreška pri postavljanju stanja šifre</translation>
     </message>
@@ -4780,17 +4780,17 @@ Imajte na umu da će uporaba bilo koje opcije naredbenog retka u vezi sa zapisim
         <translation>Datoteka %1 je trenutno u upotrebi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="556"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="558"/>
         <source>Failed to propagate directory rename in hierarchy</source>
         <translation>Nije uspjelo propagirati preimenovanje mape kroz hijerarhiju</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="561"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="563"/>
         <source>Failed to rename file</source>
         <translation>Preimenovanje datoteke nije uspjelo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="584"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="586"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Nije moguće izbrisati zapis datoteke %1 iz lokalne baze</translation>
     </message>
@@ -4848,13 +4848,13 @@ Imajte na umu da će uporaba bilo koje opcije naredbenog retka u vezi sa zapisim
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="219"/>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="289"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="291"/>
         <source>Error updating metadata: %1</source>
         <translation>Pogreška pri ažuriranju metapodataka: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="222"/>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="292"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="294"/>
         <source>The file %1 is currently in use</source>
         <translation>Datoteka %1 je trenutno u upotrebi</translation>
     </message>
@@ -4874,12 +4874,12 @@ Imajte na umu da će uporaba bilo koje opcije naredbenog retka u vezi sa zapisim
         <translation>Nije moguće izbrisati zapis datoteke %1 iz lokalne baze</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="298"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="300"/>
         <source>Error setting pin state</source>
         <translation>Pogreška pri postavljanju stanja šifre</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="305"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="307"/>
         <source>Error writing metadata to the database</source>
         <translation>Pogreška pri pisanju metapodataka u bazu podataka</translation>
     </message>
@@ -4887,60 +4887,60 @@ Imajte na umu da će uporaba bilo koje opcije naredbenog retka u vezi sa zapisim
 <context>
     <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="280"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="281"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
         <translation>Datoteka %1 ne može se otpremiti jer postoji druga datoteka s istim nazivom koja se razlikuje samo po velikom/malom slovu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="335"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="411"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="424"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="336"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="412"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="425"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
         <translation>Datoteka %1 ima neispravno vrijeme izmjene. Nemojte je prenositi na poslužitelj.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="434"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="435"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>Lokalna datoteka je izmijenjena tijekom sinkronizacije. Sinkroniziranje će se nastaviti.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="445"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="446"/>
         <source>Local file changed during sync.</source>
         <translation>Lokalna datoteka je izmijenjena tijekom sinkronizacije.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="455"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="456"/>
         <source>Failed to unlock encrypted folder.</source>
         <translation>Nije uspjelo otključavanje šifrirane mape.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="729"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="743"/>
         <source>Unable to upload an item with invalid characters</source>
         <translation>Nije moguće prenijeti stavku s neispravnim znakovima</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="817"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="831"/>
         <source>Error updating metadata: %1</source>
         <translation>Pogreška pri ažuriranju metapodataka: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="820"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="834"/>
         <source>The file %1 is currently in use</source>
         <translation>Datoteka %1 je trenutno u upotrebi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="291"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="723"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="292"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="737"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>Otpremanje %1 premašuje kvotu za mapu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="245"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="246"/>
         <source>Failed to upload encrypted file.</source>
         <translation>Otpremanje šifrirane datoteke nije uspjelo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="408"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="409"/>
         <source>File Removed (start upload) %1</source>
         <translation>Datoteka je uklonjena (početak otpremanja) %1</translation>
     </message>

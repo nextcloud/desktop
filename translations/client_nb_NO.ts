@@ -4319,7 +4319,7 @@ Merk at bruk av alle kommandolinjealternativer for logging vil overstyre denne i
 <context>
     <name>OCC::PollJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="142"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="143"/>
         <source>Invalid JSON reply from the poll URL</source>
         <translation>Ugyldig JSON-svar fra forespørsels-URL</translation>
     </message>
@@ -4743,13 +4743,13 @@ Merk at bruk av alle kommandolinjealternativer for logging vil overstyre denne i
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="492"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="579"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="581"/>
         <source>Could not get file %1 from local DB</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="505"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="566"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="568"/>
         <source>Error setting pin state</source>
         <translation>Feil ved innstilling av pin-status</translation>
     </message>
@@ -4764,17 +4764,17 @@ Merk at bruk av alle kommandolinjealternativer for logging vil overstyre denne i
         <translation>Filen %1 er i bruk</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="556"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="558"/>
         <source>Failed to propagate directory rename in hierarchy</source>
         <translation>Kunne ikke spre katalogendringer i hierarkiet</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="561"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="563"/>
         <source>Failed to rename file</source>
         <translation>Kunne ikke gi nytt navn til filen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="584"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="586"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Kunne ikke slette filposten %1 fra lokal DB</translation>
     </message>
@@ -4832,13 +4832,13 @@ Merk at bruk av alle kommandolinjealternativer for logging vil overstyre denne i
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="219"/>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="289"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="291"/>
         <source>Error updating metadata: %1</source>
         <translation>Feil ved oppdatering av metadata: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="222"/>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="292"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="294"/>
         <source>The file %1 is currently in use</source>
         <translation>Filen %1 er i bruk</translation>
     </message>
@@ -4858,12 +4858,12 @@ Merk at bruk av alle kommandolinjealternativer for logging vil overstyre denne i
         <translation>Kunne ikke slette filposten %1 fra lokal DB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="298"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="300"/>
         <source>Error setting pin state</source>
         <translation>Feil ved innstilling av pin-status</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="305"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="307"/>
         <source>Error writing metadata to the database</source>
         <translation>Feil ved skriving av metadata til databasen</translation>
     </message>
@@ -4871,60 +4871,60 @@ Merk at bruk av alle kommandolinjealternativer for logging vil overstyre denne i
 <context>
     <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="280"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="281"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
         <translation>Fil %1 kan ikke lastes opp fordi en annen fil eksisterer med samme navn, bare med forskjellige store og små bokstaver i navnet.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="335"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="411"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="424"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="336"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="412"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="425"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
         <translation>Filen %1 har ugyldig endringstid. Ikke last opp til serveren.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="434"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="435"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>Lokal fil endret under synkronisering. Den vil gjenopptas.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="445"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="446"/>
         <source>Local file changed during sync.</source>
         <translation>Lokal fil endret under synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="455"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="456"/>
         <source>Failed to unlock encrypted folder.</source>
         <translation>Kunne ikke låse opp kryptert mappe.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="729"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="743"/>
         <source>Unable to upload an item with invalid characters</source>
         <translation>Kan ikke laste opp et element med ugyldige tegn</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="817"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="831"/>
         <source>Error updating metadata: %1</source>
         <translation>Feil ved oppdatering av metadata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="820"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="834"/>
         <source>The file %1 is currently in use</source>
         <translation>Filen %1 er i bruk</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="291"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="723"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="292"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="737"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>Opplastingen av %1 overstiger kvoten for mappen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="245"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="246"/>
         <source>Failed to upload encrypted file.</source>
         <translation>Kunne ikke laste opp kryptert fil.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="408"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="409"/>
         <source>File Removed (start upload) %1</source>
         <translation>Fil fjernet (start opplasting) %1</translation>
     </message>
