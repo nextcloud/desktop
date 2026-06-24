@@ -36,7 +36,7 @@ protected:
     [[nodiscard]] bool checkParameters() const override;
 
 private:
-    Governance::LabelType _labelType = Governance::LabelType::Invalid;
+    Governance::LabelType _labelType = Governance::LabelType::InvalidLabelType;
 };
 
 } // namespace OCC
