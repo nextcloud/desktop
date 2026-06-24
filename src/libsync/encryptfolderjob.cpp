@@ -10,6 +10,8 @@
 #include "foldermetadata.h"
 #include <QLoggingCategory>
 
+using namespace Qt::StringLiterals;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcEncryptFolderJob, "nextcloud.sync.propagator.encryptfolder", QtInfoMsg)
@@ -103,12 +105,15 @@ void EncryptFolderJob::uploadMetadata()
         return;
     }
 
+    const auto rootEncryptedFolderInfo = RootEncryptedFolderInfo{RootEncryptedFolderInfo::createRootPath(currentPathRelative, rec.path())};
+
     const auto emptyMetadata(QSharedPointer<FolderMetadata>::create(
         _account,
         _remoteSyncRootPath,
         QByteArray{},
-        RootEncryptedFolderInfo(RootEncryptedFolderInfo::createRootPath(currentPathRelative, rec.path())),
-        QByteArray{}));
+        rootEncryptedFolderInfo,
+        QByteArray{},
+        rootEncryptedFolderInfo.path == u"/"_s ? FolderMetadata::FolderType::Root : FolderMetadata::FolderType::Nested));
 
     connect(emptyMetadata.data(), &FolderMetadata::setupComplete, this, [this, emptyMetadata] {
         const auto encryptedMetadata = !emptyMetadata->isValid() ? QByteArray{} : emptyMetadata->encryptedMetadata();
