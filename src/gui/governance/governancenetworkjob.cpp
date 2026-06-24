@@ -91,7 +91,7 @@ QString GovernanceNetworkJob::apiVersionAsString() const
     case Governance::ApiVersion::Version_1:
         result = u"v1"_s;
         break;
-    case Governance::ApiVersion::Invalid:
+    case Governance::ApiVersion::InvalidApiVersion:
         result = u"invalid"_s;
         break;
     }
@@ -128,7 +128,7 @@ bool GovernanceNetworkJob::checkParameters() const
         return result;
     }
 
-    if (_apiVersion == Governance::ApiVersion::Invalid) {
+    if (_apiVersion == Governance::ApiVersion::InvalidApiVersion) {
         result = false;
         return result;
     }

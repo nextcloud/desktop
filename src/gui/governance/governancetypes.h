@@ -26,13 +26,13 @@ enum class LabelType {
     Sensitivity,
     Retention,
     Hold,
-    Invalid,
+    InvalidLabelType,
 };
 
 Q_ENUM_NS(LabelType)
 
 enum class ApiVersion {
-    Invalid,
+    InvalidApiVersion,
     Version_1,
 };
 

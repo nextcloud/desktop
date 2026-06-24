@@ -45,7 +45,7 @@ QString TypedGovernanceNetworkJob::labelTypeAsString() const
     case Governance::LabelType::Hold:
         result = u"hold"_s;
         break;
-    case Governance::LabelType::Invalid:
+    case Governance::LabelType::InvalidLabelType:
         result = u"invalid"_s;
         break;
     }
@@ -61,7 +61,7 @@ bool TypedGovernanceNetworkJob::checkParameters() const
         return result;
     }
 
-    if (_labelType == Governance::LabelType::Invalid) {
+    if (_labelType == Governance::LabelType::InvalidLabelType) {
         result = false;
         return result;
     }
