@@ -969,17 +969,17 @@ QByteArray FolderMetadata::prepareMetadataForSignature(const QJsonDocument &full
     return metdataModified.toJson(QJsonDocument::Compact);
 }
 
-void FolderMetadata::addEncryptedFile(const EncryptedFile &f) {
+bool FolderMetadata::addEncryptedFile(const EncryptedFile &f) {
     Q_ASSERT(_isMetadataValid);
     if (!_isMetadataValid) {
         qCWarning(lcCseMetadata()) << "Could not add encrypted file to non-initialized metadata!";
-        return;
+        return false;
     }
 
     if (!isOriginalFilenameValid(f.originalFilename)) {
         qCWarning(lcCseMetadata()) << "Could not add encrypted file with invalid original file name.";
         _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
-        return;
+        return false;
     }
 
     for (int i = 0; i < _files.size(); ++i) {
@@ -990,6 +990,7 @@ void FolderMetadata::addEncryptedFile(const EncryptedFile &f) {
     }
 
     _files.append(f);
+    return true;
 }
 
 const QByteArray FolderMetadata::binaryMetadataKeyForDecryption() const
@@ -1062,7 +1063,9 @@ bool FolderMetadata::moveFromFileDropToFiles()
             _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
             return false;
         }
-        addEncryptedFile(parsedEncryptedFile);
+        if (!addEncryptedFile(parsedEncryptedFile)) {
+            return false;
+        }
     }
 
     _fileDropEntries.clear();
