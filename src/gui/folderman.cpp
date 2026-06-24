@@ -1789,27 +1789,7 @@ void FolderMan::leaveShare(const QString &localFile)
         SyncJournalFileRecord rec;
         if (folder->journalDb()->getFileRecord(filePathRelative, &rec)
             && rec.isValid() && rec.isE2eEncrypted()) {
-
-            if (_removeE2eeShareJob) {
-                _removeE2eeShareJob->deleteLater();
-            }
-
-            _removeE2eeShareJob = new UpdateE2eeFolderUsersMetadataJob(folder->accountState()->account(),
-                                                                                 folder->journalDb(),
-                                                                                 folder->remotePath(),
-                                                                                 UpdateE2eeFolderUsersMetadataJob::Remove,
-                                                                                 folder->remotePathTrailingSlash() + filePathRelative,
-                                                                                 folder->accountState()->account()->davUser());
-            _removeE2eeShareJob->setParent(this);
-            _removeE2eeShareJob->start(true);
-            connect(_removeE2eeShareJob, &UpdateE2eeFolderUsersMetadataJob::finished, this, [localFileNoTrailingSlash, this](int code, const QString &message) {   
-                if (code != 200) {
-                    qCWarning(lcFolderMan) << "Could not remove share from E2EE folder's metadata!" << code << message;
-                    return;
-                }
-                slotLeaveShare(localFileNoTrailingSlash, _removeE2eeShareJob->folderToken());
-            });
-
+            qCWarning(lcFolderMan) << "You cannot remove yourself from an encrypted share";
             return;
         }
         slotLeaveShare(localFileNoTrailingSlash);
@@ -1832,13 +1812,6 @@ void FolderMan::slotLeaveShare(const QString &localFile, const QByteArray &folde
     connect(leaveShareJob, &SimpleApiJob::resultReceived, this, [this, folder, localFile](int statusCode) {
         qCDebug(lcFolderMan) << "slotLeaveShare callback statusCode" << statusCode;
         Q_UNUSED(statusCode);
-        if (_removeE2eeShareJob) {
-            _removeE2eeShareJob->unlockFolder(EncryptedFolderMetadataHandler::UnlockFolderWithResult::Success);
-            connect(_removeE2eeShareJob.data(), &UpdateE2eeFolderUsersMetadataJob::folderUnlocked, this, [this, folder] {
-                scheduleFolder(folder);
-            });
-            return;
-        }
         scheduleFolder(folder);
     });
     leaveShareJob->start();
