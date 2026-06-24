@@ -1169,7 +1169,7 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
     if (!capabilities.shareAPI() || !(theme->userGroupSharing() || (theme->linkSharing() && capabilities.sharePublicLink())))
         return;
 
-    if (record._isShared && !record._sharedByMe) {
+    if (record._isShared && !record._sharedByMe && itemEncryptionFlag == SharingContextItemEncryptedFlag::NotEncryptedItem) {
         listener->sendMessage(QLatin1String("MENU_ITEM:LEAVESHARE") + flagString + tr("Leave this share"));
     }
 
