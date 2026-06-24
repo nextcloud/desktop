@@ -99,7 +99,8 @@ Window {
                     readonly property int userId: model.id
                     readonly property int onlineStatus: model.status
                     readonly property bool onlineStatusEnabled: model.isConnected && model.serverHasUserStatus
-                    readonly property string statusIcon: model.statusIcon
+                    readonly property url statusIcon: model.statusIcon
+                    readonly property bool hasStatusIcon: statusIcon.toString() !== ""
                     readonly property string statusMessage: model.statusMessage
                     readonly property var recentActivities: model.recentActivities ? model.recentActivities : []
                     readonly property var trayNotifications: model.trayNotifications ? model.trayNotifications : []
@@ -162,24 +163,7 @@ Window {
                         TrayAccountAppsModel.setUserId(accountDelegate.userId)
                         UserModel.fetchActivityPreview(accountDelegate.userId)
                         root.closeActiveAccountActionsMenu()
-
-                        const rightAlignedX = Math.max(Style.trayAccountPopupHoverMargin,
-                                                       accountRow.width - accountActionsMenu.width - Style.trayAccountPopupHoverMargin)
-                        const leftAlignedX = Style.trayAccountPopupHoverMargin
-                        const rowPosition = accountRow.mapToItem(popupContainer, 0, 0)
-                        const screenLeft = root.screen ? root.screen.virtualX : root.x
-                        const screenWidth = root.screen ? root.screen.width : root.width
-                        const screenRight = screenLeft + screenWidth
-                        const rightAlignedScreenRight = root.x + rowPosition.x + rightAlignedX + accountActionsMenu.width
-
-                        const menuX = rightAlignedScreenRight > screenRight - Style.trayAccountPopupHoverMargin
-                                      && root.x + rowPosition.x + leftAlignedX >= screenLeft + Style.trayAccountPopupHoverMargin
-                                      ? leftAlignedX
-                                      : rightAlignedX
-
-                        accountActionsMenu.popup(accountRow,
-                                                 menuX,
-                                                 Style.trayAccountPopupAccountHoverVerticalMargin)
+                        accountActionsMenu.popupSubmenuForRow(accountActionsMenu, accountRow)
                         root.activeAccountActionsMenu = accountActionsMenu
                     }
 
@@ -266,12 +250,19 @@ Window {
                             const screenBottom = screenTop + (root.screen ? root.screen.height : root.height)
                             const rightAlignedX = row.width
                             const leftAlignedX = -menuWidth
-                            const rightAlignedScreenRight = root.x + rowPosition.x + rightAlignedX + menuWidth
-                            const leftAlignedScreenLeft = root.x + rowPosition.x + leftAlignedX
-                            const menuX = rightAlignedScreenRight > screenRight - margin
+                            const rowScreenX = root.x + rowPosition.x
+                            const rightAlignedScreenRight = rowScreenX + rightAlignedX + menuWidth
+                            const leftAlignedScreenLeft = rowScreenX + leftAlignedX
+                            let menuX = rightAlignedScreenRight > screenRight - margin
                                           && leftAlignedScreenLeft >= screenLeft + margin
                                           ? leftAlignedX
                                           : rightAlignedX
+                            const menuScreenLeft = rowScreenX + menuX
+                            if (menuScreenLeft < screenLeft + margin) {
+                                menuX = screenLeft + margin - rowScreenX
+                            } else if (menuScreenLeft + menuWidth > screenRight - margin) {
+                                menuX = screenRight - margin - menuWidth - rowScreenX
+                            }
 
                             let menuY = 0
                             const screenY = root.y + rowPosition.y
@@ -310,10 +301,12 @@ Window {
                         MenuItem {
                             id: statusButton
 
-                            enabled: accountDelegate.onlineStatusEnabled
+                            readonly property bool isActionable: accountDelegate.onlineStatusEnabled
+
+                            enabled: true
                             text: accountDelegate.currentStatusLabelText()
                             font.pixelSize: Style.trayAccountPopupPrimaryFontSize
-                            hoverEnabled: true
+                            hoverEnabled: isActionable
                             onHoveredChanged: {
                                 if (hovered) {
                                     accountActionsMenu.closeSubmenus()
@@ -325,8 +318,8 @@ Window {
                                 Image {
                                     Layout.preferredWidth: Style.trayAccountPopupSyncIconSize
                                     Layout.preferredHeight: Style.trayAccountPopupSyncIconSize
-                                    visible: statusButton.enabled
-                                    source: statusButton.enabled ? accountDelegate.statusIcon : ""
+                                    visible: accountDelegate.hasStatusIcon
+                                    source: accountDelegate.statusIcon
                                     sourceSize.width: Style.trayAccountPopupSyncIconSize
                                     sourceSize.height: Style.trayAccountPopupSyncIconSize
                                     cache: false
@@ -336,18 +329,25 @@ Window {
                                     Layout.fillWidth: true
                                     text: statusButton.text
                                     font: statusButton.font
-                                    color: statusButton.enabled ? palette.windowText : palette.mid
+                                    color: palette.windowText
                                     elide: Text.ElideRight
                                 }
                             }
                             onClicked: {
+                                if (!isActionable) {
+                                    return
+                                }
                                 root._closing = true
                                 Systray.showUserStatusWindow(accountDelegate.userId)
                             }
 
-                            Accessible.role: Accessible.Button
+                            Accessible.role: statusButton.isActionable ? Accessible.Button : Accessible.StaticText
                             Accessible.name: text
-                            Accessible.onPressAction: statusButton.clicked()
+                            Accessible.onPressAction: {
+                                if (statusButton.isActionable) {
+                                    statusButton.clicked()
+                                }
+                            }
                         }
 
                         MenuSeparator {
@@ -448,63 +448,6 @@ Window {
                             Accessible.role: Accessible.Button
                             Accessible.name: text
                             Accessible.onPressAction: appsButton.clicked()
-                        }
-
-                        AutoSizingMenu {
-                            id: appsMenu
-
-                            closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
-
-                            Repeater {
-                                model: TrayAccountAppsModel
-
-                                delegate: MenuItem {
-                                    id: appEntry
-
-                                    text: model.appName
-                                    font.pixelSize: Style.trayAccountPopupPrimaryFontSize
-
-                                    function appIconSource() {
-                                        if (!model.appIconUrl || model.appIconUrl === "") {
-                                            return ""
-                                        }
-                                        return "image://tray-image-provider/" + model.appIconUrl + "/" + palette.windowText
-                                    }
-
-                                    contentItem: RowLayout {
-                                        spacing: 8
-
-                                        Image {
-                                            Layout.preferredWidth: Style.trayAccountPopupSyncIconSize
-                                            Layout.preferredHeight: Style.trayAccountPopupSyncIconSize
-                                            source: appEntry.appIconSource()
-                                            sourceSize.width: Style.trayAccountPopupSyncIconSize
-                                            sourceSize.height: Style.trayAccountPopupSyncIconSize
-                                            fillMode: Image.PreserveAspectFit
-                                        }
-
-                                        EnforcedPlainTextLabel {
-                                            Layout.fillWidth: true
-                                            text: appEntry.text
-                                            font: appEntry.font
-                                            color: palette.windowText
-                                            elide: Text.ElideRight
-                                        }
-                                    }
-
-                                    onTriggered: {
-                                        root._closing = true
-                                        appsMenu.close()
-                                        accountActionsMenu.close()
-                                        Systray.hideWindow()
-                                        TrayAccountAppsModel.openAppUrl(model.appUrl)
-                                    }
-
-                                    Accessible.role: Accessible.MenuItem
-                                    Accessible.name: qsTr("Open %1 in browser").arg(model.appName)
-                                    Accessible.onPressAction: appEntry.triggered()
-                                }
-                            }
                         }
 
                         MenuSeparator {
@@ -877,6 +820,71 @@ Window {
                             Accessible.role: Accessible.Button
                             Accessible.name: text
                             Accessible.onPressAction: moreActivitiesButton.clicked()
+                        }
+                    }
+
+                    AutoSizingMenu {
+                        id: appsMenu
+
+                        closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
+
+                        Repeater {
+                            model: TrayAccountAppsModel
+
+                            delegate: MenuItem {
+                                id: appEntry
+
+                                text: model.appName
+                                font.pixelSize: Style.trayAccountPopupPrimaryFontSize
+                                hoverEnabled: true
+
+                                function appIconSource() {
+                                    if (!model.appIconUrl || model.appIconUrl === "") {
+                                        return ""
+                                    }
+                                    return "image://tray-image-provider/" + model.appIconUrl + "/" + palette.windowText
+                                }
+
+                                background: Rectangle {
+                                    visible: opacity > 0
+                                    color: root.rowHoverColor
+                                    opacity: appEntry.hovered ? 1.0 : 0.0
+                                    Behavior on opacity { NumberAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
+                                }
+
+                                contentItem: RowLayout {
+                                    spacing: 8
+
+                                    Image {
+                                        Layout.preferredWidth: Style.trayAccountPopupSyncIconSize
+                                        Layout.preferredHeight: Style.trayAccountPopupSyncIconSize
+                                        source: appEntry.appIconSource()
+                                        sourceSize.width: Style.trayAccountPopupSyncIconSize
+                                        sourceSize.height: Style.trayAccountPopupSyncIconSize
+                                        fillMode: Image.PreserveAspectFit
+                                    }
+
+                                    EnforcedPlainTextLabel {
+                                        Layout.fillWidth: true
+                                        text: appEntry.text
+                                        font: appEntry.font
+                                        color: palette.windowText
+                                        elide: Text.ElideRight
+                                    }
+                                }
+
+                                onTriggered: {
+                                    root._closing = true
+                                    appsMenu.close()
+                                    accountActionsMenu.close()
+                                    Systray.hideWindow()
+                                    TrayAccountAppsModel.openAppUrl(model.appUrl)
+                                }
+
+                                Accessible.role: Accessible.MenuItem
+                                Accessible.name: qsTr("Open %1 in browser").arg(model.appName)
+                                Accessible.onPressAction: appEntry.triggered()
+                            }
                         }
                     }
 
