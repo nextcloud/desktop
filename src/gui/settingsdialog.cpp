@@ -248,7 +248,7 @@ void SettingsDialog::showEvent(QShowEvent *event)
     // constructor via winId()) doesn't stick, because Qt recreates the NSWindow when the dialog is
     // shown, resetting the title-bar separator to its default.
     if (auto *const handle = windowHandle()) {
-        styleNativeTitleBar(handle, /*hideTitleText=*/false);
+        styleNativeTitleBar(handle, /*hideTitleText=*/false, palette().color(QPalette::Window));
     }
 #endif
 }
@@ -266,7 +266,7 @@ void SettingsDialog::changeEvent(QEvent *e)
 #ifdef Q_OS_MACOS
         // macOS resets title-bar styling across appearance changes; re-apply it.
         if (auto *const handle = windowHandle()) {
-            styleNativeTitleBar(handle, /*hideTitleText=*/false);
+            styleNativeTitleBar(handle, /*hideTitleText=*/false, palette().color(QPalette::Window));
         }
 #endif
         break;
@@ -516,7 +516,7 @@ void SettingsDialog::customizeStyle()
         " margin: 0px;"
         " padding: 0px;"
         " }"
-        "#accountStatusPanel, #encryptionPanel, #fileProviderPanel, #syncFoldersPanel {"
+        "#accountStatusPanel, #encryptionPanel, #fileProviderPanel, #syncFoldersPanel, #accountActionsPanel {"
         " background: palette(" BACKGROUND_PALETTE ");"
         " border: none;"
         " border-radius: 12px;"

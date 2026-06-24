@@ -28,6 +28,7 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QRegularExpression>
+#include <QSizePolicy>
 #include <QUrl>
 
 namespace OCC {
@@ -51,6 +52,14 @@ InfoSettings::InfoSettings(QWidget *parent)
     _ui->infoAndUpdatesLabel->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
     _ui->infoAndUpdatesLabel->setText(aboutTextForInfoPanel());
     _ui->infoAndUpdatesLabel->setOpenExternalLinks(true);
+
+#if defined(BUILD_UPDATER)
+    _ui->updateStateLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    _ui->updateInfoRow->setStretch(0, 1);
+    _ui->autoCheckForUpdatesLabel->setWordWrap(true);
+    _ui->autoCheckForUpdatesLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    _ui->updateControlsRow->setStretch(0, 1);
+#endif
 
     connect(_ui->legalNoticeButton, &QPushButton::clicked, this, &InfoSettings::slotShowLegalNotice);
 
