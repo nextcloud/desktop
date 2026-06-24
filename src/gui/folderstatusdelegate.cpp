@@ -80,7 +80,8 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem &option,
     // Mirrors the inner text width used in paint()'s drawTextBox():
     // box spans from (option.rect.left() + aliasMargin) to (option.rect.right() - margin),
     // with an additional `margin` of inner padding on each side.
-    const int textWidth = qMax(1, option.rect.width() - aliasMargin - 3 * margin);
+    const auto rect = option.widget ? option.widget->rect() : option.rect;
+    const int textWidth = qMax(1, rect.width() - aliasMargin - 3 * margin);
     for (auto role : {FolderConflictMsg, FolderErrorMsg, FolderInfoMsg}) {
         auto msgs = qvariant_cast<QStringList>(index.data(role));
         if (msgs.isEmpty()) {
