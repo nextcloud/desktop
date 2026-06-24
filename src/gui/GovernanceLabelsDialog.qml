@@ -37,26 +37,6 @@ ApplicationWindow {
         close.accepted = true
     }
 
-    ApplyGovernanceLabel {
-        id: applyGovernanceLabel
-
-        account: governanceLabelsDialog.account
-
-        labelId: 'labelId'
-        labelType: GovernanceNetworkJob.Sensitivity
-        entityId: governanceLabelsDialog.fileId
-    }
-
-    DeleteGovernanceLabel {
-        id: deleteGovernanceLabel
-
-        account: governanceLabelsDialog.account
-
-        labelId: 'labelId'
-        labelType: GovernanceNetworkJob.Sensitivity
-        entityId: governanceLabelsDialog.fileId
-    }
-
     GetAvailableGovernanceLabels {
         id: getAvailableGovernanceLabelsForSensitivity
 
@@ -68,32 +48,6 @@ ApplicationWindow {
         onFinished: function(reply) {
             labelsModel.setAvailableLabelsJsonData(reply)
         }
-    }
-
-    GetAvailableGovernanceLabels {
-        id: getAvailableGovernanceLabelsForHold
-
-        account: governanceLabelsDialog.account
-
-        labelType: GovernanceNetworkJob.Hold
-        entityId: governanceLabelsDialog.fileId
-    }
-
-    GetAvailableGovernanceLabels {
-        id: getAvailableGovernanceLabelsForRetention
-
-        account: governanceLabelsDialog.account
-
-        labelType: GovernanceNetworkJob.Retention
-        entityId: governanceLabelsDialog.fileId
-    }
-
-    GetGovernanceLabels {
-        id: getGovernanceLabels
-
-        account: governanceLabelsDialog.account
-
-        entityId: governanceLabelsDialog.fileId
     }
 
     GovernanceLabelsListModel {
