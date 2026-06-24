@@ -27,7 +27,7 @@ extension Enumerator {
                 dbManager.addItemMetadataPreservingLocalState(metadata)
             }
         }
-        
+
         // Persist children — including those on follow-up pages — while
         // carrying over any local-only state previously set on existing rows
         // (e.g. `keepDownloaded` from a recursive "Always keep downloaded"
