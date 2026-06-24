@@ -104,7 +104,7 @@ private slots:
         encryptedFile.originalFilename = fakeFileName;
         encryptedFile.mimetype = "application/octet-stream";
         encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
-        metadata->addEncryptedFile(encryptedFile);
+        QVERIFY(metadata->addEncryptedFile(encryptedFile));
 
         const auto encryptedMetadata = metadata->encryptedMetadata();
         QVERIFY(!encryptedMetadata.isEmpty());
@@ -277,6 +277,25 @@ private slots:
         }
     }
 
+    void testAddEncryptedFileRejectsUnsafeOriginalFilename()
+    {
+        QScopedPointer<FolderMetadata> metadata(new FolderMetadata(_account, "/", FolderMetadata::FolderType::Root));
+        QSignalSpy metadataSetupCompleteSpy(metadata.data(), &FolderMetadata::setupComplete);
+        metadataSetupCompleteSpy.wait();
+        QCOMPARE(metadataSetupCompleteSpy.count(), 1);
+        QVERIFY(metadata->isValid());
+
+        FolderMetadata::EncryptedFile encryptedFile;
+        encryptedFile.encryptionKey = EncryptionHelper::generateRandom(16);
+        encryptedFile.encryptedFilename = EncryptionHelper::generateRandomFilename();
+        encryptedFile.originalFilename = QStringLiteral("folder\\file.txt");
+        encryptedFile.mimetype = "application/octet-stream";
+        encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
+
+        QVERIFY(!metadata->addEncryptedFile(encryptedFile));
+        QVERIFY(metadata->files().isEmpty());
+    }
+
     void testE2EeFolderMetadataSharing()
     {
         // instantiate empty metadata, add a file, and share with a second user "sharee"
@@ -294,7 +313,7 @@ private slots:
         encryptedFile.originalFilename = fakeFileName;
         encryptedFile.mimetype = "application/octet-stream";
         encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
-        metadata->addEncryptedFile(encryptedFile);
+        QVERIFY(metadata->addEncryptedFile(encryptedFile));
 
         QVERIFY(metadata->addUser(_secondAccount->davUser(), _secondAccount->e2e()->getCertificate(), FolderMetadata::CertificateType::SoftwareNextcloudCertificate));
 
@@ -385,7 +404,7 @@ private slots:
         encryptedFile.originalFilename = fakeFileNameFromSecondUser;
         encryptedFile.mimetype = "application/octet-stream";
         encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
-        metadataFromJsonForSecondUser->addEncryptedFile(encryptedFile);
+        QVERIFY(metadataFromJsonForSecondUser->addEncryptedFile(encryptedFile));
 
         auto encryptedMetadataFromSecondUser = metadataFromJsonForSecondUser->encryptedMetadata();
         encryptedMetadataFromSecondUser.replace("\"", "\\\"");

@@ -147,7 +147,7 @@ public:
     static MetadataVersion setupVersionFromExistingMetadata(const QByteArray &metadata);
 
 public slots:
-    void addEncryptedFile(const OCC::FolderMetadata::EncryptedFile &f);
+    [[nodiscard]] bool addEncryptedFile(const OCC::FolderMetadata::EncryptedFile &f);
     void removeEncryptedFile(const OCC::FolderMetadata::EncryptedFile &f);
     void removeAllEncryptedFiles();
 
