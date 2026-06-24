@@ -171,6 +171,8 @@ private:
 
     [[nodiscard]] QJsonObject convertFileToJsonObject(const EncryptedFile *encryptedFile) const;
 
+    [[nodiscard]] static bool isOriginalFilenameValid(const QString &originalFilename);
+
     [[nodiscard]] MetadataVersion latestSupportedMetadataVersion() const;
 
     [[nodiscard]] bool parseFileDropPart(const QJsonDocument &doc);
