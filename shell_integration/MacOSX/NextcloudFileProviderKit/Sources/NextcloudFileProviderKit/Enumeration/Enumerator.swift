@@ -262,8 +262,25 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
             let date = parsed.date
 
             Task {
-                await checkMaterializedItemsOnServer()
+                let remoteChanges = await checkMaterializedItemsOnServer()
                 let pendingLocalChanges = dbManager.pendingWorkingSetChanges(since: date)
+
+                // Merge the changes discovered directly against the server with the local pending
+                // changes re-derived from the database. `checkMaterializedItemsOnServer` returns the
+                // remote changes that the `syncTime`-based reconstruction in
+                // `pendingWorkingSetChanges` misses: non-materialized items, and items in subtrees
+                // whose own parent directory did not change. Deduplicate by ocId and make sure an
+                // item is never reported as both updated and deleted in the same pass.
+                let deletedById = Dictionary(
+                    (remoteChanges.deleted + pendingLocalChanges.deleted).map { ($0.ocId, $0) },
+                    uniquingKeysWith: { first, _ in first }
+                )
+                var seenUpdates = Set<String>()
+                let mergedUpdates = (remoteChanges.updated + pendingLocalChanges.updated)
+                    .filter { metadata in
+                        guard deletedById[metadata.ocId] == nil else { return false }
+                        return seenUpdates.insert(metadata.ocId).inserted
+                    }
 
                 completeChangesObserver(
                     observer,
@@ -273,8 +290,8 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                     remoteInterface: remoteInterface,
                     dbManager: dbManager,
                     newMetadatas: [],
-                    updatedMetadatas: pendingLocalChanges.updated,
-                    deletedMetadatas: pendingLocalChanges.deleted
+                    updatedMetadatas: mergedUpdates,
+                    deletedMetadatas: Array(deletedById.values)
                 )
             }
 
@@ -436,7 +453,21 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
 
     // MARK: - Helper methods
 
-    private func checkMaterializedItemsOnServer() async {
+    ///
+    /// Scan the materialized items (and any changed subtrees they reveal) on the server and return
+    /// the remote changes discovered, in addition to persisting them to the database.
+    ///
+    /// The returned changes are reported to the working-set change observer directly. Relying on
+    /// `pendingWorkingSetChanges(since:)` alone to re-derive the report from the database loses
+    /// changes to non-materialized items and to items in subtrees whose own parent directory did
+    /// not change, because that reconstruction is gated on the materialized set and `syncTime`.
+    ///
+    /// - Returns: The discovered new/updated metadata (merged into `updated`) and the metadata that
+    ///   were marked deleted.
+    ///
+    private func checkMaterializedItemsOnServer() async -> (
+        updated: [SendableItemMetadata], deleted: [SendableItemMetadata]
+    ) {
         logger.debug("Checking materialized items for changes on the server...")
 
         defer {
@@ -457,28 +488,42 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         var allDeletedMetadatas = [SendableItemMetadata]()
         var examinedItemIds = Set<String>()
 
-        for materializedItem in materializedItems where !examinedItemIds.contains(materializedItem.ocId) {
-            guard isLockFileName(materializedItem.fileName) == false else {
+        // Work queue seeded with the materialized items. A changed child directory discovered while
+        // scanning is appended so its descendants are visited too — otherwise a depth-1 read of a
+        // visited folder surfaces the changed subdirectory but never the changed items inside it.
+        // Unchanged subtrees are never enqueued, so the "skip unchanged directories" optimization
+        // is preserved.
+        var queue = materializedItems
+        var queuedDirectoryIds = Set(materializedItems.filter(\.directory).map(\.ocId))
+        var queueIndex = 0
+
+        while queueIndex < queue.count {
+            let workItem = queue[queueIndex]
+            queueIndex += 1
+
+            guard !examinedItemIds.contains(workItem.ocId) else { continue }
+            guard isLockFileName(workItem.fileName) == false else {
                 // Skip server requests for locally created lock files.
                 // They are not synchronized to the server for real.
                 // Thus they can be expected not to be found there.
                 // That would also cause their local deletion due to synchronization logic.
-                logger.debug("Skipping materialized item in working set check because the name hints a lock file.", [.item: materializedItem, .name: materializedItem.name])
+                logger.debug("Skipping materialized item in working set check because the name hints a lock file.", [.item: workItem, .name: workItem.name])
                 continue
             }
 
-            let itemRemoteUrl = materializedItem.remotePath()
+            let itemRemoteUrl = workItem.remotePath()
 
-            let (metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, _, readError) = await Enumerator.readServerUrl(itemRemoteUrl, account: account, remoteInterface: remoteInterface, dbManager: dbManager, depth: materializedItem.directory ? .targetAndDirectChildren : .target, log: logger.log)
+            let (metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, _, readError) = await Enumerator.readServerUrl(itemRemoteUrl, account: account, remoteInterface: remoteInterface, dbManager: dbManager, depth: workItem.directory ? .targetAndDirectChildren : .target, log: logger.log)
 
             if readError?.errorCode == 404 {
-                allDeletedMetadatas.append(materializedItem)
-                examinedItemIds.insert(materializedItem.ocId)
+                allDeletedMetadatas.append(workItem)
+                examinedItemIds.insert(workItem.ocId)
                 // Children are not marked deleted here — they may have moved with their parent.
                 logger.debug("Parent returned 404; children will be checked individually.", [.url: itemRemoteUrl])
             } else if let readError, readError != .success {
                 logger.error("Finished remote change enumeration of materialized items with error.", [.error: readError])
-                return
+                // Report what was discovered before the error rather than discarding it.
+                break
             } else {
                 allDeletedMetadatas += deletedMetadatas ?? []
                 allUpdatedMetadatas += updatedMetadatas ?? []
@@ -494,12 +539,23 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
                         examinedChildFilesAndDeletedItems.formUnion(metadatas[1...].filter { !$0.directory }.map(\.ocId))
                     }
 
-                    // Only skip unchanged child directories with no materialized descendants.
-                    // Lock changes don't propagate etags, so dirs with visible children must be enumerated.
                     if metadatas.count > 1 {
                         let childDirectories = metadatas[1...].filter(\.directory)
+                        let changedChildOcIds = Set((updatedMetadatas ?? []).map(\.ocId))
+                            .union((newMetadatas ?? []).map(\.ocId))
 
                         for childDir in childDirectories {
+                            // A changed child directory must be scanned so its descendants are
+                            // discovered, even when the directory itself is not materialized.
+                            if changedChildOcIds.contains(childDir.ocId) {
+                                if queuedDirectoryIds.insert(childDir.ocId).inserted {
+                                    queue.append(childDir)
+                                }
+                                continue
+                            }
+
+                            // Only skip unchanged child directories with no materialized descendants.
+                            // Lock changes don't propagate etags, so dirs with visible children must be enumerated.
                             guard let localItem = materializedItems.first(
                                 where: { $0.ocId == childDir.ocId }
                             ), localItem.isInSameDatabaseStoreableRemoteState(childDir) else {
@@ -533,6 +589,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
 
         allDeletedMetadatas.removeAll { survivingOcIds.contains($0.ocId) }
 
+        var reportedDeletions = [SendableItemMetadata]()
         for deletedMetadata in allDeletedMetadatas {
             if deletedMetadata.status >= Status.inUpload.rawValue {
                 logger.info("Skipping deletion of item with pending upload.", [.item: deletedMetadata.ocId])
@@ -542,11 +599,20 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
             deleteMarked.deleted = true
             deleteMarked.syncTime = Date()
             dbManager.addItemMetadata(deleteMarked)
+            reportedDeletions.append(deleteMarked)
         }
 
-        if allUpdatedMetadatas.isEmpty, allDeletedMetadatas.isEmpty {
+        // Deduplicate the discovered new/updated metadata by ocId, preserving order.
+        var seenUpdatedOcIds = Set<String>()
+        let discoveredUpdates = (allNewMetadatas + allUpdatedMetadatas).filter {
+            seenUpdatedOcIds.insert($0.ocId).inserted
+        }
+
+        if discoveredUpdates.isEmpty, reportedDeletions.isEmpty {
             logger.info("No remote changes found in materialized items.")
         }
+
+        return (updated: discoveredUpdates, deleted: reportedDeletions)
     }
 
     static func fileProviderPageforNumPage(_: Int) -> NSFileProviderPage? {
