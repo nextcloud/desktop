@@ -14,6 +14,8 @@
 #include <QLoggingCategory>
 #include <QNetworkReply>
 
+using namespace Qt::StringLiterals;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFetchAndUploadE2eeFolderMetadataJob, "nextcloud.sync.propagator.encryptedfoldermetadatahandler", QtInfoMsg)
@@ -183,7 +185,12 @@ void EncryptedFolderMetadataHandler::slotMetadataReceived(const QJsonDocument &j
 
     const auto rawMetadata = statusCode == 404
         ? QByteArray{} : json.toJson(QJsonDocument::Compact);
-    const auto metadata(QSharedPointer<FolderMetadata>::create(_account, _remoteFolderRoot, rawMetadata, _rootEncryptedFolderInfo, job->signature()));
+    const auto metadata(QSharedPointer<FolderMetadata>::create(_account,
+                                                               _remoteFolderRoot,
+                                                               rawMetadata,
+                                                               _rootEncryptedFolderInfo,
+                                                               job->signature(),
+                                                               (_rootEncryptedFolderInfo.path == u"/"_s ? FolderMetadata::FolderType::Root : FolderMetadata::FolderType::Nested)));
     connect(metadata.data(), &FolderMetadata::setupComplete, this, [this, metadata] {
         if (!metadata->isValid()) {
             qCWarning(lcFetchAndUploadE2eeFolderMetadataJob) << "Error parsing or decrypting metadata for folder" << _folderFullRemotePath;
