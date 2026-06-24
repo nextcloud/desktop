@@ -68,17 +68,19 @@ FolderMetadata::FolderMetadata(AccountPtr account,
                                const QByteArray &metadata,
                                const RootEncryptedFolderInfo &rootEncryptedFolderInfo,
                                const QByteArray &signature,
+                               FolderType folderType,
                                QObject *parent)
     : QObject(parent)
     , _account(account)
     , _remoteFolderRoot(Utility::noLeadingSlashPath(Utility::noTrailingSlashPath(remoteFolderRoot)))
     , _initialMetadata(metadata)
-    , _isRootEncryptedFolder(rootEncryptedFolderInfo.path == QStringLiteral("/"))
+    , _isRootEncryptedFolder(folderType == FolderType::Root)
     , _binaryMetadataKeyForEncryption(rootEncryptedFolderInfo.binaryKeyForEncryption)
     , _binaryMetadataKeyForDecryption(rootEncryptedFolderInfo.binaryKeyForDecryption)
     , _keyChecksums(rootEncryptedFolderInfo.keyChecksums)
     , _initialSignature(signature)
 {
+    Q_ASSERT(_isRootEncryptedFolder == (rootEncryptedFolderInfo.path == QStringLiteral("/")));
     Q_ASSERT(!_remoteFolderRoot.isEmpty());
     _existingMetadataVersion = setupVersionFromExistingMetadata(metadata);
 
@@ -131,6 +133,9 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
     const auto folderUsers = metaDataDoc[usersKey].toArray();
 
     const auto isUsersArrayValid = (!_isRootEncryptedFolder && folderUsers.isEmpty()) || (_isRootEncryptedFolder && !folderUsers.isEmpty());
+    if (!isUsersArrayValid) {
+        qCCritical(lcCseMetadata()) << (_isRootEncryptedFolder ? "is root encrypted folder" : "is child encrypted folder") << folderUsers;
+    }
     Q_ASSERT(isUsersArrayValid);
 
     if (!isUsersArrayValid) {
