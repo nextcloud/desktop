@@ -84,6 +84,8 @@ ApplicationWindow {
             Accessible.name: qsTr("Select sensitivity label")
 
             model: labelsModel
+            textRole: 'name'
+            valueRole: 'id'
         }
 
         DialogButtonBox {
