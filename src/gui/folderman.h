@@ -402,8 +402,6 @@ private:
     NavigationPaneHelper _navigationPaneHelper;
 #endif
 
-    QPointer<UpdateE2eeFolderUsersMetadataJob> _removeE2eeShareJob;
-
     bool _appRestartRequired = false;
 
     static FolderMan *_instance;
