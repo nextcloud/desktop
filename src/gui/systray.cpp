@@ -1062,10 +1062,11 @@ void Systray::positionWindowAtTray(QQuickWindow *window) const
     // otherwise it is being incorrectly resized by the OS or Qt when switching to a screen
     // with a different DPI setting
     const auto initialSize = window->size();
-    const auto position = computeWindowPosition(initialSize.width(), initialSize.height());
-    window->setPosition(position);
     window->setScreen(currentScreen());
     window->resize(initialSize);
+
+    const auto position = computeWindowPosition(initialSize.width(), initialSize.height());
+    window->setPosition(position);
 }
 
 void Systray::positionWindowAtScreenCenter(QQuickWindow *window) const

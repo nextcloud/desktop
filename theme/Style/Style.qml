@@ -82,6 +82,8 @@ QtObject {
     property int trayModalHeight: 490
     property int trayAccountPopupWidth: variableSize(300)
     property int trayAccountActionsMenuWidth: variableSize(340)
+    property int trayAccountAppsMenuWidth: variableSize(220)
+    property int trayNotificationActionsMenuWidth: variableSize(160)
     property int trayAccountPopupRowHeight: variableSize(44)
     property int trayAccountPopupTopPadding: 4
     property int trayAccountPopupActionHeight: variableSize(26)

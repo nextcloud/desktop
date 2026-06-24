@@ -6,6 +6,7 @@
 import QtQuick
 import QtQuick.Controls.Basic
 import QtQuick.Layouts
+import QtQml.Models
 import Qt5Compat.GraphicalEffects
 
 import Style
@@ -22,14 +23,13 @@ Window {
     property var activeAccountActionsMenu: null
 
     readonly property bool hasAccounts: UserModel && UserModel.count > 0
-    readonly property color rowHoverColor: Style.darkMode
-                                               ? Qt.rgba(1, 1, 1, Style.trayAccountPopupRowHoverOpacity)
-                                               : Qt.rgba(0, 0, 0, Style.trayAccountPopupRowHoverOpacity)
 
     width: Style.trayAccountPopupWidth
     height: contentColumn.height
     color: "transparent"
     flags: Qt.Tool | Qt.FramelessWindowHint | Qt.NoDropShadowWindowHint
+
+    Component.onCompleted: Systray.forceWindowInit(root)
 
     onVisibleChanged: {
         if (visible) {
@@ -61,6 +61,29 @@ Window {
 
     function translatedAskAssistantText() {
         return qsTranslate("MainWindow", "Ask Assistant\u00A0…")
+    }
+
+    component TrayActionHoverBackground: Item {
+        property bool active: false
+        property int verticalMargin: 0
+
+        Rectangle {
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.leftMargin: Style.trayAccountPopupHoverMargin
+            anchors.rightMargin: Style.trayAccountPopupHoverMargin
+            anchors.topMargin: parent.verticalMargin
+            anchors.bottomMargin: parent.verticalMargin
+            radius: Style.trayAccountPopupHoverRadius
+            visible: opacity > 0
+            color: Style.darkMode
+                   ? Qt.rgba(1, 1, 1, Style.trayAccountPopupRowHoverOpacity)
+                   : Qt.rgba(0, 0, 0, Style.trayAccountPopupRowHoverOpacity)
+            opacity: parent.active ? 1.0 : 0.0
+            Behavior on opacity { NumberAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
+        }
     }
 
     Rectangle {
@@ -187,22 +210,9 @@ Window {
                         }
                     }
 
-                    background: Item {
-                        Rectangle {
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.top: parent.top
-                            anchors.bottom: parent.bottom
-                            anchors.leftMargin: Style.trayAccountPopupHoverMargin
-                            anchors.rightMargin: Style.trayAccountPopupHoverMargin
-                            anchors.topMargin: Style.trayAccountPopupAccountHoverVerticalMargin
-                            anchors.bottomMargin: Style.trayAccountPopupAccountHoverVerticalMargin
-                            radius: Style.trayAccountPopupHoverRadius
-                            visible: opacity > 0
-                            color: root.rowHoverColor
-                            opacity: accountRow.hovered || accountActionsMenu.opened ? 1.0 : 0.0
-                            Behavior on opacity { NumberAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
-                        }
+                    background: TrayActionHoverBackground {
+                        active: accountRow.hovered || accountActionsMenu.opened
+                        verticalMargin: Style.trayAccountPopupAccountHoverVerticalMargin
                     }
 
                     AutoSizingMenu {
@@ -237,6 +247,20 @@ Window {
                         function closeSubmenus() {
                             closeAppsMenu()
                             closeNotificationActionsMenu()
+                        }
+
+                        function itemIndex(item) {
+                            for (let i = 0; i < count; ++i) {
+                                if (itemAt(i) === item) {
+                                    return i
+                                }
+                            }
+                            return -1
+                        }
+
+                        function insertionIndexAfter(anchorItem, offset) {
+                            const anchorIndex = itemIndex(anchorItem)
+                            return anchorIndex < 0 ? count : anchorIndex + 1 + offset
                         }
 
                         function popupSubmenuForRow(menu, row) {
@@ -312,6 +336,9 @@ Window {
                                     accountActionsMenu.closeSubmenus()
                                 }
                             }
+                            background: TrayActionHoverBackground {
+                                active: statusButton.isActionable && statusButton.hovered
+                            }
                             contentItem: RowLayout {
                                 spacing: 8
 
@@ -364,6 +391,9 @@ Window {
                                     accountActionsMenu.closeSubmenus()
                                 }
                             }
+                            background: TrayActionHoverBackground {
+                                active: openLocalFolderButton.hovered
+                            }
                             onClicked: accountDelegate.openLocalFolder()
 
                             Accessible.role: Accessible.Button
@@ -384,6 +414,9 @@ Window {
                                 if (hovered) {
                                     accountActionsMenu.closeSubmenus()
                                 }
+                            }
+                            background: TrayActionHoverBackground {
+                                active: assistantButton.hovered
                             }
                             onClicked: accountDelegate.openAssistant()
 
@@ -419,11 +452,8 @@ Window {
 
                             onClicked: openAppsMenu()
 
-                            background: Rectangle {
-                                visible: opacity > 0
-                                color: root.rowHoverColor
-                                opacity: appsButton.hovered || appsMenu.opened ? 1.0 : 0.0
-                                Behavior on opacity { NumberAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
+                            background: TrayActionHoverBackground {
+                                active: appsButton.hovered || appsMenu.opened
                             }
 
                             contentItem: RowLayout {
@@ -476,8 +506,15 @@ Window {
                             Accessible.name: text
                         }
 
-                        Repeater {
+                        Instantiator {
                             model: accountDelegate.trayNotifications
+
+                            onObjectAdded: (index, object) => {
+                                accountActionsMenu.insertItem(accountActionsMenu.insertionIndexAfter(notificationsHeader, index), object)
+                            }
+                            onObjectRemoved: (index, object) => {
+                                accountActionsMenu.removeItem(object)
+                            }
 
                             delegate: MenuItem {
                                 id: notificationRow
@@ -539,11 +576,8 @@ Window {
 
                                 onClicked: openNotification()
 
-                                background: Rectangle {
-                                    visible: opacity > 0
-                                    color: root.rowHoverColor
-                                    opacity: notificationRow.hovered || notificationActionsMenu.opened ? 1.0 : 0.0
-                                    Behavior on opacity { NumberAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
+                                background: TrayActionHoverBackground {
+                                    active: notificationRow.hovered || notificationActionsMenu.opened
                                 }
 
                                 contentItem: RowLayout {
@@ -598,6 +632,7 @@ Window {
                                 AutoSizingMenu {
                                     id: notificationActionsMenu
 
+                                    width: Style.trayNotificationActionsMenuWidth
                                     closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
                                     onClosed: {
                                         if (accountActionsMenu.activeNotificationActionsMenu === notificationActionsMenu) {
@@ -615,6 +650,10 @@ Window {
 
                                             text: modelData.label
                                             font.pixelSize: Style.trayAccountPopupPrimaryFontSize
+                                            hoverEnabled: true
+                                            background: TrayActionHoverBackground {
+                                                active: notificationActionMenuItem.hovered
+                                            }
                                             onTriggered: {
                                                 const activityIndex = notificationRow.modelData.activityIndex
                                                 const actionIndex = modelData.actionIndex
@@ -672,8 +711,15 @@ Window {
                             Accessible.name: text
                         }
 
-                        Repeater {
+                        Instantiator {
                             model: accountDelegate.recentActivities
+
+                            onObjectAdded: (index, object) => {
+                                accountActionsMenu.insertItem(accountActionsMenu.insertionIndexAfter(lastActivitiesHeader, index), object)
+                            }
+                            onObjectRemoved: (index, object) => {
+                                accountActionsMenu.removeItem(object)
+                            }
 
                             delegate: MenuItem {
                                 id: recentActivityRow
@@ -689,11 +735,8 @@ Window {
                                                            : Style.trayAccountPopupPreviewActionHeight
                                 font.pixelSize: Style.trayAccountPopupPrimaryFontSize
                                 hoverEnabled: true
-                                background: Rectangle {
-                                    visible: opacity > 0
-                                    color: root.rowHoverColor
-                                    opacity: recentActivityRow.hovered ? 1.0 : 0.0
-                                    Behavior on opacity { NumberAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
+                                background: TrayActionHoverBackground {
+                                    active: recentActivityRow.hovered
                                 }
 
                                 function iconSource() {
@@ -815,6 +858,9 @@ Window {
                                     accountActionsMenu.closeSubmenus()
                                 }
                             }
+                            background: TrayActionHoverBackground {
+                                active: moreActivitiesButton.hovered
+                            }
                             onClicked: accountDelegate.openActivities()
 
                             Accessible.role: Accessible.Button
@@ -826,6 +872,7 @@ Window {
                     AutoSizingMenu {
                         id: appsMenu
 
+                        width: Style.trayAccountAppsMenuWidth
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
                         Repeater {
@@ -845,11 +892,8 @@ Window {
                                     return "image://tray-image-provider/" + model.appIconUrl + "/" + palette.windowText
                                 }
 
-                                background: Rectangle {
-                                    visible: opacity > 0
-                                    color: root.rowHoverColor
-                                    opacity: appEntry.hovered ? 1.0 : 0.0
-                                    Behavior on opacity { NumberAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
+                                background: TrayActionHoverBackground {
+                                    active: appEntry.hovered
                                 }
 
                                 contentItem: RowLayout {
@@ -1076,20 +1120,8 @@ Window {
                 padding: 0
                 leftPadding: Style.trayAccountPopupRowPadding
 
-                background: Item {
-                    Rectangle {
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
-                        anchors.leftMargin: Style.trayAccountPopupHoverMargin
-                        anchors.rightMargin: Style.trayAccountPopupHoverMargin
-                        radius: Style.trayAccountPopupHoverRadius
-                        visible: opacity > 0
-                        color: root.rowHoverColor
-                        opacity: addAccountRow.hovered ? 1.0 : 0.0
-                        Behavior on opacity { NumberAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
-                    }
+                background: TrayActionHoverBackground {
+                    active: addAccountRow.hovered
                 }
 
                 contentItem: EnforcedPlainTextLabel {
@@ -1124,20 +1156,8 @@ Window {
                 padding: 0
                 leftPadding: Style.trayAccountPopupRowPadding
 
-                background: Item {
-                    Rectangle {
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
-                        anchors.leftMargin: Style.trayAccountPopupHoverMargin
-                        anchors.rightMargin: Style.trayAccountPopupHoverMargin
-                        radius: Style.trayAccountPopupHoverRadius
-                        visible: opacity > 0
-                        color: root.rowHoverColor
-                        opacity: settingsRow.hovered ? 1.0 : 0.0
-                        Behavior on opacity { NumberAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
-                    }
+                background: TrayActionHoverBackground {
+                    active: settingsRow.hovered
                 }
 
                 contentItem: EnforcedPlainTextLabel {
@@ -1172,20 +1192,8 @@ Window {
                 padding: 0
                 leftPadding: Style.trayAccountPopupRowPadding
 
-                background: Item {
-                    Rectangle {
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
-                        anchors.leftMargin: Style.trayAccountPopupHoverMargin
-                        anchors.rightMargin: Style.trayAccountPopupHoverMargin
-                        radius: Style.trayAccountPopupHoverRadius
-                        visible: opacity > 0
-                        color: root.rowHoverColor
-                        opacity: quitRow.hovered ? 1.0 : 0.0
-                        Behavior on opacity { NumberAnimation { duration: Style.trayAccountPopupHoverAnimationDuration } }
-                    }
+                background: TrayActionHoverBackground {
+                    active: quitRow.hovered
                 }
 
                 contentItem: EnforcedPlainTextLabel {
