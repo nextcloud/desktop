@@ -146,6 +146,7 @@ public extension ItemMetadata {
             && comparingMetadata.sharePermissionsCollaborationServices
             == sharePermissionsCollaborationServices
             && comparingMetadata.favorite == favorite
+            && comparingMetadata.size == size
     }
 
     /// Returns false if the user is lokced out of the file. I.e. The file is locked but by someone else
