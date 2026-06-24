@@ -182,7 +182,7 @@ void OCC::GovernanceLabelsListModel::etagChanged()
 
 void GovernanceLabelsListModel::emitRefreshData()
 {
-    if (_entityId.isEmpty() || _labelType == Governance::LabelType::Invalid) {
+    if (_entityId.isEmpty() || _labelType == Governance::LabelType::InvalidLabelType) {
         return;
     }
 

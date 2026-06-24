@@ -70,7 +70,7 @@ Q_SIGNALS:
 private:
     void emitRefreshData();
 
-    Governance::LabelType _labelType = Governance::LabelType::Invalid;
+    Governance::LabelType _labelType = Governance::LabelType::InvalidLabelType;
 
     QString _entityId;
 
