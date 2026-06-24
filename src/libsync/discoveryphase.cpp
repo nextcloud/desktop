@@ -664,11 +664,17 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
         break;
     }
 
+    const auto rootEncryptedFolderInfo = RootEncryptedFolderInfo{Utility::fullRemotePathToRemoteSyncRootRelative(topLevelFolderPath, _remoteRootFolderPath)};
+
+    const auto folderType = _topLevelE2eeFolderPaths.contains(_subPath) ? FolderMetadata::FolderType::Root : FolderMetadata::FolderType::Nested;
+    Q_ASSERT((folderType == FolderMetadata::FolderType::Root) == (rootEncryptedFolderInfo.path == QStringLiteral("/")));
+
     const auto e2EeFolderMetadata = new FolderMetadata(_account,
                                                        _remoteRootFolderPath,
                                                        jsonMetadata,
-                                                       RootEncryptedFolderInfo(Utility::fullRemotePathToRemoteSyncRootRelative(topLevelFolderPath, _remoteRootFolderPath)),
-                                                       job->signature());
+                                                       rootEncryptedFolderInfo,
+                                                       job->signature(),
+                                                       folderType);
     connect(e2EeFolderMetadata, &FolderMetadata::setupComplete, this, [this, e2EeFolderMetadata] {
         e2EeFolderMetadata->deleteLater();
         if (!e2EeFolderMetadata->isValid()) {
