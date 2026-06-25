@@ -14,7 +14,7 @@
 //  push/poll signal drives. That path is:
 //
 //      enumerateChanges(.workingSet)
-//        -> checkMaterializedItemsOnServer()        // PROPFINDs every *materialized* item,
+//        -> scanMaterialisedItemsForRemoteChanges()  // PROPFINDs every *materialized* item,
 //                                                    // writes fresh metadata + syncTime to the DB
 //        -> pendingWorkingSetChanges(since: anchor)  // re-derives the report from the DB by
 //                                                    // `syncTime > anchorDate` (+ a child scan)
@@ -26,7 +26,7 @@
 //
 //  Three of them reproduced real silent-drops in the enumerator/DB change-derivation logic and
 //  now pass after the fixes (see inline "Regression guard (Sx)" notes):
-//    - S1/S2: `checkMaterializedItemsOnServer` now returns the changes it discovers (reported
+//    - S1/S2: `scanMaterialisedItemsForRemoteChanges` now returns the changes it discovers (reported
 //      directly) and recurses into changed subdirectories, instead of relying on the lossy
 //      `syncTime`-based reconstruction in `pendingWorkingSetChanges`.
 //    - S4: `isInSameDatabaseStoreableRemoteState` now also compares `size`.
@@ -200,7 +200,7 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
 
     /// Scenario B (S1/S2): same as A but the parent folder's ETag is NOT bumped. This probes how
     /// strongly the working-set report depends on the parent directory's `syncTime` being advanced.
-    /// The change is written to the DB by `checkMaterializedItemsOnServer` but
+    /// The change is written to the DB by `scanMaterialisedItemsForRemoteChanges` but
     /// `pendingWorkingSetChanges` only scans children of directories that are themselves in the
     /// materialized-and-changed set — so a non-materialized child whose parent did not change may be
     /// dropped. Asserts the desired behaviour (child reported); a FAILURE documents the dependency.
@@ -222,7 +222,7 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
 
         XCTAssertNil(observer.error)
         // Regression guard (S1/S2): the changed child is now reported because
-        // checkMaterializedItemsOnServer returns it directly, rather than being gated on the
+        // scanMaterialisedItemsForRemoteChanges returns it directly, rather than being gated on the
         // parent folder's syncTime via pendingWorkingSetChanges.
         XCTAssertTrue(
             reportedIds(observer).contains(file.identifier),
@@ -231,7 +231,7 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
     }
 
     /// Scenario C (S1 headline — depth-1 limitation): a change to a grandchild file that lives under
-    /// a NON-materialized subdirectory of a visited folder. `checkMaterializedItemsOnServer` reads
+    /// a NON-materialized subdirectory of a visited folder. `scanMaterialisedItemsForRemoteChanges` reads
     /// the visited folder only at depth 1, so it sees the changed subdirectory but never reads the
     /// grandchild; the grandchild's `syncTime` is never advanced and it is never reported — even
     /// with a perfectly well-behaved server that bumped every ancestor ETag. (Reachable when a prior
@@ -258,7 +258,7 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         let observer = try await runWorkingSetChanges(remoteInterface)
 
         XCTAssertNil(observer.error)
-        // Regression guard (S1 headline): checkMaterializedItemsOnServer now enqueues the changed
+        // Regression guard (S1 headline): scanMaterialisedItemsForRemoteChanges now enqueues the changed
         // subfolder and scans it, so the grandchild's change is discovered, persisted and reported
         // rather than dropped behind the depth-1 read of the visited folder.
         XCTAssertTrue(

@@ -128,7 +128,7 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
             keepExistingDownloadState: true
         )
 
-        let renamedResult = result.updatedMetadatas?.first(where: { $0.ocId == "lock-update" })
+        let renamedResult = result?.updated.first(where: { $0.ocId == "lock-update" })
         XCTAssertNotNil(renamedResult, "Renamed item should appear in updated metadatas")
         XCTAssertNil(
             renamedResult?.lockToken,
@@ -173,7 +173,7 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
             keepExistingDownloadState: true
         )
 
-        let preservedResult = result.updatedMetadatas?.first(where: { $0.ocId == "lock-preserve" })
+        let preservedResult = result?.updated.first(where: { $0.ocId == "lock-preserve" })
         XCTAssertNotNil(preservedResult, "Unchanged-path item should appear in updated metadatas")
         XCTAssertEqual(
             preservedResult?.lockToken,
