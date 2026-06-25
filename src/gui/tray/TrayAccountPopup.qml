@@ -380,7 +380,7 @@ Window {
                                     elide: Text.ElideRight
                                 }
                             }
-                            onClicked: {
+                            onTriggered: {
                                 if (!statusButton.enabled) {
                                     return
                                 }
@@ -392,7 +392,7 @@ Window {
                             Accessible.name: text
                             Accessible.onPressAction: {
                                 if (statusButton.isActionable) {
-                                    statusButton.clicked()
+                                    statusButton.triggered()
                                 }
                             }
                         }
@@ -414,11 +414,11 @@ Window {
                             background: TrayActionHoverBackground {
                                 active: openLocalFolderButton.hovered
                             }
-                            onClicked: accountDelegate.openLocalFolder()
+                            onTriggered: accountDelegate.openLocalFolder()
 
                             Accessible.role: Accessible.Button
                             Accessible.name: text
-                            Accessible.onPressAction: openLocalFolderButton.clicked()
+                            Accessible.onPressAction: openLocalFolderButton.triggered()
                         }
 
                         MenuItem {
@@ -438,11 +438,11 @@ Window {
                             background: TrayActionHoverBackground {
                                 active: assistantButton.hovered
                             }
-                            onClicked: accountDelegate.openAssistant()
+                            onTriggered: accountDelegate.openAssistant()
 
                             Accessible.role: Accessible.Button
                             Accessible.name: text
-                            Accessible.onPressAction: assistantButton.clicked()
+                            Accessible.onPressAction: assistantButton.triggered()
                         }
 
                         MenuItem {
@@ -457,6 +457,7 @@ Window {
                                 if (!enabled) {
                                     return
                                 }
+                                appsMenu.cancelHoverLeaveClose()
                                 accountActionsMenu.closeNotificationActionsMenu()
                                 TrayAccountAppsModel.setUserId(accountDelegate.userId)
                                 if (!appsMenu.opened) {
@@ -467,10 +468,12 @@ Window {
                             onHoveredChanged: {
                                 if (hovered) {
                                     openAppsMenu()
+                                } else {
+                                    appsMenu.scheduleHoverLeaveClose()
                                 }
                             }
 
-                            onClicked: openAppsMenu()
+                            onTriggered: openAppsMenu()
 
                             background: TrayActionHoverBackground {
                                 active: appsButton.hovered || appsMenu.opened
@@ -497,7 +500,7 @@ Window {
 
                             Accessible.role: Accessible.Button
                             Accessible.name: text
-                            Accessible.onPressAction: appsButton.clicked()
+                            Accessible.onPressAction: appsButton.triggered()
                         }
 
                         MenuSeparator {
@@ -594,7 +597,7 @@ Window {
                                     }
                                 }
 
-                                onClicked: openNotification()
+                                onTriggered: openNotification()
 
                                 background: TrayActionHoverBackground {
                                     active: notificationRow.hovered || notificationActionsMenu.opened
@@ -709,7 +712,7 @@ Window {
 
                                 Accessible.role: Accessible.Button
                                 Accessible.name: text
-                                Accessible.onPressAction: notificationRow.clicked()
+                                Accessible.onPressAction: notificationRow.triggered()
                             }
                         }
 
@@ -831,11 +834,11 @@ Window {
                                     }
                                 }
 
-                                onClicked: accountDelegate.openActivities()
+                                onTriggered: accountDelegate.openActivities()
 
                                 Accessible.role: Accessible.Button
                                 Accessible.name: text
-                                Accessible.onPressAction: recentActivityRow.clicked()
+                                Accessible.onPressAction: recentActivityRow.triggered()
                             }
                         }
 
@@ -889,11 +892,11 @@ Window {
                             background: TrayActionHoverBackground {
                                 active: moreActivitiesButton.hovered
                             }
-                            onClicked: accountDelegate.openActivities()
+                            onTriggered: accountDelegate.openActivities()
 
                             Accessible.role: Accessible.Button
                             Accessible.name: text
-                            Accessible.onPressAction: moreActivitiesButton.clicked()
+                            Accessible.onPressAction: moreActivitiesButton.triggered()
                         }
                     }
 
@@ -901,6 +904,7 @@ Window {
                         id: appsMenu
 
                         property var anchorRow: null
+                        property var hoveredAppEntry: null
 
                         width: Style.trayAccountAppsMenuWidth
                         topPadding: Style.trayAccountPopupActionVerticalPadding
@@ -909,6 +913,33 @@ Window {
                         modal: false
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
                         onHeightChanged: accountActionsMenu.repositionOpenSubmenu(appsMenu)
+                        onClosed: {
+                            anchorRow = null
+                            hoveredAppEntry = null
+                            hoverLeaveCloseTimer.stop()
+                        }
+
+                        function cancelHoverLeaveClose() {
+                            hoverLeaveCloseTimer.stop()
+                        }
+
+                        function scheduleHoverLeaveClose() {
+                            if (opened && !appsButton.hovered && !hoveredAppEntry) {
+                                hoverLeaveCloseTimer.restart()
+                            }
+                        }
+
+                        Timer {
+                            id: hoverLeaveCloseTimer
+
+                            interval: 120
+                            repeat: false
+                            onTriggered: {
+                                if (appsMenu.opened && !appsButton.hovered && !appsMenu.hoveredAppEntry) {
+                                    appsMenu.close()
+                                }
+                            }
+                        }
 
                         Repeater {
                             model: TrayAccountAppsModel
@@ -919,6 +950,15 @@ Window {
                                 text: model.appName
                                 font.pixelSize: Style.trayAccountPopupPrimaryFontSize
                                 hoverEnabled: true
+                                onHoveredChanged: {
+                                    if (hovered) {
+                                        appsMenu.hoveredAppEntry = appEntry
+                                        appsMenu.cancelHoverLeaveClose()
+                                    } else if (appsMenu.hoveredAppEntry === appEntry) {
+                                        appsMenu.hoveredAppEntry = null
+                                        appsMenu.scheduleHoverLeaveClose()
+                                    }
+                                }
 
                                 function appIconSource() {
                                     if (!model.appIconUrl || model.appIconUrl === "") {
