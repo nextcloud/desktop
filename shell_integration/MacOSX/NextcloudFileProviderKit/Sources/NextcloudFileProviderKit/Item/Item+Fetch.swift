@@ -24,7 +24,7 @@ public extension Item {
         var remoteDirectoryPaths = [directoryRemotePath]
         while !remoteDirectoryPaths.isEmpty {
             let remoteDirectoryPath = remoteDirectoryPaths.removeFirst()
-            let (metadatas, _, _, _, _, readError) = await Enumerator.readServerUrl(
+            let readResult = await Enumerator.readServerUrl(
                 remoteDirectoryPath,
                 account: account,
                 remoteInterface: remoteInterface,
@@ -32,7 +32,7 @@ public extension Item {
                 log: logger.log
             )
 
-            if let readError, readError != .success {
+            if let readError = readResult.error, readError != .success {
                 logger.error("Could not enumerate directory contents.", [.name: metadata.fileName, .url: remoteDirectoryPath, .error: readError])
 
                 throw readError.fileProviderError(
@@ -40,7 +40,7 @@ public extension Item {
                 ) ?? NSFileProviderError(.cannotSynchronize)
             }
 
-            guard var metadatas else {
+            guard var metadatas = readResult.metadatas else {
                 logger.error("Could not fetch directory contents.", [.name: metadata.fileName, .url: remoteDirectoryPath])
                 throw NSFileProviderError(.cannotSynchronize)
             }

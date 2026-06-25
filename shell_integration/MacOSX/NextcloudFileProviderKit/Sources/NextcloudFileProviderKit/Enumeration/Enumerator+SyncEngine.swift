@@ -59,9 +59,7 @@ extension Enumerator {
         log: any FileProviderLogging
     ) async -> (
         metadatas: [SendableItemMetadata]?,
-        newMetadatas: [SendableItemMetadata]?,
-        updatedMetadatas: [SendableItemMetadata]?,
-        deletedMetadatas: [SendableItemMetadata]?,
+        changes: ChangeSet?,
         readError: NKError?
     ) {
         let logger = FileProviderLogger(category: "Enumerator", log: log)
@@ -71,18 +69,18 @@ extension Enumerator {
         if let pageIndex {
             let (metadatas, error) =
                 handlePagedReadResults(files: files, pageIndex: pageIndex, dbManager: dbManager)
-            return (metadatas, nil, nil, nil, error)
+            return (metadatas, nil, error)
         }
 
         guard var (directory, _, files) = await files.toSendableDirectoryMetadata(account: account, directoryToRead: serverUrl) else {
             logger.error("Failed to convert array of NKFile to directory and files metadata objects!")
-            return (nil, nil, nil, nil, .invalidData)
+            return (nil, nil, .invalidData)
         }
 
         // STORE DATA FOR CURRENTLY SCANNED DIRECTORY
         guard directory.directory else {
             logger.error("Expected directory metadata but received file metadata!", [.url: serverUrl])
-            return (nil, nil, nil, nil, .invalidData)
+            return (nil, nil, .invalidData)
         }
 
         if let existingMetadata = dbManager.itemMetadata(ocId: directory.ocId) {
@@ -94,20 +92,14 @@ extension Enumerator {
 
         files.insert(directory, at: 0)
 
-        let changedMetadatas = dbManager.depth1ReadUpdateItemMetadatas(
+        let changes = dbManager.depth1ReadUpdateItemMetadatas(
             account: account.ncKitAccount,
             serverUrl: serverUrl,
             updatedMetadatas: files,
             keepExistingDownloadState: true
         )
 
-        return (
-            files,
-            changedMetadatas.newMetadatas,
-            changedMetadatas.updatedMetadatas,
-            changedMetadatas.deletedMetadatas,
-            nil
-        )
+        return (files, changes, nil)
     }
 
     /// READ THIS CAREFULLY.
@@ -133,14 +125,7 @@ extension Enumerator {
         enumeratedItemIdentifier: NSFileProviderItemIdentifier? = nil,
         depth: EnumerateDepth = .targetAndDirectChildren,
         log: any FileProviderLogging
-    ) async -> (
-        metadatas: [SendableItemMetadata]?,
-        newMetadatas: [SendableItemMetadata]?,
-        updatedMetadatas: [SendableItemMetadata]?,
-        deletedMetadatas: [SendableItemMetadata]?,
-        nextPage: EnumeratorPageResponse?,
-        readError: NKError?
-    ) {
+    ) async -> RemoteReadResult {
         let logger = FileProviderLogger(category: "Enumerator", log: log)
 
         logger.debug("Starting to read server URL.", [.url: serverUrl])
@@ -176,12 +161,12 @@ extension Enumerator {
 
         guard error == .success else {
             logger.error("Read of URL did fail.", [.error: error, .url: serverUrl])
-            return (nil, nil, nil, nil, nil, error)
+            return RemoteReadResult(error: error)
         }
 
         guard let data else {
             logger.error("\(depth.rawValue) depth read of url \(serverUrl) did not return data.")
-            return (nil, nil, nil, nil, nil, error)
+            return RemoteReadResult(error: error)
         }
 
         // This will be nil if the page settings were also nil, as the server will not give us the
@@ -192,7 +177,7 @@ extension Enumerator {
             logger.error("Received no items.", [.url: serverUrl])
             // This is technically possible when doing a paginated request with the index too high.
             // It's technically not an error reply.
-            return ([], nil, nil, nil, nextPage, nil)
+            return RemoteReadResult(metadatas: [], nextPage: nextPage)
         }
 
         // Generally speaking a PROPFIND will provide the target of the PROPFIND as the first result
@@ -222,7 +207,11 @@ extension Enumerator {
                 }
 
                 dbManager.addItemMetadata(metadata)
-                return ([metadata], newItems, updatedItems, [], nextPage, nil)
+                return RemoteReadResult(
+                    metadatas: [metadata],
+                    changes: ChangeSet(created: newItems, updated: updatedItems),
+                    nextPage: nextPage
+                )
             }
         }
 
@@ -247,9 +236,13 @@ extension Enumerator {
 
             dbManager.addItemMetadata(metadata)
 
-            return ([metadata], newMetadatas, updatedMetadatas, [], nextPage, nil)
+            return RemoteReadResult(
+                metadatas: [metadata],
+                changes: ChangeSet(created: newMetadatas, updated: updatedMetadatas),
+                nextPage: nextPage
+            )
         } else if depth == .targetAndDirectChildren {
-            let (allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError) = await handleDepth1ReadFileOrFolder(
+            let depth1Read = await handleDepth1ReadFileOrFolder(
                 serverUrl: serverUrl,
                 account: account,
                 dbManager: dbManager,
@@ -258,16 +251,21 @@ extension Enumerator {
                 log: logger.log
             )
 
-            return (allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, nextPage, readError)
+            return RemoteReadResult(
+                metadatas: depth1Read.metadatas,
+                changes: depth1Read.changes,
+                nextPage: nextPage,
+                error: depth1Read.readError
+            )
         } else if let pageIndex = pageSettings?.index {
             let (metadatas, error) = handlePagedReadResults(
                 files: files, pageIndex: pageIndex, dbManager: dbManager
             )
-            return (metadatas, nil, nil, nil, nextPage, error)
+            return RemoteReadResult(metadatas: metadatas, nextPage: nextPage, error: error)
         } else {
             // Infinite depth unpaged reads are a bad idea
             logger.error("Infinite depth read requested.")
-            return (nil, nil, nil, nil, nil, .cancelled)
+            return RemoteReadResult(error: .cancelled)
         }
     }
 }
