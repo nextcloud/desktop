@@ -230,7 +230,17 @@ Window {
                         focus: false
                         modal: false
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
-                        height: implicitHeight
+                        readonly property real calculatedHeight: {
+                            let totalHeight = topPadding + bottomPadding
+                            for (let i = 0; i < count; ++i) {
+                                const item = itemAt(i)
+                                if (item && item.visible !== false) {
+                                    totalHeight += item.height > 0 ? item.height : item.implicitHeight
+                                }
+                            }
+                            return totalHeight
+                        }
+                        height: calculatedHeight
                         onHeightChanged: repositionOpenSubmenu(accountActionsMenu)
                         onClosed: {
                             closeSubmenus()
@@ -584,6 +594,94 @@ Window {
                                     font.pixelSize: Style.trayAccountPopupChevronFontSize
                                     color: appsButton.enabled ? palette.windowText : palette.mid
                                     opacity: appsButton.enabled ? 0.35 : 1.0
+                                }
+                            }
+
+                            AutoSizingMenu {
+                                id: appsMenu
+
+                                readonly property bool containsMouse: appsMenuHoverHandler.hovered
+                                property var anchorRow: null
+
+                                width: Style.trayAccountAppsMenuWidth
+                                topPadding: Style.trayAccountPopupActionVerticalPadding
+                                bottomPadding: Style.trayAccountPopupActionVerticalPadding
+                                focus: false
+                                modal: false
+                                closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
+                                onHeightChanged: accountActionsMenu.repositionOpenSubmenu(appsMenu)
+                                onContainsMouseChanged: {
+                                    if (containsMouse) {
+                                        accountActionsMenu.cancelActiveSubmenuClose()
+                                    } else {
+                                        accountActionsMenu.scheduleActiveSubmenuClose(appsMenu)
+                                    }
+                                }
+                                onClosed: {
+                                    anchorRow = null
+                                    accountActionsMenu.clearActiveSubmenu(appsMenu)
+                                }
+
+                                HoverHandler {
+                                    id: appsMenuHoverHandler
+
+                                    target: appsMenu.contentItem
+                                }
+
+                                Repeater {
+                                    model: TrayAccountAppsModel
+
+                                    delegate: MenuItem {
+                                        id: appEntry
+
+                                        text: model.appName
+                                        font.pixelSize: Style.trayAccountPopupPrimaryFontSize
+                                        hoverEnabled: true
+
+                                        function appIconSource() {
+                                            if (!model.appIconUrl || model.appIconUrl === "") {
+                                                return ""
+                                            }
+                                            return "image://tray-image-provider/" + model.appIconUrl + "/" + palette.windowText
+                                        }
+
+                                        background: TrayActionHoverBackground {
+                                            active: appEntry.hovered
+                                        }
+
+                                        contentItem: RowLayout {
+                                            spacing: 8
+
+                                            Image {
+                                                Layout.preferredWidth: Style.trayAccountPopupSyncIconSize
+                                                Layout.preferredHeight: Style.trayAccountPopupSyncIconSize
+                                                source: appEntry.appIconSource()
+                                                sourceSize.width: Style.trayAccountPopupSyncIconSize
+                                                sourceSize.height: Style.trayAccountPopupSyncIconSize
+                                                fillMode: Image.PreserveAspectFit
+                                            }
+
+                                            EnforcedPlainTextLabel {
+                                                Layout.fillWidth: true
+                                                text: appEntry.text
+                                                font: appEntry.font
+                                                color: palette.windowText
+                                                elide: Text.ElideRight
+                                            }
+                                        }
+
+                                        onTriggered: {
+                                            root._closing = true
+                                            appsMenu.close()
+                                            accountActionsMenu.close()
+                                            Systray.hideWindow()
+                                            TrayAccountAppsModel.openAppUrl(model.appUrl)
+                                        }
+
+                                        Accessible.role: Accessible.MenuItem
+                                        Accessible.name: qsTr("Open %1 in browser").arg(model.appName)
+                                        Accessible.onPressAction: appEntry.triggered()
+                                    }
                                 }
                             }
 
@@ -997,94 +1095,6 @@ Window {
                             Accessible.role: Accessible.Button
                             Accessible.name: text
                             Accessible.onPressAction: moreActivitiesButton.triggered()
-                        }
-                    }
-
-                    AutoSizingMenu {
-                        id: appsMenu
-
-                        readonly property bool containsMouse: appsMenuHoverHandler.hovered
-                        property var anchorRow: null
-
-                        width: Style.trayAccountAppsMenuWidth
-                        topPadding: Style.trayAccountPopupActionVerticalPadding
-                        bottomPadding: Style.trayAccountPopupActionVerticalPadding
-                        focus: false
-                        modal: false
-                        closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
-                        onHeightChanged: accountActionsMenu.repositionOpenSubmenu(appsMenu)
-                        onContainsMouseChanged: {
-                            if (containsMouse) {
-                                accountActionsMenu.cancelActiveSubmenuClose()
-                            } else {
-                                accountActionsMenu.scheduleActiveSubmenuClose(appsMenu)
-                            }
-                        }
-                        onClosed: {
-                            anchorRow = null
-                            accountActionsMenu.clearActiveSubmenu(appsMenu)
-                        }
-
-                        HoverHandler {
-                            id: appsMenuHoverHandler
-
-                            target: appsMenu.contentItem
-                        }
-
-                        Repeater {
-                            model: TrayAccountAppsModel
-
-                            delegate: MenuItem {
-                                id: appEntry
-
-                                text: model.appName
-                                font.pixelSize: Style.trayAccountPopupPrimaryFontSize
-                                hoverEnabled: true
-
-                                function appIconSource() {
-                                    if (!model.appIconUrl || model.appIconUrl === "") {
-                                        return ""
-                                    }
-                                    return "image://tray-image-provider/" + model.appIconUrl + "/" + palette.windowText
-                                }
-
-                                background: TrayActionHoverBackground {
-                                    active: appEntry.hovered
-                                }
-
-                                contentItem: RowLayout {
-                                    spacing: 8
-
-                                    Image {
-                                        Layout.preferredWidth: Style.trayAccountPopupSyncIconSize
-                                        Layout.preferredHeight: Style.trayAccountPopupSyncIconSize
-                                        source: appEntry.appIconSource()
-                                        sourceSize.width: Style.trayAccountPopupSyncIconSize
-                                        sourceSize.height: Style.trayAccountPopupSyncIconSize
-                                        fillMode: Image.PreserveAspectFit
-                                    }
-
-                                    EnforcedPlainTextLabel {
-                                        Layout.fillWidth: true
-                                        text: appEntry.text
-                                        font: appEntry.font
-                                        color: palette.windowText
-                                        elide: Text.ElideRight
-                                    }
-                                }
-
-                                onTriggered: {
-                                    root._closing = true
-                                    appsMenu.close()
-                                    accountActionsMenu.close()
-                                    Systray.hideWindow()
-                                    TrayAccountAppsModel.openAppUrl(model.appUrl)
-                                }
-
-                                Accessible.role: Accessible.MenuItem
-                                Accessible.name: qsTr("Open %1 in browser").arg(model.appName)
-                                Accessible.onPressAction: appEntry.triggered()
-                            }
                         }
                     }
 
