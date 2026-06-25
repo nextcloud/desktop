@@ -165,9 +165,6 @@ void PropagateUploadEncrypted::slotFetchMetadataJobFinished(int statusCode, cons
 
     if (!metadata->addEncryptedFile(encryptedFile)) {
         qCWarning(lcPropagateUploadEncrypted()) << "There was an error encrypting the file, aborting upload. Invalid metadata file name.";
-        if (!info.isDir()) {
-            QFile::remove(_completeFileName);
-        }
         emit error();
         return;
     }
