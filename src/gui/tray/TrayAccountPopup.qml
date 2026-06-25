@@ -225,6 +225,7 @@ Window {
                         topPadding: Style.trayAccountPopupActionVerticalPadding
                         bottomPadding: Style.trayAccountPopupActionVerticalPadding
                         focus: false
+                        modal: false
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
                         height: implicitHeight
                         onHeightChanged: repositionOpenSubmenu(accountActionsMenu)
@@ -269,7 +270,7 @@ Window {
                             return anchorIndex < 0 ? count : anchorIndex + 1 + offset
                         }
 
-                        function positionSubmenuForRow(menu, row) {
+                        function submenuPositionForRow(menu, row) {
                             const menuWidth = Math.max(menu.width, menu.implicitWidth)
                             const menuHeight = Math.max(menu.height, menu.implicitHeight)
                             const margin = Style.trayAccountPopupHoverMargin
@@ -304,19 +305,19 @@ Window {
                                 menuY = screenTop + margin - screenY
                             }
 
-                            menu.x = menuX
-                            menu.y = menuY
+                            return { "x": menuX, "y": menuY }
                         }
 
                         function popupSubmenuForRow(menu, row) {
                             menu.anchorRow = row
-                            positionSubmenuForRow(menu, row)
-                            menu.popup(row, menu.x, menu.y)
+                            const position = submenuPositionForRow(menu, row)
+                            menu.popup(row, position.x, position.y)
                         }
 
                         function repositionOpenSubmenu(menu) {
                             if (menu.opened && menu.anchorRow) {
-                                positionSubmenuForRow(menu, menu.anchorRow)
+                                const position = submenuPositionForRow(menu, menu.anchorRow)
+                                menu.popup(menu.anchorRow, position.x, position.y)
                             }
                         }
 
@@ -657,6 +658,7 @@ Window {
                                     topPadding: Style.trayAccountPopupActionVerticalPadding
                                     bottomPadding: Style.trayAccountPopupActionVerticalPadding
                                     focus: false
+                                    modal: false
                                     closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
                                     onHeightChanged: accountActionsMenu.repositionOpenSubmenu(notificationActionsMenu)
                                     onClosed: {
@@ -904,6 +906,7 @@ Window {
                         topPadding: Style.trayAccountPopupActionVerticalPadding
                         bottomPadding: Style.trayAccountPopupActionVerticalPadding
                         focus: false
+                        modal: false
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
                         onHeightChanged: accountActionsMenu.repositionOpenSubmenu(appsMenu)
 
