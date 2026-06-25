@@ -522,7 +522,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
         <source>File provider settings</source>
-        <translation type="unfinished"/>
+        <translation>檔案提供者設定</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
@@ -537,7 +537,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="57"/>
         <source>File Provider items appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. It is not possible to have a File Provider and classic sync Finder integration enabled simultaneously.</source>
-        <translation type="unfinished"/>
+        <translation>檔案提供者項目外觀與一般檔案無異，但不會佔用本機儲存空間。當您開啟檔案時，內容會自動下載。無法同時啟用檔案提供者與經典同步 Finder 整合功能。</translation>
     </message>
 </context>
 <context>
@@ -781,10 +781,28 @@ Should the account be imported?</source>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="429"/>
-        <location filename="../src/gui/accountsettings.cpp" line="191"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1306"/>
+        <location filename="../src/gui/accountsettings.cpp" line="193"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1331"/>
         <source>Connection settings</source>
         <translation>連線設定</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="488"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1541"/>
+        <source>Log out, log back in, or remove this account from the client.</source>
+        <translation>請登出、重新登入，或從客戶端移除此帳號。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="504"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1537"/>
+        <source>Log out</source>
+        <translation>登出</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="517"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1538"/>
+        <source>Remove account</source>
+        <translation>移除帳號</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="324"/>
@@ -794,7 +812,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="159"/>
         <source>File Provider</source>
-        <translation type="unfinished"/>
+        <translation>檔案提供者</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="159"/>
@@ -803,8 +821,8 @@ Should the account be imported?</source>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="311"/>
-        <location filename="../src/gui/accountsettings.cpp" line="947"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1132"/>
+        <location filename="../src/gui/accountsettings.cpp" line="972"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1157"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -814,86 +832,86 @@ Should the account be imported?</source>
         <translation>已連線到 &lt;server&gt; 身份為 &lt;user&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="332"/>
+        <location filename="../src/gui/accountsettings.cpp" line="342"/>
         <source>No account configured.</source>
         <translation>未設定帳號。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="96"/>
+        <location filename="../src/gui/accountsettings.cpp" line="98"/>
         <source>End-to-end Encryption with Virtual Files</source>
         <translation>虛擬檔案的端對端加密</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="97"/>
+        <location filename="../src/gui/accountsettings.cpp" line="99"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
         <translation>您似乎在此資料夾中啟用了「虛擬檔案」功能。目前還無法以隱含方式下載有端對端加密的虛擬檔案。為了有最佳的虛擬檔案與端對端加密體驗，請確保已加密的資料夾有標記為「一律可在本機使用」。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="105"/>
-        <location filename="../src/gui/accountsettings.cpp" line="127"/>
+        <location filename="../src/gui/accountsettings.cpp" line="107"/>
+        <location filename="../src/gui/accountsettings.cpp" line="129"/>
         <source>Do not encrypt folder</source>
         <translation>不要加密資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="108"/>
-        <location filename="../src/gui/accountsettings.cpp" line="130"/>
+        <location filename="../src/gui/accountsettings.cpp" line="110"/>
+        <location filename="../src/gui/accountsettings.cpp" line="132"/>
         <source>Encrypt folder</source>
         <translation>加密資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="118"/>
+        <location filename="../src/gui/accountsettings.cpp" line="120"/>
         <source>End-to-end Encryption</source>
         <translation>端對端加密</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="121"/>
+        <location filename="../src/gui/accountsettings.cpp" line="123"/>
         <source>This will encrypt your folder and all files within it. These files will no longer be accessible without your encryption mnemonic key. 
 &lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</source>
         <translation>這將會加密您的資料夾與其中的所有檔案。一旦丟失您的加密記憶關鍵密語，將無法再存取這些檔案。
 &lt;b&gt;此過程不可逆轉。您確定要繼續嗎？&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="323"/>
+        <location filename="../src/gui/accountsettings.cpp" line="333"/>
         <source>End-to-end encryption has not been initialized on this account.</source>
         <translation>此帳號尚未初始化端到端加密。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="350"/>
+        <location filename="../src/gui/accountsettings.cpp" line="360"/>
         <source>Forget encryption setup</source>
         <translation>忘記加密設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="360"/>
+        <location filename="../src/gui/accountsettings.cpp" line="370"/>
         <source>Display mnemonic</source>
         <translation>顯示記憶密語</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="366"/>
+        <location filename="../src/gui/accountsettings.cpp" line="376"/>
         <source>Encryption is set-up. Remember to &lt;b&gt;Encrypt&lt;/b&gt; a folder to end-to-end encrypt any new files added to it.</source>
         <translation>已設定加密。請記得&lt;b&gt;加密&lt;/b&gt;資料夾以端到端加密新增到其中的任何新檔案。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="399"/>
+        <location filename="../src/gui/accountsettings.cpp" line="409"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="445"/>
+        <location filename="../src/gui/accountsettings.cpp" line="470"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
         <translation>請先等待資料夾同步完畢，再嘗試加密。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="447"/>
+        <location filename="../src/gui/accountsettings.cpp" line="472"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>資料夾有些微的同步問題。等同步成功後才能加密此資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="449"/>
+        <location filename="../src/gui/accountsettings.cpp" line="474"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>資料夾有同步錯誤。等同步成功後才能加密此資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="460"/>
+        <location filename="../src/gui/accountsettings.cpp" line="485"/>
         <source>You cannot encrypt this folder because the end-to-end encryption is not set-up yet on this device.
 Would you like to do this now?</source>
         <translation>您無法加密此資料夾，因為裝置上尚未設定端到端加密。
@@ -901,143 +919,143 @@ Would you like to do this now?</source>
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="484"/>
+        <location filename="../src/gui/accountsettings.cpp" line="509"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
         <translation>您無法加密有內容的資料夾，請移除檔案。
 等新同步完成，然後再加密。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="508"/>
+        <location filename="../src/gui/accountsettings.cpp" line="533"/>
         <source>Encryption failed</source>
         <translation>加密失敗</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="508"/>
+        <location filename="../src/gui/accountsettings.cpp" line="533"/>
         <source>Could not encrypt folder because the folder does not exist anymore</source>
         <translation>無法加密資料夾，因為資料夾不再存在</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="649"/>
+        <location filename="../src/gui/accountsettings.cpp" line="674"/>
         <source>Encrypt</source>
         <translation>加密</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="657"/>
-        <location filename="../src/gui/accountsettings.cpp" line="727"/>
+        <location filename="../src/gui/accountsettings.cpp" line="682"/>
+        <location filename="../src/gui/accountsettings.cpp" line="752"/>
         <source>Edit Ignored Files</source>
         <translation>編輯忽略的檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="660"/>
-        <location filename="../src/gui/accountsettings.cpp" line="730"/>
+        <location filename="../src/gui/accountsettings.cpp" line="685"/>
+        <location filename="../src/gui/accountsettings.cpp" line="755"/>
         <source>Create new folder</source>
         <translation>建立新資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="666"/>
-        <location filename="../src/gui/accountsettings.cpp" line="756"/>
+        <location filename="../src/gui/accountsettings.cpp" line="691"/>
+        <location filename="../src/gui/accountsettings.cpp" line="781"/>
         <source>Availability</source>
         <translation>可用性</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="735"/>
+        <location filename="../src/gui/accountsettings.cpp" line="760"/>
         <source>Choose what to sync</source>
         <translation>選擇要同步的項目</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="741"/>
+        <location filename="../src/gui/accountsettings.cpp" line="766"/>
         <source>Force sync now</source>
         <translation>強制立刻同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="743"/>
+        <location filename="../src/gui/accountsettings.cpp" line="768"/>
         <source>Restart sync</source>
         <translation>重新開始同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="752"/>
+        <location filename="../src/gui/accountsettings.cpp" line="777"/>
         <source>Remove folder sync connection</source>
         <translation>移除資料夾同步連線</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="765"/>
+        <location filename="../src/gui/accountsettings.cpp" line="790"/>
         <source>Disable virtual file support …</source>
         <translation>停用虛擬檔案支援…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="777"/>
+        <location filename="../src/gui/accountsettings.cpp" line="802"/>
         <source>Enable virtual file support %1 …</source>
         <translation>啟用虛擬檔案支援 %1…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="777"/>
+        <location filename="../src/gui/accountsettings.cpp" line="802"/>
         <source>(experimental)</source>
         <translation>（實驗性）</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="879"/>
+        <location filename="../src/gui/accountsettings.cpp" line="904"/>
         <source>Folder creation failed</source>
         <translation>資料夾建立失敗</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="939"/>
+        <location filename="../src/gui/accountsettings.cpp" line="964"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>確認移除資料夾同步連線</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="946"/>
+        <location filename="../src/gui/accountsettings.cpp" line="971"/>
         <source>Remove Folder Sync Connection</source>
         <translation>移除資料夾同步連線</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="981"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1006"/>
         <source>Grant access to sync folder</source>
         <translation>授予同步資料夾的存取權</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="993"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1018"/>
         <source>Access Error</source>
         <translation>存取錯誤</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="994"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1019"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
         <translation>無法取得所選資料夾的存取權限。請重新嘗試。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1002"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1027"/>
         <source>Wrong Folder</source>
         <translation>錯誤資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1003"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1028"/>
         <source>Please select the original sync folder: %1</source>
         <translation>請選取原始同步資料夾：%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1012"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1021"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1037"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1046"/>
         <source>Bookmark Error</source>
         <translation>書籤錯誤</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1013"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1038"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
         <translation>無法為資料夾建立安全書籤。請重試。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1022"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1047"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
         <translation>無法解決安全書籤。請重試。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1123"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1148"/>
         <source>Disable virtual file support?</source>
         <translation>停用虛擬檔案支援？</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1124"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1149"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as &quot;available online only&quot; will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -1050,73 +1068,88 @@ This action will abort any currently running synchronization.</source>
 此動作將會中止任何目前正在執行的同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1131"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1156"/>
         <source>Disable support</source>
         <translation>停用支援</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1218"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1243"/>
         <source>End-to-end encryption mnemonic</source>
         <translation>端對端加密記憶密語</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1220"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1245"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
         <translation>要保護您的密碼學身份，我們使用 12 個字典單字的記憶密語來進行加密。請將這些單字記下來並妥善保管。您需要它來設定同步處理其他裝置上的加密資料夾。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1245"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1270"/>
         <source>Forget the end-to-end encryption on this device</source>
         <translation>忘記此裝置的端到端加密吧</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1246"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1271"/>
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
         <translation>您想要忘記此裝置上的 %1 端到端加密設定嗎？</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1247"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1272"/>
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
         <translation>忘記端對端加密會移除此裝置上的敏感資料與所有加密檔案。&lt;br&gt;但是，若已設定，加密檔案會保留在伺服器與您所有其他裝置上。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1352"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1377"/>
         <source>Sync Running</source>
         <translation>正在執行同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1353"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1378"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>正在執行同步操作。&lt;br/&gt;您想要中斷嗎？</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1425"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1450"/>
         <source>%1 in use</source>
         <translation>已使用 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1465"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1490"/>
         <source>Connected to %1 (%2).</source>
         <translation>連線至 %1 (%2)。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1685"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1537"/>
+        <source>Log in</source>
+        <translation>登入</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1538"/>
+        <source>Leave share</source>
+        <translation>離開分享</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1540"/>
+        <source>Remove this public share connection from the client.</source>
+        <translation>從客戶端移除此公開分享連線。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1718"/>
         <source>Migrate certificate to a new one</source>
         <translation>將憑證遷移至新憑證</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1792"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1825"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>有些資料夾的大小已超過 %1MB：%2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1840"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1879"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
         <translation>端對端加密已在此帳號使用其他裝置初始化。&lt;br&gt;輸入唯一的記憶密語，即可在此裝置上同步處理加密資料夾。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1901"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1903"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1940"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1942"/>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
         <translation>此帳號支援端到端加密，但必須先設定。</translation>
     </message>
@@ -1126,118 +1159,118 @@ This action will abort any currently running synchronization.</source>
         <translation>虛擬檔案整合尚未支援端到端加密。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1901"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1940"/>
         <source>The File Provider extension does not support end-to-end encryption yet.</source>
-        <translation type="unfinished"/>
+        <translation>「檔案提供者」擴充功能目前尚不支援端到端加密。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1909"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1948"/>
         <source>Set up encryption</source>
         <translation>設置加密</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1463"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1488"/>
         <source>Connected to %1.</source>
         <translation>已連線到 %1。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1471"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1496"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>伺服器 %1 暫時無法使用。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1474"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1499"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>伺服器 %1 目前正處於維護模式。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1480"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1505"/>
         <source>Signed out from %1.</source>
         <translation>已從 %1 登出。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1779"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1812"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>有些資料夾因為容量太大無法同步： </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1780"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1813"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>有些資料夾因位在外部儲存空間無法同步： </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1781"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1814"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>有些資料夾因為容量太大或是位在外部儲存空間而無法同步： </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="630"/>
-        <location filename="../src/gui/accountsettings.cpp" line="724"/>
+        <location filename="../src/gui/accountsettings.cpp" line="655"/>
+        <location filename="../src/gui/accountsettings.cpp" line="749"/>
         <source>Open folder</source>
         <translation>開啟資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="749"/>
+        <location filename="../src/gui/accountsettings.cpp" line="774"/>
         <source>Resume sync</source>
         <translation>繼續同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="749"/>
+        <location filename="../src/gui/accountsettings.cpp" line="774"/>
         <source>Pause sync</source>
         <translation>暫停同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="880"/>
+        <location filename="../src/gui/accountsettings.cpp" line="905"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;無法建立本機資料夾 &lt;i&gt;%1&lt;/i&gt;。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="940"/>
+        <location filename="../src/gui/accountsettings.cpp" line="965"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;您真的要停止同步資料夾 &lt;i&gt;%1&lt;/i&gt; 嗎？&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意：&lt;/b&gt;這&lt;b&gt;不會&lt;/b&gt;刪除任何檔案。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1418"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1443"/>
         <source>%1 of %2 in use</source>
         <translation>已使用 %2 中的 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1454"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1479"/>
         <source>%1 as %2</source>
         <translation>%1 身份為 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1461"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1486"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>已不支援伺服器版本 %1！若繼續請自負風險。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1477"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1502"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
         <translation>伺服器 %1 目前正被重新導向，或者您的連線位於強制入口網頁之後。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1483"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1508"/>
         <source>Connecting to %1 …</source>
         <translation>正在連線到 %1…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1487"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1512"/>
         <source>Unable to connect to %1.</source>
         <translation>無法連線至 %1。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1492"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1517"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>伺服器組態設定錯誤：%1 於 %2。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1501"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1526"/>
         <source>You need to accept the terms of service at %1.</source>
         <translation>您必須在 %1 接受服務條款。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1506"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1531"/>
         <source>No %1 connection configured.</source>
         <translation>未設定 %1 連線組態。</translation>
     </message>
@@ -1596,37 +1629,37 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="370"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="367"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="383"/>
         <source>Create Debug Archive</source>
         <translation>建立除錯封存檔</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="235"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="251"/>
         <source>Advanced</source>
         <translation>進階</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="369"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="385"/>
         <source>Zip Archives</source>
         <translation>ZIP 封存檔</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="382"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="398"/>
         <source>Failed to Access File</source>
         <translation>無法存取檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="383"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="399"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
         <translation>無法存取選定的位置。請再試一次或選擇其他位置。</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="392"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="408"/>
         <source>Debug Archive Created</source>
         <translation>已建立除錯封存檔</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="393"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="409"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation>請在分享前刪除敏感資訊！已於 %1 建立除錯封存檔</translation>
     </message>
@@ -2022,12 +2055,12 @@ This action will abort any currently running synchronization.</source>
         <translation>提供使用者 PIN 後，登入至權杖失敗。其可能無效或錯誤。請再試一次！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="2263"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="2272"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>請輸入您的端對端加密通行密語：&lt;br&gt;&lt;br&gt;使用者名稱：%2&lt;br&gt;帳號：%3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="2271"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="2280"/>
         <source>Enter E2E passphrase</source>
         <translation>輸入端對端加密通行密語</translation>
     </message>
@@ -3789,38 +3822,38 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>立刻檢查</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="103"/>
+        <location filename="../src/gui/infosettings.cpp" line="112"/>
         <source>Restore to &amp;%1</source>
         <translation>還原至 &amp;%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="144"/>
-        <location filename="../src/gui/infosettings.cpp" line="170"/>
+        <location filename="../src/gui/infosettings.cpp" line="153"/>
+        <location filename="../src/gui/infosettings.cpp" line="179"/>
         <source>Connected to an enterprise system. Update channel (%1) cannot be changed.</source>
         <translation>已連結至企業系統。無法變更更新頻道 (%1)。</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="201"/>
+        <location filename="../src/gui/infosettings.cpp" line="210"/>
         <source>stable</source>
         <translation>穩定版</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="205"/>
+        <location filename="../src/gui/infosettings.cpp" line="214"/>
         <source>beta</source>
         <translation>測試版</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="209"/>
+        <location filename="../src/gui/infosettings.cpp" line="218"/>
         <source>daily</source>
         <translation>每日</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="213"/>
+        <location filename="../src/gui/infosettings.cpp" line="222"/>
         <source>enterprise</source>
         <translation>企業版</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="248"/>
+        <location filename="../src/gui/infosettings.cpp" line="257"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -3832,7 +3865,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 無法立即降級版本：從測試版變更為穩定版必須等待新的穩定版本才能更新。</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="253"/>
+        <location filename="../src/gui/infosettings.cpp" line="262"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -3842,12 +3875,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 無法立即降級版本：從穩定版變更為企業版必須等待新的企業版本才能更新。</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="260"/>
+        <location filename="../src/gui/infosettings.cpp" line="269"/>
         <source>Changing update channel?</source>
         <translation>變更更新頻道？</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="261"/>
+        <location filename="../src/gui/infosettings.cpp" line="270"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -3857,12 +3890,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="267"/>
+        <location filename="../src/gui/infosettings.cpp" line="276"/>
         <source>Change update channel</source>
         <translation>變更更新頻道</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="268"/>
+        <location filename="../src/gui/infosettings.cpp" line="277"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -5830,18 +5863,18 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="458"/>
+        <location filename="../src/libsync/theme.cpp" line="466"/>
         <source>%1 Desktop Client Version %2 (%3 running on %4)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the platform name (wayland, x11, …)</comment>
         <translation>%1 桌面客戶端版本 %2（%3 執行於 %4）</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="643"/>
+        <location filename="../src/libsync/theme.cpp" line="651"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;正在使用虛擬檔案插入式元件：%1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="661"/>
+        <location filename="../src/libsync/theme.cpp" line="669"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
         <translation>&lt;p&gt;此發行版本由 %1 提供。&lt;/p&gt;</translation>
     </message>
@@ -6916,7 +6949,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>File Provider</source>
-        <translation type="unfinished"/>
+        <translation>檔案提供者</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="91"/>
@@ -7326,7 +7359,7 @@ Server replied with error: %2</source>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="624"/>
+        <location filename="../src/libsync/theme.cpp" line="632"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;根據 Git 修訂版本 &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; 於 %3 %4 建置，使用 Qt %5、%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -7454,52 +7487,52 @@ Server replied with error: %2</source>
 <context>
     <name>theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="97"/>
+        <location filename="../src/libsync/theme.cpp" line="105"/>
         <source>Sync status is unknown</source>
         <translation>同步狀態位置</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="100"/>
+        <location filename="../src/libsync/theme.cpp" line="108"/>
         <source>Waiting to start syncing</source>
         <translation>正在等待開始同步</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="103"/>
+        <location filename="../src/libsync/theme.cpp" line="111"/>
         <source>Sync is running</source>
         <translation>正在執行同步</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="106"/>
+        <location filename="../src/libsync/theme.cpp" line="114"/>
         <source>Sync was successful</source>
         <translation>同步成功</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="109"/>
+        <location filename="../src/libsync/theme.cpp" line="117"/>
         <source>Sync was successful but some files were ignored</source>
         <translation>同步成功，但忽略了部份檔案</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="112"/>
+        <location filename="../src/libsync/theme.cpp" line="120"/>
         <source>Error occurred during sync</source>
         <translation>同步時發生錯誤</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="115"/>
+        <location filename="../src/libsync/theme.cpp" line="123"/>
         <source>Error occurred during setup</source>
         <translation>設定時發生錯誤</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="121"/>
+        <location filename="../src/libsync/theme.cpp" line="129"/>
         <source>Stopping sync</source>
         <translation>正在停止同步</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="118"/>
+        <location filename="../src/libsync/theme.cpp" line="126"/>
         <source>Preparing to sync</source>
         <translation>正在準備同步</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="124"/>
+        <location filename="../src/libsync/theme.cpp" line="132"/>
         <source>Sync is paused</source>
         <translation>同步已暫停</translation>
     </message>

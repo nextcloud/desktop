@@ -90,8 +90,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             keepExistingDownloadState: true
         )
 
-        XCTAssertEqual(result.newMetadatas?.isEmpty, false, "Should create new metadatas")
-        XCTAssertEqual(result.updatedMetadatas?.isEmpty, true, "No metadata should be updated")
+        XCTAssertEqual(result?.created.isEmpty, false, "Should create new metadatas")
+        XCTAssertEqual(result?.updated.isEmpty, true, "No metadata should be updated")
 
         // Now test we are receiving the updated basic metadatas correctly.
         metadata.etag = "new and shiny"
@@ -103,8 +103,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             keepExistingDownloadState: true
         )
 
-        XCTAssertEqual(result2.newMetadatas?.isEmpty, true, "Should create no new metadatas")
-        XCTAssertEqual(result2.updatedMetadatas?.isEmpty, false, "Metadata should be updated")
+        XCTAssertEqual(result2?.created.isEmpty, true, "Should create no new metadatas")
+        XCTAssertEqual(result2?.updated.isEmpty, false, "Metadata should be updated")
 
         // Also check the download state is correctly kept the same.
         // We set it to false here to replicate the lack of a download state when converting from
@@ -119,9 +119,9 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             keepExistingDownloadState: true
         )
 
-        XCTAssertEqual(result3.newMetadatas?.isEmpty, true, "Should create no new metadatas")
-        XCTAssertEqual(result3.updatedMetadatas?.isEmpty, false, "Metadata should be updated")
-        XCTAssertEqual(result3.updatedMetadatas?.first?.downloaded, true)
+        XCTAssertEqual(result3?.created.isEmpty, true, "Should create no new metadatas")
+        XCTAssertEqual(result3?.updated.isEmpty, false, "Metadata should be updated")
+        XCTAssertEqual(result3?.updated.first?.downloaded, true)
     }
 
     func testUpdateRenamesDirectoryAndPropagatesToChildren() {
@@ -166,9 +166,9 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         )
 
         // Ensure rename took place
-        XCTAssertEqual(result.newMetadatas?.isEmpty, true)
-        XCTAssertEqual(result.updatedMetadatas?.isEmpty, false)
-        XCTAssertNotNil(result.updatedMetadatas?.first(where: { $0.fileName == "newDir" }))
+        XCTAssertEqual(result?.created.isEmpty, true)
+        XCTAssertEqual(result?.updated.isEmpty, false)
+        XCTAssertNotNil(result?.updated.first(where: { $0.fileName == "newDir" }))
 
         // Ensure the child's serverUrl was updated accordingly
         let updatedChild = Self.dbManager.itemMetadata(ocId: "child1")
@@ -201,9 +201,9 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             keepExistingDownloadState: true
         )
 
-        XCTAssertEqual(result.updatedMetadatas?.isEmpty, true, "Transit items should not be updated")
-        XCTAssertEqual(result.newMetadatas?.isEmpty, true)
-        XCTAssertEqual(result.deletedMetadatas?.isEmpty, true)
+        XCTAssertEqual(result?.updated.isEmpty, true, "Transit items should not be updated")
+        XCTAssertEqual(result?.created.isEmpty, true)
+        XCTAssertEqual(result?.deleted.isEmpty, true)
 
         let inDb = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: transit.ocId))
         XCTAssertEqual(inDb.etag, transit.etag)
@@ -226,10 +226,10 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             keepExistingDownloadState: true
         )
 
-        XCTAssertEqual(result.updatedMetadatas?.isEmpty, true)
-        XCTAssertEqual(result.newMetadatas?.isEmpty, true)
-        XCTAssertEqual(result.deletedMetadatas?.isEmpty, false)
-        XCTAssertEqual(result.deletedMetadatas?.first?.ocId, transit.ocId)
+        XCTAssertEqual(result?.updated.isEmpty, true)
+        XCTAssertEqual(result?.created.isEmpty, true)
+        XCTAssertEqual(result?.deleted.isEmpty, false)
+        XCTAssertEqual(result?.deleted.first?.ocId, transit.ocId)
     }
 
     func testSetStatusForItemMetadata() throws {
@@ -409,13 +409,13 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             keepExistingDownloadState: true
         )
 
-        XCTAssertEqual(results.newMetadatas?.count, 1, "Should create one new metadata")
-        XCTAssertEqual(results.updatedMetadatas?.count, 2, "Should update two existing metadata")
+        XCTAssertEqual(results?.created.count, 1, "Should create one new metadata")
+        XCTAssertEqual(results?.updated.count, 2, "Should update two existing metadata")
         XCTAssertEqual(
-            results.newMetadatas?.first?.ocId, "id-2", "New metadata ocId should be 'id-2'"
+            results?.created.first?.ocId, "id-2", "New metadata ocId should be 'id-2'"
         )
         XCTAssertEqual(
-            results.updatedMetadatas?.last?.fileName,
+            results?.updated.last?.fileName,
             "UpdatedFile.pdf",
             "Updated metadata should have the new file name"
         )
@@ -475,9 +475,9 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             .where { $0.account == testAccount && $0.serverUrl == testServerUrl }
 
         // Check the returned delete list (based on the copy made before deletion)
-        XCTAssertEqual(results.deletedMetadatas?.count, 1, "Should identify the uploaded item as deleted.")
-        XCTAssertEqual(results.deletedMetadatas?.first?.ocId, "ocid-uploaded-123", "The correct uploaded item should be marked for deletion.")
-        XCTAssertTrue(results.deletedMetadatas?.first?.uploaded ?? false, "The item marked for deletion should have uploaded=true")
+        XCTAssertEqual(results?.deleted.count, 1, "Should identify the uploaded item as deleted.")
+        XCTAssertEqual(results?.deleted.first?.ocId, "ocid-uploaded-123", "The correct uploaded item should be marked for deletion.")
+        XCTAssertTrue(results?.deleted.first?.uploaded ?? false, "The item marked for deletion should have uploaded=true")
 
         // Check the actual database state after the write transaction
         XCTAssertEqual(remainingMetadatas.filter(\.deleted).count, 1)
@@ -490,8 +490,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertFalse(try XCTUnwrap(survivingItem?.uploaded), "The surviving item must be the one marked uploaded = false.")
 
         // Check other return values are empty as expected
-        XCTAssertTrue(results.newMetadatas?.isEmpty ?? true, "No new items should have been created.")
-        XCTAssertTrue(results.updatedMetadatas?.isEmpty ?? true, "No items should have been updated.")
+        XCTAssertTrue(results?.created.isEmpty ?? true, "No new items should have been created.")
+        XCTAssertTrue(results?.updated.isEmpty ?? true, "No items should have been updated.")
     }
 
     func testDirectoryMetadataRetrieval() throws {
@@ -914,11 +914,11 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             keepExistingDownloadState: true
         )
 
-        XCTAssertEqual(result.newMetadatas?.isEmpty, true, "Should create no new metadatas")
-        XCTAssertEqual(result.updatedMetadatas?.isEmpty, false, "Should update existing metadata")
+        XCTAssertEqual(result?.created.isEmpty, true, "Should create no new metadatas")
+        XCTAssertEqual(result?.updated.isEmpty, false, "Should update existing metadata")
 
         // Verify keepDownloaded is retained
-        let finalMetadata = try XCTUnwrap(result.updatedMetadatas?.first)
+        let finalMetadata = try XCTUnwrap(result?.updated.first)
         XCTAssertTrue(finalMetadata.keepDownloaded, "keepDownloaded should be retained during update")
         XCTAssertTrue(finalMetadata.downloaded, "downloaded should be retained during update")
         XCTAssertEqual(finalMetadata.etag, "new-etag", "etag should be updated")
@@ -953,10 +953,10 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             keepExistingDownloadState: false // Even when not keeping download state
         )
 
-        XCTAssertEqual(result.updatedMetadatas?.isEmpty, false, "Should update existing metadata")
+        XCTAssertEqual(result?.updated.isEmpty, false, "Should update existing metadata")
 
         // Verify keepDownloaded is still retained even when keepExistingDownloadState is false
-        let finalMetadata = try XCTUnwrap(result.updatedMetadatas?.first)
+        let finalMetadata = try XCTUnwrap(result?.updated.first)
         XCTAssertTrue(finalMetadata.keepDownloaded, "keepDownloaded should be retained regardless of keepExistingDownloadState")
         XCTAssertEqual(finalMetadata.downloaded, false, "downloaded should not be retained when keepExistingDownloadState is false")
     }
@@ -987,7 +987,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             keepExistingDownloadState: true
         )
 
-        let updatedMetadata = try XCTUnwrap(result.updatedMetadatas?.first)
+        let updatedMetadata = try XCTUnwrap(result?.updated.first)
         XCTAssertTrue(updatedMetadata.keepDownloaded, "keepDownloaded should be retained in read target metadata")
         XCTAssertTrue(updatedMetadata.downloaded, "downloaded should be retained when keepExistingDownloadState is true")
     }
@@ -1008,10 +1008,10 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             keepExistingDownloadState: true
         )
 
-        XCTAssertEqual(result.newMetadatas?.isEmpty, false, "Should create new metadata")
-        XCTAssertEqual(result.updatedMetadatas?.isEmpty, true, "Should not update any metadata")
+        XCTAssertEqual(result?.created.isEmpty, false, "Should create new metadata")
+        XCTAssertEqual(result?.updated.isEmpty, true, "Should not update any metadata")
 
-        let createdMetadata = try XCTUnwrap(result.newMetadatas?.first)
+        let createdMetadata = try XCTUnwrap(result?.created.first)
         XCTAssertFalse(createdMetadata.keepDownloaded, "keepDownloaded should remain false when no pinned ancestor exists")
 
         // Verify in database
@@ -1047,7 +1047,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             keepExistingDownloadState: true
         )
 
-        let createdChild = try XCTUnwrap(result.newMetadatas?.first(where: { $0.ocId == "fresh-child" }))
+        let createdChild = try XCTUnwrap(result?.created.first(where: { $0.ocId == "fresh-child" }))
         XCTAssertTrue(createdChild.keepDownloaded, "keepDownloaded should be inherited from pinned parent for new items")
 
         let dbChild = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "fresh-child"))
@@ -1159,10 +1159,10 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             keepExistingDownloadState: true
         )
 
-        XCTAssertEqual(result.updatedMetadatas?.count, 4, "Should update all four items")
+        XCTAssertEqual(result?.updated.count, 4, "Should update all four items")
 
         // Verify each item's keepDownloaded state is correctly retained
-        let updatedMetadatas = try XCTUnwrap(result.updatedMetadatas)
+        let updatedMetadatas = try XCTUnwrap(result?.updated)
 
         let finalItem1 = try XCTUnwrap(updatedMetadatas.first { $0.ocId == "multi-1" })
         XCTAssertTrue(finalItem1.keepDownloaded, "Item 1 should retain keepDownloaded = true")
@@ -1318,11 +1318,11 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             keepExistingDownloadState: true
         )
 
-        XCTAssertEqual(result.newMetadatas?.isEmpty, true, "Should create no new metadatas")
-        XCTAssertEqual(result.updatedMetadatas?.isEmpty, false, "Should update existing metadata")
+        XCTAssertEqual(result?.created.isEmpty, true, "Should create no new metadatas")
+        XCTAssertEqual(result?.updated.isEmpty, false, "Should update existing metadata")
 
         // Verify keepDownloaded is retained
-        let finalMetadata = try XCTUnwrap(result.updatedMetadatas?.first)
+        let finalMetadata = try XCTUnwrap(result?.updated.first)
         XCTAssertTrue(finalMetadata.keepDownloaded, "keepDownloaded should be retained during update")
         XCTAssertTrue(finalMetadata.downloaded, "downloaded should be retained during update")
         XCTAssertEqual(finalMetadata.etag, "new-etag", "etag should be updated")
