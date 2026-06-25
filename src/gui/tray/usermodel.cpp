@@ -528,6 +528,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::headerColorChanged);
     connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::headerTextColorChanged);
     connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::accentColorChanged);
+    connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::serverHasUserStatusChanged);
     connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::assistantStateChanged);
 
     connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::slotAccountCapabilitiesChangedRefreshGroupFolders);
@@ -2619,6 +2620,10 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
             emit dataChanged(index(row, 0), index(row, 0), { UserModel::IsConnectedRole });
         });
         connect(u, &User::accountStateChanged, this, &UserModel::updateSyncErrorUsers);
+
+        connect(u, &User::serverHasUserStatusChanged, this, [this, row] {
+            emit dataChanged(index(row, 0), index(row, 0), { UserModel::ServerHasUserStatusRole });
+        });
 
         connect(u, &User::syncStatusChanged, this, [this, row] {
             emit dataChanged(index(row, 0), index(row, 0), { UserModel::SyncStatusIconRole,

@@ -62,7 +62,7 @@ class User : public QObject
     Q_PROPERTY(QColor headerColor READ headerColor NOTIFY headerColorChanged)
     Q_PROPERTY(QColor headerTextColor READ headerTextColor NOTIFY headerTextColorChanged)
     Q_PROPERTY(QColor accentColor READ accentColor NOTIFY accentColorChanged)
-    Q_PROPERTY(bool serverHasUserStatus READ serverHasUserStatus CONSTANT)
+    Q_PROPERTY(bool serverHasUserStatus READ serverHasUserStatus NOTIFY serverHasUserStatusChanged)
     Q_PROPERTY(UserStatus::OnlineStatus status READ status NOTIFY statusChanged)
     Q_PROPERTY(QUrl statusIcon READ statusIcon NOTIFY statusChanged)
     Q_PROPERTY(QString statusEmoji READ statusEmoji NOTIFY statusChanged)
@@ -165,6 +165,7 @@ signals:
     void trayNotificationsChanged();
     void accountAlertChanged();
     void accountStateChanged();
+    void serverHasUserStatusChanged();
     void statusChanged();
     void desktopNotificationsAllowedChanged();
     void headerColorChanged();

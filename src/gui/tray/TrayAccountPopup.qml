@@ -219,13 +219,19 @@ Window {
                         id: accountActionsMenu
 
                         property var activeNotificationActionsMenu: null
+                        property var anchorRow: null
 
                         width: Style.trayAccountActionsMenuWidth
+                        topPadding: Style.trayAccountPopupActionVerticalPadding
+                        bottomPadding: Style.trayAccountPopupActionVerticalPadding
+                        focus: false
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
                         height: implicitHeight
+                        onHeightChanged: repositionOpenSubmenu(accountActionsMenu)
                         onClosed: {
                             appsMenu.close()
                             closeNotificationActionsMenu()
+                            anchorRow = null
                             if (root.activeAccountActionsMenu === accountActionsMenu) {
                                 root.activeAccountActionsMenu = null
                             }
@@ -263,7 +269,7 @@ Window {
                             return anchorIndex < 0 ? count : anchorIndex + 1 + offset
                         }
 
-                        function popupSubmenuForRow(menu, row) {
+                        function positionSubmenuForRow(menu, row) {
                             const menuWidth = Math.max(menu.width, menu.implicitWidth)
                             const menuHeight = Math.max(menu.height, menu.implicitHeight)
                             const margin = Style.trayAccountPopupHoverMargin
@@ -298,7 +304,20 @@ Window {
                                 menuY = screenTop + margin - screenY
                             }
 
-                            menu.popup(row, menuX, menuY)
+                            menu.x = menuX
+                            menu.y = menuY
+                        }
+
+                        function popupSubmenuForRow(menu, row) {
+                            menu.anchorRow = row
+                            positionSubmenuForRow(menu, row)
+                            menu.popup(row, menu.x, menu.y)
+                        }
+
+                        function repositionOpenSubmenu(menu) {
+                            if (menu.opened && menu.anchorRow) {
+                                positionSubmenuForRow(menu, menu.anchorRow)
+                            }
                         }
 
                         MenuItem {
@@ -327,17 +346,17 @@ Window {
 
                             readonly property bool isActionable: accountDelegate.onlineStatusEnabled
 
-                            enabled: true
+                            enabled: statusButton.isActionable
                             text: accountDelegate.currentStatusLabelText()
                             font.pixelSize: Style.trayAccountPopupPrimaryFontSize
-                            hoverEnabled: isActionable
+                            hoverEnabled: statusButton.enabled
                             onHoveredChanged: {
                                 if (hovered) {
                                     accountActionsMenu.closeSubmenus()
                                 }
                             }
                             background: TrayActionHoverBackground {
-                                active: statusButton.isActionable && statusButton.hovered
+                                active: statusButton.enabled && statusButton.hovered
                             }
                             contentItem: RowLayout {
                                 spacing: 8
@@ -356,12 +375,12 @@ Window {
                                     Layout.fillWidth: true
                                     text: statusButton.text
                                     font: statusButton.font
-                                    color: palette.windowText
+                                    color: statusButton.enabled ? palette.windowText : palette.mid
                                     elide: Text.ElideRight
                                 }
                             }
                             onClicked: {
-                                if (!isActionable) {
+                                if (!statusButton.enabled) {
                                     return
                                 }
                                 root._closing = true
@@ -632,9 +651,16 @@ Window {
                                 AutoSizingMenu {
                                     id: notificationActionsMenu
 
+                                    property var anchorRow: null
+
                                     width: Style.trayNotificationActionsMenuWidth
+                                    topPadding: Style.trayAccountPopupActionVerticalPadding
+                                    bottomPadding: Style.trayAccountPopupActionVerticalPadding
+                                    focus: false
                                     closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
+                                    onHeightChanged: accountActionsMenu.repositionOpenSubmenu(notificationActionsMenu)
                                     onClosed: {
+                                        anchorRow = null
                                         if (accountActionsMenu.activeNotificationActionsMenu === notificationActionsMenu) {
                                             accountActionsMenu.activeNotificationActionsMenu = null
                                         }
@@ -872,8 +898,14 @@ Window {
                     AutoSizingMenu {
                         id: appsMenu
 
+                        property var anchorRow: null
+
                         width: Style.trayAccountAppsMenuWidth
+                        topPadding: Style.trayAccountPopupActionVerticalPadding
+                        bottomPadding: Style.trayAccountPopupActionVerticalPadding
+                        focus: false
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
+                        onHeightChanged: accountActionsMenu.repositionOpenSubmenu(appsMenu)
 
                         Repeater {
                             model: TrayAccountAppsModel
