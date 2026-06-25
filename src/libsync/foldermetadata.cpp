@@ -56,6 +56,11 @@ bool FolderMetadata::isOriginalFilenameValid(const QString &originalFilename)
         return false;
     }
 
+    if (originalFilename == QStringLiteral(".")
+        || originalFilename == QStringLiteral("..")) {
+        return false;
+    }
+
     if (originalFilename.contains(QLatin1Char('/'))
         || originalFilename.contains(QLatin1Char('\\'))
         || originalFilename.contains(QChar(0))) {
