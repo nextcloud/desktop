@@ -302,7 +302,7 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
     /// item also carries its PARENT folder's fileId (and ancestors) — all of which the client has
     /// enumerated. The gate therefore matches and the new item triggers a refresh; it only ignores a
     /// push whose ids are entirely outside the enumerated tree. See nextcloud/desktop#6430.
-    func testPushGateMatchesParentFolderOfNewItem() throws {
+    func testPushGateMatchesParentFolderOfNewItem() {
         let db = Self.dbManager.ncDatabase(); debugPrint(db)
 
         let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
