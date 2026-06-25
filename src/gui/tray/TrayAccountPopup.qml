@@ -121,6 +121,7 @@ Window {
                     id: accountDelegate
                     readonly property int userId: model.id
                     readonly property int onlineStatus: model.status
+                    readonly property bool hasUserStatusSection: model.serverHasUserStatus
                     readonly property bool onlineStatusEnabled: model.isConnected && model.serverHasUserStatus
                     readonly property url statusIcon: model.statusIcon
                     readonly property bool hasStatusIcon: statusIcon.toString() !== ""
@@ -219,6 +220,8 @@ Window {
                         id: accountActionsMenu
 
                         property var activeNotificationActionsMenu: null
+                        property var activeSubmenu: null
+                        property var activeSubmenuAnchorRow: null
                         property var anchorRow: null
 
                         width: Style.trayAccountActionsMenuWidth
@@ -230,22 +233,76 @@ Window {
                         height: implicitHeight
                         onHeightChanged: repositionOpenSubmenu(accountActionsMenu)
                         onClosed: {
-                            appsMenu.close()
-                            closeNotificationActionsMenu()
+                            closeSubmenus()
                             anchorRow = null
                             if (root.activeAccountActionsMenu === accountActionsMenu) {
                                 root.activeAccountActionsMenu = null
                             }
                         }
 
+                        Timer {
+                            id: activeSubmenuCloseTimer
+
+                            interval: 180
+                            repeat: false
+                            onTriggered: accountActionsMenu.closeActiveSubmenuIfPointerLeft()
+                        }
+
+                        function activeSubmenuContainsPointer() {
+                            return !!activeSubmenu && activeSubmenu.containsMouse === true
+                        }
+
+                        function cancelActiveSubmenuClose() {
+                            activeSubmenuCloseTimer.stop()
+                        }
+
+                        function clearActiveSubmenu(menu) {
+                            if (activeSubmenu !== menu) {
+                                return
+                            }
+                            activeSubmenuCloseTimer.stop()
+                            activeSubmenu = null
+                            activeSubmenuAnchorRow = null
+                            if (activeNotificationActionsMenu === menu) {
+                                activeNotificationActionsMenu = null
+                            }
+                        }
+
+                        function closeActiveSubmenu() {
+                            const submenu = activeSubmenu
+                            activeSubmenuCloseTimer.stop()
+                            activeSubmenu = null
+                            activeSubmenuAnchorRow = null
+                            activeNotificationActionsMenu = null
+                            if (submenu && submenu.opened) {
+                                submenu.close()
+                            }
+                        }
+
+                        function closeActiveSubmenuIfPointerLeft() {
+                            if (!activeSubmenu || !activeSubmenu.opened) {
+                                closeActiveSubmenu()
+                                return
+                            }
+                            if ((activeSubmenuAnchorRow && activeSubmenuAnchorRow.hovered)
+                                    || activeSubmenuContainsPointer()) {
+                                return
+                            }
+                            closeActiveSubmenu()
+                        }
+
                         function closeAppsMenu() {
-                            if (appsMenu.opened) {
+                            if (activeSubmenu === appsMenu) {
+                                closeActiveSubmenu()
+                            } else if (appsMenu.opened) {
                                 appsMenu.close()
                             }
                         }
 
                         function closeNotificationActionsMenu() {
-                            if (activeNotificationActionsMenu && activeNotificationActionsMenu.opened) {
+                            if (activeNotificationActionsMenu && activeSubmenu === activeNotificationActionsMenu) {
+                                closeActiveSubmenu()
+                            } else if (activeNotificationActionsMenu && activeNotificationActionsMenu.opened) {
                                 activeNotificationActionsMenu.close()
                             }
                             activeNotificationActionsMenu = null
@@ -254,6 +311,10 @@ Window {
                         function closeSubmenus() {
                             closeAppsMenu()
                             closeNotificationActionsMenu()
+                        }
+
+                        function isActiveSubmenuAnchor(row) {
+                            return !!activeSubmenu && activeSubmenu.opened && activeSubmenuAnchorRow === row
                         }
 
                         function itemIndex(item) {
@@ -314,6 +375,21 @@ Window {
                             menu.popup(row, position.x, position.y)
                         }
 
+                        function popupActiveSubmenuForRow(menu, row) {
+                            activeSubmenuCloseTimer.stop()
+                            if (activeSubmenu && activeSubmenu !== menu) {
+                                const previousSubmenu = activeSubmenu
+                                activeSubmenu = null
+                                activeSubmenuAnchorRow = null
+                                if (previousSubmenu.opened) {
+                                    previousSubmenu.close()
+                                }
+                            }
+                            activeSubmenu = menu
+                            activeSubmenuAnchorRow = row
+                            popupSubmenuForRow(menu, row)
+                        }
+
                         function repositionOpenSubmenu(menu) {
                             if (menu.opened && menu.anchorRow) {
                                 const position = submenuPositionForRow(menu, menu.anchorRow)
@@ -321,9 +397,18 @@ Window {
                             }
                         }
 
+                        function scheduleActiveSubmenuClose(menu) {
+                            if (!menu || activeSubmenu !== menu || !menu.opened) {
+                                return
+                            }
+                            activeSubmenuCloseTimer.restart()
+                        }
+
                         MenuItem {
                             id: userStatusHeader
 
+                            visible: accountDelegate.hasUserStatusSection
+                            height: visible ? implicitHeight : 0
                             enabled: false
                             text: qsTr("User status")
                             font.pixelSize: Style.trayAccountPopupSecondaryFontSize
@@ -347,6 +432,8 @@ Window {
 
                             readonly property bool isActionable: accountDelegate.onlineStatusEnabled
 
+                            visible: accountDelegate.hasUserStatusSection
+                            height: visible ? implicitHeight : 0
                             enabled: statusButton.isActionable
                             text: accountDelegate.currentStatusLabelText()
                             font.pixelSize: Style.trayAccountPopupPrimaryFontSize
@@ -398,6 +485,8 @@ Window {
                         }
 
                         MenuSeparator {
+                            visible: accountDelegate.hasUserStatusSection
+                            height: visible ? implicitHeight : 0
                         }
 
                         MenuItem {
@@ -457,11 +546,11 @@ Window {
                                 if (!enabled) {
                                     return
                                 }
-                                appsMenu.cancelHoverLeaveClose()
+                                accountActionsMenu.cancelActiveSubmenuClose()
                                 accountActionsMenu.closeNotificationActionsMenu()
                                 TrayAccountAppsModel.setUserId(accountDelegate.userId)
                                 if (!appsMenu.opened) {
-                                    accountActionsMenu.popupSubmenuForRow(appsMenu, appsButton)
+                                    accountActionsMenu.popupActiveSubmenuForRow(appsMenu, appsButton)
                                 }
                             }
 
@@ -469,14 +558,14 @@ Window {
                                 if (hovered) {
                                     openAppsMenu()
                                 } else {
-                                    appsMenu.scheduleHoverLeaveClose()
+                                    accountActionsMenu.scheduleActiveSubmenuClose(appsMenu)
                                 }
                             }
 
                             onTriggered: openAppsMenu()
 
                             background: TrayActionHoverBackground {
-                                active: appsButton.hovered || appsMenu.opened
+                                active: appsButton.hovered || accountActionsMenu.isActiveSubmenuAnchor(appsButton)
                             }
 
                             contentItem: RowLayout {
@@ -576,12 +665,8 @@ Window {
                                     if (!hasNotificationActions) {
                                         return
                                     }
-                                    if (accountActionsMenu.activeNotificationActionsMenu
-                                            && accountActionsMenu.activeNotificationActionsMenu !== notificationActionsMenu) {
-                                        accountActionsMenu.activeNotificationActionsMenu.close()
-                                    }
                                     if (!notificationActionsMenu.opened) {
-                                        accountActionsMenu.popupSubmenuForRow(notificationActionsMenu, notificationRow)
+                                        accountActionsMenu.popupActiveSubmenuForRow(notificationActionsMenu, notificationRow)
                                     }
                                     accountActionsMenu.activeNotificationActionsMenu = notificationActionsMenu
                                 }
@@ -600,7 +685,7 @@ Window {
                                 onTriggered: openNotification()
 
                                 background: TrayActionHoverBackground {
-                                    active: notificationRow.hovered || notificationActionsMenu.opened
+                                    active: notificationRow.hovered || accountActionsMenu.isActiveSubmenuAnchor(notificationRow)
                                 }
 
                                 contentItem: RowLayout {
@@ -655,6 +740,7 @@ Window {
                                 AutoSizingMenu {
                                     id: notificationActionsMenu
 
+                                    readonly property bool containsMouse: notificationActionsMenuHoverHandler.hovered
                                     property var anchorRow: null
 
                                     width: Style.trayNotificationActionsMenuWidth
@@ -664,11 +750,25 @@ Window {
                                     modal: false
                                     closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
                                     onHeightChanged: accountActionsMenu.repositionOpenSubmenu(notificationActionsMenu)
+                                    onContainsMouseChanged: {
+                                        if (containsMouse) {
+                                            accountActionsMenu.cancelActiveSubmenuClose()
+                                        } else {
+                                            accountActionsMenu.scheduleActiveSubmenuClose(notificationActionsMenu)
+                                        }
+                                    }
                                     onClosed: {
                                         anchorRow = null
+                                        accountActionsMenu.clearActiveSubmenu(notificationActionsMenu)
                                         if (accountActionsMenu.activeNotificationActionsMenu === notificationActionsMenu) {
                                             accountActionsMenu.activeNotificationActionsMenu = null
                                         }
+                                    }
+
+                                    HoverHandler {
+                                        id: notificationActionsMenuHoverHandler
+
+                                        target: notificationActionsMenu.contentItem
                                     }
 
                                     Repeater {
@@ -903,8 +1003,8 @@ Window {
                     AutoSizingMenu {
                         id: appsMenu
 
+                        readonly property bool containsMouse: appsMenuHoverHandler.hovered
                         property var anchorRow: null
-                        property var hoveredAppEntry: null
 
                         width: Style.trayAccountAppsMenuWidth
                         topPadding: Style.trayAccountPopupActionVerticalPadding
@@ -913,32 +1013,22 @@ Window {
                         modal: false
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
                         onHeightChanged: accountActionsMenu.repositionOpenSubmenu(appsMenu)
+                        onContainsMouseChanged: {
+                            if (containsMouse) {
+                                accountActionsMenu.cancelActiveSubmenuClose()
+                            } else {
+                                accountActionsMenu.scheduleActiveSubmenuClose(appsMenu)
+                            }
+                        }
                         onClosed: {
                             anchorRow = null
-                            hoveredAppEntry = null
-                            hoverLeaveCloseTimer.stop()
+                            accountActionsMenu.clearActiveSubmenu(appsMenu)
                         }
 
-                        function cancelHoverLeaveClose() {
-                            hoverLeaveCloseTimer.stop()
-                        }
+                        HoverHandler {
+                            id: appsMenuHoverHandler
 
-                        function scheduleHoverLeaveClose() {
-                            if (opened && !appsButton.hovered && !hoveredAppEntry) {
-                                hoverLeaveCloseTimer.restart()
-                            }
-                        }
-
-                        Timer {
-                            id: hoverLeaveCloseTimer
-
-                            interval: 120
-                            repeat: false
-                            onTriggered: {
-                                if (appsMenu.opened && !appsButton.hovered && !appsMenu.hoveredAppEntry) {
-                                    appsMenu.close()
-                                }
-                            }
+                            target: appsMenu.contentItem
                         }
 
                         Repeater {
@@ -950,15 +1040,6 @@ Window {
                                 text: model.appName
                                 font.pixelSize: Style.trayAccountPopupPrimaryFontSize
                                 hoverEnabled: true
-                                onHoveredChanged: {
-                                    if (hovered) {
-                                        appsMenu.hoveredAppEntry = appEntry
-                                        appsMenu.cancelHoverLeaveClose()
-                                    } else if (appsMenu.hoveredAppEntry === appEntry) {
-                                        appsMenu.hoveredAppEntry = null
-                                        appsMenu.scheduleHoverLeaveClose()
-                                    }
-                                }
 
                                 function appIconSource() {
                                     if (!model.appIconUrl || model.appIconUrl === "") {

@@ -1415,29 +1415,32 @@ static NSView *compactAccountActionsSeparator()
         });
 
     const auto userModelIndex = model->index(userIndex);
+    const auto serverHasUserStatus = model->data(userModelIndex, OCC::UserModel::ServerHasUserStatusRole).toBool();
     const auto onlineStatusEnabled = model->data(userModelIndex, OCC::UserModel::IsConnectedRole).toBool()
-        && model->data(userModelIndex, OCC::UserModel::ServerHasUserStatusRole).toBool();
-    const auto status = model->data(userModelIndex, OCC::UserModel::StatusRole).value<OCC::UserStatus::OnlineStatus>();
-    const auto statusMessage = model->data(userModelIndex, OCC::UserModel::StatusMessageRole).toString();
-    NSImage *statusIcon = nsImageFromQUrl(model->data(userModelIndex, OCC::UserModel::StatusIconRole).toUrl());
+        && serverHasUserStatus;
 
     auto appsModel = OCC::TrayAccountAppsModel::instance();
     appsModel->setUserId(userIndex);
     const auto appsEnabled = appsModel->rowCount() > 0;
     const auto assistantEnabled = model->data(userModelIndex, OCC::UserModel::AssistantEnabledRole).toBool();
     [_stack addArrangedSubview:[[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kAccountActionsPopupWidth]];
-    [_stack addArrangedSubview:[[NCSectionHeaderRow alloc] initWithTitle:QCoreApplication::translate("TrayAccountPopup", "User status").toNSString()
-                                                                  width:kAccountActionsPopupWidth]];
-    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:statusMenuText(status, statusMessage).toNSString()
-                                                             icon:statusIcon
-                                                            width:kAccountActionsPopupWidth
-                                                          enabled:onlineStatusEnabled
-                                                           action:^{
-        [weakOwner openOnlineStatusForIndex:userIndex];
-    } hoverAction:^(NSView *) {
-        [weakSelf hideAppsPopup];
-    }]];
-    [_stack addArrangedSubview:accountActionsSeparator()];
+    if (serverHasUserStatus) {
+        const auto status = model->data(userModelIndex, OCC::UserModel::StatusRole).value<OCC::UserStatus::OnlineStatus>();
+        const auto statusMessage = model->data(userModelIndex, OCC::UserModel::StatusMessageRole).toString();
+        NSImage *statusIcon = nsImageFromQUrl(model->data(userModelIndex, OCC::UserModel::StatusIconRole).toUrl());
+        [_stack addArrangedSubview:[[NCSectionHeaderRow alloc] initWithTitle:QCoreApplication::translate("TrayAccountPopup", "User status").toNSString()
+                                                                      width:kAccountActionsPopupWidth]];
+        [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:statusMenuText(status, statusMessage).toNSString()
+                                                                 icon:statusIcon
+                                                                width:kAccountActionsPopupWidth
+                                                              enabled:onlineStatusEnabled
+                                                               action:^{
+            [weakOwner openOnlineStatusForIndex:userIndex];
+        } hoverAction:^(NSView *) {
+            [weakSelf hideAppsPopup];
+        }]];
+        [_stack addArrangedSubview:accountActionsSeparator()];
+    }
     [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:QCoreApplication::translate("TrayFoldersMenuButton", "Open local folder").toNSString()
                                                             width:kAccountActionsPopupWidth
                                                           enabled:YES
