@@ -296,29 +296,31 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         )
     }
 
-    /// S3 (push gate, DB boundary): on notify_push servers the extension's `processFileIdsChanged`
-    /// signals the working set ONLY when at least one changed fileId is already in the local DB
-    /// (`containsAnyItemMetadata`). A NEWLY-created remote file has a fileId the DB has never seen,
-    /// so the notification is dropped and no enumeration is triggered. This characterizes the gate
-    /// directly: a known fileId passes; an unknown one (the new-file case) does not.
-    func testPushGateDropsUnknownFileId() throws {
+    /// S3 (push gate): on notify_push servers `processFileIdsChanged` signals the working set when at
+    /// least one received fileId is locally known (`containsAnyItemMetadata`). The server propagates
+    /// a change's ETag up every ancestor to the user's root, so a `notify_file_id` for a newly-created
+    /// item also carries its PARENT folder's fileId (and ancestors) — all of which the client has
+    /// enumerated. The gate therefore matches and the new item triggers a refresh; it only ignores a
+    /// push whose ids are entirely outside the enumerated tree. See nextcloud/desktop#6430.
+    func testPushGateMatchesParentFolderOfNewItem() throws {
         let db = Self.dbManager.ncDatabase(); debugPrint(db)
 
         let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
-        let known = makeFile(name: "known", parent: folder, etag: "known-v1")
         // `MockRemoteItem.identifier` becomes both ocId and fileId; use a numeric id like the server.
-        known.identifier = "100"
+        folder.identifier = "1234"
         seed(folder, visitedDirectory: true)
-        seed(known, downloaded: true)
 
+        // A new child of folder 1234 has an id the client has never seen, but the server's parent-etag
+        // propagation means the push also carries the known parent folder id 1234 — so the gate matches
+        // and the new child is not dropped.
         XCTAssertTrue(
-            Self.dbManager.containsAnyItemMetadata(fileIds: ["100"]),
-            "A push for a known fileId must pass the gate so the working set is signalled."
+            Self.dbManager.containsAnyItemMetadata(fileIds: ["1234", "9001"]),
+            "A push carrying the (known) parent folder id must pass the gate so the new child surfaces."
         )
+        // A push whose ids are all outside the enumerated tree affects nothing the working set tracks.
         XCTAssertFalse(
-            Self.dbManager.containsAnyItemMetadata(fileIds: ["200"]),
-            "A push for an unknown fileId (e.g. a newly-created remote file) is dropped by the gate — "
-                + "the new file never triggers a working-set signal on push-only accounts."
+            Self.dbManager.containsAnyItemMetadata(fileIds: ["9001", "9002"]),
+            "A push with no locally known ids is correctly ignored."
         )
     }
 }
