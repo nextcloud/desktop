@@ -330,11 +330,7 @@ public final class FilesDatabaseManager: Sendable {
         serverUrl: String,
         updatedMetadatas: [SendableItemMetadata],
         keepExistingDownloadState: Bool
-    ) -> (
-        newMetadatas: [SendableItemMetadata]?,
-        updatedMetadatas: [SendableItemMetadata]?,
-        deletedMetadatas: [SendableItemMetadata]?
-    ) {
+    ) -> ChangeSet? {
         let database = ncDatabase()
 
         do {
@@ -440,10 +436,12 @@ public final class FilesDatabaseManager: Sendable {
                 database.add(metadatasToCreate.map { RealmItemMetadata(value: $0) }, update: .all)
             }
 
-            return (metadatasToCreate, metadatasToUpdate, metadatasToDelete)
+            return ChangeSet(
+                created: metadatasToCreate, updated: metadatasToUpdate, deleted: metadatasToDelete
+            )
         } catch {
             logger.error("Could not update any item metadatas.", [.error: error])
-            return (nil, nil, nil)
+            return nil
         }
     }
 
@@ -693,7 +691,7 @@ public final class FilesDatabaseManager: Sendable {
             return parentItemIdentifier
         }
 
-        let (metadatas, _, _, _, _, error) = await Enumerator.readServerUrl(
+        let readResult = await Enumerator.readServerUrl(
             metadata.serverUrl,
             account: account,
             remoteInterface: remoteInterface,
@@ -702,9 +700,9 @@ public final class FilesDatabaseManager: Sendable {
             log: logger.log
         )
 
-        guard error == nil, let parentMetadata = metadatas?.first else {
+        guard readResult.error == nil, let parentMetadata = readResult.metadatas?.first else {
             logger.error("Could not retrieve parent item identifier remotely.", [
-                .error: error,
+                .error: readResult.error,
                 .item: metadata.ocId,
                 .name: metadata.fileName
             ])

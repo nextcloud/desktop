@@ -253,7 +253,7 @@ public extension Item {
         while !remoteDirectoryPaths.isEmpty {
             let remoteDirectoryPath = remoteDirectoryPaths.removeFirst()
 
-            let (metadatas, _, _, _, _, readError) = await Enumerator.readServerUrl(
+            let readResult = await Enumerator.readServerUrl(
                 remoteDirectoryPath,
                 account: account,
                 remoteInterface: remoteInterface,
@@ -263,7 +263,7 @@ public extension Item {
                 log: logger.log
             )
 
-            if let readError, readError != .success {
+            if let readError = readResult.error, readError != .success {
                 if isTopLevel {
                     logger.error("Could not enumerate directory for keep-downloaded.", [.name: metadata.fileName, .url: remoteDirectoryPath, .error: readError])
                     throw readError.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier) ?? NSFileProviderError(.cannotSynchronize)
@@ -278,7 +278,7 @@ public extension Item {
 
             isTopLevel = false
 
-            guard var metadatas else { continue }
+            guard var metadatas = readResult.metadatas else { continue }
 
             // `readServerUrl` returns the target directory as the first entry
             // for depth-1 reads; drop it before queueing children.

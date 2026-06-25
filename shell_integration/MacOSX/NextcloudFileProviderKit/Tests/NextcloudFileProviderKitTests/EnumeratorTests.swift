@@ -310,7 +310,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // --- Scenario A: Initial Paginated Request (isFollowUpPaginatedRequest == false) ---
 
         // 2. Act: Call readServerUrl for the first page.
-        let (initialMetadatas, _, _, _, initialNextPage, initialError) = await Enumerator.readServerUrl(
+        let initialReadResult = await Enumerator.readServerUrl(
             remoteFolder.remotePath,
             pageSettings: (page: nil, index: 0, size: 5), // index is 0
             account: Self.account,
@@ -318,6 +318,9 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
         )
+        let initialMetadatas = initialReadResult.metadatas
+        let initialNextPage = initialReadResult.nextPage
+        let initialError = initialReadResult.error
 
         // 3. Assert: Verify the initial request's behavior.
         XCTAssertNil(initialError)
@@ -347,7 +350,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // 4. Act: Call readServerUrl for the second page using the received page token.
         let followUpPage = try NSFileProviderPage(XCTUnwrap(initialNextPage?.token?.data(using: .utf8)))
 
-        let (followUpMetadatas, _, _, _, finalNextPage, followUpError) = await Enumerator.readServerUrl(
+        let followUpReadResult = await Enumerator.readServerUrl(
             remoteFolder.remotePath,
             pageSettings: (page: followUpPage, index: 1, size: 5), // index > 0 and page is non-nil
             account: Self.account,
@@ -355,6 +358,9 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
         )
+        let followUpMetadatas = followUpReadResult.metadatas
+        let finalNextPage = followUpReadResult.nextPage
+        let followUpError = followUpReadResult.error
 
         // 5. Assert: Verify the follow-up request's behavior.
         XCTAssertNil(followUpError)
@@ -2088,7 +2094,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         fileMetadata.downloaded = true
         Self.dbManager.addItemMetadata(fileMetadata)
 
-        let (_, _, _, _, _, readError) = await Enumerator.readServerUrl(
+        let readResult = await Enumerator.readServerUrl(
             Self.account.davFilesUrl + "/lockTokenTestFile.txt",
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -2097,7 +2103,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock()
         )
 
-        XCTAssertNil(readError)
+        XCTAssertNil(readResult.error)
 
         let postRead = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "lockTokenTestFile"))
         XCTAssertEqual(
