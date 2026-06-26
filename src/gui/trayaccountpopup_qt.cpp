@@ -28,6 +28,7 @@
 #include <QPointer>
 #include <QPixmap>
 #include <QScreen>
+#include <QStyle>
 #include <QSvgRenderer>
 #include <QUrl>
 #include <QVariantMap>
@@ -96,6 +97,50 @@ QImage tintImage(const QImage &image, const QColor &color)
     return tintedImage;
 }
 
+QPalette nativeMenuIconPalette(const QMenu *menu)
+{
+    if (menu && menu->style()) {
+        return menu->style()->standardPalette();
+    }
+    return QGuiApplication::palette();
+}
+
+QString templateIconPaletteCacheKey(const QPalette &palette)
+{
+    return QStringLiteral("%1:%2:%3").arg(
+        palette.color(QPalette::Active, QPalette::Text).name(QColor::HexArgb),
+        palette.color(QPalette::Active, QPalette::HighlightedText).name(QColor::HexArgb),
+        palette.color(QPalette::Disabled, QPalette::Text).name(QColor::HexArgb));
+}
+
+void addTemplatePixmap(QIcon &icon, const QImage &image, const QColor &color, const QIcon::Mode mode)
+{
+    icon.addPixmap(QPixmap::fromImage(tintImage(image, color)), mode);
+}
+
+QIcon templateIconFromImage(const QImage &image, const QPalette &palette)
+{
+    if (image.isNull()) {
+        return {};
+    }
+
+    auto icon = QIcon{};
+    addTemplatePixmap(icon, image, palette.color(QPalette::Active, QPalette::Text), QIcon::Normal);
+    addTemplatePixmap(icon, image, palette.color(QPalette::Active, QPalette::Text), QIcon::Active);
+    addTemplatePixmap(icon, image, palette.color(QPalette::Active, QPalette::HighlightedText), QIcon::Selected);
+    addTemplatePixmap(icon, image, palette.color(QPalette::Disabled, QPalette::Text), QIcon::Disabled);
+    return icon;
+}
+
+QIcon templateIconFromIcon(const QIcon &icon, const QSize &requestedSize, const QPalette &palette)
+{
+    if (icon.isNull()) {
+        return {};
+    }
+
+    return templateIconFromImage(icon.pixmap(requestedSize).toImage(), palette);
+}
+
 QString statusText(const UserStatus::OnlineStatus status)
 {
     switch (status) {
@@ -158,27 +203,27 @@ bool isRemoteIconUrl(const QUrl &url)
     return url.scheme() == QStringLiteral("http") || url.scheme() == QStringLiteral("https");
 }
 
-QString remoteIconCacheKey(const AccountStatePtr &accountState, const QUrl &url, const QColor &iconColor)
+QString remoteIconCacheKey(const AccountStatePtr &accountState, const QUrl &url, const QPalette &iconPalette)
 {
     if (!accountState || !accountState->account()) {
         return {};
     }
     return QStringLiteral("%1:%2:%3").arg(
         accountState->account()->id(),
-        iconColor.name(QColor::HexArgb),
+        templateIconPaletteCacheKey(iconPalette),
         url.toString());
 }
 
 void fetchRemoteAppIcon(QAction *action,
     const AccountStatePtr &accountState,
     const QUrl &iconUrl,
-    const QColor &iconColor)
+    const QPalette &iconPalette)
 {
     if (!action || !accountState || !accountState->account() || !isRemoteIconUrl(iconUrl)) {
         return;
     }
 
-    const auto cacheKey = remoteIconCacheKey(accountState, iconUrl, iconColor);
+    const auto cacheKey = remoteIconCacheKey(accountState, iconUrl, iconPalette);
     if (cacheKey.isEmpty()) {
         return;
     }
@@ -193,13 +238,13 @@ void fetchRemoteAppIcon(QAction *action,
     QObject::connect(iconJob,
         &IconJob::jobFinished,
         action,
-        [actionPointer, cacheKey, iconColor](const QByteArray &iconData) {
+        [actionPointer, cacheKey, iconPalette](const QByteArray &iconData) {
             const auto image = imageFromImageData(iconData, QSize(18, 18));
             if (image.isNull()) {
                 return;
             }
 
-            const auto icon = QIcon(QPixmap::fromImage(tintImage(image, iconColor)));
+            const auto icon = templateIconFromImage(image, iconPalette);
             s_remoteAppIconCache.insert(cacheKey, icon);
             if (actionPointer) {
                 actionPointer->setIcon(icon);
@@ -246,6 +291,14 @@ QString titleWithDetail(const QString &title, const QString &subtitle, const QSt
 QAction *addMenuAction(QMenu *menu, const QIcon &icon, const QString &text)
 {
     return icon.isNull() ? menu->addAction(text) : menu->addAction(icon, text);
+}
+
+QAction *addSectionHeading(QMenu *menu, const QString &text)
+{
+    const auto action = menu->addAction(text);
+    action->setEnabled(false);
+    action->setIconVisibleInMenu(false);
+    return action;
 }
 
 QPoint clampedMenuPosition(const QPoint &position, const QSize &menuSize, const QRect &availableGeometry)
@@ -337,7 +390,7 @@ bool populateAppsMenu(QMenu *menu, const int userId)
     const auto accountState = userId >= 0 && userId < accounts.size()
         ? accounts.at(userId)
         : AccountStatePtr{};
-    const auto appIconColor = menu->palette().color(QPalette::Active, QPalette::Text);
+    const auto appIconPalette = nativeMenuIconPalette(menu);
 
     for (auto row = 0; row < appCount; ++row) {
         const auto appIndex = appsModel->index(row);
@@ -348,9 +401,10 @@ bool populateAppsMenu(QMenu *menu, const int userId)
         if (appIcon.isNull()) {
             appIcon = blackThemeIcon(QStringLiteral("more-apps.svg"));
         }
+        appIcon = templateIconFromIcon(appIcon, QSize(18, 18), appIconPalette);
 
         const auto action = addMenuAction(menu, appIcon, appName);
-        fetchRemoteAppIcon(action, accountState, appIconUrl, appIconColor);
+        fetchRemoteAppIcon(action, accountState, appIconUrl, appIconPalette);
         QObject::connect(action, &QAction::triggered, action, [appUrl] {
             closeTrayPopup();
             TrayAccountAppsModel::instance()->openAppUrl(appUrl);
@@ -398,7 +452,7 @@ void addNotifications(QMenu *menu, const int userId, const QVariantList &notific
         return;
     }
 
-    menu->addSection(QCoreApplication::translate("TrayAccountPopup", "Notifications"));
+    addSectionHeading(menu, QCoreApplication::translate("TrayAccountPopup", "Notifications"));
     for (const auto &notificationVariant : notifications) {
         const auto notificationData = notificationVariant.toMap();
         const auto title = notificationData.value(QStringLiteral("title")).toString();
@@ -431,7 +485,7 @@ void addNotifications(QMenu *menu, const int userId, const QVariantList &notific
 
 void addRecentActivities(QMenu *menu, const int userId, const QVariantList &recentActivities)
 {
-    menu->addSection(QCoreApplication::translate("TrayAccountPopup", "Recent activity"));
+    addSectionHeading(menu, QCoreApplication::translate("TrayAccountPopup", "Recent activity"));
 
     if (recentActivities.isEmpty()) {
         const auto noRecentActivity = addMenuAction(menu,
@@ -488,7 +542,7 @@ void populateAccountMenu(QMenu *menu, const int userId)
     }
 
     if (serverHasUserStatus) {
-        menu->addSection(QCoreApplication::translate("TrayAccountPopup", "User status"));
+        addSectionHeading(menu, QCoreApplication::translate("TrayAccountPopup", "User status"));
         const auto status = userModel->data(userModelIndex, UserModel::StatusRole).value<UserStatus::OnlineStatus>();
         const auto statusMessage = userModel->data(userModelIndex, UserModel::StatusMessageRole).toString();
         const auto statusAction = addMenuAction(menu,
