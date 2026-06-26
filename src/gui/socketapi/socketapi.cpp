@@ -65,6 +65,10 @@
 #include <QProcess>
 #include <QStandardPaths>
 
+#ifdef Q_OS_WIN
+#include <windows.h>
+#endif
+
 #ifdef Q_OS_MACOS
 #include <CoreFoundation/CoreFoundation.h>
 #include "common/utility_mac_sandbox.h"
@@ -105,6 +109,63 @@ QStringList split(const QString &data)
     // TODO: string ref?
     return data.split(RecordSeparator());
 }
+
+#ifdef Q_OS_WIN
+bool isTrustedWindowsPipeClient(QIODevice *socket, QString *errorDetails = nullptr)
+{
+    auto *localSocket = qobject_cast<QLocalSocket *>(socket);
+    if (!localSocket) {
+        if (errorDetails) {
+            *errorDetails = QStringLiteral("socket is not a QLocalSocket");
+        }
+        return false;
+    }
+
+    const auto socketDescriptor = localSocket->socketDescriptor();
+    if (socketDescriptor == -1) {
+        if (errorDetails) {
+            *errorDetails = QStringLiteral("invalid socket descriptor");
+        }
+        return false;
+    }
+
+    ULONG clientProcessId = 0;
+    if (!GetNamedPipeClientProcessId(reinterpret_cast<HANDLE>(socketDescriptor), &clientProcessId)) {
+        if (errorDetails) {
+            *errorDetails = QStringLiteral("GetNamedPipeClientProcessId failed: %1").arg(GetLastError());
+        }
+        return false;
+    }
+
+    DWORD currentSessionId = 0;
+    if (!ProcessIdToSessionId(GetCurrentProcessId(), &currentSessionId)) {
+        if (errorDetails) {
+            *errorDetails = QStringLiteral("ProcessIdToSessionId failed for current process: %1").arg(GetLastError());
+        }
+        return false;
+    }
+
+    DWORD clientSessionId = 0;
+    if (!ProcessIdToSessionId(clientProcessId, &clientSessionId)) {
+        if (errorDetails) {
+            *errorDetails = QStringLiteral("ProcessIdToSessionId failed for client process %1: %2").arg(clientProcessId).arg(GetLastError());
+        }
+        return false;
+    }
+
+    if (clientSessionId != currentSessionId) {
+        if (errorDetails) {
+            *errorDetails = QStringLiteral("client process %1 is in session %2, expected session %3")
+                                .arg(clientProcessId)
+                                .arg(clientSessionId)
+                                .arg(currentSessionId);
+        }
+        return false;
+    }
+
+    return true;
+}
+#endif
 
 #if GUI_TESTING
 
@@ -299,6 +360,10 @@ SocketApi::SocketApi(QObject *parent)
         }
     }
 
+    if (Utility::isWindows()) {
+        _localServer.setSocketOptions(QLocalServer::UserAccessOption);
+    }
+
     const bool result = _localServer.listen(socketPath);
     qCDebug(lcSocketApi) << "Full server name:" << _localServer.fullServerName();
 
@@ -340,6 +405,24 @@ void SocketApi::slotNewConnection()
     if (!socket) {
         return;
     }
+
+#ifdef Q_OS_WIN
+   // SECURITY NOTE:
+    // This is the central trust boundary for incoming Windows SocketAPI clients.
+    // We gate new connections here (before listener registration and command
+    // dispatch) using named-pipe client process/session validation.
+    //
+    // This check improves local IPC hardening but is not a complete security
+    // boundary against a fully compromised same-user environment. Command-level
+    // validation and user interaction requirements remain important.
+    QString trustError;
+    if (!isTrustedWindowsPipeClient(socket, &trustError)) {
+        qCWarning(lcSocketApi) << "Rejecting untrusted SocketAPI client:" << trustError;
+        socket->deleteLater();
+        return;
+    }
+#endif
+
     qCDebug(lcSocketApi) << "New connection" << socket;
     connect(socket, &QIODevice::readyRead, this, &SocketApi::slotReadSocket);
     connect(socket, SIGNAL(disconnected()), this, SLOT(onLostConnection()));
