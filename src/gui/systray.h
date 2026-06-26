@@ -220,9 +220,6 @@ private:
     QHash<QString, QPointer<QQuickWindow>> _activitiesWindows;
     QHash<QString, QPointer<QQuickWindow>> _assistantWindows;
     QPointer<QQuickWindow> _userStatusWindow;
-#ifndef Q_OS_MACOS
-    QSharedPointer<QQuickWindow> _popupWindow;
-#endif
 
     AccessManagerFactory _accessManagerFactory;
 
@@ -233,6 +230,11 @@ private:
 
     QStringListModel _fakeActivityModel;
 };
+
+#ifndef Q_OS_MACOS
+void showQtTrayPopup(const QRect &iconRect, Systray::WindowPosition position);
+void hideQtTrayPopup();
+#endif
 
 } // namespace OCC
 

@@ -31,8 +31,8 @@
 #include <QQuickWindow>
 #include <QVariantMap>
 #include <QScreen>
-#include <QMenu>
 #include <QGuiApplication>
+#include <QMenu>
 
 #ifdef USE_FDO_NOTIFICATIONS
 #include <QDBusConnection>
@@ -179,15 +179,6 @@ void Systray::create()
         } else {
             _trayEngine->rootContext()->setContextProperty("activityModel", &_fakeActivityModel);
         }
-
-#ifndef Q_OS_MACOS
-        QQmlComponent popupComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/tray/TrayAccountPopup.qml"));
-        if (popupComponent.isError()) {
-            qCWarning(lcSystray) << popupComponent.errorString();
-        } else {
-            _popupWindow.reset(qobject_cast<QQuickWindow*>(popupComponent.create()));
-        }
-#endif
     }
     hideWindow();
     emit activated(QSystemTrayIcon::ActivationReason::Unknown);
@@ -218,19 +209,7 @@ void Systray::showTrayPopup(WindowPosition position)
     setIsOpen(true);
     UserModel::instance()->fetchCurrentActivityModel();
 #else
-    if (!_popupWindow) {
-        showActivitiesWindow();
-        return;
-    }
-
-    if (position == WindowPosition::Center) {
-        positionWindowAtScreenCenter(_popupWindow.data());
-    } else {
-        positionWindowAtTray(_popupWindow.data());
-    }
-    _popupWindow->show();
-    _popupWindow->raise();
-    _popupWindow->requestActivate();
+    showQtTrayPopup(geometry(), position);
     setIsOpen(true);
 #endif
 }
@@ -244,9 +223,7 @@ void Systray::hideWindow()
 #ifdef Q_OS_MACOS
     hideMacOSTrayPopup();
 #else
-    if (_popupWindow) {
-        _popupWindow->hide();
-    }
+    hideQtTrayPopup();
 #endif
     setIsOpen(false);
 }

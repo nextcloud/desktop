@@ -18,7 +18,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-// Keep behavior and layout aligned with src/gui/tray/TrayAccountPopup.qml.
+// Keep behavior and menu taxonomy aligned with src/gui/trayaccountpopup_qt.cpp.
 
 static const CGFloat kPopupWidth   = 300.0;
 static const CGFloat kRowHeight    = 48.0;
