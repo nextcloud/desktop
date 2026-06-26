@@ -263,7 +263,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         )
     }
 
-    func testDeleteLockFileWithoutCapabilitiesDoesNothing() async {
+    func testDeleteLockFileWithoutCapabilitiesRemovesLocalMetadataButKeepsServerLock() async {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         XCTAssert(remoteInterface.capabilities.contains(##""locking": "1.0","##))
         remoteInterface.capabilities =
@@ -319,6 +319,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
             ocId: "lock-id", fileName: lockFileName, account: Self.account
         )
         lockFileMetadata.serverUrl += "/folder"
+        Self.dbManager.addItemMetadata(lockFileMetadata)
 
         let lockItem = Item(
             metadata: lockFileMetadata,
@@ -330,10 +331,84 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
 
         // Delete the lock file
         let error = await lockItem.delete(dbManager: Self.dbManager)
-        XCTAssertNil(Self.dbManager.itemMetadata(ocId: lockFileMetadata.ocId))
+        // The local lock metadata is always removed, even without locking capability, so it is
+        // never orphaned in the database.
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: lockFileMetadata.ocId)?.deleted, true)
         XCTAssertNil(error)
+        // No unlock request can be made without the capability, so the server lock is untouched.
         XCTAssertTrue(
             targetRemote.locked, "Expected the target file to still be locked"
+        )
+    }
+
+    /// An Adobe lock file resolves its guarded document by sibling lookup, then unlocks it on the
+    /// server on deletion, mirroring the Office/LibreOffice behaviour.
+    func testDeleteAdobeLockFileUnlocksDocument() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        let folderRemote = MockRemoteItem(
+            identifier: "folder-id",
+            versionIdentifier: "1",
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        let targetFileName = "MyDoc.indd"
+        let targetRemote = MockRemoteItem(
+            identifier: "folder/\(targetFileName)",
+            versionIdentifier: "1",
+            name: targetFileName,
+            remotePath: folderRemote.remotePath + "/" + targetFileName,
+            data: Data("test data".utf8),
+            locked: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        folderRemote.children = [targetRemote]
+        folderRemote.parent = rootItem
+        rootItem.children = [folderRemote]
+
+        var folderMetadata = SendableItemMetadata(
+            ocId: folderRemote.identifier, fileName: "folder", account: Self.account
+        )
+        folderMetadata.directory = true
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        var targetMetadata = SendableItemMetadata(
+            ocId: targetRemote.identifier, fileName: targetFileName, account: Self.account
+        )
+        targetMetadata.serverUrl += "/folder"
+        Self.dbManager.addItemMetadata(targetMetadata)
+
+        let lockFileName = "~MyDoc~0kjyv(.idlk"
+        var lockFileMetadata = SendableItemMetadata(
+            ocId: "lock-id", fileName: lockFileName, account: Self.account
+        )
+        lockFileMetadata.serverUrl += "/folder"
+        lockFileMetadata.isLockFileOfLocalOrigin = true
+        Self.dbManager.addItemMetadata(lockFileMetadata)
+
+        let lockItem = Item(
+            metadata: lockFileMetadata,
+            parentItemIdentifier: .init(folderMetadata.ocId),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let error = await lockItem.delete(dbManager: Self.dbManager)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: lockFileMetadata.ocId)?.deleted, true)
+        XCTAssertNil(error)
+        XCTAssertFalse(
+            targetRemote.locked, "Expected the document to be unlocked after lock file deletion"
         )
     }
 
