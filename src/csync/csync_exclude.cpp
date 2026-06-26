@@ -27,6 +27,9 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QVariant>
+#include <QLoggingCategory>
+
+Q_LOGGING_CATEGORY(lcCsyncExclude, "nextcloud.csync.exclude", QtInfoMsg)
 
 /** Expands C-like escape sequences (in place)
  */
@@ -163,8 +166,14 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
     // not allow to sync those to avoid file loss/ambiguities (#416)
     if (blen > 1) {
         if (bname.at(blen - 1) == QLatin1Char('.')) {
+
             return CSYNC_FILE_EXCLUDE_INVALID_CHAR;
         }
+    }
+
+    if (OCC::FileSystem::isFileLocked(path, OCC::FileSystem::LockMode::SharedRead)) {
+        qCWarning(lcCsyncExclude) << path << "is locked" << "exluding it from sync";
+        return CSYNC_FILE_LOCKED_SILENTLY_EXCLUDED;
     }
 
     if (csync_is_windows_reserved_word(bname)) {

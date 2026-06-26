@@ -4,6 +4,7 @@
 @preconcurrency import FileProvider
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
+import NextcloudFileProviderXPC
 import NextcloudKit
 import RealmSwift
 import TestInterface
@@ -156,6 +157,317 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         )
     }
 
+    /// Real Nextcloud servers echo the upload's `X-OC-Mtime` back via a
+    /// `Last-Modified` IMF-fixdate, which collapses to 1 s precision. APFS stores
+    /// sub-second mtimes, so if the file provider trusted the server's response
+    /// the returned `Item.contentModificationDate` would drift down by hundreds
+    /// of milliseconds — and AppKit/NSDocument-based editors (Xcode, TextEdit)
+    /// would interpret that drift as "the item has been changed on disk by
+    /// another application" right after their own save.
+    /// Regression test for that scenario: configure the mock to truncate the
+    /// upload response date to 1 s precision, save a sub-second mtime, and
+    /// verify the resulting `Item` and the persisted metadata both preserve the
+    /// exact local value rather than the truncated one.
+    func testModifyFilePreservesLocalContentModificationDateWhenServerTruncates() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.uploadResponseMtimeTruncation = 1.0
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let newContents = "Hello, New World!".data(using: .utf8)
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("modify-precise-mtime")
+        try newContents?.write(to: newContentsUrl)
+
+        // Pick a sub-second value the mock will truncate down to `…17.000`.
+        let preciseLocalMtime = Date(timeIntervalSince1970: 1_747_564_337.456789)
+        var targetItemMetadata = SendableItemMetadata(value: itemMetadata)
+        targetItemMetadata.date = preciseLocalMtime
+        targetItemMetadata.size = try Int64(XCTUnwrap(newContents?.count))
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let targetItem = Item(
+            metadata: targetItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItemMaybe, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(error)
+        let modifiedItem = try XCTUnwrap(modifiedItemMaybe)
+
+        XCTAssertEqual(modifiedItem.contentModificationDate, preciseLocalMtime)
+
+        // Belt-and-braces: also confirm we did *not* take the mock server's
+        // truncated value. If this is ever equal to the precise value the test
+        // is moot, so guard against that too.
+        let truncatedResponse = Date(
+            timeIntervalSince1970: preciseLocalMtime.timeIntervalSince1970.rounded(.down)
+        )
+        XCTAssertNotEqual(truncatedResponse, preciseLocalMtime)
+        XCTAssertNotEqual(modifiedItem.contentModificationDate, truncatedResponse)
+
+        let persisted = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
+        XCTAssertEqual(persisted.date, preciseLocalMtime)
+    }
+
+    /// Modify-path counterpart of `testCreateFileRefusedByQuotaReportsToMainApp`: the extension
+    /// must surface a per-item + per-folder summary report to the main app over XPC when an
+    /// already-uploaded file is rewritten with content the server can no longer accept.
+    func testModifyFileRefusedByQuotaReportsToMainApp() async throws {
+        rootItem.quotaAvailableBytes = 4
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let newContents = "Hello, much bigger New World!".data(using: .utf8)!
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("quota-report-modify")
+        try newContents.write(to: newContentsUrl)
+
+        var targetItemMetadata = SendableItemMetadata(value: itemMetadata)
+        targetItemMetadata.size = Int64(newContents.count)
+
+        let domain = NSFileProviderDomain(
+            identifier: NSFileProviderDomainIdentifier("test-domain-modify"),
+            displayName: "test"
+        )
+        let proxy = QuotaCapturingAppProxy()
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: targetItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            domain: domain,
+            dbManager: Self.dbManager,
+            appProxy: proxy
+        )
+
+        XCTAssertNil(modifiedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .insufficientQuota)
+        XCTAssertEqual(proxy.capturedItems.count, 1)
+        XCTAssertEqual(proxy.capturedItems.first?.fileName, "item.txt")
+        XCTAssertEqual(proxy.capturedItems.first?.fileBytes, Int64(newContents.count))
+        XCTAssertEqual(proxy.capturedSummaryDomains, ["test-domain-modify"])
+    }
+
+    /// Pre-flight quota gate on the modify path: when the parent's `quotaAvailableBytes`
+    /// is below the new local content size, refuse the upload up-front with
+    /// `.insufficientQuota` and leave the remote item untouched.
+    /// See nextcloud/desktop#9598.
+    func testModifyFileBlockedByInsufficientQuota() async throws {
+        rootItem.quotaAvailableBytes = 4 // less than the new content we're about to push
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let originalRemoteData = remoteItem.data
+        let newContents = "Hello, much bigger New World!".data(using: .utf8)!
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("quota-blocked-modify")
+        try newContents.write(to: newContentsUrl)
+
+        var targetItemMetadata = SendableItemMetadata(value: itemMetadata)
+        targetItemMetadata.size = Int64(newContents.count)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: targetItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(modifiedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .insufficientQuota)
+        // The remote bytes must not have been touched by the refused upload.
+        XCTAssertEqual(remoteItem.data, originalRemoteData)
+    }
+
+    /// When the server returns 404 during an upload (the parent folder was renamed
+    /// on another client while the file was open), the extension must:
+    ///   - clear the stale lock token so the next attempt goes without an If: header
+    ///   - return cannotSynchronize, not noSuchItem — the file still exists at a new path
+    ///
+    /// Regression test for the race condition described in nextcloud/desktop#9987.
+    func testModifyWith404ClearsLockTokenAndReturnsCannotSynchronize() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.uploadError = NKError(statusCode: 404, fallbackDescription: "Not Found")
+
+        var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        itemMetadata.lockToken = "opaquelocktoken:stale-token-from-old-path"
+        itemMetadata.uploaded = true
+        itemMetadata.downloaded = true
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("modify-404-test")
+        try "Updated content".write(to: newContentsUrl, atomically: true, encoding: .utf8)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(modifiedItem)
+        XCTAssertEqual(
+            (error as? NSFileProviderError)?.code, .cannotSynchronize,
+            "404 during modify must surface as cannotSynchronize, not noSuchItem"
+        )
+        let updatedMetadata = Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)
+        XCTAssertNil(
+            updatedMetadata?.lockToken,
+            "Lock token must be cleared when the upload path is gone"
+        )
+    }
+
+    func testModifyWith412ClearsLockToken() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.uploadError = NKError(statusCode: 412, fallbackDescription: "Precondition Failed")
+
+        var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        itemMetadata.lockToken = "opaquelocktoken:stale-token"
+        itemMetadata.uploaded = true
+        itemMetadata.downloaded = true
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("modify-412-test")
+        try "Updated content".write(to: newContentsUrl, atomically: true, encoding: .utf8)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(modifiedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        let updatedMetadata = Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)
+        XCTAssertNil(updatedMetadata?.lockToken, "Stale lock token must be cleared on 412.")
+    }
+
+    func testModifyWith423ClearsLockToken() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.uploadError = NKError(statusCode: 423, fallbackDescription: "Locked")
+
+        var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        itemMetadata.lockToken = "opaquelocktoken:stale-token"
+        itemMetadata.uploaded = true
+        itemMetadata.downloaded = true
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("modify-423-test")
+        try "Updated content".write(to: newContentsUrl, atomically: true, encoding: .utf8)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(modifiedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        let updatedMetadata = Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)
+        XCTAssertNil(updatedMetadata?.lockToken, "Stale lock token must be cleared on 423.")
+    }
+
     func testModifyFolder() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
@@ -239,375 +551,49 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         // We do not yet support modification of folder contents
     }
 
-    func testModifyBundleContents() async throws {
-        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
+    /// Verify that a modify operation on a bundle is refused at the file provider boundary
+    /// with `.excludedFromSync` and that the (mock) server is left untouched. Replaces the
+    /// previous `testModifyBundleContents` test, which validated the now-removed recursive-
+    /// mirror code path. See https://github.com/nextcloud/desktop/issues/9827.
+    func testModifyBundleIsExcluded() async {
+        let db = Self.dbManager.ncDatabase()
         debugPrint(db)
 
+        let bundleFilename = "test.key"
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
 
-        let keynoteBundleFilename = "test.key"
-        let keynoteIndexZipFilename = "Index.zip"
-        let keynoteRandomFileName = "random.txt"
-        let keynoteDataFolderName = "Data"
-        let keynoteDataRandomImageName = "random.jpg"
-        let keynoteMetadataFolderName = "Metadata"
-        let keynoteDocIdentifierFilename = "DocumentIdentifier"
-        let keynoteVersionPlistFilename = "BuildVersionHistory.plist"
-        let keynotePropertiesPlistFilename = "Properties.plist"
-
-        let remoteFolder = MockRemoteItem(
-            identifier: "folder",
-            versionIdentifier: "old",
-            name: "folder",
-            remotePath: Self.account.davFilesUrl + "/folder",
-            directory: true,
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
+        // Pre-seed: the bundle exists locally + in the DB but never reached the server. This
+        // mirrors what would happen after the create-time exclusion path ran on a fresh drag.
+        var bundleMetadata = SendableItemMetadata(
+            ocId: "test-bundle-id", fileName: bundleFilename, account: Self.account
         )
-        let remoteKeynoteBundle = MockRemoteItem(
-            identifier: keynoteBundleFilename,
-            versionIdentifier: "old",
-            name: keynoteBundleFilename,
-            remotePath: Self.account.davFilesUrl + "/" + keynoteBundleFilename,
-            directory: true,
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
-        )
-        let remoteKeynoteDataFolder = MockRemoteItem(
-            identifier: keynoteBundleFilename + "/" + keynoteDataFolderName,
-            versionIdentifier: "old",
-            name: keynoteDataFolderName,
-            remotePath: Self.account.davFilesUrl + "/" + keynoteBundleFilename + "/" + keynoteDataFolderName,
-            directory: true,
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
-        )
-        let remoteKeynoteDataRandomFile = MockRemoteItem(
-            identifier: keynoteBundleFilename + "/" + keynoteDataFolderName + "/" + keynoteDataRandomImageName,
-            versionIdentifier: "old",
-            name: keynoteDataRandomImageName,
-            remotePath: Self.account.davFilesUrl + "/" + keynoteBundleFilename + "/" + keynoteDataFolderName + "/" + keynoteDataRandomImageName,
-            data: "000".data(using: .utf8),
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
-        )
-        let remoteKeynoteMetadataFolder = MockRemoteItem(
-            identifier: keynoteBundleFilename + "/" + keynoteMetadataFolderName,
-            versionIdentifier: "old",
-            name: keynoteMetadataFolderName,
-            remotePath: Self.account.davFilesUrl + "/" + keynoteBundleFilename + "/" + keynoteMetadataFolderName,
-            directory: true,
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
-        )
-        let remoteKeynoteIndexZip = MockRemoteItem(
-            identifier: keynoteBundleFilename + "/" + keynoteIndexZipFilename,
-            versionIdentifier: "old",
-            name: keynoteIndexZipFilename,
-            remotePath: Self.account.davFilesUrl + "/" + keynoteBundleFilename + "/" + keynoteIndexZipFilename,
-            data: "This is a fake zip, pre modification".data(using: .utf8),
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
-        )
-        let remoteKeynoteRandomFile = MockRemoteItem( // We will want this to be gone later
-            identifier: keynoteBundleFilename + "/" + keynoteRandomFileName,
-            versionIdentifier: "old",
-            name: keynoteRandomFileName,
-            remotePath: Self.account.davFilesUrl + "/" + keynoteBundleFilename + "/" + keynoteRandomFileName,
-            data: "This is a random file, I should be gone post modify".data(using: .utf8),
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
-        )
-        let remoteKeynoteDocIdentifier = MockRemoteItem(
-            identifier: keynoteBundleFilename + "/" + keynoteMetadataFolderName + "/" + keynoteDocIdentifierFilename,
-            versionIdentifier: "old",
-            name: keynoteDocIdentifierFilename,
-            remotePath: Self.account.davFilesUrl + "/" + keynoteBundleFilename + "/" + keynoteMetadataFolderName + "/" + keynoteDocIdentifierFilename,
-            data: "8B0C6C1F-4DA4-4DE8-8510-0C91FDCE7D01".data(using: .utf8),
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
-        )
-        let remoteKeynoteVersionPlist = MockRemoteItem(
-            identifier: keynoteBundleFilename + "/" + keynoteMetadataFolderName + "/" + keynoteVersionPlistFilename,
-            versionIdentifier: "new",
-            name: keynoteVersionPlistFilename,
-            remotePath: Self.account.davFilesUrl + "/" + keynoteBundleFilename + "/" + keynoteMetadataFolderName + "/" + keynoteVersionPlistFilename,
-            data: """
-            <?xml version="1.0" encoding="UTF-8"?>
-            <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-            <plist version="1.0">
-            <array>
-                <string>Template: 35_DynamicWavesDark (14.1)</string>
-                <string>M14.1-7040.0.73-4</string>
-            </array>
-            </plist>
-            """.data(using: .utf8),
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
-        )
-        let remoteKeynotePropertiesPlist = MockRemoteItem(
-            identifier: keynoteBundleFilename + "/" + keynoteMetadataFolderName + "/" + keynotePropertiesPlistFilename,
-            versionIdentifier: "old",
-            name: "Properties.plist",
-            remotePath: Self.account.davFilesUrl + "/" + keynoteBundleFilename + "/" + keynoteMetadataFolderName + "/" + keynotePropertiesPlistFilename,
-            data: """
-            <?xml version="1.0" encoding="UTF-8"?>
-            <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-            <plist version="1.0">
-            <dict>
-                <key>revision</key>
-                <string>0::5B42B84E-6F62-4E53-9E71-7DD24FA7E2EA</string>
-                <key>documentUUID</key>
-                <string>8B0C6C1F-4DA4-4DE8-8510-0C91FDCE7D01</string>
-                <key>versionUUID</key>
-                <string>5B42B84E-6F62-4E53-9E71-7DD24FA7E2EA</string>
-                <key>privateUUID</key>
-                <string>637C846B-6146-40C2-8EF8-26996E598E49</string>
-                <key>isMultiPage</key>
-                <false/>
-                <key>stableDocumentUUID</key>
-                <string>8B0C6C1F-4DA4-4DE8-8510-0C91FDCE7D01</string>
-                <key>fileFormatVersion</key>
-                <string>14.1.1</string>
-                <key>shareUUID</key>
-                <string>8B0C6C1F-4DA4-4DE8-8510-0C91FDCE7D01</string>
-            </dict>
-            </plist>
-            """.data(using: .utf8),
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
-        )
-
-        rootItem.children.forEach { $0.parent = nil }
-        rootItem.children = [remoteKeynoteBundle, remoteFolder]
-        remoteFolder.parent = rootItem
-        remoteKeynoteBundle.parent = rootItem
-        remoteKeynoteBundle.children = [
-            remoteKeynoteIndexZip,
-            remoteKeynoteRandomFile,
-            remoteKeynoteDataFolder,
-            remoteKeynoteMetadataFolder
-        ]
-        remoteKeynoteIndexZip.parent = remoteKeynoteBundle
-        remoteKeynoteRandomFile.parent = remoteKeynoteBundle
-        remoteKeynoteDataFolder.parent = remoteKeynoteBundle
-        remoteKeynoteDataRandomFile.parent = remoteKeynoteDataFolder
-        remoteKeynoteDataFolder.children = [remoteKeynoteDataRandomFile]
-        remoteKeynoteMetadataFolder.parent = remoteKeynoteBundle
-        remoteKeynoteMetadataFolder.children = [
-            remoteKeynoteDocIdentifier,
-            remoteKeynoteVersionPlist,
-            remoteKeynotePropertiesPlist
-        ]
-        remoteKeynoteDocIdentifier.parent = remoteKeynoteMetadataFolder
-        remoteKeynoteVersionPlist.parent = remoteKeynoteMetadataFolder
-        remoteKeynotePropertiesPlist.parent = remoteKeynoteMetadataFolder
-
-        let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
-        Self.dbManager.addItemMetadata(folderMetadata)
-
-        var bundleItemMetadata = remoteKeynoteBundle.toItemMetadata(account: Self.account)
-        bundleItemMetadata.contentType = UTType.bundle.identifier
-        Self.dbManager.addItemMetadata(bundleItemMetadata)
-
-        var bundleIndexZipMetadata = remoteKeynoteIndexZip.toItemMetadata(account: Self.account)
-        bundleIndexZipMetadata.classFile = NKTypeClassFile.compress.rawValue
-        bundleIndexZipMetadata.contentType = UTType.zip.identifier
-        Self.dbManager.addItemMetadata(bundleIndexZipMetadata)
-
-        var bundleRandomFileMetadata = remoteKeynoteRandomFile.toItemMetadata(account: Self.account)
-        bundleRandomFileMetadata.contentType = UTType.text.identifier
-        Self.dbManager.addItemMetadata(bundleRandomFileMetadata)
-
-        let bundleDataFolderMetadata = remoteKeynoteDataFolder.toItemMetadata(account: Self.account)
-        Self.dbManager.addItemMetadata(bundleDataFolderMetadata)
-
-        var bundleDataRandomFileMetadata =
-            remoteKeynoteDataRandomFile.toItemMetadata(account: Self.account)
-        bundleDataRandomFileMetadata.classFile = NKTypeClassFile.image.rawValue
-        bundleDataRandomFileMetadata.contentType = UTType.image.identifier
-        Self.dbManager.addItemMetadata(bundleDataRandomFileMetadata)
-
-        let bundleMetadataFolderMetadata = remoteKeynoteMetadataFolder.toItemMetadata(account: Self.account)
-        Self.dbManager.addItemMetadata(bundleMetadataFolderMetadata)
-
-        var bundleDocIdentifierMetadata =
-            remoteKeynoteDocIdentifier.toItemMetadata(account: Self.account)
-        bundleDocIdentifierMetadata.contentType = UTType.text.identifier
-        Self.dbManager.addItemMetadata(bundleDocIdentifierMetadata)
-
-        var bundleVersionPlistMetadata =
-            remoteKeynoteVersionPlist.toItemMetadata(account: Self.account)
-        bundleVersionPlistMetadata.contentType = UTType.xml.identifier
-        Self.dbManager.addItemMetadata(bundleVersionPlistMetadata)
-
-        var bundlePropertiesPlistMetadata =
-            remoteKeynotePropertiesPlist.toItemMetadata(account: Self.account)
-        bundlePropertiesPlistMetadata.size = Int64(remoteKeynotePropertiesPlist.data?.count ?? 0)
-        bundlePropertiesPlistMetadata.directory = false
-        bundlePropertiesPlistMetadata.contentType = UTType.xml.identifier
-
-        Self.dbManager.addItemMetadata(bundlePropertiesPlistMetadata)
+        bundleMetadata.directory = true
+        bundleMetadata.serverUrl = Self.account.davFilesUrl
+        bundleMetadata.classFile = NKTypeClassFile.directory.rawValue
+        bundleMetadata.contentType = UTType.bundle.identifier
+        bundleMetadata.uploaded = false
+        bundleMetadata.downloaded = true
+        Self.dbManager.addItemMetadata(bundleMetadata)
 
         let bundleItem = Item(
-            metadata: bundleItemMetadata,
+            metadata: bundleMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
 
-        let fm = FileManager.default
-        let tempUrl = fm.temporaryDirectory.appendingPathComponent(keynoteBundleFilename)
-        try fm.createDirectory(at: tempUrl, withIntermediateDirectories: true, attributes: nil)
-        let keynoteIndexZipPath = tempUrl.appendingPathComponent("Index.zip")
-        try Data("This is a fake zip (but new!)".utf8).write(to: keynoteIndexZipPath)
-        let keynoteDataDir = tempUrl.appendingPathComponent("Data")
-        try fm.createDirectory(
-            at: keynoteDataDir, withIntermediateDirectories: true, attributes: nil
-        )
-        let keynoteMetadataDir = tempUrl.appendingPathComponent("Metadata")
-        try fm.createDirectory(
-            at: keynoteMetadataDir, withIntermediateDirectories: true, attributes: nil
-        )
-        let keynoteDocIdentifierPath =
-            keynoteMetadataDir.appendingPathComponent("DocumentIdentifier")
-        try Data("82LQN84b-12JF-BV90-13F0-149UFRN241B".utf8).write(to: keynoteDocIdentifierPath)
-        let keynoteBuildVersionPlistPath =
-            keynoteMetadataDir.appendingPathComponent("BuildVersionHistory.plist")
-        try Data(
-            """
-            <?xml version="1.0" encoding="UTF-8"?>
-            <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-            <plist version="1.0">
-            <array>
-                <string>Template: 34_DynamicWaves (15.0)</string>
-                <string>M15.0-7040.0.73-4</string>
-            </array>
-            </plist>
-            """
-            .utf8
-        ).write(to: keynoteBuildVersionPlistPath)
-        let keynotePropertiesPlistPath =
-            keynoteMetadataDir.appendingPathComponent("Properties.plist")
-        try Data(
-            """
-            <?xml version="1.0" encoding="UTF-8"?>
-            <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-            <plist version="1.0">
-            <dict>
-                <key>revision</key>
-                <string>SOME-RANDOM-REVISION-STRING</string>
-                <key>documentUUID</key>
-                <string>82LQN84b-12JF-BV90-13F0-149UFRN241B</string>
-                <key>versionUUID</key>
-                <string>VERSION-BEEP-BOOP-HEHE</string>
-                <key>privateUUID</key>
-                <string>PRIVATE-UUID-BEEP-BOOP-HEHE</string>
-                <key>isMultiPage</key>
-                <false/>
-                <key>stableDocumentUUID</key>
-                <string>82LQN84b-12JF-BV90-13F0-149UFRN241B</string>
-                <key>fileFormatVersion</key>
-                <string>15.0</string>
-                <key>shareUUID</key>
-                <string>82LQN84b-12JF-BV90-13F0-149UFRN241B</string>
-            </dict>
-            </plist>
-            """
-            .utf8
-        ).write(to: keynotePropertiesPlistPath)
-
-        var targetBundleMetadata = remoteKeynoteBundle.toItemMetadata(account: Self.account)
-        targetBundleMetadata.etag = "this-is-a-new-etag"
-        targetBundleMetadata.name = "renamed-" + keynoteBundleFilename
-        targetBundleMetadata.fileName = "renamed-" + keynoteBundleFilename
-        targetBundleMetadata.fileNameView = "renamed-" + keynoteBundleFilename
-        targetBundleMetadata.serverUrl = Self.account.davFilesUrl + "/folder" // Move
-
-        let targetItem = Item(
-            metadata: targetBundleMetadata,
-            parentItemIdentifier: .init(remoteFolder.identifier),
-            account: Self.account,
-            remoteInterface: remoteInterface,
+        let (modifiedItem, error) = await bundleItem.modify(
+            itemTarget: bundleItem,
+            changedFields: [.contents],
+            contents: nil,
             dbManager: Self.dbManager
         )
 
-        let (modifiedItemMaybe, error) = await bundleItem.modify(
-            itemTarget: targetItem,
-            changedFields: [.filename, .contents, .parentItemIdentifier, .contentModificationDate],
-            contents: tempUrl,
-            dbManager: Self.dbManager
-        )
-        XCTAssertNil(error)
-        let modifiedItem = try XCTUnwrap(modifiedItemMaybe)
-
-        XCTAssertEqual(modifiedItem.itemIdentifier, targetItem.itemIdentifier)
-        XCTAssertEqual(modifiedItem.filename, targetItem.filename)
-        XCTAssertEqual(modifiedItem.parentItemIdentifier, targetItem.parentItemIdentifier)
-        // TODO: This is a folder, unfortunately through NCKit we cannot set these details on a
-        // TODO: folder's creation; we should fix this
-        // XCTAssertEqual(modifiedItem.contentModificationDate, targetItem.contentModificationDate)
-
-        XCTAssertEqual(remoteFolder.children.count, 1)
-        XCTAssertEqual(remoteFolder.children.first, remoteKeynoteBundle)
-        XCTAssertEqual(remoteKeynoteBundle.name, targetBundleMetadata.fileName)
-        XCTAssertEqual(
-            remoteKeynoteBundle.remotePath,
-            targetBundleMetadata.serverUrl + "/" + targetBundleMetadata.fileName
-        )
-
-        XCTAssertNil(remoteKeynoteBundle.children.first { $0.name == keynoteRandomFileName })
-        XCTAssertNil(
-            remoteKeynoteDataFolder.children.first { $0.name == keynoteDataRandomImageName }
-        )
-
-        XCTAssertEqual(remoteKeynoteBundle.children.count, 3)
-        XCTAssertNotNil(remoteKeynoteBundle.children.first { $0.name == keynoteIndexZipFilename })
-        XCTAssertNotNil(remoteKeynoteBundle.children.first { $0.name == keynoteMetadataFolderName })
-        XCTAssertNotNil(remoteKeynoteBundle.children.first { $0.name == keynoteDataFolderName })
-        XCTAssertEqual(remoteKeynoteDataFolder.children.count, 0)
-        XCTAssertEqual(remoteKeynoteMetadataFolder.children.count, 3)
-        XCTAssertNotNil(
-            remoteKeynoteMetadataFolder.children.first { $0.name == keynoteDocIdentifierFilename }
-        )
-        XCTAssertNotNil(
-            remoteKeynoteMetadataFolder.children.first { $0.name == keynoteVersionPlistFilename }
-        )
-        XCTAssertNotNil(
-            remoteKeynoteMetadataFolder.children.first { $0.name == keynotePropertiesPlistFilename }
-        )
-
-        XCTAssertEqual(remoteKeynoteIndexZip.data, try Data(contentsOf: keynoteIndexZipPath))
-        XCTAssertEqual(
-            remoteKeynoteDocIdentifier.data, try Data(contentsOf: keynoteDocIdentifierPath)
-        )
-        XCTAssertEqual(
-            remoteKeynoteVersionPlist.data, try Data(contentsOf: keynoteBuildVersionPlistPath)
-        )
-        XCTAssertEqual(
-            remoteKeynotePropertiesPlist.data, try Data(contentsOf: keynotePropertiesPlistPath)
-        )
+        XCTAssertNotNil(modifiedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .excludedFromSync)
+        // Mock server stays untouched.
+        XCTAssertNil(rootItem.children.first { $0.name == bundleFilename })
     }
 
     func testMoveFileToTrash() async throws {

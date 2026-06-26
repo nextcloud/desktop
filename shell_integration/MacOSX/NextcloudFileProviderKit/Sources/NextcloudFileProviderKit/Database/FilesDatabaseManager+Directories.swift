@@ -17,14 +17,33 @@ public extension FilesDatabaseManager {
     func childItems(directoryMetadata: SendableItemMetadata) -> [SendableItemMetadata] {
         let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
         return itemMetadatas
-            .where { $0.serverUrl.starts(with: directoryServerUrl) }
+            .where {
+                $0.serverUrl == directoryServerUrl ||
+                    $0.serverUrl.starts(with: directoryServerUrl + "/")
+            }
+            .toUnmanagedResults()
+    }
+
+    ///
+    /// Immediate children of a directory — i.e. items whose parent ``serverUrl``
+    /// equals the directory's full path. Unlike ``childItems(directoryMetadata:)``
+    /// this does not recurse into descendants.
+    ///
+    func immediateChildItems(directoryMetadata: SendableItemMetadata) -> [SendableItemMetadata] {
+        let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
+
+        return itemMetadatas
+            .where { $0.serverUrl == directoryServerUrl }
             .toUnmanagedResults()
     }
 
     func childItemCount(directoryMetadata: SendableItemMetadata) -> Int {
         let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
         return itemMetadatas
-            .where { $0.serverUrl.starts(with: directoryServerUrl) }
+            .where {
+                $0.serverUrl == directoryServerUrl ||
+                    $0.serverUrl.starts(with: directoryServerUrl + "/")
+            }
             .count
     }
 
@@ -71,10 +90,21 @@ public extension FilesDatabaseManager {
         var deletedMetadatas: [SendableItemMetadata] = [directoryMetadataCopy]
 
         let results = itemMetadatas.where {
-            $0.account == directoryAccount && $0.serverUrl.starts(with: directoryUrlPath)
+            $0.account == directoryAccount &&
+                ($0.serverUrl == directoryUrlPath || $0.serverUrl.starts(with: directoryUrlPath + "/"))
         }
 
+        // TODO: Parent is deleted even when a child upload is pending. The child will
+        // orphan after upload. Follow-up: defer parent deletion or re-parent after upload.
         for result in results {
+            if result.status >= Status.inUpload.rawValue {
+                logger.info("Skipping deletion of child with pending upload.", [.item: result.ocId])
+                continue
+            }
+            if result.isLockFileOfLocalOrigin {
+                logger.info("Skipping deletion of local-origin lock file during directory delete.", [.item: result.ocId, .name: result.fileName])
+                continue
+            }
             let inactiveItemMetadata = SendableItemMetadata(value: result)
             do {
                 try database.write { result.deleted = true }
@@ -106,7 +136,7 @@ public extension FilesDatabaseManager {
         let newDirectoryServerUrl = newServerUrl + "/" + newFileName
         let childItemResults = itemMetadatas.where {
             $0.account == directoryMetadata.account &&
-                $0.serverUrl.starts(with: oldDirectoryServerUrl)
+                ($0.serverUrl == oldDirectoryServerUrl || $0.serverUrl.starts(with: oldDirectoryServerUrl + "/"))
         }
 
         renameItemMetadata(ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName)
@@ -121,6 +151,7 @@ public extension FilesDatabaseManager {
                         of: oldDirectoryServerUrl, with: newDirectoryServerUrl
                     )
                     childItem.serverUrl = movedServerUrl
+                    childItem.lockToken = nil
                     database.add(childItem, update: .all)
                     logger.debug(
                         """
@@ -138,7 +169,7 @@ public extension FilesDatabaseManager {
         return itemMetadatas
             .where {
                 $0.account == directoryMetadata.account &&
-                    $0.serverUrl.starts(with: newDirectoryServerUrl)
+                    ($0.serverUrl == newDirectoryServerUrl || $0.serverUrl.starts(with: newDirectoryServerUrl + "/"))
             }
             .toUnmanagedResults()
     }

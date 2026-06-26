@@ -169,14 +169,32 @@
             </layout>
            </item>
            <item>
-            <widget class="QCheckBox" name="authRequiredcheckBox">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Proxy server requires authentication</string>
-             </property>
-            </widget>
+            <layout class="QHBoxLayout" name="authRequiredLayout">
+             <item>
+              <widget class="QLabel" name="authRequiredLabel">
+               <property name="text">
+                <string>Proxy server requires authentication</string>
+               </property>
+               <property name="buddy">
+                <cstring>authRequiredcheckBox</cstring>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="authRequiredSpacer">
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="OCC::SettingsSwitch" name="authRequiredcheckBox">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
            <item>
             <widget class="QWidget" name="authWidgets" native="true">
@@ -438,6 +456,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>OCC::SettingsSwitch</class>
+   <extends>QAbstractButton</extends>
+   <header>settingsswitch.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

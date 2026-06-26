@@ -130,9 +130,6 @@ public:
      */
     static bool ensureJournalGone(const QString &journalDbFile);
 
-    /** Creates a new and empty local directory. */
-    bool startFromScratch(const QString &);
-
     /// Produce text for use in the tray tooltip
     static QString trayTooltipStatusString(SyncResult::Status syncStatus, bool hasUnresolvedConflicts, bool paused, ProgressInfo *progress);
 
@@ -349,10 +346,6 @@ private:
     /** Will start a sync after a bit of delay. */
     void startScheduledSyncSoon();
 
-    // finds all folder configuration files
-    // and create the folders
-    [[nodiscard]] QString getBackupName(QString fullPathName) const;
-
     // makes the folder known to the socket api
     void registerFolderWithSocketApi(Folder *folder);
 
@@ -403,8 +396,6 @@ private:
 #ifdef Q_OS_WIN
     NavigationPaneHelper _navigationPaneHelper;
 #endif
-
-    QPointer<UpdateE2eeFolderUsersMetadataJob> _removeE2eeShareJob;
 
     bool _appRestartRequired = false;
 

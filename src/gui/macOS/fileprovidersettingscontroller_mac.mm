@@ -9,6 +9,7 @@
 #include <QDir>
 #include <QList>
 #include <QQmlApplicationEngine>
+#include <QQuickItem>
 #include <QUrl>
 #include <QMessageBox>
 
@@ -57,9 +58,15 @@ public:
 
         migrateToAppSandbox();
         removeOrphanedDomains();
-        restoreMissingDomains();
-        Mac::FileProvider::instance()->domainManager()->reconnectAll();
-        Mac::FileProvider::instance()->configureXPC();
+
+        if (Mac::FileProvider::available()) {
+            restoreMissingDomains();
+            Mac::FileProvider::instance()->domainManager()->reconcileDomainDisplayNames();
+            Mac::FileProvider::instance()->domainManager()->reconnectAll();
+            Mac::FileProvider::instance()->configureXPC();
+        } else {
+            disableFileProviderForAllEnabledAccountsOnUnsupportedOS();
+        }
     };
 
     ~MacImplementation() override = default;
@@ -286,6 +293,32 @@ public:
         qCInfo(lcFileProviderSettingsController) << "Finished removing orphaned domains.";
     }
 
+    // macOS 13 Ventura cleanup: removes any pre-existing file provider domain
+    // gracefully (preserving dirty user data) for each account that still has
+    // VFS enabled. Can be deleted once Ventura is no longer supported.
+    void disableFileProviderForAllEnabledAccountsOnUnsupportedOS()
+    {
+        qCInfo(lcFileProviderSettingsController) << "macOS 13 Ventura: disabling file provider for all enabled accounts.";
+
+        const auto accountStates = AccountManager::instance()->accounts();
+
+        for (const auto &accountState : accountStates) {
+            const auto account = accountState->account();
+
+            if (!account) {
+                continue;
+            }
+
+            if (account->fileProviderDomainIdentifier().isEmpty()) {
+                continue;
+            }
+
+            const auto userIdAtHost = account->userIdAtHostWithPort();
+            qCInfo(lcFileProviderSettingsController) << "Disabling file provider for account" << userIdAtHost;
+            (void)setVfsEnabledForAccount(userIdAtHost, false);
+        }
+    }
+
 private:
     [[maybe_unused]] FileProviderSettingsController *q = nullptr;
 };
@@ -323,6 +356,9 @@ QQuickWidget *FileProviderSettingsController::settingsViewWidget(const QString &
     settingsViewWidget->setResizeMode(resizeMode);
     settingsViewWidget->setSource(QUrl(fpSettingsQmlPath));
     settingsViewWidget->rootObject()->setProperty(fpAccountUserIdAtHostProp, accountUserIdAtHost);
+    QObject::connect(settingsViewWidget->rootObject(), &QQuickItem::implicitHeightChanged, settingsViewWidget, [settingsViewWidget] {
+        settingsViewWidget->updateGeometry();
+    });
     return settingsViewWidget;
 }
 
@@ -364,8 +400,8 @@ void FileProviderSettingsController::setVfsEnabledForAccount(const QString &user
 
                 if (setEnabled && showInformationDialog) {
                     QMessageBox::information(nullptr,
-                                             controller->tr("Virtual files enabled"),
-                                             controller->tr("Virtual files have been enabled for this account.\n\n"
+                                             controller->tr("File Provider enabled"),
+                                             controller->tr("File Provider has been enabled for this account.\n\n"
                                                             "Your files are now accessible in Finder under the \"Locations\" section."));
                 }
             }

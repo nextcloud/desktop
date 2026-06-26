@@ -21,7 +21,8 @@ path = [
     ".swiftformat",
     ".swift-version",
     "Package.swift",
-    "Sources/NextcloudFileProviderKit/Documentation.docc/theme-settings.json"
+    "Sources/NextcloudFileProviderKit/Documentation.docc/theme-settings.json",
+    "Sources/NextcloudFileProviderKit/Resources/Localizable.xcstrings"
 ]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2025 Nextcloud GmbH and Nextcloud contributors"

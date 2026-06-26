@@ -223,6 +223,7 @@ public:
     char contentChar = 'W';
     LockState lockState = LockState::FileUnlocked;
     int lockType = 0;
+    QString lockToken;
     QString lockOwner;
     QString lockOwnerId;
     QString lockEditorId;
@@ -596,6 +597,7 @@ class FakeFolder
 {
     QTemporaryDir _tempDir;
     QString _tempDirLocalPath;
+    QString _remotePath;
     DiskFileModifier _localModifier;
     // FIXME: Clarify ownership, double delete
     FakeQNAM *_fakeQnam;

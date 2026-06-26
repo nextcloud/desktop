@@ -157,6 +157,19 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
         return;
     }
 
+#ifdef Q_OS_MACOS
+    if (folder->needsSandboxBookmark()) {
+        markFolderAsError(folder);
+        setSyncing(false);
+        setTotalFiles(0);
+        setSyncStatusString(tr("Reauthorization required"));
+        setSyncStatusDetailString(tr("Please grant access to your sync folders"));
+        setSyncIcon(Theme::instance()->error());
+        setNeedsSandboxReapproval(true);
+        return;
+    }
+#endif
+
     const auto state = determineSyncStatus(folder->syncResult());
 
     switch (state) {
@@ -176,6 +189,7 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
         break;
     }
 
+    updateNeedsSandboxReapproval();
     setSyncState(state);
 }
 
@@ -193,6 +207,15 @@ void SyncStatusSummary::setSyncState(const SyncResult::Status state)
     switch (state) {
     case SyncResult::Success:
     case SyncResult::SyncPrepare:
+    case SyncResult::Undefined:
+        // `Undefined` reaches this point only via the file provider path, before the extension has
+        // reported a concrete state (e.g. right after a fresh launch). It means "no status yet",
+        // not "a sync failed", so render it as the optimistic resting state rather than the
+        // misleading "Some files could not be synced!". This mirrors how the menu bar icon
+        // (`ownCloudGui::slotComputeOverallSyncStatus`) and the per-account icons (`UserModel`)
+        // already bucket `Undefined` as idle. The extension is additionally forced to report its
+        // real state once the app connects. See https://github.com/nextcloud/desktop/issues/10053.
+        //
         // Success should only be shown if all folders were fine
         if (!folderErrors()
 #ifdef BUILD_FILE_PROVIDER_MODULE
@@ -234,7 +257,6 @@ void SyncStatusSummary::setSyncState(const SyncResult::Status state)
         setSyncIcon(Theme::instance()->pause());
         break;
     case SyncResult::Problem:
-    case SyncResult::Undefined:
         setSyncing(false);
         setTotalFiles(0);
         setSyncStatusString(tr("Some files could not be synced!"));
@@ -267,23 +289,34 @@ void SyncStatusSummary::onFileProviderDomainSyncStateChanged(const AccountPtr &a
     switch (state) {
     case SyncResult::Success:
     case SyncResult::SyncPrepare:
-        // Success should only be shown if all folders were fine
+        // The domain is healthy again, so it no longer counts towards the "some files
+        // couldn't be synced" header.
         _fileProviderDomainsWithErrors.erase(account->userIdAtHostWithPort());
         break;
     case SyncResult::Error:
     case SyncResult::SetupError:
     case SyncResult::Problem:
-    case SyncResult::Undefined:
-        _fileProviderDomainsWithErrors.erase(account->userIdAtHostWithPort());
-        state = SyncResult::Success;
+        // Mark this domain as failing so `setSyncState`'s `Success` branch correctly gates
+        // the "All synced!" header on `_fileProviderDomainsWithErrors.empty()`. The previous
+        // inversion erased the domain and forced `state = Success`, which is why the header
+        // showed "Everything synchronized!" while the tray icon was red. See
+        // https://github.com/nextcloud/desktop/issues/9598.
+        _fileProviderDomainsWithErrors.insert(account->userIdAtHostWithPort());
         break;
     case SyncResult::SyncRunning:
     case SyncResult::NotYetStarted:
     case SyncResult::Paused:
     case SyncResult::SyncAbortRequested:
+    case SyncResult::Undefined:
+        // `Undefined` means the extension has not reported a concrete state yet (e.g. right after
+        // launch). It is not an error, so leave `_fileProviderDomainsWithErrors` untouched: a
+        // previously reported real error stays recorded, while a freshly configured domain simply
+        // stays out of the error set. The matching `setSyncState` branch then renders it as the
+        // optimistic resting state instead of the misleading warning. See
+        // https://github.com/nextcloud/desktop/issues/10053.
         break;
     }
-        
+
     setSyncState(state);
 }
 #endif
@@ -483,5 +516,33 @@ void SyncStatusSummary::initSyncState()
     if (syncStateFallbackNeeded) {
         setSyncStateToConnectedState();
     }
+}
+
+bool SyncStatusSummary::needsSandboxReapproval() const
+{
+    return _needsSandboxReapproval;
+}
+
+void SyncStatusSummary::setNeedsSandboxReapproval(bool value)
+{
+    if (_needsSandboxReapproval == value) {
+        return;
+    }
+
+    _needsSandboxReapproval = value;
+    emit needsSandboxReapprovalChanged();
+}
+
+void SyncStatusSummary::updateNeedsSandboxReapproval()
+{
+#ifdef Q_OS_MACOS
+    for (const auto &folder : FolderMan::instance()->map()) {
+        if (folder && folder->accountState() == _accountState.data() && folder->needsSandboxBookmark()) {
+            setNeedsSandboxReapproval(true);
+            return;
+        }
+    }
+#endif
+    setNeedsSandboxReapproval(false);
 }
 }

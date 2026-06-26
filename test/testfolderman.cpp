@@ -19,6 +19,7 @@
 #include "accountstate.h"
 #include <accountmanager.h>
 #include "configfile.h"
+#include "socketapi/socketapi.h"
 #include "syncenginetestutils.h"
 #include "testhelper.h"
 
@@ -281,7 +282,11 @@ private slots:
         QVERIFY(dir2.mkpath("free2/sub"));
         {
             QFile f(dir.path() + "/sub/file.txt");
-            f.open(QFile::WriteOnly);
+            const auto openResult = f.open(QFile::WriteOnly);
+            if (!openResult) {
+                qWarning() << "Failed to create file:" << dir.path() + "/sub/file.txt";
+                return;
+            }
             f.write("hello");
         }
         QString dirPath = dir2.canonicalPath();
@@ -549,6 +554,39 @@ private slots:
         verifyFolderSyncChangesOnReceivedFileIdNotification(user2, {11, 16, 21},          {"2"});
         verifyFolderSyncChangesOnReceivedFileIdNotification(user2, {50},                  {"2"});
         verifyFolderSyncChangesOnReceivedFileIdNotification(user2, {10, 11, 17, 18, 404}, {});
+    }
+
+    void testUnloadAndDeleteAllFolders()
+    {
+        _fm.reset({});
+        _fm.reset(new FolderMan{});
+
+        QTemporaryDir dir;
+        ConfigFile::setConfDir(dir.path());
+        QVERIFY(dir.isValid());
+        QVERIFY(QDir(dir.path()).mkpath(QStringLiteral("folder1")));
+        QVERIFY(QDir(dir.path()).mkpath(QStringLiteral("folder2")));
+
+        auto account = Account::create();
+        account->setCredentials(new FakeCredentials{new FakeQNAM({})});
+        account->setUrl(QUrl(QStringLiteral("http://example.de")));
+        auto accountState = new FakeAccountState(account);
+
+        const auto folder1 = FolderMan::instance()->addFolder(accountState, folderDefinition(dir.path() + QStringLiteral("/folder1")));
+        const auto folder2 = FolderMan::instance()->addFolder(accountState, folderDefinition(dir.path() + QStringLiteral("/folder2")));
+        QVERIFY(folder1);
+        QVERIFY(folder2);
+        QCOMPARE(FolderMan::instance()->map().count(), 2);
+
+        auto socketApi = FolderMan::instance()->socketApi();
+
+        // verifies that calling slotUnregisterPath twice on the same alias doesn't crash
+        socketApi->slotUnregisterPath(folder1->alias());
+        socketApi->slotUnregisterPath(folder1->alias());
+
+        FolderMan::instance()->unloadAndDeleteAllFolders();
+
+        QCOMPARE(FolderMan::instance()->map().count(), 0);
     }
 };
 

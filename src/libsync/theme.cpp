@@ -29,6 +29,10 @@
 #include <windows.h>
 #endif
 
+#ifdef Q_OS_MACOS
+#include "theme_mac.h"
+#endif
+
 #include "nextcloudtheme.h"
 
 #ifdef THEME_INCLUDE
@@ -56,6 +60,14 @@ QUrl imagePathToUrl(const QString &imagePath)
 bool shouldPreferSvg()
 {
     return QByteArray(APPLICATION_ICON_SET).toUpper() == QByteArrayLiteral("SVG");
+}
+
+constexpr QRgb darkDestructiveActionTextColor = 0xffdad6;
+constexpr QRgb lightDestructiveActionTextColor = 0xba1a1a;
+
+QColor destructiveActionColor(const bool darkMode, const QRgb darkColor, const QRgb lightColor)
+{
+    return QColor(darkMode ? darkColor : lightColor);
 }
 
 #ifdef Q_OS_WIN
@@ -256,6 +268,11 @@ QString Theme::configFileName() const
 
 QIcon Theme::applicationIcon() const
 {
+#ifdef Q_OS_MACOS
+    if (auto bundleIcon = loadAppIconFromBundle(); !bundleIcon.isNull()) {
+        return bundleIcon;
+    }
+#endif
     return themeIcon(QStringLiteral(APPLICATION_ICON_NAME "-icon"));
 }
 
@@ -875,12 +892,6 @@ QString Theme::userIDHint() const
     return QString();
 }
 
-
-QString Theme::wizardUrlPostfix() const
-{
-    return QString();
-}
-
 QString Theme::wizardUrlHint() const
 {
     return QString();
@@ -1030,6 +1041,11 @@ bool Theme::disableVirtualFilesSyncFolder() const
 QColor Theme::defaultColor()
 {
     return QColor{NEXTCLOUD_BACKGROUND_COLOR};
+}
+
+QColor Theme::destructiveActionTextColor() const
+{
+    return destructiveActionColor(darkMode(), darkDestructiveActionTextColor, lightDestructiveActionTextColor);
 }
 
 void Theme::connectToPaletteSignal() const

@@ -6,7 +6,7 @@
 #include "fileproviderservice.h"
 
 #import <Foundation/Foundation.h>
-#import "AppProtocol.h"
+#import "../../../shell_integration/MacOSX/NextcloudFileProviderKit/Sources/NextcloudFileProviderXPC/include/NextcloudFileProviderXPC.h"
 
 #include <QLoggingCategory>
 #include <QReadLocker>
@@ -55,11 +55,115 @@ Q_LOGGING_CATEGORY(lcMacFileProviderService, "nextcloud.gui.macfileproviderservi
                               Q_ARG(QString, domainId));
 }
 
+- (void)openItemInBrowser:(NSString *)fileId
+           remoteItemPath:(NSString *)remoteItemPath
+      forDomainIdentifier:(NSString *)domainIdentifier
+{
+    qCDebug(OCC::lcMacFileProviderService) << "Should open item in browser with fileId:"
+                                           << fileId
+                                           << "remote item path:"
+                                           << remoteItemPath
+                                           << "domain identifier:"
+                                           << domainIdentifier;
+
+    const auto qFileId = QString::fromNSString(fileId);
+    const auto qRemoteItemPath = QString::fromNSString(remoteItemPath);
+    const auto domainId = QString::fromNSString(domainIdentifier);
+
+    // The XPC callback may arrive on a non-main thread; use a queued connection so observers
+    // running on the GUI thread (e.g. `OwncloudGui`) receive the signal there.
+    QMetaObject::invokeMethod(_service, "openItemInBrowserRequested", Qt::QueuedConnection,
+                              Q_ARG(QString, qFileId),
+                              Q_ARG(QString, qRemoteItemPath),
+                              Q_ARG(QString, domainId));
+}
+
+- (void)copyInternalLinkForItem:(NSString *)fileId
+                 remoteItemPath:(NSString *)remoteItemPath
+            forDomainIdentifier:(NSString *)domainIdentifier
+{
+    qCDebug(OCC::lcMacFileProviderService) << "Should copy internal link for fileId:"
+                                           << fileId
+                                           << "remote item path:"
+                                           << remoteItemPath
+                                           << "domain identifier:"
+                                           << domainIdentifier;
+
+    const auto qFileId = QString::fromNSString(fileId);
+    const auto qRemoteItemPath = QString::fromNSString(remoteItemPath);
+    const auto domainId = QString::fromNSString(domainIdentifier);
+
+    // The XPC callback may arrive on a non-main thread; use a queued connection so observers
+    // running on the GUI thread (e.g. `OwncloudGui`) receive the signal there.
+    QMetaObject::invokeMethod(_service, "copyInternalLinkRequested", Qt::QueuedConnection,
+                              Q_ARG(QString, qFileId),
+                              Q_ARG(QString, qRemoteItemPath),
+                              Q_ARG(QString, domainId));
+}
+
+- (void)reportItemExcludedFromSync:(NSString *)relativePath
+                          fileName:(NSString *)fileName
+                            reason:(NSString *)reason
+               forDomainIdentifier:(NSString *)domainIdentifier
+{
+    const auto qDomainIdentifier = QString::fromNSString(domainIdentifier);
+    const auto qRelativePath = QString::fromNSString(relativePath);
+    const auto qFileName = QString::fromNSString(fileName);
+    const auto qReason = QString::fromNSString(reason);
+
+    qCInfo(OCC::lcMacFileProviderService) << "File provider extension reported item excluded from sync:"
+                                          << qFileName
+                                          << "for domain:" << qDomainIdentifier;
+
+    // The XPC callback may arrive on a non-main thread; use a queued connection so observers
+    // running on the GUI thread (e.g. `OCC::User`) receive the signal there.
+    QMetaObject::invokeMethod(_service, "itemExcludedFromSync", Qt::QueuedConnection,
+                              Q_ARG(QString, qDomainIdentifier),
+                              Q_ARG(QString, qRelativePath),
+                              Q_ARG(QString, qFileName),
+                              Q_ARG(QString, qReason));
+}
+
+- (void)reportInsufficientQuotaForItem:(NSString *)relativePath
+                              fileName:(NSString *)fileName
+                             fileBytes:(NSNumber *)fileBytes
+                        availableBytes:(NSNumber *)availableBytes
+                   forDomainIdentifier:(NSString *)domainIdentifier
+{
+    const auto qDomainIdentifier = QString::fromNSString(domainIdentifier);
+    const auto qRelativePath = QString::fromNSString(relativePath);
+    const auto qFileName = QString::fromNSString(fileName);
+    const qint64 qFileBytes = fileBytes ? fileBytes.longLongValue : -1;
+    const qint64 qAvailableBytes = availableBytes ? availableBytes.longLongValue : -1;
+
+    qCInfo(OCC::lcMacFileProviderService) << "File provider extension reported insufficient-quota item:"
+                                          << qFileName
+                                          << "for domain:" << qDomainIdentifier;
+
+    QMetaObject::invokeMethod(_service, "insufficientQuotaForItem", Qt::QueuedConnection,
+                              Q_ARG(QString, qDomainIdentifier),
+                              Q_ARG(QString, qRelativePath),
+                              Q_ARG(QString, qFileName),
+                              Q_ARG(qint64, qFileBytes),
+                              Q_ARG(qint64, qAvailableBytes));
+}
+
+- (void)reportInsufficientQuotaSummaryForDomainIdentifier:(NSString *)domainIdentifier
+{
+    const auto qDomainIdentifier = QString::fromNSString(domainIdentifier);
+
+    qCInfo(OCC::lcMacFileProviderService) << "File provider extension reported insufficient-quota summary for domain:"
+                                          << qDomainIdentifier;
+
+    QMetaObject::invokeMethod(_service, "insufficientQuotaSummary", Qt::QueuedConnection,
+                              Q_ARG(QString, qDomainIdentifier));
+}
+
 - (void)reportSyncStatus:(NSString *)status forDomainIdentifier:(NSString *)domainIdentifier
 {
     const auto statusString = QString::fromNSString(status);
     const auto domainIdString = QString::fromNSString(domainIdentifier);
-    
+
     qCDebug(OCC::lcMacFileProviderService) << "Received sync status from file provider extension:"
                                            << statusString
                                            << "for domain:" << domainIdString;
@@ -89,7 +193,14 @@ Q_LOGGING_CATEGORY(lcMacFileProviderService, "nextcloud.gui.macfileproviderservi
     } else if (statusString == QStringLiteral("SYNC_FINISHED")) {
         syncState = OCC::SyncResult::Status::Success;
     } else if (statusString == QStringLiteral("SYNC_FAILED")) {
-        syncState = OCC::SyncResult::Status::Problem;
+        // Map to `Error` (red icon) rather than `Problem` (yellow). Classic sync paints the
+        // tray icon red whenever any item-level error blocks an upload (see e.g.
+        // `SyncEngine::slotInsufficientRemoteStorage` → folder `Error` state); we want the
+        // file provider domain path to drive the same red state. Yellow `Problem` is reserved
+        // for soft warnings (e.g. unresolved conflicts coexisting with a successful sync) and
+        // does not match the semantics of the FPE's `errorActions` set, which only fills when
+        // an actual operation has failed. Reported on https://github.com/nextcloud/desktop/issues/9598.
+        syncState = OCC::SyncResult::Status::Error;
     } else if (statusString == QStringLiteral("SYNC_PAUSED")) {
         syncState = OCC::SyncResult::Status::Paused;
     } else {

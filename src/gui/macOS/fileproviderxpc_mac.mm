@@ -124,6 +124,11 @@ void FileProviderXPC::slotAccountStateChanged(const AccountState::State state) c
     case AccountState::Connected:
         // Provide credentials
         authenticateFileProviderDomain(fileProviderDomainId);
+        // Push the ignore list alongside credentials — the extension rejects
+        // `modifyItem` and friends with `.notAuthenticated` as long as its
+        // `ignoredFiles` is still `nil`, so a domain that comes online after
+        // startup needs both halves of the configuration, not just the one.
+        setIgnoreList();
         break;
     }
 }
@@ -213,6 +218,39 @@ bool FileProviderXPC::fileProviderDomainHasDirtyUserData(const QString &fileProv
     qCInfo(lcFileProviderXPC) << "File provider domain" << fileProviderDomainIdentifier << (hasDirtyUserData ? "has" : "does not have") << "dirty user data";
 
     return hasDirtyUserData;
+}
+
+bool FileProviderXPC::processFileIdsChanged(const QString &fileProviderDomainIdentifier, const QList<qint64> &fileIds) const
+{
+    const auto service = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(fileProviderDomainIdentifier);
+
+    if (service == nil) {
+        qCWarning(lcFileProviderXPC) << "Could not get service for file provider domain" << fileProviderDomainIdentifier;
+        return false;
+    }
+
+    NSMutableArray<NSNumber *> *const nsFileIds = [NSMutableArray arrayWithCapacity:fileIds.size()];
+
+    for (const auto fileId : fileIds) {
+        [nsFileIds addObject:@(fileId)];
+    }
+
+    __block auto processed = false;
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    [service processFileIdsChanged:nsFileIds completionHandler:^(BOOL didProcess) {
+        processed = didProcess;
+        dispatch_semaphore_signal(semaphore);
+    }];
+
+    const auto waitResult = dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
+
+    if (waitResult != 0) {
+        qCWarning(lcFileProviderXPC) << "Timed out while forwarding file ID changes to file provider domain"
+                                     << fileProviderDomainIdentifier;
+        return false;
+    }
+
+    return processed;
 }
 
 void FileProviderXPC::setIgnoreList() const

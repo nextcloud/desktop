@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 name: "🐞 Bug report"
 description: "Help us to improve by reporting a bug"
-title: "[Bug]: "
 labels: ["bug", "0. Needs triage"]
 type: "Bug"
 body:
@@ -23,7 +22,7 @@ body:
       options:
         - label: This is a **bug**, not a question or a configuration issue.
           required: true
-        - label: This issue is **not** already reported on Github (I've searched it).
+        - label: This issue is **not** already reported on Github (I have searched for it).
           required: true
         - label: Nextcloud Server and Desktop Client are **up to date**. See [Server Maintenance and Release Schedule](https://github.com/nextcloud/server/wiki/Maintenance-and-Release-Schedule) and [Desktop Releases](https://nextcloud.com/install/#install-clients) for supported versions.
           required: true
@@ -84,25 +83,24 @@ body:
     id: distro
     attributes:
       label: Which version of the operating system you are running.
-      description: In case of Linux, provide the distribution + version.
+      description: In case of macOS, you can [quickly find out which version you are using as documented by Apple](https://support.apple.com/en-us/109033). In case of Linux, provide the distribution name and its version.
       placeholder: Windows 11
     validations:
       required: true
   - type: dropdown
     id: install-method
     attributes:
-      label: Package
-      description: Select installation method you used.
+      label: Installation method
+      description: Select the method you have used to install the Nextcloud Desktop Client.
       options:
         - "Official Linux AppImage"
         - "Official Windows MSI"
-        - "Official macOS 12+ universal pkg"
-        - "Official macOS Virtual files 12+ universal pkg"
-        - "Official PPA"
-        - "Community FlatPak"
-        - "Community SNAP package"
-        - "Distro package manager"
-        - "Compiled it myself"
+        - "Official Installer for macOS 13 and later"
+        - "Community PPA (please test with the AppImage package ?)"
+        - "Community FlatPak (please test with the AppImage package ?)"
+        - "Community SNAP package (please test with the AppImage package ?)"
+        - "Distro package manager (please test with the AppImage package ?)"
+        - "Compiled it myself (please test with the AppImage package ?)"
         - "Other"
     validations:
       required: true
@@ -111,7 +109,7 @@ body:
     attributes:
       label: Nextcloud Server version
       description: Nextcloud Server version.
-      placeholder: 28.0.5
+      placeholder: 33.0.0
     validations:
       required: true
   - type: input
@@ -119,18 +117,18 @@ body:
     attributes:
       label: Nextcloud Desktop Client version
       description: Nextcloud Desktop Client version.
-      placeholder: 3.16.0
+      placeholder: 33.0.0
     validations:
       required: true
   - type: dropdown
     id: fresh
     attributes:
-      label: Is this bug present after an update or on a fresh install?
-      description: Select if bug is present after an update or on a fresh install.
+      label: Did this occur after an update or on a clean installation?
+      description: Select if bug is present after an app update or on a clean installation without the client being installed before.
       options:
-        - "Updated from a minor version (ex. 3.16.1 to 3.16.2)"
-        - "Updated to a major version (ex. 3.16.3 to 3.17.0)"
-        - "Fresh desktop client install"
+        - "Minor version update (i.e. 33.0.0 → 33.0.1)"
+        - "Major version update (i.e. 4.0.0 → 33.0.0)"
+        - "Clean desktop client installation"
     validations:
       required: true
   - type: dropdown
@@ -138,10 +136,10 @@ body:
     attributes:
       label: Are you using the Nextcloud Server Encryption module?
       description: |
-        Select if encryption is Enabled on your Nextcloud Server.
+        Select whether encryption is enabled on your Nextcloud Server or not.
       options:
-        - "Encryption is Enabled"
-        - "Encryption is Disabled"
+        - "Yes"
+        - "No"
     validations:
       required: true
   - type: checkboxes
@@ -153,7 +151,7 @@ body:
         Describe in the "Additional info" section if you chose "Other".
       options:
       - label: "Default internal user-backend"
-      - label: "LDAP/ Active Directory"
+      - label: "LDAP or Active Directory"
       - label: "SSO - SAML"
       - label: "Other"
     validations:
@@ -164,8 +162,8 @@ body:
       label: Nextcloud Server logs
       description: |
         Provide Nextcloud Server logs lines.
-        Copy all contents from `data/nextcloud.log` or a RAW from `/settings/admin/logging` section:
-        > NOTE: This will be automatically formatted into code or attach the file to the issue.
+        Copy all contents from `data/nextcloud.log` or a RAW from `/settings/admin/logging` section.
+        > NOTE: This will be automatically formatted as code. Alternatively, you can attach the file to the issue.
       render: shell
     validations:
       required: false
@@ -182,7 +180,7 @@ body:
         ## :warning: Desktop Client Logs
         Under the "General" settings, you can click on **"Create Debug Archive"** to pick the location of where the desktop client will export the logs and the database to a zip file: https://docs.nextcloud.com/server/latest/admin_manual/desktop/troubleshooting.html#create-debug-archive
         > Please attach the debug archive to this issue. You can edit it down to the bug report time window to reduce size.
-        > Please note that the debug archive might include sensitive date. Review befor publishing
+        > Please note that the debug archive might include sensitive data. Review before publishing.
   - type: markdown
     attributes:
       value: |

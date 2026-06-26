@@ -15,17 +15,35 @@ extension Enumerator {
         if pageIndex == 0 {
             guard let firstFile = files.first else { return (nil, .invalidResponseError) }
             var metadata = firstFile.toItemMetadata()
+
             if metadata.directory {
+                // Mark the directory as visited in this request, then persist
+                // while preserving the rest of the local-only state. Skip
+                // preservation of `visitedDirectory` so the just-set `true`
+                // is not overwritten by the existing row's value.
                 metadata.visitedDirectory = true
-                if let existingMetadata = dbManager.itemMetadata(ocId: metadata.ocId) {
-                    metadata.downloaded = existingMetadata.downloaded
-                    metadata.keepDownloaded = existingMetadata.keepDownloaded
-                }
+                dbManager.addItemMetadataPreservingLocalState(metadata, preserveVisitedDirectory: false)
+            } else {
+                dbManager.addItemMetadataPreservingLocalState(metadata)
             }
-            dbManager.addItemMetadata(metadata)
         }
-        let metadatas = files[startIndex...].map { $0.toItemMetadata() }
-        metadatas.forEach { dbManager.addItemMetadata($0) }
+
+        // Persist children — including those on follow-up pages — while
+        // carrying over any local-only state previously set on existing rows
+        // (e.g. `keepDownloaded` from a recursive "Always keep downloaded"
+        // enable). A plain `addItemMetadata` would clobber those flags via
+        // Realm's `update: .all`, which is the root cause of #9923.
+        //
+        // Use the merged metadata returned by the helper for both the DB
+        // write and the value reported back to the framework. Returning the
+        // pre-merge fresh-from-server metadata would tell the framework
+        // `keepDownloaded == false` for items that are pinned in the
+        // database, leaving the OS view (`isKeepDownloaded`, `contentPolicy`)
+        // out of sync with the local truth.
+        let metadatas = files[startIndex...].map { file -> SendableItemMetadata in
+            dbManager.addItemMetadataPreservingLocalState(file.toItemMetadata())
+        }
+
         return (metadatas, nil)
     }
 
@@ -41,9 +59,7 @@ extension Enumerator {
         log: any FileProviderLogging
     ) async -> (
         metadatas: [SendableItemMetadata]?,
-        newMetadatas: [SendableItemMetadata]?,
-        updatedMetadatas: [SendableItemMetadata]?,
-        deletedMetadatas: [SendableItemMetadata]?,
+        changes: ChangeSet?,
         readError: NKError?
     ) {
         let logger = FileProviderLogger(category: "Enumerator", log: log)
@@ -53,18 +69,18 @@ extension Enumerator {
         if let pageIndex {
             let (metadatas, error) =
                 handlePagedReadResults(files: files, pageIndex: pageIndex, dbManager: dbManager)
-            return (metadatas, nil, nil, nil, error)
+            return (metadatas, nil, error)
         }
 
         guard var (directory, _, files) = await files.toSendableDirectoryMetadata(account: account, directoryToRead: serverUrl) else {
             logger.error("Failed to convert array of NKFile to directory and files metadata objects!")
-            return (nil, nil, nil, nil, .invalidData)
+            return (nil, nil, .invalidData)
         }
 
         // STORE DATA FOR CURRENTLY SCANNED DIRECTORY
         guard directory.directory else {
             logger.error("Expected directory metadata but received file metadata!", [.url: serverUrl])
-            return (nil, nil, nil, nil, .invalidData)
+            return (nil, nil, .invalidData)
         }
 
         if let existingMetadata = dbManager.itemMetadata(ocId: directory.ocId) {
@@ -76,20 +92,14 @@ extension Enumerator {
 
         files.insert(directory, at: 0)
 
-        let changedMetadatas = dbManager.depth1ReadUpdateItemMetadatas(
+        let changes = dbManager.depth1ReadUpdateItemMetadatas(
             account: account.ncKitAccount,
             serverUrl: serverUrl,
             updatedMetadatas: files,
             keepExistingDownloadState: true
         )
 
-        return (
-            files,
-            changedMetadatas.newMetadatas,
-            changedMetadatas.updatedMetadatas,
-            changedMetadatas.deletedMetadatas,
-            nil
-        )
+        return (files, changes, nil)
     }
 
     /// READ THIS CAREFULLY.
@@ -115,14 +125,7 @@ extension Enumerator {
         enumeratedItemIdentifier: NSFileProviderItemIdentifier? = nil,
         depth: EnumerateDepth = .targetAndDirectChildren,
         log: any FileProviderLogging
-    ) async -> (
-        metadatas: [SendableItemMetadata]?,
-        newMetadatas: [SendableItemMetadata]?,
-        updatedMetadatas: [SendableItemMetadata]?,
-        deletedMetadatas: [SendableItemMetadata]?,
-        nextPage: EnumeratorPageResponse?,
-        readError: NKError?
-    ) {
+    ) async -> RemoteReadResult {
         let logger = FileProviderLogger(category: "Enumerator", log: log)
 
         logger.debug("Starting to read server URL.", [.url: serverUrl])
@@ -158,12 +161,12 @@ extension Enumerator {
 
         guard error == .success else {
             logger.error("Read of URL did fail.", [.error: error, .url: serverUrl])
-            return (nil, nil, nil, nil, nil, error)
+            return RemoteReadResult(error: error)
         }
 
         guard let data else {
             logger.error("\(depth.rawValue) depth read of url \(serverUrl) did not return data.")
-            return (nil, nil, nil, nil, nil, error)
+            return RemoteReadResult(error: error)
         }
 
         // This will be nil if the page settings were also nil, as the server will not give us the
@@ -174,7 +177,7 @@ extension Enumerator {
             logger.error("Received no items.", [.url: serverUrl])
             // This is technically possible when doing a paginated request with the index too high.
             // It's technically not an error reply.
-            return ([], nil, nil, nil, nextPage, nil)
+            return RemoteReadResult(metadatas: [], nextPage: nextPage)
         }
 
         // Generally speaking a PROPFIND will provide the target of the PROPFIND as the first result
@@ -194,9 +197,21 @@ extension Enumerator {
                 metadata.lockToken = existing?.lockToken
                 let updatedItems: [SendableItemMetadata] = isNew ? [] : [metadata]
                 metadata.downloaded = existing?.downloaded == true
-                metadata.keepDownloaded = existing?.keepDownloaded == true
+
+                if let existing {
+                    metadata.keepDownloaded = existing.keepDownloaded
+                } else {
+                    // Genuinely new item: inherit the parent's pin so the
+                    // overlay and `contentPolicy` match its siblings (#10054).
+                    metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
+                }
+
                 dbManager.addItemMetadata(metadata)
-                return ([metadata], newItems, updatedItems, [], nextPage, nil)
+                return RemoteReadResult(
+                    metadatas: [metadata],
+                    changes: ChangeSet(created: newItems, updated: updatedItems),
+                    nextPage: nextPage
+                )
             }
         }
 
@@ -207,13 +222,27 @@ extension Enumerator {
             let updatedMetadatas = isNew ? [] : [metadata]
             let newMetadatas = isNew ? [metadata] : []
 
+            metadata.lockToken = existing?.lockToken
+            metadata.visitedDirectory = existing?.visitedDirectory == true
             metadata.downloaded = existing?.downloaded == true
-            metadata.keepDownloaded = existing?.keepDownloaded == true
+
+            if let existing {
+                metadata.keepDownloaded = existing.keepDownloaded
+            } else {
+                // Genuinely new item: inherit the parent's pin so the
+                // overlay and `contentPolicy` match its siblings (#10054).
+                metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
+            }
+
             dbManager.addItemMetadata(metadata)
 
-            return ([metadata], newMetadatas, updatedMetadatas, [], nextPage, nil)
+            return RemoteReadResult(
+                metadatas: [metadata],
+                changes: ChangeSet(created: newMetadatas, updated: updatedMetadatas),
+                nextPage: nextPage
+            )
         } else if depth == .targetAndDirectChildren {
-            let (allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError) = await handleDepth1ReadFileOrFolder(
+            let depth1Read = await handleDepth1ReadFileOrFolder(
                 serverUrl: serverUrl,
                 account: account,
                 dbManager: dbManager,
@@ -222,15 +251,21 @@ extension Enumerator {
                 log: logger.log
             )
 
-            return (allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, nextPage, readError)
+            return RemoteReadResult(
+                metadatas: depth1Read.metadatas,
+                changes: depth1Read.changes,
+                nextPage: nextPage,
+                error: depth1Read.readError
+            )
         } else if let pageIndex = pageSettings?.index {
             let (metadatas, error) = handlePagedReadResults(
                 files: files, pageIndex: pageIndex, dbManager: dbManager
             )
-            return (metadatas, nil, nil, nil, nextPage, error)
+            return RemoteReadResult(metadatas: metadatas, nextPage: nextPage, error: error)
         } else {
             // Infinite depth unpaged reads are a bad idea
-            return (nil, nil, nil, nil, nil, .invalidResponseError)
+            logger.error("Infinite depth read requested.")
+            return RemoteReadResult(error: .cancelled)
         }
     }
 }

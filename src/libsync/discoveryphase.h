@@ -345,6 +345,9 @@ signals:
     void addErrorToGui(const OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject, const OCC::ErrorCategory category);
 
     void remnantReadOnlyFolderDiscovered(const OCC::SyncFileItemPtr &item);
+
+    /** Emitted when propagation would have problems with a locked file. */
+    void seenLockedFile(const QString &fileName);
 private slots:
     void slotItemDiscovered(const OCC::SyncFileItemPtr &item);
 };

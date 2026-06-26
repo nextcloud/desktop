@@ -3,14 +3,15 @@
 name: Linux GCC compilation and tests
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, reopened, synchronize, ready_for_review]
 jobs:
   build:
+    if: ${{ !github.event.pull_request.draft }}
     name: Linux GCC compilation and tests
     runs-on: ubuntu-latest
-    container: ghcr.io/nextcloud/continuous-integration-client-qt6:client-forky-6.9.2-3
+    container: ghcr.io/nextcloud/continuous-integration-client-qt6:client-sid-6.10.2-2
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           fetch-depth: 1
       - name: Configure and compile

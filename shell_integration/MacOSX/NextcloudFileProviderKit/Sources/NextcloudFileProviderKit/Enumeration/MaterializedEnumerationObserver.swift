@@ -61,11 +61,18 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
             } else {
                 stillMaterializedItems.insert(enumeratedIdentifier)
 
-                guard var metadata = if enumeratedIdentifier == .rootContainer {
-                    dbManager.rootItemMetadata(account: account)
-                } else {
-                    dbManager.itemMetadata(enumeratedIdentifier)
-                } else {
+                var metadata: SendableItemMetadata?
+
+                switch enumeratedIdentifier {
+                    case .rootContainer:
+                        metadata = dbManager.rootItemMetadata(account: account)
+                    case .trashContainer:
+                        continue // there is no placeholder item for the trash container in the database
+                    default:
+                        metadata = dbManager.itemMetadata(enumeratedIdentifier)
+                }
+
+                guard var metadata else {
                     logger.error("No metadata for enumerated item found.", [.item: enumeratedIdentifier])
                     continue
                 }
@@ -90,7 +97,16 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
             logger.info("Updating item state to dataless.", [.name: metadata.fileName, .item: evictedItemIdentifier])
 
             metadata.downloaded = false
-            metadata.visitedDirectory = false
+
+            // Being absent from enumeratorForMaterializedItems only means the item has no
+            // local materialized content. For directories, visitedDirectory is our refresh
+            // subscription: if Finder has enumerated a folder before, keep watching it for
+            // remote child changes even when macOS reports it as dataless. This matters for
+            // shared mount roots, which may be omitted from materialized items after browsing.
+            if !metadata.directory {
+                metadata.visitedDirectory = false
+            }
+
             dbManager.addItemMetadata(metadata)
         }
 

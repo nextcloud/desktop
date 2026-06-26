@@ -37,6 +37,27 @@ func upload(
     let fileSize =
         (try? FileManager.default.attributesOfItem(atPath: localFilePath)[.size] as? Int64) ?? 0
 
+    // Pre-flight quota check: a depth-0 PROPFIND on the destination's parent picks up
+    // the user-level quota plus any tighter per-folder quota (group folders, external
+    // shares). Failing fast here keeps multi-GB chunked uploads from running for minutes
+    // before being rejected by a final 507. See nextcloud/desktop#9598.
+
+    if let lastSlash = remotePath.lastIndex(of: "/") {
+        let parentRemotePath = String(remotePath[..<lastSlash])
+
+        if !parentRemotePath.isEmpty {
+            let (_, files, _, propfindError) = await remoteInterface.enumerate(remotePath: parentRemotePath, depth: .target, showHiddenFiles: true, includeHiddenFiles: [], requestBody: nil, account: account, options: options, taskHandler: taskHandler)
+
+            if propfindError == .success, let availableBytes = files.first?.quotaAvailableBytes, availableBytes >= 0, fileSize > availableBytes {
+                uploadLogger.info("Refusing upload: file size \(fileSize) bytes exceeds available server quota of \(availableBytes) bytes.", [.url: remotePath])
+
+                return (nil, nil, nil, nil, NKError(statusCode: 507, fallbackDescription: "Insufficient quota on the server."))
+            } else if propfindError != .success {
+                uploadLogger.info("Could not check available quota. Proceeding with upload anyway.", [.error: propfindError, .url: parentRemotePath])
+            }
+        }
+    }
+
     let chunkSize = await {
         if let chunkSize {
             uploadLogger.info("Using provided chunkSize: \(chunkSize)")

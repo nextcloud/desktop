@@ -28,6 +28,14 @@ extension NKError {
         errorCode == 404
     }
 
+    var isPreconditionFailedError: Bool {
+        errorCode == 412
+    }
+
+    var isLockedError: Bool {
+        errorCode == 423
+    }
+
     var isNoChangesError: Bool {
         errorCode == NKError.noChangesErrorCode
     }
@@ -49,7 +57,6 @@ extension NKError {
         } else if isNotFoundError {
             NSFileProviderError(.noSuchItem)
         } else if isCouldntConnectError {
-            // Provide something the file provider can do something with
             NSFileProviderError(.serverUnreachable)
         } else if isUnauthenticatedError || isUnauthorizedError {
             NSFileProviderError(.notAuthenticated)

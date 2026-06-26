@@ -11,21 +11,22 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Legal notice</string>
+   <string/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="header">
      <property name="font">
       <font>
-       <pointsize>13</pointsize>
+       <pointsize>20</pointsize>
+       <bold>true</bold>
       </font>
      </property>
      <property name="text">
       <string>Legal notice</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
    </item>

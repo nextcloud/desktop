@@ -29,6 +29,7 @@ class QListWidgetItem;
 class QLabel;
 class QPushButton;
 class QIcon;
+class QFrame;
 
 namespace OCC {
 
@@ -89,6 +90,7 @@ protected slots:
     void slotScheduleCurrentFolderForceRemoteDiscovery();
     void slotForceSyncCurrentFolder();
     void slotRemoveCurrentFolder();
+    void slotRemoveAccount();
     void slotOpenCurrentFolder(); // sync folder
     void slotOpenCurrentLocalSubFolder(); // selected subfolder in sync folder
     void slotEditCurrentIgnoredFiles();
@@ -130,6 +132,7 @@ private slots:
     void forgetEncryptionOnDeviceForAccount(const OCC::AccountPtr &account) const;
     void migrateCertificateForAccount(const OCC::AccountPtr &account);
     void showConnectionLabel(const QString &message, QStringList errors = QStringList());
+    void showConnectionSettingsDialog();
     void openIgnoredFilesDialog(const QString & absFolderPath);
     void customizeStyle();
 
@@ -137,6 +140,7 @@ private slots:
     void forgetE2eEncryption();
     void checkClientSideEncryptionState();
     void removeActionFromEncryptionMessage(const QString &actionId);
+    void setEncryptionPanelVisible(bool visible);
 
 private:
     bool event(QEvent *) override;
@@ -160,6 +164,7 @@ private:
     QAction *_addAccountAction = nullptr;
 
     bool _menuShown = false;
+    QFrame *_encryptionPanel = nullptr;
 
     QHash<QString, QMetaObject::Connection> _folderConnections;
     QHash<QAction *, QPushButton *> _encryptionMessageButtons;

@@ -158,6 +158,11 @@ QString Utility::getAppExecutablePath()
     return executablePath;
 }
 
+bool Utility::launchOnStartupRequiresApproval()
+{
+    return false;
+}
+
 bool Utility::hasDarkSystray()
 {
     return true;

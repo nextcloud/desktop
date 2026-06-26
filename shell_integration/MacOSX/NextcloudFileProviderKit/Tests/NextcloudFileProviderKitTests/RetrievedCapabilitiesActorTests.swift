@@ -8,7 +8,6 @@ import Testing
 @testable import TestInterface
 import XCTest
 
-@Suite("RetrievedCapabilitiesActor tests")
 struct RetrievedCapabilitiesActorTests {
     let account1 = "acc1"
     let account2 = "acc2"

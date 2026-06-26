@@ -13,4 +13,4 @@ NoNewPrivileges=true
 RestrictRealtime=true
 
 [Install]
-WantedBy=default.target
+WantedBy=graphical.target

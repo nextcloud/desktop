@@ -39,6 +39,12 @@ public:
 
     static constexpr auto WhitelistFolderVerb = "WHITELIST_FOLDER";
     static constexpr auto BlacklistFolderVerb = "BLACKLIST_FOLDER";
+    /// Verb for the per-folder summary entry the file provider extension surfaces when an
+    /// upload is refused for insufficient server-side quota. The link payload is the file
+    /// provider domain identifier; `ActivityListModel::slotTriggerAction` dispatches this
+    /// verb to `User::slotFileProviderRetryUploads` and clears the quota entries for the
+    /// domain. See https://github.com/nextcloud/desktop/issues/9598.
+    static constexpr auto FileProviderRetryUploadsVerb = "FILE_PROVIDER_RETRY_UPLOADS";
 
 public:
     QString _imageSource;

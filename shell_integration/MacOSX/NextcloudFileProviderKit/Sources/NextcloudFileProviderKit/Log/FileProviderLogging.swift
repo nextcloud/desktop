@@ -8,12 +8,21 @@ import os
 ///
 public protocol FileProviderLogging: Actor {
     ///
-    /// Write a message to the unified logging system and current log file.
+    /// Whether `.debug`-level messages are currently included in the logging output.
+    ///
+    /// ``FileProviderLogger`` reads this before forwarding debug messages to Apple's unified logging system so the gate applies to both destinations.
+    /// The value is controlled at runtime via the `debugLoggingEnabled` user default; see `Logging.md`.
+    ///
+    var debugLoggingEnabled: Bool { get }
+
+    ///
+    /// Write a message to the current JSON Lines log file.
     ///
     /// Usually, you do not need or want to use this but the methods provided by ``FileProviderLogger`` instead.
+    /// Forwarding to Apple's unified logging system is handled by ``FileProviderLogger`` so that each message is tagged with the calling type's category.
     ///
     /// - Parameters:
-    ///     - category: The unified logging category to use. Usually, this is the logging type.
+    ///     - category: The logging category to use. Usually, this is the logging type.
     ///     - level: The severity of the message.
     ///     - message: A human-readable message, preferably generic and without interpolations. The `details` argument is for arguments.
     ///     - details: Structured and contextual details about a message.

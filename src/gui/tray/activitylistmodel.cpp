@@ -673,6 +673,54 @@ void ActivityListModel::removeActivityFromActivityList(const Activity &activity)
     }
 }
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+qint64 ActivityListModel::fileProviderQuotaSummaryActivityId(const QString &domainIdentifier)
+{
+    return -static_cast<qint64>(qHash(QStringLiteral("fp-quota-summary:") + domainIdentifier));
+}
+
+qint64 ActivityListModel::fileProviderQuotaItemActivityId(
+    const QString &domainIdentifier, const QString &relativePath, const QString &fileName)
+{
+    return -static_cast<qint64>(qHash(QStringLiteral("fp-quota-item:") + domainIdentifier + relativePath + fileName));
+}
+
+void ActivityListModel::removeFileProviderQuotaActivitiesForDomain(const QString &domainIdentifier)
+{
+    if (domainIdentifier.isEmpty()) {
+        return;
+    }
+
+    const auto summaryId = fileProviderQuotaSummaryActivityId(domainIdentifier);
+
+    // Both the per-folder summary (constructed by `User::slotFileProviderInsufficientQuotaSummary`)
+    // and each per-item entry (constructed by `slotFileProviderInsufficientQuotaForItem`) stamp
+    // the file provider domain identifier into `_folder` for exactly this reason: the retry
+    // sweep can match by it without parsing subjects. A summary entry is identified by its
+    // stable id; per-item entries are identified by `_folder == domainIdentifier` plus the
+    // `DetailError` status (the only status we ever publish for these item entries).
+    ActivityList toRemove;
+    for (const auto &activity : std::as_const(_finalList)) {
+        if (activity._id == summaryId) {
+            toRemove.append(activity);
+            continue;
+        }
+        if (activity._type == Activity::SyncFileItemType
+            && activity._syncFileItemStatus == SyncFileItem::DetailError
+            && activity._folder == domainIdentifier) {
+            toRemove.append(activity);
+        }
+    }
+
+    for (const auto &activity : std::as_const(toRemove)) {
+        removeActivityFromActivityList(activity);
+    }
+
+    qCInfo(lcActivity) << "Removed" << toRemove.size()
+                       << "file provider quota activities for domain" << domainIdentifier;
+}
+#endif
+
 void ActivityListModel::removeOutdatedNotifications(const OCC::ActivityList &receivedNotifications)
 {
     ActivityList activitiesToRemove;
@@ -855,6 +903,17 @@ void ActivityListModel::slotTriggerAction(const int activityIndex, const int act
         removeActivityFromActivityList(activity);
         return;
     }
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    else if (action._verb == ActivityLink::FileProviderRetryUploadsVerb) {
+        const auto domainIdentifier = action._link;
+        // Tell the system to drop the cached `.insufficientQuota` error and re-enumerate
+        // (handled by `OCC::User::slotFileProviderRetryUploads`), then sweep the related
+        // activity entries from the list so the user gets immediate feedback.
+        emit fileProviderRetryUploadsRequested(domainIdentifier);
+        removeFileProviderQuotaActivitiesForDomain(domainIdentifier);
+        return;
+    }
+#endif
 
     emit sendNotificationRequest(activity._accName, action._link, action._verb, activityIndex);
 }

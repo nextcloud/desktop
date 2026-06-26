@@ -150,6 +150,9 @@ namespace Utility {
     OCSYNC_EXPORT bool hasSystemLaunchOnStartup(const QString &appName);
     OCSYNC_EXPORT bool hasLaunchOnStartup(const QString &appName);
     OCSYNC_EXPORT void setLaunchOnStartup(const QString &appName, const QString &guiName, const bool launch);
+    /** On macOS, returns true when the login item is registered but awaiting user approval
+     *  in System Settings → General → Login Items. Always returns false on other platforms. */
+    OCSYNC_EXPORT bool launchOnStartupRequiresApproval();
     OCSYNC_EXPORT uint convertSizeToUint(size_t &convertVar);
     OCSYNC_EXPORT int convertSizeToInt(size_t &convertVar);
 
@@ -232,13 +235,6 @@ namespace Utility {
     // uses QDir::canonicalPath() to judge and cares for the systems
     // case sensitivity.
     OCSYNC_EXPORT bool fileNamesEqual(const QString &fn1, const QString &fn2);
-
-    // Call the given command with the switch --version and rerun the first line
-    // of the output.
-    // If command is empty, the function calls the running application which, on
-    // Linux, might have changed while this one is running.
-    // For Mac and Windows, it returns QString()
-    OCSYNC_EXPORT QByteArray versionOfInstalledBinary(const QString &command = QString());
 
     OCSYNC_EXPORT QString fileNameForGuiUse(const QString &fName);
 

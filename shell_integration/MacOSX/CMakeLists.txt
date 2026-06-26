@@ -2,7 +2,11 @@
 # SPDX-FileCopyrightText: 2014 ownCloud GmbH
 # SPDX-License-Identifier: GPL-2.0-or-later
 if(APPLE)
-    set(OC_OEM_SHARE_ICNS "${CMAKE_BINARY_DIR}/src/gui/${APPLICATION_ICON_NAME}.icns")
+    if(MACOS_USE_ICON_COMPOSER)
+        set(OC_OEM_SHARE_ICNS "${CMAKE_BINARY_DIR}/src/gui/AppIconCompiled/AppIcon.icns")
+    else()
+        set(OC_OEM_SHARE_ICNS "${CMAKE_BINARY_DIR}/src/gui/${APPLICATION_ICON_NAME}.icns")
+    endif()
 
     if (NEXTCLOUD_DEV)
         set(XCODE_TARGET_CONFIGURATION "Debug")
@@ -15,9 +19,15 @@ if(APPLE)
     # Pass the info through the xcodebuild command line and make sure that the project uses
     # those user-defined settings to build the plist.
     add_custom_target( mac_overlayplugin ALL
-        xcodebuild ARCHS=${CMAKE_OSX_ARCHITECTURES} ONLY_ACTIVE_ARCH=NO
+        xcodebuild
+        ARCHS=${CMAKE_OSX_ARCHITECTURES}
+        ONLY_ACTIVE_ARCH=NO
         -project ${CMAKE_SOURCE_DIR}/shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj
-        -target FinderSyncExt -configuration ${XCODE_TARGET_CONFIGURATION} "SYMROOT=${CMAKE_CURRENT_BINARY_DIR}"
+        -target FinderSyncExt
+        -configuration ${XCODE_TARGET_CONFIGURATION}
+        "SYMROOT=${CMAKE_CURRENT_BINARY_DIR}"
+        "MARKETING_VERSION=${MIRALL_VERSION}"
+        "CURRENT_PROJECT_VERSION=${MIRALL_VERSION_BUILD}"
         "OC_OEM_SHARE_ICNS=${OC_OEM_SHARE_ICNS}"
         "OC_APPLICATION_NAME=${APPLICATION_NAME}"
         "OC_APPLICATION_REV_DOMAIN=${APPLICATION_REV_DOMAIN}"
@@ -26,11 +36,15 @@ if(APPLE)
 
     if (BUILD_FILE_PROVIDER_MODULE)
         add_custom_target( mac_fileproviderplugin ALL
-            xcodebuild ARCHS=${CMAKE_OSX_ARCHITECTURES} ONLY_ACTIVE_ARCH=NO
+            xcodebuild
+            ARCHS=${CMAKE_OSX_ARCHITECTURES}
+            ONLY_ACTIVE_ARCH=NO
             -project ${CMAKE_SOURCE_DIR}/shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj
             -target FileProviderExt 
             -configuration ${XCODE_TARGET_CONFIGURATION}
             "SYMROOT=${CMAKE_CURRENT_BINARY_DIR}"
+            "MARKETING_VERSION=${MIRALL_VERSION}"
+            "CURRENT_PROJECT_VERSION=${MIRALL_VERSION_BUILD}"
             "OC_APPLICATION_EXECUTABLE_NAME=${APPLICATION_EXECUTABLE}"
             "OC_APPLICATION_VENDOR=${APPLICATION_VENDOR}"
             "OC_APPLICATION_NAME=${APPLICATION_NAME}"
@@ -39,9 +53,15 @@ if(APPLE)
             VERBATIM)
 
         add_custom_target( mac_fileprovideruiplugin ALL
-            xcodebuild ARCHS=${CMAKE_OSX_ARCHITECTURES} ONLY_ACTIVE_ARCH=NO
+            xcodebuild
+            ARCHS=${CMAKE_OSX_ARCHITECTURES}
+            ONLY_ACTIVE_ARCH=NO
             -project ${CMAKE_SOURCE_DIR}/shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj
-            -target FileProviderUIExt -configuration ${XCODE_TARGET_CONFIGURATION} "SYMROOT=${CMAKE_CURRENT_BINARY_DIR}"
+            -target FileProviderUIExt
+            -configuration ${XCODE_TARGET_CONFIGURATION}
+            "SYMROOT=${CMAKE_CURRENT_BINARY_DIR}"
+            "MARKETING_VERSION=${MIRALL_VERSION}"
+            "CURRENT_PROJECT_VERSION=${MIRALL_VERSION_BUILD}"
             "OC_APPLICATION_EXECUTABLE_NAME=${APPLICATION_EXECUTABLE}"
             "OC_APPLICATION_VENDOR=${APPLICATION_VENDOR}"
             "OC_APPLICATION_NAME=${APPLICATION_NAME}"
@@ -94,6 +114,10 @@ if(APPLE)
             install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${XCODE_TARGET_CONFIGURATION}/PackageFrameworks/RealmSwift.framework
                 DESTINATION ${OSX_PLUGINS_INSTALL_DIR}/FileProviderUIExt.appex/Contents/Frameworks
                 USE_SOURCE_PERMISSIONS)
+
+            # File provider badge icon asset for items marked as "Always keep downloaded"
+            install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/KeepDownloaded.icns
+                DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources)
         endif()
     endif()
 endif()

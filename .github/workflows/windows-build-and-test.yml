@@ -3,9 +3,10 @@
 name: Windows Build and Test
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, reopened, synchronize, ready_for_review]
 jobs:
   build:
+    if: ${{ !github.event.pull_request.draft }}
     name: Windows Build and Test
     runs-on: windows-2022
     env:
@@ -14,7 +15,7 @@ jobs:
       CRAFT_MASTER_LOCATION: ${{ github.workspace }}\CraftMaster
       CRAFT_MASTER_CONFIG: ${{ github.workspace }}\craftmaster.ini
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
 
@@ -31,14 +32,14 @@ jobs:
               if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
           }
           
-          craft --add-blueprint-repository "https://github.com/nextcloud/craft-blueprints-kde.git|master|"
-          craft --add-blueprint-repository "https://github.com/nextcloud/desktop-client-blueprints.git|master|"
+          craft --add-blueprint-repository "https://github.com/nextcloud/craft-blueprints-kde.git|stable-34.0|"
+          craft --add-blueprint-repository "https://github.com/nextcloud/craft-blueprints-nextcloud.git|stable-34.0|"
           craft craft
           craft --install-deps nextcloud-client
           
       - name: Cache Install OpenCppCoverage
         id: cache-install-opencppcoverage
-        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: C:\Program Files\OpenCppCoverage
           key: ${{ runner.os }}-cache-install-opencppcoverage
@@ -51,7 +52,7 @@ jobs:
 
       #- name: Cache Install inkscape
       #  id: cache-install-inkscape
-      #  uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+      #  uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
       #  with:
       #    path: C:\Program Files\inkscape
       #    key: ${{ runner.os }}-cache-install-inkscape

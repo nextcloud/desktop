@@ -17,7 +17,11 @@ HeaderButton {
     signal folderEntryTriggered(string fullFolderPath, bool isGroupFolder)
 
     required property var currentUser
-    property bool userHasGroupFolders: currentUser.groupFolders.length > 0
+    // Group folders are only navigable from this dropdown when the account has a
+    // classic-sync local folder — sandbox restrictions stop us revealing descendants
+    // of a file-provider domain in Finder, so file-provider accounts always use the
+    // folder button as a single-click "reveal root container" affordance instead.
+    property bool userHasGroupFolders: currentUser.hasLocalFolder && currentUser.groupFolders.length > 0
     property color parentBackgroundColor: "transparent"
 
     function openMenu() {
@@ -36,7 +40,7 @@ HeaderButton {
         }
     }
 
-    visible: currentUser.hasLocalFolder
+    visible: currentUser.hasLocalFolder || (Qt.platform.os === "osx" && currentUser.hasFileProvider)
     display: AbstractButton.IconOnly
     flat: true
 
@@ -55,7 +59,7 @@ HeaderButton {
         id: tooltip
         popupType: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
         visible: root.hovered && !foldersMenuLoader.isMenuVisible
-        text: root.userHasGroupFolders ? qsTr("Open local or group folders") : qsTr("Open local folder")
+        text: root.userHasGroupFolders ? qsTr("Open local or team folders") : qsTr("Open local folder")
     }
 
 
@@ -169,7 +173,7 @@ HeaderButton {
                         property bool isGroupFolder: model.modelData.isGroupFolder
 
                         text: model.modelData.name
-                        toolTipText: !isGroupFolder ? qsTr("Open local folder \"%1\"").arg(model.modelData.fullPath) : qsTr("Open group folder \"%1\"").arg(model.modelData.fullPath)
+                        toolTipText: !isGroupFolder ? qsTr("Open local folder \"%1\"").arg(model.modelData.fullPath) : qsTr("Open team folder \"%1\"").arg(model.modelData.fullPath)
                         subline: model.modelData.parentPath
                         width: foldersMenuListView.width
                         height: Style.standardPrimaryButtonHeight

@@ -102,7 +102,9 @@ RowLayout {
 
         visible: !activityModel.hasSyncConflicts &&
                  !syncStatus.syncing &&
-                 NC.UserModel.currentUser.hasLocalFolder &&
+                 !syncStatus.needsSandboxReapproval &&
+                 (NC.UserModel.currentUser.hasLocalFolder ||
+                  (Qt.platform.os === "osx" && NC.UserModel.currentUser.hasFileProvider)) &&
                  NC.UserModel.currentUser.isConnected
         enabled: visible
         onClicked: {
@@ -134,5 +136,19 @@ RowLayout {
         enabled: visible
 
         onClicked: NC.UserModel.openCurrentAccountServer()
+    }
+
+    Button {
+        Layout.rightMargin: Style.trayHorizontalMargin
+
+        text: qsTr("Open settings")
+
+        visible: syncStatus.needsSandboxReapproval &&
+                 !syncStatus.syncing &&
+                 NC.UserModel.currentUser.hasLocalFolder &&
+                 NC.UserModel.currentUser.isConnected
+        enabled: visible
+
+        onClicked: NC.Systray.openSettingsForSandboxReapproval()
     }
 }

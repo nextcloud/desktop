@@ -218,8 +218,7 @@ void ProcessDirectoryJob::process()
         // If the filename starts with a . we consider it a hidden file
         // For windows, the hidden state is also discovered within the vio
         // local stat function.
-        // Recall file shall not be ignored (#4420)
-        const auto isHidden = e.localEntry.isHidden || (!f.first.isEmpty() && f.first[0] == '.' && f.first != QLatin1String(".sys.admin#recall#"));
+        const auto isHidden = e.localEntry.isHidden || (!f.first.isEmpty() && f.first[0] == '.');
 
         const auto isEncryptedFolderButE2eIsNotSetup = e.serverEntry.isValid() && e.serverEntry.isE2eEncrypted() &&
             _discoveryData->_account->e2e() && !_discoveryData->_account->e2e()->isInitialized();
@@ -354,6 +353,14 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         }
     }
 
+    if (excluded == CSYNC_NOT_EXCLUDED && OCC::FileSystem::isFileLocked(_discoveryData->_localDir + path, OCC::FileSystem::LockMode::SharedRead) &&
+        (!entries.dbEntry.isValid() || !entries.serverEntry.isValid() || entries.serverEntry.etag == entries.dbEntry._etag)) {
+        qCInfo(lcDisco) << _discoveryData->_localDir + path << "is locked" << "exluding it from sync";
+        excluded = CSYNC_FILE_LOCKED_SILENTLY_EXCLUDED;
+
+        emit _discoveryData->seenLockedFile(_discoveryData->_localDir + path);
+    }
+
     if (excluded == CSYNC_NOT_EXCLUDED && !entries.localEntry.isSymLink) {
         return false;
     } else if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED || excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
@@ -383,6 +390,9 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         case CSYNC_FILE_SILENTLY_EXCLUDED:
         case CSYNC_FILE_EXCLUDE_AND_REMOVE:
             qCFatal(lcDisco) << "These were handled earlier";
+            break;
+        case CSYNC_FILE_LOCKED_SILENTLY_EXCLUDED:
+            item->_errorString = tr("File is locked by another application.");
             break;
         case CSYNC_FILE_EXCLUDE_LIST:
             item->_errorString = tr("File is listed on the ignore list.");
@@ -744,8 +754,13 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
         Q_ASSERT(item->_e2eEncryptionStatus != SyncFileItem::EncryptionStatus::NotEncrypted);
     }
     item->_encryptedFileName = [=, this] {
+        auto result = QString{};
+
+        if (item->_e2eEncryptionStatus == SyncFileItem::EncryptionStatus::NotEncrypted) {
+            return result;
+        }
         if (serverEntry.e2eMangledName.isEmpty()) {
-            return QString();
+            return result;
         }
 
         Q_ASSERT(_discoveryData->_remoteFolder.startsWith('/'));
@@ -753,7 +768,8 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
 
         const auto rootPath = _discoveryData->_remoteFolder.mid(1);
         Q_ASSERT(serverEntry.e2eMangledName.startsWith(rootPath));
-        return serverEntry.e2eMangledName.mid(rootPath.length());
+        result = serverEntry.e2eMangledName.mid(rootPath.length());
+        return result;
     }();
     item->_locked = serverEntry.locked;
     item->_lockOwnerDisplayName = serverEntry.lockOwnerDisplayName;
@@ -833,7 +849,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
             item->_direction = SyncFileItem::Down;
             item->_instruction = CSYNC_INSTRUCTION_SYNC;
             item->_type = ItemTypeVirtualFileDownload;
-        } else if (serverEntry.isValid() && !serverEntry.isDirectory && !serverEntry.remotePerm.isNull() && !serverEntry.remotePerm.hasPermission(RemotePermissions::CanRead)) {
+        } else if (serverEntry.isValid() && !serverEntry.remotePerm.isNull() && !serverEntry.remotePerm.hasPermission(RemotePermissions::CanRead)) {
             item->_instruction = CSYNC_INSTRUCTION_REMOVE;
             item->_direction = SyncFileItem::Down;
         } else if (dbEntry._etag != serverEntry.etag) {
@@ -928,7 +944,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
         return;
     }
 
-    if (serverEntry.isValid() && !serverEntry.isDirectory && !serverEntry.remotePerm.isNull() && !serverEntry.remotePerm.hasPermission(RemotePermissions::CanRead)) {
+    if (serverEntry.isValid() && !serverEntry.remotePerm.isNull() && !serverEntry.remotePerm.hasPermission(RemotePermissions::CanRead)) {
         item->_instruction = CSYNC_INSTRUCTION_IGNORE;
         emit _discoveryData->itemDiscovered(item);
 
@@ -2456,6 +2472,7 @@ bool ProcessDirectoryJob::maybeRenameForWindowsCompatibility(const QString &abso
     switch (excludeReason)
     {
     case CSYNC_NOT_EXCLUDED:
+    case CSYNC_FILE_LOCKED_SILENTLY_EXCLUDED:
     case CSYNC_FILE_EXCLUDE_CASE_CLASH_CONFLICT:
     case CSYNC_FILE_EXCLUDE_AND_REMOVE:
     case CSYNC_FILE_EXCLUDE_CANNOT_ENCODE:
