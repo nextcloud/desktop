@@ -80,10 +80,15 @@ extension Enumerator {
         var scannedItemIds = Set<String>()
 
         // Work queue seeded with the materialised items. A changed child directory discovered while
-        // scanning is appended so its descendants are visited too — otherwise a depth-1 read of a
-        // visited folder surfaces the changed subdirectory but never the changed items inside it.
-        // Unchanged subtrees are never enqueued, so the "skip unchanged directories" optimisation
-        // is preserved.
+        // scanning is appended ONLY when its subtree actually contains a materialised item, so its
+        // changed descendants are visited too — otherwise a depth-1 read of a visited folder surfaces
+        // the changed subdirectory but never the changed items inside it. A changed subdirectory whose
+        // subtree holds nothing materialised is NOT enqueued: nothing inside it is part of the working
+        // set, so there is nothing to keep in sync, and its contents are read lazily when the user
+        // navigates into it. Without that bound a single working-set signal on a sparse / freshly
+        // activated domain triggers a full recursive PROPFIND of every changed branch down to its
+        // leaves (every never-enumerated descendant looks "new"), hammering the server. Unchanged
+        // subtrees are likewise never enqueued, so the "skip unchanged directories" optimisation holds.
         var scanQueue = materialisedItems
         var enqueuedDirectoryIds = Set(materialisedItems.filter(\.directory).map(\.ocId))
         var scanIndex = 0
@@ -138,10 +143,25 @@ extension Enumerator {
                             .union(changes.created.map(\.ocId))
 
                         for childDirectory in childDirectories {
-                            // A changed child directory must be scanned so its descendants are
-                            // discovered, even when the directory itself is not materialised.
+                            // A changed child directory is scanned so its changed descendants are
+                            // discovered, even when the directory itself is not materialised — but
+                            // only when the working set actually tracks something inside it, i.e. it
+                            // has a materialised descendant (a visited subfolder or a downloaded file).
+                            // A changed-but-unmaterialised subtree is never crawled here: nothing in
+                            // it is cached locally, so its contents are read lazily on navigation
+                            // rather than walked now (which on a sparse domain would recurse into
+                            // entire never-visited subtrees). Its own change is still reported above
+                            // via `accumulatedUpdates` / `accumulatedCreations`.
                             if changedChildOcIds.contains(childDirectory.ocId) {
-                                if enqueuedDirectoryIds.insert(childDirectory.ocId).inserted {
+                                let childPath = childDirectory.remotePath()
+                                let childHasMaterialisedDescendant = materialisedItems.contains {
+                                    $0.ocId != childDirectory.ocId
+                                        && ($0.serverUrl == childPath
+                                            || $0.serverUrl.hasPrefix(childPath + "/"))
+                                }
+                                if childHasMaterialisedDescendant,
+                                   enqueuedDirectoryIds.insert(childDirectory.ocId).inserted
+                                {
                                     scanQueue.append(childDirectory)
                                 }
                                 continue
