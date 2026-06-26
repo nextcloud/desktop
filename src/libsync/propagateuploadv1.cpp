@@ -160,6 +160,10 @@ void PropagateUploadFileV1::startNextChunk()
     connect(job, &PUTFileJob::uploadProgress, this, &PropagateUploadFileV1::slotUploadProgress);
     connect(job, &PUTFileJob::uploadProgress, devicePtr, &UploadDevice::slotJobUploadProgress);
     connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
+    connect(job, &AbstractNetworkJob::transferStalled, this, [this]() {
+        qCWarning(lcPropagateUploadV1) << "Upload stalled for" << _item->_file << "- scheduling retry.";
+        abortWithError(SyncFileItem::SoftError, tr("Upload stalled: no data was transferred. The upload will be retried."));
+    });
     if (isFinalChunk)
         adjustLastJobTimeout(job, fileSize);
     job->start();
