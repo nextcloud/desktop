@@ -13,6 +13,7 @@
 #include "tray/usermodel.h"
 
 #include <QAction>
+#include <QColor>
 #include <QCoreApplication>
 #include <QCursor>
 #include <QGuiApplication>
@@ -22,6 +23,7 @@
 #include <QMenu>
 #include <QMimeDatabase>
 #include <QMimeType>
+#include <QPalette>
 #include <QPainter>
 #include <QPointer>
 #include <QPixmap>
@@ -76,6 +78,22 @@ QImage imageFromImageData(const QByteArray &imageData, const QSize &requestedSiz
         image = image.scaled(requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
     return image;
+}
+
+QImage tintImage(const QImage &image, const QColor &color)
+{
+    if (image.isNull() || !color.isValid()) {
+        return image;
+    }
+
+    auto tintedImage = QImage(image.size(), QImage::Format_ARGB32_Premultiplied);
+    tintedImage.fill(color);
+
+    auto painter = QPainter(&tintedImage);
+    painter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
+    painter.drawImage(0, 0, image.convertToFormat(QImage::Format_ARGB32_Premultiplied));
+    painter.end();
+    return tintedImage;
 }
 
 QString statusText(const UserStatus::OnlineStatus status)
@@ -140,21 +158,27 @@ bool isRemoteIconUrl(const QUrl &url)
     return url.scheme() == QStringLiteral("http") || url.scheme() == QStringLiteral("https");
 }
 
-QString remoteIconCacheKey(const AccountStatePtr &accountState, const QUrl &url)
+QString remoteIconCacheKey(const AccountStatePtr &accountState, const QUrl &url, const QColor &iconColor)
 {
     if (!accountState || !accountState->account()) {
         return {};
     }
-    return QStringLiteral("%1:%2").arg(accountState->account()->id(), url.toString());
+    return QStringLiteral("%1:%2:%3").arg(
+        accountState->account()->id(),
+        iconColor.name(QColor::HexArgb),
+        url.toString());
 }
 
-void fetchRemoteAppIcon(QAction *action, const AccountStatePtr &accountState, const QUrl &iconUrl)
+void fetchRemoteAppIcon(QAction *action,
+    const AccountStatePtr &accountState,
+    const QUrl &iconUrl,
+    const QColor &iconColor)
 {
     if (!action || !accountState || !accountState->account() || !isRemoteIconUrl(iconUrl)) {
         return;
     }
 
-    const auto cacheKey = remoteIconCacheKey(accountState, iconUrl);
+    const auto cacheKey = remoteIconCacheKey(accountState, iconUrl, iconColor);
     if (cacheKey.isEmpty()) {
         return;
     }
@@ -166,18 +190,21 @@ void fetchRemoteAppIcon(QAction *action, const AccountStatePtr &accountState, co
 
     const auto actionPointer = QPointer<QAction>(action);
     auto iconJob = new IconJob(accountState->account(), iconUrl, action);
-    QObject::connect(iconJob, &IconJob::jobFinished, action, [actionPointer, cacheKey](const QByteArray &iconData) {
-        const auto image = imageFromImageData(iconData, QSize(18, 18));
-        if (image.isNull()) {
-            return;
-        }
+    QObject::connect(iconJob,
+        &IconJob::jobFinished,
+        action,
+        [actionPointer, cacheKey, iconColor](const QByteArray &iconData) {
+            const auto image = imageFromImageData(iconData, QSize(18, 18));
+            if (image.isNull()) {
+                return;
+            }
 
-        const auto icon = QIcon(QPixmap::fromImage(image));
-        s_remoteAppIconCache.insert(cacheKey, icon);
-        if (actionPointer) {
-            actionPointer->setIcon(icon);
-        }
-    });
+            const auto icon = QIcon(QPixmap::fromImage(tintImage(image, iconColor)));
+            s_remoteAppIconCache.insert(cacheKey, icon);
+            if (actionPointer) {
+                actionPointer->setIcon(icon);
+            }
+        });
 }
 
 QIcon activityIcon(const QVariantMap &activityData)
@@ -310,6 +337,7 @@ bool populateAppsMenu(QMenu *menu, const int userId)
     const auto accountState = userId >= 0 && userId < accounts.size()
         ? accounts.at(userId)
         : AccountStatePtr{};
+    const auto appIconColor = menu->palette().color(QPalette::Active, QPalette::Text);
 
     for (auto row = 0; row < appCount; ++row) {
         const auto appIndex = appsModel->index(row);
@@ -322,7 +350,7 @@ bool populateAppsMenu(QMenu *menu, const int userId)
         }
 
         const auto action = addMenuAction(menu, appIcon, appName);
-        fetchRemoteAppIcon(action, accountState, appIconUrl);
+        fetchRemoteAppIcon(action, accountState, appIconUrl, appIconColor);
         QObject::connect(action, &QAction::triggered, action, [appUrl] {
             closeTrayPopup();
             TrayAccountAppsModel::instance()->openAppUrl(appUrl);
