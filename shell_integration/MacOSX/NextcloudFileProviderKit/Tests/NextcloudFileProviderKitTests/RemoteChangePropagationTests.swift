@@ -42,6 +42,25 @@ import RealmSwift
 @testable import TestInterface
 import XCTest
 
+/// Thread-safe collector for the remote paths a working-set scan issues PROPFINDs for. The mock's
+/// `enumerateCallHandler` may run off the test's thread, so guard the storage with a lock.
+private final class EnumeratePathRecorder: @unchecked Sendable {
+    private let lock = NSLock()
+    private var storage: [String] = []
+
+    func add(_ path: String) {
+        lock.lock()
+        defer { lock.unlock() }
+        storage.append(path)
+    }
+
+    var paths: [String] {
+        lock.lock()
+        defer { lock.unlock() }
+        return storage
+    }
+}
+
 final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
@@ -235,23 +254,28 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         )
     }
 
-    /// Scenario C (S1 headline — depth-1 limitation): a change to a grandchild file that lives under
-    /// a NON-materialized subdirectory of a visited folder. `checkMaterializedItemsOnServer` reads
-    /// the visited folder only at depth 1, so it sees the changed subdirectory but never reads the
-    /// grandchild; the grandchild's `syncTime` is never advanced and it is never reported — even
-    /// with a perfectly well-behaved server that bumped every ancestor ETag. (Reachable when a prior
-    /// recursive enumeration populated the grandchild while the subdirectory was never opened.)
-    /// Asserts the desired behaviour; a FAILURE localizes the depth-1 drop.
-    func testDeepChangeUnderNonMaterializedSubfolderIsReported() async throws {
+    /// Scenario C (S1 headline — bounded recursion): a change to a grandchild file under a NON-visited
+    /// subdirectory of a visited folder. `checkMaterializedItemsOnServer` reads the visited folder
+    /// only at depth 1, so it sees the changed subdirectory but not the grandchild. The fix enqueues
+    /// the changed subdirectory and scans it — BUT only because the subtree contains a materialized
+    /// item (a downloaded sibling `anchor`), which is what makes the working set care about it. So the
+    /// grandchild's change is discovered, persisted and reported rather than dropped behind the
+    /// depth-1 read. The companion test below proves the complementary bound: a changed subtree with
+    /// NOTHING materialized inside is deliberately NOT crawled.
+    func testDeepChangeUnderNonVisitedSubfolderWithMaterializedDescendantIsReported() async throws {
         let db = Self.dbManager.ncDatabase(); debugPrint(db)
 
         let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
         let childFolder = makeFolder(name: "childFolder", parent: folder, etag: "child-v1")
         let grandchild = makeFile(name: "itemX", parent: childFolder, etag: "itemX-v1")
+        // A downloaded (materialized) sibling makes `childFolder`'s subtree part of the working set,
+        // so the scan is allowed to descend into the changed `childFolder`.
+        let anchor = makeFile(name: "anchor", parent: childFolder, etag: "anchor-v1")
 
         seed(folder, visitedDirectory: true) // materialized
-        seed(childFolder, visitedDirectory: false) // NOT materialized
+        seed(childFolder, visitedDirectory: false) // NOT materialized, but known in DB
         seed(grandchild, downloaded: false) // NOT materialized, but known in DB
+        seed(anchor, downloaded: true) // materialized descendant — justifies descent
 
         // Well-behaved server: every ancestor ETag bumped along with the grandchild's change.
         grandchild.versionIdentifier = "itemX-v2"
@@ -263,12 +287,79 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         let observer = try await runWorkingSetChanges(remoteInterface)
 
         XCTAssertNil(observer.error)
-        // Regression guard (S1 headline): checkMaterializedItemsOnServer now enqueues the changed
-        // subfolder and scans it, so the grandchild's change is discovered, persisted and reported
-        // rather than dropped behind the depth-1 read of the visited folder.
+        // Regression guard (S1 headline): checkMaterializedItemsOnServer enqueues the changed subfolder
+        // (its subtree holds a materialized item) and scans it, so the grandchild's change surfaces.
         XCTAssertTrue(
             reportedIds(observer).contains(grandchild.identifier),
-            "A change to a grandchild under a non-materialized subfolder should surface in the working set."
+            "A change to a grandchild under a non-visited subfolder with a materialized descendant should surface."
+        )
+    }
+
+    /// Scenario D (PROPFIND-storm guard): a sibling subtree that the server reports as changed (its
+    /// ETag bubbled up) but which the user NEVER opened — nothing inside it is materialized, and its
+    /// children are brand new on the server. `checkMaterializedItemsOnServer` must report the sibling
+    /// directory's own change but must NOT recurse into it; otherwise a single working-set signal on a
+    /// freshly activated / sparse domain walks entire never-visited subtrees (observed: ~1700 PROPFINDs
+    /// to depth 7 from one push). Verifies no enumerate call is ever issued into the sibling subtree
+    /// and that its never-enumerated descendants are not reported.
+    func testChangedUnmaterializedSiblingSubtreeIsNotCrawled() async throws {
+        let db = Self.dbManager.ncDatabase(); debugPrint(db)
+
+        let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
+
+        // A `Talk`-like sibling: known in the DB (it was listed when `folder`'s parent was enumerated)
+        // but never visited, so nothing under it is materialized.
+        let siblingFolder = makeFolder(name: "SiblingFolder", parent: folder, etag: "sibling-v1")
+        // Children that exist on the server but have never been enumerated -> no DB rows -> classified
+        // NEW; these are exactly what the old code crawled into.
+        let newSub = makeFolder(name: "NewSub", parent: siblingFolder, etag: "newsub-v1")
+        let newLeaf = makeFile(name: "newLeaf", parent: newSub, etag: "newleaf-v1")
+
+        seed(folder, visitedDirectory: true) // materialized -> seeds the scan
+        seed(siblingFolder, visitedDirectory: false) // known but NOT materialized
+        // newSub / newLeaf intentionally NOT seeded -> NEW on the next read.
+
+        // Server bumps the sibling's ETag (a change happened somewhere inside it).
+        siblingFolder.versionIdentifier = "sibling-v2"
+        folder.versionIdentifier = "folder-v2"
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        // Record every path the scan issues a PROPFIND for.
+        let recorder = EnumeratePathRecorder()
+        remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+            recorder.add(remotePath)
+        }
+
+        let observer = try await runWorkingSetChanges(remoteInterface)
+        let enumeratedPaths = recorder.paths
+
+        XCTAssertNil(observer.error)
+
+        // Sanity: the materialized folder itself is scanned at depth 1.
+        XCTAssertTrue(
+            enumeratedPaths.contains { $0.hasSuffix("/folder") },
+            "The materialized folder should be read."
+        )
+        // The bound: the unmaterialized sibling subtree is never crawled.
+        XCTAssertFalse(
+            enumeratedPaths.contains { $0.contains("/SiblingFolder") },
+            "A changed-but-unmaterialized sibling subtree must not be PROPFIND'd (storm guard)."
+        )
+        // Its never-enumerated descendants are therefore not reported.
+        XCTAssertFalse(
+            reportedIds(observer).contains(newSub.identifier),
+            "A never-visited NEW subdirectory must not surface in the working set."
+        )
+        XCTAssertFalse(
+            reportedIds(observer).contains(newLeaf.identifier),
+            "A never-visited NEW leaf must not surface in the working set."
+        )
+        // The sibling directory's OWN change is still reported — we report the change to the known
+        // item, we just do not crawl its contents.
+        XCTAssertTrue(
+            reportedIds(observer).contains(siblingFolder.identifier),
+            "The changed (known) sibling directory's own update should still be reported."
         )
     }
 
