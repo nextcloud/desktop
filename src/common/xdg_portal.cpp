@@ -19,14 +19,15 @@ constexpr auto portalDesktopService = "org.freedesktop.portal.Desktop";
 constexpr auto portalDesktopPath = "/org/freedesktop/portal/desktop";
 
 XdgPortal::XdgPortal(QObject *parent)
-    : QObject(parent)
+    : QObject(parent),
+      _connection(QDBusConnection::sessionBus())
 {
     initPortalInterface();
 }
 
 void XdgPortal::initPortalInterface()
 {
-    auto *busInterface = QDBusConnection::sessionBus().interface();
+    auto *busInterface = _connection.interface();
     if (!busInterface) {
         qWarning() << "XDG Desktop Portal not available";
         return;
@@ -39,6 +40,11 @@ void XdgPortal::initPortalInterface()
     }
 }
 
+bool XdgPortal::isAvailable()
+{
+    return _available;
+}
+
 bool XdgPortal::background(const QString &handle_token, const bool &autostart)
 {
     if (!_available) {
@@ -49,7 +55,7 @@ bool XdgPortal::background(const QString &handle_token, const bool &autostart)
         QLatin1String(portalDesktopService),
         QLatin1String(portalDesktopPath),
         QLatin1String("org.freedesktop.portal.Background"),
-        QDBusConnection::sessionBus());
+        _connection);
     if (!backgroundInterface.isValid()) { // just in case
         qWarning() << "org.freedesktop.portal.Background not available";
         return false;
