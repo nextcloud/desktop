@@ -143,6 +143,16 @@ bool SyncEngine::checkErrorBlacklisting(SyncFileItem &item)
 
     item._hasBlacklistEntry = true;
 
+    // Discovery already produced a deliberate error for items protected in checkNewDeleteConflict.
+    // Keep its instruction and message intact so the specific reason is displayed.
+    // Still show the quota notification if applicable.
+    if (item._instruction == CSYNC_INSTRUCTION_ERROR) {
+        if (entry._errorCategory == SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage) {
+            slotInsufficientRemoteStorage();
+        }
+        return true;
+    }
+
     // If duration has expired, it's not blacklisted anymore
     time_t now = Utility::qDateTimeToTime_t(QDateTime::currentDateTimeUtc());
     if (now >= entry._lastTryTime + entry._ignoreDuration) {
@@ -471,6 +481,16 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
     // check for blacklisting of this item.
     // if the item is on blacklist, the instruction was set to ERROR
     checkErrorBlacklisting(*item);
+
+    // When discovery protects a file from deletion because of a quota error, emit the storage
+    // full notification so the sync status shows as error. checkErrorBlacklisting only does this
+    // when a blacklist entry already exists; in the same sync as the folder deletion there is no
+    // entry yet, so we check here unconditionally.
+    if (item->_instruction == CSYNC_INSTRUCTION_ERROR
+        && item->_isQuotaError) {
+        slotInsufficientRemoteStorage();
+    }
+
     _needsUpdate = true;
 
     // Insert sorted

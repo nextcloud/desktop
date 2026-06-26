@@ -252,7 +252,7 @@ private:
     bool maybeRenameForWindowsCompatibility(const QString &absoluteFileName,
                                             CSYNC_EXCLUDE_TYPE excludeReason);
 
-    [[nodiscard]] bool checkNewDeleteConflict(const SyncFileItemPtr &item) const;
+    [[nodiscard]] bool checkNewDeleteConflict(const SyncFileItemPtr &item, int64_t localFileSize = 0);
 
     qint64 _lastSyncTimestamp = 0;
 

@@ -95,6 +95,20 @@ void ProcessDirectoryJob::start()
             qCDebug(lcDisco) << "adjusted discovery policy" << _currentFolder._server << _queryServer << _currentFolder._local << _queryLocal;
         }
     }
+    // Deleted directories must always scan local files so that checkNewDeleteConflict
+    // can find and protect quota-blocked files (not in DB) inside them. Under
+    // ParentNotChanged those files are invisible and would be deleted by the propagator
+    // along with the folder even though they were never uploaded.
+    // Only force NormalQuery when the directory actually exists on disk. If it is
+    // already gone (e.g. deleted by a previous interrupted sync), forcing NormalQuery
+    // would trigger a fatal "Directory not found" error from startAsyncLocalQuery()
+    // and abort the sync instead of letting the normal stale-entry cleanup proceed.
+    if (_queryLocal == ParentNotChanged && _dirItem && _dirItem->_instruction == CSYNC_INSTRUCTION_REMOVE) {
+        const QString localPath = _discoveryData->_localDir + _currentFolder._local;
+        if (QDir(localPath).exists()) {
+            _queryLocal = NormalQuery;
+        }
+    }
 
     if (_queryLocal == NormalQuery) {
         startAsyncLocalQuery();
@@ -1065,9 +1079,14 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
         } else {
             // we need to make a request to the server to know that the original file is deleted on the server
             _pendingAsyncJobs++;
+            // Mark this path as a pending rename check so that children blocked from upload
+            // because of quota errors inside a queued deleted-directory job do not cancel the
+            // parent's REMOVE instruction before rename detection can claim it.
+            _discoveryData->_pendingRenameSourcePaths.insert(originalPath);
             const auto job = new RequestEtagJob(_discoveryData->_account, _discoveryData->_remoteFolder + originalPath, this);
             connect(job, &RequestEtagJob::finishedWithResult, this, [=, this](const HttpResult<QByteArray> &etag) mutable {
                 _pendingAsyncJobs--;
+                _discoveryData->_pendingRenameSourcePaths.remove(originalPath);
                 QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
                 if (etag || etag.error().code != 404 ||
                     // Somehow another item claimed this original path, consider as if it existed
@@ -1237,6 +1256,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             }
 
             item->_status = SyncFileItem::Status::NormalError;
+            // Flag as a quota error so blacklistUpdate writes an InsufficientRemoteStorage entry,
+            // which checkNewDeleteConflict uses to protect the file if its parent folder is later
+            // deleted on the server before the quota situation is resolved.
+            item->_isQuotaError = true;
             _discoveryData->_anotherSyncNeeded = true;
             _discoveryData->_filesNeedingScheduledSync.insert(path._original, delayIntervalForSyncRetryForFilesExceedQuotaSeconds);
         }
@@ -1473,7 +1496,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         return;
     }
 
-    if (checkNewDeleteConflict(item)) {
+    if (checkNewDeleteConflict(item, localEntry.size)) {
         return;
     }
 
@@ -2219,6 +2242,18 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
                 // Do not remove a directory that has ignored files
                 qCInfo(lcDisco) << "Child ignored for a folder to remove" << _dirItem->_file << "direction" << _dirItem->_direction;
                 _dirItem->_instruction = CSYNC_INSTRUCTION_NONE;
+                // Invalidate the parent directory's etag so the next sync queries it from
+                // the server instead of using a ParentNotChanged cache hit.  Without this, a
+                // parent whose etag has not changed since the server side deletion uses its DB
+                // record as a proxy for server state and keeps issuing NONE for this folder.
+                const auto slashPos = _dirItem->_file.lastIndexOf(QLatin1Char('/'));
+                const auto parentPath = slashPos >= 0 ? _dirItem->_file.left(slashPos) : QString();
+                _discoveryData->_statedb->schedulePathForRemoteDiscovery(parentPath.toUtf8());
+                // Clear the folder's own DB record so the next sync treats it as a new local
+                // folder rather than a server deleted one. Without this, once all protected files
+                // inside it are removed by the user, the empty folder would be deleted locally
+                // on the next sync because the DB record still points to a server side deletion.
+                _discoveryData->_statedb->deleteFileRecord(_dirItem->_file, false);
             }
         }
         emit finished();
@@ -2510,18 +2545,64 @@ bool ProcessDirectoryJob::maybeRenameForWindowsCompatibility(const QString &abso
     return result;
 }
 
-bool ProcessDirectoryJob::checkNewDeleteConflict(const SyncFileItemPtr &item) const
+bool ProcessDirectoryJob::checkNewDeleteConflict(const SyncFileItemPtr &item, int64_t localFileSize)
 {
-    if (_discoveryData->recursiveCheckForDeletedParents(item->_file)) {
-        qCWarning(lcDisco) << "Removing local file inside a remotely deleted folder" << item->_file;
-        item->_instruction = CSYNC_INSTRUCTION_REMOVE;
-        item->_direction = SyncFileItem::Down;
-        item->_wantsSpecificActions = SyncFileItem::SynchronizationOptions::MoveToClientTrashBin;
+    if (!_discoveryData->recursiveCheckForDeletedParents(item->_file)) {
+        return false;
+    }
+
+    // Deleting the local copy could result in permanent data loss if the file was never in the
+    // server and blocked from being uploaded by a quota error.
+    // Protect it instead and let the user resolve the storage situation first.
+    if (const auto blacklistEntry = _discoveryData->_statedb->errorBlacklistEntry(item->_file);
+        blacklistEntry.isValid()
+        && blacklistEntry._errorCategory == SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage) {
+        qCWarning(lcDisco) << "Not removing local file inside a remotely deleted folder: "
+                              "file was never uploaded due to storage quota —"
+                           << item->_file;
+        item->_instruction = CSYNC_INSTRUCTION_ERROR;
+        item->_status = SyncFileItem::SoftError;
+        item->_isQuotaError = true;
+        item->_errorString = tr("%1 could not be removed: it has unsynced changes due to full server storage. "
+                                "Please manage your files and try syncing again.")
+                                 .arg(item->_file);
+        // Prevent the parent directory from being deleted while a file with an error exists.
+        _childIgnored = true;
         emit _discoveryData->itemDiscovered(item);
         return true;
     }
 
-    return false;
+    // No prior blacklist entry. For files blocked from upload due to a quota error in the same
+    // sync as the folder deletion, check the parent folder's last known quota from the DB.
+    if (!item->isDirectory() && localFileSize > 0 && _dirItem) {
+        SyncJournalFileRecord dirItemDbRecord;
+        if (_discoveryData->_statedb->getFileRecord(_dirItem->_file, &dirItemDbRecord)
+            && dirItemDbRecord.isValid()) {
+            const auto bytesAvailable = dirItemDbRecord._folderQuota.bytesAvailable;
+            if (bytesAvailable >= 0 && localFileSize > bytesAvailable) {
+                qCWarning(lcDisco) << "Not removing local file inside a remotely deleted folder: "
+                                      "file would exceed last known parent folder quota —"
+                                   << item->_file;
+                item->_instruction = CSYNC_INSTRUCTION_ERROR;
+                item->_status = SyncFileItem::SoftError;
+                item->_isQuotaError = true;
+                item->_errorString = tr("\"%1\" was not deleted because its latest changes were not synced "
+                                        "and your server quota was exceeded. "
+                                        "Please manage your storage and try syncing again.")
+                                         .arg(item->_file);
+                _childIgnored = true;
+                emit _discoveryData->itemDiscovered(item);
+                return true;
+            }
+        }
+    }
+
+    qCWarning(lcDisco) << "Removing local file inside a remotely deleted folder" << item->_file;
+    item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+    item->_direction = SyncFileItem::Down;
+    item->_wantsSpecificActions = SyncFileItem::SynchronizationOptions::MoveToClientTrashBin;
+    emit _discoveryData->itemDiscovered(item);
+    return true;
 }
 
 }
