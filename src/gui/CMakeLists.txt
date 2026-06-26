@@ -207,6 +207,27 @@ set(client_SRCS
     filedetails/shareemodel.cpp
     filedetails/sortedsharemodel.h
     filedetails/sortedsharemodel.cpp
+    governance/governancenetworkjob.h
+    governance/governancenetworkjob.cpp
+    governance/getgovernancelabels.h
+    governance/getgovernancelabels.cpp
+    governance/getavailablegovernancelabels.h
+    governance/getavailablegovernancelabels.cpp
+    governance/applygovernancelabel.h
+    governance/applygovernancelabel.cpp
+    governance/deletegovernancelabel.h
+    governance/deletegovernancelabel.cpp
+    governance/typedgovernancenetworkjob.h
+    governance/typedgovernancenetworkjob.cpp
+    governance/ocsgovernancejob.h
+    governance/ocsgovernancejob.cpp
+    governance/typedwithlabelidgovernancenetworkjob.h
+    governance/typedwithlabelidgovernancenetworkjob.cpp
+    governance/governancelabelinfo.h
+    governance/governancelabelinfo.cpp
+    governance/governancelabelslistmodel.h
+    governance/governancelabelslistmodel.cpp
+    governance/governancetypes.h
     tray/svgimageprovider.h
     tray/svgimageprovider.cpp
     tray/syncstatussummary.h

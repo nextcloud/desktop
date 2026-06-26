@@ -183,6 +183,8 @@ public:
     DirectEditor* getDirectEditorForMimetype(const QMimeType &mimeType);
     DirectEditor* getDirectEditorForOptionalMimetype(const QMimeType &mimeType);
 
+    [[nodiscard]] bool governanceAvailable() const;
+
 private:
     [[nodiscard]] QMap<QString, QVariant> serverThemingMap() const;
 

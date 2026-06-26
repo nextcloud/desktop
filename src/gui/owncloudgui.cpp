@@ -36,6 +36,11 @@
 #include "tray/syncstatussummary.h"
 #include "tray/unifiedsearchresultslistmodel.h"
 #include "integration/fileactionsmodel.h"
+#include "governance/applygovernancelabel.h"
+#include "governance/deletegovernancelabel.h"
+#include "governance/getavailablegovernancelabels.h"
+#include "governance/getgovernancelabels.h"
+#include "governance/governancelabelslistmodel.h"
 #include "filesystem.h"
 
 #ifdef WITH_LIBCLOUDPROVIDERS
@@ -152,6 +157,11 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<SyncConflictsModel>("com.nextcloud.desktopclient", 1, 0, "SyncConflictsModel");
     qmlRegisterType<FileActionsModel>("com.nextcloud.desktopclient", 1, 0, "FileActionsModel");
     qmlRegisterType<AccountWizardController>("com.nextcloud.desktopclient", 1, 0, "AccountWizardController");
+    qmlRegisterType<ApplyGovernanceLabel>("com.nextcloud.desktopclient", 1, 0, "ApplyGovernanceLabel");
+    qmlRegisterType<DeleteGovernanceLabel>("com.nextcloud.desktopclient", 1, 0, "DeleteGovernanceLabel");
+    qmlRegisterType<GetAvailableGovernanceLabels>("com.nextcloud.desktopclient", 1, 0, "GetAvailableGovernanceLabels");
+    qmlRegisterType<GetGovernanceLabels>("com.nextcloud.desktopclient", 1, 0, "GetGovernanceLabels");
+    qmlRegisterType<GovernanceLabelsListModel>("com.nextcloud.desktopclient", 1, 0, "GovernanceLabelsListModel");
 
     qmlRegisterUncreatableType<QAbstractItemModel>("com.nextcloud.desktopclient", 1, 0, "QAbstractItemModel", "QAbstractItemModel");
     qmlRegisterUncreatableType<Activity>("com.nextcloud.desktopclient", 1, 0, "activity", "Activity");
@@ -160,6 +170,9 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterUncreatableType<UserStatus>("com.nextcloud.desktopclient", 1, 0, "userStatus", "Access to Status enum");
     qmlRegisterUncreatableType<Sharee>("com.nextcloud.desktopclient", 1, 0, "sharee", "Access to Type enum");
     qmlRegisterUncreatableType<ClientSideEncryptionTokenSelector>("com.nextcloud.desktopclient", 1, 0, "ClientSideEncryptionTokenSelector", "Access to the certificate selector");
+    qmlRegisterUncreatableType<GovernanceNetworkJob>("com.nextcloud.desktopclient", 1, 0, "GovernanceNetworkJob", "base abstract type for governance labels");
+    qmlRegisterUncreatableType<TypedGovernanceNetworkJob>("com.nextcloud.desktopclient", 1, 0, "TypedGovernanceNetworkJob", "base abstract type for governance labels");
+    qmlRegisterUncreatableType<TypedWithLabelIdGovernanceNetworkJob>("com.nextcloud.desktopclient", 1, 0, "TypedWithLabelIdGovernanceNetworkJob", "base abstract type for governance labels");
 
     qRegisterMetaType<ActivityListModel *>("ActivityListModel*");
     qRegisterMetaType<UnifiedSearchResultsListModel *>("UnifiedSearchResultsListModel*");
@@ -774,6 +787,13 @@ void ownCloudGui::raiseDialog(QWidget *raiseWidget)
 void ownCloudGui::slotShowShareDialog(const QString &localPath) const
 {
     _tray->createShareDialog(localPath);
+}
+
+void ownCloudGui::slotShowGovernanceLabelsDialog(AccountPtr account,
+                                                 const QString &localPath,
+                                                 const QString &fileId) const
+{
+    _tray->createGovernanceLabelsDialog(account, localPath, fileId);
 }
 
 void ownCloudGui::slotShowFileActivityDialog(const QString &localPath) const
