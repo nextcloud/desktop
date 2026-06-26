@@ -33,9 +33,9 @@ public:
     bool background(const QString &handle_token, const bool &autostart);
 
 private:
-    bool m_available;
-
     void initPortalInterface();
+
+    bool _available = false;
 };
 
 } // namespace OCC

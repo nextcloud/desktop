@@ -20,7 +20,6 @@ constexpr auto portalDesktopPath = "/org/freedesktop/portal/desktop";
 
 XdgPortal::XdgPortal(QObject *parent)
     : QObject(parent)
-    , m_available(false)
 {
     initPortalInterface();
 }
@@ -34,15 +33,15 @@ void XdgPortal::initPortalInterface()
     }
 
     const auto registered = busInterface->isServiceRegistered(QLatin1String(portalDesktopService));
-    m_available = registered.isValid() && registered.value();
-    if (!m_available) {
+    _available = registered.isValid() && registered.value();
+    if (!_available) {
         qWarning() << "XDG Desktop Portal not available";
     }
 }
 
 bool XdgPortal::background(const QString &handle_token, const bool &autostart)
 {
-    if (!m_available) {
+    if (!_available) {
         return false;
     }
 
