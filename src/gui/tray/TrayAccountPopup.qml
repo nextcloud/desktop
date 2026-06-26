@@ -1108,7 +1108,6 @@ Window {
                                 : (Style.darkMode ? "image://avatars/fallbackWhite" : "image://avatars/fallbackBlack")
                             fillMode: Image.PreserveAspectCrop
                             cache: false
-                            layer.enabled: visible && status === Image.Ready
                             layer.effect: OpacityMask {
                                 maskSource: Rectangle {
                                     width: Style.trayAccountPopupAvatarSize
