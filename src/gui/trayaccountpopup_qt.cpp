@@ -13,6 +13,7 @@
 #include "tray/usermodel.h"
 
 #include <QAction>
+#include <QAbstractItemModel>
 #include <QColor>
 #include <QCoreApplication>
 #include <QCursor>
@@ -20,9 +21,12 @@
 #include <QHash>
 #include <QIcon>
 #include <QImage>
+#include <QLabel>
+#include <QList>
 #include <QMenu>
 #include <QMimeDatabase>
 #include <QMimeType>
+#include <QModelIndex>
 #include <QPalette>
 #include <QPainter>
 #include <QPointer>
@@ -32,6 +36,7 @@
 #include <QSvgRenderer>
 #include <QUrl>
 #include <QVariantMap>
+#include <QWidgetAction>
 
 namespace OCC {
 
@@ -139,6 +144,16 @@ QIcon templateIconFromIcon(const QIcon &icon, const QSize &requestedSize, const 
     }
 
     return templateIconFromImage(icon.pixmap(requestedSize).toImage(), palette);
+}
+
+QIcon templateThemeIcon(const QString &iconName, const QPalette &palette)
+{
+    return templateIconFromIcon(QIcon(QStringLiteral(":/client/theme/%1").arg(iconName)), QSize(18, 18), palette);
+}
+
+QIcon templateBlackThemeIcon(const QString &iconName, const QPalette &palette)
+{
+    return templateIconFromIcon(QIcon(QStringLiteral(":/client/theme/black/%1").arg(iconName)), QSize(18, 18), palette);
 }
 
 QString statusText(const UserStatus::OnlineStatus status)
@@ -295,9 +310,15 @@ QAction *addMenuAction(QMenu *menu, const QIcon &icon, const QString &text)
 
 QAction *addSectionHeading(QMenu *menu, const QString &text)
 {
-    const auto action = menu->addAction(text);
+    auto action = new QWidgetAction(menu);
+    auto label = new QLabel(text, menu);
+    label->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    label->setContentsMargins(10, 4, 10, 2);
+    label->setEnabled(false);
+    label->setFont(menu->font());
     action->setEnabled(false);
-    action->setIconVisibleInMenu(false);
+    action->setDefaultWidget(label);
+    menu->addAction(action);
     return action;
 }
 
@@ -481,6 +502,8 @@ void addNotifications(QMenu *menu, const int userId, const QVariantList &notific
         notificationMenu->addSeparator();
         populateNotificationActionsMenu(notificationMenu, userId, activityIndex, actions);
     }
+
+    menu->addSeparator();
 }
 
 void addRecentActivities(QMenu *menu, const int userId, const QVariantList &recentActivities)
@@ -488,8 +511,9 @@ void addRecentActivities(QMenu *menu, const int userId, const QVariantList &rece
     addSectionHeading(menu, QCoreApplication::translate("TrayAccountPopup", "Recent activity"));
 
     if (recentActivities.isEmpty()) {
+        const auto menuIconPalette = nativeMenuIconPalette(menu);
         const auto noRecentActivity = addMenuAction(menu,
-            blackThemeIcon(QStringLiteral("activity.svg")),
+            templateBlackThemeIcon(QStringLiteral("activity.svg"), menuIconPalette),
             QCoreApplication::translate("TrayAccountPopup", "No recent activity"));
         noRecentActivity->setEnabled(false);
     }
@@ -515,7 +539,7 @@ void addRecentActivities(QMenu *menu, const int userId, const QVariantList &rece
     });
 }
 
-void populateAccountMenu(QMenu *menu, const int userId)
+void populateAccountMenu(QMenu *menu, const int userId, const bool fetchActivityPreview = true)
 {
     menu->clear();
 
@@ -524,9 +548,12 @@ void populateAccountMenu(QMenu *menu, const int userId)
         return;
     }
 
-    userModel->fetchActivityPreview(userId);
+    if (fetchActivityPreview) {
+        userModel->fetchActivityPreview(userId);
+    }
 
     const auto userModelIndex = userModel->index(userId);
+    const auto menuIconPalette = nativeMenuIconPalette(menu);
     const auto serverHasUserStatus = userModel->data(userModelIndex, UserModel::ServerHasUserStatusRole).toBool();
     const auto onlineStatusEnabled = userModel->data(userModelIndex, UserModel::IsConnectedRole).toBool() && serverHasUserStatus;
 
@@ -557,7 +584,7 @@ void populateAccountMenu(QMenu *menu, const int userId)
     menu->addSeparator();
 
     const auto openFolderAction = addMenuAction(menu,
-        themeIcon(QStringLiteral("file-open.svg")),
+        templateThemeIcon(QStringLiteral("file-open.svg"), menuIconPalette),
         QCoreApplication::translate("TrayFoldersMenuButton", "Open local folder"));
     QObject::connect(openFolderAction, &QAction::triggered, openFolderAction, [userId] {
         openLocalFolderForUser(userId);
@@ -566,14 +593,14 @@ void populateAccountMenu(QMenu *menu, const int userId)
     const auto assistantEnabled = userModel->data(userModelIndex, UserModel::AssistantEnabledRole).toBool();
     if (assistantEnabled) {
         const auto assistantAction = addMenuAction(menu,
-            blackThemeIcon(QStringLiteral("nc-assistant-app.svg")),
+            templateBlackThemeIcon(QStringLiteral("nc-assistant-app.svg"), menuIconPalette),
             QCoreApplication::translate("MainWindow", "Ask Assistant\302\240\342\200\246"));
         QObject::connect(assistantAction, &QAction::triggered, assistantAction, [userId] {
             openAssistantForUser(userId);
         });
     }
 
-    const auto appsMenu = menu->addMenu(blackThemeIcon(QStringLiteral("more-apps.svg")),
+    const auto appsMenu = menu->addMenu(templateBlackThemeIcon(QStringLiteral("more-apps.svg"), menuIconPalette),
         QCoreApplication::translate("TrayWindowHeader", "More apps"));
     appsMenu->menuAction()->setEnabled(populateAppsMenu(appsMenu, userId));
     QObject::connect(appsMenu, &QMenu::aboutToShow, appsMenu, [appsMenu, userId] {
@@ -591,6 +618,7 @@ void populateTrayMenu(QMenu *menu)
     menu->clear();
 
     const auto userModel = UserModel::instance();
+    const auto menuIconPalette = nativeMenuIconPalette(menu);
     if (userModel && userModel->rowCount() > 0) {
         for (auto userId = 0; userId < userModel->rowCount(); ++userId) {
             const auto userModelIndex = userModel->index(userId);
@@ -606,25 +634,45 @@ void populateTrayMenu(QMenu *menu)
             QObject::connect(accountMenu, &QMenu::aboutToShow, accountMenu, [accountMenu, userId] {
                 populateAccountMenu(accountMenu, userId);
             });
+            QObject::connect(userModel,
+                &QAbstractItemModel::dataChanged,
+                accountMenu,
+                [accountMenu, userId](const QModelIndex &topLeft, const QModelIndex &bottomRight, const QList<int> &roles) {
+                    if (!accountMenu->isVisible() || userId < topLeft.row() || userId > bottomRight.row()) {
+                        return;
+                    }
+                    if (!roles.isEmpty()
+                        && !roles.contains(UserModel::RecentActivitiesRole)
+                        && !roles.contains(UserModel::TrayNotificationsRole)) {
+                        return;
+                    }
+                    populateAccountMenu(accountMenu, userId, false);
+                });
         }
         menu->addSeparator();
     }
 
     if (Systray::instance()->enableAddAccount()) {
-        const auto addAccountAction = addMenuAction(menu, themeIcon(QStringLiteral("add.svg")), Systray::tr("Add account"));
+        const auto addAccountAction = addMenuAction(menu,
+            templateThemeIcon(QStringLiteral("add.svg"), menuIconPalette),
+            Systray::tr("Add account"));
         QObject::connect(addAccountAction, &QAction::triggered, addAccountAction, [] {
             closeTrayPopup();
             Systray::instance()->openAccountWizard();
         });
     }
 
-    const auto settingsAction = addMenuAction(menu, themeIcon(QStringLiteral("settings.svg")), Systray::tr("Settings"));
+    const auto settingsAction = addMenuAction(menu,
+        templateThemeIcon(QStringLiteral("settings.svg"), menuIconPalette),
+        Systray::tr("Settings"));
     QObject::connect(settingsAction, &QAction::triggered, settingsAction, [] {
         closeTrayPopup();
         Systray::instance()->openSettings();
     });
 
-    const auto quitAction = addMenuAction(menu, themeIcon(QStringLiteral("close.svg")), Systray::tr("Quit"));
+    const auto quitAction = addMenuAction(menu,
+        templateThemeIcon(QStringLiteral("close.svg"), menuIconPalette),
+        Systray::tr("Quit"));
     QObject::connect(quitAction, &QAction::triggered, quitAction, [] {
         closeTrayPopup();
         Systray::instance()->shutdown();
