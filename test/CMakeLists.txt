@@ -150,6 +150,7 @@ endif()
 
 nextcloud_add_test(LongPath)
 nextcloud_add_benchmark(LargeSync)
+nextcloud_add_benchmark(ScheduleDelay)
 
 nextcloud_add_test(Account)
 nextcloud_add_test(AccountWizardController)
