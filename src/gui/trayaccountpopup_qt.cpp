@@ -5,6 +5,9 @@
 
 #include "systray.h"
 
+#include "accountmanager.h"
+#include "accountstate.h"
+#include "iconjob.h"
 #include "theme.h"
 #include "tray/trayaccountappsmodel.h"
 #include "tray/usermodel.h"
@@ -13,11 +16,17 @@
 #include <QCoreApplication>
 #include <QCursor>
 #include <QGuiApplication>
+#include <QHash>
 #include <QIcon>
+#include <QImage>
 #include <QMenu>
+#include <QMimeDatabase>
+#include <QMimeType>
+#include <QPainter>
 #include <QPointer>
 #include <QPixmap>
 #include <QScreen>
+#include <QSvgRenderer>
 #include <QUrl>
 #include <QVariantMap>
 
@@ -28,6 +37,46 @@ namespace OCC {
 namespace {
 
 QPointer<QMenu> s_trayPopup;
+QHash<QString, QIcon> s_remoteAppIconCache;
+
+QRectF aspectFitRect(const QSize &sourceSize, const QSize &targetSize)
+{
+    if (!sourceSize.isValid() || !targetSize.isValid()) {
+        return QRectF(QPointF(0.0, 0.0), targetSize);
+    }
+
+    const auto scaledSize = sourceSize.scaled(targetSize, Qt::KeepAspectRatio);
+    return QRectF(QPointF((targetSize.width() - scaledSize.width()) / 2.0,
+                          (targetSize.height() - scaledSize.height()) / 2.0),
+                  scaledSize);
+}
+
+QImage imageFromImageData(const QByteArray &imageData, const QSize &requestedSize)
+{
+    if (imageData.isEmpty()) {
+        return {};
+    }
+
+    const auto mimetype = QMimeDatabase().mimeTypeForData(imageData);
+    if (mimetype.isValid() && mimetype.inherits(QStringLiteral("image/svg+xml"))) {
+        auto renderer = QSvgRenderer{};
+        if (!renderer.load(imageData)) {
+            return {};
+        }
+
+        auto image = QImage(requestedSize, QImage::Format_ARGB32);
+        image.fill(Qt::transparent);
+        auto painter = QPainter(&image);
+        renderer.render(&painter, aspectFitRect(renderer.defaultSize(), requestedSize));
+        return image;
+    }
+
+    auto image = QImage::fromData(imageData);
+    if (!image.isNull() && requestedSize.isValid()) {
+        image = image.scaled(requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    }
+    return image;
+}
 
 QString statusText(const UserStatus::OnlineStatus status)
 {
@@ -86,6 +135,51 @@ QIcon iconFromImage(const QImage &image)
     return image.isNull() ? QIcon{} : QIcon(QPixmap::fromImage(image));
 }
 
+bool isRemoteIconUrl(const QUrl &url)
+{
+    return url.scheme() == QStringLiteral("http") || url.scheme() == QStringLiteral("https");
+}
+
+QString remoteIconCacheKey(const AccountStatePtr &accountState, const QUrl &url)
+{
+    if (!accountState || !accountState->account()) {
+        return {};
+    }
+    return QStringLiteral("%1:%2").arg(accountState->account()->id(), url.toString());
+}
+
+void fetchRemoteAppIcon(QAction *action, const AccountStatePtr &accountState, const QUrl &iconUrl)
+{
+    if (!action || !accountState || !accountState->account() || !isRemoteIconUrl(iconUrl)) {
+        return;
+    }
+
+    const auto cacheKey = remoteIconCacheKey(accountState, iconUrl);
+    if (cacheKey.isEmpty()) {
+        return;
+    }
+
+    if (s_remoteAppIconCache.contains(cacheKey)) {
+        action->setIcon(s_remoteAppIconCache.value(cacheKey));
+        return;
+    }
+
+    const auto actionPointer = QPointer<QAction>(action);
+    auto iconJob = new IconJob(accountState->account(), iconUrl, action);
+    QObject::connect(iconJob, &IconJob::jobFinished, action, [actionPointer, cacheKey](const QByteArray &iconData) {
+        const auto image = imageFromImageData(iconData, QSize(18, 18));
+        if (image.isNull()) {
+            return;
+        }
+
+        const auto icon = QIcon(QPixmap::fromImage(image));
+        s_remoteAppIconCache.insert(cacheKey, icon);
+        if (actionPointer) {
+            actionPointer->setIcon(icon);
+        }
+    });
+}
+
 QIcon activityIcon(const QVariantMap &activityData)
 {
     const auto systemIconName = activityData.value(QStringLiteral("systemIconName")).toString();
@@ -125,6 +219,24 @@ QString titleWithDetail(const QString &title, const QString &subtitle, const QSt
 QAction *addMenuAction(QMenu *menu, const QIcon &icon, const QString &text)
 {
     return icon.isNull() ? menu->addAction(text) : menu->addAction(icon, text);
+}
+
+QPoint clampedMenuPosition(const QPoint &position, const QSize &menuSize, const QRect &availableGeometry)
+{
+    auto clampedPosition = position;
+    if (clampedPosition.x() + menuSize.width() > availableGeometry.right() + 1) {
+        clampedPosition.setX(availableGeometry.right() - menuSize.width() + 1);
+    }
+    if (clampedPosition.x() < availableGeometry.left()) {
+        clampedPosition.setX(availableGeometry.left());
+    }
+    if (clampedPosition.y() + menuSize.height() > availableGeometry.bottom() + 1) {
+        clampedPosition.setY(availableGeometry.bottom() - menuSize.height() + 1);
+    }
+    if (clampedPosition.y() < availableGeometry.top()) {
+        clampedPosition.setY(availableGeometry.top());
+    }
+    return clampedPosition;
 }
 
 void closeTrayPopup()
@@ -194,17 +306,23 @@ bool populateAppsMenu(QMenu *menu, const int userId)
     const auto appsModel = TrayAccountAppsModel::instance();
     appsModel->setUserId(userId);
     const auto appCount = appsModel->rowCount();
+    const auto accounts = AccountManager::instance()->accounts();
+    const auto accountState = userId >= 0 && userId < accounts.size()
+        ? accounts.at(userId)
+        : AccountStatePtr{};
 
     for (auto row = 0; row < appCount; ++row) {
         const auto appIndex = appsModel->index(row);
         const auto appName = appsModel->data(appIndex, TrayAccountAppsModel::NameRole).toString();
         const auto appUrl = appsModel->data(appIndex, TrayAccountAppsModel::UrlRole).toUrl();
-        auto appIcon = iconFromUrl(appsModel->data(appIndex, TrayAccountAppsModel::IconUrlRole).toUrl());
+        const auto appIconUrl = appsModel->data(appIndex, TrayAccountAppsModel::IconUrlRole).toUrl();
+        auto appIcon = iconFromUrl(appIconUrl);
         if (appIcon.isNull()) {
             appIcon = blackThemeIcon(QStringLiteral("more-apps.svg"));
         }
 
         const auto action = addMenuAction(menu, appIcon, appName);
+        fetchRemoteAppIcon(action, accountState, appIconUrl);
         QObject::connect(action, &QAction::triggered, action, [appUrl] {
             closeTrayPopup();
             TrayAccountAppsModel::instance()->openAppUrl(appUrl);
@@ -330,13 +448,6 @@ void populateAccountMenu(QMenu *menu, const int userId)
     const auto serverHasUserStatus = userModel->data(userModelIndex, UserModel::ServerHasUserStatusRole).toBool();
     const auto onlineStatusEnabled = userModel->data(userModelIndex, UserModel::IsConnectedRole).toBool() && serverHasUserStatus;
 
-    const auto openActivitiesAction = addMenuAction(menu,
-        blackThemeIcon(QStringLiteral("activity.svg")),
-        QCoreApplication::translate("TrayAccountPopup", "Open activity"));
-    QObject::connect(openActivitiesAction, &QAction::triggered, openActivitiesAction, [userId] {
-        openActivitiesForUser(userId);
-    });
-
     const auto accountAlert = userModel->data(userModelIndex, UserModel::AccountAlertRole).toMap();
     const auto accountAlertTitle = accountAlert.value(QStringLiteral("title")).toString();
     if (!accountAlertTitle.isEmpty()) {
@@ -440,23 +551,35 @@ void populateTrayMenu(QMenu *menu)
 
 QPoint trayPopupPosition(const QMenu *menu, const QRect &iconRect, const Systray::WindowPosition position)
 {
+    const auto cursorScreen = QGuiApplication::screenAt(QCursor::pos());
+    const auto trayScreen = iconRect.isValid() && !iconRect.isNull()
+        ? QGuiApplication::screenAt(iconRect.center())
+        : nullptr;
+    const auto screen = trayScreen ? trayScreen : (cursorScreen ? cursorScreen : QGuiApplication::primaryScreen());
+    if (!screen) {
+        return QCursor::pos();
+    }
+
+    const auto availableGeometry = screen->availableGeometry();
+    const auto menuSize = menu->sizeHint();
+
     if (position == Systray::WindowPosition::Center) {
-        const auto cursorScreen = QGuiApplication::screenAt(QCursor::pos());
-        const auto screen = cursorScreen ? cursorScreen : QGuiApplication::primaryScreen();
-        if (!screen) {
-            return QCursor::pos();
-        }
-
-        const auto menuSize = menu->sizeHint();
-        const auto screenCenter = screen->availableGeometry().center();
-        return screenCenter - QPoint(menuSize.width() / 2, menuSize.height() / 2);
+        const auto screenCenter = availableGeometry.center();
+        return clampedMenuPosition(screenCenter - QPoint(menuSize.width() / 2, menuSize.height() / 2), menuSize, availableGeometry);
     }
 
+    auto positionPoint = QCursor::pos();
     if (iconRect.isValid() && !iconRect.isNull()) {
-        return iconRect.center();
+        const auto trayCenter = iconRect.center();
+        positionPoint.setX(trayCenter.x() - menuSize.width() / 2);
+        if (trayCenter.y() < availableGeometry.center().y()) {
+            positionPoint.setY(availableGeometry.top());
+        } else {
+            positionPoint.setY(availableGeometry.bottom() - menuSize.height() + 1);
+        }
     }
 
-    return QCursor::pos();
+    return clampedMenuPosition(positionPoint, menuSize, availableGeometry);
 }
 
 } // namespace
