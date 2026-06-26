@@ -2237,7 +2237,7 @@ Vienintelis virtualių failų palaikymo išjungimo privalumas yra tai, kad vėl 
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="634"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="682"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="688"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Šifruotų metaduomenų sąrankos klaida!</translation>
     </message>
@@ -2420,7 +2420,7 @@ Vienintelis virtualių failų palaikymo išjungimo privalumas yra tai, kad vėl 
 <context>
     <name>OCC::EncryptFolderJob</name>
     <message>
-        <location filename="../src/libsync/encryptfolderjob.cpp" line="118"/>
+        <location filename="../src/libsync/encryptfolderjob.cpp" line="123"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
         <translation>Nepavyko sugeneruoti šifravimo metaduomenų, aplankas atrakinamas.
@@ -2430,34 +2430,34 @@ Tai gali būti susiję su jūsų „OpenSSL“ bibliotekomis.</translation>
 <context>
     <name>OCC::EncryptedFolderMetadataHandler</name>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="55"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="62"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="68"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="171"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="180"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="208"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="57"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="64"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="70"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="173"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="182"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="215"/>
         <source>Error fetching metadata.</source>
         <translation>Klaida gaunant metaduomenis.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="123"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="129"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="222"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="125"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="131"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="229"/>
         <source>Error locking folder.</source>
         <translation>Klaida užrakinant aplanką.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="156"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="158"/>
         <source>Error fetching encrypted folder ID.</source>
         <translation>Klaida gaunant šifruoto aplanko ID.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="190"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="197"/>
         <source>Error parsing or decrypting metadata.</source>
         <translation>Klaida nagrinėjant ar iššifruojant metaduomenis.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="333"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="340"/>
         <source>Failed to upload metadata</source>
         <translation>Nepavyko įkelti metaduomenų</translation>
     </message>
@@ -2889,116 +2889,116 @@ Arba galite atkurti visus ištrintus failus atsisiųsdami juos iš serverio.</tr
         <translation>(atsarginė kopija %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1885"/>
+        <location filename="../src/gui/folderman.cpp" line="1858"/>
         <source>Undefined state.</source>
         <translation>Neapibrėžta būsena.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1888"/>
+        <location filename="../src/gui/folderman.cpp" line="1861"/>
         <source>Waiting to start syncing.</source>
         <translation>Laukiama pradėti sinchronizavimą.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1891"/>
+        <location filename="../src/gui/folderman.cpp" line="1864"/>
         <source>Preparing for sync.</source>
         <translation>Ruošiamasi sinchronizavimui.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1901"/>
+        <location filename="../src/gui/folderman.cpp" line="1874"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation>Sinchronizuojama %1 iš %2 (liko kelios sekundės)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1904"/>
+        <location filename="../src/gui/folderman.cpp" line="1877"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Sinchronizuojama %1 iš %2 (liko %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1907"/>
+        <location filename="../src/gui/folderman.cpp" line="1880"/>
         <source>Syncing %1 of %2</source>
         <translation>Sinchronizuojama %1 iš %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1913"/>
+        <location filename="../src/gui/folderman.cpp" line="1886"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>Sinchronizuojama %1 (liko kelios sekundės)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1915"/>
+        <location filename="../src/gui/folderman.cpp" line="1888"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Sinchronizuojama %1 (liko %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1918"/>
+        <location filename="../src/gui/folderman.cpp" line="1891"/>
         <source>Syncing %1</source>
         <translation>Sinchronizuojama %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1923"/>
+        <location filename="../src/gui/folderman.cpp" line="1896"/>
         <source>Sync is running.</source>
         <translation>Vyksta sinchronizacija</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1928"/>
+        <location filename="../src/gui/folderman.cpp" line="1901"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Sinchronizavimas baigtas su neišspręstais konfliktais.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1930"/>
+        <location filename="../src/gui/folderman.cpp" line="1903"/>
         <source>Last sync was successful.</source>
         <translation>Paskutinis sinchronizavimas buvo sėkmingas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1936"/>
+        <location filename="../src/gui/folderman.cpp" line="1909"/>
         <source>Setup error.</source>
         <translation>Sąrankos klaida.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1939"/>
+        <location filename="../src/gui/folderman.cpp" line="1912"/>
         <source>Sync request was cancelled.</source>
         <translation>Sinchronizavimo užklausa atšaukta.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1956"/>
+        <location filename="../src/gui/folderman.cpp" line="1929"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
         <translation>Pasirinkite kitą vietą. Pasirinktas aplankas negalioja.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1964"/>
-        <location filename="../src/gui/folderman.cpp" line="2043"/>
+        <location filename="../src/gui/folderman.cpp" line="1937"/>
+        <location filename="../src/gui/folderman.cpp" line="2016"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
         <translation>Pasirinkite kitą vietą. %1 jau naudojama kaip sinchronizavimo aplankas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1973"/>
+        <location filename="../src/gui/folderman.cpp" line="1946"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
         <translation>Pasirinkite kitą vietą. %1 kelias neegzistuoja.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1977"/>
+        <location filename="../src/gui/folderman.cpp" line="1950"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
         <translation>Pasirinkite kitą vietą. Kelias %1 nėra aplankas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1985"/>
-        <location filename="../src/gui/folderman.cpp" line="1990"/>
+        <location filename="../src/gui/folderman.cpp" line="1958"/>
+        <location filename="../src/gui/folderman.cpp" line="1963"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
         <translation>Pasirinkite kitą vietą. Jūs neturite pakankamai leidimų rašyti į %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2050"/>
+        <location filename="../src/gui/folderman.cpp" line="2023"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
         <translation>Pasirinkite kitą vietą. %1 jau yra aplanke, naudojamame kaip sinchronizavimo aplankas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2065"/>
+        <location filename="../src/gui/folderman.cpp" line="2038"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
         <translation>Pasirinkite kitą vietą. %1 jau naudojama kaip sinchronizavimo aplankas, skirtas %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2223"/>
+        <location filename="../src/gui/folderman.cpp" line="2196"/>
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
@@ -3009,7 +3009,7 @@ Norėdami išspręsti šią problemą: pašalinkite %1 iš vienos iš paskyrų i
 Pažengusiems vartotojams: ši problema gali būti susijusi su keliais sinchronizavimo duomenų bazės failais, rastais viename aplanke. Patikrinkite, ar aplanke %1 nėra pasenusių ir nenaudojamų .sync_*.db failų, ir juos pašalinkite.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1942"/>
+        <location filename="../src/gui/folderman.cpp" line="1915"/>
         <source>Sync is paused.</source>
         <translation>Sinchronizavimas yra pristabdytas.</translation>
     </message>
@@ -3019,7 +3019,7 @@ Pažengusiems vartotojams: ši problema gali būti susijusi su keliais sinchroni
         <translation>Atidarykite programėlės nustatymus, kad suteiktumėte prieigą prie sinchronizavimo aplankų.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1948"/>
+        <location filename="../src/gui/folderman.cpp" line="1921"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Sinchronizavimas pristabdytas)</translation>
     </message>
@@ -3032,14 +3032,14 @@ Pažengusiems vartotojams: ši problema gali būti susijusi su keliais sinchroni
         <translation>Pridėti aplanko sinchronizavimo ryšį</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="102"/>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="323"/>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="465"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="103"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="324"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="466"/>
         <source>Grant access</source>
         <translation>Suteikti prieigą</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="346"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="347"/>
         <source>File</source>
         <translation>Failas</translation>
     </message>
@@ -4520,80 +4520,80 @@ Atkreipkite dėmesį, kad naudojant bet kurias žurnalo įrašymo komandinės ei
         <translation>Failo plėtinys yra skirtas virtualiems failams.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="795"/>
+        <location filename="../src/libsync/discovery.cpp" line="801"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>Aplankas serveryje yra neprieinamas.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="796"/>
+        <location filename="../src/libsync/discovery.cpp" line="802"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>Failas serveryje yra neprieinamas.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1209"/>
+        <location filename="../src/libsync/discovery.cpp" line="1215"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Sinchronizuoti negalima dėl neteisingo pakeitimo laiko</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1225"/>
+        <location filename="../src/libsync/discovery.cpp" line="1231"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>Įkeltas %1 viršija asmeniniuose failuose likusią %2 vietą.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1228"/>
+        <location filename="../src/libsync/discovery.cpp" line="1234"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>Įkelto failo %1 kiekis viršija %2 laisvos vietos aplanke %3.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1244"/>
+        <location filename="../src/libsync/discovery.cpp" line="1250"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Nepavyko įkelti failo, nes jis atidarytas aplanke „%1“.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1297"/>
+        <location filename="../src/libsync/discovery.cpp" line="1303"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Klaida šalinant failo įrašą %1 iš duomenų bazės</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1584"/>
-        <location filename="../src/libsync/discovery.cpp" line="2055"/>
+        <location filename="../src/libsync/discovery.cpp" line="1590"/>
+        <location filename="../src/libsync/discovery.cpp" line="2061"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Perkelta į netinkamą paskirties vietą, atkuriama</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1912"/>
+        <location filename="../src/libsync/discovery.cpp" line="1918"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Nepavyksta modifikuoti užšifruoto elemento, nes pasirinktas sertifikatas negalioja.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1979"/>
+        <location filename="../src/libsync/discovery.cpp" line="1985"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignoruojama dėl juodojo sąrašo „pasirinkti, ką sinchronizuoti“</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2013"/>
+        <location filename="../src/libsync/discovery.cpp" line="2019"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Neleidžiama, nes neturite leidimo pridėti poaplankių prie šio aplanko</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2019"/>
+        <location filename="../src/libsync/discovery.cpp" line="2025"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Neleidžiama, nes neturite leidimo pridėti failų į tą aplanką</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2033"/>
+        <location filename="../src/libsync/discovery.cpp" line="2039"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Šio failo įkelti neleidžiama, nes serveryje jis skirtas tik skaitymui, atkuriama</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2069"/>
+        <location filename="../src/libsync/discovery.cpp" line="2075"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Neleidžiama pašalinti, atkuriama</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2240"/>
+        <location filename="../src/libsync/discovery.cpp" line="2246"/>
         <source>Error while reading the database</source>
         <translation>Klaida skaitant duomenų bazę</translation>
     </message>

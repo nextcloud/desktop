@@ -2237,7 +2237,7 @@ Samuti katkevad kõik hetkel toimivad sünkroonimised.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="634"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="682"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="688"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Krüptitud meataandmete seadistamise viga!</translation>
     </message>
@@ -2420,7 +2420,7 @@ Samuti katkevad kõik hetkel toimivad sünkroonimised.</translation>
 <context>
     <name>OCC::EncryptFolderJob</name>
     <message>
-        <location filename="../src/libsync/encryptfolderjob.cpp" line="118"/>
+        <location filename="../src/libsync/encryptfolderjob.cpp" line="123"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
         <translation>Krüptimise jaoks vajalikke metaandmeid ei õnnestunud luua, eemaldan kausta lukustuse.
@@ -2430,34 +2430,34 @@ See võib olla seotud kasutatavate OpenSSl-i teekidega.</translation>
 <context>
     <name>OCC::EncryptedFolderMetadataHandler</name>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="55"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="62"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="68"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="171"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="180"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="208"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="57"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="64"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="70"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="173"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="182"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="215"/>
         <source>Error fetching metadata.</source>
         <translation>Viga metaandmete laadimisel.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="123"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="129"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="222"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="125"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="131"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="229"/>
         <source>Error locking folder.</source>
         <translation>Viga kausta lukustamisel.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="156"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="158"/>
         <source>Error fetching encrypted folder ID.</source>
         <translation>Viga krüptitud kausta tunnuse laadimisel.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="190"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="197"/>
         <source>Error parsing or decrypting metadata.</source>
         <translation>Viga metaandmete töötlmemisel või dekrüptimisel.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="333"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="340"/>
         <source>Failed to upload metadata</source>
         <translation>Ei õnnestunud üles laadida metaandmeid</translation>
     </message>
@@ -2889,116 +2889,116 @@ Alternatiivina saad nad taasta serverist uuesti allalaadides.</translation>
         <translation> (varukoopia %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1885"/>
+        <location filename="../src/gui/folderman.cpp" line="1858"/>
         <source>Undefined state.</source>
         <translation>Määratlemata olek.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1888"/>
+        <location filename="../src/gui/folderman.cpp" line="1861"/>
         <source>Waiting to start syncing.</source>
         <translation>Oodatakse sünkroonimise alustamist.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1891"/>
+        <location filename="../src/gui/folderman.cpp" line="1864"/>
         <source>Preparing for sync.</source>
         <translation>Valmistun sünkroonima.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1901"/>
+        <location filename="../src/gui/folderman.cpp" line="1874"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation>Sünkroonin: %1 / %2 (mõni sekund jäänud)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1904"/>
+        <location filename="../src/gui/folderman.cpp" line="1877"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Sünkroonin: %1 / %2 (jäänud %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1907"/>
+        <location filename="../src/gui/folderman.cpp" line="1880"/>
         <source>Syncing %1 of %2</source>
         <translation>Sünkroonin: %1 / %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1913"/>
+        <location filename="../src/gui/folderman.cpp" line="1886"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>Sünkroonin: %1 (mõni sekund jäänud)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1915"/>
+        <location filename="../src/gui/folderman.cpp" line="1888"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Sünkroonin: %1 (jäänud %2 )</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1918"/>
+        <location filename="../src/gui/folderman.cpp" line="1891"/>
         <source>Syncing %1</source>
         <translation>Sünkroonin: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1923"/>
+        <location filename="../src/gui/folderman.cpp" line="1896"/>
         <source>Sync is running.</source>
         <translation>Sünkroonimine on käimas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1928"/>
+        <location filename="../src/gui/folderman.cpp" line="1901"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Sünkroonimine lõppes lahendamata failikonfliktidega.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1930"/>
+        <location filename="../src/gui/folderman.cpp" line="1903"/>
         <source>Last sync was successful.</source>
         <translation>Viimane sünkroonimine õnnestus.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1936"/>
+        <location filename="../src/gui/folderman.cpp" line="1909"/>
         <source>Setup error.</source>
         <translation>Seadistamise viga.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1939"/>
+        <location filename="../src/gui/folderman.cpp" line="1912"/>
         <source>Sync request was cancelled.</source>
         <translation>Sünkroonimispäring on katkestatud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1956"/>
+        <location filename="../src/gui/folderman.cpp" line="1929"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
         <translation>Palun vali muu asukoht. Valitud kaust pole korrektne kaust.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1964"/>
-        <location filename="../src/gui/folderman.cpp" line="2043"/>
+        <location filename="../src/gui/folderman.cpp" line="1937"/>
+        <location filename="../src/gui/folderman.cpp" line="2016"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
         <translation>Palun vali muu asukoht. „%1“ on juba kasutusel sünkroonitava kaustana.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1973"/>
+        <location filename="../src/gui/folderman.cpp" line="1946"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
         <translation>Palun vali muu asukoht. „%1“ asukohta pole olemas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1977"/>
+        <location filename="../src/gui/folderman.cpp" line="1950"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
         <translation>Palun vali muu asukoht. „%1“ pole kaust.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1985"/>
-        <location filename="../src/gui/folderman.cpp" line="1990"/>
+        <location filename="../src/gui/folderman.cpp" line="1958"/>
+        <location filename="../src/gui/folderman.cpp" line="1963"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
         <translation>Palun vali muu asukoht. Sul pole piisavalt õigusi kirjutamaks „%1“ kausta.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2050"/>
+        <location filename="../src/gui/folderman.cpp" line="2023"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
         <translation>Palun vali muu asukoht. „%1“ on juba sisaldub sünkroonitavas kaustas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2065"/>
+        <location filename="../src/gui/folderman.cpp" line="2038"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
         <translation>Palun vali muu asukoht. „%1“ on juba kasutusel sünkroonitava kaustana %2 jaoks.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2223"/>
+        <location filename="../src/gui/folderman.cpp" line="2196"/>
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
@@ -3009,7 +3009,7 @@ Olukorra lahendamiseks palun eemalda „%1“ kõikide peale ühe kasutajakonto 
 Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes kaustas on mitu mitu sünkroniseerimise andmebaasi. Palun vaata „%1“ kausta ja otsi kasutamata .sync_*.db faile ning eemalda nad.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1942"/>
+        <location filename="../src/gui/folderman.cpp" line="1915"/>
         <source>Sync is paused.</source>
         <translation>Sünkroniseerimine on peatatud.</translation>
     </message>
@@ -3019,7 +3019,7 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
         <translation>Palun ava rakenduse seadistused ja luba ligipääs sünkroonimiskaustadele.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1948"/>
+        <location filename="../src/gui/folderman.cpp" line="1921"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Sünkroonimine on peatatud)</translation>
     </message>
@@ -3032,14 +3032,14 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
         <translation>Lisa kaustale sünkroonimine</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="102"/>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="323"/>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="465"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="103"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="324"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="466"/>
         <source>Grant access</source>
         <translation>Luba ligipääs</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="346"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="347"/>
         <source>File</source>
         <translation>Fail</translation>
     </message>
@@ -4518,80 +4518,80 @@ Palun arvesta, et käsurealt lisatud logimistingimused on alati primaarsed nende
         <translation>Failil on laiend, mis on kasutusel vaid virtuaalsete failide puhul.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="795"/>
+        <location filename="../src/libsync/discovery.cpp" line="801"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>Kaust ei ole serveris enam ligipääsetav.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="796"/>
+        <location filename="../src/libsync/discovery.cpp" line="802"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>Fail ei ole serveris enam ligipääsetav.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1209"/>
+        <location filename="../src/libsync/discovery.cpp" line="1215"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Vigase muutmisaja tõttu sünkroonimine ei õnnestu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1225"/>
+        <location filename="../src/libsync/discovery.cpp" line="1231"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>„%1“ faili(de) üleslaaditav maht on suurem, kui isiklike failide „%2“ vaba ruum.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1228"/>
+        <location filename="../src/libsync/discovery.cpp" line="1234"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>„%1“ üleslaadimine on suurem, kui „%3“ kausta „%2“ vaba ruum.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1244"/>
+        <location filename="../src/libsync/discovery.cpp" line="1250"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Kuna fail on avatud rakenduses „%1“, siis tema üleslaadimine pole võimalik.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1297"/>
+        <location filename="../src/libsync/discovery.cpp" line="1303"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>„%1“ kirje kustutamisel andmebaasist tekkis viga</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1584"/>
-        <location filename="../src/libsync/discovery.cpp" line="2055"/>
+        <location filename="../src/libsync/discovery.cpp" line="1590"/>
+        <location filename="../src/libsync/discovery.cpp" line="2061"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Teisaldatud vigasesse sihtkohta, taastan andmed</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1912"/>
+        <location filename="../src/libsync/discovery.cpp" line="1918"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Krüptitud objekti ei õnnestu muuta, sest valitud sertifikaat pole kehtiv.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1979"/>
+        <location filename="../src/libsync/discovery.cpp" line="1985"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>„Vali, mida sünkroniseerida“ keelunimekirja tõttu vahele jäetud</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2013"/>
+        <location filename="../src/libsync/discovery.cpp" line="2019"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Pole lubatud, kuna sul puuduvad õigused alamkausta lisamiseks sinna kausta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2019"/>
+        <location filename="../src/libsync/discovery.cpp" line="2025"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Pole lubatud, kuna sul puuduvad õigused failide lisamiseks sinna kausta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2033"/>
+        <location filename="../src/libsync/discovery.cpp" line="2039"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Pole lubatud üles laadida, kuna tegemist on serveri poolel ainult-loetava failiga, taastan oleku</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2069"/>
+        <location filename="../src/libsync/discovery.cpp" line="2075"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Eemaldamine pole lubatud, taastan</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2240"/>
+        <location filename="../src/libsync/discovery.cpp" line="2246"/>
         <source>Error while reading the database</source>
         <translation>Viga andmebaasist lugemisel</translation>
     </message>

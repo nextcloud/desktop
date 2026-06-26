@@ -2237,7 +2237,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="634"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="682"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="688"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Produciuse un erro na configuración dos metadatos cifrados!</translation>
     </message>
@@ -2420,7 +2420,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
 <context>
     <name>OCC::EncryptFolderJob</name>
     <message>
-        <location filename="../src/libsync/encryptfolderjob.cpp" line="118"/>
+        <location filename="../src/libsync/encryptfolderjob.cpp" line="123"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
         <translation>Non foi posíbel xerar os metadatos para a cifraxe, Desbloqueando o cartafol.
@@ -2430,34 +2430,34 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
 <context>
     <name>OCC::EncryptedFolderMetadataHandler</name>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="55"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="62"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="68"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="171"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="180"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="208"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="57"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="64"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="70"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="173"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="182"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="215"/>
         <source>Error fetching metadata.</source>
         <translation>Produciuse un erro ao recuperar os metadatos.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="123"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="129"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="222"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="125"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="131"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="229"/>
         <source>Error locking folder.</source>
         <translation>Produciuse un erro ao bloquear o cartafol.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="156"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="158"/>
         <source>Error fetching encrypted folder ID.</source>
         <translation>Produciuse un erro ao recuperar o ID do cartafol cifrado.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="190"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="197"/>
         <source>Error parsing or decrypting metadata.</source>
         <translation>Produciuse un erro ao analizar ou descifrar os metadatos.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="333"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="340"/>
         <source>Failed to upload metadata</source>
         <translation>Produciuse un fallo ao enviar os metadatos</translation>
     </message>
@@ -2889,116 +2889,116 @@ Como alternativa, pode restaurar todos os ficheiros eliminados descargándoos do
         <translation> (copia de seguranza %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1885"/>
+        <location filename="../src/gui/folderman.cpp" line="1858"/>
         <source>Undefined state.</source>
         <translation>Estado sen definir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1888"/>
+        <location filename="../src/gui/folderman.cpp" line="1861"/>
         <source>Waiting to start syncing.</source>
         <translation>Agardando para iniciar a sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1891"/>
+        <location filename="../src/gui/folderman.cpp" line="1864"/>
         <source>Preparing for sync.</source>
         <translation>Preparando para sincronizar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1901"/>
+        <location filename="../src/gui/folderman.cpp" line="1874"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation>Sincronizando %1 de %2 (restan uns segundos)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1904"/>
+        <location filename="../src/gui/folderman.cpp" line="1877"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Sincronizando %1 de %2  (restan %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1907"/>
+        <location filename="../src/gui/folderman.cpp" line="1880"/>
         <source>Syncing %1 of %2</source>
         <translation>Sincronizando %1 de %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1913"/>
+        <location filename="../src/gui/folderman.cpp" line="1886"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>Sincronizando %1 (restan uns segundos)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1915"/>
+        <location filename="../src/gui/folderman.cpp" line="1888"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Sincronizando %1 (restan %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1918"/>
+        <location filename="../src/gui/folderman.cpp" line="1891"/>
         <source>Syncing %1</source>
         <translation>Sincronizando %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1923"/>
+        <location filename="../src/gui/folderman.cpp" line="1896"/>
         <source>Sync is running.</source>
         <translation>Estase sincronizando.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1928"/>
+        <location filename="../src/gui/folderman.cpp" line="1901"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>A sincronización rematou con conflitos sen resolver.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1930"/>
+        <location filename="../src/gui/folderman.cpp" line="1903"/>
         <source>Last sync was successful.</source>
         <translation>A última sincronización fíxose correctamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1936"/>
+        <location filename="../src/gui/folderman.cpp" line="1909"/>
         <source>Setup error.</source>
         <translation>Produciuse un erro de configuración.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1939"/>
+        <location filename="../src/gui/folderman.cpp" line="1912"/>
         <source>Sync request was cancelled.</source>
         <translation>Cancelouse a solicitude de sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1956"/>
+        <location filename="../src/gui/folderman.cpp" line="1929"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
         <translation>Escolla unha localización diferente. O cartafol seleccionado non é válido.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1964"/>
-        <location filename="../src/gui/folderman.cpp" line="2043"/>
+        <location filename="../src/gui/folderman.cpp" line="1937"/>
+        <location filename="../src/gui/folderman.cpp" line="2016"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
         <translation>Escolla unha localización diferente. %1 xa está a se usar como cartafol de sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1973"/>
+        <location filename="../src/gui/folderman.cpp" line="1946"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
         <translation>Escolla unha localización diferente. A ruta %1 non existe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1977"/>
+        <location filename="../src/gui/folderman.cpp" line="1950"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
         <translation>Escolla unha localización diferente. A ruta %1 non é un cartafol.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1985"/>
-        <location filename="../src/gui/folderman.cpp" line="1990"/>
+        <location filename="../src/gui/folderman.cpp" line="1958"/>
+        <location filename="../src/gui/folderman.cpp" line="1963"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
         <translation>Escolla unha localización diferente. Non ten permisos abondo para escribir en %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2050"/>
+        <location filename="../src/gui/folderman.cpp" line="2023"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
         <translation>Escolla unha localización diferente. %1 xa está contido nun cartafol usado como cartafol de sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2065"/>
+        <location filename="../src/gui/folderman.cpp" line="2038"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
         <translation>Escolla unha situación diferente. %1 xa se está a usar como cartafol de sincronización para %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2223"/>
+        <location filename="../src/gui/folderman.cpp" line="2196"/>
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
@@ -3009,7 +3009,7 @@ Para resolver este problema: retire %1 dunha das contas e cree un novo cartafol 
 Para usuarios avanzados: este problema pode estar relacionado con varios ficheiros de bases de datos de sincronización que se atopan nun cartafol. Comprobe se %1 ten ficheiros .sync_*.db obsoletos e sen usar e retíreos.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1942"/>
+        <location filename="../src/gui/folderman.cpp" line="1915"/>
         <source>Sync is paused.</source>
         <translation>Sincronización en pausa.</translation>
     </message>
@@ -3019,7 +3019,7 @@ Para usuarios avanzados: este problema pode estar relacionado con varios ficheir
         <translation>Abre os axustes da aplicación para conceder acceso ás carpetas de sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1948"/>
+        <location filename="../src/gui/folderman.cpp" line="1921"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (sincronización en pausa)</translation>
     </message>
@@ -3032,14 +3032,14 @@ Para usuarios avanzados: este problema pode estar relacionado con varios ficheir
         <translation>Engadir a conexión da sincronización do cartafol</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="102"/>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="323"/>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="465"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="103"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="324"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="466"/>
         <source>Grant access</source>
         <translation>Conceder acceso</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="346"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="347"/>
         <source>File</source>
         <translation>Ficheiro</translation>
     </message>
@@ -4519,80 +4519,80 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
         <translation>O ficheiro ten a extensión reservada para ficheiros virtuais.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="795"/>
+        <location filename="../src/libsync/discovery.cpp" line="801"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>Non é posíbel acceder ao cartafol no servidor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="796"/>
+        <location filename="../src/libsync/discovery.cpp" line="802"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>Non é posíbel acceder ao ficheiro no servidor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1209"/>
+        <location filename="../src/libsync/discovery.cpp" line="1215"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Non é posíbel sincronizar por mor dunha hora de modificación incorrecta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1225"/>
+        <location filename="../src/libsync/discovery.cpp" line="1231"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>O envío de %1 excede en %2 o espazo restante nos ficheiros persoais.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1228"/>
+        <location filename="../src/libsync/discovery.cpp" line="1234"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>O envío de %1 excede en %2 o espazo restante no cartafol %3.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1244"/>
+        <location filename="../src/libsync/discovery.cpp" line="1250"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Non foi posíbel enviar o ficheiro porque está aberto en «%1».</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1297"/>
+        <location filename="../src/libsync/discovery.cpp" line="1303"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Produciuse un erro ao eliminar o rexistro do ficheiro %1 da base de datos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1584"/>
-        <location filename="../src/libsync/discovery.cpp" line="2055"/>
+        <location filename="../src/libsync/discovery.cpp" line="1590"/>
+        <location filename="../src/libsync/discovery.cpp" line="2061"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Moveuse a un destino non válido, restaurándo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1912"/>
+        <location filename="../src/libsync/discovery.cpp" line="1918"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Non é posíbel modificar o elemento cifrado porque o certificado seleccionado non é válido.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1979"/>
+        <location filename="../src/libsync/discovery.cpp" line="1985"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorado por mor da lista de bloqueo de «Escoller que sincronizar»</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2013"/>
+        <location filename="../src/libsync/discovery.cpp" line="2019"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Non se lle permite porque Vde. non ten permiso para engadir subcartafoles neste cartafol</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2019"/>
+        <location filename="../src/libsync/discovery.cpp" line="2025"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Non se lle permite porque Vde. non ten permiso para engadir ficheiros neste cartafol</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2033"/>
+        <location filename="../src/libsync/discovery.cpp" line="2039"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Non está permitido o envío xa que o ficheiro é só de lectura no servidor, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2069"/>
+        <location filename="../src/libsync/discovery.cpp" line="2075"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Non está permitido retiralo, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2240"/>
+        <location filename="../src/libsync/discovery.cpp" line="2246"/>
         <source>Error while reading the database</source>
         <translation>Produciuse un erro ao ler a base de datos</translation>
     </message>

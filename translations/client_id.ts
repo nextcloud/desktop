@@ -2236,7 +2236,7 @@ Tindakan ini akan membatalkan sinkronisasi apa pun yang sedang berjalan saat ini
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="634"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="682"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="688"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Kesalahan penyiapan metadata terenkripsi!</translation>
     </message>
@@ -2419,7 +2419,7 @@ Tindakan ini akan membatalkan sinkronisasi apa pun yang sedang berjalan saat ini
 <context>
     <name>OCC::EncryptFolderJob</name>
     <message>
-        <location filename="../src/libsync/encryptfolderjob.cpp" line="118"/>
+        <location filename="../src/libsync/encryptfolderjob.cpp" line="123"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
         <translation>Tidak dapat menghasilkan metadata untuk enkripsi, membuka kunci folder.
@@ -2429,34 +2429,34 @@ Hal ini bisa menjadi masalah pada pustaka OpenSSL Anda.</translation>
 <context>
     <name>OCC::EncryptedFolderMetadataHandler</name>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="55"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="62"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="68"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="171"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="180"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="208"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="57"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="64"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="70"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="173"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="182"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="215"/>
         <source>Error fetching metadata.</source>
         <translation>Kesalahan saat mengambil metadata.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="123"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="129"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="222"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="125"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="131"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="229"/>
         <source>Error locking folder.</source>
         <translation>Kesalahan saat mengunci folder.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="156"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="158"/>
         <source>Error fetching encrypted folder ID.</source>
         <translation>Kesalahan saat mengambil ID folder terenkripsi.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="190"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="197"/>
         <source>Error parsing or decrypting metadata.</source>
         <translation>Kesalahan saat mengurai atau mendekripsi metadata.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="333"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="340"/>
         <source>Failed to upload metadata</source>
         <translation>Gagal mengunggah metadata</translation>
     </message>
@@ -2888,116 +2888,116 @@ Sebagai alternatif, Anda dapat memulihkan semua file yang dihapus dengan mengund
         <translation> (cadangan %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1885"/>
+        <location filename="../src/gui/folderman.cpp" line="1858"/>
         <source>Undefined state.</source>
         <translation>Status tidak terdefinisi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1888"/>
+        <location filename="../src/gui/folderman.cpp" line="1861"/>
         <source>Waiting to start syncing.</source>
         <translation>Menunggu untuk memulai sinkronisasi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1891"/>
+        <location filename="../src/gui/folderman.cpp" line="1864"/>
         <source>Preparing for sync.</source>
         <translation>Persiapan untuk sinkronisasi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1901"/>
+        <location filename="../src/gui/folderman.cpp" line="1874"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation>Menyinkronkan %1 dari %2 (Tersisa beberapa detik)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1904"/>
+        <location filename="../src/gui/folderman.cpp" line="1877"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Menyinkronkan %1 dari %2 (Tersisa %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1907"/>
+        <location filename="../src/gui/folderman.cpp" line="1880"/>
         <source>Syncing %1 of %2</source>
         <translation>Menyinkronkan %1 dari %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1913"/>
+        <location filename="../src/gui/folderman.cpp" line="1886"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>Menyinkronkan %1 (Tersisa beberapa detik)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1915"/>
+        <location filename="../src/gui/folderman.cpp" line="1888"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Menyinkronkan %1 (Tersisa %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1918"/>
+        <location filename="../src/gui/folderman.cpp" line="1891"/>
         <source>Syncing %1</source>
         <translation>Menyinkronkan %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1923"/>
+        <location filename="../src/gui/folderman.cpp" line="1896"/>
         <source>Sync is running.</source>
         <translation>Sinkronisasi sedang berjalan.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1928"/>
+        <location filename="../src/gui/folderman.cpp" line="1901"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Sinkronisasi selesai dengan konflik yang belum terselesaikan.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1930"/>
+        <location filename="../src/gui/folderman.cpp" line="1903"/>
         <source>Last sync was successful.</source>
         <translation>Sinkronisasi terakhir berhasil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1936"/>
+        <location filename="../src/gui/folderman.cpp" line="1909"/>
         <source>Setup error.</source>
         <translation>Kesalahan penyiapan.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1939"/>
+        <location filename="../src/gui/folderman.cpp" line="1912"/>
         <source>Sync request was cancelled.</source>
         <translation>Permintaan sinkronisasi dibatalkan.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1956"/>
+        <location filename="../src/gui/folderman.cpp" line="1929"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
         <translation>Silakan pilih lokasi lain. Folder yang dipilih tidak valid.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1964"/>
-        <location filename="../src/gui/folderman.cpp" line="2043"/>
+        <location filename="../src/gui/folderman.cpp" line="1937"/>
+        <location filename="../src/gui/folderman.cpp" line="2016"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
         <translation>Silakan pilih lokasi lain. %1 sudah digunakan sebagai folder sinkronisasi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1973"/>
+        <location filename="../src/gui/folderman.cpp" line="1946"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
         <translation>Silakan pilih lokasi lain. Jalur %1 tidak ada.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1977"/>
+        <location filename="../src/gui/folderman.cpp" line="1950"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
         <translation>Silakan pilih lokasi lain. Jalur %1 bukan folder.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1985"/>
-        <location filename="../src/gui/folderman.cpp" line="1990"/>
+        <location filename="../src/gui/folderman.cpp" line="1958"/>
+        <location filename="../src/gui/folderman.cpp" line="1963"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
         <translation>Silakan pilih lokasi lain. Anda tidak memiliki izin yang cukup untuk menulis ke %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2050"/>
+        <location filename="../src/gui/folderman.cpp" line="2023"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
         <translation>Silakan pilih lokasi lain. %1 sudah termasuk dalam folder yang digunakan sebagai folder sinkronisasi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2065"/>
+        <location filename="../src/gui/folderman.cpp" line="2038"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
         <translation>Silakan pilih lokasi lain. %1 sudah digunakan sebagai folder sinkronisasi untuk %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2223"/>
+        <location filename="../src/gui/folderman.cpp" line="2196"/>
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
@@ -3008,7 +3008,7 @@ Untuk mengatasi masalah ini: hapus %1 dari salah satu akun dan buat folder sinkr
 Untuk pengguna tingkat lanjut: masalah ini mungkin terkait dengan beberapa file basis data sinkronisasi yang ditemukan dalam satu folder. Silakan periksa %1 untuk file .sync_*.db yang kedaluwarsa dan tidak digunakan, lalu hapus file-file tersebut.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1942"/>
+        <location filename="../src/gui/folderman.cpp" line="1915"/>
         <source>Sync is paused.</source>
         <translation>Sinkronisasi dijeda.</translation>
     </message>
@@ -3018,7 +3018,7 @@ Untuk pengguna tingkat lanjut: masalah ini mungkin terkait dengan beberapa file 
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1948"/>
+        <location filename="../src/gui/folderman.cpp" line="1921"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Sinkronisasi dijeda)</translation>
     </message>
@@ -3031,14 +3031,14 @@ Untuk pengguna tingkat lanjut: masalah ini mungkin terkait dengan beberapa file 
         <translation>Tambah Koneksi Sinkronisasi Folder</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="102"/>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="323"/>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="465"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="103"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="324"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="466"/>
         <source>Grant access</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="346"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="347"/>
         <source>File</source>
         <translation>Berkas</translation>
     </message>
@@ -4512,80 +4512,80 @@ Perlu dicatat bahwa penggunaan opsi baris perintah pencatatan log apa pun akan m
         <translation>File memiliki ekstensi yang dicadangkan untuk file virtual.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="795"/>
+        <location filename="../src/libsync/discovery.cpp" line="801"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>Folder tidak dapat diakses di server.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="796"/>
+        <location filename="../src/libsync/discovery.cpp" line="802"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>File tidak dapat diakses di server.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1209"/>
+        <location filename="../src/libsync/discovery.cpp" line="1215"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Tidak dapat sinkron karena waktu modifikasi tidak valid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1225"/>
+        <location filename="../src/libsync/discovery.cpp" line="1231"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>Unggahan %1 melampaui %2 dari sisa ruang di file pribadi.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1228"/>
+        <location filename="../src/libsync/discovery.cpp" line="1234"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>Unggahan %1 melampaui %2 dari sisa ruang di folder %3.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1244"/>
+        <location filename="../src/libsync/discovery.cpp" line="1250"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Tidak dapat mengunggah file, karena sedang dibuka di &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1297"/>
+        <location filename="../src/libsync/discovery.cpp" line="1303"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Kesalahan saat menghapus catatan file %1 dari basis data</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1584"/>
-        <location filename="../src/libsync/discovery.cpp" line="2055"/>
+        <location filename="../src/libsync/discovery.cpp" line="1590"/>
+        <location filename="../src/libsync/discovery.cpp" line="2061"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Dipindahkan ke target tidak valid, memulihkan</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1912"/>
+        <location filename="../src/libsync/discovery.cpp" line="1918"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Tidak dapat memodifikasi item terenkripsi karena sertifikat yang dipilih tidak valid.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1979"/>
+        <location filename="../src/libsync/discovery.cpp" line="1985"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Diabaikan karena blacklist &quot;pilih yang akan disinkronkan&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2013"/>
+        <location filename="../src/libsync/discovery.cpp" line="2019"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Tidak diizinkan karena Anda tidak memiliki izin untuk menambahkan subfolder ke folder tersebut</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2019"/>
+        <location filename="../src/libsync/discovery.cpp" line="2025"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Tidak diizinkan karena Anda tidak memiliki izin untuk menambahkan file di folder tersebut</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2033"/>
+        <location filename="../src/libsync/discovery.cpp" line="2039"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Tidak diizinkan mengunggah file ini karena bersifat hanya-baca di server, memulihkan</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2069"/>
+        <location filename="../src/libsync/discovery.cpp" line="2075"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Tidak diizinkan menghapus, memulihkan</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2240"/>
+        <location filename="../src/libsync/discovery.cpp" line="2246"/>
         <source>Error while reading the database</source>
         <translation>Kesalahan saat membaca basis data</translation>
     </message>
