@@ -36,6 +36,50 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcNetworkJob, "nextcloud.sync.networkjob", QtInfoMsg)
 
+namespace {
+
+// Registrable domain (eTLD+1) of url, using Qt's public-suffix list.
+// Falls back to the bare host for IP addresses and intranet names that have
+// no public suffix, so those only ever match themselves exactly.
+QString registrableDomain(const QUrl &url)
+{
+    const auto host = url.host();
+    const auto tld = url.topLevelDomain();
+    if (tld.isEmpty() || !host.endsWith(tld)) {
+        return host;
+    }
+    auto label = host.left(host.size() - tld.size());
+    const auto lastDot = label.lastIndexOf(QLatin1Char('.'));
+    return (lastDot < 0 ? label : label.mid(lastDot + 1)) + tld;
+}
+
+// Whether the Authorization header / credentials may follow a redirect from
+// origin to target without leaking them to an untrusted host.
+bool redirectKeepsCredentials(const QUrl &origin, const QUrl &target,
+    const QUrl &accountUrl, const QStringList &trustedHosts)
+{
+    // Never carry credentials across a scheme change (e.g. HTTPS -> HTTP).
+    if (origin.scheme() != target.scheme()) {
+        return false;
+    }
+    // Same host:port as the immediate origin.
+    if (origin.host() == target.host() && origin.port() == target.port()) {
+        return true;
+    }
+    // Same registrable domain as the account's own server. Covers SSO /
+    // reverse-proxy setups such as auth.example.com <-> cloud.example.com.
+    if (accountUrl.scheme() == target.scheme()) {
+        const auto accountDomain = registrableDomain(accountUrl);
+        if (!accountDomain.isEmpty() && accountDomain == registrableDomain(target)) {
+            return true;
+        }
+    }
+    // Explicitly trusted host (e.g. a third-party identity provider).
+    return trustedHosts.contains(target.host(), Qt::CaseInsensitive);
+}
+
+} // anonymous namespace
+
 // If not set, it is overwritten by the Application constructor with the value from the config
 int AbstractNetworkJob::httpTimeout = qEnvironmentVariableIntValue("OWNCLOUD_TIMEOUT");
 bool AbstractNetworkJob::enableTimeout = true;
@@ -276,8 +320,8 @@ void AbstractNetworkJob::slotFinished()
 
                 auto request = reply()->request();
 
-                if (!(requestedUrl.host() == redirectUrl.host() && requestedUrl.port() == redirectUrl.port())) {
-                    qCWarning(lcNetworkJob).nospace() << "redirect target mismatches origin, removing credentials"
+                if (!redirectKeepsCredentials(requestedUrl, redirectUrl, _account->url(), _account->trustedRedirectHosts())) {
+                    qCWarning(lcNetworkJob).nospace() << "redirect target is not trusted, removing credentials"
                         << " origin=" << requestedUrl.host() << ":" << requestedUrl.port()
                         << " target=" << redirectUrl.host() << ":" << redirectUrl.port();
 

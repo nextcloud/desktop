@@ -584,6 +584,16 @@ void Account::setUserVisibleHost(const QString &host)
     _userVisibleUrl.setHost(host);
 }
 
+QStringList Account::trustedRedirectHosts() const
+{
+    return _settingsMap.value(QStringLiteral("trustedRedirectHosts")).toStringList();
+}
+
+void Account::setTrustedRedirectHosts(const QStringList &hosts)
+{
+    _settingsMap.insert(QStringLiteral("trustedRedirectHosts"), hosts);
+}
+
 QVariant Account::credentialSetting(const QString &key) const
 {
     if (_credentials) {
