@@ -873,6 +873,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
+            displayFileActions: false,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
         )
