@@ -12,6 +12,7 @@
 #include <QDebug>
 #include <QFileInfo>
 #include <QCoreApplication>
+#include <QUuid>
 
 namespace OCC {
 
@@ -22,32 +23,29 @@ XdgPortal::XdgPortal(QObject *parent)
     : QObject(parent),
       _connection(QDBusConnection::sessionBus())
 {
-    initPortalInterface();
-}
-
-void XdgPortal::initPortalInterface()
-{
-    auto *busInterface = _connection.interface();
-    if (!busInterface) {
-        qWarning() << "XDG Desktop Portal not available";
-        return;
-    }
-
-    const auto registered = busInterface->isServiceRegistered(QLatin1String(portalDesktopService));
-    _available = registered.isValid() && registered.value();
-    if (!_available) {
+    if (!isAvailable()) {
         qWarning() << "XDG Desktop Portal not available";
     }
 }
 
-bool XdgPortal::isAvailable()
+bool XdgPortal::isAvailable() const
 {
-    return _available;
+    // do a basic ping to check if the portal is active
+    QDBusInterface iface(
+        QLatin1String(portalDesktopService),
+        QLatin1String(portalDesktopPath),
+        QLatin1String("org.freedesktop.DBus.Peer"),
+        _connection
+    );
+
+    QDBusReply<void> reply = iface.call(QLatin1String("Ping"));
+
+    return reply.isValid();
 }
 
-bool XdgPortal::background(const QString &handle_token, const bool &autostart)
+bool XdgPortal::background(bool autostart)
 {
-    if (!_available) {
+    if (!isAvailable()) {
         return false;
     }
 
@@ -61,8 +59,11 @@ bool XdgPortal::background(const QString &handle_token, const bool &autostart)
         return false;
     }
 
+    const QString handle_token = QUuid::createUuid().toString(QUuid::Id128);
+
     QVariantMap options;
     options[QLatin1String("autostart")] = autostart;
+    options[QLatin1String("handle_token")] = handle_token;
     const QString flatpakId = qEnvironmentVariable("FLATPAK_ID");
     if (flatpakId.isNull()) {
         QStringList list = {Utility::getAppExecutablePath(), QLatin1String("--background")};
@@ -72,14 +73,14 @@ bool XdgPortal::background(const QString &handle_token, const bool &autostart)
         options[QLatin1String("commandline")] = list;
     }
 
-    QDBusMessage reply = backgroundInterface.call(
+    QDBusReply<QDBusObjectPath> reply = backgroundInterface.call(
         QLatin1String("RequestBackground"),
-        handle_token,
+        QLatin1String(""),
         options
     );
 
-    if (reply.type() == QDBusMessage::ErrorMessage) {
-        qWarning() << "Background request failed: " << reply.errorMessage();
+    if (!reply.isValid()) {
+        qWarning() << "Background request failed: " << reply.error().name() << reply.error().message();
         return false;
     }
 

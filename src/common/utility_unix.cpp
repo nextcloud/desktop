@@ -102,7 +102,7 @@ QString Utility::syncFolderDisplayName(const QString &folder, const QString &dis
 void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName, bool enable)
 {
     XdgPortal portal;
-    const bool success = portal.background(appName, enable);
+    const bool success = portal.background(enable);
 
     const auto userAutoStartPath = getUserAutostartDir();
     const QString desktopFileLocation = userAutoStartPath + appName + QLatin1String(".desktop");
