@@ -44,14 +44,14 @@ bool AccountSetupCommandLineManager::parseCommandlineOption(const QString &optio
         }
     } else if (option == QStringLiteral("--localdirpath")) {
         if (optionsIterator.hasNext() && !optionsIterator.peekNext().startsWith(QLatin1String("--"))) {
-            _localDirPath = optionsIterator.next();
+            _localDirPaths.append(optionsIterator.next());
             return true;
         } else {
             errorMessage = QStringLiteral("basedir not specified");
         }
     } else if (option == QStringLiteral("--remotedirpath")) {
         if (optionsIterator.hasNext() && !optionsIterator.peekNext().startsWith(QLatin1String("--"))) {
-            _remoteDirPath = optionsIterator.next();
+            _remoteDirPaths.append(optionsIterator.next());
             return true;
         } else {
             errorMessage = QStringLiteral("remotedir not specified");
@@ -95,7 +95,14 @@ void AccountSetupCommandLineManager::setupAccountFromCommandLine()
 {
     if (isCommandLineParsed()) {
         qCInfo(lcAccountSetupCommandLineManager) << QStringLiteral("Command line has been parsed and account setup parameters have been found. Attempting setup a new account %1...").arg(_userId);
-        const auto accountSetupJob = new AccountSetupFromCommandLineJob(_appPassword, _userId, _serverUrl, _localDirPath, _isVfsEnabled, _remoteDirPath, parent());
+
+        QList<QPair<QString, QString>> folderPaths;
+        for (int i = 0; i < _localDirPaths.size(); ++i) {
+            const auto remotePath = i < _remoteDirPaths.size() ? _remoteDirPaths.at(i) : QStringLiteral("/");
+            folderPaths.append({_localDirPaths.at(i), remotePath});
+        }
+
+        const auto accountSetupJob = new AccountSetupFromCommandLineJob(_appPassword, _userId, _serverUrl, folderPaths, _isVfsEnabled, parent());
         accountSetupJob->handleAccountSetupFromCommandLine();
     } else {
         qCInfo(lcAccountSetupCommandLineManager) << QStringLiteral("No account setup parameters have been found, or they are invalid. Proceed with normal startup...");
@@ -103,8 +110,8 @@ void AccountSetupCommandLineManager::setupAccountFromCommandLine()
     _appPassword.clear();
     _userId.clear();
     _serverUrl.clear();
-    _remoteDirPath.clear();
-    _localDirPath.clear();
+    _localDirPaths.clear();
+    _remoteDirPaths.clear();
     _isVfsEnabled = true;
 }
 }
