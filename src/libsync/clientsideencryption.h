@@ -245,11 +245,22 @@ public:
         FatalError,
     };
 
+    enum class InitializationState
+    {
+        NotStarted,
+        Initializing,
+        Initialized,
+        Failed
+    };
+
     Q_ENUM(EncryptionErrorType)
+    Q_ENUM(InitializationState)
 
     explicit ClientSideEncryption();
 
     [[nodiscard]] bool isInitialized() const;
+
+    [[nodiscard]] InitializationState initializationState() const;
 
     [[nodiscard]] bool tokenIsSetup() const;
 
@@ -297,6 +308,7 @@ public:
 
 signals:
     void initializationFinished(bool isNewMnemonicGenerated = false);
+    void initializationStateChanged(InitializationState state);
     void sensitiveDataForgotten();
     void privateKeyDeleted();
     void certificateDeleted();
@@ -393,12 +405,16 @@ private:
 
     [[nodiscard]] bool checkEncryptionIsWorking(const CertificateInformation &currentCertificate);
 
+    void setInitializationState(InitializationState state);
+
     void failedToInitialize();
 
     void saveCertificateIdentification() const;
     void cacheTokenPin(const QString pin);
 
     AccountPtr _account;
+
+    InitializationState _initializationState = InitializationState::NotStarted;
 
     QString _mnemonic;
     bool _newMnemonicGenerated = false;
