@@ -41,6 +41,8 @@ elseif(APPLE)
 elseif(UNIX AND NOT APPLE)
     list(APPEND common_SOURCES
         ${CMAKE_CURRENT_LIST_DIR}/utility_unix.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/xdg_portal.h
+        ${CMAKE_CURRENT_LIST_DIR}/xdg_portal.cpp
     )
 endif()
 

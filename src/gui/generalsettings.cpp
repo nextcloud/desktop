@@ -113,9 +113,10 @@ void GeneralSettings::saveMiscSettings()
 void GeneralSettings::slotToggleLaunchOnStartup(bool enable)
 {
     const auto theme = Theme::instance();
-    if (enable == Utility::hasLaunchOnStartup(theme->appName())) {
-        return;
-    }
+    //! please see Utility::hasLaunchOnStartup for why this is disabled
+    // if (enable == Utility::hasLaunchOnStartup(theme->appName())) {
+    //     return;
+    // }
 
     Utility::setLaunchOnStartup(theme->appName(), theme->appNameGUI(), enable);
 
