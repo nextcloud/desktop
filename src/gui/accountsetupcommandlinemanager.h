@@ -5,7 +5,9 @@
 
 #pragma once
 
+#include <QList>
 #include <QObject>
+#include <QPair>
 #include <QString>
 #include <QStringList>
 #include <QUrl>
@@ -36,8 +38,8 @@ private:
     QString _appPassword;
     QString _userId;
     QUrl _serverUrl;
-    QString _remoteDirPath;
-    QString _localDirPath;
+    QList<QString> _localDirPaths;
+    QList<QString> _remoteDirPaths;
     bool _isVfsEnabled = false;
 };
 
