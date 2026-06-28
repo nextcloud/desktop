@@ -4,94 +4,94 @@
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="162"/>
         <source>Secure connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Secure connection failed</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="165"/>
         <source>Connect to %1?</source>
-        <translation type="unfinished"/>
+        <translation>Connect to %1?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="175"/>
         <source>The secure connection failed. You can retry without encryption, or add a client certificate and try again.</source>
-        <translation type="unfinished"/>
+        <translation>The secure connection failed. You can retry without encryption, or add a client certificate and try again.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="176"/>
         <source>The secure connection failed. You can add a client certificate and try again.</source>
-        <translation type="unfinished"/>
+        <translation>The secure connection failed. You can add a client certificate and try again.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="197"/>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="268"/>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="270"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="207"/>
         <source>Connect without TLS</source>
-        <translation type="unfinished"/>
+        <translation>Connect without TLS</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="219"/>
         <source>Use client certificate</source>
-        <translation type="unfinished"/>
+        <translation>Use client certificate</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="271"/>
         <source>Back</source>
-        <translation type="unfinished"/>
+        <translation>Back</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="285"/>
         <source>Set up later</source>
-        <translation type="unfinished"/>
+        <translation>Set up later</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="296"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Advanced</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="305"/>
         <source>Sign up</source>
-        <translation type="unfinished"/>
+        <translation>Sign up</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="315"/>
         <source>Self-host</source>
-        <translation type="unfinished"/>
+        <translation>Self-host</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="328"/>
         <source>Proxy settings</source>
-        <translation type="unfinished"/>
+        <translation>Proxy settings</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="349"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Copy link</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="382"/>
         <source>Open</source>
-        <translation type="unfinished"/>
+        <translation>Open</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="384"/>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>Connect</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="386"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Done</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="388"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Log in</translation>
     </message>
 </context>
 <context>
@@ -154,32 +154,32 @@
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="32"/>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="35"/>
         <source>Advanced options</source>
-        <translation type="unfinished"/>
+        <translation>Advanced options</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="44"/>
         <source>Ask before syncing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Ask before syncing folders larger than</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="62"/>
         <source>Large folder threshold</source>
-        <translation type="unfinished"/>
+        <translation>Large folder threshold</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="64"/>
         <source>%1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%1 MB</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="71"/>
         <source>Ask before syncing external storage</source>
-        <translation type="unfinished"/>
+        <translation>Ask before syncing external storage</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="90"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Done</translation>
     </message>
 </context>
 <context>
@@ -187,32 +187,32 @@
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="27"/>
         <source>Connect public share</source>
-        <translation type="unfinished"/>
+        <translation>Connect public share</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="27"/>
         <source>Enter credentials</source>
-        <translation type="unfinished"/>
+        <translation>Enter credentials</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="37"/>
         <source>Enter the share password if the link is password protected.</source>
-        <translation type="unfinished"/>
+        <translation>Enter the share password if the link is password protected.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="38"/>
         <source>Enter the username and password for this server.</source>
-        <translation type="unfinished"/>
+        <translation>Enter the username and password for this server.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="50"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Username</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="60"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Password</translation>
     </message>
 </context>
 <context>
@@ -220,7 +220,7 @@
     <message>
         <location filename="../src/gui/wizard/qml/BrowserAuthPage.qml" line="38"/>
         <source>Switch to your browser</source>
-        <translation type="unfinished"/>
+        <translation>Switch to your browser</translation>
     </message>
 </context>
 <context>
@@ -252,37 +252,37 @@
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="33"/>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="36"/>
         <source>Client certificate</source>
-        <translation type="unfinished"/>
+        <translation>Client certificate</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="44"/>
         <source>Select a PKCS#12 certificate file and enter its password.</source>
-        <translation type="unfinished"/>
+        <translation>Select a PKCS#12 certificate file and enter its password.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="57"/>
         <source>Certificate file</source>
-        <translation type="unfinished"/>
+        <translation>Certificate file</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="63"/>
         <source>Choose</source>
-        <translation type="unfinished"/>
+        <translation>Choose</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="70"/>
         <source>Certificate password</source>
-        <translation type="unfinished"/>
+        <translation>Certificate password</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="94"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="104"/>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>Connect</translation>
     </message>
 </context>
 <context>
@@ -522,7 +522,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
         <source>File provider settings</source>
-        <translation type="unfinished"/>
+        <translation>File provider settings</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
@@ -537,7 +537,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="57"/>
         <source>File Provider items appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. It is not possible to have a File Provider and classic sync Finder integration enabled simultaneously.</source>
-        <translation type="unfinished"/>
+        <translation>File Provider items appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. It is not possible to have a File Provider and classic sync Finder integration enabled simultaneously.</translation>
     </message>
 </context>
 <context>
@@ -652,7 +652,7 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="503"/>
         <source>Ask Assistant …</source>
-        <translation type="unfinished"/>
+        <translation>Ask Assistant …</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="503"/>
@@ -790,7 +790,7 @@ Should the account be imported?</translation>
         <location filename="../src/gui/accountsettings.ui" line="488"/>
         <location filename="../src/gui/accountsettings.cpp" line="1541"/>
         <source>Log out, log back in, or remove this account from the client.</source>
-        <translation type="unfinished"/>
+        <translation>Log out, log back in, or remove this account from the client.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="504"/>
@@ -802,7 +802,7 @@ Should the account be imported?</translation>
         <location filename="../src/gui/accountsettings.ui" line="517"/>
         <location filename="../src/gui/accountsettings.cpp" line="1538"/>
         <source>Remove account</source>
-        <translation type="unfinished"/>
+        <translation>Remove account</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="324"/>
@@ -812,7 +812,7 @@ Should the account be imported?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="159"/>
         <source>File Provider</source>
-        <translation type="unfinished"/>
+        <translation>File Provider</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="159"/>
@@ -1124,12 +1124,12 @@ This action will abort any currently running synchronization.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1538"/>
         <source>Leave share</source>
-        <translation type="unfinished"/>
+        <translation>Leave share</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1540"/>
         <source>Remove this public share connection from the client.</source>
-        <translation type="unfinished"/>
+        <translation>Remove this public share connection from the client.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1718"/>
@@ -1160,7 +1160,7 @@ This action will abort any currently running synchronization.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1940"/>
         <source>The File Provider extension does not support end-to-end encryption yet.</source>
-        <translation type="unfinished"/>
+        <translation>The File Provider extension does not support end-to-end encryption yet.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1948"/>
@@ -1355,203 +1355,204 @@ This action will abort any currently running synchronization.</translation>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="251"/>
         <source>Will require local storage</source>
-        <translation type="unfinished"/>
+        <translation>Will require local storage</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="631"/>
         <source>Proxy settings are incomplete.</source>
-        <translation type="unfinished"/>
+        <translation>Proxy settings are incomplete.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="638"/>
         <source>Server address does not seem to be valid</source>
-        <translation type="unfinished"/>
+        <translation>Server address does not seem to be valid</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="659"/>
         <source>Username must not be empty.</source>
-        <translation type="unfinished"/>
+        <translation>Username must not be empty.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="665"/>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="995"/>
         <source>Checking account access</source>
-        <translation type="unfinished"/>
+        <translation>Checking account access</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="743"/>
         <source>Checking server address</source>
-        <translation type="unfinished"/>
+        <translation>Checking server address</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="808"/>
         <source>Preparing browser login</source>
-        <translation type="unfinished"/>
+        <translation>Preparing browser login</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="829"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>Invalid URL</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="831"/>
         <source>Failed to connect to %1 at %2:
 %3</source>
-        <translation type="unfinished"/>
+        <translation>Failed to connect to %1 at %2:
+%3</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="847"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Timeout while trying to connect to %1 at %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="868"/>
         <source>This server requires legacy browser authentication. Enter app-password credentials instead.</source>
-        <translation type="unfinished"/>
+        <translation>This server requires legacy browser authentication. Enter app-password credentials instead.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="946"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation type="unfinished"/>
+        <translation>Unable to open the Browser, please copy the link to your Browser.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="971"/>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="976"/>
         <source>Waiting for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Waiting for authorisation</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="981"/>
         <source>Starting authorization</source>
-        <translation type="unfinished"/>
+        <translation>Starting authorisation</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="986"/>
         <source>Link copied to clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Link copied to clipboard.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1041"/>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1071"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation type="unfinished"/>
+        <translation>There was an invalid response to an authenticated WebDAV request</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1058"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1066"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
-        <translation type="unfinished"/>
+        <translation>Access forbidden by server. To verify that you have proper access, open the service in your browser.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1084"/>
         <source>Account connected.</source>
-        <translation type="unfinished"/>
+        <translation>Account connected.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1159"/>
         <source>Will require %1 of storage</source>
-        <translation type="unfinished"/>
+        <translation>Will require %1 of storage</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1340"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
-        <translation type="unfinished"/>
+        <translation>%1 free space</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1350"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
-        <translation type="unfinished"/>
+        <translation>There isn&apos;t enough free space in the local folder!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1367"/>
         <source>Please choose a local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Please choose a local sync folder.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1372"/>
         <source>Please choose an empty local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Please choose an empty local sync folder.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1437"/>
         <source>Could not create local folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Could not create local folder %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1451"/>
         <source>Checking remote folder</source>
-        <translation type="unfinished"/>
+        <translation>Checking remote folder</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1497"/>
         <source>No remote folder specified!</source>
-        <translation type="unfinished"/>
+        <translation>No remote folder specified!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1506"/>
         <source>Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1511"/>
         <source>Creating remote folder</source>
-        <translation type="unfinished"/>
+        <translation>Creating remote folder</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1530"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation type="unfinished"/>
+        <translation>The folder creation resulted in HTTP error code %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1532"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
-        <translation type="unfinished"/>
+        <translation>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1534"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1558"/>
         <source>Account setup failed while creating the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Account setup failed while creating the sync folder.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1585"/>
         <source>Could not create the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Could not create the sync folder.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1675"/>
         <source>Local Sync Folder</source>
-        <translation type="unfinished"/>
+        <translation>Local Sync Folder</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1922"/>
         <source>Select a certificate</source>
-        <translation type="unfinished"/>
+        <translation>Select a certificate</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1924"/>
         <source>Certificate files (*.p12 *.pfx)</source>
-        <translation type="unfinished"/>
+        <translation>Certificate files (*.p12 *.pfx)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1932"/>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1952"/>
         <source>Could not access the selected certificate file.</source>
-        <translation type="unfinished"/>
+        <translation>Could not access the selected certificate file.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1968"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation type="unfinished"/>
+        <translation>Could not load certificate. Maybe wrong password?</translation>
     </message>
 </context>
 <context>
@@ -1577,38 +1578,38 @@ This action will abort any currently running synchronization.</translation>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="50"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Ask for confirmation before synchronising new folders larger than</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="70"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>MB</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="105"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation type="unfinished"/>
+        <translation>Notify when synchronised folders grow larger than specified limit</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="139"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation type="unfinished"/>
+        <translation>Automatically disable synchronisation of folders that overcome limit</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="186"/>
         <source>Server poll interval</source>
-        <translation type="unfinished"/>
+        <translation>Server poll interval</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="203"/>
         <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
-        <translation type="unfinished"/>
+        <translation>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="243"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Ask for confirmation before synchronising external storages</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="277"/>
@@ -1618,48 +1619,48 @@ This action will abort any currently running synchronization.</translation>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="324"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
-        <translation type="unfinished"/>
+        <translation>Show sync folders in &amp;Explorer&apos;s navigation pane</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="363"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Edit &amp;Ignored Files</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="370"/>
         <location filename="../src/gui/advancedsettings.cpp" line="383"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Create Debug Archive</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="251"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Advanced</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="385"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Zip Archives</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="398"/>
         <source>Failed to Access File</source>
-        <translation type="unfinished"/>
+        <translation>Failed to Access File</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="399"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
-        <translation type="unfinished"/>
+        <translation>Could not access the selected location. Please try again or choose a different location.</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="408"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Debug Archive Created</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="409"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Redact information deemed sensitive before sharing! Debug archive created at %1</translation>
     </message>
 </context>
 <context>
@@ -3782,73 +3783,73 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/infosettings.ui" line="51"/>
         <source>Desktop client x.x.x</source>
-        <translation type="unfinished"/>
+        <translation>Desktop client x.x.x</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
         <source>Usage Documentation</source>
-        <translation type="unfinished"/>
+        <translation>Usage Documentation</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="81"/>
         <source>Legal Notice</source>
-        <translation type="unfinished"/>
+        <translation>Legal Notice</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="152"/>
         <source>Update channel</source>
-        <translation type="unfinished"/>
+        <translation>Update channel</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="172"/>
         <source>Restore &amp;Default</source>
-        <translation type="unfinished"/>
+        <translation>Restore &amp;Default</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="193"/>
         <source>&amp;Automatically check for updates</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Automatically check for updates</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="216"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Restart &amp;&amp; Update</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="229"/>
         <source>Check Now</source>
-        <translation type="unfinished"/>
+        <translation>Check Now</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="112"/>
         <source>Restore to &amp;%1</source>
-        <translation type="unfinished"/>
+        <translation>Restore to &amp;%1</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="153"/>
         <location filename="../src/gui/infosettings.cpp" line="179"/>
         <source>Connected to an enterprise system. Update channel (%1) cannot be changed.</source>
-        <translation type="unfinished"/>
+        <translation>Connected to an enterprise system. Update channel (%1) cannot be changed.</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="210"/>
         <source>stable</source>
-        <translation type="unfinished"/>
+        <translation>stable</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="214"/>
         <source>beta</source>
-        <translation type="unfinished"/>
+        <translation>beta</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="218"/>
         <source>daily</source>
-        <translation type="unfinished"/>
+        <translation>daily</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="222"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>enterprise</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="257"/>
@@ -3857,7 +3858,10 @@ Items where deletion is allowed will be deleted if they prevent a directory from
 
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
         <comment>list of available update channels to non enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- beta: contains versions with new features that may not be tested thoroughly
+- daily: contains versions created daily only for testing and development
+
+Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="262"/>
@@ -3865,12 +3869,14 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
         <comment>list of available update channels to enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- enterprise: contains stable versions for customers.
+
+Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="269"/>
         <source>Changing update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Changing update channel?</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="270"/>
@@ -3878,17 +3884,19 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 - stable: contains tested versions considered reliable
 </source>
         <comment>starts list of available update channels, stable is always available</comment>
-        <translation type="unfinished"/>
+        <translation>The channel determines which upgrades will be offered to install:
+- stable: contains tested versions considered reliable
+</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="276"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Change update channel</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="277"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancel</translation>
     </message>
 </context>
 <context>
@@ -4384,7 +4392,7 @@ Note that using any logging command line options will override this setting.</tr
     <message>
         <location filename="../src/libsync/discovery.cpp" line="395"/>
         <source>File is locked by another application.</source>
-        <translation type="unfinished"/>
+        <translation>File is locked by another application.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="398"/>
@@ -4985,7 +4993,7 @@ Note that using any logging command line options will override this setting.</tr
         <location filename="../src/libsync/propagateuploadng.cpp" line="364"/>
         <source>File is locked preventing syncing it</source>
         <comment>Generic warning message when a locked file cannot be synced</comment>
-        <translation type="unfinished"/>
+        <translation>File is locked preventing syncing it</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="459"/>
@@ -5031,7 +5039,7 @@ Note that using any logging command line options will override this setting.</tr
         <location filename="../src/libsync/propagateuploadv1.cpp" line="141"/>
         <source>File is locked preventing syncing it</source>
         <comment>Generic warning message when a locked file cannot be synced</comment>
-        <translation type="unfinished"/>
+        <translation>File is locked preventing syncing it</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="233"/>
@@ -5158,12 +5166,12 @@ Note that using any logging command line options will override this setting.</tr
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="184"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Advanced</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="185"/>
         <source>Info</source>
-        <translation type="unfinished"/>
+        <translation>Info</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="335"/>
@@ -5189,7 +5197,7 @@ Note that using any logging command line options will override this setting.</tr
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="573"/>
         <source>%1 day</source>
-        <translation type="unfinished"/>
+        <translation>%1 day</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="573"/>
@@ -5968,27 +5976,27 @@ Server replied with error: %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="727"/>
         <location filename="../src/gui/tray/usermodel.cpp" line="766"/>
         <source>“%1” was not synchronized</source>
-        <translation type="unfinished"/>
+        <translation>“%1” was not synchronised</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="768"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
-        <translation type="unfinished"/>
+        <translation>Insufficient storage on the server. The file requires %1 but only %2 are available.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="771"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
-        <translation type="unfinished"/>
+        <translation>Insufficient storage on the server. The file requires %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="774"/>
         <source>Insufficient storage on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Insufficient storage on the server.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="810"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>There is insufficient space available on the server for some uploads.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="826"/>
@@ -6036,7 +6044,7 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1794"/>
         <source>Sending your request …</source>
-        <translation type="unfinished"/>
+        <translation>Sending your request …</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1867"/>
@@ -6344,7 +6352,7 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="499"/>
         <source>macOS VFS for %1: An error was encountered.</source>
-        <translation type="unfinished"/>
+        <translation>macOS VFS for %1: An error was encountered.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="565"/>
@@ -6359,12 +6367,12 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="851"/>
         <source>Internal link copied</source>
-        <translation type="unfinished"/>
+        <translation>Internal link copied</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="852"/>
         <source>The internal link has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>The internal link has been copied to the clipboard.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="399"/>
@@ -6393,77 +6401,77 @@ Server replied with error: %2</translation>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="77"/>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="80"/>
         <source>Proxy settings</source>
-        <translation type="unfinished"/>
+        <translation>Proxy settings</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="88"/>
         <source>No proxy</source>
-        <translation type="unfinished"/>
+        <translation>No proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="98"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>Use system proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="108"/>
         <source>Manually specify proxy</source>
-        <translation type="unfinished"/>
+        <translation>Manually specify proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="123"/>
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished"/>
+        <translation>HTTP(S) proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="123"/>
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished"/>
+        <translation>SOCKS5 proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="127"/>
         <source>Proxy type</source>
-        <translation type="unfinished"/>
+        <translation>Proxy type</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="138"/>
         <source>Hostname of proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Hostname of proxy server</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="150"/>
         <source>Proxy port</source>
-        <translation type="unfinished"/>
+        <translation>Proxy port</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="159"/>
         <source>Proxy server requires authentication</source>
-        <translation type="unfinished"/>
+        <translation>Proxy server requires authentication</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="175"/>
         <source>Username for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Username for proxy server</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="182"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Password for proxy server</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="191"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Note: proxy settings have no effects for accounts on localhost</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="208"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="215"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Done</translation>
     </message>
 </context>
 <context>
@@ -6549,7 +6557,7 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="307"/>
         <source>Answer</source>
-        <translation type="unfinished"/>
+        <translation>Answer</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1304"/>
@@ -6761,22 +6769,22 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="29"/>
         <source>Log in to %1</source>
-        <translation type="unfinished"/>
+        <translation>Log in to %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="38"/>
         <source>Enter the link to your %1 web interface from the browser or the link to a folder shared with you.</source>
-        <translation type="unfinished"/>
+        <translation>Enter the link to your %1 web interface from the browser or the link to a folder shared with you.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="181"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Log in</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="196"/>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>Server address</translation>
     </message>
 </context>
 <context>
@@ -6935,17 +6943,17 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>Virtual files</source>
-        <translation type="unfinished"/>
+        <translation>Virtual files</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>File Provider</source>
-        <translation type="unfinished"/>
+        <translation>File Provider</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="91"/>
         <source>Download files on-demand</source>
-        <translation type="unfinished"/>
+        <translation>Download files on-demand</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="99"/>
@@ -6955,17 +6963,17 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="108"/>
         <source>Choose what to sync</source>
-        <translation type="unfinished"/>
+        <translation>Choose what to sync</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="122"/>
         <source>Local sync folder</source>
-        <translation type="unfinished"/>
+        <translation>Local sync folder</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="154"/>
         <source>Choose</source>
-        <translation type="unfinished"/>
+        <translation>Choose</translation>
     </message>
 </context>
 <context>
@@ -7009,17 +7017,17 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayAccountPopup.qml" line="216"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Add account</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayAccountPopup.qml" line="256"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Settings</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayAccountPopup.qml" line="296"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Quit</translation>
     </message>
 </context>
 <context>
@@ -7583,7 +7591,7 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="130"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Enable experimental feature?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="131"/>
@@ -7599,12 +7607,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="146"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>Enable experimental placeholder mode</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="147"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Stay safe</translation>
     </message>
 </context>
 <context>
