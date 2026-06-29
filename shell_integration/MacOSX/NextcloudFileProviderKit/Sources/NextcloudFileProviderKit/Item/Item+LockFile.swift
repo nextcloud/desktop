@@ -79,7 +79,7 @@ extension Item {
 
         logger.info("Item to create is a lock file. Will attempt to lock the associated file on the server.", [.name: itemTemplate.filename])
 
-        guard let targetFileName = originalFileName(fromLockFileName: itemTemplate.filename, dbManager: dbManager) else {
+        guard let targetFileName = lockFileTargetName(forLockFileName: itemTemplate.filename, parentServerUrl: parentItemRemotePath, dbManager: dbManager) else {
             logger.error("Will not lock the target file because it could not be determined based on the lock file name.", [.name: itemTemplate.filename])
             return (nil, NSFileProviderError(.excludedFromSync))
         }
@@ -238,13 +238,16 @@ extension Item {
     }
 
     func deleteLockFile(domain: NSFileProviderDomain? = nil, dbManager: FilesDatabaseManager) async -> Error? {
+        // Always drop the local lock metadata first so it is never orphaned, even when the
+        // server lacks the locking capability or the guarded document cannot be determined.
+        dbManager.deleteItemMetadata(ocId: metadata.ocId)
+
         guard await Self.assertRequiredCapabilities(domain: domain, itemIdentifier: itemIdentifier, account: account, remoteInterface: remoteInterface, logger: logger) else {
+            logger.info("Server does not support locking; removed local lock metadata without contacting the server.", [.name: metadata.fileName])
             return nil
         }
 
-        dbManager.deleteItemMetadata(ocId: metadata.ocId)
-
-        guard let originalFileName = originalFileName(fromLockFileName: metadata.fileName, dbManager: dbManager) else {
+        guard let originalFileName = lockFileTargetName(forLockFileName: metadata.fileName, parentServerUrl: metadata.serverUrl, dbManager: dbManager) else {
             logger.error("Could not get original filename from lock file filename so will not unlock target file.", [.name: metadata.fileName])
             return nil
         }

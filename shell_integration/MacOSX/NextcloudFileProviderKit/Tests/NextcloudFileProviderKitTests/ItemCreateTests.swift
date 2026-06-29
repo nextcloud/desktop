@@ -943,6 +943,229 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertFalse(targetRemote.locked)
     }
 
+    /// An Adobe lock file name does not encode the guarded document's extension, so the document
+    /// is resolved by matching a sibling file. Once resolved it is locked on the server just like
+    /// for Office lock files, while the lock file itself stays local and is never uploaded.
+    func testCreateAdobeInDesignLockFileLocksDocument() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        let folderRemote = MockRemoteItem(
+            identifier: "folder",
+            versionIdentifier: "1",
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        let targetFileName = "MyDoc.indd"
+        let targetRemote = MockRemoteItem(
+            identifier: "folder/\(targetFileName)",
+            versionIdentifier: "1",
+            name: targetFileName,
+            remotePath: folderRemote.remotePath + "/" + targetFileName,
+            data: Data("test data".utf8),
+            locked: false,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        folderRemote.children = [targetRemote]
+        folderRemote.parent = rootItem
+        rootItem.children = [folderRemote]
+
+        var folderMetadata = SendableItemMetadata(
+            ocId: folderRemote.identifier, fileName: "folder", account: Self.account
+        )
+        folderMetadata.directory = true
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        var targetMetadata = SendableItemMetadata(
+            ocId: targetRemote.identifier, fileName: targetFileName, account: Self.account
+        )
+        targetMetadata.serverUrl += "/folder"
+        Self.dbManager.addItemMetadata(targetMetadata)
+
+        // InDesign lock file: `~{base name}~{random token}(.idlk`.
+        let lockFileName = "~MyDoc~0kjyv(.idlk"
+        var lockFileMetadata = SendableItemMetadata(
+            ocId: "lock-id", fileName: lockFileName, account: Self.account
+        )
+        lockFileMetadata.serverUrl += "/folder"
+
+        let lockItemTemplate = Item(
+            metadata: lockFileMetadata,
+            parentItemIdentifier: .init(folderMetadata.ocId),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (createdItem, error) = await Item.create(
+            basedOn: lockItemTemplate,
+            contents: nil,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertNotNil(createdItem)
+        XCTAssertEqual(createdItem?.isUploaded, false)
+        XCTAssertEqual(createdItem?.isDownloaded, true)
+        XCTAssertNil(error)
+
+        let lockMetadata = Self.dbManager.itemMetadata(ocId: lockFileMetadata.ocId)
+        XCTAssertNotNil(lockMetadata)
+        XCTAssertEqual(lockMetadata?.classFile, "lock")
+        XCTAssertEqual(lockMetadata?.isLockFileOfLocalOrigin, true)
+
+        // The lock file itself is never uploaded to the server.
+        XCTAssertFalse(folderRemote.children.contains { $0.name == lockFileName })
+        // The guarded document is locked on the server.
+        XCTAssertTrue(targetRemote.locked)
+    }
+
+    /// Premiere Pro lock files are named `{base name}.prlock` and guard a `.prproj` project.
+    func testCreateAdobePremiereLockFileLocksDocument() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        let folderRemote = MockRemoteItem(
+            identifier: "folder",
+            versionIdentifier: "1",
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        let targetFileName = "MyDoc.prproj"
+        let targetRemote = MockRemoteItem(
+            identifier: "folder/\(targetFileName)",
+            versionIdentifier: "1",
+            name: targetFileName,
+            remotePath: folderRemote.remotePath + "/" + targetFileName,
+            data: Data("test data".utf8),
+            locked: false,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        folderRemote.children = [targetRemote]
+        folderRemote.parent = rootItem
+        rootItem.children = [folderRemote]
+
+        var folderMetadata = SendableItemMetadata(
+            ocId: folderRemote.identifier, fileName: "folder", account: Self.account
+        )
+        folderMetadata.directory = true
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        var targetMetadata = SendableItemMetadata(
+            ocId: targetRemote.identifier, fileName: targetFileName, account: Self.account
+        )
+        targetMetadata.serverUrl += "/folder"
+        Self.dbManager.addItemMetadata(targetMetadata)
+
+        let lockFileName = "MyDoc.prlock"
+        var lockFileMetadata = SendableItemMetadata(
+            ocId: "lock-id", fileName: lockFileName, account: Self.account
+        )
+        lockFileMetadata.serverUrl += "/folder"
+
+        let lockItemTemplate = Item(
+            metadata: lockFileMetadata,
+            parentItemIdentifier: .init(folderMetadata.ocId),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (createdItem, error) = await Item.create(
+            basedOn: lockItemTemplate,
+            contents: nil,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertNotNil(createdItem)
+        XCTAssertEqual(createdItem?.isUploaded, false)
+        XCTAssertNil(error)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: lockFileMetadata.ocId)?.isLockFileOfLocalOrigin, true)
+        XCTAssertFalse(folderRemote.children.contains { $0.name == lockFileName })
+        XCTAssertTrue(targetRemote.locked)
+    }
+
+    /// When the guarded document cannot be found (e.g. a stale lock file, or the document is not
+    /// in the database), the Adobe lock file is excluded from sync, matching Office behaviour.
+    func testCreateAdobeLockFileWithoutDocumentIsExcluded() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        let folderRemote = MockRemoteItem(
+            identifier: "folder",
+            versionIdentifier: "1",
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        folderRemote.parent = rootItem
+        rootItem.children = [folderRemote]
+
+        var folderMetadata = SendableItemMetadata(
+            ocId: folderRemote.identifier, fileName: "folder", account: Self.account
+        )
+        folderMetadata.directory = true
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        // No `MyDoc.indd` sibling exists in the database.
+        let lockFileName = "~MyDoc~0kjyv(.idlk"
+        var lockFileMetadata = SendableItemMetadata(
+            ocId: "lock-id", fileName: lockFileName, account: Self.account
+        )
+        lockFileMetadata.serverUrl += "/folder"
+
+        let lockItemTemplate = Item(
+            metadata: lockFileMetadata,
+            parentItemIdentifier: .init(folderMetadata.ocId),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (createdItem, error) = await Item.create(
+            basedOn: lockItemTemplate,
+            contents: nil,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertNil(createdItem)
+        let unwrappedError = try XCTUnwrap(error) as? NSFileProviderError
+        XCTAssertEqual(unwrappedError, NSFileProviderError(.excludedFromSync))
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: lockFileMetadata.ocId))
+    }
+
     ///
     /// A new file created in a folder the user marked "Always keep downloaded"
     /// must inherit that flag so the Finder overlay decoration matches its
