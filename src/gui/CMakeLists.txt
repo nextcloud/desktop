@@ -87,6 +87,8 @@ set(client_SRCS
     conflictsolver.cpp
     connectionvalidator.h
     connectionvalidator.cpp
+    e2eefoldermanager.h
+    e2eefoldermanager.cpp
     editlocallyjob.h
     editlocallyjob.cpp
     editlocallymanager.h
