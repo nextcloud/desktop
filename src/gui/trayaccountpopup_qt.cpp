@@ -291,24 +291,12 @@ QIcon activityIcon(const QVariantMap &activityData)
     return blackThemeIcon(QStringLiteral("activity.svg"));
 }
 
-QString titleWithDetail(const QString &title, const QString &subtitle, const QString &dateTime)
+QString compactTimedMenuText(const QString &text, const QString &dateTime)
 {
-    auto result = title;
-    if (!subtitle.isEmpty()) {
-        result = QStringLiteral("%1 - %2").arg(result, subtitle);
-    }
-    if (!dateTime.isEmpty()) {
-        result = QStringLiteral("%1 (%2)").arg(result, dateTime);
-    }
-    return result;
-}
+    static constexpr auto maximumTextLength = 60;
 
-QString recentActivityMenuText(const QString &message, const QString &dateTime)
-{
-    static constexpr auto maximumMessageLength = 50;
-
-    auto result = message.left(maximumMessageLength);
-    if (message.size() > maximumMessageLength) {
+    auto result = text.left(maximumTextLength);
+    if (text.size() > maximumTextLength) {
         result += QStringLiteral("...");
     }
     if (!dateTime.isEmpty()) {
@@ -499,7 +487,7 @@ void addNotifications(QMenu *menu, const int userId, const QVariantList &notific
         const auto activityIndex = notificationData.value(QStringLiteral("activityIndex")).toInt();
         const auto actions = notificationData.value(QStringLiteral("actions")).toList();
         const auto dateTime = notificationData.value(QStringLiteral("dateTime")).toString();
-        const auto menuText = titleWithDetail(title, {}, dateTime);
+        const auto menuText = compactTimedMenuText(title, dateTime);
         if (actions.isEmpty()) {
             const auto action = addMenuAction(menu, activityIcon(notificationData), menuText);
             QObject::connect(action, &QAction::triggered, action, [userId, opensSettings] {
@@ -540,7 +528,7 @@ void addRecentActivities(QMenu *menu, const int userId, const QVariantList &rece
         }
 
         const auto dateTime = activityData.value(QStringLiteral("dateTime")).toString();
-        const auto action = addMenuAction(menu, activityIcon(activityData), recentActivityMenuText(message, dateTime));
+        const auto action = addMenuAction(menu, activityIcon(activityData), compactTimedMenuText(message, dateTime));
         QObject::connect(action, &QAction::triggered, action, [userId] {
             openActivitiesForUser(userId);
         });
