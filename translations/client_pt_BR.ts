@@ -1124,7 +1124,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1538"/>
         <source>Leave share</source>
-        <translation>Deixar o compartilhamento</translation>
+        <translation>Deixar compartilhamento</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1540"/>
