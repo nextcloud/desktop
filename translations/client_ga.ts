@@ -790,19 +790,19 @@ Ar cheart an cuntas a allmhairiú?</translation>
         <location filename="../src/gui/accountsettings.ui" line="488"/>
         <location filename="../src/gui/accountsettings.cpp" line="1541"/>
         <source>Log out, log back in, or remove this account from the client.</source>
-        <translation type="unfinished"/>
+        <translation>Logáil amach, logáil isteach arís, nó bain an cuntas seo ón gcliant.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="504"/>
         <location filename="../src/gui/accountsettings.cpp" line="1537"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>Logáil amach</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="517"/>
         <location filename="../src/gui/accountsettings.cpp" line="1538"/>
         <source>Remove account</source>
-        <translation type="unfinished"/>
+        <translation>Bain cuntas</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="324"/>
@@ -1119,17 +1119,17 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1537"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Logáil isteach</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1538"/>
         <source>Leave share</source>
-        <translation type="unfinished"/>
+        <translation>Fág an comhroinnt</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1540"/>
         <source>Remove this public share connection from the client.</source>
-        <translation type="unfinished"/>
+        <translation>Bain an nasc comhroinnte poiblí seo ón gcliant.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1718"/>
