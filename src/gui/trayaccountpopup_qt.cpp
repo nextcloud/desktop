@@ -297,29 +297,34 @@ QIcon activityIcon(const QVariantMap &activityData)
     return blackThemeIcon(QStringLiteral("activity.svg"));
 }
 
+QString compactMenuText(const QString &text)
+{
+    static constexpr auto maximumTextLength = 50;
+
+    return text.size() <= maximumTextLength
+        ? text
+        : text.left(maximumTextLength - 3) + QStringLiteral("...");
+}
+
 QString compactTimedMenuText(const QString &text, const QString &dateTime)
 {
-    static constexpr auto maximumTextLength = 60;
-
-    auto result = text.left(maximumTextLength);
-    if (text.size() > maximumTextLength) {
-        result += QStringLiteral("...");
-    }
+    auto result = compactMenuText(text);
     if (!dateTime.isEmpty()) {
         result = QStringLiteral("%1 - %2").arg(result, dateTime);
     }
-    return result;
+    return compactMenuText(result);
 }
 
 QAction *addMenuAction(QMenu *menu, const QIcon &icon, const QString &text)
 {
-    return icon.isNull() ? menu->addAction(text) : menu->addAction(icon, text);
+    const auto compactText = compactMenuText(text);
+    return icon.isNull() ? menu->addAction(compactText) : menu->addAction(icon, compactText);
 }
 
 QAction *addSectionHeading(QMenu *menu, const QString &text)
 {
     auto action = new QWidgetAction(menu);
-    auto label = new QLabel(text, menu);
+    auto label = new QLabel(compactMenuText(text), menu);
     label->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     label->setContentsMargins(10, 4, 10, 2);
     label->setEnabled(false);
@@ -456,7 +461,7 @@ bool populateAppsMenu(QMenu *menu, const int userId)
     }
 
     if (menu->isEmpty()) {
-        const auto noAppsAction = menu->addAction(QCoreApplication::translate("TrayAccountPopup", "No apps available"));
+        const auto noAppsAction = menu->addAction(compactMenuText(QCoreApplication::translate("TrayAccountPopup", "No apps available")));
         noAppsAction->setEnabled(false);
     }
 
@@ -474,7 +479,7 @@ void populateNotificationActionsMenu(QMenu *menu, const int userId, const int ac
 
         const auto actionType = actionData.value(QStringLiteral("actionType")).toString();
         const auto actionIndex = actionData.value(QStringLiteral("actionIndex")).toInt();
-        const auto action = menu->addAction(title);
+        const auto action = menu->addAction(compactMenuText(title));
         QObject::connect(action, &QAction::triggered, action, [userId, activityIndex, actionType, actionIndex] {
             if (actionType == QStringLiteral("dismiss")) {
                 UserModel::instance()->dismissNotification(userId, activityIndex);
@@ -517,8 +522,8 @@ void addNotifications(QMenu *menu, const int userId, const QVariantList &notific
             continue;
         }
 
-        const auto notificationMenu = menu->addMenu(activityIcon(notificationData), menuText);
-        const auto openAction = notificationMenu->addAction(QCoreApplication::translate("TrayAccountPopup", "Open"));
+        const auto notificationMenu = menu->addMenu(activityIcon(notificationData), compactMenuText(menuText));
+        const auto openAction = notificationMenu->addAction(compactMenuText(QCoreApplication::translate("TrayAccountPopup", "Open")));
         QObject::connect(openAction, &QAction::triggered, openAction, [userId, opensSettings] {
             openNotification(userId, opensSettings);
         });
@@ -555,7 +560,7 @@ void addRecentActivities(QMenu *menu, const int userId, const QVariantList &rece
         });
     }
 
-    const auto moreActivitiesAction = menu->addAction(QCoreApplication::translate("TrayAccountPopup", "More activity\342\200\246"));
+    const auto moreActivitiesAction = menu->addAction(compactMenuText(QCoreApplication::translate("TrayAccountPopup", "More activity\342\200\246")));
     QObject::connect(moreActivitiesAction, &QAction::triggered, moreActivitiesAction, [userId] {
         openActivitiesForUser(userId);
     });
@@ -606,8 +611,8 @@ void populateAccountMenu(QMenu *menu, const int userId, const bool fetchActivity
     menu->addSeparator();
 
     const auto openFolderAction = addMenuAction(menu,
-        templateThemeIcon(QStringLiteral("file-open.svg"), menuIconPalette),
-        QCoreApplication::translate("TrayFoldersMenuButton", "Open local folder"));
+        templateBlackThemeIcon(QStringLiteral("folder.svg"), menuIconPalette),
+        QCoreApplication::translate("TrayFoldersMenuButton", "Local folder"));
     QObject::connect(openFolderAction, &QAction::triggered, openFolderAction, [userId] {
         openLocalFolderForUser(userId);
     });
@@ -623,7 +628,7 @@ void populateAccountMenu(QMenu *menu, const int userId, const bool fetchActivity
     }
 
     const auto appsMenu = menu->addMenu(templateBlackThemeIcon(QStringLiteral("more-apps.svg"), menuIconPalette),
-        QCoreApplication::translate("TrayWindowHeader", "More apps"));
+        compactMenuText(QCoreApplication::translate("TrayWindowHeader", "More apps")));
     appsMenu->menuAction()->setEnabled(populateAppsMenu(appsMenu, userId));
     QObject::connect(appsMenu, &QMenu::aboutToShow, appsMenu, [appsMenu, userId] {
         appsMenu->menuAction()->setEnabled(populateAppsMenu(appsMenu, userId));
@@ -656,7 +661,7 @@ void populateTrayMenu(QMenu *menu, Systray *systray)
                 accountIcon = Theme::instance()->applicationIcon();
             }
 
-            const auto accountMenu = menu->addMenu(accountIcon, accountText);
+            const auto accountMenu = menu->addMenu(accountIcon, compactMenuText(accountText));
             QObject::connect(accountMenu, &QMenu::aboutToShow, accountMenu, [accountMenu, userId] {
                 populateAccountMenu(accountMenu, userId);
             });
@@ -692,7 +697,7 @@ void populateTrayMenu(QMenu *menu, Systray *systray)
         const auto syncPauseText = systray->syncIsPaused()
             ? QCoreApplication::translate("CurrentAccountHeaderButton", "Resume sync for all")
             : QCoreApplication::translate("CurrentAccountHeaderButton", "Pause sync for all");
-        const auto syncPauseAction = menu->addAction(syncPauseText);
+        const auto syncPauseAction = menu->addAction(compactMenuText(syncPauseText));
         QObject::connect(syncPauseAction, &QAction::triggered, syncPauseAction, [] {
             toggleSyncPause();
         });
@@ -705,7 +710,7 @@ void populateTrayMenu(QMenu *menu, Systray *systray)
         openSettingsAfterTrayPopupCloses();
     });
 
-    const auto helpAction = menu->addAction(Systray::tr("Help"));
+    const auto helpAction = menu->addAction(compactMenuText(Systray::tr("Help")));
     QObject::connect(helpAction, &QAction::triggered, helpAction, [] {
         closeTrayPopup();
         Systray::instance()->openHelp();

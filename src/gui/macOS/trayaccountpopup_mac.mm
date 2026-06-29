@@ -103,6 +103,88 @@ static void addOwnedArrangedSubview(NSStackView *stack, NSView *view)
     [view release];
 }
 
+static NSStackView *configurePopupPanel(NSPanel *panel)
+{
+    panel.level = NSPopUpMenuWindowLevel;
+    panel.hasShadow = YES;
+    panel.releasedWhenClosed = NO;
+    panel.backgroundColor = NSColor.clearColor;
+    panel.opaque = NO;
+
+    auto container = [[[NSView alloc] init] autorelease];
+    container.wantsLayer = YES;
+    container.layer.cornerRadius = kCornerRadius;
+    container.layer.masksToBounds = YES;
+    panel.contentView = container;
+
+    auto visualEffectView = [[[NSVisualEffectView alloc] init] autorelease];
+    visualEffectView.material = NSVisualEffectMaterialHUDWindow;
+    visualEffectView.blendingMode = NSVisualEffectBlendingModeBehindWindow;
+    visualEffectView.state = NSVisualEffectStateActive;
+    visualEffectView.wantsLayer = YES;
+    visualEffectView.layer.cornerRadius = kCornerRadius;
+    visualEffectView.layer.masksToBounds = YES;
+    visualEffectView.translatesAutoresizingMaskIntoConstraints = NO;
+    [container addSubview:visualEffectView];
+
+    auto stack = [NSStackView stackViewWithViews:@[]];
+    stack.orientation = NSUserInterfaceLayoutOrientationVertical;
+    stack.spacing = 0;
+    stack.translatesAutoresizingMaskIntoConstraints = NO;
+    [visualEffectView addSubview:stack];
+
+    [NSLayoutConstraint activateConstraints:@[
+        [visualEffectView.topAnchor constraintEqualToAnchor:container.topAnchor],
+        [visualEffectView.leadingAnchor constraintEqualToAnchor:container.leadingAnchor],
+        [visualEffectView.trailingAnchor constraintEqualToAnchor:container.trailingAnchor],
+        [visualEffectView.bottomAnchor constraintEqualToAnchor:container.bottomAnchor],
+        [stack.topAnchor constraintEqualToAnchor:visualEffectView.topAnchor],
+        [stack.leadingAnchor constraintEqualToAnchor:visualEffectView.leadingAnchor],
+        [stack.trailingAnchor constraintEqualToAnchor:visualEffectView.trailingAnchor],
+        [stack.bottomAnchor constraintEqualToAnchor:visualEffectView.bottomAnchor],
+    ]];
+
+    return stack;
+}
+
+static void clearStack(NSStackView *stack)
+{
+    auto arrangedSubviews = [stack.arrangedSubviews copy];
+    for (NSView *view in arrangedSubviews) {
+        [stack removeArrangedSubview:view];
+        [view removeFromSuperview];
+    }
+    [arrangedSubviews release];
+}
+
+static void positionPopupFromRow(NSPanel *popup, NSView *row)
+{
+    const auto rowTopLeftInWindow = [row convertPoint:NSMakePoint(NSMinX(row.bounds) + kHPad, NSMaxY(row.bounds)) toView:nil];
+    const auto rowTopRightInWindow = [row convertPoint:NSMakePoint(NSMaxX(row.bounds) - kHPad, NSMaxY(row.bounds)) toView:nil];
+    const auto rowTopLeftOnScreen = [row.window convertPointToScreen:rowTopLeftInWindow];
+    auto rowTopRightOnScreen = [row.window convertPointToScreen:rowTopRightInWindow];
+
+    const auto popupWidth = popup.frame.size.width;
+    const auto popupHeight = popup.frame.size.height;
+    auto popupOrigin = rowTopRightOnScreen;
+    popupOrigin.y -= popupHeight;
+
+    auto screen = row.window.screen;
+    if (!screen) {
+        screen = NSScreen.mainScreen ?: NSScreen.screens.firstObject;
+    }
+    const auto visibleFrame = screen.visibleFrame;
+    const auto rightEdge = NSMaxX(visibleFrame) - kScreenEdgePadding;
+    const auto leftEdge = NSMinX(visibleFrame) + kScreenEdgePadding;
+
+    if (popupOrigin.x + popupWidth > rightEdge && rowTopLeftOnScreen.x - popupWidth >= leftEdge) {
+        popupOrigin.x = rowTopLeftOnScreen.x - popupWidth;
+    }
+    popupOrigin = clampedPopupOrigin(popupOrigin, NSMakeSize(popupWidth, popupHeight), visibleFrame);
+
+    [popup setFrameOrigin:popupOrigin];
+}
+
 static NSColor *hoverColor()
 {
     NSAppearanceName appearanceName = [NSApp.effectiveAppearance bestMatchFromAppearancesWithNames:@[
@@ -1036,45 +1118,7 @@ static NSView *compactAccountActionsSeparator()
                                 defer:NO];
     if (!self) return nil;
 
-    self.level = NSPopUpMenuWindowLevel;
-    self.hasShadow = YES;
-    self.releasedWhenClosed = NO;
-    self.backgroundColor = NSColor.clearColor;
-    self.opaque = NO;
-
-    NSView *container = [[[NSView alloc] init] autorelease];
-    container.wantsLayer = YES;
-    container.layer.cornerRadius = kCornerRadius;
-    container.layer.masksToBounds = YES;
-    self.contentView = container;
-
-    NSVisualEffectView *vev = [[[NSVisualEffectView alloc] init] autorelease];
-    vev.material = NSVisualEffectMaterialHUDWindow;
-    vev.blendingMode = NSVisualEffectBlendingModeBehindWindow;
-    vev.state = NSVisualEffectStateActive;
-    vev.wantsLayer = YES;
-    vev.layer.cornerRadius = kCornerRadius;
-    vev.layer.masksToBounds = YES;
-    vev.translatesAutoresizingMaskIntoConstraints = NO;
-    [container addSubview:vev];
-    [NSLayoutConstraint activateConstraints:@[
-        [vev.topAnchor constraintEqualToAnchor:container.topAnchor],
-        [vev.leadingAnchor constraintEqualToAnchor:container.leadingAnchor],
-        [vev.trailingAnchor constraintEqualToAnchor:container.trailingAnchor],
-        [vev.bottomAnchor constraintEqualToAnchor:container.bottomAnchor],
-    ]];
-
-    _stack = [NSStackView stackViewWithViews:@[]];
-    _stack.orientation = NSUserInterfaceLayoutOrientationVertical;
-    _stack.spacing = 0;
-    _stack.translatesAutoresizingMaskIntoConstraints = NO;
-    [vev addSubview:_stack];
-    [NSLayoutConstraint activateConstraints:@[
-        [_stack.topAnchor constraintEqualToAnchor:vev.topAnchor],
-        [_stack.leadingAnchor constraintEqualToAnchor:vev.leadingAnchor],
-        [_stack.trailingAnchor constraintEqualToAnchor:vev.trailingAnchor],
-        [_stack.bottomAnchor constraintEqualToAnchor:vev.bottomAnchor],
-    ]];
+    _stack = configurePopupPanel(self);
     return self;
 }
 
@@ -1082,12 +1126,7 @@ static NSView *compactAccountActionsSeparator()
 
 - (void)populateForUserIndex:(int)userIndex owner:(NCTrayPopup *)owner
 {
-    auto arrangedSubviews = [_stack.arrangedSubviews copy];
-    for (NSView *v in arrangedSubviews) {
-        [_stack removeArrangedSubview:v];
-        [v removeFromSuperview];
-    }
-    [arrangedSubviews release];
+    clearStack(_stack);
 
     __unsafe_unretained NCTrayPopup *weakOwner = owner;
     auto appsModel = OCC::TrayAccountAppsModel::instance();
@@ -1164,45 +1203,7 @@ static NSView *compactAccountActionsSeparator()
                                 defer:NO];
     if (!self) return nil;
 
-    self.level = NSPopUpMenuWindowLevel;
-    self.hasShadow = YES;
-    self.releasedWhenClosed = NO;
-    self.backgroundColor = NSColor.clearColor;
-    self.opaque = NO;
-
-    NSView *container = [[[NSView alloc] init] autorelease];
-    container.wantsLayer = YES;
-    container.layer.cornerRadius = kCornerRadius;
-    container.layer.masksToBounds = YES;
-    self.contentView = container;
-
-    NSVisualEffectView *vev = [[[NSVisualEffectView alloc] init] autorelease];
-    vev.material = NSVisualEffectMaterialHUDWindow;
-    vev.blendingMode = NSVisualEffectBlendingModeBehindWindow;
-    vev.state = NSVisualEffectStateActive;
-    vev.wantsLayer = YES;
-    vev.layer.cornerRadius = kCornerRadius;
-    vev.layer.masksToBounds = YES;
-    vev.translatesAutoresizingMaskIntoConstraints = NO;
-    [container addSubview:vev];
-    [NSLayoutConstraint activateConstraints:@[
-        [vev.topAnchor constraintEqualToAnchor:container.topAnchor],
-        [vev.leadingAnchor constraintEqualToAnchor:container.leadingAnchor],
-        [vev.trailingAnchor constraintEqualToAnchor:container.trailingAnchor],
-        [vev.bottomAnchor constraintEqualToAnchor:container.bottomAnchor],
-    ]];
-
-    _stack = [NSStackView stackViewWithViews:@[]];
-    _stack.orientation = NSUserInterfaceLayoutOrientationVertical;
-    _stack.spacing = 0;
-    _stack.translatesAutoresizingMaskIntoConstraints = NO;
-    [vev addSubview:_stack];
-    [NSLayoutConstraint activateConstraints:@[
-        [_stack.topAnchor constraintEqualToAnchor:vev.topAnchor],
-        [_stack.leadingAnchor constraintEqualToAnchor:vev.leadingAnchor],
-        [_stack.trailingAnchor constraintEqualToAnchor:vev.trailingAnchor],
-        [_stack.bottomAnchor constraintEqualToAnchor:vev.bottomAnchor],
-    ]];
+    _stack = configurePopupPanel(self);
     return self;
 }
 
@@ -1210,12 +1211,7 @@ static NSView *compactAccountActionsSeparator()
 
 - (void)populateForUserIndex:(int)userIndex activityIndex:(int)activityIndex actions:(QVariantList)actions owner:(NCTrayPopup *)owner
 {
-    auto arrangedSubviews = [_stack.arrangedSubviews copy];
-    for (NSView *v in arrangedSubviews) {
-        [_stack removeArrangedSubview:v];
-        [v removeFromSuperview];
-    }
-    [arrangedSubviews release];
+    clearStack(_stack);
 
     __unsafe_unretained NCTrayPopup *weakOwner = owner;
     __unsafe_unretained NCNotificationActionsPopup *weakSelf = self;
@@ -1292,46 +1288,8 @@ static NSView *compactAccountActionsSeparator()
                                 defer:NO];
     if (!self) return nil;
 
-    self.level = NSPopUpMenuWindowLevel;
-    self.hasShadow = YES;
-    self.releasedWhenClosed = NO;
-    self.backgroundColor = NSColor.clearColor;
-    self.opaque = NO;
     _userIndex = -1;
-
-    NSView *container = [[[NSView alloc] init] autorelease];
-    container.wantsLayer = YES;
-    container.layer.cornerRadius = kCornerRadius;
-    container.layer.masksToBounds = YES;
-    self.contentView = container;
-
-    NSVisualEffectView *vev = [[[NSVisualEffectView alloc] init] autorelease];
-    vev.material = NSVisualEffectMaterialHUDWindow;
-    vev.blendingMode = NSVisualEffectBlendingModeBehindWindow;
-    vev.state = NSVisualEffectStateActive;
-    vev.wantsLayer = YES;
-    vev.layer.cornerRadius = kCornerRadius;
-    vev.layer.masksToBounds = YES;
-    vev.translatesAutoresizingMaskIntoConstraints = NO;
-    [container addSubview:vev];
-    [NSLayoutConstraint activateConstraints:@[
-        [vev.topAnchor constraintEqualToAnchor:container.topAnchor],
-        [vev.leadingAnchor constraintEqualToAnchor:container.leadingAnchor],
-        [vev.trailingAnchor constraintEqualToAnchor:container.trailingAnchor],
-        [vev.bottomAnchor constraintEqualToAnchor:container.bottomAnchor],
-    ]];
-
-    _stack = [NSStackView stackViewWithViews:@[]];
-    _stack.orientation = NSUserInterfaceLayoutOrientationVertical;
-    _stack.spacing = 0;
-    _stack.translatesAutoresizingMaskIntoConstraints = NO;
-    [vev addSubview:_stack];
-    [NSLayoutConstraint activateConstraints:@[
-        [_stack.topAnchor constraintEqualToAnchor:vev.topAnchor],
-        [_stack.leadingAnchor constraintEqualToAnchor:vev.leadingAnchor],
-        [_stack.trailingAnchor constraintEqualToAnchor:vev.trailingAnchor],
-        [_stack.bottomAnchor constraintEqualToAnchor:vev.bottomAnchor],
-    ]];
+    _stack = configurePopupPanel(self);
     return self;
 }
 
@@ -1392,30 +1350,7 @@ static NSView *compactAccountActionsSeparator()
         [_activeSubmenuRow setPersistentHighlight:YES];
     }
 
-    const auto rowTopLeftInWindow = [row convertPoint:NSMakePoint(NSMinX(row.bounds) + kHPad, NSMaxY(row.bounds)) toView:nil];
-    const auto rowTopRightInWindow = [row convertPoint:NSMakePoint(NSMaxX(row.bounds) - kHPad, NSMaxY(row.bounds)) toView:nil];
-    const auto rowTopLeftOnScreen = [row.window convertPointToScreen:rowTopLeftInWindow];
-    auto rowTopRightOnScreen = [row.window convertPointToScreen:rowTopRightInWindow];
-
-    const auto popupWidth = _appsPopup.frame.size.width;
-    const auto popupHeight = _appsPopup.frame.size.height;
-    auto popupOrigin = rowTopRightOnScreen;
-    popupOrigin.y -= popupHeight;
-
-    auto screen = row.window.screen;
-    if (!screen) {
-        screen = NSScreen.mainScreen ?: NSScreen.screens.firstObject;
-    }
-    const auto visibleFrame = screen.visibleFrame;
-    const auto rightEdge = NSMaxX(visibleFrame) - kScreenEdgePadding;
-    const auto leftEdge = NSMinX(visibleFrame) + kScreenEdgePadding;
-
-    if (popupOrigin.x + popupWidth > rightEdge && rowTopLeftOnScreen.x - popupWidth >= leftEdge) {
-        popupOrigin.x = rowTopLeftOnScreen.x - popupWidth;
-    }
-    popupOrigin = clampedPopupOrigin(popupOrigin, NSMakeSize(popupWidth, popupHeight), visibleFrame);
-
-    [_appsPopup setFrameOrigin:popupOrigin];
+    positionPopupFromRow(_appsPopup, row);
     [_appsPopup orderFront:nil];
 }
 
@@ -1433,30 +1368,7 @@ static NSView *compactAccountActionsSeparator()
         [_activeSubmenuRow setPersistentHighlight:YES];
     }
 
-    const auto rowTopLeftInWindow = [row convertPoint:NSMakePoint(NSMinX(row.bounds) + kHPad, NSMaxY(row.bounds)) toView:nil];
-    const auto rowTopRightInWindow = [row convertPoint:NSMakePoint(NSMaxX(row.bounds) - kHPad, NSMaxY(row.bounds)) toView:nil];
-    const auto rowTopLeftOnScreen = [row.window convertPointToScreen:rowTopLeftInWindow];
-    auto rowTopRightOnScreen = [row.window convertPointToScreen:rowTopRightInWindow];
-
-    const auto popupWidth = _notificationActionsPopup.frame.size.width;
-    const auto popupHeight = _notificationActionsPopup.frame.size.height;
-    auto popupOrigin = rowTopRightOnScreen;
-    popupOrigin.y -= popupHeight;
-
-    auto screen = row.window.screen;
-    if (!screen) {
-        screen = NSScreen.mainScreen ?: NSScreen.screens.firstObject;
-    }
-    const auto visibleFrame = screen.visibleFrame;
-    const auto rightEdge = NSMaxX(visibleFrame) - kScreenEdgePadding;
-    const auto leftEdge = NSMinX(visibleFrame) + kScreenEdgePadding;
-
-    if (popupOrigin.x + popupWidth > rightEdge && rowTopLeftOnScreen.x - popupWidth >= leftEdge) {
-        popupOrigin.x = rowTopLeftOnScreen.x - popupWidth;
-    }
-    popupOrigin = clampedPopupOrigin(popupOrigin, NSMakeSize(popupWidth, popupHeight), visibleFrame);
-
-    [_notificationActionsPopup setFrameOrigin:popupOrigin];
+    positionPopupFromRow(_notificationActionsPopup, row);
     [_notificationActionsPopup orderFront:nil];
 }
 
@@ -1475,12 +1387,7 @@ static NSView *compactAccountActionsSeparator()
     [_appsPopup orderOut:nil];
     [self clearActiveSubmenuRow];
 
-    auto arrangedSubviews = [_stack.arrangedSubviews copy];
-    for (NSView *v in arrangedSubviews) {
-        [_stack removeArrangedSubview:v];
-        [v removeFromSuperview];
-    }
-    [arrangedSubviews release];
+    clearStack(_stack);
 
     auto model = OCC::UserModel::instance();
     if (_recentActivitiesConnection) {
@@ -1537,7 +1444,7 @@ static NSView *compactAccountActionsSeparator()
         }]);
         [_stack addArrangedSubview:accountActionsSeparator()];
     }
-    addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:QCoreApplication::translate("TrayFoldersMenuButton", "Open local folder").toNSString()
+    addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:QCoreApplication::translate("TrayFoldersMenuButton", "Local folder").toNSString()
                                                                  width:kAccountActionsPopupWidth
                                                                enabled:YES
                                                                 action:^{
@@ -1678,45 +1585,7 @@ static NSView *compactAccountActionsSeparator()
                                 defer:NO];
     if (!self) return nil;
 
-    self.level = NSPopUpMenuWindowLevel;
-    self.hasShadow = YES;
-    self.releasedWhenClosed = NO;
-    self.backgroundColor = NSColor.clearColor;
-    self.opaque = NO;
-
-    NSView *container = [[[NSView alloc] init] autorelease];
-    container.wantsLayer = YES;
-    container.layer.cornerRadius = kCornerRadius;
-    container.layer.masksToBounds = YES;
-    self.contentView = container;
-
-    NSVisualEffectView *vev = [[[NSVisualEffectView alloc] init] autorelease];
-    vev.material = NSVisualEffectMaterialHUDWindow;
-    vev.blendingMode = NSVisualEffectBlendingModeBehindWindow;
-    vev.state = NSVisualEffectStateActive;
-    vev.wantsLayer = YES;
-    vev.layer.cornerRadius = kCornerRadius;
-    vev.layer.masksToBounds = YES;
-    vev.translatesAutoresizingMaskIntoConstraints = NO;
-    [container addSubview:vev];
-    [NSLayoutConstraint activateConstraints:@[
-        [vev.topAnchor constraintEqualToAnchor:container.topAnchor],
-        [vev.leadingAnchor constraintEqualToAnchor:container.leadingAnchor],
-        [vev.trailingAnchor constraintEqualToAnchor:container.trailingAnchor],
-        [vev.bottomAnchor constraintEqualToAnchor:container.bottomAnchor],
-    ]];
-
-    _stack = [NSStackView stackViewWithViews:@[]];
-    _stack.orientation = NSUserInterfaceLayoutOrientationVertical;
-    _stack.spacing = 0;
-    _stack.translatesAutoresizingMaskIntoConstraints = NO;
-    [vev addSubview:_stack];
-    [NSLayoutConstraint activateConstraints:@[
-        [_stack.topAnchor constraintEqualToAnchor:vev.topAnchor],
-        [_stack.leadingAnchor constraintEqualToAnchor:vev.leadingAnchor],
-        [_stack.trailingAnchor constraintEqualToAnchor:vev.trailingAnchor],
-        [_stack.bottomAnchor constraintEqualToAnchor:vev.bottomAnchor],
-    ]];
+    _stack = configurePopupPanel(self);
     return self;
 }
 
@@ -1840,12 +1709,7 @@ static NSView *compactAccountActionsSeparator()
     [_accountActionsPopup orderOut:nil];
     [self clearActiveAccountRow];
 
-    auto arrangedSubviews = [_stack.arrangedSubviews copy];
-    for (NSView *v in arrangedSubviews) {
-        [_stack removeArrangedSubview:v];
-        [v removeFromSuperview];
-    }
-    [arrangedSubviews release];
+    clearStack(_stack);
 
     OCC::UserModel *model = OCC::UserModel::instance();
     addOwnedArrangedSubview(_stack, [[NCSpacerView alloc] initWithHeight:kTopPadding]);
@@ -1941,29 +1805,7 @@ static NSView *compactAccountActionsSeparator()
 
     [_accountActionsPopup populateForUserIndex:row.userIndex owner:self];
 
-    const auto rowTopLeftInWindow = [row convertPoint:NSMakePoint(NSMinX(row.bounds) + kHPad, NSMaxY(row.bounds)) toView:nil];
-    const auto rowTopRightInWindow = [row convertPoint:NSMakePoint(NSMaxX(row.bounds) - kHPad, NSMaxY(row.bounds)) toView:nil];
-    const auto rowTopLeftOnScreen = [row.window convertPointToScreen:rowTopLeftInWindow];
-    auto rowTopRightOnScreen = [row.window convertPointToScreen:rowTopRightInWindow];
-
-    const auto popupWidth = _accountActionsPopup.frame.size.width;
-    auto popupOrigin = rowTopRightOnScreen;
-    popupOrigin.y -= _accountActionsPopup.frame.size.height;
-
-    auto screen = row.window.screen;
-    if (!screen) {
-        screen = NSScreen.mainScreen ?: NSScreen.screens.firstObject;
-    }
-    const auto visibleFrame = screen.visibleFrame;
-    const auto rightEdge = NSMaxX(visibleFrame) - kScreenEdgePadding;
-    const auto leftEdge = NSMinX(visibleFrame) + kScreenEdgePadding;
-
-    if (popupOrigin.x + popupWidth > rightEdge && rowTopLeftOnScreen.x - popupWidth >= leftEdge) {
-        popupOrigin.x = rowTopLeftOnScreen.x - popupWidth;
-    }
-    popupOrigin = clampedPopupOrigin(popupOrigin, NSMakeSize(popupWidth, _accountActionsPopup.frame.size.height), visibleFrame);
-
-    [_accountActionsPopup setFrameOrigin:popupOrigin];
+    positionPopupFromRow(_accountActionsPopup, row);
     [_accountActionsPopup orderFront:nil];
 }
 
