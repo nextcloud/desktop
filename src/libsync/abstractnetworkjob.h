@@ -70,8 +70,7 @@ public:
     /* Content of the X-Request-ID header. (Only set after the request is sent) */
     QByteArray requestId();
 
-    [[nodiscard]] qint64 timeoutMsec() const { return _timer.interval(); }
-    [[nodiscard]] bool timedOut() const { return _timedout; }
+    [[nodiscard]] qint64 timeoutMsec() const { return _timeoutDuration; }
 
     /** Returns an error message, if any. */
     [[nodiscard]] virtual QString errorString() const;
@@ -112,7 +111,6 @@ public:
 
 public slots:
     void setTimeout(qint64 msec);
-    void resetTimeout();
 signals:
     /** Emitted on network error.
      *
@@ -191,7 +189,6 @@ protected:
     virtual void onTimedOut();
 
     QByteArray _responseTimestamp;
-    bool _timedout = false; // set to true when the timeout slot is received
 
     // Automatically follows redirects. Note that this only works for
     // GET requests that don't set up any HTTP body or other flags.
@@ -201,19 +198,17 @@ protected:
 
 private slots:
     void slotFinished();
-    void slotTimeout();
 
 protected:
     AccountPtr _account;
 
 private:
-    QNetworkReply *addTimer(QNetworkReply *reply);
     bool _ignoreCredentialFailure = false;
     QPointer<QNetworkReply> _reply; // (QPointer because the NetworkManager may be destroyed before the jobs at exit)
     QString _path;
-    QTimer _timer;
     int _redirectCount = 0;
     int _http2ResendCount = 0;
+    qint64 _timeoutDuration = 300000;
 
     // Set by the xyzRequest() functions and needed to be able to redirect
     // requests, should it be required.
