@@ -635,8 +635,12 @@ void populateAccountMenu(QMenu *menu, const int userId, const bool fetchActivity
     addRecentActivities(menu, userId, userModel->data(userModelIndex, UserModel::RecentActivitiesRole).toList());
 }
 
-void populateTrayMenu(QMenu *menu)
+void populateTrayMenu(QMenu *menu, Systray *systray)
 {
+    if (!systray) {
+        return;
+    }
+
     menu->clear();
 
     const auto userModel = UserModel::instance();
@@ -674,7 +678,7 @@ void populateTrayMenu(QMenu *menu)
         menu->addSeparator();
     }
 
-    if (Systray::instance()->enableAddAccount()) {
+    if (systray->enableAddAccount()) {
         const auto addAccountAction = addMenuAction(menu,
             templateThemeIcon(QStringLiteral("add.svg"), menuIconPalette),
             Systray::tr("Add account"));
@@ -684,7 +688,6 @@ void populateTrayMenu(QMenu *menu)
         });
     }
 
-    const auto systray = Systray::instance();
     if (systray->anySyncFolders()) {
         const auto syncPauseText = systray->syncIsPaused()
             ? QCoreApplication::translate("CurrentAccountHeaderButton", "Resume sync for all")
@@ -751,23 +754,27 @@ QPoint trayPopupPosition(const QMenu *menu, const QRect &iconRect, const Systray
 
 } // namespace
 
-void setupQtTrayContextMenu(QMenu *menu)
+void setupQtTrayContextMenu(QMenu *menu, Systray *systray)
 {
-    if (!menu) {
+    if (!menu || !systray) {
         return;
     }
 
-    populateTrayMenu(menu);
-    QObject::connect(menu, &QMenu::aboutToShow, menu, [menu] {
-        populateTrayMenu(menu);
+    populateTrayMenu(menu, systray);
+    QObject::connect(menu, &QMenu::aboutToShow, menu, [menu, systray] {
+        populateTrayMenu(menu, systray);
     });
 }
 
-bool showQtTrayPopup(const QRect &iconRect, const Systray::WindowPosition position)
+bool showQtTrayPopup(Systray *systray, const QRect &iconRect, const Systray::WindowPosition position)
 {
+    if (!systray) {
+        return false;
+    }
+
     // Wayland cannot create an arbitrary QWidget popup from a tray activation.
     if (isWaylandPlatform()) {
-        Systray::instance()->showActivitiesWindow();
+        systray->showActivitiesWindow();
         return false;
     }
 
@@ -775,13 +782,13 @@ bool showQtTrayPopup(const QRect &iconRect, const Systray::WindowPosition positi
 
     const auto menu = new QMenu();
     s_trayPopup = menu;
-    populateTrayMenu(menu);
+    populateTrayMenu(menu, systray);
 
-    QObject::connect(menu, &QMenu::aboutToHide, menu, [menu] {
+    QObject::connect(menu, &QMenu::aboutToHide, menu, [menu, systray] {
         if (s_trayPopup == menu) {
             s_trayPopup = nullptr;
         }
-        Systray::instance()->setIsOpen(false);
+        systray->setIsOpen(false);
         menu->deleteLater();
     });
 

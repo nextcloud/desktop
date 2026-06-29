@@ -233,8 +233,8 @@ private:
 };
 
 #ifndef Q_OS_MACOS
-void setupQtTrayContextMenu(QMenu *menu);
-bool showQtTrayPopup(const QRect &iconRect, Systray::WindowPosition position);
+void setupQtTrayContextMenu(QMenu *menu, Systray *systray);
+bool showQtTrayPopup(Systray *systray, const QRect &iconRect, Systray::WindowPosition position);
 void hideQtTrayPopup();
 #endif
 

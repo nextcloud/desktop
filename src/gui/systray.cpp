@@ -209,7 +209,7 @@ void Systray::showTrayPopup(WindowPosition position)
     setIsOpen(true);
     UserModel::instance()->fetchCurrentActivityModel();
 #else
-    if (showQtTrayPopup(geometry(), position)) {
+    if (showQtTrayPopup(this, geometry(), position)) {
         setIsOpen(true);
     }
 #endif
@@ -476,7 +476,7 @@ void Systray::setupContextMenu()
     setContextMenu(_contextMenu);
 
 #if defined(Q_OS_LINUX)
-    setupQtTrayContextMenu(_contextMenu);
+    setupQtTrayContextMenu(_contextMenu, this);
 #else
     if (AccountManager::instance()->accounts().isEmpty()) {
         _contextMenu->addAction(tr("Add account"), this, &Systray::openAccountWizard);
