@@ -11,9 +11,12 @@
 
 #include <QByteArray>
 #include <QCoreApplication>
+#include <QGuiApplication>
+#include <QHash>
 #include <QImage>
 #include <QMimeDatabase>
 #include <QPainter>
+#include <QScreen>
 #include <QSvgRenderer>
 
 #import <Cocoa/Cocoa.h>
@@ -45,6 +48,61 @@ static const CGFloat kActivityPreviewIconSize = 16.0;
 
 typedef void (^NCActionHoverBlock)(NSView *row);
 
+static QHash<QString, QImage> s_remoteAppIconCache;
+
+static CGFloat clampedPopupOriginCoordinate(const CGFloat origin, const CGFloat minEdge, const CGFloat maxEdge, const CGFloat size)
+{
+    const auto minOrigin = minEdge + kScreenEdgePadding;
+    const auto maxOrigin = maxEdge - size - kScreenEdgePadding;
+    if (maxOrigin < minOrigin) {
+        return minOrigin;
+    }
+    return origin < minOrigin ? minOrigin : (origin > maxOrigin ? maxOrigin : origin);
+}
+
+static NSPoint clampedPopupOrigin(const NSPoint origin, const NSSize size, const NSRect visibleFrame)
+{
+    return NSMakePoint(clampedPopupOriginCoordinate(origin.x, NSMinX(visibleFrame), NSMaxX(visibleFrame), size.width),
+                       clampedPopupOriginCoordinate(origin.y, NSMinY(visibleFrame), NSMaxY(visibleFrame), size.height));
+}
+
+static NSScreen *nsScreenForQtScreen(QScreen *qtScreen)
+{
+    if (!qtScreen) {
+        return NSScreen.mainScreen ?: NSScreen.screens.firstObject;
+    }
+
+    const auto qtScreenName = qtScreen->name().toNSString();
+    for (NSScreen *candidate in NSScreen.screens) {
+        if ([candidate.localizedName isEqualToString:qtScreenName]) {
+            return candidate;
+        }
+    }
+
+    const auto qtScreens = QGuiApplication::screens();
+    const auto screenIndex = qtScreens.indexOf(qtScreen);
+    if (screenIndex >= 0 && screenIndex < static_cast<int>(NSScreen.screens.count)) {
+        return [NSScreen.screens objectAtIndex:screenIndex];
+    }
+
+    return NSScreen.mainScreen ?: NSScreen.screens.firstObject;
+}
+
+static QString remoteAppIconCacheKey(const OCC::AccountStatePtr &accountState, const QUrl &url)
+{
+    if (!accountState || !accountState->account() || !url.isValid() || url.scheme().isEmpty()) {
+        return {};
+    }
+
+    return QStringLiteral("%1:%2").arg(accountState->account()->id(), url.toString());
+}
+
+static void addOwnedArrangedSubview(NSStackView *stack, NSView *view)
+{
+    [stack addArrangedSubview:view];
+    [view release];
+}
+
 static NSColor *hoverColor()
 {
     NSAppearanceName appearanceName = [NSApp.effectiveAppearance bestMatchFromAppearancesWithNames:@[
@@ -70,10 +128,15 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
                   colorSpaceName:NSCalibratedRGBColorSpace
                      bytesPerRow:rgba.bytesPerLine()
                     bitsPerPixel:32];
+    if (!rep || !rep.bitmapData) {
+        [rep release];
+        return nil;
+    }
     memcpy(rep.bitmapData, rgba.constBits(), (size_t)rgba.bytesPerLine() * rgba.height());
     NSImage *img = [[NSImage alloc] initWithSize:NSMakeSize(rgba.width(), rgba.height())];
     [img addRepresentation:rep];
-    return img;
+    [rep release];
+    return [img autorelease];
 }
 
 static QImage qImageFromImageData(const QByteArray &imageData, const QSize &requestedSize)
@@ -190,12 +253,19 @@ static QString statusMenuText(OCC::UserStatus::OnlineStatus status, const QStrin
 - (void)updateTrackingAreas
 {
     [super updateTrackingAreas];
-    for (NSTrackingArea *ta in self.trackingAreas.copy) [self removeTrackingArea:ta];
-    [self addTrackingArea:[[NSTrackingArea alloc]
+    auto trackingAreas = [self.trackingAreas copy];
+    for (NSTrackingArea *ta in trackingAreas) {
+        [self removeTrackingArea:ta];
+    }
+    [trackingAreas release];
+
+    auto trackingArea = [[NSTrackingArea alloc]
         initWithRect:self.bounds
              options:NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways
                owner:self
-            userInfo:nil]];
+            userInfo:nil];
+    [self addTrackingArea:trackingArea];
+    [trackingArea release];
 }
 
 @end
@@ -225,7 +295,7 @@ static QString statusMenuText(OCC::UserStatus::OnlineStatus status, const QStrin
     if (!self) return nil;
     self.layer.backgroundColor = CGColorGetConstantColor(kCGColorClear);
 
-    _hoverView = [[NSView alloc] init];
+    _hoverView = [[[NSView alloc] init] autorelease];
     _hoverView.wantsLayer = YES;
     _hoverView.layer.backgroundColor = hoverColor().CGColor;
     _hoverView.layer.cornerRadius = kHoverRadius;
@@ -485,7 +555,7 @@ static QString statusMenuText(OCC::UserStatus::OnlineStatus status, const QStrin
     _actionEnabled = enabled;
     self.layer.backgroundColor = CGColorGetConstantColor(kCGColorClear);
 
-    _hoverView = [[NSView alloc] init];
+    _hoverView = [[[NSView alloc] init] autorelease];
     _hoverView.wantsLayer = YES;
     _hoverView.layer.backgroundColor = hoverColor().CGColor;
     _hoverView.layer.cornerRadius = kHoverRadius;
@@ -505,7 +575,7 @@ static QString statusMenuText(OCC::UserStatus::OnlineStatus status, const QStrin
     NSTextField *subtitleLabel = nil;
     NSTextField *dateTimeLabel = nil;
     if (isPreviewRow) {
-        textContainer = [[NSView alloc] init];
+        textContainer = [[[NSView alloc] init] autorelease];
         textContainer.translatesAutoresizingMaskIntoConstraints = NO;
         [self addSubview:textContainer];
         [textContainer addSubview:_label];
@@ -564,7 +634,7 @@ static QString statusMenuText(OCC::UserStatus::OnlineStatus status, const QStrin
     }
 
     if (showsSubmenuIndicator) {
-        NSImageView *chevron = [[NSImageView alloc] init];
+        NSImageView *chevron = [[[NSImageView alloc] init] autorelease];
         chevron.image = [[NSImage imageWithSystemSymbolName:@"chevron.right" accessibilityDescription:nil]
             imageWithSymbolConfiguration:[NSImageSymbolConfiguration configurationWithPointSize:11 weight:NSFontWeightMedium]];
         chevron.contentTintColor = enabled ? NSColor.tertiaryLabelColor : NSColor.quaternaryLabelColor;
@@ -590,7 +660,7 @@ static QString statusMenuText(OCC::UserStatus::OnlineStatus status, const QStrin
     }
 
     if (icon) {
-        _iconView = [[NSImageView alloc] init];
+        _iconView = [[[NSImageView alloc] init] autorelease];
         _iconView.image = icon;
         _iconView.imageScaling = NSImageScaleProportionallyUpOrDown;
         _iconView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -677,6 +747,13 @@ static QString statusMenuText(OCC::UserStatus::OnlineStatus status, const QStrin
     if (_actionEnabled && _action) _action();
 }
 
+- (void)dealloc
+{
+    [_action release];
+    [_hoverAction release];
+    [super dealloc];
+}
+
 @end
 
 @interface NCSectionHeaderRow : NSView
@@ -737,7 +814,7 @@ static QString statusMenuText(OCC::UserStatus::OnlineStatus status, const QStrin
     ]];
 
     if (icon) {
-        auto iconView = [[NSImageView alloc] init];
+        auto iconView = [[[NSImageView alloc] init] autorelease];
         iconView.image = icon;
         iconView.contentTintColor = NSColor.secondaryLabelColor;
         iconView.imageScaling = NSImageScaleProportionallyUpOrDown;
@@ -875,7 +952,7 @@ static QString statusMenuText(OCC::UserStatus::OnlineStatus status, const QStrin
 
 static NSView *accountActionsSeparator(const CGFloat verticalMargin)
 {
-    auto separator = [[NSBox alloc] init];
+    auto separator = [[[NSBox alloc] init] autorelease];
     separator.boxType = NSBoxSeparator;
     separator.translatesAutoresizingMaskIntoConstraints = NO;
 
@@ -891,7 +968,7 @@ static NSView *accountActionsSeparator(const CGFloat verticalMargin)
         [separator.centerYAnchor constraintEqualToAnchor:container.centerYAnchor],
         [separator.heightAnchor constraintEqualToConstant:1.0],
     ]];
-    return container;
+    return [container autorelease];
 }
 
 static NSView *accountActionsSeparator()
@@ -965,13 +1042,13 @@ static NSView *compactAccountActionsSeparator()
     self.backgroundColor = NSColor.clearColor;
     self.opaque = NO;
 
-    NSView *container = [[NSView alloc] init];
+    NSView *container = [[[NSView alloc] init] autorelease];
     container.wantsLayer = YES;
     container.layer.cornerRadius = kCornerRadius;
     container.layer.masksToBounds = YES;
     self.contentView = container;
 
-    NSVisualEffectView *vev = [[NSVisualEffectView alloc] init];
+    NSVisualEffectView *vev = [[[NSVisualEffectView alloc] init] autorelease];
     vev.material = NSVisualEffectMaterialHUDWindow;
     vev.blendingMode = NSVisualEffectBlendingModeBehindWindow;
     vev.state = NSVisualEffectStateActive;
@@ -1005,10 +1082,12 @@ static NSView *compactAccountActionsSeparator()
 
 - (void)populateForUserIndex:(int)userIndex owner:(NCTrayPopup *)owner
 {
-    for (NSView *v in _stack.arrangedSubviews.copy) {
+    auto arrangedSubviews = [_stack.arrangedSubviews copy];
+    for (NSView *v in arrangedSubviews) {
         [_stack removeArrangedSubview:v];
         [v removeFromSuperview];
     }
+    [arrangedSubviews release];
 
     __unsafe_unretained NCTrayPopup *weakOwner = owner;
     auto appsModel = OCC::TrayAccountAppsModel::instance();
@@ -1019,12 +1098,16 @@ static NSView *compactAccountActionsSeparator()
         : OCC::AccountStatePtr{};
     auto fallbackIcon = [[NSImage imageWithSystemSymbolName:@"app" accessibilityDescription:nil]
         imageWithSymbolConfiguration:[NSImageSymbolConfiguration configurationWithPointSize:14 weight:NSFontWeightRegular]];
-    [_stack addArrangedSubview:[[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kAppsPopupWidth]];
+    addOwnedArrangedSubview(_stack, [[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kAppsPopupWidth]);
     for (auto row = 0; row < appsModel->rowCount(); ++row) {
         const auto appIndex = appsModel->index(row);
         const auto appUrl = appsModel->data(appIndex, OCC::TrayAccountAppsModel::UrlRole).toUrl();
         const auto appIconUrl = appsModel->data(appIndex, OCC::TrayAccountAppsModel::IconUrlRole).toUrl();
+        const auto appIconCacheKey = remoteAppIconCacheKey(accountState, appIconUrl);
         auto appIcon = nsImageFromQUrl(appIconUrl);
+        if (!appIcon && !appIconCacheKey.isEmpty() && s_remoteAppIconCache.contains(appIconCacheKey)) {
+            appIcon = nsImageFromQImage(s_remoteAppIconCache.value(appIconCacheKey));
+        }
         auto actionRow = [[NCActionRow alloc] initWithTitle:appsModel->data(appIndex, OCC::TrayAccountAppsModel::NameRole).toString().toNSString()
                                                        icon:appIcon != nil ? appIcon : fallbackIcon
                                                       width:kAppsPopupWidth
@@ -1036,19 +1119,24 @@ static NSView *compactAccountActionsSeparator()
         [actionRow setIconTintedToLabelColor:YES];
         [_stack addArrangedSubview:actionRow];
 
-        if (!appIcon && accountState && accountState->account() && appIconUrl.isValid() && !appIconUrl.scheme().isEmpty()) {
+        if (!appIcon && !appIconCacheKey.isEmpty()) {
             auto retainedRow = [actionRow retain];
             auto iconJob = new OCC::IconJob(accountState->account(), appIconUrl);
-            QObject::connect(iconJob, &OCC::IconJob::jobFinished, iconJob, [retainedRow](const QByteArray &iconData) {
-                [retainedRow setIcon:nsImageFromImageData(iconData, QSize(18, 18))];
+            QObject::connect(iconJob, &OCC::IconJob::jobFinished, iconJob, [retainedRow, appIconCacheKey](const QByteArray &iconData) {
+                const auto image = qImageFromImageData(iconData, QSize(18, 18));
+                if (!image.isNull()) {
+                    s_remoteAppIconCache.insert(appIconCacheKey, image);
+                    [retainedRow setIcon:nsImageFromQImage(image)];
+                }
                 [retainedRow release];
             });
             QObject::connect(iconJob, &OCC::IconJob::error, iconJob, [retainedRow](auto) {
                 [retainedRow release];
             });
         }
+        [actionRow release];
     }
-    [_stack addArrangedSubview:[[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kAppsPopupWidth]];
+    addOwnedArrangedSubview(_stack, [[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kAppsPopupWidth]);
 
     [self.contentView layoutSubtreeIfNeeded];
     NSRect frame = self.frame;
@@ -1082,13 +1170,13 @@ static NSView *compactAccountActionsSeparator()
     self.backgroundColor = NSColor.clearColor;
     self.opaque = NO;
 
-    NSView *container = [[NSView alloc] init];
+    NSView *container = [[[NSView alloc] init] autorelease];
     container.wantsLayer = YES;
     container.layer.cornerRadius = kCornerRadius;
     container.layer.masksToBounds = YES;
     self.contentView = container;
 
-    NSVisualEffectView *vev = [[NSVisualEffectView alloc] init];
+    NSVisualEffectView *vev = [[[NSVisualEffectView alloc] init] autorelease];
     vev.material = NSVisualEffectMaterialHUDWindow;
     vev.blendingMode = NSVisualEffectBlendingModeBehindWindow;
     vev.state = NSVisualEffectStateActive;
@@ -1122,14 +1210,16 @@ static NSView *compactAccountActionsSeparator()
 
 - (void)populateForUserIndex:(int)userIndex activityIndex:(int)activityIndex actions:(QVariantList)actions owner:(NCTrayPopup *)owner
 {
-    for (NSView *v in _stack.arrangedSubviews.copy) {
+    auto arrangedSubviews = [_stack.arrangedSubviews copy];
+    for (NSView *v in arrangedSubviews) {
         [_stack removeArrangedSubview:v];
         [v removeFromSuperview];
     }
+    [arrangedSubviews release];
 
     __unsafe_unretained NCTrayPopup *weakOwner = owner;
     __unsafe_unretained NCNotificationActionsPopup *weakSelf = self;
-    [_stack addArrangedSubview:[[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kNotificationActionsPopupWidth]];
+    addOwnedArrangedSubview(_stack, [[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kNotificationActionsPopupWidth]);
     for (const auto &actionVariant : actions) {
         const auto actionData = actionVariant.toMap();
         const auto title = actionData.value(QStringLiteral("label")).toString();
@@ -1145,10 +1235,10 @@ static NSView *compactAccountActionsSeparator()
             continue;
         }
 
-        [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:title.toNSString()
-                                                                width:kNotificationActionsPopupWidth
-                                                              enabled:YES
-                                                               action:^{
+        addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:title.toNSString()
+                                                                     width:kNotificationActionsPopupWidth
+                                                                   enabled:YES
+                                                                    action:^{
             if (dismisses) {
                 OCC::UserModel::instance()->dismissNotification(userIndex, activityIndex);
                 [weakSelf orderOut:nil];
@@ -1161,9 +1251,9 @@ static NSView *compactAccountActionsSeparator()
 
             [weakOwner closeAllPopups];
             OCC::UserModel::instance()->triggerNotificationAction(userIndex, activityIndex, actionIndex);
-        }]];
+        }]);
     }
-    [_stack addArrangedSubview:[[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kNotificationActionsPopupWidth]];
+    addOwnedArrangedSubview(_stack, [[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kNotificationActionsPopupWidth]);
 
     [self.contentView layoutSubtreeIfNeeded];
     NSRect frame = self.frame;
@@ -1209,13 +1299,13 @@ static NSView *compactAccountActionsSeparator()
     self.opaque = NO;
     _userIndex = -1;
 
-    NSView *container = [[NSView alloc] init];
+    NSView *container = [[[NSView alloc] init] autorelease];
     container.wantsLayer = YES;
     container.layer.cornerRadius = kCornerRadius;
     container.layer.masksToBounds = YES;
     self.contentView = container;
 
-    NSVisualEffectView *vev = [[NSVisualEffectView alloc] init];
+    NSVisualEffectView *vev = [[[NSVisualEffectView alloc] init] autorelease];
     vev.material = NSVisualEffectMaterialHUDWindow;
     vev.blendingMode = NSVisualEffectBlendingModeBehindWindow;
     vev.state = NSVisualEffectStateActive;
@@ -1246,6 +1336,16 @@ static NSView *compactAccountActionsSeparator()
 }
 
 - (BOOL)canBecomeKeyWindow { return NO; }
+
+- (void)dealloc
+{
+    [_appsPopup release];
+    [_notificationActionsPopup release];
+    if (_recentActivitiesConnection) {
+        QObject::disconnect(_recentActivitiesConnection);
+    }
+    [super dealloc];
+}
 
 - (BOOL)isShowingActivitiesForUserIndex:(int)userIndex
 {
@@ -1309,14 +1409,11 @@ static NSView *compactAccountActionsSeparator()
     const auto visibleFrame = screen.visibleFrame;
     const auto rightEdge = NSMaxX(visibleFrame) - kScreenEdgePadding;
     const auto leftEdge = NSMinX(visibleFrame) + kScreenEdgePadding;
-    const auto topEdge = NSMaxY(visibleFrame) - kScreenEdgePadding;
-    const auto bottomEdge = NSMinY(visibleFrame) + kScreenEdgePadding;
 
     if (popupOrigin.x + popupWidth > rightEdge && rowTopLeftOnScreen.x - popupWidth >= leftEdge) {
         popupOrigin.x = rowTopLeftOnScreen.x - popupWidth;
     }
-    popupOrigin.x = popupOrigin.x < leftEdge ? leftEdge : (popupOrigin.x + popupWidth > rightEdge ? rightEdge - popupWidth : popupOrigin.x);
-    popupOrigin.y = popupOrigin.y < bottomEdge ? bottomEdge : (popupOrigin.y + popupHeight > topEdge ? topEdge - popupHeight : popupOrigin.y);
+    popupOrigin = clampedPopupOrigin(popupOrigin, NSMakeSize(popupWidth, popupHeight), visibleFrame);
 
     [_appsPopup setFrameOrigin:popupOrigin];
     [_appsPopup orderFront:nil];
@@ -1353,14 +1450,11 @@ static NSView *compactAccountActionsSeparator()
     const auto visibleFrame = screen.visibleFrame;
     const auto rightEdge = NSMaxX(visibleFrame) - kScreenEdgePadding;
     const auto leftEdge = NSMinX(visibleFrame) + kScreenEdgePadding;
-    const auto topEdge = NSMaxY(visibleFrame) - kScreenEdgePadding;
-    const auto bottomEdge = NSMinY(visibleFrame) + kScreenEdgePadding;
 
     if (popupOrigin.x + popupWidth > rightEdge && rowTopLeftOnScreen.x - popupWidth >= leftEdge) {
         popupOrigin.x = rowTopLeftOnScreen.x - popupWidth;
     }
-    popupOrigin.x = popupOrigin.x < leftEdge ? leftEdge : (popupOrigin.x + popupWidth > rightEdge ? rightEdge - popupWidth : popupOrigin.x);
-    popupOrigin.y = popupOrigin.y < bottomEdge ? bottomEdge : (popupOrigin.y + popupHeight > topEdge ? topEdge - popupHeight : popupOrigin.y);
+    popupOrigin = clampedPopupOrigin(popupOrigin, NSMakeSize(popupWidth, popupHeight), visibleFrame);
 
     [_notificationActionsPopup setFrameOrigin:popupOrigin];
     [_notificationActionsPopup orderFront:nil];
@@ -1381,10 +1475,12 @@ static NSView *compactAccountActionsSeparator()
     [_appsPopup orderOut:nil];
     [self clearActiveSubmenuRow];
 
-    for (NSView *v in _stack.arrangedSubviews.copy) {
+    auto arrangedSubviews = [_stack.arrangedSubviews copy];
+    for (NSView *v in arrangedSubviews) {
         [_stack removeArrangedSubview:v];
         [v removeFromSuperview];
     }
+    [arrangedSubviews release];
 
     auto model = OCC::UserModel::instance();
     if (_recentActivitiesConnection) {
@@ -1423,57 +1519,57 @@ static NSView *compactAccountActionsSeparator()
     appsModel->setUserId(userIndex);
     const auto appsEnabled = appsModel->rowCount() > 0;
     const auto assistantEnabled = model->data(userModelIndex, OCC::UserModel::AssistantEnabledRole).toBool();
-    [_stack addArrangedSubview:[[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kAccountActionsPopupWidth]];
+    addOwnedArrangedSubview(_stack, [[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kAccountActionsPopupWidth]);
     if (serverHasUserStatus) {
         const auto status = model->data(userModelIndex, OCC::UserModel::StatusRole).value<OCC::UserStatus::OnlineStatus>();
         const auto statusMessage = model->data(userModelIndex, OCC::UserModel::StatusMessageRole).toString();
         NSImage *statusIcon = nsImageFromQUrl(model->data(userModelIndex, OCC::UserModel::StatusIconRole).toUrl());
-        [_stack addArrangedSubview:[[NCSectionHeaderRow alloc] initWithTitle:QCoreApplication::translate("TrayAccountPopup", "User status").toNSString()
-                                                                      width:kAccountActionsPopupWidth]];
-        [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:statusMenuText(status, statusMessage).toNSString()
-                                                                 icon:statusIcon
-                                                                width:kAccountActionsPopupWidth
-                                                              enabled:onlineStatusEnabled
-                                                               action:^{
+        addOwnedArrangedSubview(_stack, [[NCSectionHeaderRow alloc] initWithTitle:QCoreApplication::translate("TrayAccountPopup", "User status").toNSString()
+                                                                            width:kAccountActionsPopupWidth]);
+        addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:statusMenuText(status, statusMessage).toNSString()
+                                                                      icon:statusIcon
+                                                                     width:kAccountActionsPopupWidth
+                                                                   enabled:onlineStatusEnabled
+                                                                    action:^{
             [weakOwner openOnlineStatusForIndex:userIndex];
         } hoverAction:^(NSView *) {
             [weakSelf hideAppsPopup];
-        }]];
+        }]);
         [_stack addArrangedSubview:accountActionsSeparator()];
     }
-    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:QCoreApplication::translate("TrayFoldersMenuButton", "Open local folder").toNSString()
-                                                            width:kAccountActionsPopupWidth
-                                                          enabled:YES
-                                                           action:^{
+    addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:QCoreApplication::translate("TrayFoldersMenuButton", "Open local folder").toNSString()
+                                                                 width:kAccountActionsPopupWidth
+                                                               enabled:YES
+                                                                action:^{
         [weakOwner openLocalFolderForIndex:userIndex];
     } hoverAction:^(NSView *) {
         [weakSelf hideAppsPopup];
-    }]];
+    }]);
     if (assistantEnabled) {
-        [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:QCoreApplication::translate("MainWindow", "Ask Assistant\302\240\342\200\246").toNSString()
-                                                                width:kAccountActionsPopupWidth
-                                                              enabled:YES
-                                                               action:^{
+        addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:QCoreApplication::translate("MainWindow", "Ask Assistant\302\240\342\200\246").toNSString()
+                                                                      width:kAccountActionsPopupWidth
+                                                                    enabled:YES
+                                                                     action:^{
             [weakOwner openAssistantForIndex:userIndex];
         } hoverAction:^(NSView *) {
             [weakSelf hideAppsPopup];
-        }]];
+        }]);
     }
-    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:QCoreApplication::translate("TrayWindowHeader", "More apps").toNSString()
-                                                            icon:nil
-                                                           width:kAccountActionsPopupWidth
-                                                         enabled:appsEnabled
-                                                          action:^{}
-                                                     hoverAction:^(NSView *row) {
+    addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:QCoreApplication::translate("TrayWindowHeader", "More apps").toNSString()
+                                                                  icon:nil
+                                                                 width:kAccountActionsPopupWidth
+                                                               enabled:appsEnabled
+                                                                action:^{}
+                                                           hoverAction:^(NSView *row) {
         [weakSelf showAppsPopupFromRow:row forUserIndex:userIndex];
-    } showsSubmenuIndicator:YES]];
+    } showsSubmenuIndicator:YES]);
 
     [_stack addArrangedSubview:accountActionsSeparator()];
 
     const auto trayNotifications = model->data(userModelIndex, OCC::UserModel::TrayNotificationsRole).toList();
     if (!trayNotifications.isEmpty()) {
-        [_stack addArrangedSubview:[[NCSectionHeaderRow alloc] initWithTitle:QCoreApplication::translate("TrayAccountPopup", "Notifications").toNSString()
-                                                                      width:kAccountActionsPopupWidth]];
+        addOwnedArrangedSubview(_stack, [[NCSectionHeaderRow alloc] initWithTitle:QCoreApplication::translate("TrayAccountPopup", "Notifications").toNSString()
+                                                                            width:kAccountActionsPopupWidth]);
         for (const auto &trayNotification : trayNotifications) {
             const auto notificationData = trayNotification.toMap();
             const auto title = notificationData.value(QStringLiteral("title")).toString();
@@ -1483,12 +1579,12 @@ static NSView *compactAccountActionsSeparator()
             const auto opensSettings = notificationData.value(QStringLiteral("opensSettings")).toBool();
             const auto notificationActions = notificationData.value(QStringLiteral("actions")).toList();
             const auto activityIndex = notificationData.value(QStringLiteral("activityIndex")).toInt();
-            [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:title.toNSString()
-                                                                     icon:systemSymbolImage(notificationData.value(QStringLiteral("systemIconName")).toString(), 14.0)
-                                                                 dateTime:notificationData.value(QStringLiteral("dateTime")).toString().toNSString()
-                                                                    width:kAccountActionsPopupWidth
-                                                                  enabled:YES
-                                                                   action:^{
+            addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:title.toNSString()
+                                                                          icon:systemSymbolImage(notificationData.value(QStringLiteral("systemIconName")).toString(), 14.0)
+                                                                      dateTime:notificationData.value(QStringLiteral("dateTime")).toString().toNSString()
+                                                                         width:kAccountActionsPopupWidth
+                                                                       enabled:YES
+                                                                        action:^{
                 if (opensSettings) {
                     [weakOwner closeAllPopups];
                     OCC::Systray::instance()->openSettings();
@@ -1501,19 +1597,19 @@ static NSView *compactAccountActionsSeparator()
                 } else {
                     [weakSelf hideAppsPopup];
                 }
-            } showsSubmenuIndicator:!notificationActions.isEmpty()]];
+            } showsSubmenuIndicator:!notificationActions.isEmpty()]);
         }
 
         [_stack addArrangedSubview:compactAccountActionsSeparator()];
     }
 
-    [_stack addArrangedSubview:[[NCSectionHeaderRow alloc] initWithTitle:QCoreApplication::translate("TrayAccountPopup", "Recent activity").toNSString()
-                                                                  width:kAccountActionsPopupWidth]];
+    addOwnedArrangedSubview(_stack, [[NCSectionHeaderRow alloc] initWithTitle:QCoreApplication::translate("TrayAccountPopup", "Recent activity").toNSString()
+                                                                        width:kAccountActionsPopupWidth]);
     const auto recentActivities = model->data(userModelIndex, OCC::UserModel::RecentActivitiesRole).toList();
     if (recentActivities.isEmpty()) {
-        [_stack addArrangedSubview:[[NCStaticInfoRow alloc] initWithTitle:QCoreApplication::translate("TrayAccountPopup", "No recent activity").toNSString()
-                                                                     icon:systemSymbolImage(QStringLiteral("clock"), 14.0)
-                                                                    width:kAccountActionsPopupWidth]];
+        addOwnedArrangedSubview(_stack, [[NCStaticInfoRow alloc] initWithTitle:QCoreApplication::translate("TrayAccountPopup", "No recent activity").toNSString()
+                                                                          icon:systemSymbolImage(QStringLiteral("clock"), 14.0)
+                                                                         width:kAccountActionsPopupWidth]);
     }
     for (const auto &recentActivity : recentActivities) {
         const auto activityData = recentActivity.toMap();
@@ -1521,28 +1617,28 @@ static NSView *compactAccountActionsSeparator()
         if (title.isEmpty()) {
             continue;
         }
-        [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:title.toNSString()
-                                                                 icon:systemSymbolImage(activityData.value(QStringLiteral("systemIconName")).toString(), 14.0)
-                                                             subtitle:activityData.value(QStringLiteral("subtitle")).toString().toNSString()
-                                                             dateTime:activityData.value(QStringLiteral("dateTime")).toString().toNSString()
-                                                                width:kAccountActionsPopupWidth
-                                                              enabled:YES
-                                                               action:^{
+        addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:title.toNSString()
+                                                                      icon:systemSymbolImage(activityData.value(QStringLiteral("systemIconName")).toString(), 14.0)
+                                                                  subtitle:activityData.value(QStringLiteral("subtitle")).toString().toNSString()
+                                                                  dateTime:activityData.value(QStringLiteral("dateTime")).toString().toNSString()
+                                                                     width:kAccountActionsPopupWidth
+                                                                   enabled:YES
+                                                                    action:^{
             [weakOwner openActivitiesForIndex:userIndex];
         } hoverAction:^(NSView *) {
             [weakSelf hideAppsPopup];
-        }]];
+        }]);
     }
-    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:QCoreApplication::translate("TrayAccountPopup", "More activity\342\200\246").toNSString()
-                                                            width:kAccountActionsPopupWidth
-                                                          enabled:YES
-                                                           action:^{
+    addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:QCoreApplication::translate("TrayAccountPopup", "More activity\342\200\246").toNSString()
+                                                                 width:kAccountActionsPopupWidth
+                                                               enabled:YES
+                                                                action:^{
         [weakOwner openActivitiesForIndex:userIndex];
     } hoverAction:^(NSView *) {
         [weakSelf hideAppsPopup];
-    }]];
+    }]);
 
-    [_stack addArrangedSubview:[[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kAccountActionsPopupWidth]];
+    addOwnedArrangedSubview(_stack, [[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kAccountActionsPopupWidth]);
 
     [self.contentView layoutSubtreeIfNeeded];
     NSRect frame = self.frame;
@@ -1550,6 +1646,13 @@ static NSView *compactAccountActionsSeparator()
     frame.size.height = _stack.fittingSize.height;
     if (preserveTopEdge) {
         frame.origin.y = topEdge - frame.size.height;
+    }
+    auto screen = self.screen;
+    if (!screen) {
+        screen = NSScreen.mainScreen ?: NSScreen.screens.firstObject;
+    }
+    if (screen) {
+        frame.origin = clampedPopupOrigin(frame.origin, frame.size, screen.visibleFrame);
     }
     [self setFrame:frame display:NO];
     [self invalidateShadow];
@@ -1581,13 +1684,13 @@ static NSView *compactAccountActionsSeparator()
     self.backgroundColor = NSColor.clearColor;
     self.opaque = NO;
 
-    NSView *container = [[NSView alloc] init];
+    NSView *container = [[[NSView alloc] init] autorelease];
     container.wantsLayer = YES;
     container.layer.cornerRadius = kCornerRadius;
     container.layer.masksToBounds = YES;
     self.contentView = container;
 
-    NSVisualEffectView *vev = [[NSVisualEffectView alloc] init];
+    NSVisualEffectView *vev = [[[NSVisualEffectView alloc] init] autorelease];
     vev.material = NSVisualEffectMaterialHUDWindow;
     vev.blendingMode = NSVisualEffectBlendingModeBehindWindow;
     vev.state = NSVisualEffectStateActive;
@@ -1618,6 +1721,12 @@ static NSView *compactAccountActionsSeparator()
 }
 
 - (BOOL)canBecomeKeyWindow { return YES; }
+
+- (void)dealloc
+{
+    [_accountActionsPopup release];
+    [super dealloc];
+}
 
 - (void)resignKeyWindow
 {
@@ -1654,7 +1763,7 @@ static NSView *compactAccountActionsSeparator()
                            avatar:(NSImage *)avatar
                   syncStatusImage:(NSImage *)syncStatusImage
 {
-    NSImageView *avatarView = [[NSImageView alloc] init];
+    NSImageView *avatarView = [[[NSImageView alloc] init] autorelease];
     avatarView.image = avatar != nil ? avatar : [NSImage imageWithSystemSymbolName:@"person.circle.fill"
                                                             accessibilityDescription:nil];
     avatarView.wantsLayer = YES;
@@ -1675,15 +1784,15 @@ static NSView *compactAccountActionsSeparator()
     serverLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     serverLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
-    NCAccountRow *row = [[NCAccountRow alloc] init];
+    NCAccountRow *row = [[[NCAccountRow alloc] init] autorelease];
     row.userIndex = index;
     row.popupDelegate = self;
 
-    NSImageView *statusView = [[NSImageView alloc] init];
+    NSImageView *statusView = [[[NSImageView alloc] init] autorelease];
     statusView.image = syncStatusImage;
     statusView.translatesAutoresizingMaskIntoConstraints = NO;
 
-    NSImageView *chevron = [[NSImageView alloc] init];
+    NSImageView *chevron = [[[NSImageView alloc] init] autorelease];
     chevron.image = [[NSImage imageWithSystemSymbolName:@"chevron.right" accessibilityDescription:nil]
         imageWithSymbolConfiguration:[NSImageSymbolConfiguration configurationWithPointSize:11 weight:NSFontWeightMedium]];
     chevron.contentTintColor = NSColor.tertiaryLabelColor;
@@ -1731,13 +1840,15 @@ static NSView *compactAccountActionsSeparator()
     [_accountActionsPopup orderOut:nil];
     [self clearActiveAccountRow];
 
-    for (NSView *v in _stack.arrangedSubviews.copy) {
+    auto arrangedSubviews = [_stack.arrangedSubviews copy];
+    for (NSView *v in arrangedSubviews) {
         [_stack removeArrangedSubview:v];
         [v removeFromSuperview];
     }
+    [arrangedSubviews release];
 
     OCC::UserModel *model = OCC::UserModel::instance();
-    [_stack addArrangedSubview:[[NCSpacerView alloc] initWithHeight:kTopPadding]];
+    addOwnedArrangedSubview(_stack, [[NCSpacerView alloc] initWithHeight:kTopPadding]);
     for (int i = 0; i < model->rowCount(); ++i) {
         const QModelIndex idx = model->index(i);
         NSString *name   = model->data(idx, OCC::UserModel::NameRole).toString().toNSString();
@@ -1752,12 +1863,12 @@ static NSView *compactAccountActionsSeparator()
                                          syncStatusImage:syncStatus]];
         const auto accountAlertTitle = accountAlert.value(QStringLiteral("title")).toString();
         if (!accountAlertTitle.isEmpty()) {
-            [_stack addArrangedSubview:[[NCAlertBoxRow alloc] initWithTitle:accountAlertTitle.toNSString()
-                                                                     action:^{
+            addOwnedArrangedSubview(_stack, [[NCAlertBoxRow alloc] initWithTitle:accountAlertTitle.toNSString()
+                                                                          action:^{
                 [self openActivitiesForIndex:i];
             } hoverAction:^(NSView *) {
                 [self closeAccountActionsPopup];
-            }]];
+            }]);
         }
     }
 
@@ -1767,41 +1878,42 @@ static NSView *compactAccountActionsSeparator()
         sep.translatesAutoresizingMaskIntoConstraints = NO;
         [_stack addArrangedSubview:sep];
         [sep.widthAnchor constraintEqualToConstant:kPopupWidth].active = YES;
+        [sep release];
     }
-    [_stack addArrangedSubview:[[NCSpacerView alloc] initWithHeight:kActionVerticalPadding]];
+    addOwnedArrangedSubview(_stack, [[NCSpacerView alloc] initWithHeight:kActionVerticalPadding]);
 
     __unsafe_unretained NCTrayPopup *weakSelf = self;
     if (OCC::Systray::instance()->enableAddAccount()) {
-        [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:OCC::Systray::tr("Add account").toNSString()
-                                                                width:kPopupWidth
-                                                              enabled:YES
-                                                               action:^{
+        addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:OCC::Systray::tr("Add account").toNSString()
+                                                                      width:kPopupWidth
+                                                                    enabled:YES
+                                                                     action:^{
             [weakSelf orderOut:nil];
             OCC::Systray::instance()->setIsOpen(false);
             OCC::Systray::instance()->openAccountWizard();
         } hoverAction:^(NSView *) {
             [weakSelf closeAccountActionsPopup];
-        }]];
+        }]);
     }
-    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:OCC::Systray::tr("Settings").toNSString()
-                                                            width:kPopupWidth
-                                                          enabled:YES
-                                                           action:^{
+    addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:OCC::Systray::tr("Settings").toNSString()
+                                                                 width:kPopupWidth
+                                                               enabled:YES
+                                                                action:^{
         [weakSelf orderOut:nil];
         OCC::Systray::instance()->setIsOpen(false);
         OCC::Systray::instance()->openSettings();
     } hoverAction:^(NSView *) {
         [weakSelf closeAccountActionsPopup];
-    }]];
-    [_stack addArrangedSubview:[[NCActionRow alloc] initWithTitle:OCC::Systray::tr("Quit").toNSString()
-                                                            width:kPopupWidth
-                                                          enabled:YES
-                                                           action:^{
+    }]);
+    addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:OCC::Systray::tr("Quit").toNSString()
+                                                                 width:kPopupWidth
+                                                               enabled:YES
+                                                                action:^{
         OCC::Systray::instance()->shutdown();
     } hoverAction:^(NSView *) {
         [weakSelf closeAccountActionsPopup];
-    }]];
-    [_stack addArrangedSubview:[[NCSpacerView alloc] initWithHeight:kActionVerticalPadding]];
+    }]);
+    addOwnedArrangedSubview(_stack, [[NCSpacerView alloc] initWithHeight:kActionVerticalPadding]);
 
     [self.contentView layoutSubtreeIfNeeded];
     NSRect frame = self.frame;
@@ -1849,7 +1961,7 @@ static NSView *compactAccountActionsSeparator()
     if (popupOrigin.x + popupWidth > rightEdge && rowTopLeftOnScreen.x - popupWidth >= leftEdge) {
         popupOrigin.x = rowTopLeftOnScreen.x - popupWidth;
     }
-    popupOrigin.x = popupOrigin.x < leftEdge ? leftEdge : (popupOrigin.x + popupWidth > rightEdge ? rightEdge - popupWidth : popupOrigin.x);
+    popupOrigin = clampedPopupOrigin(popupOrigin, NSMakeSize(popupWidth, _accountActionsPopup.frame.size.height), visibleFrame);
 
     [_accountActionsPopup setFrameOrigin:popupOrigin];
     [_accountActionsPopup orderFront:nil];
@@ -1915,37 +2027,31 @@ void showMacOSTrayPopup(const QRect &iconRect)
 
     [s_popup populate];
 
-    NSPoint iconPoint = NSMakePoint(iconRect.x(), iconRect.y());
-    NSScreen *screen = nil;
-    for (NSScreen *candidate in NSScreen.screens) {
-        if (NSPointInRect(iconPoint, candidate.frame)) {
-            screen = candidate;
-            break;
-        }
-    }
+    auto qtScreen = iconRect.isValid() && !iconRect.isNull()
+        ? QGuiApplication::screenAt(iconRect.center())
+        : nullptr;
+    NSScreen *screen = nsScreenForQtScreen(qtScreen);
     if (!screen) {
         screen = NSScreen.screens.firstObject;
     }
 
-    const CGFloat screenH = screen.frame.size.height;
     const CGFloat popupW  = s_popup.frame.size.width;
     const CGFloat popupH  = s_popup.frame.size.height;
     const NSRect visibleFrame = screen.visibleFrame;
 
     CGFloat x, y;
-    if (iconRect.isValid()) {
-        x = iconRect.x() - kStatusItemLeadingOffset;
-        y = screenH - iconRect.bottom() - popupH - kStatusItemVerticalOffset;
+    if (iconRect.isValid() && !iconRect.isNull() && qtScreen) {
+        const auto qtScreenGeometry = qtScreen->geometry();
+        x = NSMinX(screen.frame) + iconRect.x() - qtScreenGeometry.x() - kStatusItemLeadingOffset;
+        y = NSMaxY(screen.frame) - (iconRect.y() + iconRect.height() - qtScreenGeometry.y()) - popupH - kStatusItemVerticalOffset;
     } else {
         x = NSMaxX(visibleFrame) - popupW - kScreenEdgePadding;
         y = NSMaxY(visibleFrame) - popupH;
     }
 
-    const CGFloat xMin = NSMinX(visibleFrame) + kScreenEdgePadding;
-    const CGFloat xMax = NSMaxX(visibleFrame) - popupW - kScreenEdgePadding;
-    x = x < xMin ? xMin : (x > xMax ? xMax : x);
+    const auto popupOrigin = clampedPopupOrigin(NSMakePoint(x, y), NSMakeSize(popupW, popupH), visibleFrame);
 
-    [s_popup setFrameOrigin:NSMakePoint(x, y)];
+    [s_popup setFrameOrigin:popupOrigin];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [NSApp activateIgnoringOtherApps:YES];

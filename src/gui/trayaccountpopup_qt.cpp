@@ -303,6 +303,20 @@ QString titleWithDetail(const QString &title, const QString &subtitle, const QSt
     return result;
 }
 
+QString recentActivityMenuText(const QString &message, const QString &dateTime)
+{
+    static constexpr auto maximumMessageLength = 50;
+
+    auto result = message.left(maximumMessageLength);
+    if (message.size() > maximumMessageLength) {
+        result += QStringLiteral("...");
+    }
+    if (!dateTime.isEmpty()) {
+        result = QStringLiteral("%1 - %2").arg(result, dateTime);
+    }
+    return result;
+}
+
 QAction *addMenuAction(QMenu *menu, const QIcon &icon, const QString &text)
 {
     return icon.isNull() ? menu->addAction(text) : menu->addAction(icon, text);
@@ -520,14 +534,13 @@ void addRecentActivities(QMenu *menu, const int userId, const QVariantList &rece
 
     for (const auto &recentActivityVariant : recentActivities) {
         const auto activityData = recentActivityVariant.toMap();
-        const auto title = activityData.value(QStringLiteral("title")).toString();
-        if (title.isEmpty()) {
+        const auto message = activityData.value(QStringLiteral("subtitle")).toString();
+        if (message.isEmpty()) {
             continue;
         }
 
-        const auto subtitle = activityData.value(QStringLiteral("subtitle")).toString();
         const auto dateTime = activityData.value(QStringLiteral("dateTime")).toString();
-        const auto action = addMenuAction(menu, activityIcon(activityData), titleWithDetail(title, subtitle, dateTime));
+        const auto action = addMenuAction(menu, activityIcon(activityData), recentActivityMenuText(message, dateTime));
         QObject::connect(action, &QAction::triggered, action, [userId] {
             openActivitiesForUser(userId);
         });
