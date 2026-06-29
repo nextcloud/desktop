@@ -34,6 +34,7 @@
 #include <QScreen>
 #include <QStyle>
 #include <QSvgRenderer>
+#include <QTimer>
 #include <QUrl>
 #include <QVariantMap>
 #include <QWidgetAction>
@@ -46,6 +47,11 @@ namespace {
 
 QPointer<QMenu> s_trayPopup;
 QHash<QString, QIcon> s_remoteAppIconCache;
+
+bool isWaylandPlatform()
+{
+    return QGuiApplication::platformName().contains(QStringLiteral("wayland"), Qt::CaseInsensitive);
+}
 
 QRectF aspectFitRect(const QSize &sourceSize, const QSize &targetSize)
 {
@@ -392,14 +398,29 @@ void openAssistantForUser(const int userId)
     Systray::instance()->showAssistantWindow(userId);
 }
 
-void openNotification(const int userId, const bool opensSettings)
+void openSettingsAfterTrayPopupCloses()
 {
     closeTrayPopup();
-    if (opensSettings) {
+    QTimer::singleShot(0, Systray::instance(), [] {
         Systray::instance()->openSettings();
+    });
+}
+
+void openNotification(const int userId, const bool opensSettings)
+{
+    if (opensSettings) {
+        openSettingsAfterTrayPopupCloses();
         return;
     }
+    closeTrayPopup();
     Systray::instance()->showActivitiesWindow(userId);
+}
+
+void toggleSyncPause()
+{
+    closeTrayPopup();
+    const auto systray = Systray::instance();
+    systray->setSyncIsPaused(!systray->syncIsPaused());
 }
 
 bool populateAppsMenu(QMenu *menu, const int userId)
@@ -663,12 +684,28 @@ void populateTrayMenu(QMenu *menu)
         });
     }
 
+    const auto systray = Systray::instance();
+    if (systray->anySyncFolders()) {
+        const auto syncPauseText = systray->syncIsPaused()
+            ? QCoreApplication::translate("CurrentAccountHeaderButton", "Resume sync for all")
+            : QCoreApplication::translate("CurrentAccountHeaderButton", "Pause sync for all");
+        const auto syncPauseAction = menu->addAction(syncPauseText);
+        QObject::connect(syncPauseAction, &QAction::triggered, syncPauseAction, [] {
+            toggleSyncPause();
+        });
+    }
+
     const auto settingsAction = addMenuAction(menu,
         templateThemeIcon(QStringLiteral("settings.svg"), menuIconPalette),
         Systray::tr("Settings"));
     QObject::connect(settingsAction, &QAction::triggered, settingsAction, [] {
+        openSettingsAfterTrayPopupCloses();
+    });
+
+    const auto helpAction = menu->addAction(Systray::tr("Help"));
+    QObject::connect(helpAction, &QAction::triggered, helpAction, [] {
         closeTrayPopup();
-        Systray::instance()->openSettings();
+        Systray::instance()->openHelp();
     });
 
     const auto quitAction = addMenuAction(menu,
@@ -699,15 +736,14 @@ QPoint trayPopupPosition(const QMenu *menu, const QRect &iconRect, const Systray
         return clampedMenuPosition(screenCenter - QPoint(menuSize.width() / 2, menuSize.height() / 2), menuSize, availableGeometry);
     }
 
-    auto positionPoint = QCursor::pos();
-    if (iconRect.isValid() && !iconRect.isNull()) {
-        const auto trayCenter = iconRect.center();
-        positionPoint.setX(trayCenter.x() - menuSize.width() / 2);
-        if (trayCenter.y() < availableGeometry.center().y()) {
-            positionPoint.setY(availableGeometry.top());
-        } else {
-            positionPoint.setY(availableGeometry.bottom() - menuSize.height() + 1);
-        }
+    const auto trayCenter = iconRect.isValid() && !iconRect.isNull()
+        ? iconRect.center()
+        : QCursor::pos();
+    auto positionPoint = QPoint(trayCenter.x() - menuSize.width() / 2, trayCenter.y());
+    if (trayCenter.y() < availableGeometry.center().y()) {
+        positionPoint.setY(availableGeometry.top());
+    } else {
+        positionPoint.setY(availableGeometry.bottom() - menuSize.height() + 1);
     }
 
     return clampedMenuPosition(positionPoint, menuSize, availableGeometry);
@@ -715,8 +751,26 @@ QPoint trayPopupPosition(const QMenu *menu, const QRect &iconRect, const Systray
 
 } // namespace
 
-void showQtTrayPopup(const QRect &iconRect, const Systray::WindowPosition position)
+void setupQtTrayContextMenu(QMenu *menu)
 {
+    if (!menu) {
+        return;
+    }
+
+    populateTrayMenu(menu);
+    QObject::connect(menu, &QMenu::aboutToShow, menu, [menu] {
+        populateTrayMenu(menu);
+    });
+}
+
+bool showQtTrayPopup(const QRect &iconRect, const Systray::WindowPosition position)
+{
+    // Wayland cannot create an arbitrary QWidget popup from a tray activation.
+    if (isWaylandPlatform()) {
+        Systray::instance()->showActivitiesWindow();
+        return false;
+    }
+
     hideQtTrayPopup();
 
     const auto menu = new QMenu();
@@ -732,6 +786,7 @@ void showQtTrayPopup(const QRect &iconRect, const Systray::WindowPosition positi
     });
 
     menu->popup(trayPopupPosition(menu, iconRect, position));
+    return true;
 }
 
 void hideQtTrayPopup()

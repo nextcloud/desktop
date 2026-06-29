@@ -16,6 +16,7 @@
 #include <QStringListModel>
 
 class QScreen;
+class QMenu;
 class QQmlApplicationEngine;
 class QQuickWindow;
 class QWindow;
@@ -232,7 +233,8 @@ private:
 };
 
 #ifndef Q_OS_MACOS
-void showQtTrayPopup(const QRect &iconRect, Systray::WindowPosition position);
+void setupQtTrayContextMenu(QMenu *menu);
+bool showQtTrayPopup(const QRect &iconRect, Systray::WindowPosition position);
 void hideQtTrayPopup();
 #endif
 
