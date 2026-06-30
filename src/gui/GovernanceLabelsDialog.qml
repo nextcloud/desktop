@@ -61,6 +61,19 @@ ApplicationWindow {
         }
     }
 
+    ApplyGovernanceLabel {
+        id: applySensitivityLabel
+
+        account: governanceLabelsDialog.account
+
+        labelType: GovernanceNetworkJob.Sensitivity
+        entityId: governanceLabelsDialog.fileId
+
+        onFinished: function(reply) {
+            sensitivityLabelsModel.setAvailableLabelsJsonData(reply)
+        }
+    }
+
     GovernanceLabelsListModel {
         id: retentionLabelsModel
 
@@ -135,6 +148,11 @@ ApplicationWindow {
                 model: sensitivityLabelsModel
                 textRole: 'name'
                 valueRole: 'id'
+
+                onActivated: function() {
+                    applySensitivityLabel.labelId = currentValue
+                    applySensitivityLabel.start()
+                }
             }
         }
 
@@ -180,11 +198,6 @@ ApplicationWindow {
 
         DialogButtonBox {
             Layout.fillWidth: true
-
-            Button {
-                text: qsTr("Apply")
-                DialogButtonBox.buttonRole: DialogButtonBox.ApplyRole
-            }
 
             Button {
                 text: qsTr("Cancel")

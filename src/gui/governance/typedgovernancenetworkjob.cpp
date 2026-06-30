@@ -37,13 +37,13 @@ QString TypedGovernanceNetworkJob::labelTypeAsString() const
     switch (_labelType)
     {
     case Governance::LabelType::Sensitivity:
-        result = u"sensitivity"_s;
+        result = u"SENSITIVITY"_s;
         break;
     case Governance::LabelType::Retention:
-        result = u"retention"_s;
+        result = u"RETENTION"_s;
         break;
     case Governance::LabelType::Hold:
-        result = u"hold"_s;
+        result = u"HOLD"_s;
         break;
     case Governance::LabelType::InvalidLabelType:
         result = u"invalid"_s;
