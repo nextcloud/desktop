@@ -37,6 +37,17 @@ ApplicationWindow {
         close.accepted = true
     }
 
+    GovernanceLabelsListModel {
+        id: sensitivityLabelsModel
+
+        entityId: governanceLabelsDialog.fileId
+        labelType: GovernanceNetworkJob.Sensitivity
+
+        onRefreshData: function(labelType, entityId) {
+            getAvailableGovernanceLabelsForSensitivity.start(labelType, entityId)
+        }
+    }
+
     GetAvailableGovernanceLabels {
         id: getAvailableGovernanceLabelsForSensitivity
 
@@ -46,18 +57,55 @@ ApplicationWindow {
         entityId: governanceLabelsDialog.fileId
 
         onFinished: function(reply) {
-            labelsModel.setAvailableLabelsJsonData(reply)
+            sensitivityLabelsModel.setAvailableLabelsJsonData(reply)
         }
     }
 
     GovernanceLabelsListModel {
-        id: labelsModel
+        id: retentionLabelsModel
 
         entityId: governanceLabelsDialog.fileId
-        labelType: GovernanceNetworkJob.Sensitivity
+        labelType: GovernanceNetworkJob.Retention
 
         onRefreshData: function(labelType, entityId) {
             getAvailableGovernanceLabelsForSensitivity.start(labelType, entityId)
+        }
+    }
+
+    GetAvailableGovernanceLabels {
+        id: getAvailableGovernanceLabelsForRetention
+
+        account: governanceLabelsDialog.account
+
+        labelType: GovernanceNetworkJob.Retention
+        entityId: governanceLabelsDialog.fileId
+
+        onFinished: function(reply) {
+            retentionLabelsModel.setAvailableLabelsJsonData(reply)
+        }
+    }
+
+    GovernanceLabelsListModel {
+        id: legalHoldLabelsModel
+
+        entityId: governanceLabelsDialog.fileId
+        labelType: GovernanceNetworkJob.Retention
+
+        onRefreshData: function(labelType, entityId) {
+            getAvailableGovernanceLabelsForSensitivity.start(labelType, entityId)
+        }
+    }
+
+    GetAvailableGovernanceLabels {
+        id: getAvailableGovernanceLabelsForLegalHold
+
+        account: governanceLabelsDialog.account
+
+        labelType: GovernanceNetworkJob.Retention
+        entityId: governanceLabelsDialog.fileId
+
+        onFinished: function(reply) {
+            legalHoldLabelsModel.setAvailableLabelsJsonData(reply)
         }
     }
 
@@ -70,22 +118,64 @@ ApplicationWindow {
         spacing: 15
         z: 2
 
-        EnforcedPlainTextLabel {
-            text: 'Sensitivity label:'
+        RowLayout {
+            EnforcedPlainTextLabel {
+                text: 'Sensitivity label:'
 
-            font.pixelSize: Style.pixelSize + 2
+                font.pixelSize: Style.pixelSize + 2
+            }
+
+            ComboBox {
+                id: selectedNewSensitivityLabel
+
+                font.pixelSize: Style.pixelSize + 2
+                Accessible.role: Accessible.ComboBox
+                Accessible.name: qsTr("Select sensitivity label")
+
+                model: sensitivityLabelsModel
+                textRole: 'name'
+                valueRole: 'id'
+            }
         }
 
-        ComboBox {
-            id: selectedNewSensitivityLabel
+        RowLayout {
+            EnforcedPlainTextLabel {
+                text: 'Retention labels:'
 
-            font.pixelSize: Style.pixelSize + 2
-            Accessible.role: Accessible.ComboBox
-            Accessible.name: qsTr("Select sensitivity label")
+                font.pixelSize: Style.pixelSize + 2
+            }
 
-            model: labelsModel
-            textRole: 'name'
-            valueRole: 'id'
+            ComboBox {
+                id: selectedNewRetentionLabel
+
+                font.pixelSize: Style.pixelSize + 2
+                Accessible.role: Accessible.ComboBox
+                Accessible.name: qsTr("Select retention labels")
+
+                model: retentionLabelsModel
+                textRole: 'name'
+                valueRole: 'id'
+            }
+        }
+
+        RowLayout {
+            EnforcedPlainTextLabel {
+                text: 'Legal hold labels:'
+
+                font.pixelSize: Style.pixelSize + 2
+            }
+
+            ComboBox {
+                id: selectedNewLegalHoldLabel
+
+                font.pixelSize: Style.pixelSize + 2
+                Accessible.role: Accessible.ComboBox
+                Accessible.name: qsTr("Select legal hold labels")
+
+                model: legalHoldLabelsModel
+                textRole: 'name'
+                valueRole: 'id'
+            }
         }
 
         DialogButtonBox {
