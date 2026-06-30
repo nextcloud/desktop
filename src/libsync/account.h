@@ -17,6 +17,7 @@
 #include "updatechannel.h"
 
 #include <QByteArray>
+#include <QStringList>
 #include <QUrl>
 #include <QNetworkCookie>
 #include <QNetworkProxy>
@@ -242,6 +243,13 @@ public:
     [[nodiscard]] QList<QSslCertificate> approvedCerts() const { return _approvedCerts; }
     void setApprovedCerts(const QList<QSslCertificate> certs);
     void addApprovedCerts(const QList<QSslCertificate> certs);
+
+    /** Additional hosts to which credentials may still be sent when an HTTP
+     *  redirect targets a host other than the account's own. Redirects within
+     *  the account's own registrable domain are always trusted; this list
+     *  covers cross-domain cases such as a third-party SSO / identity provider. */
+    [[nodiscard]] QStringList trustedRedirectHosts() const;
+    void setTrustedRedirectHosts(const QStringList &hosts);
 
     // Usually when a user explicitly rejects a certificate we don't
     // ask again. After this call, a dialog will again be shown when
