@@ -130,7 +130,7 @@ public:
         , _direction(None)
         , _serverHasIgnoredFiles(false)
         , _hasBlacklistEntry(false)
-        , _errorMayBeBlacklisted(false)
+        , _isQuotaError(false)
         , _status(NoStatus)
         , _isRestoration(false)
         , _isSelectiveSync(false)
@@ -261,12 +261,12 @@ public:
     /// without the status being FileIgnored.
     bool _hasBlacklistEntry BITFIELD(1);
 
-    /** If true and NormalError, this error may be blacklisted
+    /** True when discovery detected that this item exceeds the remote storage quota.
      *
-     * Note that non-local errors (httpErrorCode!=0) may also be
-     * blacklisted independently of this flag.
+     * Causes blacklistUpdate to write an InsufficientRemoteStorage entry even
+     * though no HTTP request was made (and _httpErrorCode is therefore 0).
      */
-    bool _errorMayBeBlacklisted BITFIELD(1);
+    bool _isQuotaError BITFIELD(1);
 
     // Variables useful to report to the user
     Status _status BITFIELD(4);
