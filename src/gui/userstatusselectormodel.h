@@ -16,6 +16,7 @@
 #include <QtNumeric>
 
 #include <cstddef>
+#include <deque>
 #include <memory>
 #include <vector>
 
@@ -34,6 +35,7 @@ class UserStatusSelectorModel : public QObject
     Q_PROPERTY(QString clearAtDisplayString READ clearAtDisplayString NOTIFY clearAtDisplayStringChanged)
     Q_PROPERTY(QString errorMessage READ errorMessage NOTIFY errorMessageChanged)
     Q_PROPERTY(bool busyStatusSupported READ busyStatusSupported NOTIFY busyStatusSupportedChanged)
+    Q_PROPERTY(bool finishOnOnlineStatusSet READ finishOnOnlineStatusSet WRITE setFinishOnOnlineStatusSet NOTIFY finishOnOnlineStatusSetChanged)
     Q_PROPERTY(QUrl onlineIcon READ onlineIcon CONSTANT)
     Q_PROPERTY(QUrl awayIcon READ awayIcon CONSTANT)
     Q_PROPERTY(QUrl dndIcon READ dndIcon CONSTANT)
@@ -91,9 +93,11 @@ public:
 
     [[nodiscard]] QString errorMessage() const;
     [[nodiscard]] bool busyStatusSupported() const;
+    [[nodiscard]] bool finishOnOnlineStatusSet() const;
 
 public slots:
     void setUserIndex(const int userIndex);
+    void setFinishOnOnlineStatusSet(bool finishOnOnlineStatusSet);
     void setUserStatus();
     void clearUserStatus();
     void setClearAt(const OCC::UserStatusSelectorModel::ClearStageType clearStageType);
@@ -106,9 +110,15 @@ signals:
     void userStatusChanged();
     void clearAtDisplayStringChanged();
     void predefinedStatusesChanged();
+    void finishOnOnlineStatusSetChanged();
     void finished();
 
 private:
+    enum class SetUserStatusOperation {
+        OnlineStatus,
+        Message,
+    };
+
     void init();
     void reset();
     void onUserStatusFetched(const UserStatus &userStatus);
@@ -125,10 +135,12 @@ private:
     void clearError();
 
     int _userIndex = -1;
+    bool _finishOnOnlineStatusSet = true;
     std::shared_ptr<UserStatusConnector> _userStatusConnector {};
     QVector<UserStatus> _predefinedStatuses;
     UserStatus _userStatus;
     std::unique_ptr<DateTimeProvider> _dateTimeProvider;
+    std::deque<SetUserStatusOperation> _setUserStatusOperations;
 
     QString _errorMessage;
 

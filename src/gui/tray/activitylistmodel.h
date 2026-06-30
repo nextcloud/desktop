@@ -96,6 +96,8 @@ public:
 
     [[nodiscard]] const ActivityList& activityList() const { return _finalList; }
     [[nodiscard]] const ActivityList& errorsList() const { return _notificationErrorsLists; }
+    [[nodiscard]] QVariantList recentActivityPreviewData(int limit = 5) const;
+    [[nodiscard]] QVariantList notificationPreviewData() const;
 
     [[nodiscard]] AccountState *accountState() const;
 
@@ -155,6 +157,9 @@ signals:
     void accountStateChanged();
     void hasSyncConflictsChanged();
     void allConflictsChanged();
+    void recentActivityPreviewDataChanged();
+    void notificationPreviewDataChanged();
+    void activityListChanged();
 
     void activityJobStatusCode(int statusCode);
     void sendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
@@ -196,12 +201,15 @@ private slots:
 private:
     static QVariantList convertLinksToMenuEntries(const Activity &activity);
     static QVariantList convertLinksToActionButtons(const Activity &activity);
-    static QVariant convertLinkToActionButton(const ActivityLink &activityLink);
+    static QVariant convertLinkToActionButton(const ActivityLink &activityLink, int actionIndex);
 
     [[nodiscard]] bool canFetchActivities() const;
 
     void displaySingleConflictDialog(const Activity &activity);
     void setHasSyncConflicts(bool conflictsFound);
+    [[nodiscard]] QVariantList buildRecentActivityPreviewData(int limit) const;
+    [[nodiscard]] QVariantList buildNotificationPreviewData() const;
+    void refreshPreviewData();
 
     Activity _notificationIgnoredFiles;
     Activity _dummyFetchingActivities;
@@ -210,6 +218,8 @@ private:
     ActivityList _notificationErrorsLists;
     ActivityList _conflictsList;
     ActivityList _finalList;
+    QVariantList _recentActivityPreviewData;
+    QVariantList _notificationPreviewData;
 
     QSet<qint64> _presentedActivities;
     QSet<qint64> _activeNotificationIds;

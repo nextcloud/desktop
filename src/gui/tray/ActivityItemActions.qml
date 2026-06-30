@@ -47,7 +47,7 @@ Repeater {
 
         icon.source: model.modelData.imageSource ? model.modelData.imageSource + Style.adjustedCurrentUserHeaderColor : ""
 
-        onClicked: isTalkReplyButton ? root.showReplyField() : root.triggerAction(model.index)
+        onClicked: isTalkReplyButton ? root.showReplyField() : root.triggerAction(model.modelData.actionIndex)
 
         visible: verb !== "REPLY" || (verb === "REPLY" && root.talkReplyButtonVisible)
     }

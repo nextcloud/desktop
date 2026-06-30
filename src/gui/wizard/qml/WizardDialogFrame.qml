@@ -7,13 +7,15 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import Style
+
 Pane {
     id: root
 
     default property alias contents: body.data
     property alias footer: footerLayout.data
-    readonly property int windowMargin: 24
-    readonly property int footerButtonHeight: 36
+    readonly property int windowMargin: Style.wizardWindowMargin
+    readonly property int footerButtonHeight: Style.wizardFooterButtonHeight
 
     padding: 0
 
@@ -42,7 +44,7 @@ Pane {
                 anchors.rightMargin: root.windowMargin
                 anchors.topMargin: 0
                 anchors.bottomMargin: root.windowMargin
-                spacing: 8
+                spacing: Style.wizardFooterSpacing
             }
         }
     }

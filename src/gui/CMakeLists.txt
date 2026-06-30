@@ -220,6 +220,8 @@ set(client_SRCS
     tray/unifiedsearchresult.cpp
     tray/unifiedsearchresultslistmodel.h
     tray/trayimageprovider.cpp
+    tray/trayaccountappsmodel.h
+    tray/trayaccountappsmodel.cpp
     tray/unifiedsearchresultslistmodel.cpp
     tray/usermodel.h
     tray/usermodel.cpp
@@ -338,7 +340,10 @@ IF( APPLE )
         install(DIRECTORY "${SPARKLE_LIBRARY}"
                 DESTINATION "${OWNCLOUD_OSX_BUNDLE}/Contents/Frameworks" USE_SOURCE_PERMISSIONS)
 
-   endif()
+    endif()
+ENDIF()
+IF( NOT APPLE )
+    list(APPEND client_SRCS trayaccountpopup_qt.cpp)
 ENDIF()
 
 IF( NOT WIN32 AND NOT APPLE )
