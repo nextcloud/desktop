@@ -29,7 +29,7 @@ int GovernanceLabelsListModel::rowCount(const QModelIndex &parent) const
         return result;
     }
 
-    result = _data.count();
+    result = _data.count() + 1;
     return result;
 }
 
@@ -45,33 +45,54 @@ QVariant GovernanceLabelsListModel::data(const QModelIndex &index, int role) con
         return result;
     }
 
-    if (index.row() < 0 || index.row() >= _data.count()) {
+    if (index.row() < 0 || index.row() >= _data.count() + 1) {
         return result;
     }
 
     if (role >= Qt::UserRole + 1) {
         auto convertedRole = static_cast<LabelsListModelRoles>(role);
 
-        switch (convertedRole)
-        {
-        case LabelsListModelRoles::IdRole:
-            result = _data[index.row()]._id;
-            break;
-        case LabelsListModelRoles::NameRole:
-            result = _data[index.row()]._name;
-            break;
-        case LabelsListModelRoles::PriorityRole:
-            result = _data[index.row()]._priority;
-            break;
-        case LabelsListModelRoles::DescriptionRole:
-            result = _data[index.row()]._description;
-            break;
-        case LabelsListModelRoles::ColorRole:
-            result = _data[index.row()]._color;
-            break;
-        case LabelsListModelRoles::ScopesRole:
-            result = _data[index.row()]._scopes;
-            break;
+        [[unlikely]] if (index.row() == _data.count()) {
+            switch (convertedRole)
+            {
+            case LabelsListModelRoles::IdRole:
+                result = -1;
+                break;
+            case LabelsListModelRoles::NameRole:
+                result = tr("None");
+                break;
+            case LabelsListModelRoles::PriorityRole:
+                result = -1;
+                break;
+            case LabelsListModelRoles::DescriptionRole:
+                result = tr("No label");
+                break;
+            case LabelsListModelRoles::ColorRole:
+            case LabelsListModelRoles::ScopesRole:
+                break;
+            }
+        } else {
+            switch (convertedRole)
+            {
+            case LabelsListModelRoles::IdRole:
+                result = _data[index.row()]._id;
+                break;
+            case LabelsListModelRoles::NameRole:
+                result = _data[index.row()]._name;
+                break;
+            case LabelsListModelRoles::PriorityRole:
+                result = _data[index.row()]._priority;
+                break;
+            case LabelsListModelRoles::DescriptionRole:
+                result = _data[index.row()]._description;
+                break;
+            case LabelsListModelRoles::ColorRole:
+                result = _data[index.row()]._color;
+                break;
+            case LabelsListModelRoles::ScopesRole:
+                result = _data[index.row()]._scopes;
+                break;
+            }
         }
     }
 
@@ -175,6 +196,16 @@ void GovernanceLabelsListModel::setExistingLabelsJsonData(const QJsonDocument &d
     qCInfo(lcGovernanceLabelsListModel()) << data.toJson(QJsonDocument::JsonFormat::Compact);
 }
 
+void GovernanceLabelsListModel::toggleLabel(const QString &labelId)
+{
+    Q_EMIT addLabel(labelId);
+}
+
+void GovernanceLabelsListModel::toggleLabel(const QString &labelId)
+{
+    Q_EMIT addLabel(labelId);
+}
+
 void OCC::GovernanceLabelsListModel::etagChanged()
 {
     Q_EMIT refreshData(_labelType, _entityId);
@@ -187,6 +218,21 @@ void GovernanceLabelsListModel::emitRefreshData()
     }
 
     Q_EMIT refreshData(_labelType, _entityId);
+}
+
+GovernanceLabelsListModel::LabelBehavior GovernanceLabelsListModel::labelBehavior() const
+{
+    return _labelBehavior;
+}
+
+void GovernanceLabelsListModel::setLabelBehavior(LabelBehavior newLabelBehavior)
+{
+    if (_labelBehavior == newLabelBehavior) {
+        return;
+    }
+
+    _labelBehavior = newLabelBehavior;
+    Q_EMIT labelBehaviorChanged();
 }
 
 } // namespace OCC

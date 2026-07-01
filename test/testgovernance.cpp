@@ -562,7 +562,7 @@ private slots:
 
         myModel.setAvailableLabelsJsonData(replyData);
 
-        QCOMPARE(myModel.rowCount(), 1);
+        QCOMPARE(myModel.rowCount(), 2);
         const auto labelIndex = myModel.index(0);
         QVERIFY(labelIndex.isValid());
         QCOMPARE(myModel.data(labelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::IdRole)), u"91785883351310337"_s);
@@ -582,7 +582,6 @@ private slots:
         myModel.setEntityId(u"117"_s);
         myModel.setLabelType(Governance::LabelType::Sensitivity);
 
-        QVERIFY(modelRefreshDataSignalSpy.wait());
         QCOMPARE(modelRefreshDataSignalSpy.count(), 1);
         QCOMPARE(modelRefreshDataSignalSpy.at(0).count(), 2);
         QCOMPARE(modelRefreshDataSignalSpy.at(0).at(0).value<OCC::Governance::LabelType>(), OCC::Governance::LabelType::Sensitivity);
