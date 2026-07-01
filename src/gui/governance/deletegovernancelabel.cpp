@@ -15,13 +15,17 @@ namespace OCC
 DeleteGovernanceLabel::DeleteGovernanceLabel(QObject *parent)
     : OCC::TypedWithLabelIdGovernanceNetworkJob{parent}
 {
-    connect(this, &DeleteGovernanceLabel::apiVersionChanged, this, &DeleteGovernanceLabel::initialize);
-    connect(this, &DeleteGovernanceLabel::entityTypeChanged, this, &DeleteGovernanceLabel::initialize);
-    connect(this, &DeleteGovernanceLabel::customEntityTypeChanged, this, &DeleteGovernanceLabel::initialize);
-    connect(this, &DeleteGovernanceLabel::entityIdChanged, this, &DeleteGovernanceLabel::initialize);
-    connect(this, &DeleteGovernanceLabel::accountChanged, this, &DeleteGovernanceLabel::initialize);
-    connect(this, &DeleteGovernanceLabel::labelTypeChanged, this, &DeleteGovernanceLabel::initialize);
-    connect(this, &DeleteGovernanceLabel::labelIdChanged, this, &DeleteGovernanceLabel::initialize);
+}
+
+void DeleteGovernanceLabel::classBegin()
+{
+}
+
+void DeleteGovernanceLabel::componentComplete()
+{
+    if (checkParameters()) {
+        start();
+    }
 }
 
 void DeleteGovernanceLabel::start()
@@ -44,6 +48,13 @@ void DeleteGovernanceLabel::start()
     ocsGovernanceJob()->start();
 }
 
+void DeleteGovernanceLabel::start(const QString &labelId)
+{
+    setLabelId(labelId);
+
+    start();
+}
+
 QString DeleteGovernanceLabel::buildPath() const
 {
     return u"/ocs/v2.php/apps/governance/%1/labels/%2/%3/%4/%5"_s.arg(apiVersionAsString(), entityTypeAsString(), integerEntityIdAsString(), labelTypeAsString(TypedGovernanceNetworkJob::Capitalization::UpCase), labelId());
@@ -52,13 +63,6 @@ QString DeleteGovernanceLabel::buildPath() const
 void DeleteGovernanceLabel::jobDone(QJsonDocument reply, [[maybe_unused]] int statusCode)
 {
     Q_EMIT finished(reply);
-}
-
-void DeleteGovernanceLabel::initialize()
-{
-    if (checkParameters()) {
-        start();
-    }
 }
 
 } // namespace OCC
