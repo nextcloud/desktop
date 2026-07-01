@@ -45,7 +45,7 @@ QString TypedGovernanceNetworkJob::labelTypeAsString(Capitalization capitalizati
         case Governance::LabelType::Retention:
             result = u"retention"_s;
             break;
-        case Governance::LabelType::Hold:
+        case Governance::LabelType::LegalHold:
             result = u"hold"_s;
             break;
         case Governance::LabelType::InvalidLabelType:
@@ -62,7 +62,7 @@ QString TypedGovernanceNetworkJob::labelTypeAsString(Capitalization capitalizati
         case Governance::LabelType::Retention:
             result = u"RETENTION"_s;
             break;
-        case Governance::LabelType::Hold:
+        case Governance::LabelType::LegalHold:
             result = u"HOLD"_s;
             break;
         case Governance::LabelType::InvalidLabelType:

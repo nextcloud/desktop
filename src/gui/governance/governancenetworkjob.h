@@ -11,6 +11,7 @@
 
 #include <QObject>
 #include <QQmlEngine>
+#include <QQmlParserStatus>
 #include <QLoggingCategory>
 #include <QJsonDocument>
 
@@ -21,10 +22,11 @@ Q_DECLARE_LOGGING_CATEGORY(lcGovernanceNetwork)
 
 class OcsGovernanceJob;
 
-class GovernanceNetworkJob : public QObject
+class GovernanceNetworkJob : public QObject, public QQmlParserStatus
 {
     Q_OBJECT
     QML_ELEMENT
+    Q_INTERFACES(QQmlParserStatus)
 
     Q_PROPERTY(AccountPtr account READ account WRITE setAccount NOTIFY accountChanged FINAL)
 

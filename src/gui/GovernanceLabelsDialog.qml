@@ -86,10 +86,6 @@ ApplicationWindow {
 
         labelType: GovernanceNetworkJob.Sensitivity
         entityId: governanceLabelsDialog.fileId
-
-        onFinished: function(reply) {
-            sensitivityLabelsModel.setAvailableLabelsJsonData(reply)
-        }
     }
 
     GovernanceLabelsListModel {
@@ -116,11 +112,20 @@ ApplicationWindow {
         }
     }
 
+    ApplyGovernanceLabel {
+        id: applyRetentionLabel
+
+        account: governanceLabelsDialog.account
+
+        labelType: GovernanceNetworkJob.Retention
+        entityId: governanceLabelsDialog.fileId
+    }
+
     GovernanceLabelsListModel {
         id: legalHoldLabelsModel
 
         entityId: governanceLabelsDialog.fileId
-        labelType: GovernanceNetworkJob.Retention
+        labelType: GovernanceNetworkJob.LegalHold
 
         onRefreshData: function(labelType, entityId) {
             getAvailableGovernanceLabelsForSensitivity.start(labelType, entityId)
@@ -132,12 +137,21 @@ ApplicationWindow {
 
         account: governanceLabelsDialog.account
 
-        labelType: GovernanceNetworkJob.Retention
+        labelType: GovernanceNetworkJob.LegalHold
         entityId: governanceLabelsDialog.fileId
 
         onFinished: function(reply) {
             legalHoldLabelsModel.setAvailableLabelsJsonData(reply)
         }
+    }
+
+    ApplyGovernanceLabel {
+        id: applyLegalHoldLabel
+
+        account: governanceLabelsDialog.account
+
+        labelType: GovernanceNetworkJob.LegalHold
+        entityId: governanceLabelsDialog.fileId
     }
 
     ColumnLayout {
@@ -171,8 +185,7 @@ ApplicationWindow {
                 Layout.fillWidth: true
 
                 onActivated: function() {
-                    applySensitivityLabel.labelId = currentValue
-                    applySensitivityLabel.start()
+                    applySensitivityLabel.start(currentValue)
                 }
             }
         }
@@ -196,7 +209,12 @@ ApplicationWindow {
                 model: retentionLabelsModel
                 textRole: "name"
                 valueRole: "id"
+
                 Layout.fillWidth: true
+
+                onActivated: function() {
+                    applyRetentionLabel.start(currentValue)
+                }
             }
         }
 
@@ -219,7 +237,12 @@ ApplicationWindow {
                 model: legalHoldLabelsModel
                 textRole: "name"
                 valueRole: "id"
+
                 Layout.fillWidth: true
+
+                onActivated: function() {
+                    applyLegalHoldLabel.start(currentValue)
+                }
             }
         }
 

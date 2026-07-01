@@ -25,7 +25,7 @@ Q_ENUM_NS(EntityType)
 enum class LabelType {
     Sensitivity,
     Retention,
-    Hold,
+    LegalHold,
     InvalidLabelType,
 };
 
