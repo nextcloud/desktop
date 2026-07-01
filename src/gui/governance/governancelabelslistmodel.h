@@ -25,6 +25,8 @@ class GovernanceLabelsListModel : public QAbstractListModel
 
     Q_PROPERTY(QString entityId READ entityId WRITE setEntityId NOTIFY entityIdChanged FINAL)
 
+    Q_PROPERTY(LabelBehavior labelBehavior READ labelBehavior WRITE setLabelBehavior NOTIFY labelBehaviorChanged FINAL)
+
 public:
     enum class LabelsListModelRoles {
         IdRole = Qt::UserRole + 1,
@@ -36,6 +38,14 @@ public:
     };
 
     Q_ENUM(LabelsListModelRoles)
+
+    enum class LabelBehavior {
+        UniqueLabel,
+        MultipleLabels,
+        UnknownLabelbehavior,
+    };
+
+    Q_ENUM(LabelBehavior)
 
     explicit GovernanceLabelsListModel(QObject *parent = nullptr);
 
@@ -53,10 +63,16 @@ public:
 
     void setEntityId(const QString &newEntityId);
 
+    [[nodiscard]] LabelBehavior labelBehavior() const;
+
+    void setLabelBehavior(LabelBehavior newLabelBehavior);
+
 public Q_SLOTS:
     void setAvailableLabelsJsonData(const QJsonDocument &reply);
 
     void setExistingLabelsJsonData(const QJsonDocument &data);
+
+    void toggleLabel(const QString &labelId);
 
     void etagChanged();
 
@@ -67,6 +83,12 @@ Q_SIGNALS:
 
     void refreshData(OCC::Governance::LabelType labelType, const QString &entityId);
 
+    void addLabel(const QString &labelId);
+
+    void removeLabel(const QString &labelId);
+
+    void labelBehaviorChanged();
+
 private:
     void emitRefreshData();
 
@@ -75,6 +97,8 @@ private:
     QString _entityId;
 
     QList<GovernanceLabelInfo> _data;
+
+    LabelBehavior _labelBehavior = LabelBehavior::UnknownLabelbehavior;
 };
 
 } // namespace OCC
