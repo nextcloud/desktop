@@ -51,6 +51,29 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     let remoteInterface: RemoteInterface
     let serverUrl: String
 
+    /// Holds the undelivered remainder of a large change set so it can be reported one batch at a time
+    /// across the framework's `moreComing` re-invocations without re-running the destructive derivation.
+    /// See ``ChangeDeliveryBuffer`` and ``drainChangeBuffer(for:startAnchor:finalAnchor:suggested:)``.
+    ///
+    /// Load-bearing assumption: the framework continues a `moreComing` chain on the *same* enumerator
+    /// instance, re-invoking `enumerateChanges(for:from:)` with the anchor the previous batch returned
+    /// (see `NSFileProviderEnumerating.h`, `currentSyncAnchorWithCompletionHandler`). The in-memory
+    /// buffer therefore survives the chain. If the extension process is recycled mid-drain, a fresh
+    /// instance re-derives from the original anchor; see ``ChangeDeliveryBuffer`` for the bounded
+    /// created/updated loss this can cause for change sets larger than ``maxBatchSize``.
+    let changeBuffer: ChangeDeliveryBuffer
+
+    /// Default number of items reported per page/batch when the system does not suggest one. Mirrors the
+    /// per-page item budget used for paginated item enumeration (``pageItemCount``).
+    static let defaultBatchSize = 1000
+
+    /// Hard ceiling on the items reported in a single page/batch. The framework asserts past 100× the
+    /// system's suggested size (≈20000 for the default suggestion of 200, which is the limit the
+    /// `__FILEPROVIDER_OBSERVER_TOO_MANY_ITEMS__` crash hit); staying well under that avoids the assertion
+    /// while keeping batch counts low. It also leaves headroom for the single recovered-parent item that
+    /// invalid-parent recovery may prepend to a batch.
+    static let maxBatchSize = 4000
+
     private static func isSystemIdentifier(_ identifier: NSFileProviderItemIdentifier) -> Bool {
         identifier == .rootContainer || identifier == .trashContainer || identifier == .workingSet
     }
@@ -71,6 +94,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         self.domain = domain
         pageItemCount = pageSize
         logger = FileProviderLogger(category: "Enumerator", log: log)
+        changeBuffer = ChangeDeliveryBuffer(log: log)
 
         if Self.isSystemIdentifier(enumeratedItemIdentifier) {
             logger.info("Providing enumerator for a system defined container.", [.item: enumeratedItemIdentifier])
@@ -96,6 +120,19 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         logger.debug("Enumerator is being invalidated.", [.item: enumeratedItemIdentifier, .name: enumeratedItemMetadata?.fileName])
     }
 
+    ///
+    /// Resolve how many items to report per page/batch from the observer's system-set suggestion,
+    /// falling back to ``defaultBatchSize`` when the system did not set one and clamping to
+    /// ``maxBatchSize``.
+    ///
+    /// `suggestedBatchSize` / `suggestedPageSize` are optional observer properties the system sets to the
+    /// value best suited to the current enumeration; they surface as `nil` (or `0`) when unset.
+    ///
+    func effectiveBatchSize(suggested: Int?) -> Int {
+        let base = suggested.flatMap { $0 > 0 ? $0 : nil } ?? Self.defaultBatchSize
+        return min(base, Self.maxBatchSize)
+    }
+
     // MARK: - Protocol methods
 
     public func enumerateItems(for observer: NSFileProviderEnumerationObserver, startingAt page: NSFileProviderPage) {
@@ -104,7 +141,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         if enumeratedItemIdentifier == .trashContainer {
             enumerateTrashItems(for: observer)
         } else if enumeratedItemIdentifier == .workingSet {
-            enumerateWorkingSetItems(for: observer)
+            enumerateWorkingSetItems(for: observer, startingAt: page)
         } else {
             enumerateContainerItems(for: observer, startingAt: page)
         }
@@ -121,7 +158,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         }
 
         if enumeratedItemIdentifier == .workingSet {
-            enumerateWorkingSetChanges(for: observer, since: anchorDate)
+            enumerateWorkingSetChanges(for: observer, since: anchorDate, anchor: anchor)
         } else if enumeratedItemIdentifier == .trashContainer {
             enumerateTrashChanges(for: observer, anchor: anchor)
         } else {
