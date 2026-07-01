@@ -15,6 +15,7 @@
 #include "common/constants.h"
 #include <common/checksums.h>
 #include "wordlist.h"
+#include "foldermetadata.h"
 
 #include <qt6keychain/keychain.h>
 
