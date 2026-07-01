@@ -857,18 +857,6 @@ void AccountWizardController::slotDetermineAuthType()
         case DetermineAuthTypeJob::LoginFlowV2:
             startFlow2Auth();
             break;
-#ifdef WITH_WEBENGINE
-        case DetermineAuthTypeJob::WebViewFlow:
-            if (ConfigFile().forceLoginV2()) {
-                startFlow2Auth();
-                break;
-            }
-            setBusy(false);
-            setAuthStatusText({});
-            setErrorText(tr("This server requires legacy browser authentication. Enter app-password credentials instead."));
-            setCurrentStep(BasicAuthStep);
-            break;
-#endif
         case DetermineAuthTypeJob::Basic:
         case DetermineAuthTypeJob::NoAuthType:
             setBusy(false);
