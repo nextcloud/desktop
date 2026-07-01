@@ -53,6 +53,8 @@ public:
 
     [[nodiscard]] QString entityId() const;
 
+    [[nodiscard]] QString integerEntityIdAsString() const;
+
     void setEntityId(const QString &newEntityId);
 
     void setAccount(AccountPtr newAccount);
@@ -88,7 +90,7 @@ protected:
         return _account;
     }
 
-    [[nodiscard]] virtual QString buildPath() const;
+    [[nodiscard]] virtual QString buildPath() const = 0;
 
     [[nodiscard]] QString apiVersionAsString() const;
 
