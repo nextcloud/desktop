@@ -31,6 +31,7 @@
 #include "tooltipupdater.h"
 #include "filesystem.h"
 #include "encryptfolderjob.h"
+#include "repairfolderencryptionmetadatajob.h"
 #include "syncresult.h"
 #include "ignorelisttablewidget.h"
 #include "networksettings.h"
@@ -417,6 +418,25 @@ void AccountSettings::slotEncryptFolderFinished(int status)
     job->deleteLater();
 }
 
+void AccountSettings::slotRepairEncryptedFolderFinished(int status)
+{
+    qCInfo(lcAccountSettings) << "Current folder encryption status code:" << status;
+    auto job = qobject_cast<RepairFolderEncryptionMetadataJob*>(sender());
+    Q_ASSERT(job);
+    if (!job->errorString().isEmpty()) {
+        QMessageBox::warning(nullptr, tr("Repair of encryption failed"), job->errorString());
+    }
+
+    const auto folder = job->property(propertyFolder).value<Folder *>();
+    Q_ASSERT(folder);
+    const auto path = job->property(propertyPath).toString();
+    const auto index = _model->indexForPath(folder, path);
+    Q_ASSERT(index.isValid());
+    _model->resetAndFetch(index.parent());
+
+    job->deleteLater();
+}
+
 QString AccountSettings::selectedFolderAlias() const
 {
     const auto selected = _ui->_folderList->selectionModel()->currentIndex();
@@ -552,6 +572,33 @@ void AccountSettings::slotMarkSubfolderEncrypted(FolderStatusModel::SubFolderInf
     showEnableE2eeWarningDialog(encryptFolder);
 }
 
+void AccountSettings::slotRepairEncryptedSubfolder(FolderStatusModel::SubFolderInfo *folderInfo)
+{
+    const auto folder = folderInfo->_folder;
+    Q_ASSERT(folder);
+
+    const auto folderAlias = folder->alias();
+    const auto path = folderInfo->_path;
+    const auto fileId = folderInfo->_fileId;
+
+    if (!folder) {
+        qCWarning(lcAccountSettings) << "Could not repair encrypted folder because folder" << folderAlias << "does not exist anymore";
+        QMessageBox::warning(nullptr, tr("Repair of encryption failed"), tr("Could not repair encryption because the folder does not exist anymore"));
+        return;
+    }
+
+    // Folder info have directory paths in Foo/Bar/ convention...
+    Q_ASSERT(!path.startsWith('/') && path.endsWith('/'));
+    // But EncryptFolderJob expects directory path Foo/Bar convention
+    const auto choppedPath = path.chopped(1);
+    auto job = new RepairFolderEncryptionMetadataJob(accountsState()->account(), folder->journalDb(), choppedPath, choppedPath, folder->remotePath(), fileId);
+    job->setParent(this);
+    job->setProperty(propertyFolder, QVariant::fromValue(folder));
+    job->setProperty(propertyPath, QVariant::fromValue(path));
+    connect(job, &RepairFolderEncryptionMetadataJob::finished, this, &AccountSettings::slotRepairEncryptedFolderFinished);
+    job->start();
+}
+
 void AccountSettings::slotEditCurrentIgnoredFiles()
 {
     const auto folder = FolderMan::instance()->folder(selectedFolderAlias());
@@ -674,6 +721,10 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
         } else {
             // Ignore decrypting for now since it only works with an empty folder
             // connect(ac, &QAction::triggered, [this, &info] { slotMarkSubfolderDecrypted(info); });
+        }
+        if (isEncrypted && _accountState->account()->e2e()->isInitialized()) {
+            ac = menu.addAction(tr("Repair encryption"));
+            connect(ac, &QAction::triggered, [this, info] { slotRepairEncryptedSubfolder(info); });
         }
     }
 
@@ -1262,7 +1313,7 @@ void AccountSettings::displayMnemonic(const QString &mnemonic)
     ui.lineEdit->selectAll();
     ui.lineEdit->setAlignment(Qt::AlignCenter);
 
-    const QFont font(QStringLiteral(""), 0);
+    const QFont font(QLatin1String{}, 0);
     QFontMetrics fm(font);
     ui.lineEdit->setFixedWidth(fm.horizontalAdvance(mnemonic));
     widget.resize(widget.sizeHint());

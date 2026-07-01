@@ -435,6 +435,27 @@ void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
     _isMetadataValid = true;
 }
 
+void FolderMetadata::initMetadataFromClientState()
+{
+    const auto oldFiles = _files;
+    for (const auto &oneItem : oldFiles) {
+        const auto result = addEncryptedFile(oneItem);
+        if (!result) {
+            qCWarning(lcCseMetadata()) << "Could not add encrypted file" << oneItem.originalFilename;
+        }
+    }
+
+    const auto oldFolderUsers = _folderUsers;
+    for (const auto &oneUser : oldFolderUsers) {
+        if (!addUser(oneUser.userId, QSslCertificate{oneUser.certificatePem}, CertificateType::SoftwareNextcloudCertificate)) {
+            qCWarning(lcCseMetadata()) << "impossible to add former user into new metadata" << oneUser.userId;
+            _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
+        }
+    }
+
+    _isMetadataValid = true;
+}
+
 FolderMetadata::MetadataVersion FolderMetadata::setupVersionFromExistingMetadata(const QByteArray &metadata)
 {
     auto resultVersion = FolderMetadata::MetadataVersion{};
@@ -927,6 +948,11 @@ void FolderMetadata::updateSelfCertificate()
             oneFolderUser.certificatePem = _account->e2e()->getCertificate().toPem();
         }
     }
+}
+
+void FolderMetadata::repair()
+{
+    initMetadataFromClientState();
 }
 
 quint64 FolderMetadata::newCounter() const

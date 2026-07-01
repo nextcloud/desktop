@@ -146,6 +146,8 @@ public:
 
     static MetadataVersion setupVersionFromExistingMetadata(const QByteArray &metadata);
 
+    void repair();
+
 public slots:
     [[nodiscard]] bool addEncryptedFile(const OCC::FolderMetadata::EncryptedFile &f);
     void removeEncryptedFile(const OCC::FolderMetadata::EncryptedFile &f);
@@ -192,6 +194,8 @@ private slots:
 
     void setupExistingMetadata(const QByteArray &metadata);
     void setupExistingMetadataLegacy(const QByteArray &metadata);
+
+    void initMetadataFromClientState();
 
     void startFetchRootE2eeFolderMetadata(const QString &path);
     void slotRootE2eeFolderMetadataReceived(int statusCode, const QString &message);
