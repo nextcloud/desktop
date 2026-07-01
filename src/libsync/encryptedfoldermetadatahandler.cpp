@@ -280,6 +280,11 @@ void EncryptedFolderMetadataHandler::unlockFolder(const UnlockFolderWithResult r
     unlockJob->start();
 }
 
+void EncryptedFolderMetadataHandler::repairMetadata()
+{
+    _folderMetadata->repair();
+}
+
 void EncryptedFolderMetadataHandler::startUploadMetadata()
 {
     qCDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "Metadata created, sending to the server.";

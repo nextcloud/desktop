@@ -624,3 +624,5 @@ std::optional<QString> AbstractNetworkJob::hstsErrorStringFromReply(QNetworkRepl
 }
 
 } // namespace OCC
+
+#include "moc_abstractnetworkjob.cpp"

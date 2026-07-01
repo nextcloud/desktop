@@ -30,19 +30,20 @@ class OWNCLOUDSYNC_EXPORT EncryptedFolderMetadataHandler
 public:
     enum class FetchMode {
         NonEmptyMetadata = 0,
-        AllowEmptyMetadata
+        AllowEmptyMetadata,
+        AllowBrokenSignature,
     };
     Q_ENUM(FetchMode);
 
     enum class UploadMode {
         DoNotKeepLock = 0,
-        KeepLock
+        KeepLock,
     };
     Q_ENUM(UploadMode);
 
     enum class UnlockFolderWithResult {
         Success = 0,
-        Failure
+        Failure,
     };
     Q_ENUM(UnlockFolderWithResult);
 
@@ -66,6 +67,7 @@ public:
     void fetchMetadata(const FetchMode fetchMode = FetchMode::NonEmptyMetadata);
     void uploadMetadata(const UploadMode uploadMode = UploadMode::DoNotKeepLock);
     void unlockFolder(const UnlockFolderWithResult result = UnlockFolderWithResult::Success);
+    void repairMetadata();
 
 private:
     void lockFolder();
