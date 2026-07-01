@@ -7,6 +7,8 @@
 
 #include "ocsgovernancejob.h"
 
+using namespace Qt::StringLiterals;
+
 namespace OCC
 {
 
@@ -40,6 +42,11 @@ void DeleteGovernanceLabel::start()
     ocsGovernanceJob()->setMethod("DELETE");
 
     ocsGovernanceJob()->start();
+}
+
+QString DeleteGovernanceLabel::buildPath() const
+{
+    return u"/ocs/v2.php/apps/governance/%1/labels/%2/%3/%4/%5"_s.arg(apiVersionAsString(), entityTypeAsString(), integerEntityIdAsString(), labelTypeAsString(TypedGovernanceNetworkJob::Capitalization::UpCase), labelId());
 }
 
 void DeleteGovernanceLabel::jobDone(QJsonDocument reply, [[maybe_unused]] int statusCode)

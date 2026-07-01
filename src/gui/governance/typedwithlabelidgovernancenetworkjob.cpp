@@ -30,11 +30,6 @@ void TypedWithLabelIdGovernanceNetworkJob::setLabelId(const QString &newLabelId)
     Q_EMIT labelIdChanged();
 }
 
-QString TypedWithLabelIdGovernanceNetworkJob::buildPath() const
-{
-    return u"/ocs/v2.php/apps/governance/%1/labels/%2/%3/%4/%5"_s.arg(apiVersionAsString(), entityTypeAsString(), entityId(), labelTypeAsString(), labelId());
-}
-
 bool TypedWithLabelIdGovernanceNetworkJob::checkParameters() const
 {
     auto result = TypedGovernanceNetworkJob::checkParameters();

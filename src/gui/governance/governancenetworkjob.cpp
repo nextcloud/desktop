@@ -67,6 +67,21 @@ QString GovernanceNetworkJob::entityId() const
     return _entityId;
 }
 
+QString GovernanceNetworkJob::integerEntityIdAsString() const
+{
+    auto result = u"-1"_s;
+
+    const auto entityIdView = QStringView{_entityId};
+    const auto idView = entityIdView.left(8);
+    auto conversionStatus = false;
+    const auto fileId = idView.toInt(&conversionStatus);
+    if (conversionStatus) {
+        result = QString::number(fileId);
+    }
+
+    return result;
+}
+
 void GovernanceNetworkJob::setEntityId(const QString &newEntityId)
 {
     if (_entityId == newEntityId) {
@@ -75,11 +90,6 @@ void GovernanceNetworkJob::setEntityId(const QString &newEntityId)
 
     _entityId = newEntityId;
     Q_EMIT entityIdChanged();
-}
-
-QString GovernanceNetworkJob::buildPath() const
-{
-    return u"/ocs/v2.php/apps/governance/%1/labels/%2/%3"_s.arg(apiVersionAsString(), entityTypeAsString(), entityId());
 }
 
 QString GovernanceNetworkJob::apiVersionAsString() const
