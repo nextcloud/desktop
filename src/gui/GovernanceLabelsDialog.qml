@@ -12,6 +12,7 @@ import QtQml.Models
 import Style
 import com.nextcloud.desktopclient
 import "./tray"
+import "./wizard/qml"
 
 ApplicationWindow {
     id: governanceLabelsDialog
@@ -19,6 +20,9 @@ ApplicationWindow {
     required property var fileName
     required property var fileId
     required property var account
+
+    readonly property color primaryTextColor: Style.wizardPrimaryText
+    readonly property color hintTextColor: Style.wizardSecondaryText
 
     flags: Qt.Window | Qt.Dialog
     visible: true
@@ -30,7 +34,21 @@ ApplicationWindow {
     height: Style.minimumHeightResolveConflictsDialog
     minimumWidth: Style.minimumWidthResolveConflictsDialog
     minimumHeight: Style.minimumHeightResolveConflictsDialog
-    title: qsTr('Applys labels')
+    title: qsTr("Apply labels")
+
+    color: Style.wizardWindowBackground
+    palette.window:          Style.wizardWindowBackground
+    palette.windowText:      Style.wizardPrimaryText
+    palette.base:            Style.wizardFieldBackground
+    palette.text:            Style.wizardPrimaryText
+    palette.button:          Style.wizardFieldBackground
+    palette.buttonText:      Style.wizardPrimaryText
+    palette.mid:             Style.wizardDisabledText
+    palette.placeholderText: Style.wizardPlaceholderText
+
+    background: Rectangle {
+        color: Style.wizardWindowBackground
+    }
 
     onClosing: function(close) {
         Systray.destroyDialog(self);
@@ -124,30 +142,33 @@ ApplicationWindow {
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.leftMargin: 10
-        anchors.rightMargin: 10
-        anchors.bottomMargin: 5
-        anchors.topMargin: 10
-        spacing: 15
-        z: 2
+        anchors.leftMargin: 24
+        anchors.rightMargin: 24
+        anchors.bottomMargin: 24
+        anchors.topMargin: 24
+        spacing: 14
 
         RowLayout {
-            EnforcedPlainTextLabel {
-                text: 'Sensitivity label:'
+            Layout.fillWidth: true
+            spacing: 8
 
-                font.pixelSize: Style.pixelSize + 2
+            EnforcedPlainTextLabel {
+                text: qsTr("Sensitivity:")
+                color: governanceLabelsDialog.hintTextColor
+                font.pixelSize: Style.pixelSize
             }
 
-            ComboBox {
+            WizardComboBox {
                 id: selectedNewSensitivityLabel
 
-                font.pixelSize: Style.pixelSize + 2
                 Accessible.role: Accessible.ComboBox
                 Accessible.name: qsTr("Select sensitivity label")
 
                 model: sensitivityLabelsModel
-                textRole: 'name'
-                valueRole: 'id'
+                textRole: "name"
+                valueRole: "id"
+
+                Layout.fillWidth: true
 
                 onActivated: function() {
                     applySensitivityLabel.labelId = currentValue
@@ -157,66 +178,67 @@ ApplicationWindow {
         }
 
         RowLayout {
-            EnforcedPlainTextLabel {
-                text: 'Retention labels:'
+            Layout.fillWidth: true
+            spacing: 8
 
-                font.pixelSize: Style.pixelSize + 2
+            EnforcedPlainTextLabel {
+                text: qsTr("Retention:")
+                color: governanceLabelsDialog.hintTextColor
+                font.pixelSize: Style.pixelSize
             }
 
-            ComboBox {
+            WizardComboBox {
                 id: selectedNewRetentionLabel
 
-                font.pixelSize: Style.pixelSize + 2
                 Accessible.role: Accessible.ComboBox
-                Accessible.name: qsTr("Select retention labels")
+                Accessible.name: qsTr("Select retention label")
 
                 model: retentionLabelsModel
-                textRole: 'name'
-                valueRole: 'id'
+                textRole: "name"
+                valueRole: "id"
+                Layout.fillWidth: true
             }
         }
 
         RowLayout {
-            EnforcedPlainTextLabel {
-                text: 'Legal hold labels:'
+            Layout.fillWidth: true
+            spacing: 8
 
-                font.pixelSize: Style.pixelSize + 2
+            EnforcedPlainTextLabel {
+                text: qsTr("Legal hold:")
+                color: governanceLabelsDialog.hintTextColor
+                font.pixelSize: Style.pixelSize
             }
 
-            ComboBox {
+            WizardComboBox {
                 id: selectedNewLegalHoldLabel
 
-                font.pixelSize: Style.pixelSize + 2
                 Accessible.role: Accessible.ComboBox
-                Accessible.name: qsTr("Select legal hold labels")
+                Accessible.name: qsTr("Select legal hold label")
 
                 model: legalHoldLabelsModel
-                textRole: 'name'
-                valueRole: 'id'
+                textRole: "name"
+                valueRole: "id"
+                Layout.fillWidth: true
             }
         }
 
-        DialogButtonBox {
+        Item {
+            Layout.fillHeight: true
+        }
+
+        RowLayout {
             Layout.fillWidth: true
+            Layout.topMargin: 8
 
-            Button {
+            Item {
+                Layout.fillWidth: true
+            }
+
+            WizardButton {
                 text: qsTr("Cancel")
-                DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
-            }
-
-            onAccepted: function() {
-                Systray.destroyDialog(governanceLabelsDialog)
-            }
-
-            onRejected: function() {
-                Systray.destroyDialog(governanceLabelsDialog)
+                onClicked: Systray.destroyDialog(governanceLabelsDialog)
             }
         }
-    }
-
-    Rectangle {
-        color: palette.base
-        anchors.fill: parent
-        z: 1
     }
 }
