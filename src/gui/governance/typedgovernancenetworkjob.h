@@ -21,6 +21,13 @@ class TypedGovernanceNetworkJob : public GovernanceNetworkJob
     Q_PROPERTY(Governance::LabelType labelType READ labelType WRITE setLabelType NOTIFY labelTypeChanged FINAL)
 
 public:
+    enum class Capitalization {
+        UpCase,
+        LowCase,
+    };
+
+    Q_ENUM(Capitalization)
+
     TypedGovernanceNetworkJob(QObject *parent = nullptr);
 
     [[nodiscard]] Governance::LabelType labelType() const;
@@ -31,7 +38,7 @@ Q_SIGNALS:
     void labelTypeChanged();
 
 protected:
-    [[nodiscard]] QString labelTypeAsString() const;
+    [[nodiscard]] QString labelTypeAsString(Capitalization capitalization) const;
 
     [[nodiscard]] bool checkParameters() const override;
 

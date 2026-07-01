@@ -7,6 +7,8 @@
 
 #include "ocsgovernancejob.h"
 
+using namespace Qt::StringLiterals;
+
 namespace OCC
 {
 
@@ -38,6 +40,11 @@ void GetGovernanceLabels::start()
     ocsGovernanceJob()->setMethod("GET");
 
     ocsGovernanceJob()->start();
+}
+
+QString GetGovernanceLabels::buildPath() const
+{
+    return u"/ocs/v2.php/apps/governance/%1/labels/%2/%3"_s.arg(apiVersionAsString(), entityTypeAsString(), integerEntityIdAsString());
 }
 
 void GetGovernanceLabels::jobDone(QJsonDocument reply, [[maybe_unused]] int statusCode)

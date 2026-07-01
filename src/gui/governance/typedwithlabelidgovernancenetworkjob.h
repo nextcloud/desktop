@@ -31,8 +31,6 @@ signals:
     void labelIdChanged();
 
 protected:
-    [[nodiscard]] QString buildPath() const override;
-
     [[nodiscard]] bool checkParameters() const override;
 
 private:

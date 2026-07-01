@@ -25,6 +25,9 @@ public:
 public Q_SLOTS:
     void start();
 
+protected:
+    [[nodiscard]] QString buildPath() const override;
+
 private Q_SLOTS:
     void jobDone(QJsonDocument reply, int statusCode);
 

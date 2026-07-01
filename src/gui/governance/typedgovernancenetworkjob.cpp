@@ -30,23 +30,45 @@ void TypedGovernanceNetworkJob::setLabelType(Governance::LabelType newLabelType)
     Q_EMIT labelTypeChanged();
 }
 
-QString TypedGovernanceNetworkJob::labelTypeAsString() const
+QString TypedGovernanceNetworkJob::labelTypeAsString(Capitalization capitalization) const
 {
     auto result = QString{};
 
-    switch (_labelType)
+    switch (capitalization)
     {
-    case Governance::LabelType::Sensitivity:
-        result = u"SENSITIVITY"_s;
+    case Capitalization::LowCase:
+        switch (_labelType)
+        {
+        case Governance::LabelType::Sensitivity:
+            result = u"sensitivity"_s;
+            break;
+        case Governance::LabelType::Retention:
+            result = u"retention"_s;
+            break;
+        case Governance::LabelType::Hold:
+            result = u"hold"_s;
+            break;
+        case Governance::LabelType::InvalidLabelType:
+            result = u"invalid"_s;
+            break;
+        }
         break;
-    case Governance::LabelType::Retention:
-        result = u"RETENTION"_s;
-        break;
-    case Governance::LabelType::Hold:
-        result = u"HOLD"_s;
-        break;
-    case Governance::LabelType::InvalidLabelType:
-        result = u"invalid"_s;
+    case Capitalization::UpCase:
+        switch (_labelType)
+        {
+        case Governance::LabelType::Sensitivity:
+            result = u"SENSITIVITY"_s;
+            break;
+        case Governance::LabelType::Retention:
+            result = u"RETENTION"_s;
+            break;
+        case Governance::LabelType::Hold:
+            result = u"HOLD"_s;
+            break;
+        case Governance::LabelType::InvalidLabelType:
+            result = u"invalid"_s;
+            break;
+        }
         break;
     }
 
