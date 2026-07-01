@@ -19,9 +19,14 @@ class GetAvailableGovernanceLabels : public OCC::TypedGovernanceNetworkJob
 {
     Q_OBJECT
     QML_ELEMENT
+    Q_INTERFACES(QQmlParserStatus)
 
 public:
     explicit GetAvailableGovernanceLabels(QObject *parent = nullptr);
+
+    void classBegin() override;
+
+    void componentComplete() override;
 
 Q_SIGNALS:
 
@@ -35,8 +40,6 @@ protected:
 
 private Q_SLOTS:
     void jobDone(QJsonDocument reply, int statusCode);
-
-    void initialize();
 };
 
 } // namespace OCC
