@@ -78,9 +78,7 @@ nextcloud_add_test(Blacklist)
 nextcloud_add_test(LocalDiscovery)
 nextcloud_add_test(RemoteDiscovery)
 
-if (NOT APPLE)
-    nextcloud_add_test(Permissions)
-endif()
+nextcloud_add_test(Permissions)
 
 nextcloud_add_test(SelectiveSync)
 nextcloud_add_test(DatabaseError)
