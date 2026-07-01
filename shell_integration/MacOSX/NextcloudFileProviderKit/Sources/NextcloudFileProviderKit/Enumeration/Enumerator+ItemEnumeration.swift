@@ -14,17 +14,44 @@ extension Enumerator {
     /// Enumerate the working set: the items the system keeps track of, i.e. visited folders and
     /// downloaded files, read straight from the local database.
     ///
-    func enumerateWorkingSetItems(for observer: NSFileProviderEnumerationObserver) {
+    func enumerateWorkingSetItems(
+        for observer: NSFileProviderEnumerationObserver, startingAt page: NSFileProviderPage
+    ) {
         logger.info("Upcoming enumeration is of working set.")
-        // Visited folders and downloaded files.
+
+        // Visited folders and downloaded files, read straight from the local database. The materialised
+        // set can be large, so report it one page at a time to stay under the framework's per-page limit.
+        // Sort by a stable key (ocId) so the offset cursor stays consistent across the paginated
+        // re-invocations the framework drives; the read itself is non-destructive, so re-reading and
+        // slicing on each page needs no cross-call buffer.
         let materialisedItems = dbManager.materialisedItemMetadatas(account: account.ncKitAccount)
             .filter { !$0.deleted }
-        completeEnumerationObserver(observer, nextPage: nil, itemMetadatas: materialisedItems)
+            .sorted { $0.ocId < $1.ocId }
+
+        let offset = Self.itemPageOffset(from: page)
+        let pageSize = effectiveBatchSize(suggested: observer.suggestedPageSize)
+        let start = min(offset, materialisedItems.count)
+        let end = min(start + pageSize, materialisedItems.count)
+        let pageItems = Array(materialisedItems[start ..< end])
+        let nextPage = end < materialisedItems.count ? Self.itemPage(forOffset: end) : nil
+
+        logger.debug(
+            "Enumerating working-set items page. offset: \(offset), pageSize: \(pageSize), pageItems: \(pageItems.count), totalMaterialised: \(materialisedItems.count), hasNextPage: \(nextPage != nil)",
+            [.account: account.ncKitAccount]
+        )
+
+        completeEnumerationObserver(observer, nextPage: nextPage, itemMetadatas: pageItems)
     }
 
     ///
     /// Enumerate the direct children of a regular directory container by reading it from the server,
     /// paginating when the server supports it.
+    ///
+    /// - Note: On servers older than Nextcloud 31 the read is not server-paginated and all direct
+    ///   children are reported in one page. A single directory with more than ~100× the suggested page
+    ///   size of *direct* children could in theory still hit the framework's per-page limit there. This
+    ///   is left unhandled for now: the supported (Nextcloud 31+) path paginates, and the working-set
+    ///   item path — the realistic large-listing case — is paged in ``enumerateWorkingSetItems(for:startingAt:)``.
     ///
     func enumerateContainerItems(
         for observer: NSFileProviderEnumerationObserver, startingAt page: NSFileProviderPage
@@ -111,7 +138,18 @@ extension Enumerator {
                 """
             )
 
-            completeEnumerationObserver(observer, nextPage: nextPage, itemMetadatas: items)
+            // completeEnumerationObserver finishes on an already-encoded page, so serialise the server's
+            // pagination cursor here (nil ends the enumeration). Each server page is already bounded by
+            // pageItemCount, so it stays under the framework's per-page limit.
+            let rawNextPage: NSFileProviderPage?
+            if let nextPage, let nextPageData = try? JSONEncoder().encode(nextPage) {
+                logger.info("Next page: \(String(data: nextPageData, encoding: .utf8) ?? "?")")
+                rawNextPage = NSFileProviderPage(nextPageData)
+            } else {
+                rawNextPage = nil
+            }
+
+            completeEnumerationObserver(observer, nextPage: rawNextPage, itemMetadatas: items)
         }
     }
 
@@ -138,5 +176,32 @@ extension Enumerator {
         }
 
         return (index: response.index, total: response.total, page: page)
+    }
+
+    ///
+    /// The offset a client-paginated item enumeration should resume from.
+    ///
+    /// Used by the item paths that read the whole listing into memory and page over it locally (the
+    /// working set; see ``enumerateWorkingSetItems(for:startingAt:)``). The cursor is the decimal offset
+    /// encoded as UTF-8 — tiny (well under the 500-byte page limit) and never failing to encode. The
+    /// framework's opaque initial pages, and anything that is not a non-negative decimal, map to offset `0`.
+    ///
+    static func itemPageOffset(from page: NSFileProviderPage) -> Int {
+        guard page != NSFileProviderPage.initialPageSortedByName as NSFileProviderPage,
+              page != NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage,
+              let text = String(data: page.rawValue, encoding: .utf8),
+              let offset = Int(text), offset >= 0
+        else {
+            return 0
+        }
+        return offset
+    }
+
+    ///
+    /// Encode a continuation page for a client-paginated item enumeration. Encoding a decimal offset
+    /// cannot fail, so this never silently truncates the enumeration.
+    ///
+    static func itemPage(forOffset offset: Int) -> NSFileProviderPage {
+        NSFileProviderPage(Data(String(offset).utf8))
     }
 }

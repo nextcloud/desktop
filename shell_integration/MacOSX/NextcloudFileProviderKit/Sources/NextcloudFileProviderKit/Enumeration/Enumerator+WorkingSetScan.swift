@@ -19,26 +19,50 @@ extension Enumerator {
     /// server scan is what surfaces remote changes the database-only reconstruction misses:
     /// non-materialised items, and items whose own parent directory did not itself change.
     ///
-    func enumerateWorkingSetChanges(for observer: NSFileProviderChangeObserver, since date: Date) {
+    func enumerateWorkingSetChanges(
+        for observer: NSFileProviderChangeObserver, since date: Date, anchor: NSFileProviderSyncAnchor
+    ) {
         logger.debug("Enumerating changes in working set.", [.account: account])
 
+        let anchorKey = String(data: anchor.rawValue, encoding: .utf8) ?? ""
+
         Task {
-            let serverChanges = await scanMaterialisedItemsForRemoteChanges()
-            let pendingLocalChanges = dbManager.pendingWorkingSetChanges(since: date)
+            // Derive the change set once per drain sequence. The scan is destructive — it persists its
+            // discoveries to the database as it recurses — so on the framework's moreComing
+            // re-invocations we must drain the buffer rather than re-derive, or every change beyond the
+            // first batch is silently dropped.
+            if !changeBuffer.isPrimed(forKey: anchorKey) {
+                // A re-invocation under a *different* anchor is a fresh enumeration; drop any stale
+                // remainder before deriving anew.
+                changeBuffer.reset()
+                logger.debug("Working-set change buffer not primed for anchor \(anchorKey); deriving changes.", [.account: account])
 
-            let changes = ChangeSet(
-                mergingUpdated: [serverChanges.updated, pendingLocalChanges.updated],
-                deleted: [serverChanges.deleted, pendingLocalChanges.deleted]
-            )
+                let serverChanges = await scanMaterialisedItemsForRemoteChanges()
+                let pendingLocalChanges = dbManager.pendingWorkingSetChanges(since: date)
 
-            completeChangesObserver(
-                observer,
-                anchor: currentAnchor,
-                enumeratedItemIdentifier: enumeratedItemIdentifier,
-                account: account,
-                remoteInterface: remoteInterface,
-                dbManager: dbManager,
-                changes: changes
+                let changes = ChangeSet(
+                    mergingUpdated: [serverChanges.updated, pendingLocalChanges.updated],
+                    deleted: [serverChanges.deleted, pendingLocalChanges.deleted]
+                )
+
+                // Sort created+updated by remote-path length (ascending) so parent directories are
+                // reported before their children. Draining the single combined list front-to-back
+                // preserves this across batches; without it macOS may create a rename-destination folder
+                // to house a child before it processes the parent rename, briefly leaving both the old
+                // and new folder names on disk.
+                let sortedUpdated = changes.createdAndUpdated
+                    .sorted { $0.remotePath().count < $1.remotePath().count }
+
+                changeBuffer.prime(key: anchorKey, updated: sortedUpdated, deleted: changes.deleted)
+            }
+
+            // Intermediate batches keep the original anchor so an interrupted drain resumes behind all
+            // undelivered items; the final batch advances the working-set sync point to currentAnchor.
+            drainChangeBuffer(
+                for: observer,
+                startAnchor: anchor,
+                finalAnchor: currentAnchor,
+                suggested: observer.suggestedBatchSize
             )
         }
     }

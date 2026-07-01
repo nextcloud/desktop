@@ -23,12 +23,29 @@ extension Enumerator {
     ) {
         logger.info("Enumerating changes in item.", [.url: serverUrl])
 
+        let anchorKey = String(data: anchor.rawValue, encoding: .utf8) ?? ""
+
         // No matter what happens here we finish enumeration in some way, either from the error
-        // handling below or from the completeChangesObserver.
+        // handling below or from draining the change buffer.
         Task { [weak self] in
             guard let self else {
                 return
             }
+
+            // Continuation of an in-progress drain: serve the next buffered batch without re-reading
+            // the container (the depth-1 read is destructive, so re-deriving would lose the remainder).
+            // A regular container preserves its incoming anchor, so startAnchor and finalAnchor match.
+            if changeBuffer.isPrimed(forKey: anchorKey) {
+                logger.debug("Container change buffer primed for anchor \(anchorKey); draining next batch without re-reading.", [.url: serverUrl])
+                drainChangeBuffer(
+                    for: observer,
+                    startAnchor: anchor,
+                    finalAnchor: anchor,
+                    suggested: observer.suggestedBatchSize
+                )
+                return
+            }
+            changeBuffer.reset()
 
             let readResult = await Self.readServerUrl(
                 serverUrl,
@@ -61,14 +78,16 @@ extension Enumerator {
                         dbManager.deleteItemMetadata(ocId: itemMetadata.ocId)
                     }
 
-                    completeChangesObserver(
+                    // A single deletion — small enough to report directly without buffering.
+                    completeChangesBatch(
                         observer,
+                        updated: [],
+                        deleted: [itemMetadata],
                         anchor: anchor,
-                        enumeratedItemIdentifier: enumeratedItemIdentifier,
+                        moreComing: false,
                         account: account,
                         remoteInterface: remoteInterface,
-                        dbManager: dbManager,
-                        changes: ChangeSet(deleted: [itemMetadata])
+                        dbManager: dbManager
                     )
                     return
                 } else if readError!.isNoChangesError { // All is well, just no changed etags
@@ -92,14 +111,18 @@ extension Enumerator {
 
             logger.info("Finished reading remote changes.", [.account: account.ncKitAccount, .url: serverUrl])
 
-            completeChangesObserver(
-                observer,
-                anchor: anchor,
-                enumeratedItemIdentifier: enumeratedItemIdentifier,
-                account: account,
-                remoteInterface: remoteInterface,
-                dbManager: dbManager,
-                changes: changes
+            // Sort created+updated parents-before-children (see completeChangesBatch) and buffer the
+            // full set so it can be delivered one batch at a time across the framework's moreComing
+            // re-invocations without exceeding the per-batch limit.
+            let sortedUpdated = changes.createdAndUpdated
+                .sorted { $0.remotePath().count < $1.remotePath().count }
+            changeBuffer.prime(key: anchorKey, updated: sortedUpdated, deleted: changes.deleted)
+
+            drainChangeBuffer(
+                for: observer,
+                startAnchor: anchor,
+                finalAnchor: anchor,
+                suggested: observer.suggestedBatchSize
             )
         }
     }
