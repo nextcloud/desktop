@@ -70,10 +70,12 @@
         <file>src/gui/wizard/qml/ServerPage.qml</file>
         <file>src/gui/wizard/qml/SyncOptionsPage.qml</file>
         <file>src/gui/wizard/qml/WizardButton.qml</file>
+        <file>src/gui/wizard/qml/WizardComboBox.qml</file>
         <file>src/gui/wizard/qml/WizardDialogFrame.qml</file>
         <file>src/gui/wizard/qml/WizardTextField.qml</file>
         <file>src/gui/macOS/ui/FileProviderSettings.qml</file>
         <file>src/gui/macOS/ui/FileProviderFileDelegate.qml</file>
         <file>src/gui/integration/FileActionsWindow.qml</file>
+        <file>src/gui/GovernanceLabelsDialog.qml</file>
     </qresource>
 </RCC>
