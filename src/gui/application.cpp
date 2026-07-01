@@ -748,7 +748,8 @@ void Application::setupLogging()
                           << "locale:" << QLocale::system().name()
                           << "ui_lang:" << property("ui_lang")
                           << "version:" << _theme->version()
-                          << "os:" << Utility::platformName();
+                          << "os:" << Utility::platformName()
+                          << "platform:" << QApplication::platformName();
     qCInfo(lcApplication) << "Arguments:" << qApp->arguments();
 }
 
