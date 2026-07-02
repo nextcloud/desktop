@@ -11,7 +11,9 @@
 #import <AppKit/NSApplication.h>
 
 #include "application.h"
-#include "editlocallymanager.h"
+#include "urischemehandler.h"
+
+#include <QTimer>
 
 /* In theory, we should be able to just capture QFileOpenEvents
  * when we open our custom URLs in our Application class and be
@@ -52,7 +54,21 @@
 {
     NSURL* url = [NSURL URLWithString:[[event paramDescriptorForKeyword:keyDirectObject] stringValue]];
     const auto qtUrl = QUrl::fromNSURL(url);
-    OCC::EditLocallyManager::instance()->handleRequest(qtUrl);
+    qCInfo(OCC::lcApplication) << "macOS AppleEvent contains custom URI scheme request:"
+                               << "scheme=" << qtUrl.scheme()
+                               << "host=" << qtUrl.host()
+                               << "path=" << qtUrl.path();
+    if (qApp) {
+        QTimer::singleShot(0, qApp, [qtUrl] {
+            qCInfo(OCC::lcApplication) << "Dispatching macOS AppleEvent custom URI scheme request:"
+                                       << "scheme=" << qtUrl.scheme()
+                                       << "host=" << qtUrl.host()
+                                       << "path=" << qtUrl.path();
+            OCC::UriSchemeHandler::handleUri(qtUrl);
+        });
+    } else {
+        qCWarning(OCC::lcApplication) << "Could not dispatch macOS AppleEvent custom URI scheme request because qApp is not available yet.";
+    }
 }
 
 @end

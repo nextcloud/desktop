@@ -5,7 +5,7 @@
 
 #include "flow2authwidget.h"
 
-#include "common/utility.h"
+#include "guiutility.h"
 #include "account.h"
 #include "creds/webflowcredentials.h"
 #include "guiutility.h"
@@ -18,6 +18,8 @@
 #include <QJsonDocument>
 #include <QStringLiteral>
 #include <QJsonObject>
+#include <QApplication>
+#include <QClipboard>
 
 namespace OCC {
 
@@ -56,6 +58,8 @@ void Flow2AuthWidget::setLogo()
 
 void Flow2AuthWidget::startAuth(Account *account)
 {
+    _externalUrl.clear();
+
     const auto oldAuth = _asyncAuth.release();
     if (oldAuth) {
         oldAuth->deleteLater();
@@ -73,6 +77,29 @@ void Flow2AuthWidget::startAuth(Account *account)
         connect(_asyncAuth.get(), &Flow2Auth::statusChanged, this, &Flow2AuthWidget::slotStatusChanged);
         connect(this, &Flow2AuthWidget::pollNow, _asyncAuth.get(), &Flow2Auth::slotPollNow);
         _asyncAuth->start();
+    }
+}
+
+void Flow2AuthWidget::startProviderSignup(const QUrl &signupUrl)
+{
+    const auto oldAuth = _asyncAuth.release();
+    if (oldAuth) {
+        oldAuth->deleteLater();
+    }
+
+    _account = nullptr;
+    _externalUrl = signupUrl;
+    _statusUpdateSkipCount = 0;
+    _ui.errorLabel->hide();
+    _ui.errorLabel->clear();
+    _ui.label->setText(tr("Complete your provider signup in your browser"));
+    _ui.statusLabel->setText(tr("Please complete the provider signup in your browser. "
+                                "After the completion, confirm to open the Nextcloud application popup in your browser."));
+    stopSpinner(true);
+
+    if (!Utility::openBrowser(_externalUrl)) {
+        _ui.errorLabel->setText(tr("Unable to open the Browser, please copy the link to your Browser."));
+        _ui.errorLabel->show();
     }
 }
 
@@ -124,8 +151,14 @@ void Flow2AuthWidget::slotOpenBrowser()
     if (_ui.errorLabel)
         _ui.errorLabel->hide();
 
-    if (_asyncAuth)
+    if (!_externalUrl.isEmpty()) {
+        if (!Utility::openBrowser(_externalUrl)) {
+            _ui.errorLabel->setText(tr("Unable to open the Browser, please copy the link to your Browser."));
+            _ui.errorLabel->show();
+        }
+    } else if (_asyncAuth) {
         _asyncAuth->openBrowser();
+    }
 }
 
 void Flow2AuthWidget::slotCopyLinkToClipboard()
@@ -133,8 +166,12 @@ void Flow2AuthWidget::slotCopyLinkToClipboard()
     if (_ui.errorLabel)
         _ui.errorLabel->hide();
 
-    if (_asyncAuth)
+    if (!_externalUrl.isEmpty()) {
+        QApplication::clipboard()->setText(_externalUrl.toString(QUrl::FullyEncoded));
+        _ui.statusLabel->setText(tr("Link copied to clipboard."));
+    } else if (_asyncAuth) {
         _asyncAuth->copyLinkToClipboard();
+    }
 }
 
 void Flow2AuthWidget::slotPollNow()
@@ -157,7 +194,7 @@ void Flow2AuthWidget::slotStatusChanged(Flow2Auth::PollStatus status, int second
     case Flow2Auth::statusPollNow:
         _statusUpdateSkipCount = 0;
         _ui.statusLabel->setText(tr("Polling for authorization") + "…");
-        startSpinner();
+        startSpinner(true);
         break;
     case Flow2Auth::statusFetchToken:
         _statusUpdateSkipCount = 0;
@@ -172,15 +209,15 @@ void Flow2AuthWidget::slotStatusChanged(Flow2Auth::PollStatus status, int second
     }
 }
 
-void Flow2AuthWidget::startSpinner()
+void Flow2AuthWidget::startSpinner(bool keepLinkButtonsEnabled)
 {
     _ui.progressLayout->setEnabled(true);
     _ui.statusLabel->setVisible(true);
     _progressIndi->setVisible(true);
     _progressIndi->startAnimation();
 
-    _ui.openLinkButton->setEnabled(false);
-    _ui.copyLinkButton->setEnabled(false);
+    _ui.openLinkButton->setEnabled(keepLinkButtonsEnabled);
+    _ui.copyLinkButton->setEnabled(keepLinkButtonsEnabled);
 }
 
 void Flow2AuthWidget::stopSpinner(bool showStatusLabel)
