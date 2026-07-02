@@ -113,7 +113,8 @@ public:
 
     virtual void fetchPredefinedStatuses() = 0;
 
-    virtual void setUserStatus(const UserStatus &userStatus) = 0;
+    // Returns false if the request was not accepted, for example while another set request is still running.
+    [[nodiscard]] virtual bool setUserStatus(const UserStatus &userStatus) = 0;
 
     virtual void clearMessage() = 0;
 

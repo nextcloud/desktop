@@ -24,7 +24,7 @@ public:
 
     void fetchPredefinedStatuses() override;
 
-    void setUserStatus(const UserStatus &userStatus) override;
+    [[nodiscard]] bool setUserStatus(const UserStatus &userStatus) override;
 
     void clearMessage() override;
 
