@@ -16,6 +16,8 @@ RowLayout {
 
     property alias model: syncStatus
     property color accentColor: Style.ncBlue
+    property var user: NC.UserModel.currentUser
+    property var activityListModel: null
 
     spacing: Style.trayHorizontalMargin
 
@@ -100,16 +102,18 @@ RowLayout {
 
         padding: Style.smallSpacing
 
-        visible: !activityModel.hasSyncConflicts &&
+        visible: root.user !== null &&
+                 root.activityListModel !== null &&
+                 !root.activityListModel.hasSyncConflicts &&
                  !syncStatus.syncing &&
                  !syncStatus.needsSandboxReapproval &&
-                 (NC.UserModel.currentUser.hasLocalFolder ||
-                  (Qt.platform.os === "osx" && NC.UserModel.currentUser.hasFileProvider)) &&
-                 NC.UserModel.currentUser.isConnected
+                 (root.user.hasLocalFolder ||
+                  (Qt.platform.os === "osx" && root.user.hasFileProvider)) &&
+                 root.user.isConnected
         enabled: visible
         onClicked: {
             if(!syncStatus.syncing) {
-                NC.UserModel.currentUser.forceSyncNow();
+                root.user.forceSyncNow();
             }
         }
     }
@@ -119,12 +123,14 @@ RowLayout {
 
         text: qsTr("Resolve conflicts")
 
-        visible: activityModel.hasSyncConflicts &&
+        visible: root.user !== null &&
+                 root.activityListModel !== null &&
+                 root.activityListModel.hasSyncConflicts &&
                  !syncStatus.syncing &&
-                 NC.UserModel.currentUser.hasLocalFolder &&
-                 NC.UserModel.currentUser.isConnected
+                 root.user.hasLocalFolder &&
+                 root.user.isConnected
         enabled: visible
-        onClicked: NC.Systray.createResolveConflictsDialog(activityModel.allConflicts);
+        onClicked: NC.Systray.createResolveConflictsDialog(root.activityListModel.allConflicts);
     }
 
     Button {
@@ -132,10 +138,10 @@ RowLayout {
 
         text: qsTr("Open browser")
 
-        visible: NC.UserModel.currentUser.needsToSignTermsOfService
+        visible: root.user !== null && root.user.needsToSignTermsOfService
         enabled: visible
 
-        onClicked: NC.UserModel.openCurrentAccountServer()
+        onClicked: root.user.openServer()
     }
 
     Button {
@@ -145,8 +151,9 @@ RowLayout {
 
         visible: syncStatus.needsSandboxReapproval &&
                  !syncStatus.syncing &&
-                 NC.UserModel.currentUser.hasLocalFolder &&
-                 NC.UserModel.currentUser.isConnected
+                 root.user !== null &&
+                 root.user.hasLocalFolder &&
+                 root.user.isConnected
         enabled: visible
 
         onClicked: NC.Systray.openSettingsForSandboxReapproval()

@@ -15,6 +15,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
+#include <iterator>
 
 namespace OCC {
 
@@ -98,6 +99,7 @@ void UserStatusSelectorModel::reset()
             &UserStatusSelectorModel::onMessageCleared);
     }
     _userStatusConnector = nullptr;
+    _setUserStatusOperations.clear();
 }
 
 void UserStatusSelectorModel::init()
@@ -126,6 +128,18 @@ void UserStatusSelectorModel::init()
 
 void UserStatusSelectorModel::onUserStatusSet()
 {
+    auto operation = SetUserStatusOperation::Message;
+    if (!_setUserStatusOperations.empty()) {
+        operation = _setUserStatusOperations.front();
+        _setUserStatusOperations.pop_front();
+    } else if (!_finishOnOnlineStatusSet) {
+        return;
+    }
+
+    if (operation == SetUserStatusOperation::OnlineStatus && !_finishOnOnlineStatusSet) {
+        return;
+    }
+
     emit finished();
 }
 
@@ -156,6 +170,9 @@ void UserStatusSelectorModel::onError(UserStatusConnector::Error error)
         return;
 
     case UserStatusConnector::Error::CouldNotSetUserStatus:
+        if (!_setUserStatusOperations.empty()) {
+            _setUserStatusOperations.pop_front();
+        }
         setError(tr("Could not set status. Make sure you are connected to the server."));
         return;
 
@@ -178,6 +195,21 @@ void UserStatusSelectorModel::clearError()
     setError("");
 }
 
+bool UserStatusSelectorModel::finishOnOnlineStatusSet() const
+{
+    return _finishOnOnlineStatusSet;
+}
+
+void UserStatusSelectorModel::setFinishOnOnlineStatusSet(bool finishOnOnlineStatusSet)
+{
+    if (_finishOnOnlineStatusSet == finishOnOnlineStatusSet) {
+        return;
+    }
+
+    _finishOnOnlineStatusSet = finishOnOnlineStatusSet;
+    emit finishOnOnlineStatusSetChanged();
+}
+
 void UserStatusSelectorModel::setOnlineStatus(UserStatus::OnlineStatus status)
 {
     if (!_userStatusConnector || status == _userStatus.state()) {
@@ -185,7 +217,7 @@ void UserStatusSelectorModel::setOnlineStatus(UserStatus::OnlineStatus status)
     }
 
     _userStatus.setState(status);
-    _userStatusConnector->setUserStatus(_userStatus);
+    setUserStatus(SetUserStatusOperation::OnlineStatus);
     emit userStatusChanged();
 }
 
@@ -307,7 +339,20 @@ void UserStatusSelectorModel::setUserStatus()
     }
 
     clearError();
-    _userStatusConnector->setUserStatus(_userStatus);
+    setUserStatus(SetUserStatusOperation::Message);
+}
+
+void UserStatusSelectorModel::setUserStatus(SetUserStatusOperation operation)
+{
+    _setUserStatusOperations.push_back(operation);
+    if (_userStatusConnector->setUserStatus(_userStatus)) {
+        return;
+    }
+
+    const auto queuedOperation = std::find(_setUserStatusOperations.rbegin(), _setUserStatusOperations.rend(), operation);
+    if (queuedOperation != _setUserStatusOperations.rend()) {
+        _setUserStatusOperations.erase(std::next(queuedOperation).base());
+    }
 }
 
 void UserStatusSelectorModel::clearUserStatus()

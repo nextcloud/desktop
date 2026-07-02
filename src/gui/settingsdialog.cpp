@@ -324,7 +324,7 @@ void SettingsDialog::showIssuesList(AccountState *account)
     const auto userModel = UserModel::instance();
     const auto id = userModel->findUserIdForAccount(account);
     UserModel::instance()->setCurrentUserId(id);
-    Systray::instance()->showWindow();
+    Systray::instance()->showActivitiesWindow(id);
 }
 
 void SettingsDialog::accountAdded(AccountState *s)

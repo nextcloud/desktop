@@ -12,9 +12,11 @@
 
 #include <QSystemTrayIcon>
 #include <QQmlNetworkAccessManagerFactory>
+#include <QHash>
 #include <QStringListModel>
 
 class QScreen;
+class QMenu;
 class QQmlApplicationEngine;
 class QQuickWindow;
 class QWindow;
@@ -90,6 +92,7 @@ public:
     [[nodiscard]] bool syncIsPaused() const;
     [[nodiscard]] bool anySyncFolders() const;
     [[nodiscard]] bool isOpen() const;
+    [[nodiscard]] bool isActivitySurfaceVisible() const;
 
     [[nodiscard]] bool enableAddAccount() const;
 
@@ -145,8 +148,12 @@ public slots:
     void destroyDialog(QQuickWindow *window) const;
 
     void showWindow(OCC::Systray::WindowPosition position = OCC::Systray::WindowPosition::Default);
+    void showTrayPopup(OCC::Systray::WindowPosition position = OCC::Systray::WindowPosition::Default);
     void hideWindow();
     void showQMLWindow();
+    void showActivitiesWindow(int userIndex = -1);
+    void showAssistantWindow(int userIndex = -1);
+    void showUserStatusWindow(int userIndex);
 
     void setSyncIsPaused(const bool syncIsPaused);
     void setIsOpen(const bool isOpen);
@@ -211,10 +218,9 @@ private:
 
     std::unique_ptr<QQmlApplicationEngine> _trayEngine;
     QPointer<QMenu> _contextMenu;
-    QSharedPointer<QQuickWindow> _trayWindow;
-#ifndef Q_OS_MACOS
-    QSharedPointer<QQuickWindow> _popupWindow;
-#endif
+    QHash<QString, QPointer<QQuickWindow>> _activitiesWindows;
+    QHash<QString, QPointer<QQuickWindow>> _assistantWindows;
+    QPointer<QQuickWindow> _userStatusWindow;
 
     AccessManagerFactory _accessManagerFactory;
 
@@ -225,6 +231,12 @@ private:
 
     QStringListModel _fakeActivityModel;
 };
+
+#ifndef Q_OS_MACOS
+void setupQtTrayContextMenu(QMenu *menu, Systray *systray);
+bool showQtTrayPopup(Systray *systray, const QRect &iconRect, Systray::WindowPosition position);
+void hideQtTrayPopup();
+#endif
 
 } // namespace OCC
 
