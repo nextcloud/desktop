@@ -346,6 +346,7 @@ bool ExcludedFiles::reloadExcludeFiles()
             const auto &excludeFile = *excludeFileIt;
             QFile file(excludeFile);
             if (!file.exists()) {
+                qWarning() << "Exclude list file does not exist, skipping:" << excludeFile;
                 excludeFileIt = excludeFiles.erase(excludeFileIt);
                 continue;
             }
