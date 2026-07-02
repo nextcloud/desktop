@@ -84,12 +84,17 @@ void AsyncImageResponse::processNextImage()
         if (iconUrl.isValid() && !iconUrl.scheme().isEmpty()) {
             // fetch the remote resource in the thread of the account (or rather its QNAM)
             // for some reason trying to use `accountInRequestedServer` causes clang 21 to crash for me :(
-            const auto accountQnam = accountInRequestedServer->networkAccessManager();
-            QMetaObject::invokeMethod(accountQnam, [this, accountInRequestedServer, iconUrl]() -> void {
+            // Hold the QNAM alive via its QSharedPointer for the whole request: resetNetworkAccessManager()
+            // (e.g. on wake from sleep) reassigns the account's QNAM and deleteLater()s the old one, which
+            // would otherwise take our in-flight reply with it and crash processNetworkReply() on another
+            // thread. reply->deleteLater() below breaks the resulting QNAM<->reply<->lambda ref cycle.
+            const auto accountQnam = accountInRequestedServer->sharedNetworkAccessManager();
+            QMetaObject::invokeMethod(accountQnam.data(), [this, accountInRequestedServer, accountQnam, iconUrl]() -> void {
                 const auto reply = accountInRequestedServer->sendRawRequest("GET"_ba, iconUrl);
-                connect(reply, &QNetworkReply::finished, this, [this, reply]() -> void {
-                    QMetaObject::invokeMethod(this, [this, reply]() -> void {
+                connect(reply, &QNetworkReply::finished, this, [this, reply, accountQnam]() -> void {
+                    QMetaObject::invokeMethod(this, [this, reply, accountQnam]() -> void {
                         processNetworkReply(reply);
+                        reply->deleteLater();
                     });
                 });
             });
