@@ -1374,7 +1374,7 @@ This action will abort any currently running synchronization.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="665"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="995"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="983"/>
         <source>Checking account access</source>
         <translation>Checking account access</translation>
     </message>
@@ -1406,151 +1406,146 @@ This action will abort any currently running synchronization.</translation>
         <translation>Timeout while trying to connect to %1 at %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="868"/>
-        <source>This server requires legacy browser authentication. Enter app-password credentials instead.</source>
-        <translation>This server requires legacy browser authentication. Enter app-password credentials instead.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="946"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="934"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>Unable to open the Browser, please copy the link to your Browser.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="971"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="976"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="959"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="964"/>
         <source>Waiting for authorization</source>
         <translation>Waiting for authorization</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="981"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="969"/>
         <source>Starting authorization</source>
         <translation>Starting authorization</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="986"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="974"/>
         <source>Link copied to clipboard.</source>
         <translation>Link copied to clipboard.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1041"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1071"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1029"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1059"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>There was an invalid response to an authenticated WebDAV request</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1058"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1046"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1066"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1054"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
         <translation>Access forbidden by server. To verify that you have proper access, open the service in your browser.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1084"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1072"/>
         <source>Account connected.</source>
         <translation>Account connected.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1159"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1147"/>
         <source>Will require %1 of storage</source>
         <translation>Will require %1 of storage</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1340"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1328"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 free space</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1350"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1338"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>There isn&apos;t enough free space in the local folder!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1367"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1355"/>
         <source>Please choose a local sync folder.</source>
         <translation>Please choose a local sync folder.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1372"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1360"/>
         <source>Please choose an empty local sync folder.</source>
         <translation>Please choose an empty local sync folder.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1437"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1425"/>
         <source>Could not create local folder %1</source>
         <translation>Could not create local folder %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1451"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1439"/>
         <source>Checking remote folder</source>
         <translation>Checking remote folder</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1497"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1485"/>
         <source>No remote folder specified!</source>
         <translation>No remote folder specified!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1506"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1494"/>
         <source>Error: %1</source>
         <translation>Error: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1511"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1499"/>
         <source>Creating remote folder</source>
         <translation>Creating remote folder</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1530"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1518"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>The folder creation resulted in HTTP error code %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1532"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1520"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
         <translation>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1534"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1522"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1558"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1546"/>
         <source>Account setup failed while creating the sync folder.</source>
         <translation>Account setup failed while creating the sync folder.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1585"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1573"/>
         <source>Could not create the sync folder.</source>
         <translation>Could not create the sync folder.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1675"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1663"/>
         <source>Local Sync Folder</source>
         <translation>Local Sync Folder</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1922"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1910"/>
         <source>Select a certificate</source>
         <translation>Select a certificate</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1924"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1912"/>
         <source>Certificate files (*.p12 *.pfx)</source>
         <translation>Certificate files (*.p12 *.pfx)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1932"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1952"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1920"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1940"/>
         <source>Could not access the selected certificate file.</source>
         <translation>Could not access the selected certificate file.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1968"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1956"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Could not load certificate. Maybe wrong password?</translation>
     </message>
@@ -6270,22 +6265,9 @@ Server replied with error: %2</translation>
     </message>
 </context>
 <context>
-    <name>OCC::WebEnginePage</name>
-    <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="239"/>
-        <source>Invalid certificate detected</source>
-        <translation>گواهی نامعتبر شناسایی شد</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="240"/>
-        <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation>The host &quot;%1&quot; provided an invalid certificate. Continue?</translation>
-    </message>
-</context>
-<context>
     <name>OCC::WebFlowCredentials</name>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="172"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="150"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
         <translation>You have been logged out of your account %1 at %2. Please login again.</translation>
     </message>
@@ -8061,6 +8043,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="180"/>
         <source>Copy Link</source>
         <translation>Copy Link</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::WebEnginePage</name>
+    <message>
+        <location filename="../src/gui/wizard/webview.cpp" line="239"/>
+        <source>Invalid certificate detected</source>
+        <translation>گواهی نامعتبر شناسایی شد</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/webview.cpp" line="240"/>
+        <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
+        <translation>The host &quot;%1&quot; provided an invalid certificate. Continue?</translation>
     </message>
 </context>
 <context>
