@@ -27,7 +27,6 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QPushButton>
-#include <QRegularExpression>
 #include <QSizePolicy>
 #include <QUrl>
 
@@ -38,7 +37,6 @@ QString aboutTextForInfoPanel()
 {
     auto aboutText = Theme::instance()->about();
     Theme::replaceLinkColorStringBackgroundAware(aboutText);
-    aboutText.replace(QRegularExpression(QStringLiteral(R"( \(([^()]*)\)$)")), QStringLiteral("<br>(\\1)"));
     return aboutText;
 }
 }
