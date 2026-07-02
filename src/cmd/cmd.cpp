@@ -547,6 +547,15 @@ restart_sync:
 
     // Always try to load the user-provided exclude list if one is specified
     if (hasUserExcludeFile) {
+        if (!QFile::exists(options.exclude)) {
+            // A user-supplied --exclude path that can't be found is a
+            // configuration error, not something to silently ignore:
+            // reloadExcludeFiles() below drops missing files without
+            // failing, which previously made the whole sync run with
+            // no exclusions and no diagnostic (see nextcloud/desktop#4621).
+            qFatal("Exclude list file supplied via --exclude does not exist: %s", qUtf8Printable(options.exclude));
+            return EXIT_FAILURE;
+        }
         engine.excludedFiles().addExcludeFilePath(options.exclude);
     }
     // Load the system list if available, or if there's no user-provided list
