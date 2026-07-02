@@ -442,13 +442,8 @@ Theme::Theme()
 
 QString Theme::developerStringInfo() const
 {
-    // Shorten Qt's OS name: "macOS Mojave (10.14)" -> "macOS"
-    const auto osStringList = Utility::platformName().split(QLatin1Char(' '));
-    const auto osName = osStringList.at(0);
-
-    const auto devString = QString(tr("%1 Desktop Client Version %2 (%3 running on %4)", "%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the platform name (wayland, x11, …)"))
-    .arg(APPLICATION_NAME, QString::fromLatin1(MIRALL_HUMAN_VERSION_STRING), osName, qGuiApp->platformName());
-
+    const auto devString = QString(tr("%1 Desktop Client Version %2", "%1 is application name. %2 is the human version string."))
+    .arg(APPLICATION_NAME, QString::fromLatin1(MIRALL_HUMAN_VERSION_STRING));
     return devString;
 }
 
