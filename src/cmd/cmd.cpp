@@ -67,6 +67,7 @@ struct CmdOptions
     bool interactive = false;
     bool ignoreHiddenFiles = false;
     QString exclude;
+    QString excludeAnchored;
     QString unsyncedfolders;
     int restartTimes = 0;
     int downlimit = 0;
@@ -171,6 +172,10 @@ void help()
     std::cout << "                         Proxy is http://server:port" << std::endl;
     std::cout << "  --trust                Trust the SSL certification." << std::endl;
     std::cout << "  --exclude [file]       Exclude list file" << std::endl;
+    std::cout << "  --exclude-anchored [file]  Exclude list file, always anchored at the" << std::endl;
+    std::cout << "                         sync root regardless of the file's own name" << std::endl;
+    std::cout << "                         (use this if --exclude patterns aren't matching," << std::endl;
+    std::cout << "                         see nextcloud/desktop#2916, #7682)" << std::endl;
     std::cout << "  --unsyncedfolders [file]    File containing the list of unsynced remote folders (selective sync)" << std::endl;
     std::cout << "  --user, -u [name]      Use [name] as the login name" << std::endl;
     std::cout << "  --password, -p [pass]  Use [pass] as password" << std::endl;
@@ -248,6 +253,8 @@ void parseOptions(const QStringList &app_args, CmdOptions *options)
             options->password = it.next();
         } else if (option == "--exclude" && !it.peekNext().startsWith("-")) {
             options->exclude = it.next();
+        } else if (option == "--exclude-anchored" && !it.peekNext().startsWith("-")) {
+            options->excludeAnchored = it.next();
         } else if (option == "--unsyncedfolders" && !it.peekNext().startsWith("-")) {
             options->unsyncedfolders = it.next();
         } else if (option == "--max-sync-retries" && !it.peekNext().startsWith("-")) {
@@ -542,11 +549,11 @@ restart_sync:
 
     // Exclude lists
 
-    bool hasUserExcludeFile = !options.exclude.isEmpty();
+    bool hasUserExcludeFile = !options.exclude.isEmpty() || !options.excludeAnchored.isEmpty();
     QString systemExcludeFile = ConfigFile::excludeFileFromSystem();
 
-    // Always try to load the user-provided exclude list if one is specified
-    if (hasUserExcludeFile) {
+    // Always try to load the user-provided exclude list(s) if specified
+    if (!options.exclude.isEmpty()) {
         if (!QFile::exists(options.exclude)) {
             // A user-supplied --exclude path that can't be found is a
             // configuration error, not something to silently ignore:
@@ -556,7 +563,21 @@ restart_sync:
             qFatal("Exclude list file supplied via --exclude does not exist: %s", qUtf8Printable(options.exclude));
             return EXIT_FAILURE;
         }
+        // Keeps addExcludeFilePath()'s historic filename-based anchoring
+        // heuristic for --exclude, so existing setups that rely on it
+        // (however unintentionally) don't change behavior. Use
+        // --exclude-anchored instead if patterns aren't matching because
+        // the file isn't literally named "sync-exclude.lst".
         engine.excludedFiles().addExcludeFilePath(options.exclude);
+    }
+    if (!options.excludeAnchored.isEmpty()) {
+        if (!QFile::exists(options.excludeAnchored)) {
+            qFatal("Exclude list file supplied via --exclude-anchored does not exist: %s", qUtf8Printable(options.excludeAnchored));
+            return EXIT_FAILURE;
+        }
+        // Always anchor patterns at the sync root regardless of the file's
+        // own name, see ExcludedFiles::addExcludeFilePath().
+        engine.excludedFiles().addExcludeFilePath(options.excludeAnchored, ExcludedFiles::ExcludeFileAnchor::SyncRoot);
     }
     // Load the system list if available, or if there's no user-provided list
     if (!hasUserExcludeFile || QFile::exists(systemExcludeFile)) {
@@ -564,7 +585,7 @@ restart_sync:
     }
 
     if (!engine.excludedFiles().reloadExcludeFiles()) {
-        qFatal("Cannot load system exclude list or list supplied via --exclude");
+        qFatal("Cannot load system exclude list or list supplied via --exclude/--exclude-anchored");
         return EXIT_FAILURE;
     }
 
