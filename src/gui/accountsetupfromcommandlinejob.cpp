@@ -194,7 +194,7 @@ void AccountSetupFromCommandLineJob::setupLocalSyncFolder(AccountState *accountS
         AccountManager::instance()->deleteAccount(accountState);
         printAccountSetupFromCommandLineStatusAndExit(
             QStringLiteral("Account %1 setup from command line failed, due to folder creation failure.").arg(_account->displayName()),
-            false);
+            true);
     }
 }
 
