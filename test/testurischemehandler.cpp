@@ -6,8 +6,10 @@
 #include <QtTest>
 
 #include <QScopeGuard>
+#include <QStandardPaths>
 #include <QUrl>
 
+#include "configfile.h"
 #include "theme.h"
 #include "urischemehandler.h"
 
@@ -20,6 +22,11 @@ class TestUriSchemeHandler : public QObject
     Q_OBJECT
 
 private slots:
+    void initTestCase()
+    {
+        QStandardPaths::setTestModeEnabled(true);
+    }
+
     void parseUri_data()
     {
         QTest::addColumn<QUrl>("url");
@@ -104,6 +111,7 @@ private slots:
         auto theme = Theme::instance();
         theme->setOverrideServerUrl(QString{});
         theme->setForceOverrideServerUrl(false);
+        ConfigFile{}.setOverrideServerUrl(QString{});
 
         const auto result = UriSchemeHandler::parseUri(url);
 
@@ -128,6 +136,33 @@ private slots:
         const auto acceptedResult = UriSchemeHandler::parseUri(QUrl(QStringLiteral("nc://login/server:https://cloud.example.com/")));
         QCOMPARE(acceptedResult.action, UriSchemeHandler::Action::Login);
         QCOMPARE(acceptedResult.serverUrl, QUrl(QStringLiteral("https://cloud.example.com/")));
+        QVERIFY(acceptedResult.error.isEmpty());
+
+        const auto rejectedResult = UriSchemeHandler::parseUri(QUrl(QStringLiteral("nc://login/server:https://unconfigured.example.com")));
+        QCOMPARE(rejectedResult.action, UriSchemeHandler::Action::Invalid);
+        QVERIFY(!rejectedResult.error.isEmpty());
+    }
+
+    void parseUriHonoursConfiguredServerOverride()
+    {
+        ConfigFile cfg;
+        const auto previousConfiguredOverrideServerUrl = cfg.overrideServerUrl();
+        auto theme = Theme::instance();
+        const auto previousOverrideServerUrl = theme->overrideServerUrl();
+        const auto previousForceOverrideServerUrl = theme->forceOverrideServerUrl();
+        const auto restoreState = qScopeGuard([&cfg, theme, previousConfiguredOverrideServerUrl, previousOverrideServerUrl, previousForceOverrideServerUrl] {
+            cfg.setOverrideServerUrl(previousConfiguredOverrideServerUrl);
+            theme->setOverrideServerUrl(previousOverrideServerUrl);
+            theme->setForceOverrideServerUrl(previousForceOverrideServerUrl);
+        });
+
+        cfg.setOverrideServerUrl(QStringLiteral("https://configured.example.com"));
+        theme->setOverrideServerUrl(QString{});
+        theme->setForceOverrideServerUrl(false);
+
+        const auto acceptedResult = UriSchemeHandler::parseUri(QUrl(QStringLiteral("nc://login/server:https://configured.example.com")));
+        QCOMPARE(acceptedResult.action, UriSchemeHandler::Action::Login);
+        QCOMPARE(acceptedResult.serverUrl, QUrl(QStringLiteral("https://configured.example.com")));
         QVERIFY(acceptedResult.error.isEmpty());
 
         const auto rejectedResult = UriSchemeHandler::parseUri(QUrl(QStringLiteral("nc://login/server:https://unconfigured.example.com")));
