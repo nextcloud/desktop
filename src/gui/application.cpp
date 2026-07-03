@@ -326,7 +326,7 @@ Application::Application(int &argc, char **argv)
 
     // try to migrate legacy accounts and folders from a previous client version
     // only copy the settings and check what should be skipped
-    if (!configVersionMigration()) {
+    if (!AccountSetupCommandLineManager::instance()->isCommandLineParsed() && !configVersionMigration()) {
         qCWarning(lcApplication) << "Config version migration was not possible.";
     }
 
@@ -391,6 +391,16 @@ Application::Application(int &argc, char **argv)
 #else
     connect(&_singleApp, &KDSingleApplication::messageReceived, this, &Application::slotParseMessage);
 #endif
+
+    if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
+        _folderManager.reset(new FolderMan);
+        AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
+        _quitInstance = true;
+    }
+    AccountSetupCommandLineManager::destroy();
+    if (_quitInstance) {
+        return;
+    }
 
     // create accounts and folders from a legacy desktop client or from the current config file
     setupAccountsAndFolders();
@@ -480,11 +490,6 @@ Application::Application(int &argc, char **argv)
         }
     }
 #endif
-
-    if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
-        AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
-    }
-    AccountSetupCommandLineManager::destroy();
 
 #if defined(BUILD_FILE_PROVIDER_MODULE)
     Mac::FileProvider::instance();
