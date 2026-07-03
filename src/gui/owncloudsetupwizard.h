@@ -40,7 +40,6 @@ private:
     ~OwncloudSetupWizard() override;
     bool startQmlWizard();
     bool startQmlWizardForLoginFlow(const QUrl &serverUrl);
-    void startWizardForLoginFlow(const QUrl &serverUrl);
     void finish(int result);
 
     AccountWizardController *_qmlController = nullptr;

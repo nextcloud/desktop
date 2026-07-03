@@ -81,8 +81,10 @@ void OwncloudSetupWizard::runWizardForLoginFlow(QObject *obj, const char *amembe
 
     if (!owncloudSetupWizard.isNull()) {
         qCInfo(lcWizard) << "Restarting existing setup wizard for URI login flow.";
-        FolderMan::instance()->setSyncEnabled(false);
-        owncloudSetupWizard->startWizardForLoginFlow(serverUrl);
+        owncloudSetupWizard->finish(QDialog::Rejected);
+    }
+
+    if (!owncloudSetupWizard.isNull()) {
         bringWizardToFrontIfVisible();
         return;
     }
@@ -241,14 +243,6 @@ bool OwncloudSetupWizard::startQmlWizardForLoginFlow(const QUrl &serverUrl)
 #endif
 
     return true;
-}
-
-void OwncloudSetupWizard::startWizardForLoginFlow(const QUrl &serverUrl)
-{
-    if (_qmlController) {
-        _qmlController->setServerUrl(serverUrl.toString());
-        _qmlController->submitServerUrl();
-    }
 }
 
 void OwncloudSetupWizard::finish(int result)
