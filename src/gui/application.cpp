@@ -1131,10 +1131,6 @@ void Application::handleUriFromOptions()
         return;
     }
 
-    qCInfo(lcApplication) << "Dispatching pending custom URI scheme request from command line options:"
-                          << "scheme=" << _uriSchemeUrl.scheme()
-                          << "host=" << _uriSchemeUrl.host()
-                          << "path=" << _uriSchemeUrl.path();
     UriSchemeHandler::handleUri(_uriSchemeUrl);
     _uriSchemeUrl.clear();
 }
