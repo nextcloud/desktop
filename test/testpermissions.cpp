@@ -944,6 +944,76 @@ private Q_SLOTS:
         QVERIFY(ensureReadOnlyItem("readOnlyFolder/newFolder"));
     }
 
+    // Regression test for https://github.com/nextcloud/desktop/issues/9885
+    //
+    // A read-only shared file (for example a Talk attachment) must download
+    // successfully and end up read-only locally. The read-only permission is
+    // applied to the final file only after it has been renamed into place.
+    // Applying it to the temporary download file before the rename used to add
+    // a deny-DELETE ACE on Windows that blocked the rename, turning the download
+    // into a persistent Error 5 (Access Denied) retry loop.
+    void testDownloadReadOnlyFileMakesItReadOnly()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto &remote = fakeFolder.remoteModifier();
+
+        remote.insert("readOnlyFile.txt", 100, 'A');
+        // "mG" excludes the W (CanWrite) permission, so the file is read-only.
+        remote.find("readOnlyFile.txt")->permissions = RemotePermissions::fromServerString("mG");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(!QFileInfo(fakeFolder.localPath() + "readOnlyFile.txt").isWritable());
+    }
+
+    // Companion to the test above: a remote change to a file that is already
+    // read-only locally must re-download and overwrite it. This exercises the
+    // temp-file -> rename-over-read-only-destination path that regressed in
+    // #9885, and confirms the file stays read-only afterwards.
+    void testUpdateExistingReadOnlyFileMakesItReadOnly()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto &remote = fakeFolder.remoteModifier();
+
+        remote.insert("readOnlyFile.txt", 100, 'A');
+        remote.find("readOnlyFile.txt")->permissions = RemotePermissions::fromServerString("mG");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!QFileInfo(fakeFolder.localPath() + "readOnlyFile.txt").isWritable());
+
+        // Remote update while the file is read-only locally: the client must
+        // download to a temp file and rename it over the read-only destination.
+        remote.setContents("readOnlyFile.txt", 'B');
+        remote.appendByte("readOnlyFile.txt");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(!QFileInfo(fakeFolder.localPath() + "readOnlyFile.txt").isWritable());
+    }
+
+    // A file that becomes writable again on the server must lose its local
+    // read-only state on the next sync. Validates the read-write branch of the
+    // permission block that the fix moved after the rename.
+    void testDownloadReadWriteFileMakesItWritable()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto &remote = fakeFolder.remoteModifier();
+
+        remote.insert("file.txt", 100, 'A');
+        remote.find("file.txt")->permissions = RemotePermissions::fromServerString("mG");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!QFileInfo(fakeFolder.localPath() + "file.txt").isWritable());
+
+        // Grant write permission and change the content so the file re-downloads.
+        remote.find("file.txt")->permissions = RemotePermissions::fromServerString("WmG");
+        remote.appendByte("file.txt");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(QFileInfo(fakeFolder.localPath() + "file.txt").isWritable());
+    }
+
     void testForbiddenDownload()
     {
         FakeFolder fakeFolder{FileInfo{}};
