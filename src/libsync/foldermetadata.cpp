@@ -277,30 +277,39 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
         _counter = counterVariantFromJson.value<quint64>();
     }
 
+    QVector<EncryptedFile> parsedFiles;
+    parsedFiles.reserve(files.size() + folders.size());
+
     for (auto it = files.constBegin(), end = files.constEnd(); it != end; ++it) {
         const auto parsedEncryptedFile = parseEncryptedFileFromJson(it.key(), it.value());
-        if (!parsedEncryptedFile.originalFilename.isEmpty()) {
-            _files.push_back(parsedEncryptedFile);
+        if (parsedEncryptedFile.originalFilename.isEmpty()) {
+            qCWarning(lcCseMetadata()) << "Could not setup metadata. Encrypted file" << it.key() << "metadata is invalid.";
+            _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
+            return;
         }
+        parsedFiles.push_back(parsedEncryptedFile);
     }
 
     for (auto it = folders.constBegin(); it != folders.constEnd(); ++it) {
         const auto folderName = it.value().toString();
         if (folderName.isEmpty()) {
-            continue;
+            qCWarning(lcCseMetadata()) << "Could not setup metadata. Encrypted folder" << it.key() << "metadata has an empty file name.";
+            _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
+            return;
         }
 
         if (!isOriginalFilenameValid(folderName)) {
-            qCWarning(lcCseMetadata()) << "skipping encrypted folder" << it.key() << "metadata has an invalid file name";
+            qCWarning(lcCseMetadata()) << "Could not setup metadata. Encrypted folder" << it.key() << "metadata has an invalid file name.";
             _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
-            continue;
+            return;
         }
 
         EncryptedFile file;
         file.encryptedFilename = it.key();
         file.originalFilename = folderName;
-        _files.push_back(file);
+        parsedFiles.push_back(file);
     }
+    _files = parsedFiles;
     _isMetadataValid = true;
 }
 
@@ -386,14 +395,15 @@ void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
 
         const auto originalFilename = decryptedFileObj["filename"].toString();
         if (originalFilename.isEmpty()) {
-            qCWarning(lcCseMetadata) << "decrypted metadata" << decryptedFileDoc.toJson(QJsonDocument::Compact) << "skipping encrypted file" << file.encryptedFilename << "metadata has an empty file name";
-            continue;
+            qCWarning(lcCseMetadata) << "decrypted metadata" << decryptedFileDoc.toJson(QJsonDocument::Compact) << "Could not setup legacy metadata. Encrypted file" << file.encryptedFilename << "metadata has an empty file name.";
+            _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
+            return;
         }
 
         if (!isOriginalFilenameValid(originalFilename)) {
-            qCWarning(lcCseMetadata) << "skipping encrypted file" << file.encryptedFilename << "metadata has an invalid file name";
+            qCWarning(lcCseMetadata) << "Could not setup legacy metadata. Encrypted file" << file.encryptedFilename << "metadata has an invalid file name.";
             _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
-            continue;
+            return;
         }
 
         file.originalFilename = originalFilename;
