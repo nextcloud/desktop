@@ -5586,18 +5586,18 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="449"/>
-        <source>%1 Desktop Client Version %2 (%3 running on %4)</source>
-        <comment>%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the platform name (wayland, x11, …)</comment>
+        <location filename="../src/libsync/theme.cpp" line="445"/>
+        <source>%1 Desktop Client Version %2</source>
+        <comment>%1 is application name. %2 is the human version string.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="634"/>
+        <location filename="../src/libsync/theme.cpp" line="629"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="652"/>
+        <location filename="../src/libsync/theme.cpp" line="647"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7157,7 +7157,7 @@ Server replied with error: %2</source>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="615"/>
+        <location filename="../src/libsync/theme.cpp" line="610"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
