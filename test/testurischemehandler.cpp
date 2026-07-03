@@ -5,8 +5,10 @@
 
 #include <QtTest>
 
+#include <QScopeGuard>
 #include <QUrl>
 
+#include "theme.h"
 #include "urischemehandler.h"
 
 using namespace OCC;
@@ -99,11 +101,65 @@ private slots:
         QFETCH(QUrl, expectedServerUrl);
         QFETCH(bool, expectError);
 
+        auto theme = Theme::instance();
+        theme->setOverrideServerUrl(QString{});
+        theme->setForceOverrideServerUrl(false);
+
         const auto result = UriSchemeHandler::parseUri(url);
 
         QCOMPARE(result.action, expectedAction);
         QCOMPARE(result.serverUrl, expectedServerUrl);
         QCOMPARE(result.error.isEmpty(), !expectError);
+    }
+
+    void parseUriHonoursForcedSingleServerOverride()
+    {
+        auto theme = Theme::instance();
+        const auto previousOverrideServerUrl = theme->overrideServerUrl();
+        const auto previousForceOverrideServerUrl = theme->forceOverrideServerUrl();
+        const auto restoreTheme = qScopeGuard([theme, previousOverrideServerUrl, previousForceOverrideServerUrl] {
+            theme->setOverrideServerUrl(previousOverrideServerUrl);
+            theme->setForceOverrideServerUrl(previousForceOverrideServerUrl);
+        });
+
+        theme->setOverrideServerUrl(QStringLiteral("https://cloud.example.com"));
+        theme->setForceOverrideServerUrl(true);
+
+        const auto acceptedResult = UriSchemeHandler::parseUri(QUrl(QStringLiteral("nc://login/server:https://cloud.example.com/")));
+        QCOMPARE(acceptedResult.action, UriSchemeHandler::Action::Login);
+        QCOMPARE(acceptedResult.serverUrl, QUrl(QStringLiteral("https://cloud.example.com/")));
+        QVERIFY(acceptedResult.error.isEmpty());
+
+        const auto rejectedResult = UriSchemeHandler::parseUri(QUrl(QStringLiteral("nc://login/server:https://unconfigured.example.com")));
+        QCOMPARE(rejectedResult.action, UriSchemeHandler::Action::Invalid);
+        QVERIFY(!rejectedResult.error.isEmpty());
+    }
+
+    void parseUriHonoursMultipleServerOverrides()
+    {
+        auto theme = Theme::instance();
+        const auto previousOverrideServerUrl = theme->overrideServerUrl();
+        const auto previousForceOverrideServerUrl = theme->forceOverrideServerUrl();
+        const auto restoreTheme = qScopeGuard([theme, previousOverrideServerUrl, previousForceOverrideServerUrl] {
+            theme->setOverrideServerUrl(previousOverrideServerUrl);
+            theme->setForceOverrideServerUrl(previousForceOverrideServerUrl);
+        });
+
+        theme->setOverrideServerUrl(QStringLiteral(
+            "["
+            R"({"name": "Primary", "url": "https://primary.example.com"},)"
+            R"({"name": "Secondary", "url": "https://secondary.example.com"})"
+            "]"));
+        theme->setForceOverrideServerUrl(true);
+
+        const auto acceptedResult = UriSchemeHandler::parseUri(QUrl(QStringLiteral("nc://login/server:https://secondary.example.com")));
+        QCOMPARE(acceptedResult.action, UriSchemeHandler::Action::Login);
+        QCOMPARE(acceptedResult.serverUrl, QUrl(QStringLiteral("https://secondary.example.com")));
+        QVERIFY(acceptedResult.error.isEmpty());
+
+        const auto rejectedResult = UriSchemeHandler::parseUri(QUrl(QStringLiteral("nc://login/server:https://unconfigured.example.com")));
+        QCOMPARE(rejectedResult.action, UriSchemeHandler::Action::Invalid);
+        QVERIFY(!rejectedResult.error.isEmpty());
     }
 };
 

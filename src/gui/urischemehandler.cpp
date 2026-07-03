@@ -10,8 +10,13 @@
 #include "editlocallymanager.h"
 #include "owncloudsetupwizard.h"
 #include "systray.h"
+#include "theme.h"
 
 #include <QApplication>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QList>
 #include <QLoggingCategory>
 #include <QStringList>
 #include <QSystemTrayIcon>
@@ -49,6 +54,70 @@ constexpr auto loginServerPathPrefix = "/server:";
         && !serverUrl.isRelative()
         && !serverUrl.host().isEmpty()
         && (serverUrl.scheme() == QStringLiteral("http") || serverUrl.scheme() == QStringLiteral("https"));
+}
+
+[[nodiscard]] QUrl normalizedServerUrlForComparison(const QUrl &serverUrl)
+{
+    auto normalizedUrl = serverUrl.adjusted(QUrl::NormalizePathSegments
+                                            | QUrl::StripTrailingSlash
+                                            | QUrl::RemoveUserInfo
+                                            | QUrl::RemoveQuery
+                                            | QUrl::RemoveFragment);
+    normalizedUrl.setScheme(normalizedUrl.scheme().toCaseFolded());
+    normalizedUrl.setHost(normalizedUrl.host().toCaseFolded());
+
+    if ((normalizedUrl.scheme() == QStringLiteral("http") && normalizedUrl.port() == 80)
+        || (normalizedUrl.scheme() == QStringLiteral("https") && normalizedUrl.port() == 443)) {
+        normalizedUrl.setPort(-1);
+    }
+    if (normalizedUrl.path() == QStringLiteral("/")) {
+        normalizedUrl.setPath(QString{});
+    }
+
+    return normalizedUrl;
+}
+
+[[nodiscard]] QList<QUrl> configuredOverrideServerUrls()
+{
+    const auto theme = Theme::instance();
+    auto serverUrls = QList<QUrl>{};
+
+    if (theme->multipleOverrideServers()) {
+        const auto serversJsonArray = QJsonDocument::fromJson(theme->overrideServerUrl().toUtf8()).array();
+        for (const auto &serverJson : serversJsonArray) {
+            const auto serverUrl = QUrl{serverJson.toObject().value(QStringLiteral("url")).toString()};
+            if (isValidServerUrl(serverUrl)) {
+                serverUrls.append(serverUrl);
+            }
+        }
+        return serverUrls;
+    }
+
+    const auto serverUrl = QUrl{theme->overrideServerUrl()};
+    if (isValidServerUrl(serverUrl)) {
+        serverUrls.append(serverUrl);
+    }
+
+    return serverUrls;
+}
+
+[[nodiscard]] bool isAllowedByConfiguredServerOverride(const QUrl &serverUrl)
+{
+    const auto theme = Theme::instance();
+    if (theme->overrideServerUrl().isEmpty()
+        || (!theme->forceOverrideServerUrl() && !theme->multipleOverrideServers())) {
+        return true;
+    }
+
+    const auto normalizedServerUrl = normalizedServerUrlForComparison(serverUrl);
+    const auto allowedServerUrls = configuredOverrideServerUrls();
+    for (const auto &allowedServerUrl : allowedServerUrls) {
+        if (normalizedServerUrlForComparison(allowedServerUrl) == normalizedServerUrl) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void showWarning(const QString &message)
@@ -113,6 +182,12 @@ UriSchemeHandler::ParsedUri UriSchemeHandler::parseUri(const QUrl &url)
                                << "path=" << serverUrl.path();
     if (!isValidServerUrl(serverUrl)) {
         result.error = QStringLiteral("The login URL contains an invalid server URL.");
+        qCWarning(lcUriSchemeHandler) << "Rejected URI scheme request:" << result.error << describeUriForLog(url);
+        return result;
+    }
+
+    if (!isAllowedByConfiguredServerOverride(serverUrl)) {
+        result.error = QStringLiteral("The login URL is not allowed by the configured server restriction.");
         qCWarning(lcUriSchemeHandler) << "Rejected URI scheme request:" << result.error << describeUriForLog(url);
         return result;
     }
