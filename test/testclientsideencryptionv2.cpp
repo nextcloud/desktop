@@ -296,6 +296,80 @@ private slots:
         QVERIFY(metadata->files().isEmpty());
     }
 
+    void testSetupExistingMetadataRejectsUnsafeOriginalFilename()
+    {
+        QScopedPointer<FolderMetadata> metadata(new FolderMetadata(_account, "/", FolderMetadata::FolderType::Root));
+        QSignalSpy metadataSetupCompleteSpy(metadata.data(), &FolderMetadata::setupComplete);
+        metadataSetupCompleteSpy.wait();
+        QCOMPARE(metadataSetupCompleteSpy.count(), 1);
+        QVERIFY(metadata->isValid());
+
+        const auto initialEncryptedMetadata = metadata->encryptedMetadata();
+        QVERIFY(!initialEncryptedMetadata.isEmpty());
+
+        const auto encryptedFilename = QStringLiteral("encrypted-name");
+        const auto fileJson = QJsonObject{
+            {QStringLiteral("filename"), QStringLiteral("folder\\file.txt")},
+            {QStringLiteral("key"), QString::fromUtf8(EncryptionHelper::generateRandom(16).toBase64())},
+            {QStringLiteral("mimetype"), QStringLiteral("application/octet-stream")},
+            {QStringLiteral("nonce"), QString::fromUtf8(EncryptionHelper::generateRandom(16).toBase64())},
+            {QStringLiteral("authenticationTag"), QString::fromUtf8(EncryptionHelper::generateRandom(16).toBase64())},
+        };
+
+        QJsonArray keyChecksums;
+        for (auto it = metadata->_keyChecksums.constBegin(), end = metadata->_keyChecksums.constEnd(); it != end; ++it) {
+            keyChecksums.push_back(QJsonValue::fromVariant(*it));
+        }
+
+        const auto cipherText = QJsonObject{
+            {QStringLiteral("counter"), QJsonValue::fromVariant(metadata->newCounter())},
+            {QStringLiteral("files"), QJsonObject{{encryptedFilename, fileJson}}},
+            {QStringLiteral("folders"), QJsonObject{}},
+            {QStringLiteral("keyChecksums"), keyChecksums},
+        };
+        const auto cipherTextDoc = QJsonDocument(cipherText);
+
+        QByteArray authenticationTag;
+        const auto nonce = EncryptionHelper::generateRandom(16);
+        const auto encryptedCipherText = EncryptionHelper::gzipThenEncryptData(metadata->binaryMetadataKeyForEncryption(),
+                                                                               cipherTextDoc.toJson(QJsonDocument::Compact),
+                                                                               nonce,
+                                                                               authenticationTag).toBase64()
+            + QByteArrayLiteral("|") + nonce.toBase64();
+
+        auto metadataDoc = QJsonDocument::fromJson(initialEncryptedMetadata);
+        auto metaObject = metadataDoc.object();
+        auto metadataObject = metaObject[QStringLiteral("metadata")].toObject();
+        metadataObject.insert(QStringLiteral("ciphertext"), QString::fromUtf8(encryptedCipherText));
+        metadataObject.insert(QStringLiteral("nonce"), QString::fromUtf8(nonce.toBase64()));
+        metadataObject.insert(QStringLiteral("authenticationTag"), QString::fromUtf8(authenticationTag.toBase64()));
+        metaObject.insert(QStringLiteral("metadata"), metadataObject);
+        metadataDoc.setObject(metaObject);
+
+        const auto signature = _account->e2e()->generateSignatureCryptographicMessageSyntax(FolderMetadata::prepareMetadataForSignature(metadataDoc).toBase64()).toBase64();
+        QVERIFY(!signature.isEmpty());
+
+        const auto ocsDoc = QJsonDocument(QJsonObject{
+            {QStringLiteral("ocs"), QJsonObject{
+                {QStringLiteral("data"), QJsonObject{
+                    {QStringLiteral("meta-data"), QString::fromUtf8(metadataDoc.toJson(QJsonDocument::Compact))},
+                }},
+            }},
+        });
+
+        QScopedPointer<FolderMetadata> metadataFromJson(new FolderMetadata(_account,
+                                                                           "/",
+                                                                           ocsDoc.toJson(),
+                                                                           RootEncryptedFolderInfo::makeDefault(),
+                                                                           signature,
+                                                                           FolderMetadata::FolderType::Root));
+        QSignalSpy metadataSetupExistingCompleteSpy(metadataFromJson.data(), &FolderMetadata::setupComplete);
+        metadataSetupExistingCompleteSpy.wait();
+        QCOMPARE(metadataSetupExistingCompleteSpy.count(), 1);
+        QVERIFY(!metadataFromJson->isValid());
+        QVERIFY(metadataFromJson->files().isEmpty());
+    }
+
     void testE2EeFolderMetadataSharing()
     {
         // instantiate empty metadata, add a file, and share with a second user "sharee"
