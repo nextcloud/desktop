@@ -5858,7 +5858,7 @@ Server antwortete mit Fehler: %2</translation>
         <location filename="../src/libsync/theme.cpp" line="462"/>
         <source>%1 Desktop Client Version %2</source>
         <comment>%1 is application name. %2 is the human version string.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 Desktop-Client Version %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="646"/>
