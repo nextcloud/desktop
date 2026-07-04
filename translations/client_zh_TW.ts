@@ -5861,7 +5861,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/theme.cpp" line="462"/>
         <source>%1 Desktop Client Version %2</source>
         <comment>%1 is application name. %2 is the human version string.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 桌面客戶端版本 %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="646"/>
