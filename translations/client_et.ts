@@ -5858,7 +5858,7 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/libsync/theme.cpp" line="462"/>
         <source>%1 Desktop Client Version %2</source>
         <comment>%1 is application name. %2 is the human version string.</comment>
-        <translation type="unfinished"/>
+        <translation>%1i Töölauakliendi versioon %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="646"/>
@@ -7676,12 +7676,12 @@ Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="318"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
-        <translation>„%1“ teenuse kaust „%2“ on sünkroniseeritud kohalikuks kaustaks „%3“</translation>
+        <translation>„%1“ teenuse kaust „%2“ on sünkroonitud kohalikku kausta „%3“</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="321"/>
         <source>Sync the folder &quot;%1&quot;</source>
-        <translation>Sünkroniseeri kaust „%1“</translation>
+        <translation>Sünkrooni kaust „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="326"/>

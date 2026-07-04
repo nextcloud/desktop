@@ -790,7 +790,7 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountsettings.ui" line="488"/>
         <location filename="../src/gui/accountsettings.cpp" line="1541"/>
         <source>Log out, log back in, or remove this account from the client.</source>
-        <translation type="unfinished"/>
+        <translation>Вийдіть, увійдіть знову або вилучіть цей обліковий запис із застосунку.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="504"/>
@@ -802,7 +802,7 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountsettings.ui" line="517"/>
         <location filename="../src/gui/accountsettings.cpp" line="1538"/>
         <source>Remove account</source>
-        <translation type="unfinished"/>
+        <translation>Вилучити обліковий запис</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="324"/>
@@ -1123,12 +1123,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1538"/>
         <source>Leave share</source>
-        <translation type="unfinished"/>
+        <translation>Вийти із спільного доступу</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1540"/>
         <source>Remove this public share connection from the client.</source>
-        <translation type="unfinished"/>
+        <translation>Вилучити це з&apos;єднання з публічним ресурсом із застосунку.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1718"/>
@@ -5855,7 +5855,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/theme.cpp" line="462"/>
         <source>%1 Desktop Client Version %2</source>
         <comment>%1 is application name. %2 is the human version string.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 Версія настільного застосунку %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="646"/>
