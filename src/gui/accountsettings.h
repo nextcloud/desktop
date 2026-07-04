@@ -119,7 +119,6 @@ protected slots:
 
     void slotSelectiveSyncChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight,
                                   const QVector<int> &roles);
-    void slotPossiblyUnblacklistE2EeFoldersAndRestartSync();
 
     void slotE2eEncryptionCertificateNeedMigration();
 

@@ -155,6 +155,7 @@ nextcloud_add_test(Account)
 nextcloud_add_test(AccountWizardController)
 nextcloud_add_test(Folder)
 nextcloud_add_test(FolderMan)
+nextcloud_add_test(E2eEFolderManager)
 nextcloud_add_test(ForceSyncNow)
 nextcloud_add_test(RemoteWipe)
 
