@@ -96,12 +96,16 @@ void EditLocallyManager::verify(const AccountStatePtr &accountState,
                                 const QString &relPath, 
                                 const QString &token)
 {
+#ifndef BUILD_FILE_PROVIDER_MODULE
     // Show the loading dialog but don't show the filename until we have
-    // verified the token
+    // verified the token. File Provider handles nc:// without a progress dialog.
     Systray::instance()->createEditFileLocallyLoadingDialog({});
+#endif
     
     const auto finishedHandler = [this, token] {
+#ifndef BUILD_FILE_PROVIDER_MODULE
         Systray::instance()->destroyEditFileLocallyLoadingDialog();
+#endif
         _verificationJobs.remove(token); 
     };
     const auto errorEditLocally = [finishedHandler] {
