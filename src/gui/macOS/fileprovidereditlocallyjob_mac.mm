@@ -6,11 +6,11 @@
 #include "fileprovidereditlocallyjob.h"
 
 #include <QLoggingCategory>
+#include <QTimer>
 
 #include "account.h"
 #include "accountstate.h"
 #include "editlocallymanager.h"
-#include "systray.h"
 
 #include "macOS/fileprovider.h"
 #include "macOS/fileproviderdomainmanager.h"
@@ -55,10 +55,6 @@ void FileProviderEditLocallyJob::openFileProviderFile(const QString &ocId)
     [manager getUserVisibleURLForItemIdentifier:nsOcId
                               completionHandler:^(NSURL *const url, NSError *const error) {
 
-        dispatch_async(dispatch_get_main_queue(), ^{
-            Systray::instance()->destroyEditFileLocallyLoadingDialog();
-        });
-
         if (error != nil) {
             const auto errorMessage = QString::fromNSString(error.localizedDescription);
             qCWarning(lcFileProviderEditLocallyMacJob) << "Error getting user visible URL for item:" << errorMessage;
@@ -67,9 +63,14 @@ void FileProviderEditLocallyJob::openFileProviderFile(const QString &ocId)
             });
         } else if (url != nil) {
             const auto itemLocalPath = QString::fromNSString(url.path);
-            qCDebug(lcFileProviderEditLocallyMacJob) << "Got user visible URL for item:" << itemLocalPath;
-            [NSWorkspace.sharedWorkspace openURL:url];
+            qCDebug(lcFileProviderEditLocallyMacJob) << "Revealing file provider item in Finder:" << itemLocalPath;
+
             dispatch_async(dispatch_get_main_queue(), ^{
+                QTimer::singleShot(0, [itemLocalPath] {
+                    qCDebug(lcFileProviderEditLocallyMacJob) << "Activating Finder for file provider item:" << itemLocalPath;
+                    const auto urlToReveal = [NSURL fileURLWithPath:itemLocalPath.toNSString()];
+                    [NSWorkspace.sharedWorkspace activateFileViewerSelectingURLs:@[urlToReveal]];
+                });
                 emit finished();
             });
         } else {
