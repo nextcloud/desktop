@@ -223,8 +223,11 @@ SyncStatusInfo syncStatusForAccount(const OCC::AccountStatePtr &accountState)
             hasError = true;
             break;
         case OCC::SyncResult::Problem:
-        case OCC::SyncResult::Undefined:
             hasWarning = true;
+            break;
+        case OCC::SyncResult::Undefined:
+            // The extension has not reported a concrete state yet. Keep the account row neutral
+            // until a real File Provider status arrives.
             break;
         case OCC::SyncResult::Paused:
             hasPaused = true;
@@ -379,7 +382,7 @@ bool accountHasSyncErrors(const OCC::AccountStatePtr &accountState)
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
     const auto fileProviderStatus = OCC::Mac::FileProvider::instance()->service()->latestReceivedSyncStatusForAccount(accountState->account());
-    if (isSyncStatusError(fileProviderStatus)) {
+    if (fileProviderStatus != OCC::SyncResult::Undefined && isSyncStatusError(fileProviderStatus)) {
         return true;
     }
 #endif
@@ -406,7 +409,9 @@ SyncIssueKind syncIssueKindForAccount(const OCC::AccountStatePtr &accountState)
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
     const auto fileProviderStatus = OCC::Mac::FileProvider::instance()->service()->latestReceivedSyncStatusForAccount(accountState->account());
-    result = strongestSyncIssueKind(result, syncIssueKindForSyncResult(fileProviderStatus));
+    if (fileProviderStatus != OCC::SyncResult::Undefined) {
+        result = strongestSyncIssueKind(result, syncIssueKindForSyncResult(fileProviderStatus));
+    }
 #endif
 
     return result;

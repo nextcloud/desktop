@@ -320,6 +320,8 @@ ApplicationWindow {
             },
 
             Button {
+                id: proxySettingsButton
+
                 visible: root.controller
                     && root.controller.currentStep === AccountWizardController.ServerStep
                     && root.controller.proxySettingsAvailable
@@ -332,6 +334,14 @@ ApplicationWindow {
                 Layout.preferredWidth: 1
                 Layout.preferredHeight: 36
                 onClicked: root.controller.openProxySettings()
+
+                MouseArea {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.NoButton
+                    enabled: proxySettingsButton.enabled
+                    hoverEnabled: enabled
+                    cursorShape: Qt.PointingHandCursor
+                }
             },
 
             Item {
