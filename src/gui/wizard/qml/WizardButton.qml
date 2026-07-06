@@ -91,4 +91,12 @@ BasicControls.Button {
                 : root.secondaryColor
         }
     }
+
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.NoButton
+        enabled: root.enabled
+        hoverEnabled: enabled
+        cursorShape: Qt.PointingHandCursor
+    }
 }

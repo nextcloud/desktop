@@ -107,6 +107,7 @@ ApplicationWindow {
 
                 anchors.fill: parent
                 activeFocusOnTab: true
+                currentUser: root.currentUser
                 model: root.activityModel
                 onOpenFile: Qt.openUrlExternally(filePath)
                 onActivityItemClicked: {

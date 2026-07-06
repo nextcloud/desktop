@@ -12,6 +12,7 @@ import com.nextcloud.desktopclient as NC
 ScrollView {
     id: controlRoot
     property alias model: sortedActivityList.sourceModel
+    property var currentUser: NC.UserModel.currentUser
     property alias count: activityList.count
     property alias atYBeginning : activityList.atYBeginning
     property bool isFileActivityList: false
@@ -98,6 +99,8 @@ ScrollView {
             width: activityList.contentItem.width
 
             isFileActivityList: controlRoot.isFileActivityList
+            currentUser: controlRoot.currentUser
+            activityModel: controlRoot.model
             iconSize: controlRoot.iconSize
             flickable: activityList
             onHoveredChanged: if (hovered) {

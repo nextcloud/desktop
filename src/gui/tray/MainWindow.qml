@@ -878,6 +878,7 @@ ApplicationWindow {
             anchors.bottom: trayWindowMainItem.bottom
 
             activeFocusOnTab: true
+            currentUser: UserModel.currentUser
             model: activityModel
             onOpenFile: Qt.openUrlExternally(filePath);
             onActivityItemClicked: {
