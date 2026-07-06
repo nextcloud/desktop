@@ -192,7 +192,12 @@ bool OwncloudSetupWizard::startQmlWizardForLoginFlow(const QUrl &serverUrl)
     }
 
     _qmlController = new AccountWizardController(this);
-    _qmlController->setServerUrl(serverUrl.toString());
+    if (!_qmlController->setServerUrlForLoginFlow(serverUrl)) {
+        qCWarning(lcWizard) << "Cannot start QML account wizard for URI login flow with an unconfigured server URL.";
+        _qmlController->deleteLater();
+        _qmlController = nullptr;
+        return false;
+    }
     _qmlController->submitServerUrl();
 
     QQmlComponent component(engine, QStringLiteral("qrc:/qml/src/gui/wizard/qml/AccountWizardWindow.qml"));
