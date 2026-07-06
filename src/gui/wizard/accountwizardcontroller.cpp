@@ -68,6 +68,27 @@ bool localFolderContainsData(const QString &localSyncFolder)
         && !localFolder.entryList(QDir::AllEntries | QDir::NoDotAndDotDot).isEmpty();
 }
 
+[[nodiscard]] QUrl normalizedServerUrlForComparison(const QUrl &serverUrl)
+{
+    auto normalizedUrl = serverUrl.adjusted(QUrl::NormalizePathSegments
+                                            | QUrl::StripTrailingSlash
+                                            | QUrl::RemoveUserInfo
+                                            | QUrl::RemoveQuery
+                                            | QUrl::RemoveFragment);
+    normalizedUrl.setScheme(normalizedUrl.scheme().toCaseFolded());
+    normalizedUrl.setHost(normalizedUrl.host().toCaseFolded());
+
+    if ((normalizedUrl.scheme() == "http"_L1 && normalizedUrl.port() == 80)
+        || (normalizedUrl.scheme() == "https"_L1 && normalizedUrl.port() == 443)) {
+        normalizedUrl.setPort(-1);
+    }
+    if (normalizedUrl.path() == "/"_L1) {
+        normalizedUrl.setPath({});
+    }
+
+    return normalizedUrl;
+}
+
 }
 
 AccountWizardController::AccountWizardController(QObject *parent)
@@ -203,6 +224,27 @@ void AccountWizardController::setOverrideServerIndex(int index)
     _overrideServerIndex = index;
     setServerUrl(_overrideServerUrls.at(index));
     emit overrideServerSelectionChanged();
+}
+
+bool AccountWizardController::setServerUrlForLoginFlow(const QUrl &serverUrl)
+{
+    if (!overrideServerSelectionRequired()) {
+        setServerUrl(serverUrl.toString());
+        return true;
+    }
+
+    const auto normalizedServerUrl = normalizedServerUrlForComparison(serverUrl);
+    for (auto index = 0; index < _overrideServerUrls.size(); ++index) {
+        if (normalizedServerUrlForComparison(QUrl(_overrideServerUrls.at(index))) != normalizedServerUrl) {
+            continue;
+        }
+
+        setOverrideServerIndex(index);
+        setServerUrl(_overrideServerUrls.at(index));
+        return true;
+    }
+
+    return false;
 }
 
 bool AccountWizardController::busy() const
@@ -903,7 +945,7 @@ void AccountWizardController::copyLoginLink()
 
 void AccountWizardController::openSignup()
 {
-    Utility::openBrowser(QUrl(QStringLiteral("https://nextcloud.com/register")));
+    Utility::openBrowser(QUrl(u"https://nextcloud.com/sign-up/?flow=V3"_s));
 }
 
 void AccountWizardController::openSelfHostedServerGuide()

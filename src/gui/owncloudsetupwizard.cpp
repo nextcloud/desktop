@@ -6,6 +6,7 @@
 
 #include "owncloudsetupwizard.h"
 
+#include "accountmanager.h"
 #include "folderman.h"
 #include "systray.h"
 #include "theme.h"
@@ -62,6 +63,37 @@ void OwncloudSetupWizard::runWizard(QObject *obj, const char *amember, QWidget *
 
     FolderMan::instance()->setSyncEnabled(false);
     if (owncloudSetupWizard->startQmlWizard()) {
+        return;
+    }
+
+    emit owncloudSetupWizard->ownCloudWizardDone(QDialog::Rejected);
+    owncloudSetupWizard->deleteLater();
+    owncloudSetupWizard.clear();
+}
+
+void OwncloudSetupWizard::runWizardForLoginFlow(QObject *obj, const char *amember, const QUrl &serverUrl, QWidget *parent)
+{
+#if defined ENFORCE_SINGLE_ACCOUNT
+    if (!AccountManager::instance()->accounts().isEmpty()) {
+        return;
+    }
+#endif
+
+    if (!owncloudSetupWizard.isNull()) {
+        qCInfo(lcWizard) << "Restarting existing setup wizard for URI login flow.";
+        owncloudSetupWizard->finish(QDialog::Rejected);
+    }
+
+    if (!owncloudSetupWizard.isNull()) {
+        bringWizardToFrontIfVisible();
+        return;
+    }
+
+    owncloudSetupWizard = new OwncloudSetupWizard(parent);
+    connect(owncloudSetupWizard, SIGNAL(ownCloudWizardDone(int)), obj, amember);
+
+    FolderMan::instance()->setSyncEnabled(false);
+    if (owncloudSetupWizard->startQmlWizardForLoginFlow(serverUrl)) {
         return;
     }
 
@@ -143,6 +175,73 @@ bool OwncloudSetupWizard::startQmlWizard()
     // Re-apply when the window colour changes (e.g. the macOS light/dark switch) so the title bar
     // keeps matching the body. Updating it in the same synchronous step lets the system appearance
     // cross-fade animate the title bar together with the window content.
+    connect(_qmlWizardWindow, &QQuickWindow::colorChanged, this, [this] {
+        styleNativeTitleBar(_qmlWizardWindow, /*hideTitleText=*/true);
+    });
+#endif
+
+    return true;
+}
+
+bool OwncloudSetupWizard::startQmlWizardForLoginFlow(const QUrl &serverUrl)
+{
+    auto *engine = Systray::instance()->trayEngine();
+    if (!engine) {
+        qCWarning(lcWizard) << "Cannot start QML account wizard without a QML engine.";
+        return false;
+    }
+
+    _qmlController = new AccountWizardController(this);
+    if (!_qmlController->setServerUrlForLoginFlow(serverUrl)) {
+        qCWarning(lcWizard) << "Cannot start QML account wizard for URI login flow with an unconfigured server URL.";
+        _qmlController->deleteLater();
+        _qmlController = nullptr;
+        return false;
+    }
+    _qmlController->submitServerUrl();
+
+    QQmlComponent component(engine, QStringLiteral("qrc:/qml/src/gui/wizard/qml/AccountWizardWindow.qml"));
+    QVariantMap initialProperties;
+    initialProperties.insert(QStringLiteral("controller"), QVariant::fromValue<QObject *>(_qmlController));
+    auto *createdObject = component.createWithInitialProperties(initialProperties);
+
+    if (component.isError()) {
+        qCWarning(lcWizard) << "Failed to load QML account wizard:" << component.errors();
+    }
+
+    _qmlWizardWindow = qobject_cast<QQuickWindow *>(createdObject);
+    if (!_qmlWizardWindow) {
+        if (createdObject) {
+            createdObject->deleteLater();
+        }
+        _qmlController->deleteLater();
+        _qmlController = nullptr;
+        return false;
+    }
+
+    _qmlWizardWindow->setIcon(Theme::instance()->applicationIcon());
+
+#ifdef Q_OS_MACOS
+    auto *fgbg = new ForegroundBackground(this);
+    _qmlWizardWindow->installEventFilter(fgbg);
+#endif
+
+    connect(_qmlController, &AccountWizardController::finished, this, &OwncloudSetupWizard::finish);
+    connect(_qmlWizardWindow, &QQuickWindow::visibleChanged, this, [this](bool visible) {
+        if (!visible) {
+            finish(QDialog::Rejected);
+        }
+    });
+    connect(_qmlWizardWindow, &QObject::destroyed, this, [this] {
+        finish(QDialog::Rejected);
+    });
+
+    _qmlWizardWindow->show();
+    _qmlWizardWindow->raise();
+    _qmlWizardWindow->requestActivate();
+
+#ifdef Q_OS_MACOS
+    styleNativeTitleBar(_qmlWizardWindow, /*hideTitleText=*/true);
     connect(_qmlWizardWindow, &QQuickWindow::colorChanged, this, [this] {
         styleNativeTitleBar(_qmlWizardWindow, /*hideTitleText=*/true);
     });

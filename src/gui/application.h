@@ -74,6 +74,7 @@ public:
     bool sendMessage(const QString &message);
 
     void showMainDialog();
+    bool handleUriSchemeRequest(const QUrl &url);
 
     [[nodiscard]] ownCloudGui *gui() const;
 
@@ -120,7 +121,7 @@ protected slots:
 private:
     void setHelp();
 
-    void handleEditLocallyFromOptions();
+    void handleUriFromOptions();
 
     AccountManager::AccountsRestoreResult restoreLegacyAccount();
     void setupConfigFile();
@@ -163,7 +164,8 @@ private:
     bool _userTriggeredConnect = false;
     bool _debugMode = false;
     bool _backgroundMode = false;
-    QUrl _editFileLocallyUrl;
+    bool _suppressNextEmptyAccountCheck = false;
+    QUrl _uriSchemeUrl;
 
     ClientProxy _proxy;
 
