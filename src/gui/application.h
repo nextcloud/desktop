@@ -74,6 +74,7 @@ public:
     bool sendMessage(const QString &message);
 
     void showMainDialog();
+    bool handleUriSchemeRequest(const QUrl &url);
 
     [[nodiscard]] ownCloudGui *gui() const;
 

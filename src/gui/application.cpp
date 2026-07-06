@@ -1137,14 +1137,30 @@ void Application::handleUriFromOptions()
         return;
     }
 
-    const auto parsedUri = UriSchemeHandler::parseUri(_uriSchemeUrl);
-    if (UriSchemeHandler::handleUri(_uriSchemeUrl)
-        && parsedUri.action == UriSchemeHandler::Action::Login
-        && AccountManager::instance()->accounts().isEmpty()) {
+    handleUriSchemeRequest(_uriSchemeUrl);
+    _uriSchemeUrl.clear();
+}
+
+bool Application::handleUriSchemeRequest(const QUrl &url)
+{
+    const auto parsedUri = UriSchemeHandler::parseUri(url);
+    const auto suppressEmptyAccountCheck = parsedUri.action == UriSchemeHandler::Action::Login
+        && AccountManager::instance()->accounts().isEmpty();
+    const auto wasCheckConnectionTimerActive = _checkConnectionTimer.isActive();
+    if (suppressEmptyAccountCheck) {
         _suppressNextEmptyAccountCheck = true;
         _checkConnectionTimer.stop();
     }
-    _uriSchemeUrl.clear();
+
+    const auto handled = UriSchemeHandler::handleUri(url);
+    if (!handled && suppressEmptyAccountCheck) {
+        _suppressNextEmptyAccountCheck = false;
+        if (wasCheckConnectionTimerActive) {
+            _checkConnectionTimer.start();
+        }
+    }
+
+    return handled;
 }
 
 QString enforcedLanguage()
@@ -1309,7 +1325,7 @@ bool Application::event(QEvent *event)
                                   << "scheme=" << openEvent->url().scheme()
                                   << "host=" << openEvent->url().host()
                                   << "path=" << openEvent->url().path();
-            UriSchemeHandler::handleUri(openEvent->url());
+            handleUriSchemeRequest(openEvent->url());
         } else {
             const auto errorParsingLocalFileEditingUrl = QStringLiteral("The supplied url for local file editing '%1' is invalid!").arg(openEvent->url().toString());
             qCInfo(lcApplication) << errorParsingLocalFileEditingUrl;

@@ -121,6 +121,7 @@ public:
     [[nodiscard]] QStringList overrideServerNames() const;
     [[nodiscard]] int overrideServerIndex() const;
     void setOverrideServerIndex(int index);
+    [[nodiscard]] bool setServerUrlForLoginFlow(const QUrl &serverUrl);
     [[nodiscard]] bool busy() const;
     [[nodiscard]] bool authPolling() const;
     [[nodiscard]] QString errorText() const;

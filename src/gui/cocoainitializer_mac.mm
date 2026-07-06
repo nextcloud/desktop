@@ -11,7 +11,6 @@
 #import <AppKit/NSApplication.h>
 
 #include "application.h"
-#include "urischemehandler.h"
 
 #include <QTimer>
 
@@ -60,7 +59,11 @@
                                        << "scheme=" << qtUrl.scheme()
                                        << "host=" << qtUrl.host()
                                        << "path=" << qtUrl.path();
-            OCC::UriSchemeHandler::handleUri(qtUrl);
+            if (auto application = qobject_cast<OCC::Application *>(qApp)) {
+                application->handleUriSchemeRequest(qtUrl);
+            } else {
+                qCWarning(OCC::lcApplication) << "Could not dispatch macOS AppleEvent custom URI scheme request because qApp is not an Application.";
+            }
         });
     } else {
         qCWarning(OCC::lcApplication) << "Could not dispatch macOS AppleEvent custom URI scheme request because qApp is not available yet.";
