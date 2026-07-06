@@ -35,6 +35,7 @@ class UserStatusSelectorModel : public QObject
     Q_PROPERTY(QString clearAtDisplayString READ clearAtDisplayString NOTIFY clearAtDisplayStringChanged)
     Q_PROPERTY(QString errorMessage READ errorMessage NOTIFY errorMessageChanged)
     Q_PROPERTY(bool busyStatusSupported READ busyStatusSupported NOTIFY busyStatusSupportedChanged)
+    Q_PROPERTY(bool userStatusLoaded READ userStatusLoaded NOTIFY userStatusLoadedChanged)
     Q_PROPERTY(bool finishOnOnlineStatusSet READ finishOnOnlineStatusSet WRITE setFinishOnOnlineStatusSet NOTIFY finishOnOnlineStatusSetChanged)
     Q_PROPERTY(QUrl onlineIcon READ onlineIcon CONSTANT)
     Q_PROPERTY(QUrl awayIcon READ awayIcon CONSTANT)
@@ -93,6 +94,7 @@ public:
 
     [[nodiscard]] QString errorMessage() const;
     [[nodiscard]] bool busyStatusSupported() const;
+    [[nodiscard]] bool userStatusLoaded() const;
     [[nodiscard]] bool finishOnOnlineStatusSet() const;
 
 public slots:
@@ -107,6 +109,7 @@ signals:
     void userIndexChanged();
     void errorMessageChanged();
     void busyStatusSupportedChanged();
+    void userStatusLoadedChanged();
     void userStatusChanged();
     void clearAtDisplayStringChanged();
     void predefinedStatusesChanged();
@@ -133,6 +136,7 @@ private:
     [[nodiscard]] Optional<ClearAt> clearStageTypeToDateTime(ClearStageType type) const;
     void setError(const QString &reason);
     void clearError();
+    void setUserStatusLoaded(bool userStatusLoaded);
     void setUserStatus(SetUserStatusOperation operation);
 
     int _userIndex = -1;
@@ -140,6 +144,7 @@ private:
     std::shared_ptr<UserStatusConnector> _userStatusConnector {};
     QVector<UserStatus> _predefinedStatuses;
     UserStatus _userStatus;
+    bool _userStatusLoaded = false;
     std::unique_ptr<DateTimeProvider> _dateTimeProvider;
     std::deque<SetUserStatusOperation> _setUserStatusOperations;
 

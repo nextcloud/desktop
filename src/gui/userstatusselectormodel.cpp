@@ -100,6 +100,16 @@ void UserStatusSelectorModel::reset()
     }
     _userStatusConnector = nullptr;
     _setUserStatusOperations.clear();
+    _userStatus = {};
+    _predefinedStatuses.clear();
+    _errorMessage.clear();
+
+    setUserStatusLoaded(false);
+    emit userStatusChanged();
+    emit clearAtDisplayStringChanged();
+    emit predefinedStatusesChanged();
+    emit errorMessageChanged();
+    emit busyStatusSupportedChanged();
 }
 
 void UserStatusSelectorModel::init()
@@ -158,10 +168,18 @@ void UserStatusSelectorModel::onError(UserStatusConnector::Error error)
         return;
 
     case UserStatusConnector::Error::CouldNotFetchUserStatus:
+        _userStatus = {};
+        setUserStatusLoaded(false);
+        emit userStatusChanged();
+        emit clearAtDisplayStringChanged();
         setError(tr("Could not fetch status. Make sure you are connected to the server."));
         return;
 
     case UserStatusConnector::Error::UserStatusNotSupported:
+        _userStatus = {};
+        setUserStatusLoaded(false);
+        emit userStatusChanged();
+        emit clearAtDisplayStringChanged();
         setError(tr("Status feature is not supported. You will not be able to set your status."));
         return;
 
@@ -200,6 +218,21 @@ bool UserStatusSelectorModel::finishOnOnlineStatusSet() const
     return _finishOnOnlineStatusSet;
 }
 
+bool UserStatusSelectorModel::userStatusLoaded() const
+{
+    return _userStatusLoaded;
+}
+
+void UserStatusSelectorModel::setUserStatusLoaded(bool userStatusLoaded)
+{
+    if (_userStatusLoaded == userStatusLoaded) {
+        return;
+    }
+
+    _userStatusLoaded = userStatusLoaded;
+    emit userStatusLoadedChanged();
+}
+
 void UserStatusSelectorModel::setFinishOnOnlineStatusSet(bool finishOnOnlineStatusSet)
 {
     if (_finishOnOnlineStatusSet == finishOnOnlineStatusSet) {
@@ -212,7 +245,7 @@ void UserStatusSelectorModel::setFinishOnOnlineStatusSet(bool finishOnOnlineStat
 
 void UserStatusSelectorModel::setOnlineStatus(UserStatus::OnlineStatus status)
 {
-    if (!_userStatusConnector || status == _userStatus.state()) {
+    if (!_userStatusLoaded || !_userStatusConnector || status == _userStatus.state()) {
         return;
     }
 
@@ -255,6 +288,10 @@ QString UserStatusSelectorModel::userStatusMessage() const
 
 void UserStatusSelectorModel::setUserStatusMessage(const QString &message)
 {
+    if (!_userStatusLoaded) {
+        return;
+    }
+
     _userStatus.setMessage(message);
     _userStatus.setMessagePredefined(false);
     emit userStatusChanged();
@@ -262,6 +299,10 @@ void UserStatusSelectorModel::setUserStatusMessage(const QString &message)
 
 void UserStatusSelectorModel::setUserStatusEmoji(const QString &emoji)
 {
+    if (!_userStatusLoaded) {
+        return;
+    }
+
     _userStatus.setIcon(emoji);
     _userStatus.setMessagePredefined(false);
     emit userStatusChanged();
@@ -284,6 +325,7 @@ void UserStatusSelectorModel::onUserStatusFetched(const UserStatus &userStatus)
 
     emit userStatusChanged();
     emit clearAtDisplayStringChanged();
+    setUserStatusLoaded(true);
 }
 
 Optional<ClearAt> UserStatusSelectorModel::clearStageTypeToDateTime(ClearStageType type) const
@@ -334,7 +376,7 @@ Optional<ClearAt> UserStatusSelectorModel::clearStageTypeToDateTime(ClearStageTy
 
 void UserStatusSelectorModel::setUserStatus()
 {
-    if (!_userStatusConnector) {
+    if (!_userStatusLoaded || !_userStatusConnector) {
         return;
     }
 
@@ -357,7 +399,7 @@ void UserStatusSelectorModel::setUserStatus(SetUserStatusOperation operation)
 
 void UserStatusSelectorModel::clearUserStatus()
 {
-    if (!_userStatusConnector) {
+    if (!_userStatusLoaded || !_userStatusConnector) {
         return;
     }
 
@@ -378,6 +420,10 @@ QVector<UserStatus> UserStatusSelectorModel::predefinedStatuses() const
 
 void UserStatusSelectorModel::setPredefinedStatus(const UserStatus &predefinedStatus)
 {
+    if (!_userStatusLoaded) {
+        return;
+    }
+
     _userStatus.setMessagePredefined(true);
     _userStatus.setId(predefinedStatus.id());
     _userStatus.setMessage(predefinedStatus.message());
@@ -430,6 +476,10 @@ QVariantList UserStatusSelectorModel::clearStageTypes() const
 
 void UserStatusSelectorModel::setClearAt(const ClearStageType clearStageType)
 {
+    if (!_userStatusLoaded) {
+        return;
+    }
+
     _userStatus.setClearAt(clearStageTypeToDateTime(clearStageType));
     emit clearAtDisplayStringChanged();
 }

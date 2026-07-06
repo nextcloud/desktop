@@ -870,8 +870,17 @@ void setupQtTrayContextMenu(QMenu *menu, Systray *systray)
     }
 
     populateTrayMenu(menu, systray);
+    QObject::connect(menu, &QMenu::aboutToShow, systray, [systray] {
+        systray->setTrayContextMenuVisible(true);
+    });
     QObject::connect(menu, &QMenu::aboutToShow, menu, [menu, systray] {
         populateTrayMenu(menu, systray);
+    });
+    QObject::connect(menu, &QMenu::aboutToHide, systray, [systray] {
+        systray->setTrayContextMenuVisible(false);
+    });
+    QObject::connect(menu, &QObject::destroyed, systray, [systray] {
+        systray->setTrayContextMenuVisible(false);
     });
 }
 

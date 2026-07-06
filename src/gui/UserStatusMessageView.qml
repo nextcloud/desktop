@@ -18,6 +18,8 @@ ColumnLayout {
     id: rootLayout
 
     property NC.UserStatusSelectorModel userStatusSelectorModel
+    readonly property bool userStatusLoaded: userStatusSelectorModel !== null
+        && userStatusSelectorModel.userStatusLoaded
 
     signal finished
 
@@ -58,6 +60,7 @@ ColumnLayout {
                 text: userStatusSelectorModel && userStatusSelectorModel.userStatusEmoji.length > 0
                       ? userStatusSelectorModel.userStatusEmoji
                       : fallbackEmoji
+                enabled: rootLayout.userStatusLoaded
                 padding: 0
                 z: showBorder ? 2 : 0
                 hoverEnabled: true
@@ -101,7 +104,7 @@ ColumnLayout {
                     id: emojiPicker
 
                     onChosen: {
-                        if (userStatusSelectorModel) {
+                        if (rootLayout.userStatusLoaded) {
                             userStatusSelectorModel.userStatusEmoji = emoji
                         }
                         emojiDialog.close()
@@ -115,9 +118,10 @@ ColumnLayout {
                 Layout.fillWidth: true
                 placeholderText: qsTr("What is your status?")
                 text: userStatusSelectorModel ? userStatusSelectorModel.userStatusMessage : ""
+                enabled: rootLayout.userStatusLoaded
                 selectByMouse: true
                 onEditingFinished: {
-                    if (userStatusSelectorModel) {
+                    if (rootLayout.userStatusLoaded) {
                         userStatusSelectorModel.userStatusMessage = text
                     }
                 }
@@ -134,6 +138,7 @@ ColumnLayout {
 
             ListView {
                 spacing: 0
+                enabled: rootLayout.userStatusLoaded
                 model: userStatusSelectorModel ? userStatusSelectorModel.predefinedStatuses : []
                 delegate: PredefinedStatusButton {
                     anchors.left: parent.left
@@ -145,8 +150,9 @@ ColumnLayout {
                     emoji: modelData.icon
                     statusText: modelData.message
                     clearAtText: userStatusSelectorModel ? userStatusSelectorModel.clearAtReadable(modelData) : ""
+                    enabled: rootLayout.userStatusLoaded
                     onClicked: {
-                        if (userStatusSelectorModel) {
+                        if (rootLayout.userStatusLoaded) {
                             userStatusSelectorModel.setPredefinedStatus(modelData)
                         }
                     }
@@ -180,8 +186,9 @@ ColumnLayout {
                 textRole: "display"
                 valueRole: "clearStageType"
                 displayText: userStatusSelectorModel ? userStatusSelectorModel.clearAtDisplayString : ""
+                enabled: rootLayout.userStatusLoaded
                 onActivated: {
-                    if (userStatusSelectorModel) {
+                    if (rootLayout.userStatusLoaded) {
                         userStatusSelectorModel.setClearAt(currentValue)
                     }
                 }
@@ -210,8 +217,9 @@ ColumnLayout {
         }
         Button {
             text: qsTr("Clear")
+            enabled: rootLayout.userStatusLoaded
             onClicked: {
-                if (userStatusSelectorModel) {
+                if (rootLayout.userStatusLoaded) {
                     userStatusSelectorModel.clearUserStatus()
                 }
             }
@@ -219,8 +227,9 @@ ColumnLayout {
         Button {
             focusPolicy: Qt.StrongFocus
             text: qsTr("Apply")
+            enabled: rootLayout.userStatusLoaded
             onClicked: {
-                if (userStatusSelectorModel) {
+                if (rootLayout.userStatusLoaded) {
                     userStatusSelectorModel.setUserStatus()
                 }
             }

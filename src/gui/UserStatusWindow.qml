@@ -55,6 +55,8 @@ ApplicationWindow {
         onFinished: root.close()
     }
 
+    readonly property bool statusLoaded: statusModel.userStatusLoaded
+
     Binding {
         target: statusModel
         property: "userIndex"
@@ -63,12 +65,20 @@ ApplicationWindow {
     }
 
     function setOnlineStatus(status) {
+        if (!root.statusLoaded) {
+            return
+        }
+
         if (statusModel.onlineStatus !== status) {
             statusModel.onlineStatus = status
         }
     }
 
     function saveStatusMessage() {
+        if (!root.statusLoaded) {
+            return
+        }
+
         if (statusModel.userStatusMessage !== statusMessageField.text) {
             statusModel.userStatusMessage = statusMessageField.text
         }
@@ -84,7 +94,7 @@ ApplicationWindow {
         target: statusModel
 
         function onUserStatusChanged() {
-            if (!statusMessageField.activeFocus) {
+            if (!statusMessageField.activeFocus || !root.statusLoaded) {
                 statusMessageField.text = statusModel.userStatusMessage
             }
         }
@@ -106,7 +116,8 @@ ApplicationWindow {
 
                 UserStatusWindowStatusRow {
                     Layout.fillWidth: true
-                    selected: statusModel.onlineStatus === NC.userStatus.Online
+                    enabled: root.statusLoaded
+                    selected: root.statusLoaded && statusModel.onlineStatus === NC.userStatus.Online
                     iconSource: statusModel.onlineIcon
                     text: qsTr("Online")
                     onClicked: root.setOnlineStatus(NC.userStatus.Online)
@@ -114,7 +125,8 @@ ApplicationWindow {
 
                 UserStatusWindowStatusRow {
                     Layout.fillWidth: true
-                    selected: statusModel.onlineStatus === NC.userStatus.Away
+                    enabled: root.statusLoaded
+                    selected: root.statusLoaded && statusModel.onlineStatus === NC.userStatus.Away
                     iconSource: statusModel.awayIcon
                     text: qsTr("Away")
                     onClicked: root.setOnlineStatus(NC.userStatus.Away)
@@ -123,7 +135,8 @@ ApplicationWindow {
                 UserStatusWindowStatusRow {
                     Layout.fillWidth: true
                     visible: statusModel.busyStatusSupported
-                    selected: statusModel.onlineStatus === NC.userStatus.Busy
+                    enabled: root.statusLoaded
+                    selected: root.statusLoaded && statusModel.onlineStatus === NC.userStatus.Busy
                     iconSource: statusModel.busyIcon
                     text: qsTr("Busy")
                     onClicked: root.setOnlineStatus(NC.userStatus.Busy)
@@ -131,7 +144,8 @@ ApplicationWindow {
 
                 UserStatusWindowStatusRow {
                     Layout.fillWidth: true
-                    selected: statusModel.onlineStatus === NC.userStatus.DoNotDisturb
+                    enabled: root.statusLoaded
+                    selected: root.statusLoaded && statusModel.onlineStatus === NC.userStatus.DoNotDisturb
                     iconSource: statusModel.dndIcon
                     text: qsTr("Do not disturb")
                     secondaryText: qsTr("Mute all notifications")
@@ -140,8 +154,10 @@ ApplicationWindow {
 
                 UserStatusWindowStatusRow {
                     Layout.fillWidth: true
-                    selected: statusModel.onlineStatus === NC.userStatus.Invisible
+                    enabled: root.statusLoaded
+                    selected: root.statusLoaded && (statusModel.onlineStatus === NC.userStatus.Invisible
                         || statusModel.onlineStatus === NC.userStatus.Offline
+                    )
                     iconSource: statusModel.invisibleIcon
                     text: qsTr("Invisible")
                     secondaryText: qsTr("Appear offline")
@@ -181,6 +197,7 @@ ApplicationWindow {
                         Layout.preferredWidth: 36
                         Layout.preferredHeight: 36
                         padding: 0
+                        enabled: root.statusLoaded
                         text: statusModel.userStatusEmoji.length > 0
                             ? statusModel.userStatusEmoji
                             : fallbackEmoji
@@ -208,9 +225,14 @@ ApplicationWindow {
                         Layout.fillWidth: true
                         Layout.preferredHeight: 36
                         placeholderText: qsTr("What is your status?")
+                        enabled: root.statusLoaded
                         selectByMouse: true
                         Component.onCompleted: text = statusModel.userStatusMessage
-                        onEditingFinished: statusModel.userStatusMessage = text
+                        onEditingFinished: {
+                            if (root.statusLoaded) {
+                                statusModel.userStatusMessage = text
+                            }
+                        }
                     }
                 }
 
@@ -241,7 +263,9 @@ ApplicationWindow {
                         visibleRows: 10
 
                         onChosen: {
-                            statusModel.userStatusEmoji = emoji
+                            if (root.statusLoaded) {
+                                statusModel.userStatusEmoji = emoji
+                            }
                             emojiPopup.close()
                         }
                     }
@@ -269,6 +293,7 @@ ApplicationWindow {
                                 clearAtText: statusModel.clearAtReadable(modelData)
                                 selected: statusModel.userStatusMessage === modelData.message
                                     && statusModel.userStatusEmoji === modelData.icon
+                                enabled: root.statusLoaded
                                 onClicked: {
                                     statusModel.setPredefinedStatus(modelData)
                                     statusMessageField.text = statusModel.userStatusMessage
@@ -307,6 +332,7 @@ ApplicationWindow {
                         valueRole: "clearStageType"
                         displayText: statusModel.clearAtDisplayString
                         Accessible.name: qsTr("Clear status after")
+                        enabled: root.statusLoaded
                         onActivated: statusModel.setClearAt(currentValue)
 
                         contentItem: Text {
@@ -338,6 +364,7 @@ ApplicationWindow {
         footer: [
             WizardButton {
                 text: qsTr("Clear status message")
+                enabled: root.statusLoaded
                 onClicked: statusModel.clearUserStatus()
             },
 
@@ -348,6 +375,7 @@ ApplicationWindow {
             WizardButton {
                 primary: true
                 text: qsTr("Set status message")
+                enabled: root.statusLoaded
                 onClicked: root.saveStatusMessage()
             }
         ]

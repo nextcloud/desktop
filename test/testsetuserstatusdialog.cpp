@@ -102,6 +102,11 @@ public:
         emit UserStatusConnector::userStatusSet();
     }
 
+    void emitError(Error error)
+    {
+        emit UserStatusConnector::error(error);
+    }
+
     void setErrorCouldNotFetchPredefinedUserStatuses(bool value)
     {
         _couldNotFetchPredefinedUserStatuses = value;
@@ -249,6 +254,7 @@ private slots:
         OCC::UserStatusSelectorModel model(fakeUserStatusJob, std::move(fakeDateTimeProvider));
 
         // Was user status set correctly?
+        QVERIFY(model.userStatusLoaded());
         QCOMPARE(model.userStatusMessage(), userStatusMessage);
         QCOMPARE(model.userStatusEmoji(), userStatusIcon);
         QCOMPARE(model.onlineStatus(), userStatusState);
@@ -274,6 +280,7 @@ private slots:
     {
         OCC::UserStatusSelectorModel model(nullptr, nullptr);
 
+        QVERIFY(!model.userStatusLoaded());
         QCOMPARE(model.userStatusMessage(), "");
         QCOMPARE(model.userStatusEmoji(), "");
         QCOMPARE(model.clearAtDisplayString(), QStringLiteral("Don't clear"));
@@ -286,6 +293,7 @@ private slots:
             OCC::UserStatus::OnlineStatus::Offline, false, {} });
         OCC::UserStatusSelectorModel model(fakeUserStatusJob);
 
+        QVERIFY(model.userStatusLoaded());
         QCOMPARE(model.onlineStatus(), OCC::UserStatus::OnlineStatus::Offline);
         QCOMPARE(model.userStatusMessage(), "");
         QCOMPARE(model.userStatusEmoji(), "");
@@ -812,8 +820,34 @@ private slots:
         fakeUserStatusJob->setErrorCouldNotFetchUserStatus(true);
         OCC::UserStatusSelectorModel model(fakeUserStatusJob);
 
+        QVERIFY(!model.userStatusLoaded());
         QCOMPARE(model.errorMessage(),
             QStringLiteral("Could not fetch status. Make sure you are connected to the server."));
+    }
+
+    void testError_couldNotFetchUserStatus_clearStatusAndDisableWrites()
+    {
+        const OCC::UserStatus userStatus("fake-id", "Old message", "old-icon",
+            OCC::UserStatus::OnlineStatus::DoNotDisturb, false, {});
+        auto fakeUserStatusJob = std::make_shared<FakeUserStatusConnector>();
+        fakeUserStatusJob->setFakeUserStatus(userStatus);
+        OCC::UserStatusSelectorModel model(fakeUserStatusJob);
+
+        QVERIFY(model.userStatusLoaded());
+        QCOMPARE(model.userStatusMessage(), userStatus.message());
+        QCOMPARE(model.userStatusEmoji(), userStatus.icon());
+
+        fakeUserStatusJob->emitError(OCC::UserStatusConnector::Error::CouldNotFetchUserStatus);
+
+        QVERIFY(!model.userStatusLoaded());
+        QCOMPARE(model.userStatusMessage(), "");
+        QCOMPARE(model.userStatusEmoji(), "");
+        QCOMPARE(model.clearAtDisplayString(), QStringLiteral("Don't clear"));
+
+        model.setUserStatusMessage(QStringLiteral("Should not be saved"));
+        model.setUserStatus();
+
+        QCOMPARE(fakeUserStatusJob->setUserStatusCallCount(), 0);
     }
 
     void testError_userStatusNotSupported_emitError()
