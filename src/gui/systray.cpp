@@ -939,7 +939,7 @@ bool Systray::isOpen() const
 
 bool Systray::isActivitySurfaceVisible() const
 {
-    if (isOpen()) {
+    if (isOpen() || _isTrayContextMenuVisible) {
         return true;
     }
 
@@ -950,6 +950,11 @@ bool Systray::isActivitySurfaceVisible() const
     }
 
     return false;
+}
+
+void Systray::setTrayContextMenuVisible(const bool visible)
+{
+    _isTrayContextMenuVisible = visible;
 }
 
 bool Systray::enableAddAccount() const

@@ -93,6 +93,7 @@ public:
     [[nodiscard]] bool anySyncFolders() const;
     [[nodiscard]] bool isOpen() const;
     [[nodiscard]] bool isActivitySurfaceVisible() const;
+    void setTrayContextMenuVisible(const bool visible);
 
     [[nodiscard]] bool enableAddAccount() const;
 
@@ -213,6 +214,7 @@ private:
     [[nodiscard]] QPoint computeNotificationPosition(int width, int height, int spacing = 20, NotificationPosition position = NotificationPosition::Default) const;
 
     bool _isOpen = false;
+    bool _isTrayContextMenuVisible = false;
     bool _syncIsPaused = true;
     bool _anySyncFolders = false;
 
