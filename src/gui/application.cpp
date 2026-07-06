@@ -818,6 +818,12 @@ void Application::slotSystemOnlineConfigurationChanged()
 void Application::slotCheckConnection()
 {
     if (AccountManager::instance()->accounts().isEmpty()) {
+        if (_suppressNextEmptyAccountCheck) {
+            qCInfo(lcApplication) << "Suppressing empty-account check after handling login URI.";
+            _suppressNextEmptyAccountCheck = false;
+            return;
+        }
+
         // let gui open the setup wizard
         _gui->slotOpenSettingsDialog();
 
@@ -1131,7 +1137,13 @@ void Application::handleUriFromOptions()
         return;
     }
 
-    UriSchemeHandler::handleUri(_uriSchemeUrl);
+    const auto parsedUri = UriSchemeHandler::parseUri(_uriSchemeUrl);
+    if (UriSchemeHandler::handleUri(_uriSchemeUrl)
+        && parsedUri.action == UriSchemeHandler::Action::Login
+        && AccountManager::instance()->accounts().isEmpty()) {
+        _suppressNextEmptyAccountCheck = true;
+        _checkConnectionTimer.stop();
+    }
     _uriSchemeUrl.clear();
 }
 

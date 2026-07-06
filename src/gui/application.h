@@ -163,6 +163,7 @@ private:
     bool _userTriggeredConnect = false;
     bool _debugMode = false;
     bool _backgroundMode = false;
+    bool _suppressNextEmptyAccountCheck = false;
     QUrl _uriSchemeUrl;
 
     ClientProxy _proxy;

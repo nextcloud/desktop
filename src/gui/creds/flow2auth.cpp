@@ -20,8 +20,6 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 
-#include <chrono>
-
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFlow2auth, "nextcloud.sync.credentials.flow2auth", QtInfoMsg)
