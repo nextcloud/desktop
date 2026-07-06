@@ -945,7 +945,7 @@ void AccountWizardController::copyLoginLink()
 
 void AccountWizardController::openSignup()
 {
-    Utility::openBrowser(QUrl(QStringLiteral("https://nextcloud.com/sign-up/?flow=V3")));
+    Utility::openBrowser(QUrl(u"https://nextcloud.com/sign-up/?flow=V3"_s));
 }
 
 void AccountWizardController::openSelfHostedServerGuide()
