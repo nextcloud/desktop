@@ -73,16 +73,16 @@ ColumnLayout {
         text: root.searchText
         topPadding: 0
         bottomPadding: 0
-        leftPadding: 10
-        rightPadding: 10
+        leftPadding: Style.standardSpacing
+        rightPadding: Style.standardSpacing
         font.pixelSize: Style.pixelSize + 2
         verticalAlignment: TextInput.AlignVCenter
         onTextChanged: root.searchText = text
 
         background: Rectangle {
-            radius: 8
+            radius: Style.mediumRoundedButtonRadius
             color: palette.base
-            border.width: 1
+            border.width: Style.normalBorderWidth
             border.color: searchField.activeFocus ? Style.ncBlue : palette.dark
         }
     }

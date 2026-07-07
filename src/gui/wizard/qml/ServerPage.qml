@@ -19,10 +19,10 @@ Item {
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.leftMargin: 24
-        anchors.rightMargin: 24
-        anchors.topMargin: 24
-        anchors.bottomMargin: 24
+        anchors.leftMargin: Style.wizardWindowMargin
+        anchors.rightMargin: Style.wizardWindowMargin
+        anchors.topMargin: Style.wizardWindowMargin
+        anchors.bottomMargin: Style.wizardWindowMargin
         spacing: 4
 
         EnforcedPlainTextLabel {
@@ -95,8 +95,8 @@ Item {
                     indicator: Image {
                         x: serverSelector.width - width - 12
                         y: Math.round((serverSelector.height - height) / 2)
-                        width: 16
-                        height: 16
+                        width: Style.smallIconSize
+                        height: Style.smallIconSize
                         source: "image://svgimage-custom-color/caret-down.svg/" + root.primaryTextColor
                         rotation: serverSelector.popup.visible ? 180 : 0
                         opacity: serverSelector.enabled ? 1 : 0.45
@@ -111,9 +111,9 @@ Item {
                     }
 
                     background: Rectangle {
-                        radius: 8
+                        radius: Style.mediumRoundedButtonRadius
                         color: Style.wizardFieldBackground
-                        border.width: 1
+                        border.width: Style.normalBorderWidth
                         border.color: serverSelector.activeFocus || serverSelector.popup.visible
                             ? Style.ncBlue
                             : Style.wizardFieldBorder
@@ -167,9 +167,9 @@ Item {
                         }
 
                         background: Rectangle {
-                            radius: 8
+                            radius: Style.mediumRoundedButtonRadius
                             color: Style.wizardFieldBackground
-                            border.width: 1
+                            border.width: Style.normalBorderWidth
                             border.color: Style.wizardSecondaryButtonBorder
                         }
                     }

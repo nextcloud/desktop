@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/qml">
         <file>src/gui/UserStatusMessageView.qml</file>
+        <file>src/gui/WizardStyledWindow.qml</file>
         <file>src/gui/UserStatusWindow.qml</file>
         <file>src/gui/WindowAccountHeader.qml</file>
         <file>src/gui/ActivitiesWindow.qml</file>

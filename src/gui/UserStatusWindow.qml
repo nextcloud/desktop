@@ -12,41 +12,18 @@ import Style
 import "./tray"
 import "./wizard/qml"
 
-ApplicationWindow {
+WizardStyledWindow {
     id: root
 
     property int userIndex: -1
 
-    readonly property int sectionSpacing: 12
     readonly property int rowSpacing: 8
-    readonly property int contentWidth: 560
-
-    LayoutMirroring.enabled: Application.layoutDirection === Qt.RightToLeft
-    LayoutMirroring.childrenInherit: true
 
     title: qsTr("Online status")
-    width: contentWidth
-    height: 700
-    minimumWidth: 520
-    minimumHeight: 560
-    flags: Qt.Window
-        | Qt.CustomizeWindowHint
-        | Qt.WindowTitleHint
-        | Qt.WindowSystemMenuHint
-        | Qt.WindowCloseButtonHint
-    color: Style.wizardWindowBackground
-    palette.window: Style.wizardWindowBackground
-    palette.windowText: Style.wizardPrimaryText
-    palette.base: Style.wizardFieldBackground
-    palette.text: Style.wizardPrimaryText
-    palette.button: Style.wizardFieldBackground
-    palette.buttonText: Style.wizardPrimaryText
-    palette.mid: Style.wizardDisabledText
-    palette.placeholderText: Style.wizardPlaceholderText
-
-    background: Rectangle {
-        color: Style.wizardWindowBackground
-    }
+    width: Style.userStatusWindowWidth
+    height: Style.userStatusWindowHeight
+    minimumWidth: Style.wizardStandaloneWindowMinimumWidth
+    minimumHeight: Style.userStatusWindowMinimumHeight
 
     NC.UserStatusSelectorModel {
         id: statusModel
@@ -108,7 +85,7 @@ ApplicationWindow {
         ColumnLayout {
             anchors.fill: parent
             anchors.margins: frame.windowMargin
-            spacing: root.sectionSpacing
+            spacing: Style.wizardSectionSpacing
 
             ColumnLayout {
                 Layout.fillWidth: true
@@ -172,7 +149,7 @@ ApplicationWindow {
 
                 RowLayout {
                     Layout.fillWidth: true
-                    spacing: 8
+                    spacing: root.rowSpacing
 
                     EnforcedPlainTextLabel {
                         Layout.fillWidth: true
@@ -187,15 +164,15 @@ ApplicationWindow {
 
                 RowLayout {
                     Layout.fillWidth: true
-                    spacing: 8
+                    spacing: root.rowSpacing
 
                     Button {
                         id: emojiButton
 
                         readonly property string fallbackEmoji: "😀"
 
-                        Layout.preferredWidth: 36
-                        Layout.preferredHeight: 36
+                        Layout.preferredWidth: Style.wizardFooterButtonHeight
+                        Layout.preferredHeight: Style.wizardFooterButtonHeight
                         padding: 0
                         enabled: root.statusLoaded
                         text: statusModel.userStatusEmoji.length > 0
@@ -223,7 +200,7 @@ ApplicationWindow {
                         id: statusMessageField
 
                         Layout.fillWidth: true
-                        Layout.preferredHeight: 36
+                        Layout.preferredHeight: Style.wizardFooterButtonHeight
                         placeholderText: qsTr("What is your status?")
                         enabled: root.statusLoaded
                         selectByMouse: true
@@ -251,9 +228,9 @@ ApplicationWindow {
 
                     background: Rectangle {
                         color: Style.wizardWindowBackground
-                        border.width: 1
+                        border.width: Style.normalBorderWidth
                         border.color: Style.wizardFieldBorder
-                        radius: 8
+                        radius: Style.mediumRoundedButtonRadius
                     }
 
                     EmojiPicker {
@@ -281,7 +258,7 @@ ApplicationWindow {
 
                     Column {
                         width: predefinedStatusesScrollView.availableWidth
-                        spacing: 2
+                        spacing: Style.extraSmallSpacing
 
                         Repeater {
                             model: statusModel.predefinedStatuses
@@ -305,11 +282,11 @@ ApplicationWindow {
 
                 RowLayout {
                     Layout.fillWidth: true
-                    spacing: 8
+                    spacing: root.rowSpacing
 
                     EnforcedPlainTextLabel {
                         Layout.preferredWidth: implicitWidth
-                        Layout.preferredHeight: 36
+                        Layout.preferredHeight: Style.wizardFooterButtonHeight
                         text: qsTr("Clear status after")
                         color: Style.wizardPrimaryText
                         font.pixelSize: Style.pixelSize + 3
@@ -321,7 +298,7 @@ ApplicationWindow {
                         id: clearAtComboBox
 
                         Layout.fillWidth: true
-                        Layout.preferredHeight: 36
+                        Layout.preferredHeight: Style.wizardFooterButtonHeight
                         leftPadding: 12
                         rightPadding: 32
                         topPadding: 0
@@ -344,9 +321,9 @@ ApplicationWindow {
                         }
 
                         background: Rectangle {
-                            radius: 8
+                            radius: Style.mediumRoundedButtonRadius
                             color: Style.wizardFieldBackground
-                            border.width: 1
+                            border.width: Style.normalBorderWidth
                             border.color: clearAtComboBox.activeFocus ? Style.ncBlue : Style.wizardFieldBorder
                         }
                     }

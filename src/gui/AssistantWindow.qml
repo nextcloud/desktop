@@ -11,7 +11,7 @@ import Style
 import "./tray"
 import "./wizard/qml"
 
-ApplicationWindow {
+WizardStyledWindow {
     id: root
 
     property int userIndex: -1
@@ -22,32 +22,11 @@ ApplicationWindow {
             || currentUser.assistantResponse.length > 0
             || currentUser.assistantError.length > 0)
 
-    LayoutMirroring.enabled: Application.layoutDirection === Qt.RightToLeft
-    LayoutMirroring.childrenInherit: true
-
     title: ""
     width: Style.assistantWindowWidth
     height: Style.assistantWindowHeight
     minimumWidth: Style.wizardStandaloneWindowMinimumWidth
     minimumHeight: Style.wizardStandaloneWindowMinimumHeight
-    flags: Qt.Window
-        | Qt.CustomizeWindowHint
-        | Qt.WindowTitleHint
-        | Qt.WindowSystemMenuHint
-        | Qt.WindowCloseButtonHint
-    color: Style.wizardWindowBackground
-    palette.window: Style.wizardWindowBackground
-    palette.windowText: Style.wizardPrimaryText
-    palette.base: Style.wizardFieldBackground
-    palette.text: Style.wizardPrimaryText
-    palette.button: Style.wizardFieldBackground
-    palette.buttonText: Style.wizardPrimaryText
-    palette.mid: Style.wizardDisabledText
-    palette.placeholderText: Style.wizardPlaceholderText
-
-    background: Rectangle {
-        color: Style.wizardWindowBackground
-    }
 
     function submitQuestion() {
         if (!currentUser) {
