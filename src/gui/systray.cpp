@@ -49,7 +49,7 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcSystray, "nextcloud.gui.systray")
 
 namespace {
-#if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+#if defined(Q_OS_MACOS)
 constexpr auto macOSWindowDragHandleHeight = 28;
 
 class QuickWindowDragHandle : public QObject
@@ -297,7 +297,7 @@ void Systray::showActivitiesWindow(int userIndex)
     window->installEventFilter(fgbg);
 #endif
 
-#if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+#if defined(Q_OS_MACOS)
     configureMacOSExpandedQuickWindow(window);
 #endif
 
@@ -373,7 +373,7 @@ void Systray::showAssistantWindow(int userIndex)
     window->installEventFilter(fgbg);
 #endif
 
-#if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+#if defined(Q_OS_MACOS)
     configureMacOSExpandedQuickWindow(window);
 #endif
 
@@ -447,7 +447,7 @@ void Systray::showUserStatusWindow(int userIndex)
     _userStatusWindow->installEventFilter(fgbg);
 #endif
 
-#if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+#if defined(Q_OS_MACOS)
     configureMacOSExpandedQuickWindow(_userStatusWindow.data());
 #endif
 
