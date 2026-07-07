@@ -121,7 +121,7 @@ signals:
     void hideSettingsDialog();
 
 public slots:
-    [[nodiscard]] bool openUrlInBrowser(const QUrl &url) const;
+    void openUrlInBrowser(const QUrl &url) const;
 
     void setTrayEngine(QQmlApplicationEngine *trayEngine);
     void create();
