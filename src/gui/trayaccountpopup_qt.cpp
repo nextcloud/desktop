@@ -738,7 +738,7 @@ void populateAccountMenu(QMenu *menu, const int userId, const bool fetchActivity
     if (assistantEnabled) {
         const auto assistantAction = addMenuAction(menu,
             templateBlackThemeIcon(QStringLiteral("nc-assistant-app.svg"), menuIconSize, menuIconPalette),
-            QCoreApplication::translate("MainWindow", "Ask Assistant\302\240\342\200\246"));
+            QCoreApplication::translate("MainWindow", "Open Assistant"));
         QObject::connect(assistantAction, &QAction::triggered, assistantAction, [userId] {
             openAssistantForUser(userId);
         });

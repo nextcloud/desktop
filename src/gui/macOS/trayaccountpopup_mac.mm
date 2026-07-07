@@ -1255,14 +1255,15 @@ static NSView *compactAccountActionsSeparator()
     addOwnedArrangedSubview(_stack, [[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kAppsPopupWidth]);
     for (auto row = 0; row < appsModel->rowCount(); ++row) {
         const auto appIndex = appsModel->index(row);
-        const auto appUrl = appsModel->data(appIndex, OCC::TrayAccountAppsModel::UrlRole).toUrl();
-        const auto appIconUrl = appsModel->data(appIndex, OCC::TrayAccountAppsModel::IconUrlRole).toUrl();
+        const auto appName = appsModel->data(appIndex, static_cast<int>(OCC::TrayAccountAppsModel::Roles::NameRole)).toString();
+        const auto appUrl = appsModel->data(appIndex, static_cast<int>(OCC::TrayAccountAppsModel::Roles::UrlRole)).toUrl();
+        const auto appIconUrl = appsModel->data(appIndex, static_cast<int>(OCC::TrayAccountAppsModel::Roles::IconUrlRole)).toUrl();
         const auto appIconCacheKey = remoteAppIconCacheKey(accountState, appIconUrl, appIconRequestedSize);
         auto appIcon = nsImageFromQUrl(appIconUrl);
         if (!appIcon && !appIconCacheKey.isEmpty() && s_remoteAppIconCache.contains(appIconCacheKey)) {
             appIcon = nsImageFromQImage(s_remoteAppIconCache.value(appIconCacheKey));
         }
-        auto actionRow = [[NCActionRow alloc] initWithTitle:appsModel->data(appIndex, OCC::TrayAccountAppsModel::NameRole).toString().toNSString()
+        auto actionRow = [[NCActionRow alloc] initWithTitle:appName.toNSString()
                                                        icon:appIcon != nil ? appIcon : fallbackIcon
                                                       width:kAppsPopupWidth
                                                     enabled:YES
@@ -1569,7 +1570,7 @@ static NSView *compactAccountActionsSeparator()
         [weakSelf hideAppsPopup];
     }]);
     if (assistantEnabled) {
-        addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:QCoreApplication::translate("MainWindow", "Ask Assistant\302\240\342\200\246").toNSString()
+        addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:QCoreApplication::translate("MainWindow", "Open Assistant").toNSString()
                                                                       width:kAccountActionsPopupWidth
                                                                     enabled:YES
                                                                      action:^{
