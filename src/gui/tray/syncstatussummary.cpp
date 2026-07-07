@@ -91,13 +91,13 @@ void SyncStatusSummary::load()
     loadForUser(UserModel::instance()->currentUser());
 }
 
-void SyncStatusSummary::loadForUser(User *user)
+void SyncStatusSummary::loadForUser(User *currentUser)
 {
-    if (!user) {
+    if (!currentUser) {
         return;
     }
 
-    setAccountState(user->accountState());
+    setAccountState(currentUser->accountState());
     clearFolderErrors();
     connectToFoldersProgress(FolderMan::instance()->map());
     initSyncState();

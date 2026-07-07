@@ -53,7 +53,7 @@ signals:
 
 public slots:
     void load();
-    void loadForUser(OCC::User *user);
+    void loadForUser(OCC::User *currentUser);
 
 private:
     void connectToFoldersProgress(const Folder::Map &map);
