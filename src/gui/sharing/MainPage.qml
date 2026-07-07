@@ -47,6 +47,17 @@ Page {
                     }
                 }
 
+                ComboBox {
+                    id: permissionPresetSelector
+                    model: [
+                        { preset: "view", text: qsTr("Can view") },
+                        { preset: "edit", text: qsTr("Can edit") },
+                        { preset: null,   text: qsTr("Can…") },
+                    ]
+                    textRole: "text"
+                    valueRole: "preset"
+                }
+
                 Repeater {
                     id: permissionsList
                     Layout.fillWidth: true
@@ -57,6 +68,7 @@ Page {
 
                     delegate: ItemDelegate {
                         // Layout.fillWidth: true
+                        visible: !permissionPresetSelector.currentValue
 
                         required property var model
                         RowLayout {
