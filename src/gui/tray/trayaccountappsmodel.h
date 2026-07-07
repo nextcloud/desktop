@@ -22,7 +22,7 @@ public:
     static TrayAccountAppsModel *instance();
     ~TrayAccountAppsModel() override = default;
 
-    enum class Roles {
+    enum Roles {
         NameRole = Qt::UserRole + 1,
         UrlRole,
         IconUrlRole,

@@ -93,15 +93,15 @@ QVariant TrayAccountAppsModel::data(const QModelIndex &index, const int role) co
         return result;
     }
 
-    if (role >= static_cast<int>(Roles::NameRole) && role < static_cast<int>(Roles::IconUrlRole)) {
-        switch (static_cast<Roles>(role)) {
-        case Roles::NameRole:
+    if (role >= NameRole && role < IconUrlRole) {
+        switch (role) {
+        case NameRole:
             result = _apps[index.row()]->name();
             break;
-        case Roles::UrlRole:
+        case UrlRole:
             result = _apps[index.row()]->url();
             break;
-        case Roles::IconUrlRole:
+        case IconUrlRole:
             result = _apps[index.row()]->iconUrl().toString();
             break;
         }
@@ -113,9 +113,9 @@ QVariant TrayAccountAppsModel::data(const QModelIndex &index, const int role) co
 QHash<int, QByteArray> TrayAccountAppsModel::roleNames() const
 {
     return {
-        { static_cast<int>(Roles::NameRole), "appName" },
-        { static_cast<int>(Roles::UrlRole), "appUrl" },
-        { static_cast<int>(Roles::IconUrlRole), "appIconUrl" },
+        { NameRole, "appName" },
+        { UrlRole, "appUrl" },
+        { IconUrlRole, "appIconUrl" },
     };
 }
 
