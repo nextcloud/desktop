@@ -34,6 +34,8 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcActivity, "nextcloud.gui.activity", QtInfoMsg)
 
+constexpr auto defaultRecentActivityPreviewCount = 5;
+
 namespace {
 
 struct RecentActivityPreviewItem {
@@ -412,11 +414,13 @@ int ActivityListModel::rowCount(const QModelIndex &parent) const
 
 QVariantList ActivityListModel::recentActivityPreviewData(const int limit) const
 {
-    if (limit == 5) {
-        return _recentActivityPreviewData;
+    auto result = _recentActivityPreviewData;
+
+    if (limit != defaultRecentActivityPreviewCount) {
+        result = buildRecentActivityPreviewData(limit);
     }
 
-    return buildRecentActivityPreviewData(limit);
+    return result;
 }
 
 QVariantList ActivityListModel::notificationPreviewData() const
@@ -426,8 +430,10 @@ QVariantList ActivityListModel::notificationPreviewData() const
 
 QVariantList ActivityListModel::buildRecentActivityPreviewData(const int limit) const
 {
+    auto recentActivities = QVariantList{};
+
     if (limit <= 0) {
-        return {};
+        return recentActivities;
     }
 
     auto candidates = QVector<RecentActivityPreviewItem>{};
@@ -444,7 +450,6 @@ QVariantList ActivityListModel::buildRecentActivityPreviewData(const int limit) 
         return left.activity._dateTime > right.activity._dateTime;
     });
 
-    auto recentActivities = QVariantList{};
     for (const auto &candidate : std::as_const(candidates)) {
         const auto previewText = candidate.activity.recentActivityPreviewText();
         if (previewText.title.isEmpty()) {
@@ -1094,13 +1099,13 @@ QVariant ActivityListModel::convertLinkToActionButton(const OCC::ActivityLink &a
     }
 
     return QVariantMap{
-        {QStringLiteral("actionIndex"), actionIndex},
-        {QStringLiteral("imageSource"), activityLinkCopy._imageSource},
-        {QStringLiteral("imageSourceHovered"), activityLinkCopy._imageSourceHovered},
-        {QStringLiteral("label"), activityLinkCopy._label},
-        {QStringLiteral("link"), activityLinkCopy._link},
-        {QStringLiteral("primary"), activityLinkCopy._primary},
-        {QStringLiteral("verb"), QString::fromUtf8(activityLinkCopy._verb.constData(), activityLinkCopy._verb.size())},
+        {u"actionIndex"_s, actionIndex},
+        {u"imageSource"_s, activityLinkCopy._imageSource},
+        {u"imageSourceHovered"_s, activityLinkCopy._imageSourceHovered},
+        {u"label"_s, activityLinkCopy._label},
+        {u"link"_s, activityLinkCopy._link},
+        {u"primary"_s, activityLinkCopy._primary},
+        {u"verb"_s, QString::fromUtf8(activityLinkCopy._verb.constData(), activityLinkCopy._verb.size())},
     };
 }
 
