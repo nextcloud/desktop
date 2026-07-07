@@ -248,4 +248,340 @@ QString Activity::relativeServerFileTypeIconPath(const QMimeType &mimeType)
     return defaultIcon;
 }
 
+bool Activity::isSyncIssue() const
+{
+    if (_type == Activity::SyncResultType) {
+        return true;
+    }
+
+    if (_type != Activity::SyncFileItemType) {
+        return false;
+    }
+
+    return _syncFileItemStatus != SyncFileItem::NoStatus
+        && _syncFileItemStatus != SyncFileItem::Success;
+}
+
+bool Activity::isRecentActivityPreviewCandidate() const
+{
+    switch (_type) {
+    case Activity::ActivityType:
+        return true;
+    case Activity::SyncFileItemType:
+        return !isSyncIssue();
+    case Activity::NotificationType:
+    case Activity::OpenSettingsNotificationType:
+    case Activity::SyncResultType:
+    case Activity::DummyFetchingActivityType:
+    case Activity::DummyMoreActivitiesAvailableType:
+        return false;
+    }
+    return false;
+}
+
+bool Activity::isNotificationPreviewCandidate() const
+{
+    return _type == Activity::NotificationType
+        || _type == Activity::OpenSettingsNotificationType;
+}
+
+bool Activity::isDismissableActivity() const
+{
+    return !_links.isEmpty() &&
+        _syncFileItemStatus != SyncFileItem::FileNameClash &&
+        _syncFileItemStatus != SyncFileItem::Conflict &&
+        _syncFileItemStatus != SyncFileItem::FileNameInvalid &&
+        _syncFileItemStatus != SyncFileItem::FileNameInvalidOnServer;
+}
+
+QVariantList Activity::notificationPreviewActions() const
+{
+    auto actions = QVariantList{};
+
+    if (isDismissableActivity()) {
+        actions.push_back(notificationPreviewAction(
+            QCoreApplication::translate("ActivityItemContent", "Dismiss"),
+            QStringLiteral("dismiss"),
+            -1,
+            QByteArrayLiteral("DELETE")));
+    }
+
+    const auto &actionsList = activityActionMetadata();
+    for (const auto &action : actionsList) {
+        const auto &link = action.link;
+
+        actions.push_back(notificationPreviewAction(
+            link._label,
+            link._verb == QByteArrayLiteral("REPLY") ? QStringLiteral("openActivities") : QStringLiteral("trigger"),
+            action.actionIndex,
+            link._verb));
+    }
+
+    return actions;
+}
+
+QString Activity::activitySubjectText() const
+{
+    if (!_subjectDisplay.isEmpty()) {
+        return _subjectDisplay;
+    }
+    return _subject;
+}
+
+QString Activity::subjectWithoutRichParameter(const QString &parameterKey) const
+{
+    if (_subjectRich.isEmpty() || parameterKey.isEmpty()) {
+        return activitySubjectText();
+    }
+
+    auto displayString = _subjectRich;
+    for (auto it = _subjectRichParameters.cbegin(); it != _subjectRichParameters.cend(); ++it) {
+        const auto parameter = it.value().value<Activity::RichSubjectParameter>();
+        const auto replacement = it.key() == parameterKey ? QString{} : parameter.name;
+        displayString.replace(QStringLiteral("{%1}").arg(it.key()), replacement);
+    }
+
+    return normalizedPreviewText(displayString);
+}
+
+QString Activity::compactNotificationTitle() const
+{
+    if (!_subjectDisplay.isEmpty()) {
+        return _subjectDisplay;
+    }
+    if (!_subject.isEmpty()) {
+        return _subject;
+    }
+    return _message;
+}
+
+QString Activity::recentActivitySystemIconName() const
+{
+    switch (_type) {
+    case Activity::NotificationType:
+    case Activity::OpenSettingsNotificationType:
+        return QStringLiteral("bell");
+    case Activity::SyncResultType:
+        return QStringLiteral("exclamationmark.triangle");
+    case Activity::SyncFileItemType:
+        if (_syncFileItemStatus == SyncFileItem::NormalError
+            || _syncFileItemStatus == SyncFileItem::FatalError
+            || _syncFileItemStatus == SyncFileItem::DetailError
+            || _syncFileItemStatus == SyncFileItem::BlacklistedError) {
+            return QStringLiteral("exclamationmark.triangle");
+        }
+        if (_syncFileItemStatus == SyncFileItem::SoftError
+            || _syncFileItemStatus == SyncFileItem::Conflict
+            || _syncFileItemStatus == SyncFileItem::Restoration
+            || _syncFileItemStatus == SyncFileItem::FileLocked
+            || _syncFileItemStatus == SyncFileItem::FileNameInvalid
+            || _syncFileItemStatus == SyncFileItem::FileNameInvalidOnServer
+            || _syncFileItemStatus == SyncFileItem::FileNameClash) {
+            return QStringLiteral("exclamationmark.triangle");
+        }
+        if (_fileAction == "file_deleted"_L1) {
+            return QStringLiteral("trash");
+        }
+        if (_fileAction == "file_renamed"_L1) {
+            return QStringLiteral("pencil");
+        }
+        return QStringLiteral("doc");
+    case Activity::ActivityType:
+        if (_objectType == "chat"_L1 || _objectType == "room"_L1 || _objectType == "call"_L1) {
+            return QStringLiteral("message");
+        }
+        if (_objectType == "calendar"_L1) {
+            return QStringLiteral("calendar");
+        }
+        if (_fileAction == "file_deleted"_L1) {
+            return QStringLiteral("trash");
+        }
+        return QStringLiteral("doc");
+    case Activity::DummyFetchingActivityType:
+    case Activity::DummyMoreActivitiesAvailableType:
+        return QStringLiteral("clock");
+    }
+    return QStringLiteral("doc");
+}
+
+Activity::RecentActivityPreviewText Activity::recentActivityPreviewText() const
+{
+    auto title = QString{};
+    auto subtitle = QString{};
+    auto richParameter = Activity::RichSubjectPreviewParameter{};
+
+    for (const auto &preview : _previews) {
+        title = Activity::compactPathLabel(preview._filename);
+        if (!title.isEmpty()) {
+            break;
+        }
+    }
+
+    if (title.isEmpty()) {
+        richParameter = firstRichSubjectPreviewObjectParameter();
+        title = richParameter.label;
+    }
+
+    if (title.isEmpty()) {
+        for (const auto &candidate : {_objectName, _file, _renamedFile}) {
+            title = compactPathLabel(candidate);
+            if (!title.isEmpty()) {
+                break;
+            }
+        }
+    }
+
+    if (_type == Activity::SyncFileItemType) {
+        subtitle = !_message.isEmpty() ? _message : activitySubjectText();
+    } else {
+        subtitle = subjectWithoutRichParameter(richParameter.key);
+    }
+
+    if (title.isEmpty()) {
+        title = activitySubjectText();
+        subtitle = _message;
+    }
+
+    if (subtitle == title) {
+        subtitle = _message;
+    }
+
+    return {title, subtitle};
+}
+
+Activity::RichSubjectPreviewParameter Activity::firstRichSubjectPreviewObjectParameter() const
+{
+    const auto parameters = richSubjectPreviewParameters(_subjectRichParameters);
+    const auto fileParameter = firstRichSubjectPreviewParameterByType(parameters, {
+                                                                                      QStringLiteral("file"),
+                                                                                      QStringLiteral("files"),
+                                                                                  });
+    if (!fileParameter.label.isEmpty()) {
+        return fileParameter;
+    }
+
+    const auto objectParameter = firstRichSubjectPreviewParameterByType(parameters, {
+                                                                                        QStringLiteral("event"),
+                                                                                        QStringLiteral("calendar-event"),
+                                                                                        QStringLiteral("task"),
+                                                                                        QStringLiteral("todo"),
+                                                                                        QStringLiteral("deck-card"),
+                                                                                        QStringLiteral("deck-board"),
+                                                                                    });
+    if (!objectParameter.label.isEmpty()) {
+        return objectParameter;
+    }
+
+    for (const auto &parameter : parameters) {
+        if (parameter.type != "user"_L1 && parameter.type != "calendar"_L1) {
+            return parameter;
+        }
+    }
+
+    for (const auto &parameter : parameters) {
+        if (parameter.type != "user"_L1) {
+            return parameter;
+        }
+    }
+
+    return {};
+}
+
+QVariantMap Activity::notificationPreviewAction(const QString &label, const QString &actionType, const int actionIndex, const QByteArray &verb)
+{
+    auto action = QVariantMap{
+                              {QStringLiteral("label"), label},
+                              {QStringLiteral("actionType"), actionType},
+                              {QStringLiteral("actionIndex"), actionIndex},
+                              };
+
+    if (!verb.isEmpty()) {
+        action.insert(QStringLiteral("verb"), QString::fromUtf8(verb.constData(), verb.size()));
+    }
+
+    return action;
+}
+
+QString Activity::compactPathLabel(const QString &path)
+{
+    const auto trimmedPath = path.trimmed();
+    if (trimmedPath.isEmpty()) {
+        return {};
+    }
+
+    const auto fileName = QFileInfo(trimmedPath).fileName();
+    return fileName.isEmpty() || fileName == "."_L1 ? trimmedPath : fileName;
+}
+
+QString Activity::normalizedPreviewText(QString text)
+{
+    static const auto regexp = QRegularExpression{u"\\s+"_s};
+    text.replace(regexp, QStringLiteral(" "));
+    return text.trimmed();
+}
+
+QString Activity::richSubjectParameterLabel(const RichSubjectParameter &parameter)
+{
+    return compactPathLabel(!parameter.path.isEmpty() ? parameter.path : parameter.name);
+}
+
+Activity::RichSubjectPreviewParameter Activity::firstRichSubjectPreviewParameterByType(const QVector<RichSubjectPreviewParameter> &parameters,
+                                                                                       const QStringList &types)
+{
+    for (const auto &type : types) {
+        for (const auto &parameter : parameters) {
+            if (parameter.type == type) {
+                return parameter;
+            }
+        }
+    }
+    return {};
+}
+
+QVector<Activity::RichSubjectPreviewParameter> Activity::richSubjectPreviewParameters(const QVariantMap &parameters)
+{
+    auto previewParameters = QVector<RichSubjectPreviewParameter>{};
+    previewParameters.reserve(parameters.size());
+
+    for (auto it = parameters.cbegin(); it != parameters.cend(); ++it) {
+        const auto parameter = it.value().value<Activity::RichSubjectParameter>();
+        const auto label = richSubjectParameterLabel(parameter);
+        if (label.isEmpty()) {
+            continue;
+        }
+
+        previewParameters.push_back({it.key(), parameter.type, label});
+    }
+
+    return previewParameters;
+}
+
+QVector<Activity::ActivityActionMetadata> Activity::activityActionMetadata(const int maximumActionIndex) const
+{
+    auto actions = QVector<ActivityActionMetadata>{};
+    actions.reserve(_links.size());
+
+    for (auto i = 0; i < _links.size(); ++i) {
+        if (maximumActionIndex >= 0 && i > maximumActionIndex) {
+            break;
+        }
+
+        const auto &activityLink = _links.at(i);
+
+               // Use the isDismissable model role to present custom dismiss button if needed.
+               // Also don't show "View chat" for talk activities, default action will open chat anyway.
+        const auto isUseCustomDeleteAction = activityLink._verb == QByteArrayLiteral("DELETE")
+            && _objectType != QStringLiteral("remote_share");
+        const auto isTalkWebAction = activityLink._verb == QByteArrayLiteral("WEB")
+            && _objectType == QStringLiteral("chat");
+        if (isUseCustomDeleteAction || isTalkWebAction || activityLink._label.isEmpty()) {
+            continue;
+        }
+
+        actions.push_back({i, activityLink});
+    }
+
+    return actions;
+}
+
 }

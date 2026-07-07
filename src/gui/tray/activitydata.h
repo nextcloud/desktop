@@ -11,7 +11,6 @@
 #include "syncresult.h"
 #include "account.h"
 
-#include <QtCore>
 #include <QIcon>
 #include <QJsonObject>
 #include <QVariantMap>
@@ -142,6 +141,22 @@ class Activity
     Q_PROPERTY(QVariantMap subjectRichParameters MEMBER _subjectRichParameters)
 
 public:
+    struct ActivityActionMetadata {
+        int actionIndex = -1;
+        ActivityLink link;
+    };
+
+    struct RichSubjectPreviewParameter {
+        QString key;
+        QString type;
+        QString label;
+    };
+
+    struct RecentActivityPreviewText {
+        QString title;
+        QString subtitle;
+    };
+
     using Identifier = QPair<qint64, QString>;
 
     // Note that these are in the order we want to present them in the model!
@@ -203,6 +218,47 @@ public:
     bool _shouldNotify = true;
 
     [[nodiscard]] Identifier ident() const;
+
+    [[nodiscard]] bool isSyncIssue() const;
+
+    [[nodiscard]] bool isRecentActivityPreviewCandidate() const;
+
+    [[nodiscard]] bool isNotificationPreviewCandidate() const;
+
+    [[nodiscard]] bool isDismissableActivity() const;
+
+    [[nodiscard]] QVariantList notificationPreviewActions() const;
+
+    [[nodiscard]] QVector<ActivityActionMetadata> activityActionMetadata(const int maximumActionIndex = -1) const;
+
+    [[nodiscard]] QString activitySubjectText() const;
+
+    [[nodiscard]] RichSubjectPreviewParameter firstRichSubjectPreviewObjectParameter() const;
+
+    [[nodiscard]] QString subjectWithoutRichParameter(const QString &parameterKey) const;
+
+    [[nodiscard]] RecentActivityPreviewText recentActivityPreviewText() const;
+
+    [[nodiscard]] QString compactNotificationTitle() const;
+
+    [[nodiscard]] QString recentActivitySystemIconName() const;
+
+private:
+    static QVariantMap notificationPreviewAction(const QString &label,
+                                                 const QString &actionType,
+                                                 const int actionIndex = -1,
+                                                 const QByteArray &verb = {});
+
+    static QString richSubjectParameterLabel(const Activity::RichSubjectParameter &parameter);
+
+    static QVector<RichSubjectPreviewParameter> richSubjectPreviewParameters(const QVariantMap &parameters);
+
+    static RichSubjectPreviewParameter firstRichSubjectPreviewParameterByType(const QVector<RichSubjectPreviewParameter> &parameters,
+                                                                              const QStringList &types);
+
+    static QString compactPathLabel(const QString &path);
+
+    static QString normalizedPreviewText(QString text);
 };
 
 bool operator==(const Activity &rhs, const Activity &lhs);
