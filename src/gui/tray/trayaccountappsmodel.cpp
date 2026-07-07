@@ -93,7 +93,7 @@ QVariant TrayAccountAppsModel::data(const QModelIndex &index, const int role) co
         return result;
     }
 
-    if (role >= NameRole && role < IconUrlRole) {
+    if (role >= NameRole && role <= IconUrlRole) {
         switch (role) {
         case NameRole:
             result = _apps[index.row()]->name();
