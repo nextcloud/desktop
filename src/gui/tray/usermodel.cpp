@@ -284,32 +284,40 @@ bool isSyncStatusError(const OCC::SyncResult::Status status)
 
 SyncIssueKind syncIssueKindForSyncResult(const OCC::SyncResult::Status status)
 {
+    auto result = SyncIssueKind::None;
+
     switch (status) {
     case OCC::SyncResult::Error:
     case OCC::SyncResult::SetupError:
-        return SyncIssueKind::Error;
+        result = SyncIssueKind::Error;
+        break;
     case OCC::SyncResult::Problem:
     case OCC::SyncResult::Undefined:
-        return SyncIssueKind::Warning;
+        result = SyncIssueKind::Warning;
+        break;
     case OCC::SyncResult::Success:
     case OCC::SyncResult::SyncPrepare:
     case OCC::SyncResult::SyncRunning:
     case OCC::SyncResult::NotYetStarted:
     case OCC::SyncResult::Paused:
     case OCC::SyncResult::SyncAbortRequested:
-        return SyncIssueKind::None;
+        result = SyncIssueKind::None;
+        break;
     }
-    return SyncIssueKind::None;
+    return result;
 }
 
 SyncIssueKind syncIssueKindForSyncFileItem(const OCC::SyncFileItem::Status status)
 {
+    auto result = SyncIssueKind::None;
+
     switch (status) {
     case OCC::SyncFileItem::NormalError:
     case OCC::SyncFileItem::FatalError:
     case OCC::SyncFileItem::DetailError:
     case OCC::SyncFileItem::BlacklistedError:
-        return SyncIssueKind::Error;
+        result = SyncIssueKind::Error;
+        break;
     case OCC::SyncFileItem::SoftError:
     case OCC::SyncFileItem::Conflict:
     case OCC::SyncFileItem::FileIgnored:
@@ -318,43 +326,56 @@ SyncIssueKind syncIssueKindForSyncFileItem(const OCC::SyncFileItem::Status statu
     case OCC::SyncFileItem::FileNameInvalid:
     case OCC::SyncFileItem::FileNameInvalidOnServer:
     case OCC::SyncFileItem::FileNameClash:
-        return SyncIssueKind::Warning;
+        result = SyncIssueKind::Warning;
+        break;
     case OCC::SyncFileItem::NoStatus:
     case OCC::SyncFileItem::Success:
-        return SyncIssueKind::None;
+        result = SyncIssueKind::None;
+        break;
     }
-    return SyncIssueKind::None;
+    return result;
 }
 
 SyncIssueKind strongestSyncIssueKind(const SyncIssueKind left, const SyncIssueKind right)
 {
+    auto result = SyncIssueKind::None;
+
     if (left == SyncIssueKind::Error || right == SyncIssueKind::Error) {
-        return SyncIssueKind::Error;
+        result = SyncIssueKind::Error;
+        return result;
     }
     if (left == SyncIssueKind::Warning || right == SyncIssueKind::Warning) {
-        return SyncIssueKind::Warning;
+        result = SyncIssueKind::Warning;
+        return result;
     }
-    return SyncIssueKind::None;
+
+    return result;
 }
 
 SyncIssueKind syncIssueKindForActivity(const OCC::Activity &activity)
 {
+    auto result = SyncIssueKind::None;
+
     if (activity._type == OCC::Activity::SyncResultType) {
-        return syncIssueKindForSyncResult(activity._syncResultStatus);
+        result = syncIssueKindForSyncResult(activity._syncResultStatus);
+        return result;
     }
     if (activity._type == OCC::Activity::SyncFileItemType) {
-        return syncIssueKindForSyncFileItem(activity._syncFileItemStatus);
+        result = syncIssueKindForSyncFileItem(activity._syncFileItemStatus);
+        return result;
     }
-    return SyncIssueKind::None;
+
+    return result;
 }
 
 SyncIssueKind syncIssueKindForActivities(const OCC::ActivityListModel *activityModel)
 {
+    auto result = SyncIssueKind::None;
+
     if (!activityModel) {
-        return SyncIssueKind::None;
+        return result;
     }
 
-    auto result = SyncIssueKind::None;
     for (const auto &activity : activityModel->activityList()) {
         result = strongestSyncIssueKind(result, syncIssueKindForActivity(activity));
         if (result == SyncIssueKind::Error) {
@@ -370,7 +391,8 @@ bool accountHasSyncErrors(const OCC::AccountStatePtr &accountState)
         return false;
     }
 
-    for (const auto folder : OCC::FolderMan::instance()->map().values()) {
+    const auto &allFolders = OCC::FolderMan::instance()->map().values();
+    for (const auto folder : allFolders) {
         if (folder->accountState() != accountState.data()) {
             continue;
         }
@@ -397,7 +419,8 @@ SyncIssueKind syncIssueKindForAccount(const OCC::AccountStatePtr &accountState)
     }
 
     auto result = SyncIssueKind::None;
-    for (const auto folder : OCC::FolderMan::instance()->map().values()) {
+    const auto &allFolders = OCC::FolderMan::instance()->map().values();
+    for (const auto folder : allFolders) {
         if (folder->accountState() != accountState.data()) {
             continue;
         }
@@ -516,7 +539,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
         this, &User::slotCheckExpiredActivities);
 
     connect(_account.data(), &AccountState::stateChanged,
-            [=, this]() { if (isConnected()) {slotRefreshImmediately();} });
+            this, [=, this]() { if (isConnected()) {slotRefreshImmediately();} });
     connect(_account.data(), &AccountState::stateChanged, this, &User::accountStateChanged);
     connect(_account.data(), &AccountState::stateChanged, this, &User::refreshAccountAlert);
     connect(_account.data(), &AccountState::hasFetchedNavigationApps,
@@ -861,7 +884,7 @@ void User::slotCheckExpiredActivities()
 {
     const auto errorsList = _activityModel->errorsList();
     for (const auto &activity : errorsList) {
-        if (activity._expireAtMsecs > 0 && QDateTime::currentDateTime().toMSecsSinceEpoch() >= activity._expireAtMsecs) {
+        if (activity._expireAtMsecs > 0 && QDateTime::currentMSecsSinceEpoch() >= activity._expireAtMsecs) {
             _activityModel->removeActivityFromActivityList(activity);
         }
     }
@@ -1311,7 +1334,7 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
                 continue;
             }
 
-            if (const auto filePath = f->path() + activity._file; !FileSystem::fileExists(filePath)) {
+            if (const auto filePath = QString{f->path() + activity._file}; !FileSystem::fileExists(filePath)) {
                 _activityModel->removeActivityFromActivityList(activity);
                 continue;
             }
@@ -2577,7 +2600,7 @@ QImage UserModel::syncStatusIconForRow(const int row) const
         return {};
     }
     const auto url = _users[row]->syncStatusIcon();
-    const auto resourcePath = QStringLiteral(":") + url.path();
+    const auto resourcePath = QString{u":"_s + url.path()};
     return QIcon(resourcePath).pixmap(18, 18).toImage();
 }
 
