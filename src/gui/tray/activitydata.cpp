@@ -300,7 +300,7 @@ QVariantList Activity::notificationPreviewActions() const
 
     if (isDismissableActivity()) {
         actions.push_back(notificationPreviewAction(
-            QCoreApplication::translate("ActivityItemContent", "Dismiss"),
+            QCoreApplication::translate("ActivityItemContent", "Confirm"),
             QStringLiteral("dismiss"),
             -1,
             QByteArrayLiteral("DELETE")));
