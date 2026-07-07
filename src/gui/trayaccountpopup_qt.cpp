@@ -556,9 +556,9 @@ bool populateAppsMenu(QMenu *menu, const int userId)
 
     for (auto row = 0; row < appCount; ++row) {
         const auto appIndex = appsModel->index(row);
-        const auto appName = appsModel->data(appIndex, static_cast<int>(TrayAccountAppsModel::Roles::NameRole)).toString();
-        const auto appUrl = appsModel->data(appIndex, static_cast<int>(TrayAccountAppsModel::Roles::UrlRole)).toUrl();
-        const auto appIconUrl = appsModel->data(appIndex, static_cast<int>(TrayAccountAppsModel::Roles::IconUrlRole)).toUrl();
+        const auto appName = appsModel->data(appIndex, TrayAccountAppsModel::NameRole).toString();
+        const auto appUrl = appsModel->data(appIndex, TrayAccountAppsModel::UrlRole).toUrl();
+        const auto appIconUrl = appsModel->data(appIndex, TrayAccountAppsModel::IconUrlRole).toUrl();
         auto appIcon = iconFromUrl(appIconUrl);
         if (appIcon.isNull()) {
             appIcon = templateBlackThemeIcon(QStringLiteral("more-apps.svg"), appIconSize, appIconPalette);
