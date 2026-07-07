@@ -42,6 +42,8 @@
 
 #include <algorithm>
 
+using namespace Qt::StringLiterals;
+
 namespace OCC {
 
 // Keep behavior and menu taxonomy aligned with src/gui/macOS/trayaccountpopup_mac.mm.
@@ -55,8 +57,8 @@ constexpr auto menuTextReservedWidth = 40;
 constexpr auto submenuIndicatorReservedWidth = 18;
 constexpr auto minimumElidedTextWidth = 32;
 
-QPointer<QMenu> s_trayPopup;
-QHash<QString, QIcon> s_remoteAppIconCache;
+static QPointer<QMenu> s_trayPopup;
+static QHash<QString, QIcon> s_remoteAppIconCache;
 
 void setFixedMenuWidth(QMenu *menu)
 {
@@ -375,7 +377,7 @@ QString elidedTimedMenuText(const QMenu *menu, const QString &text, const QStrin
         return elidedMenuText(menu, timedMenuText(text, dateTime), hasSubmenu);
     }
 
-    const auto timeSuffix = QStringLiteral(" - ") + dateTime;
+    const auto timeSuffix = QString{u" - "_s + dateTime};
     const auto availableTextWidth = menuTextWidth(hasSubmenu);
     const auto messageTextWidth = std::max(
         availableTextWidth - menu->fontMetrics().horizontalAdvance(timeSuffix),
@@ -523,7 +525,7 @@ void openSettingsAfterTrayPopupCloses()
 {
     closeTrayPopup();
     QTimer::singleShot(0, Systray::instance(), [] {
-        Systray::instance()->openSettings();
+        Q_EMIT Systray::instance()->openSettings();
     });
 }
 
@@ -809,7 +811,7 @@ void populateTrayMenu(QMenu *menu, Systray *systray)
             Systray::tr("Add account"));
         QObject::connect(addAccountAction, &QAction::triggered, addAccountAction, [] {
             closeTrayPopup();
-            Systray::instance()->openAccountWizard();
+            Q_EMIT Systray::instance()->openAccountWizard();
         });
     }
 
@@ -825,7 +827,7 @@ void populateTrayMenu(QMenu *menu, Systray *systray)
         Systray::tr("Quit"));
     QObject::connect(quitAction, &QAction::triggered, quitAction, [] {
         closeTrayPopup();
-        Systray::instance()->shutdown();
+        Q_EMIT Systray::instance()->shutdown();
     });
 }
 
