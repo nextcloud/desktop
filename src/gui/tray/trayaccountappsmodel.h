@@ -17,7 +17,7 @@ namespace OCC {
 class TrayAccountAppsModel : public QAbstractListModel
 {
     Q_OBJECT
-    Q_PROPERTY(int count READ count NOTIFY countChanged)
+    Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
 public:
     static TrayAccountAppsModel *instance();
     ~TrayAccountAppsModel() override = default;
@@ -31,7 +31,6 @@ public:
     Q_ENUM(Roles)
 
     [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    [[nodiscard]] int count() const;
     [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 Q_SIGNALS:
