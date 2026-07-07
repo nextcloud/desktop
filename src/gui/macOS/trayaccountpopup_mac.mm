@@ -1531,7 +1531,7 @@ static NSView *compactAccountActionsSeparator()
         }]);
         [_stack addArrangedSubview:accountActionsSeparator()];
     }
-    addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:QCoreApplication::translate("TrayFoldersMenuButton", "Local folder").toNSString()
+    addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:QCoreApplication::translate("TrayFoldersMenuButton", "Reveal in Finder").toNSString()
                                                                  width:kAccountActionsPopupWidth
                                                                enabled:YES
                                                                 action:^{
@@ -1549,7 +1549,7 @@ static NSView *compactAccountActionsSeparator()
             [weakSelf hideAppsPopup];
         }]);
     }
-    addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:QCoreApplication::translate("TrayWindowHeader", "More apps").toNSString()
+    addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:QCoreApplication::translate("TrayWindowHeader", "Apps").toNSString()
                                                                   icon:nil
                                                                  width:kAccountActionsPopupWidth
                                                                enabled:appsEnabled

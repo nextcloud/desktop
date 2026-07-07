@@ -744,7 +744,7 @@ void populateAccountMenu(QMenu *menu, const int userId, const bool fetchActivity
 
     const auto appsMenu = addSubMenu(menu,
         templateBlackThemeIcon(QStringLiteral("more-apps.svg"), menuIconSize, menuIconPalette),
-        QCoreApplication::translate("TrayWindowHeader", "More apps"));
+        QCoreApplication::translate("TrayWindowHeader", "Apps"));
     setFixedMenuWidth(appsMenu);
     appsMenu->menuAction()->setEnabled(populateAppsMenu(appsMenu, userId));
     QObject::connect(appsMenu, &QMenu::aboutToShow, appsMenu, [appsMenu, userId] {
