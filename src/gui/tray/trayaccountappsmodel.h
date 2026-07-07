@@ -22,21 +22,25 @@ public:
     static TrayAccountAppsModel *instance();
     ~TrayAccountAppsModel() override = default;
 
-    enum Roles {
+    enum class Roles {
         NameRole = Qt::UserRole + 1,
         UrlRole,
-        IconUrlRole
+        IconUrlRole,
     };
+
+    Q_ENUM(Roles)
 
     [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     [[nodiscard]] int count() const;
     [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
-    Q_INVOKABLE void setUserId(int userId);
-    Q_INVOKABLE void openAppUrl(const QUrl &url);
-
-signals:
+Q_SIGNALS:
     void countChanged();
+
+public Q_SLOTS:
+    void setUserId(int userId);
+
+    void openAppUrl(const QUrl &url);
 
 protected:
     [[nodiscard]] QHash<int, QByteArray> roleNames() const override;

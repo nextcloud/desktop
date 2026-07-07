@@ -89,28 +89,35 @@ int TrayAccountAppsModel::count() const
 
 QVariant TrayAccountAppsModel::data(const QModelIndex &index, const int role) const
 {
+    auto result = QVariant{};
+
     if (index.row() < 0 || index.row() >= _apps.size()) {
-        return {};
+        return result;
     }
 
-    switch (role) {
-    case NameRole:
-        return _apps[index.row()]->name();
-    case UrlRole:
-        return _apps[index.row()]->url();
-    case IconUrlRole:
-        return _apps[index.row()]->iconUrl().toString();
-    default:
-        return {};
+    if (role >= static_cast<int>(Roles::NameRole) && role < static_cast<int>(Roles::IconUrlRole)) {
+        switch (static_cast<Roles>(role)) {
+        case Roles::NameRole:
+            result = _apps[index.row()]->name();
+            break;
+        case Roles::UrlRole:
+            result = _apps[index.row()]->url();
+            break;
+        case Roles::IconUrlRole:
+            result = _apps[index.row()]->iconUrl().toString();
+            break;
+        }
     }
+
+    return result;
 }
 
 QHash<int, QByteArray> TrayAccountAppsModel::roleNames() const
 {
     return {
-        { NameRole, "appName" },
-        { UrlRole, "appUrl" },
-        { IconUrlRole, "appIconUrl" },
+        { static_cast<int>(Roles::NameRole), "appName" },
+        { static_cast<int>(Roles::UrlRole), "appUrl" },
+        { static_cast<int>(Roles::IconUrlRole), "appIconUrl" },
     };
 }
 
