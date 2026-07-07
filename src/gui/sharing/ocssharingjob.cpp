@@ -132,7 +132,7 @@ void OcsSharingJob::setPermission(const QString &permissionClass, bool enabled)
         return;
     }
 
-    setPath(SHARING_V1_BASE % "/share/%1/enabled"_L1.arg(_shareId));
+    setPath(SHARING_V1_BASE % "/share/%1/permission"_L1.arg(_shareId));
     setVerb("PUT"_ba);
 
     addParam("class"_L1, permissionClass);
