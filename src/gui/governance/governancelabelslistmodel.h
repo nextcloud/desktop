@@ -35,6 +35,7 @@ public:
         DescriptionRole,
         ColorRole,
         ScopesRole,
+        SelectedRole,
     };
 
     Q_ENUM(LabelsListModelRoles)
@@ -70,13 +71,15 @@ public:
 public Q_SLOTS:
     void setAvailableLabelsJsonData(const QJsonDocument &reply);
 
-    void setExistingLabelsJsonData(const QJsonDocument &data);
+    void setExistingLabelsJsonData(const QJsonDocument &reply);
 
-    void toggleLabel(const QString &labelId);
+    void toggleLabel(int index, const QString &labelId);
 
     void toggleLabel(const QString &labelId);
 
     void etagChanged();
+
+    void labelWasModified();
 
 Q_SIGNALS:
     void labelTypeChanged();
@@ -93,6 +96,8 @@ Q_SIGNALS:
 
 private:
     void emitRefreshData();
+
+    QJsonValue readOcsReply(const QJsonDocument &reply);
 
     Governance::LabelType _labelType = Governance::LabelType::InvalidLabelType;
 

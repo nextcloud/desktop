@@ -55,6 +55,20 @@ ApplicationWindow {
         close.accepted = true
     }
 
+    GetGovernanceLabels {
+        id: getGovernanceLabels
+
+        account: governanceLabelsDialog.account
+
+        entityId: governanceLabelsDialog.fileId
+
+        onFinished: function(reply) {
+            sensitivityLabelsModel.setExistingLabelsJsonData(reply)
+            retentionLabelsModel.setExistingLabelsJsonData(reply)
+            legalHoldLabelsModel.setExistingLabelsJsonData(reply)
+        }
+    }
+
     GovernanceLabelsListModel {
         id: sensitivityLabelsModel
 
@@ -64,6 +78,7 @@ ApplicationWindow {
 
         onRefreshData: function(labelType, entityId) {
             getAvailableGovernanceLabelsForSensitivity.start(labelType, entityId)
+            getGovernanceLabels.start(entityId)
         }
 
         onAddLabel: function(labelId) {
@@ -95,6 +110,10 @@ ApplicationWindow {
 
         labelType: GovernanceNetworkJob.Sensitivity
         entityId: governanceLabelsDialog.fileId
+
+        onFinished: function() {
+            sensitivityLabelsModel.labelWasModified()
+        }
     }
 
     DeleteGovernanceLabel {
@@ -104,6 +123,10 @@ ApplicationWindow {
 
         labelType: GovernanceNetworkJob.Sensitivity
         entityId: governanceLabelsDialog.fileId
+
+        onFinished: function() {
+            sensitivityLabelsModel.labelWasModified()
+        }
     }
 
     GovernanceLabelsListModel {
@@ -115,6 +138,7 @@ ApplicationWindow {
 
         onRefreshData: function(labelType, entityId) {
             getAvailableGovernanceLabelsForSensitivity.start(labelType, entityId)
+            getGovernanceLabels.start(entityId)
         }
 
         onAddLabel: function(labelId) {
@@ -146,6 +170,10 @@ ApplicationWindow {
 
         labelType: GovernanceNetworkJob.Retention
         entityId: governanceLabelsDialog.fileId
+
+        onFinished: function() {
+            retentionLabelsModel.labelWasModified()
+        }
     }
 
     DeleteGovernanceLabel {
@@ -155,6 +183,10 @@ ApplicationWindow {
 
         labelType: GovernanceNetworkJob.Retention
         entityId: governanceLabelsDialog.fileId
+
+        onFinished: function() {
+            retentionLabelsModel.labelWasModified()
+        }
     }
 
     GovernanceLabelsListModel {
@@ -166,6 +198,7 @@ ApplicationWindow {
 
         onRefreshData: function(labelType, entityId) {
             getAvailableGovernanceLabelsForSensitivity.start(labelType, entityId)
+            getGovernanceLabels.start(entityId)
         }
 
         onAddLabel: function(labelId) {
@@ -197,6 +230,10 @@ ApplicationWindow {
 
         labelType: GovernanceNetworkJob.LegalHold
         entityId: governanceLabelsDialog.fileId
+
+        onFinished: function() {
+            legalHoldLabelsModel.labelWasModified()
+        }
     }
 
     DeleteGovernanceLabel {
@@ -206,6 +243,10 @@ ApplicationWindow {
 
         labelType: GovernanceNetworkJob.LegalHold
         entityId: governanceLabelsDialog.fileId
+
+        onFinished: function() {
+            legalHoldLabelsModel.labelWasModified()
+        }
     }
 
     ColumnLayout {
@@ -238,8 +279,8 @@ ApplicationWindow {
 
                 Layout.fillWidth: true
 
-                onActivated: function() {
-                    sensitivityLabelsModel.toggleLabel(currentValue)
+                onActivated: function(index) {
+                    sensitivityLabelsModel.toggleLabel(index, currentValue)
                 }
             }
         }
@@ -313,7 +354,7 @@ ApplicationWindow {
             }
 
             WizardButton {
-                text: qsTr("Cancel")
+                text: qsTr("Done")
                 onClicked: Systray.destroyDialog(governanceLabelsDialog)
             }
         }

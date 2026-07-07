@@ -70,6 +70,9 @@ QVariant GovernanceLabelsListModel::data(const QModelIndex &index, int role) con
             case LabelsListModelRoles::ColorRole:
             case LabelsListModelRoles::ScopesRole:
                 break;
+            case LabelsListModelRoles::SelectedRole:
+                result = false;
+                break;
             }
         } else {
             switch (convertedRole)
@@ -92,6 +95,9 @@ QVariant GovernanceLabelsListModel::data(const QModelIndex &index, int role) con
             case LabelsListModelRoles::ScopesRole:
                 result = _data[index.row()]._scopes;
                 break;
+            case LabelsListModelRoles::SelectedRole:
+                result = _data[index.row()]._status == GovernanceLabelInfo::Status::Selected;
+                break;
             }
         }
     }
@@ -108,6 +114,7 @@ QHash<int, QByteArray> GovernanceLabelsListModel::roleNames() const
         {static_cast<int>(LabelsListModelRoles::DescriptionRole), "description"_ba},
         {static_cast<int>(LabelsListModelRoles::ColorRole), "color"_ba},
         {static_cast<int>(LabelsListModelRoles::ScopesRole), "scopes"_ba},
+        {static_cast<int>(LabelsListModelRoles::SelectedRole), "isSelected"_ba},
     };
 
     return result;
@@ -149,21 +156,7 @@ void GovernanceLabelsListModel::setEntityId(const QString &newEntityId)
 
 void GovernanceLabelsListModel::setAvailableLabelsJsonData(const QJsonDocument &reply)
 {
-    const auto replyObject = reply.object();
-
-    if (!replyObject.contains(u"ocs"_s)) {
-        qCWarning(lcGovernanceLabelsListModel()) << "wrong format for reply" << reply.toJson(QJsonDocument::JsonFormat::Compact);
-        return;
-    }
-
-    const auto ocsObject = replyObject.value(u"ocs"_s).toObject();
-
-    if (!ocsObject.contains(u"data"_s)) {
-        qCWarning(lcGovernanceLabelsListModel()) << "wrong format for reply" << ocsObject;
-        return;
-    }
-
-    const auto dataArray = ocsObject.value(u"data"_s).toArray();
+    const auto dataArray = readOcsReply(reply).toArray();
 
     const auto convertToStringList = [] (const QJsonArray &scopesList) -> QStringList
     {
@@ -191,14 +184,120 @@ void GovernanceLabelsListModel::setAvailableLabelsJsonData(const QJsonDocument &
     endResetModel();
 }
 
-void GovernanceLabelsListModel::setExistingLabelsJsonData(const QJsonDocument &data)
+void GovernanceLabelsListModel::setExistingLabelsJsonData(const QJsonDocument &reply)
 {
-    qCInfo(lcGovernanceLabelsListModel()) << data.toJson(QJsonDocument::JsonFormat::Compact);
+    const auto dataReply = readOcsReply(reply).toObject();
+    qCInfo(lcGovernanceLabelsListModel()) << reply;
+    qCInfo(lcGovernanceLabelsListModel()) << dataReply;
+
+    switch (_labelType)
+    {
+    case Governance::LabelType::Sensitivity:
+    {
+        if (!dataReply.contains(u"sensitivity"_s)) {
+            qCWarning(lcGovernanceLabelsListModel()) << "missing sensitivity data in OCS reply";
+            return;
+        }
+
+        const auto sensitivityLabel = dataReply[u"sensitivity"_s].toObject();
+        for (auto rowIndex = 0; rowIndex < _data.size(); ++rowIndex) {
+            if (_data[rowIndex]._id == sensitivityLabel[u"id"_s]) {
+                if (_data[rowIndex]._status != GovernanceLabelInfo::Status::Selected) {
+                    _data[rowIndex]._status = GovernanceLabelInfo::Status::Selected;
+                    Q_EMIT dataChanged(index(rowIndex), index(rowIndex));
+                }
+            } else {
+                if (_data[rowIndex]._status != GovernanceLabelInfo::Status::Available) {
+                    _data[rowIndex]._status = GovernanceLabelInfo::Status::Available;
+                    Q_EMIT dataChanged(index(rowIndex), index(rowIndex));
+                }
+            }
+        }
+
+        break;
+    }
+    case Governance::LabelType::Retention:
+    {
+        if (!dataReply.contains(u"retention"_s)) {
+            qCWarning(lcGovernanceLabelsListModel()) << "missing retention data in OCS reply";
+            return;
+        }
+
+        const auto retentionLabels = dataReply[u"retention"_s].toArray();
+
+        for (const auto &oneLabel : retentionLabels) {
+            const auto oneLabelObject = oneLabel.toObject();
+            for (auto rowIndex = 0; rowIndex < _data.size(); ++rowIndex) {
+                if (_data[rowIndex]._id == oneLabelObject[u"id"_s]) {
+                    if (_data[rowIndex]._status != GovernanceLabelInfo::Status::Selected) {
+                        _data[rowIndex]._status = GovernanceLabelInfo::Status::Selected;
+                        Q_EMIT dataChanged(index(rowIndex), index(rowIndex));
+                    }
+                } else {
+                    if (_data[rowIndex]._status != GovernanceLabelInfo::Status::Available) {
+                        _data[rowIndex]._status = GovernanceLabelInfo::Status::Available;
+                        Q_EMIT dataChanged(index(rowIndex), index(rowIndex));
+                    }
+                }
+            }
+        }
+
+        break;
+    }
+    case Governance::LabelType::LegalHold:
+    {
+        if (!dataReply.contains(u"hold"_s)) {
+            qCWarning(lcGovernanceLabelsListModel()) << "missing legal hold data in OCS reply";
+            return;
+        }
+
+        const auto legalHoldLabels = dataReply[u"hold"_s].toArray();
+
+        for (const auto &oneLabel : legalHoldLabels) {
+            const auto oneLabelObject = oneLabel.toObject();
+            for (auto rowIndex = 0; rowIndex < _data.size(); ++rowIndex) {
+                if (_data[rowIndex]._id == oneLabelObject[u"id"_s]) {
+                    if (_data[rowIndex]._status != GovernanceLabelInfo::Status::Selected) {
+                        _data[rowIndex]._status = GovernanceLabelInfo::Status::Selected;
+                        Q_EMIT dataChanged(index(rowIndex), index(rowIndex));
+                    }
+                } else {
+                    if (_data[rowIndex]._status != GovernanceLabelInfo::Status::Available) {
+                        _data[rowIndex]._status = GovernanceLabelInfo::Status::Available;
+                        Q_EMIT dataChanged(index(rowIndex), index(rowIndex));
+                    }
+                }
+            }
+        }
+
+        break;
+    }
+    case Governance::LabelType::InvalidLabelType:
+        break;
+    }
 }
 
-void GovernanceLabelsListModel::toggleLabel(const QString &labelId)
+void GovernanceLabelsListModel::toggleLabel(const int index, const QString &labelId)
 {
-    Q_EMIT addLabel(labelId);
+    if (_data.size() == index) {
+        for (const auto &oneLabel : std::as_const(_data)) {
+            if (oneLabel._status == GovernanceLabelInfo::Status::Selected) {
+                Q_EMIT removeLabel(oneLabel._id);
+            }
+        }
+    } else if (index <_data.size() && index >= 0) {
+        switch (_data[index]._status)
+        {
+        case GovernanceLabelInfo::Status::Selected:
+            Q_EMIT removeLabel(labelId);
+            break;
+        case GovernanceLabelInfo::Status::Available:
+            Q_EMIT addLabel(labelId);
+            break;
+        case GovernanceLabelInfo::Status::UnknownStatus:
+            break;
+        }
+    }
 }
 
 void GovernanceLabelsListModel::toggleLabel(const QString &labelId)
@@ -211,6 +310,11 @@ void OCC::GovernanceLabelsListModel::etagChanged()
     Q_EMIT refreshData(_labelType, _entityId);
 }
 
+void GovernanceLabelsListModel::labelWasModified()
+{
+    Q_EMIT refreshData(_labelType, _entityId);
+}
+
 void GovernanceLabelsListModel::emitRefreshData()
 {
     if (_entityId.isEmpty() || _labelType == Governance::LabelType::InvalidLabelType) {
@@ -218,6 +322,29 @@ void GovernanceLabelsListModel::emitRefreshData()
     }
 
     Q_EMIT refreshData(_labelType, _entityId);
+}
+
+QJsonValue GovernanceLabelsListModel::readOcsReply(const QJsonDocument &reply)
+{
+    auto result = QJsonValue{};
+
+    const auto replyObject = reply.object();
+
+    if (!replyObject.contains(u"ocs"_s)) {
+        qCWarning(lcGovernanceLabelsListModel()) << "wrong format for reply" << reply.toJson(QJsonDocument::JsonFormat::Compact);
+        return result;
+    }
+
+    const auto ocsObject = replyObject.value(u"ocs"_s).toObject();
+
+    if (!ocsObject.contains(u"data"_s)) {
+        qCWarning(lcGovernanceLabelsListModel()) << "wrong format for reply" << ocsObject;
+        return result;
+    }
+
+    result = ocsObject.value(u"data"_s);
+
+    return result;
 }
 
 GovernanceLabelsListModel::LabelBehavior GovernanceLabelsListModel::labelBehavior() const
