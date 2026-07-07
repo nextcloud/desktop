@@ -571,7 +571,7 @@
         <translation>Sinu kasutajakonto ühendamiseks ava nüüd oma veebibrauser</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.ui" line="229"/>
+        <location filename="../src/gui/wizard/flow2authwidget.ui" line="232"/>
         <source>An error occurred while connecting. Please try again.</source>
         <translation>Ühenduse loomisel tekkis viga. Palun proovi uuesti.</translation>
     </message>
@@ -1353,199 +1353,199 @@ Samuti katkevad kõik hetkel toimivad sünkroonimised.</translation>
 <context>
     <name>OCC::AccountWizardController</name>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="251"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="293"/>
         <source>Will require local storage</source>
         <translation>Vajab kohalikku andmeruumi</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="631"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="673"/>
         <source>Proxy settings are incomplete.</source>
         <translation>Proksiserveri seadistused on poolikud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="638"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="680"/>
         <source>Server address does not seem to be valid</source>
         <translation>Serveri aadress ei tundu olema korrektne</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="659"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="701"/>
         <source>Username must not be empty.</source>
         <translation>Kasutajanimi ei saa olla tühi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="665"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="983"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="707"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1025"/>
         <source>Checking account access</source>
         <translation>Kontrollin kasutajakonto ligipääsuõigusi</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="743"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="785"/>
         <source>Checking server address</source>
         <translation>Kontrollin serveri aadressi</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="808"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="850"/>
         <source>Preparing browser login</source>
         <translation>Valmistan ette veebibrauseripõhist sisselogimist</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="829"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="871"/>
         <source>Invalid URL</source>
         <translation>Vigane võrguaadress</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="831"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="873"/>
         <source>Failed to connect to %1 at %2:
 %3</source>
         <translation>Ei õnnestunud ühendada %1 %2-st:
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="847"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="889"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Päringu aegumine proovides luua ühendust „%1“ teenusega serveris „%2“.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="934"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="976"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>Veebibrauseri avamine ei õnnestu, palun kopeeri link veebibrauseri jaoks ja ava ta ise.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="959"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="964"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1001"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1006"/>
         <source>Waiting for authorization</source>
         <translation>Ootame autentimist</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="969"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1011"/>
         <source>Starting authorization</source>
         <translation>Alustame autentimisega</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="974"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1016"/>
         <source>Link copied to clipboard.</source>
         <translation>Link on kopeeritud lõikelauale.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1029"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1059"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1071"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1101"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>Autenditud WebDAV-i päringu vastuseks oli vigane vastus</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1046"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1088"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>Autenditud päring serverisse on ümbersuunatud siia: „%1“. Aga kuna server in vigaselt seadistatud, siis tegemist kahjuliku võrguaadressiga.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1054"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1096"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
         <translation>Server keelab ligipääsu. Kontrollimaks omi õigusi ava teenuses oma veebibrauseri vahendusel.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1072"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1114"/>
         <source>Account connected.</source>
         <translation>Kasutajakonto on ühendatud</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1147"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1189"/>
         <source>Will require %1 of storage</source>
         <translation>Vajab %1 andmeruumi</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1328"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1370"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>Vaba ruumi: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1338"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1380"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Kohalikus kaustas pole piisavalt vaba ruumi!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1355"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1397"/>
         <source>Please choose a local sync folder.</source>
         <translation>Palun vali kohalik sünkroonimiskaust</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1360"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1402"/>
         <source>Please choose an empty local sync folder.</source>
         <translation>Palun vali tühi kohalik sünkroonimiskaust.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1425"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1467"/>
         <source>Could not create local folder %1</source>
         <translation>Ei suuda luua kohalikku kausta: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1439"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1481"/>
         <source>Checking remote folder</source>
         <translation>Kontrollin kaugkausta</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1485"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1527"/>
         <source>No remote folder specified!</source>
         <translation>Ühtegi kaugkausta pole määratletud!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1494"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1536"/>
         <source>Error: %1</source>
         <translation>Viga: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1499"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1541"/>
         <source>Creating remote folder</source>
         <translation>Loon kaugkausta</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1518"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1560"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Kausta loomisel tekkis HTTP-viga %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1520"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1562"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
         <translation>Kausta loomine serverisse ei õnnestunud, kuna kasutajanimi/salasõna on valed! Palun mine tagasi ja kontrolli oma kasutajatunnust ja salasõna.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1522"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1564"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>„%1“ kaugkausta loomine serverisse ebaõnnestus veaga &lt;tt&gt;%2&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1546"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1588"/>
         <source>Account setup failed while creating the sync folder.</source>
         <translation>Kasutajakonto seadistamine ei õnnestunud sünkroonimiskausta loomisel.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1573"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1615"/>
         <source>Could not create the sync folder.</source>
         <translation>Sünkroonimiskausta loomine ei õnnestunud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1663"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1705"/>
         <source>Local Sync Folder</source>
         <translation>Kohalik sünkroonimiskaust</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1910"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1952"/>
         <source>Select a certificate</source>
         <translation>Vali sertifikaat</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1912"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1954"/>
         <source>Certificate files (*.p12 *.pfx)</source>
         <translation>Sertifikaadifailid (*.p12 *.pfx)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1920"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1940"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1962"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1982"/>
         <source>Could not access the selected certificate file.</source>
         <translation>Valitud sertifikaadifaili polnud võimalik laadida.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1956"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1998"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Ei õnnestu laadida sertifikaati. Kas salasõna oli vale?</translation>
     </message>
@@ -1661,71 +1661,71 @@ Samuti katkevad kõik hetkel toimivad sünkroonimised.</translation>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="181"/>
+        <location filename="../src/gui/application.cpp" line="180"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Mõned seadistused on seadistatud selle kliendi versioonis %1  ning kasutavad funktsionaalsust, mis pole hetkel saadaval.&lt;br&gt;&lt;br&gt;Jätkamine tähendab neid &lt;b&gt;%2 seadistusi&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Praegune seadistuste fail on juba varundatud siia: &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="187"/>
+        <location filename="../src/gui/application.cpp" line="186"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>uuem</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="187"/>
+        <location filename="../src/gui/application.cpp" line="186"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>vanem</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="188"/>
+        <location filename="../src/gui/application.cpp" line="187"/>
         <source>ignoring</source>
         <translation>eiran</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="188"/>
+        <location filename="../src/gui/application.cpp" line="187"/>
         <source>deleting</source>
         <translation>kustutan</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="190"/>
+        <location filename="../src/gui/application.cpp" line="189"/>
         <source>Quit</source>
         <translation>Välju</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="191"/>
+        <location filename="../src/gui/application.cpp" line="190"/>
         <source>Continue</source>
         <translation>Jätka</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="618"/>
+        <location filename="../src/gui/application.cpp" line="617"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 kasutajakontot</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="619"/>
+        <location filename="../src/gui/application.cpp" line="618"/>
         <source>1 account</source>
         <translation>1 kasutajakonto</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="621"/>
+        <location filename="../src/gui/application.cpp" line="620"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 kausta</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="622"/>
+        <location filename="../src/gui/application.cpp" line="621"/>
         <source>1 folder</source>
         <translation>1 kaust</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="624"/>
+        <location filename="../src/gui/application.cpp" line="623"/>
         <source>Legacy import</source>
         <translation>Import rakenduse vanast pärandversioonist</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="625"/>
+        <location filename="../src/gui/application.cpp" line="624"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1733,12 +1733,12 @@ Samuti katkevad kõik hetkel toimivad sünkroonimised.</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="745"/>
+        <location filename="../src/gui/application.cpp" line="744"/>
         <source>Error accessing the configuration file</source>
         <translation>Viga ligipääsul seadistuste failile</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="746"/>
+        <location filename="../src/gui/application.cpp" line="745"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Ligipääsul seadistustefailile asukohaga „%1“ tekkis viga. Palun kontrolli, et sinu süsteemikontol on õigus seda faili näha.</translation>
     </message>
@@ -2367,12 +2367,12 @@ Samuti katkevad kõik hetkel toimivad sünkroonimised.</translation>
 <context>
     <name>OCC::EditLocallyManager</name>
     <message>
-        <location filename="../src/gui/editlocallymanager.cpp" line="109"/>
+        <location filename="../src/gui/editlocallymanager.cpp" line="113"/>
         <source>Could not validate the request to open a file from server.</source>
         <translation>Ei õnnestunud valideerida päringut, mis soovis faili serverist avada.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallymanager.cpp" line="110"/>
+        <location filename="../src/gui/editlocallymanager.cpp" line="114"/>
         <source>Please try again.</source>
         <translation>Palun proovi uuesti.</translation>
     </message>
@@ -2574,37 +2574,50 @@ See võib olla seotud kasutatavate OpenSSl-i teekidega.</translation>
 <context>
     <name>OCC::Flow2AuthWidget</name>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="91"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="101"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="118"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="156"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>Veebibrauseri avamine ei õnnestu, palun kopeeri link veebibrauseri jaoks ja ava ta ise.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="154"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="191"/>
         <source>Waiting for authorization</source>
         <translation>Ootame autentimist</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="159"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="196"/>
         <source>Polling for authorization</source>
         <translation>Pollime autentimist</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="164"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="201"/>
         <source>Starting authorization</source>
         <translation>Alustame autentimisega</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="168"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="171"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="205"/>
         <source>Link copied to clipboard.</source>
         <translation>Link on kopeeritud lõikelauale.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="215"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="95"/>
+        <source>Complete your provider signup in your browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="96"/>
+        <source>Please complete the provider signup in your browser. After the completion, confirm to open the Nextcloud application popup in your browser.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="252"/>
         <source>Open Browser</source>
         <translation>Ava veebilehitseja</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="217"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="254"/>
         <source>Copy Link</source>
         <translation>Kopeeri link</translation>
     </message>
@@ -4103,32 +4116,32 @@ Palun arvesta, et käsurealt lisatud logimistingimused on alati primaarsed nende
 <context>
     <name>OCC::Mac::FileProviderEditLocallyJob</name>
     <message>
-        <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="35"/>
+        <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="34"/>
         <source>Could not start editing locally.</source>
         <translation>Ei õnnestunud alustada muutmist kohalikus seadmes.</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="35"/>
+        <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="34"/>
         <source>An error occurred during setup.</source>
         <translation>Seadistamisel tekkis viga.</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="41"/>
+        <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="40"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
         <translation>Ei leidnud faili, mida kohalkus seadmes muuta. Palun kontrolli, et asukoht on korrektne ja ta on sünkroonitud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="74"/>
+        <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="69"/>
         <source>Could not get file ID.</source>
         <translation>Faili tunnust ei õnnestu tuvastada.</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="82"/>
+        <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="77"/>
         <source>Could not get file identifier.</source>
         <translation>Ei õnnestunud tuvastada failitunnust.</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="82"/>
+        <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="77"/>
         <source>The file identifier is empty.</source>
         <translation>Failitunnus on tühi</translation>
     </message>
@@ -7115,6 +7128,19 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/gui/tray/UnifiedSearchResultSectionItem.qml" line="24"/>
         <source>Search results section %1</source>
         <translation>Otsingutulemuste lõik %1</translation>
+    </message>
+</context>
+<context>
+    <name>UriSchemeHandler</name>
+    <message>
+        <location filename="../src/gui/urischemehandler.cpp" line="123"/>
+        <source>Could not handle link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/urischemehandler.cpp" line="191"/>
+        <source>Adding another account is not allowed in this client.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
