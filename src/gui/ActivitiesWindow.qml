@@ -10,7 +10,7 @@ import QtQuick.Layouts
 import Style
 import "./tray"
 
-ApplicationWindow {
+WizardStyledWindow {
     id: root
 
     property int userIndex: -1
@@ -18,32 +18,11 @@ ApplicationWindow {
     property var activityModel: null
     readonly property string headline: qsTr("Activities")
 
-    LayoutMirroring.enabled: Application.layoutDirection === Qt.RightToLeft
-    LayoutMirroring.childrenInherit: true
-
     title: ""
     width: Style.activitiesWindowWidth
     height: Style.activitiesWindowHeight
     minimumWidth: Style.wizardStandaloneWindowMinimumWidth
     minimumHeight: Style.wizardStandaloneWindowMinimumHeight
-    flags: Qt.Window
-        | Qt.CustomizeWindowHint
-        | Qt.WindowTitleHint
-        | Qt.WindowSystemMenuHint
-        | Qt.WindowCloseButtonHint
-    color: Style.wizardWindowBackground
-    palette.window: Style.wizardWindowBackground
-    palette.windowText: Style.wizardPrimaryText
-    palette.base: Style.wizardFieldBackground
-    palette.text: Style.wizardPrimaryText
-    palette.button: Style.wizardFieldBackground
-    palette.buttonText: Style.wizardPrimaryText
-    palette.mid: Style.wizardDisabledText
-    palette.placeholderText: Style.wizardPlaceholderText
-
-    background: Rectangle {
-        color: Style.wizardWindowBackground
-    }
 
     function reloadForCurrentUser() {
         newActivitiesButtonLoader.active = false

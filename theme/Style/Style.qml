@@ -146,6 +146,9 @@ QtObject {
     readonly property int activitiesWindowHeight: 700
     readonly property int assistantWindowWidth: 640
     readonly property int assistantWindowHeight: 620
+    readonly property int userStatusWindowWidth: 560
+    readonly property int userStatusWindowHeight: 700
+    readonly property int userStatusWindowMinimumHeight: 560
 
     property int minActivityHeight: variableSize(32)
 
