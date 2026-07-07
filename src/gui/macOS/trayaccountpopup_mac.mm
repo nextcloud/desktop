@@ -28,6 +28,7 @@ static const CGFloat kRowHeight    = 48.0;
 static const CGFloat kAvatarSize   = 34.0;
 static const CGFloat kTopPadding = 4.0;
 static const CGFloat kActionHeight = 26.0;
+static const CGFloat kActionIconSize = 18.0;
 static const CGFloat kPreviewActionHeight = 52.0;
 static const CGFloat kDetailedPreviewActionHeight = 58.0;
 static const CGFloat kActionVerticalPadding = 8.0;
@@ -87,13 +88,35 @@ static NSScreen *nsScreenForQtScreen(QScreen *qtScreen)
     return NSScreen.mainScreen ?: NSScreen.screens.firstObject;
 }
 
-static QString remoteAppIconCacheKey(const OCC::AccountStatePtr &accountState, const QUrl &url)
+static QString remoteAppIconCacheKey(const OCC::AccountStatePtr &accountState, const QUrl &url, const QSize &requestedSize)
 {
-    if (!accountState || !accountState->account() || !url.isValid() || url.scheme().isEmpty()) {
+    if (!accountState || !accountState->account() || !url.isValid() || url.scheme().isEmpty() || !requestedSize.isValid()) {
         return {};
     }
 
-    return QStringLiteral("%1:%2").arg(accountState->account()->id(), url.toString());
+    return QStringLiteral("%1:%2x%3:%4").arg(
+        accountState->account()->id(),
+        QString::number(requestedSize.width()),
+        QString::number(requestedSize.height()),
+        url.toString());
+}
+
+static qreal backingScaleFactorForWindow(NSWindow *window)
+{
+    auto scale = window.screen.backingScaleFactor;
+    if (scale <= 0.0) {
+        scale = NSScreen.mainScreen.backingScaleFactor;
+    }
+    return scale > 0.0 ? scale : 1.0;
+}
+
+static QSize pixelSizeForPointSize(const CGFloat pointSize, const qreal scale)
+{
+    auto pixelSize = static_cast<int>(pointSize * scale + 0.5);
+    if (pixelSize < 1) {
+        pixelSize = 1;
+    }
+    return QSize(pixelSize, pixelSize);
 }
 
 static void addOwnedArrangedSubview(NSStackView *stack, NSView *view)
@@ -243,6 +266,7 @@ static NSColor *hoverColor()
 static NSImage *nsImageFromQImage(const QImage &qimg)
 {
     if (qimg.isNull()) return nil;
+    const auto devicePixelRatio = qimg.devicePixelRatio() > 0.0 ? qimg.devicePixelRatio() : 1.0;
     const QImage rgba = qimg.convertToFormat(QImage::Format_RGBA8888);
     NSBitmapImageRep *rep = [[NSBitmapImageRep alloc]
         initWithBitmapDataPlanes:nullptr
@@ -260,7 +284,9 @@ static NSImage *nsImageFromQImage(const QImage &qimg)
         return nil;
     }
     memcpy(rep.bitmapData, rgba.constBits(), (size_t)rgba.bytesPerLine() * rgba.height());
-    NSImage *img = [[NSImage alloc] initWithSize:NSMakeSize(rgba.width(), rgba.height())];
+    const auto imageSize = NSMakeSize(rgba.width() / devicePixelRatio, rgba.height() / devicePixelRatio);
+    rep.size = imageSize;
+    NSImage *img = [[NSImage alloc] initWithSize:imageSize];
     [img addRepresentation:rep];
     [rep release];
     return [img autorelease];
@@ -795,8 +821,8 @@ static QString statusMenuText(OCC::UserStatus::OnlineStatus status, const QStrin
         [constraints addObjectsFromArray:@[
             [_iconView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:kHPad],
             [_iconView.centerYAnchor constraintEqualToAnchor:self.centerYAnchor],
-            [_iconView.widthAnchor constraintEqualToConstant:18.0],
-            [_iconView.heightAnchor constraintEqualToConstant:18.0],
+            [_iconView.widthAnchor constraintEqualToConstant:kActionIconSize],
+            [_iconView.heightAnchor constraintEqualToConstant:kActionIconSize],
         ]];
         if (isPreviewRow) {
             [constraints addObject:[textContainer.leadingAnchor constraintEqualToAnchor:_iconView.trailingAnchor constant:8.0]];
@@ -813,7 +839,7 @@ static QString statusMenuText(OCC::UserStatus::OnlineStatus status, const QStrin
 
     auto availableTextWidth = width - (kHPad * 2.0);
     if (icon) {
-        availableTextWidth -= 18.0 + 8.0;
+        availableTextWidth -= kActionIconSize + 8.0;
     }
     if (showsSubmenuIndicator) {
         availableTextWidth -= 8.0 + 8.0;
@@ -1224,12 +1250,14 @@ static NSView *compactAccountActionsSeparator()
         : OCC::AccountStatePtr{};
     auto fallbackIcon = [[NSImage imageWithSystemSymbolName:@"app" accessibilityDescription:nil]
         imageWithSymbolConfiguration:[NSImageSymbolConfiguration configurationWithPointSize:14 weight:NSFontWeightRegular]];
+    const auto appIconRequestedSize = pixelSizeForPointSize(kActionIconSize, backingScaleFactorForWindow(self));
+    const auto appIconDevicePixelRatio = static_cast<qreal>(appIconRequestedSize.width()) / kActionIconSize;
     addOwnedArrangedSubview(_stack, [[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kAppsPopupWidth]);
     for (auto row = 0; row < appsModel->rowCount(); ++row) {
         const auto appIndex = appsModel->index(row);
         const auto appUrl = appsModel->data(appIndex, OCC::TrayAccountAppsModel::UrlRole).toUrl();
         const auto appIconUrl = appsModel->data(appIndex, OCC::TrayAccountAppsModel::IconUrlRole).toUrl();
-        const auto appIconCacheKey = remoteAppIconCacheKey(accountState, appIconUrl);
+        const auto appIconCacheKey = remoteAppIconCacheKey(accountState, appIconUrl, appIconRequestedSize);
         auto appIcon = nsImageFromQUrl(appIconUrl);
         if (!appIcon && !appIconCacheKey.isEmpty() && s_remoteAppIconCache.contains(appIconCacheKey)) {
             appIcon = nsImageFromQImage(s_remoteAppIconCache.value(appIconCacheKey));
@@ -1248,9 +1276,10 @@ static NSView *compactAccountActionsSeparator()
         if (!appIcon && !appIconCacheKey.isEmpty()) {
             auto retainedRow = [actionRow retain];
             auto iconJob = new OCC::IconJob(accountState->account(), appIconUrl);
-            QObject::connect(iconJob, &OCC::IconJob::jobFinished, iconJob, [retainedRow, appIconCacheKey](const QByteArray &iconData) {
-                const auto image = qImageFromImageData(iconData, QSize(18, 18));
+            QObject::connect(iconJob, &OCC::IconJob::jobFinished, iconJob, [retainedRow, appIconCacheKey, appIconRequestedSize, appIconDevicePixelRatio](const QByteArray &iconData) {
+                auto image = qImageFromImageData(iconData, appIconRequestedSize);
                 if (!image.isNull()) {
+                    image.setDevicePixelRatio(appIconDevicePixelRatio);
                     s_remoteAppIconCache.insert(appIconCacheKey, image);
                     [retainedRow setIcon:nsImageFromQImage(image)];
                 }
