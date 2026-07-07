@@ -52,7 +52,7 @@ BasicControls.ComboBox {
             : Style.wizardFieldBorder
     }
 
-    delegate: BasicControls.ItemDelegate {
+    delegate: BasicControls.CheckDelegate {
         id: delegateItem
 
         required property int index
@@ -61,6 +61,7 @@ BasicControls.ComboBox {
         width: ListView.view ? ListView.view.width : root.width - 8
         height: Style.standardPrimaryButtonHeight
         highlighted: root.highlightedIndex === index
+        checkState: model.isSelected ? Qt.Checked : Qt.Unchecked
 
         contentItem: Text {
             text: delegateItem.model.name

@@ -15,6 +15,12 @@ namespace OCC
 struct GovernanceLabelInfo
 {
 public:
+    enum class Status {
+        Selected,
+        Available,
+        UnknownStatus,
+    };
+
     QString _id;
 
     QString _name;
@@ -26,6 +32,8 @@ public:
     QString _color;
 
     QStringList _scopes;
+
+    Status _status = Status::UnknownStatus;
 };
 
 } // namespace OCC
