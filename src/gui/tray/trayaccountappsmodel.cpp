@@ -78,12 +78,10 @@ void TrayAccountAppsModel::openAppUrl(const QUrl &url)
 
 int TrayAccountAppsModel::rowCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent);
-    return count();
-}
+    if (parent.isValid()) {
+        return 0;
+    }
 
-int TrayAccountAppsModel::count() const
-{
     return _apps.size();
 }
 
