@@ -194,6 +194,70 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         )
     }
 
+    /// Regression for ticket 96101301: an app "safe save" (create -> delete -> recreate) rotates the
+    /// ocId, so one logical path ends up with a stale ghost row (gone from the server) beside the live,
+    /// recreated file. During the working-set scan the parent depth-1 read reconciles the stale ocId as
+    /// gone and the scan persists that tombstone via `addItemMetadata`. Before the fix, the tombstone's
+    /// `evictLogicalDuplicates` soft-deleted the LIVE sibling, and both ocIds were reported deleted — so
+    /// the freshly saved file vanished from Finder even though it was live on the server. The live row
+    /// must survive and be reported updated (not deleted); the genuinely-gone ghost must still be
+    /// reported deleted.
+    func testAtomicSaveRecreateDoesNotDeleteLiveItemFromWorkingSet() async throws {
+        let db = Self.dbManager.ncDatabase(); debugPrint(db)
+
+        let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
+        // The live, recreated file that currently exists on the server at this path.
+        let liveFile = makeFile(name: "TEST 1.pdf", parent: folder, etag: "pdf-v1")
+
+        seed(folder, visitedDirectory: true)
+        seed(liveFile, downloaded: true) // materialized live file
+
+        // Seed a stale ghost row at the SAME logical address (same serverUrl + fileName) but a
+        // different ocId, NOT present on the mock server. `uploaded == true` so the depth-1 read's
+        // delete reconciliation considers it. This stands in for the first "safe save" write whose
+        // ocId the server rotated away.
+        let storedLive = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: liveFile.identifier))
+        let realm = Self.dbManager.ncDatabase()
+        let ghost = RealmItemMetadata()
+        ghost.ocId = "staleGhost"
+        ghost.account = Self.account.ncKitAccount
+        ghost.serverUrl = storedLive.serverUrl
+        ghost.fileName = storedLive.fileName
+        ghost.uploaded = true
+        ghost.syncTime = oldSyncTime
+        try realm.write { realm.add(ghost) }
+
+        // The live file also changed on the server (the recreate), so it is a genuine update.
+        liveFile.versionIdentifier = "pdf-v2"
+        liveFile.modificationDate = Date()
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let observer = try await runWorkingSetChanges(remoteInterface)
+
+        XCTAssertNil(observer.error)
+
+        // The live row must NOT be soft-deleted by the ghost's eviction (primary regression guard).
+        let liveAfter = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: liveFile.identifier))
+        XCTAssertFalse(
+            liveAfter.deleted,
+            "The live recreated file must not be soft-deleted when the stale ghost's tombstone is persisted."
+        )
+
+        let deletedIds = Set(observer.deletedItemIdentifiers.map(\.rawValue))
+        XCTAssertFalse(
+            deletedIds.contains(liveFile.identifier),
+            "The live recreated file must not be reported deleted to the framework."
+        )
+        XCTAssertTrue(
+            reportedIds(observer).contains(liveFile.identifier),
+            "The live recreated file must be reported as an update."
+        )
+        XCTAssertTrue(
+            deletedIds.contains("staleGhost"),
+            "The genuinely-gone stale ocId must still be reported deleted."
+        )
+    }
+
     /// Scenario A (S1/S2 control): a NON-materialized file changed inside a visited (materialized)
     /// folder, AND the folder's ETag is bumped too (a well-behaved server propagates child changes
     /// up to the parent's ETag). Expected to PASS — the parent's bumped `syncTime` lets the child
