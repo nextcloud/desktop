@@ -25,7 +25,7 @@ BasicControls.Button {
     implicitHeight: 44
 
     Accessible.role: Accessible.Button
-    Accessible.name: secondaryText === "" ? text : qsTr("%1, %2").arg(text).arg(secondaryText)
+    Accessible.name: secondaryText === "" ? text : text + ", " + secondaryText
 
     background: Rectangle {
         radius: 8
