@@ -5,6 +5,7 @@
 
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Controls.Basic as BasicControls
 import QtQuick.Layouts
 
 import Style
@@ -12,6 +13,42 @@ import com.nextcloud.desktopclient 1.0 as NC
 import "./tray"
 
 ColumnLayout {
+    id: root
+
+    property bool showSearch: false
+    property int visibleRows: 8
+    property string searchText: ""
+    readonly property var filteredModel: {
+        if (searchText === "") {
+            return emojiModel.model
+        }
+
+        const needle = searchText.toLowerCase()
+        const emojiLists = [
+            emojiModel.people,
+            emojiModel.nature,
+            emojiModel.food,
+            emojiModel.activity,
+            emojiModel.travel,
+            emojiModel.objects,
+            emojiModel.symbols,
+            emojiModel.flags
+        ]
+        var results = []
+        for (var listIndex = 0; listIndex < emojiLists.length; ++listIndex) {
+            const emojis = emojiLists[listIndex]
+            for (var emojiIndex = 0; emojiIndex < emojis.length; ++emojiIndex) {
+                const emoji = emojis[emojiIndex]
+                const shortname = emoji.shortname === undefined ? "" : emoji.shortname.toLowerCase()
+                const unicode = emoji.unicode === undefined ? "" : emoji.unicode
+                if (shortname.indexOf(needle) !== -1 || unicode.indexOf(searchText) !== -1) {
+                    results.push(emoji)
+                }
+            }
+        }
+        return results
+    }
+
     NC.EmojiModel {
         id: emojiModel
     }
@@ -24,6 +61,32 @@ ColumnLayout {
         id: metrics
     }
 
+    BasicControls.TextField {
+        id: searchField
+
+        visible: root.showSearch
+        Layout.fillWidth: true
+        Layout.preferredHeight: visible ? 32 : 0
+        Layout.margins: visible ? Style.smallSpacing : 0
+        placeholderText: qsTr("Search emoji")
+        selectByMouse: true
+        text: root.searchText
+        topPadding: 0
+        bottomPadding: 0
+        leftPadding: Style.standardSpacing
+        rightPadding: Style.standardSpacing
+        font.pixelSize: Style.pixelSize + 2
+        verticalAlignment: TextInput.AlignVCenter
+        onTextChanged: root.searchText = text
+
+        background: Rectangle {
+            radius: Style.mediumRoundedButtonRadius
+            color: palette.base
+            border.width: Style.normalBorderWidth
+            border.color: searchField.activeFocus ? Style.ncBlue : palette.dark
+        }
+    }
+
     ListView {
         id: headerLayout
         Layout.fillWidth: true
@@ -31,6 +94,8 @@ ColumnLayout {
         implicitWidth: contentItem.childrenRect.width
         implicitHeight: metrics.height * 2
 
+        visible: root.searchText === ""
+        Layout.preferredHeight: visible ? implicitHeight : 0
         orientation: ListView.Horizontal
 
         model: emojiModel.emojiCategoriesModel
@@ -74,7 +139,7 @@ ColumnLayout {
     }
 
     Rectangle {
-        height: Style.normalBorderWidth
+        Layout.preferredHeight: root.searchText === "" ? Style.normalBorderWidth : 0
         Layout.fillWidth: true
         color: palette.dark
     }
@@ -82,7 +147,7 @@ ColumnLayout {
     ScrollView {
         Layout.fillWidth: true
         Layout.fillHeight: true
-        Layout.preferredHeight: metrics.height * 8
+        Layout.preferredHeight: metrics.height * root.visibleRows
         Layout.margins: Style.normalBorderWidth
         clip: true
 
@@ -95,7 +160,7 @@ ColumnLayout {
             cellWidth: metrics.height * 2
             cellHeight: metrics.height * 2
             boundsBehavior: Flickable.DragOverBounds
-            model: emojiModel.model
+            model: root.filteredModel
 
             delegate: ItemDelegate {
                 id: emojiDelegate
@@ -129,11 +194,11 @@ ColumnLayout {
 
             }
 
-           EnforcedPlainTextLabel {
+            EnforcedPlainTextLabel {
                 id: placeholderMessage
                 width: parent.width * 0.8
                 anchors.centerIn: parent
-                text: qsTr("No recent emojis")
+                text: root.searchText === "" ? qsTr("No recent emojis") : qsTr("No emojis found")
                 wrapMode: Text.Wrap
                 font.bold: true
                 visible: emojiView.count === 0

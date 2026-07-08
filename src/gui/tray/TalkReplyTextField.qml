@@ -13,6 +13,8 @@ import Style
 TextField {
     id: replyMessageTextField
 
+    property color accentColor: UserModel.currentUser ? UserModel.currentUser.accentColor : palette.highlight
+
     signal sendReply(string reply)
     function sendReplyMessage() { if (text !== "") sendReply(text) }
 
@@ -43,7 +45,7 @@ TextField {
 
         icon {
             source: "image://svgimage-custom-color/send.svg" + "/" + palette.dark
-            color: hovered || !sendReplyMessageButton.enabled ? palette.dark : UserModel.currentUser.accentColor
+            color: hovered || !sendReplyMessageButton.enabled ? palette.dark : replyMessageTextField.accentColor
         }
 
         anchors {
@@ -58,4 +60,3 @@ TextField {
         }
     }
 }
-

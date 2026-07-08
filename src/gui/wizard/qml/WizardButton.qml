@@ -23,7 +23,7 @@ BasicControls.Button {
     readonly property color disabledColor: Style.wizardDisabledButtonBackground
     readonly property color disabledBorderColor: Style.wizardDisabledButtonBorder
 
-    implicitHeight: 36
+    implicitHeight: Style.wizardFooterButtonHeight
     leftPadding: 18
     rightPadding: 18
     font.pixelSize: Style.pixelSize + 3
@@ -44,10 +44,10 @@ BasicControls.Button {
             Image {
                 visible: root.iconSource !== "" && root.iconBeforeText
                 source: root.iconSource
-                sourceSize.width: 16
-                sourceSize.height: 16
-                width: visible ? 16 : 0
-                height: 16
+                sourceSize.width: Style.smallIconSize
+                sourceSize.height: Style.smallIconSize
+                width: visible ? Style.smallIconSize : 0
+                height: Style.smallIconSize
                 anchors.verticalCenter: parent.verticalCenter
                 fillMode: Image.PreserveAspectFit
             }
@@ -65,10 +65,10 @@ BasicControls.Button {
             Image {
                 visible: root.iconSource !== "" && !root.iconBeforeText
                 source: root.iconSource
-                sourceSize.width: 16
-                sourceSize.height: 16
-                width: visible ? 16 : 0
-                height: 16
+                sourceSize.width: Style.smallIconSize
+                sourceSize.height: Style.smallIconSize
+                width: visible ? Style.smallIconSize : 0
+                height: Style.smallIconSize
                 anchors.verticalCenter: parent.verticalCenter
                 fillMode: Image.PreserveAspectFit
             }
@@ -76,7 +76,7 @@ BasicControls.Button {
     }
 
     background: Rectangle {
-        radius: 8
+        radius: Style.mediumRoundedButtonRadius
         border.width: root.primary ? 0 : 1
         border.color: root.enabled ? root.secondaryBorderColor : root.disabledBorderColor
         color: {
@@ -90,5 +90,13 @@ BasicControls.Button {
                 ? root.secondaryPressedColor
                 : root.secondaryColor
         }
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.NoButton
+        enabled: root.enabled
+        hoverEnabled: enabled
+        cursorShape: Qt.PointingHandCursor
     }
 }

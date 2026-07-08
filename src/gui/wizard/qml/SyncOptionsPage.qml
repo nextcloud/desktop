@@ -26,7 +26,7 @@ Item {
         anchors.rightMargin: 28
         anchors.topMargin: 40
         anchors.bottomMargin: 16
-        spacing: 2
+        spacing: Style.extraSmallSpacing
 
         Item {
             Layout.preferredWidth: 80
@@ -132,7 +132,7 @@ Item {
 
                 Rectangle {
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 36
+                    Layout.preferredHeight: Style.wizardFooterButtonHeight
                     radius: 6
                     border.width: 1
                     border.color: root.controller.localSyncFolderError === "" ? Style.wizardRowBorder : Style.wizardErrorBorder
@@ -140,8 +140,8 @@ Item {
 
                     EnforcedPlainTextLabel {
                         anchors.fill: parent
-                        anchors.leftMargin: 10
-                        anchors.rightMargin: 10
+                        anchors.leftMargin: Style.standardSpacing
+                        anchors.rightMargin: Style.standardSpacing
                         verticalAlignment: Text.AlignVCenter
                         text: root.controller.localSyncFolderDisplay
                         color: root.primaryTextColor
@@ -153,7 +153,7 @@ Item {
                 WizardButton {
                     text: qsTr("Choose")
                     Layout.preferredWidth: 96
-                    Layout.preferredHeight: 36
+                    Layout.preferredHeight: Style.wizardFooterButtonHeight
                     enabled: root.controller.canUseClassicSync
                     onClicked: root.controller.chooseLocalSyncFolder()
                 }

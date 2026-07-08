@@ -221,6 +221,8 @@ set(client_SRCS
     tray/unifiedsearchresult.cpp
     tray/unifiedsearchresultslistmodel.h
     tray/trayimageprovider.cpp
+    tray/trayaccountappsmodel.h
+    tray/trayaccountappsmodel.cpp
     tray/unifiedsearchresultslistmodel.cpp
     tray/usermodel.h
     tray/usermodel.cpp
@@ -273,7 +275,40 @@ IF( APPLE )
     list(APPEND client_SRCS cocoainitializer_mac.mm)
     list(APPEND client_SRCS systray_mac_common.mm)
     list(APPEND client_SRCS notificationsoundplayer_mac.mm)
-    list(APPEND client_SRCS macOS/trayaccountpopup_mac.mm)
+    list(APPEND client_SRCS
+        # macOS tray account popup: one type per header/implementation pair.
+        # Shared foundation first, then the base hover view, rows, popups and the
+        # public entry point (OCC::showMacOSTrayPopup / hideMacOSTrayPopup).
+        macOS/trayaccountpopup/trayaccountpopupmetrics.h
+        macOS/trayaccountpopup/trayaccountpopupimageutils.h
+        macOS/trayaccountpopup/trayaccountpopupimageutils.mm
+        macOS/trayaccountpopup/trayaccountpopupviewutils.h
+        macOS/trayaccountpopup/trayaccountpopupviewutils.mm
+        macOS/trayaccountpopup/nchoverview.h
+        macOS/trayaccountpopup/nchoverview.mm
+        macOS/trayaccountpopup/ncaccountrow.h
+        macOS/trayaccountpopup/ncaccountrow.mm
+        macOS/trayaccountpopup/ncactionrow.h
+        macOS/trayaccountpopup/ncactionrow.mm
+        macOS/trayaccountpopup/ncsectionheaderrow.h
+        macOS/trayaccountpopup/ncsectionheaderrow.mm
+        macOS/trayaccountpopup/ncstaticinforow.h
+        macOS/trayaccountpopup/ncstaticinforow.mm
+        macOS/trayaccountpopup/ncpointinghandbutton.h
+        macOS/trayaccountpopup/ncpointinghandbutton.mm
+        macOS/trayaccountpopup/ncalertboxrow.h
+        macOS/trayaccountpopup/ncalertboxrow.mm
+        macOS/trayaccountpopup/ncspacerview.h
+        macOS/trayaccountpopup/ncspacerview.mm
+        macOS/trayaccountpopup/ncappspopup.h
+        macOS/trayaccountpopup/ncappspopup.mm
+        macOS/trayaccountpopup/ncnotificationactionspopup.h
+        macOS/trayaccountpopup/ncnotificationactionspopup.mm
+        macOS/trayaccountpopup/ncaccountactionspopup.h
+        macOS/trayaccountpopup/ncaccountactionspopup.mm
+        macOS/trayaccountpopup/nctraypopup.h
+        macOS/trayaccountpopup/nctraypopup.mm
+        macOS/trayaccountpopup/trayaccountpopup_mac.mm)
     list(APPEND client_SRCS macOS/singleinstancemanager_mac.mm)
 
     list(APPEND client_SRCS systray_mac_usernotifications.mm)
@@ -334,7 +369,10 @@ IF( APPLE )
         install(DIRECTORY "${SPARKLE_LIBRARY}"
                 DESTINATION "${OWNCLOUD_OSX_BUNDLE}/Contents/Frameworks" USE_SOURCE_PERMISSIONS)
 
-   endif()
+    endif()
+ENDIF()
+IF( NOT APPLE )
+    list(APPEND client_SRCS trayaccountpopup_qt.cpp)
 ENDIF()
 
 IF( NOT WIN32 AND NOT APPLE )

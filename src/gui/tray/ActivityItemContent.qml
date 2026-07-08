@@ -20,6 +20,8 @@ RowLayout {
 
     property variant activity: {{}}
 
+    property var activityModel: null
+
     property bool showDismissButton: false
 
     property bool childHovered: fileDetailsButton.hovered || dismissActionButton.hovered
@@ -297,9 +299,13 @@ RowLayout {
                 linksForActionButtons: activityData.linksForActionButtons
                 linksContextMenu: activityData.linksContextMenu
 
-                maxActionButtons: activityModel.maxActionButtons
+                maxActionButtons: root.activityModel ? root.activityModel.maxActionButtons : 0
 
-                onTriggerAction: activityModel.slotTriggerAction(activityData.activityIndex, actionIndex)
+                onTriggerAction: {
+                    if (root.activityModel) {
+                        root.activityModel.slotTriggerAction(activityData.activityIndex, actionIndex)
+                    }
+                }
 
                 onShowReplyField: isTalkReplyOptionVisible = true
                 talkReplyButtonVisible: root.activityData.messageSent === "" && !isTalkReplyOptionVisible

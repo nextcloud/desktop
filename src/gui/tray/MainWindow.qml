@@ -262,10 +262,7 @@ ApplicationWindow {
 
             onFeaturedAppButtonClicked: {
                 if (UserModel.currentUser.isAssistantEnabled) {
-                    trayWindowMainItem.showAssistantPanel = !trayWindowMainItem.showAssistantPanel
-                    if (trayWindowMainItem.showAssistantPanel) {
-                        assistantQuestionInput.forceActiveFocus()
-                    }
+                    Systray.showAssistantWindow(UserModel.currentUserId)
                 } else {
                     UserModel.openCurrentAccountFeaturedApp()
                 }
@@ -800,6 +797,8 @@ ApplicationWindow {
             id: syncStatus
 
             accentColor: Style.accentColor
+            user: UserModel.currentUser
+            activityListModel: activityModel
             visible: !trayWindowMainItem.isUnifiedSearchActive && !trayWindowMainItem.showAssistantPanel
 
             anchors.top: trayWindowMainItem.showAssistantPanel ? assistantInputContainer.bottom : trayWindowUnifiedSearchInputContainer.bottom
@@ -879,6 +878,7 @@ ApplicationWindow {
             anchors.bottom: trayWindowMainItem.bottom
 
             activeFocusOnTab: true
+            currentUser: UserModel.currentUser
             model: activityModel
             onOpenFile: Qt.openUrlExternally(filePath);
             onActivityItemClicked: {
