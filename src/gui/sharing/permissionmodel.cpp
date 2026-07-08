@@ -6,7 +6,6 @@
 #include "permissionmodel.h"
 
 #include <QPointer>
-#include <qnamespace.h>
 
 #include "share.h"
 #include "permission.h"
@@ -16,7 +15,7 @@ using namespace OCC;
 using namespace OCC::Gui::Sharing;
 
 PermissionModel::PermissionModel(QObject *parent)
-    : QAbstractListModel{parent}
+    : AbstractShareModel{parent}
 {}
 
 int PermissionModel::rowCount(const QModelIndex &parent) const
@@ -82,23 +81,15 @@ QHash<int, QByteArray> PermissionModel::roleNames() const
     };
 };
 
-Share *PermissionModel::share() const
-{
-    return _share;
-}
-
 void PermissionModel::setShare(Share *share)
 {
-    if (_share == share) {
+    AbstractShareModel::setShare(share);
+    if (!_share) {
         return;
     }
 
-    beginResetModel();
-    _share = share;
     connect(_share, &Share::permissionsChanged, this, [this]() -> void {
         beginResetModel();
         endResetModel();
     });
-    Q_EMIT shareChanged();
-    endResetModel();
 }
