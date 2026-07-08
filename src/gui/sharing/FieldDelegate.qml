@@ -16,7 +16,6 @@ import Style
 Loader {
     id: instantiator
     required property var model
-    required property var account
 
     sourceComponent: switch (model.type) {
         case PropertyModel.Switch:
@@ -25,8 +24,6 @@ Loader {
             return textFieldComponent;
         case PropertyModel.TextArea:
             return textAreaComponent;
-        case PropertyModel.RecipientsField:
-            return recipientsFieldComponent;
         default:
             return unknownItem;
     }
@@ -85,58 +82,6 @@ Loader {
                         return;
                     }
                     instantiator.model.value = text
-                }
-            }
-        }
-    }
-
-    Component {
-        id: recipientsFieldComponent
-        ColumnLayout {
-            Label {
-                text: instantiator.model.label
-            }
-            SearchField {
-                id: searchField
-                // TODO: only available with Qt 6.10
-                Layout.fillWidth: true
-                // no placeholderText on SearchField, really?
-
-                suggestionModel: RecipientSearchModel {
-                    account: instantiator.account
-                    query: searchField.text
-                }
-                textRole: "query"
-                delegate: ItemDelegate {
-                    id: recipientDelegate
-                    text: displayName
-
-                    contentItem: Row {
-                        Label {
-                            // TODO: use plaintext-only fields
-                            text: recipientDelegate.value
-                        }
-                        Label {
-                            text: recipientDelegate.text
-                            // TODO: use plaintext-only fields
-                        }
-                    }
-
-                    required property string displayName
-                    required property string value
-                }
-
-                onActivated: (index) => {
-                    console.log(`activated index ${index}`)
-                    console.log(`activated index ${index} => ${suggestionModel.get(index).value}`)
-                    instantiator.model.value.append(suggestionModel.get(index).value)
-                }
-            }
-            Repeater {
-                model: model.value ?? []
-                Label {
-                    required property list<string> value
-                    text: value
                 }
             }
         }
