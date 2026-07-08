@@ -46,7 +46,7 @@ using namespace Qt::StringLiterals;
 
 namespace OCC {
 
-// Keep behavior and menu taxonomy aligned with src/gui/macOS/trayaccountpopup_mac.mm.
+// Keep behavior and menu taxonomy aligned with the macOS popup in src/gui/macOS/trayaccountpopup/.
 
 namespace {
 
