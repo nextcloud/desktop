@@ -95,6 +95,19 @@
     </message>
 </context>
 <context>
+    <name>ActivitiesWindow</name>
+    <message>
+        <location filename="../src/gui/ActivitiesWindow.qml" line="19"/>
+        <source>Activities</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/ActivitiesWindow.qml" line="126"/>
+        <source>New activities</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ActivityItem</name>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="29"/>
@@ -128,6 +141,11 @@
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="229"/>
         <source>Dismiss</source>
         <translation>Tutup</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/activitydata.cpp" line="303"/>
+        <source>Confirm</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -179,6 +197,46 @@
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="90"/>
         <source>Done</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>AssistantWindow</name>
+    <message>
+        <location filename="../src/gui/AssistantWindow.qml" line="19"/>
+        <source>Nextcloud Assistant</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/AssistantWindow.qml" line="91"/>
+        <location filename="../src/gui/AssistantWindow.qml" line="95"/>
+        <source>Start new conversation?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/AssistantWindow.qml" line="104"/>
+        <source>This will clear the existing conversation.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/AssistantWindow.qml" line="119"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/AssistantWindow.qml" line="125"/>
+        <location filename="../src/gui/AssistantWindow.qml" line="245"/>
+        <source>New conversation</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/AssistantWindow.qml" line="236"/>
+        <source>Ask Assistant …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/AssistantWindow.qml" line="252"/>
+        <source>Send</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -459,9 +517,19 @@
 <context>
     <name>EmojiPicker</name>
     <message>
+        <location filename="../src/gui/EmojiPicker.qml" line="71"/>
+        <source>Search emoji</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/EmojiPicker.qml" line="136"/>
         <source>No recent emojis</source>
         <translation>Tidak ada emoji terbaru</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/EmojiPicker.qml" line="201"/>
+        <source>No emojis found</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -678,6 +746,11 @@
         <location filename="../src/gui/tray/MainWindow.qml" line="841"/>
         <source>New activities</source>
         <translation>Aktivitas baru</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="741"/>
+        <source>Open Assistant</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1277,17 +1350,17 @@ Tindakan ini akan membatalkan sinkronisasi apa pun yang sedang berjalan saat ini
 <context>
     <name>OCC::AccountSetupFromCommandLineJob</name>
     <message>
-        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="141"/>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="149"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>Permintaan terautentikasi ke server dialihkan ke &quot;%1&quot;. URL tidak benar, server salah dikonfigurasi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="151"/>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="159"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Akses dilarang oleh server. Untuk memverifikasi bahwa Anda memiliki akses yang semestinya, &lt;a href=&quot;%1&quot;&gt;klik di sini&lt;/a&gt; untuk mengakses layanan dengan browser Anda.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="159"/>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="167"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>Ada respons yang tidak valid terhadap permintaan WebDAV terautentikasi</translation>
     </message>
@@ -1697,34 +1770,34 @@ Tindakan ini akan membatalkan sinkronisasi apa pun yang sedang berjalan saat ini
         <translation>Lanjutkan</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="617"/>
+        <location filename="../src/gui/application.cpp" line="622"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 akun</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="618"/>
+        <location filename="../src/gui/application.cpp" line="623"/>
         <source>1 account</source>
         <translation>1 akun</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="620"/>
+        <location filename="../src/gui/application.cpp" line="625"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 folder</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="621"/>
+        <location filename="../src/gui/application.cpp" line="626"/>
         <source>1 folder</source>
         <translation>1 folder</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="623"/>
+        <location filename="../src/gui/application.cpp" line="628"/>
         <source>Legacy import</source>
         <translation>Impor lama</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="624"/>
+        <location filename="../src/gui/application.cpp" line="629"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1732,12 +1805,12 @@ Tindakan ini akan membatalkan sinkronisasi apa pun yang sedang berjalan saat ini
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="744"/>
+        <location filename="../src/gui/application.cpp" line="749"/>
         <source>Error accessing the configuration file</source>
         <translation>Galat saat mengakses berkas konfigurasi</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="745"/>
+        <location filename="../src/gui/application.cpp" line="750"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Terjadi kesalahan saat mengakses file konfigurasi di %1. Pastikan file tersebut dapat diakses oleh akun sistem Anda.</translation>
     </message>
@@ -5811,52 +5884,57 @@ Server membalas dengan kesalahan: %2</translation>
         <translation>Unduh</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="259"/>
+        <location filename="../src/gui/systray.cpp" line="261"/>
         <source>Add account</source>
         <translation>Tambah akun</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="261"/>
+        <location filename="../src/gui/systray.cpp" line="263"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
         <translation>Buka %1 Desktop</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="264"/>
-        <location filename="../src/gui/systray.cpp" line="274"/>
+        <location filename="../src/gui/systray.cpp" line="266"/>
+        <location filename="../src/gui/systray.cpp" line="276"/>
         <source>Pause sync</source>
         <translation>Jeda sinkronisasi</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="265"/>
-        <location filename="../src/gui/systray.cpp" line="280"/>
+        <location filename="../src/gui/systray.cpp" line="267"/>
+        <location filename="../src/gui/systray.cpp" line="282"/>
         <source>Resume sync</source>
         <translation>Lanjutkan sinkronisasi</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="266"/>
+        <location filename="../src/gui/systray.cpp" line="268"/>
         <source>Settings</source>
         <translation>Setelan</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="267"/>
+        <location filename="../src/gui/systray.cpp" line="269"/>
         <source>Help</source>
         <translation>Bantuan</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="268"/>
+        <location filename="../src/gui/systray.cpp" line="270"/>
         <source>Exit %1</source>
         <translation>Keluar %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="274"/>
+        <location filename="../src/gui/systray.cpp" line="276"/>
         <source>Pause sync for all</source>
         <translation>Jeda sinkronisasi untuk semua</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="280"/>
+        <location filename="../src/gui/systray.cpp" line="282"/>
         <source>Resume sync for all</source>
         <translation>Lanjutkan sinkronisasi untuk semua</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="827"/>
+        <source>Quit</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -6014,6 +6092,11 @@ Server membalas dengan kesalahan: %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="1375"/>
         <source>Rename file</source>
         <translation>Ganti nama file</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1690"/>
+        <source>Sync conflicts</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1532"/>
@@ -7002,6 +7085,46 @@ Server membalas dengan kesalahan: %2</translation>
 <context>
     <name>TrayAccountPopup</name>
     <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="578"/>
+        <source>No apps available</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="618"/>
+        <source>Notifications</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="640"/>
+        <source>Open</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="653"/>
+        <source>Recent activity</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="660"/>
+        <source>No recent activity</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="678"/>
+        <source>More activity…</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="709"/>
+        <source>Resolve: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="716"/>
+        <source>User status</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/TrayAccountPopup.qml" line="216"/>
         <source>Add account</source>
         <translation type="unfinished"/>
@@ -7049,6 +7172,11 @@ Server membalas dengan kesalahan: %2</translation>
         <source>User group and local folders menu</source>
         <translation>Menu grup pengguna dan folder lokal</translation>
     </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="732"/>
+        <source>Local folder</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>TrayWindowHeader</name>
@@ -7066,6 +7194,11 @@ Server membalas dengan kesalahan: %2</translation>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="142"/>
         <source>Open %1 in browser</source>
         <translation>Buka %1 di browser</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="749"/>
+        <source>Apps</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -7267,6 +7400,101 @@ Server membalas dengan kesalahan: %2</translation>
     </message>
 </context>
 <context>
+    <name>UserStatusWindow</name>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="22"/>
+        <source>Online status</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="99"/>
+        <source>Online</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="108"/>
+        <source>Away</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="118"/>
+        <source>Busy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="127"/>
+        <source>Do not disturb</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="128"/>
+        <source>Mute all notifications</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="139"/>
+        <source>Invisible</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="140"/>
+        <source>Appear offline</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="156"/>
+        <source>Status message</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="182"/>
+        <source>Choose emoji</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="204"/>
+        <source>What is your status?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="290"/>
+        <location filename="../src/gui/UserStatusWindow.qml" line="311"/>
+        <source>Clear status after</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="343"/>
+        <source>Clear status message</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="354"/>
+        <source>Set status message</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>UserStatusWindowPredefinedStatusRow</name>
+    <message>
+        <location filename="../src/gui/UserStatusWindowPredefinedStatusRow.qml" line="29"/>
+        <source>%1, clears %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindowPredefinedStatusRow.qml" line="70"/>
+        <source>- %1</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>UserStatusWindowStatusRow</name>
+    <message>
+        <location filename="../src/gui/UserStatusWindowStatusRow.qml" line="28"/>
+        <source>%1, %2</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>Utility</name>
     <message>
         <location filename="../src/common/utility.cpp" line="107"/>
@@ -7340,6 +7568,14 @@ Server membalas dengan kesalahan: %2</translation>
         <location filename="../src/common/checksums.cpp" line="298"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
         <translation>File yang diunduh tidak cocok dengan checksum, akan dilanjutkan. &quot;%1&quot; != &quot;%2&quot;</translation>
+    </message>
+</context>
+<context>
+    <name>WindowAccountHeader</name>
+    <message>
+        <location filename="../src/gui/WindowAccountHeader.qml" line="63"/>
+        <source>Account avatar</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
