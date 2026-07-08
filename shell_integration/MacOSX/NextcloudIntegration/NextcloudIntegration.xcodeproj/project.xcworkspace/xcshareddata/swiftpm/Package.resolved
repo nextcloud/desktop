@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/nextcloud/NextcloudFileProviderKit.git",
       "state" : {
-        "revision" : "6340c62b8d7c7c5099c8e6122f5c90594bb60cdc",
-        "version" : "3.2.13"
+        "revision" : "262a12f57cfaf1ebb04890f1ac4343a92000b324",
+        "version" : "3.2.14"
       }
     },
     {
