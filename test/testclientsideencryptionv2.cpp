@@ -5,6 +5,8 @@
 #include "syncenginetestutils.h"
 #include "clientsideencryption.h"
 #include "foldermetadata.h"
+#include "encryptedfoldermetadatahandler.h"
+
 #include <QtTest>
 
 using namespace OCC;

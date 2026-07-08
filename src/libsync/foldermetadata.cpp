@@ -7,12 +7,16 @@
 #include "encryptedfoldermetadatahandler.h"
 #include "foldermetadata.h"
 #include "clientsideencryption.h"
-#include "clientsideencryptionjobs.h"
-#include <common/checksums.h>
+#include "common/checksums.h"
+#include "owncloudpropagator.h"
+
 #include <QDir>
+#include <QFileInfo>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QSslCertificate>
+
+using namespace Qt::StringLiterals;
 
 namespace OCC
 {
@@ -74,6 +78,50 @@ bool FolderMetadata::isOriginalFilenameValid(const QString &originalFilename)
 bool FolderMetadata::EncryptedFile::isDirectory() const
 {
     return mimetype.isEmpty() || mimetype == QByteArrayLiteral("inode/directory") || mimetype == QByteArrayLiteral("httpd/unix-directory");
+}
+
+bool FolderMetadata::EncryptedFile::isValid() const
+{
+    return !encryptionKey.isEmpty() && !initializationVector.isEmpty() && !originalFilename.isEmpty();
+}
+
+void FolderMetadata::EncryptedFile::initializeForNewItem(const QString &fileName, const QFileInfo &info)
+{
+    encryptionKey = EncryptionHelper::generateRandom(16);
+    encryptedFilename = EncryptionHelper::generateRandomFilename();
+    originalFilename = fileName;
+
+    QMimeDatabase mdb;
+    mimetype = mdb.mimeTypeForFile(info).name().toLocal8Bit();
+
+    // Other clients expect "httpd/unix-directory" instead of "inode/directory"
+    // Doesn't matter much for us since we don't do much about that mimetype anyway
+    if (mimetype == QByteArrayLiteral("inode/directory")) {
+        mimetype = QByteArrayLiteral("httpd/unix-directory");
+    }
+}
+
+void FolderMetadata::EncryptedFile::initializeForRecovery(const QString &fileName,
+                                                          const QString &encryptedFileName,
+                                                          const QByteArray &existingEncryptionKey,
+                                                          const QByteArray &existingInitializationVector,
+                                                          const QByteArray &existingAuthenticationTag,
+                                                          const QFileInfo &info)
+{
+    encryptionKey = existingEncryptionKey;
+    initializationVector = existingInitializationVector;
+    authenticationTag = existingAuthenticationTag;
+    encryptedFilename = encryptedFileName;
+    originalFilename = fileName;
+
+    QMimeDatabase mdb;
+    mimetype = mdb.mimeTypeForFile(info).name().toLocal8Bit();
+
+           // Other clients expect "httpd/unix-directory" instead of "inode/directory"
+           // Doesn't matter much for us since we don't do much about that mimetype anyway
+    if (mimetype == QByteArrayLiteral("inode/directory")) {
+        mimetype = QByteArrayLiteral("httpd/unix-directory");
+    }
 }
 
 FolderMetadata::FolderMetadata(AccountPtr account, const QString &remoteFolderRoot, FolderType folderType) :
@@ -435,11 +483,21 @@ void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
     _isMetadataValid = true;
 }
 
-void FolderMetadata::initMetadataFromClientState()
+void FolderMetadata::initMetadataFromClientState(const QList<DatabaseEncryptedFile> &childItems,
+                                                 OwncloudPropagator *propagator)
 {
-    const auto oldFiles = _files;
-    for (const auto &oneItem : oldFiles) {
-        const auto result = addEncryptedFile(oneItem);
+    for (const auto &oneItem : childItems) {
+        auto newEncryptedItem = EncryptedFile{};
+        auto fileInfo = QFileInfo{propagator->fullLocalPath(oneItem.originalFilename)};
+
+        if (fileInfo.isFile()) {
+            newEncryptedItem.initializeForRecovery(oneItem.originalFilename, oneItem.encryptedFilename, oneItem.encryptionKey, oneItem.initializationVector, oneItem.authenticationTag, fileInfo);
+        } else {
+            newEncryptedItem.originalFilename = oneItem.originalFilename;
+            newEncryptedItem.encryptedFilename = oneItem.encryptedFilename;
+            newEncryptedItem.mimetype = "httpd/unix-directory"_ba;
+        }
+        const auto result = addEncryptedFile(newEncryptedItem);
         if (!result) {
             qCWarning(lcCseMetadata()) << "Could not add encrypted file" << oneItem.originalFilename;
         }
@@ -613,22 +671,27 @@ FolderMetadata::EncryptedFile FolderMetadata::parseEncryptedFileFromJson(const Q
     return file;
 }
 
-QJsonObject FolderMetadata::convertFileToJsonObject(const EncryptedFile *encryptedFile) const
+QJsonObject FolderMetadata::convertFileToJsonObject(const EncryptedFile &encryptedFile) const
 {
-    if (!encryptedFile || !isOriginalFilenameValid(encryptedFile->originalFilename)) {
+    if (!isOriginalFilenameValid(encryptedFile.originalFilename)) {
         qCWarning(lcCseMetadata()) << "Metadata generation failed. Invalid original file name.";
         return {};
     }
 
+    if (!encryptedFile.isValid()) {
+        qCWarning(lcCseMetadata()) << "Metadata generation failed. Invalid encryption metadata for file." << encryptedFile.originalFilename << encryptedFile.encryptedFilename;
+        return {};
+    }
+
     QJsonObject file;
-    file.insert("key", QString(encryptedFile->encryptionKey.toBase64()));
-    file.insert("filename", encryptedFile->originalFilename);
-    file.insert("mimetype", QString(encryptedFile->mimetype));
+    file.insert("key", QString(encryptedFile.encryptionKey.toBase64()));
+    file.insert("filename", encryptedFile.originalFilename);
+    file.insert("mimetype", QString(encryptedFile.mimetype));
     const auto nonceFinalKey = latestSupportedMetadataVersion() < MetadataVersion::Version2_0
         ? initializationVectorKey
         : nonceKey;
-    file.insert(nonceFinalKey, QString(encryptedFile->initializationVector.toBase64()));
-    file.insert(authenticationTagKey, QString(encryptedFile->authenticationTag.toBase64()));
+    file.insert(nonceFinalKey, QString(encryptedFile.initializationVector.toBase64()));
+    file.insert(authenticationTagKey, QString(encryptedFile.authenticationTag.toBase64()));
 
     return file;
 }
@@ -709,7 +772,7 @@ QByteArray FolderMetadata::encryptedMetadata()
 
     QJsonObject files, folders;
     for (auto it = _files.constBegin(), end = _files.constEnd(); it != end; ++it) {
-        const auto file = convertFileToJsonObject(&(*it));
+        const auto &file = convertFileToJsonObject(*it);
         if (file.isEmpty()) {
             qCWarning(lcCseMetadata) << "Metadata generation failed for file" << it->encryptedFilename;
             return {};
@@ -758,7 +821,7 @@ QByteArray FolderMetadata::encryptedMetadata()
 
     QJsonArray folderUsers;
     if (_isRootEncryptedFolder) {
-        for (const auto &folderUser : _folderUsers) {
+        for (const auto &folderUser : std::as_const(_folderUsers)) {
             const QJsonObject folderUserJson{{usersUserIdKey, folderUser.userId},
                                              {usersCertificateKey, QJsonValue::fromVariant(folderUser.certificatePem)},
                                              {usersEncryptedMetadataKey, QJsonValue::fromVariant(folderUser.encryptedMetadataKey)}};
@@ -950,9 +1013,10 @@ void FolderMetadata::updateSelfCertificate()
     }
 }
 
-void FolderMetadata::repair()
+void FolderMetadata::repair(const QList<FolderMetadata::DatabaseEncryptedFile> &childItems,
+                            OwncloudPropagator *propagator)
 {
-    initMetadataFromClientState();
+    initMetadataFromClientState(childItems, propagator);
 }
 
 quint64 FolderMetadata::newCounter() const

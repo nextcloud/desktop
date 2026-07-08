@@ -45,7 +45,7 @@ Q_LOGGING_CATEGORY(lcDb, "nextcloud.sync.database", QtInfoMsg)
         "SELECT path, inode, modtime, type, md5, fileid, remotePerm, filesize," \
         "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum, e2eMangledName, isE2eEncrypted, e2eCertificateFingerprint, " \
         "  lock, lockOwnerDisplayName, lockOwnerId, lockType, lockOwnerEditor, lockTime, lockTimeout, lockToken, isShared, lastShareStateFetchedTimestmap, " \
-        "  sharedByMe, isLivePhoto, livePhotoFile, quotaBytesUsed, quotaBytesAvailable" \
+        "  sharedByMe, isLivePhoto, livePhotoFile, quotaBytesUsed, quotaBytesAvailable, e2eFileEncryptionKey, authenticationTag, initializationVector" \
         " FROM metadata" \
         "  LEFT JOIN checksumtype as contentchecksumtype ON metadata.contentChecksumTypeId == contentchecksumtype.id"
 
@@ -63,6 +63,9 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._checksumHeader = query.baValue(9);
     rec._e2eMangledName = query.baValue(10);
     rec._e2eEncryptionStatus = static_cast<SyncJournalFileRecord::EncryptionStatus>(query.intValue(11));
+    rec._e2eFileEncryptionKey = query.baValue(28);
+    rec._authenticationTag = query.baValue(29);
+    rec._initializationVector = query.baValue(30);
     rec._lockstate._locked = query.intValue(13) > 0;
     rec._lockstate._lockOwnerDisplayName = query.stringValue(14);
     rec._lockstate._lockOwnerId = query.stringValue(15);
@@ -917,6 +920,10 @@ bool SyncJournalDb::updateMetadataTableStructure()
         addColumn(quotaBytesAvailable, bigInt, false, defaultCommand);
     }
 
+    addColumn(u"e2eFileEncryptionKey"_s, u"TEXT"_s);
+    addColumn(u"authenticationTag"_s, u"TEXT"_s);
+    addColumn(u"initializationVector"_s, u"TEXT"_s);
+
     return re;
 }
 
@@ -1078,9 +1085,13 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
 
     const auto query = _queryManager.get(PreparedSqlQueryManager::SetFileRecordQuery, QByteArrayLiteral("INSERT OR REPLACE INTO metadata "
                                                                                                         "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, "
-                                                                                                        "contentChecksum, contentChecksumTypeId, e2eMangledName, isE2eEncrypted, e2eCertificateFingerprint, lock, lockType, lockOwnerDisplayName, lockOwnerId, "
-                                                                                                        "lockOwnerEditor, lockTime, lockTimeout, lockToken, isShared, lastShareStateFetchedTimestmap, sharedByMe, isLivePhoto, livePhotoFile, quotaBytesUsed, quotaBytesAvailable) "
-                                                                                                        "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22, ?23, ?24, ?25, ?26, ?27, ?28, ?29, ?30, ?31, ?32, ?33, ?34);"),
+                                                                                                        "contentChecksum, contentChecksumTypeId, e2eMangledName, isE2eEncrypted, e2eCertificateFingerprint, "
+                                                                                                        "lock, lockType, lockOwnerDisplayName, lockOwnerId, "
+                                                                                                        "lockOwnerEditor, lockTime, lockTimeout, lockToken, isShared, lastShareStateFetchedTimestmap, "
+                                                                                                        "sharedByMe, isLivePhoto, livePhotoFile, quotaBytesUsed, quotaBytesAvailable, "
+                                                                                                        "e2eFileEncryptionKey, authenticationTag, initializationVector) "
+                                                                                                        "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, "
+                                                                                                        "?18, ?19, ?20, ?21, ?22, ?23, ?24, ?25, ?26, ?27, ?28, ?29, ?30, ?31, ?32, ?33, ?34, ?35, ?36, ?37);"),
         _db);
     if (!query) {
         qCWarning(lcDb) << "database error:" << query->error();
@@ -1106,6 +1117,9 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     query->bindValue(17, record._e2eMangledName);
     query->bindValue(18, static_cast<int>(record._e2eEncryptionStatus));
     query->bindValue(19, {});
+    query->bindValue(35, record._e2eFileEncryptionKey);
+    query->bindValue(36, record._authenticationTag);
+    query->bindValue(37, record._initializationVector);
     query->bindValue(20, record._lockstate._locked ? 1 : 0);
     query->bindValue(21, record._lockstate._lockOwnerType);
     query->bindValue(22, record._lockstate._lockOwnerDisplayName);

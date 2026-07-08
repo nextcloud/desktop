@@ -72,6 +72,9 @@ public:
     QByteArray _checksumHeader;
     QByteArray _e2eMangledName;
     EncryptionStatus _e2eEncryptionStatus = EncryptionStatus::NotEncrypted;
+    QByteArray _e2eFileEncryptionKey;
+    QByteArray _initializationVector;
+    QByteArray _authenticationTag;
     SyncJournalFileLockInfo _lockstate;
     bool _isShared = false;
     qint64 _lastShareStateFetchedTimestamp = 0;

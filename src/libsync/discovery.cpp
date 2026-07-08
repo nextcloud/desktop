@@ -760,6 +760,9 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
         result = serverEntry.e2eMangledName.mid(rootPath.length());
         return result;
     }();
+    item->_e2eFileEncryptionKey = serverEntry._e2eFileEncryptionKey;
+    item->_initializationVector = serverEntry._initializationVector;
+    item->_authenticationTag = serverEntry._authenticationTag;
     item->_locked = serverEntry.locked;
     item->_lockOwnerDisplayName = serverEntry.lockOwnerDisplayName;
     item->_lockOwnerId = serverEntry.lockOwnerId;

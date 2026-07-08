@@ -34,6 +34,9 @@ struct RemoteInfo
     bool _isE2eEncrypted = false;
     bool isFileDropDetected = false;
     QString e2eMangledName;
+    QByteArray _e2eFileEncryptionKey;
+    QByteArray _initializationVector;
+    QByteArray _authenticationTag;
     bool sharedByMe = false;
 
     [[nodiscard]] bool isValid() const { return !name.isNull(); }
