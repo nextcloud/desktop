@@ -5,19 +5,15 @@
 
 #pragma once
 
-#include <QAbstractListModel>
+#include "abstractsharemodel.h"
 #include <qqmlintegration.h>
-
-#include "share.h"
 
 namespace OCC::Gui::Sharing {
 
-class PropertyModel : public QAbstractListModel
+class PropertyModel : public AbstractShareModel
 {
     Q_OBJECT
     QML_ELEMENT
-
-    Q_PROPERTY(Share *share READ share WRITE setShare NOTIFY shareChanged)
 
 public:
     enum Roles {
@@ -44,14 +40,9 @@ public:
     Qt::ItemFlags flags(const QModelIndex &index) const override;
     QHash<int, QByteArray> roleNames() const override;
 
-    [[nodiscard]] Share* share() const;
-    void setShare(Share* share);
-
-Q_SIGNALS:
-    void shareChanged();
+    void setShare(Share* share) override;
 
 private:
-    Share *_share = nullptr;
     QVariantMap _fieldValues;
 };
 
