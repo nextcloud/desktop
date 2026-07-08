@@ -21,9 +21,7 @@ PermissionModel::PermissionModel(QObject *parent)
 
 int PermissionModel::rowCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent)
-
-    if (!_share) {
+    if (parent.isValid() || !_share) {
         return 0;
     }
 
