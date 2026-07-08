@@ -37,6 +37,7 @@ public:
     Q_INVOKABLE void removeRecipient(const QString &recipientType, const QString &recipientValue);
 
     Q_INVOKABLE void setPermission(const QString &permissionClass, bool enabled);
+    Q_INVOKABLE void setPermissionPreset(const QString &permissionPreset);
 
 Q_SIGNALS:
     void accountChanged();

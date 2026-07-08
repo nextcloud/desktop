@@ -61,6 +61,13 @@ Page {
                     valueRole: "preset"
 
                     // value: root.sharingController.share.permissionPreset
+                    onCurrentValueChanged: {
+                        if (!currentValue) {
+                            return;
+                        }
+
+                        root.sharingController.setPermissionPreset(currentValue)
+                    }
                 }
 
                 Repeater {
