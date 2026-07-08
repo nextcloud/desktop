@@ -18,6 +18,8 @@
 #include <QJsonObject>
 #include <QLoggingCategory>
 
+using namespace Qt::StringLiterals;
+
 namespace OCC
 {
 Q_LOGGING_CATEGORY(lcAccountSetupCommandLineJob, "nextcloud.gui.accountsetupcommandlinejob", QtInfoMsg)
@@ -69,8 +71,14 @@ void AccountSetupFromCommandLineJob::handleAccountSetupFromCommandLine()
 
     const auto credentials = new WebFlowCredentials(_userId, _appPassword);
     _account = AccountManager::createAccount();
+
     _account->setCredentials(credentials);
+    _account->setCredentialSetting(u"user"_s, _userId);
     _account->setUrl(_serverUrl);
+    auto accountState = AccountManager::instance()->addAccount(_account);
+    setupLocalSyncFolder(accountState);
+
+    Q_EMIT _account->wantsAccountSaved(_account);
 
     fetchUserName();
 }
@@ -186,7 +194,7 @@ void AccountSetupFromCommandLineJob::setupLocalSyncFolder(AccountState *accountS
         AccountManager::instance()->deleteAccount(accountState);
         printAccountSetupFromCommandLineStatusAndExit(
             QStringLiteral("Account %1 setup from command line failed, due to folder creation failure.").arg(_account->displayName()),
-            false);
+            true);
     }
 }
 

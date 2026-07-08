@@ -795,8 +795,10 @@ AccountPtr AccountManager::createAccount()
     acc->setSslErrorHandler(new SslDialogErrorHandler);
     connect(acc.data(), &Account::proxyAuthenticationRequired,
         ProxyAuthHandler::instance(), &ProxyAuthHandler::handleProxyAuthenticationRequired);
-    connect(acc.data(), &Account::lockFileError,
-        Systray::instance(), &Systray::showErrorMessageDialog);
+    if (Systray::instance()) {
+        connect(acc.data(), &Account::lockFileError,
+            Systray::instance(), &Systray::showErrorMessageDialog);
+    }
 
     return acc;
 }
