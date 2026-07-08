@@ -22,6 +22,10 @@ RecipientSearchModel::RecipientSearchModel(QObject *parent)
 
 int RecipientSearchModel::rowCount(const QModelIndex &parent) const
 {
+    if (parent.isValid()) {
+        return 0;
+    }
+
     return _searchResults.size();
 }
 
