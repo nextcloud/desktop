@@ -119,18 +119,7 @@ void PropagateUploadEncrypted::slotFetchMetadataJobFinished(int statusCode, cons
 
     // New encrypted file so set it all up!
     if (!found) {
-        encryptedFile.encryptionKey = EncryptionHelper::generateRandom(16);
-        encryptedFile.encryptedFilename = EncryptionHelper::generateRandomFilename();
-        encryptedFile.originalFilename = fileName;
-
-        QMimeDatabase mdb;
-        encryptedFile.mimetype = mdb.mimeTypeForFile(info).name().toLocal8Bit();
-
-        // Other clients expect "httpd/unix-directory" instead of "inode/directory"
-        // Doesn't matter much for us since we don't do much about that mimetype anyway
-        if (encryptedFile.mimetype == QByteArrayLiteral("inode/directory")) {
-            encryptedFile.mimetype = QByteArrayLiteral("httpd/unix-directory");
-        }
+        encryptedFile.initializeForNewItem(fileName, info);
     }
 
     encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);

@@ -1,7 +1,11 @@
 #include "repairfolderencryptionmetadatajob.h"
 
+#include <QLoggingCategory>
+
 namespace OCC
 {
+
+Q_LOGGING_CATEGORY(lcRepairFolderEncryptionMetadataJob, "nextcloud.sync.clientsideencryption.repairjob", QtInfoMsg)
 
 RepairFolderEncryptionMetadataJob::RepairFolderEncryptionMetadataJob(const AccountPtr &account,
                                                                      SyncJournalDb *journal,
@@ -32,13 +36,27 @@ RepairFolderEncryptionMetadataJob::RepairFolderEncryptionMetadataJob(const Accou
 
 void RepairFolderEncryptionMetadataJob::start()
 {
+    auto childItems = QList<FolderMetadata::DatabaseEncryptedFile>{};
+    const auto result = _journal->getFilesBelowPath(_path.toUtf8(), [this, &childItems] (const SyncJournalFileRecord &record) -> void {
+        const auto recordPath = QString::fromUtf8(record._path);
+        const auto recordRelativePath = recordPath.mid(_path.length());
+        const auto isDirectChild = recordRelativePath.indexOf('/') == -1;
+        if (isDirectChild) {
+            childItems.emplace_back(record._path, record.e2eMangledName(), record._e2eFileEncryptionKey, record._initializationVector, record._authenticationTag);
+        }
+    });
+
     connect(_encryptedFolderMetadataHandler.data(), &EncryptedFolderMetadataHandler::uploadFinished,
             this, &RepairFolderEncryptionMetadataJob::metadataUploadFinished);
     connect(_encryptedFolderMetadataHandler.data(), &EncryptedFolderMetadataHandler::fetchFinished,
-            this, [this] () {
-                _encryptedFolderMetadataHandler->repairMetadata();
+            this, [this, childItems] () {
+                _encryptedFolderMetadataHandler->repairMetadata(childItems, _propagator);
                 _encryptedFolderMetadataHandler->uploadMetadata();
             });
+
+    if (!result) {
+        qCWarning(lcRepairFolderEncryptionMetadataJob()) << "failed to fetch database records";
+    }
 
     _encryptedFolderMetadataHandler->fetchMetadata(EncryptedFolderMetadataHandler::FetchMode::AllowBrokenSignature);
 }

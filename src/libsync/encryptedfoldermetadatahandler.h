@@ -10,6 +10,7 @@
 #include "account.h"
 #include "rootencryptedfolderinfo.h"
 #include "common/syncjournaldb.h"
+#include "foldermetadata.h"
 
 #include <QHash>
 #include <QMutex>
@@ -19,8 +20,10 @@
 #include <QPointer>
 
 namespace OCC {
-class FolderMetadata;
+
 class SyncJournalDb;
+class OwncloudPropagator;
+
 // all metadata operations with server must be performed via this class
 class OWNCLOUDSYNC_EXPORT EncryptedFolderMetadataHandler
     : public QObject
@@ -67,7 +70,8 @@ public:
     void fetchMetadata(const FetchMode fetchMode = FetchMode::NonEmptyMetadata);
     void uploadMetadata(const UploadMode uploadMode = UploadMode::DoNotKeepLock);
     void unlockFolder(const UnlockFolderWithResult result = UnlockFolderWithResult::Success);
-    void repairMetadata();
+    void repairMetadata(const QList<OCC::FolderMetadata::DatabaseEncryptedFile> &childItems,
+                        OwncloudPropagator *propagator);
 
 private:
     void lockFolder();
