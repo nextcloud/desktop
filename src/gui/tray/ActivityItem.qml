@@ -17,10 +17,14 @@ ItemDelegate {
 
     property int iconSize: Style.trayListItemIconSize
 
+    property var currentUser: UserModel.currentUser
+
+    property var activityModel: null
+
     property bool isFileActivityList: false
 
     readonly property bool isChatActivity: model.objectType === "chat" || model.objectType === "room" || model.objectType === "call"
-    readonly property bool isTalkReplyPossible: model.conversationToken !== ""
+    readonly property bool isTalkReplyPossible: root.currentUser !== null && model.conversationToken !== ""
     property bool isTalkReplyOptionVisible: model.messageSent !== ""
 
     padding: Style.standardSpacing
@@ -55,7 +59,13 @@ ItemDelegate {
             activityData: model
             activity: model.activity
 
-            onDismissButtonClicked: activityModel.slotTriggerDismiss(model.activityIndex)
+            activityModel: root.activityModel
+
+            onDismissButtonClicked: {
+                if (root.activityModel) {
+                    root.activityModel.slotTriggerDismiss(model.activityIndex)
+                }
+            }
         }
 
         Loader {
@@ -68,8 +78,9 @@ ItemDelegate {
             Layout.leftMargin: Style.trayListItemIconSize + Style.trayHorizontalMargin
 
             sourceComponent: TalkReplyTextField {
+                accentColor: root.currentUser ? root.currentUser.accentColor : palette.highlight
                 onSendReply: {
-                    UserModel.currentUser.sendReplyMessage(model.activityIndex, model.conversationToken, reply, model.messageId);
+                    root.currentUser.sendReplyMessage(model.activityIndex, model.conversationToken, reply, model.messageId);
                     talkReplyTextFieldLoader.visible = false;
                 }
             }

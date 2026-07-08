@@ -1,6 +1,13 @@
 <RCC>
     <qresource prefix="/qml">
         <file>src/gui/UserStatusMessageView.qml</file>
+        <file>src/gui/WizardStyledWindow.qml</file>
+        <file>src/gui/UserStatusWindow.qml</file>
+        <file>src/gui/WindowAccountHeader.qml</file>
+        <file>src/gui/ActivitiesWindow.qml</file>
+        <file>src/gui/AssistantWindow.qml</file>
+        <file>src/gui/UserStatusWindowStatusRow.qml</file>
+        <file>src/gui/UserStatusWindowPredefinedStatusRow.qml</file>
         <file>src/gui/UserStatusSelectorPage.qml</file>
         <file>src/gui/EmojiPicker.qml</file>
         <file>src/gui/UserStatusSelectorButton.qml</file>
@@ -22,7 +29,6 @@
         <file>src/gui/filedetails/ShareeSearchField.qml</file>
         <file>src/gui/filedetails/ShareView.qml</file>
         <file>src/gui/tray/MainWindow.qml</file>
-        <file>src/gui/tray/TrayAccountPopup.qml</file>
         <file>src/gui/tray/UserLine.qml</file>
         <file>src/gui/tray/HeaderButton.qml</file>
         <file>src/gui/tray/SyncStatus.qml</file>

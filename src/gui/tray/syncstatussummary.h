@@ -17,6 +17,8 @@
 
 namespace OCC {
 
+class User;
+
 class SyncStatusSummary : public QObject
 {
     Q_OBJECT
@@ -51,6 +53,7 @@ signals:
 
 public slots:
     void load();
+    void loadForUser(OCC::User *currentUser);
 
 private:
     void connectToFoldersProgress(const Folder::Map &map);

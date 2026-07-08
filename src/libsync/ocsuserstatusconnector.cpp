@@ -391,22 +391,23 @@ void OcsUserStatusConnector::setUserStatusMessage(const UserStatus &userStatus)
     setUserStatusMessageCustom(userStatus);
 }
 
-void OcsUserStatusConnector::setUserStatus(const UserStatus &userStatus)
+bool OcsUserStatusConnector::setUserStatus(const UserStatus &userStatus)
 {
     if (!_userStatusSupported) {
         emit error(Error::UserStatusNotSupported);
-        return;
+        return false;
     }
 
     if (_setOnlineStatusJob || _setMessageJob) {
         qCDebug(lcOcsUserStatusConnector) << "Set online status job or set message job are already running.";
-        return;
+        return false;
     }
 
     if (userStatus.state() != _userStatus.state()) {
         setUserStatusOnlineStatus(userStatus.state());
     }
     setUserStatusMessage(userStatus);
+    return true;
 }
 
 void OcsUserStatusConnector::onUserStatusOnlineStatusSet(const QJsonDocument &json, int statusCode)

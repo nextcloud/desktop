@@ -4,6 +4,7 @@
  */
 
 #include "asyncimageresponse.h"
+#include "trayimageutils.h"
 
 #include <QIcon>
 #include <QMimeDatabase>
@@ -13,6 +14,19 @@
 #include "accountmanager.h"
 
 using namespace Qt::StringLiterals;
+
+namespace {
+
+QImage aspectFitImage(const QImage &sourceImage, const QSize &requestedSize)
+{
+    if (sourceImage.isNull() || !requestedSize.isValid()) {
+        return sourceImage;
+    }
+
+    return sourceImage.scaled(requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+}
+
+}
 
 AsyncImageResponse::AsyncImageResponse(const QString &id, const QSize &requestedSize)
 {
@@ -127,7 +141,7 @@ void AsyncImageResponse::processNetworkReply(QNetworkReply *reply)
     if (const auto mimetype = QMimeDatabase().mimeTypeForData(imageData);
         !(mimetype.isValid() && mimetype.inherits("image/svg+xml"_L1))) {
         // Not an SVG: let's let QImage deal with the response.
-        setImageAndEmitFinished(QImage::fromData(imageData).scaled(_requestedImageSize));
+        setImageAndEmitFinished(aspectFitImage(QImage::fromData(imageData), _requestedImageSize));
         return;
     }
 
@@ -141,7 +155,7 @@ void AsyncImageResponse::processNetworkReply(QNetworkReply *reply)
     QImage scaledSvg(_requestedImageSize, QImage::Format_ARGB32);
     scaledSvg.fill("transparent");
     QPainter painterForSvg(&scaledSvg);
-    svgRenderer.render(&painterForSvg);
+    svgRenderer.render(&painterForSvg, OCC::aspectFitRect(svgRenderer.defaultSize(), _requestedImageSize));
 
     if (!_svgRecolor.isValid()) {
         setImageAndEmitFinished(scaledSvg);
@@ -155,4 +169,3 @@ void AsyncImageResponse::processNetworkReply(QNetworkReply *reply)
     imagePainter.drawImage(0, 0, scaledSvg);
     setImageAndEmitFinished(image);
 }
-

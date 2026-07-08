@@ -309,9 +309,13 @@ private slots:
                     QVERIFY(actionsLinksContextMenu.isEmpty() || actionsLinksContextMenu.size() < actionsLinks.size());
 
                     // context menu must not contain the primary action
-                    QVERIFY(std::find_if(std::begin(actionsLinksContextMenu), std::end(actionsLinksContextMenu),
-                                [](const QVariant &entry) { return entry.value<OCC::ActivityLink>()._primary; })
-                        == std::end(actionsLinksContextMenu));
+                    QVERIFY(std::all_of(std::begin(actionsLinksContextMenu), std::end(actionsLinksContextMenu),
+                        [&actionsLinks](const QVariant &entry) {
+                            auto ok = false;
+                            const auto actionIndex = entry.toMap().value(QStringLiteral("actionIndex")).toInt(&ok);
+                            return ok && actionIndex >= 0 && actionIndex < actionsLinks.size()
+                                && !actionsLinks[actionIndex].value<OCC::ActivityLink>()._primary;
+                        }));
 
                     const auto objectType = index.data(OCC::ActivityListModel::ObjectTypeRole).toString();
 
@@ -350,7 +354,7 @@ private slots:
 
                         // both action links and buttons must contain a "REPLY" verb element as secondary action
                         QVERIFY(actionsLinks[replyActionPos].value<OCC::ActivityLink>()._verb == QStringLiteral("REPLY"));
-                        //QVERIFY(actionButtonsLinks[replyActionPos].value<OCC::ActivityLink>()._verb == QStringLiteral("REPLY"));
+                        QCOMPARE(actionButtonsLinks[replyActionPos].toMap().value(QStringLiteral("verb")).toString(), QStringLiteral("REPLY"));
 
                         // the first action button for chat must have image set
                         //QVERIFY(!actionButtonsLinks[replyActionPos].value<OCC::ActivityLink>()._imageSource.isEmpty());
@@ -361,7 +365,7 @@ private slots:
                                 || (objectType != QStringLiteral("room") && objectType != QStringLiteral("call")))) {
 
                             // button's label for "chat" must be renamed to "Reply"
-                            QVERIFY(actionButtonsLinks[0].value<OCC::ActivityLink>()._label == QObject::tr("Reply"));
+                            QCOMPARE(actionButtonsLinks[0].toMap().value(QStringLiteral("label")).toString(), QObject::tr("Reply"));
 
                             if (static_cast<quint32>(actionsLinks.size()) > OCC::ActivityListModel::maxActionButtons()) {
                                 QCOMPARE(actionButtonsLinks.size(), OCC::ActivityListModel::maxActionButtons());
@@ -369,7 +373,7 @@ private slots:
                                 QCOMPARE(actionButtonsLinks.size() + actionsLinksContextMenu.size(), actionsLinks.size());
                             }
                         } else if ((objectType == QStringLiteral("call"))) {
-                            QVERIFY(actionButtonsLinks[0].value<OCC::ActivityLink>()._label == QStringLiteral("Call back"));
+                            QCOMPARE(actionButtonsLinks[0].toMap().value(QStringLiteral("label")).toString(), QStringLiteral("Call back"));
                         }
                     }
                 }

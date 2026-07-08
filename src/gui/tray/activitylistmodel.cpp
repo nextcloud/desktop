@@ -19,7 +19,6 @@
 #include "systray.h"
 #include "common/utility.h"
 
-#include <QtCore>
 #include <QAbstractListModel>
 #include <QDesktopServices>
 #include <QWidget>
@@ -27,11 +26,24 @@
 #include <QJsonDocument>
 #include <QLoggingCategory>
 
+#include <algorithm>
+
 using namespace Qt::StringLiterals;
 
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcActivity, "nextcloud.gui.activity", QtInfoMsg)
+
+constexpr auto defaultRecentActivityPreviewCount = 5;
+
+namespace {
+
+struct RecentActivityPreviewItem {
+    int row = -1;
+    Activity activity;
+};
+
+}
 
 ActivityListModel::ActivityListModel(QObject *parent)
     : QAbstractListModel(parent)
@@ -400,10 +412,127 @@ int ActivityListModel::rowCount(const QModelIndex &parent) const
     return _finalList.count();
 }
 
+QVariantList ActivityListModel::recentActivityPreviewData(const int limit) const
+{
+    auto result = _recentActivityPreviewData;
+
+    if (limit != defaultRecentActivityPreviewCount) {
+        result = buildRecentActivityPreviewData(limit);
+    }
+
+    return result;
+}
+
+QVariantList ActivityListModel::notificationPreviewData() const
+{
+    return _notificationPreviewData;
+}
+
+QVariantList ActivityListModel::buildRecentActivityPreviewData(const int limit) const
+{
+    auto recentActivities = QVariantList{};
+
+    if (limit <= 0) {
+        return recentActivities;
+    }
+
+    auto candidates = QVector<RecentActivityPreviewItem>{};
+    candidates.reserve(_finalList.size());
+
+    for (auto row = 0; row < _finalList.size(); ++row) {
+        const auto activity = _finalList.at(row);
+        if (activity.isRecentActivityPreviewCandidate()) {
+            candidates.push_back({row, activity});
+        }
+    }
+
+    std::stable_sort(candidates.begin(), candidates.end(), [](const auto &left, const auto &right) {
+        return left.activity._dateTime > right.activity._dateTime;
+    });
+
+    for (const auto &candidate : std::as_const(candidates)) {
+        const auto previewText = candidate.activity.recentActivityPreviewText();
+        if (previewText.title.isEmpty()) {
+            continue;
+        }
+
+        const auto modelIndex = index(candidate.row);
+        recentActivities.push_back(QVariantMap{
+            {QStringLiteral("title"), previewText.title},
+            {QStringLiteral("subtitle"), previewText.subtitle},
+            {QStringLiteral("icon"), data(modelIndex, IconRole).toString()},
+            {QStringLiteral("systemIconName"), candidate.activity.recentActivitySystemIconName()},
+            {QStringLiteral("dateTime"), data(modelIndex, PointInTimeRole).toString()},
+            {QStringLiteral("activityIndex"), candidate.row},
+        });
+
+        if (recentActivities.size() >= limit) {
+            break;
+        }
+    }
+
+    return recentActivities;
+}
+
+QVariantList ActivityListModel::buildNotificationPreviewData() const
+{
+    auto candidates = QVector<RecentActivityPreviewItem>{};
+    candidates.reserve(_finalList.size());
+
+    for (auto row = 0; row < _finalList.size(); ++row) {
+        const auto activity = _finalList.at(row);
+        if (activity.isNotificationPreviewCandidate()) {
+            candidates.push_back({row, activity});
+        }
+    }
+
+    std::stable_sort(candidates.begin(), candidates.end(), [](const auto &left, const auto &right) {
+        return left.activity._dateTime > right.activity._dateTime;
+    });
+
+    auto notifications = QVariantList{};
+    for (const auto &candidate : std::as_const(candidates)) {
+        const auto title = candidate.activity.compactNotificationTitle();
+        if (title.isEmpty()) {
+            continue;
+        }
+
+        const auto modelIndex = index(candidate.row);
+        const auto actions = candidate.activity.notificationPreviewActions();
+        notifications.push_back(QVariantMap{
+            {QStringLiteral("title"), title},
+            {QStringLiteral("icon"), data(modelIndex, IconRole).toString()},
+            {QStringLiteral("systemIconName"), candidate.activity.recentActivitySystemIconName()},
+            {QStringLiteral("dateTime"), data(modelIndex, PointInTimeRole).toString()},
+            {QStringLiteral("activityIndex"), candidate.row},
+            {QStringLiteral("opensSettings"), candidate.activity._type == Activity::OpenSettingsNotificationType},
+            {QStringLiteral("canDismiss"), candidate.activity.isDismissableActivity()},
+            {QStringLiteral("actions"), actions},
+        });
+    }
+
+    return notifications;
+}
+
+void ActivityListModel::refreshPreviewData()
+{
+    const auto recentActivityPreviewData = buildRecentActivityPreviewData(5);
+    if (_recentActivityPreviewData != recentActivityPreviewData) {
+        _recentActivityPreviewData = recentActivityPreviewData;
+        emit recentActivityPreviewDataChanged();
+    }
+
+    const auto notificationPreviewData = buildNotificationPreviewData();
+    if (_notificationPreviewData != notificationPreviewData) {
+        _notificationPreviewData = notificationPreviewData;
+        emit notificationPreviewDataChanged();
+    }
+}
+
 bool ActivityListModel::canFetchMore(const QModelIndex &) const
 {
     // We need to be connected to be able to fetch more
-    if (_accountState && _accountState->isConnected() && Systray::instance()->isOpen()) {
+    if (_accountState && _accountState->isConnected() && Systray::instance()->isActivitySurfaceVisible()) {
         // If the fetching is reported to be done or we are currently fetching we can't fetch more
         if (!_doneFetching && !currentlyFetching()) {
             return true;
@@ -568,8 +697,9 @@ void ActivityListModel::addEntriesToActivityList(const ActivityList &activityLis
         }
     }
     endInsertRows();
-
     setHasSyncConflicts(!_conflictsList.isEmpty());
+    refreshPreviewData();
+    emit activityListChanged();
 }
 
 void ActivityListModel::accountStateHasChanged()
@@ -646,6 +776,7 @@ void ActivityListModel::removeActivityFromActivityList(int row)
 void ActivityListModel::removeActivityFromActivityList(const Activity &activity)
 {
     const auto index = _finalList.indexOf(activity);
+    const auto activityWasRemoved = index != -1;
     if (index != -1) {
         beginRemoveRows({}, index, index);
         _finalList.removeAt(index);
@@ -670,6 +801,12 @@ void ActivityListModel::removeActivityFromActivityList(const Activity &activity)
         if (notificationErrorsListIndex != -1) {
             _notificationErrorsLists.removeAt(notificationErrorsListIndex);
         }
+    }
+
+    if (activityWasRemoved) {
+        setHasSyncConflicts(!_conflictsList.isEmpty());
+        refreshPreviewData();
+        emit activityListChanged();
     }
 }
 
@@ -940,24 +1077,15 @@ QVariantList ActivityListModel::convertLinksToActionButtons(const Activity &acti
 {
     QVariantList customList;
 
-    for (int i = 0; i < activity._links.size() && static_cast<quint32>(i) <= maxActionButtons(); ++i) {
-        const auto activityLink = activity._links[i];
-
-        // Use the isDismissable model role to present custom dismiss button if needed
-        // Also don't show "View chat" for talk activities, default action will open chat anyway
-        const auto isUseCustomDeleteAction = activityLink._verb == "DELETE"
-            && activity._objectType != QStringLiteral("remote_share");
-        if (isUseCustomDeleteAction || (activityLink._verb == "WEB" && activity._objectType == "chat")) {
-            continue;
-        }
-
-        customList << ActivityListModel::convertLinkToActionButton(activityLink);
+    const auto &actionsList = activity.activityActionMetadata(maxActionButtons());
+    for (const auto &action : actionsList) {
+        customList << ActivityListModel::convertLinkToActionButton(action.link, action.actionIndex);
     }
 
     return customList;
 }
 
-QVariant ActivityListModel::convertLinkToActionButton(const OCC::ActivityLink &activityLink)
+QVariant ActivityListModel::convertLinkToActionButton(const OCC::ActivityLink &activityLink, const int actionIndex)
 {
     auto activityLinkCopy = activityLink;
 
@@ -970,7 +1098,15 @@ QVariant ActivityListModel::convertLinkToActionButton(const OCC::ActivityLink &a
         activityLinkCopy._imageSourceHovered = QString(replyButtonPath + "/");
     }
 
-    return QVariant::fromValue(activityLinkCopy);
+    return QVariantMap{
+        {u"actionIndex"_s, actionIndex},
+        {u"imageSource"_s, activityLinkCopy._imageSource},
+        {u"imageSourceHovered"_s, activityLinkCopy._imageSourceHovered},
+        {u"label"_s, activityLinkCopy._label},
+        {u"link"_s, activityLinkCopy._link},
+        {u"primary"_s, activityLinkCopy._primary},
+        {u"verb"_s, QString::fromUtf8(activityLinkCopy._verb.constData(), activityLinkCopy._verb.size())},
+    };
 }
 
 QVariantList ActivityListModel::convertLinksToMenuEntries(const Activity &activity)
@@ -1033,6 +1169,9 @@ void ActivityListModel::slotRemoveAccount()
     _doneFetching = false;
     _currentItem = 0;
     _showMoreActivitiesAvailableEntry = false;
+    setHasSyncConflicts(false);
+    refreshPreviewData();
+    emit activityListChanged();
 }
 
 void ActivityListModel::setReplyMessageSent(const int activityIndex, const QString &message)

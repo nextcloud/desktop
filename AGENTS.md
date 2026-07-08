@@ -74,6 +74,17 @@ See [HowToApplyALicense.md](https://github.com/nextcloud/server/blob/master/cont
 
 Avoid creating source files that implement multiple types; instead, place each type in its own dedicated source file.
 
+### Documentation comments
+
+Documentation must be trustworthy: only write a comment you can back with the implementation in front of you. **A wrong or overreaching comment is worse than none** - when a behaviour is unclear or you cannot state it with confidence, leave it undocumented. This is the same verifiability rule that governs commit messages and PR text, applied to code comments.
+
+- **Style.** Use Doxygen `/** @brief ... */` blocks for types and their members - the established convention across this codebase. Use a trailing `//!< ...` for a single instance variable or field, and plain `//` for free helper functions and file-local statics.
+- **Document the type and each declared member.** For a type, state what it is and how it behaves. For each public property, method or protocol callback, state what it does. Add `@param` entries only where the meaning is not obvious from the name - in particular, spell out what `nil`, `NO`, an empty string or `0` does, and which event triggers a callback block.
+- **Do not overreach.** Describe what the code actually does, not what it looks like it should do. Avoid absolute claims the implementation does not guarantee - for example, do not write "keeps the window on screen" for a helper that only best-effort clamps and can still overflow, or "loads a remote URL" for one that only reads local files.
+- **Overload sets.** When a type has many overloaded initializers or methods that funnel into one, fully document the designated one (with its `@param` list) and simply mark the rest as convenience overloads rather than repeating the text.
+- **Comment members selectively.** Document instance variables and file-local statics whose purpose is not obvious from their name and type; leave self-explanatory ones (a backing `_stack`, a counter) uncommented to avoid noise. In Objective-C(++), instance variables live in the `@implementation` block, so their comments belong there, not in the header.
+- **Verify before you trust it.** Re-read the implementation and confirm every comment is literally true before considering the work done.
+
 ## Commit and Pull Request Guidelines
 
 ### Commit format
@@ -147,6 +158,18 @@ The following details are important and only relevant when working on the deskto
 - To abstract macOS and Objective-C specific APIs, prefer to use Qt and C++ types in public identifiers declared in headers. Use and prefer Objective-C or native macOS features only internally in implementations. This rule applies only to the code in `src/gui/macOS`, though.
 - When writing code in Swift, respect strict concurrency rules and Swift 6 compatibility.
 - Manage memory explicitly and manually when writing or updating code located under `./src`. For example, do not use features like `__weak` from automatic reference counting in Objective-C because ARC is not used in this project.
+
+#### Code organization
+
+These conventions apply to the C++, Objective-C and Objective-C++ (and their Qt-facing) code under `./src`, and macOS code under `src/gui/macOS` in particular. Follow them both when adding code and when a file has grown into an unmaintainable catch-all that must be split.
+
+- **One type per file.** Each Objective-C class or C++ type gets its own dedicated header and implementation pair (for example `ncactionrow.h` + `ncactionrow.mm`). Never accumulate several classes in a single translation unit. Objective-C class file names are the class name lowercased, without the `NC`/type prefix stripped (`NCActionRow` → `ncactionrow`).
+- **Keep the public boundary C++/Qt-only.** The seam between a macOS module and the rest of the app must expose only C++ and Qt types (for example the `showMacOSTrayPopup(const QRect &)` entry point declared in `systray.h`). *Internal* Objective-C++ headers, by contrast, may freely declare Objective-C classes and expose `NS*` types — see `fileproviderxpc_mac_utils.h` — because their only consumers are other Objective-C++ files in the same module.
+- **Group a feature's files in a subdirectory.** When a split produces more than a handful of files, place them in a feature subdirectory (for example `src/gui/macOS/trayaccountpopup/`), mirroring how `src/gui` already uses `tray/`, `wizard/` and `integration/`.
+- **Collect cohesive free helpers and constants into clearly-scoped support files.** Shared free functions belong in a namespaced `*utils` header/implementation pair (for example `namespace OCC::Mac::TrayPopupViewUtils`, following the existing `OCC::Mac::FileProviderXPCUtils`); shared layout constants belong in a `*metrics` header. Lightweight declarations such as a single block alias or a constant do **not** each need their own file — the one-type-per-file rule targets classes, not aliases.
+- **Keep single-use helpers next to their sole user.** A file-static helper or cache used by exactly one class stays in that class's implementation file rather than being promoted to a shared header.
+- **Objective-C instance variables live in the `@implementation` block**, not the header — this is the project's Objective-C equivalent of the PIMPL pattern and keeps a type's storage private to its implementation.
+- **Remove dead code as part of the move.** When reorganizing an existing file, drop functions and members that are defined but never referenced instead of carrying them along.
 
 #### Logging
 
