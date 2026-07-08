@@ -28,7 +28,6 @@ public:
         Switch,
         TextField,
         TextArea,
-        RecipientsField,
     };
     Q_ENUM(FieldTypes)
 
