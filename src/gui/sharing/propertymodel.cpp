@@ -15,7 +15,7 @@ using namespace OCC;
 using namespace OCC::Gui::Sharing;
 
 PropertyModel::PropertyModel(QObject *parent)
-    : QAbstractListModel{parent}
+    : AbstractShareModel{parent}
 {}
 
 int PropertyModel::rowCount(const QModelIndex &parent) const
@@ -100,17 +100,15 @@ QHash<int, QByteArray> PropertyModel::roleNames() const
     };
 };
 
-Share *PropertyModel::share() const
-{
-    return _share;
-}
-
 void PropertyModel::setShare(Share *share)
 {
-    if (_share == share) {
+    AbstractShareModel::setShare(share);
+    if (!_share) {
         return;
     }
 
-    _share = share;
-    Q_EMIT shareChanged();
+    connect(_share, &Share::propertiesChanged, this, [this]() -> void {
+        beginResetModel();
+        endResetModel();
+    });
 }
