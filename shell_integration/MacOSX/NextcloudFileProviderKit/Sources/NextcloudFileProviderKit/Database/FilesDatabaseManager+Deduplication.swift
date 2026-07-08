@@ -50,6 +50,17 @@ public extension FilesDatabaseManager {
             return []
         }
 
+        // A soft-deleted incoming row is a tombstone, not an authoritative live
+        // occupant of its logical address, so it must never evict a live sibling.
+        // A deletion is authoritative only about its own ocId; if another live row
+        // shares the (account, serverUrl, fileName) it is the current truth and
+        // must survive. Without this, persisting the tombstone of a stale ocId
+        // after an app "safe save" (create -> delete -> recreate, which rotates the
+        // ocId) soft-deletes the freshly recreated live file. (Ticket 96101301)
+        if incoming.deleted {
+            return []
+        }
+
         let incomingOcId = incoming.ocId
         let incomingAccount = incoming.account
         let incomingServerUrl = incoming.serverUrl

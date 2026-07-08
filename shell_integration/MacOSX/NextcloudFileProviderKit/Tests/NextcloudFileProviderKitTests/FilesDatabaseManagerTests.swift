@@ -1511,6 +1511,33 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertFalse(storedB.deleted, "Newly added row should not be deleted")
     }
 
+    func testDeletedIncomingDoesNotEvictLiveLogicalSibling() throws {
+        // Regression for ticket 96101301: an app "safe save" (create -> delete ->
+        // recreate) rotates the ocId, leaving a stale tombstone beside the live,
+        // server-confirmed row at the same logical path. Persisting that tombstone
+        // must NOT soft-delete the live sibling, or the freshly recreated file
+        // vanishes from Finder.
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+
+        // The live, server-confirmed row for the recreated file.
+        var live = SendableItemMetadata(ocId: "104", fileName: "TEST 1.pdf", account: account)
+        live.syncTime = Date(timeIntervalSince1970: 1000)
+        Self.dbManager.addItemMetadata(live)
+
+        // The tombstone of the stale ocId at the same logical address, being
+        // persisted by the working-set scan's deletion path with a bumped syncTime.
+        var tombstone = SendableItemMetadata(ocId: "99", fileName: "TEST 1.pdf", account: account)
+        tombstone.deleted = true
+        tombstone.syncTime = Date(timeIntervalSince1970: 2000)
+        Self.dbManager.addItemMetadata(tombstone)
+
+        let storedLive = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "104"))
+        XCTAssertFalse(storedLive.deleted, "A tombstone incoming must not soft-delete the live sibling")
+
+        let storedTombstone = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "99"))
+        XCTAssertTrue(storedTombstone.deleted, "The tombstone itself should remain recorded as deleted")
+    }
+
     func testAddItemMetadataSameOcIdSameLogicalPathIsNormalUpsert() throws {
         let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
 
