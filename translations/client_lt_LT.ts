@@ -2604,12 +2604,12 @@ Tai gali būti susiję su jūsų „OpenSSL“ bibliotekomis.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="95"/>
         <source>Complete your provider signup in your browser</source>
-        <translation type="unfinished"/>
+        <translation>Baikite paslaugų teikėjo registraciją naršyklėje.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="96"/>
         <source>Please complete the provider signup in your browser. After the completion, confirm to open the Nextcloud application popup in your browser.</source>
-        <translation type="unfinished"/>
+        <translation>Prašome užbaigti paslaugų teikėjo registraciją savo naršyklėje. Tai atlikę, patvirtinkite „Nextcloud“ programėlės iššokančiojo lango atvėrimą naršyklėje.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="252"/>
@@ -7137,12 +7137,12 @@ Serveris atsakė su klaida: %2</translation>
     <message>
         <location filename="../src/gui/urischemehandler.cpp" line="123"/>
         <source>Could not handle link</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko apdoroti nuorodos</translation>
     </message>
     <message>
         <location filename="../src/gui/urischemehandler.cpp" line="191"/>
         <source>Adding another account is not allowed in this client.</source>
-        <translation type="unfinished"/>
+        <translation>Šioje programėlėje neleidžiama pridėti kitos paskyros.</translation>
     </message>
 </context>
 <context>
