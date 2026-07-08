@@ -26,7 +26,8 @@ BasicControls.Button {
     implicitHeight: 30
 
     Accessible.role: Accessible.Button
-    Accessible.name: qsTr("%1, clears %2").arg(statusText).arg(clearAtText)
+    //: %1 is the status text and %2 is a time string.
+    Accessible.name: qsTr("%1, resets after %2").arg(statusText).arg(clearAtText)
 
     background: Rectangle {
         radius: 8
@@ -67,7 +68,7 @@ BasicControls.Button {
 
             EnforcedPlainTextLabel {
                 Layout.fillWidth: true
-                text: qsTr("- %1").arg(root.clearAtText)
+                text: "- " + root.clearAtText
                 color: Style.wizardSecondaryText
                 font.pixelSize: Style.pixelSize
                 horizontalAlignment: Text.AlignLeft
