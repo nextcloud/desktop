@@ -5,6 +5,8 @@ add_library(nextcloudGuiSharing STATIC)
 
 target_sources(nextcloudGuiSharing
   PRIVATE
+    abstractsharemodel.h
+    abstractsharemodel.cpp
     ocssharingjob.h
     ocssharingjob.cpp
     permission.h
@@ -15,6 +17,10 @@ target_sources(nextcloudGuiSharing
     property.cpp
     propertymodel.h
     propertymodel.cpp
+    recipient.h
+    recipient.cpp
+    recipientmodel.h
+    recipientmodel.cpp
     recipientsearchmodel.h
     recipientsearchmodel.cpp
     share.h
