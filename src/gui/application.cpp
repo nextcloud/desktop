@@ -392,8 +392,10 @@ Application::Application(int &argc, char **argv)
     connect(&_singleApp, &KDSingleApplication::messageReceived, this, &Application::slotParseMessage);
 #endif
 
+    // create accounts and folders from a legacy desktop client or from the current config file
+    setupAccountsAndFolders();
+
     if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
-        _folderManager.reset(new FolderMan);
         AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
         _quitInstance = true;
     }
@@ -401,9 +403,6 @@ Application::Application(int &argc, char **argv)
     if (_quitInstance) {
         return;
     }
-
-    // create accounts and folders from a legacy desktop client or from the current config file
-    setupAccountsAndFolders();
 
     setQuitOnLastWindowClosed(false);
 
