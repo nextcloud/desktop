@@ -108,8 +108,10 @@ Systray::Systray()
         this, [this]{ showWindow(WindowPosition::Center); });
 #endif
 
-    connect(FolderMan::instance(), &FolderMan::folderListChanged, this, &Systray::slotSyncFoldersChanged);
-    slotSyncFoldersChanged(FolderMan::instance()->map());
+    if (FolderMan::instance()) {
+        connect(FolderMan::instance(), &FolderMan::folderListChanged, this, &Systray::slotSyncFoldersChanged);
+        slotSyncFoldersChanged(FolderMan::instance()->map());
+    }
 }
 
 void Systray::create()
