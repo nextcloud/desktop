@@ -154,6 +154,7 @@ public slots:
     void showQMLWindow();
     void showActivitiesWindow(int userIndex = -1);
     void showAssistantWindow(int userIndex = -1);
+    void showSearchWindow(int userIndex = -1);
     void showUserStatusWindow(int userIndex);
 
     void setSyncIsPaused(const bool syncIsPaused);
@@ -222,6 +223,7 @@ private:
     QPointer<QMenu> _contextMenu;
     QHash<QString, QPointer<QQuickWindow>> _activitiesWindows;
     QHash<QString, QPointer<QQuickWindow>> _assistantWindows;
+    QHash<QString, QPointer<QQuickWindow>> _searchWindows;
     QPointer<QQuickWindow> _userStatusWindow;
 
     AccessManagerFactory _accessManagerFactory;

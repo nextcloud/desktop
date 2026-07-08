@@ -10,6 +10,7 @@
 #include "config.h"
 #include "common/utility.h"
 #include "tray/svgimageprovider.h"
+#include "tray/unifiedsearchresultslistmodel.h"
 #include "tray/usermodel.h"
 #include "wheelhandler.h"
 #include "tray/trayimageprovider.h"
@@ -381,6 +382,82 @@ void Systray::showAssistantWindow(int userIndex)
 
     connect(window, &QObject::destroyed, this, [this, windowKey] {
         _assistantWindows.remove(windowKey);
+    });
+
+    positionWindowAtScreenCenter(window);
+    window->show();
+    window->raise();
+    window->requestActivate();
+}
+
+void Systray::showSearchWindow(int userIndex)
+{
+    const auto userModel = UserModel::instance();
+    if (!userModel) {
+        return;
+    }
+
+    const auto targetUserId = userIndex >= 0 ? userIndex : userModel->currentUserId();
+    const auto user = userModel->user(targetUserId);
+    if (!user) {
+        qCWarning(lcSystray) << "Invalid user index for search window:" << targetUserId;
+        return;
+    }
+
+    hideWindow();
+
+    if (!_trayEngine) {
+        qCWarning(lcSystray) << "Could not open search window as no tray engine was available";
+        return;
+    }
+
+    const auto windowKey = user->account()->id();
+
+    if (const auto existingWindow = _searchWindows.value(windowKey)) {
+        positionWindowAtScreenCenter(existingWindow.data());
+        existingWindow->show();
+        existingWindow->raise();
+        existingWindow->requestActivate();
+        return;
+    }
+
+    const QVariantMap initialProperties{
+        {"userIndex", targetUserId},
+        {"currentUser", QVariant::fromValue(user)},
+        {"searchModel", QVariant::fromValue(user->getUnifiedSearchResultsListModel())},
+    };
+    QQmlComponent searchWindowComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/SearchWindow.qml"));
+
+    if (searchWindowComponent.isError()) {
+        qCWarning(lcSystray) << searchWindowComponent.errorString();
+        qCWarning(lcSystray) << searchWindowComponent.errors();
+        return;
+    }
+
+    const auto createdObject = searchWindowComponent.createWithInitialProperties(initialProperties);
+    const auto window = qobject_cast<QQuickWindow *>(createdObject);
+    if (!window) {
+        qCWarning(lcSystray) << "Search window resulted in creation of object that was not a window!";
+        if (createdObject) {
+            createdObject->deleteLater();
+        }
+        return;
+    }
+
+    _searchWindows.insert(windowKey, window);
+    window->setIcon(Theme::instance()->applicationIcon());
+
+#ifdef Q_OS_MACOS
+    auto *fgbg = new ForegroundBackground(this);
+    window->installEventFilter(fgbg);
+#endif
+
+#if defined(Q_OS_MACOS)
+    configureMacOSExpandedQuickWindow(window);
+#endif
+
+    connect(window, &QObject::destroyed, this, [this, windowKey] {
+        _searchWindows.remove(windowKey);
     });
 
     positionWindowAtScreenCenter(window);
