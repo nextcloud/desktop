@@ -140,3 +140,19 @@ void OcsSharingJob::setPermission(const QString &permissionClass, bool enabled)
 
     start();
 }
+
+void OcsSharingJob::setPermissionPreset(const QString &permissionPreset)
+{
+    if (_shareId.isEmpty()) {
+        qCWarning(lcOcsSharingJob) << "setPermissionPreset called without a shareId, not starting job";
+        Q_EMIT jobFinished({}, 0);
+        return;
+    }
+
+    setPath(SHARING_V1_BASE % "/share/%1/permission/preset"_L1.arg(_shareId));
+    setVerb("PUT"_ba);
+
+    addParam("permissionPreset"_L1, permissionPreset);
+
+    start();
+}
