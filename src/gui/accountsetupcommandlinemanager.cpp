@@ -83,7 +83,7 @@ bool AccountSetupCommandLineManager::parseCommandlineOption(const QString &optio
 
 bool AccountSetupCommandLineManager::isCommandLineParsed() const
 {
-    return !_appPassword.isEmpty() && !_userId.isEmpty() && _serverUrl.isValid();
+    return !_userId.isEmpty() && _serverUrl.isValid();
 }
 
 bool AccountSetupCommandLineManager::isVfsEnabled() const
