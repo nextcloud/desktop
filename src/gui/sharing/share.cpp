@@ -33,8 +33,10 @@ void Share::updateFromJson(const QJsonDocument &json)
     const auto data = json.object().value("ocs"_L1).toObject().value("data"_L1).toObject();
     setId(data.value("id"_L1).toString());
     setState(data.value("state"_L1).toString());
+    setPermissionPreset(data.value("permission_preset"_L1).toString());
     setPermissions(data.value("permissions"_L1).toArray());
     setProperties(data.value("properties"_L1).toArray());
+    setRecipients(data.value("recipients"_L1).toArray());
 }
 
 Share::Share(const AccountPtr &account)
@@ -51,6 +53,11 @@ Share::ShareState Share::state() const
     return _state;
 }
 
+QString Share::permissionPreset() const
+{
+    return _permissionPreset;
+}
+
 const QList<QPointer<Permission>> &Share::permissions() const
 {
     return _permissions;
@@ -59,6 +66,11 @@ const QList<QPointer<Permission>> &Share::permissions() const
 const QList<QPointer<Property>> &Share::properties() const
 {
     return _properties;
+}
+
+const QList<QPointer<Recipient>> &Share::recipients() const
+{
+    return _recipients;
 }
 
 void Share::setId(const QString &id)
@@ -87,6 +99,16 @@ void Share::setState(const QString &state)
 
     _state = newState;
     Q_EMIT stateChanged();
+}
+
+void Share::setPermissionPreset(const QString &permissionPreset)
+{
+    if (_permissionPreset == permissionPreset) {
+        return;
+    }
+
+    _permissionPreset = permissionPreset;
+    Q_EMIT permissionPresetChanged();
 }
 
 void Share::setPermissions(const QJsonArray &permissions)
@@ -127,4 +149,24 @@ void Share::setProperties(const QJsonArray &properties)
     }
 
     Q_EMIT propertiesChanged();
+}
+
+void Share::setRecipients(const QJsonArray &recipients)
+{
+    _recipients.clear();
+
+    if (recipients.isEmpty()) {
+        Q_EMIT recipientsChanged();
+        return;
+    }
+
+    for (const auto &recipientValue : recipients) {
+        if (!recipientValue.isObject()) {
+            continue;
+        }
+        const auto recipientObject = recipientValue.toObject();
+        _recipients.append(Recipient::fromJson(recipientObject));
+    }
+
+    Q_EMIT recipientsChanged();
 }

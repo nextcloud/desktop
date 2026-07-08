@@ -19,7 +19,7 @@ Page {
     property string localPath: ""
     property string shortLocalPath: ""
     required property SharingController sharingController
-    required property list<string> recipientTypes
+    property bool isLinkShare: false
 
     title: qsTr("Share \"%1\"").arg(root.shortLocalPath)
 
@@ -40,6 +40,9 @@ Page {
                 RecipientSearchField {
                     id: searchField
                     Layout.fillWidth: true
+
+                    visible: !root.isLinkShare
+
                     account: root.sharingController.account
 
                     onRecipientSelected: (recipientType, recipientValue) => {
