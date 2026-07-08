@@ -56,6 +56,8 @@ Page {
                     ]
                     textRole: "text"
                     valueRole: "preset"
+
+                    // value: root.sharingController.share.permissionPreset
                 }
 
                 Repeater {
@@ -78,12 +80,11 @@ Page {
                                 Layout.fillWidth: true
                             }
                             Switch {
-                                Component.onCompleted: checked = model.enabled ?? false
+                                checked: model.enabled
                                 onCheckedChanged: {
                                     if (model.enabled === checked) {
                                         return;
                                     }
-                                    // model.enabled = checked
                                     root.sharingController.setPermission(model.className, checked)
                                 }
                             }

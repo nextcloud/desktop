@@ -77,7 +77,7 @@ void OcsJob::start()
     auto *buffer = new QBuffer;
 
     QUrlQuery queryItems;
-    if (_verb == "GET") {
+    if (_verb == "GET" || _verb == "DELETE") {
         queryItems = percentEncodeQueryItems(_params);
     } else if (_verb == "POST" || _verb == "PUT") {
         // Url encode the _postParams and put them in a buffer.

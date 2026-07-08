@@ -167,12 +167,6 @@ ApplicationWindow {
                 id: viewInvitedPeople
                 text: qsTr("Invited people")
 
-                readonly property list<string> recipientTypes: [
-                    // TODO: this won't be hardcoded in the future
-                    "OC\\Core\\Sharing\\RecipientType\\UserShareRecipientType",
-                    "OC\\Core\\Sharing\\RecipientType\\GroupShareRecipientType",
-                ]
-
                 checkable: true
                 checked: true
                 ButtonGroup.group: shareType
@@ -184,17 +178,11 @@ ApplicationWindow {
                 id: viewAnyone
                 text: qsTr("Anyone")
 
-                readonly property list<string> recipientTypes: [
-                    // TODO: this won't be hardcoded in the future
-                    "OC\\Core\\Sharing\\RecipientType\\TokenShareRecipientType",
-                ]
-
                 checkable: true
                 ButtonGroup.group: shareType
-                enabled: false // TODO: figure out why link shares don't work
 
                 onCheckedChanged: {
-                    const parameters = ["OC\\Core\\Sharing\\Recipient\\TokenShareRecipientType", qsTr("Link share")]
+                    const parameters = ["OC\\Core\\Sharing\\Recipient\\TokenShareRecipientType", "somevaluethatislongerthan32characters12345678"]
                     if (checked) {
                         sharingController.addRecipient(...parameters)
                         return
