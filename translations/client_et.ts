@@ -2604,12 +2604,12 @@ See võib olla seotud kasutatavate OpenSSl-i teekidega.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="95"/>
         <source>Complete your provider signup in your browser</source>
-        <translation type="unfinished"/>
+        <translation>Lõpeta oma teenusepakkujaga liitumine oma veebibrauseris</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="96"/>
         <source>Please complete the provider signup in your browser. After the completion, confirm to open the Nextcloud application popup in your browser.</source>
-        <translation type="unfinished"/>
+        <translation>Palun lõpeta teenusepakkujaga liitumine oma veebibrauseris. Peale seda kinnita brauseris Nextcloudi rakenduse hüpikakna avamine.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="252"/>
@@ -3062,7 +3062,7 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="156"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation>Sünkroniseeritava kausta lisamiseks kliki sellele nupule.</translation>
+        <translation>Sünkroonitava kausta lisamiseks klõpsa seda nuppu.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="169"/>
@@ -5529,7 +5529,7 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/gui/sslbutton.cpp" line="166"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation>Ühendus on krüpteeritud kasutades %1 bitt %2
+        <translation>Ühendus on krüptitud kasutades %1-bitist %2
 </translation>
     </message>
     <message>
@@ -6375,7 +6375,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="401"/>
         <source>Account %1: %2</source>
-        <translation>Konto %1: %2</translation>
+        <translation>Kasutajakonto %1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
@@ -7135,12 +7135,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/urischemehandler.cpp" line="123"/>
         <source>Could not handle link</source>
-        <translation type="unfinished"/>
+        <translation>Lingi käsitlemine ei õnnestu</translation>
     </message>
     <message>
         <location filename="../src/gui/urischemehandler.cpp" line="191"/>
         <source>Adding another account is not allowed in this client.</source>
-        <translation type="unfinished"/>
+        <translation>Selles kliendis pole teise kasutajakonto lisamine lubatud.</translation>
     </message>
 </context>
 <context>
