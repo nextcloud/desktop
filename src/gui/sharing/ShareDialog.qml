@@ -24,8 +24,6 @@ ApplicationWindow {
 
     readonly property int windowRadius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
 
-    property list<string> recipientTypes: shareType.checkedButton?.recipientTypes || []
-
     ButtonGroup {
         id: shareType
     }
@@ -207,6 +205,6 @@ ApplicationWindow {
         sharingController: sharingController
         localPath: root.localPath
         shortLocalPath: root.shortLocalPath
-        recipientTypes: root.recipientTypes
+        isLinkShare: viewAnyone.checked
     }
 }
