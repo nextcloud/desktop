@@ -106,9 +106,12 @@ Page {
                 //     sourceModel: root.sharingModel
                 //     recipientTypes: root.recipientTypes
                 // }
+                model: PropertyModel {
+                    // TODO: only show properties with prio=1
+                    share: root.sharingController.share
+                }
 
                 delegate: FieldDelegate {
-                    account: root.account
                     width: propertyList.contentItem.width
                 }
             }
@@ -118,14 +121,14 @@ Page {
             Button {
                 Layout.fillWidth: true
 
-                text: qsTr("Copy link")
+                text: root.isLinkShare ? qsTr("Copy public link") : qsTr("Copy private link")
             }
             Button {
                 Layout.fillWidth: true
 
                 text: qsTr("Send")
-                visible: root.recipientTypes.length > 1
-                enabled: root.recipientTypes.length > 1
+                visible: !root.isLinkShare
+                enabled: !root.isLinkShare
             }
         }
     }
