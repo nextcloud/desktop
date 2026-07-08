@@ -277,9 +277,10 @@ void EncryptedFolderMetadataHandler::unlockFolder(const UnlockFolderWithResult r
     unlockJob->start();
 }
 
-void EncryptedFolderMetadataHandler::repairMetadata()
+void EncryptedFolderMetadataHandler::repairMetadata(const QList<FolderMetadata::DatabaseEncryptedFile> &childItems,
+                                                    OwncloudPropagator *propagator)
 {
-    _folderMetadata->repair();
+    _folderMetadata->repair(childItems, propagator);
 }
 
 void EncryptedFolderMetadataHandler::startUploadMetadata()

@@ -252,6 +252,10 @@ public:
     /// the encrypted name on the server.
     QString _encryptedFileName;
 
+    QByteArray _e2eFileEncryptionKey;
+    QByteArray _initializationVector;
+    QByteArray _authenticationTag;
+
     ItemType _type BITFIELD(3);
     Direction _direction BITFIELD(3);
     bool _serverHasIgnoredFiles BITFIELD(1);

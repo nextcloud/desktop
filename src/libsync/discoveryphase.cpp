@@ -717,6 +717,9 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
                 result._isE2eEncrypted = true;
                 result.e2eMangledName = _subPath.mid(1) + u'/' + result.name;
                 result.name = encryptedFileInfo->originalFilename;
+                result._e2eFileEncryptionKey = encryptedFileInfo->encryptionKey;
+                result._initializationVector = encryptedFileInfo->initializationVector;
+                result._authenticationTag = encryptedFileInfo->authenticationTag;
             }
             return result;
         });
