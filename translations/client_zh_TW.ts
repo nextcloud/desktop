@@ -95,6 +95,19 @@
     </message>
 </context>
 <context>
+    <name>ActivitiesWindow</name>
+    <message>
+        <location filename="../src/gui/ActivitiesWindow.qml" line="19"/>
+        <source>Activities</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/ActivitiesWindow.qml" line="126"/>
+        <source>New activities</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ActivityItem</name>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="29"/>
@@ -128,6 +141,11 @@
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="229"/>
         <source>Dismiss</source>
         <translation>忽略</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/activitydata.cpp" line="303"/>
+        <source>Confirm</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -180,6 +198,46 @@
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="90"/>
         <source>Done</source>
         <translation>完成</translation>
+    </message>
+</context>
+<context>
+    <name>AssistantWindow</name>
+    <message>
+        <location filename="../src/gui/AssistantWindow.qml" line="19"/>
+        <source>Nextcloud Assistant</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/AssistantWindow.qml" line="91"/>
+        <location filename="../src/gui/AssistantWindow.qml" line="95"/>
+        <source>Start new conversation?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/AssistantWindow.qml" line="104"/>
+        <source>This will clear the existing conversation.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/AssistantWindow.qml" line="119"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/AssistantWindow.qml" line="125"/>
+        <location filename="../src/gui/AssistantWindow.qml" line="245"/>
+        <source>New conversation</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/AssistantWindow.qml" line="236"/>
+        <source>Ask Assistant …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/AssistantWindow.qml" line="252"/>
+        <source>Send</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -459,9 +517,19 @@
 <context>
     <name>EmojiPicker</name>
     <message>
+        <location filename="../src/gui/EmojiPicker.qml" line="71"/>
+        <source>Search emoji</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/EmojiPicker.qml" line="136"/>
         <source>No recent emojis</source>
         <translation>無最近的表情符號</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/EmojiPicker.qml" line="201"/>
+        <source>No emojis found</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -678,6 +746,11 @@
         <location filename="../src/gui/tray/MainWindow.qml" line="841"/>
         <source>New activities</source>
         <translation>新活動</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="741"/>
+        <source>Open Assistant</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1278,17 +1351,17 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::AccountSetupFromCommandLineJob</name>
     <message>
-        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="141"/>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="149"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>對伺服器的已認證請求會被重新導向至「%1」。URL 不良，伺服器組態設定有誤。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="151"/>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="159"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>伺服器禁止存取。為了驗證您是否有適當的存取權，&lt;a href=&quot;%1&quot;&gt;請點擊此處&lt;/a&gt;來使用您的瀏覽器存取服務。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="159"/>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="167"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>伺服器回應 WebDAV 認證請求無效</translation>
     </message>
@@ -1699,34 +1772,34 @@ This action will abort any currently running synchronization.</source>
         <translation>繼續</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="617"/>
+        <location filename="../src/gui/application.cpp" line="622"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 個帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="618"/>
+        <location filename="../src/gui/application.cpp" line="623"/>
         <source>1 account</source>
         <translation>1 個帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="620"/>
+        <location filename="../src/gui/application.cpp" line="625"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 個資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="621"/>
+        <location filename="../src/gui/application.cpp" line="626"/>
         <source>1 folder</source>
         <translation>1 個資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="623"/>
+        <location filename="../src/gui/application.cpp" line="628"/>
         <source>Legacy import</source>
         <translation>舊版匯入</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="624"/>
+        <location filename="../src/gui/application.cpp" line="629"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1734,12 +1807,12 @@ This action will abort any currently running synchronization.</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="744"/>
+        <location filename="../src/gui/application.cpp" line="749"/>
         <source>Error accessing the configuration file</source>
         <translation>存取組態設定檔時發生錯誤</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="745"/>
+        <location filename="../src/gui/application.cpp" line="750"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>存取位於 %1 的組態設定檔時發生錯誤。請確保您的系統帳號可以存取該檔案。</translation>
     </message>
@@ -2605,12 +2678,12 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="95"/>
         <source>Complete your provider signup in your browser</source>
-        <translation type="unfinished"/>
+        <translation>在瀏覽器中完成提供者註冊</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="96"/>
         <source>Please complete the provider signup in your browser. After the completion, confirm to open the Nextcloud application popup in your browser.</source>
-        <translation type="unfinished"/>
+        <translation>請在您的瀏覽器中完成提供者註冊。完成後，請確認在瀏覽器中開啟 Nextcloud 應用程式的彈出視窗。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="252"/>
@@ -5820,52 +5893,57 @@ Server replied with error: %2</source>
         <translation>下載</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="259"/>
+        <location filename="../src/gui/systray.cpp" line="261"/>
         <source>Add account</source>
         <translation>新增帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="261"/>
+        <location filename="../src/gui/systray.cpp" line="263"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
         <translation>開啟 %1 桌面</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="264"/>
-        <location filename="../src/gui/systray.cpp" line="274"/>
+        <location filename="../src/gui/systray.cpp" line="266"/>
+        <location filename="../src/gui/systray.cpp" line="276"/>
         <source>Pause sync</source>
         <translation>暫停同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="265"/>
-        <location filename="../src/gui/systray.cpp" line="280"/>
+        <location filename="../src/gui/systray.cpp" line="267"/>
+        <location filename="../src/gui/systray.cpp" line="282"/>
         <source>Resume sync</source>
         <translation>繼續同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="266"/>
+        <location filename="../src/gui/systray.cpp" line="268"/>
         <source>Settings</source>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="267"/>
+        <location filename="../src/gui/systray.cpp" line="269"/>
         <source>Help</source>
         <translation>說明</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="268"/>
+        <location filename="../src/gui/systray.cpp" line="270"/>
         <source>Exit %1</source>
         <translation>離開 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="274"/>
+        <location filename="../src/gui/systray.cpp" line="276"/>
         <source>Pause sync for all</source>
         <translation>暫停所有同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="280"/>
+        <location filename="../src/gui/systray.cpp" line="282"/>
         <source>Resume sync for all</source>
         <translation>恢復所有同步</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="827"/>
+        <source>Quit</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -6023,6 +6101,11 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/usermodel.cpp" line="1375"/>
         <source>Rename file</source>
         <translation>重新命名檔案</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1690"/>
+        <source>Sync conflicts</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1532"/>
@@ -7011,6 +7094,46 @@ Server replied with error: %2</source>
 <context>
     <name>TrayAccountPopup</name>
     <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="578"/>
+        <source>No apps available</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="618"/>
+        <source>Notifications</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="640"/>
+        <source>Open</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="653"/>
+        <source>Recent activity</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="660"/>
+        <source>No recent activity</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="678"/>
+        <source>More activity…</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="709"/>
+        <source>Resolve: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="716"/>
+        <source>User status</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/TrayAccountPopup.qml" line="216"/>
         <source>Add account</source>
         <translation>新增帳號</translation>
@@ -7058,6 +7181,11 @@ Server replied with error: %2</source>
         <source>User group and local folders menu</source>
         <translation>使用者群組與本機資料夾選單</translation>
     </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="732"/>
+        <source>Local folder</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>TrayWindowHeader</name>
@@ -7075,6 +7203,11 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="142"/>
         <source>Open %1 in browser</source>
         <translation>在瀏覽器中開啟 %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="749"/>
+        <source>Apps</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -7138,12 +7271,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/urischemehandler.cpp" line="123"/>
         <source>Could not handle link</source>
-        <translation type="unfinished"/>
+        <translation>無法處理連結</translation>
     </message>
     <message>
         <location filename="../src/gui/urischemehandler.cpp" line="191"/>
         <source>Adding another account is not allowed in this client.</source>
-        <translation type="unfinished"/>
+        <translation>此客戶端不允許新增其他帳號。</translation>
     </message>
 </context>
 <context>
@@ -7276,6 +7409,101 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
+    <name>UserStatusWindow</name>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="22"/>
+        <source>Online status</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="99"/>
+        <source>Online</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="108"/>
+        <source>Away</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="118"/>
+        <source>Busy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="127"/>
+        <source>Do not disturb</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="128"/>
+        <source>Mute all notifications</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="139"/>
+        <source>Invisible</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="140"/>
+        <source>Appear offline</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="156"/>
+        <source>Status message</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="182"/>
+        <source>Choose emoji</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="204"/>
+        <source>What is your status?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="290"/>
+        <location filename="../src/gui/UserStatusWindow.qml" line="311"/>
+        <source>Clear status after</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="343"/>
+        <source>Clear status message</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindow.qml" line="354"/>
+        <source>Set status message</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>UserStatusWindowPredefinedStatusRow</name>
+    <message>
+        <location filename="../src/gui/UserStatusWindowPredefinedStatusRow.qml" line="29"/>
+        <source>%1, clears %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusWindowPredefinedStatusRow.qml" line="70"/>
+        <source>- %1</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>UserStatusWindowStatusRow</name>
+    <message>
+        <location filename="../src/gui/UserStatusWindowStatusRow.qml" line="28"/>
+        <source>%1, %2</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>Utility</name>
     <message>
         <location filename="../src/common/utility.cpp" line="107"/>
@@ -7349,6 +7577,14 @@ Server replied with error: %2</source>
         <location filename="../src/common/checksums.cpp" line="298"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
         <translation>下載的檔案與校驗檢查碼不相符，將會還原。「%1」!=「%2」</translation>
+    </message>
+</context>
+<context>
+    <name>WindowAccountHeader</name>
+    <message>
+        <location filename="../src/gui/WindowAccountHeader.qml" line="63"/>
+        <source>Account avatar</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
