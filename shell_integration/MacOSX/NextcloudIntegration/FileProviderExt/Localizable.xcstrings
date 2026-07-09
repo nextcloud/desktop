@@ -47,6 +47,12 @@
             "value" : "Luba automaatselt vabastada andmeruumi"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "آزادسازی خودکار فضا"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -179,6 +185,12 @@
             "value" : "Jäta allalaaditu alati alles"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "همیشه نگه‌داشتن فایل دانلودشده"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -309,6 +321,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Autentimine ei õnnestunud vigase kasutajanime või salasõna tõttu"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "احراز هویت ناموفق بود؛ اطلاعات ورود معتبر نیست."
           }
         },
         "fr" : {
@@ -506,7 +524,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "کپی کردن پیوند داخلی"
+            "value" : "کپی لینک داخلی"
           }
         },
         "fi_FI" : {
@@ -573,12 +591,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "内部リンクをコピー"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Copy internal link"
           }
         },
         "kab" : {
@@ -866,7 +878,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "اقدامات فایل"
+            "value" : "عملیات فایل"
           }
         },
         "fi_FI" : {
@@ -939,12 +951,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "파일 동작"
-          }
-        },
-        "lo" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "File actions"
           }
         },
         "lt_LT" : {
@@ -1547,6 +1553,12 @@
             "value" : "Kasutajakonto teave pole saadaval"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اطلاعات حساب کاربری در دسترس نیست."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1683,6 +1695,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tekkis võrguühenduse viga."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "خطا در اتصال به شبکه."
           }
         },
         "fr" : {
