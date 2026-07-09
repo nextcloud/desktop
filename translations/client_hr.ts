@@ -1770,34 +1770,34 @@ Ova će radnja prekinuti bilo koju trenutačnu sinkronizaciju.</translation>
         <translation>Nastavi</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="622"/>
+        <location filename="../src/gui/application.cpp" line="621"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 računa</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="623"/>
+        <location filename="../src/gui/application.cpp" line="622"/>
         <source>1 account</source>
         <translation>1 račun</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="625"/>
+        <location filename="../src/gui/application.cpp" line="624"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 mapa</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="626"/>
+        <location filename="../src/gui/application.cpp" line="625"/>
         <source>1 folder</source>
         <translation>1 mapa</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="628"/>
+        <location filename="../src/gui/application.cpp" line="627"/>
         <source>Legacy import</source>
         <translation>Uvoz iz starog klijenta</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="629"/>
+        <location filename="../src/gui/application.cpp" line="628"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1805,12 +1805,12 @@ Ova će radnja prekinuti bilo koju trenutačnu sinkronizaciju.</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="749"/>
+        <location filename="../src/gui/application.cpp" line="748"/>
         <source>Error accessing the configuration file</source>
         <translation>Pogreška pri pristupanju konfiguracijskoj datoteci</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="750"/>
+        <location filename="../src/gui/application.cpp" line="749"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Došlo je do pogreške pri pristupu konfiguracijskoj datoteci na %1. Provjerite može li sustavni račun pristupiti toj datoteci.</translation>
     </message>
