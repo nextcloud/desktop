@@ -54,6 +54,7 @@ void GetAvailableGovernanceLabels::start()
     ocsGovernanceJob()->setMethod("GET");
 
     ocsGovernanceJob()->start();
+    Q_EMIT started();
 }
 
 void GetAvailableGovernanceLabels::jobDone(QJsonDocument reply, [[maybe_unused]] int statusCode)

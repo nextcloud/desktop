@@ -46,6 +46,7 @@ void ApplyGovernanceLabel::start()
     ocsGovernanceJob()->setMethod("POST");
 
     ocsGovernanceJob()->start();
+    Q_EMIT started();
 }
 
 void ApplyGovernanceLabel::start(const QString &labelId)
