@@ -2,64 +2,64 @@
 <context>
     <name>AccountWizardWindow</name>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="162"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="160"/>
         <source>Secure connection failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="165"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="163"/>
         <source>Connect to %1?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="175"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="173"/>
         <source>The secure connection failed. You can retry without encryption, or add a client certificate and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="176"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="174"/>
         <source>The secure connection failed. You can add a client certificate and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="197"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="195"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="266"/>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="268"/>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="270"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="207"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="205"/>
         <source>Connect without TLS</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="219"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="217"/>
         <source>Use client certificate</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="271"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="269"/>
         <source>Back</source>
         <translation>Tillbaka</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="285"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="283"/>
         <source>Set up later</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="296"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="294"/>
         <source>Advanced</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="305"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="303"/>
         <source>Sign up</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="315"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="313"/>
         <source>Self-host</source>
         <translation type="unfinished"/>
     </message>
@@ -69,27 +69,27 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="349"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="357"/>
         <source>Copy link</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="382"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="390"/>
         <source>Open</source>
         <translation>Öppna</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="384"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="392"/>
         <source>Connect</source>
         <translation>Anslut</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="386"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="394"/>
         <source>Done</source>
         <translation>Klar</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="388"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="396"/>
         <source>Log in</source>
         <translation>Logga in</translation>
     </message>
@@ -110,12 +110,12 @@
 <context>
     <name>ActivityItem</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="29"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="33"/>
         <source>Open %1 locally</source>
         <translation>Öppna %1 lokalt</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="35"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="39"/>
         <source>In %1</source>
         <translation>Om %1</translation>
     </message>
@@ -123,22 +123,22 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="183"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="185"/>
         <source>Open file details</source>
         <translation>Öppna filinformation</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="197"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="199"/>
         <source>File details</source>
         <translation>Filinformation</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="206"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
         <source>File actions</source>
         <translation>Filåtgärder</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="229"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="231"/>
         <source>Dismiss</source>
         <translation>Avfärda</translation>
     </message>
@@ -151,17 +151,17 @@
 <context>
     <name>ActivityList</name>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="55"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="56"/>
         <source>Activity list</source>
         <translation>Aktivitetslista</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="139"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="142"/>
         <source>Scroll to top</source>
         <translation>Bläddra till toppen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="168"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="171"/>
         <source>No activities yet</source>
         <translation>Inga aktiviteter än</translation>
     </message>
@@ -522,7 +522,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/EmojiPicker.qml" line="136"/>
+        <location filename="../src/gui/EmojiPicker.qml" line="201"/>
         <source>No recent emojis</source>
         <translation>Inga senaste emojier</translation>
     </message>
@@ -688,37 +688,37 @@
         <translation>Huvudinnehåll</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="330"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="327"/>
         <source>Issue with account %1</source>
         <translation>Problem med kontot %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="332"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="329"/>
         <source>Issues with several accounts</source>
         <translation>Problem med flera konton</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="413"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="410"/>
         <source>Start new conversation?</source>
         <translation>Starta ny konversation?</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="433"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="430"/>
         <source>New conversation</source>
         <translation>Ny konversation</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="437"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="434"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="458"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="455"/>
         <source>This will clear the existing conversation.</source>
         <translation>Detta kommer att rensa den befintliga konversationen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="503"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="500"/>
         <source>Ask Assistant …</source>
         <translation>Fråga assistenten …</translation>
     </message>
@@ -728,22 +728,22 @@
         <translation>Fråga assistenten...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="531"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="528"/>
         <source>Send assistant question</source>
         <translation>Skicka fråga till assistenten</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="552"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="549"/>
         <source>Start a new assistant chat</source>
         <translation>Starta en ny chatt med assistenten.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="777"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="774"/>
         <source>Unified search results list</source>
         <translation>Sammanlagda sökresultat</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="841"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="840"/>
         <source>New activities</source>
         <translation>Nya aktiviteter</translation>
     </message>
@@ -1625,17 +1625,17 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="487"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="616"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Öppna Aktivitetsappen för fler aktiviteter.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="507"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="636"/>
         <source>Fetching activities …</source>
         <translation>Hämtar aktiviteter ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="614"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="744"/>
         <source>Network error occurred: client will retry syncing.</source>
         <translation>Nätverksfel inträffade: klienten kommer att försöka synkronisera igen.</translation>
     </message>
@@ -5787,91 +5787,96 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>OCC::SyncStatusSummary</name>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="151"/>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="201"/>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="467"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="156"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="206"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="472"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="220"/>
         <source>Offline</source>
         <translation>Offline</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="154"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="159"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1706"/>
         <source>You need to accept the terms of service</source>
         <translation>Du behöver acceptera användarvillkoren</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="165"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1698"/>
         <source>Reauthorization required</source>
         <translation>Ny autentisering krävs</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="166"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="171"/>
         <source>Please grant access to your sync folders</source>
         <translation>Ge åtkomst till dina synkroniseringsmappar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="227"/>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="473"/>
-        <location filename="../src/gui/tray/syncstatussummary.h" line="98"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="232"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="478"/>
+        <location filename="../src/gui/tray/syncstatussummary.h" line="101"/>
         <source>All synced!</source>
         <translation>Färdigsynkroniserat!</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="236"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="241"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1717"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation>Vissa filer kunde inte synkroniseras!</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="237"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="242"/>
         <source>See below for errors</source>
         <translation>Se nedan för felmeddelanden</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="244"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="249"/>
         <source>Checking folder changes</source>
         <translation>Kontrollerar mappändringar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="246"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="251"/>
         <source>Syncing changes</source>
         <translation>Synkroniserar ändringar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="255"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="260"/>
         <source>Sync paused</source>
         <translation>Synkronisering pausad</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="262"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="267"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1718"/>
         <source>Some files could not be synced!</source>
         <translation>Vissa filer kunde inte synkroniseras!</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="263"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="268"/>
         <source>See below for warnings</source>
         <translation>Se nedan för felmeddelanden</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="345"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="350"/>
         <source>Syncing</source>
         <translation>Synkroniserar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="358"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="363"/>
         <source>%1 of %2 · %3 left</source>
         <translation>%1 av %2 · %3 kvar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="362"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="367"/>
         <source>%1 of %2</source>
         <translation>%1 av %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="367"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="372"/>
         <source>Syncing file %1 of %2</source>
         <translation>Synkroniserar fil %1 av %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="470"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="475"/>
         <source>No synchronisation configured</source>
         <translation>Ingen synkronisering konfigurerad</translation>
     </message>
@@ -5879,55 +5884,57 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>OCC::Systray</name>
     <message>
-        <location filename="../src/gui/systray.cpp" line="84"/>
+        <location filename="../src/gui/systray.cpp" line="143"/>
         <source>Download</source>
         <translation>Ladda ner</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="261"/>
+        <location filename="../src/gui/systray.cpp" line="484"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="811"/>
         <source>Add account</source>
         <translation>Lägg till konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="263"/>
+        <location filename="../src/gui/systray.cpp" line="486"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
         <translation>Öppna %1 Desktop</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="266"/>
-        <location filename="../src/gui/systray.cpp" line="276"/>
+        <location filename="../src/gui/systray.cpp" line="489"/>
+        <location filename="../src/gui/systray.cpp" line="499"/>
         <source>Pause sync</source>
         <translation>Pausa synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="267"/>
-        <location filename="../src/gui/systray.cpp" line="282"/>
+        <location filename="../src/gui/systray.cpp" line="490"/>
+        <location filename="../src/gui/systray.cpp" line="505"/>
         <source>Resume sync</source>
         <translation>Återuppta synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="268"/>
+        <location filename="../src/gui/systray.cpp" line="491"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="820"/>
         <source>Settings</source>
         <translation>Inställningar</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="269"/>
+        <location filename="../src/gui/systray.cpp" line="492"/>
         <source>Help</source>
         <translation>Hjälp</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="270"/>
+        <location filename="../src/gui/systray.cpp" line="493"/>
         <source>Exit %1</source>
         <translation>Avsluta %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="276"/>
+        <location filename="../src/gui/systray.cpp" line="499"/>
         <source>Pause sync for all</source>
         <translation>Pausa synkronisering för alla</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="282"/>
+        <location filename="../src/gui/systray.cpp" line="505"/>
         <source>Resume sync for all</source>
         <translation>Återuppta synkronisering för alla</translation>
     </message>
@@ -6036,60 +6043,60 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="386"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="577"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
         <translation>End-to-end-certifikatet måste migreras till ett nytt</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="388"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="579"/>
         <source>Trigger the migration</source>
         <translation>Initiera migreringen</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/tray/usermodel.cpp" line="484"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="680"/>
         <source>%n notification(s)</source>
         <translation><numerusform>%n avisering</numerusform><numerusform>%n aviseringar</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="727"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="766"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="923"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="962"/>
         <source>“%1” was not synchronized</source>
         <translation>“%1” synkroniserades inte</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="768"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="964"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
         <translation>Otillräckligt lagringsutrymme på servern. Filen kräver %1 men endast %2 är tillgängligt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="771"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="967"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
         <translation>Otillräckligt lagringsutrymme på servern. Filen kräver %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="774"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="970"/>
         <source>Insufficient storage on the server.</source>
         <translation>Otillräckligt lagringsutrymme på servern.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="810"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1006"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Det finns inte tillräckligt med utrymme på servern för vissa uppladdningar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="826"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1172"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1022"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1388"/>
         <source>Retry all uploads</source>
         <translation>Försök ladda upp igen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1223"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1385"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1439"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1601"/>
         <source>Resolve conflict</source>
         <translation>Lös konflikt</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1375"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1591"/>
         <source>Rename file</source>
         <translation>Byt namn på fil</translation>
     </message>
@@ -6099,23 +6106,23 @@ Servern svarade med fel: %2</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1532"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1825"/>
         <source>Public Share Link</source>
         <translation>Offentlig delningslänk</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1644"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1937"/>
         <source>Open %1 Assistant</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>Öppna %1 assistenten</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1751"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2044"/>
         <source>Assistant is not available for this account.</source>
         <translation>Assistenten är inte tillgänglig för detta konto.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1757"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2050"/>
         <source>Assistant is already processing a request.</source>
         <translation>Assistenten behandlar redan en begäran.</translation>
     </message>
@@ -6125,37 +6132,37 @@ Servern svarade med fel: %2</translation>
         <translation>Skickar din begäran...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1794"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2087"/>
         <source>Sending your request …</source>
         <translation>Skickar din förfrågan …</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1867"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2160"/>
         <source>No response yet. Please try again later.</source>
         <translation>Inget svar ännu. Försök igen senare.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1886"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2179"/>
         <source>No supported assistant task types were returned.</source>
         <translation>Inga supporterade assistentuppgiftstyper returnerades.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1968"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2261"/>
         <source>Waiting for the assistant response…</source>
         <translation>Väntar på svar från assistenten...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1990"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2283"/>
         <source>Assistant request failed (%1).</source>
         <translation>Förfrågan till assistenten misslyckades (%1).</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2065"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2358"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation>Kvoten har uppdaterats; %1 procent av det totala utrymmet är använt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2085"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2378"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation>Kvotvarning - %1 procent eller mer av lagringsutrymmet används</translation>
     </message>
@@ -6163,32 +6170,32 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2502"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2810"/>
         <source>Confirm Account Removal</source>
         <translation>Bekräfta radering an kontot</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2503"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2811"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vill du verkligen ta bort anslutningen till konto &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;OBS:&lt;/b&gt; Detta kommer &lt;b&gt;inte&lt;/b&gt; att radera några filer.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2507"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2815"/>
         <source>Remove connection</source>
         <translation>Ta bort anslutning</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2508"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2816"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2594"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2902"/>
         <source>Leave share</source>
         <translation>Lämna delning</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2594"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2902"/>
         <source>Remove account</source>
         <translation>Ta bort konto</translation>
     </message>
@@ -6196,85 +6203,85 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>OCC::UserStatusSelectorModel</name>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="143"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="167"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
         <translation>Kunde inte hämta fördefinierade statusar. Kontrollera anslutningen till servern.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="147"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="175"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
         <translation>Det gick inte att hämta status. Kontrollera att du är ansluten till servern.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="151"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="183"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
         <translation>Statusfunktionen stöds inte. Du kommer inte att kunna ställa in din status.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="155"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="187"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
         <translation>Emojier stöds inte. Viss statusfunktionalitet kan vara otillgänglig.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="194"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
         <translation>Kunde inte sätta status. Kontrollera att du är ansluten till servern.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="163"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="198"/>
         <source>Could not clear status message. Make sure you are connected to the server.</source>
         <translation>Kunde inte rensa statusmeddelande. Kontrollera anslutningen till servern.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="350"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="453"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="441"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="548"/>
         <source>Don&apos;t clear</source>
         <translation>Rensa inte</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="353"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="444"/>
         <source>30 minutes</source>
         <translation>30 minuter</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="356"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="447"/>
         <source>1 hour</source>
         <translation>1 timme</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="359"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="450"/>
         <source>4 hours</source>
         <translation>4 timmar</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="362"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="442"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="453"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="537"/>
         <source>Today</source>
         <translation>Idag</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="365"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="444"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="456"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="539"/>
         <source>This week</source>
         <translation>Denna vecka</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="408"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="503"/>
         <source>Less than a minute</source>
         <translation>Mindre än en minut</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="411"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="506"/>
         <source>%n minute(s)</source>
         <translation><numerusform>%n minut</numerusform><numerusform>%n minuter</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="414"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="509"/>
         <source>%n hour(s)</source>
         <translation><numerusform>%n timme</numerusform><numerusform>%n timmar</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="417"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="512"/>
         <source>%n day(s)</source>
         <translation><numerusform>%n dag</numerusform><numerusform>%n dagar</numerusform></translation>
     </message>
@@ -6364,103 +6371,103 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="415"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="417"/>
         <source>Please sign in</source>
         <translation>Vänliga logga in</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="506"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="508"/>
         <source>There are no sync folders configured.</source>
         <translation>Det finns inga synkroniseringsmappar konfigurerade.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="396"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="398"/>
         <source>Disconnected from %1</source>
         <translation>Koppla från %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="282"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="284"/>
         <source>Unsupported Server Version</source>
         <translation>Serverversion stöds inte</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="283"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="285"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>Servern på kontot %1 kör en version %2 som inte stöds. Att använda den här klienten med serverversioner som inte stöds är oprövat och potentiellt farligt. Fortsätt på egen risk.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="295"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="297"/>
         <source>Terms of service</source>
         <translation>Användarvillkor</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="296"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="298"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
         <translation>Ditt konto %1 kräver att du accepterar din servers användarvillkor. Du kommer bli omdirigerad till %2 för att bekräfta att du har läst och håller med om villkoren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="486"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="488"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="490"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="492"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>macOS VFS för %1: Synkronisering körs.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="493"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="495"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>macOS VFS för %1: Senaste synkroniseringen lyckades.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="496"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="498"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFS för %1: Ett problem påträffades.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="499"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="501"/>
         <source>macOS VFS for %1: An error was encountered.</source>
         <translation>macOS VFS for %1: Ett problem påträffades.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="565"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="567"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>Söker efter ändringar i fjärrmappen &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="568"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="570"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>Söker efter ändringar i lokala &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="851"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="853"/>
         <source>Internal link copied</source>
         <translation>Intern länk kopierad</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="852"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="854"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation>Den interna länken har kopierats till urklipp.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="399"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="401"/>
         <source>Disconnected from accounts:</source>
         <translation>Bortkopplad från dessa konton:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="401"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="403"/>
         <source>Account %1: %2</source>
         <translation>Konto %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="419"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="421"/>
         <source>Account synchronization is disabled</source>
         <translation>Synkronisering för konto är avstängd</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="585"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="587"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
@@ -6625,32 +6632,32 @@ Servern svarade med fel: %2</translation>
         <translation>Det gick inte att flytta felsökningsarkivet till den valda platsen!</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="307"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="492"/>
         <source>Answer</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1304"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1520"/>
         <source>You renamed %1</source>
         <translation>Du döpte om %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1306"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1522"/>
         <source>You deleted %1</source>
         <translation>Du raderade %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1308"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1524"/>
         <source>You created %1</source>
         <translation>Du skapade %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1310"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1526"/>
         <source>You changed %1</source>
         <translation>Du ändrade %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1334"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1550"/>
         <source>Synced %1</source>
         <translation>Synkroniserade %1</translation>
     </message>
@@ -7049,22 +7056,22 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>SyncStatus</name>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="99"/>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="101"/>
         <source>Sync now</source>
         <translation>Synkronisera nu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="120"/>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="124"/>
         <source>Resolve conflicts</source>
         <translation>Lös konflikter</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="133"/>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="139"/>
         <source>Open browser</source>
         <translation>Öppna webbläsare</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="144"/>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="150"/>
         <source>Open settings</source>
         <translation>Öppna inställningar</translation>
     </message>
@@ -7072,12 +7079,12 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>TalkReplyTextField</name>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="21"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="23"/>
         <source>Reply to …</source>
         <translation>Svara till ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="57"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="59"/>
         <source>Send reply to chat message</source>
         <translation>Skicka svar på chattmeddelande</translation>
     </message>
@@ -7123,21 +7130,6 @@ Servern svarade med fel: %2</translation>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="716"/>
         <source>User status</source>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="216"/>
-        <source>Add account</source>
-        <translation>Lägg till konto</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="256"/>
-        <source>Settings</source>
-        <translation>Inställningar</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="296"/>
-        <source>Quit</source>
-        <translation>Avsluta</translation>
     </message>
 </context>
 <context>
@@ -7321,32 +7313,32 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>UserStatusMessageView</name>
     <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="40"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="42"/>
         <source>Status message</source>
         <translation>Statusmeddelande</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="116"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="119"/>
         <source>What is your status?</source>
         <translation>Vad är din status?</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="168"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="174"/>
         <source>Clear status message after</source>
         <translation>Rensa statusmeddelande efter</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="205"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="212"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="212"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="219"/>
         <source>Clear</source>
         <translation>Rensa</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="221"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="229"/>
         <source>Apply</source>
         <translation>Verkställ</translation>
     </message>
@@ -7354,47 +7346,53 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>UserStatusSetStatusView</name>
     <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="42"/>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="44"/>
         <source>Online status</source>
         <translation>Onlinestatus</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="51"/>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="54"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="210"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="222"/>
         <source>Online</source>
         <translation>Online</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="61"/>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="65"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="212"/>
         <source>Away</source>
         <translation>Borta</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="72"/>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="77"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="214"/>
         <source>Busy</source>
         <translation>Upptagen</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="82"/>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="88"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="216"/>
         <source>Do not disturb</source>
         <translation>Stör ej</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="83"/>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="89"/>
         <source>Mute all notifications</source>
         <translation>Stäng av alla aviseringar</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="94"/>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="101"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="218"/>
         <source>Invisible</source>
         <translation>Osynlig</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="95"/>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="102"/>
         <source>Appear offline</source>
         <translation>Visa som offline</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="106"/>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="113"/>
         <source>Status message</source>
         <translation>Statusmeddelande</translation>
     </message>
@@ -7476,21 +7474,9 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>UserStatusWindowPredefinedStatusRow</name>
     <message>
-        <location filename="../src/gui/UserStatusWindowPredefinedStatusRow.qml" line="29"/>
-        <source>%1, clears %2</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusWindowPredefinedStatusRow.qml" line="70"/>
-        <source>- %1</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>UserStatusWindowStatusRow</name>
-    <message>
-        <location filename="../src/gui/UserStatusWindowStatusRow.qml" line="28"/>
-        <source>%1, %2</source>
+        <location filename="../src/gui/UserStatusWindowPredefinedStatusRow.qml" line="30"/>
+        <source>%1, resets after %2</source>
+        <extracomment>%1 is the status text and %2 is a time string.</extracomment>
         <translation type="unfinished"/>
     </message>
 </context>
