@@ -2,64 +2,64 @@
 <context>
     <name>AccountWizardWindow</name>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="162"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="160"/>
         <source>Secure connection failed</source>
         <translation>安全连接失败</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="165"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="163"/>
         <source>Connect to %1?</source>
         <translation>连接到 %1？</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="175"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="173"/>
         <source>The secure connection failed. You can retry without encryption, or add a client certificate and try again.</source>
         <translation>安全连接失败。您可以在不加密的情况下重试，也可以添加客户端证书并重试。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="176"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="174"/>
         <source>The secure connection failed. You can add a client certificate and try again.</source>
         <translation>安全连接失败。您可以添加客户端证书并重试。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="197"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="195"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="266"/>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="268"/>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="270"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="207"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="205"/>
         <source>Connect without TLS</source>
         <translation>不使用 TLS 连接</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="219"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="217"/>
         <source>Use client certificate</source>
         <translation>使用客户端证书</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="271"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="269"/>
         <source>Back</source>
         <translation>返回</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="285"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="283"/>
         <source>Set up later</source>
         <translation>稍后设置</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="296"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="294"/>
         <source>Advanced</source>
         <translation>高级</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="305"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="303"/>
         <source>Sign up</source>
         <translation>注册</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="315"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="313"/>
         <source>Self-host</source>
         <translation>自托管</translation>
     </message>
@@ -69,27 +69,27 @@
         <translation>代理设置</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="349"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="357"/>
         <source>Copy link</source>
         <translation>复制链接</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="382"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="390"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="384"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="392"/>
         <source>Connect</source>
         <translation>连接</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="386"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="394"/>
         <source>Done</source>
         <translation>完成</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="388"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="396"/>
         <source>Log in</source>
         <translation>登录</translation>
     </message>
@@ -110,12 +110,12 @@
 <context>
     <name>ActivityItem</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="29"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="33"/>
         <source>Open %1 locally</source>
         <translation>在本地打开 %1 </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="35"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="39"/>
         <source>In %1</source>
         <translation>在 %1</translation>
     </message>
@@ -123,22 +123,22 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="183"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="185"/>
         <source>Open file details</source>
         <translation>打开文件的详细信息</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="197"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="199"/>
         <source>File details</source>
         <translation>文件详情</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="206"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
         <source>File actions</source>
         <translation>文件操作</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="229"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="231"/>
         <source>Dismiss</source>
         <translation>关闭</translation>
     </message>
@@ -151,17 +151,17 @@
 <context>
     <name>ActivityList</name>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="55"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="56"/>
         <source>Activity list</source>
         <translation>动态列表</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="139"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="142"/>
         <source>Scroll to top</source>
         <translation>滚动至顶部</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="168"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="171"/>
         <source>No activities yet</source>
         <translation>暂无动态</translation>
     </message>
@@ -522,7 +522,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/EmojiPicker.qml" line="136"/>
+        <location filename="../src/gui/EmojiPicker.qml" line="201"/>
         <source>No recent emojis</source>
         <translation>没有最近使用的表情符号</translation>
     </message>
@@ -688,37 +688,37 @@
         <translation>主要内容</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="330"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="327"/>
         <source>Issue with account %1</source>
         <translation>账号 %1 的问题</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="332"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="329"/>
         <source>Issues with several accounts</source>
         <translation>多个账号的问题</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="413"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="410"/>
         <source>Start new conversation?</source>
         <translation>开始新对话？</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="433"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="430"/>
         <source>New conversation</source>
         <translation>新对话</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="437"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="434"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="458"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="455"/>
         <source>This will clear the existing conversation.</source>
         <translation>这将清除现有对话。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="503"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="500"/>
         <source>Ask Assistant …</source>
         <translation>询问助手 …</translation>
     </message>
@@ -728,22 +728,22 @@
         <translation>请问助手…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="531"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="528"/>
         <source>Send assistant question</source>
         <translation>发送助手问题</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="552"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="549"/>
         <source>Start a new assistant chat</source>
         <translation>开始新助手聊天</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="777"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="774"/>
         <source>Unified search results list</source>
         <translation>统一搜索结果列表</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="841"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="840"/>
         <source>New activities</source>
         <translation>新动态</translation>
     </message>
@@ -1623,17 +1623,17 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="487"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="616"/>
         <source>For more activities please open the Activity app.</source>
         <translation>有关更多动态，请打开 “动态” 应用。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="507"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="636"/>
         <source>Fetching activities …</source>
         <translation>正在拉取动态...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="614"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="744"/>
         <source>Network error occurred: client will retry syncing.</source>
         <translation>遇到网络错误：客户端将重试同步。</translation>
     </message>
@@ -5790,91 +5790,96 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::SyncStatusSummary</name>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="151"/>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="201"/>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="467"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="156"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="206"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="472"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="220"/>
         <source>Offline</source>
         <translation>离线</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="154"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="159"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1706"/>
         <source>You need to accept the terms of service</source>
         <translation>您需要接受服务条款</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="165"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1698"/>
         <source>Reauthorization required</source>
         <translation>需要重新授权</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="166"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="171"/>
         <source>Please grant access to your sync folders</source>
         <translation>请授予对同步文件夹的访问权限</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="227"/>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="473"/>
-        <location filename="../src/gui/tray/syncstatussummary.h" line="98"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="232"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="478"/>
+        <location filename="../src/gui/tray/syncstatussummary.h" line="101"/>
         <source>All synced!</source>
         <translation>已同步所有文件！</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="236"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="241"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1717"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation>无法同步某些文件！</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="237"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="242"/>
         <source>See below for errors</source>
         <translation>查看下方错误</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="244"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="249"/>
         <source>Checking folder changes</source>
         <translation>正在检查文件夹更改</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="246"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="251"/>
         <source>Syncing changes</source>
         <translation>正在同步更改</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="255"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="260"/>
         <source>Sync paused</source>
         <translation>同步已暂停</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="262"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="267"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1718"/>
         <source>Some files could not be synced!</source>
         <translation>某些文件无法同步！</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="263"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="268"/>
         <source>See below for warnings</source>
         <translation>查看下方警告</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="345"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="350"/>
         <source>Syncing</source>
         <translation>同步中</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="358"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="363"/>
         <source>%1 of %2 · %3 left</source>
         <translation>%2 中的 %1 · %3 剩余</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="362"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="367"/>
         <source>%1 of %2</source>
         <translation>%2 中的 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="367"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="372"/>
         <source>Syncing file %1 of %2</source>
         <translation>正在同步 %2 中的 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="470"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="475"/>
         <source>No synchronisation configured</source>
         <translation>未配置同步</translation>
     </message>
@@ -5882,55 +5887,57 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::Systray</name>
     <message>
-        <location filename="../src/gui/systray.cpp" line="84"/>
+        <location filename="../src/gui/systray.cpp" line="143"/>
         <source>Download</source>
         <translation>下载</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="261"/>
+        <location filename="../src/gui/systray.cpp" line="484"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="811"/>
         <source>Add account</source>
         <translation>添加账号</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="263"/>
+        <location filename="../src/gui/systray.cpp" line="486"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
         <translation>打开 %1 桌面</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="266"/>
-        <location filename="../src/gui/systray.cpp" line="276"/>
+        <location filename="../src/gui/systray.cpp" line="489"/>
+        <location filename="../src/gui/systray.cpp" line="499"/>
         <source>Pause sync</source>
         <translation>暂停同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="267"/>
-        <location filename="../src/gui/systray.cpp" line="282"/>
+        <location filename="../src/gui/systray.cpp" line="490"/>
+        <location filename="../src/gui/systray.cpp" line="505"/>
         <source>Resume sync</source>
         <translation>恢复同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="268"/>
+        <location filename="../src/gui/systray.cpp" line="491"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="820"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="269"/>
+        <location filename="../src/gui/systray.cpp" line="492"/>
         <source>Help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="270"/>
+        <location filename="../src/gui/systray.cpp" line="493"/>
         <source>Exit %1</source>
         <translation>退出 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="276"/>
+        <location filename="../src/gui/systray.cpp" line="499"/>
         <source>Pause sync for all</source>
         <translation>全部暂停同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="282"/>
+        <location filename="../src/gui/systray.cpp" line="505"/>
         <source>Resume sync for all</source>
         <translation>全部恢复同步</translation>
     </message>
@@ -6039,60 +6046,60 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="386"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="577"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
         <translation>端到端证书需要迁移到新证书</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="388"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="579"/>
         <source>Trigger the migration</source>
         <translation>触发迁移</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/tray/usermodel.cpp" line="484"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="680"/>
         <source>%n notification(s)</source>
         <translation><numerusform>%n 个通知</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="727"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="766"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="923"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="962"/>
         <source>“%1” was not synchronized</source>
         <translation>“%1”未同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="768"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="964"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
         <translation>服务器存储空间不足。该文件需要 %1，但只有 %2 可用。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="771"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="967"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
         <translation>服务器存储空间不足。该文件需要 %1。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="774"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="970"/>
         <source>Insufficient storage on the server.</source>
         <translation>服务器存储空间不足。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="810"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1006"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>服务器可用空间不足，无法上传部分文件。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="826"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1172"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1022"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1388"/>
         <source>Retry all uploads</source>
         <translation>重试所有上传</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1223"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1385"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1439"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1601"/>
         <source>Resolve conflict</source>
         <translation>解决冲突</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1375"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1591"/>
         <source>Rename file</source>
         <translation>重命名文件</translation>
     </message>
@@ -6102,23 +6109,23 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1532"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1825"/>
         <source>Public Share Link</source>
         <translation>公开分享链接</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1644"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1937"/>
         <source>Open %1 Assistant</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>打开 %1 助手</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1751"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2044"/>
         <source>Assistant is not available for this account.</source>
         <translation>此账号无法使用助手。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1757"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2050"/>
         <source>Assistant is already processing a request.</source>
         <translation>助手已在处理请求。</translation>
     </message>
@@ -6128,37 +6135,37 @@ Server replied with error: %2</source>
         <translation>正在发送您的请求…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1794"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2087"/>
         <source>Sending your request …</source>
         <translation>正在发送您的请求 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1867"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2160"/>
         <source>No response yet. Please try again later.</source>
         <translation>还没有响应，请稍后重试。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1886"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2179"/>
         <source>No supported assistant task types were returned.</source>
         <translation>未返回支持的助手任务类型。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1968"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2261"/>
         <source>Waiting for the assistant response…</source>
         <translation>正在等待助手响应…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1990"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2283"/>
         <source>Assistant request failed (%1).</source>
         <translation>助手请求失败（%1）。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2065"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2358"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation>配额已更新；已使用总空间的 %1%。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2085"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2378"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation>配额警告 - %1% 或更多存储空间正在使用</translation>
     </message>
@@ -6166,32 +6173,32 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2502"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2810"/>
         <source>Confirm Account Removal</source>
         <translation>确认移除账号</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2503"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2811"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;您确定要移除与账号&lt;i&gt;%1&lt;/i&gt;的连接吗？&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意：&lt;/b&gt; 这 &lt;b&gt;不会&lt;/b&gt; 删除任何文件。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2507"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2815"/>
         <source>Remove connection</source>
         <translation>移除连接</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2508"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2816"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2594"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2902"/>
         <source>Leave share</source>
         <translation>离开分享</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2594"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2902"/>
         <source>Remove account</source>
         <translation>移除账号</translation>
     </message>
@@ -6199,85 +6206,85 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserStatusSelectorModel</name>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="143"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="167"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
         <translation>无法获取预定义状态。确保您已连接到服务器。</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="147"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="175"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
         <translation>无法获取状态。请确保你已经连接至服务器。</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="151"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="183"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
         <translation>不支持状态功能。你将无法设置你的状态。</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="155"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="187"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
         <translation>不支持表情符号。某些状态功能可能无法正常工作。</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="194"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
         <translation>无法设置状态。请确定你已经连接至服务器。</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="163"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="198"/>
         <source>Could not clear status message. Make sure you are connected to the server.</source>
         <translation>无法清除状态信息。请确定你已经连接至服务器。</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="350"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="453"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="441"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="548"/>
         <source>Don&apos;t clear</source>
         <translation>不要清除</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="353"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="444"/>
         <source>30 minutes</source>
         <translation>30 分钟</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="356"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="447"/>
         <source>1 hour</source>
         <translation>1小时</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="359"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="450"/>
         <source>4 hours</source>
         <translation>4小时</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="362"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="442"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="453"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="537"/>
         <source>Today</source>
         <translation>今日</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="365"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="444"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="456"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="539"/>
         <source>This week</source>
         <translation>本周</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="408"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="503"/>
         <source>Less than a minute</source>
         <translation>不到一分钟</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="411"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="506"/>
         <source>%n minute(s)</source>
         <translation><numerusform>%n 分钟</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="414"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="509"/>
         <source>%n hour(s)</source>
         <translation><numerusform>%n 小时</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="417"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="512"/>
         <source>%n day(s)</source>
         <translation><numerusform>%n 天</numerusform></translation>
     </message>
@@ -6367,103 +6374,103 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="415"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="417"/>
         <source>Please sign in</source>
         <translation>请登录</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="506"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="508"/>
         <source>There are no sync folders configured.</source>
         <translation>没有已配置的同步文件夹。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="396"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="398"/>
         <source>Disconnected from %1</source>
         <translation>已从服务器断开 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="282"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="284"/>
         <source>Unsupported Server Version</source>
         <translation>不支持的服务器版本</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="283"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="285"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>帐户 %1 上的服务器运行不支持的版本 %2。将此客户端与不支持的服务器版本一起使用是未经测试的，并且有潜在的危险。继续进行，风险自担。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="295"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="297"/>
         <source>Terms of service</source>
         <translation>服务条款</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="296"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="298"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
         <translation>你的账号 %1 要求你接受服务器的服务条款。你将被重定向到 %2，以确认你已阅读并同意。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="486"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="488"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1：%2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="490"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="492"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>%1 的 macOS VFS：正在同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="493"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="495"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>%1 的 macOS VFS：上次同步成功。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="496"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="498"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>%1 的 macOS VFS：遇到问题。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="499"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="501"/>
         <source>macOS VFS for %1: An error was encountered.</source>
         <translation>%1 的 macOS VFS：遇到错误。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="565"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="567"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>正检查远程 &quot;%1&quot; 中的更改</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="568"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="570"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>正检查本地 &quot;%1&quot; 的更改</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="851"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="853"/>
         <source>Internal link copied</source>
         <translation>内部链接已复制</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="852"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="854"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation>内部链接已复制到剪贴板。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="399"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="401"/>
         <source>Disconnected from accounts:</source>
         <translation>已断开账号：</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="401"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="403"/>
         <source>Account %1: %2</source>
         <translation>账号 %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="419"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="421"/>
         <source>Account synchronization is disabled</source>
         <translation>账号同步已禁用</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="585"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="587"/>
         <source>%1 (%2, %3)</source>
         <translation>%1（%2, %3）</translation>
     </message>
@@ -6628,32 +6635,32 @@ Server replied with error: %2</source>
         <translation>无法将调试存档移动到所选位置！</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="307"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="492"/>
         <source>Answer</source>
         <translation>接听</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1304"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1520"/>
         <source>You renamed %1</source>
         <translation>你重命名了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1306"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1522"/>
         <source>You deleted %1</source>
         <translation>你删除了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1308"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1524"/>
         <source>You created %1</source>
         <translation>你创建了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1310"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1526"/>
         <source>You changed %1</source>
         <translation>你修改了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1334"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1550"/>
         <source>Synced %1</source>
         <translation>已同步 %1</translation>
     </message>
@@ -7052,22 +7059,22 @@ Server replied with error: %2</source>
 <context>
     <name>SyncStatus</name>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="99"/>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="101"/>
         <source>Sync now</source>
         <translation>立刻同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="120"/>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="124"/>
         <source>Resolve conflicts</source>
         <translation>解决冲突</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="133"/>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="139"/>
         <source>Open browser</source>
         <translation>打开浏览器</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="144"/>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="150"/>
         <source>Open settings</source>
         <translation>打开设置</translation>
     </message>
@@ -7075,12 +7082,12 @@ Server replied with error: %2</source>
 <context>
     <name>TalkReplyTextField</name>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="21"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="23"/>
         <source>Reply to …</source>
         <translation>回复...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="57"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="59"/>
         <source>Send reply to chat message</source>
         <translation>回复聊天消息</translation>
     </message>
@@ -7126,21 +7133,6 @@ Server replied with error: %2</source>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="716"/>
         <source>User status</source>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="216"/>
-        <source>Add account</source>
-        <translation>添加账号</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="256"/>
-        <source>Settings</source>
-        <translation>设置</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayAccountPopup.qml" line="296"/>
-        <source>Quit</source>
-        <translation>退出</translation>
     </message>
 </context>
 <context>
@@ -7324,32 +7316,32 @@ Server replied with error: %2</source>
 <context>
     <name>UserStatusMessageView</name>
     <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="40"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="42"/>
         <source>Status message</source>
         <translation>状态消息</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="116"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="119"/>
         <source>What is your status?</source>
         <translation>您的状态如何？</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="168"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="174"/>
         <source>Clear status message after</source>
         <translation>在多久后清除状态消息</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="205"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="212"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="212"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="219"/>
         <source>Clear</source>
         <translation>清除</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="221"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="229"/>
         <source>Apply</source>
         <translation>应用</translation>
     </message>
@@ -7357,47 +7349,53 @@ Server replied with error: %2</source>
 <context>
     <name>UserStatusSetStatusView</name>
     <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="42"/>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="44"/>
         <source>Online status</source>
         <translation>在线状态</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="51"/>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="54"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="210"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="222"/>
         <source>Online</source>
         <translation>在线</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="61"/>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="65"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="212"/>
         <source>Away</source>
         <translation>离开</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="72"/>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="77"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="214"/>
         <source>Busy</source>
         <translation>忙碌</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="82"/>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="88"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="216"/>
         <source>Do not disturb</source>
         <translation>勿扰</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="83"/>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="89"/>
         <source>Mute all notifications</source>
         <translation>静音所有通知</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="94"/>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="101"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="218"/>
         <source>Invisible</source>
         <translation>隐身</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="95"/>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="102"/>
         <source>Appear offline</source>
         <translation>显示为离线</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="106"/>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="113"/>
         <source>Status message</source>
         <translation>状态消息</translation>
     </message>
@@ -7479,21 +7477,9 @@ Server replied with error: %2</source>
 <context>
     <name>UserStatusWindowPredefinedStatusRow</name>
     <message>
-        <location filename="../src/gui/UserStatusWindowPredefinedStatusRow.qml" line="29"/>
-        <source>%1, clears %2</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusWindowPredefinedStatusRow.qml" line="70"/>
-        <source>- %1</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>UserStatusWindowStatusRow</name>
-    <message>
-        <location filename="../src/gui/UserStatusWindowStatusRow.qml" line="28"/>
-        <source>%1, %2</source>
+        <location filename="../src/gui/UserStatusWindowPredefinedStatusRow.qml" line="30"/>
+        <source>%1, resets after %2</source>
+        <extracomment>%1 is the status text and %2 is a time string.</extracomment>
         <translation type="unfinished"/>
     </message>
 </context>
