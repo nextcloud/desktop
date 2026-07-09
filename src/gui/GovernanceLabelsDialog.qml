@@ -41,10 +41,11 @@ ApplicationWindow {
     LayoutMirroring.enabled: Application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
 
-    width: Style.minimumWidthResolveConflictsDialog
-    height: Style.minimumHeightResolveConflictsDialog
-    minimumWidth: Style.minimumWidthResolveConflictsDialog
-    minimumHeight: Style.minimumHeightResolveConflictsDialog
+    minimumWidth: mainContent.implicitWidth
+    minimumHeight: mainContent.implicitHeight + 40
+    width: Style.defaultWidthGovernanceLabelsDialog
+    height: Style.defaultHeightGovernanceLabelsDialog
+
     title: qsTr("Apply labels")
 
     color: Style.wizardWindowBackground
@@ -341,6 +342,8 @@ ApplicationWindow {
     }
 
     ColumnLayout {
+        id: mainContent
+
         anchors.fill: parent
         anchors.leftMargin: 24
         anchors.rightMargin: 24
@@ -354,87 +357,72 @@ ApplicationWindow {
             font.pixelSize: Style.pixelSize
         }
 
-        RowLayout {
+        EnforcedPlainTextLabel {
+            text: qsTr("Sensitivity:")
+            color: governanceLabelsDialog.hintTextColor
+            font.pixelSize: Style.pixelSize
+        }
+
+        WizardComboBox {
+            id: selectedNewSensitivityLabel
+
+            Accessible.role: Accessible.ComboBox
+            Accessible.name: qsTr("Select sensitivity label")
+
+            model: sensitivityLabelsModel
+            textRole: "name"
+            valueRole: "id"
+
             Layout.fillWidth: true
-            spacing: 8
 
-            EnforcedPlainTextLabel {
-                text: qsTr("Sensitivity:")
-                color: governanceLabelsDialog.hintTextColor
-                font.pixelSize: Style.pixelSize
-            }
-
-            WizardComboBox {
-                id: selectedNewSensitivityLabel
-
-                Accessible.role: Accessible.ComboBox
-                Accessible.name: qsTr("Select sensitivity label")
-
-                model: sensitivityLabelsModel
-                textRole: "name"
-                valueRole: "id"
-
-                Layout.fillWidth: true
-
-                onActivated: function(index) {
-                    sensitivityLabelsModel.toggleLabel(index, currentValue)
-                }
+            onActivated: function(index) {
+                sensitivityLabelsModel.toggleLabel(index, currentValue)
             }
         }
 
-        RowLayout {
+        EnforcedPlainTextLabel {
+            text: qsTr("Retention:")
+            color: governanceLabelsDialog.hintTextColor
+            font.pixelSize: Style.pixelSize
+        }
+
+        WizardComboBox {
+            id: selectedNewRetentionLabel
+
+            Accessible.role: Accessible.ComboBox
+            Accessible.name: qsTr("Select retention label")
+
+            model: retentionLabelsModel
+            textRole: "name"
+            valueRole: "id"
+
             Layout.fillWidth: true
-            spacing: 8
 
-            EnforcedPlainTextLabel {
-                text: qsTr("Retention:")
-                color: governanceLabelsDialog.hintTextColor
-                font.pixelSize: Style.pixelSize
-            }
-
-            WizardComboBox {
-                id: selectedNewRetentionLabel
-
-                Accessible.role: Accessible.ComboBox
-                Accessible.name: qsTr("Select retention label")
-
-                model: retentionLabelsModel
-                textRole: "name"
-                valueRole: "id"
-
-                Layout.fillWidth: true
-
-                onActivated: function() {
-                    retentionLabelsModel.toggleLabel(currentValue)
-                }
+            onActivated: function() {
+                retentionLabelsModel.toggleLabel(currentValue)
             }
         }
 
-        RowLayout {
+        EnforcedPlainTextLabel {
+            text: qsTr("Legal hold:")
+            color: governanceLabelsDialog.hintTextColor
+            font.pixelSize: Style.pixelSize
+        }
+
+        WizardComboBox {
+            id: selectedNewLegalHoldLabel
+
+            Accessible.role: Accessible.ComboBox
+            Accessible.name: qsTr("Select legal hold label")
+
+            model: legalHoldLabelsModel
+            textRole: "name"
+            valueRole: "id"
+
             Layout.fillWidth: true
-            spacing: 8
 
-            EnforcedPlainTextLabel {
-                text: qsTr("Legal hold:")
-                color: governanceLabelsDialog.hintTextColor
-                font.pixelSize: Style.pixelSize
-            }
-
-            WizardComboBox {
-                id: selectedNewLegalHoldLabel
-
-                Accessible.role: Accessible.ComboBox
-                Accessible.name: qsTr("Select legal hold label")
-
-                model: legalHoldLabelsModel
-                textRole: "name"
-                valueRole: "id"
-
-                Layout.fillWidth: true
-
-                onActivated: function() {
-                    legalHoldLabelsModel.toggleLabel(currentValue)
-                }
+            onActivated: function() {
+                legalHoldLabelsModel.toggleLabel(currentValue)
             }
         }
 
