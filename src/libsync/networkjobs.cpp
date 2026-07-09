@@ -561,11 +561,6 @@ bool LsColJob::finished()
             // XML parse error
             emit finishedWithError(reply());
         }
-
-        // processEvents is called AFTER all reply() accesses. A pending deleteLater()
-        // processed inside it can zero the QPointer and caused a SIGSEGV when it was
-        // placed before the reply reads. Do not abuse: it affects QObject lifetimes.
-        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
     } else {
         // wrong content type, wrong HTTP code or any other network error
         emit finishedWithError(reply());
