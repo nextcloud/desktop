@@ -577,7 +577,7 @@ private slots:
     {
         GovernanceLabelsListModel myModel;
         QAbstractItemModelTester myModelTester(&myModel);
-        QSignalSpy modelRefreshDataSignalSpy(&myModel, &GovernanceLabelsListModel::refreshData);
+        QSignalSpy modelRefreshDataSignalSpy(&myModel, &GovernanceLabelsListModel::refreshAvailableLabelsData);
 
         myModel.setEntityId(u"117"_s);
         myModel.setLabelType(Governance::LabelType::Sensitivity);
