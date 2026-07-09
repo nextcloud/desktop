@@ -8,6 +8,7 @@ import QtQuick.Controls.Basic
 import QtQuick.Layouts
 
 import Style
+import com.nextcloud.desktopclient
 import "./tray"
 
 WizardStyledWindow {
@@ -17,37 +18,11 @@ WizardStyledWindow {
     property var currentUser: null
     property var searchModel: null
     readonly property string headline: qsTr("Search")
-    readonly property bool isFetchMoreInProgress: searchModel !== null
-        && searchModel.currentFetchMoreInProgressProviderId.length > 0
-    readonly property bool isSearchInProgress: searchModel !== null
-        && searchModel.isSearchInProgress
-    readonly property bool waitingForSearchTermEditEnd: searchModel !== null
-        && searchModel.waitingForSearchTermEditEnd
-    readonly property bool hasSearchTerm: searchModel !== null
-        && searchModel.searchTerm.length > 0
-    readonly property bool hasSearchError: searchModel !== null
-        && searchModel.errorString.length > 0
-    readonly property bool canEditSearch: currentUser !== null
-        && currentUser.isConnected
-        && searchModel !== null
-        && !isFetchMoreInProgress
-    readonly property bool showResults: searchModel !== null
-        && searchResultsListView.count > 0
-    readonly property bool showNothingFound: hasSearchTerm
-        && !isSearchInProgress
-        && !waitingForSearchTermEditEnd
-        && !hasSearchError
-        && searchResultsListView.count === 0
-    readonly property bool showPlaceholder: !hasSearchTerm
-        && !hasSearchError
-    readonly property bool showSearchError: hasSearchError
-        && !showResults
-        && !isSearchInProgress
-        && !isFetchMoreInProgress
-    readonly property bool showSkeleton: hasSearchTerm
-        && !showNothingFound
-        && !showResults
-        && !hasSearchError
+    readonly property int searchState: searchModel
+        ? searchModel.searchState
+        : UnifiedSearchResultsListModel.Placeholder
+    readonly property bool isSearchInProgress: searchModel !== null && searchModel.isSearchInProgress
+    readonly property bool canEditSearch: searchModel !== null && searchModel.canEditSearch
 
     title: ""
     width: Style.searchWindowWidth
@@ -125,25 +100,25 @@ WizardStyledWindow {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: parent.top
-                visible: root.showSearchError
+                visible: root.searchState === UnifiedSearchResultsListModel.SearchError
                 text: root.searchModel ? root.searchModel.errorString : ""
             }
 
             UnifiedSearchPlaceholderView {
                 anchors.fill: parent
-                visible: root.showPlaceholder
+                visible: root.searchState === UnifiedSearchResultsListModel.Placeholder
             }
 
             UnifiedSearchResultNothingFound {
                 anchors.fill: parent
-                visible: root.showNothingFound
+                visible: root.searchState === UnifiedSearchResultsListModel.NothingFound
                 text: root.searchModel ? root.searchModel.searchTerm : ""
             }
 
             Loader {
                 anchors.fill: parent
                 anchors.margins: Style.smallSpacing
-                active: root.showSkeleton
+                active: root.searchState === UnifiedSearchResultsListModel.Skeleton
                 asynchronous: true
 
                 sourceComponent: UnifiedSearchResultItemSkeletonContainer {
@@ -158,7 +133,7 @@ WizardStyledWindow {
 
                 anchors.fill: parent
                 contentWidth: availableWidth
-                visible: root.showResults
+                visible: root.searchState === UnifiedSearchResultsListModel.Results
 
                 ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
