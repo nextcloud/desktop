@@ -366,10 +366,24 @@ ApplicationWindow {
             font.pixelSize: Style.pixelSize
         }
 
-        EnforcedPlainTextLabel {
-            text: qsTr("Sensitivity:")
-            color: governanceLabelsDialog.hintTextColor
-            font.pixelSize: Style.pixelSize
+        RowLayout {
+            spacing: 4
+
+            Image {
+                source: "image://svgimage-custom-color/security.svg/" + governanceLabelsDialog.hintTextColor
+                sourceSize.width: Style.smallIconSize
+                sourceSize.height: Style.smallIconSize
+                fillMode: Image.PreserveAspectFit
+                Layout.alignment: Qt.AlignVCenter
+                opacity: governanceLabelsDialog.hintTextColor.a
+            }
+
+            EnforcedPlainTextLabel {
+                text: qsTr("Sensitivity:")
+                color: governanceLabelsDialog.hintTextColor
+                font.pixelSize: Style.pixelSize
+                Layout.alignment: Qt.AlignVCenter
+            }
         }
 
         WizardComboBox {
@@ -389,10 +403,24 @@ ApplicationWindow {
             }
         }
 
-        EnforcedPlainTextLabel {
-            text: qsTr("Retention:")
-            color: governanceLabelsDialog.hintTextColor
-            font.pixelSize: Style.pixelSize
+        RowLayout {
+            spacing: 4
+
+            Image {
+                source: "image://svgimage-custom-color/file-clock-outline.svg/" + governanceLabelsDialog.hintTextColor
+                sourceSize.width: Style.smallIconSize
+                sourceSize.height: Style.smallIconSize
+                fillMode: Image.PreserveAspectFit
+                Layout.alignment: Qt.AlignVCenter
+                opacity: governanceLabelsDialog.hintTextColor.a
+            }
+
+            EnforcedPlainTextLabel {
+                text: qsTr("Retention:")
+                color: governanceLabelsDialog.hintTextColor
+                font.pixelSize: Style.pixelSize
+                Layout.alignment: Qt.AlignVCenter
+            }
         }
 
         WizardComboBox {
