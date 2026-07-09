@@ -189,6 +189,19 @@ UnifiedSearchResultsListModel::UnifiedSearchResultsListModel(AccountState *accou
     : QAbstractListModel(parent)
     , _accountState(accountState)
 {
+    connect(this, &UnifiedSearchResultsListModel::isSearchInProgressChanged, this, &UnifiedSearchResultsListModel::searchStateChanged);
+    connect(this, &UnifiedSearchResultsListModel::currentFetchMoreInProgressProviderIdChanged, this, &UnifiedSearchResultsListModel::searchStateChanged);
+    connect(this, &UnifiedSearchResultsListModel::searchTermChanged, this, &UnifiedSearchResultsListModel::searchStateChanged);
+    connect(this, &UnifiedSearchResultsListModel::errorStringChanged, this, &UnifiedSearchResultsListModel::searchStateChanged);
+    connect(this, &UnifiedSearchResultsListModel::waitingForSearchTermEditEndChanged, this, &UnifiedSearchResultsListModel::searchStateChanged);
+    connect(this, &QAbstractListModel::rowsInserted, this, &UnifiedSearchResultsListModel::searchStateChanged);
+    connect(this, &QAbstractListModel::rowsRemoved, this, &UnifiedSearchResultsListModel::searchStateChanged);
+    connect(this, &QAbstractListModel::modelReset, this, &UnifiedSearchResultsListModel::searchStateChanged);
+
+    connect(this, &UnifiedSearchResultsListModel::currentFetchMoreInProgressProviderIdChanged, this, &UnifiedSearchResultsListModel::canEditSearchChanged);
+    if (_accountState) {
+        connect(_accountState, &AccountState::isConnectedChanged, this, &UnifiedSearchResultsListModel::canEditSearchChanged);
+    }
 }
 
 QVariant UnifiedSearchResultsListModel::data(const QModelIndex &index, int role) const
@@ -324,6 +337,47 @@ void UnifiedSearchResultsListModel::setSearchTerm(const QString &term)
 bool UnifiedSearchResultsListModel::isSearchInProgress() const
 {
     return !_searchJobConnections.isEmpty();
+}
+
+bool UnifiedSearchResultsListModel::isFetchMoreInProgress() const
+{
+    return !_currentFetchMoreInProgressProviderId.isEmpty();
+}
+
+bool UnifiedSearchResultsListModel::hasSearchTerm() const
+{
+    return !_searchTerm.isEmpty();
+}
+
+bool UnifiedSearchResultsListModel::hasSearchError() const
+{
+    return !_errorString.isEmpty();
+}
+
+bool UnifiedSearchResultsListModel::canEditSearch() const
+{
+    return _accountState && _accountState->isConnected() && !isFetchMoreInProgress();
+}
+
+UnifiedSearchResultsListModel::SearchState UnifiedSearchResultsListModel::searchState() const
+{
+    if (rowCount() > 0) {
+        return SearchState::Results;
+    }
+
+    if (hasSearchError()) {
+        return (!isSearchInProgress() && !isFetchMoreInProgress()) ? SearchState::SearchError : SearchState::None;
+    }
+
+    if (!hasSearchTerm()) {
+        return SearchState::Placeholder;
+    }
+
+    if (!isSearchInProgress() && !waitingForSearchTermEditEnd()) {
+        return SearchState::NothingFound;
+    }
+
+    return SearchState::Skeleton;
 }
 
 void UnifiedSearchResultsListModel::resultClicked(const QString &providerId, const QUrl &resourceUrl) const
