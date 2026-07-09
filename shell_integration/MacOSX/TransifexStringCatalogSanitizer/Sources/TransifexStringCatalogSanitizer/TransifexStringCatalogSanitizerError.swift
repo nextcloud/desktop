@@ -8,6 +8,7 @@ enum TransifexStringCatalogSanitizerError: Error {
     case missingFile(String)
     case missingLocalization(String)
     case missingLocalizations(String)
+    case missingSourceLanguage
     case missingString(String)
     case missingStrings
     case missingStringUnit(String)
@@ -24,6 +25,8 @@ extension TransifexStringCatalogSanitizerError: LocalizedError {
             return "The expected localization dictionary for locale code \"\(localeCode)\" was either not found or could not be casted to the expected type."
         case let .missingLocalizations(key):
             return "The localizations object of a string object with the key \"\(key)\" was either not found or could not be casted to the expected type."
+            case .missingSourceLanguage:
+            return "The string catalog lacks a source language property."
         case let .missingString(key):
             return "An expected string dictionary with the key \"\(key)\" was either not found or could not be casted to the expected type."
         case .missingStrings:

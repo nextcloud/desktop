@@ -21,13 +21,17 @@ struct TransifexStringCatalogSanitizer: ParsableCommand {
         guard var root = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
             throw TransifexStringCatalogSanitizerError.jsonObject
         }
-        
+
+        guard let sourceLanguage = root["sourceLanguage"] as? String else {
+            throw TransifexStringCatalogSanitizerError.missingSourceLanguage
+        }
+
         guard var strings = root["strings"] as? [String: Any] else {
             throw TransifexStringCatalogSanitizerError.missingStrings
         }
         
-        try sanitizeStrings(&strings)
-        
+        try sanitizeStrings(&strings, sourceLanguage: sourceLanguage)
+
         // Update the root with modified strings
         root["strings"] = strings
         
@@ -35,8 +39,11 @@ struct TransifexStringCatalogSanitizer: ParsableCommand {
         let processedData = try JSONSerialization.data(withJSONObject: root, options: [.prettyPrinted, .sortedKeys])
         try processedData.write(to: url)
     }
-    
-    private func sanitizeStrings(_ strings: inout [String: Any]) throws {
+
+    ///
+    /// Sanitize the string keys.
+    ///
+    private func sanitizeStrings(_ strings: inout [String: Any], sourceLanguage: String) throws {
         for key in strings.keys.sorted() {
             print("💬 \"\(key)\"")
             
@@ -61,15 +68,18 @@ struct TransifexStringCatalogSanitizer: ParsableCommand {
                 throw TransifexStringCatalogSanitizerError.missingLocalizations(key)
             }
             
-            try sanitizeLocalizations(&localizations)
-            
+            try sanitizeLocalizations(&localizations, key: key, sourceLanguage: sourceLanguage)
+
             // Update the string with modified localizations
             string["localizations"] = localizations
             strings[key] = string
         }
     }
-    
-    private func sanitizeLocalizations(_ localizations: inout [String: Any]) throws {
+
+    ///
+    /// Sanitize the individual localizations of a key.
+    ///
+    private func sanitizeLocalizations(_ localizations: inout [String: Any], key: String, sourceLanguage: String) throws {
         var localizationsToRemove: [String] = []
         
         for localeCode in localizations.keys.sorted() {
@@ -87,6 +97,9 @@ struct TransifexStringCatalogSanitizer: ParsableCommand {
             
             if value.isEmpty {
                 print("\t❌ \(localeCode): empty, will be removed")
+                localizationsToRemove.append(localeCode)
+            } else if value == key && localeCode.hasPrefix(sourceLanguage) == false {
+                print("\t❌ \(localeCode): same as key, will be removed")
                 localizationsToRemove.append(localeCode)
             } else {
                 print("\t✅ \(localeCode): \"\(value)\"")
