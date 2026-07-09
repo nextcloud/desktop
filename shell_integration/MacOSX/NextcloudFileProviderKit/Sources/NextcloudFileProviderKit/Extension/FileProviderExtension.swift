@@ -492,7 +492,15 @@ import OSLog
         }
 
         let materialisedEnumerator = manager.enumeratorForMaterializedItems()
-        let materialisedObserver = MaterializedEnumerationObserver(account: ncAccount, dbManager: dbManager, log: log) { _, _ in
+        let materialisedObserver = MaterializedEnumerationObserver(account: ncAccount, dbManager: dbManager, log: log) { [weak self] materialized, evicted in
+            // Covers eviction (files going dataless) and out-of-band
+            // materialization the observer discovers itself. Downloads via
+            // `Item.fetchContents` are handled there instead, because they update
+            // the database before this enumeration runs (#10085).
+            let changed = materialized.union(evicted)
+            if let self, !changed.isEmpty {
+                refreshRemoveDownloadVisibility(forAncestorsOfFileOcIds: Set(changed.map(\.rawValue)), manager: manager, dbManager: dbManager, logger: logger)
+            }
             completionHandler()
         }
         let startingPage = NSFileProviderPage(NSFileProviderPage.initialPageSortedByName as Data)

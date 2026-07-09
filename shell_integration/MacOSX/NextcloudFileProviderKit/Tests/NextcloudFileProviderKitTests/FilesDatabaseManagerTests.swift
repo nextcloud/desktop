@@ -39,6 +39,117 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertFalse(Self.dbManager.containsAnyItemMetadata(fileIds: ["13347012"]))
     }
 
+    /// `ancestorContainerIdentifiers` returns every directory on a file's path to
+    /// the root (root excluded) — the set of folders whose "Remove download"
+    /// visibility must be refreshed when that file materializes (#10085).
+    func testAncestorContainerIdentifiersForMaterializedFile() throws {
+        let folder = RealmItemMetadata()
+        folder.ocId = "folder-1"
+        folder.account = Self.account.ncKitAccount
+        folder.serverUrl = "https://cloud.example.com/files"
+        folder.fileName = "documents"
+        folder.directory = true
+
+        let subfolder = RealmItemMetadata()
+        subfolder.ocId = "subfolder-1"
+        subfolder.account = Self.account.ncKitAccount
+        subfolder.serverUrl = "https://cloud.example.com/files/documents"
+        subfolder.fileName = "nested"
+        subfolder.directory = true
+
+        let deepFile = RealmItemMetadata()
+        deepFile.ocId = "deep-file"
+        deepFile.account = Self.account.ncKitAccount
+        deepFile.serverUrl = "https://cloud.example.com/files/documents/nested"
+        deepFile.fileName = "note.txt"
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            realm.add(folder)
+            realm.add(subfolder)
+            realm.add(deepFile)
+        }
+
+        // Every directory on the deep file's path, root excluded.
+        XCTAssertEqual(
+            Self.dbManager.ancestorContainerIdentifiers(ofFileItemsWithOcIds: ["deep-file"]),
+            [NSFileProviderItemIdentifier("subfolder-1"), NSFileProviderItemIdentifier("folder-1")]
+        )
+
+        // Directory ocIds are ignored — only a file's materialization feeds an
+        // ancestor's displayEvict.
+        XCTAssertTrue(
+            Self.dbManager.ancestorContainerIdentifiers(ofFileItemsWithOcIds: ["subfolder-1"]).isEmpty
+        )
+
+        // Unknown ocIds are skipped without error.
+        XCTAssertTrue(
+            Self.dbManager.ancestorContainerIdentifiers(ofFileItemsWithOcIds: ["does-not-exist"]).isEmpty
+        )
+    }
+
+    /// A file directly under the account root resolves its parent to the root
+    /// container, which must be included so "Remove download" is offered on the
+    /// whole file provider — symmetric with pinning it all offline (#10085).
+    func testAncestorContainerIdentifiersIncludeRootContainer() throws {
+        let topFile = RealmItemMetadata()
+        topFile.ocId = "top-file"
+        topFile.account = Self.account.ncKitAccount
+        topFile.serverUrl = Self.account.davFilesUrl
+        topFile.urlBase = Self.account.serverUrl
+        topFile.userId = Self.account.id
+        topFile.fileName = "top.txt"
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            realm.add(topFile)
+        }
+
+        XCTAssertEqual(
+            Self.dbManager.ancestorContainerIdentifiers(ofFileItemsWithOcIds: ["top-file"]),
+            [.rootContainer]
+        )
+    }
+
+    /// `evictableDescendantFileIdentifiers` returns exactly the downloaded,
+    /// non-deleted, non-pinned descendant FILES — the set the "Remove downloaded
+    /// items" handler evicts individually (#10085). Pinned, dataless, tombstoned,
+    /// and directory rows are excluded; deep descendants are included.
+    func testEvictableDescendantFileIdentifiers() throws {
+        let base = "https://cloud.example.com/files"
+        let dir = base + "/documents"
+
+        func seed(_ ocId: String, _ name: String, url: String, directory: Bool = false, downloaded: Bool = false, deleted: Bool = false, keepDownloaded: Bool = false) -> RealmItemMetadata {
+            let m = RealmItemMetadata()
+            m.ocId = ocId
+            m.account = Self.account.ncKitAccount
+            m.serverUrl = url
+            m.fileName = name
+            m.directory = directory
+            m.downloaded = downloaded
+            m.deleted = deleted
+            m.keepDownloaded = keepDownloaded
+            return m
+        }
+
+        let rows = [
+            seed("folder-1", "documents", url: base, directory: true),
+            seed("file-a", "a.txt", url: dir, downloaded: true), // evictable
+            seed("file-b", "b.txt", url: dir, downloaded: true, keepDownloaded: true), // pinned -> excluded
+            seed("file-c", "c.txt", url: dir, downloaded: false), // dataless -> excluded
+            seed("file-d", "d.txt", url: dir, downloaded: true, deleted: true), // tombstone -> excluded
+            seed("subfolder", "nested", url: dir, directory: true, downloaded: true), // directory -> excluded
+            seed("deep-file", "deep.txt", url: dir + "/nested", downloaded: true) // evictable (deep)
+        ]
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write { rows.forEach { realm.add($0) } }
+
+        let folderMeta = try XCTUnwrap(Self.dbManager.directoryMetadata(ocId: "folder-1"))
+        let ids = Set(Self.dbManager.evictableDescendantFileIdentifiers(directoryMetadata: folderMeta).map(\.rawValue))
+        XCTAssertEqual(ids, ["file-a", "deep-file"])
+    }
+
     func testAnyItemMetadatasForAccount() throws {
         // Insert test data
         let expected = true

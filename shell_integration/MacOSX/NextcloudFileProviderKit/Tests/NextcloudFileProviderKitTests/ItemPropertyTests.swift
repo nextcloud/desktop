@@ -260,6 +260,229 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(undownloadedPredicate.evaluate(with: fileproviderItems))
     }
 
+    // MARK: - "Remove download" visibility on folders (#10085)
+
+    // Unlike the file cases above (which read `displayEvict` straight off the
+    // metadata), directory eviction visibility depends on descendant *file* rows
+    // in the database, so these tests seed the per-test Realm first.
+
+    /// Full server path of the folder produced by `makeFolderItem()`.
+    private var folderServerPath: String {
+        Self.account.davFilesUrl + "/folder"
+    }
+
+    /// Seed one metadata row into the per-test Realm.
+    private func seedMetadataRow(
+        ocId: String,
+        fileName: String,
+        serverUrl: String,
+        directory: Bool,
+        downloaded: Bool = false,
+        visitedDirectory: Bool = false,
+        deleted: Bool = false,
+        keepDownloaded: Bool = false
+    ) throws {
+        let row = RealmItemMetadata()
+        row.ocId = ocId
+        row.account = Self.account.ncKitAccount
+        row.serverUrl = serverUrl
+        row.fileName = fileName
+        row.directory = directory
+        row.downloaded = downloaded
+        row.visitedDirectory = visitedDirectory
+        row.deleted = deleted
+        row.keepDownloaded = keepDownloaded
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write { realm.add(row) }
+    }
+
+    /// A directory `Item` at `folderServerPath`; its descendants are whatever
+    /// rows the test seeded under that path.
+    private func makeFolderItem(keepDownloaded: Bool = false) -> Item {
+        var metadata =
+            SendableItemMetadata(ocId: "folder-id", fileName: "folder", account: Self.account)
+        metadata.directory = true
+        metadata.keepDownloaded = keepDownloaded
+        return Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager
+        )
+    }
+
+    /// A root-container `Item`; its descendants are any rows seeded under
+    /// `Self.account.davFilesUrl`.
+    private func makeRootItem() -> Item {
+        Item.rootContainer(
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: false,
+            log: FileProviderLogMock()
+        )
+    }
+
+    /// Regression for #10085: a folder holding a materialized descendant file
+    /// must offer the folder eviction action ("Remove downloaded items"), gated on
+    /// `displayEvictDescendants` — never the file action `displayEvict`.
+    func testItemUserInfoDisplayEvictDescendantsForFolderWithDownloadedFile() throws {
+        try seedMetadataRow(
+            ocId: "child-file", fileName: "report.pdf", serverUrl: folderServerPath,
+            directory: false, downloaded: true
+        )
+
+        let item = makeFolderItem()
+        XCTAssertEqual(item.userInfo?["displayEvictDescendants"] as? Bool, true)
+        // The file-labelled action ("Remove download") must never show on a folder.
+        XCTAssertEqual(item.userInfo?["displayEvict"] as? Bool, false)
+
+        // Assert against the exact SUBQUERY predicate Finder evaluates.
+        let canEvictPredicate = NSPredicate(
+            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayEvictDescendants == true ).@count > 0"
+        )
+        XCTAssertTrue(
+            canEvictPredicate.evaluate(with: ["fileproviderItems": [item]]),
+            "A folder with a materialized descendant file must qualify for the folder evict action."
+        )
+    }
+
+    /// A materialized file offers "Remove download" (`displayEvict`) but never the
+    /// folder-labelled action (`displayEvictDescendants`) — the two never overlap.
+    func testItemUserInfoFileDoesNotOfferDisplayEvictDescendants() {
+        var metadata =
+            SendableItemMetadata(ocId: "file-id", fileName: "report.pdf", account: Self.account)
+        metadata.downloaded = true
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertEqual(item.userInfo?["displayEvict"] as? Bool, true)
+        XCTAssertEqual(item.userInfo?["displayEvictDescendants"] as? Bool, false)
+    }
+
+    /// A folder whose descendant files are all dataless has nothing to remove.
+    func testItemUserInfoNoDisplayEvictDescendantsForFolderWithoutDownloadedFile() throws {
+        try seedMetadataRow(
+            ocId: "child-file", fileName: "report.pdf", serverUrl: folderServerPath,
+            directory: false, downloaded: false
+        )
+
+        XCTAssertEqual(makeFolderItem().userInfo?["displayEvictDescendants"] as? Bool, false)
+    }
+
+    /// A materialized descendant *sub-folder* (visited, but holding no downloaded
+    /// file) must NOT make the action appear — only files count (#10085).
+    func testItemUserInfoNoDisplayEvictDescendantsForFolderWithOnlyVisitedSubfolder() throws {
+        try seedMetadataRow(
+            ocId: "subfolder", fileName: "nested", serverUrl: folderServerPath,
+            directory: true, visitedDirectory: true
+        )
+        // A dataless file deeper in the tree must not count either.
+        try seedMetadataRow(
+            ocId: "deep-file", fileName: "note.txt", serverUrl: folderServerPath + "/nested",
+            directory: false, downloaded: false
+        )
+
+        XCTAssertEqual(makeFolderItem().userInfo?["displayEvictDescendants"] as? Bool, false)
+    }
+
+    /// Pinned folders must NOT advertise the evict action even with materialized
+    /// content — the -2008 NonEvictable guard applies to folders too (#9891).
+    func testItemUserInfoDisplayEvictDescendantsGatedOnUnpinnedForFolder() throws {
+        try seedMetadataRow(
+            ocId: "child-file", fileName: "report.pdf", serverUrl: folderServerPath,
+            directory: false, downloaded: true
+        )
+
+        XCTAssertEqual(makeFolderItem(keepDownloaded: true).userInfo?["displayEvictDescendants"] as? Bool, false)
+    }
+
+    /// A folder whose only downloaded descendant is individually pinned ("Always
+    /// keep downloaded") has nothing removable — the action must stay hidden, so
+    /// the handler never tries to evict strict-pinned content (-2008, #9891/#10085).
+    func testItemUserInfoNoDisplayEvictDescendantsForFolderWithOnlyPinnedDownloadedFile() throws {
+        try seedMetadataRow(
+            ocId: "pinned-file", fileName: "keep.pdf", serverUrl: folderServerPath,
+            directory: false, downloaded: true, keepDownloaded: true
+        )
+        XCTAssertEqual(makeFolderItem().userInfo?["displayEvictDescendants"] as? Bool, false)
+    }
+
+    /// A downloaded file under a *sibling* folder sharing a name prefix
+    /// (`.../folderX`) must not make `.../folder` advertise the action — guards
+    /// the `+ "/"` boundary in the descendant predicate.
+    func testItemUserInfoNoDisplayEvictDescendantsForPrefixSiblingFile() throws {
+        try seedMetadataRow(
+            ocId: "sibling-file", fileName: "report.pdf",
+            serverUrl: Self.account.davFilesUrl + "/folderX",
+            directory: false, downloaded: true
+        )
+        XCTAssertEqual(makeFolderItem().userInfo?["displayEvictDescendants"] as? Bool, false)
+    }
+
+    /// A downloaded file nested several levels deep must surface the folder action —
+    /// exercises the `starts(with: path + "/")` recursion branch.
+    func testItemUserInfoDisplayEvictDescendantsForDeepDownloadedFile() throws {
+        try seedMetadataRow(
+            ocId: "deep-file", fileName: "note.txt",
+            serverUrl: folderServerPath + "/nested",
+            directory: false, downloaded: true
+        )
+        XCTAssertEqual(makeFolderItem().userInfo?["displayEvictDescendants"] as? Bool, true)
+    }
+
+    /// A soft-deleted (tombstoned) downloaded descendant must not keep the action visible.
+    func testItemUserInfoNoDisplayEvictDescendantsForFolderWithDeletedDownloadedFile() throws {
+        try seedMetadataRow(
+            ocId: "child-file", fileName: "report.pdf", serverUrl: folderServerPath,
+            directory: false, downloaded: true, deleted: true
+        )
+        XCTAssertEqual(makeFolderItem().userInfo?["displayEvictDescendants"] as? Bool, false)
+    }
+
+    /// The root container offers "Remove downloaded items" for any downloaded file
+    /// anywhere in the domain, and hides it when there is none — symmetric with
+    /// pinning the whole file provider (#10085). Exercises the rootContainer branch
+    /// of `fullServerPathUrl`.
+    func testItemUserInfoDisplayEvictDescendantsForRootContainer() throws {
+        XCTAssertEqual(makeRootItem().userInfo?["displayEvictDescendants"] as? Bool, false)
+
+        try seedMetadataRow(
+            ocId: "top-file", fileName: "top.pdf", serverUrl: Self.account.davFilesUrl,
+            directory: false, downloaded: true
+        )
+        XCTAssertEqual(makeRootItem().userInfo?["displayEvictDescendants"] as? Bool, true)
+        // The file-labelled action must never show on the root either.
+        XCTAssertEqual(makeRootItem().userInfo?["displayEvict"] as? Bool, false)
+    }
+
+    /// A folder's `metadataVersion` must change when it gains a materialized
+    /// descendant file, so the framework treats its cached snapshot as stale and
+    /// re-reads the recomputed `displayEvict` instead of dropping the update
+    /// (#10085). Without this, the ancestor-refresh nudge would be deduplicated.
+    func testFolderMetadataVersionReflectsDescendantMaterialization() throws {
+        let versionWithoutDownload = makeFolderItem().itemVersion.metadataVersion
+
+        try seedMetadataRow(
+            ocId: "child-file", fileName: "report.pdf", serverUrl: folderServerPath,
+            directory: false, downloaded: true
+        )
+
+        let versionWithDownload = makeFolderItem().itemVersion.metadataVersion
+        XCTAssertNotEqual(
+            versionWithoutDownload,
+            versionWithDownload,
+            "A folder's metadataVersion must change when a descendant file materializes."
+        )
+    }
+
     func testItemUserInfoKeepDownloadedProperties() {
         var metadataA =
             SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
