@@ -23,6 +23,17 @@ ApplicationWindow {
 
     readonly property color primaryTextColor: Style.wizardPrimaryText
     readonly property color hintTextColor: Style.wizardSecondaryText
+    readonly property color networkErrorTextColor: Style.wizardErrorText
+
+    property string lastError: ''
+
+    function displayError(networkError) {
+        lastError = networkError
+    }
+
+    function clearError() {
+        lastError = ''
+    }
 
     flags: Qt.Window | Qt.Dialog
     visible: true
@@ -62,10 +73,18 @@ ApplicationWindow {
 
         entityId: governanceLabelsDialog.fileId
 
+        onStarted: function() {
+            clearError()
+        }
+
         onFinished: function(reply) {
             sensitivityLabelsModel.setExistingLabelsJsonData(reply)
             retentionLabelsModel.setExistingLabelsJsonData(reply)
             legalHoldLabelsModel.setExistingLabelsJsonData(reply)
+        }
+
+        onFinishedWithError: function(errorCode, errorMessage) {
+            displayError(errorMessage)
         }
     }
 
@@ -98,8 +117,16 @@ ApplicationWindow {
         labelType: GovernanceNetworkJob.Sensitivity
         entityId: governanceLabelsDialog.fileId
 
+        onStarted: function() {
+            clearError()
+        }
+
         onFinished: function(reply) {
             sensitivityLabelsModel.setAvailableLabelsJsonData(reply)
+        }
+
+        onFinishedWithError: function(errorCode, errorMessage) {
+            displayError(errorMessage)
         }
     }
 
@@ -111,8 +138,16 @@ ApplicationWindow {
         labelType: GovernanceNetworkJob.Sensitivity
         entityId: governanceLabelsDialog.fileId
 
+        onStarted: function() {
+            clearError()
+        }
+
         onFinished: function() {
             sensitivityLabelsModel.labelWasModified()
+        }
+
+        onFinishedWithError: function(errorCode, errorMessage) {
+            displayError(errorMessage)
         }
     }
 
@@ -124,8 +159,16 @@ ApplicationWindow {
         labelType: GovernanceNetworkJob.Sensitivity
         entityId: governanceLabelsDialog.fileId
 
+        onStarted: function() {
+            clearError()
+        }
+
         onFinished: function() {
             sensitivityLabelsModel.labelWasModified()
+        }
+
+        onFinishedWithError: function(errorCode, errorMessage) {
+            displayError(errorMessage)
         }
     }
 
@@ -158,8 +201,16 @@ ApplicationWindow {
         labelType: GovernanceNetworkJob.Retention
         entityId: governanceLabelsDialog.fileId
 
+        onStarted: function() {
+            clearError()
+        }
+
         onFinished: function(reply) {
             retentionLabelsModel.setAvailableLabelsJsonData(reply)
+        }
+
+        onFinishedWithError: function(errorCode, errorMessage) {
+            displayError(errorMessage)
         }
     }
 
@@ -171,8 +222,16 @@ ApplicationWindow {
         labelType: GovernanceNetworkJob.Retention
         entityId: governanceLabelsDialog.fileId
 
+        onStarted: function() {
+            clearError()
+        }
+
         onFinished: function() {
             retentionLabelsModel.labelWasModified()
+        }
+
+        onFinishedWithError: function(errorCode, errorMessage) {
+            displayError(errorMessage)
         }
     }
 
@@ -184,8 +243,16 @@ ApplicationWindow {
         labelType: GovernanceNetworkJob.Retention
         entityId: governanceLabelsDialog.fileId
 
+        onStarted: function() {
+            clearError()
+        }
+
         onFinished: function() {
             retentionLabelsModel.labelWasModified()
+        }
+
+        onFinishedWithError: function(errorCode, errorMessage) {
+            displayError(errorMessage)
         }
     }
 
@@ -218,8 +285,16 @@ ApplicationWindow {
         labelType: GovernanceNetworkJob.LegalHold
         entityId: governanceLabelsDialog.fileId
 
+        onStarted: function() {
+            clearError()
+        }
+
         onFinished: function(reply) {
             legalHoldLabelsModel.setAvailableLabelsJsonData(reply)
+        }
+
+        onFinishedWithError: function(errorCode, errorMessage) {
+            displayError(errorMessage)
         }
     }
 
@@ -231,8 +306,16 @@ ApplicationWindow {
         labelType: GovernanceNetworkJob.LegalHold
         entityId: governanceLabelsDialog.fileId
 
+        onStarted: function() {
+            clearError()
+        }
+
         onFinished: function() {
             legalHoldLabelsModel.labelWasModified()
+        }
+
+        onFinishedWithError: function(errorCode, errorMessage) {
+            displayError(errorMessage)
         }
     }
 
@@ -244,8 +327,16 @@ ApplicationWindow {
         labelType: GovernanceNetworkJob.LegalHold
         entityId: governanceLabelsDialog.fileId
 
+        onStarted: function() {
+            clearError()
+        }
+
         onFinished: function() {
             legalHoldLabelsModel.labelWasModified()
+        }
+
+        onFinishedWithError: function(errorCode, errorMessage) {
+            displayError(errorMessage)
         }
     }
 
@@ -256,6 +347,12 @@ ApplicationWindow {
         anchors.bottomMargin: 24
         anchors.topMargin: 24
         spacing: 14
+
+        EnforcedPlainTextLabel {
+            text: lastError
+            color: governanceLabelsDialog.networkErrorTextColor
+            font.pixelSize: Style.pixelSize
+        }
 
         RowLayout {
             Layout.fillWidth: true

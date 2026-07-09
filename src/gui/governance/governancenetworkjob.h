@@ -70,6 +70,8 @@ Q_SIGNALS:
 
     void entityIdChanged();
 
+    void started();
+
     void finished(QJsonDocument reply);
 
     void finishedWithError(int errorCode, const QString &errorMessage);

@@ -46,6 +46,7 @@ void DeleteGovernanceLabel::start()
     ocsGovernanceJob()->setMethod("DELETE");
 
     ocsGovernanceJob()->start();
+    Q_EMIT started();
 }
 
 void DeleteGovernanceLabel::start(const QString &labelId)

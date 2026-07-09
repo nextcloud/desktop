@@ -46,6 +46,7 @@ void GetGovernanceLabels::start()
     ocsGovernanceJob()->setMethod("GET");
 
     ocsGovernanceJob()->start();
+    Q_EMIT started();
 }
 
 void GetGovernanceLabels::start(const QString &entityId)
