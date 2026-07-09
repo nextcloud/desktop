@@ -626,6 +626,117 @@ private slots:
         QVERIFY(!model->errorString().isEmpty());
     }
 
+    void testSearchStatePlaceholderWhenNoSearchTerm()
+    {
+        model->setSearchTerm(QStringLiteral(""));
+        QVERIFY(model->rowCount() == 0);
+
+        QVERIFY(!model->hasSearchTerm());
+        QVERIFY(!model->hasSearchError());
+        QCOMPARE(model->searchState(), OCC::UnifiedSearchResultsListModel::SearchState::Placeholder);
+    }
+
+    void testSearchStateSkeletonWhileSearching()
+    {
+        model->setSearchTerm(QStringLiteral(""));
+        QVERIFY(model->rowCount() == 0);
+
+        QSignalSpy searchStateChanged(model.data(), &OCC::UnifiedSearchResultsListModel::searchStateChanged);
+
+        model->setSearchTerm(QStringLiteral("dis"));
+
+        // waiting for the edit timer to fire, nothing fetched yet
+        QVERIFY(model->waitingForSearchTermEditEnd());
+        QVERIFY(!model->isSearchInProgress());
+        QVERIFY(model->hasSearchTerm());
+        QCOMPARE(model->searchState(), OCC::UnifiedSearchResultsListModel::SearchState::Skeleton);
+        QVERIFY(searchStateChanged.count() > 0);
+
+        QSignalSpy searchInProgressChanged(
+            model.data(), &OCC::UnifiedSearchResultsListModel::isSearchInProgressChanged);
+
+        // search started but results have not arrived yet
+        QVERIFY(searchInProgressChanged.wait());
+        QVERIFY(model->isSearchInProgress());
+        QVERIFY(model->rowCount() == 0);
+        QCOMPARE(model->searchState(), OCC::UnifiedSearchResultsListModel::SearchState::Skeleton);
+
+        model->setSearchTerm(QStringLiteral(""));
+    }
+
+    void testSearchStateResultsWhenResultsFound()
+    {
+        model->setSearchTerm(QStringLiteral(""));
+        QVERIFY(model->rowCount() == 0);
+
+        QSignalSpy searchStateChanged(model.data(), &OCC::UnifiedSearchResultsListModel::searchStateChanged);
+        QSignalSpy searchInProgressChanged(
+            model.data(), &OCC::UnifiedSearchResultsListModel::isSearchInProgressChanged);
+
+        model->setSearchTerm(QStringLiteral("discuss"));
+
+        QVERIFY(searchInProgressChanged.wait());
+        QVERIFY(model->isSearchInProgress());
+
+        QVERIFY(searchInProgressChanged.wait());
+        QVERIFY(!model->isSearchInProgress());
+
+        QVERIFY(model->rowCount() > 0);
+        QVERIFY(!model->hasSearchError());
+        QVERIFY(!model->isFetchMoreInProgress());
+        QCOMPARE(model->searchState(), OCC::UnifiedSearchResultsListModel::SearchState::Results);
+        QVERIFY(searchStateChanged.count() > 0);
+
+        model->setSearchTerm(QStringLiteral(""));
+    }
+
+    void testSearchStateNothingFoundWhenNoResults()
+    {
+        model->setSearchTerm(QStringLiteral(""));
+        QVERIFY(model->rowCount() == 0);
+
+        QSignalSpy searchInProgressChanged(
+            model.data(), &OCC::UnifiedSearchResultsListModel::isSearchInProgressChanged);
+
+        model->setSearchTerm(QStringLiteral("[empty]"));
+
+        QVERIFY(searchInProgressChanged.wait());
+        QVERIFY(model->isSearchInProgress());
+
+        QVERIFY(searchInProgressChanged.wait());
+        QVERIFY(!model->isSearchInProgress());
+
+        QVERIFY(model->rowCount() == 0);
+        QVERIFY(model->hasSearchTerm());
+        QVERIFY(!model->hasSearchError());
+        QCOMPARE(model->searchState(), OCC::UnifiedSearchResultsListModel::SearchState::NothingFound);
+
+        model->setSearchTerm(QStringLiteral(""));
+    }
+
+    void testSearchStateSearchErrorWhenSearchFails()
+    {
+        model->setSearchTerm(QStringLiteral(""));
+        QVERIFY(model->rowCount() == 0);
+
+        QSignalSpy searchInProgressChanged(
+            model.data(), &OCC::UnifiedSearchResultsListModel::isSearchInProgressChanged);
+
+        model->setSearchTerm(QStringLiteral("[HTTP500]"));
+
+        QVERIFY(searchInProgressChanged.wait());
+        QVERIFY(model->isSearchInProgress());
+
+        QVERIFY(searchInProgressChanged.wait());
+        QVERIFY(!model->isSearchInProgress());
+
+        QVERIFY(model->rowCount() == 0);
+        QVERIFY(model->hasSearchError());
+        QCOMPARE(model->searchState(), OCC::UnifiedSearchResultsListModel::SearchState::SearchError);
+
+        model->setSearchTerm(QStringLiteral(""));
+    }
+
     void cleanupTestCase()
     {
         FakeSearchResultsStorage::destroy();
