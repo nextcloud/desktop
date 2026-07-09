@@ -96,8 +96,11 @@ ApplicationWindow {
         labelType: GovernanceNetworkJob.Sensitivity
         labelBehavior: GovernanceLabelsListModel.UniqueLabel
 
-        onRefreshData: function(labelType, entityId) {
+        onRefreshAvailableLabelsData: function(labelType, entityId) {
             getAvailableGovernanceLabelsForSensitivity.start(labelType, entityId)
+        }
+
+        onRefreshExistingLabelsData: function(labelType, entityId) {
             getGovernanceLabels.start(entityId)
         }
 
@@ -180,8 +183,11 @@ ApplicationWindow {
         labelType: GovernanceNetworkJob.Retention
         labelBehavior: GovernanceLabelsListModel.MultipleLabels
 
-        onRefreshData: function(labelType, entityId) {
+        onRefreshAvailableLabelsData: function(labelType, entityId) {
             getAvailableGovernanceLabelsForSensitivity.start(labelType, entityId)
+        }
+
+        onRefreshExistingLabelsData: function(labelType, entityId) {
             getGovernanceLabels.start(entityId)
         }
 
@@ -264,8 +270,11 @@ ApplicationWindow {
         labelType: GovernanceNetworkJob.LegalHold
         labelBehavior: GovernanceLabelsListModel.MultipleLabels
 
-        onRefreshData: function(labelType, entityId) {
-            getAvailableGovernanceLabelsForSensitivity.start(labelType, entityId)
+        onRefreshAvailableLabelsData: function(labelType, entityId) {
+            getAvailableGovernanceLabelsForLegalHold.start(labelType, entityId)
+        }
+
+        onRefreshExistingLabelsData: function(labelType, entityId) {
             getGovernanceLabels.start(entityId)
         }
 

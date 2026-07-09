@@ -156,124 +156,19 @@ void GovernanceLabelsListModel::setEntityId(const QString &newEntityId)
 
 void GovernanceLabelsListModel::setAvailableLabelsJsonData(const QJsonDocument &reply)
 {
-    const auto dataArray = readOcsReply(reply).toArray();
+    _availableLabelsReply = reply.object();
 
-    const auto convertToStringList = [] (const QJsonArray &scopesList) -> QStringList
-    {
-        auto result = QStringList{};
-
-        for (const auto &oneScope : scopesList) {
-            result << oneScope.toString();
-        }
-
-        return result;
-    };
-
-    beginResetModel();
-    _data.clear();
-    for (const auto oneLabel : dataArray) {
-        const auto oneLabelObject = oneLabel.toObject();
-        _data.emplaceBack(oneLabelObject.value(u"id"_s).toString(),
-                          oneLabelObject.value(u"name"_s).toString(),
-                          oneLabelObject.value(u"priority"_s).toInt(),
-                          oneLabelObject.value(u"description"_s).toString(),
-                          oneLabelObject.value(u"color"_s).toString(),
-                          convertToStringList(oneLabelObject.value(u"scopes"_s).toArray())
-                          );
+    if (hasReceivedAllData()) {
+        refreshModel();
     }
-    endResetModel();
 }
 
 void GovernanceLabelsListModel::setExistingLabelsJsonData(const QJsonDocument &reply)
 {
-    const auto dataReply = readOcsReply(reply).toObject();
-    qCInfo(lcGovernanceLabelsListModel()) << reply;
-    qCInfo(lcGovernanceLabelsListModel()) << dataReply;
+    _existingLabelsReply = reply.object();
 
-    switch (_labelType)
-    {
-    case Governance::LabelType::Sensitivity:
-    {
-        if (!dataReply.contains(u"sensitivity"_s)) {
-            qCWarning(lcGovernanceLabelsListModel()) << "missing sensitivity data in OCS reply";
-            return;
-        }
-
-        const auto sensitivityLabel = dataReply[u"sensitivity"_s].toObject();
-        for (auto rowIndex = 0; rowIndex < _data.size(); ++rowIndex) {
-            if (_data[rowIndex]._id == sensitivityLabel[u"id"_s]) {
-                if (_data[rowIndex]._status != GovernanceLabelInfo::Status::Selected) {
-                    _data[rowIndex]._status = GovernanceLabelInfo::Status::Selected;
-                    Q_EMIT dataChanged(index(rowIndex), index(rowIndex));
-                }
-            } else {
-                if (_data[rowIndex]._status != GovernanceLabelInfo::Status::Available) {
-                    _data[rowIndex]._status = GovernanceLabelInfo::Status::Available;
-                    Q_EMIT dataChanged(index(rowIndex), index(rowIndex));
-                }
-            }
-        }
-
-        break;
-    }
-    case Governance::LabelType::Retention:
-    {
-        if (!dataReply.contains(u"retention"_s)) {
-            qCWarning(lcGovernanceLabelsListModel()) << "missing retention data in OCS reply";
-            return;
-        }
-
-        const auto retentionLabels = dataReply[u"retention"_s].toArray();
-
-        for (const auto &oneLabel : retentionLabels) {
-            const auto oneLabelObject = oneLabel.toObject();
-            for (auto rowIndex = 0; rowIndex < _data.size(); ++rowIndex) {
-                if (_data[rowIndex]._id == oneLabelObject[u"id"_s]) {
-                    if (_data[rowIndex]._status != GovernanceLabelInfo::Status::Selected) {
-                        _data[rowIndex]._status = GovernanceLabelInfo::Status::Selected;
-                        Q_EMIT dataChanged(index(rowIndex), index(rowIndex));
-                    }
-                } else {
-                    if (_data[rowIndex]._status != GovernanceLabelInfo::Status::Available) {
-                        _data[rowIndex]._status = GovernanceLabelInfo::Status::Available;
-                        Q_EMIT dataChanged(index(rowIndex), index(rowIndex));
-                    }
-                }
-            }
-        }
-
-        break;
-    }
-    case Governance::LabelType::LegalHold:
-    {
-        if (!dataReply.contains(u"hold"_s)) {
-            qCWarning(lcGovernanceLabelsListModel()) << "missing legal hold data in OCS reply";
-            return;
-        }
-
-        const auto legalHoldLabels = dataReply[u"hold"_s].toArray();
-
-        for (const auto &oneLabel : legalHoldLabels) {
-            const auto oneLabelObject = oneLabel.toObject();
-            for (auto rowIndex = 0; rowIndex < _data.size(); ++rowIndex) {
-                if (_data[rowIndex]._id == oneLabelObject[u"id"_s]) {
-                    if (_data[rowIndex]._status != GovernanceLabelInfo::Status::Selected) {
-                        _data[rowIndex]._status = GovernanceLabelInfo::Status::Selected;
-                        Q_EMIT dataChanged(index(rowIndex), index(rowIndex));
-                    }
-                } else {
-                    if (_data[rowIndex]._status != GovernanceLabelInfo::Status::Available) {
-                        _data[rowIndex]._status = GovernanceLabelInfo::Status::Available;
-                        Q_EMIT dataChanged(index(rowIndex), index(rowIndex));
-                    }
-                }
-            }
-        }
-
-        break;
-    }
-    case Governance::LabelType::InvalidLabelType:
-        break;
+    if (hasReceivedAllData()) {
+        refreshModel();
     }
 }
 
@@ -307,12 +202,12 @@ void GovernanceLabelsListModel::toggleLabel(const QString &labelId)
 
 void OCC::GovernanceLabelsListModel::etagChanged()
 {
-    Q_EMIT refreshData(_labelType, _entityId);
+    emitRefreshData();
 }
 
 void GovernanceLabelsListModel::labelWasModified()
 {
-    Q_EMIT refreshData(_labelType, _entityId);
+    emitRefreshData();
 }
 
 void GovernanceLabelsListModel::emitRefreshData()
@@ -321,17 +216,18 @@ void GovernanceLabelsListModel::emitRefreshData()
         return;
     }
 
-    Q_EMIT refreshData(_labelType, _entityId);
+    _availableLabelsReply = {};
+    _existingLabelsReply = {};
+    Q_EMIT refreshAvailableLabelsData(_labelType, _entityId);
+    Q_EMIT refreshExistingLabelsData(_entityId);
 }
 
-QJsonValue GovernanceLabelsListModel::readOcsReply(const QJsonDocument &reply)
+QJsonValue GovernanceLabelsListModel::readOcsReply(const QJsonObject &replyObject)
 {
     auto result = QJsonValue{};
 
-    const auto replyObject = reply.object();
-
     if (!replyObject.contains(u"ocs"_s)) {
-        qCWarning(lcGovernanceLabelsListModel()) << "wrong format for reply" << reply.toJson(QJsonDocument::JsonFormat::Compact);
+        qCWarning(lcGovernanceLabelsListModel()) << "wrong format for reply" << replyObject;
         return result;
     }
 
@@ -345,6 +241,105 @@ QJsonValue GovernanceLabelsListModel::readOcsReply(const QJsonDocument &reply)
     result = ocsObject.value(u"data"_s);
 
     return result;
+}
+
+bool GovernanceLabelsListModel::hasReceivedAllData() const
+{
+    return _availableLabelsReply.contains(u"ocs"_s) && _existingLabelsReply.contains(u"ocs"_s);
+}
+
+void GovernanceLabelsListModel::refreshModel()
+{
+    const auto dataArray = readOcsReply(_availableLabelsReply).toArray();
+    const auto dataReply = readOcsReply(_existingLabelsReply).toObject();
+
+    const auto convertToStringList = [] (const QJsonArray &scopesList) -> QStringList
+    {
+        auto result = QStringList{};
+
+        for (const auto &oneScope : scopesList) {
+            result << oneScope.toString();
+        }
+
+        return result;
+    };
+
+    const auto parseExistingSingleLabel = [this] (const int rowIndex, const QJsonObject &oneLabel) -> void{
+        if (_data[rowIndex]._id == oneLabel[u"id"_s]) {
+            if (_data[rowIndex]._status != GovernanceLabelInfo::Status::Selected) {
+                _data[rowIndex]._status = GovernanceLabelInfo::Status::Selected;
+                Q_EMIT dataChanged(index(rowIndex), index(rowIndex));
+            }
+        } else {
+            if (_data[rowIndex]._status != GovernanceLabelInfo::Status::Available) {
+                _data[rowIndex]._status = GovernanceLabelInfo::Status::Available;
+                Q_EMIT dataChanged(index(rowIndex), index(rowIndex));
+            }
+        }
+    };
+
+    beginResetModel();
+    _data.clear();
+    for (const auto oneLabel : dataArray) {
+        const auto rowIndex = _data.size();
+        const auto oneLabelObject = oneLabel.toObject();
+        _data.emplaceBack(oneLabelObject.value(u"id"_s).toString(),
+                          oneLabelObject.value(u"name"_s).toString(),
+                          oneLabelObject.value(u"priority"_s).toInt(),
+                          oneLabelObject.value(u"description"_s).toString(),
+                          oneLabelObject.value(u"color"_s).toString(),
+                          convertToStringList(oneLabelObject.value(u"scopes"_s).toArray())
+                          );
+
+        switch (_labelType)
+        {
+        case Governance::LabelType::Sensitivity:
+        {
+            if (!dataReply.contains(u"sensitivity"_s)) {
+                qCWarning(lcGovernanceLabelsListModel()) << "missing sensitivity data in OCS reply";
+                break;
+            }
+
+            const auto &sensitivityLabel = dataReply[u"sensitivity"_s].toObject();
+
+            parseExistingSingleLabel(rowIndex, sensitivityLabel);
+            break;
+        }
+        case Governance::LabelType::Retention:
+        {
+            if (!dataReply.contains(u"retention"_s)) {
+                qCWarning(lcGovernanceLabelsListModel()) << "missing retention data in OCS reply";
+                break;
+            }
+
+            const auto retentionLabels = dataReply[u"retention"_s].toArray();
+
+            for (const auto &oneLabel : retentionLabels) {
+                const auto &oneLabelObject = oneLabel.toObject();
+                parseExistingSingleLabel(rowIndex, oneLabelObject);
+            }
+            break;
+        }
+        case Governance::LabelType::LegalHold:
+        {
+            if (!dataReply.contains(u"hold"_s)) {
+                qCWarning(lcGovernanceLabelsListModel()) << "missing legal hold data in OCS reply";
+                break;
+            }
+
+            const auto legalHoldLabels = dataReply[u"hold"_s].toArray();
+
+            for (const auto &oneLabel : legalHoldLabels) {
+                const auto &oneLabelObject = oneLabel.toObject();
+                parseExistingSingleLabel(rowIndex, oneLabelObject);
+            }
+            break;
+        }
+        case Governance::LabelType::InvalidLabelType:
+            break;
+        }
+    }
+    endResetModel();
 }
 
 GovernanceLabelsListModel::LabelBehavior GovernanceLabelsListModel::labelBehavior() const

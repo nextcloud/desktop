@@ -12,6 +12,7 @@
 #include <QAbstractListModel>
 #include <QQmlEngine>
 #include <QList>
+#include <QJsonObject>
 
 namespace OCC
 {
@@ -50,11 +51,11 @@ public:
 
     explicit GovernanceLabelsListModel(QObject *parent = nullptr);
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
-    QHash<int,QByteArray> roleNames() const override;
+    [[nodiscard]] QHash<int,QByteArray> roleNames() const override;
 
     [[nodiscard]] Governance::LabelType labelType() const;
 
@@ -86,7 +87,9 @@ Q_SIGNALS:
 
     void entityIdChanged();
 
-    void refreshData(OCC::Governance::LabelType labelType, const QString &entityId);
+    void refreshAvailableLabelsData(OCC::Governance::LabelType labelType, const QString &entityId);
+
+    void refreshExistingLabelsData(const QString &entityId);
 
     void addLabel(const QString &labelId);
 
@@ -97,7 +100,11 @@ Q_SIGNALS:
 private:
     void emitRefreshData();
 
-    QJsonValue readOcsReply(const QJsonDocument &reply);
+    static QJsonValue readOcsReply(const QJsonObject &reply);
+
+    [[nodiscard]] bool hasReceivedAllData() const;
+
+    void refreshModel();
 
     Governance::LabelType _labelType = Governance::LabelType::InvalidLabelType;
 
@@ -106,6 +113,10 @@ private:
     QList<GovernanceLabelInfo> _data;
 
     LabelBehavior _labelBehavior = LabelBehavior::UnknownLabelbehavior;
+
+    QJsonObject _availableLabelsReply;
+
+    QJsonObject _existingLabelsReply;
 };
 
 } // namespace OCC
