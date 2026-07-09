@@ -534,7 +534,7 @@ private slots:
         GovernanceLabelsListModel myModel;
         QAbstractItemModelTester myModelTester(&myModel);
 
-        const auto replyJson = R"json(
+        const auto availableReplyJson = R"json(
 {
   "ocs": {
     "meta": {
@@ -557,10 +557,51 @@ private slots:
   }
 }
             )json"_ba;
+        const auto availableReplyData = QJsonDocument::fromJson(availableReplyJson);
 
-        const auto replyData = QJsonDocument::fromJson(replyJson);
+        const auto existingReplyJson = R"json(
+{
+  "ocs": {
+    "meta": {
+      "status": "string",
+      "statuscode": 0,
+      "message": "string",
+      "totalitems": "string",
+      "itemsperpage": "string"
+    },
+    "data": {
+      "sensitivity": {
+        "id": "91785883351310337",
+        "name": "Test Sensitivity",
+        "priority": 0,
+        "description": "This is a long description",
+        "color": "bf4040",
+        "canRemove": "yes",
+        "canAssign": "yes",
+        "isAssigned": true
+      },
+      "retention": [
+        {
+          "id": "string",
+          "name": "string",
+          "priority": 0,
+          "description": "string",
+          "color": "string",
+          "canRemove": "yes",
+          "canAssign": "yes",
+          "isAssigned": true
+        }
+      ]
+    }
+  }
+}
+)json"_ba;
+        const auto existingReplyData = QJsonDocument::fromJson(existingReplyJson);
 
-        myModel.setAvailableLabelsJsonData(replyData);
+        myModel.setAvailableLabelsJsonData(availableReplyData);
+        QCOMPARE(myModel.rowCount(), 1);
+
+        myModel.setExistingLabelsJsonData(existingReplyData);
 
         QCOMPARE(myModel.rowCount(), 2);
         const auto labelIndex = myModel.index(0);
@@ -571,6 +612,7 @@ private slots:
         QCOMPARE(myModel.data(labelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::DescriptionRole)), u"This is a long description"_s);
         QCOMPARE(myModel.data(labelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::ColorRole)), u"bf4040"_s);
         QCOMPARE(myModel.data(labelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::ScopesRole)).toStringList(), QStringList{u"FILES"_s});
+        QCOMPARE(myModel.data(labelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::SelectedRole)).toBool(), true);
     }
 
     void testGovernanceLabelListModel_refreshData()
