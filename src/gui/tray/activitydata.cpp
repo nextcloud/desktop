@@ -298,14 +298,6 @@ QVariantList Activity::notificationPreviewActions() const
 {
     auto actions = QVariantList{};
 
-    if (isDismissableActivity()) {
-        actions.push_back(notificationPreviewAction(
-            QCoreApplication::translate("ActivityItemContent", "Confirm"),
-            QStringLiteral("dismiss"),
-            -1,
-            QByteArrayLiteral("DELETE")));
-    }
-
     const auto &actionsList = activityActionMetadata();
     for (const auto &action : actionsList) {
         const auto &link = action.link;
@@ -315,6 +307,14 @@ QVariantList Activity::notificationPreviewActions() const
             link._verb == QByteArrayLiteral("REPLY") ? QStringLiteral("openActivities") : QStringLiteral("trigger"),
             action.actionIndex,
             link._verb));
+    }
+
+    if (isDismissableActivity()) {
+        actions.push_back(notificationPreviewAction(
+            QCoreApplication::translate("ActivityItemContent", "Dismiss"),
+            QStringLiteral("dismiss"),
+            -1,
+            QByteArrayLiteral("DELETE")));
     }
 
     return actions;
