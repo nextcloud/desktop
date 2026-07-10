@@ -785,9 +785,9 @@ void ownCloudGui::raiseDialog(QWidget *raiseWidget)
 }
 
 
-void ownCloudGui::slotShowShareDialog(const QString &localPath) const
+void ownCloudGui::slotShowShareDialog(const QString &localPath, const QString &fileId) const
 {
-    _tray->createShareDialog(localPath);
+    _tray->createShareDialog(localPath, fileId);
 }
 
 void ownCloudGui::slotShowGovernanceLabelsDialog(AccountPtr account,
