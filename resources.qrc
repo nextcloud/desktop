@@ -6,7 +6,6 @@
         <file>src/gui/WindowAccountHeader.qml</file>
         <file>src/gui/ActivitiesWindow.qml</file>
         <file>src/gui/AssistantWindow.qml</file>
-        <file>src/gui/search/qml/SearchWindow.qml</file>
         <file>src/gui/UserStatusWindowStatusRow.qml</file>
         <file>src/gui/UserStatusWindowPredefinedStatusRow.qml</file>
         <file>src/gui/UserStatusSelectorPage.qml</file>
@@ -38,16 +37,6 @@
         <file>src/gui/tray/ActivityList.qml</file>
         <file>src/gui/tray/CurrentAccountHeaderButton.qml</file>
         <file>src/gui/tray/TrayWindowHeader.qml</file>
-        <file>src/gui/search/qml/UnifiedSearchInputContainer.qml</file>
-        <file>src/gui/search/qml/UnifiedSearchResultFetchMoreTrigger.qml</file>
-        <file>src/gui/search/qml/UnifiedSearchResultItem.qml</file>
-        <file>src/gui/search/qml/UnifiedSearchResultItemSkeleton.qml</file>
-        <file>src/gui/search/qml/UnifiedSearchResultItemSkeletonContainer.qml</file>
-        <file>src/gui/search/qml/UnifiedSearchResultItemSkeletonGradientRectangle.qml</file>
-        <file>src/gui/search/qml/UnifiedSearchResultListItem.qml</file>
-        <file>src/gui/search/qml/UnifiedSearchResultNothingFound.qml</file>
-        <file>src/gui/search/qml/UnifiedSearchPlaceholderView.qml</file>
-        <file>src/gui/search/qml/UnifiedSearchResultSectionItem.qml</file>
         <file>src/gui/tray/ActivityItemContextMenu.qml</file>
         <file>src/gui/tray/ActivityItemActions.qml</file>
         <file>src/gui/tray/ActivityItemContent.qml</file>
