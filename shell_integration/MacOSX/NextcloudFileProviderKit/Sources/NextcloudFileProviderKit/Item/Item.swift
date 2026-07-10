@@ -83,7 +83,23 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         //
         // See nextcloud/desktop#10065.
         let extensionVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
-        let metadataVersionString = "\(metadata.etag)|\(extensionVersion)"
+        var metadataVersionString = "\(metadata.etag)|\(extensionVersion)"
+
+        // A directory's `displayEvictDescendants` ("Remove downloaded items")
+        // depends on whether it holds an evictable descendant file — state that
+        // lives outside the folder's own etag. Fold that boolean into
+        // `metadataVersion` so the framework detects its cached snapshot as stale
+        // and re-reads the recomputed `userInfo` when a descendant materializes or
+        // is evicted. Without this, the ancestor-refresh nudge (see
+        // `FileProviderExtension.materializedItemsDidChange`) would hand back an
+        // unchanged version and the framework would drop the update — the same
+        // versioning rationale as the extension-version component above (#10085,
+        // #10065). A bool suffices: it flips exactly at the 0↔≥1 boundary where
+        // the folder action itself flips, so it does not over-invalidate on every
+        // descendant change.
+        if metadata.directory {
+            metadataVersionString += "|\(dbManager.hasEvictableDescendantFile(directoryMetadata: metadata))"
+        }
 
         return NSFileProviderItemVersion(contentVersion: metadata.etag.data(using: .utf8)!, metadataVersion: metadataVersionString.data(using: .utf8)!)
     }
@@ -216,13 +232,37 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
 
         userInfoDict["displayKeepDownloaded"] = !metadata.keepDownloaded
         userInfoDict["displayAllowAutoEvicting"] = metadata.keepDownloaded
-        // Restricted to non-pinned items so the action only appears once the
-        // framework has refreshed `contentPolicy` to `.inherited`. Both fields
-        // are read from the same `Item` returned by `item(for:)`, so they
-        // always agree — preventing the -2008 NonEvictable race that would
-        // otherwise occur if we tried to evict while `requestModification`'s
-        // unpin signal was still queued (#9891).
-        userInfoDict["displayEvict"] = metadata.downloaded && !metadata.keepDownloaded
+        // "Remove download" is split into two actions that share the same evict
+        // handler but carry different, statically-declared labels (#10085):
+        //
+        // - `displayEvict` → "Remove download", for a *file* whose own payload is
+        //   materialized. Files carry that state in `downloaded`.
+        // - `displayEvictDescendants` → "Remove downloaded items", for a *folder*
+        //   (including the root) that holds at least one *evictable* descendant
+        //   file: downloaded, not pinned via "Always keep downloaded" (an
+        //   individually-pinned descendant is not removable and can't be evicted —
+        //   -2008 NonEvictable, #9891). Folders never get `downloaded == true`
+        //   during sync, and the file label would misdescribe a folder. Sub-folders
+        //   alone do not count; unlike the sticky `visitedDirectory`, this clears
+        //   itself after eviction because it tracks descendants' `downloaded` flags,
+        //   which the materialized-set observer resets.
+        //
+        // Both are restricted to non-pinned items so the action only appears once
+        // the framework has refreshed `contentPolicy` to `.inherited`. This field
+        // and `contentPolicy` are read from the same `Item` returned by
+        // `item(for:)`, so they always agree — preventing the -2008 NonEvictable
+        // race that would otherwise occur if we tried to evict while
+        // `requestModification`'s unpin signal was still queued (#9891). Pinning a
+        // folder recursively sets `keepDownloaded` on the folder itself, so the
+        // same guard keeps the folder action hidden until the two-step unpin flow.
+        let notPinned = !metadata.keepDownloaded
+        if metadata.directory {
+            userInfoDict["displayEvict"] = false
+            userInfoDict["displayEvictDescendants"] = dbManager.hasEvictableDescendantFile(directoryMetadata: metadata) && notPinned
+        } else {
+            userInfoDict["displayEvict"] = metadata.downloaded && notPinned
+            userInfoDict["displayEvictDescendants"] = false
+        }
 
         // Gate the "Open in browser" context menu action on items that have a
         // server-side counterpart whose private link the main app can resolve.

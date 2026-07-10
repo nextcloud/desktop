@@ -46,6 +46,12 @@
             "value" : "Kasutajakonto andmed pole saadaval, andmete laadimine pole võimalik!"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اطلاعات حساب در دسترس نیست؛ امکان بارگذاری مجدد وجود ندارد."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -172,6 +178,12 @@
             "value" : "Luba üleslaadimine ja muutmine"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اجازه بارگذاری و ویرایش"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -290,6 +302,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Autendin…"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "در حال احراز هویت…"
           }
         },
         "fr" : {
@@ -583,6 +601,12 @@
             "value" : "Ikoon, mis katkestab loomise"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "آیکون لغو ساخت"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -694,6 +718,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Märkeruut ringis"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "علامت تیک در دایره"
           }
         },
         "fr" : {
@@ -808,6 +838,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sulge"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بستن"
           }
         },
         "fr" : {
@@ -942,6 +978,12 @@
             "value" : "Suhtlen serveriga, lukustan faili…"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "در حال ارتباط با سرور، قفل کردن فایل…"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1052,6 +1094,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Suhtlen serveriga, eemaldan faili lukustust…"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "در حال ارتباط با سرور، باز کردن قفل فایل…"
           }
         },
         "fr" : {
@@ -1165,6 +1213,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kuna kasutajakonto on vigane, siis ei õnnestunud laadida võimekusi."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "به دلیل نامعتبر بودن حساب، امکان دریافت قابلیت‌ها وجود ندارد."
           }
         },
         "fr" : {
@@ -1286,6 +1340,12 @@
             "value" : "Objekti tunnuse tuvastamine ei õnnestunud. Ühtegi jagamist ei õnnestu tuvastada ega laadida."
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "شناسه آیتم یافت نشد؛ امکان اشتراک‌گذاری وجود ندارد."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1403,6 +1463,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tundmatu objekti lukustamine ei õnnestunud…"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "امکان قفل کردن آیتم ناشناس وجود ندارد…"
           }
         },
         "fr" : {
@@ -1524,6 +1590,12 @@
             "value" : "Andmete laadimine ei õnnestunud: %@. Proovin üsna pea uuesti."
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "امکان بارگذاری مجدد داده‌ها وجود ندارد: %@، دوباره تلاش خواهد شد."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1642,6 +1714,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lisa uus jagamine"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ایجاد اشتراک‌گذاری جدید"
           }
         },
         "fr" : {
@@ -1766,6 +1844,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kustuta"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف"
           }
         },
         "fr" : {
@@ -1917,6 +2001,12 @@
             "value" : "Prügikasti tühjendamise ikoon"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "آیکون سطل زباله حذف"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2029,6 +2119,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Loobu"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بستن"
           }
         },
         "fr" : {
@@ -2168,6 +2264,12 @@
             "value" : "Dokumendi sümbol"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نماد سند"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2280,6 +2382,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jagamine e-kirjaga"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اشتراک‌گذاری از طریق ایمیل"
           }
         },
         "fr" : {
@@ -2401,6 +2509,12 @@
             "value" : "E-postiga jagamine (%@)"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اشتراک‌گذاری از طریق ایمیل (%@)"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2512,6 +2626,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-postiga jagamise ikoon"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "آیکون اشتراک‌گذاری ایمیل"
           }
         },
         "fr" : {
@@ -2626,6 +2746,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sisesta uus salasõna"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "رمز عبور جدید را وارد کنید"
           }
         },
         "fr" : {
@@ -2753,6 +2879,12 @@
             "value" : "Viga loomisel: %@"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "خطا در ایجاد: %@"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2872,6 +3004,12 @@
             "value" : "Viga jagamiste laadimisel: %@"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "خطا در دریافت موارد اشتراک‌گذاری‌شده: %@"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2989,6 +3127,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Serveri tingimuste laadimine ei õnnestunud: %@"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "خطا در دریافت قابلیت‌های سرور: %@"
           }
         },
         "fr" : {
@@ -3111,6 +3255,12 @@
             "value" : "Aegumise kuupäev"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تاریخ انقضا"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3138,7 +3288,7 @@
         "lt_LT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Galiojimo laikas"
+            "value" : "Galiojimo pabaigos data"
           }
         },
         "mn" : {
@@ -3234,6 +3384,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ei õnnestunud laadida üksikasju failide jagamise lisamoodulist. Proovin uuesti."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "دریافت اطلاعات از افزونه تامین‌کننده فایل ناموفق بود. در حال تلاش مجدد."
           }
         },
         "fr" : {
@@ -3356,6 +3512,12 @@
             "value" : "Jagamine liitpilves"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اشتراک‌گذاری ابری فدرال"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3396,12 +3558,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compartilhamento de nuvem federada"
-          }
-        },
-        "sw" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Federated cloud share"
           }
         },
         "tr" : {
@@ -3473,6 +3629,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jagamine liitpilves (%@)"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اشتراک‌گذاری ابری فدرال (%@)"
           }
         },
         "fr" : {
@@ -3588,6 +3750,12 @@
             "value" : "Liitpilves jagamise ikoon"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "آیکون اشتراک‌گذاری ابری فدرال"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3700,6 +3868,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "„%@“ fail on lukustatud!"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فایل «%@» قفل شد!"
           }
         },
         "fr" : {
@@ -3818,6 +3992,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "„%@“ faili lukustus on eemaldatud!"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "قفل فایل «%@» باز شد!"
           }
         },
         "fr" : {
@@ -3940,6 +4120,12 @@
             "value" : "Vabasta andmeruumi"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "آزادسازی فضا"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4051,7 +4237,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Group share"
+            "value" : "اشتراک‌گذاری گروهی"
           }
         },
         "fr" : {
@@ -4191,6 +4377,12 @@
             "value" : "Jagamine grupile (%@)"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اشتراک‌گذاری گروهی (%@)"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4302,6 +4494,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Grupile jagamise ikoon"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "آیکون اشتراک‌گذاری گروهی"
           }
         },
         "fr" : {
@@ -4416,6 +4614,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Peida allalaaditu"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "پنهان کردن دانلودها"
           }
         },
         "fr" : {
@@ -4549,6 +4753,12 @@
             "value" : "Sisemise jagamislingi ikoon"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "آیکون اشتراک‌گذاری لینک داخلی"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4662,6 +4872,12 @@
             "value" : "Sisemine jagamine (eeldab ligipääsu failile)"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اشتراک‌گذاری داخلی (نیازمند دسترسی به فایل)"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4768,6 +4984,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Viimati muudetud: %@"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "آخرین تغییر: %@"
           }
         },
         "fr" : {
@@ -4890,6 +5112,12 @@
             "value" : "Lukusta fail"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "قفل کردن فایل"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5009,6 +5237,12 @@
             "value" : "Lukustan „%@“ faili…"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "در حال قفل کردن فایل «%@»…"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5120,6 +5354,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "NextcloudKiti server või kasutajakonto pole saadaval, jagamiste laadimine ei õnnestu!"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حساب یا نمونه NextcloudKit در دسترس نیست؛ امکان دریافت موارد اشتراک‌گذاری‌شده وجود ندارد!"
           }
         },
         "fr" : {
@@ -5239,6 +5479,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Objekti võrguaadressi pole, andmete laadimine ei õnnestu!"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نشانی (URL) آیتم وجود ندارد؛ امکان بارگذاری مجدد داده‌ها نیست!"
           }
         },
         "fr" : {
@@ -5361,6 +5607,12 @@
             "value" : "Märge saajale"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "یادداشت برای گیرنده"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5479,6 +5731,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kaitse salasõnaga"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "محافظت با رمز عبور"
           }
         },
         "fr" : {
@@ -5606,6 +5864,12 @@
             "value" : "Ikoon, mis kinnitab, et avalik jagamislink on kopeeritud"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "آیکون کپی شدن لینک عمومی"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5724,6 +5988,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Avaliku lingiga jagamine"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اشتراک‌گذاری با لینک عمومی"
           }
         },
         "fr" : {
@@ -5845,6 +6115,12 @@
             "value" : "Avaliku jagamislingi ikoon"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "آیکون اشتراک‌گذاری لینک عمومی"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5957,6 +6233,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Salvesta"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ذخیره"
           }
         },
         "fr" : {
@@ -6094,6 +6376,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Server ei toeta jagamist"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سرور از اشتراک‌گذاری پشتیبانی نمی‌کند."
           }
         },
         "fr" : {
@@ -6348,6 +6636,12 @@
             "value" : "Jagamise valikud"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "گزینه‌های اشتراک‌گذاری"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6474,6 +6768,12 @@
             "value" : "Jagamise saaja"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "گیرنده اشتراک‌گذاری"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6586,6 +6886,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jagamine kõnerakenduse vestlusesse"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اشتراک‌گذاری در گفتگوی Talk"
           }
         },
         "fr" : {
@@ -6701,6 +7007,12 @@
             "value" : "Jagamine kõnerakenduse vestlusesse (%@)"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اشتراک‌گذاری در گفتگوی Talk (%@)"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6806,6 +7118,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kõnerakenduse vestlusesse jagamise ikoon"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "آیکون اشتراک‌گذاری گفتگو در Talk"
           }
         },
         "fr" : {
@@ -6916,6 +7234,12 @@
             "value" : "Jagamine tiimile"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اشتراک‌گذاری تیمی"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7024,6 +7348,12 @@
             "value" : "Jagamine tiimile (%@)"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اشتراک‌گذاری تیمی (%@)"
+          }
+        },
         "ga" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7116,6 +7446,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tiimile jagamise ikoon"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "آیکون اشتراک‌گذاری تیمی"
           }
         },
         "ga" : {
@@ -7217,6 +7553,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Seda faili ei saa jagada."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "این فایل قابل اشتراک‌گذاری نیست."
           }
         },
         "fr" : {
@@ -7331,6 +7673,12 @@
             "value" : "Faili metaandmete laadimine ei õnnestu…"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "امکان بازیابی متادیتای فایل وجود ندارد…"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7443,6 +7791,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Objekt pole teada"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "آیتم ناشناس"
           }
         },
         "fr" : {
@@ -7565,6 +7919,12 @@
             "value" : "Muutmise kuupäev pole teada"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تاریخ تغییر نامشخص"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7684,6 +8044,12 @@
             "value" : "Tundmatu jaosmeedia"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اشتراک‌گذاری ناشناس"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7790,6 +8156,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Suurus pole teada"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اندازه نامشخص"
           }
         },
         "fr" : {
@@ -7918,6 +8290,12 @@
             "value" : "Eemalda faili lukustus"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "باز کردن قفل فایل"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8038,6 +8416,12 @@
             "value" : "Eemaldan „%@“ faili lukustust…"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "در حال باز کردن قفل فایل «%@»…"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8150,6 +8534,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kasutaja jaosmeedia"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اشتراک‌گذاری با کاربر"
           }
         },
         "fr" : {
@@ -8271,6 +8661,12 @@
             "value" : "Kasutajale jagamine (%@)"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اشتراک‌گذاری با کاربر (%@)"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8376,6 +8772,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kasutajale jagamise ikoon"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "آیکون اشتراک‌گذاری با کاربر"
           }
         },
         "fr" : {
