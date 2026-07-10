@@ -31,8 +31,6 @@ public:
 
     QString _color;
 
-    QStringList _scopes;
-
     Status _status = Status::UnknownStatus;
 };
 

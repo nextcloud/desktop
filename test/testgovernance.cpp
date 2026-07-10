@@ -316,6 +316,8 @@ private slots:
     {
         OCC::Logger::instance()->setLogFlush(true);
         OCC::Logger::instance()->setLogDebug(true);
+        OCC::Logger::instance()->setLogFile(QStringLiteral("-"));
+        OCC::Logger::instance()->addLogRule({ QStringLiteral("sync.httplogger=true") });
 
         QStandardPaths::setTestModeEnabled(true);
     }
@@ -549,9 +551,19 @@ private slots:
         "priority": 0,
         "description": "This is a long description",
         "color": "bf4040",
-        "scopes": [
-          "FILES"
-        ]
+        "canAssign": "no",
+        "canRemove": "no",
+        "isAssigned": false
+      },
+      {
+        "id": "91345129959310149",
+        "name": "High Sensitivity",
+        "priority": 1,
+        "description": "This is a long description for high sensitive label",
+        "color": "56cd40",
+        "canAssign": "no",
+        "canRemove": "no",
+        "isAssigned": false
       }
     ]
   }
@@ -563,56 +575,65 @@ private slots:
 {
   "ocs": {
     "meta": {
-      "status": "string",
-      "statuscode": 0,
-      "message": "string",
-      "totalitems": "string",
-      "itemsperpage": "string"
+      "status": "ok",
+      "statuscode": 200,
+      "message": "OK"
     },
     "data": {
+      "retention": [],
       "sensitivity": {
         "id": "91785883351310337",
         "name": "Test Sensitivity",
         "priority": 0,
         "description": "This is a long description",
         "color": "bf4040",
-        "canRemove": "yes",
-        "canAssign": "yes",
+        "canAssign": "no",
+        "canRemove": "no",
         "isAssigned": true
-      },
-      "retention": [
-        {
-          "id": "string",
-          "name": "string",
-          "priority": 0,
-          "description": "string",
-          "color": "string",
-          "canRemove": "yes",
-          "canAssign": "yes",
-          "isAssigned": true
-        }
-      ]
+      }
     }
   }
 }
 )json"_ba;
         const auto existingReplyData = QJsonDocument::fromJson(existingReplyJson);
 
+        myModel.setEntityId(u"123456"_s);
+        myModel.setLabelBehavior(GovernanceLabelsListModel::LabelBehavior::UniqueLabel);
+        myModel.setLabelType(Governance::LabelType::Sensitivity);
+
         myModel.setAvailableLabelsJsonData(availableReplyData);
         QCOMPARE(myModel.rowCount(), 1);
 
         myModel.setExistingLabelsJsonData(existingReplyData);
 
-        QCOMPARE(myModel.rowCount(), 2);
-        const auto labelIndex = myModel.index(0);
-        QVERIFY(labelIndex.isValid());
-        QCOMPARE(myModel.data(labelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::IdRole)), u"91785883351310337"_s);
-        QCOMPARE(myModel.data(labelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::NameRole)), u"Test Sensitivity"_s);
-        QCOMPARE(myModel.data(labelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::PriorityRole)), 0);
-        QCOMPARE(myModel.data(labelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::DescriptionRole)), u"This is a long description"_s);
-        QCOMPARE(myModel.data(labelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::ColorRole)), u"bf4040"_s);
-        QCOMPARE(myModel.data(labelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::ScopesRole)).toStringList(), QStringList{u"FILES"_s});
-        QCOMPARE(myModel.data(labelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::SelectedRole)).toBool(), true);
+        QCOMPARE(myModel.rowCount(), 3);
+
+        const auto firstLabelIndex = myModel.index(0);
+        QVERIFY(firstLabelIndex.isValid());
+        QCOMPARE(myModel.data(firstLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::IdRole)), u"91785883351310337"_s);
+        QCOMPARE(myModel.data(firstLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::NameRole)), u"Test Sensitivity"_s);
+        QCOMPARE(myModel.data(firstLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::PriorityRole)), 0);
+        QCOMPARE(myModel.data(firstLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::DescriptionRole)), u"This is a long description"_s);
+        QCOMPARE(myModel.data(firstLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::ColorRole)), u"bf4040"_s);
+        QCOMPARE(myModel.data(firstLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::SelectedRole)).toBool(), true);
+
+        const auto secondLabelIndex = myModel.index(1);
+        QVERIFY(secondLabelIndex.isValid());
+        QCOMPARE(myModel.data(secondLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::IdRole)), u"91345129959310149"_s);
+        QCOMPARE(myModel.data(secondLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::NameRole)), u"High Sensitivity"_s);
+        QCOMPARE(myModel.data(secondLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::PriorityRole)), 1);
+        QCOMPARE(myModel.data(secondLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::DescriptionRole)), u"This is a long description for high sensitive label"_s);
+        QCOMPARE(myModel.data(secondLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::ColorRole)), u"56cd40"_s);
+        QCOMPARE(myModel.data(secondLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::SelectedRole)).toBool(), false);
+
+        const auto noneLabelIndex = myModel.index(2);
+        QVERIFY(noneLabelIndex.isValid());
+        QCOMPARE(myModel.data(noneLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::IdRole)), -1);
+        QCOMPARE(myModel.data(noneLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::NameRole)), u"None"_s);
+        QCOMPARE(myModel.data(noneLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::PriorityRole)), -1);
+        QCOMPARE(myModel.data(noneLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::DescriptionRole)), u"No label"_s);
+        QCOMPARE(myModel.data(noneLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::ColorRole)), {});
+        QCOMPARE(myModel.data(noneLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::SelectedRole)).toBool(), false);
     }
 
     void testGovernanceLabelListModel_refreshData()

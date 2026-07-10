@@ -68,7 +68,6 @@ QVariant GovernanceLabelsListModel::data(const QModelIndex &index, int role) con
                 result = tr("No label");
                 break;
             case LabelsListModelRoles::ColorRole:
-            case LabelsListModelRoles::ScopesRole:
                 break;
             case LabelsListModelRoles::SelectedRole:
                 result = false;
@@ -92,9 +91,6 @@ QVariant GovernanceLabelsListModel::data(const QModelIndex &index, int role) con
             case LabelsListModelRoles::ColorRole:
                 result = _data[index.row()]._color;
                 break;
-            case LabelsListModelRoles::ScopesRole:
-                result = _data[index.row()]._scopes;
-                break;
             case LabelsListModelRoles::SelectedRole:
                 result = _data[index.row()]._status == GovernanceLabelInfo::Status::Selected;
                 break;
@@ -113,7 +109,6 @@ QHash<int, QByteArray> GovernanceLabelsListModel::roleNames() const
         {static_cast<int>(LabelsListModelRoles::PriorityRole), "priority"_ba},
         {static_cast<int>(LabelsListModelRoles::DescriptionRole), "description"_ba},
         {static_cast<int>(LabelsListModelRoles::ColorRole), "color"_ba},
-        {static_cast<int>(LabelsListModelRoles::ScopesRole), "scopes"_ba},
         {static_cast<int>(LabelsListModelRoles::SelectedRole), "isSelected"_ba},
     };
 
@@ -158,6 +153,11 @@ void GovernanceLabelsListModel::setAvailableLabelsJsonData(const QJsonDocument &
 {
     _availableLabelsReply = reply.object();
 
+    if (!validState()) {
+        qCWarning(lcGovernanceLabelsListModel()) << "setting data in an invalid model state";
+        return;
+    }
+
     if (hasReceivedAllData()) {
         refreshModel();
     }
@@ -166,6 +166,11 @@ void GovernanceLabelsListModel::setAvailableLabelsJsonData(const QJsonDocument &
 void GovernanceLabelsListModel::setExistingLabelsJsonData(const QJsonDocument &reply)
 {
     _existingLabelsReply = reply.object();
+
+    if (!validState()) {
+        qCWarning(lcGovernanceLabelsListModel()) << "setting data in an invalid model state";
+        return;
+    }
 
     if (hasReceivedAllData()) {
         refreshModel();
@@ -212,7 +217,7 @@ void GovernanceLabelsListModel::labelWasModified()
 
 void GovernanceLabelsListModel::emitRefreshData()
 {
-    if (_entityId.isEmpty() || _labelType == Governance::LabelType::InvalidLabelType) {
+    if (!validState()) {
         return;
     }
 
@@ -248,21 +253,15 @@ bool GovernanceLabelsListModel::hasReceivedAllData() const
     return _availableLabelsReply.contains(u"ocs"_s) && _existingLabelsReply.contains(u"ocs"_s);
 }
 
+bool GovernanceLabelsListModel::validState() const
+{
+    return !_entityId.isEmpty() && _labelType != Governance::LabelType::InvalidLabelType;
+}
+
 void GovernanceLabelsListModel::refreshModel()
 {
-    const auto dataArray = readOcsReply(_availableLabelsReply).toArray();
-    const auto dataReply = readOcsReply(_existingLabelsReply).toObject();
-
-    const auto convertToStringList = [] (const QJsonArray &scopesList) -> QStringList
-    {
-        auto result = QStringList{};
-
-        for (const auto &oneScope : scopesList) {
-            result << oneScope.toString();
-        }
-
-        return result;
-    };
+    const auto availableLabelsArray = readOcsReply(_availableLabelsReply).toArray();
+    const auto existingLabelsObject = readOcsReply(_existingLabelsReply).toObject();
 
     const auto parseExistingSingleLabel = [this] (const int rowIndex, const QJsonObject &oneLabel) -> void{
         if (_data[rowIndex]._id == oneLabel[u"id"_s]) {
@@ -280,39 +279,40 @@ void GovernanceLabelsListModel::refreshModel()
 
     beginResetModel();
     _data.clear();
-    for (const auto oneLabel : dataArray) {
+    for (const auto oneLabel : availableLabelsArray) {
         const auto rowIndex = _data.size();
         const auto oneLabelObject = oneLabel.toObject();
         _data.emplaceBack(oneLabelObject.value(u"id"_s).toString(),
                           oneLabelObject.value(u"name"_s).toString(),
                           oneLabelObject.value(u"priority"_s).toInt(),
                           oneLabelObject.value(u"description"_s).toString(),
-                          oneLabelObject.value(u"color"_s).toString(),
-                          convertToStringList(oneLabelObject.value(u"scopes"_s).toArray())
+                          oneLabelObject.value(u"color"_s).toString()
                           );
 
         switch (_labelType)
         {
         case Governance::LabelType::Sensitivity:
         {
-            if (!dataReply.contains(u"sensitivity"_s)) {
+            qCDebug(lcGovernanceLabelsListModel()) << "checking existing sensitivity labels";
+            if (!existingLabelsObject.contains(u"sensitivity"_s)) {
                 qCWarning(lcGovernanceLabelsListModel()) << "missing sensitivity data in OCS reply";
                 break;
             }
 
-            const auto &sensitivityLabel = dataReply[u"sensitivity"_s].toObject();
+            const auto &sensitivityLabel = existingLabelsObject[u"sensitivity"_s].toObject();
 
             parseExistingSingleLabel(rowIndex, sensitivityLabel);
             break;
         }
         case Governance::LabelType::Retention:
         {
-            if (!dataReply.contains(u"retention"_s)) {
+            qCDebug(lcGovernanceLabelsListModel()) << "checking existing retention labels";
+            if (!existingLabelsObject.contains(u"retention"_s)) {
                 qCWarning(lcGovernanceLabelsListModel()) << "missing retention data in OCS reply";
                 break;
             }
 
-            const auto retentionLabels = dataReply[u"retention"_s].toArray();
+            const auto retentionLabels = existingLabelsObject[u"retention"_s].toArray();
 
             for (const auto &oneLabel : retentionLabels) {
                 const auto &oneLabelObject = oneLabel.toObject();
@@ -322,12 +322,13 @@ void GovernanceLabelsListModel::refreshModel()
         }
         case Governance::LabelType::LegalHold:
         {
-            if (!dataReply.contains(u"hold"_s)) {
+            qCDebug(lcGovernanceLabelsListModel()) << "checking existing legal hold labels";
+            if (!existingLabelsObject.contains(u"hold"_s)) {
                 qCWarning(lcGovernanceLabelsListModel()) << "missing legal hold data in OCS reply";
                 break;
             }
 
-            const auto legalHoldLabels = dataReply[u"hold"_s].toArray();
+            const auto legalHoldLabels = existingLabelsObject[u"hold"_s].toArray();
 
             for (const auto &oneLabel : legalHoldLabels) {
                 const auto &oneLabelObject = oneLabel.toObject();
