@@ -61,6 +61,10 @@ public:
 
     void setAccount(AccountPtr newAccount);
 
+    void classBegin() override;
+
+    void componentComplete() override;
+
 Q_SIGNALS:
     void apiVersionChanged();
 
@@ -77,6 +81,12 @@ Q_SIGNALS:
     void finishedWithError(int errorCode, const QString &errorMessage);
 
     void accountChanged();
+
+public Q_SLOTS:
+    virtual void start() = 0;
+
+protected Q_SLOTS:
+    void jobDone(QJsonDocument reply, int statusCode);
 
 protected:
     void setOcsGovernanceJob(QPointer<OcsGovernanceJob> newJob)

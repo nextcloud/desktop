@@ -171,4 +171,20 @@ void GovernanceNetworkJob::setAccount(AccountPtr newAccount)
     Q_EMIT accountChanged();
 }
 
+void GovernanceNetworkJob::classBegin()
+{
+}
+
+void GovernanceNetworkJob::componentComplete()
+{
+    if (checkParameters()) {
+        start();
+    }
+}
+
+void GovernanceNetworkJob::jobDone(QJsonDocument reply, [[maybe_unused]] int statusCode)
+{
+    Q_EMIT finished(reply);
+}
+
 } // namespace OCC

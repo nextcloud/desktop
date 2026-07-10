@@ -17,17 +17,6 @@ DeleteGovernanceLabel::DeleteGovernanceLabel(QObject *parent)
 {
 }
 
-void DeleteGovernanceLabel::classBegin()
-{
-}
-
-void DeleteGovernanceLabel::componentComplete()
-{
-    if (checkParameters()) {
-        start();
-    }
-}
-
 void DeleteGovernanceLabel::start()
 {
     if (!checkParameters()) {
@@ -59,11 +48,6 @@ void DeleteGovernanceLabel::start(const QString &labelId)
 QString DeleteGovernanceLabel::buildPath() const
 {
     return u"/ocs/v2.php/apps/governance/%1/labels/%2/%3/%4/%5"_s.arg(apiVersionAsString(), entityTypeAsString(), integerEntityIdAsString(), labelTypeAsString(TypedGovernanceNetworkJob::Capitalization::UpCase), labelId());
-}
-
-void DeleteGovernanceLabel::jobDone(QJsonDocument reply, [[maybe_unused]] int statusCode)
-{
-    Q_EMIT finished(reply);
 }
 
 } // namespace OCC
