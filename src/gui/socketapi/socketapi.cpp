@@ -641,7 +641,9 @@ void SocketApi::processShareRequest(const QString &localFile, SocketListener *li
     const QString message = QLatin1String("SHARE:OK:") + QDir::toNativeSeparators(localFile);
     listener->sendMessage(message);
 
-    emit shareCommandReceived(fileData.localPath);
+    const QString fileId = fileData.journalRecord().numericFileId();
+
+    emit shareCommandReceived(fileData.localPath, fileId);
 }
 
 void SocketApi::processLeaveShareRequest(const QString &localFile, SocketListener *listener)
