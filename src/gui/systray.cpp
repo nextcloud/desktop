@@ -5,6 +5,7 @@
  */
 
 #include "accountmanager.h"
+#include "assistant/assistantcontroller.h"
 #include "systray.h"
 #include "theme.h"
 #include "config.h"
@@ -33,6 +34,8 @@
 #include <QScreen>
 #include <QGuiApplication>
 #include <QMenu>
+
+#include <memory>
 
 #ifdef USE_FDO_NOTIFICATIONS
 #include <QDBusConnection>
@@ -345,11 +348,7 @@ void Systray::showAssistantWindow(int userIndex)
         return;
     }
 
-    const QVariantMap initialProperties{
-        {"userIndex", targetUserId},
-        {"currentUser", QVariant::fromValue(user)},
-    };
-    QQmlComponent assistantWindowComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/AssistantWindow.qml"));
+    QQmlComponent assistantWindowComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/assistant/qml/AssistantWindow.qml"));
 
     if (assistantWindowComponent.isError()) {
         qCWarning(lcSystray) << assistantWindowComponent.errorString();
@@ -357,15 +356,22 @@ void Systray::showAssistantWindow(int userIndex)
         return;
     }
 
+    auto assistantController = std::make_unique<AssistantController>(user->accountState());
+    const QVariantMap initialProperties{
+        {"currentUser", QVariant::fromValue(user)},
+        {"assistantController", QVariant::fromValue(assistantController.get())},
+    };
     const auto createdObject = assistantWindowComponent.createWithInitialProperties(initialProperties);
     const auto window = qobject_cast<QQuickWindow *>(createdObject);
     if (!window) {
         qCWarning(lcSystray) << "Assistant window resulted in creation of object that was not a window!";
         if (createdObject) {
+            assistantController.release()->setParent(createdObject);
             createdObject->deleteLater();
         }
         return;
     }
+    assistantController.release()->setParent(window);
 
     _assistantWindows.insert(windowKey, window);
     window->setIcon(Theme::instance()->applicationIcon());
