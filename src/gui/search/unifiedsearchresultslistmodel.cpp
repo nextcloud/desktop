@@ -68,7 +68,7 @@ QString iconUrlForDefaultIconName(const QString &defaultIconName, const bool dar
     if (urlForIcon.isValid() && !urlForIcon.scheme().isEmpty()) {
         return defaultIconName;
     }
-    
+
     const auto colorIconPath = darkMode ? QStringLiteral(":/client/theme/white/") : QStringLiteral(":/client/theme/black/");
 
     if (defaultIconName.startsWith(QStringLiteral("icon-"))) {
@@ -189,6 +189,19 @@ UnifiedSearchResultsListModel::UnifiedSearchResultsListModel(AccountState *accou
     : QAbstractListModel(parent)
     , _accountState(accountState)
 {
+    connect(this, &UnifiedSearchResultsListModel::isSearchInProgressChanged, this, &UnifiedSearchResultsListModel::searchStateChanged);
+    connect(this, &UnifiedSearchResultsListModel::currentFetchMoreInProgressProviderIdChanged, this, &UnifiedSearchResultsListModel::searchStateChanged);
+    connect(this, &UnifiedSearchResultsListModel::searchTermChanged, this, &UnifiedSearchResultsListModel::searchStateChanged);
+    connect(this, &UnifiedSearchResultsListModel::errorStringChanged, this, &UnifiedSearchResultsListModel::searchStateChanged);
+    connect(this, &UnifiedSearchResultsListModel::waitingForSearchTermEditEndChanged, this, &UnifiedSearchResultsListModel::searchStateChanged);
+    connect(this, &QAbstractListModel::rowsInserted, this, &UnifiedSearchResultsListModel::searchStateChanged);
+    connect(this, &QAbstractListModel::rowsRemoved, this, &UnifiedSearchResultsListModel::searchStateChanged);
+    connect(this, &QAbstractListModel::modelReset, this, &UnifiedSearchResultsListModel::searchStateChanged);
+
+    connect(this, &UnifiedSearchResultsListModel::currentFetchMoreInProgressProviderIdChanged, this, &UnifiedSearchResultsListModel::canEditSearchChanged);
+    if (_accountState) {
+        connect(_accountState, &AccountState::isConnectedChanged, this, &UnifiedSearchResultsListModel::canEditSearchChanged);
+    }
 }
 
 QVariant UnifiedSearchResultsListModel::data(const QModelIndex &index, int role) const
@@ -198,7 +211,7 @@ QVariant UnifiedSearchResultsListModel::data(const QModelIndex &index, int role)
     switch (role) {
     case ProviderNameRole:
         return _results.at(index.row())._providerName;
-    case ProviderIdRole: 
+    case ProviderIdRole:
         return _results.at(index.row())._providerId;
     case DarkImagePlaceholderRole:
         return imagePlaceholderUrlForProviderId(_results.at(index.row())._providerId, true);
@@ -326,6 +339,52 @@ bool UnifiedSearchResultsListModel::isSearchInProgress() const
     return !_searchJobConnections.isEmpty();
 }
 
+bool UnifiedSearchResultsListModel::isFetchMoreInProgress() const
+{
+    return !_currentFetchMoreInProgressProviderId.isEmpty();
+}
+
+bool UnifiedSearchResultsListModel::hasSearchTerm() const
+{
+    return !_searchTerm.isEmpty();
+}
+
+bool UnifiedSearchResultsListModel::hasSearchError() const
+{
+    return !_errorString.isEmpty();
+}
+
+bool UnifiedSearchResultsListModel::canEditSearch() const
+{
+    return isAccountConnected() && !isFetchMoreInProgress();
+}
+
+bool UnifiedSearchResultsListModel::isAccountConnected() const
+{
+    return _accountState && _accountState->isConnected();
+}
+
+UnifiedSearchResultsListModel::SearchState UnifiedSearchResultsListModel::searchState() const
+{
+    if (rowCount() > 0) {
+        return SearchState::Results;
+    }
+
+    if (hasSearchError()) {
+        return (!isSearchInProgress() && !isFetchMoreInProgress()) ? SearchState::SearchError : SearchState::None;
+    }
+
+    if (!hasSearchTerm()) {
+        return SearchState::Placeholder;
+    }
+
+    if (!isSearchInProgress() && !waitingForSearchTermEditEnd()) {
+        return SearchState::NothingFound;
+    }
+
+    return SearchState::Skeleton;
+}
+
 void UnifiedSearchResultsListModel::resultClicked(const QString &providerId, const QUrl &resourceUrl) const
 {
     const QUrlQuery urlQuery{resourceUrl};
@@ -399,7 +458,7 @@ void UnifiedSearchResultsListModel::slotFetchProvidersFinished(const QJsonDocume
         emit errorStringChanged();
         return;
     }
-    
+
     if (statusCode != 200) {
         qCCritical(lcUnifiedSearch) << QStringLiteral("%1: Failed to fetch search providers for '%2'. Error: %3")
                                            .arg(statusCode)
@@ -446,7 +505,7 @@ void UnifiedSearchResultsListModel::slotSearchForProviderFinished(const QJsonDoc
     }
 
     const auto providerId = job->property("providerId").toString();
-    
+
     if (providerId.isEmpty()) {
         return;
     }

@@ -10,6 +10,7 @@ import Qt5Compat.GraphicalEffects
 import Style
 
 import com.nextcloud.desktopclient
+import "../../tray"
 
 TextField {
     id: root
@@ -44,7 +45,7 @@ TextField {
             top: root.top
             topMargin: Style.extraSmallSpacing
             bottom: root.bottom
-            bottomMargin: Style.extraSmallSpacing 
+            bottomMargin: Style.extraSmallSpacing
         }
 
         fillMode: Image.PreserveAspectFit

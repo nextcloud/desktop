@@ -303,6 +303,13 @@ using namespace OCC::Mac::TrayPopupViewUtils;
     OCC::Systray::instance()->showAssistantWindow(index);
 }
 
+- (void)openSearchForIndex:(int)index
+{
+    [_accountActionsPopup orderOut:nil];
+    [self orderOut:nil];
+    OCC::Systray::instance()->showSearchWindow(index);
+}
+
 - (void)openOnlineStatusForIndex:(int)index
 {
     [_accountActionsPopup orderOut:nil];

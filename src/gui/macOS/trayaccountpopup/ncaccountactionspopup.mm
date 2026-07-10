@@ -239,6 +239,7 @@ static NSView *compactAccountActionsSeparator()
     appsModel->setUserId(userIndex);
     const auto appsEnabled = appsModel->rowCount() > 0;
     const auto assistantEnabled = model->data(userModelIndex, OCC::UserModel::AssistantEnabledRole).toBool();
+    const auto searchEnabled = model->data(userModelIndex, OCC::UserModel::IsConnectedRole).toBool();
     addOwnedArrangedSubview(_stack, [[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kAccountActionsPopupWidth]);
     if (serverHasUserStatus) {
         const auto status = model->data(userModelIndex, OCC::UserModel::StatusRole).value<OCC::UserStatus::OnlineStatus>();
@@ -275,6 +276,14 @@ static NSView *compactAccountActionsSeparator()
             [weakSelf hideAppsPopup];
         }]);
     }
+    addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:QCoreApplication::translate("TrayAccountPopup", "Search").toNSString()
+                                                                 width:kAccountActionsPopupWidth
+                                                               enabled:searchEnabled
+                                                                action:^{
+        [weakOwner openSearchForIndex:userIndex];
+    } hoverAction:^(NSView *) {
+        [weakSelf hideAppsPopup];
+    }]);
     addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:QCoreApplication::translate("TrayWindowHeader", "Apps").toNSString()
                                                                   icon:nil
                                                                  width:kAccountActionsPopupWidth

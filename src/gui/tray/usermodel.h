@@ -29,7 +29,6 @@
 #include <chrono>
 
 namespace OCC {
-class UnifiedSearchResultsListModel;
 class OcsAssistantConnector;
 
 
@@ -83,7 +82,6 @@ class User : public QObject
     Q_PROPERTY(bool syncStatusOk READ syncStatusOk NOTIFY syncStatusChanged)
     Q_PROPERTY(bool isConnected READ isConnected NOTIFY accountStateChanged)
     Q_PROPERTY(bool needsToSignTermsOfService READ needsToSignTermsOfService NOTIFY accountStateChanged)
-    Q_PROPERTY(UnifiedSearchResultsListModel* unifiedSearchResultsListModel READ getUnifiedSearchResultsListModel CONSTANT)
     Q_PROPERTY(QVariantList groupFolders READ groupFolders NOTIFY groupFoldersChanged)
     Q_PROPERTY(bool canLogout READ canLogout CONSTANT)
     Q_PROPERTY(bool isAssistantEnabled READ isNcAssistantEnabled NOTIFY assistantStateChanged)
@@ -105,7 +103,6 @@ public:
     void setCurrentUser(const bool &isCurrent);
     [[nodiscard]] Folder *getFolder() const;
     ActivityListModel *getActivityModel();
-    [[nodiscard]] UnifiedSearchResultsListModel *getUnifiedSearchResultsListModel() const;
     void openLocalFolder() const;
 #ifdef BUILD_FILE_PROVIDER_MODULE
     void openFileProviderDomain() const;
@@ -275,7 +272,6 @@ private:
     AccountStatePtr _account;
     bool _isCurrentUser;
     ActivityListModel *_activityModel;
-    UnifiedSearchResultsListModel *_unifiedSearchResultsModel;
     QVariantMap _accountAlert;
     
     QVariantList _trayFolderInfos;

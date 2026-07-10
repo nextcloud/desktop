@@ -5,11 +5,13 @@
  */
 
 #include "accountmanager.h"
+#include "accountstate.h"
 #include "systray.h"
 #include "theme.h"
 #include "config.h"
 #include "common/utility.h"
 #include "tray/svgimageprovider.h"
+#include "search/unifiedsearchresultslistmodel.h"
 #include "tray/usermodel.h"
 #include "wheelhandler.h"
 #include "tray/trayimageprovider.h"
@@ -381,6 +383,106 @@ void Systray::showAssistantWindow(int userIndex)
 
     connect(window, &QObject::destroyed, this, [this, windowKey] {
         _assistantWindows.remove(windowKey);
+    });
+
+    positionWindowAtScreenCenter(window);
+    window->show();
+    window->raise();
+    window->requestActivate();
+}
+
+void Systray::showSearchWindow(int userIndex)
+{
+    const auto userModel = UserModel::instance();
+    if (!userModel) {
+        return;
+    }
+
+    const auto targetUserId = userIndex >= 0 ? userIndex : userModel->currentUserId();
+    const auto user = userModel->user(targetUserId);
+    if (!user) {
+        qCWarning(lcSystray) << "Invalid user index for search window:" << targetUserId;
+        return;
+    }
+
+    hideWindow();
+
+    if (!_trayEngine) {
+        qCWarning(lcSystray) << "Could not open search window as no tray engine was available";
+        return;
+    }
+
+    const auto accountState = user->accountState();
+    if (!accountState) {
+        qCWarning(lcSystray) << "Could not open search window without an account state";
+        return;
+    }
+
+    const auto windowKey = user->account()->id();
+
+    if (const auto existingWindow = _searchWindows.value(windowKey)) {
+        positionWindowAtScreenCenter(existingWindow.data());
+        existingWindow->show();
+        existingWindow->raise();
+        existingWindow->requestActivate();
+        return;
+    }
+
+    QQmlComponent searchWindowComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/search/qml/SearchWindow.qml"));
+
+    if (searchWindowComponent.isError()) {
+        qCWarning(lcSystray) << searchWindowComponent.errorString();
+        qCWarning(lcSystray) << searchWindowComponent.errors();
+        return;
+    }
+
+    auto *const searchModel = new UnifiedSearchResultsListModel(accountState.data(), accountState.data());
+    const QVariantMap initialProperties{
+        {"account", QVariantMap{
+                        {"avatar", user->avatarUrl()},
+                        {"name", user->name()},
+                        {"server", user->server()},
+                    }},
+        {"searchModel", QVariant::fromValue(searchModel)},
+    };
+    const auto createdObject = searchWindowComponent.createWithInitialProperties(initialProperties);
+    const auto window = qobject_cast<QQuickWindow *>(createdObject);
+    if (!window) {
+        qCWarning(lcSystray) << "Search window resulted in creation of object that was not a window!";
+        if (createdObject) {
+            createdObject->deleteLater();
+        }
+        searchModel->deleteLater();
+        return;
+    }
+
+    _searchWindows.insert(windowKey, window);
+    window->setIcon(Theme::instance()->applicationIcon());
+
+#ifdef Q_OS_MACOS
+    auto *fgbg = new ForegroundBackground(this);
+    window->installEventFilter(fgbg);
+#endif
+
+#if defined(Q_OS_MACOS)
+    configureMacOSExpandedQuickWindow(window);
+#endif
+
+    connect(window, &QObject::destroyed, this, [this, windowKey] {
+        _searchWindows.remove(windowKey);
+    });
+    connect(window, &QObject::destroyed, searchModel, &QObject::deleteLater);
+    const auto searchModelGuard = QPointer<UnifiedSearchResultsListModel>(searchModel);
+    connect(window, &QWindow::visibleChanged, window, [window, searchModelGuard](const bool visible) {
+        if (!visible) {
+            if (searchModelGuard) {
+                searchModelGuard->deleteLater();
+            }
+            window->deleteLater();
+        }
+    });
+    connect(accountState.data(), &QObject::destroyed, window, [window] {
+        window->close();
     });
 
     positionWindowAtScreenCenter(window);
