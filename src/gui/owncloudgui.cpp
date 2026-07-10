@@ -35,7 +35,7 @@
 #include "tray/sortedactivitylistmodel.h"
 #include "tray/syncstatussummary.h"
 #include "tray/trayaccountappsmodel.h"
-#include "tray/unifiedsearchresultslistmodel.h"
+#include "search/unifiedsearchresultslistmodel.h"
 #include "integration/fileactionsmodel.h"
 #include "filesystem.h"
 

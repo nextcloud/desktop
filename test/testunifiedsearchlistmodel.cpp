@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include "gui/tray/unifiedsearchresultslistmodel.h"
+#include "gui/search/unifiedsearchresultslistmodel.h"
 
 #include "account.h"
 #include "accountstate.h"

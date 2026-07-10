@@ -9,13 +9,12 @@ import QtQuick.Layouts
 
 import Style
 import com.nextcloud.desktopclient
-import "./tray"
+import "../.."
 
 WizardStyledWindow {
     id: root
 
-    property int userIndex: -1
-    property var currentUser: null
+    property var account: null
     property var searchModel: null
     readonly property string headline: qsTr("Search")
     readonly property int searchState: searchModel
@@ -23,6 +22,7 @@ WizardStyledWindow {
         : UnifiedSearchResultsListModel.Placeholder
     readonly property bool isSearchInProgress: searchModel !== null && searchModel.isSearchInProgress
     readonly property bool canEditSearch: searchModel !== null && searchModel.canEditSearch
+    readonly property bool isAccountConnected: searchModel !== null && searchModel.isAccountConnected
 
     title: ""
     width: Style.searchWindowWidth
@@ -59,7 +59,7 @@ WizardStyledWindow {
         WindowAccountHeader {
             Layout.fillWidth: true
             title: root.headline
-            user: root.currentUser
+            user: root.account
         }
 
         UnifiedSearchInputContainer {
@@ -70,7 +70,7 @@ WizardStyledWindow {
             enabled: root.searchModel !== null
             readOnly: !root.canEditSearch
             text: root.searchModel ? root.searchModel.searchTerm : ""
-            placeholderText: root.currentUser !== null && !root.currentUser.isConnected
+            placeholderText: root.account !== null && !root.isAccountConnected
                 ? qsTr("Search is available when this account is connected")
                 : qsTr("Search files, messages, events …")
             isSearchInProgress: root.isSearchInProgress

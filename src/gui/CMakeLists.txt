@@ -216,14 +216,14 @@ set(client_SRCS
     tray/activitydata.cpp
     tray/activitylistmodel.h
     tray/activitylistmodel.cpp
-    tray/unifiedsearchresult.h
+    search/unifiedsearchresult.h
     tray/asyncimageresponse.cpp
-    tray/unifiedsearchresult.cpp
-    tray/unifiedsearchresultslistmodel.h
+    search/unifiedsearchresult.cpp
+    search/unifiedsearchresultslistmodel.h
     tray/trayimageprovider.cpp
     tray/trayaccountappsmodel.h
     tray/trayaccountappsmodel.cpp
-    tray/unifiedsearchresultslistmodel.cpp
+    search/unifiedsearchresultslistmodel.cpp
     tray/usermodel.h
     tray/usermodel.cpp
     tray/notificationhandler.h

@@ -34,6 +34,7 @@ class UnifiedSearchResultsListModel : public QAbstractListModel
     Q_PROPERTY(bool hasSearchTerm READ hasSearchTerm NOTIFY searchTermChanged)
     Q_PROPERTY(bool hasSearchError READ hasSearchError NOTIFY errorStringChanged)
     Q_PROPERTY(bool canEditSearch READ canEditSearch NOTIFY canEditSearchChanged)
+    Q_PROPERTY(bool isAccountConnected READ isAccountConnected NOTIFY canEditSearchChanged)
     Q_PROPERTY(SearchState searchState READ searchState NOTIFY searchStateChanged)
 
     struct UnifiedSearchProvider
@@ -90,6 +91,8 @@ public:
     [[nodiscard]] bool hasSearchTerm() const;
     [[nodiscard]] bool hasSearchError() const;
     [[nodiscard]] bool canEditSearch() const;
+    /** @brief Returns whether the account is connected. */
+    [[nodiscard]] bool isAccountConnected() const;
     [[nodiscard]] SearchState searchState() const;
 
     Q_INVOKABLE void resultClicked(const QString &providerId, const QUrl &resourceUrl) const;

@@ -22,7 +22,6 @@
 #include "syncfileitem.h"
 #include "systray.h"
 #include "tray/activitylistmodel.h"
-#include "tray/unifiedsearchresultslistmodel.h"
 #include "tray/talkreply.h"
 #include "userstatusconnector.h"
 #include "common/utility.h"
@@ -521,7 +520,6 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     , _account(account)
     , _isCurrentUser(isCurrent)
     , _activityModel(new ActivityListModel(_account.data(), this))
-    , _unifiedSearchResultsModel(new UnifiedSearchResultsListModel(_account.data(), this))
 {
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo,
         this, &User::slotProgressInfo);
@@ -1733,11 +1731,6 @@ void User::refreshAccountAlert()
 
     _accountAlert = accountAlert;
     emit accountAlertChanged();
-}
-
-UnifiedSearchResultsListModel *User::getUnifiedSearchResultsListModel() const
-{
-    return _unifiedSearchResultsModel;
 }
 
 void User::openLocalFolder() const
