@@ -116,7 +116,10 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                 return performKeepDownloadedAction(keepDownloaded: true, onItemsWithIdentifiers: itemIdentifiers, completionHandler: completionHandler)
             case .evictAutomatically:
                 return performKeepDownloadedAction(keepDownloaded: false, onItemsWithIdentifiers: itemIdentifiers, completionHandler: completionHandler)
-            case .evict:
+            case .evict, .evictDescendants:
+                // Same handler for both — the folder variant exists only to carry
+                // a folder-appropriate menu label ("Remove downloaded items").
+                // `evictItem` recurses into a directory's contents (#10085).
                 return performEvictAction(onItemsWithIdentifiers: itemIdentifiers, completionHandler: completionHandler)
             default:
                 logger.error("Unsupported action: \(actionIdentifier.rawValue)")
@@ -192,11 +195,12 @@ extension FileProviderExtension: NSFileProviderCustomAction {
     }
 
     ///
-    /// Force the materialized payload of an item to be removed (made dataless), even when the item is pinned via "Always keep downloaded" (#9891).
+    /// Handle "Remove download" (a file) and "Remove downloaded items" (a folder or the root) — both routed here (#9891, #10085).
     ///
-    /// macOS refuses `evictItem` on items whose `contentPolicy` is`.downloadEagerlyAndKeepDownloaded`.
-    /// To honour the user's explicit "Remove download" gesture, we first clear the keep-downloaded flag — which flips `contentPolicy` back to `.inherited` and signals the framework — and then evict.
-    /// The unpin is propagated to descendants by `Item.set(keepDownloaded:domain:)` (matches `AutoEvictAction` semantics), so directories behave consistently with the pin counterpart.
+    /// macOS refuses `evictItem` on items whose `contentPolicy` is `.downloadEagerlyAndKeepDownloaded`.
+    ///
+    /// - For a **file**: to honour the user's explicit gesture even on a pinned file, we first clear its keep-downloaded flag — which flips `contentPolicy` back to `.inherited` and signals the framework — and then evict it.
+    /// - For a **directory** (including the root): we evict each *evictable* (downloaded, non-pinned) descendant file individually rather than calling `evictItem` on the directory. This leaves individually-pinned descendants materialized (honouring the explicit per-item choice), never asks the framework to evict strict-pinned content (so it cannot hit -2008), and does not rely on `evictItem` recursing into a directory or the root pseudo-container.
     ///
     private func performEvictAction(onItemsWithIdentifiers itemIdentifiers: [NSFileProviderItemIdentifier], completionHandler: @Sendable @escaping ((any Error)?) -> Void) -> Progress {
         guard let ncAccount else {
@@ -239,12 +243,29 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                                 throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
                             }
 
-                            // Clear keep-downloaded so that contentPolicy changes from `.downloadEagerlyAndKeepDownloaded` back to `.inherited`. `set(keepDownloaded:)` awaits the framework's acknowledgement of the modification, so by the time it returns the policy refresh has propagated.
-                            if item.keepDownloaded {
-                                try await item.set(keepDownloaded: false, domain: localDomain)
-                            }
+                            if item.metadata.directory {
+                                // "Remove downloaded items" on a folder or the root: evict each
+                                // evictable (downloaded, non-pinned) descendant file individually.
+                                // This leaves individually-pinned descendants materialized —
+                                // honoring the user's explicit "Always keep downloaded" — and never
+                                // asks the framework to evict strict-pinned content, so it cannot hit
+                                // -2008 NonEvictable (#9891). It also does not depend on `evictItem`
+                                // recursing into a directory (incl. the root pseudo-container) (#10085).
+                                for descendant in dbManager.evictableDescendantFileIdentifiers(directoryMetadata: item.metadata) {
+                                    try await manager.evictItem(identifier: descendant)
+                                }
+                            } else {
+                                // "Remove download" on a single file. Clear keep-downloaded first so
+                                // contentPolicy changes from `.downloadEagerlyAndKeepDownloaded` back
+                                // to `.inherited`; `set(keepDownloaded:)` awaits the framework's
+                                // acknowledgement, so the policy refresh has propagated by the time it
+                                // returns (#9891).
+                                if item.keepDownloaded {
+                                    try await item.set(keepDownloaded: false, domain: localDomain)
+                                }
 
-                            try await manager.evictItem(identifier: identifier)
+                                try await manager.evictItem(identifier: identifier)
+                            }
                         }
                     }
 
