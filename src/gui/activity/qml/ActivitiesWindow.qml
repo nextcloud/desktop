@@ -8,14 +8,15 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import Style
-import "./tray"
+import "../.."
 
 WizardStyledWindow {
     id: root
 
-    property int userIndex: -1
-    property var currentUser: null
+    property var account: null
+    property var activityUser: null
     property var activityModel: null
+    property var syncStatusModel: null
     readonly property string headline: qsTr("Activities")
 
     title: ""
@@ -24,9 +25,8 @@ WizardStyledWindow {
     minimumWidth: Style.wizardStandaloneWindowMinimumWidth
     minimumHeight: Style.wizardStandaloneWindowMinimumHeight
 
-    function reloadForCurrentUser() {
+    function resetActivityList() {
         newActivitiesButtonLoader.active = false
-        syncStatus.model.loadForUser(root.currentUser)
     }
 
     Shortcut {
@@ -34,11 +34,11 @@ WizardStyledWindow {
         onActivated: root.close()
     }
 
-    Component.onCompleted: reloadForCurrentUser()
+    Component.onCompleted: resetActivityList()
 
     onVisibleChanged: {
         if (visible) {
-            reloadForCurrentUser()
+            resetActivityList()
         }
     }
 
@@ -53,7 +53,7 @@ WizardStyledWindow {
         WindowAccountHeader {
             Layout.fillWidth: true
             title: root.headline
-            user: root.currentUser
+            user: root.account
         }
 
         Rectangle {
@@ -66,8 +66,9 @@ WizardStyledWindow {
             id: syncStatus
 
             Layout.fillWidth: true
-            accentColor: Style.accentColor
-            user: root.currentUser
+            accentColor: root.account ? root.account.accentColor : Style.accentColor
+            syncStatusModel: root.syncStatusModel
+            user: root.activityUser
             activityListModel: root.activityModel
         }
 
@@ -86,7 +87,7 @@ WizardStyledWindow {
 
                 anchors.fill: parent
                 activeFocusOnTab: true
-                currentUser: root.currentUser
+                accentColor: root.account ? root.account.accentColor : Style.accentColor
                 model: root.activityModel
                 onOpenFile: Qt.openUrlExternally(filePath)
                 onActivityItemClicked: {

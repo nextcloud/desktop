@@ -10,6 +10,7 @@ import QtQuick.Layouts
 import Style
 import Qt5Compat.GraphicalEffects
 import com.nextcloud.desktopclient
+import "../../tray"
 
 RowLayout {
     id: root

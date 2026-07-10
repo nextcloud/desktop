@@ -15,7 +15,7 @@
 #include "accountmanager.h"
 #include "config.h"
 #include "systray.h"
-#include "tray/talkreply.h"
+#include "activity/talkreply.h"
 
 Q_LOGGING_CATEGORY(lcMacSystrayUserNotifications, "nextcloud.gui.macsystrayusernotifications")
 

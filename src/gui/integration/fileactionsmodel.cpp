@@ -8,7 +8,7 @@
 #include "account.h"
 #include "folderman.h"
 #include "common/utility.h"
-#include "tray/activitydata.h"
+#include "activity/activitydata.h"
 
 #include <optional>
 
