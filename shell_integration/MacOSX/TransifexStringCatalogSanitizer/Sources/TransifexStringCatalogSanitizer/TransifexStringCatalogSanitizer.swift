@@ -8,7 +8,10 @@ import Foundation
 struct TransifexStringCatalogSanitizer: ParsableCommand {
     @Argument(help: "The string catalog file to sanitize.")
     var input: String
-    
+
+    @Flag(name: .long, help: "Report what would change without writing to disk or creating a backup file.")
+    var dryRun = false
+
     mutating func run() throws {
         let url = URL(fileURLWithPath: input).standardized
 
@@ -17,7 +20,7 @@ struct TransifexStringCatalogSanitizer: ParsableCommand {
         }
 
         let data = try Data(contentsOf: url)
-        
+
         guard var root = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
             throw TransifexStringCatalogSanitizerError.jsonObject
         }
@@ -29,86 +32,31 @@ struct TransifexStringCatalogSanitizer: ParsableCommand {
         guard var strings = root["strings"] as? [String: Any] else {
             throw TransifexStringCatalogSanitizerError.missingStrings
         }
-        
-        try sanitizeStrings(&strings, sourceLanguage: sourceLanguage)
+
+        if dryRun {
+            print("🔍 Dry run: no files will be written.\n")
+        }
+
+        try Sanitizer.sanitizeStrings(&strings, sourceLanguage: sourceLanguage)
 
         // Update the root with modified strings
         root["strings"] = strings
-        
+
         // Write the processed data back to the original file
         let processedData = try JSONSerialization.data(withJSONObject: root, options: [.prettyPrinted, .sortedKeys])
+
+        guard !dryRun else {
+            print("\n🔍 Dry run complete. Nothing was written to disk.")
+            return
+        }
+
+        // Preserve the pre-sanitize bytes so a bad run can be recovered from without
+        // re-pulling from Transifex. This must be the last thing before the real write:
+        // every guard/throw above has already succeeded by this point, so a crash during
+        // parsing or sanitizing never creates (or clobbers) a backup for a write that
+        // was never going to happen.
+        try data.write(to: url.appendingPathExtension("bak"))
+
         try processedData.write(to: url)
-    }
-
-    ///
-    /// Sanitize the string keys.
-    ///
-    private func sanitizeStrings(_ strings: inout [String: Any], sourceLanguage: String) throws {
-        for key in strings.keys.sorted() {
-            print("💬 \"\(key)\"")
-            
-            guard var string = strings[key] as? [String: Any] else {
-                throw TransifexStringCatalogSanitizerError.missingString(key)
-            }
-
-            let extractionState = string["extractionState"] as? String
-
-            if extractionState == nil && string["localizations"] == nil {
-                print("\t🆕 This appears to be new because neither extraction state nor localization objects found.")
-                continue
-            }
-
-            if extractionState == "stale" {
-                print("\t❌ This is removed because it has been marked as stale.")
-                strings[key] = nil
-                continue
-            }
-
-            guard var localizations = string["localizations"] as? [String: Any] else {
-                throw TransifexStringCatalogSanitizerError.missingLocalizations(key)
-            }
-            
-            try sanitizeLocalizations(&localizations, key: key, sourceLanguage: sourceLanguage)
-
-            // Update the string with modified localizations
-            string["localizations"] = localizations
-            strings[key] = string
-        }
-    }
-
-    ///
-    /// Sanitize the individual localizations of a key.
-    ///
-    private func sanitizeLocalizations(_ localizations: inout [String: Any], key: String, sourceLanguage: String) throws {
-        var localizationsToRemove: [String] = []
-        
-        for localeCode in localizations.keys.sorted() {
-            guard let localization = localizations[localeCode] as? [String: Any] else {
-                throw TransifexStringCatalogSanitizerError.missingLocalization(localeCode)
-            }
-            
-            guard let stringUnit = localization["stringUnit"] as? [String: Any] else {
-                throw TransifexStringCatalogSanitizerError.missingStringUnit(localeCode)
-            }
-            
-            guard let value = stringUnit["value"] as? String else {
-                throw TransifexStringCatalogSanitizerError.missingValue
-            }
-            
-            if value.isEmpty {
-                print("\t❌ \(localeCode): empty, will be removed")
-                localizationsToRemove.append(localeCode)
-            } else if value == key && localeCode.hasPrefix(sourceLanguage) == false {
-                print("\t❌ \(localeCode): same as key, will be removed")
-                localizationsToRemove.append(localeCode)
-            } else {
-                print("\t✅ \(localeCode): \"\(value)\"")
-            }
-        }
-        
-        // Remove empty localizations
-        for localeCode in localizationsToRemove {
-            localizations.removeValue(forKey: localeCode)
-        }
     }
 }
