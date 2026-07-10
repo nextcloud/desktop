@@ -627,15 +627,17 @@ void addNotifications(QMenu *menu, const int userId, const QVariantList &notific
         const auto activityIndex = notificationData.value(QStringLiteral("activityIndex")).toInt();
         const auto actions = notificationData.value(QStringLiteral("actions")).toList();
         const auto dateTime = notificationData.value(QStringLiteral("dateTime")).toString();
+        const auto subtitle = notificationData.value(QStringLiteral("subtitle")).toString();
+        const auto displayTitle = subtitle.isEmpty() ? title : QStringLiteral("%1: %2").arg(title, subtitle);
         if (actions.isEmpty()) {
-            const auto action = addTimedMenuAction(menu, activityIcon(notificationData), title, dateTime);
+            const auto action = addTimedMenuAction(menu, activityIcon(notificationData), displayTitle, dateTime);
             QObject::connect(action, &QAction::triggered, action, [userId, opensSettings] {
                 openNotification(userId, opensSettings);
             });
             continue;
         }
 
-        const auto notificationMenu = addTimedSubMenu(menu, activityIcon(notificationData), title, dateTime);
+        const auto notificationMenu = addTimedSubMenu(menu, activityIcon(notificationData), displayTitle, dateTime);
         setFixedMenuWidth(notificationMenu);
         const auto openAction = addMenuAction(notificationMenu, QIcon{}, QCoreApplication::translate("TrayAccountPopup", "Open"));
         QObject::connect(openAction, &QAction::triggered, openAction, [userId, opensSettings] {
@@ -738,7 +740,7 @@ void populateAccountMenu(QMenu *menu, const int userId, const bool fetchActivity
     if (assistantEnabled) {
         const auto assistantAction = addMenuAction(menu,
             templateBlackThemeIcon(QStringLiteral("nc-assistant-app.svg"), menuIconSize, menuIconPalette),
-            QCoreApplication::translate("MainWindow", "Open Assistant"));
+            QCoreApplication::translate("MainWindow", "Assistant"));
         QObject::connect(assistantAction, &QAction::triggered, assistantAction, [userId] {
             openAssistantForUser(userId);
         });
