@@ -9,7 +9,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Style
 import com.nextcloud.desktopclient
-import "../../tray"
+import "qrc:/qml/src/gui/tray"
 
 EnforcedPlainTextLabel {
     required property string section

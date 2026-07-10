@@ -8,7 +8,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Style
-import "../../tray"
+import "qrc:/qml/src/gui/tray"
 
 ColumnLayout {
     id: root
