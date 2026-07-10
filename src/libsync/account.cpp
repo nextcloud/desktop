@@ -60,6 +60,17 @@ constexpr int pushNotificationsReconnectInterval = 1000 * 60 * 2;
 constexpr int usernamePrefillServerVersionMinSupportedMajor = 24;
 constexpr int checksumRecalculateRequestServerVersionMinSupportedMajor = 24;
 constexpr auto isSkipE2eeMetadataChecksumValidationAllowedInClientVersion = MIRALL_VERSION_MAJOR == 3 && MIRALL_VERSION_MINOR == 8;
+
+bool isPushNotificationsWebSocketUrlAllowed(const QUrl &accountUrl, const QUrl &webSocketUrl)
+{
+    const auto webSocketScheme = webSocketUrl.scheme();
+    if (webSocketScheme.compare(QLatin1String("wss"), Qt::CaseInsensitive) == 0) {
+        return true;
+    }
+
+    return webSocketScheme.compare(QLatin1String("ws"), Qt::CaseInsensitive) == 0
+        && accountUrl.scheme().compare(QLatin1String("http"), Qt::CaseInsensitive) == 0;
+}
 }
 
 namespace OCC {
@@ -344,6 +355,17 @@ void Account::trySetupPushNotifications()
     _pushNotificationsReconnectTimer.stop();
 
     if (_capabilities.availablePushNotifications() != PushNotificationType::None) {
+        const auto webSocketUrl = _capabilities.pushNotificationsWebSocketUrl();
+        if (!isPushNotificationsWebSocketUrlAllowed(url(), webSocketUrl)) {
+            qCWarning(lcAccount) << "Reject insecure push notifications websocket endpoint" << webSocketUrl << "for account" << url();
+            if (_pushNotifications) {
+                delete _pushNotifications;
+                _pushNotifications = nullptr;
+            }
+            emit pushNotificationsDisabled(sharedFromThis());
+            return;
+        }
+
         qCInfo(lcAccount) << "Try to setup push notifications";
 
         if (!_pushNotifications) {
