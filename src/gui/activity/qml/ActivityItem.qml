@@ -8,7 +8,6 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Style
-import com.nextcloud.desktopclient
 
 ItemDelegate {
     id: root
@@ -17,14 +16,14 @@ ItemDelegate {
 
     property int iconSize: Style.trayListItemIconSize
 
-    property var currentUser: UserModel.currentUser
-
     property var activityModel: null
+
+    property color accentColor: Style.accentColor
 
     property bool isFileActivityList: false
 
     readonly property bool isChatActivity: model.objectType === "chat" || model.objectType === "room" || model.objectType === "call"
-    readonly property bool isTalkReplyPossible: root.currentUser !== null && model.conversationToken !== ""
+    readonly property bool isTalkReplyPossible: root.activityModel !== null && model.conversationToken !== ""
     property bool isTalkReplyOptionVisible: model.messageSent !== ""
 
     padding: Style.standardSpacing
@@ -78,10 +77,12 @@ ItemDelegate {
             Layout.leftMargin: Style.trayListItemIconSize + Style.trayHorizontalMargin
 
             sourceComponent: TalkReplyTextField {
-                accentColor: root.currentUser ? root.currentUser.accentColor : palette.highlight
+                accentColor: root.accentColor
                 onSendReply: {
-                    root.currentUser.sendReplyMessage(model.activityIndex, model.conversationToken, reply, model.messageId);
-                    talkReplyTextFieldLoader.visible = false;
+                    if (root.activityModel) {
+                        root.activityModel.sendReplyMessage(model.activityIndex, model.conversationToken, reply, model.messageId)
+                        talkReplyTextFieldLoader.visible = false
+                    }
                 }
             }
         }

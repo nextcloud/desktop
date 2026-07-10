@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include "notificationhandler.h"
+#include "activity/notificationhandler.h"
 #include "usermodel.h"
 #include "common/filesystembase.h"
 
@@ -21,8 +21,7 @@
 #include "syncresult.h"
 #include "syncfileitem.h"
 #include "systray.h"
-#include "tray/activitylistmodel.h"
-#include "tray/talkreply.h"
+#include "activity/activitylistmodel.h"
 #include "userstatusconnector.h"
 #include "common/utility.h"
 #include "ocsassistantconnector.h"
@@ -566,8 +565,6 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(_activityModel, &ActivityListModel::recentActivityPreviewDataChanged, this, &User::recentActivitiesChanged);
     connect(_activityModel, &ActivityListModel::notificationPreviewDataChanged, this, &User::trayNotificationsChanged);
     connect(_activityModel, &ActivityListModel::activityListChanged, this, &User::refreshAccountAlert);
-
-    connect(this, &User::sendReplyMessage, this, &User::slotSendReplyMessage);
 
     connect(_account->account().data(), &Account::userCertificateNeedsMigrationChanged, this, [this] () {
         auto certificateNeedMigration = Activity{};
@@ -1666,6 +1663,11 @@ ActivityListModel *User::getActivityModel()
     return _activityModel;
 }
 
+void User::refreshActivities()
+{
+    slotRefresh();
+}
+
 QVariantList User::recentActivities() const
 {
     return _activityModel->recentActivityPreviewData();
@@ -2015,15 +2017,6 @@ void User::removeAccount() const
 {
     AccountManager::instance()->deleteAccount(_account.data());
     AccountManager::instance()->save();
-}
-
-void User::slotSendReplyMessage(const int activityIndex, const QString &token, const QString &message, const QString &replyTo)
-{
-    QPointer<TalkReply> talkReply = new TalkReply(_account.data(), this);
-    talkReply->sendReplyMessage(token, message, replyTo);
-    connect(talkReply, &TalkReply::replyMessageSent, this, [&, activityIndex](const QString &message) {
-        _activityModel->setReplyMessageSent(activityIndex, message);
-    });
 }
 
 void User::submitAssistantQuestion(const QString &question)
@@ -2957,15 +2950,6 @@ void UserModel::fetchCurrentActivityModel()
         return;
 
     _users[currentUserId()]->slotRefresh();
-}
-
-void UserModel::fetchActivityModel(const int id)
-{
-    if (id < 0 || id >= _users.size()) {
-        return;
-    }
-
-    _users[id]->slotRefresh();
 }
 
 void UserModel::fetchActivityPreview(const int id)

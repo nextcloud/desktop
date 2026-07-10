@@ -123,6 +123,7 @@ public slots:
     void slotTriggerDefaultAction(const int activityIndex);
     void slotTriggerAction(const int activityIndex, const int actionIndex);
     void slotTriggerDismiss(const int activityIndex);
+    Q_INVOKABLE void sendReplyMessage(const int activityIndex, const QString &conversationToken, const QString &message, const QString &replyTo);
 
     void addNotificationToActivityList(const OCC::Activity &activity);
     void addErrorToActivityList(const OCC::Activity &activity, const OCC::ActivityListModel::ErrorType type);

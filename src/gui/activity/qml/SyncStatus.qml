@@ -10,19 +10,21 @@ import QtQuick.Layouts
 import Style
 
 import com.nextcloud.desktopclient as NC
+import "../../tray"
 
 RowLayout {
     id: root
 
-    property alias model: syncStatus
+    property var syncStatusModel: null
+    property var model: syncStatusModel ? syncStatusModel : defaultSyncStatus
     property color accentColor: Style.ncBlue
-    property var user: NC.UserModel.currentUser
+    property var user: null
     property var activityListModel: null
 
     spacing: Style.trayHorizontalMargin
 
     NC.SyncStatusSummary {
-        id: syncStatus
+        id: defaultSyncStatus
     }
 
     NCBusyIndicator {
@@ -41,7 +43,7 @@ RowLayout {
 
         padding: 0
 
-        imageSource: syncStatus.syncIcon
+        imageSource: root.model.syncIcon
         running: false // hotfix for download speed slowdown when tray is open
     }
 
@@ -60,7 +62,7 @@ RowLayout {
 
             Layout.fillWidth: true
 
-            text: syncStatus.syncStatusString
+            text: root.model.syncStatusString
             verticalAlignment: Text.AlignVCenter
             font.pixelSize: Style.topLinePixelSize
             font.bold: true
@@ -71,12 +73,12 @@ RowLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: Style.progressBarPreferredHeight
 
-            active: syncStatus.syncing && syncStatus.totalFiles > 0
+            active: root.model.syncing && root.model.totalFiles > 0
             visible: active
 
             sourceComponent: NCProgressBar {
                 id: syncProgressBar
-                value: syncStatus.syncProgress
+                value: root.model.syncProgress
                 fillColor: root.accentColor
             }
         }
@@ -86,8 +88,8 @@ RowLayout {
 
             Layout.fillWidth: true
 
-            text: syncStatus.syncStatusDetailString
-            visible: syncStatus.syncStatusDetailString !== ""
+            text: root.model.syncStatusDetailString
+            visible: root.model.syncStatusDetailString !== ""
             font.pixelSize: Style.subLinePixelSize
             wrapMode: Text.Wrap
         }
@@ -105,14 +107,14 @@ RowLayout {
         visible: root.user !== null &&
                  root.activityListModel !== null &&
                  !root.activityListModel.hasSyncConflicts &&
-                 !syncStatus.syncing &&
-                 !syncStatus.needsSandboxReapproval &&
+                 !root.model.syncing &&
+                 !root.model.needsSandboxReapproval &&
                  (root.user.hasLocalFolder ||
                   (Qt.platform.os === "osx" && root.user.hasFileProvider)) &&
                  root.user.isConnected
         enabled: visible
         onClicked: {
-            if(!syncStatus.syncing) {
+            if(!root.model.syncing) {
                 root.user.forceSyncNow();
             }
         }
@@ -126,7 +128,7 @@ RowLayout {
         visible: root.user !== null &&
                  root.activityListModel !== null &&
                  root.activityListModel.hasSyncConflicts &&
-                 !syncStatus.syncing &&
+                 !root.model.syncing &&
                  root.user.hasLocalFolder &&
                  root.user.isConnected
         enabled: visible
@@ -149,8 +151,8 @@ RowLayout {
 
         text: qsTr("Open settings")
 
-        visible: syncStatus.needsSandboxReapproval &&
-                 !syncStatus.syncing &&
+        visible: root.model.needsSandboxReapproval &&
+                 !root.model.syncing &&
                  root.user !== null &&
                  root.user.hasLocalFolder &&
                  root.user.isConnected

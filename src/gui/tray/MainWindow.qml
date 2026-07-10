@@ -7,6 +7,7 @@ import QtQml
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Window
+import "../activity/qml"
 import QtQuick.Layouts
 import Qt5Compat.GraphicalEffects
 import Qt.labs.platform as NativeDialogs
@@ -728,7 +729,7 @@ ApplicationWindow {
             anchors.bottom: trayWindowMainItem.bottom
 
             activeFocusOnTab: true
-            currentUser: UserModel.currentUser
+            accentColor: UserModel.currentUser.accentColor
             model: activityModel
             onOpenFile: Qt.openUrlExternally(filePath);
             onActivityItemClicked: {

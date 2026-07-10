@@ -6,7 +6,7 @@
 #include "activitylistmodeltestutils.h"
 #include "syncenginetestutils.h"
 #include "syncresult.h"
-#include "tray/sortedactivitylistmodel.h"
+#include "activity/sortedactivitylistmodel.h"
 
 #include <QAbstractItemModelTester>
 #include <QDesktopServices>

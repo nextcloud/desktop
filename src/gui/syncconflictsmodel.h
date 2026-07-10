@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "tray/activitydata.h"
+#include "activity/activitydata.h"
 
 #include "conflictsolver.h"
 

@@ -8,11 +8,14 @@
 
 #include <QtCore>
 
-#include "usermodel.h"
+#include "activitydata.h"
 
 class QJsonDocument;
 
 namespace OCC {
+
+class AccountState;
+class JsonApiJob;
 
 class ServerNotificationHandler : public QObject
 {

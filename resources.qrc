@@ -4,7 +4,7 @@
         <file>src/gui/WizardStyledWindow.qml</file>
         <file>src/gui/UserStatusWindow.qml</file>
         <file>src/gui/WindowAccountHeader.qml</file>
-        <file>src/gui/ActivitiesWindow.qml</file>
+        <file>src/gui/activity/qml/ActivitiesWindow.qml</file>
         <file>src/gui/AssistantWindow.qml</file>
         <file>src/gui/UserStatusWindowStatusRow.qml</file>
         <file>src/gui/UserStatusWindowPredefinedStatusRow.qml</file>
@@ -31,16 +31,16 @@
         <file>src/gui/tray/MainWindow.qml</file>
         <file>src/gui/tray/UserLine.qml</file>
         <file>src/gui/tray/HeaderButton.qml</file>
-        <file>src/gui/tray/SyncStatus.qml</file>
-        <file>src/gui/tray/ActivityItem.qml</file>
+        <file>src/gui/activity/qml/SyncStatus.qml</file>
+        <file>src/gui/activity/qml/ActivityItem.qml</file>
         <file>src/gui/tray/AutoSizingMenu.qml</file>
-        <file>src/gui/tray/ActivityList.qml</file>
+        <file>src/gui/activity/qml/ActivityList.qml</file>
         <file>src/gui/tray/CurrentAccountHeaderButton.qml</file>
         <file>src/gui/tray/TrayWindowHeader.qml</file>
-        <file>src/gui/tray/ActivityItemContextMenu.qml</file>
-        <file>src/gui/tray/ActivityItemActions.qml</file>
-        <file>src/gui/tray/ActivityItemContent.qml</file>
-        <file>src/gui/tray/TalkReplyTextField.qml</file>
+        <file>src/gui/activity/qml/ActivityItemContextMenu.qml</file>
+        <file>src/gui/activity/qml/ActivityItemActions.qml</file>
+        <file>src/gui/activity/qml/ActivityItemContent.qml</file>
+        <file>src/gui/activity/qml/TalkReplyTextField.qml</file>
         <file>src/gui/tray/CallNotificationDialog.qml</file>
         <file>src/gui/tray/EditFileLocallyLoadingDialog.qml</file>
         <file>src/gui/tray/EncryptionTokenDiscoveryDialog.qml</file>

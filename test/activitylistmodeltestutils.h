@@ -6,7 +6,7 @@
 #include <QJsonArray>
 #include <QVariantMap>
 
-#include "gui/tray/activitylistmodel.h"
+#include "gui/activity/activitylistmodel.h"
 
 #include "libsync/account.h"
 #include "gui/accountstate.h"
