@@ -4945,17 +4945,22 @@ Beachten Sie, dass die Verwendung von Befehlszeilenoptionen für die Protokollie
         <translation>Es wurde ein falscher HTTP-Status-Code vom Server gesendet. Erwartet wurde 201, aber gesendet wurde &quot;%1 %2&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="251"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="216"/>
+        <source>Failed to create encrypted folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="255"/>
         <source>Failed to encrypt a folder %1</source>
         <translation>Ordner konnte nicht verschlüsselt werden %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="274"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="278"/>
         <source>Error writing metadata to the database: %1</source>
         <translation>Fehler beim Schreiben der Metadaten in die Datenbank: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="277"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="281"/>
         <source>The file %1 is currently in use</source>
         <translation>Die Datei %1 ist aktuell in Benutzung</translation>
     </message>

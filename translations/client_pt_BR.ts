@@ -99,12 +99,12 @@
     <message>
         <location filename="../src/gui/ActivitiesWindow.qml" line="19"/>
         <source>Activities</source>
-        <translation type="unfinished"/>
+        <translation>Atividades</translation>
     </message>
     <message>
         <location filename="../src/gui/ActivitiesWindow.qml" line="126"/>
         <source>New activities</source>
-        <translation type="unfinished"/>
+        <translation>Novas atividades</translation>
     </message>
 </context>
 <context>
@@ -145,7 +145,7 @@
     <message>
         <location filename="../src/gui/tray/activitydata.cpp" line="303"/>
         <source>Confirm</source>
-        <translation type="unfinished"/>
+        <translation>Confirmar</translation>
     </message>
 </context>
 <context>
@@ -205,39 +205,39 @@
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="19"/>
         <source>Nextcloud Assistant</source>
-        <translation type="unfinished"/>
+        <translation>Nextcloud Assistente</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="91"/>
         <location filename="../src/gui/AssistantWindow.qml" line="95"/>
         <source>Start new conversation?</source>
-        <translation type="unfinished"/>
+        <translation>Iniciar uma nova conversa?</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="104"/>
         <source>This will clear the existing conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Isso apagará a conversa atual.</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="119"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="125"/>
         <location filename="../src/gui/AssistantWindow.qml" line="245"/>
         <source>New conversation</source>
-        <translation type="unfinished"/>
+        <translation>Nova conversa</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="236"/>
         <source>Ask Assistant …</source>
-        <translation type="unfinished"/>
+        <translation>Pergunte ao Assistente …</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="252"/>
         <source>Send</source>
-        <translation type="unfinished"/>
+        <translation>Enviar</translation>
     </message>
 </context>
 <context>
@@ -519,7 +519,7 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="71"/>
         <source>Search emoji</source>
-        <translation type="unfinished"/>
+        <translation>Pesquisar emoji</translation>
     </message>
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="201"/>
@@ -529,7 +529,7 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="201"/>
         <source>No emojis found</source>
-        <translation type="unfinished"/>
+        <translation>Não foram encontrados emojis</translation>
     </message>
 </context>
 <context>
@@ -750,7 +750,7 @@
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="741"/>
         <source>Open Assistant</source>
-        <translation type="unfinished"/>
+        <translation>Abrir Assistente</translation>
     </message>
 </context>
 <context>
@@ -4946,17 +4946,22 @@ Observe que o uso de qualquer opção de logs na linha de comandos substituirá 
         <translation>Código HTTP errado retornado pelo servidor. 201 esperado, mas recebeu &quot;%1 %2&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="251"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="216"/>
+        <source>Failed to create encrypted folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="255"/>
         <source>Failed to encrypt a folder %1</source>
         <translation>Falha ao criptografar uma pasta %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="274"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="278"/>
         <source>Error writing metadata to the database: %1</source>
         <translation>Erro ao gravar metadados no banco de dados: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="277"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="281"/>
         <source>The file %1 is currently in use</source>
         <translation>O arquivo %1 está em uso no momento</translation>
     </message>
@@ -5948,7 +5953,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="827"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Sair</translation>
     </message>
 </context>
 <context>
@@ -6110,7 +6115,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1690"/>
         <source>Sync conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Conflitos de sincronização</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1825"/>
@@ -7101,42 +7106,42 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="578"/>
         <source>No apps available</source>
-        <translation type="unfinished"/>
+        <translation>Nenhum aplicativo disponível</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="618"/>
         <source>Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Notificações</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="640"/>
         <source>Open</source>
-        <translation type="unfinished"/>
+        <translation>Abrir</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="653"/>
         <source>Recent activity</source>
-        <translation type="unfinished"/>
+        <translation>Atividades recentes</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="660"/>
         <source>No recent activity</source>
-        <translation type="unfinished"/>
+        <translation>Nenhuma atividade recente</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="678"/>
         <source>More activity…</source>
-        <translation type="unfinished"/>
+        <translation>Mais atividades…</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="709"/>
         <source>Resolve: %1</source>
-        <translation type="unfinished"/>
+        <translation>Resolver: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="716"/>
         <source>User status</source>
-        <translation type="unfinished"/>
+        <translation>Status de usuário</translation>
     </message>
 </context>
 <context>
@@ -7174,7 +7179,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="732"/>
         <source>Local folder</source>
-        <translation type="unfinished"/>
+        <translation>Pasta local</translation>
     </message>
 </context>
 <context>
@@ -7197,7 +7202,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="749"/>
         <source>Apps</source>
-        <translation type="unfinished"/>
+        <translation>Aplicativos</translation>
     </message>
 </context>
 <context>
@@ -7409,73 +7414,73 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="22"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>Status on-line</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="99"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>On-line</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="108"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Ausente</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="118"/>
         <source>Busy</source>
-        <translation type="unfinished"/>
+        <translation>Ocupado</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="127"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Não perturbe</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="128"/>
         <source>Mute all notifications</source>
-        <translation type="unfinished"/>
+        <translation>Silenciar todas as notificações</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="139"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Invisível</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="140"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>Aparecer off-line</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="156"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Mensagem de status</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="182"/>
         <source>Choose emoji</source>
-        <translation type="unfinished"/>
+        <translation>Escolher emoji</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="204"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>Qual é o seu status?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="290"/>
         <location filename="../src/gui/UserStatusWindow.qml" line="311"/>
         <source>Clear status after</source>
-        <translation type="unfinished"/>
+        <translation>Limpar o status após</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="343"/>
         <source>Clear status message</source>
-        <translation type="unfinished"/>
+        <translation>Limpar mensagem de status</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="354"/>
         <source>Set status message</source>
-        <translation type="unfinished"/>
+        <translation>Definir mensagem de status</translation>
     </message>
 </context>
 <context>
@@ -7484,7 +7489,7 @@ Servidor respondeu com erro: %2</translation>
         <location filename="../src/gui/UserStatusWindowPredefinedStatusRow.qml" line="30"/>
         <source>%1, resets after %2</source>
         <extracomment>%1 is the status text and %2 is a time string.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1, reinicia após %2</translation>
     </message>
 </context>
 <context>
@@ -7568,7 +7573,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/WindowAccountHeader.qml" line="63"/>
         <source>Account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Avatar da conta</translation>
     </message>
 </context>
 <context>

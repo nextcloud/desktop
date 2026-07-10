@@ -4938,17 +4938,22 @@ Poznamenejme, že použití jakékoli volby příkazového řádku má před tí
         <translation>Serverem vrácen neplatný HTTP kód. Očekáván 201, ale obdržen „%1 %2“.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="251"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="216"/>
+        <source>Failed to create encrypted folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="255"/>
         <source>Failed to encrypt a folder %1</source>
         <translation>Složku %1 se nepodařilo zašifrovat</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="274"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="278"/>
         <source>Error writing metadata to the database: %1</source>
         <translation>Chyba zápisu metadat do databáze: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="277"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="281"/>
         <source>The file %1 is currently in use</source>
         <translation>Soubor %1 je v tuto chvíli používán jinou aplikací</translation>
     </message>

@@ -4941,17 +4941,22 @@ Note that using any logging command line options will override this setting.</so
         <translation>從伺服器端回傳錯誤的 HTTP 代碼， 預期是 201， 但是接收到的是 &quot;%1 %2&quot;。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="251"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="216"/>
+        <source>Failed to create encrypted folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="255"/>
         <source>Failed to encrypt a folder %1</source>
         <translation>加密資料夾失敗 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="274"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="278"/>
         <source>Error writing metadata to the database: %1</source>
         <translation>將詮釋資料寫入到資料庫時發生錯誤：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="277"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="281"/>
         <source>The file %1 is currently in use</source>
         <translation>檔案 %1 正在使用中</translation>
     </message>

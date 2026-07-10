@@ -4920,17 +4920,22 @@ Note that using any logging command line options will override this setting.</so
         <translation>Грешен HTTP код, върнат от сървъра. Очакван 201, но е получен „%1 %2“.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="251"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="216"/>
+        <source>Failed to create encrypted folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="255"/>
         <source>Failed to encrypt a folder %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="274"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="278"/>
         <source>Error writing metadata to the database: %1</source>
         <translation>Грешка при актуализиране на метаданните: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="277"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="281"/>
         <source>The file %1 is currently in use</source>
         <translation>Файлът %1 в момента се използва</translation>
     </message>
