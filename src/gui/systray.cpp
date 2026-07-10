@@ -687,14 +687,14 @@ bool Systray::raiseFileDetailDialogs(const QString &localPath)
     return !_fileDetailDialogs.empty();
 }
 
-void Systray::createFileDetailsDialog(const QString &localPath)
+void Systray::createFileDetailsDialog(const QString &localPath, const QString &fileId)
 {
     if (raiseFileDetailDialogs(localPath)) {
         qCDebug(lcSystray) << "Reopening an existing file details dialog for " << localPath;
         return;
     }
 
-    qCDebug(lcSystray) << "Opening new file details dialog for " << localPath;
+    qCDebug(lcSystray).nospace() << "Opening new file details dialog localPath=" << localPath << " fileId=" << fileId;
 
     if (!_trayEngine) {
         qCWarning(lcSystray) << "Could not open file details dialog for" << localPath << "as no tray engine was available";
@@ -714,6 +714,7 @@ void Systray::createFileDetailsDialog(const QString &localPath)
         const QVariantMap initialProperties{
             {"account", QVariant::fromValue(folder->accountState()->account())},
             {"localPath", localPath},
+            {"fileId", fileId},
         };
 
         QQmlComponent fileDetailsDialog(trayEngine(), "com.nextcloud.desktopclient.sharing"_L1, "ShareDialog"_L1);
@@ -767,9 +768,9 @@ void Systray::createFileDetailsDialog(const QString &localPath)
     }
 }
 
-void Systray::createShareDialog(const QString &localPath)
+void Systray::createShareDialog(const QString &localPath, const QString &fileId)
 {
-    createFileDetailsDialog(localPath);
+    createFileDetailsDialog(localPath, fileId);
     Q_EMIT showFileDetailsPage(localPath, FileDetailsPage::Sharing);
 }
 

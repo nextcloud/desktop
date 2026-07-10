@@ -96,7 +96,7 @@ public slots:
      * localPath is the absolute local path to it (so not relative
      * to the folder).
      */
-    void slotShowShareDialog(const QString &localPath) const;
+    void slotShowShareDialog(const QString &localPath, const QString &fileId) const;
     void slotShowFileActivityDialog(const QString &localPath) const;
     void slotShowFileActionsDialog(const QString &localPath) const;
 #ifdef BUILD_FILE_PROVIDER_MODULE

@@ -21,6 +21,7 @@ ApplicationWindow {
     property var account
     property string localPath: ""
     property string shortLocalPath: root.localPath.split("/").reverse()[0]
+    property string fileId: ""
 
     readonly property int windowRadius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
 
@@ -34,7 +35,7 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
-        sharingController.createShare("8") // TODO: do not hardcode fileid
+        sharingController.createShare(root.fileId)
     }
 
     width: 400

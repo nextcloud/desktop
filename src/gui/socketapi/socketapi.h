@@ -69,7 +69,7 @@ public slots:
     void broadcastStatusPushMessage(const QString &systemPath, OCC::SyncFileStatus fileStatus);
 
 signals:
-    void shareCommandReceived(const QString &localPath);
+    void shareCommandReceived(const QString &localPath, const QString &fileId);
     void fileActivityCommandReceived(const QString &localPath);
     void fileActionsCommandReceived(const QString &localPath);
 
