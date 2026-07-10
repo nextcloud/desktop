@@ -70,7 +70,7 @@ public Q_SLOTS:
     void broadcastStatusPushMessage(const QString &systemPath, OCC::SyncFileStatus fileStatus);
 
 Q_SIGNALS:
-    void shareCommandReceived(const QString &localPath);
+    void shareCommandReceived(const QString &localPath, const QString &fileId);
     void fileActivityCommandReceived(const QString &localPath);
     void fileActionsCommandReceived(const QString &localPath);
     void governanceLabelsCommandReceived(OCC::AccountPtr account, const QString &filePath, const QString &fileId);
