@@ -19,25 +19,17 @@ class DeleteGovernanceLabel : public OCC::TypedWithLabelIdGovernanceNetworkJob
 {
     Q_OBJECT
     QML_ELEMENT
-    Q_INTERFACES(QQmlParserStatus)
 
 public:
     explicit DeleteGovernanceLabel(QObject *parent = nullptr);
 
-    void classBegin() override;
-
-    void componentComplete() override;
+    void start() override;
 
 public Q_SLOTS:
-    void start();
-
     void start(const QString &labelId);
 
 protected:
     [[nodiscard]] QString buildPath() const override;
-
-private Q_SLOTS:
-    void jobDone(QJsonDocument reply, int statusCode);
 };
 
 } // namespace OCC

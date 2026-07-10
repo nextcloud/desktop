@@ -17,17 +17,6 @@ GetAvailableGovernanceLabels::GetAvailableGovernanceLabels(QObject *parent)
 {
 }
 
-void GetAvailableGovernanceLabels::classBegin()
-{
-}
-
-void GetAvailableGovernanceLabels::componentComplete()
-{
-    if (checkParameters()) {
-        start();
-    }
-}
-
 void GetAvailableGovernanceLabels::start(Governance::LabelType labelType, const QString &entityId)
 {
     setLabelType(labelType);
@@ -55,11 +44,6 @@ void GetAvailableGovernanceLabels::start()
 
     ocsGovernanceJob()->start();
     Q_EMIT started();
-}
-
-void GetAvailableGovernanceLabels::jobDone(QJsonDocument reply, [[maybe_unused]] int statusCode)
-{
-    Q_EMIT finished(reply);
 }
 
 QString GetAvailableGovernanceLabels::buildPath() const

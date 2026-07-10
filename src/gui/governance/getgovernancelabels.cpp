@@ -17,17 +17,6 @@ GetGovernanceLabels::GetGovernanceLabels(QObject *parent)
 {
 }
 
-void GetGovernanceLabels::classBegin()
-{
-}
-
-void GetGovernanceLabels::componentComplete()
-{
-    if (checkParameters()) {
-        start();
-    }
-}
-
 void GetGovernanceLabels::start()
 {
     if (!checkParameters()) {
@@ -58,11 +47,6 @@ void GetGovernanceLabels::start(const QString &entityId)
 QString GetGovernanceLabels::buildPath() const
 {
     return u"/ocs/v2.php/apps/governance/%1/labels/%2/%3"_s.arg(apiVersionAsString(), entityTypeAsString(), integerEntityIdAsString());
-}
-
-void GetGovernanceLabels::jobDone(QJsonDocument reply, [[maybe_unused]] int statusCode)
-{
-    Q_EMIT finished(reply);
 }
 
 } // namespace OCC

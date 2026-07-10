@@ -17,17 +17,6 @@ ApplyGovernanceLabel::ApplyGovernanceLabel(QObject *parent)
 {
 }
 
-void ApplyGovernanceLabel::classBegin()
-{
-}
-
-void ApplyGovernanceLabel::componentComplete()
-{
-    if (checkParameters()) {
-        start();
-    }
-}
-
 void ApplyGovernanceLabel::start()
 {
     if (!checkParameters()) {
@@ -59,11 +48,6 @@ void ApplyGovernanceLabel::start(const QString &labelId)
 QString ApplyGovernanceLabel::buildPath() const
 {
     return u"/ocs/v2.php/apps/governance/%1/labels/%2/%3/%4/%5"_s.arg(apiVersionAsString(), entityTypeAsString(), integerEntityIdAsString(), labelTypeAsString(TypedGovernanceNetworkJob::Capitalization::UpCase), labelId());
-}
-
-void ApplyGovernanceLabel::jobDone(QJsonDocument reply, [[maybe_unused]] int statusCode)
-{
-    Q_EMIT finished(reply);
 }
 
 } // namespace OCC
