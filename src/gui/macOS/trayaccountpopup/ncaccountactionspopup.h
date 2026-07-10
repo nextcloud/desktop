@@ -14,8 +14,8 @@
 /**
  * @brief The submenu shown for a single account.
  *
- * Lists the user status, "Reveal in Finder", the Assistant and Apps shortcuts,
- * pending notifications and recent activity. Owns the apps and
+ * Lists the user status, "Reveal in Finder", the Assistant, Search and Apps
+ * shortcuts, pending notifications and recent activity. Owns the apps and
  * notification-actions sub-popups.
  */
 @interface NCAccountActionsPopup : NSPanel

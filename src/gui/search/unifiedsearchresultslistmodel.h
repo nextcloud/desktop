@@ -30,6 +30,12 @@ class UnifiedSearchResultsListModel : public QAbstractListModel
     Q_PROPERTY(QString errorString READ errorString NOTIFY errorStringChanged)
     Q_PROPERTY(QString searchTerm READ searchTerm WRITE setSearchTerm NOTIFY searchTermChanged)
     Q_PROPERTY(bool waitingForSearchTermEditEnd READ waitingForSearchTermEditEnd NOTIFY waitingForSearchTermEditEndChanged)
+    Q_PROPERTY(bool isFetchMoreInProgress READ isFetchMoreInProgress NOTIFY currentFetchMoreInProgressProviderIdChanged)
+    Q_PROPERTY(bool hasSearchTerm READ hasSearchTerm NOTIFY searchTermChanged)
+    Q_PROPERTY(bool hasSearchError READ hasSearchError NOTIFY errorStringChanged)
+    Q_PROPERTY(bool canEditSearch READ canEditSearch NOTIFY canEditSearchChanged)
+    Q_PROPERTY(bool isAccountConnected READ isAccountConnected NOTIFY canEditSearchChanged)
+    Q_PROPERTY(SearchState searchState READ searchState NOTIFY searchStateChanged)
 
     struct UnifiedSearchProvider
     {
@@ -42,6 +48,16 @@ class UnifiedSearchResultsListModel : public QAbstractListModel
     };
 
 public:
+    enum class SearchState {
+        None,
+        Placeholder,
+        Skeleton,
+        NothingFound,
+        Results,
+        SearchError,
+    };
+    Q_ENUM(SearchState)
+
     enum DataRole {
         ProviderNameRole = Qt::UserRole + 1,
         ProviderIdRole,
@@ -70,6 +86,14 @@ public:
     [[nodiscard]] QString searchTerm() const;
     [[nodiscard]] QString errorString() const;
     [[nodiscard]] bool waitingForSearchTermEditEnd() const;
+
+    [[nodiscard]] bool isFetchMoreInProgress() const;
+    [[nodiscard]] bool hasSearchTerm() const;
+    [[nodiscard]] bool hasSearchError() const;
+    [[nodiscard]] bool canEditSearch() const;
+    /** @brief Returns whether the account is connected. */
+    [[nodiscard]] bool isAccountConnected() const;
+    [[nodiscard]] SearchState searchState() const;
 
     Q_INVOKABLE void resultClicked(const QString &providerId, const QUrl &resourceUrl) const;
     Q_INVOKABLE void fetchMoreTriggerClicked(const QString &providerId);
@@ -100,6 +124,8 @@ signals:
     void errorStringChanged();
     void searchTermChanged();
     void waitingForSearchTermEditEndChanged();
+    void canEditSearchChanged();
+    void searchStateChanged();
 
 public slots:
     void setSearchTerm(const QString &term);

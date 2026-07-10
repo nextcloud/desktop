@@ -521,6 +521,12 @@ void openAssistantForUser(const int userId)
     Systray::instance()->showAssistantWindow(userId);
 }
 
+void openSearchForUser(const int userId)
+{
+    closeTrayPopup();
+    Systray::instance()->showSearchWindow(userId);
+}
+
 void openSettingsAfterTrayPopupCloses()
 {
     closeTrayPopup();
@@ -745,6 +751,14 @@ void populateAccountMenu(QMenu *menu, const int userId, const bool fetchActivity
             openAssistantForUser(userId);
         });
     }
+
+    const auto searchAction = addMenuAction(menu,
+        templateBlackThemeIcon(QStringLiteral("search.svg"), menuIconSize, menuIconPalette),
+        QCoreApplication::translate("TrayAccountPopup", "Search"));
+    searchAction->setEnabled(userModel->data(userModelIndex, UserModel::IsConnectedRole).toBool());
+    QObject::connect(searchAction, &QAction::triggered, searchAction, [userId] {
+        openSearchForUser(userId);
+    });
 
     const auto appsMenu = addSubMenu(menu,
         templateBlackThemeIcon(QStringLiteral("more-apps.svg"), menuIconSize, menuIconPalette),

@@ -8,6 +8,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Style
+import "../../tray"
 
 ColumnLayout {
     id: unifiedSearchResultItemFetchMore
