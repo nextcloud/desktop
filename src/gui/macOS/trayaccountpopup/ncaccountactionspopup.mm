@@ -266,7 +266,7 @@ static NSView *compactAccountActionsSeparator()
         [weakSelf hideAppsPopup];
     }]);
     if (assistantEnabled) {
-        addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:QCoreApplication::translate("MainWindow", "Open Assistant").toNSString()
+        addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:QCoreApplication::translate("MainWindow", "Assistant").toNSString()
                                                                       width:kAccountActionsPopupWidth
                                                                     enabled:YES
                                                                      action:^{
@@ -301,6 +301,7 @@ static NSView *compactAccountActionsSeparator()
             const auto activityIndex = notificationData.value(QStringLiteral("activityIndex")).toInt();
             addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:title.toNSString()
                                                                           icon:systemSymbolImage(notificationData.value(QStringLiteral("systemIconName")).toString(), 14.0)
+                                                                      subtitle:notificationData.value(QStringLiteral("subtitle")).toString().toNSString()
                                                                       dateTime:notificationData.value(QStringLiteral("dateTime")).toString().toNSString()
                                                                          width:kAccountActionsPopupWidth
                                                                        enabled:YES

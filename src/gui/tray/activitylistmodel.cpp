@@ -492,7 +492,21 @@ QVariantList ActivityListModel::buildNotificationPreviewData() const
 
     auto notifications = QVariantList{};
     for (const auto &candidate : std::as_const(candidates)) {
-        const auto title = candidate.activity.compactNotificationTitle();
+        auto title = candidate.activity.compactNotificationTitle();
+        auto subtitle = QString{};
+        auto systemIconName = candidate.activity.recentActivitySystemIconName();
+        if (candidate.activity._objectType == QStringLiteral("chat")
+            && candidate.activity._subjectRichParameters.contains(QStringLiteral("user"))) {
+            const auto user = candidate.activity._subjectRichParameters.value(QStringLiteral("user")).value<Activity::RichSubjectParameter>();
+            if (!user.name.isEmpty() && !candidate.activity._message.isEmpty()) {
+                title = user.name;
+                subtitle = candidate.activity._message;
+            }
+        }
+        if (candidate.activity._objectType == QStringLiteral("chat")
+            || candidate.activity._objectType == QStringLiteral("room")) {
+            systemIconName = QStringLiteral("message");
+        }
         if (title.isEmpty()) {
             continue;
         }
@@ -501,8 +515,9 @@ QVariantList ActivityListModel::buildNotificationPreviewData() const
         const auto actions = candidate.activity.notificationPreviewActions();
         notifications.push_back(QVariantMap{
             {QStringLiteral("title"), title},
+            {QStringLiteral("subtitle"), subtitle},
             {QStringLiteral("icon"), data(modelIndex, IconRole).toString()},
-            {QStringLiteral("systemIconName"), candidate.activity.recentActivitySystemIconName()},
+            {QStringLiteral("systemIconName"), systemIconName},
             {QStringLiteral("dateTime"), data(modelIndex, PointInTimeRole).toString()},
             {QStringLiteral("activityIndex"), candidate.row},
             {QStringLiteral("opensSettings"), candidate.activity._type == Activity::OpenSettingsNotificationType},
