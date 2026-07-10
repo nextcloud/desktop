@@ -35,7 +35,6 @@ public:
         PriorityRole,
         DescriptionRole,
         ColorRole,
-        ScopesRole,
         SelectedRole,
     };
 
@@ -103,6 +102,8 @@ private:
     static QJsonValue readOcsReply(const QJsonObject &reply);
 
     [[nodiscard]] bool hasReceivedAllData() const;
+
+    [[nodiscard]] bool validState() const;
 
     void refreshModel();
 
