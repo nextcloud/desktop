@@ -271,6 +271,10 @@ void Systray::showActivitiesWindow(int userIndex)
     const auto windowKey = user->account()->id();
 
     if (const auto existingWindow = _activitiesWindows.value(windowKey)) {
+        const auto syncStatusModel = qvariant_cast<SyncStatusSummary *>(existingWindow->property("syncStatusModel"));
+        if (syncStatusModel) {
+            syncStatusModel->loadForAccount(accountState);
+        }
         positionWindowAtScreenCenter(existingWindow.data());
         existingWindow->show();
         existingWindow->raise();
