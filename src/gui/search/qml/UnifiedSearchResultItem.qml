@@ -10,6 +10,7 @@ import QtQuick.Layouts
 import Qt5Compat.GraphicalEffects
 
 import Style
+import "../../tray"
 
 RowLayout {
     id: unifiedSearchResultItemDetails

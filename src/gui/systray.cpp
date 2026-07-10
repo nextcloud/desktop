@@ -5,12 +5,13 @@
  */
 
 #include "accountmanager.h"
+#include "accountstate.h"
 #include "systray.h"
 #include "theme.h"
 #include "config.h"
 #include "common/utility.h"
 #include "tray/svgimageprovider.h"
-#include "tray/unifiedsearchresultslistmodel.h"
+#include "search/unifiedsearchresultslistmodel.h"
 #include "tray/usermodel.h"
 #include "wheelhandler.h"
 #include "tray/trayimageprovider.h"
@@ -411,6 +412,12 @@ void Systray::showSearchWindow(int userIndex)
         return;
     }
 
+    const auto accountState = user->accountState();
+    if (!accountState) {
+        qCWarning(lcSystray) << "Could not open search window without an account state";
+        return;
+    }
+
     const auto windowKey = user->account()->id();
 
     if (const auto existingWindow = _searchWindows.value(windowKey)) {
@@ -421,12 +428,7 @@ void Systray::showSearchWindow(int userIndex)
         return;
     }
 
-    const QVariantMap initialProperties{
-        {"userIndex", targetUserId},
-        {"currentUser", QVariant::fromValue(user)},
-        {"searchModel", QVariant::fromValue(user->getUnifiedSearchResultsListModel())},
-    };
-    QQmlComponent searchWindowComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/SearchWindow.qml"));
+    QQmlComponent searchWindowComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/search/qml/SearchWindow.qml"));
 
     if (searchWindowComponent.isError()) {
         qCWarning(lcSystray) << searchWindowComponent.errorString();
@@ -434,6 +436,15 @@ void Systray::showSearchWindow(int userIndex)
         return;
     }
 
+    auto *const searchModel = new UnifiedSearchResultsListModel(accountState.data(), accountState.data());
+    const QVariantMap initialProperties{
+        {"account", QVariantMap{
+                        {"avatar", user->avatarUrl()},
+                        {"name", user->name()},
+                        {"server", user->server()},
+                    }},
+        {"searchModel", QVariant::fromValue(searchModel)},
+    };
     const auto createdObject = searchWindowComponent.createWithInitialProperties(initialProperties);
     const auto window = qobject_cast<QQuickWindow *>(createdObject);
     if (!window) {
@@ -441,6 +452,7 @@ void Systray::showSearchWindow(int userIndex)
         if (createdObject) {
             createdObject->deleteLater();
         }
+        searchModel->deleteLater();
         return;
     }
 
@@ -458,6 +470,19 @@ void Systray::showSearchWindow(int userIndex)
 
     connect(window, &QObject::destroyed, this, [this, windowKey] {
         _searchWindows.remove(windowKey);
+    });
+    connect(window, &QObject::destroyed, searchModel, &QObject::deleteLater);
+    const auto searchModelGuard = QPointer<UnifiedSearchResultsListModel>(searchModel);
+    connect(window, &QWindow::visibleChanged, window, [window, searchModelGuard](const bool visible) {
+        if (!visible) {
+            if (searchModelGuard) {
+                searchModelGuard->deleteLater();
+            }
+            window->deleteLater();
+        }
+    });
+    connect(accountState.data(), &QObject::destroyed, window, [window] {
+        window->close();
     });
 
     positionWindowAtScreenCenter(window);

@@ -68,7 +68,7 @@ QString iconUrlForDefaultIconName(const QString &defaultIconName, const bool dar
     if (urlForIcon.isValid() && !urlForIcon.scheme().isEmpty()) {
         return defaultIconName;
     }
-    
+
     const auto colorIconPath = darkMode ? QStringLiteral(":/client/theme/white/") : QStringLiteral(":/client/theme/black/");
 
     if (defaultIconName.startsWith(QStringLiteral("icon-"))) {
@@ -211,7 +211,7 @@ QVariant UnifiedSearchResultsListModel::data(const QModelIndex &index, int role)
     switch (role) {
     case ProviderNameRole:
         return _results.at(index.row())._providerName;
-    case ProviderIdRole: 
+    case ProviderIdRole:
         return _results.at(index.row())._providerId;
     case DarkImagePlaceholderRole:
         return imagePlaceholderUrlForProviderId(_results.at(index.row())._providerId, true);
@@ -356,7 +356,12 @@ bool UnifiedSearchResultsListModel::hasSearchError() const
 
 bool UnifiedSearchResultsListModel::canEditSearch() const
 {
-    return _accountState && _accountState->isConnected() && !isFetchMoreInProgress();
+    return isAccountConnected() && !isFetchMoreInProgress();
+}
+
+bool UnifiedSearchResultsListModel::isAccountConnected() const
+{
+    return _accountState && _accountState->isConnected();
 }
 
 UnifiedSearchResultsListModel::SearchState UnifiedSearchResultsListModel::searchState() const
@@ -453,7 +458,7 @@ void UnifiedSearchResultsListModel::slotFetchProvidersFinished(const QJsonDocume
         emit errorStringChanged();
         return;
     }
-    
+
     if (statusCode != 200) {
         qCCritical(lcUnifiedSearch) << QStringLiteral("%1: Failed to fetch search providers for '%2'. Error: %3")
                                            .arg(statusCode)
@@ -500,7 +505,7 @@ void UnifiedSearchResultsListModel::slotSearchForProviderFinished(const QJsonDoc
     }
 
     const auto providerId = job->property("providerId").toString();
-    
+
     if (providerId.isEmpty()) {
         return;
     }
