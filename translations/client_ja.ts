@@ -139,13 +139,9 @@
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="231"/>
+        <location filename="../src/gui/tray/activitydata.cpp" line="314"/>
         <source>Dismiss</source>
         <translation>閉じる</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/activitydata.cpp" line="303"/>
-        <source>Confirm</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -683,44 +679,54 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="248"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="243"/>
         <source>Main content</source>
         <translation>メインコンテンツ</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="327"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="322"/>
         <source>Issue with account %1</source>
         <translation>アカウント %1 の問題</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="329"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="324"/>
         <source>Issues with several accounts</source>
         <translation>複数のアカウントに関する問題</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="410"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="381"/>
         <source>Start new conversation?</source>
         <translation>新しい会話を開始しますか？</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="430"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="401"/>
         <source>New conversation</source>
         <translation>新しい会話</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="434"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="405"/>
         <source>Cancel</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="455"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="426"/>
         <source>This will clear the existing conversation.</source>
         <translation>これにより既存の会話が消去されます。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="500"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="471"/>
         <source>Ask Assistant …</source>
         <translation>アシスタントにたずねる...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="499"/>
+        <source>Send assistant question</source>
+        <translation>アシスタントに質問を送信</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="777"/>
+        <source>Unified search results list</source>
+        <translation>統合検索結果</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="503"/>
@@ -728,28 +734,18 @@
         <translation>アシスタントにたずねる...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="528"/>
-        <source>Send assistant question</source>
-        <translation>アシスタントに質問を送信</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="549"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="520"/>
         <source>Start a new assistant chat</source>
         <translation>新しいアシスタントチャットを開始する</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="774"/>
-        <source>Unified search results list</source>
-        <translation>統合検索結果</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="840"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="689"/>
         <source>New activities</source>
         <translation>新しいアクティビティ</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="741"/>
-        <source>Open Assistant</source>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="749"/>
+        <source>Assistant</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -1626,17 +1622,17 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="616"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="631"/>
         <source>For more activities please open the Activity app.</source>
         <translation>その他のアクティビティについては、アクティビティアプリを開いてください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="636"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="651"/>
         <source>Fetching activities …</source>
         <translation>アクティビティを取得中...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="744"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="759"/>
         <source>Network error occurred: client will retry syncing.</source>
         <translation>ネットワークエラーが発生しました：クライアントは同期を再試行します。</translation>
     </message>
@@ -5808,13 +5804,13 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="159"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1706"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1704"/>
         <source>You need to accept the terms of service</source>
         <translation>利用規約に同意する必要があります</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1698"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1696"/>
         <source>Reauthorization required</source>
         <translation>再承認が必要</translation>
     </message>
@@ -5832,7 +5828,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="241"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1717"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1715"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation>いくつかのファイルが同期できませんでした！</translation>
     </message>
@@ -5858,7 +5854,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="267"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1718"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1716"/>
         <source>Some files could not be synced!</source>
         <translation>いくつかのファイルが同期できませんでした！</translation>
     </message>
@@ -5896,62 +5892,62 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::Systray</name>
     <message>
-        <location filename="../src/gui/systray.cpp" line="143"/>
+        <location filename="../src/gui/systray.cpp" line="145"/>
         <source>Download</source>
         <translation>ダウンロード</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="484"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="811"/>
+        <location filename="../src/gui/systray.cpp" line="586"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="827"/>
         <source>Add account</source>
         <translation>アカウントを追加</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="486"/>
+        <location filename="../src/gui/systray.cpp" line="588"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
         <translation>%1 デスクトップを開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="489"/>
-        <location filename="../src/gui/systray.cpp" line="499"/>
+        <location filename="../src/gui/systray.cpp" line="591"/>
+        <location filename="../src/gui/systray.cpp" line="601"/>
         <source>Pause sync</source>
         <translation>同期を一時停止</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="490"/>
-        <location filename="../src/gui/systray.cpp" line="505"/>
+        <location filename="../src/gui/systray.cpp" line="592"/>
+        <location filename="../src/gui/systray.cpp" line="607"/>
         <source>Resume sync</source>
         <translation>同期を再開</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="491"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="820"/>
+        <location filename="../src/gui/systray.cpp" line="593"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="836"/>
         <source>Settings</source>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="492"/>
+        <location filename="../src/gui/systray.cpp" line="594"/>
         <source>Help</source>
         <translation>ヘルプ</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="493"/>
+        <location filename="../src/gui/systray.cpp" line="595"/>
         <source>Exit %1</source>
         <translation>%1 を終了</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="499"/>
+        <location filename="../src/gui/systray.cpp" line="601"/>
         <source>Pause sync for all</source>
         <translation>全ての同期を一時停止</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="505"/>
+        <location filename="../src/gui/systray.cpp" line="607"/>
         <source>Resume sync for all</source>
         <translation>すべての同期を再開</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="827"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="843"/>
         <source>Quit</source>
         <translation type="unfinished"/>
     </message>
@@ -5978,22 +5974,22 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UnifiedSearchResultsListModel</name>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="398"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="457"/>
         <source>Failed to fetch providers.</source>
         <translation>プロバイダーの取得に失敗しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="409"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="468"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
         <translation>&apos;%1&apos;の検索プロバイダーの取得に失敗しました。 エラー: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="443"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="502"/>
         <source>Search has failed for &apos;%2&apos;.</source>
         <translation>&apos;%2&apos; を検索できませんでした</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="472"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="531"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
         <translation>&apos;%1&apos; を検索できませんでした。エラー: %2</translation>
     </message>
@@ -6055,86 +6051,86 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="577"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="575"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
         <translation>エンドツーエンド証明書を新しいものに移行する必要があります。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="579"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="577"/>
         <source>Trigger the migration</source>
         <translation>移行のトリガー</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/tray/usermodel.cpp" line="680"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="678"/>
         <source>%n notification(s)</source>
         <translation><numerusform>%n 通知</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="923"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="962"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="921"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="960"/>
         <source>“%1” was not synchronized</source>
         <translation>&quot;%1&quot;は同期されていません </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="964"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="962"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
         <translation>サーバーの空き容量が不足しています。ファイルには%1が必要ですが、利用可能な容量は%2しかありません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="967"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="965"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
         <translation>サーバーのストレージ容量が不足しています。このファイルには%1が必要です。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="970"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="968"/>
         <source>Insufficient storage on the server.</source>
         <translation>サーバーのストレージ容量が不足しています。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1006"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1004"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>一部のアップロードについて、サーバーの空き容量が不足しています。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1022"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1388"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1020"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1386"/>
         <source>Retry all uploads</source>
         <translation>すべてのアップロードを再試行</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1439"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1601"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1437"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1599"/>
         <source>Resolve conflict</source>
         <translation>競合の解決</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1591"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1589"/>
         <source>Rename file</source>
         <translation>ファイル名の変更</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1690"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1688"/>
         <source>Sync conflicts</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1825"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1818"/>
         <source>Public Share Link</source>
         <translation>公開共有リンク</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1937"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1930"/>
         <source>Open %1 Assistant</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation>%1 アシスタントを開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2044"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2037"/>
         <source>Assistant is not available for this account.</source>
         <translation>このアカウントではアシスタントはご利用いただけません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2050"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2043"/>
         <source>Assistant is already processing a request.</source>
         <translation>アシスタントは既にリクエストを処理中です。</translation>
     </message>
@@ -6144,37 +6140,37 @@ Server replied with error: %2</source>
         <translation>リクエストを送信中…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2087"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2080"/>
         <source>Sending your request …</source>
         <translation>リクエストを送信しています…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2160"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2153"/>
         <source>No response yet. Please try again later.</source>
         <translation>まだ応答がありません。後ほど再度お試しください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2179"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2172"/>
         <source>No supported assistant task types were returned.</source>
         <translation>サポートされているアシスタントタスクの種類は返されませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2261"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2254"/>
         <source>Waiting for the assistant response…</source>
         <translation>アシスタントの応答を待っています…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2283"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2276"/>
         <source>Assistant request failed (%1).</source>
         <translation>アシスタントのリクエストが失敗しました (%1)。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2358"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2351"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation>クォータが更新されました。総容量の %1 パーセントが使用されています。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2378"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2371"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation>クォータ警告 - 使用中のストレージが %1 パーセント以上です</translation>
     </message>
@@ -6182,32 +6178,32 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2810"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2803"/>
         <source>Confirm Account Removal</source>
         <translation>アカウント削除の確認</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2811"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2804"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;本当に &lt;i&gt;%1&lt;/i&gt; アカウントへの接続を解除しますか？ &lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; この操作ではファイルは&lt;b&gt;削除されません&lt;/b&gt;。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2815"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2808"/>
         <source>Remove connection</source>
         <translation>接続を外す</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2816"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2809"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2902"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2895"/>
         <source>Leave share</source>
         <translation>共有から抜ける</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2902"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2895"/>
         <source>Remove account</source>
         <translation>アカウントを削除</translation>
     </message>
@@ -6644,32 +6640,32 @@ Server replied with error: %2</source>
         <translation>デバッグアーカイブを選択した場所に移動できませんでした！</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="492"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="491"/>
         <source>Answer</source>
         <translation>回答</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1520"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1518"/>
         <source>You renamed %1</source>
         <translation>%1 の名前を変更しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1522"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1520"/>
         <source>You deleted %1</source>
         <translation>%1 を削除しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1524"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1522"/>
         <source>You created %1</source>
         <translation>%1 を作成しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1526"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1524"/>
         <source>You changed %1</source>
         <translation>%1 を変更しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1550"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1548"/>
         <source>Synced %1</source>
         <translation>%1 を同期しました</translation>
     </message>
@@ -6851,6 +6847,29 @@ Server replied with error: %2</source>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="148"/>
         <source>Cancel</source>
         <translation>キャンセル</translation>
+    </message>
+</context>
+<context>
+    <name>SearchWindow</name>
+    <message>
+        <location filename="../src/gui/search/qml/SearchWindow.qml" line="19"/>
+        <source>Search</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/qml/SearchWindow.qml" line="74"/>
+        <source>Search is available when this account is connected</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/qml/SearchWindow.qml" line="75"/>
+        <source>Search files, messages, events …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/search/qml/SearchWindow.qml" line="150"/>
+        <source>Search results list</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -7104,43 +7123,48 @@ Server replied with error: %2</source>
 <context>
     <name>TrayAccountPopup</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="578"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="584"/>
         <source>No apps available</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="618"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="624"/>
         <source>Notifications</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="640"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="648"/>
         <source>Open</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="653"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="661"/>
         <source>Recent activity</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="660"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="668"/>
         <source>No recent activity</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="678"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="686"/>
         <source>More activity…</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="709"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="717"/>
         <source>Resolve: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="716"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="724"/>
         <source>User status</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="757"/>
+        <source>Search</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -7177,7 +7201,7 @@ Server replied with error: %2</source>
         <translation>ユーザグループとローカルフォルダメニュー</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="732"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="740"/>
         <source>Local folder</source>
         <translation type="unfinished"/>
     </message>
@@ -7200,7 +7224,7 @@ Server replied with error: %2</source>
         <translation>%1をブラウザーで開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="749"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="765"/>
         <source>Apps</source>
         <translation type="unfinished"/>
     </message>
@@ -7208,7 +7232,7 @@ Server replied with error: %2</source>
 <context>
     <name>UnifiedSearchInputContainer</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="34"/>
+        <location filename="../src/gui/search/qml/UnifiedSearchInputContainer.qml" line="35"/>
         <source>Search files, messages, events …</source>
         <translation>ファイルやメッセージ、イベントを検索</translation>
     </message>
@@ -7216,7 +7240,7 @@ Server replied with error: %2</source>
 <context>
     <name>UnifiedSearchPlaceholderView</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchPlaceholderView.qml" line="30"/>
+        <location filename="../src/gui/search/qml/UnifiedSearchPlaceholderView.qml" line="31"/>
         <source>Start typing to search</source>
         <translation>入力して検索を開始 </translation>
     </message>
@@ -7224,7 +7248,7 @@ Server replied with error: %2</source>
 <context>
     <name>UnifiedSearchResultFetchMoreTrigger</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml" line="36"/>
+        <location filename="../src/gui/search/qml/UnifiedSearchResultFetchMoreTrigger.qml" line="37"/>
         <source>Load more results</source>
         <translation>結果をさらに読み込む</translation>
     </message>
@@ -7232,7 +7256,7 @@ Server replied with error: %2</source>
 <context>
     <name>UnifiedSearchResultItemSkeleton</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchResultItemSkeleton.qml" line="20"/>
+        <location filename="../src/gui/search/qml/UnifiedSearchResultItemSkeleton.qml" line="20"/>
         <source>Search result skeleton.</source>
         <translation>検索結果のスケルトン。</translation>
     </message>
@@ -7240,7 +7264,7 @@ Server replied with error: %2</source>
 <context>
     <name>UnifiedSearchResultListItem</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="35"/>
+        <location filename="../src/gui/search/qml/UnifiedSearchResultListItem.qml" line="35"/>
         <source>Load more results</source>
         <translation>結果をさらに読み込む</translation>
     </message>
@@ -7248,7 +7272,7 @@ Server replied with error: %2</source>
 <context>
     <name>UnifiedSearchResultNothingFound</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchResultNothingFound.qml" line="31"/>
+        <location filename="../src/gui/search/qml/UnifiedSearchResultNothingFound.qml" line="32"/>
         <source>No results for</source>
         <translation>該当する結果はありませんでした</translation>
     </message>
@@ -7256,7 +7280,7 @@ Server replied with error: %2</source>
 <context>
     <name>UnifiedSearchResultSectionItem</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchResultSectionItem.qml" line="24"/>
+        <location filename="../src/gui/search/qml/UnifiedSearchResultSectionItem.qml" line="25"/>
         <source>Search results section %1</source>
         <translation>セクション %1 の検索結果</translation>
     </message>
