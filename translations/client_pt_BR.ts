@@ -746,7 +746,7 @@
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="749"/>
         <source>Assistant</source>
-        <translation type="unfinished"/>
+        <translation>Assistente</translation>
     </message>
 </context>
 <context>
@@ -6854,22 +6854,22 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/search/qml/SearchWindow.qml" line="19"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Pesquisar</translation>
     </message>
     <message>
         <location filename="../src/gui/search/qml/SearchWindow.qml" line="74"/>
         <source>Search is available when this account is connected</source>
-        <translation type="unfinished"/>
+        <translation>A função de pesquisa fica disponível quando esta conta estiver conectada</translation>
     </message>
     <message>
         <location filename="../src/gui/search/qml/SearchWindow.qml" line="75"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>Pesquisar arquivos, mensagens, eventos …</translation>
     </message>
     <message>
         <location filename="../src/gui/search/qml/SearchWindow.qml" line="150"/>
         <source>Search results list</source>
-        <translation type="unfinished"/>
+        <translation>Lista de resultados da pesquisa</translation>
     </message>
 </context>
 <context>
@@ -7165,7 +7165,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="757"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Pesquisar</translation>
     </message>
 </context>
 <context>

@@ -99,12 +99,12 @@
     <message>
         <location filename="../src/gui/ActivitiesWindow.qml" line="19"/>
         <source>Activities</source>
-        <translation type="unfinished"/>
+        <translation>Gníomhaíochtaí</translation>
     </message>
     <message>
         <location filename="../src/gui/ActivitiesWindow.qml" line="126"/>
         <source>New activities</source>
-        <translation type="unfinished"/>
+        <translation>Gníomhaíochtaí nua</translation>
     </message>
 </context>
 <context>
@@ -201,39 +201,39 @@
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="19"/>
         <source>Nextcloud Assistant</source>
-        <translation type="unfinished"/>
+        <translation>Cúntóir Nextcloud</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="91"/>
         <location filename="../src/gui/AssistantWindow.qml" line="95"/>
         <source>Start new conversation?</source>
-        <translation type="unfinished"/>
+        <translation>Comhrá nua a thosú?</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="104"/>
         <source>This will clear the existing conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Glanfaidh sé seo an comhrá atá ann cheana féin.</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="119"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cealaigh</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="125"/>
         <location filename="../src/gui/AssistantWindow.qml" line="245"/>
         <source>New conversation</source>
-        <translation type="unfinished"/>
+        <translation>Comhrá nua</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="236"/>
         <source>Ask Assistant …</source>
-        <translation type="unfinished"/>
+        <translation>Iarr ar an gCúntóir …</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="252"/>
         <source>Send</source>
-        <translation type="unfinished"/>
+        <translation>Seol</translation>
     </message>
 </context>
 <context>
@@ -515,7 +515,7 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="71"/>
         <source>Search emoji</source>
-        <translation type="unfinished"/>
+        <translation>Cuardaigh emoji</translation>
     </message>
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="201"/>
@@ -525,7 +525,7 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="201"/>
         <source>No emojis found</source>
-        <translation type="unfinished"/>
+        <translation>Níor aimsíodh aon emoji</translation>
     </message>
 </context>
 <context>
@@ -746,7 +746,7 @@
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="749"/>
         <source>Assistant</source>
-        <translation type="unfinished"/>
+        <translation>Cúntóir</translation>
     </message>
 </context>
 <context>
@@ -4944,7 +4944,7 @@ Tabhair faoi deara go sárófar an socrú seo trí úsáid a bhaint as aon rogha
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="216"/>
         <source>Failed to create encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>Theip ar fhillteán criptithe a chruthú.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="255"/>
@@ -5949,7 +5949,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="843"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Scoir</translation>
     </message>
 </context>
 <context>
@@ -6111,7 +6111,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1688"/>
         <source>Sync conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Coimhlintí sioncrónaithe</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1818"/>
@@ -6854,22 +6854,22 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/search/qml/SearchWindow.qml" line="19"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Cuardaigh</translation>
     </message>
     <message>
         <location filename="../src/gui/search/qml/SearchWindow.qml" line="74"/>
         <source>Search is available when this account is connected</source>
-        <translation type="unfinished"/>
+        <translation>Tá cuardach ar fáil nuair a bhíonn an cuntas seo ceangailte</translation>
     </message>
     <message>
         <location filename="../src/gui/search/qml/SearchWindow.qml" line="75"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>Cuardaigh comhaid, teachtaireachtaí, imeachtaí …</translation>
     </message>
     <message>
         <location filename="../src/gui/search/qml/SearchWindow.qml" line="150"/>
         <source>Search results list</source>
-        <translation type="unfinished"/>
+        <translation>Liosta torthaí cuardaigh</translation>
     </message>
 </context>
 <context>
@@ -7125,47 +7125,47 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="584"/>
         <source>No apps available</source>
-        <translation type="unfinished"/>
+        <translation>Níl aon aipeanna ar fáil</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="624"/>
         <source>Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Fógraí</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="648"/>
         <source>Open</source>
-        <translation type="unfinished"/>
+        <translation>Oscail</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="661"/>
         <source>Recent activity</source>
-        <translation type="unfinished"/>
+        <translation>Gníomhaíocht le déanaí</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="668"/>
         <source>No recent activity</source>
-        <translation type="unfinished"/>
+        <translation>Gan aon ghníomhaíocht le déanaí</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="686"/>
         <source>More activity…</source>
-        <translation type="unfinished"/>
+        <translation>Tuilleadh gníomhaíochta…</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="717"/>
         <source>Resolve: %1</source>
-        <translation type="unfinished"/>
+        <translation>Réitigh: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="724"/>
         <source>User status</source>
-        <translation type="unfinished"/>
+        <translation>Stádas úsáideora</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="757"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Cuardaigh</translation>
     </message>
 </context>
 <context>
@@ -7203,7 +7203,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="740"/>
         <source>Local folder</source>
-        <translation type="unfinished"/>
+        <translation>Fillteán áitiúil</translation>
     </message>
 </context>
 <context>
@@ -7226,7 +7226,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="765"/>
         <source>Apps</source>
-        <translation type="unfinished"/>
+        <translation>Aipeanna</translation>
     </message>
 </context>
 <context>
@@ -7438,73 +7438,73 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="22"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>Stádas ar líne</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="99"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Ar líne</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="108"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Ar shiúl</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="118"/>
         <source>Busy</source>
-        <translation type="unfinished"/>
+        <translation>Gnóthach</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="127"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Ná cuir isteach</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="128"/>
         <source>Mute all notifications</source>
-        <translation type="unfinished"/>
+        <translation>Balbhaigh gach fógra</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="139"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Dofheicthe</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="140"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>Le feiceáil as líne</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="156"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Teachtaireacht stádais</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="182"/>
         <source>Choose emoji</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh emoji</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="204"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>Cén stádas atá agat?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="290"/>
         <location filename="../src/gui/UserStatusWindow.qml" line="311"/>
         <source>Clear status after</source>
-        <translation type="unfinished"/>
+        <translation>Glan stádas ina dhiaidh sin</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="343"/>
         <source>Clear status message</source>
-        <translation type="unfinished"/>
+        <translation>Glan an teachtaireacht stádais</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="354"/>
         <source>Set status message</source>
-        <translation type="unfinished"/>
+        <translation>Socraigh teachtaireacht stádais</translation>
     </message>
 </context>
 <context>
@@ -7513,7 +7513,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <location filename="../src/gui/UserStatusWindowPredefinedStatusRow.qml" line="30"/>
         <source>%1, resets after %2</source>
         <extracomment>%1 is the status text and %2 is a time string.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1, athshocraítear é tar éis %2</translation>
     </message>
 </context>
 <context>
@@ -7597,7 +7597,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/WindowAccountHeader.qml" line="63"/>
         <source>Account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Abhatár cuntais</translation>
     </message>
 </context>
 <context>
