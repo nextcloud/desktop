@@ -746,7 +746,7 @@
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="749"/>
         <source>Assistant</source>
-        <translation type="unfinished"/>
+        <translation>Abiline</translation>
     </message>
 </context>
 <context>
@@ -6853,22 +6853,22 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/search/qml/SearchWindow.qml" line="19"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Otsi</translation>
     </message>
     <message>
         <location filename="../src/gui/search/qml/SearchWindow.qml" line="74"/>
         <source>Search is available when this account is connected</source>
-        <translation type="unfinished"/>
+        <translation>Otsing on kasutatav peale kasutajakonto ühendamist</translation>
     </message>
     <message>
         <location filename="../src/gui/search/qml/SearchWindow.qml" line="75"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>Otsi faile, sõnumeid või sündmusi…</translation>
     </message>
     <message>
         <location filename="../src/gui/search/qml/SearchWindow.qml" line="150"/>
         <source>Search results list</source>
-        <translation type="unfinished"/>
+        <translation>Otsingutulemuste loend</translation>
     </message>
 </context>
 <context>
@@ -7164,7 +7164,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="757"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Otsi</translation>
     </message>
 </context>
 <context>
