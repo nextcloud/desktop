@@ -85,38 +85,59 @@ NSStackView *configurePopupPanel(NSPanel *panel)
     panel.backgroundColor = NSColor.clearColor;
     panel.opaque = NO;
 
-    auto container = [[[NSView alloc] init] autorelease];
-    container.wantsLayer = YES;
-    container.layer.cornerRadius = kCornerRadius;
-    container.layer.masksToBounds = YES;
-    panel.contentView = container;
-
-    auto visualEffectView = [[[NSVisualEffectView alloc] init] autorelease];
-    visualEffectView.material = NSVisualEffectMaterialMenu;
-    visualEffectView.blendingMode = NSVisualEffectBlendingModeBehindWindow;
-    visualEffectView.state = NSVisualEffectStateActive;
-    visualEffectView.wantsLayer = YES;
-    visualEffectView.layer.cornerRadius = kCornerRadius;
-    visualEffectView.layer.masksToBounds = YES;
-    visualEffectView.translatesAutoresizingMaskIntoConstraints = NO;
-    [container addSubview:visualEffectView];
-
     auto stack = [NSStackView stackViewWithViews:@[]];
     stack.orientation = NSUserInterfaceLayoutOrientationVertical;
     stack.spacing = 0;
     stack.translatesAutoresizingMaskIntoConstraints = NO;
-    [visualEffectView addSubview:stack];
 
-    [NSLayoutConstraint activateConstraints:@[
-        [visualEffectView.topAnchor constraintEqualToAnchor:container.topAnchor],
-        [visualEffectView.leadingAnchor constraintEqualToAnchor:container.leadingAnchor],
-        [visualEffectView.trailingAnchor constraintEqualToAnchor:container.trailingAnchor],
-        [visualEffectView.bottomAnchor constraintEqualToAnchor:container.bottomAnchor],
-        [stack.topAnchor constraintEqualToAnchor:visualEffectView.topAnchor],
-        [stack.leadingAnchor constraintEqualToAnchor:visualEffectView.leadingAnchor],
-        [stack.trailingAnchor constraintEqualToAnchor:visualEffectView.trailingAnchor],
-        [stack.bottomAnchor constraintEqualToAnchor:visualEffectView.bottomAnchor],
-    ]];
+    if (@available(macOS 26.0, *)) {
+        auto container = [[[NSView alloc] init] autorelease];
+        container.wantsLayer = YES;
+        container.layer.cornerRadius = kCornerRadius;
+        container.layer.masksToBounds = YES;
+        panel.contentView = container;
+
+        auto glassEffectView = [[[NSGlassEffectView alloc] init] autorelease];
+        glassEffectView.cornerRadius = kCornerRadius;
+        glassEffectView.contentView = stack;
+        glassEffectView.translatesAutoresizingMaskIntoConstraints = NO;
+        [container addSubview:glassEffectView];
+
+        [NSLayoutConstraint activateConstraints:@[
+            [glassEffectView.topAnchor constraintEqualToAnchor:container.topAnchor],
+            [glassEffectView.leadingAnchor constraintEqualToAnchor:container.leadingAnchor],
+            [glassEffectView.trailingAnchor constraintEqualToAnchor:container.trailingAnchor],
+            [glassEffectView.bottomAnchor constraintEqualToAnchor:container.bottomAnchor],
+        ]];
+    } else {
+        auto container = [[[NSView alloc] init] autorelease];
+        container.wantsLayer = YES;
+        container.layer.cornerRadius = kCornerRadius;
+        container.layer.masksToBounds = YES;
+        panel.contentView = container;
+
+        auto visualEffectView = [[[NSVisualEffectView alloc] init] autorelease];
+        visualEffectView.material = NSVisualEffectMaterialMenu;
+        visualEffectView.blendingMode = NSVisualEffectBlendingModeBehindWindow;
+        visualEffectView.state = NSVisualEffectStateActive;
+        visualEffectView.wantsLayer = YES;
+        visualEffectView.layer.cornerRadius = kCornerRadius;
+        visualEffectView.layer.masksToBounds = YES;
+        visualEffectView.translatesAutoresizingMaskIntoConstraints = NO;
+        [container addSubview:visualEffectView];
+        [visualEffectView addSubview:stack];
+
+        [NSLayoutConstraint activateConstraints:@[
+            [visualEffectView.topAnchor constraintEqualToAnchor:container.topAnchor],
+            [visualEffectView.leadingAnchor constraintEqualToAnchor:container.leadingAnchor],
+            [visualEffectView.trailingAnchor constraintEqualToAnchor:container.trailingAnchor],
+            [visualEffectView.bottomAnchor constraintEqualToAnchor:container.bottomAnchor],
+            [stack.topAnchor constraintEqualToAnchor:visualEffectView.topAnchor],
+            [stack.leadingAnchor constraintEqualToAnchor:visualEffectView.leadingAnchor],
+            [stack.trailingAnchor constraintEqualToAnchor:visualEffectView.trailingAnchor],
+            [stack.bottomAnchor constraintEqualToAnchor:visualEffectView.bottomAnchor],
+        ]];
+    }
 
     return stack;
 }
