@@ -14,8 +14,18 @@
 #include "settingspanelstyle.h"
 #include "theme.h"
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "account.h"
+#include "accountstate.h"
+#include "folder.h"
+#include "folderman.h"
+#include "macOS/fileprovider.h"
+#include "macOS/fileprovidersettingscontroller.h"
+#endif
+
 #include <QAbstractButton>
 #include <QMessageBox>
+#include <QPushButton>
 #include <QScopedValueRollback>
 #include <QSignalBlocker>
 
@@ -65,6 +75,26 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     _ui->monoIconsRowWidget->setVisible(monoIconsAvailable);
     _ui->startupSeparator->setVisible(monoIconsAvailable);
 
+#if defined(BUILD_FILE_PROVIDER_MODULE)
+    if (Mac::FileProvider::available() && !Theme::instance()->disableVirtualFilesSyncFolder()) {
+        const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
+
+        // "clicked" rather than "toggled": only direct user interaction may open the
+        // confirmation flow, never the programmatic setChecked in loadMiscSettings().
+        connect(_ui->fileProviderCheckBox, &QAbstractButton::clicked,
+                this, &GeneralSettings::slotFileProviderSwitchClicked);
+        connect(fpSettingsController, &Mac::FileProviderSettingsController::fileProviderModeEnabledChanged,
+                this, &GeneralSettings::loadMiscSettings);
+        connect(fpSettingsController, &Mac::FileProviderSettingsController::operationInProgressChanged,
+                this, &GeneralSettings::loadMiscSettings);
+    } else {
+        // macOS 13 Ventura (feature unsupported) or branding that bans virtual files.
+        _ui->fileProviderGroupBox->setVisible(false);
+    }
+#else
+    _ui->fileProviderGroupBox->setVisible(false);
+#endif
+
     customizeStyle();
 }
 
@@ -97,6 +127,16 @@ void GeneralSettings::loadMiscSettings()
     _ui->quotaWarningNotificationsLabel->setEnabled(cfgFile.optionalServerNotifications());
     _ui->quotaWarningNotificationsCheckBox->setEnabled(cfgFile.optionalServerNotifications());
     _ui->quotaWarningNotificationsCheckBox->setChecked(cfgFile.showQuotaWarningNotifications());
+
+#if defined(BUILD_FILE_PROVIDER_MODULE)
+    if (Mac::FileProvider::available()) {
+        const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
+        const auto fpOperationInProgress = fpSettingsController->isOperationInProgress();
+        _ui->fileProviderCheckBox->setChecked(fpSettingsController->fileProviderModeEnabled());
+        _ui->fileProviderCheckBox->setEnabled(!fpOperationInProgress);
+        _ui->fileProviderLabel->setEnabled(!fpOperationInProgress);
+    }
+#endif
 }
 
 void GeneralSettings::saveMiscSettings()
@@ -165,6 +205,105 @@ void GeneralSettings::slotToggleQuotaWarningNotifications(bool enable)
     ConfigFile().setShowQuotaWarningNotifications(enable);
 }
 
+void GeneralSettings::slotFileProviderSwitchClicked(bool checked)
+{
+#if defined(BUILD_FILE_PROVIDER_MODULE)
+    const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
+
+    // The switch must not lead the actual state: snap it back immediately and only let
+    // it move once the controller confirms the change via fileProviderModeEnabledChanged.
+    {
+        const QSignalBlocker blocker(_ui->fileProviderCheckBox);
+        _ui->fileProviderCheckBox->setChecked(fpSettingsController->fileProviderModeEnabled());
+    }
+
+    if (checked == fpSettingsController->fileProviderModeEnabled()) {
+        return;
+    }
+
+    if (checked) {
+        confirmEnableFileProviderMode();
+    } else {
+        confirmDisableFileProviderMode();
+    }
+#else
+    Q_UNUSED(checked)
+#endif
+}
+
+#if defined(BUILD_FILE_PROVIDER_MODULE)
+void GeneralSettings::confirmEnableFileProviderMode()
+{
+    // Gather the accounts whose classic sync folder connections enabling would discard.
+    QStringList accountsWithClassicFolders;
+
+    if (const auto folderMan = FolderMan::instance()) {
+        const auto folderMap = folderMan->map();
+        for (const auto folder : folderMap) {
+            const auto accountState = folder->accountState();
+            const auto account = accountState ? accountState->account() : nullptr;
+            const auto accountName = account ? account->userIdAtHostWithPort() : tr("Unknown account");
+            if (!accountsWithClassicFolders.contains(accountName)) {
+                accountsWithClassicFolders.append(accountName);
+            }
+        }
+    }
+
+    auto text = tr("File Provider will be enabled for all accounts. Your files will appear in Finder under the \"Locations\" section. Accounts added later will also be set up as File Providers.");
+
+    if (!accountsWithClassicFolders.isEmpty()) {
+        QStringList accountLines;
+        for (const auto &accountName : std::as_const(accountsWithClassicFolders)) {
+            accountLines.append(QStringLiteral("• ") + accountName);
+        }
+
+        text += QStringLiteral("\n\n")
+            + tr("This removes classic sync folder connections from the following accounts:")
+            + QStringLiteral("\n\n")
+            + accountLines.join(QStringLiteral("\n"))
+            + QStringLiteral("\n\n")
+            + tr("Synced files stay on your computer, but they will no longer be kept up to date and settings such as selective sync are discarded.");
+    }
+
+    const auto messageBox = new QMessageBox(QMessageBox::Question,
+                                            tr("Enable File Provider?"),
+                                            text,
+                                            QMessageBox::NoButton,
+                                            this);
+    messageBox->setAttribute(Qt::WA_DeleteOnClose);
+    const auto enableButton = messageBox->addButton(tr("Enable File Provider"), QMessageBox::AcceptRole);
+    messageBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
+    connect(messageBox, &QMessageBox::finished, this, [messageBox, enableButton] {
+        if (messageBox->clickedButton() == enableButton) {
+            Mac::FileProviderSettingsController::instance()->setFileProviderModeEnabled(true);
+        }
+    });
+    messageBox->open();
+}
+
+void GeneralSettings::confirmDisableFileProviderMode()
+{
+    const auto text = tr("File Provider will be turned off for all accounts, and your files will no longer be available in Finder under the \"Locations\" section.")
+        + QStringLiteral("\n\n")
+        + tr("Items that were not uploaded yet will be preserved and shown to you. Classic sync folders are not set up again automatically — you can add folder sync connections afterwards in each account's settings.");
+
+    const auto messageBox = new QMessageBox(QMessageBox::Question,
+                                            tr("Disable File Provider?"),
+                                            text,
+                                            QMessageBox::NoButton,
+                                            this);
+    messageBox->setAttribute(Qt::WA_DeleteOnClose);
+    const auto disableButton = messageBox->addButton(tr("Disable File Provider"), QMessageBox::AcceptRole);
+    messageBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
+    connect(messageBox, &QMessageBox::finished, this, [messageBox, disableButton] {
+        if (messageBox->clickedButton() == disableButton) {
+            Mac::FileProviderSettingsController::instance()->setFileProviderModeEnabled(false);
+        }
+    });
+    messageBox->open();
+}
+#endif
+
 void GeneralSettings::slotStyleChanged()
 {
     customizeStyle();
@@ -173,6 +312,13 @@ void GeneralSettings::slotStyleChanged()
 void GeneralSettings::customizeStyle()
 {
     SettingsPanelStyle::apply(this);
+
+    // SettingsPanelStyle gives every row equal margins on all sides. For the File
+    // Provider description we only want a left indent that matches the switch label
+    // above it, and no padding on the other sides — so copy the row's left margin and
+    // zero the rest. Done after apply() so it is not overwritten.
+    const auto rowLeftMargin = _ui->fileProviderRow->contentsMargins().left();
+    _ui->fileProviderDescriptionRow->setContentsMargins(rowLeftMargin, 0, 0, 0);
 }
 
 } // namespace OCC
