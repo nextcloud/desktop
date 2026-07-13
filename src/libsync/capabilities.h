@@ -38,11 +38,8 @@ public:
     Capabilities(const QVariantMap &capabilities);
 
     [[nodiscard]] bool shareAPI() const;
-    [[nodiscard]] bool shareEmailPasswordEnabled() const;
     [[nodiscard]] bool shareEmailPasswordEnforced() const;
     [[nodiscard]] bool sharePublicLink() const;
-    [[nodiscard]] bool sharePublicLinkAllowUpload() const;
-    [[nodiscard]] bool sharePublicLinkSupportsUploadOnly() const;
     [[nodiscard]] bool sharePublicLinkAskOptionalPassword() const;
     [[nodiscard]] bool sharePublicLinkEnforcePassword() const;
     [[nodiscard]] bool sharePublicLinkEnforceExpireDate() const;
@@ -51,7 +48,6 @@ public:
     [[nodiscard]] int shareInternalExpireDateDays() const;
     [[nodiscard]] bool shareRemoteEnforceExpireDate() const;
     [[nodiscard]] int shareRemoteExpireDateDays() const;
-    [[nodiscard]] bool sharePublicLinkMultiple() const;
     [[nodiscard]] bool shareResharing() const;
     [[nodiscard]] int shareDefaultPermissions() const;
     [[nodiscard]] bool chunkingNg() const;
