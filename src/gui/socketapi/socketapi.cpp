@@ -830,7 +830,7 @@ public:
 private slots:
     void sharesFetched(const QList<OCC::SharePtr> &shares)
     {
-        auto shareName = SocketApi::tr("Context menu share");
+        auto shareLabel = SocketApi::tr("Context menu share");
 
         // If there already is a context menu share, reuse it
         for (const auto &share : shares) {
@@ -838,7 +838,7 @@ private slots:
             if (!linkShare)
                 continue;
 
-            if (linkShare->getName() == shareName) {
+            if (linkShare->getLabel() == shareLabel) {
                 qCDebug(lcPublicLink) << "Found existing share, reusing";
                 return success(linkShare->getLink().toString());
             }
@@ -847,9 +847,9 @@ private slots:
         // otherwise create a new one
         qCDebug(lcPublicLink) << "Creating new share";
         if (_isSecureFileDropOnlyFolder) {
-            _shareManager.createSecureFileDropShare(_localFile, shareName, QString());
+            _shareManager.createSecureFileDropShare(_localFile, shareLabel, QString());
         } else {
-            _shareManager.createLinkShare(_localFile, shareName, QString());
+            _shareManager.createLinkShare(_localFile, shareLabel, QString());
         }
     }
 
