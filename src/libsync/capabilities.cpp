@@ -13,10 +13,11 @@
 #include <QVersionNumber>
 #include <QDebug>
 
+using namespace Qt::StringLiterals;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcServerCapabilities, "nextcloud.sync.server.capabilities", QtInfoMsg)
-
 
 Capabilities::Capabilities(const QVariantMap &capabilities)
     : _capabilities(capabilities)
@@ -33,11 +34,6 @@ bool Capabilities::shareAPI() const
     }
 }
 
-bool Capabilities::shareEmailPasswordEnabled() const
-{
-    return _capabilities["files_sharing"].toMap()["sharebymail"].toMap()["password"].toMap()["enabled"].toBool();
-}
-
 bool Capabilities::shareEmailPasswordEnforced() const
 {
     return _capabilities["files_sharing"].toMap()["sharebymail"].toMap()["password"].toMap()["enforced"].toBool();
@@ -51,16 +47,6 @@ bool Capabilities::sharePublicLink() const
         // This was later added so if it is not present just assume that link sharing is enabled.
         return true;
     }
-}
-
-bool Capabilities::sharePublicLinkAllowUpload() const
-{
-    return _capabilities["files_sharing"].toMap()["public"].toMap()["upload"].toBool();
-}
-
-bool Capabilities::sharePublicLinkSupportsUploadOnly() const
-{
-    return _capabilities["files_sharing"].toMap()["public"].toMap()["supports_upload_only"].toBool();
 }
 
 bool Capabilities::sharePublicLinkAskOptionalPassword() const
@@ -103,11 +89,6 @@ int Capabilities::shareRemoteExpireDateDays() const
     return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date_remote"].toMap()["days"].toInt();
 }
 
-bool Capabilities::sharePublicLinkMultiple() const
-{
-    return _capabilities["files_sharing"].toMap()["public"].toMap()["multiple"].toBool();
-}
-
 bool Capabilities::shareResharing() const
 {
     return _capabilities["files_sharing"].toMap()["resharing"].toBool();
@@ -120,6 +101,11 @@ int Capabilities::shareDefaultPermissions() const
     }
     
     return {};
+}
+
+bool Capabilities::unifiedSharingAvailable() const
+{
+    return _capabilities.contains("sharing"_L1);
 }
 
 bool Capabilities::clientSideEncryptionAvailable() const

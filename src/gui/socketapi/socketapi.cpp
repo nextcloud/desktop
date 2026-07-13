@@ -599,42 +599,51 @@ void SocketApi::processShareRequest(const QString &localFile, SocketListener *li
         const QString message = QLatin1String("SHARE:NOP:") + QDir::toNativeSeparators(localFile);
         // files that are not within a sync folder are not synced.
         listener->sendMessage(message);
-    } else if (!shareFolder->accountState()->isConnected()) {
+        return;
+    }
+
+    if (!shareFolder->accountState()->isConnected()) {
         const QString message = QLatin1String("SHARE:NOTCONNECTED:") + QDir::toNativeSeparators(localFile);
         // if the folder isn't connected, don't open the share dialog
         listener->sendMessage(message);
-    } else if (!theme->linkSharing() && (!theme->userGroupSharing() || shareFolder->accountState()->account()->serverVersionInt() < Account::makeServerVersion(8, 2, 0))) {
+        return;
+    }
+
+    if (!theme->linkSharing() && (!theme->userGroupSharing() || shareFolder->accountState()->account()->serverVersionInt() < Account::makeServerVersion(8, 2, 0))) {
         const QString message = QLatin1String("SHARE:NOP:") + QDir::toNativeSeparators(localFile);
         listener->sendMessage(message);
-    } else {
-        // If the file doesn't have a journal record, it might not be uploaded yet
-        if (!fileData.journalRecord().isValid()) {
-            const QString message = QLatin1String("SHARE:NOTSYNCED:") + QDir::toNativeSeparators(localFile);
-            listener->sendMessage(message);
-            return;
-        }
-
-        if (!fileData.journalRecord().e2eMangledName().isEmpty()) {
-            // we can not share an encrypted file or a subfolder under encrypted root foolder
-            const QString message = QLatin1String("SHARE:NOP:") + QDir::toNativeSeparators(localFile);
-            listener->sendMessage(message);
-            return;
-        }
-
-        auto &remotePath = fileData.serverRelativePath;
-
-        // Can't share root folder
-        if (remotePath == "/") {
-            const QString message = QLatin1String("SHARE:CANNOTSHAREROOT:") + QDir::toNativeSeparators(localFile);
-            listener->sendMessage(message);
-            return;
-        }
-
-        const QString message = QLatin1String("SHARE:OK:") + QDir::toNativeSeparators(localFile);
-        listener->sendMessage(message);
-
-        emit shareCommandReceived(fileData.localPath);
+        return;
     }
+
+    // If the file doesn't have a journal record, it might not be uploaded yet
+    if (!fileData.journalRecord().isValid()) {
+        const QString message = QLatin1String("SHARE:NOTSYNCED:") + QDir::toNativeSeparators(localFile);
+        listener->sendMessage(message);
+        return;
+    }
+
+    if (!fileData.journalRecord().e2eMangledName().isEmpty()) {
+        // we can not share an encrypted file or a subfolder under encrypted root foolder
+        const QString message = QLatin1String("SHARE:NOP:") + QDir::toNativeSeparators(localFile);
+        listener->sendMessage(message);
+        return;
+    }
+
+    auto &remotePath = fileData.serverRelativePath;
+
+    // Can't share root folder
+    if (remotePath == "/") {
+        const QString message = QLatin1String("SHARE:CANNOTSHAREROOT:") + QDir::toNativeSeparators(localFile);
+        listener->sendMessage(message);
+        return;
+    }
+
+    const QString message = QLatin1String("SHARE:OK:") + QDir::toNativeSeparators(localFile);
+    listener->sendMessage(message);
+
+    const QString fileId = fileData.journalRecord().numericFileId();
+
+    emit shareCommandReceived(fileData.localPath, fileId);
 }
 
 void SocketApi::processLeaveShareRequest(const QString &localFile, SocketListener *listener)
@@ -816,7 +825,7 @@ private slots:
             if (!linkShare)
                 continue;
 
-            if (linkShare->getName() == shareName) {
+            if (linkShare->getLabel() == shareName) {
                 qCDebug(lcPublicLink) << "Found existing share, reusing";
                 return success(linkShare->getLink().toString());
             }

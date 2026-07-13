@@ -160,7 +160,7 @@ public slots:
     void setSyncIsPaused(const bool syncIsPaused);
     void setIsOpen(const bool isOpen);
 
-    void createShareDialog(const QString &localPath);
+    void createShareDialog(const QString &localPath, const QString &fileId = {});
     void createFileActivityDialog(const QString &localPath);
     void showFileActionsDialog(const QString &localPath);
 
@@ -188,7 +188,7 @@ private:
     Systray();
 
     void setupContextMenu();
-    void createFileDetailsDialog(const QString &localPath);
+    void createFileDetailsDialog(const QString &localPath, const QString &fileId = {});
     void createFileActionsDialog(const QString &localPath);
 
     #ifdef BUILD_FILE_PROVIDER_MODULE

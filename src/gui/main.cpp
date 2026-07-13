@@ -32,6 +32,9 @@
 #include <QQuickWindow>
 #include <QSurfaceFormat>
 #include <QOperatingSystemVersion>
+#include <QQmlExtensionPlugin>
+
+Q_IMPORT_QML_PLUGIN(com_nextcloud_desktopclient_sharingPlugin)
 
 using namespace OCC;
 
