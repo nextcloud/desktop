@@ -15,9 +15,15 @@
     NSMutableDictionary *_strings;
     NSMutableArray *_menuItems;
     NSCondition *_menuIsComplete;
+    BOOL _menuReady;  // Predicate for _menuIsComplete; guards against lost NSCondition signals.
     os_log_t _log;
 }
 @end
+
+// Upper bound on how long -menuForMenuKind: blocks Finder's thread waiting for the app to
+// return menu items. A healthy connection replies in milliseconds; this only bites when the
+// app died mid-request, so we cap it rather than hang Finder indefinitely (issues #10032/#8363).
+static const NSTimeInterval kFinderSyncMenuWaitTimeoutSeconds = 5.0;
 
 static os_log_t getFinderSyncLogger(void) {
     static dispatch_once_t onceToken;
@@ -61,11 +67,12 @@ static os_log_t getFinderSyncLogger(void) {
         [syncController setBadgeImage:warning label:@"Ignored" forBadgeIdentifier:@"IGNORE+SWM"];
         [syncController setBadgeImage:error label:@"Error" forBadgeIdentifier:@"ERROR+SWM"];
 
-        // Initialize XPC manager instead of socket client
+        // Initialize XPC manager instead of socket client. The manager pulls the localized
+        // strings itself once the handshake with the app succeeds, so there is no point
+        // requesting them here — at init time the connection is never established yet.
         os_log_info(_log, "Initializing FinderSync XPC manager");
         self.xpcManager = [[FinderSyncXPCManager alloc] initWithDelegate:self];
         [self.xpcManager start];
-        [self.xpcManager askOnSocket:@"" query:@"GET_STRINGS"];
 
         _registeredDirectories = NSMutableSet.set;
         _strings = NSMutableDictionary.dictionary;
@@ -118,10 +125,20 @@ static os_log_t getFinderSyncLogger(void) {
 - (void)waitForMenuToArrive
 {
     os_log_debug(_log, "Waiting for menu to arrive");
+    NSDate *const deadline = [NSDate dateWithTimeIntervalSinceNow:kFinderSyncMenuWaitTimeoutSeconds];
     [self->_menuIsComplete lock];
-    [self->_menuIsComplete wait];
+    // Loop on a predicate rather than a bare -wait: an NSCondition signal is not sticky, so if
+    // -menuHasCompleted fired before we reached -wait the signal would be lost and we would block
+    // forever. The deadline additionally guarantees we never hang Finder if the reply never comes.
+    while (!self->_menuReady) {
+        if (![self->_menuIsComplete waitUntilDate:deadline]) {
+            os_log_error(_log, "Timed out waiting for menu items from app after %.0f s; returning what we have",
+                         (double)kFinderSyncMenuWaitTimeoutSeconds);
+            break;
+        }
+    }
     [self->_menuIsComplete unlock];
-    os_log_debug(_log, "Menu arrival wait completed");
+    os_log_debug(_log, "Menu arrival wait completed (ready=%d)", self->_menuReady);
 }
 
 - (NSMenu *)menuForMenuKind:(FIMenuKind)whichMenu
@@ -156,6 +173,13 @@ static os_log_t getFinderSyncLogger(void) {
 	os_log_debug(_log, "Root directories check: onlyRootsSelected = %d", onlyRootsSelected);
 
 	NSString *paths = [self selectedPathsSeparatedByRecordSeparator];
+
+    // Arm the predicate before issuing the async request so a reply that races back
+    // before -waitForMenuToArrive cannot be missed.
+    [self->_menuIsComplete lock];
+    self->_menuReady = NO;
+    [self->_menuIsComplete unlock];
+
 	[self.xpcManager askOnSocket:paths query:@"GET_MENU_ITEMS"];
 
     // Since the XPC communication is asynchronous, wait here until the menu
@@ -271,7 +295,10 @@ static os_log_t getFinderSyncLogger(void) {
 - (void)menuHasCompleted
 {
     os_log_debug(_log, "Menu completion signal received");
+    [self->_menuIsComplete lock];
+    self->_menuReady = YES;
     [self->_menuIsComplete signal];
+    [self->_menuIsComplete unlock];
     os_log_debug(_log, "Menu signal emitted");
 }
 

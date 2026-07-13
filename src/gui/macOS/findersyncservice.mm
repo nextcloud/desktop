@@ -261,6 +261,18 @@ Q_LOGGING_CATEGORY(lcMacFinderSyncService, "nextcloud.gui.macfindersyncservice",
     }, Qt::QueuedConnection);
 }
 
+- (void)performHandshakeWithReply:(void(^)(void))completionHandler
+{
+    // Logged at info level so it appears in the client log bundle users attach to
+    // issues: this line is the positive proof that a FinderSync extension reached
+    // the app and completed the connection handshake (see issues #10032/#8471/#8363).
+    qCInfo(OCC::lcMacFinderSyncService) << "FinderSync extension handshake received; connection to app is live";
+
+    if (completionHandler) {
+        completionHandler();
+    }
+}
+
 @end
 
 namespace OCC {

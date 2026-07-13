@@ -179,4 +179,5 @@ The way Transifex handles Xcode string catalogs creates a high risk of accidenta
 
 - **Direct `mac-crafter` CLI usage / branding builds** → [`admin/osx/mac-crafter/README.md`](../admin/osx/mac-crafter/README.md)
 - **Qt + macOS App Sandbox internals** → [`doc/macOS-Sandbox-Qt.md`](./macOS-Sandbox-Qt.md)
+- **Finder integration (FinderSync) extension — verifying & troubleshooting loading** → [`doc/macOS-FinderSync-extension.md`](./macOS-FinderSync-extension.md)
 - **NextcloudFileProviderKit Swift package** → [`shell_integration/MacOSX/NextcloudFileProviderKit/README.md`](../shell_integration/MacOSX/NextcloudFileProviderKit/README.md)
