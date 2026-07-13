@@ -266,6 +266,13 @@ public:
     [[nodiscard]] bool fileProviderDomainsAppSandboxMigrationCompleted() const;
     void setFileProviderDomainsAppSandboxMigrationCompleted(bool completed);
 
+    /// App-level macOS File Provider mode: when enabled, every account gets a file
+    /// provider domain and classic sync folders are unavailable (the File Provider
+    /// extension and the FinderSync extension cannot run at the same time).
+    [[nodiscard]] bool macFileProviderModeEnabled() const;
+    [[nodiscard]] bool macFileProviderModeEnabledIsSet() const;
+    void setMacFileProviderModeEnabled(bool enabled);
+
     /// Helper function for migration/upgrade proccess
     enum MigrationPhase {
         NotStarted,

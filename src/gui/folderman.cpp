@@ -1387,6 +1387,15 @@ void FolderMan::slotFolderSyncFinished(const SyncResult &)
 
 Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition &folderDefinition)
 {
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    // Classic sync folders and the File Provider integration are mutually exclusive:
+    // the FinderSync extension cannot run while the File Provider extension is active.
+    if (ConfigFile().macFileProviderModeEnabled()) {
+        qCWarning(lcFolderMan) << "Refusing to add classic sync folder: File Provider mode is enabled.";
+        return nullptr;
+    }
+#endif
+
     // Choose a db filename
     auto definition = folderDefinition;
     definition.journalPath = definition.defaultJournalPath(accountState->account());

@@ -17,6 +17,10 @@
 #include "nativetitlebar_mac.h"
 #endif
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "macOS/fileprovidersettingscontroller.h"
+#endif
+
 #include <QDialog>
 #include <QLoggingCategory>
 #include <QQmlApplicationEngine>
@@ -31,6 +35,23 @@ Q_LOGGING_CATEGORY(lcWizard, "nextcloud.gui.wizard", QtInfoMsg)
 OwncloudSetupWizard::OwncloudSetupWizard(QObject *parent)
     : QObject(parent)
 {
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    // The wizard decides up front whether to offer classic sync options based on the
+    // app-level File Provider mode. If that mode is toggled from the General settings
+    // while the wizard is open, its decision is stale — cancel the wizard so it is
+    // restarted against the new mode, rather than provisioning a conflicting mix of a
+    // classic sync folder and a File Provider domain. fileProviderModeEnabledChanged is
+    // only emitted on an actual app-level toggle, never by the wizard's own account
+    // creation (that emits the per-account vfsEnabledForAccountChanged).
+    connect(Mac::FileProviderSettingsController::instance(),
+            &Mac::FileProviderSettingsController::fileProviderModeEnabledChanged,
+            this, [this] {
+        if (!_finished) {
+            qCInfo(lcWizard) << "File Provider mode changed while the account wizard was open; cancelling the wizard.";
+            finish(QDialog::Rejected);
+        }
+    });
+#endif
 }
 
 OwncloudSetupWizard::~OwncloudSetupWizard()

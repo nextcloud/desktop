@@ -43,12 +43,15 @@ public:
 
     /**
      * @brief Synchronous and logging wrapper for `[NSFileProviderManager addDomain:]`.
+     * @return true when the domain was added, false when the system reported an error.
      */
-    void addDomain(NSFileProviderDomain *domain)
+    bool addDomain(NSFileProviderDomain *domain)
     {
         qCInfo(lcMacFileProviderDomainManager) << "Adding domain" << domain.identifier;
         dispatch_group_t dispatchGroup = dispatch_group_create();
         dispatch_group_enter(dispatchGroup);
+
+        __block bool addSucceeded = false;
 
         [NSFileProviderManager addDomain:domain completionHandler:^(NSError * const error) {
             if(error) {
@@ -60,10 +63,12 @@ public:
             }
 
             qCDebug(lcMacFileProviderDomainManager) << "Added domain with identifier" << domain.identifier;
+            addSucceeded = true;
             dispatch_group_leave(dispatchGroup);
         }];
 
         dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER);
+        return addSucceeded;
     }
 
     /**
@@ -405,7 +410,14 @@ public:
         const auto domainId = QUuid::createUuid().toString(QUuid::WithoutBraces);
         NSFileProviderDomain * const domain = [[NSFileProviderDomain alloc] initWithIdentifier:domainId.toNSString() displayName:domainDisplayName.toNSString()];
         domain.supportsSyncingTrash = YES;
-        addDomain(domain);
+
+        if (!addDomain(domain)) {
+            qCWarning(lcMacFileProviderDomainManager) << "Failed to add file provider domain for account"
+                                                      << accountId
+                                                      << "- not persisting domain identifier.";
+            return {};
+        }
+
         AccountManager::instance()->setFileProviderDomainIdentifier(accountId, domainId);
 
         return domainId;
@@ -555,6 +567,10 @@ QString FileProviderDomainManager::addDomainForAccount(const AccountState * cons
     Q_ASSERT(account);
 
     const auto identifier = d->addFileProviderDomain(accountState);
+
+    if (identifier.isEmpty()) {
+        return {};
+    }
 
     // Disconnect the domain when something changes regarding authentication
     connect(accountState, &AccountState::stateChanged, this, [this, accountState] {
