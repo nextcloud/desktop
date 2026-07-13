@@ -126,6 +126,12 @@ SPDX-FileCopyrightText = "2018-2025 Google LLC"
 SPDX-License-Identifier = "Apache-2.0"
 
 [[annotations]]
+path = ["theme/security.svg", "theme/file-clock-outline.svg"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Material Design Authors"
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
 path = [
     "Nextcloud Desktop Client.xcworkspace/**",
     "shell_integration/MacOSX/KeepDownloaded.icns"
