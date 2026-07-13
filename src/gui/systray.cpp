@@ -721,6 +721,37 @@ void Systray::createResolveConflictsDialog(const OCC::ActivityList &allConflicts
     dialogWindow->requestActivate();
 }
 
+void Systray::createGovernanceLabelsDialog(AccountPtr account, const QString &fileName, const QString &fileId)
+{
+    const auto conflictsDialog = std::make_unique<QQmlComponent>(trayEngine(), QStringLiteral("qrc:/qml/src/gui/GovernanceLabelsDialog.qml"));
+    const QVariantMap initialProperties{
+                                        {"fileName", QVariant::fromValue(fileName)},
+                                        {"account", QVariant::fromValue(account)},
+                                        {"fileId", QVariant::fromValue(fileId)},
+                                        };
+
+    if(conflictsDialog->isError()) {
+        qCWarning(lcSystray) << conflictsDialog->errorString();
+        return;
+    }
+
+    // This call dialog gets deallocated on close conditions
+    // by a call from the QML side to the destroyDialog slot
+    auto dialog = std::unique_ptr<QObject>(conflictsDialog->createWithInitialProperties(initialProperties));
+    if (!dialog) {
+        return;
+    }
+    dialog->setParent(QGuiApplication::instance());
+
+    auto dialogWindow = qobject_cast<QQuickWindow*>(dialog.release());
+    if (!dialogWindow) {
+        return;
+    }
+    dialogWindow->show();
+    dialogWindow->raise();
+    dialogWindow->requestActivate();
+}
+
 void Systray::createEncryptionTokenDiscoveryDialog()
 {
     if (_encryptionTokenDiscoveryDialog) {
