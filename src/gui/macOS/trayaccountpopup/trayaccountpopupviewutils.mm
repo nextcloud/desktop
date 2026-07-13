@@ -92,7 +92,7 @@ NSStackView *configurePopupPanel(NSPanel *panel)
     panel.contentView = container;
 
     auto visualEffectView = [[[NSVisualEffectView alloc] init] autorelease];
-    visualEffectView.material = NSVisualEffectMaterialHUDWindow;
+    visualEffectView.material = NSVisualEffectMaterialMenu;
     visualEffectView.blendingMode = NSVisualEffectBlendingModeBehindWindow;
     visualEffectView.state = NSVisualEffectStateActive;
     visualEffectView.wantsLayer = YES;
