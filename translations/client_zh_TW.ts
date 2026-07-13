@@ -746,7 +746,7 @@
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="749"/>
         <source>Assistant</source>
-        <translation type="unfinished"/>
+        <translation>小幫手</translation>
     </message>
 </context>
 <context>
@@ -4946,7 +4946,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="216"/>
         <source>Failed to create encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>建立加密資料夾失敗</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="255"/>
@@ -6856,7 +6856,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/qml/SearchWindow.qml" line="19"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>搜尋</translation>
     </message>
     <message>
         <location filename="../src/gui/search/qml/SearchWindow.qml" line="74"/>
