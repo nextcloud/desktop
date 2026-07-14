@@ -16,6 +16,7 @@
 #include <QDir>
 #include <QDirIterator>
 #include <QCoreApplication>
+#include <QRegularExpression>
 
 #include <array>
 #include <map>
@@ -91,6 +92,87 @@ static const std::map<std::string_view, std::vector<std::string_view>> adobeLock
     {"idlk", {"indd", "icml"}},
     {"prlock", {"prproj"}},
 };
+
+bool isAdobeLockFileExtension(const QString &path)
+{
+    const auto suffix = QFileInfo{path}.suffix().toLower().toStdString();
+    return adobeLockFileDocumentExtensions.contains(suffix);
+}
+
+// Returns the candidate document extensions guarded by the given Adobe lock file
+// extension (lowercased, without the dot), in lookup order. Returns std::nullopt
+// if the extension is not a recognised Adobe lock file extension.
+std::optional<QList<QString>> adobeDocumentExtensionsFor(const QString &lockExtension)
+{
+    const auto lockExt = lockExtension.toStdString();
+    const auto it = adobeLockFileDocumentExtensions.find(lockExt);
+    if (it == adobeLockFileDocumentExtensions.cend()) {
+        return std::nullopt;
+    }
+    QList<QString> result;
+    result.reserve(static_cast<int>(it->second.size()));
+    for (const auto &documentExtension : it->second) {
+        result.append(QString::fromStdString(std::string(documentExtension)));
+    }
+    return result;
+}
+
+// Parses the document base name embedded in an Adobe lock file name.
+//   - InDesign / InCopy (.idlk): `Test` is extracted from `~Test~0kjyv(.idlk`.
+//   - Premiere Pro (.prlock): `Test` is extracted from `Test.prlock`.
+// Adobe lock file names drop the guarded document's own extension, so only the
+// base name can be recovered here. Returns std::nullopt if \a lockExtension is
+// not a recognised Adobe lock file extension, or if \a lockFileName does not
+// match the naming pattern expected for it.
+std::optional<QString> adobeLockFileDocumentBaseName(const QString &lockFileName, const QString &lockExtension)
+{
+    static const QRegularExpression idlkPattern(QStringLiteral(R"(^~(?<base>.+)~[^~]*\(\.idlk$)"),
+                                                QRegularExpression::CaseInsensitiveOption);
+    static const QRegularExpression prlockPattern(QStringLiteral(R"(^(?<base>.+)\.prlock$)"),
+                                                 QRegularExpression::CaseInsensitiveOption);
+
+    const auto pattern = lockExtension == QLatin1String("idlk")    ? &idlkPattern
+        : lockExtension == QLatin1String("prlock") ? &prlockPattern
+                                                   : nullptr;
+    if (!pattern) {
+        return std::nullopt;
+    }
+
+    const auto match = pattern->match(lockFileName);
+    if (!match.hasMatch()) {
+        return std::nullopt;
+    }
+    return match.captured(QStringLiteral("base"));
+}
+
+// Resolve the document guarded by an Adobe lock file by matching a sibling file
+// in the same directory by base name and expected document extension. Returns
+// the guarded document's absolute file path, or an empty string if no matching
+// document is found.
+std::optional<QString> adobeLockFileTargetFilePath(const QString &lockFilePath)
+{
+    const QFileInfo lockFileInfo{lockFilePath};
+    const auto lockExtension = QFileInfo{lockFileInfo.fileName()}.suffix().toLower();
+    const auto documentExtensions = adobeDocumentExtensionsFor(lockExtension);
+    if (!documentExtensions || documentExtensions->isEmpty()) {
+        return std::nullopt;
+    }
+
+    const auto baseName = adobeLockFileDocumentBaseName(lockFileInfo.fileName(), lockExtension);
+    if (!baseName || baseName->isEmpty()) {
+        return std::nullopt;
+    }
+
+    const QDir dir = lockFileInfo.dir();
+    for (const auto &documentExtension : *documentExtensions) {
+        const auto candidatePath = dir.absoluteFilePath(*baseName + QLatin1Char('.') + documentExtension);
+        if (QFileInfo::exists(candidatePath)) {
+            return candidatePath;
+        }
+    }
+    return std::nullopt;
+}
+
 // iterates through the dirPath to find the matching fileName
 QString findMatchingUnlockedFileInDir(const QString &dirPath, const QString &lockFileName)
 {
@@ -140,6 +222,14 @@ QString FileSystem::filePathLockFilePatternMatch(const QString &path)
         return QStringLiteral(".") + suffix;
     }
 
+    // Adobe lock files (.idlk / .prlock) are identified by extension, not prefix.
+    const auto suffix = QFileInfo{pathSplit.last()}.suffix().toLower().toStdString();
+    if (adobeLockFileDocumentExtensions.contains(suffix)) {
+        const auto pattern = QStringLiteral(".") + QString::fromStdString(suffix);
+        qCDebug(OCC::lcFileSystem) << "Found an Adobe lock file with extension:" << pattern << "in path:" << path;
+        return pattern;
+    }
+
     return {};
 }
 
@@ -182,6 +272,18 @@ FileSystem::FileLockingInfo FileSystem::lockFileTargetFilePath(const QString &lo
             } else if (!autoCADSiblingLockFileExists(lockFilePath)) {
                 result.type = FileLockingInfo::Type::Unlocked;
             }
+        }
+        return result;
+    }
+
+    // Adobe lock files (.idlk / .prlock) are resolved by sibling lookup — the lock
+    // file name carries only the document base name, not its extension.
+    if (isAdobeLockFileExtension(lockFilePath)) {
+        const auto adobeResolvedPath = adobeLockFileTargetFilePath(lockFilePath);
+        if (adobeResolvedPath) {
+            result.path = *adobeResolvedPath;
+            if (!result.path.isEmpty())
+                result.type = QFile::exists(lockFilePath) ? FileLockingInfo::Type::Locked : FileLockingInfo::Type::Unlocked;
         }
         return result;
     }
