@@ -202,14 +202,31 @@ public extension Item {
             """
         )
 
-        if let expectedSize = itemTemplate.documentSize??.int64Value, size != expectedSize {
-            logger.info(
-                """
-                Created item upload reported as successful, but there are differences between
-                the received file size (\(Int(size ?? -1)))
-                and the original file size (\(itemTemplate.documentSize??.int64Value ?? 0))
-                """
-            )
+        // Integrity check: the size the server reports it stored must match the bytes we
+        // uploaded. On a mismatch the transfer was torn/truncated (a dropped connection, or an app
+        // such as Adobe InDesign/Illustrator still writing the file). Refuse to record a clean
+        // creation: delete the partial remote object (best effort) so a retry starts clean, then
+        // return a *transient* error so the File Provider system re-drives the create instead of
+        // surfacing a broken file as synced.
+        //
+        // The error must be transient to get an automatic retry: per NSFileProviderReplicatedExtension,
+        // resolvable NSFileProviderError codes such as `.cannotSynchronize` make the system back off
+        // until the provider signals resolution, whereas "any other error … in NSCocoaErrorDomain" is
+        // retried. NOTE: a create retry may arrive with `.mayAlreadyExist`, which `create()` currently
+        // short-circuits — tracked as a separate follow-up.
+        let localAttributes = try? FileManager.default.attributesOfItem(atPath: localPath)
+
+        if let localSize = localAttributes?[.size] as? Int64, let uploadedSize = size, uploadedSize != localSize {
+            logger.error("Upload integrity check failed for created item: server stored \(uploadedSize) bytes but the local file is \(localSize) bytes. Removing the partial remote object and returning a transient error so the system retries.", [.name: itemTemplate.filename])
+            let (_, _, deleteError) = await remoteInterface.delete(remotePath: remotePath, account: account, options: .init(), taskHandler: { _ in })
+
+            if deleteError != .success {
+                logger.error("Could not remove partial remote object after integrity failure.", [.name: itemTemplate.filename, .error: deleteError])
+            }
+
+            return (nil, NSError(domain: NSCocoaErrorDomain, code: NSFileWriteUnknownError, userInfo: [
+                NSLocalizedDescriptionKey: "Upload integrity check failed: server stored \(uploadedSize) of \(localSize) bytes."
+            ]))
         }
 
         let contentType: String = if itemTemplate.contentType == .aliasFile {
