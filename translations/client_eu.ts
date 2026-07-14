@@ -677,6 +677,49 @@
     </message>
 </context>
 <context>
+    <name>GovernanceLabelsDialog</name>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="49"/>
+        <source>Apply labels</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="382"/>
+        <source>Sensitivity:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="393"/>
+        <source>Select sensitivity label</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="419"/>
+        <source>Retention:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="430"/>
+        <source>Select retention label</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="444"/>
+        <source>Legal hold:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="453"/>
+        <source>Select legal hold label</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="479"/>
+        <source>Done</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="243"/>
@@ -770,22 +813,22 @@
 <context>
     <name>OCC::Account</name>
     <message>
-        <location filename="../src/libsync/account.cpp" line="227"/>
+        <location filename="../src/libsync/account.cpp" line="238"/>
         <source>Public Share Link</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1067"/>
+        <location filename="../src/libsync/account.cpp" line="1089"/>
         <source>File %1 is already locked by %2.</source>
         <translation>%1 fitxategia %2-(e)k blokeatuta du dagoeneko</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1069"/>
+        <location filename="../src/libsync/account.cpp" line="1091"/>
         <source>Lock operation on %1 failed with error %2</source>
         <translation>%1 blokeatze eragiketak huts egin du %2 errorearekin</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1071"/>
+        <location filename="../src/libsync/account.cpp" line="1093"/>
         <source>Unlock operation on %1 failed with error %2</source>
         <translation>%1 desblokeatze eragiketak huts egin du %2 errorearekin</translation>
     </message>
@@ -1764,34 +1807,34 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
         <translation>Jarraitu</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="621"/>
+        <location filename="../src/gui/application.cpp" line="624"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 kontu</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="622"/>
+        <location filename="../src/gui/application.cpp" line="625"/>
         <source>1 account</source>
         <translation>Kontu 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="624"/>
+        <location filename="../src/gui/application.cpp" line="627"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 karpeta</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="625"/>
+        <location filename="../src/gui/application.cpp" line="628"/>
         <source>1 folder</source>
         <translation>Karpeta 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="627"/>
+        <location filename="../src/gui/application.cpp" line="630"/>
         <source>Legacy import</source>
         <translation>Zaharkitutako inportazioa</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="628"/>
+        <location filename="../src/gui/application.cpp" line="631"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1799,12 +1842,12 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="748"/>
+        <location filename="../src/gui/application.cpp" line="751"/>
         <source>Error accessing the configuration file</source>
         <translation>Errorea ezarpen fitxategia atzitzean</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="749"/>
+        <location filename="../src/gui/application.cpp" line="752"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Errorea gertatu da %1 konfigurazio fitxategian sartzean. Egiaztatu zure sistemaren kontuak fitxategi hau atzitzeko baimena duela.</translation>
     </message>
@@ -2943,12 +2986,12 @@ Bestela, ezabatutako fitxategi guztiak leheneratu ditzakezu zerbitzaritik deskar
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="505"/>
+        <location filename="../src/gui/folderman.cpp" line="500"/>
         <source>Could not reset folder state</source>
         <translation>Ezin izan da karpetaren egoera berrezarri</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="506"/>
+        <location filename="../src/gui/folderman.cpp" line="501"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>&quot;% 1&quot; sinkronizazio egunkari zahar bat aurkitu da, baina ezin izan da kendu. Ziurtatu ez dela aplikaziorik erabiltzen ari.</translation>
     </message>
@@ -2963,116 +3006,116 @@ Bestela, ezabatutako fitxategi guztiak leheneratu ditzakezu zerbitzaritik deskar
         <translation> (backup %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1858"/>
+        <location filename="../src/gui/folderman.cpp" line="1853"/>
         <source>Undefined state.</source>
         <translation>Definitu gabeko egoera.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1861"/>
+        <location filename="../src/gui/folderman.cpp" line="1856"/>
         <source>Waiting to start syncing.</source>
         <translation>Itxoiten sinkronizazioa hasteko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1864"/>
+        <location filename="../src/gui/folderman.cpp" line="1859"/>
         <source>Preparing for sync.</source>
         <translation>Sinkronizazioa prestatzen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1874"/>
+        <location filename="../src/gui/folderman.cpp" line="1869"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation>Sinkronizatzen %2-tik %1 (segundo batzuk falta dira)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1877"/>
+        <location filename="../src/gui/folderman.cpp" line="1872"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Sinkronizatzen %2-tik %1 (%3 segundo falta dira)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1880"/>
+        <location filename="../src/gui/folderman.cpp" line="1875"/>
         <source>Syncing %1 of %2</source>
         <translation>Sinkronizatzen %2-tik %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1886"/>
+        <location filename="../src/gui/folderman.cpp" line="1881"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>Sinkronizatzen %1 (segundo batzuk falta dira)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1888"/>
+        <location filename="../src/gui/folderman.cpp" line="1883"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Sinkronizatzen %1 (%2 segundo falta dira)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1891"/>
+        <location filename="../src/gui/folderman.cpp" line="1886"/>
         <source>Syncing %1</source>
         <translation>Sinkronizatzen %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1896"/>
+        <location filename="../src/gui/folderman.cpp" line="1891"/>
         <source>Sync is running.</source>
         <translation>Sinkronizazioa martxan da.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1901"/>
+        <location filename="../src/gui/folderman.cpp" line="1896"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Sinkronizazioa burutu da, ebatzi gabeko gatazka batzuekin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1903"/>
+        <location filename="../src/gui/folderman.cpp" line="1898"/>
         <source>Last sync was successful.</source>
         <translation>Azkeneko sinkronizazioa behar bezala burutu da.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1909"/>
+        <location filename="../src/gui/folderman.cpp" line="1904"/>
         <source>Setup error.</source>
         <translation>Konfigurazio errorea.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1912"/>
+        <location filename="../src/gui/folderman.cpp" line="1907"/>
         <source>Sync request was cancelled.</source>
         <translation>Sinkronizazio eskaera bertan behera utzi da.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1929"/>
+        <location filename="../src/gui/folderman.cpp" line="1924"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1937"/>
-        <location filename="../src/gui/folderman.cpp" line="2016"/>
+        <location filename="../src/gui/folderman.cpp" line="1932"/>
+        <location filename="../src/gui/folderman.cpp" line="2011"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1946"/>
+        <location filename="../src/gui/folderman.cpp" line="1941"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1950"/>
+        <location filename="../src/gui/folderman.cpp" line="1945"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1953"/>
         <location filename="../src/gui/folderman.cpp" line="1958"/>
-        <location filename="../src/gui/folderman.cpp" line="1963"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2023"/>
+        <location filename="../src/gui/folderman.cpp" line="2018"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2038"/>
+        <location filename="../src/gui/folderman.cpp" line="2033"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2196"/>
+        <location filename="../src/gui/folderman.cpp" line="2191"/>
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
@@ -3080,17 +3123,17 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1915"/>
+        <location filename="../src/gui/folderman.cpp" line="1910"/>
         <source>Sync is paused.</source>
         <translation>Sinkronizazioa pausatuta dago.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="418"/>
+        <location filename="../src/gui/folderman.cpp" line="413"/>
         <source>Please open the app settings to grant access to the sync folders.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1921"/>
+        <location filename="../src/gui/folderman.cpp" line="1916"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Sinkronizazioa pausatuta dago)</translation>
     </message>
@@ -3716,28 +3759,41 @@ Bertsioak ezin dira berehala jaitsi: egonkorretik enpresara aldatzeak enpresa be
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="843"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="865"/>
         <source>Password for share required</source>
         <translation>Partekatzeak pasahitza izan behar du</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="844"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="866"/>
         <source>Please enter a password for your link share:</source>
         <translation>Idatzi zure partekatze estekaren pasahitza:</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="870"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="892"/>
         <source>Sharing error</source>
         <translation>Errorea partekatzerakoan</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="871"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="893"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
         <translation>Ezin izan da berreskuratu edo sortu esteka publikoaren partekatzea. Errorea:
 
 %1</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::GovernanceLabelsListModel</name>
+    <message>
+        <location filename="../src/gui/governance/governancelabelslistmodel.cpp" line="62"/>
+        <source>None</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/governance/governancelabelslistmodel.cpp" line="68"/>
+        <source>No label</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -5250,7 +5306,7 @@ Kontuan izan erregistro-komando lerroaren edozein aukera erabiliz ezarpen hau ga
 <context>
     <name>OCC::ShareManager</name>
     <message>
-        <location filename="../src/gui/sharemanager.cpp" line="714"/>
+        <location filename="../src/gui/sharemanager.cpp" line="695"/>
         <source>Error</source>
         <translation>Errorea</translation>
     </message>
@@ -5258,14 +5314,19 @@ Kontuan izan erregistro-komando lerroaren edozein aukera erabiliz ezarpen hau ga
 <context>
     <name>OCC::ShareModel</name>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="571"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="568"/>
         <source>%1 days</source>
         <translation>%1 egun</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="573"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="570"/>
         <source>%1 day</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="571"/>
+        <source>Today</source>
+        <translation>Gaur</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="573"/>
@@ -5273,37 +5334,32 @@ Kontuan izan erregistro-komando lerroaren edozein aukera erabiliz ezarpen hau ga
         <translation>egun 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="574"/>
-        <source>Today</source>
-        <translation>Gaur</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="748"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="744"/>
         <source>Secure file drop link</source>
         <translation>Fitxategi-jartze esteka segurua</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="748"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="744"/>
         <source>Share link</source>
         <translation>Partekatu esteka</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="756"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="752"/>
         <source>Link share</source>
         <translation>Lotu partekatzea</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="758"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="754"/>
         <source>Internal link</source>
         <translation>Barneko esteka</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="760"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="756"/>
         <source>Secure file drop</source>
         <translation>Fitxategi-jartze segurua</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="960"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="945"/>
         <source>Could not find local folder for %1</source>
         <translation>Ezin da %1 karpeta lokala aurkitu</translation>
     </message>
@@ -5336,28 +5392,28 @@ Kontuan izan erregistro-komando lerroaren edozein aukera erabiliz ezarpen hau ga
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="811"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="833"/>
         <source>Context menu share</source>
         <translation>Testuinguruaren partekatze menua</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1130"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1152"/>
         <source>I shared something with you</source>
         <translation>Zerbait partekatu dut zurekin</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1143"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1181"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1165"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1203"/>
         <source>Share options</source>
         <translation>Partekatze aukerak</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1148"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1170"/>
         <source>Send private link by email …</source>
         <translation>Bidali esteka pribatua postaz...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1147"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1169"/>
         <source>Copy private link to clipboard</source>
         <translation>Kopiatu esteka pribatua arbelera</translation>
     </message>
@@ -5396,101 +5452,106 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
         <translation>Hurrengo karpeta ondo zifratu da: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1062"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1084"/>
         <source>Select new location …</source>
         <translation>Hautatu kokapen berria ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1144"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1207"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1166"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1229"/>
         <source>File actions</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1145"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1379"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1167"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1410"/>
         <source>Activity</source>
         <translation>Jarduera</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1173"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1195"/>
         <source>Leave this share</source>
         <translation>Utzi partekatze hau</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1179"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1201"/>
         <source>Resharing this file is not allowed</source>
         <translation>Fitxategi hau birpartekatzea ez da onartzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1179"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1201"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Karpeta hau berriro partekatzea ez dago onartuta</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1240"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1262"/>
         <source>Encrypt</source>
         <translation>Zifratu</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1251"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1273"/>
         <source>Lock file</source>
         <translation>Blokeatu fitxategia</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1254"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1276"/>
         <source>Unlock file</source>
         <translation>Desblokeatu fitxategia</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1270"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1292"/>
         <source>Locked by %1</source>
         <translation>%1-(e)k blokeatuta</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1274"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1296"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1415"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1305"/>
+        <source>Apply labels</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1447"/>
         <source>Resolve conflict …</source>
         <translation>Ebatzi gatazka ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1419"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1451"/>
         <source>Move and rename …</source>
         <translation>Mugitu eta izena aldatu  ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1422"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1454"/>
         <source>Move, rename and upload …</source>
         <translation>Mugitu, izena aldatu  eta igo ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1424"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1456"/>
         <source>Delete local changes</source>
         <translation>Ezabatu tokiko aldaketak</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1430"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1462"/>
         <source>Move and upload …</source>
         <translation>Mugitu eta igo ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1431"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1463"/>
         <source>Delete</source>
         <translation>Ezabatu</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1185"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1207"/>
         <source>Copy internal link</source>
         <translation>Kopiatu barne esteka</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1385"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1387"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1416"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1418"/>
         <source>Open in browser</source>
         <translation>Ireki nabigatzailean</translation>
     </message>
@@ -6366,103 +6427,103 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="417"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="430"/>
         <source>Please sign in</source>
         <translation>Mesedez saioa hasi</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="508"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="521"/>
         <source>There are no sync folders configured.</source>
         <translation>Ez dago sinkronizazio karpetarik definituta.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="398"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="411"/>
         <source>Disconnected from %1</source>
         <translation>%1etik deskonektatuta</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="284"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="297"/>
         <source>Unsupported Server Version</source>
         <translation>Ez da zerbitzariaren bertsioa onartzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="285"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="298"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>%1 kontuko zerbitzariak onartzen ez den %2 bertsioa darabil. Onartzen ez diren zerbitzari bertsioekin bezero hau erabiltzea probatu gabe dago eta potentzialki arriskutsua da. Zure ardurapean jarraitu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="297"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="310"/>
         <source>Terms of service</source>
         <translation>Zerbitzuaren baldintzak</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="298"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="311"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
         <translation>Zure %1 kontuak zure zerbitzariaren zerbitzuaren baldintzak onartzea eskatzen du. %2-ra birbideratuko zaituzte irakurri duzula eta horrekin ados zaudela aitortzeko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="488"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="501"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="492"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="505"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>%1-rako macOS VFS: Sinkronizazioa abian da.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="495"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="508"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>macOS VFS % 1erako: Azken sinkronizazioa behar bezala burutu da.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="498"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="511"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFS % 1erako: arazo bat aurkitu da.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="501"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="514"/>
         <source>macOS VFS for %1: An error was encountered.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="567"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="580"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>Urruneko &quot;% 1&quot;-(e)an aldaketarik dagoen egiaztatzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="570"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="583"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>Tokiko &quot;% 1&quot;-(e)an aldaketarik dagoen egiaztatzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="853"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="873"/>
         <source>Internal link copied</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="854"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="874"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="401"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="414"/>
         <source>Disconnected from accounts:</source>
         <translation>Kontuetatik deskonektatuta:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="403"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="416"/>
         <source>Account %1: %2</source>
         <translation>%1 Kontua: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="421"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="434"/>
         <source>Account synchronization is disabled</source>
         <translation>Kontuen sinkronizazioa desgaituta dago</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="587"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="600"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
