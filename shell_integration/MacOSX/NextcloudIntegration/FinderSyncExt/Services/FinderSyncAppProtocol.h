@@ -56,6 +56,23 @@
                   forPaths:(NSArray<NSString *> *)paths
          completionHandler:(void(^)(NSError *error))completionHandler;
 
+/**
+ * @brief Handshake round-trip the extension uses to confirm the app is actually
+ * listening before it treats the XPC connection as usable.
+ *
+ * NSXPCConnection is lazy: -resume and -remoteObjectProxyWithErrorHandler: both
+ * succeed even when no peer has accepted the connection yet — e.g. the extension
+ * was launched by Finder at login before the main app finished starting. Treating
+ * that as "connected" is the phantom state behind issues #10032/#8471/#8363, where
+ * Finder shows the extension enabled but badges and menus never work after a reboot.
+ * Only a real round-trip proves the app is alive: on success this reply is invoked;
+ * if delivery fails the proxy's error handler fires instead, which the extension
+ * uses to detect the dead connection and reconnect.
+ *
+ * @param completionHandler Invoked by the app once it has received the handshake.
+ */
+- (void)performHandshakeWithReply:(void(^)(void))completionHandler;
+
 @end
 
 #endif /* FinderSyncAppProtocol_h */
