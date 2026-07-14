@@ -21,6 +21,18 @@ let adobeLockFileDocumentExtensions: [String: [String]] = [
     "prlock": ["prproj"]
 ]
 
+/// Lock file extensions created by AutoCAD.
+///
+/// AutoCAD creates `.dwl` (plain text) and `.dwl2` (XML) lock files when a `.dwg` drawing is
+/// opened. Unlike Adobe lock files, the lock file shares the exact same base name as the
+/// document — only the extension differs — so the guarded document is resolved by simply
+/// replacing the lock extension with `.dwg`. Both lock files are deleted when the drawing
+/// is closed.
+let autoCADLockFileExtensions: Set<String> = ["dwl", "dwl2"]
+
+/// The document extension guarded by AutoCAD lock files.
+let autoCADDocumentExtension = "dwg"
+
 ///
 /// Determine whether the given filename is a lock file as created by Adobe applications like InDesign or Premiere Pro.
 ///
@@ -34,7 +46,19 @@ public func isAdobeLockFileName(_ filename: String) -> Bool {
 }
 
 ///
-/// Determine whether the given filename is a lock file as created by certain applications like Microsoft Office, LibreOffice or Adobe.
+/// Determine whether the given filename is a lock file as created by AutoCAD.
+///
+/// - Parameters:
+///     - filename: The filename to check.
+///
+/// - Returns: `true` if the filename is an AutoCAD lock file, `false` otherwise.
+///
+public func isAutoCADLockFileName(_ filename: String) -> Bool {
+    autoCADLockFileExtensions.contains((filename as NSString).pathExtension.lowercased())
+}
+
+///
+/// Determine whether the given filename is a lock file as created by certain applications like Microsoft Office, LibreOffice, Adobe or AutoCAD.
 ///
 /// - Parameters:
 ///     - filename: The filename to check.
@@ -47,7 +71,9 @@ public func isLockFileName(_ filename: String) -> Bool {
         // LibreOffice lock files
         (filename.hasPrefix(".~lock.") && filename.hasSuffix("#")) ||
         // Adobe lock files
-        isAdobeLockFileName(filename)
+        isAdobeLockFileName(filename) ||
+        // AutoCAD lock files
+        isAutoCADLockFileName(filename)
 }
 
 ///
