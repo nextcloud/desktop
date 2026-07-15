@@ -201,12 +201,32 @@ func adobeLockFileTargetName(lockFilename: String, parentServerUrl: String, dbMa
 }
 
 ///
+/// Resolve the document guarded by an AutoCAD lock file.
+///
+/// AutoCAD lock files (`.dwl` / `.dwl2`) share the exact same base name as the guarded
+/// `.dwg` document — only the extension differs — so the document name is derived by
+/// replacing the lock extension with `.dwg`. No sibling lookup is needed.
+///
+/// - Parameters:
+///     - lockFilename: The AutoCAD lock file name.
+///
+/// - Returns: The guarded document's file name, or `nil` if it is not an AutoCAD lock file.
+///
+func autoCADLockFileTargetName(_ lockFilename: String) -> String? {
+    guard isAutoCADLockFileName(lockFilename) else { return nil }
+    let baseName = (lockFilename as NSString).deletingPathExtension
+    return baseName.isEmpty ? nil : baseName + "." + autoCADDocumentExtension
+}
+
+///
 /// Resolve the document guarded by a lock file, regardless of the application that created it.
 ///
 /// Office and LibreOffice lock file names fully encode the document name, so it is decoded
 /// directly via ``originalFileName(fromLockFileName:dbManager:)``. Adobe lock file names only
 /// encode the base name, so the document is resolved by matching a sibling file via
-/// ``adobeLockFileTargetName(lockFilename:parentServerUrl:dbManager:)``.
+/// ``adobeLockFileTargetName(lockFilename:parentServerUrl:dbManager:)``. AutoCAD lock files
+/// share the document's base name, so the document is resolved by replacing the extension
+/// with `.dwg` via ``autoCADLockFileTargetName(_:)``.
 ///
 /// - Parameters:
 ///     - lockFilename: The lock file name.
@@ -218,6 +238,10 @@ func adobeLockFileTargetName(lockFilename: String, parentServerUrl: String, dbMa
 public func lockFileTargetName(forLockFileName lockFilename: String, parentServerUrl: String, dbManager: FilesDatabaseManager) -> String? {
     if isAdobeLockFileName(lockFilename) {
         return adobeLockFileTargetName(lockFilename: lockFilename, parentServerUrl: parentServerUrl, dbManager: dbManager)
+    }
+
+    if isAutoCADLockFileName(lockFilename) {
+        return autoCADLockFileTargetName(lockFilename)
     }
 
     return originalFileName(fromLockFileName: lockFilename, dbManager: dbManager)
