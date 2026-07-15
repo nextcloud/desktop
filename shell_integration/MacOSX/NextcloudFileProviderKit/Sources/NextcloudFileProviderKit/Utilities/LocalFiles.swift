@@ -219,6 +219,42 @@ func autoCADLockFileTargetName(_ lockFilename: String) -> String? {
 }
 
 ///
+/// Check whether any other AutoCAD lock file for the same document still exists in the
+/// database, apart from the one being deleted.
+///
+/// AutoCAD creates `.dwl` and `.dwl2` as a pair. The guarded document must only be
+/// unlocked on the server when **both** are gone. This helper is used by
+/// ``Item/deleteLockFile(domain:dbManager:)`` to avoid prematurely unlocking when
+/// only one of the two lock files is removed.
+///
+/// - Parameters:
+///     - lockFilename: The lock file name being deleted.
+///     - parentServerUrl: The server URL of the directory containing the lock file.
+///     - dbManager: The database manager to use for looking up files.
+///
+/// - Returns: `true` if at least one other AutoCAD lock file for the same base name
+///   still exists in the database, `false` otherwise.
+///
+func autoCADSiblingLockFileExists(lockFilename: String, parentServerUrl: String, dbManager: FilesDatabaseManager) -> Bool {
+    let baseName = (lockFilename as NSString).deletingPathExtension
+    guard !baseName.isEmpty else { return false }
+
+    let otherLockExtensions = autoCADLockFileExtensions.subtracting([(lockFilename as NSString).pathExtension.lowercased()])
+    for ext in otherLockExtensions {
+        let siblingName = baseName + "." + ext
+        if let sibling = dbManager.itemMetadatas
+            .where({ $0.serverUrl.equals(parentServerUrl) })
+            .where({ $0.fileName.equals(siblingName) })
+            .first,
+           !sibling.deleted
+        {
+            return true
+        }
+    }
+    return false
+}
+
+///
 /// Resolve the document guarded by a lock file, regardless of the application that created it.
 ///
 /// Office and LibreOffice lock file names fully encode the document name, so it is decoded
