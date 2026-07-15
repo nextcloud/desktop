@@ -18,6 +18,7 @@
 #include <QCoreApplication>
 
 #include <array>
+#include <optional>
 #include <ranges>
 #include <string_view>
 
@@ -38,6 +39,46 @@ constexpr std::array<std::string_view, 8> officeFileExtensions = {"doc", "docx",
 // Both lock files are deleted when the drawing is closed.
 constexpr std::array<const char *, 2> autoCADLockFileExtensions = {"dwl", "dwl2"};
 constexpr std::string_view autoCADDocumentExtension = "dwg";
+
+// Returns true if the path's suffix is an AutoCAD lock file extension (.dwl/.dwl2).
+bool isAutoCADLockFileExtension(const QString &path)
+{
+    const auto suffix = QFileInfo{path}.suffix().toLower().toStdString();
+    return std::ranges::any_of(autoCADLockFileExtensions, [&suffix](const auto ext) { return ext == suffix; });
+}
+
+// Resolve the document guarded by an AutoCAD lock file. The lock file shares the
+// document's base name, so the document path is derived by replacing the extension
+// with .dwg. Returns std::nullopt if the lock file is not an AutoCAD lock file
+// or the guarded document does not exist.
+std::optional<QString> autoCADLockFileTargetFilePath(const QString &lockFilePath)
+{
+    const QFileInfo lockFileInfo{lockFilePath};
+    const auto baseName = lockFileInfo.completeBaseName();
+    if (baseName.isEmpty()) {
+        return std::nullopt;
+    }
+    const auto dir = lockFileInfo.dir();
+    const auto candidatePath = dir.absoluteFilePath(baseName + QLatin1Char('.') + QString::fromStdString(std::string(autoCADDocumentExtension)));
+    return QFileInfo::exists(candidatePath) ? std::make_optional(candidatePath) : std::nullopt;
+}
+
+// Returns true if a sibling AutoCAD lock file for the same base name still exists
+// on disk. AutoCAD creates .dwl and .dwl2 as a pair; the document must only be
+// unlocked when both are gone.
+bool autoCADSiblingLockFileExists(const QString &lockFilePath)
+{
+    const QFileInfo lockFileInfo{lockFilePath};
+    const auto baseName = lockFileInfo.completeBaseName();
+    if (baseName.isEmpty()) {
+        return false;
+    }
+    const auto deletedExt = lockFileInfo.suffix().toLower().toStdString();
+    const auto dir = lockFileInfo.dir();
+    return std::ranges::any_of(autoCADLockFileExtensions, [&](const auto ext) {
+        return ext != deletedExt && QFileInfo::exists(dir.absoluteFilePath(baseName + QLatin1Char('.') + QString::fromStdString(ext)));
+    });
+}
 
 // iterates through the dirPath to find the matching fileName
 QString findMatchingUnlockedFileInDir(const QString &dirPath, const QString &lockFileName)
@@ -72,19 +113,23 @@ QString FileSystem::filePathLockFilePatternMatch(const QString &path)
     if (pathSplit.isEmpty()) {
         return {};
     }
-    QString lockFilePatternFound;
+
+    // Office / LibreOffice lock files are identified by a filename prefix.
     for (const auto &lockFilePattern : lockFilePatterns) {
         if (pathSplit.last().startsWith(lockFilePattern)) {
-            lockFilePatternFound = lockFilePattern;
-            break;
+            qCDebug(OCC::lcFileSystem) << "Found a lock file with prefix:" << lockFilePattern << "in path:" << path;
+            return lockFilePattern;
         }
     }
 
-    if (!lockFilePatternFound.isEmpty()) {
-        qCDebug(OCC::lcFileSystem) << "Found a lock file with prefix:" << lockFilePatternFound << "in path:" << path;
+    // AutoCAD lock files (.dwl / .dwl2) are identified by extension, not prefix.
+    if (isAutoCADLockFileExtension(pathSplit.last())) {
+        const auto suffix = QFileInfo{pathSplit.last()}.suffix().toLower();
+        qCDebug(OCC::lcFileSystem) << "Found an AutoCAD lock file with extension:" << suffix << "in path:" << path;
+        return QStringLiteral(".") + suffix;
     }
 
-    return lockFilePatternFound;
+    return {};
 }
 
 bool FileSystem::isMatchingOfficeFileExtension(const QString &path)
@@ -102,6 +147,24 @@ bool FileSystem::isMatchingAutoCADDocumentExtension(const QString &path)
 FileSystem::FileLockingInfo FileSystem::lockFileTargetFilePath(const QString &lockFilePath, const QString &lockFileNamePattern)
 {
     FileLockingInfo result;
+
+    // AutoCAD lock files (.dwl / .dwl2) share the document's base name, so the
+    // guarded document is resolved by replacing the extension with .dwg.
+    // AutoCAD creates .dwl and .dwl2 as a pair — only report Unlocked when both
+    // are gone; if a sibling lock file still exists, leave the type as Unset so
+    // the watcher does not prematurely unlock the document.
+    if (isAutoCADLockFileExtension(lockFilePath)) {
+        const auto targetPath = autoCADLockFileTargetFilePath(lockFilePath);
+        if (targetPath) {
+            result.path = *targetPath;
+            if (QFile::exists(lockFilePath)) {
+                result.type = FileLockingInfo::Type::Locked;
+            } else if (!autoCADSiblingLockFileExists(lockFilePath)) {
+                result.type = FileLockingInfo::Type::Unlocked;
+            }
+        }
+        return result;
+    }
 
     if (lockFileNamePattern.isEmpty()) {
         return result;
