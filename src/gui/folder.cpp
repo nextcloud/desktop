@@ -1203,6 +1203,10 @@ void Folder::startSync(const QStringList &pathList)
         fullLocalDiscoveryInterval.count() >= 0 // negative means we don't require periodic full runs
         && _timeSinceLastFullLocalDiscovery.hasExpired(fullLocalDiscoveryInterval.count());
 
+    // From here on the sync's discovery style is fixed, so a request arriving later is about a
+    // state this sync will not see and must not be marked as covered by it.
+    _fullLocalDiscoveryRequestedDuringSync = false;
+
     if (singleItemDiscoveryOptions.isValid() && singleItemDiscoveryOptions.discoveryPath != QStringLiteral("/")) {
         qCInfo(lcFolder) << "Going to sync just one file";
         _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, {singleItemDiscoveryOptions.discoveryPath});
@@ -1369,7 +1373,8 @@ void Folder::slotSyncFinished(bool success)
     if ((_syncResult.status() == SyncResult::Success
             || _syncResult.status() == SyncResult::Problem)
         && success) {
-        if (_engine->lastLocalDiscoveryStyle() == LocalDiscoveryStyle::FilesystemOnly) {
+        if (_engine->lastLocalDiscoveryStyle() == LocalDiscoveryStyle::FilesystemOnly
+            && !_fullLocalDiscoveryRequestedDuringSync) {
             _timeSinceLastFullLocalDiscovery.start();
         }
     }
@@ -1588,6 +1593,10 @@ void Folder::slotScheduleThisFolder()
 void Folder::slotNextSyncFullLocalDiscovery()
 {
     _timeSinceLastFullLocalDiscovery.invalidate();
+
+    // Invalidating on its own is not enough: a sync that is already running restarts the timer when
+    // it finishes (see slotSyncFinished), which would drop this request.
+    _fullLocalDiscoveryRequestedDuringSync = true;
 }
 
 void Folder::setSilenceErrorsUntilNextSync(bool silenceErrors)
@@ -1618,21 +1627,23 @@ void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QS
         return;
     }
 
-    // Don't warn for items that no longer exist.
-    // Note: This assumes we're getting file watcher notifications
-    // for folders only on creation and deletion - if we got a notification
-    // on content change that would create spurious warnings.
-    const auto fullPath = QString{_canonicalLocalPath + path};
-    if (!FileSystem::fileExists(fullPath)) {
-        return;
-    }
-
+    // Checked before touching the filesystem below: this runs once per added file, and the list is
+    // empty unless the user configured selective sync.
     bool ok = false;
     const auto selectiveSyncList = _journal.getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
     if (!ok) {
         return;
     }
     if (!selectiveSyncList.contains(path + "/")) {
+        return;
+    }
+
+    // Don't warn for items that no longer exist.
+    // Note: This assumes we're getting file watcher notifications
+    // for folders only on creation and deletion - if we got a notification
+    // on content change that would create spurious warnings.
+    const auto fullPath = QString{_canonicalLocalPath + path};
+    if (!FileSystem::fileExists(fullPath)) {
         return;
     }
 
@@ -1749,6 +1760,10 @@ void Folder::registerFolderWatcher()
         this, [this](const QString &path) { slotWatchedPathChanged(path, Folder::ChangeReason::Other); });
     connect(_folderWatcher.data(), &FolderWatcher::lostChanges,
         this, &Folder::slotNextSyncFullLocalDiscovery);
+    // The watcher reports no paths along with lostChanges(), so nothing else would trigger the
+    // sync that is supposed to pick the missed changes up.
+    connect(_folderWatcher.data(), &FolderWatcher::lostChanges,
+        this, &Folder::scheduleThisFolderSoon);
     connect(_folderWatcher.data(), &FolderWatcher::becameUnreliable,
         this, &Folder::slotWatcherUnreliable);
     if (_accountState->account()->capabilities().filesLockAvailable()) {
@@ -1769,6 +1784,7 @@ void Folder::disconnectFolderWatcher()
     }
     disconnect(_folderWatcher.data(), &FolderWatcher::pathChanged, nullptr, nullptr);
     disconnect(_folderWatcher.data(), &FolderWatcher::lostChanges, this, &Folder::slotNextSyncFullLocalDiscovery);
+    disconnect(_folderWatcher.data(), &FolderWatcher::lostChanges, this, &Folder::scheduleThisFolderSoon);
     disconnect(_folderWatcher.data(), &FolderWatcher::becameUnreliable, this, &Folder::slotWatcherUnreliable);
     if (_accountState->account()->capabilities().filesLockAvailable()) {
         disconnect(_folderWatcher.data(), &FolderWatcher::filesLockReleased, this, &Folder::slotFilesLockReleased);

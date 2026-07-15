@@ -580,6 +580,14 @@ private:
     QElapsedTimer _timeSinceLastSyncDone;
     QElapsedTimer _timeSinceLastSyncStart;
     QElapsedTimer _timeSinceLastFullLocalDiscovery;
+
+    /** Whether a full local discovery was requested after the running sync picked its discovery
+     *  style, and is therefore not covered by it.
+     *
+     * Without this, slotSyncFinished() would restart _timeSinceLastFullLocalDiscovery and the
+     * request would be lost.
+     */
+    bool _fullLocalDiscoveryRequestedDuringSync = false;
     std::chrono::milliseconds _lastSyncDuration;
 
     /// The number of syncs that failed in a row.
