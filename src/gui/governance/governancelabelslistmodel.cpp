@@ -289,55 +289,33 @@ void GovernanceLabelsListModel::refreshModel()
                           oneLabelObject.value(u"color"_s).toString()
                           );
 
+        auto labelKeyName = QString{};
         switch (_labelType)
         {
         case Governance::LabelType::Sensitivity:
-        {
-            qCDebug(lcGovernanceLabelsListModel()) << "checking existing sensitivity labels";
-            if (!existingLabelsObject.contains(u"sensitivity"_s)) {
-                qCWarning(lcGovernanceLabelsListModel()) << "missing sensitivity data in OCS reply";
-                break;
-            }
-
-            const auto &sensitivityLabel = existingLabelsObject[u"sensitivity"_s].toObject();
-
-            parseExistingSingleLabel(rowIndex, sensitivityLabel);
+            labelKeyName = u"sensitivity"_s;
             break;
-        }
         case Governance::LabelType::Retention:
-        {
-            qCDebug(lcGovernanceLabelsListModel()) << "checking existing retention labels";
-            if (!existingLabelsObject.contains(u"retention"_s)) {
-                qCWarning(lcGovernanceLabelsListModel()) << "missing retention data in OCS reply";
-                break;
-            }
-
-            const auto retentionLabels = existingLabelsObject[u"retention"_s].toArray();
-
-            for (const auto &oneLabel : retentionLabels) {
-                const auto &oneLabelObject = oneLabel.toObject();
-                parseExistingSingleLabel(rowIndex, oneLabelObject);
-            }
+            labelKeyName = u"retention"_s;
             break;
-        }
         case Governance::LabelType::LegalHold:
-        {
-            qCDebug(lcGovernanceLabelsListModel()) << "checking existing legal hold labels";
-            if (!existingLabelsObject.contains(u"hold"_s)) {
-                qCWarning(lcGovernanceLabelsListModel()) << "missing legal hold data in OCS reply";
-                break;
-            }
-
-            const auto legalHoldLabels = existingLabelsObject[u"hold"_s].toArray();
-
-            for (const auto &oneLabel : legalHoldLabels) {
-                const auto &oneLabelObject = oneLabel.toObject();
-                parseExistingSingleLabel(rowIndex, oneLabelObject);
-            }
+            labelKeyName = u"hold"_s;
             break;
-        }
         case Governance::LabelType::InvalidLabelType:
             break;
+        }
+
+        qCDebug(lcGovernanceLabelsListModel()) << "checking existing" << labelKeyName << "labels";
+        if (!existingLabelsObject.contains(labelKeyName)) {
+            qCWarning(lcGovernanceLabelsListModel()) << "missing" << labelKeyName << "data in OCS reply";
+            break;
+        }
+
+        const auto &sensitivityLabels = existingLabelsObject[labelKeyName].toArray();
+
+        for (const auto &oneLabel : sensitivityLabels) {
+            const auto &oneLabelObject = oneLabel.toObject();
+            parseExistingSingleLabel(rowIndex, oneLabelObject);
         }
     }
     endResetModel();
