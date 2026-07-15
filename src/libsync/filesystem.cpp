@@ -18,6 +18,7 @@
 #include <QCoreApplication>
 
 #include <array>
+#include <ranges>
 #include <string_view>
 
 #ifdef Q_OS_WIN
@@ -30,6 +31,14 @@ namespace
 {
 constexpr std::array<const char *, 2> lockFilePatterns = {{".~lock.", "~$"}};
 constexpr std::array<std::string_view, 8> officeFileExtensions = {"doc", "docx", "xls", "xlsx", "ppt", "pptx", "odt", "odp"};
+
+// AutoCAD creates .dwl (plain text) and .dwl2 (XML) lock files when a .dwg drawing
+// is opened. Both share the document's base name — only the extension differs — so
+// the guarded document is resolved by replacing the lock extension with .dwg.
+// Both lock files are deleted when the drawing is closed.
+constexpr std::array<const char *, 2> autoCADLockFileExtensions = {"dwl", "dwl2"};
+constexpr std::string_view autoCADDocumentExtension = "dwg";
+
 // iterates through the dirPath to find the matching fileName
 QString findMatchingUnlockedFileInDir(const QString &dirPath, const QString &lockFileName)
 {
@@ -83,6 +92,11 @@ bool FileSystem::isMatchingOfficeFileExtension(const QString &path)
     const auto pathSplit = path.split(QLatin1Char('.'));
     const auto extension = pathSplit.size() > 1 ? pathSplit.last().toStdString() : std::string{};
     return std::find(std::cbegin(officeFileExtensions), std::cend(officeFileExtensions), extension) != std::cend(officeFileExtensions);
+}
+
+bool FileSystem::isMatchingAutoCADDocumentExtension(const QString &path)
+{
+    return QFileInfo{path}.suffix().toLower().toStdString() == autoCADDocumentExtension;
 }
 
 FileSystem::FileLockingInfo FileSystem::lockFileTargetFilePath(const QString &lockFilePath, const QString &lockFileNamePattern)

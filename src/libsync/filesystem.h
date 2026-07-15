@@ -56,6 +56,8 @@ namespace FileSystem {
     QString OWNCLOUDSYNC_EXPORT filePathLockFilePatternMatch(const QString &path);
     // check if it is an office file (by extension), ONLY call it for files
     bool OWNCLOUDSYNC_EXPORT isMatchingOfficeFileExtension(const QString &path);
+    // check if it is an AutoCAD document (by .dwg extension), ONLY call it for files
+    bool OWNCLOUDSYNC_EXPORT isMatchingAutoCADDocumentExtension(const QString &path);
     // finds and fetches FileLockingInfo for the corresponding file that we are locking/unlocking
     FileLockingInfo OWNCLOUDSYNC_EXPORT lockFileTargetFilePath(const QString &lockFilePath, const QString &lockFileNamePattern);
     // lists all files matching a lockfile pattern in dirPath
