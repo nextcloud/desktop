@@ -892,7 +892,7 @@ void OwncloudPropagator::scheduleNextJob()
 {
     if (_jobScheduled) return; // don't schedule more than 1
     _jobScheduled = true;
-    QMetaObject::invokeMethod(this, &OwncloudPropagator::scheduleNextJobImpl, Qt::QueuedConnection);
+    QTimer::singleShot(3, this, &OwncloudPropagator::scheduleNextJobImpl);
 }
 
 void OwncloudPropagator::scheduleNextJobImpl()
