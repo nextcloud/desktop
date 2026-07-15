@@ -431,6 +431,15 @@ private:
     int _transaction = 0;
     bool _metadataTableIsEmpty = false;
 
+    /* Cache for getSelectiveSyncList(), keyed by SelectiveSyncListType.
+     *
+     * The list is read once per file in some hot paths (see Folder::warnOnNewExcludedItem) while
+     * changing only when the user edits the selective sync configuration, so it is kept here
+     * rather than re-queried. Invalidated by setSelectiveSyncList() -- the only writer of the
+     * selectivesync table -- and on close().
+     */
+    QHash<int, QStringList> _selectiveSyncListCache;
+
     /* Storing etags to these folders, or their parent folders, is filtered out.
      *
      * When schedulePathForRemoteDiscovery() is called some etags to _invalid_ in the

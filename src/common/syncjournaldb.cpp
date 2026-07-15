@@ -703,6 +703,7 @@ void SyncJournalDb::close()
 
     _db.close();
     clearEtagStorageFilter();
+    _selectiveSyncListCache.clear();
     _metadataTableIsEmpty = false;
 }
 
@@ -2380,6 +2381,12 @@ QStringList SyncJournalDb::getSelectiveSyncList(SyncJournalDb::SelectiveSyncList
         return result;
     }
 
+    const auto cached = _selectiveSyncListCache.constFind(int(type));
+    if (cached != _selectiveSyncListCache.constEnd()) {
+        *ok = true;
+        return *cached;
+    }
+
     const auto query = _queryManager.get(PreparedSqlQueryManager::GetSelectiveSyncListQuery, QByteArrayLiteral("SELECT path FROM selectivesync WHERE type=?1"), _db);
     if (!query) {
         qCWarning(lcDb) << "database error:" << query->error();
@@ -2408,6 +2415,8 @@ QStringList SyncJournalDb::getSelectiveSyncList(SyncJournalDb::SelectiveSyncList
     }
     *ok = true;
 
+    _selectiveSyncListCache.insert(int(type), result);
+
     return result;
 }
 
@@ -2417,6 +2426,10 @@ void SyncJournalDb::setSelectiveSyncList(SyncJournalDb::SelectiveSyncListType ty
     if (!checkConnect()) {
         return;
     }
+
+    // Dropped rather than replaced with `list`: getSelectiveSyncList() hands out entries with a
+    // trailing slash, which is added on read, not on write.
+    _selectiveSyncListCache.remove(int(type));
 
     startTransaction();
 
