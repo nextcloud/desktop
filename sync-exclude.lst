@@ -4,6 +4,12 @@
 ~$*
 .~lock.*
 ~*.tmp
+
+# AutoCAD lock files (.dwl / .dwl2) created when opening a .dwg drawing.
+# Both share the document's base name and are deleted when it is closed.
+*.dwl
+*.dwl2
+
 ]*.~*
 ]Icon\r*
 ].DS_Store
