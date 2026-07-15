@@ -139,7 +139,7 @@ public extension Item {
             usingRemoteInterface: remoteInterface,
             withAccount: account,
             inChunksSized: forcedChunkSize,
-            usingChunkUploadId: metadata.chunkUploadId,
+            forItemWithIdentifier: ocId,
             dbManager: dbManager,
             creationDate: newCreationDate,
             modificationDate: newContentModificationDate,

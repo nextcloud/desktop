@@ -697,13 +697,31 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
 
     func testCreateFileChunkedResumed() async throws {
         let chunkSize = 2
-        let expectedChunkUploadId = UUID().uuidString // Check if illegal characters are stripped
-        let illegalChunkUploadId = expectedChunkUploadId + "/" // Check if illegal characters are stripped
+        let expectedChunkUploadIdBase = UUID().uuidString // Check that illegal characters are stripped.
+        let illegalChunkUploadId = expectedChunkUploadIdBase + "/" // Check that illegal characters are stripped.
+
+        let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("file")
+        let tempData = Data(repeating: 1, count: chunkSize * 3)
+        try tempData.write(to: tempUrl)
+
+        // New-item creation has no persisted ItemMetadata (the OS supplies the template), so the chunk
+        // id is derived from the template's itemIdentifier plus the content's (size, modificationDate),
+        // with illegal path characters stripped. Seed the prior interrupted attempt under exactly that
+        // derived id so the resume path recognises identical content.
+        let modificationDate = Date(timeIntervalSince1970: 1_700_000_000)
+        let chunkUploadId = chunkUploadIdentifier(
+            forItemWithIdentifier: illegalChunkUploadId,
+            fileSize: Int64(tempData.count),
+            modificationDate: modificationDate
+        )
+        XCTAssertTrue(chunkUploadId.hasPrefix(expectedChunkUploadIdBase + "_"))
+        XCTAssertFalse(chunkUploadId.contains("/"))
+
         let previousUploadedChunkNum = 1
         let preexistingChunk = RemoteFileChunk(
             fileName: String(previousUploadedChunkNum),
             size: Int64(chunkSize),
-            remoteChunkStoreFolderName: expectedChunkUploadId
+            remoteChunkStoreFolderName: chunkUploadId
         )
 
         let db = Self.dbManager.ncDatabase()
@@ -712,37 +730,24 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
                 RemoteFileChunk(
                     fileName: String(previousUploadedChunkNum + 1),
                     size: Int64(chunkSize),
-                    remoteChunkStoreFolderName: expectedChunkUploadId
+                    remoteChunkStoreFolderName: chunkUploadId
                 ),
                 RemoteFileChunk(
                     fileName: String(previousUploadedChunkNum + 2),
                     size: Int64(chunkSize),
-                    remoteChunkStoreFolderName: expectedChunkUploadId
+                    remoteChunkStoreFolderName: chunkUploadId
                 )
             ])
         }
 
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
-        remoteInterface.currentChunks = [expectedChunkUploadId: [preexistingChunk]]
+        remoteInterface.currentChunks = [chunkUploadId: [preexistingChunk]]
 
-        // With real new item uploads we do not have an associated ItemMetadata as the template is
-        // passed onto us by the OS. We cannot rely on the chunkUploadId property we usually use
-        // during modified item uploads.
-        //
-        // We therefore can only use the system-provided item template's itemIdentifier as the
-        // chunked upload identifier during new item creation.
-        //
-        // To test this situation we set the ocId of the metadata used to construct the item
-        // template to the chunk upload id.
         var fileItemMetadata = SendableItemMetadata(
             ocId: illegalChunkUploadId, fileName: "file", account: Self.account
         )
-        fileItemMetadata.ocId = illegalChunkUploadId
         fileItemMetadata.classFile = NKTypeClassFile.document.rawValue
-
-        let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("file")
-        let tempData = Data(repeating: 1, count: chunkSize * 3)
-        try tempData.write(to: tempUrl)
+        fileItemMetadata.date = modificationDate
 
         let fileItemTemplate = Item(
             metadata: fileItemMetadata,
@@ -776,7 +781,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(remoteItem.directory, fileItemMetadata.directory)
         XCTAssertEqual(remoteItem.data, tempData)
         XCTAssertEqual(
-            remoteInterface.completedChunkTransferSize[expectedChunkUploadId],
+            remoteInterface.completedChunkTransferSize[chunkUploadId],
             Int64(tempData.count) - preexistingChunk.size
         )
 
