@@ -30,6 +30,7 @@
 #include <unistd.h>
 #endif
 
+#include <algorithm>
 #include <climits>
 #include <cassert>
 #include <chrono>
@@ -473,9 +474,10 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
     checkErrorBlacklisting(*item);
     _needsUpdate = true;
 
-    // Insert sorted
-    auto it = std::lower_bound( _syncItems.begin(), _syncItems.end(), item ); // the _syncItems is sorted
-    _syncItems.insert( it, item );
+    // Consumers need _syncItems sorted, but inserting in order here would memmove the tail of the
+    // vector once per item and cost O(n^2) overall. Nothing reads _syncItems before discovery ends,
+    // so it is sorted in one pass in slotDiscoveryFinished() instead.
+    _syncItems.append(item);
 
     slotNewItem(item);
 
@@ -846,6 +848,10 @@ void SyncEngine::slotDiscoveryFinished()
     } else {
         _restartedSyncAfterDiscovery = false;
     }
+
+    // Restores the ordering slotItemDiscovered() deliberately did not maintain per item. Stable so
+    // that items comparing equal keep the order they were discovered in.
+    std::stable_sort(_syncItems.begin(), _syncItems.end());
 
     if (handleMassDeletion()) {
         return;
