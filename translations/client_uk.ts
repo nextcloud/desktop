@@ -3466,7 +3466,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="235"/>
         <source>Server returned wrong content-range</source>
-        <translation>Сервер повернув невірний content-range</translation>
+        <translation>Сервер повернув недійсний content-range</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="361"/>
@@ -6799,7 +6799,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="529"/>
         <source>The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.</source>
-        <translation>Сервер не зміг обробити ваш запит, оскільки деяка інформація була невірною або неповною. Спробуйте синхронізувати пізніше або зверніться за допомогою до адміністратора сервера.</translation>
+        <translation>Сервер не зміг обробити ваш запит, оскільки було отримано недійсні або неповні дані. Спробуйте синхронізувати пізніше або зверніться за допомогою до адміністратора сервера.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="532"/>
@@ -8142,7 +8142,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="320"/>
         <source>Invalid URL</source>
-        <translation>Невірний URL</translation>
+        <translation>Недійсний URL</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="322"/>
