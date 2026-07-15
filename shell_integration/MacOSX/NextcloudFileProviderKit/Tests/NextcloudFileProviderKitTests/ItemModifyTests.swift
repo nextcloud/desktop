@@ -1292,13 +1292,31 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
 
     func testModifyFileContentsChunkedResumed() async throws {
         let chunkSize = 2
-        let chunkUploadId = UUID().uuidString
+        let newContents = Data(repeating: 1, count: chunkSize * 3)
+        let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
+        try newContents.write(to: newContentsUrl)
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        // The chunk id is derived from (item, size, modificationDate); seed the prior interrupted
+        // attempt under exactly that derived id so the resume path recognises identical content.
+        let modificationDate = Date(timeIntervalSince1970: 1_700_000_000)
+        let chunkUploadId = chunkUploadIdentifier(
+            forItemWithIdentifier: itemMetadata.ocId,
+            fileSize: Int64(newContents.count),
+            modificationDate: modificationDate
+        )
+
         let previousUploadedChunkNum = 1
         let preexistingChunk = RemoteFileChunk(
             fileName: String(previousUploadedChunkNum),
             size: Int64(chunkSize),
             remoteChunkStoreFolderName: chunkUploadId
         )
+        remoteInterface.currentChunks = [chunkUploadId: [preexistingChunk]]
 
         let db = Self.dbManager.ncDatabase()
         try db.write {
@@ -1316,19 +1334,8 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             ])
         }
 
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
-        remoteInterface.currentChunks = [chunkUploadId: [preexistingChunk]]
-
-        var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
-        itemMetadata.chunkUploadId = chunkUploadId
-        Self.dbManager.addItemMetadata(itemMetadata)
-
-        let newContents = Data(repeating: 1, count: chunkSize * 3)
-        let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
-        try newContents.write(to: newContentsUrl)
-
         var targetItemMetadata = SendableItemMetadata(value: itemMetadata)
-        targetItemMetadata.date = .init()
+        targetItemMetadata.date = modificationDate
         targetItemMetadata.size = Int64(newContents.count)
 
         let item = Item(
@@ -1366,9 +1373,6 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             remoteInterface.completedChunkTransferSize[chunkUploadId],
             Int64(newContents.count) - preexistingChunk.size
         )
-
-        let dbItem = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
-        XCTAssertNil(dbItem.chunkUploadId)
     }
 
     func testModifyDoesNotPropagateIgnoredFile() async {
