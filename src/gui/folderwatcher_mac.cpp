@@ -13,10 +13,21 @@
 
 #include <cerrno>
 #include <QDirIterator>
+#include <QSet>
 #include <QStringList>
 
 
 namespace OCC {
+
+namespace {
+/* Upper bound on the paths one event batch may be expanded into by addCoalescedPaths().
+ *
+ * Every reported path costs a journal lookup and a few stats on the GUI thread later on, so for a
+ * large tree it is both faster and gentler on the UI to stop enumerating and let the next sync
+ * rediscover the tree instead.
+ */
+constexpr auto maxCoalescedPaths = 1000;
+}
 
 FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p, const QString &path)
     : _parent(p)
@@ -27,9 +38,20 @@ FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p, const QString &path
 
 FolderWatcherPrivate::~FolderWatcherPrivate()
 {
-    FSEventStreamStop(_stream);
-    FSEventStreamInvalidate(_stream);
-    FSEventStreamRelease(_stream);
+    if (_stream) {
+        FSEventStreamStop(_stream);
+        FSEventStreamInvalidate(_stream);
+        FSEventStreamRelease(_stream);
+        _stream = nullptr;
+    }
+
+    if (_queue) {
+        // A callback block may already be running on the queue and still touching this object,
+        // so let it drain before the members it reads are destroyed.
+        dispatch_sync(_queue, ^{});
+        dispatch_release(_queue);
+        _queue = nullptr;
+    }
 }
 
 static void callback(
@@ -108,44 +130,71 @@ void FolderWatcherPrivate::startWatching()
 
     CFRelease(pathsToWatch);
     CFRelease(folderCF);
-    FSEventStreamSetDispatchQueue(_stream, dispatch_get_main_queue());
+
+    // Deliver events on a private queue rather than the main one: dropping a large tree into the
+    // sync folder produces event batches big enough that handling them on the main queue blocks
+    // the GUI. This mirrors what the Windows watcher does with its own WatcherThread.
+    _queue = dispatch_queue_create("com.nextcloud.desktopclient.folderwatcher", DISPATCH_QUEUE_SERIAL);
+    FSEventStreamSetDispatchQueue(_stream, _queue);
     FSEventStreamStart(_stream);
 }
 
-QStringList FolderWatcherPrivate::addCoalescedPaths(const QStringList &paths) const
+void FolderWatcherPrivate::addCoalescedPaths(const QStringList &paths, QStringList &coalesced) const
 {
-    QStringList coalescedPaths;
+    // Only the expansion below is bounded, not `paths` itself: those are events FSEvents actually
+    // reported, they are capped by the kernel's own buffer, and reporting them is what drives
+    // things a rediscovery cannot redo, such as releasing office file locks.
+    //
+    // FSEvents reports a renamed or moved directory, but not the items below it, so the tree is
+    // walked to report those too.
+    coalesced = paths;
+    QSet<QString> seen{paths.begin(), paths.end()};
+
     for (const auto &eventPath : paths) {
-        if (QDir(eventPath).exists()) {
-            QDirIterator it(eventPath, QDir::AllDirs | QDir::NoDotAndDotDot | QDir::Files, QDirIterator::Subdirectories);
-            while (it.hasNext()) {
-                const auto path = it.next();
-                if (!paths.contains(path)) {
-                    coalescedPaths.append(path);
-                }
+        if (!QDir(eventPath).exists()) {
+            continue;
+        }
+        QDirIterator it(eventPath, QDir::AllDirs | QDir::NoDotAndDotDot | QDir::Files, QDirIterator::Subdirectories);
+        while (it.hasNext()) {
+            const auto path = it.next();
+            if (coalesced.size() >= maxCoalescedPaths) {
+                // Give up on expanding this batch rather than report a whole tree path by path.
+                // Nothing is lost by stopping: the directory that is being expanded was itself
+                // reported, and SyncEngine::shouldDiscoverLocally() descends into a touched
+                // directory's entire subtree, so the entries below it are discovered anyway.
+                return;
+            }
+            if (!seen.contains(path)) {
+                seen.insert(path);
+                coalesced.append(path);
             }
         }
     }
-    return (paths + coalescedPaths);
 }
 
 void FolderWatcherPrivate::doNotifyParent(const QStringList &paths)
 {
-    const QStringList totalPaths = addCoalescedPaths(paths);
-    _parent->changeDetected(totalPaths);
+    if (paths.isEmpty()) {
+        return;
+    }
+
+    QStringList totalPaths;
+    addCoalescedPaths(paths, totalPaths);
+
+    // We are on the private dispatch queue here, but everything FolderWatcher touches from
+    // changeDetected() (its timers, the lock-file sets, the pathChanged() receivers) may only be
+    // used on the thread it lives on, so hand the batch over instead of processing it here.
+    QMetaObject::invokeMethod(
+        _parent, [parent = _parent, totalPaths] { parent->changeDetected(totalPaths); }, Qt::QueuedConnection);
 }
 
 void FolderWatcherPrivate::notifyAll()
 {
-    QDirIterator dirIterator(_folder, QDirIterator::Subdirectories);
-    QStringList allPaths;
-
-    while(dirIterator.hasNext()) {
-        const auto dirEntry = dirIterator.next();
-        allPaths.append(dirEntry);
-    }
-
-    _parent->changeDetected(allPaths);
+    // FSEvents either dropped events or asked for a full rescan. Enumerating the whole tree to
+    // report every path would take minutes on a large folder, and a full local discovery re-reads
+    // it anyway, so ask for one of those instead of reporting anything.
+    QMetaObject::invokeMethod(
+        _parent, [parent = _parent, folder = _folder] { parent->changesLost(folder); }, Qt::QueuedConnection);
 }
 
 

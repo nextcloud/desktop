@@ -26,7 +26,14 @@ public:
     ~FolderWatcherPrivate();
 
     void startWatching();
-    QStringList addCoalescedPaths(const QStringList &) const;
+
+    /** Expand @a paths with the contents of any directory among them, into @a coalesced.
+     *
+     * The expansion stops at maxCoalescedPaths; the sync engine descends into a reported directory
+     * on its own, so the entries left out are still discovered. @a paths itself is always passed
+     * through, however large it is.
+     */
+    void addCoalescedPaths(const QStringList &paths, QStringList &coalesced) const;
     void doNotifyParent(const QStringList &);
     void notifyAll();
 
@@ -38,7 +45,10 @@ private:
 
     QString _folder;
 
-    FSEventStreamRef _stream;
+    FSEventStreamRef _stream = nullptr;
+
+    /// Events are delivered here instead of on the main queue, to keep them off the GUI thread.
+    dispatch_queue_t _queue = nullptr;
 };
 }
 

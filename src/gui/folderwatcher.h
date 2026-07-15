@@ -129,6 +129,14 @@ private slots:
     void startNotificationTestWhenReady();
     void lockChangeDebouncingTimerTimedOut();
 
+private:
+    /** Report that the backend could not keep track of individual changes under @a root.
+     *
+     * Emits lostChanges() so that the next sync runs a full local discovery. Reports no path, so
+     * whoever wants a sync scheduled has to react to lostChanges() as well.
+     */
+    void changesLost(const QString &root);
+
 protected:
     QHash<QString, int> _pendingPathes;
 

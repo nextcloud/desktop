@@ -213,6 +213,17 @@ int FolderWatcher::lockChangeDebouncingTimout() const
     return _lockChangeDebouncingTimer.interval();
 }
 
+void FolderWatcher::changesLost(const QString &root)
+{
+    qCWarning(lcFolderWatcher) << "Lost track of individual changes in" << root
+                               << "- the next sync will run a full local discovery";
+
+    // Makes the next sync rediscover the tree from the filesystem instead of the database. No path
+    // is reported: the root would reach the local discovery tracker as an empty relative path,
+    // which matches only the root itself and not the tree below it.
+    emit lostChanges();
+}
+
 void FolderWatcher::changeDetected(const QString &path)
 {
     QStringList paths(path);
