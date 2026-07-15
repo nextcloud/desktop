@@ -22,6 +22,9 @@
 
 #ifdef Q_OS_MACOS
 #include "foregroundbackground_interface.h"
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_14
+#include "notifications/macnotificationcenter.h"
+#endif
 #endif
 
 #include <QCursor>
@@ -140,9 +143,7 @@ Systray::Systray()
     : QSystemTrayIcon(nullptr)
 {
 #if defined(Q_OS_MACOS) && __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_14 && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
-    setUserNotificationCenterDelegate();
-    checkNotificationAuth(MacNotificationAuthorizationOptions::Default); // No provisional auth, ask user explicitly first time
-    registerNotificationCategories(QString(tr("Download")));
+    MacNotificationCenter::initialize(tr("Download"));
 #elif !defined(Q_OS_MACOS)
     connect(AccountManager::instance(), &AccountManager::accountAdded,
         this, &Systray::setupContextMenu);
@@ -314,6 +315,16 @@ void Systray::showActivitiesWindow(int userIndex)
     window->raise();
     window->requestActivate();
     userModel->fetchActivityModel(targetUserId);
+}
+
+void Systray::showActivitiesWindow(AccountState *accountState)
+{
+    const auto userId = UserModel::instance()->findUserIdForAccount(accountState);
+    if (userId < 0) {
+        qCWarning(lcSystray) << "Could not find account for activities window.";
+        return;
+    }
+    showActivitiesWindow(userId);
 }
 
 void Systray::showAssistantWindow(int userIndex)
@@ -1118,8 +1129,8 @@ void Systray::showMessage(const QString &title, const QString &message, MessageI
     } else
 #endif
 #if defined(Q_OS_MACOS) && __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_14 && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
-        if (canOsXSendUserNotification()) {
-        sendOsXUserNotification(title, message);
+    if (MacNotificationCenter::canSendNotification()) {
+        MacNotificationCenter::sendNotification(title, message);
     } else
 #endif
     {
@@ -1130,7 +1141,7 @@ void Systray::showMessage(const QString &title, const QString &message, MessageI
 void Systray::showUpdateMessage(const QString &title, const QString &message, const QUrl &webUrl)
 {
 #if defined(Q_OS_MACOS) && __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_14 && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
-    sendOsXUpdateNotification(title, message, webUrl);
+    MacNotificationCenter::sendUpdateNotification(title, message, webUrl);
 #else // TODO: Implement custom notifications (i.e. actionable) for other OSes
     Q_UNUSED(webUrl);
     showMessage(title, message);
@@ -1140,7 +1151,7 @@ void Systray::showUpdateMessage(const QString &title, const QString &message, co
 void Systray::showTalkMessage(const QString &title, const QString &message, const QString &token, const QString &replyTo, const AccountStatePtr &accountState)
 {
 #if defined(Q_OS_MACOS) && __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_14 && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
-    sendOsXTalkNotification(title, message, token, replyTo, accountState);
+    MacNotificationCenter::sendTalkNotification(title, message, token, replyTo, accountState);
 #else // TODO: Implement custom notifications (i.e. actionable) for other OSes
     Q_UNUSED(replyTo)
     Q_UNUSED(token)

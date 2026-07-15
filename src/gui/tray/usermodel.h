@@ -30,6 +30,7 @@
 
 namespace OCC {
 class OcsAssistantConnector;
+class NotificationManager;
 
 
 class TrayFolderInfo
@@ -103,6 +104,8 @@ public:
     void setCurrentUser(const bool &isCurrent);
     [[nodiscard]] Folder *getFolder() const;
     ActivityListModel *getActivityModel();
+    /** @brief Return the account-scoped notification feature manager. */
+    [[nodiscard]] NotificationManager *notificationManager() const;
     void openLocalFolder() const;
 #ifdef BUILD_FILE_PROVIDER_MODULE
     void openFileProviderDomain() const;
@@ -184,22 +187,14 @@ public slots:
     void slotAddError(const QString &folderAlias, const QString &message, OCC::ErrorCategory category);
     void slotAddErrorToGui(const QString &folderAlias, const OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject, const OCC::ErrorCategory category);
     void slotAddNotification(const OCC::Folder *folder, const OCC::Activity &activity);
-    void slotNotificationRequestFinished(int statusCode);
-    void slotNotifyNetworkError(QNetworkReply *reply);
-    void slotEndNotificationRequest(int replyCode);
-    void slotNotifyServerFinished(const QString &reply, int replyCode);
-    void slotSendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
-    void slotBuildNotificationDisplay(const OCC::ActivityList &list);
-    void slotNotificationFetchFinished();
-    void slotBuildIncomingCallDialogs(const OCC::ActivityList &list);
-    void slotRefreshNotifications();
     void slotRefreshActivitiesInitial();
     void slotRefreshActivityPreview();
     void slotRefreshActivities();
     void slotRefresh();
     void slotRefreshUserStatus();
     void slotRefreshImmediately();
-    void setNotificationRefreshInterval(std::chrono::milliseconds interval);
+    /** @brief Set the fallback polling interval used without push notifications. */
+    void setRefreshInterval(std::chrono::milliseconds interval);
     void slotRebuildNavigationAppList();
     void slotSendReplyMessage(const int activityIndex, const QString &conversationToken, const QString &message, const QString &replyTo);
     void forceSyncNow() const;
@@ -235,7 +230,6 @@ private slots:
     void slotDisconnectPushNotifications();
     void slotReceivedPushFilesChanges(Account *account);
     void slotReceivedPushFileIdsChanges(Account *account, const QList<qint64> &fileIds);
-    void slotReceivedPushNotification(OCC::Account *account);
     void slotReceivedPushActivity(OCC::Account *account);
     void slotCheckExpiredActivities();
     void slotGroupFoldersFetched(QNetworkReply *reply);
@@ -246,12 +240,6 @@ private slots:
     void slotAssistantTaskScheduled(const QJsonDocument &json, int statusCode);
     void slotAssistantTaskDeleted(int statusCode);
     void slotAssistantRequestError(const QString &context, int statusCode);
-    void checkNotifiedNotifications();
-    void showDesktopNotification(const QString &title, const QString &message, const qint64 notificationId);
-    void showDesktopNotification(const OCC::Activity &activity);
-    void showDesktopNotification(const OCC::ActivityList &activityList);
-    void showDesktopTalkNotification(const OCC::Activity &activity);
-
 private:
     void prePendGroupFoldersWithLocalFolder();
     void parseNewGroupFolderPath(const QString &path);
@@ -264,26 +252,21 @@ private:
     [[nodiscard]] QVariantMap buildAccountAlert() const;
     void refreshAccountAlert();
 
-    bool notificationAlreadyShown(const qint64 notificationId);
-    bool canShowNotification(const qint64 notificationId);
-
     [[nodiscard]] bool serverHasTalk() const;
 
     AccountStatePtr _account;
     bool _isCurrentUser;
     ActivityListModel *_activityModel;
+    NotificationManager *_notificationManager;
     QVariantMap _accountAlert;
     
     QVariantList _trayFolderInfos;
 
     QTimer _expiredActivitiesCheckTimer;
-    QTimer _notificationCheckTimer;
+    QTimer _refreshTimer;
     QHash<AccountState *, QElapsedTimer> _timeSinceLastCheck;
     QElapsedTimer _timeSinceLastActivityPreviewCheck;
 
-    QElapsedTimer _guiLogTimer;
-    QSet<qint64> _notifiedNotifications;
-    QSet<qint64> _activeNotifications;
 #ifdef BUILD_FILE_PROVIDER_MODULE
     /// Rate-limit per relativePath so repeated bundle drops don't spam the activity view.
     /// Cleared by the existing `_expiredActivitiesCheckTimer` tick.
@@ -302,14 +285,6 @@ private:
     QSet<QString> _reportedQuotaItems;
 #endif
     QMimeDatabase _mimeDb;
-
-    // number of currently running notification requests. If non zero,
-    // no query for notifications is started.
-    int _notificationRequestsRunning = 0;
-
-    int _lastTalkNotificationsReceivedCount = 0;
-
-    bool _isNotificationFetchRunning = false;
 
     // used for quota warnings
     int _lastQuotaPercent = 0;
@@ -411,8 +386,6 @@ public slots:
     void fetchCurrentActivityModel();
     Q_INVOKABLE void fetchActivityModel(int id);
     Q_INVOKABLE void fetchActivityPreview(int id);
-    Q_INVOKABLE void dismissNotification(int id, int activityIndex);
-    Q_INVOKABLE void triggerNotificationAction(int id, int activityIndex, int actionIndex);
     void openCurrentAccountLocalFolder();
 #ifdef BUILD_FILE_PROVIDER_MODULE
     void openCurrentAccountFileProviderDomain();

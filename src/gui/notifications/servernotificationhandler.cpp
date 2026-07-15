@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include "notificationhandler.h"
+#include "servernotificationhandler.h"
 
 #include "accountstate.h"
 #include "capabilities.h"

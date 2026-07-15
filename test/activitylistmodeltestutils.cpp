@@ -531,7 +531,8 @@ void TestingALM::slotProcessReceivedActivities()
             const auto activityJsonObject = FakeRemoteActivityStorage::instance()->activityById(activity._id);
 
             if (!activityJsonObject.isNull()) {
-                // because "_links" are normally populated within the notificationhandler.cpp, which we don't run as part of this unit test, we have to fill them here
+                // Because "_links" are normally populated within servernotificationhandler.cpp,
+                // which we don't run as part of this unit test, we have to fill them here.
                 // TODO: move the logic to populate "_links" to "activitylistmodel.cpp"
                 const auto actions = activityJsonObject.toObject().value("actions").toArray();
                 for (const auto &action : actions) {

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include "talkreply.h"
+#include "notifications/talkreply.h"
 
 #include "accountstate.h"
 #include "networkjobs.h"

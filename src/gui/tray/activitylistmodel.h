@@ -129,6 +129,8 @@ public slots:
     void addSyncFileItemToActivityList(const OCC::Activity &activity);
     void removeActivityFromActivityList(int row);
     void removeActivityFromActivityList(const OCC::Activity &activity);
+    /** @brief Remove a Notifications-app activity by its stable server identifier. */
+    void removeNotificationFromActivityList(qint64 notificationId);
 
     void removeOutdatedNotifications(const OCC::ActivityList &receivedNotifications);
 
@@ -160,6 +162,8 @@ signals:
     void recentActivityPreviewDataChanged();
     void notificationPreviewDataChanged();
     void activityListChanged();
+    /** @brief Emitted after a Notifications-app activity is removed from the model. */
+    void notificationRemoved(qint64 notificationId);
 
     void activityJobStatusCode(int statusCode);
     void sendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
