@@ -681,42 +681,42 @@
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="49"/>
         <source>Apply labels</source>
-        <translation type="unfinished"/>
+        <translation>Rakenda sildid / kasuta silte</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="382"/>
         <source>Sensitivity:</source>
-        <translation type="unfinished"/>
+        <translation>Delikaatsus:</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="393"/>
         <source>Select sensitivity label</source>
-        <translation type="unfinished"/>
+        <translation>Vali delikaatsuse silt</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="419"/>
         <source>Retention:</source>
-        <translation type="unfinished"/>
+        <translation>Säilitusreeglid:</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="430"/>
         <source>Select retention label</source>
-        <translation type="unfinished"/>
+        <translation>Vali säilitamisekohane silt</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="444"/>
         <source>Legal hold:</source>
-        <translation type="unfinished"/>
+        <translation>Säilitusreeglid juriidiliste nõuete alusel:</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="453"/>
         <source>Select legal hold label</source>
-        <translation type="unfinished"/>
+        <translation>Vali juriidiliste nõuete alusel säilitamise silt</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="479"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Valmis</translation>
     </message>
 </context>
 <context>
@@ -3794,12 +3794,12 @@ Kui võtad selle kasutusele, siis eelmise versiooni juurde ei ole võimalik otse
     <message>
         <location filename="../src/gui/governance/governancelabelslistmodel.cpp" line="62"/>
         <source>None</source>
-        <translation type="unfinished"/>
+        <translation>Puudub</translation>
     </message>
     <message>
         <location filename="../src/gui/governance/governancelabelslistmodel.cpp" line="68"/>
         <source>No label</source>
-        <translation type="unfinished"/>
+        <translation>Silti pole</translation>
     </message>
 </context>
 <context>
@@ -5524,7 +5524,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1305"/>
         <source>Apply labels</source>
-        <translation type="unfinished"/>
+        <translation>Rakenda sildid / kasuta silte</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1447"/>

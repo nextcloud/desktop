@@ -681,42 +681,42 @@
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="49"/>
         <source>Apply labels</source>
-        <translation type="unfinished"/>
+        <translation>Aplicar rótulos</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="382"/>
         <source>Sensitivity:</source>
-        <translation type="unfinished"/>
+        <translation>Confidencialidade:</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="393"/>
         <source>Select sensitivity label</source>
-        <translation type="unfinished"/>
+        <translation>Selecione o rótulo de confidencialidade</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="419"/>
         <source>Retention:</source>
-        <translation type="unfinished"/>
+        <translation>Retenção:</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="430"/>
         <source>Select retention label</source>
-        <translation type="unfinished"/>
+        <translation>Selecione o rótulo de retenção</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="444"/>
         <source>Legal hold:</source>
-        <translation type="unfinished"/>
+        <translation>Retenção legal:</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="453"/>
         <source>Select legal hold label</source>
-        <translation type="unfinished"/>
+        <translation>Selecione o rótulo de retenção legal</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="479"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Concluído</translation>
     </message>
 </context>
 <context>
@@ -3795,12 +3795,12 @@ O downgrade das versões não é possível imediatamente: mudar de estável para
     <message>
         <location filename="../src/gui/governance/governancelabelslistmodel.cpp" line="62"/>
         <source>None</source>
-        <translation type="unfinished"/>
+        <translation>Nenhum</translation>
     </message>
     <message>
         <location filename="../src/gui/governance/governancelabelslistmodel.cpp" line="68"/>
         <source>No label</source>
-        <translation type="unfinished"/>
+        <translation>Sem rótulo</translation>
     </message>
 </context>
 <context>
@@ -5525,7 +5525,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1305"/>
         <source>Apply labels</source>
-        <translation type="unfinished"/>
+        <translation>Aplicar rótulos</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1447"/>
