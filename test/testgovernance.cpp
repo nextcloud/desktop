@@ -581,16 +581,18 @@ private slots:
     },
     "data": {
       "retention": [],
-      "sensitivity": {
-        "id": "91785883351310337",
-        "name": "Test Sensitivity",
-        "priority": 0,
-        "description": "This is a long description",
-        "color": "bf4040",
-        "canAssign": "no",
-        "canRemove": "no",
-        "isAssigned": true
-      }
+      "sensitivity": [
+        {
+          "id": "91785883351310337",
+          "name": "Test Sensitivity",
+          "priority": 0,
+          "description": "This is a long description",
+          "color": "bf4040",
+          "canAssign": "no",
+          "canRemove": "no",
+          "isAssigned": true
+        }
+      ]
     }
   }
 }

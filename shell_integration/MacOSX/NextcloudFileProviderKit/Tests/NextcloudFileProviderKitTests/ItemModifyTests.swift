@@ -330,6 +330,66 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(remoteItem.data, originalRemoteData)
     }
 
+    /// Upload integrity guard (F1): when the server reports it stored a different number of bytes
+    /// than the local file contains, the modify must NOT record the item as a clean upload. It
+    /// returns a *transient* error (so the File Provider system automatically retries the modify)
+    /// and leaves the row un-uploaded, instead of committing a truncated/torn file.
+    func testModifyFileFailsOnUploadSizeMismatch() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        itemMetadata.uploaded = true
+        itemMetadata.downloaded = true
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let newContents = "Hello, New World!".data(using: .utf8)!
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("integrity-mismatch-modify")
+        try newContents.write(to: newContentsUrl)
+
+        // Simulate the server storing fewer bytes than we sent (a torn transfer).
+        remoteInterface.uploadResponseSizeOverride = Int64(newContents.count - 1)
+
+        var targetItemMetadata = SendableItemMetadata(value: itemMetadata)
+        targetItemMetadata.size = Int64(newContents.count)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: targetItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents],
+            contents: newContentsUrl,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(modifiedItem)
+
+        // The error must be *transient* (NSCocoaErrorDomain, outside the resolvable
+        // NSFileProviderError set) so the system automatically retries the modify rather than
+        // backing off until the provider signals resolution.
+        let nsError = try XCTUnwrap(error as NSError?)
+        XCTAssertEqual(nsError.domain, NSCocoaErrorDomain)
+        XCTAssertEqual(nsError.code, NSFileWriteUnknownError)
+
+        // The item must not be recorded as a clean upload; it stays pending for the retry.
+        let dbItem = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
+        XCTAssertFalse(dbItem.uploaded)
+        XCTAssertNotEqual(dbItem.status, Status.normal.rawValue)
+    }
+
     /// When the server returns 404 during an upload (the parent folder was renamed
     /// on another client while the file was open), the extension must:
     ///   - clear the stale lock token so the next attempt goes without an If: header
@@ -1232,13 +1292,31 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
 
     func testModifyFileContentsChunkedResumed() async throws {
         let chunkSize = 2
-        let chunkUploadId = UUID().uuidString
+        let newContents = Data(repeating: 1, count: chunkSize * 3)
+        let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
+        try newContents.write(to: newContentsUrl)
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        // The chunk id is derived from (item, size, modificationDate); seed the prior interrupted
+        // attempt under exactly that derived id so the resume path recognises identical content.
+        let modificationDate = Date(timeIntervalSince1970: 1_700_000_000)
+        let chunkUploadId = chunkUploadIdentifier(
+            forItemWithIdentifier: itemMetadata.ocId,
+            fileSize: Int64(newContents.count),
+            modificationDate: modificationDate
+        )
+
         let previousUploadedChunkNum = 1
         let preexistingChunk = RemoteFileChunk(
             fileName: String(previousUploadedChunkNum),
             size: Int64(chunkSize),
             remoteChunkStoreFolderName: chunkUploadId
         )
+        remoteInterface.currentChunks = [chunkUploadId: [preexistingChunk]]
 
         let db = Self.dbManager.ncDatabase()
         try db.write {
@@ -1256,19 +1334,8 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             ])
         }
 
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
-        remoteInterface.currentChunks = [chunkUploadId: [preexistingChunk]]
-
-        var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
-        itemMetadata.chunkUploadId = chunkUploadId
-        Self.dbManager.addItemMetadata(itemMetadata)
-
-        let newContents = Data(repeating: 1, count: chunkSize * 3)
-        let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
-        try newContents.write(to: newContentsUrl)
-
         var targetItemMetadata = SendableItemMetadata(value: itemMetadata)
-        targetItemMetadata.date = .init()
+        targetItemMetadata.date = modificationDate
         targetItemMetadata.size = Int64(newContents.count)
 
         let item = Item(
@@ -1306,9 +1373,6 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             remoteInterface.completedChunkTransferSize[chunkUploadId],
             Int64(newContents.count) - preexistingChunk.size
         )
-
-        let dbItem = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
-        XCTAssertNil(dbItem.chunkUploadId)
     }
 
     func testModifyDoesNotPropagateIgnoredFile() async {

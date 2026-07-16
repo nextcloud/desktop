@@ -196,16 +196,14 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     connect(connectionSettingsButton, &QPushButton::clicked, this, &AccountSettings::showConnectionSettingsDialog);
 
     _ui->verticalLayout_2->removeWidget(_ui->accountStatusPanel);
-    _ui->verticalLayout_2->removeWidget(_ui->fileProviderPanel);
     _ui->verticalLayout_2->removeWidget(_ui->syncFoldersPanel);
     _ui->verticalLayout_2->removeWidget(_ui->connectionSettingsPanel);
     _ui->verticalLayout_2->removeWidget(_ui->accountActionsPanel);
     _ui->connectionSettingsPanel->hide();
-    _ui->verticalLayout_2->insertWidget(0, _ui->fileProviderPanel);
-    _ui->verticalLayout_2->insertWidget(1, _ui->syncFoldersPanel);
-    _ui->verticalLayout_2->insertWidget(2, _encryptionPanel);
-    _ui->verticalLayout_2->insertWidget(3, _ui->accountStatusPanel);
-    _ui->verticalLayout_2->insertWidget(4, _ui->accountActionsPanel);
+    _ui->verticalLayout_2->insertWidget(0, _ui->syncFoldersPanel);
+    _ui->verticalLayout_2->insertWidget(1, _encryptionPanel);
+    _ui->verticalLayout_2->insertWidget(2, _ui->accountStatusPanel);
+    _ui->verticalLayout_2->insertWidget(3, _ui->accountActionsPanel);
 
     _model->setAccountState(_accountState);
     _model->setParent(this);
@@ -215,9 +213,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->syncFoldersPanelContents->setAutoFillBackground(false);
     _ui->syncFoldersPanelContents->setAttribute(Qt::WA_StyledBackground, false);
     _ui->syncFoldersPanelContents->setContentsMargins(0, 0, 0, 0);
-    _ui->fileProviderPanelContents->setAutoFillBackground(false);
-    _ui->fileProviderPanelContents->setAttribute(Qt::WA_StyledBackground, false);
-    _ui->fileProviderPanelContents->setContentsMargins(0, 0, 0, 0);
     _ui->connectionSettingsPanelContents->setAutoFillBackground(false);
     _ui->connectionSettingsPanelContents->setAttribute(Qt::WA_StyledBackground, false);
     _ui->connectionSettingsPanelContents->setContentsMargins(0, 0, 0, 0);
@@ -244,30 +239,30 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     new ToolTipUpdater(_ui->_folderList);
 
 #if defined(BUILD_FILE_PROVIDER_MODULE)
-    if (Mac::FileProvider::available()) {
-        const auto fileProviderPanelContents = _ui->fileProviderPanelContents;
-        const auto fpSettingsLayout = new QVBoxLayout(fileProviderPanelContents);
-        const auto fpAccountUserIdAtHost = _accountState->account()->userIdAtHostWithPort();
-        const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
-        const auto fpSettingsWidget = fpSettingsController->settingsViewWidget(fpAccountUserIdAtHost, fileProviderPanelContents,
-                                                                               QQuickWidget::SizeRootObjectToView);
-        fpSettingsLayout->setContentsMargins(0, 0, 0, 0);
-        fpSettingsLayout->setSpacing(0);
-
-        fpSettingsWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        if (const auto fpSettingsWidgetLayout = fpSettingsWidget->layout()) {
-            fpSettingsWidgetLayout->setContentsMargins(0, 0, 0, 0);
-        }
-        fpSettingsLayout->addWidget(fpSettingsWidget, 1);
-        fileProviderPanelContents->setLayout(fpSettingsLayout);
-    } else {
-        // macOS 13 Ventura: the file provider feature is unsupported there.
-        // This branch can be removed once Ventura is no longer supported.
-        _ui->fileProviderPanel->setVisible(false);
-    }
-#else
-    _ui->fileProviderPanel->setVisible(false);
+    // The File Provider integration is an app-level mode, toggled in the General
+    // settings. While it is enabled, classic sync folders are unavailable: hide the
+    // "Classic sync" panel, except when the account still has classic folders
+    // configured (a conflict the banner asks the user to resolve).
+    const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
+    connect(fpSettingsController, &Mac::FileProviderSettingsController::fileProviderModeEnabledChanged,
+            this, &AccountSettings::updateSyncFoldersPanelVisibility);
+    connect(fpSettingsController, &Mac::FileProviderSettingsController::fileProviderModeEnabledChanged,
+            this, &AccountSettings::refreshE2eEncryptionMessage);
+    // The reconciliation "Keep File Provider" path applies the mode without emitting
+    // fileProviderModeEnabledChanged (the flag was already on), so also refresh on the
+    // bulk-apply completion to update a page that is open during the transition.
+    connect(fpSettingsController, &Mac::FileProviderSettingsController::fileProviderModeApplyFinished,
+            this, [this](bool, const QStringList &) {
+                refreshE2eEncryptionMessage();
+                updateSyncFoldersPanelVisibility();
+            });
+    connect(FolderMan::instance(), &FolderMan::folderListChanged,
+            this, &AccountSettings::updateSyncFoldersPanelVisibility);
+    connect(_ui->fileProviderConflictResolveButton, &QPushButton::clicked, this, [fpSettingsController] {
+        fpSettingsController->performStartupReconciliation();
+    });
 #endif
+    updateSyncFoldersPanelVisibility();
 
     const auto mouseCursorChanger = new MouseCursorChanger(this);
     mouseCursorChanger->folderList = _ui->_folderList;
@@ -329,7 +324,10 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     // Connect E2E stuff
     if (_accountState->isConnected()) {
         setupE2eEncryption();
+        _e2eEncryptionSetupDone = true;
     } else {
+        // Not connected yet: setupE2eEncryption() (which builds the File-Provider-aware
+        // message) runs on the first Connected transition in slotAccountStateChanged().
         _ui->encryptionMessageLabel->setText(tr("End-to-end encryption has not been initialized on this account."));
     }
     _ui->encryptionMessageLabel->setTextFormat(Qt::RichText);
@@ -940,6 +938,13 @@ void AccountSettings::slotFolderWizardAccepted()
             QStringList() << QLatin1String("/"));
         folderMan->scheduleAllFolders();
         emit folderChanged();
+    } else {
+        // addFolder can refuse (e.g. classic sync folders are unavailable while the
+        // File Provider integration is enabled). Don't leave the user believing the
+        // wizard succeeded.
+        QMessageBox::warning(this, tr("Folder creation failed"),
+            tr("<p>Could not add the folder sync connection for <i>%1</i>.</p>")
+                .arg(Utility::escape(QDir::toNativeSeparators(definition.localPath))));
     }
 }
 
@@ -1560,6 +1565,15 @@ void AccountSettings::slotAccountStateChanged()
     refreshSelectiveSyncStatus();
 
     if (state == AccountState::State::Connected) {
+        // Build the encryption message on the first connect if the account was still
+        // connecting when this page was constructed — otherwise the panel would be
+        // revealed below still showing the not-connected placeholder instead of the
+        // File-Provider-aware text. Guarded so e2e initialization is set up only once;
+        // File-Provider-mode changes are handled separately via the controller signals.
+        if (!_e2eEncryptionSetupDone) {
+            setupE2eEncryption();
+            _e2eEncryptionSetupDone = true;
+        }
         checkClientSideEncryptionState();
     }
 }
@@ -1936,17 +1950,38 @@ QAction *AccountSettings::addActionToEncryptionMessage(const QString &actionTitl
 
 void AccountSettings::setupE2eEncryptionMessage()
 {
-#ifdef BUILD_FILE_PROVIDER_MODULE
-    const auto encryptionMessage = tr("This account supports end-to-end encryption, but it needs to be set up first.") + QStringLiteral(" ") + tr("The File Provider extension does not support end-to-end encryption yet.");
-#else
-    const auto encryptionMessage = tr("This account supports end-to-end encryption, but it needs to be set up first.");
-#endif
-    _ui->encryptionMessageLabel->setText(encryptionMessage);
     setEncryptionMessageIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/info.svg")));
     setEncryptionPanelVisible(false);
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    if (Mac::FileProvider::available() && Mac::FileProviderSettingsController::instance()->fileProviderModeEnabled()) {
+        // The File Provider extension does not support end-to-end encryption yet, so it
+        // cannot be set up while File Provider mode is enabled. Replace the whole setup
+        // prompt with an informational message and offer no "Set up encryption" action.
+        _ui->encryptionMessageLabel->setText(tr("The File Provider extension does not support end-to-end encryption yet."));
+        return;
+    }
+#endif
+
+    _ui->encryptionMessageLabel->setText(tr("This account supports end-to-end encryption, but it needs to be set up first."));
+
     auto *const actionSetupE2e = addActionToEncryptionMessage(tr("Set up encryption"), e2EeUiActionSetupEncryptionId);
     connect(actionSetupE2e, &QAction::triggered, this, &AccountSettings::slotE2eEncryptionGenerateKeys);
+}
+
+void AccountSettings::refreshE2eEncryptionMessage()
+{
+    // Only the not-yet-initialized setup prompt depends on the File Provider mode; once
+    // encryption is initialized the message shown is independent of it.
+    if (_accountState->account()->e2e()->isInitialized()) {
+        return;
+    }
+
+    // Rebuild from scratch so a stale "Set up encryption" action cannot linger (and to
+    // avoid re-connecting the same action twice).
+    removeActionFromEncryptionMessage(e2EeUiActionSetupEncryptionId);
+    setupE2eEncryptionMessage();
+    checkClientSideEncryptionState();
 }
 
 void AccountSettings::setEncryptionPanelVisible(bool visible)
@@ -1955,6 +1990,39 @@ void AccountSettings::setEncryptionPanelVisible(bool visible)
     if (_encryptionPanel) {
         _encryptionPanel->setVisible(visible);
     }
+}
+
+void AccountSettings::updateSyncFoldersPanelVisibility()
+{
+#if defined(BUILD_FILE_PROVIDER_MODULE)
+    const auto fpModeOn = Mac::FileProvider::available()
+        && Mac::FileProviderSettingsController::instance()->fileProviderModeEnabled();
+
+    auto hasClassicFolders = false;
+    const auto folderMap = FolderMan::instance()->map();
+
+    for (const auto folder : folderMap) {
+        if (folder->accountState() == _accountState) {
+            hasClassicFolders = true;
+            break;
+        }
+    }
+
+    // Hide the classic sync settings while File Provider mode is on — except when this
+    // account still has classic folders configured (mixed state): those must stay
+    // visible, together with the banner asking the user to resolve the conflict.
+    _ui->syncFoldersPanel->setVisible(!fpModeOn || hasClassicFolders);
+    _ui->fileProviderConflictBanner->setVisible(fpModeOn && hasClassicFolders);
+
+    if (fpModeOn && hasClassicFolders && _ui->fileProviderConflictBannerIcon->pixmap().isNull()) {
+        const auto iconSize = style()->pixelMetric(QStyle::PM_SmallIconSize, nullptr, this);
+        const auto warningIcon = Theme::createColorAwareIcon(QStringLiteral(":/client/theme/black/warning.svg"));
+        _ui->fileProviderConflictBannerIcon->setPixmap(warningIcon.pixmap(iconSize, iconSize));
+    }
+#else
+    _ui->syncFoldersPanel->setVisible(true);
+    _ui->fileProviderConflictBanner->setVisible(false);
+#endif
 }
 
 void AccountSettings::setEncryptionMessageIcon(const QIcon &icon)

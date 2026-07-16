@@ -139,7 +139,7 @@ public extension Item {
             usingRemoteInterface: remoteInterface,
             withAccount: account,
             inChunksSized: forcedChunkSize,
-            usingChunkUploadId: metadata.chunkUploadId,
+            forItemWithIdentifier: ocId,
             dbManager: dbManager,
             creationDate: newCreationDate,
             modificationDate: newContentModificationDate,
@@ -229,15 +229,25 @@ public extension Item {
             """
         )
 
+        // Integrity check: the size the server reports it stored must match the bytes we handed it.
+        // A mismatch means a torn/truncated transfer (a dropped connection, or an app such as Adobe
+        // InDesign/Illustrator still writing the file). Do NOT record it as a clean upload — return a
+        // *transient* error so the File Provider system re-drives the modification instead of
+        // committing a broken file. See F1 in the Adobe compatibility diagnosis.
+        //
+        // The error must be transient to get an automatic retry: per NSFileProviderReplicatedExtension,
+        // the resolvable NSFileProviderError codes (`.cannotSynchronize`, `.notAuthenticated`,
+        // `.excludedFromSync`, …) make the system back off until the provider calls
+        // `signalErrorResolved(_:)`. "Any other error … in NSCocoaErrorDomain" is treated as transient
+        // and retried. We leave the row in its `.uploading` state so the retry settles it to `.normal`.
         let contentAttributes = try? FileManager.default.attributesOfItem(atPath: newContents.path)
-        if let expectedSize = contentAttributes?[.size] as? Int64, size != expectedSize {
-            logger.info(
-                """
-                Item content modification upload reported as successful,
-                but there are differences between the received file size (\(size ?? -1))
-                and the original file size (\(documentSize?.int64Value ?? 0))
-                """
-            )
+
+        if let localSize = contentAttributes?[.size] as? Int64, let uploadedSize = size, uploadedSize != localSize {
+            logger.error("Upload integrity check failed for item: server stored \(uploadedSize) bytes but the local file is \(localSize) bytes. Returning a transient error so the system retries.", [.name: filename, .item: ocId])
+
+            return (nil, NSError(domain: NSCocoaErrorDomain, code: NSFileWriteUnknownError, userInfo: [
+                NSLocalizedDescriptionKey: "Upload integrity check failed: server stored \(uploadedSize) of \(localSize) bytes."
+            ]))
         }
 
         var newMetadata =

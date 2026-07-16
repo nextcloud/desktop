@@ -7,6 +7,9 @@
 #ifndef MIRALL_GENERALSETTINGS_H
 #define MIRALL_GENERALSETTINGS_H
 
+// For BUILD_FILE_PROVIDER_MODULE, which gates the File Provider members below.
+#include "config.h"
+
 #include <QWidget>
 
 namespace OCC {
@@ -38,10 +41,16 @@ private slots:
     void slotToggleChatNotifications(bool);
     void slotToggleCallNotifications(bool);
     void slotToggleQuotaWarningNotifications(bool);
+    void slotFileProviderSwitchClicked(bool checked);
     void loadMiscSettings();
 
 private:
     void customizeStyle();
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    void confirmEnableFileProviderMode();
+    void confirmDisableFileProviderMode();
+#endif
 
     Ui::GeneralSettings *_ui;
     bool _currentlyLoading = false;

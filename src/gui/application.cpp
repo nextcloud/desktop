@@ -515,14 +515,22 @@ Application::Application(int &argc, char **argv)
 
 #if defined(BUILD_FILE_PROVIDER_MODULE)
     Mac::FileProvider::instance();
+
+    // Instantiating the settings controller runs its startup migrations: initialising
+    // the app-level File Provider mode flag, and — on macOS 13 Ventura, where the file
+    // provider feature is unsupported — gracefully tearing down any pre-existing VFS
+    // domains.
+    Mac::FileProviderSettingsController::instance();
+
     if (Mac::FileProvider::available()) {
         Mac::FileProvider::instance()->configureXPC();
-    } else {
-        // macOS 13 Ventura: instantiating the settings controller triggers the
-        // one-time cleanup that gracefully tears down any pre-existing VFS
-        // domains. The check (and this branch) can be removed once Ventura is
-        // no longer supported.
-        Mac::FileProviderSettingsController::instance();
+
+        // Deferred so that the event loop is running: reconciles the file provider
+        // domains with the app-level mode and, if both File Provider mode and classic
+        // sync folders are configured, asks the user which one to keep.
+        QTimer::singleShot(0, this, [] {
+            Mac::FileProviderSettingsController::instance()->performStartupReconciliation();
+        });
     }
 #endif
 

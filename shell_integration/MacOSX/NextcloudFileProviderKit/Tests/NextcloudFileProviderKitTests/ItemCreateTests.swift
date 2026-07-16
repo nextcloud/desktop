@@ -124,6 +124,53 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(createdItem.isUploaded)
     }
 
+    /// Upload integrity guard (F1): when the server reports it stored a different number of bytes
+    /// than the local file contains, `create` must NOT record the item as a clean upload. It
+    /// returns a *transient* error (so the File Provider system automatically retries the create)
+    /// and best-effort removes the partial remote object, instead of surfacing a torn file as synced.
+    func testCreateFileFailsOnUploadSizeMismatch() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        var fileItemMetadata = SendableItemMetadata(
+            ocId: "file-id", fileName: "file", account: Self.account
+        )
+        fileItemMetadata.classFile = NKTypeClassFile.document.rawValue
+
+        let tempUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("integrity-mismatch-create")
+        try Data("Hello world".utf8).write(to: tempUrl)
+
+        // Simulate the server storing fewer bytes than we sent (a torn transfer).
+        remoteInterface.uploadResponseSizeOverride = 3
+
+        let fileItemTemplate = Item(
+            metadata: fileItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let (createdItemMaybe, error) = await Item.create(
+            basedOn: fileItemTemplate,
+            contents: tempUrl,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertNil(createdItemMaybe)
+
+        // The error must be *transient* (NSCocoaErrorDomain) so the system automatically retries
+        // the create rather than backing off until the provider signals resolution.
+        let nsError = try XCTUnwrap(error as NSError?)
+        XCTAssertEqual(nsError.domain, NSCocoaErrorDomain)
+        XCTAssertEqual(nsError.code, NSFileWriteUnknownError)
+
+        // Nothing must be recorded as a clean upload for this item.
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: "file-id"))
+    }
+
     func testCreateFile() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         var fileItemMetadata = SendableItemMetadata(
@@ -650,13 +697,31 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
 
     func testCreateFileChunkedResumed() async throws {
         let chunkSize = 2
-        let expectedChunkUploadId = UUID().uuidString // Check if illegal characters are stripped
-        let illegalChunkUploadId = expectedChunkUploadId + "/" // Check if illegal characters are stripped
+        let expectedChunkUploadIdBase = UUID().uuidString // Check that illegal characters are stripped.
+        let illegalChunkUploadId = expectedChunkUploadIdBase + "/" // Check that illegal characters are stripped.
+
+        let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("file")
+        let tempData = Data(repeating: 1, count: chunkSize * 3)
+        try tempData.write(to: tempUrl)
+
+        // New-item creation has no persisted ItemMetadata (the OS supplies the template), so the chunk
+        // id is derived from the template's itemIdentifier plus the content's (size, modificationDate),
+        // with illegal path characters stripped. Seed the prior interrupted attempt under exactly that
+        // derived id so the resume path recognises identical content.
+        let modificationDate = Date(timeIntervalSince1970: 1_700_000_000)
+        let chunkUploadId = chunkUploadIdentifier(
+            forItemWithIdentifier: illegalChunkUploadId,
+            fileSize: Int64(tempData.count),
+            modificationDate: modificationDate
+        )
+        XCTAssertTrue(chunkUploadId.hasPrefix(expectedChunkUploadIdBase + "_"))
+        XCTAssertFalse(chunkUploadId.contains("/"))
+
         let previousUploadedChunkNum = 1
         let preexistingChunk = RemoteFileChunk(
             fileName: String(previousUploadedChunkNum),
             size: Int64(chunkSize),
-            remoteChunkStoreFolderName: expectedChunkUploadId
+            remoteChunkStoreFolderName: chunkUploadId
         )
 
         let db = Self.dbManager.ncDatabase()
@@ -665,37 +730,24 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
                 RemoteFileChunk(
                     fileName: String(previousUploadedChunkNum + 1),
                     size: Int64(chunkSize),
-                    remoteChunkStoreFolderName: expectedChunkUploadId
+                    remoteChunkStoreFolderName: chunkUploadId
                 ),
                 RemoteFileChunk(
                     fileName: String(previousUploadedChunkNum + 2),
                     size: Int64(chunkSize),
-                    remoteChunkStoreFolderName: expectedChunkUploadId
+                    remoteChunkStoreFolderName: chunkUploadId
                 )
             ])
         }
 
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
-        remoteInterface.currentChunks = [expectedChunkUploadId: [preexistingChunk]]
+        remoteInterface.currentChunks = [chunkUploadId: [preexistingChunk]]
 
-        // With real new item uploads we do not have an associated ItemMetadata as the template is
-        // passed onto us by the OS. We cannot rely on the chunkUploadId property we usually use
-        // during modified item uploads.
-        //
-        // We therefore can only use the system-provided item template's itemIdentifier as the
-        // chunked upload identifier during new item creation.
-        //
-        // To test this situation we set the ocId of the metadata used to construct the item
-        // template to the chunk upload id.
         var fileItemMetadata = SendableItemMetadata(
             ocId: illegalChunkUploadId, fileName: "file", account: Self.account
         )
-        fileItemMetadata.ocId = illegalChunkUploadId
         fileItemMetadata.classFile = NKTypeClassFile.document.rawValue
-
-        let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("file")
-        let tempData = Data(repeating: 1, count: chunkSize * 3)
-        try tempData.write(to: tempUrl)
+        fileItemMetadata.date = modificationDate
 
         let fileItemTemplate = Item(
             metadata: fileItemMetadata,
@@ -729,7 +781,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(remoteItem.directory, fileItemMetadata.directory)
         XCTAssertEqual(remoteItem.data, tempData)
         XCTAssertEqual(
-            remoteInterface.completedChunkTransferSize[expectedChunkUploadId],
+            remoteInterface.completedChunkTransferSize[chunkUploadId],
             Int64(tempData.count) - preexistingChunk.size
         )
 

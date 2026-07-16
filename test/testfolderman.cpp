@@ -588,6 +588,55 @@ private slots:
 
         QCOMPARE(FolderMan::instance()->map().count(), 0);
     }
+
+    void testMacFileProviderModeEnabledConfig()
+    {
+        QTemporaryDir dir;
+        ConfigFile::setConfDir(dir.path());
+        QVERIFY(dir.isValid());
+
+        ConfigFile cfg;
+        QVERIFY(!cfg.macFileProviderModeEnabledIsSet());
+        QVERIFY(!cfg.macFileProviderModeEnabled());
+
+        cfg.setMacFileProviderModeEnabled(true);
+        QVERIFY(cfg.macFileProviderModeEnabledIsSet());
+        QVERIFY(cfg.macFileProviderModeEnabled());
+
+        cfg.setMacFileProviderModeEnabled(false);
+        QVERIFY(cfg.macFileProviderModeEnabledIsSet());
+        QVERIFY(!cfg.macFileProviderModeEnabled());
+    }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    void testAddFolderRefusedWhenFileProviderModeEnabled()
+    {
+        _fm.reset({});
+        _fm.reset(new FolderMan{});
+
+        QTemporaryDir dir;
+        ConfigFile::setConfDir(dir.path());
+        QVERIFY(dir.isValid());
+        QVERIFY(QDir(dir.path()).mkpath(QStringLiteral("folder1")));
+
+        auto account = Account::create();
+        account->setCredentials(new FakeCredentials{new FakeQNAM({})});
+        account->setUrl(QUrl(QStringLiteral("http://example.de")));
+        auto accountState = new FakeAccountState(account);
+
+        // Classic sync folders and File Provider mode are mutually exclusive.
+        ConfigFile().setMacFileProviderModeEnabled(true);
+        QVERIFY(!FolderMan::instance()->addFolder(accountState, folderDefinition(dir.path() + QStringLiteral("/folder1"))));
+        QCOMPARE(FolderMan::instance()->map().count(), 0);
+
+        ConfigFile().setMacFileProviderModeEnabled(false);
+        QVERIFY(FolderMan::instance()->addFolder(accountState, folderDefinition(dir.path() + QStringLiteral("/folder1"))));
+        QCOMPARE(FolderMan::instance()->map().count(), 1);
+
+        FolderMan::instance()->unloadAndDeleteAllFolders();
+        QCOMPARE(FolderMan::instance()->map().count(), 0);
+    }
+#endif
 };
 
 QTEST_GUILESS_MAIN(TestFolderMan)
