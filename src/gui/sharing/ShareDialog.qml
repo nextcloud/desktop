@@ -12,9 +12,11 @@ import QtQuick.Controls
 
 import com.nextcloud.desktopclient
 import Style
+import "qrc:/qml/src/gui"
 import "qrc:/qml/src/gui/tray"
+import "qrc:/qml/src/gui/wizard/qml"
 
-ApplicationWindow {
+WizardStyledWindow {
     id: root
     visible: true
 
@@ -23,7 +25,11 @@ ApplicationWindow {
     property string shortLocalPath: root.localPath.split("/").reverse()[0]
     property string fileId: ""
 
-    readonly property int windowRadius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
+    title: mainPage.title
+    width: 400
+    height: 500
+    minimumWidth: Style.wizardStandaloneWindowMinimumWidth
+    minimumHeight: Style.wizardStandaloneWindowMinimumHeight
 
     ButtonGroup {
         id: shareType
@@ -34,24 +40,24 @@ ApplicationWindow {
         account: root.account
     }
 
+    Shortcut {
+        sequences: [StandardKey.Cancel]
+        onActivated: root.close()
+    }
+
     Component.onCompleted: {
         sharingController.createShare(root.fileId)
     }
 
-    width: 400
-    height: 500
-    minimumWidth: 300
-    minimumHeight: 300
-
-    title: mainPage.title
-
     ColumnLayout {
-        spacing: Style.standardSpacing
         anchors.fill: parent
-        anchors.margins: Style.standardSpacing
+        anchors.leftMargin: Style.wizardWindowMargin
+        anchors.rightMargin: Style.wizardWindowMargin
+        anchors.topMargin: Style.wizardWindowTopMargin
+        anchors.bottomMargin: Style.wizardWindowMargin
+        spacing: Style.wizardSectionSpacing
 
         RowLayout {
-            // TODO: extract this to a shared component
             id: windowHeader
             Layout.fillWidth: true
 
@@ -68,7 +74,6 @@ ApplicationWindow {
                 Layout.topMargin: Style.extraSmallSpacing
                 background: Rectangle {
                     color: "transparent"
-                    radius: root.windowRadius
                     border.width: parent.hovered ? Style.trayWindowBorderWidth : 0
                     border.color: palette.dark
                     anchors.fill: parent
@@ -84,8 +89,8 @@ ApplicationWindow {
                     id: headerSettings
                     text: stack.currentItem.title
                     elide: Text.ElideRight
-                    font.bold: true
-                    font.pixelSize: Style.pixelSize
+                    font.pixelSize: Style.wizardHeaderTitleFontPixelSize
+                    font.weight: Font.DemiBold
                     color: palette.text
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
@@ -94,9 +99,8 @@ ApplicationWindow {
                     id: headerSettingsLocalPath
                     text: root.shortLocalPath
                     elide: Text.ElideRight
-                    font.bold: false
-                    font.pixelSize: Style.pixelSize
-                    color: palette.text
+                    color: Style.wizardSecondaryText
+                    font.pixelSize: Style.wizardHeaderAccountServerFontPixelSize
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
 
@@ -104,25 +108,9 @@ ApplicationWindow {
                 }
             }
 
-            Button {
+            WizardButton {
                 id: settingsButton
-                flat: true
-                padding: Style.extraSmallSpacing
-                spacing: 0
-                icon.source: "image://svgimage-custom-color/settings.svg/" + palette.windowText
-                icon.width: Style.extraSmallIconSize
-                icon.height: Style.extraSmallIconSize
-                Layout.alignment: Qt.AlignTop | Qt.AlignRight
-                Layout.rightMargin: Style.extraSmallSpacing
-                Layout.topMargin: Style.extraSmallSpacing
-                background: Rectangle {
-                    color: "transparent"
-                    radius: root.windowRadius
-                    border.width: parent.hovered ? Style.trayWindowBorderWidth : 0
-                    border.color: palette.dark
-                    anchors.fill: parent
-                    Layout.margins: Style.extraSmallSpacing
-                }
+                iconSource: "image://svgimage-custom-color/settings.svg/" + palette.windowText
 
                 visible: stack.depth < 2
 
@@ -130,35 +118,12 @@ ApplicationWindow {
                     sharingController: sharingController,
                 }))
             }
-
-            Button {
-                id: closeButton
-                flat: true
-                padding: Style.extraSmallSpacing
-                spacing: 0
-                icon.source: "image://svgimage-custom-color/close.svg/" + palette.windowText
-                icon.width: Style.extraSmallIconSize
-                icon.height: Style.extraSmallIconSize
-                Layout.alignment: Qt.AlignTop | Qt.AlignRight
-                Layout.rightMargin: Style.extraSmallSpacing
-                Layout.topMargin: Style.extraSmallSpacing
-                background: Rectangle {
-                    color: "transparent"
-                    radius: root.windowRadius
-                    border.width: parent.hovered ? Style.trayWindowBorderWidth : 0
-                    border.color: palette.dark
-                    anchors.fill: parent
-                    Layout.margins: Style.extraSmallSpacing
-                }
-
-                onClicked: root.close()
-            }
         }
 
         RowLayout {
             Layout.fillWidth: true
 
-            Button {
+            WizardButton {
                 Layout.fillWidth: true
 
                 id: viewInvitedPeople
@@ -166,16 +131,18 @@ ApplicationWindow {
 
                 checkable: true
                 checked: true
+                primary: checked // TODO: extend WizardButton for checked state
                 ButtonGroup.group: shareType
             }
 
-            Button {
+            WizardButton {
                 Layout.fillWidth: true
 
                 id: viewAnyone
                 text: qsTr("Anyone")
 
                 checkable: true
+                primary: checked // TODO: extend WizardButton for checked state
                 ButtonGroup.group: shareType
 
                 onCheckedChanged: {
