@@ -128,8 +128,6 @@ ApplicationWindow {
 
                 onClicked: stack.push(Qt.createComponent("com.nextcloud.desktopclient.sharing", "SettingsPage").createObject(root, {
                     sharingController: sharingController,
-                    shortLocalPath: root.shortLocalPath,
-                    recipientTypes: Qt.binding(() => root.recipientTypes),
                 }))
             }
 
