@@ -16,10 +16,7 @@ import Style
 Page {
     id: root
 
-    property string localPath: ""
-    property string shortLocalPath: ""
     required property SharingController sharingController
-    required property list<string> recipientTypes
 
     title: qsTr("Sharing settings")
 
@@ -48,9 +45,7 @@ Page {
                     share: root.sharingController.share
                 }
 
-
                 delegate: FieldDelegate {
-                    account: root.sharingController.account
                     width: propertyList.contentItem.width
                 }
             }
