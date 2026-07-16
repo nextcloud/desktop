@@ -12,6 +12,9 @@ import QtQuick.Controls
 
 import com.nextcloud.desktopclient
 import Style
+// import "qrc:/qml/src/gui"
+// import "qrc:/qml/src/gui/tray"
+import "qrc:/qml/src/gui/wizard/qml"
 
 Page {
     id: root
@@ -37,6 +40,8 @@ Page {
             rightPadding: ScrollBar.vertical.policy == ScrollBar.AlwaysOn ? ScrollBar.vertical.width + Style.standardSpacing : 0
 
             ColumnLayout {
+                width: parent.width
+
                 RecipientSearchField {
                     id: searchField
                     Layout.fillWidth: true
@@ -50,8 +55,10 @@ Page {
                     }
                 }
 
-                ComboBox {
+                WizardComboBox {
                     id: permissionPresetSelector
+                    Layout.fillWidth: true
+
                     model: [
                         { preset: "view", text: qsTr("Can view") },
                         { preset: "edit", text: qsTr("Can edit") },
