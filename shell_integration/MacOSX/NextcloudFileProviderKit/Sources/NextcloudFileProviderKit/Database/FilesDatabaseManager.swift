@@ -463,9 +463,6 @@ public final class FilesDatabaseManager: Sendable {
                     result.downloaded = false
                 } else if result.isUpload {
                     result.uploaded = false
-                    result.chunkUploadId = UUID().uuidString
-                } else if status == .normal, metadata.isUpload {
-                    result.chunkUploadId = nil
                 }
 
                 logger.debug("Updated status for item metadata.", [

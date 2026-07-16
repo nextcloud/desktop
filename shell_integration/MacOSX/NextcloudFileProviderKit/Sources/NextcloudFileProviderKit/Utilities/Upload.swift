@@ -9,13 +9,44 @@ import RealmSwift
 
 let defaultFileChunkSize = 104_857_600 // 100 MiB
 
+/// The per-item prefix shared by every chunked-upload identifier for a given item, so stale chunk
+/// bookkeeping from earlier versions of the same item can be swept.
+func chunkUploadIdentifierPrefix(forItemWithIdentifier itemIdentifier: String) -> String {
+    itemIdentifier.replacingOccurrences(of: "/", with: "") + "_"
+}
+
+/// Derives a stable, *content-scoped* identifier for a chunked upload's server folder and its local
+/// `RemoteFileChunk` bookkeeping.
+///
+/// The identity is `(item, size, modificationDate)`: the same content re-uploads under the same id,
+/// so an interrupted transfer resumes and reuses the chunks already stored on the server. Any content
+/// change yields a different id, so chunks from a previous version are never spliced into a different
+/// one (see F3). The value is prefixed with the item id so stale sets can be swept by prefix.
+///
+/// When no modification date is available the content can't be bound to an id, so a per-attempt unique
+/// id is used: this forgoes resume for that upload but never risks a bad splice. In the File Provider
+/// model a real content change always bumps `contentModificationDate` (that is how the change was
+/// detected), so equal `(size, modificationDate)` reliably means identical content.
+func chunkUploadIdentifier(
+    forItemWithIdentifier itemIdentifier: String, fileSize: Int64, modificationDate: Date?
+) -> String {
+    let prefix = chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)
+
+    guard let modificationDate else {
+        return prefix + UUID().uuidString
+    }
+
+    let mtimeSeconds = Int64(modificationDate.timeIntervalSince1970.rounded())
+    return "\(prefix)\(fileSize)_\(mtimeSeconds)"
+}
+
 func upload(
     fileLocatedAt localFilePath: String,
     toRemotePath remotePath: String,
     usingRemoteInterface remoteInterface: RemoteInterface,
     withAccount account: Account,
     inChunksSized chunkSize: Int? = nil,
-    usingChunkUploadId chunkUploadId: String? = UUID().uuidString,
+    forItemWithIdentifier itemIdentifier: String,
     dbManager: FilesDatabaseManager,
     creationDate: Date? = nil,
     modificationDate: Date? = nil,
@@ -106,7 +137,9 @@ func upload(
         return (ocId, etag, date as? Date, size, remoteError)
     }
 
-    let chunkUploadId = chunkUploadId ?? UUID().uuidString
+    let chunkUploadId = chunkUploadIdentifier(
+        forItemWithIdentifier: itemIdentifier, fileSize: fileSize, modificationDate: modificationDate
+    )
 
     uploadLogger.info(
         """
@@ -116,6 +149,26 @@ func upload(
             chunkSize: \(chunkSize)
         """
     )
+
+    // Content-scoped resume (F3): drop any chunk bookkeeping left over from a *different* version of
+    // this same item — a prior interrupted upload whose content has since changed derives a different
+    // id. Keeping those rows would risk resuming against server-side chunks that belong to the old
+    // content and splicing them into the new file. Rows under the current id (a genuine resume of
+    // identical content) share the id and are preserved.
+    let staleChunkPrefix = chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)
+    do {
+        let db = dbManager.ncDatabase()
+        let staleChunks = db.objects(RemoteFileChunk.self).where {
+            $0.remoteChunkStoreFolderName.starts(with: staleChunkPrefix)
+                && $0.remoteChunkStoreFolderName != chunkUploadId
+        }
+
+        if !staleChunks.isEmpty {
+            try db.write { db.delete(staleChunks) }
+        }
+    } catch {
+        uploadLogger.error("Could not clear stale chunk bookkeeping for item.", [.error: error])
+    }
 
     let remainingChunks = dbManager
         .ncDatabase()

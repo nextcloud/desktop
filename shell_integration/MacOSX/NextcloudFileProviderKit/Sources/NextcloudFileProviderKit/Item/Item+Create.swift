@@ -137,15 +137,13 @@ public extension Item {
         log: any FileProviderLogging
     ) async -> (Item?, Error?) {
         let logger = FileProviderLogger(category: "Item", log: log)
-        let chunkUploadId =
-            itemTemplate.itemIdentifier.rawValue.replacingOccurrences(of: "/", with: "")
         let (ocId, etag, date, size, error) = await upload(
             fileLocatedAt: localPath,
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
             withAccount: account,
             inChunksSized: forcedChunkSize,
-            usingChunkUploadId: chunkUploadId,
+            forItemWithIdentifier: itemTemplate.itemIdentifier.rawValue,
             dbManager: dbManager,
             creationDate: itemTemplate.creationDate as? Date,
             modificationDate: itemTemplate.contentModificationDate as? Date,
