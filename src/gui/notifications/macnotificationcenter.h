@@ -26,8 +26,11 @@ void sendNotification(const QString &title, const QString &message);
 /** @brief Send an update notification that opens a download URL. */
 void sendUpdateNotification(const QString &title, const QString &message, const QUrl &webUrl);
 
-/** @brief Send a server notification with its server-provided actions. */
-void sendServerNotification(const Activity &activity, const AccountStatePtr &accountState);
+/**
+ * @brief Send a server notification with its server-provided actions.
+ * @param playSound Whether the notification should play the default sound.
+ */
+void sendServerNotification(const Activity &activity, const AccountStatePtr &accountState, bool playSound);
 
 /** @brief Remove a pending and delivered server notification. */
 void removeServerNotification(const QString &accountId, qint64 notificationId);

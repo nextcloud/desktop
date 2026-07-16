@@ -183,6 +183,7 @@ public:
 
     Type _type;
     qint64 _id = 0LL;
+    QString _app; //!< Server app that created this activity or notification.
     QString _fileAction;
     int _objectId = 0;
     TalkNotificationData _talkNotificationData;

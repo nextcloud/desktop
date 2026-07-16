@@ -49,6 +49,16 @@ NSMutableDictionary *notificationCategoryRegistry()
     return registry;
 }
 
+NSMutableDictionary *pendingServerNotificationCategoryReferences()
+{
+    static NSMutableDictionary *references = nil;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        references = [[NSMutableDictionary alloc] init];
+    });
+    return references;
+}
+
 void setRegisteredNotificationCategories()
 {
     auto * const registry = notificationCategoryRegistry();
@@ -66,10 +76,60 @@ void registerNativeNotificationCategory(UNNotificationCategory *category)
     }
 
     auto * const registry = notificationCategoryRegistry();
+    auto changed = false;
     @synchronized (registry) {
-        [registry setObject:category forKey:category.identifier];
+        if (![registry objectForKey:category.identifier]) {
+            [registry setObject:category forKey:category.identifier];
+            changed = true;
+        }
     }
-    setRegisteredNotificationCategories();
+    if (changed) {
+        setRegisteredNotificationCategories();
+    }
+}
+
+void retainPendingServerNotificationCategory(NSString *categoryIdentifier)
+{
+    auto * const references = pendingServerNotificationCategoryReferences();
+    @synchronized (references) {
+        const auto count = [[references objectForKey:categoryIdentifier] unsignedIntegerValue];
+        [references setObject:@(count + 1) forKey:categoryIdentifier];
+    }
+}
+
+void releasePendingServerNotificationCategory(NSString *categoryIdentifier)
+{
+    auto * const references = pendingServerNotificationCategoryReferences();
+    @synchronized (references) {
+        const auto count = [[references objectForKey:categoryIdentifier] unsignedIntegerValue];
+        if (count <= 1) {
+            [references removeObjectForKey:categoryIdentifier];
+        } else {
+            [references setObject:@(count - 1) forKey:categoryIdentifier];
+        }
+    }
+}
+
+void pruneUnusedServerNotificationCategories(NSSet<NSString *> *referencedCategoryIdentifiers)
+{
+    auto * const registry = notificationCategoryRegistry();
+    auto * const pendingReferences = pendingServerNotificationCategoryReferences();
+    auto changed = false;
+    @synchronized (registry) {
+        @synchronized (pendingReferences) {
+            for (NSString *categoryIdentifier in registry.allKeys) {
+                if ([categoryIdentifier hasPrefix:serverCategoryPrefix]
+                    && ![referencedCategoryIdentifiers containsObject:categoryIdentifier]
+                    && ![pendingReferences objectForKey:categoryIdentifier]) {
+                    [registry removeObjectForKey:categoryIdentifier];
+                    changed = true;
+                }
+            }
+        }
+    }
+    if (changed) {
+        setRegisteredNotificationCategories();
+    }
 }
 
 void seedNativeNotificationCategories(NSArray *categories)
@@ -104,6 +164,49 @@ QString nativeServerNotificationIdentifier(const QString &accountId, const qint6
     identity += QByteArray::number(notificationId);
     const auto digest = QCryptographicHash::hash(identity, QCryptographicHash::Sha256).toHex();
     return QStringLiteral("NextcloudServerNotification-%1").arg(QString::fromLatin1(digest));
+}
+
+QString serverNotificationThreadKind(const OCC::Activity &activity)
+{
+    if (activity._objectType == QStringLiteral("call")) {
+        return QStringLiteral("calls");
+    }
+    if (activity._objectType == QStringLiteral("chat")
+        || activity._objectType == QStringLiteral("room")) {
+        return QStringLiteral("talk");
+    }
+    if (activity._app == QStringLiteral("announcementcenter")
+        || activity._app == QStringLiteral("nextcloud_announcements")
+        || activity._app == QStringLiteral("admin_notifications")
+        || activity._app == QStringLiteral("notifications")
+        || activity._app == QStringLiteral("updatenotification")) {
+        return QStringLiteral("system");
+    }
+    if (activity._app == QStringLiteral("files")
+        || activity._app.startsWith(QStringLiteral("files_"))
+        || activity._app == QStringLiteral("federatedfilesharing")
+        || activity._app == QStringLiteral("sharebymail")
+        || activity._app == QStringLiteral("groupfolders")
+        || activity._objectType == QStringLiteral("files")
+        || activity._objectType == QStringLiteral("remote_share")
+        || activity._objectType == QStringLiteral("local_share")) {
+        return QStringLiteral("files");
+    }
+    return QStringLiteral("other");
+}
+
+QString nativeServerNotificationThreadIdentifier(const OCC::Activity &activity, const QString &accountId)
+{
+    const auto kind = serverNotificationThreadKind(activity);
+    auto identity = accountId.toUtf8();
+    identity += '\0';
+    identity += kind.toUtf8();
+    if (kind == QStringLiteral("talk")) {
+        identity += '\0';
+        identity += activity._talkNotificationData.conversationToken.toUtf8();
+    }
+    const auto digest = QCryptographicHash::hash(identity, QCryptographicHash::Sha256).toHex();
+    return QStringLiteral("NextcloudServerThread-%1-%2").arg(kind, QString::fromLatin1(digest));
 }
 
 QVariantList nativeNotificationActions(const OCC::Activity &activity)
@@ -208,6 +311,19 @@ void removePendingAndDeliveredNotifications(NSArray *identifiers)
     auto * const center = UNUserNotificationCenter.currentNotificationCenter;
     [center removePendingNotificationRequestsWithIdentifiers:identifiers];
     [center removeDeliveredNotificationsWithIdentifiers:identifiers];
+}
+
+NSSet<NSString *> *serverNotificationCategoryIdentifiers(
+    NSArray<UNNotificationRequest *> *requests, NSSet<NSString *> *staleIdentifiers)
+{
+    auto * const categoryIdentifiers = [NSMutableSet set];
+    for (UNNotificationRequest *request in requests) {
+        if (![staleIdentifiers containsObject:request.identifier]
+            && [request.content.categoryIdentifier hasPrefix:serverCategoryPrefix]) {
+            [categoryIdentifiers addObject:request.content.categoryIdentifier];
+        }
+    }
+    return categoryIdentifiers;
 }
 
 bool handleServerNotificationResponse(UNNotificationResponse *response, UNNotificationContent *content)
@@ -397,12 +513,14 @@ void initialize(const QString &localizedDownloadString)
     registerBaseNotificationCategories(localizedDownloadString);
 }
 
-UNMutableNotificationContent *basicNotificationContent(const QString &title, const QString &message)
+UNMutableNotificationContent *basicNotificationContent(const QString &title, const QString &message, const bool playSound = true)
 {
     UNMutableNotificationContent * const content = [[[UNMutableNotificationContent alloc] init] autorelease];
     content.title = title.toNSString();
     content.body = message.toNSString();
-    content.sound = [UNNotificationSound defaultSound];
+    if (playSound) {
+        content.sound = [UNNotificationSound defaultSound];
+    }
 
     return content;
 }
@@ -436,7 +554,7 @@ void sendUpdateNotification(const QString &title, const QString &message, const 
     [center addNotificationRequest:request withCompletionHandler:nil];
 }
 
-void sendServerNotification(const Activity &activity, const AccountStatePtr &accountState)
+void sendServerNotification(const Activity &activity, const AccountStatePtr &accountState, const bool playSound)
 {
     if (!accountState || !accountState->account()) {
         const auto previewText = activity.notificationPreviewText();
@@ -524,10 +642,11 @@ void sendServerNotification(const Activity &activity, const AccountStatePtr &acc
         options:UNNotificationCategoryOptionCustomDismissAction];
     registerNativeNotificationCategory(category);
 
-    auto * const content = basicNotificationContent(previewText.title, message);
-    content.categoryIdentifier = categoryIdentifier;
-
     const auto accountId = accountState->account()->id();
+    auto * const content = basicNotificationContent(previewText.title, message, playSound);
+    content.categoryIdentifier = categoryIdentifier;
+    content.threadIdentifier = nativeServerNotificationThreadIdentifier(activity, accountId).toNSString();
+
     auto * const userInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:
         accountId.toNSString(), accountIdUserInfoKey,
         [NSNumber numberWithLongLong:activity._id], notificationIdUserInfoKey,
@@ -546,7 +665,9 @@ void sendServerNotification(const Activity &activity, const AccountStatePtr &acc
     UNNotificationRequest * const request = [UNNotificationRequest requestWithIdentifier:requestIdentifier.toNSString()
                                                                                   content:content
                                                                                   trigger:trigger];
+    retainPendingServerNotificationCategory(categoryIdentifier);
     [center addNotificationRequest:request withCompletionHandler:^(NSError *error) {
+        releasePendingServerNotificationCategory(categoryIdentifier);
         if (error) {
             qCWarning(lcMacNotificationCenter) << "Could not deliver server notification:"
                                                      << QString::fromNSString(error.localizedDescription);
@@ -572,26 +693,31 @@ void reconcileServerNotifications(const QString &accountId, const QSet<qint64> &
         generation = beginServerNotificationReconciliation(capturedAccountId);
     });
 
-    [center getPendingNotificationRequestsWithCompletionHandler:^(NSArray<UNNotificationRequest *> *requests) {
-        performOnMainThread(^{
-            if (!isCurrentServerNotificationReconciliation(capturedAccountId, generation)) {
-                return;
-            }
-            removePendingAndDeliveredNotifications(staleServerNotificationIdentifiers(requests, capturedAccountId, capturedActiveNotificationIds));
-        });
-    }];
+    [center getPendingNotificationRequestsWithCompletionHandler:^(NSArray<UNNotificationRequest *> *pendingRequests) {
+        [center getDeliveredNotificationsWithCompletionHandler:^(NSArray<UNNotification *> *notifications) {
+            performOnMainThread(^{
+                if (!isCurrentServerNotificationReconciliation(capturedAccountId, generation)) {
+                    return;
+                }
 
-    [center getDeliveredNotificationsWithCompletionHandler:^(NSArray<UNNotification *> *notifications) {
-        performOnMainThread(^{
-            if (!isCurrentServerNotificationReconciliation(capturedAccountId, generation)) {
-                return;
-            }
-            auto * const requests = [NSMutableArray arrayWithCapacity:notifications.count];
-            for (UNNotification *notification in notifications) {
-                [requests addObject:notification.request];
-            }
-            removePendingAndDeliveredNotifications(staleServerNotificationIdentifiers(requests, capturedAccountId, capturedActiveNotificationIds));
-        });
+                auto * const deliveredRequests = [NSMutableArray arrayWithCapacity:notifications.count];
+                for (UNNotification *notification in notifications) {
+                    [deliveredRequests addObject:notification.request];
+                }
+
+                auto * const stalePendingIdentifiers =
+                    staleServerNotificationIdentifiers(pendingRequests, capturedAccountId, capturedActiveNotificationIds);
+                auto * const staleDeliveredIdentifiers =
+                    staleServerNotificationIdentifiers(deliveredRequests, capturedAccountId, capturedActiveNotificationIds);
+                removePendingAndDeliveredNotifications(stalePendingIdentifiers);
+                removePendingAndDeliveredNotifications(staleDeliveredIdentifiers);
+
+                auto * const referencedCategoryIdentifiers = [NSMutableSet set];
+                [referencedCategoryIdentifiers unionSet:serverNotificationCategoryIdentifiers(pendingRequests, [NSSet setWithArray:stalePendingIdentifiers])];
+                [referencedCategoryIdentifiers unionSet:serverNotificationCategoryIdentifiers(deliveredRequests, [NSSet setWithArray:staleDeliveredIdentifiers])];
+                pruneUnusedServerNotificationCategories(referencedCategoryIdentifiers);
+            });
+        }];
     }];
 }
 

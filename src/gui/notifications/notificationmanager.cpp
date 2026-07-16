@@ -178,68 +178,32 @@ void NotificationManager::showNotification(const Activity &activity)
     showNotification(activity._subject, message, notificationId);
 }
 
-void NotificationManager::showNotification(const ActivityList &activityList)
+void NotificationManager::showServerNotifications(const ActivityList &activities)
 {
-    const auto subject = tr("%n notification(s)", nullptr, activityList.count());
-    const auto notificationId = -static_cast<int>(qHash(subject));
-    if (!canShowNotification(notificationId) || activityList.isEmpty()) {
-        return;
-    }
-
-    const auto multipleAccounts = AccountManager::instance()->accounts().count() > 1;
-    const auto message = multipleAccounts ? activityList.constFirst()._accName : QString{};
-    Logger::instance()->postGuiLog(subject, message);
-
-    for (const auto &activity : activityList) {
-        _notifiedNotifications.insert(activity._id);
-        if (_activityModel) {
-            _activityModel->addNotificationToActivityList(activity);
-        }
-    }
-    _notificationHistoryTimer.start();
-}
-
-void NotificationManager::showTalkNotification(const Activity &activity)
-{
-    const auto notificationId = activity._id;
-    if (!canShowNotification(notificationId) || !ConfigFile().showChatNotifications()) {
-        return;
-    }
-
-    if (activity._talkNotificationData.messageId.isEmpty()) {
-        showNotification(activity._subject, activity._message, notificationId);
-        return;
-    }
-
-    _notifiedNotifications.insert(notificationId);
-    if (_activityModel) {
-        _activityModel->addNotificationToActivityList(activity);
-    }
-
-    Systray::instance()->showMessage(activity._subject, activity._message);
-    _notificationHistoryTimer.start();
-}
-
-void NotificationManager::showServerNotification(const Activity &activity)
-{
-    const auto notificationId = activity._id;
-    if (!canShowNotification(notificationId)
-        || (activity._objectType == QStringLiteral("chat") && !ConfigFile().showChatNotifications())) {
-        return;
-    }
-
-    _notifiedNotifications.insert(notificationId);
-    if (_activityModel) {
-        _activityModel->addNotificationToActivityList(activity);
-    }
-
 #if defined(Q_OS_MACOS) && __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_14 && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
-    MacNotificationCenter::sendServerNotification(activity, _accountState);
+    auto playSound = true;
+    for (const auto &activity : activities) {
+        MacNotificationCenter::sendServerNotification(activity, _accountState, playSound);
+        playSound = false;
+    }
 #else
-    const auto previewText = activity.notificationPreviewText();
-    Logger::instance()->postGuiLog(previewText.title, previewText.subtitle);
+    if (activities.size() == 1) {
+        const auto &activity = activities.constFirst();
+        if (activity._objectType == QStringLiteral("chat")) {
+            Logger::instance()->postGuiLog(activity._subject, activity._message);
+        } else {
+            const auto multipleAccounts = AccountManager::instance()->accounts().size() > 1;
+            const auto message = multipleAccounts ? activity._accName : QString{};
+            Logger::instance()->postGuiLog(activity._subject, message);
+        }
+        return;
+    }
+
+    const auto subject = tr("%n notification(s)", nullptr, activities.size());
+    const auto multipleAccounts = AccountManager::instance()->accounts().size() > 1;
+    const auto message = multipleAccounts ? activities.constFirst()._accName : QString{};
+    Logger::instance()->postGuiLog(subject, message);
 #endif
-    _notificationHistoryTimer.start();
 }
 
 void NotificationManager::buildNotificationDisplay(const ActivityList &list)
@@ -258,11 +222,25 @@ void NotificationManager::buildNotificationDisplay(const ActivityList &list)
     MacNotificationCenter::reconcileServerNotifications(_accountState->account()->id(), activeNotificationIds);
 #endif
 
+    const auto cfg = ConfigFile{};
+    if (!_accountState
+        || !cfg.optionalServerNotifications()
+        || !_accountState->isDesktopNotificationsAllowed()) {
+        return;
+    }
+
+    checkNotifiedNotifications();
+    const auto showChatNotifications = cfg.showChatNotifications();
+
     auto toNotifyList = ActivityList{};
-    std::copy_if(list.cbegin(), list.cend(), std::back_inserter(toNotifyList), [this](const Activity &activity) {
+    std::copy_if(list.cbegin(), list.cend(), std::back_inserter(toNotifyList), [this, showChatNotifications](const Activity &activity) {
         if (!activity._shouldNotify) {
             qCDebug(lcActivity).nospace() << "No notification should be sent for activity with id=" << activity._id
                                           << " objectType=" << activity._objectType;
+            return false;
+        }
+        if (activity._objectType == QStringLiteral("chat") && !showChatNotifications) {
+            qCDebug(lcActivity).nospace() << "Chat notification disabled for activity with id=" << activity._id;
             return false;
         }
         if (_notifiedNotifications.contains(activity._id)) {
@@ -277,23 +255,13 @@ void NotificationManager::buildNotificationDisplay(const ActivityList &list)
         return;
     }
 
-#if defined(Q_OS_MACOS) && __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_14 && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
     for (const auto &activity : std::as_const(toNotifyList)) {
-        showServerNotification(activity);
+        _notifiedNotifications.insert(activity._id);
+        _activityModel->addNotificationToActivityList(activity);
     }
-#else
-    if (toNotifyList.size() == 1) {
-        const auto &activity = toNotifyList.constFirst();
-        if (activity._objectType == QStringLiteral("chat")) {
-            showTalkNotification(activity);
-        } else {
-            showNotification(activity);
-        }
-        return;
-    }
+    _notificationHistoryTimer.start();
 
-    showNotification(toNotifyList);
-#endif
+    showServerNotifications(toNotifyList);
 }
 
 void NotificationManager::buildIncomingCallDialogs(const ActivityList &list)
@@ -450,31 +418,38 @@ void NotificationManager::triggerServerNotificationAction(
 void NotificationManager::sendTalkReply(
     const QString &reply, const QString &conversationToken, const QString &replyTo)
 {
-    if (!_accountState) {
-        return;
-    }
-
-    qCDebug(lcActivity) << "Sending Talk reply from native notification."
-                        << "Replying to:" << replyTo
-                        << "Token:" << conversationToken
-                        << "Account:" << _accountState->account()->id();
-    const auto talkReply = new TalkReply(_accountState.data(), this);
-    talkReply->sendReplyMessage(conversationToken, reply, replyTo);
+    sendTalkReplyMessage(conversationToken, reply, replyTo, std::nullopt, true);
 }
 
 void NotificationManager::sendTalkReply(
     const int activityIndex, const QString &conversationToken, const QString &message, const QString &replyTo)
 {
+    sendTalkReplyMessage(conversationToken, message, replyTo, activityIndex);
+}
+
+void NotificationManager::sendTalkReplyMessage(
+    const QString &conversationToken, const QString &message, const QString &replyTo,
+    const std::optional<int> activityIndex, const bool logNativeReply)
+{
     if (!_accountState) {
         return;
     }
 
+    if (logNativeReply) {
+        qCDebug(lcActivity) << "Sending Talk reply from native notification."
+                            << "Replying to:" << replyTo
+                            << "Token:" << conversationToken
+                            << "Account:" << _accountState->account()->id();
+    }
+
     const auto talkReply = new TalkReply(_accountState.data(), this);
-    connect(talkReply, &TalkReply::replyMessageSent, this, [this, activityIndex](const QString &sentMessage) {
-        if (_activityModel) {
-            _activityModel->setReplyMessageSent(activityIndex, sentMessage);
-        }
-    });
+    if (activityIndex) {
+        connect(talkReply, &TalkReply::replyMessageSent, this, [this, activityIndex = *activityIndex](const QString &sentMessage) {
+            if (_activityModel) {
+                _activityModel->setReplyMessageSent(activityIndex, sentMessage);
+            }
+        });
+    }
     talkReply->sendReplyMessage(conversationToken, message, replyTo);
 }
 

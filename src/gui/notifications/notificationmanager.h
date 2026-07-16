@@ -13,6 +13,8 @@
 #include <QPointer>
 #include <QSet>
 
+#include <optional>
+
 class QNetworkReply;
 
 namespace OCC {
@@ -89,9 +91,10 @@ private slots:
     void notifyServerFinished(const QString &reply, int replyCode);
 
 private:
-    void showNotification(const ActivityList &activityList);
-    void showTalkNotification(const Activity &activity);
-    void showServerNotification(const Activity &activity);
+    /** @brief Present server notifications using the platform-specific delivery strategy. */
+    void showServerNotifications(const ActivityList &activities);
+    void sendTalkReplyMessage(const QString &conversationToken, const QString &message, const QString &replyTo,
+        std::optional<int> activityIndex = std::nullopt, bool logNativeReply = false);
     void sendServerNotificationRequest(const QString &link, const QByteArray &verb, int row, qint64 notificationId);
     void endNotificationRequest(int replyCode);
     void checkNotifiedNotifications();

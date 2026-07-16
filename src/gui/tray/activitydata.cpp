@@ -75,6 +75,7 @@ OCC::Activity Activity::fromActivityJson(const QJsonObject &json, const AccountP
     const auto activityUser = json.value("user"_L1).toString();
 
     Activity activity;
+    activity._app = json.value("app"_L1).toString();
     activity._type = Activity::ActivityType;
     activity._objectType = json.value("object_type"_L1).toString();
     activity._objectId = json.value("object_id"_L1).toInt();

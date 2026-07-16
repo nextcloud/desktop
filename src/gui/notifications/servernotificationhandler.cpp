@@ -11,6 +11,7 @@
 
 #include "iconjob.h"
 
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 
