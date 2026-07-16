@@ -1148,18 +1148,6 @@ void Systray::showUpdateMessage(const QString &title, const QString &message, co
 #endif
 }
 
-void Systray::showTalkMessage(const QString &title, const QString &message, const QString &token, const QString &replyTo, const AccountStatePtr &accountState)
-{
-#if defined(Q_OS_MACOS) && __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_14 && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
-    MacNotificationCenter::sendTalkNotification(title, message, token, replyTo, accountState);
-#else // TODO: Implement custom notifications (i.e. actionable) for other OSes
-    Q_UNUSED(replyTo)
-    Q_UNUSED(token)
-    Q_UNUSED(accountState)
-    showMessage(title, message);
-#endif
-}
-
 bool Systray::syncIsPaused() const
 {
     return _syncIsPaused;

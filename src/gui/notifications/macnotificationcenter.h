@@ -26,9 +26,6 @@ void sendNotification(const QString &title, const QString &message);
 /** @brief Send an update notification that opens a download URL. */
 void sendUpdateNotification(const QString &title, const QString &message, const QUrl &webUrl);
 
-/** @brief Send a Talk notification with an inline reply action. */
-void sendTalkNotification(const QString &title, const QString &message, const QString &token, const QString &replyTo, const AccountStatePtr &accountState);
-
 /** @brief Send a server notification with its server-provided actions. */
 void sendServerNotification(const Activity &activity, const AccountStatePtr &accountState);
 

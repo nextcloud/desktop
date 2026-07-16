@@ -216,11 +216,7 @@ void NotificationManager::showTalkNotification(const Activity &activity)
         _activityModel->addNotificationToActivityList(activity);
     }
 
-    Systray::instance()->showTalkMessage(activity._subject,
-        activity._message,
-        activity._talkNotificationData.conversationToken,
-        activity._talkNotificationData.messageId,
-        _accountState);
+    Systray::instance()->showMessage(activity._subject, activity._message);
     _notificationHistoryTimer.start();
 }
 

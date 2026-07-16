@@ -19,9 +19,7 @@
 #include "config.h"
 #include "notifications/macnotificationcenter.h"
 #include "notifications/notificationmanager.h"
-#include "notifications/talkreply.h"
 #import "notifications/ncnotificationcenterdelegate.h"
-#include "systray.h"
 
 Q_LOGGING_CATEGORY(lcMacNotificationCenter, "nextcloud.gui.macnotificationcenter")
 
@@ -33,7 +31,7 @@ constexpr auto maximumNativeNotificationActions = 4;
 
 NSString * const serverCategoryPrefix = @"NEXTCLOUD_SERVER_";
 NSString * const serverActionPrefix = @"NEXTCLOUD_SERVER_ACTION_";
-NSString * const accountUserInfoKey = @"account";
+NSString * const legacyTalkCategoryIdentifier = @"TALK_MESSAGE";
 NSString * const accountIdUserInfoKey = @"accountId";
 NSString * const notificationIdUserInfoKey = @"notificationId";
 NSString * const responseActionsUserInfoKey = @"responseActions";
@@ -87,6 +85,9 @@ void seedNativeNotificationCategories(NSArray *categories)
     [center getNotificationCategoriesWithCompletionHandler:^(NSSet<UNNotificationCategory *> *registeredCategories) {
         @synchronized (registry) {
             for (UNNotificationCategory *category in registeredCategories) {
+                if ([category.identifier isEqualToString:legacyTalkCategoryIdentifier]) {
+                    continue;
+                }
                 if (![registry objectForKey:category.identifier]) {
                     [registry setObject:category forKey:category.identifier];
                 }
@@ -133,23 +134,6 @@ QVariantList nativeNotificationActions(const OCC::Activity &activity)
     }
 
     return selectedActions;
-}
-
-void sendTalkReply(const QString &reply, const QString &token, const QString &replyTo, const OCC::AccountStatePtr &accountState)
-{
-    if (!accountState) {
-        qCWarning(lcMacNotificationCenter) << "Could not find account for native Talk reply.";
-        return;
-    }
-
-    qCDebug(lcMacNotificationCenter) << "Sending talk reply from macOS notification."
-                                           << "Replying to:" << replyTo
-                                           << "Token:" << token
-                                           << "Account:" << accountState->account()->id();
-
-    // OCC::TalkReply deletes itself once it's done, fire and forget
-    const auto talkReply = new OCC::TalkReply(accountState.data(), OCC::Systray::instance());
-    talkReply->sendReplyMessage(token, reply, replyTo);
 }
 
 void performOnMainThread(dispatch_block_t action)
@@ -336,17 +320,6 @@ void didReceiveNotificationResponse(UNNotificationResponse *response, void (^com
             qCDebug(lcMacNotificationCenter) << "Opening update download url in browser.";
             [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[content.userInfo objectForKey:@"webUrl"]]];
         }
-    } else if ([content.categoryIdentifier isEqualToString:@"TALK_MESSAGE"]
-        && [response.actionIdentifier isEqualToString:@"TALK_REPLY_ACTION"]
-        && [response isKindOfClass:[UNTextInputNotificationResponse class]]) {
-        UNTextInputNotificationResponse * const textResponse = (UNTextInputNotificationResponse *)response;
-        const auto qReply = QString::fromNSString(textResponse.userText);
-        const auto qToken = QString::fromNSString([content.userInfo objectForKey:@"token"]);
-        const auto qReplyTo = QString::fromNSString([content.userInfo objectForKey:@"replyTo"]);
-        const auto qAccount = QString::fromNSString([content.userInfo objectForKey:accountUserInfoKey]);
-        performOnMainThread(^{
-            sendTalkReply(qReply, qToken, qReplyTo, AccountManager::instance()->accountFromUserId(qAccount));
-        });
     }
 
     completionHandler();
@@ -380,21 +353,7 @@ void registerBaseNotificationCategories(const QString &localisedDownloadString)
         intentIdentifiers:@[]
         options:UNNotificationCategoryOptionNone];
 
-    // Create the custom action for talk notifications
-    UNTextInputNotificationAction * const talkReplyAction = [UNTextInputNotificationAction
-        actionWithIdentifier:@"TALK_REPLY_ACTION"
-        title:QObject::tr("Reply").toNSString()
-        options:UNNotificationActionOptionNone
-        textInputButtonTitle:QObject::tr("Reply").toNSString()
-        textInputPlaceholder:QObject::tr("Send a Nextcloud Talk reply").toNSString()];
-
-    UNNotificationCategory * const talkReplyCategory = [UNNotificationCategory
-        categoryWithIdentifier:@"TALK_MESSAGE"
-        actions:@[talkReplyAction]
-        intentIdentifiers:@[]
-        options:UNNotificationCategoryOptionNone];
-
-    seedNativeNotificationCategories(@[generalCategory, updateCategory, talkReplyCategory]);
+    seedNativeNotificationCategories(@[generalCategory, updateCategory]);
 }
 
 void requestAuthorization(const AuthorizationOptions additionalAuthOption = AuthorizationOptions::Provisional)
@@ -473,31 +432,6 @@ void sendUpdateNotification(const QString &title, const QString &message, const 
 
     UNTimeIntervalNotificationTrigger * const trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1 repeats:NO];
     UNNotificationRequest * const request = [UNNotificationRequest requestWithIdentifier:@"NCUpdateNotification" content:content trigger:trigger];
-
-    [center addNotificationRequest:request withCompletionHandler:nil];
-}
-
-void sendTalkNotification(
-    const QString &title, const QString &message, const QString &token, const QString &replyTo, const AccountStatePtr &accountState)
-{
-    UNUserNotificationCenter * const center = UNUserNotificationCenter.currentNotificationCenter;
-    requestAuthorization();
-
-    if (!accountState || !accountState->account()) {
-        sendNotification(title, message);
-        return;
-    }
-
-    NSString * const accountNS = accountState->account()->userIdAtHostWithPort().toNSString();
-    NSString * const tokenNS = token.toNSString();
-    NSString * const replyToNS = replyTo.toNSString();
-
-    UNMutableNotificationContent * const content = basicNotificationContent(title, message);
-    content.categoryIdentifier = @"TALK_MESSAGE";
-    content.userInfo = [NSDictionary dictionaryWithObjects:@[accountNS, tokenNS, replyToNS] forKeys:@[@"account", @"token", @"replyTo"]];
-
-    UNTimeIntervalNotificationTrigger * const trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1 repeats:NO];
-    UNNotificationRequest * const request = [UNNotificationRequest requestWithIdentifier:@"NCTalkMessageNotification" content:content trigger:trigger];
 
     [center addNotificationRequest:request withCompletionHandler:nil];
 }
