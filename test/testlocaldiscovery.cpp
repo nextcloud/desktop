@@ -204,6 +204,29 @@ private slots:
         QVERIFY(!engine.shouldDiscoverLocally(""));
     }
 
+    // The macOS folder watcher stops expanding an FSEvents batch once it reaches its coalescing
+    // limit and reports only the directory it was expanding, relying on the fact that reporting a
+    // directory makes the sync engine discover its whole subtree. If that guarantee ever broke,
+    // the watcher would silently miss files below such a directory, so pin it here.
+    void testReportingDirectoryDiscoversWholeSubtree()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        auto &engine = fakeFolder.syncEngine();
+
+        // Only the directory "A" was reported (the deep entries below it were coalesced away).
+        engine.setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, {u"A"_s});
+
+        // Parents are traversed to reach it, the directory itself and everything below it is
+        // discovered, and unrelated siblings are left out.
+        QVERIFY(engine.shouldDiscoverLocally(""));
+        QVERIFY(engine.shouldDiscoverLocally("A"));
+        QVERIFY(engine.shouldDiscoverLocally("A/X"));
+        QVERIFY(engine.shouldDiscoverLocally("A/X/deep"));
+        QVERIFY(engine.shouldDiscoverLocally("A/X/deep/deeper/deepest"));
+        QVERIFY(!engine.shouldDiscoverLocally("B"));
+        QVERIFY(!engine.shouldDiscoverLocally("Ax"));
+    }
+
     // Check whether item success and item failure adjusts the
     // tracker correctly.
     void testTrackerItemCompletion()
