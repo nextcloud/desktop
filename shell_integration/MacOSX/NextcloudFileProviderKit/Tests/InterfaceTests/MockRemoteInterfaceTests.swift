@@ -503,7 +503,12 @@ final class MockRemoteInterfaceTests: XCTestCase {
         XCTAssertEqual(targetRootFile?.ocId, expectedRoot?.identifier)
         XCTAssertEqual(targetRootFile?.fileName, NextcloudKit.shared.nkCommonInstance.rootFileName) // NextcloudKit gives the root dir this name
         XCTAssertEqual(targetRootFile?.serverUrl, "https://mock.nc.com/remote.php/dav/files/testUserId") // NextcloudKit gives the root dir this url
-        XCTAssertEqual(targetRootFile?.date, expectedRoot?.creationDate)
+        // `toNKFile()` maps the item's `modificationDate` onto `NKFile.date`, so compare against
+        // that — not `creationDate`. `MockRemoteItem.init` defaults `creationDate` and
+        // `modificationDate` to two separate `Date()` calls, which are usually (but not always)
+        // identical; comparing `date` to `creationDate` therefore passed only when the clock did
+        // not tick between those two calls, and flaked on CI when it did.
+        XCTAssertEqual(targetRootFile?.date, expectedRoot?.modificationDate)
         XCTAssertEqual(targetRootFile?.etag, expectedRoot?.versionIdentifier)
 
         let resultChildren = await remoteInterface.enumerate(
