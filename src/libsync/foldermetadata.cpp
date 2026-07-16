@@ -184,7 +184,9 @@ void FolderMetadata::initMetadata()
 void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
 {
     const auto doc = QJsonDocument::fromJson(metadata);
+#if defined NEXTCLOUD_DEV && NEXTCLOUD_DEV && defined QT_DEBUG
     qCDebug(lcCseMetadata()) << "Got existing metadata:" << doc.toJson(QJsonDocument::Compact);
+#endif
 
     if (_existingMetadataVersion < MetadataVersion::Version1) {
         qCWarning(lcCseMetadata()) << "Could not setup metadata. Incorrect version" << _existingMetadataVersion;
@@ -220,9 +222,11 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
     }
 
     if (_isRootEncryptedFolder) {
+#if defined NEXTCLOUD_DEV && NEXTCLOUD_DEV && defined QT_DEBUG
         QJsonDocument debugHelper;
         debugHelper.setArray(folderUsers);
         qCDebug(lcCseMetadata()) << "users: " << debugHelper.toJson(QJsonDocument::Compact);
+#endif
     }
 
     for (auto it = folderUsers.constBegin(); it != folderUsers.constEnd(); ++it) {
@@ -777,6 +781,9 @@ QByteArray FolderMetadata::encryptedMetadata()
             qCWarning(lcCseMetadata) << "Metadata generation failed for file" << it->encryptedFilename;
             return {};
         }
+#if defined NEXTCLOUD_DEV && NEXTCLOUD_DEV && defined QT_DEBUG
+        qCDebug(lcCseMetadata()) << file;
+#endif
         const auto isDirectory =
             it->mimetype.isEmpty() || it->mimetype == QByteArrayLiteral("inode/directory") || it->mimetype == QByteArrayLiteral("httpd/unix-directory");
         if (isDirectory) {
@@ -794,6 +801,9 @@ QByteArray FolderMetadata::encryptedMetadata()
     }
 
     QJsonObject cipherText = {{counterKey, QJsonValue::fromVariant(newCounter())}, {filesKey, files}, {foldersKey, folders}};
+#if defined NEXTCLOUD_DEV && NEXTCLOUD_DEV && defined QT_DEBUG
+    qCDebug(lcCseMetadata()) << cipherText;
+#endif
 
     const auto isChecksumsArrayValid = (!_isRootEncryptedFolder && keyChecksums.isEmpty()) || (_isRootEncryptedFolder && !keyChecksums.isEmpty());
     Q_ASSERT(isChecksumsArrayValid);
