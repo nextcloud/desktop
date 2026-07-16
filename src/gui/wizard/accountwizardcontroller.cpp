@@ -25,7 +25,6 @@
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "gui/macOS/fileprovider.h"
-#include "gui/macOS/fileprovidersettingscontroller.h"
 #endif
 
 #ifdef Q_OS_MACOS
@@ -340,7 +339,7 @@ bool AccountWizardController::canUseVirtualFiles() const
     }
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    return Mac::FileProvider::available();
+    return Mac::FileProvider::available() && ConfigFile().macFileProviderModeEnabled();
 #elif defined(Q_OS_WIN)
     return bestAvailableVfsMode() == Vfs::WindowsCfApi && Theme::instance()->showVirtualFilesOption();
 #else
@@ -351,7 +350,7 @@ bool AccountWizardController::canUseVirtualFiles() const
 bool AccountWizardController::isUsingFileProvider() const
 {
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    return Mac::FileProvider::available();
+    return Mac::FileProvider::available() && ConfigFile().macFileProviderModeEnabled();
 #else
     return false;
 #endif
@@ -1264,18 +1263,10 @@ void AccountWizardController::skipFolderConfiguration()
 AccountState *AccountWizardController::applyAccountChanges()
 {
     auto manager = AccountManager::instance();
-    AccountState *accountState = nullptr;
 
-#ifdef BUILD_FILE_PROVIDER_MODULE
-    if (_syncMode == VirtualFiles) {
-        accountState = manager->addAccount(_account);
-        const auto accountId = accountState->account()->userIdAtHostWithPort();
-        Mac::FileProviderSettingsController::instance()->setVfsEnabledForAccount(accountId, true, false);
-    } else
-#endif
-    {
-        accountState = manager->addAccount(_account);
-    }
+    // With the app-level File Provider mode enabled, the new account's file provider
+    // domain is created by the FileProviderSettingsController's accountAdded hook.
+    const auto accountState = manager->addAccount(_account);
 
     manager->saveAccount(_account);
     return accountState;

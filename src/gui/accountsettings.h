@@ -141,12 +141,14 @@ private slots:
     void checkClientSideEncryptionState();
     void removeActionFromEncryptionMessage(const QString &actionId);
     void setEncryptionPanelVisible(bool visible);
+    void updateSyncFoldersPanelVisibility();
 
 private:
     bool event(QEvent *) override;
     QAction *addActionToEncryptionMessage(const QString &actionTitle, const QString &actionId);
 
     void setupE2eEncryptionMessage();
+    void refreshE2eEncryptionMessage();
     void setEncryptionMessageIcon(const QIcon &icon);
     void updateEncryptionMessageActions();
 
@@ -164,6 +166,7 @@ private:
     QAction *_addAccountAction = nullptr;
 
     bool _menuShown = false;
+    bool _e2eEncryptionSetupDone = false;
     QFrame *_encryptionPanel = nullptr;
 
     QHash<QString, QMetaObject::Connection> _folderConnections;

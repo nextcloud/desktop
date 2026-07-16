@@ -7,9 +7,14 @@
 #include "configfile.h"
 #include "theme.h"
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "gui/macOS/fileprovider.h"
+#endif
+
 #include <QScopeGuard>
 #include <QSignalSpy>
 #include <QStandardPaths>
+#include <QTemporaryDir>
 #include <QTest>
 
 using namespace OCC;
@@ -279,6 +284,36 @@ private slots:
         QVERIFY(!controller.serverUrlEditable());
         QVERIFY(controller.startLoginFlowAutomatically());
     }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    // Keep this test last: it redirects the configuration directory.
+    void followsAppLevelFileProviderMode()
+    {
+        QTemporaryDir dir;
+        ConfigFile::setConfDir(dir.path());
+        QVERIFY(dir.isValid());
+
+        ConfigFile cfg;
+        cfg.setMacFileProviderModeEnabled(false);
+
+        {
+            AccountWizardController controller;
+            QVERIFY(!controller.canUseVirtualFiles());
+            QVERIFY(!controller.isUsingFileProvider());
+            QVERIFY(controller.canUseClassicSync());
+            QVERIFY(controller.localSyncFolderRequired());
+        }
+
+        cfg.setMacFileProviderModeEnabled(true);
+
+        {
+            AccountWizardController controller;
+            QCOMPARE(controller.canUseVirtualFiles(), Mac::FileProvider::available());
+            QCOMPARE(controller.isUsingFileProvider(), Mac::FileProvider::available());
+            QCOMPARE(controller.localSyncFolderRequired(), !Mac::FileProvider::available());
+        }
+    }
+#endif
 };
 
 QTEST_MAIN(TestAccountWizardController)
