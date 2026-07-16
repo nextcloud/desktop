@@ -500,7 +500,7 @@ void SyncEngine::startSync()
 
         const auto e2EeLockedFolders = _journal->e2EeLockedFolders();
 
-        if (!e2EeLockedFolders.isEmpty()) {
+        if (_account->e2e()->isInitialized() && !e2EeLockedFolders.isEmpty()) {
             for (const auto &e2EeLockedFolder : e2EeLockedFolders) {
                 const auto folderId = e2EeLockedFolder.first;
                 qCInfo(lcEngine()) << "start unlock job for folderId:" << folderId;
