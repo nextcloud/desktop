@@ -232,7 +232,7 @@ int Capabilities::maxConcurrentChunkUploads() const
 
 bool Capabilities::bulkUpload() const
 {
-    static const auto bulkUploadEnv = qgetenv("OWNCLOUD_BULK_UPLOAD");
+    static const auto bulkUploadEnv = qgetenv("NEXTCLOUD_BULK_UPLOAD");
     if (bulkUploadEnv == "0")
         return false;
     if (bulkUploadEnv == "1")
