@@ -582,29 +582,6 @@
     </message>
 </context>
 <context>
-    <name>FileProviderSettings</name>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
-        <source>File provider settings</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
-        <source>Virtual files settings</source>
-        <translation>Virtuális fájlok beállításai</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
-        <source>Virtual files appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. Virtual files and classic sync can not be used at the same time.</source>
-        <translation>A virtuális fájlok szokásos fájlnak tűnnek, de nem foglalnak helyi tárterületet. A tartalom automatikusan letöltődik, ha megnyitja a fájlt. A virtuális fájlok és a klasszikus szinkronizálás egyidejűleg nem használható.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="57"/>
-        <source>File Provider items appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. It is not possible to have a File Provider and classic sync Finder integration enabled simultaneously.</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>FileSystem</name>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="295"/>
@@ -867,64 +844,69 @@ Legyen ez a fiók importálva?</translation>
 <context>
     <name>OCC::AccountSettings</name>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="205"/>
+        <location filename="../src/gui/accountsettings.ui" line="165"/>
         <source>Classic sync</source>
         <translation>Klasszikus szinkronizálás</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="272"/>
+        <location filename="../src/gui/accountsettings.ui" line="200"/>
+        <source>File Provider is enabled, but this account still has classic sync folders. The Finder integration stays unavailable until this is resolved.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="216"/>
+        <source>Resolve…</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="286"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
         <translation>A ki nem választott mappák &lt;b&gt;törölve&lt;/b&gt; lesznek a helyi fájlrendszerről, és a továbbiakban nem lesznek szinkronizálva erre a számítógépre</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="380"/>
+        <location filename="../src/gui/accountsettings.ui" line="394"/>
         <source>Synchronize all</source>
         <translation>Minden szinkronizálása</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="387"/>
+        <location filename="../src/gui/accountsettings.ui" line="401"/>
         <source>Synchronize none</source>
         <translation>Nincs szinkronizálás</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="394"/>
+        <location filename="../src/gui/accountsettings.ui" line="408"/>
         <source>Apply manual changes</source>
         <translation>Kézi módosítások alkalmazása</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="429"/>
+        <location filename="../src/gui/accountsettings.ui" line="443"/>
         <location filename="../src/gui/accountsettings.cpp" line="193"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1331"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1336"/>
         <source>Connection settings</source>
         <translation>Csatlakozási beállítások</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="488"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1541"/>
+        <location filename="../src/gui/accountsettings.ui" line="502"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1546"/>
         <source>Log out, log back in, or remove this account from the client.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="504"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1537"/>
+        <location filename="../src/gui/accountsettings.ui" line="518"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1542"/>
         <source>Log out</source>
         <translation>Kijelentkezés</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="517"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1538"/>
+        <location filename="../src/gui/accountsettings.ui" line="531"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1543"/>
         <source>Remove account</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="324"/>
+        <location filename="../src/gui/accountsettings.ui" line="338"/>
         <source>Apply</source>
         <translation>Alkalmaz</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.ui" line="159"/>
-        <source>File Provider</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="159"/>
@@ -932,9 +914,9 @@ Legyen ez a fiók importálva?</translation>
         <translation>Virtuális fájlok</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="311"/>
-        <location filename="../src/gui/accountsettings.cpp" line="972"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1157"/>
+        <location filename="../src/gui/accountsettings.ui" line="325"/>
+        <location filename="../src/gui/accountsettings.cpp" line="977"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1162"/>
         <source>Cancel</source>
         <translation>Mégse</translation>
     </message>
@@ -944,7 +926,7 @@ Legyen ez a fiók importálva?</translation>
         <translation>Kapcsolódva &lt;user&gt; felhasználóval ehhez: &lt;server&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="342"/>
+        <location filename="../src/gui/accountsettings.cpp" line="340"/>
         <source>No account configured.</source>
         <translation>Nincs fiók beállítva.</translation>
     </message>
@@ -983,190 +965,196 @@ Legyen ez a fiók importálva?</translation>
 &lt;b&gt;Ez a folyamat nem fordítható vissza. Biztos, hogy folytatja?&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="333"/>
+        <location filename="../src/gui/accountsettings.cpp" line="331"/>
         <source>End-to-end encryption has not been initialized on this account.</source>
         <translation>A végpontok közti titkosítás nem lett előkészítve ennél a fióknál.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="360"/>
+        <location filename="../src/gui/accountsettings.cpp" line="358"/>
         <source>Forget encryption setup</source>
         <translation>Titkosítási beállítások elfelejtése</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="370"/>
+        <location filename="../src/gui/accountsettings.cpp" line="368"/>
         <source>Display mnemonic</source>
         <translation>Mnemonikus kulcs megjelenítése</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="376"/>
+        <location filename="../src/gui/accountsettings.cpp" line="374"/>
         <source>Encryption is set-up. Remember to &lt;b&gt;Encrypt&lt;/b&gt; a folder to end-to-end encrypt any new files added to it.</source>
         <translation>Titkosítás beállítva. Ne felejtse &lt;b&gt;titkosítani&lt;/b&gt; a mappát az újonnan hozzáadott fájlok végpontok közti titkosításához.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="409"/>
+        <location filename="../src/gui/accountsettings.cpp" line="407"/>
         <source>Warning</source>
         <translation>Figyelmeztetés</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="470"/>
+        <location filename="../src/gui/accountsettings.cpp" line="468"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
         <translation>Várja meg a mappa szinkronizálását, mielőtt megpróbálná titkosítani.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="472"/>
+        <location filename="../src/gui/accountsettings.cpp" line="470"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>A mappának egy kisebb szinkronizálási problémája van. A mappa titkosítása a sikeres szinkronizálás után lesz lehetséges.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="474"/>
+        <location filename="../src/gui/accountsettings.cpp" line="472"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>A mappának szinkronizálási hibája van. A mappa titkosítása a sikeres szinkronizálás után lesz lehetséges.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="485"/>
+        <location filename="../src/gui/accountsettings.cpp" line="483"/>
         <source>You cannot encrypt this folder because the end-to-end encryption is not set-up yet on this device.
 Would you like to do this now?</source>
         <translation>Nem titkosíthatja ezt a mappát, mert a végpontok közti titkosítás nincs beállítva ezen az eszközön.
 Megteszi ezt most?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="509"/>
+        <location filename="../src/gui/accountsettings.cpp" line="507"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
         <translation>Nem titkosíthat egy fájlokat tartalmazó mappát. Távolítsa el a fájlokat.
 Várja meg az új szinkronizálást, majd titkosítsa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="533"/>
+        <location filename="../src/gui/accountsettings.cpp" line="531"/>
         <source>Encryption failed</source>
         <translation>Titkosítás sikertelen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="533"/>
+        <location filename="../src/gui/accountsettings.cpp" line="531"/>
         <source>Could not encrypt folder because the folder does not exist anymore</source>
         <translation>Nem lehetett titkosítani a mappát, mert már nem létezik</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="674"/>
+        <location filename="../src/gui/accountsettings.cpp" line="672"/>
         <source>Encrypt</source>
         <translation>Titkosítás</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="682"/>
-        <location filename="../src/gui/accountsettings.cpp" line="752"/>
+        <location filename="../src/gui/accountsettings.cpp" line="680"/>
+        <location filename="../src/gui/accountsettings.cpp" line="750"/>
         <source>Edit Ignored Files</source>
         <translation>Kihagyott fájlok szerkesztése</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="685"/>
-        <location filename="../src/gui/accountsettings.cpp" line="755"/>
+        <location filename="../src/gui/accountsettings.cpp" line="683"/>
+        <location filename="../src/gui/accountsettings.cpp" line="753"/>
         <source>Create new folder</source>
         <translation>Új mappa létrehozása</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="691"/>
-        <location filename="../src/gui/accountsettings.cpp" line="781"/>
+        <location filename="../src/gui/accountsettings.cpp" line="689"/>
+        <location filename="../src/gui/accountsettings.cpp" line="779"/>
         <source>Availability</source>
         <translation>Elérhetőség</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="760"/>
+        <location filename="../src/gui/accountsettings.cpp" line="758"/>
         <source>Choose what to sync</source>
         <translation>Szinkronizálandó elemek kiválasztása</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="766"/>
+        <location filename="../src/gui/accountsettings.cpp" line="764"/>
         <source>Force sync now</source>
         <translation>Szinkronizálás azonnal</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="768"/>
+        <location filename="../src/gui/accountsettings.cpp" line="766"/>
         <source>Restart sync</source>
         <translation>Szinkronizálás újraindítása</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="777"/>
+        <location filename="../src/gui/accountsettings.cpp" line="775"/>
         <source>Remove folder sync connection</source>
         <translation>Mappa szinkronizálási kapcsolatának eltávolítása</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="790"/>
+        <location filename="../src/gui/accountsettings.cpp" line="788"/>
         <source>Disable virtual file support …</source>
         <translation>A virtuális fájl támogatásának letiltása…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="802"/>
+        <location filename="../src/gui/accountsettings.cpp" line="800"/>
         <source>Enable virtual file support %1 …</source>
         <translation>A(z) %1 virtuális fájl támogatás engedélyezése…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="802"/>
+        <location filename="../src/gui/accountsettings.cpp" line="800"/>
         <source>(experimental)</source>
         <translation>(kísérleti)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="904"/>
+        <location filename="../src/gui/accountsettings.cpp" line="902"/>
+        <location filename="../src/gui/accountsettings.cpp" line="945"/>
         <source>Folder creation failed</source>
         <translation>Mappa létrehozása sikertelen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="964"/>
+        <location filename="../src/gui/accountsettings.cpp" line="946"/>
+        <source>&lt;p&gt;Could not add the folder sync connection for &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="969"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Mappa szinkronizációs kapcsolatának eltávolításának megerősítése</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="971"/>
+        <location filename="../src/gui/accountsettings.cpp" line="976"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Mappa szinkronizálási kapcsolatának eltávolítása</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1006"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1011"/>
         <source>Grant access to sync folder</source>
         <translation>Hozzáférés adása a szinkronizálási mappához</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1018"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1023"/>
         <source>Access Error</source>
         <translation>Hozzáférési hiba</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1019"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1024"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
         <translation>Nem sikerült hozzáférést szerezni a kijelölt mappához. Próbálja újra.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1027"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1032"/>
         <source>Wrong Folder</source>
         <translation>Hibás mappa</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1028"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1033"/>
         <source>Please select the original sync folder: %1</source>
         <translation>Válassza ki az eredeti szinkronizálási mappát: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1037"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1046"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1042"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1051"/>
         <source>Bookmark Error</source>
         <translation>Könyvjelzőhiba</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1038"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1043"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
         <translation>Nem sikerült biztonsági könyvjelzőt készíteni a mappához. Próbálja újra.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1047"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1052"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
         <translation>Nem sikerült feloldani a biztonsági könyvjelzőt. Próbálja újra.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1148"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1153"/>
         <source>Disable virtual file support?</source>
         <translation>Letiltja a virtuális fájlok támogatását?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1149"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1154"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as &quot;available online only&quot; will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -1179,88 +1167,87 @@ A virtuális fájltámogatás letiltásának egyetlen előnye, hogy a szelektív
 Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1156"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1161"/>
         <source>Disable support</source>
         <translation>Támogatás letiltása</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1243"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1248"/>
         <source>End-to-end encryption mnemonic</source>
         <translation>Végpontok közötti titkosítás mnemonikus kulcsa</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1245"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1250"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
         <translation>A kriptográfiai személyazonosságának megvédése érdekében egy 12 szótári szót tartalmazó mnemonikus kulccsal titkosítjük. Jegyezze le, és tartsa biztonságban. Szüksége lesz rá a titkosított mappák szinkronizálásának beállítása során a többi eszközén.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1270"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1275"/>
         <source>Forget the end-to-end encryption on this device</source>
         <translation>A végpontok közti titkosítás elfelejtése ezen az eszközön</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1271"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1276"/>
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
         <translation>Elfelejti a(z) %1 végpontok közti titkosításai beállításait ezen az eszközön?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1272"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1277"/>
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
         <translation>A végpontok közti titkosítás elfelejtése eltávolítja az érzékeny adatokat és az összes titkosított fájl erről az eszközről.&lt;br&gt;Viszont a titkosított fájlok továbbra is megmaradnak a kiszolgálón és a többi eszközén, ha be vannak állítva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1377"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1382"/>
         <source>Sync Running</source>
         <translation>A szinkronizálás fut</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1378"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1383"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>A szinkronizálás folyamatban van. &lt;br/&gt;Megszakítja?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1450"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1455"/>
         <source>%1 in use</source>
         <translation>%1 használatban</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1490"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1495"/>
         <source>Connected to %1 (%2).</source>
         <translation>Kapcsolódva ehhez: %1 (%2).</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1537"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1542"/>
         <source>Log in</source>
         <translation>Bejelentkezés</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1538"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1543"/>
         <source>Leave share</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1540"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1545"/>
         <source>Remove this public share connection from the client.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1718"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1732"/>
         <source>Migrate certificate to a new one</source>
         <translation>Tanúsítvány átköltöztetése egy újra</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1825"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1839"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Vannak olyan mappák, amelyek mérete nagyobb mint %1 MB: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1879"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1893"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
         <translation>A végpontok közti titkosítás elő lett készítve a fióknál egy másik eszközön.&lt;br&gt;Adja meg az egyedi mnemonikus kódját a titkosított mappák erre az eszközre történő szinkronizálásához.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1940"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1942"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1966"/>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
         <translation>Ez a fiók támogatja a végpontok közti titkosítást, de először be kell állítani.</translation>
     </message>
@@ -1270,118 +1257,118 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
         <translation>A virtuális fájlok integrációs még nem támogatja a végpontok közti titkosítást.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1940"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1961"/>
         <source>The File Provider extension does not support end-to-end encryption yet.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1948"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1968"/>
         <source>Set up encryption</source>
         <translation>Titkosítás beállítása</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1488"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1493"/>
         <source>Connected to %1.</source>
         <translation>Kapcsolódva ehhez: %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1496"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1501"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>A(z) %1 kiszolgáló jelenleg nem érhető el.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1499"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1504"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>A(z) %1 kiszolgáló jelenleg karbantartási módban van.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1505"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1510"/>
         <source>Signed out from %1.</source>
         <translation>Kijelentkezve innen: %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1812"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1826"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Az alábbi mappák nem lettek szinkronizálva, mert túl nagyok: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1813"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1827"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Az alábbi mappák nem lettek szinkronizálva, mert külső tárolók: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1814"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1828"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Az alábbi mappák nem lettek szinkronizálva, mert túl nagyok, vagy külső tárolók: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="655"/>
-        <location filename="../src/gui/accountsettings.cpp" line="749"/>
+        <location filename="../src/gui/accountsettings.cpp" line="653"/>
+        <location filename="../src/gui/accountsettings.cpp" line="747"/>
         <source>Open folder</source>
         <translation>Mappa megnyitása</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="774"/>
+        <location filename="../src/gui/accountsettings.cpp" line="772"/>
         <source>Resume sync</source>
         <translation>Szinkronizálás folytatása</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="774"/>
+        <location filename="../src/gui/accountsettings.cpp" line="772"/>
         <source>Pause sync</source>
         <translation>Szinkronizálás szüneteltetése</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="905"/>
+        <location filename="../src/gui/accountsettings.cpp" line="903"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;A helyi mappa nem hozható létre: &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="965"/>
+        <location filename="../src/gui/accountsettings.cpp" line="970"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Tényleg leállítja a(z) &lt;i&gt;%1&lt;/i&gt; mappa szinkronizálását?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Megjegyzés:&lt;/b&gt; Ez &lt;b&gt;nem&lt;/b&gt; töröl fájlokat.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1443"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1448"/>
         <source>%1 of %2 in use</source>
         <translation>%1 / %2 használatban</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1479"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1484"/>
         <source>%1 as %2</source>
         <translation>%1 mint %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1486"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1491"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>A(z) %1 kiszolgálóverzió nem támogatott. Folyatás csak saját felelősségre.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1502"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1507"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
         <translation>A(z) %1 kiszolgálót jelenleg átirányítják, vagy a kapcsolata egy beléptető portál mögött van.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1508"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1513"/>
         <source>Connecting to %1 …</source>
         <translation>Kapcsolódás ehhez: %1…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1512"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1517"/>
         <source>Unable to connect to %1.</source>
         <translation>Nem lehetséges a csatlakozás a következőhöz: %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1517"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1522"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Kiszolgáló konfigurációs hiba: %1, itt: %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1526"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1531"/>
         <source>You need to accept the terms of service at %1.</source>
         <translation>El kell fogadnia a(z) %1 szolgáltatási feltételeit.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1531"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1536"/>
         <source>No %1 connection configured.</source>
         <translation>Nincs %1 kapcsolat beállítva.</translation>
     </message>
@@ -1465,198 +1452,198 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
 <context>
     <name>OCC::AccountWizardController</name>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="293"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="292"/>
         <source>Will require local storage</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="673"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="672"/>
         <source>Proxy settings are incomplete.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="680"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="679"/>
         <source>Server address does not seem to be valid</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="701"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="700"/>
         <source>Username must not be empty.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="707"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1025"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="706"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1024"/>
         <source>Checking account access</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="785"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="784"/>
         <source>Checking server address</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="850"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="849"/>
         <source>Preparing browser login</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="871"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="870"/>
         <source>Invalid URL</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="873"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="872"/>
         <source>Failed to connect to %1 at %2:
 %3</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="889"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="888"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="976"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="975"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1001"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1006"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1000"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1005"/>
         <source>Waiting for authorization</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1011"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1010"/>
         <source>Starting authorization</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1016"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1015"/>
         <source>Link copied to clipboard.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1071"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1101"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1070"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1100"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1088"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1087"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1096"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1095"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1114"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1113"/>
         <source>Account connected.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1189"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1188"/>
         <source>Will require %1 of storage</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1370"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1361"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1380"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1371"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1397"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1388"/>
         <source>Please choose a local sync folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1402"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1393"/>
         <source>Please choose an empty local sync folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1467"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1458"/>
         <source>Could not create local folder %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1481"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1472"/>
         <source>Checking remote folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1527"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1518"/>
         <source>No remote folder specified!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1536"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1527"/>
         <source>Error: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1541"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1532"/>
         <source>Creating remote folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1560"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1551"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1562"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1553"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1564"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1555"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1588"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1579"/>
         <source>Account setup failed while creating the sync folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1615"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1606"/>
         <source>Could not create the sync folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1705"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1696"/>
         <source>Local Sync Folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1952"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1943"/>
         <source>Select a certificate</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1954"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1945"/>
         <source>Certificate files (*.p12 *.pfx)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1962"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1982"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1953"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1973"/>
         <source>Could not access the selected certificate file.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1998"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1989"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation type="unfinished"/>
     </message>
@@ -1809,34 +1796,34 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
         <translation>Folytatás</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="624"/>
+        <location filename="../src/gui/application.cpp" line="632"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 fiók</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="625"/>
+        <location filename="../src/gui/application.cpp" line="633"/>
         <source>1 account</source>
         <translation>1 fiók</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="627"/>
+        <location filename="../src/gui/application.cpp" line="635"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 mappa</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="628"/>
+        <location filename="../src/gui/application.cpp" line="636"/>
         <source>1 folder</source>
         <translation>1 mappa</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="630"/>
+        <location filename="../src/gui/application.cpp" line="638"/>
         <source>Legacy import</source>
         <translation>Importálás örökölt kliensből</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="631"/>
+        <location filename="../src/gui/application.cpp" line="639"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1844,12 +1831,12 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="751"/>
+        <location filename="../src/gui/application.cpp" line="759"/>
         <source>Error accessing the configuration file</source>
         <translation>Hiba a konfigurációs fájl elérésekor</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="752"/>
+        <location filename="../src/gui/application.cpp" line="760"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Hiba történt a következő konfigurációs fájl elérésekor: %1. Győződjön meg róla, hogy a fájlt eléri a rendszerfiók.</translation>
     </message>
@@ -3008,116 +2995,116 @@ Ellenkező esetben az összes törölt fájlt helyreállíthatja a kiszolgálór
         <translation> (biztonsági mentés: %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1853"/>
+        <location filename="../src/gui/folderman.cpp" line="1862"/>
         <source>Undefined state.</source>
         <translation>Nem definiált állapot.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1856"/>
+        <location filename="../src/gui/folderman.cpp" line="1865"/>
         <source>Waiting to start syncing.</source>
         <translation>Várakozás a szinkronizálás elindítására.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1859"/>
+        <location filename="../src/gui/folderman.cpp" line="1868"/>
         <source>Preparing for sync.</source>
         <translation>Előkészítés a szinkronizáláshoz.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1869"/>
+        <location filename="../src/gui/folderman.cpp" line="1878"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation>%1 / %2 szinkronizálása (néhány másodperc van hátra)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1872"/>
+        <location filename="../src/gui/folderman.cpp" line="1881"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>%1 / %2 szinkronizálása (%3 van hátra)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1875"/>
+        <location filename="../src/gui/folderman.cpp" line="1884"/>
         <source>Syncing %1 of %2</source>
         <translation>%1 / %2 szinkronizálása</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1881"/>
+        <location filename="../src/gui/folderman.cpp" line="1890"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>%1 szinkronizálása (néhány másodperc van hátra)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1883"/>
+        <location filename="../src/gui/folderman.cpp" line="1892"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>%1 szinkronizálása (%2 van hátra)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1886"/>
+        <location filename="../src/gui/folderman.cpp" line="1895"/>
         <source>Syncing %1</source>
         <translation>%1 szinkronizálása</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1891"/>
+        <location filename="../src/gui/folderman.cpp" line="1900"/>
         <source>Sync is running.</source>
         <translation>A szinkronizálás fut.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1896"/>
+        <location filename="../src/gui/folderman.cpp" line="1905"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>A szinkronizálás befejeződött, feloldatlan ütközések vannak.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1898"/>
+        <location filename="../src/gui/folderman.cpp" line="1907"/>
         <source>Last sync was successful.</source>
         <translation>A legutolsó szinkronizálás sikeres volt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1904"/>
+        <location filename="../src/gui/folderman.cpp" line="1913"/>
         <source>Setup error.</source>
         <translation>Beállítási hiba.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1907"/>
+        <location filename="../src/gui/folderman.cpp" line="1916"/>
         <source>Sync request was cancelled.</source>
         <translation>Szinkronizálási kérés megszakítva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1924"/>
+        <location filename="../src/gui/folderman.cpp" line="1933"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
         <translation>Válasszon egy másik helyet. A kiválasztott mappa nem érvényes.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1932"/>
-        <location filename="../src/gui/folderman.cpp" line="2011"/>
+        <location filename="../src/gui/folderman.cpp" line="1941"/>
+        <location filename="../src/gui/folderman.cpp" line="2020"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
         <translation>Válasszon egy másik helyet. A(z) %1 már szinkronizálási mappaként van használva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1941"/>
+        <location filename="../src/gui/folderman.cpp" line="1950"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
         <translation>Válasszon egy másik helyet. A(z) %1 útvonal nem létezik.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1945"/>
+        <location filename="../src/gui/folderman.cpp" line="1954"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
         <translation>Válasszon egy másik helyet. A(z) %1 útvonal nem egy mappa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1953"/>
-        <location filename="../src/gui/folderman.cpp" line="1958"/>
+        <location filename="../src/gui/folderman.cpp" line="1962"/>
+        <location filename="../src/gui/folderman.cpp" line="1967"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
         <translation>Válasszon egy másik helyet. Nincs joga ide írni: %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2018"/>
+        <location filename="../src/gui/folderman.cpp" line="2027"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
         <translation>Válasszon egy másik helyet. A(z) %1 már egy szinkronizálási mappaként használt mappában van.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2033"/>
+        <location filename="../src/gui/folderman.cpp" line="2042"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
         <translation>Válasszon egy másik helyet. A(z) %1 már a(z) %2 szinkronizálási mappájaként van használva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2191"/>
+        <location filename="../src/gui/folderman.cpp" line="2200"/>
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
@@ -3128,7 +3115,7 @@ A probléma megoldása: távolítsa el a(z) %1 mappát az egyik fiókból, és h
 Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több szinkronizálási adatbázisfájl található egy mappában. Ellenőrizze a(z) %1 mappában az elavult és nem használt .sync_*.db fájlokat, és távolítsa el őket.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1910"/>
+        <location filename="../src/gui/folderman.cpp" line="1919"/>
         <source>Sync is paused.</source>
         <translation>Szinkronizálás megállítva.</translation>
     </message>
@@ -3138,7 +3125,7 @@ Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több 
         <translation>Nyissa meg az alkalmazás beállításait, és adjon hozzáférést a szinkronizálási mappákhoz.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1916"/>
+        <location filename="../src/gui/folderman.cpp" line="1925"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (szinkronizálás megállítva)</translation>
     </message>
@@ -3477,7 +3464,7 @@ Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több 
 <context>
     <name>OCC::GeneralSettings</name>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="202"/>
+        <location filename="../src/gui/generalsettings.ui" line="252"/>
         <source>Show Call Notifications</source>
         <translation>Hívásértesítések megjelenítése</translation>
     </message>
@@ -3487,12 +3474,12 @@ Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több 
         <translation>Rendszertálcára</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="168"/>
+        <location filename="../src/gui/generalsettings.ui" line="218"/>
         <source>Show Chat Notifications</source>
         <translation>Csevegési értesítések megjelenítése</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="134"/>
+        <location filename="../src/gui/generalsettings.ui" line="184"/>
         <source>Show Server &amp;Notifications</source>
         <translation>Kiszolgálóé&amp;rtesítések megjelenítése</translation>
     </message>
@@ -3520,6 +3507,16 @@ Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több 
         <location filename="../src/gui/generalsettings.ui" line="126"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
         <translation>Megerősítés kérése az ennél nagyobb új mappák szinkronizálása előtt:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="134"/>
+        <source>Enable &amp;File Provider</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="158"/>
+        <source>Files appear in Finder under the &quot;Locations&quot; section and do not use local storage space; contents download automatically when you open a file. Applies to all accounts and replaces classic sync folders and their Finder integration.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="162"/>
@@ -3619,34 +3616,100 @@ Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több 
         <translation>&amp;Alapértelmezés helyreállítása</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="236"/>
+        <location filename="../src/gui/generalsettings.ui" line="286"/>
         <source>Show &amp;Quota Warning Notifications</source>
         <translation>&amp;Kvótafigyelmeztetési értesítések megjelenítése</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="32"/>
+        <location filename="../src/gui/generalsettings.cpp" line="42"/>
         <source>Server notifications that require attention.</source>
         <translation>Kiszolgálóértesítések, melyek a figyelmét kérik.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="36"/>
+        <location filename="../src/gui/generalsettings.cpp" line="46"/>
         <source>Show chat notification dialogs.</source>
         <translation>Csevegésértesítési párbeszédablakok megjelenítése.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="40"/>
+        <location filename="../src/gui/generalsettings.cpp" line="50"/>
         <source>Show call notification dialogs.</source>
         <translation>Hívásértesítési párbeszédablakok megjelenítése.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="43"/>
+        <location filename="../src/gui/generalsettings.cpp" line="53"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation>Értesítés megjelenítése, ha a kvótahasználat 80% fölé megy.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="48"/>
+        <location filename="../src/gui/generalsettings.cpp" line="58"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Az automatikus indítást nem tilthatja le, mert az egész rendszerre kiterjedő automatikus indítás engedélyezett.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="174"/>
+        <source>Login Item Requires Approval</source>
+        <translation>A bejelentkezési elem jóváhagyást igényel</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="175"/>
+        <source>The login item has been registered but needs your approval to become active. Please open System Settings → General → Login Items and enable %1 there.</source>
+        <translation>A bejelentkezési elem regisztrálva lett, de a jóváhagyására van szükség ahhoz, hogy aktív legyen. Nyissa meg a Rendszerbeállítások → Általános → Bejelentkezési elemek részt, és engedélyezze a következőt: %1.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="245"/>
+        <source>Unknown account</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="252"/>
+        <source>File Provider will be enabled for all accounts. Your files will appear in Finder under the &quot;Locations&quot; section. Accounts added later will also be set up as File Providers.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="261"/>
+        <source>This removes classic sync folder connections from the following accounts:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="265"/>
+        <source>Synced files stay on your computer, but they will no longer be kept up to date and settings such as selective sync are discarded.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="269"/>
+        <source>Enable File Provider?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="274"/>
+        <source>Enable File Provider</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="275"/>
+        <location filename="../src/gui/generalsettings.cpp" line="297"/>
+        <source>Cancel</source>
+        <translation>Mégse</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="286"/>
+        <source>File Provider will be turned off for all accounts, and your files will no longer be available in Finder under the &quot;Locations&quot; section.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="288"/>
+        <source>Items that were not uploaded yet will be preserved and shown to you. Classic sync folders are not set up again automatically — you can add folder sync connections afterwards in each account&apos;s settings.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="291"/>
+        <source>Disable File Provider?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="296"/>
+        <source>Disable File Provider</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="409"/>
@@ -3720,21 +3783,6 @@ A verziók visszaváltása nem lehetséges azonnal: a stabilról vállalatira va
         <location filename="../src/gui/generalsettings.cpp" line="574"/>
         <source>Change update channel</source>
         <translation>Frissítési csatorna módosítása</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="575"/>
-        <source>Cancel</source>
-        <translation>Mégse</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="134"/>
-        <source>Login Item Requires Approval</source>
-        <translation>A bejelentkezési elem jóváhagyást igényel</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="135"/>
-        <source>The login item has been registered but needs your approval to become active. Please open System Settings → General → Login Items and enable %1 there.</source>
-        <translation>A bejelentkezési elem regisztrálva lett, de a jóváhagyására van szükség ahhoz, hogy aktív legyen. Nyissa meg a Rendszerbeállítások → Általános → Bejelentkezési elemek részt, és engedélyezze a következőt: %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="737"/>
@@ -6433,103 +6481,103 @@ A kiszolgáló hibával válaszolt: %2</translation>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="430"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="426"/>
         <source>Please sign in</source>
         <translation>Jelentkezzen be</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="521"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="517"/>
         <source>There are no sync folders configured.</source>
         <translation>Nincsenek szinkronizálandó mappák beállítva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="411"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="407"/>
         <source>Disconnected from %1</source>
         <translation>Kapcsolat bontva a %1dal</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="297"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="293"/>
         <source>Unsupported Server Version</source>
         <translation>Nem támogatott kiszolgálóverzió</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="298"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>A(z) %1 fiók kiszolgálója nem támogatott verziót (%2) futtat. Ennek a kliensnek a nem támogatott kiszolgálóverziókkal történő használata nem tesztelt és potenciálisan veszélyes. Folytatás kizárólag saját felelősségére.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="310"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="306"/>
         <source>Terms of service</source>
         <translation>Szolgáltatási feltételek</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="311"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="307"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
         <translation>%1 fiókja megköveteli, hogy elfogadja a kiszolgáló szolgáltatási feltételeit. A rendszer átirányítja Önt, hogy elismerje, hogy elolvasta és elfogadja azt: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="501"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="497"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="505"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="501"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>%1 macOS VFS: A szinkronizálás fut.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="508"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="504"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>%1 macOS VFS: A legutolsó szinkronizálás sikeres volt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="511"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="507"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>%1 macOS VFS: Probléma merült fel.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="514"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="510"/>
         <source>macOS VFS for %1: An error was encountered.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="580"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="576"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>Változások keresése a(z) „%1” távoli mappában</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="583"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="579"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>Változások keresése a(z) „%1” helyi mappában</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="873"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="869"/>
         <source>Internal link copied</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="874"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="870"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="414"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="410"/>
         <source>Disconnected from accounts:</source>
         <translation>Kapcsolat bontva a fiókokkal:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="416"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="412"/>
         <source>Account %1: %2</source>
         <translation>%1 fiók: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="434"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="430"/>
         <source>Account synchronization is disabled</source>
         <translation>Fiók szinkronizálás letiltva</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="600"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="596"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
@@ -7925,6 +7973,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/guiutility.cpp" line="147"/>
         <source>Stay safe</source>
         <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>FileProviderSettings</name>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
+        <source>Virtual files settings</source>
+        <translation>Virtuális fájlok beállításai</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
+        <source>Virtual files appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. Virtual files and classic sync can not be used at the same time.</source>
+        <translation>A virtuális fájlok szokásos fájlnak tűnnek, de nem foglalnak helyi tárterületet. A tartalom automatikusan letöltődik, ha megnyitja a fájlt. A virtuális fájlok és a klasszikus szinkronizálás egyidejűleg nem használható.</translation>
     </message>
 </context>
 <context>
