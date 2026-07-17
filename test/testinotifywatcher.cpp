@@ -10,6 +10,11 @@
 
 #include <QtTest>
 
+#include <array>
+#include <climits>
+#include <sys/inotify.h>
+#include <unistd.h>
+
 #include "folderwatcher_linux.h"
 #include "common/utility.h"
 
@@ -62,6 +67,30 @@ private slots:
         QVERIFY2(dirs.count() == 11, "Directory count wrong.");
 
         QVERIFY2(ok, "findFoldersBelow failed.");
+    }
+
+    void testStaleWatchDescriptorIsIgnored()
+    {
+        QVERIFY(!testWatchContains(INT_MAX));
+
+        std::array<int, 2> pipeFds {};
+        QVERIFY(::pipe(pipeFds.data()) == 0);
+
+        QByteArray payload(sizeof(inotify_event) + sizeof("lib"), '\0');
+        const auto event = reinterpret_cast<inotify_event *>(payload.data());
+        event->wd = INT_MAX;
+        event->mask = IN_CREATE;
+        event->cookie = 0;
+        event->len = sizeof("lib");
+        memcpy(event->name, "lib", sizeof("lib"));
+
+        QCOMPARE(::write(pipeFds[1], payload.constData(), payload.size()), payload.size());
+        slotReceivedNotification(pipeFds[0]);
+
+        ::close(pipeFds[0]);
+        ::close(pipeFds[1]);
+
+        QVERIFY(!testWatchContains(INT_MAX));
     }
 
     void cleanupTestCase() {
