@@ -481,9 +481,182 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         )
 
         XCTAssertNil(modifiedItem)
-        XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        // On macOS < 26 the heuristic sends `If-Match` on every content upload
+        // (the item has a base etag), so a 412 is now read as a version conflict and
+        // returns a transient NSCocoaError. On macOS 26+ no `.failOnConflict` was
+        // requested, so no `If-Match` is sent and 412 keeps its stale-lock meaning.
+        if #available(macOS 26.0, *) {
+            XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        } else {
+            let nsError = error as NSError?
+            XCTAssertEqual(nsError?.domain, NSCocoaErrorDomain)
+            XCTAssertEqual(nsError?.code, NSFileWriteUnknownError)
+        }
         let updatedMetadata = Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)
         XCTAssertNil(updatedMetadata?.lockToken, "Stale lock token must be cleared on 412.")
+    }
+
+    /// With conflict detection active, the content upload must carry an
+    /// `If-Match` precondition set to the (quoted) base etag so the server can
+    /// reject a write that would clobber a newer version. On macOS 26+ this is
+    /// requested by the system via `.failOnConflict`; on older systems the
+    /// heuristic sends it unconditionally.
+    func testModifyPassesIfMatchWhenConflictDetectionActive() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("modify-ifmatch-sent")
+        try "Updated content".write(to: newContentsUrl, atomically: true, encoding: .utf8)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let options: NSFileProviderModifyItemOptions = if #available(macOS 26.0, *) {
+            .failOnConflict
+        } else {
+            []
+        }
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            options: options,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(error)
+        XCTAssertNotNil(modifiedItem)
+        XCTAssertEqual(
+            remoteInterface.lastUploadIfMatchHeader, "\"0\"",
+            "Content upload must carry If-Match set to the quoted base etag."
+        )
+    }
+
+    /// macOS 26+: a 412 from the server while `If-Match` was sent means the
+    /// server copy changed under us. With `.failOnConflict` the extension must
+    /// return `.localVersionConflictingWithServer` so the system creates a conflict
+    /// copy — and must not commit the rejected upload.
+    func testModifyNativeConflictReturnsLocalVersionConflict() async throws {
+        guard #available(macOS 26.0, *) else {
+            throw XCTSkip("Native fail-on-conflict requires macOS 26+")
+        }
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.uploadError = NKError(statusCode: 412, fallbackDescription: "Precondition Failed")
+
+        var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        itemMetadata.lockToken = "opaquelocktoken:token"
+        itemMetadata.uploaded = true
+        itemMetadata.downloaded = true
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("modify-native-conflict")
+        try "Updated content".write(to: newContentsUrl, atomically: true, encoding: .utf8)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            options: .failOnConflict,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(modifiedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .localVersionConflictingWithServer)
+        XCTAssertEqual(remoteInterface.lastUploadIfMatchHeader, "\"0\"")
+
+        let updated = Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)
+        XCTAssertNil(updated?.lockToken, "Lock token must be cleared on conflict.")
+        XCTAssertNotEqual(
+            updated?.status, Status.normal.rawValue,
+            "A rejected upload must not be committed as a normal, synced item."
+        )
+    }
+
+    /// macOS < 26: no conflict-copy contract exists, so a detected conflict
+    /// (412 while `If-Match` was sent) must fail transiently — an NSCocoaError
+    /// outside the resolvable NSFileProviderError set — so the system re-drives the
+    /// edit after re-enumeration instead of silently overwriting the server copy.
+    func testModifyHeuristicConflictReturnsTransientError() async throws {
+        guard #unavailable(macOS 26.0) else {
+            throw XCTSkip("Below-26 heuristic path; macOS 26+ uses the native mechanism.")
+        }
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.uploadError = NKError(statusCode: 412, fallbackDescription: "Precondition Failed")
+
+        var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        itemMetadata.lockToken = "opaquelocktoken:token"
+        itemMetadata.uploaded = true
+        itemMetadata.downloaded = true
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("modify-heuristic-conflict")
+        try "Updated content".write(to: newContentsUrl, atomically: true, encoding: .utf8)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(modifiedItem)
+        let nsError = error as NSError?
+        XCTAssertEqual(nsError?.domain, NSCocoaErrorDomain)
+        XCTAssertEqual(nsError?.code, NSFileWriteUnknownError)
+        XCTAssertEqual(remoteInterface.lastUploadIfMatchHeader, "\"0\"")
+
+        let updated = Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)
+        XCTAssertNil(updated?.lockToken, "Lock token must be cleared on conflict.")
     }
 
     func testModifyWith423ClearsLockToken() async throws {
