@@ -182,7 +182,7 @@ signals:
      * This usually happen when the server was reset or something.
      * Set *cancel to true in a slot connected from this signal to abort the sync.
      */
-    void aboutToRemoveAllFiles(OCC::SyncFileItem::Direction direction, std::function<void(bool)> f);
+    void aboutToRemoveAllFiles(OCC::SyncFileItem::Direction direction, std::function<void (bool)> f);// clazy:exclude=fully-qualified-moc-types
 
     // A new folder was discovered and was not synced because of the confirmation feature
     void newBigFolder(const QString &folder, bool isExternal);

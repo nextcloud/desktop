@@ -37,7 +37,7 @@ private slots:
     void unlockFolder(const OCC::EncryptedFolderMetadataHandler::UnlockFolderWithResult result);
 
 signals:
-    void fileDropMetadataParsedAndAdjusted(const OCC::FolderMetadata *const metadata);
+    void fileDropMetadataParsedAndAdjusted(const OCC::FolderMetadata *metadata);
 
 private:
     SyncFileItemPtr _item;

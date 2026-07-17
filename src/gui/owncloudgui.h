@@ -97,7 +97,7 @@ public slots:
      * to the folder).
      */
     void slotShowShareDialog(const QString &localPath) const;
-    void slotShowGovernanceLabelsDialog(AccountPtr account,
+    void slotShowGovernanceLabelsDialog(OCC::AccountPtr account,
                                         const QString &localPath,
                                         const QString &fileId) const;
     void slotShowFileActivityDialog(const QString &localPath) const;

@@ -134,7 +134,7 @@ public slots:
     void createEditFileLocallyLoadingDialog(const QString &fileName);
     void destroyEditFileLocallyLoadingDialog();
     void createResolveConflictsDialog(const OCC::ActivityList &allConflicts);
-    void createGovernanceLabelsDialog(AccountPtr account, const QString &fileName, const QString &fileId);
+    void createGovernanceLabelsDialog(OCC::AccountPtr account, const QString &fileName, const QString &fileId);
     void createEncryptionTokenDiscoveryDialog();
     void destroyEncryptionTokenDiscoveryDialog();
 
