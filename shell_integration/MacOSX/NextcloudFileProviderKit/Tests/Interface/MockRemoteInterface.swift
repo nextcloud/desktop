@@ -599,6 +599,11 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// `nil` echoes the real stored size.
     public var uploadResponseSizeOverride: Int64?
 
+    /// Records the `If-Match` header the most recent upload call carried (nil if none).
+    /// Lets tests assert the optimistic-concurrency precondition was sent, and with
+    /// which etag. Captured before any injected `uploadError` short-circuit.
+    public var lastUploadIfMatchHeader: String?
+
     /// Handler to track enumerate calls
     public var enumerateCallHandler: ((String, EnumerateDepth, Bool, [String], Data?, Account, NKRequestOptions, @escaping (URLSessionTask) -> Void) -> Void)?
 
@@ -667,7 +672,9 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         }
 
         var pathComponents = sanitisedPath?.components(separatedBy: "/")
-        if pathComponents?.first?.isEmpty == true { pathComponents?.removeFirst() }
+        if pathComponents?.first?.isEmpty == true {
+            pathComponents?.removeFirst()
+        }
         var currentNode = remotePath.hasPrefix(account.trashUrl) ? rootTrashItem : rootItem
 
         while pathComponents?.isEmpty == false {
@@ -690,7 +697,9 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     func parentPath(path: String, account: Account) -> String {
         let sanitisedPath = sanitisedPath(path, account: account)
         var pathComponents = sanitisedPath?.components(separatedBy: "/")
-        if pathComponents?.first?.isEmpty == true { pathComponents?.removeFirst() }
+        if pathComponents?.first?.isEmpty == true {
+            pathComponents?.removeFirst()
+        }
         guard pathComponents?.isEmpty == false else { return "/" }
         pathComponents?.removeLast()
         let rootPath = path.hasPrefix(account.trashUrl) ? account.trashUrl : account.davFilesUrl
@@ -759,7 +768,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         creationDate: Date? = .init(),
         modificationDate: Date? = .init(),
         account: Account,
-        options _: NKRequestOptions = .init(),
+        options: NKRequestOptions = .init(),
         requestHandler _: @escaping (Alamofire.UploadRequest) -> Void = { _ in },
         taskHandler _: @escaping (URLSessionTask) -> Void = { _ in },
         progressHandler _: @escaping (Progress) -> Void = { _ in }
@@ -772,6 +781,8 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         response: HTTPURLResponse?,
         remoteError: NKError
     ) {
+        lastUploadIfMatchHeader = options.customHeader?["If-Match"]
+
         if let uploadError {
             return (account.ncKitAccount, nil, nil, nil, 0, nil, uploadError)
         }
