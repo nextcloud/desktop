@@ -412,6 +412,99 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         )
     }
 
+    func testDeleteAutoCADLockFileWithSiblingKeepsDocumentLocked() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        let folderRemote = MockRemoteItem(
+            identifier: "folder-id",
+            versionIdentifier: "1",
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        let targetFileName = "Drawing.dwg"
+        let targetRemote = MockRemoteItem(
+            identifier: "folder/\(targetFileName)",
+            versionIdentifier: "1",
+            name: targetFileName,
+            remotePath: folderRemote.remotePath + "/" + targetFileName,
+            data: Data("test data".utf8),
+            locked: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        folderRemote.children = [targetRemote]
+        folderRemote.parent = rootItem
+        rootItem.children = [folderRemote]
+
+        var folderMetadata = SendableItemMetadata(
+            ocId: folderRemote.identifier, fileName: "folder", account: Self.account
+        )
+        folderMetadata.directory = true
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        var targetMetadata = SendableItemMetadata(
+            ocId: targetRemote.identifier, fileName: targetFileName, account: Self.account
+        )
+        targetMetadata.serverUrl += "/folder"
+        Self.dbManager.addItemMetadata(targetMetadata)
+
+        // Insert both .dwl and .dwl2 lock file metadata into the DB.
+        var dwlMetadata = SendableItemMetadata(
+            ocId: "dwl-id", fileName: "Drawing.dwl", account: Self.account
+        )
+        dwlMetadata.serverUrl += "/folder"
+        dwlMetadata.isLockFileOfLocalOrigin = true
+        Self.dbManager.addItemMetadata(dwlMetadata)
+
+        var dwl2Metadata = SendableItemMetadata(
+            ocId: "dwl2-id", fileName: "Drawing.dwl2", account: Self.account
+        )
+        dwl2Metadata.serverUrl += "/folder"
+        dwl2Metadata.isLockFileOfLocalOrigin = true
+        Self.dbManager.addItemMetadata(dwl2Metadata)
+
+        // Delete .dwl2 while .dwl still exists — document must stay locked.
+        let dwl2Item = Item(
+            metadata: dwl2Metadata,
+            parentItemIdentifier: .init(folderMetadata.ocId),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let error = await dwl2Item.delete(dbManager: Self.dbManager)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: dwl2Metadata.ocId)?.deleted, true)
+        XCTAssertNil(error)
+        XCTAssertTrue(
+            targetRemote.locked, "Expected the document to stay locked while .dwl sibling exists"
+        )
+
+        // Now delete .dwl — with both gone, the document must unlock.
+        let dwlItem = Item(
+            metadata: dwlMetadata,
+            parentItemIdentifier: .init(folderMetadata.ocId),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let error2 = await dwlItem.delete(dbManager: Self.dbManager)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: dwlMetadata.ocId)?.deleted, true)
+        XCTAssertNil(error2)
+        XCTAssertFalse(
+            targetRemote.locked, "Expected the document to be unlocked after both lock files are deleted"
+        )
+    }
+
     func testFailOnNonRecursiveNonEmptyDirDelete() async {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let remoteFolder = MockRemoteItem(
