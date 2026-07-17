@@ -10,7 +10,7 @@ import Qt5Compat.GraphicalEffects
 import Style
 
 import com.nextcloud.desktopclient
-import "../../tray"
+import "qrc:/qml/src/gui/tray"
 
 TextField {
     id: root

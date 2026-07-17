@@ -237,14 +237,10 @@ set(client_SRCS
     tray/activitydata.cpp
     tray/activitylistmodel.h
     tray/activitylistmodel.cpp
-    search/unifiedsearchresult.h
     tray/asyncimageresponse.cpp
-    search/unifiedsearchresult.cpp
-    search/unifiedsearchresultslistmodel.h
     tray/trayimageprovider.cpp
     tray/trayaccountappsmodel.h
     tray/trayaccountappsmodel.cpp
-    search/unifiedsearchresultslistmodel.cpp
     tray/usermodel.h
     tray/usermodel.cpp
     tray/notificationhandler.h
@@ -291,6 +287,8 @@ IF(BUILD_UPDATER)
         updater/updater.cpp
     )
 endif()
+
+add_subdirectory(search)
 
 IF( APPLE )
     list(APPEND client_SRCS cocoainitializer_mac.mm)
@@ -579,6 +577,9 @@ target_link_libraries(nextcloudCore
   Qt::QuickWidgets
   KF6::Archive
   KDAB::kdsingleapplication
+
+  nextcloudGuiSearch
+  nextcloudGuiSearchplugin
   )
 
 if(KF6GuiAddons_FOUND)
