@@ -46,6 +46,8 @@
 #define NOTIFICATIONS_IFACE "org.freedesktop.Notifications"
 #endif
 
+using namespace Qt::StringLiterals;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcSystray, "nextcloud.gui.systray")
@@ -428,7 +430,7 @@ void Systray::showSearchWindow(int userIndex)
         return;
     }
 
-    QQmlComponent searchWindowComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/search/qml/SearchWindow.qml"));
+    QQmlComponent searchWindowComponent(trayEngine(), "com.nextcloud.desktopclient.search"_L1, "SearchWindow"_L1);
 
     if (searchWindowComponent.isError()) {
         qCWarning(lcSystray) << searchWindowComponent.errorString();

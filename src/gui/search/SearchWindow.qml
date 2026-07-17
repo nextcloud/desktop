@@ -9,7 +9,7 @@ import QtQuick.Layouts
 
 import Style
 import com.nextcloud.desktopclient
-import "../.."
+import "qrc:/qml/src/gui"
 
 WizardStyledWindow {
     id: root
