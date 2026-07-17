@@ -14,6 +14,9 @@
 
 #include <QTest>
 #include <QSignalSpy>
+#include <QTemporaryDir>
+#include <QFile>
+#include <QIODevice>
 
 using namespace Qt::StringLiterals;
 
@@ -795,6 +798,89 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         QCOMPARE(lockFileDetectedNewlyUploadedSpy.count(), 1);
+    }
+
+    void testLockFile_lockFile_detect_newly_uploaded_autocad()
+    {
+        // AutoCAD: opening a .dwg creates both .dwl and .dwl2 lock files.
+        // Both share the document's base name — the guarded document is
+        // resolved by replacing the extension with .dwg.
+        const auto testFileName = QStringLiteral("floorplan.dwg");
+        const auto testLockFileName = QStringLiteral("floorplan.dwl");
+
+        const auto testDocumentsDirName = "documents";
+
+        FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.localModifier().mkdir(testDocumentsDirName);
+        // AutoCAD lock files are excluded from sync by the default exclude list;
+        // the FakeFolder does not load it, so replicate the exclusion here.
+        fakeFolder.syncEngine().excludedFiles().addManualExclude(QStringLiteral("*.dwl"));
+        fakeFolder.syncEngine().excludedFiles().addManualExclude(QStringLiteral("*.dwl2"));
+
+        fakeFolder.syncEngine().account()->setCapabilities({{"files", QVariantMap{{"locking", QByteArray{"1.0"}}}}});
+        QSignalSpy lockFileDetectedNewlyUploadedSpy(&fakeFolder.syncEngine(), &OCC::SyncEngine::lockFileDetected);
+
+        fakeFolder.localModifier().insert(testDocumentsDirName + QStringLiteral("/") + testLockFileName);
+        fakeFolder.localModifier().insert(testDocumentsDirName + QStringLiteral("/") + testFileName);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(lockFileDetectedNewlyUploadedSpy.count(), 1);
+    }
+
+    void testLockFile_autoCADLockFileTargetFilePath_resolution()
+    {
+        QTemporaryDir dir;
+        QVERIFY(dir.isValid());
+        const auto dirPath = dir.path() + QLatin1Char('/');
+
+        // .dwl lock file guards the .dwg document with the same base name.
+        const auto dwgPath = dirPath + QStringLiteral("Drawing.dwg");
+        const auto dwlPath = dirPath + QStringLiteral("Drawing.dwl");
+        QVERIFY(QFile{dwgPath}.open(QIODevice::WriteOnly));
+        QVERIFY(QFile{dwlPath}.open(QIODevice::WriteOnly));
+
+        const auto dwlResolved = OCC::FileSystem::lockFileTargetFilePath(dwlPath, QString{});
+        QCOMPARE(dwlResolved.path, dwgPath);
+        QCOMPARE(dwlResolved.type, OCC::FileSystem::FileLockingInfo::Type::Locked);
+
+        // .dwl2 lock file also guards the same .dwg document.
+        const auto dwl2Path = dirPath + QStringLiteral("Drawing.dwl2");
+        QVERIFY(QFile{dwl2Path}.open(QIODevice::WriteOnly));
+        const auto dwl2Resolved = OCC::FileSystem::lockFileTargetFilePath(dwl2Path, QString{});
+        QCOMPARE(dwl2Resolved.path, dwgPath);
+        QCOMPARE(dwl2Resolved.type, OCC::FileSystem::FileLockingInfo::Type::Locked);
+
+        // Deleting only .dwl2 while .dwl still exists must NOT unlock the document.
+        QVERIFY(QFile::remove(dwl2Path));
+        const auto dwl2Deleted = OCC::FileSystem::lockFileTargetFilePath(dwl2Path, QString{});
+        QCOMPARE(dwl2Deleted.path, dwgPath);
+        QCOMPARE(dwl2Deleted.type, OCC::FileSystem::FileLockingInfo::Type::Unset);
+
+        // Recreate .dwl2, then delete only .dwl while .dwl2 still exists.
+        // This must also NOT unlock the document.
+        QVERIFY(QFile{dwl2Path}.open(QIODevice::WriteOnly));
+        QVERIFY(QFile::remove(dwlPath));
+        const auto dwlDeleted = OCC::FileSystem::lockFileTargetFilePath(dwlPath, QString{});
+        QCOMPARE(dwlDeleted.path, dwgPath);
+        QCOMPARE(dwlDeleted.type, OCC::FileSystem::FileLockingInfo::Type::Unset);
+
+        // Removing the remaining .dwl2 now unlocks the document (both are gone).
+        QVERIFY(QFile::remove(dwl2Path));
+        const auto dwlUnlocked = OCC::FileSystem::lockFileTargetFilePath(dwl2Path, QString{});
+        QCOMPARE(dwlUnlocked.path, dwgPath);
+        QCOMPARE(dwlUnlocked.type, OCC::FileSystem::FileLockingInfo::Type::Unlocked);
+
+        // A non-lock file resolves to nothing.
+        const auto nonLock = OCC::FileSystem::lockFileTargetFilePath(dirPath + QStringLiteral("notes.txt"), QString{});
+        QVERIFY(nonLock.path.isEmpty());
+        QCOMPARE(nonLock.type, OCC::FileSystem::FileLockingInfo::Type::Unset);
+
+        // An AutoCAD lock file with no matching .dwg sibling resolves to nothing.
+        const auto orphanDwlPath = dirPath + QStringLiteral("orphan.dwl");
+        QVERIFY(QFile{orphanDwlPath}.open(QIODevice::WriteOnly));
+        const auto orphan = OCC::FileSystem::lockFileTargetFilePath(orphanDwlPath, QString{});
+        QVERIFY(orphan.path.isEmpty());
     }
 
     void testLockFile_verifyE2eeFilesUseCorrectPath()
