@@ -99,6 +99,8 @@ public extension Item {
         remotePath: String,
         newCreationDate: Date?,
         newContentModificationDate: Date?,
+        baseVersion: NSFileProviderItemVersion,
+        options: NSFileProviderModifyItemOptions,
         forcedChunkSize: Int?,
         domain: NSFileProviderDomain?,
         progress: Progress,
@@ -131,7 +133,49 @@ public extension Item {
             headers["If"] = "<\(remotePath)> (<opaquelocktoken:\(token)>)"
         }
 
-        let options = NKRequestOptions(customHeader: headers, queue: .global(qos: .utility))
+        // Optimistic-concurrency guard. Without a precondition the PUT is
+        // unconditional and silently overwrites a server copy that changed since
+        // we last synced (another client, or Adobe's rapid multi-step re-saves) —
+        // last-writer-wins. Send `If-Match: <baseEtag>` so the server rejects a
+        // conflicting write with 412 instead of clobbering. `baseVersion` carries
+        // the version the local edit was based on (its `contentVersion` is the
+        // etag bytes — see Item.swift); fall back to our stored etag.
+        let baseEtag: String? = {
+            if let s = String(data: baseVersion.contentVersion, encoding: .utf8), !s.isEmpty {
+                return s
+            }
+            return metadata.etag.isEmpty ? nil : metadata.etag
+        }()
+
+        // macOS 26+ has a real conflict-resolution contract: when the system asks
+        // for it via `.failOnConflict`, we fail the upload with
+        // `.localVersionConflictingWithServer` and the system creates a conflict
+        // copy so both versions survive. That option/error is macOS 26.0+ only,
+        // but the extension deploys back to macOS 13, so on older systems we apply
+        // a best-effort heuristic: always send `If-Match` and, on 412, fail
+        // transiently + re-enumerate to stop the silent overwrite.
+        var shouldSendIfMatch = false
+        var nativeFailOnConflict = false
+        if #available(macOS 26.0, *) {
+            if options.contains(.failOnConflict) {
+                shouldSendIfMatch = true
+                nativeFailOnConflict = true
+            }
+        } else {
+            shouldSendIfMatch = true
+        }
+
+        // We can only guard the write if we know the version to match against. When we
+        // do, a subsequent 412 is a real content conflict (below); when we don't, the
+        // upload stays unconditional and 412 keeps its previous stale-lock meaning.
+        let sentIfMatch = shouldSendIfMatch && baseEtag != nil
+        if sentIfMatch, let baseEtag {
+            // Our stored etag is normalized (unquoted); Sabre/DAV compares If-Match
+            // against the quoted resource ETag, so re-add the quotes.
+            headers["If-Match"] = "\"\(baseEtag)\""
+        }
+
+        let uploadOptions = NKRequestOptions(customHeader: headers, queue: .global(qos: .utility))
 
         let (_, etag, date, size, error) = await upload(
             fileLocatedAt: newContents.path,
@@ -143,7 +187,7 @@ public extension Item {
             dbManager: dbManager,
             creationDate: newCreationDate,
             modificationDate: newContentModificationDate,
-            options: options,
+            options: uploadOptions,
             log: logger.log,
             requestHandler: { progress.setHandlersFromAfRequest($0) },
             taskHandler: { task in
@@ -167,6 +211,39 @@ public extension Item {
                 \(error.errorDescription)
                 """
             )
+
+            // We sent `If-Match`, so a 412 here means the server copy diverged
+            // from the version this edit was based on — a genuine content conflict,
+            // not merely a stale lock. Do NOT commit the rejected upload. Clear any
+            // lock token, drop the row into an error state, and re-enumerate so the
+            // server's newer version is fetched.
+            if sentIfMatch, error.isPreconditionFailedError {
+                logger.error("Upload rejected: server version changed since last sync (If-Match precondition failed).", [.item: itemIdentifier, .name: filename])
+                metadata.lockToken = nil
+                metadata.status = Status.uploadError.rawValue
+                metadata.sessionError = error.errorDescription
+                dbManager.addItemMetadata(metadata)
+                if let domain, let manager = NSFileProviderManager(for: domain) {
+                    Task {
+                        try? await manager.signalEnumerator(for: .workingSet)
+                    }
+                }
+
+                // macOS 26+: hand the system the dedicated conflict error so it
+                // creates a conflict copy and both versions survive.
+                if nativeFailOnConflict, #available(macOS 26.0, *) {
+                    return (nil, NSFileProviderError(.localVersionConflictingWithServer))
+                }
+
+                // Older systems have no conflict-copy contract. Return a transient
+                // error (NSCocoaErrorDomain, outside the resolvable NSFileProviderError
+                // set) so the system re-drives the modification after the
+                // re-enumeration above has refreshed our base etag — turning a silent
+                // overwrite into a visible sync round-trip.
+                return (nil, NSError(domain: NSCocoaErrorDomain, code: NSFileWriteUnknownError, userInfo: [
+                    NSLocalizedDescriptionKey: "Upload rejected: the file changed on the server since it was last synced."
+                ]))
+            }
 
             if error.isPreconditionFailedError || error.isLockedError {
                 logger.info("Clearing stale lock token after lock/precondition error.", [.item: itemIdentifier])
@@ -538,6 +615,8 @@ public extension Item {
                 remotePath: newServerUrlFileName,
                 newCreationDate: newCreationDate,
                 newContentModificationDate: newContentModificationDate,
+                baseVersion: baseVersion,
+                options: options,
                 forcedChunkSize: forcedChunkSize,
                 domain: domain,
                 progress: progress,
