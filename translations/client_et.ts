@@ -584,12 +584,12 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="295"/>
+        <location filename="../src/libsync/filesystem.cpp" line="372"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>Viga „%1“ eemaldamisel: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="343"/>
+        <location filename="../src/libsync/filesystem.cpp" line="420"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>„%1“ kausta eemaldamine ei õnnestunud</translation>
     </message>
@@ -851,12 +851,12 @@ Kas peaksin selle kasutajakonto importima?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="200"/>
         <source>File Provider is enabled, but this account still has classic sync folders. The Finder integration stays unavailable until this is resolved.</source>
-        <translation type="unfinished"/>
+        <translation>Failiteenuse pakkuja on lülitatud sisse, aga selle konto puhul on veel kasutusel klassikalised sünkroonimiskaustad. Lõiming failihalduriga (Finderiga) pole saadaval seni, kuni see olukord on lahendatud.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="216"/>
         <source>Resolve…</source>
-        <translation type="unfinished"/>
+        <translation>Lahenda…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="286"/>
@@ -1095,7 +1095,7 @@ Oota kuni sünkroonimine lõppeb ja seejärel krüpti.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="946"/>
         <source>&lt;p&gt;Could not add the folder sync connection for &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Kausta sünkroonimise lisamine ei õnnestunud: &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="969"/>
@@ -3512,12 +3512,12 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
     <message>
         <location filename="../src/gui/generalsettings.ui" line="134"/>
         <source>Enable &amp;File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Lülita &amp;failiteenuse pakkuja sisse</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="158"/>
         <source>Files appear in Finder under the &quot;Locations&quot; section and do not use local storage space; contents download automatically when you open a file. Applies to all accounts and replaces classic sync folders and their Finder integration.</source>
-        <translation type="unfinished"/>
+        <translation>Failid on leitavad failihalduri (Finderist) alajaotusest „Asukohad“ (Locations) ja nad ei kasuta kohalikku andmeruumi - faili tegelik sisu laaditakse alla vaid siis, kui sellel klõpsad või avad. See kehtib kõikidele kasutajakontodele ja asendab senise failide sünkroonimise ja nende lõimingu failihalduriga.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="162"/>
@@ -3659,32 +3659,32 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="245"/>
         <source>Unknown account</source>
-        <translation type="unfinished"/>
+        <translation>Tundmatu kasutajakonto</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="252"/>
         <source>File Provider will be enabled for all accounts. Your files will appear in Finder under the &quot;Locations&quot; section. Accounts added later will also be set up as File Providers.</source>
-        <translation type="unfinished"/>
+        <translation>Failiteenuse pakkuja lülitatakse kõikide kasutajakontode jaoks sisse. Sinu failid saavad olema saadaval failihalduris (Finderis) valikust „Asukohad“ (Locations). Ka hiljem lisatud võimalikud muud kasutajakontod saavad olema seadistatud failiteenuse pakkujana.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="261"/>
         <source>This removes classic sync folder connections from the following accounts:</source>
-        <translation type="unfinished"/>
+        <translation>Järgnevaga eemaldad klassikalise kaustade sünkroonimise neilt kontodelt:</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="265"/>
         <source>Synced files stay on your computer, but they will no longer be kept up to date and settings such as selective sync are discarded.</source>
-        <translation type="unfinished"/>
+        <translation>Seni sünkroonitud failid jäävad sinu arvutisse alles, kuid edaspidist sünkroonimist ei toimi ning ei toimi ka lisafunktsionaalsus, nagu selektiivne sünkroonimine.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="269"/>
         <source>Enable File Provider?</source>
-        <translation type="unfinished"/>
+        <translation>Kas lülitad failiteenuse pakkuja sisse?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="274"/>
         <source>Enable File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Lülita failiteenuse pakkuja sisse</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="275"/>
@@ -3695,22 +3695,22 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="286"/>
         <source>File Provider will be turned off for all accounts, and your files will no longer be available in Finder under the &quot;Locations&quot; section.</source>
-        <translation type="unfinished"/>
+        <translation>Failiteenuse pakkuja lülitatakse kõikide kasutajakontode jaoks välja ja sinu failid pole enam failihalduris (Finderis) saadaval valikust „Asukohad“ (Locations).</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="288"/>
         <source>Items that were not uploaded yet will be preserved and shown to you. Classic sync folders are not set up again automatically — you can add folder sync connections afterwards in each account&apos;s settings.</source>
-        <translation type="unfinished"/>
+        <translation>Veel üles laadimata failid jäävad alles ja kuvatakse sulle. Klassikalisi sünkroonimiskaustu ei seadistata automaatselt uuesti - saad kaustade sünkroonimise ühendusi hiljem lisada iga konto seadistuste alt.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="291"/>
         <source>Disable File Provider?</source>
-        <translation type="unfinished"/>
+        <translation>Kas lülitad failiteenuse pakkuja välja?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="296"/>
         <source>Disable File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Lülita failiteenuse pakkuja välja</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="409"/>
@@ -6000,57 +6000,57 @@ Veateade serveri päringuvastuses: %2</translation>
 <context>
     <name>OCC::Systray</name>
     <message>
-        <location filename="../src/gui/systray.cpp" line="145"/>
+        <location filename="../src/gui/systray.cpp" line="147"/>
         <source>Download</source>
         <translation>Laadi alla</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="586"/>
+        <location filename="../src/gui/systray.cpp" line="588"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="827"/>
         <source>Add account</source>
         <translation>Lisa konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="588"/>
+        <location filename="../src/gui/systray.cpp" line="590"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
         <translation>Ava %1i Töölauarakendus</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="591"/>
-        <location filename="../src/gui/systray.cpp" line="601"/>
+        <location filename="../src/gui/systray.cpp" line="593"/>
+        <location filename="../src/gui/systray.cpp" line="603"/>
         <source>Pause sync</source>
         <translation>Peata sünkroonimine</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="592"/>
-        <location filename="../src/gui/systray.cpp" line="607"/>
+        <location filename="../src/gui/systray.cpp" line="594"/>
+        <location filename="../src/gui/systray.cpp" line="609"/>
         <source>Resume sync</source>
         <translation>Jätka sünroonimist</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="593"/>
+        <location filename="../src/gui/systray.cpp" line="595"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="836"/>
         <source>Settings</source>
         <translation>Seadistused</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="594"/>
+        <location filename="../src/gui/systray.cpp" line="596"/>
         <source>Help</source>
         <translation>Abiteave</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="595"/>
+        <location filename="../src/gui/systray.cpp" line="597"/>
         <source>Exit %1</source>
         <translation>Sulge %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="601"/>
+        <location filename="../src/gui/systray.cpp" line="603"/>
         <source>Pause sync for all</source>
         <translation>Peata sünkroonimine kõigi jaoks</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="607"/>
+        <location filename="../src/gui/systray.cpp" line="609"/>
         <source>Resume sync for all</source>
         <translation>Jätka sünkroonimist kõigi jaoks</translation>
     </message>
@@ -6778,7 +6778,7 @@ Veateade serveri päringuvastuses: %2</translation>
         <translation>Sünkroonitud: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="333"/>
+        <location filename="../src/libsync/filesystem.cpp" line="410"/>
         <source>Error deleting the file</source>
         <translation>Viga faili kustutamisel</translation>
     </message>
@@ -6960,22 +6960,22 @@ Veateade serveri päringuvastuses: %2</translation>
 <context>
     <name>SearchWindow</name>
     <message>
-        <location filename="../src/gui/search/qml/SearchWindow.qml" line="19"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="19"/>
         <source>Search</source>
         <translation>Otsi</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/qml/SearchWindow.qml" line="74"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="74"/>
         <source>Search is available when this account is connected</source>
         <translation>Otsing on kasutatav peale kasutajakonto ühendamist</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/qml/SearchWindow.qml" line="75"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="75"/>
         <source>Search files, messages, events …</source>
         <translation>Otsi faile, sõnumeid või sündmusi…</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/qml/SearchWindow.qml" line="150"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="150"/>
         <source>Search results list</source>
         <translation>Otsingutulemuste loend</translation>
     </message>
@@ -7340,7 +7340,7 @@ Veateade serveri päringuvastuses: %2</translation>
 <context>
     <name>UnifiedSearchInputContainer</name>
     <message>
-        <location filename="../src/gui/search/qml/UnifiedSearchInputContainer.qml" line="35"/>
+        <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="35"/>
         <source>Search files, messages, events …</source>
         <translation>Otsi faile, sõnumeid või sündmusi…</translation>
     </message>
@@ -7348,7 +7348,7 @@ Veateade serveri päringuvastuses: %2</translation>
 <context>
     <name>UnifiedSearchPlaceholderView</name>
     <message>
-        <location filename="../src/gui/search/qml/UnifiedSearchPlaceholderView.qml" line="31"/>
+        <location filename="../src/gui/search/UnifiedSearchPlaceholderView.qml" line="31"/>
         <source>Start typing to search</source>
         <translation>Otsimiseks alusta kirjutamist</translation>
     </message>
@@ -7356,7 +7356,7 @@ Veateade serveri päringuvastuses: %2</translation>
 <context>
     <name>UnifiedSearchResultFetchMoreTrigger</name>
     <message>
-        <location filename="../src/gui/search/qml/UnifiedSearchResultFetchMoreTrigger.qml" line="37"/>
+        <location filename="../src/gui/search/UnifiedSearchResultFetchMoreTrigger.qml" line="37"/>
         <source>Load more results</source>
         <translation>Laadi veel tulemusi</translation>
     </message>
@@ -7364,7 +7364,7 @@ Veateade serveri päringuvastuses: %2</translation>
 <context>
     <name>UnifiedSearchResultItemSkeleton</name>
     <message>
-        <location filename="../src/gui/search/qml/UnifiedSearchResultItemSkeleton.qml" line="20"/>
+        <location filename="../src/gui/search/UnifiedSearchResultItemSkeleton.qml" line="20"/>
         <source>Search result skeleton.</source>
         <translation>Otsingutulemuste kest</translation>
     </message>
@@ -7372,7 +7372,7 @@ Veateade serveri päringuvastuses: %2</translation>
 <context>
     <name>UnifiedSearchResultListItem</name>
     <message>
-        <location filename="../src/gui/search/qml/UnifiedSearchResultListItem.qml" line="35"/>
+        <location filename="../src/gui/search/UnifiedSearchResultListItem.qml" line="35"/>
         <source>Load more results</source>
         <translation>Laadi veel tulemusi</translation>
     </message>
@@ -7380,7 +7380,7 @@ Veateade serveri päringuvastuses: %2</translation>
 <context>
     <name>UnifiedSearchResultNothingFound</name>
     <message>
-        <location filename="../src/gui/search/qml/UnifiedSearchResultNothingFound.qml" line="32"/>
+        <location filename="../src/gui/search/UnifiedSearchResultNothingFound.qml" line="32"/>
         <source>No results for</source>
         <translation>Otsingutulemusi ei leidu:</translation>
     </message>
@@ -7388,7 +7388,7 @@ Veateade serveri päringuvastuses: %2</translation>
 <context>
     <name>UnifiedSearchResultSectionItem</name>
     <message>
-        <location filename="../src/gui/search/qml/UnifiedSearchResultSectionItem.qml" line="25"/>
+        <location filename="../src/gui/search/UnifiedSearchResultSectionItem.qml" line="25"/>
         <source>Search results section %1</source>
         <translation>Otsingutulemuste lõik %1</translation>
     </message>

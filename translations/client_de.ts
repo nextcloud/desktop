@@ -584,12 +584,12 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="295"/>
+        <location filename="../src/libsync/filesystem.cpp" line="372"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>Fehler beim Entfernen von &quot;%1&quot;: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="343"/>
+        <location filename="../src/libsync/filesystem.cpp" line="420"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>Der Ordner &quot;%1&quot; konnte nicht entfernt werden</translation>
     </message>
@@ -851,12 +851,12 @@ Soll das Konto importiert werden?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="200"/>
         <source>File Provider is enabled, but this account still has classic sync folders. The Finder integration stays unavailable until this is resolved.</source>
-        <translation type="unfinished"/>
+        <translation>Der Dateianbieter ist aktiviert, aber dieses Konto verfügt immer noch über klassische Synchronisierungsordner. Die Finder-Integration ist nicht verfügbar, bis dies behoben ist.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="216"/>
         <source>Resolve…</source>
-        <translation type="unfinished"/>
+        <translation>Löse auf …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="286"/>
@@ -1095,7 +1095,7 @@ Warten Sie auf die neue Synchronisierung und verschlüsseln Sie sie dann.</trans
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="946"/>
         <source>&lt;p&gt;Could not add the folder sync connection for &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Die Ordnersynchronisierungsverbindung konnte nicht hinzugefügt werden für&lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="969"/>
@@ -3512,12 +3512,12 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="134"/>
         <source>Enable &amp;File Provider</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Dateianbieter aktivieren</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="158"/>
         <source>Files appear in Finder under the &quot;Locations&quot; section and do not use local storage space; contents download automatically when you open a file. Applies to all accounts and replaces classic sync folders and their Finder integration.</source>
-        <translation type="unfinished"/>
+        <translation>Dateien werden im Finder im Abschnitt &quot;Orte&quot; angezeigt und verwenden keinen lokalen Speicherplatz. Der Inhalt wird automatisch heruntergeladen, wenn eine Datei geöffnet wird. Gilt für alle Konten und ersetzt klassische Synchronisierungsordner und deren Finder-Integration.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="162"/>
@@ -3659,32 +3659,32 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="245"/>
         <source>Unknown account</source>
-        <translation type="unfinished"/>
+        <translation>Unbekanntes Konto</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="252"/>
         <source>File Provider will be enabled for all accounts. Your files will appear in Finder under the &quot;Locations&quot; section. Accounts added later will also be set up as File Providers.</source>
-        <translation type="unfinished"/>
+        <translation>Der Dateianbieter wird für alle Konten aktiviert. Die Dateien werden im Finder im Abschnitt &quot;Orte&quot; angezeigt. Später hinzugefügte Konten werden auch als Dateianbieter eingerichtet.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="261"/>
         <source>This removes classic sync folder connections from the following accounts:</source>
-        <translation type="unfinished"/>
+        <translation>Dadurch werden klassische Synchronisierungsordnerverbindungen aus den folgenden Konten entfernt:</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="265"/>
         <source>Synced files stay on your computer, but they will no longer be kept up to date and settings such as selective sync are discarded.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisierte Dateien bleiben auf Ihrem Computer, werden jedoch nicht mehr auf dem neuesten Stand gehalten und Einstellungen wie die selektive Synchronisierung werden verworfen.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="269"/>
         <source>Enable File Provider?</source>
-        <translation type="unfinished"/>
+        <translation>Dateianbieter aktivieren?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="274"/>
         <source>Enable File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Dateianbieter aktivieren</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="275"/>
@@ -3695,22 +3695,22 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="286"/>
         <source>File Provider will be turned off for all accounts, and your files will no longer be available in Finder under the &quot;Locations&quot; section.</source>
-        <translation type="unfinished"/>
+        <translation>Der Dateianbieter wird für alle Konten deaktiviert und Ihre Dateien sind im Finder im Abschnitt &quot;Orte&quot; nicht mehr verfügbar.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="288"/>
         <source>Items that were not uploaded yet will be preserved and shown to you. Classic sync folders are not set up again automatically — you can add folder sync connections afterwards in each account&apos;s settings.</source>
-        <translation type="unfinished"/>
+        <translation>Elemente, die noch nicht hochgeladen wurden, bleiben erhalten und werden Ihnen angezeigt. Klassische Synchronisierungsordner werden nicht automatisch wieder eingerichtet — Sie können anschließend in den Einstellungen jedes Kontos Ordnersynchronisierungsverbindungen hinzufügen.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="291"/>
         <source>Disable File Provider?</source>
-        <translation type="unfinished"/>
+        <translation>Dateianbieter deaktivieren?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="296"/>
         <source>Disable File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Dateianbieter deaktivieren</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="409"/>
@@ -6000,57 +6000,57 @@ Server antwortete mit Fehler: %2</translation>
 <context>
     <name>OCC::Systray</name>
     <message>
-        <location filename="../src/gui/systray.cpp" line="145"/>
+        <location filename="../src/gui/systray.cpp" line="147"/>
         <source>Download</source>
         <translation>Herunterladen</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="586"/>
+        <location filename="../src/gui/systray.cpp" line="588"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="827"/>
         <source>Add account</source>
         <translation>Konto hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="588"/>
+        <location filename="../src/gui/systray.cpp" line="590"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
         <translation>%1 Desktop öffnen</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="591"/>
-        <location filename="../src/gui/systray.cpp" line="601"/>
+        <location filename="../src/gui/systray.cpp" line="593"/>
+        <location filename="../src/gui/systray.cpp" line="603"/>
         <source>Pause sync</source>
         <translation>Synchronisierung pausieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="592"/>
-        <location filename="../src/gui/systray.cpp" line="607"/>
+        <location filename="../src/gui/systray.cpp" line="594"/>
+        <location filename="../src/gui/systray.cpp" line="609"/>
         <source>Resume sync</source>
         <translation>Synchronisierung fortsetzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="593"/>
+        <location filename="../src/gui/systray.cpp" line="595"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="836"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="594"/>
+        <location filename="../src/gui/systray.cpp" line="596"/>
         <source>Help</source>
         <translation>Hilfe</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="595"/>
+        <location filename="../src/gui/systray.cpp" line="597"/>
         <source>Exit %1</source>
         <translation>%1 beenden</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="601"/>
+        <location filename="../src/gui/systray.cpp" line="603"/>
         <source>Pause sync for all</source>
         <translation>Synchronisierung für alle pausieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="607"/>
+        <location filename="../src/gui/systray.cpp" line="609"/>
         <source>Resume sync for all</source>
         <translation>Synchronisierung für alle fortsetzen</translation>
     </message>
@@ -6778,7 +6778,7 @@ Server antwortete mit Fehler: %2</translation>
         <translation>%1 synchronisiert</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="333"/>
+        <location filename="../src/libsync/filesystem.cpp" line="410"/>
         <source>Error deleting the file</source>
         <translation>Fehler beim Löschen der Datei</translation>
     </message>
@@ -6960,22 +6960,22 @@ Server antwortete mit Fehler: %2</translation>
 <context>
     <name>SearchWindow</name>
     <message>
-        <location filename="../src/gui/search/qml/SearchWindow.qml" line="19"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="19"/>
         <source>Search</source>
         <translation>Suche</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/qml/SearchWindow.qml" line="74"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="74"/>
         <source>Search is available when this account is connected</source>
         <translation>Die Suche ist verfügbar, wenn dieses Konto verbunden ist.</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/qml/SearchWindow.qml" line="75"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="75"/>
         <source>Search files, messages, events …</source>
         <translation>Suche Dateien, Nachrichten und Termine …</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/qml/SearchWindow.qml" line="150"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="150"/>
         <source>Search results list</source>
         <translation>Liste der Suchergebnisse</translation>
     </message>
@@ -7340,7 +7340,7 @@ Server antwortete mit Fehler: %2</translation>
 <context>
     <name>UnifiedSearchInputContainer</name>
     <message>
-        <location filename="../src/gui/search/qml/UnifiedSearchInputContainer.qml" line="35"/>
+        <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="35"/>
         <source>Search files, messages, events …</source>
         <translation>Suche Dateien, Nachrichten und Termine …</translation>
     </message>
@@ -7348,7 +7348,7 @@ Server antwortete mit Fehler: %2</translation>
 <context>
     <name>UnifiedSearchPlaceholderView</name>
     <message>
-        <location filename="../src/gui/search/qml/UnifiedSearchPlaceholderView.qml" line="31"/>
+        <location filename="../src/gui/search/UnifiedSearchPlaceholderView.qml" line="31"/>
         <source>Start typing to search</source>
         <translation>Beginnen Sie mit der Eingabe, um zu suchen</translation>
     </message>
@@ -7356,7 +7356,7 @@ Server antwortete mit Fehler: %2</translation>
 <context>
     <name>UnifiedSearchResultFetchMoreTrigger</name>
     <message>
-        <location filename="../src/gui/search/qml/UnifiedSearchResultFetchMoreTrigger.qml" line="37"/>
+        <location filename="../src/gui/search/UnifiedSearchResultFetchMoreTrigger.qml" line="37"/>
         <source>Load more results</source>
         <translation>Weitere Ergebnisse laden</translation>
     </message>
@@ -7364,7 +7364,7 @@ Server antwortete mit Fehler: %2</translation>
 <context>
     <name>UnifiedSearchResultItemSkeleton</name>
     <message>
-        <location filename="../src/gui/search/qml/UnifiedSearchResultItemSkeleton.qml" line="20"/>
+        <location filename="../src/gui/search/UnifiedSearchResultItemSkeleton.qml" line="20"/>
         <source>Search result skeleton.</source>
         <translation>Suchergebnis-Skelett.</translation>
     </message>
@@ -7372,7 +7372,7 @@ Server antwortete mit Fehler: %2</translation>
 <context>
     <name>UnifiedSearchResultListItem</name>
     <message>
-        <location filename="../src/gui/search/qml/UnifiedSearchResultListItem.qml" line="35"/>
+        <location filename="../src/gui/search/UnifiedSearchResultListItem.qml" line="35"/>
         <source>Load more results</source>
         <translation>Weitere Ergebnisse laden</translation>
     </message>
@@ -7380,7 +7380,7 @@ Server antwortete mit Fehler: %2</translation>
 <context>
     <name>UnifiedSearchResultNothingFound</name>
     <message>
-        <location filename="../src/gui/search/qml/UnifiedSearchResultNothingFound.qml" line="32"/>
+        <location filename="../src/gui/search/UnifiedSearchResultNothingFound.qml" line="32"/>
         <source>No results for</source>
         <translation>Keine Ergebnisse für</translation>
     </message>
@@ -7388,7 +7388,7 @@ Server antwortete mit Fehler: %2</translation>
 <context>
     <name>UnifiedSearchResultSectionItem</name>
     <message>
-        <location filename="../src/gui/search/qml/UnifiedSearchResultSectionItem.qml" line="25"/>
+        <location filename="../src/gui/search/UnifiedSearchResultSectionItem.qml" line="25"/>
         <source>Search results section %1</source>
         <translation>Suchergebnisse Abschnitt %1</translation>
     </message>
