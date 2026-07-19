@@ -658,42 +658,42 @@
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="49"/>
         <source>Apply labels</source>
-        <translation type="unfinished"/>
+        <translation>Cuir lipéid i bhfeidhm</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="382"/>
         <source>Sensitivity:</source>
-        <translation type="unfinished"/>
+        <translation>Íogaireacht:</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="393"/>
         <source>Select sensitivity label</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh lipéad íogaireachta</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="419"/>
         <source>Retention:</source>
-        <translation type="unfinished"/>
+        <translation>Coinneáil:</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="430"/>
         <source>Select retention label</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh lipéad coinneála</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="444"/>
         <source>Legal hold:</source>
-        <translation type="unfinished"/>
+        <translation>Sealbhú dlíthiúil:</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="453"/>
         <source>Select legal hold label</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh lipéad coimeádta dlíthiúil</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="479"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Déanta</translation>
     </message>
 </context>
 <context>
@@ -851,12 +851,12 @@ Ar cheart an cuntas a allmhairiú?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="200"/>
         <source>File Provider is enabled, but this account still has classic sync folders. The Finder integration stays unavailable until this is resolved.</source>
-        <translation type="unfinished"/>
+        <translation>Tá Soláthraí Comhad cumasaithe, ach tá fillteáin shioncrónaithe clasaiceacha fós sa chuntas seo. Ní bheidh an comhtháthú Finder ar fáil go dtí go réiteofar é seo.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="216"/>
         <source>Resolve…</source>
-        <translation type="unfinished"/>
+        <translation>Réitigh…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="286"/>
@@ -1095,7 +1095,7 @@ Fan leis an sioncronú nua, ansin é a chriptiú.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="946"/>
         <source>&lt;p&gt;Could not add the folder sync connection for &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Níorbh fhéidir an nasc sioncrónaithe fillteáin a chur leis do &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="969"/>
@@ -3512,12 +3512,12 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
     <message>
         <location filename="../src/gui/generalsettings.ui" line="134"/>
         <source>Enable &amp;File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Cumasaigh Soláthraí Comhad</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="158"/>
         <source>Files appear in Finder under the &quot;Locations&quot; section and do not use local storage space; contents download automatically when you open a file. Applies to all accounts and replaces classic sync folders and their Finder integration.</source>
-        <translation type="unfinished"/>
+        <translation>Feictear comhaid in Finder faoin rannán &quot;Suíomhanna&quot; agus ní úsáideann siad spás stórála áitiúil; íoslódálann an t-ábhar go huathoibríoch nuair a osclaíonn tú comhad. Baineann sé seo le gach cuntas agus cuireann sé fillteáin shioncrónaithe clasaiceacha agus a gcomhtháthú Finder ina n-ionad.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="162"/>
@@ -3659,32 +3659,32 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="245"/>
         <source>Unknown account</source>
-        <translation type="unfinished"/>
+        <translation>Cuntas anaithnid</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="252"/>
         <source>File Provider will be enabled for all accounts. Your files will appear in Finder under the &quot;Locations&quot; section. Accounts added later will also be set up as File Providers.</source>
-        <translation type="unfinished"/>
+        <translation>Cumasófar Soláthraí Comhad do gach cuntas. Beidh do chuid comhad le feiceáil in Aimsitheoir faoin rannán &quot;Suíomhanna&quot;. Socrófar cuntais a chuirfear leis níos déanaí mar Sholáthraithe Comhad freisin.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="261"/>
         <source>This removes classic sync folder connections from the following accounts:</source>
-        <translation type="unfinished"/>
+        <translation>Baintear naisc fillteáin sioncrónaithe clasaiceacha as na cuntais seo a leanas leis seo:</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="265"/>
         <source>Synced files stay on your computer, but they will no longer be kept up to date and settings such as selective sync are discarded.</source>
-        <translation type="unfinished"/>
+        <translation>Fanann comhaid sioncrónaithe ar do ríomhaire, ach ní choinneofar cothrom le dáta iad a thuilleadh agus cuirfear socruithe ar nós sioncrónú roghnach ar leataobh.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="269"/>
         <source>Enable File Provider?</source>
-        <translation type="unfinished"/>
+        <translation>Cumasaigh an Soláthraí Comhad?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="274"/>
         <source>Enable File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Cumasaigh Soláthraí Comhad</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="275"/>
@@ -3695,22 +3695,22 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="286"/>
         <source>File Provider will be turned off for all accounts, and your files will no longer be available in Finder under the &quot;Locations&quot; section.</source>
-        <translation type="unfinished"/>
+        <translation>Múchfar Soláthraí Comhad do gach cuntas, agus ní bheidh do chuid comhad ar fáil a thuilleadh in Aimsitheoir faoin rannán &quot;Suíomhanna&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="288"/>
         <source>Items that were not uploaded yet will be preserved and shown to you. Classic sync folders are not set up again automatically — you can add folder sync connections afterwards in each account&apos;s settings.</source>
-        <translation type="unfinished"/>
+        <translation>Coinneofar míreanna nár uaslódáileadh fós agus taispeánfar duit iad. Ní shocraítear fillteáin shioncrónaithe clasaiceacha arís go huathoibríoch — is féidir leat naisc shioncrónaithe fillteán a chur leis ina dhiaidh sin i socruithe gach cuntais.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="291"/>
         <source>Disable File Provider?</source>
-        <translation type="unfinished"/>
+        <translation>Díchumasaigh an Soláthraí Comhad?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="296"/>
         <source>Disable File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Díchumasaigh Soláthraí Comhad</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="409"/>
@@ -3843,12 +3843,12 @@ Ní féidir leaganacha a íosghrádú láithreach: ciallaíonn athrú ó chobhsa
     <message>
         <location filename="../src/gui/governance/governancelabelslistmodel.cpp" line="62"/>
         <source>None</source>
-        <translation type="unfinished"/>
+        <translation>Dada</translation>
     </message>
     <message>
         <location filename="../src/gui/governance/governancelabelslistmodel.cpp" line="68"/>
         <source>No label</source>
-        <translation type="unfinished"/>
+        <translation>Gan lipéad</translation>
     </message>
 </context>
 <context>
@@ -5573,7 +5573,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1305"/>
         <source>Apply labels</source>
-        <translation type="unfinished"/>
+        <translation>Cuir lipéid i bhfeidhm</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1447"/>
