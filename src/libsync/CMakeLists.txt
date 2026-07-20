@@ -138,6 +138,8 @@ set(libsync_SRCS
     clientsideencryptionprimitives.cpp
     clientsideencryptiontokenselector.h
     clientsideencryptiontokenselector.cpp
+    repairfolderencryptionmetadatajob.h
+    repairfolderencryptionmetadatajob.cpp
     datetimeprovider.h
     datetimeprovider.cpp
     rootencryptedfolderinfo.h

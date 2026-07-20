@@ -164,7 +164,9 @@ void EncryptedFolderMetadataHandler::slotFolderEncryptedIdError(QNetworkReply *r
 
 void EncryptedFolderMetadataHandler::slotMetadataReceived(const QJsonDocument &json, int statusCode)
 {
+#if defined NEXTCLOUD_DEV && NEXTCLOUD_DEV && defined QT_DEBUG
     qCDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "Metadata Received, parsing it and decrypting" << json.toVariant();
+#endif
 
     const auto job = qobject_cast<GetMetadataApiJob *>(sender());
     Q_ASSERT(job);
@@ -275,6 +277,12 @@ void EncryptedFolderMetadataHandler::unlockFolder(const UnlockFolderWithResult r
         _isUnlockRunning = false;
     });
     unlockJob->start();
+}
+
+void EncryptedFolderMetadataHandler::repairMetadata(const QList<FolderMetadata::DatabaseEncryptedFile> &childItems,
+                                                    OwncloudPropagator *propagator)
+{
+    _folderMetadata->repair(childItems, propagator);
 }
 
 void EncryptedFolderMetadataHandler::startUploadMetadata()

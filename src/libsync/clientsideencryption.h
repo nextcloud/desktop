@@ -334,10 +334,10 @@ private slots:
     void privateKeyFetched(QKeychain::Job *incoming);
     void mnemonicKeyFetched(QKeychain::Job *incoming);
 
-    void handlePrivateKeyDeleted(const QKeychain::Job* const incoming);
-    void handleCertificateDeleted(const QKeychain::Job* const incoming);
-    void handleMnemonicDeleted(const QKeychain::Job* const incoming);
-    void handlePublicKeyDeleted(const QKeychain::Job* const incoming);
+    void handlePrivateKeyDeleted(const QKeychain::Job* incoming);
+    void handleCertificateDeleted(const QKeychain::Job* incoming);
+    void handleMnemonicDeleted(const QKeychain::Job* incoming);
+    void handlePublicKeyDeleted(const QKeychain::Job* incoming);
     void checkAllSensitiveDataDeleted();
 
     void getPrivateKeyFromServer();

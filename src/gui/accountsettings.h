@@ -105,6 +105,7 @@ protected slots:
     void slotToggleSignInState();
     void refreshSelectiveSyncStatus();
     void slotMarkSubfolderEncrypted(OCC::FolderStatusModel::SubFolderInfo *folderInfo);
+    void slotRepairEncryptedSubfolder(OCC::FolderStatusModel::SubFolderInfo *folderInfo);
     void slotSubfolderContextMenuRequested(const QModelIndex& idx, const QPoint& point);
     void slotCustomContextMenuRequested(const QPoint &);
     void slotFolderListClicked(const QModelIndex &indx);
@@ -116,6 +117,7 @@ protected slots:
     void slotE2eEncryptionGenerateKeys();
     void slotE2eEncryptionInitializationFinished(bool isNewMnemonicGenerated);
     void slotEncryptFolderFinished(int status);
+    void slotRepairEncryptedFolderFinished(int status);
 
     void slotSelectiveSyncChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight,
                                   const QVector<int> &roles);
