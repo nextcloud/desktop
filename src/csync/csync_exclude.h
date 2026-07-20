@@ -62,6 +62,15 @@ class OCSYNC_EXPORT ExcludedFiles : public QObject
 public:
     using Version = std::tuple<int, int, int>;
 
+    /**
+     * Where a caller-supplied exclude file's patterns are anchored, see
+     * addExcludeFilePath().
+     */
+    enum class ExcludeFileAnchor {
+        FileDirectory, // anchor at the exclude file's own containing directory
+        SyncRoot // anchor at the sync root (_localPath), regardless of the file's name
+    };
+
     explicit ExcludedFiles(const QString &localPath = QStringLiteral("/"));
     ~ExcludedFiles() override;
 
@@ -69,8 +78,22 @@ public:
      * Adds a new path to a file containing exclude patterns.
      *
      * Does not load the file. Use reloadExcludeFiles() afterwards.
+     *
+     * By default (ExcludeFileAnchor::FileDirectory) the patterns are
+     * anchored at the directory the exclude file itself lives in, unless
+     * that file is literally named "sync-exclude.lst" (case-insensitive),
+     * in which case they're anchored at the sync root (_localPath)
+     * regardless. That heuristic exists to distinguish the GUI's global
+     * exclude list (always named sync-exclude.lst, but stored outside any
+     * sync folder) from a per-directory .sync-exclude.lst discovered
+     * during traversal.
+     *
+     * It does not fit a caller-supplied exclude file of arbitrary name,
+     * such as nextcloudcmd's --exclude option: pass
+     * ExcludeFileAnchor::SyncRoot there to force sync-root anchoring
+     * regardless of the file's name.
      */
-    void addExcludeFilePath(const QString &path);
+    void addExcludeFilePath(const QString &path, ExcludeFileAnchor anchor = ExcludeFileAnchor::FileDirectory);
 
     /**
      * Whether conflict files shall be excluded.

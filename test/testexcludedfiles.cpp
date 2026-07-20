@@ -759,7 +759,31 @@ private slots:
         QCOMPARE(excludedFiles->_excludeFiles[folder1].first(), folder1ExcludeList);
         QCOMPARE(excludedFiles->_excludeFiles[folder2].first(), folder2ExcludeList);
     }
-    
+
+    // A caller-supplied exclude file not literally named "sync-exclude.lst"
+    // must still anchor its patterns at the sync root when
+    // ExcludeFileAnchor::SyncRoot is requested.
+    void testAddExcludeFilePath_syncRootAnchor_bypassesFilenameHeuristic()
+    {
+        const QString basePath("syncFolder/");
+        excludedFiles.reset(new ExcludedFiles(basePath));
+
+        const QString customExcludeList("home/thomas/.config/my-custom-exclude.lst");
+
+        // Default (as used for per-directory .sync-exclude.lst discovery):
+        // anchored at the exclude file's own directory, since its name isn't
+        // literally "sync-exclude.lst".
+        excludedFiles->addExcludeFilePath(customExcludeList);
+        QCOMPARE(excludedFiles->_excludeFiles.contains(basePath), false);
+        QCOMPARE(excludedFiles->_excludeFiles[QString("home/thomas/.config/")].first(), customExcludeList);
+
+        // ExcludeFileAnchor::SyncRoot (as used for nextcloudcmd's --exclude
+        // option): anchored at the sync root regardless of the file's name.
+        excludedFiles.reset(new ExcludedFiles(basePath));
+        excludedFiles->addExcludeFilePath(customExcludeList, ExcludedFiles::ExcludeFileAnchor::SyncRoot);
+        QCOMPARE(excludedFiles->_excludeFiles[basePath].first(), customExcludeList);
+    }
+
     void testReloadExcludeFiles_fileDoesNotExist_returnTrue() {
         excludedFiles.reset(new ExcludedFiles());
         const QString nonExistingFile("directory/.sync-exclude.lst");
