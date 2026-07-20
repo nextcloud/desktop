@@ -828,6 +828,33 @@ private slots:
         QCOMPARE(lockFileDetectedNewlyUploadedSpy.count(), 1);
     }
 
+    void testLockFile_lockFile_detect_newly_uploaded_adobe_idlk()
+    {
+        // InDesign: opening a .indd creates `~{base}~{token}(.idlk`, which carries
+        // only the document's base name. The guarded document is resolved by
+        // matching a sibling .indd/.icml file in the same directory.
+        const auto testFileName = QStringLiteral("document.indd");
+        const auto testLockFileName = QStringLiteral("~document~0kjyv(.idlk");
+
+        const auto testDocumentsDirName = "documents";
+
+        FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.localModifier().mkdir(testDocumentsDirName);
+        // Adobe lock files are excluded from sync by the default exclude list;
+        // the FakeFolder does not load it, so replicate the exclusion here.
+        fakeFolder.syncEngine().excludedFiles().addManualExclude(QStringLiteral("*.idlk"));
+
+        fakeFolder.syncEngine().account()->setCapabilities({{"files", QVariantMap{{"locking", QByteArray{"1.0"}}}}});
+        QSignalSpy lockFileDetectedNewlyUploadedSpy(&fakeFolder.syncEngine(), &OCC::SyncEngine::lockFileDetected);
+
+        fakeFolder.localModifier().insert(testDocumentsDirName + QStringLiteral("/") + testLockFileName);
+        fakeFolder.localModifier().insert(testDocumentsDirName + QStringLiteral("/") + testFileName);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(lockFileDetectedNewlyUploadedSpy.count(), 1);
+    }
+
     void testLockFile_autoCADLockFileTargetFilePath_resolution()
     {
         QTemporaryDir dir;
@@ -881,6 +908,105 @@ private slots:
         QVERIFY(QFile{orphanDwlPath}.open(QIODevice::WriteOnly));
         const auto orphan = OCC::FileSystem::lockFileTargetFilePath(orphanDwlPath, QString{});
         QVERIFY(orphan.path.isEmpty());
+    }
+
+    void testLockFile_lockFile_detect_newly_uploaded_adobe_prlock()
+    {
+        // Premiere Pro: opening a .prproj creates `{base}.prlock`.
+        const auto testFileName = QStringLiteral("project.prproj");
+        const auto testLockFileName = QStringLiteral("project.prlock");
+
+        const auto testDocumentsDirName = "documents";
+
+        FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.localModifier().mkdir(testDocumentsDirName);
+        fakeFolder.syncEngine().excludedFiles().addManualExclude(QStringLiteral("*.prlock"));
+
+        fakeFolder.syncEngine().account()->setCapabilities({{"files", QVariantMap{{"locking", QByteArray{"1.0"}}}}});
+        QSignalSpy lockFileDetectedNewlyUploadedSpy(&fakeFolder.syncEngine(), &OCC::SyncEngine::lockFileDetected);
+
+        fakeFolder.localModifier().insert(testDocumentsDirName + QStringLiteral("/") + testLockFileName);
+        fakeFolder.localModifier().insert(testDocumentsDirName + QStringLiteral("/") + testFileName);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(lockFileDetectedNewlyUploadedSpy.count(), 1);
+    }
+
+    void testLockFile_adobeLockFileTargetFilePath_resolution()
+    {
+        QTemporaryDir dir;
+        QVERIFY(dir.isValid());
+        const auto dirPath = dir.path() + QLatin1Char('/');
+
+        // InDesign: `~{base}~{token}(.idlk` guards `{base}.indd`.
+        const auto inddPath = dirPath + QStringLiteral("Test.indd");
+        const auto idlkPath = dirPath + QStringLiteral("~Test~0kjyv(.idlk");
+        QVERIFY(QFile{inddPath}.open(QIODevice::WriteOnly));
+        QVERIFY(QFile{idlkPath}.open(QIODevice::WriteOnly));
+
+        const auto idlkResolved = OCC::FileSystem::lockFileTargetFilePath(idlkPath, QString{});
+        QCOMPARE(idlkResolved.path, inddPath);
+        QCOMPARE(idlkResolved.type, OCC::FileSystem::FileLockingInfo::Type::Locked);
+
+        // Removing the lock file marks the document as unlocked (sibling still present).
+        QVERIFY(QFile::remove(idlkPath));
+        const auto idlkUnlocked = OCC::FileSystem::lockFileTargetFilePath(idlkPath, QString{});
+        QCOMPARE(idlkUnlocked.path, inddPath);
+        QCOMPARE(idlkUnlocked.type, OCC::FileSystem::FileLockingInfo::Type::Unlocked);
+
+        // Premiere Pro: `{base}.prlock` guards `{base}.prproj`.
+        const auto prprojPath = dirPath + QStringLiteral("project.prproj");
+        const auto prlockPath = dirPath + QStringLiteral("project.prlock");
+        QVERIFY(QFile{prprojPath}.open(QIODevice::WriteOnly));
+        QVERIFY(QFile{prlockPath}.open(QIODevice::WriteOnly));
+
+        const auto prlockResolved = OCC::FileSystem::lockFileTargetFilePath(prlockPath, QString{});
+        QCOMPARE(prlockResolved.path, prprojPath);
+        QCOMPARE(prlockResolved.type, OCC::FileSystem::FileLockingInfo::Type::Locked);
+
+        // InCopy story: `.idlk` may guard an `.icml` when no `.indd` sibling exists.
+        const auto icmlPath = dirPath + QStringLiteral("story.icml");
+        const auto idlk2Path = dirPath + QStringLiteral("~story~ab12cd(.idlk");
+        QVERIFY(QFile{icmlPath}.open(QIODevice::WriteOnly));
+        QVERIFY(QFile{idlk2Path}.open(QIODevice::WriteOnly));
+        const auto idlk2Resolved = OCC::FileSystem::lockFileTargetFilePath(idlk2Path, QString{});
+        QCOMPARE(idlk2Resolved.path, icmlPath);
+        QCOMPARE(idlk2Resolved.type, OCC::FileSystem::FileLockingInfo::Type::Locked);
+
+        // A non-lock file resolves to nothing.
+        const auto nonLock = OCC::FileSystem::lockFileTargetFilePath(dirPath + QStringLiteral("notes.txt"), QString{});
+        QVERIFY(nonLock.path.isEmpty());
+        QCOMPARE(nonLock.type, OCC::FileSystem::FileLockingInfo::Type::Unset);
+
+        // A lock file with no matching sibling document resolves to nothing.
+        const auto orphanIdlkPath = dirPath + QStringLiteral("~orphan~zz(.idlk");
+        QVERIFY(QFile{orphanIdlkPath}.open(QIODevice::WriteOnly));
+        const auto orphan = OCC::FileSystem::lockFileTargetFilePath(orphanIdlkPath, QString{});
+        QVERIFY(orphan.path.isEmpty());
+
+        // An .idlk file whose name does not match the InDesign `~base~token(.idlk`
+        // pattern resolves to nothing — the regex fails, base name is nullopt.
+        const QStringList malformedIdlkNames = {
+            QStringLiteral("Test.idlk"),        // missing leading ~ and token
+            QStringLiteral("~Test.idlk"),       // missing ~token(
+            QStringLiteral("~Test~token.idlk"), // missing trailing (
+            QStringLiteral("Test~token(.idlk"), // missing leading ~
+        };
+        for (const auto &malformedName : malformedIdlkNames) {
+            const auto malformedPath = dirPath + malformedName;
+            QVERIFY(QFile{malformedPath}.open(QIODevice::WriteOnly));
+            const auto resolved = OCC::FileSystem::lockFileTargetFilePath(malformedPath, QString{});
+            QVERIFY2(resolved.path.isEmpty(), qPrintable(QStringLiteral("Expected empty path for malformed idlk name: %1").arg(malformedName)));
+            QFile::remove(malformedPath);
+        }
+
+        // A non-Adobe, non-Office extension resolves to nothing.
+        const auto unknownExtPath = dirPath + QStringLiteral("file.unknown");
+        QVERIFY(QFile{unknownExtPath}.open(QIODevice::WriteOnly));
+        const auto unknownExt = OCC::FileSystem::lockFileTargetFilePath(unknownExtPath, QString{});
+        QVERIFY(unknownExt.path.isEmpty());
+        QCOMPARE(unknownExt.type, OCC::FileSystem::FileLockingInfo::Type::Unset);
     }
 
     void testLockFile_verifyE2eeFilesUseCorrectPath()
