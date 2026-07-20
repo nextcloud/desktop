@@ -1035,14 +1035,19 @@ const QByteArray FolderMetadata::binaryMetadataKeyForDecryption() const
     return _binaryMetadataKeyForDecryption;
 }
 
-void FolderMetadata::removeEncryptedFile(const EncryptedFile &f)
+bool FolderMetadata::removeEncryptedFile(const QString &originalFilename)
 {
+    auto result = false;
+
     for (int i = 0; i < _files.size(); ++i) {
-        if (_files.at(i).originalFilename == f.originalFilename) {
+        if (_files.at(i).originalFilename == originalFilename) {
             _files.removeAt(i);
+            result = true;
             break;
         }
     }
+
+    return result;
 }
 
 void FolderMetadata::removeAllEncryptedFiles()
