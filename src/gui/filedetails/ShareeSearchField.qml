@@ -11,9 +11,10 @@ import QtQuick.Controls
 import com.nextcloud.desktopclient
 import com.nextcloud.desktopclient as NC
 import Style
+import "../common"
 import "../tray"
 
-TextField {
+NCContextMenuTextField {
     id: root
 
     signal shareeSelected(var sharee)

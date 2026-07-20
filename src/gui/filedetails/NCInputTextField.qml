@@ -9,8 +9,9 @@ import QtQuick.Layouts
 
 import com.nextcloud.desktopclient
 import Style
+import "../common"
 
-TextField {
+NCContextMenuTextField {
     id: root
 
     readonly property color accentColor: Style.ncBlue
@@ -21,8 +22,6 @@ TextField {
     implicitHeight: Math.max(Style.talkReplyTextFieldPreferredHeight, contentHeight)
 
     rightPadding: submitButton.width
-
-    selectByMouse: true
 
     Button {
         id: submitButton

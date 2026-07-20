@@ -10,9 +10,10 @@ import Qt5Compat.GraphicalEffects
 import Style
 
 import com.nextcloud.desktopclient
+import "../common"
 import "qrc:/qml/src/gui/tray"
 
-TextField {
+NCContextMenuTextField {
     id: root
 
     signal clearText()
@@ -33,8 +34,6 @@ TextField {
     verticalAlignment: Qt.AlignVCenter
 
     placeholderText: qsTr("Search files, messages, events …")
-
-    selectByMouse: true
 
     Image {
         id: searchIconImage
