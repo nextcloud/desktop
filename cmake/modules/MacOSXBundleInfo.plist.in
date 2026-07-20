@@ -18,6 +18,10 @@
     </array>
     <key>CFBundleExecutable</key>
     <string>@APPLICATION_NAME@</string>
+    <key>CFBundleName</key>
+    <string>@APPLICATION_NAME@</string>
+    <key>CFBundleDisplayName</key>
+    <string>@APPLICATION_NAME@</string>
     <key>CFBundleIconFile</key>
     <string>@MACOSX_BUNDLE_ICON_FILE@</string>
     @MACOSX_BUNDLE_ICON_NAME_BLOCK@
