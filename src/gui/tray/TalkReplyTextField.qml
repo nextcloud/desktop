@@ -9,8 +9,9 @@ import QtQuick.Layouts
 
 import com.nextcloud.desktopclient
 import Style
+import "../common"
 
-TextField {
+NCContextMenuTextField {
     id: replyMessageTextField
 
     property color accentColor: UserModel.currentUser ? UserModel.currentUser.accentColor : palette.highlight
