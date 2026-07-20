@@ -168,7 +168,13 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
             || fileName.startsWith(".sync_")) {
             continue;
         }
-        const QString p = _watchToPath[event->wd] + '/' + fileName;
+        const auto watchPathIt = _watchToPath.constFind(event->wd);
+        if (watchPathIt == _watchToPath.cend()) {
+            qCDebug(lcFolderWatcher) << "Ignoring event for unknown watch descriptor" << event->wd << fileName;
+            continue;
+        }
+
+        const QString p = *watchPathIt + '/' + fileName;
         _parent->changeDetected(p);
 
         if ((event->mask & (IN_MOVED_TO | IN_CREATE))
