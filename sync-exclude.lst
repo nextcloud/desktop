@@ -5,6 +5,13 @@
 .~lock.*
 ~*.tmp
 
+# Adobe lock files: InDesign/InCopy (.idlk) and Premiere Pro (.prlock)
+# lock files. Unlike Office/LibreOffice lock files they do not encode the
+# guarded document's extension, but excluding them by extension is safe as
+# no legitimate user document uses it.
+*.idlk
+*.prlock
+
 # AutoCAD lock files (.dwl / .dwl2) created when opening a .dwg drawing.
 # Both share the document's base name and are deleted when it is closed.
 *.dwl
