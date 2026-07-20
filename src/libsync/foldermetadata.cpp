@@ -7,11 +7,12 @@
 #include "encryptedfoldermetadatahandler.h"
 #include "foldermetadata.h"
 #include "clientsideencryption.h"
-#include "clientsideencryptionjobs.h"
 #include <common/checksums.h>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QSslCertificate>
+
+using namespace Qt::StringLiterals;
 
 namespace OCC
 {
@@ -327,8 +328,9 @@ void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
     }
 
     const auto &files = metaDataObj[filesKey].toObject();
-    const auto &metadataKey = metaDataObj[metadataJsonKey].toObject()[metadataKeyKey].toString().toUtf8();
-    const auto &metadataKeyChecksum = metaDataObj[metadataJsonKey].toObject()["checksum"].toString().toUtf8();
+    const auto &metadataObject = metaDataObj[metadataJsonKey].toObject();
+    const auto &metadataKey = metadataObject[metadataKeyKey].toString().toUtf8();
+    const auto &metadataKeyChecksum = metadataObject["checksum"].toString().toUtf8();
 
     setFileDrop(metaDataObj.value("filedrop").toObject());
     // for unit tests
@@ -673,7 +675,7 @@ QByteArray FolderMetadata::encryptedMetadata()
 
     QJsonArray folderUsers;
     if (_isRootEncryptedFolder) {
-        for (const auto &folderUser : _folderUsers) {
+        for (const auto &folderUser : std::as_const(_folderUsers)) {
             const QJsonObject folderUserJson{{usersUserIdKey, folderUser.userId},
                                              {usersCertificateKey, QJsonValue::fromVariant(folderUser.certificatePem)},
                                              {usersEncryptedMetadataKey, QJsonValue::fromVariant(folderUser.encryptedMetadataKey)}};
