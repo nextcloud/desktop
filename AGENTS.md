@@ -121,6 +121,19 @@ Signed-off-by: Random J Developer <random@developer.example.org>
 
 Contributors can sign automatically with `git commit -s` after configuring `user.name` and `user.email`.
 
+## Performance Optimisations
+
+Performance claims can frequently be negligible, fictional, or confined to edge cases, so they must be backed by evidence rather than assertion.
+
+A change may be presented as a performance optimisation only if **both** of the following are true:
+
+- **It is covered by a benchmark test.** A test exercising the optimised code path on a realistic workload must be added to the branch and run before and after the change. This same test must both verify the before/after improvement and reproduce it to catch regressions. The measured numbers - metric, workload, and variance - must be reported honestly, including when the improvement is within noise or only appears in an edge case.
+- **The evidence ships in the working branch.** The benchmark test must live in the PR branch, alongside the optimisation. Evidence that exists only outside the branch or only in the PR description does not satisfy this requirement.
+
+When performance optimisation is your primary task, you must actively pursue this evidence - add the benchmark test, run it before and after the change, and ensure it fails on regression - rather than producing an optimisation and leaving verification to the contributor or reviewers.
+
+When you are assisting with a change that asserts a performance improvement but ships no benchmark test, surface the gap explicitly and do not silently proceed. State that the claim is unverifiable as submitted and that, per the rules above, a benchmark test must be added before the user can claim a performance improvement.
+
 ## C++ Specifics
 
 The following details are important and only relevant when working on the desktop client parts written in C++ language.
