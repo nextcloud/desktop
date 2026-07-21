@@ -871,7 +871,7 @@ void SyncEngine::detectFileLock(const SyncFileItemPtr &item)
         item->_direction == SyncFileItem::Up && item->_status == SyncFileItem::Success;
 
     if (isNewlyUploadedFile && item->_locked != SyncFileItem::LockStatus::LockedItem && _account->capabilities().filesLockAvailable() &&
-        (FileSystem::isMatchingOfficeFileExtension(item->_file) || FileSystem::isMatchingAutoCADDocumentExtension(item->_file) || FileSystem::isMatchingAdobeDocumentExtension(item->_file))) {
+        (FileSystem::isMatchingOfficeFileExtension(item->_file) || FileSystem::isMatchingAutoCADDocumentExtension(item->_file) || FileSystem::isMatchingAdobeDocumentExtension(item->_file) || FileSystem::isMatchingAffinityDocumentExtension(item->_file))) {
         {
             SyncJournalFileRecord rec;
             if (!_journal->getFileRecord(item->_file, &rec) || !rec.isValid()) {
