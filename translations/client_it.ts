@@ -584,12 +584,12 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="372"/>
+        <location filename="../src/libsync/filesystem.cpp" line="494"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>Errore durante la rimozione di &quot;%1&quot;: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="420"/>
+        <location filename="../src/libsync/filesystem.cpp" line="542"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>Impossibile rimuovere la cartella &quot;%1&quot;</translation>
     </message>
@@ -6772,7 +6772,7 @@ Il server ha risposto con errore: %2</translation>
         <translation>%1 sincronizzato</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="410"/>
+        <location filename="../src/libsync/filesystem.cpp" line="532"/>
         <source>Error deleting the file</source>
         <translation>Errore durante l&apos;eliminazione del file</translation>
     </message>

@@ -4,22 +4,22 @@
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="160"/>
         <source>Secure connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Säker anslutning misslyckades</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="163"/>
         <source>Connect to %1?</source>
-        <translation type="unfinished"/>
+        <translation>Anslut till %1?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="173"/>
         <source>The secure connection failed. You can retry without encryption, or add a client certificate and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Den säkra anslutningen misslyckades. Du kan försöka igen utan kryptering eller lägga till ett klientcertifikat och försöka igen.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="174"/>
         <source>The secure connection failed. You can add a client certificate and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Den säkra anslutningen misslyckades. Du kan lägga till ett klientcertifikat och försöka igen.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="195"/>
@@ -31,12 +31,12 @@
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="205"/>
         <source>Connect without TLS</source>
-        <translation type="unfinished"/>
+        <translation>Anslut utan TLS</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="217"/>
         <source>Use client certificate</source>
-        <translation type="unfinished"/>
+        <translation>Använd klientcertifikat</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="269"/>
@@ -46,32 +46,32 @@
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="283"/>
         <source>Set up later</source>
-        <translation type="unfinished"/>
+        <translation>Konfigurera senare</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="294"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Avancerat</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="303"/>
         <source>Sign up</source>
-        <translation type="unfinished"/>
+        <translation>Registrera dig</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="313"/>
         <source>Self-host</source>
-        <translation type="unfinished"/>
+        <translation>Egen server</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="328"/>
         <source>Proxy settings</source>
-        <translation type="unfinished"/>
+        <translation>Proxyinställningar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="357"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Kopiera länk</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="390"/>
@@ -99,12 +99,12 @@
     <message>
         <location filename="../src/gui/ActivitiesWindow.qml" line="19"/>
         <source>Activities</source>
-        <translation type="unfinished"/>
+        <translation>Aktiviteter</translation>
     </message>
     <message>
         <location filename="../src/gui/ActivitiesWindow.qml" line="126"/>
         <source>New activities</source>
-        <translation type="unfinished"/>
+        <translation>Nya aktiviteter</translation>
     </message>
 </context>
 <context>
@@ -178,17 +178,17 @@
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="62"/>
         <source>Large folder threshold</source>
-        <translation type="unfinished"/>
+        <translation>Gräns för stora mappar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="64"/>
         <source>%1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%1 MB</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="71"/>
         <source>Ask before syncing external storage</source>
-        <translation type="unfinished"/>
+        <translation>Fråga innan extern lagring synkroniseras</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="90"/>
@@ -201,39 +201,39 @@
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="19"/>
         <source>Nextcloud Assistant</source>
-        <translation type="unfinished"/>
+        <translation>Nextcloud Assistant</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="91"/>
         <location filename="../src/gui/AssistantWindow.qml" line="95"/>
         <source>Start new conversation?</source>
-        <translation type="unfinished"/>
+        <translation>Starta ny konversation?</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="104"/>
         <source>This will clear the existing conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Detta kommer att rensa den befintliga konversationen.</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="119"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="125"/>
         <location filename="../src/gui/AssistantWindow.qml" line="245"/>
         <source>New conversation</source>
-        <translation type="unfinished"/>
+        <translation>Ny konversation</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="236"/>
         <source>Ask Assistant …</source>
-        <translation type="unfinished"/>
+        <translation>Fråga assistenten …</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="252"/>
         <source>Send</source>
-        <translation type="unfinished"/>
+        <translation>Skicka</translation>
     </message>
 </context>
 <context>
@@ -241,22 +241,22 @@
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="27"/>
         <source>Connect public share</source>
-        <translation type="unfinished"/>
+        <translation>Anslut offentlig delning</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="27"/>
         <source>Enter credentials</source>
-        <translation type="unfinished"/>
+        <translation>Ange inloggningsuppgifter</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="37"/>
         <source>Enter the share password if the link is password protected.</source>
-        <translation type="unfinished"/>
+        <translation>Ange delningens lösenord om länken är lösenordsskyddad.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="38"/>
         <source>Enter the username and password for this server.</source>
-        <translation type="unfinished"/>
+        <translation>Ange användarnamn och lösenord för servern.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="50"/>
@@ -306,17 +306,17 @@
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="33"/>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="36"/>
         <source>Client certificate</source>
-        <translation type="unfinished"/>
+        <translation>Klientcertifikat</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="44"/>
         <source>Select a PKCS#12 certificate file and enter its password.</source>
-        <translation type="unfinished"/>
+        <translation>Välj en PKCS#12-certifikatfil och ange dess lösenord.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="57"/>
         <source>Certificate file</source>
-        <translation type="unfinished"/>
+        <translation>Certifikatfil</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="63"/>
@@ -326,7 +326,7 @@
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="70"/>
         <source>Certificate password</source>
-        <translation type="unfinished"/>
+        <translation>Certifikatlösenord</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="94"/>
@@ -515,7 +515,7 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="71"/>
         <source>Search emoji</source>
-        <translation type="unfinished"/>
+        <translation>Sök emoji</translation>
     </message>
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="201"/>
@@ -525,7 +525,7 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="201"/>
         <source>No emojis found</source>
-        <translation type="unfinished"/>
+        <translation>Inga emojier hittades</translation>
     </message>
 </context>
 <context>
@@ -584,12 +584,12 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="372"/>
+        <location filename="../src/libsync/filesystem.cpp" line="494"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>Kunde inte radera &quot;%1&quot;: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="420"/>
+        <location filename="../src/libsync/filesystem.cpp" line="542"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>Kunde inte ta bort mappen &quot;%1&quot;</translation>
     </message>
@@ -658,42 +658,42 @@
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="49"/>
         <source>Apply labels</source>
-        <translation type="unfinished"/>
+        <translation>Tillämpa etiketter</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="382"/>
         <source>Sensitivity:</source>
-        <translation type="unfinished"/>
+        <translation>Känslighet:</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="393"/>
         <source>Select sensitivity label</source>
-        <translation type="unfinished"/>
+        <translation>Välj känslighetsetikett</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="419"/>
         <source>Retention:</source>
-        <translation type="unfinished"/>
+        <translation>Lagringstid:</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="430"/>
         <source>Select retention label</source>
-        <translation type="unfinished"/>
+        <translation>Välj etikett för lagringstid</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="444"/>
         <source>Legal hold:</source>
-        <translation type="unfinished"/>
+        <translation>Rättsligt bevarande:</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="453"/>
         <source>Select legal hold label</source>
-        <translation type="unfinished"/>
+        <translation>Välj etikett för rättsligt bevarande</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="479"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Klar</translation>
     </message>
 </context>
 <context>
@@ -766,7 +766,7 @@
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="749"/>
         <source>Assistant</source>
-        <translation type="unfinished"/>
+        <translation>Assistent</translation>
     </message>
 </context>
 <context>
@@ -851,12 +851,12 @@ Ska kontot importeras?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="200"/>
         <source>File Provider is enabled, but this account still has classic sync folders. The Finder integration stays unavailable until this is resolved.</source>
-        <translation type="unfinished"/>
+        <translation>File Provider är aktiverat, men kontot har fortfarande klassiska synkroniseringsmappar. Finder-integreringen är inte tillgänglig förrän detta har åtgärdats.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="216"/>
         <source>Resolve…</source>
-        <translation type="unfinished"/>
+        <translation>Åtgärda …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="286"/>
@@ -889,7 +889,7 @@ Ska kontot importeras?</translation>
         <location filename="../src/gui/accountsettings.ui" line="502"/>
         <location filename="../src/gui/accountsettings.cpp" line="1546"/>
         <source>Log out, log back in, or remove this account from the client.</source>
-        <translation type="unfinished"/>
+        <translation>Logga ut, logga in igen eller ta bort kontot från klienten.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="518"/>
@@ -901,7 +901,7 @@ Ska kontot importeras?</translation>
         <location filename="../src/gui/accountsettings.ui" line="531"/>
         <location filename="../src/gui/accountsettings.cpp" line="1543"/>
         <source>Remove account</source>
-        <translation type="unfinished"/>
+        <translation>Ta bort konto</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="338"/>
@@ -1095,7 +1095,7 @@ Vänta på en ny synk och kryptera den sedan.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="946"/>
         <source>&lt;p&gt;Could not add the folder sync connection for &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Det gick inte att lägga till synkroniseringskopplingen för mappen &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="969"/>
@@ -1224,12 +1224,12 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1543"/>
         <source>Leave share</source>
-        <translation type="unfinished"/>
+        <translation>Lämna delning</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1545"/>
         <source>Remove this public share connection from the client.</source>
-        <translation type="unfinished"/>
+        <translation>Ta bort anslutningen till den offentliga delningen från klienten.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1732"/>
@@ -1259,7 +1259,7 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1961"/>
         <source>The File Provider extension does not support end-to-end encryption yet.</source>
-        <translation type="unfinished"/>
+        <translation>File Provider-tillägget stöder ännu inte ände-till-ände-kryptering.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1968"/>
@@ -1454,198 +1454,199 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="292"/>
         <source>Will require local storage</source>
-        <translation type="unfinished"/>
+        <translation>Kräver lokal lagring</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="672"/>
         <source>Proxy settings are incomplete.</source>
-        <translation type="unfinished"/>
+        <translation>Proxyinställningarna är ofullständiga.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="679"/>
         <source>Server address does not seem to be valid</source>
-        <translation type="unfinished"/>
+        <translation>Serveradressen verkar vara ogiltig</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="700"/>
         <source>Username must not be empty.</source>
-        <translation type="unfinished"/>
+        <translation>Användarnamnet får inte vara tomt.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="706"/>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1024"/>
         <source>Checking account access</source>
-        <translation type="unfinished"/>
+        <translation>Kontrollerar kontoåtkomst</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="784"/>
         <source>Checking server address</source>
-        <translation type="unfinished"/>
+        <translation>Kontrollerar serveradressen</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="849"/>
         <source>Preparing browser login</source>
-        <translation type="unfinished"/>
+        <translation>Förbereder inloggning i webbläsaren</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="870"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>Ogiltig URL</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="872"/>
         <source>Failed to connect to %1 at %2:
 %3</source>
-        <translation type="unfinished"/>
+        <translation>Det gick inte att ansluta till %1 på %2:
+%3</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="888"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Försök att ansluta till %1 på %2 tog för lång tid.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="975"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation type="unfinished"/>
+        <translation>Det går inte att öppna webbläsaren, kopiera länken till din webbläsare.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1000"/>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1005"/>
         <source>Waiting for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Väntar på auktorisation</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1010"/>
         <source>Starting authorization</source>
-        <translation type="unfinished"/>
+        <translation>Startar auktorisering</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1015"/>
         <source>Link copied to clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Länken kopierad till urklipp.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1070"/>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1100"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation type="unfinished"/>
+        <translation>Det kom ett felaktigt svar på en autentiserad WebDAV-begäran</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1087"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>Den autentiserade begäran till servern omdirigerades till &quot;%1&quot;. URL:en är felaktig, servern är felkonfigurerad.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1095"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
-        <translation type="unfinished"/>
+        <translation>Servern nekade åtkomst. Öppna tjänsten i webbläsaren för att kontrollera att du har rätt behörighet.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1113"/>
         <source>Account connected.</source>
-        <translation type="unfinished"/>
+        <translation>Kontot anslöts.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1188"/>
         <source>Will require %1 of storage</source>
-        <translation type="unfinished"/>
+        <translation>Kräver %1 lagringsutrymme</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1361"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
-        <translation type="unfinished"/>
+        <translation>%1 ledigt utrymme</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1371"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Det finns inte tillräckligt med ledigt utrymme i den lokala mappen!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1388"/>
         <source>Please choose a local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Välj en lokal synkroniseringsmapp.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1393"/>
         <source>Please choose an empty local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Välj en tom lokal synkroniseringsmapp.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1458"/>
         <source>Could not create local folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte skapa lokal mapp %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1472"/>
         <source>Checking remote folder</source>
-        <translation type="unfinished"/>
+        <translation>Kontrollerar fjärrmappen</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1518"/>
         <source>No remote folder specified!</source>
-        <translation type="unfinished"/>
+        <translation>Ingen fjärrmapp har angetts!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1527"/>
         <source>Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Fel: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1532"/>
         <source>Creating remote folder</source>
-        <translation type="unfinished"/>
+        <translation>Skapar fjärrmapp</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1551"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation type="unfinished"/>
+        <translation>Skapande av mapp resulterade i HTTP felkod %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1553"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
-        <translation type="unfinished"/>
+        <translation>Fjärrmappen kunde inte skapas eftersom de angivna inloggningsuppgifterna är felaktiga. Gå tillbaka och kontrollera uppgifterna.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1555"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Misslyckades skapa fjärrmapp %1 med fel &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1579"/>
         <source>Account setup failed while creating the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Kontokonfigurationen misslyckades när synkroniseringsmappen skapades.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1606"/>
         <source>Could not create the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Det gick inte att skapa synkroniseringsmappen.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1696"/>
         <source>Local Sync Folder</source>
-        <translation type="unfinished"/>
+        <translation>Lokal mapp för synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1943"/>
         <source>Select a certificate</source>
-        <translation type="unfinished"/>
+        <translation>Välj ett certifikat</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1945"/>
         <source>Certificate files (*.p12 *.pfx)</source>
-        <translation type="unfinished"/>
+        <translation>Certifikatfiler (*.p12 *.pfx)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1953"/>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1973"/>
         <source>Could not access the selected certificate file.</source>
-        <translation type="unfinished"/>
+        <translation>Det gick inte att öppna den valda certifikatfilen.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1989"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte läsa in certifikatet. Felaktigt lösenord?</translation>
     </message>
 </context>
 <context>
@@ -1671,89 +1672,89 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="50"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Fråga innan du synkroniserar nya mappar större än</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="70"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>MB</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="105"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation type="unfinished"/>
+        <translation>Meddela när synkroniserade mappar växer sig större än den angivna gränsen</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="139"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation type="unfinished"/>
+        <translation>Inaktivera automatiskt synkronisering av mappar som överskrider gränsen</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="186"/>
         <source>Server poll interval</source>
-        <translation type="unfinished"/>
+        <translation>Serverns uppdateringsintervall</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="203"/>
         <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
-        <translation type="unfinished"/>
+        <translation>sekunder (om &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; inte är tillgängligt)</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="243"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Fråga innan synkronisering av externa lagringsytor</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="277"/>
         <source>Move removed files to trash</source>
-        <translation type="unfinished"/>
+        <translation>Flytta borttagna filer till papperskorgen</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="324"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
-        <translation type="unfinished"/>
+        <translation>Visa synkroniseringsmappar i &amp;utforskarens navigeringsfönster</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="363"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Ändra &amp;ignorerade filer</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="370"/>
         <location filename="../src/gui/advancedsettings.cpp" line="383"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Skapa felsökningsarkiv</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="251"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Avancerat</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="385"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Zip-arkiv</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="398"/>
         <source>Failed to Access File</source>
-        <translation type="unfinished"/>
+        <translation>Det gick inte att öppna filen</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="399"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
-        <translation type="unfinished"/>
+        <translation>Det gick inte att komma åt den valda platsen. Vänligen försök igen eller välj en annan plats.</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="408"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Felsökningsarkiv skapat</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="409"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Redigera information som anses känslig innan du delar! Felsökningsarkiv skapat på %1</translation>
     </message>
 </context>
 <context>
@@ -2702,12 +2703,12 @@ Det kan vara problem med dina OpenSSL-bibliotek.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="95"/>
         <source>Complete your provider signup in your browser</source>
-        <translation type="unfinished"/>
+        <translation>Slutför registreringen hos leverantören i webbläsaren</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="96"/>
         <source>Please complete the provider signup in your browser. After the completion, confirm to open the Nextcloud application popup in your browser.</source>
-        <translation type="unfinished"/>
+        <translation>Slutför registreringen hos leverantören i webbläsaren. Bekräfta därefter att Nextcloud-appen ska öppnas i webbläsarens dialogruta.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="252"/>
@@ -3511,12 +3512,12 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
     <message>
         <location filename="../src/gui/generalsettings.ui" line="134"/>
         <source>Enable &amp;File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Aktivera &amp;File Provider</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="158"/>
         <source>Files appear in Finder under the &quot;Locations&quot; section and do not use local storage space; contents download automatically when you open a file. Applies to all accounts and replaces classic sync folders and their Finder integration.</source>
-        <translation type="unfinished"/>
+        <translation>Filer visas i Finder under avsnittet &quot;Platser&quot; och använder inget lokalt lagringsutrymme. Innehållet hämtas automatiskt när du öppnar en fil. Detta gäller alla konton och ersätter klassiska synkroniseringsmappar och deras Finder-integrering.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="162"/>
@@ -3658,32 +3659,32 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="245"/>
         <source>Unknown account</source>
-        <translation type="unfinished"/>
+        <translation>Okänt konto</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="252"/>
         <source>File Provider will be enabled for all accounts. Your files will appear in Finder under the &quot;Locations&quot; section. Accounts added later will also be set up as File Providers.</source>
-        <translation type="unfinished"/>
+        <translation>File Provider aktiveras för alla konton. Dina filer visas i Finder under avsnittet &quot;Platser&quot;. Konton som läggs till senare konfigureras också med File Provider.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="261"/>
         <source>This removes classic sync folder connections from the following accounts:</source>
-        <translation type="unfinished"/>
+        <translation>Detta tar bort klassiska synkroniseringskopplingar för mappar från följande konton:</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="265"/>
         <source>Synced files stay on your computer, but they will no longer be kept up to date and settings such as selective sync are discarded.</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserade filer finns kvar på datorn, men hålls inte längre uppdaterade och inställningar som selektiv synkronisering tas bort.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="269"/>
         <source>Enable File Provider?</source>
-        <translation type="unfinished"/>
+        <translation>Aktivera File Provider?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="274"/>
         <source>Enable File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Aktivera File Provider</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="275"/>
@@ -3694,22 +3695,22 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="286"/>
         <source>File Provider will be turned off for all accounts, and your files will no longer be available in Finder under the &quot;Locations&quot; section.</source>
-        <translation type="unfinished"/>
+        <translation>File Provider inaktiveras för alla konton och dina filer är inte längre tillgängliga i Finder under avsnittet &quot;Platser&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="288"/>
         <source>Items that were not uploaded yet will be preserved and shown to you. Classic sync folders are not set up again automatically — you can add folder sync connections afterwards in each account&apos;s settings.</source>
-        <translation type="unfinished"/>
+        <translation>Objekt som ännu inte har laddats upp bevaras och visas för dig. Klassiska synkroniseringsmappar konfigureras inte automatiskt på nytt – du kan lägga till synkroniseringskopplingar för mappar i respektive kontos inställningar efteråt.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="291"/>
         <source>Disable File Provider?</source>
-        <translation type="unfinished"/>
+        <translation>Inaktivera File Provider?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="296"/>
         <source>Disable File Provider</source>
-        <translation type="unfinished"/>
+        <translation>Inaktivera File Provider</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="409"/>
@@ -3842,12 +3843,12 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
     <message>
         <location filename="../src/gui/governance/governancelabelslistmodel.cpp" line="62"/>
         <source>None</source>
-        <translation type="unfinished"/>
+        <translation>Ingen</translation>
     </message>
     <message>
         <location filename="../src/gui/governance/governancelabelslistmodel.cpp" line="68"/>
         <source>No label</source>
-        <translation type="unfinished"/>
+        <translation>Ingen etikett</translation>
     </message>
 </context>
 <context>
@@ -3963,73 +3964,73 @@ Objekt där radering är tillåtet raderas om de förhindrar att en mapp tas bor
     <message>
         <location filename="../src/gui/infosettings.ui" line="51"/>
         <source>Desktop client x.x.x</source>
-        <translation type="unfinished"/>
+        <translation>Skrivbordsklient x.x.x</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
         <source>Usage Documentation</source>
-        <translation type="unfinished"/>
+        <translation>Användardokumentation</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="81"/>
         <source>Legal Notice</source>
-        <translation type="unfinished"/>
+        <translation>Juridiskt meddelande</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="152"/>
         <source>Update channel</source>
-        <translation type="unfinished"/>
+        <translation>Uppdateringskanal</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="172"/>
         <source>Restore &amp;Default</source>
-        <translation type="unfinished"/>
+        <translation>Återställ &amp;Standard</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="193"/>
         <source>&amp;Automatically check for updates</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Automatisk kontroll av uppdateringar</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="216"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Starta om &amp;&amp; Uppdatera</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="229"/>
         <source>Check Now</source>
-        <translation type="unfinished"/>
+        <translation>Kontrollera nu</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="110"/>
         <source>Restore to &amp;%1</source>
-        <translation type="unfinished"/>
+        <translation>Återställ till &amp;%1</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="151"/>
         <location filename="../src/gui/infosettings.cpp" line="177"/>
         <source>Connected to an enterprise system. Update channel (%1) cannot be changed.</source>
-        <translation type="unfinished"/>
+        <translation>Ansluten till ett företagssystem. Uppdateringskanalen (%1) kan inte ändras.</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="208"/>
         <source>stable</source>
-        <translation type="unfinished"/>
+        <translation>stabil</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="212"/>
         <source>beta</source>
-        <translation type="unfinished"/>
+        <translation>beta</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="216"/>
         <source>daily</source>
-        <translation type="unfinished"/>
+        <translation>dagligen</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="220"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>enterprise</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="255"/>
@@ -4038,7 +4039,10 @@ Objekt där radering är tillåtet raderas om de förhindrar att en mapp tas bor
 
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
         <comment>list of available update channels to non enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- beta: innehåller versioner med nya funktioner som kanske inte testats ordentligt
+- daily: innehåller versioner som skapas dagligen endast för testning och utveckling
+
+Nedgradering av versioner är inte möjligt omedelbart: att byta från beta till stabil innebär att vänta på den nya stabila versionen.</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="260"/>
@@ -4046,12 +4050,14 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
         <comment>list of available update channels to enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- enterprise: innehåller stabila versioner för kunder.
+
+Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil till enterprise innebär att man väntar på den nya enterprise-versionen.</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="267"/>
         <source>Changing update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Ändra uppdateringskanal?</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="268"/>
@@ -4059,17 +4065,19 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 - stable: contains tested versions considered reliable
 </source>
         <comment>starts list of available update channels, stable is always available</comment>
-        <translation type="unfinished"/>
+        <translation>Kanalen avgör vilka uppgraderingar som kommer att erbjudas att installera:
+- stable: innehåller testade versioner som anses tillförlitliga
+</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="274"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Ändra uppdateringskanal</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="275"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Avbryt</translation>
     </message>
 </context>
 <context>
@@ -5041,7 +5049,7 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="216"/>
         <source>Failed to create encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>Det gick inte att skapa den krypterade mappen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="255"/>
@@ -5344,12 +5352,12 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="184"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Avancerat</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="185"/>
         <source>Info</source>
-        <translation type="unfinished"/>
+        <translation>Info</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="335"/>
@@ -5566,7 +5574,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1305"/>
         <source>Apply labels</source>
-        <translation type="unfinished"/>
+        <translation>Tillämpa etiketter</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1447"/>
@@ -6051,7 +6059,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="843"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Avsluta</translation>
     </message>
 </context>
 <context>
@@ -6060,7 +6068,7 @@ Servern svarade med fel: %2</translation>
         <location filename="../src/libsync/theme.cpp" line="462"/>
         <source>%1 Desktop Client Version %2</source>
         <comment>%1 is application name. %2 is the human version string.</comment>
-        <translation type="unfinished"/>
+        <translation>%1-skrivbordsklient, version %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="646"/>
@@ -6213,7 +6221,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1688"/>
         <source>Sync conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniseringskonflikter</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1818"/>
@@ -6588,77 +6596,77 @@ Servern svarade med fel: %2</translation>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="77"/>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="80"/>
         <source>Proxy settings</source>
-        <translation type="unfinished"/>
+        <translation>Proxyinställningar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="88"/>
         <source>No proxy</source>
-        <translation type="unfinished"/>
+        <translation>Ingen proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="98"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>Använd systemets proxyinställning</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="108"/>
         <source>Manually specify proxy</source>
-        <translation type="unfinished"/>
+        <translation>Ange proxy manuellt</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="123"/>
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished"/>
+        <translation>HTTP(S) proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="123"/>
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished"/>
+        <translation>SOCKS5 proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="127"/>
         <source>Proxy type</source>
-        <translation type="unfinished"/>
+        <translation>Proxytyp</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="138"/>
         <source>Hostname of proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Värdnamn för proxyserver</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="150"/>
         <source>Proxy port</source>
-        <translation type="unfinished"/>
+        <translation>Proxyport</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="159"/>
         <source>Proxy server requires authentication</source>
-        <translation type="unfinished"/>
+        <translation>Proxyservern kräver autentisering</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="175"/>
         <source>Username for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Användarnamn för proxyserver</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="182"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Lösenord för proxyserver</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="191"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Observera: proxyinställningarna påverkar inte konton på localhost</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="208"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="215"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Klar</translation>
     </message>
 </context>
 <context>
@@ -6744,7 +6752,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="491"/>
         <source>Answer</source>
-        <translation type="unfinished"/>
+        <translation>Svar</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1518"/>
@@ -6772,7 +6780,7 @@ Servern svarade med fel: %2</translation>
         <translation>Synkroniserade %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="410"/>
+        <location filename="../src/libsync/filesystem.cpp" line="532"/>
         <source>Error deleting the file</source>
         <translation>Kunde inte ta bort filen</translation>
     </message>
@@ -6956,22 +6964,22 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="19"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Sök</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="74"/>
         <source>Search is available when this account is connected</source>
-        <translation type="unfinished"/>
+        <translation>Sökning är tillgänglig när kontot är anslutet</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="75"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>Sök efter filer, meddelanden och händelser …</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="150"/>
         <source>Search results list</source>
-        <translation type="unfinished"/>
+        <translation>Lista över sökresultat</translation>
     </message>
 </context>
 <context>
@@ -6979,22 +6987,22 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="29"/>
         <source>Log in to %1</source>
-        <translation type="unfinished"/>
+        <translation>Logga in på %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="38"/>
         <source>Enter the link to your %1 web interface from the browser or the link to a folder shared with you.</source>
-        <translation type="unfinished"/>
+        <translation>Ange länken till %1-webbgränssnittet från webbläsaren eller länken till en mapp som har delats med dig.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="181"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Logga in</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="196"/>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>Serveradress</translation>
     </message>
 </context>
 <context>
@@ -7153,37 +7161,37 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>Virtual files</source>
-        <translation type="unfinished"/>
+        <translation>Virtuella filer</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>File Provider</source>
-        <translation type="unfinished"/>
+        <translation>File Provider</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="91"/>
         <source>Download files on-demand</source>
-        <translation type="unfinished"/>
+        <translation>Hämta filer vid behov</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="99"/>
         <source>Synchronize everything</source>
-        <translation type="unfinished"/>
+        <translation>Synkronisera allt</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="108"/>
         <source>Choose what to sync</source>
-        <translation type="unfinished"/>
+        <translation>Välj vad som ska synkroniseras</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="122"/>
         <source>Local sync folder</source>
-        <translation type="unfinished"/>
+        <translation>Lokal synkroniseringsmapp</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="154"/>
         <source>Choose</source>
-        <translation type="unfinished"/>
+        <translation>Välj</translation>
     </message>
 </context>
 <context>
@@ -7227,47 +7235,47 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="584"/>
         <source>No apps available</source>
-        <translation type="unfinished"/>
+        <translation>Inga appar tillgängliga</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="624"/>
         <source>Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Aviseringar</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="648"/>
         <source>Open</source>
-        <translation type="unfinished"/>
+        <translation>Öppna</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="661"/>
         <source>Recent activity</source>
-        <translation type="unfinished"/>
+        <translation>Senaste aktivitet</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="668"/>
         <source>No recent activity</source>
-        <translation type="unfinished"/>
+        <translation>Ingen senaste aktivitet</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="686"/>
         <source>More activity…</source>
-        <translation type="unfinished"/>
+        <translation>Mer aktivitet …</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="717"/>
         <source>Resolve: %1</source>
-        <translation type="unfinished"/>
+        <translation>Åtgärda: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="724"/>
         <source>User status</source>
-        <translation type="unfinished"/>
+        <translation>Användarstatus</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="757"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Sök</translation>
     </message>
 </context>
 <context>
@@ -7305,7 +7313,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="740"/>
         <source>Local folder</source>
-        <translation type="unfinished"/>
+        <translation>Lokal mapp</translation>
     </message>
 </context>
 <context>
@@ -7328,7 +7336,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="765"/>
         <source>Apps</source>
-        <translation type="unfinished"/>
+        <translation>Appar</translation>
     </message>
 </context>
 <context>
@@ -7392,12 +7400,12 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/urischemehandler.cpp" line="123"/>
         <source>Could not handle link</source>
-        <translation type="unfinished"/>
+        <translation>Det gick inte att hantera länken</translation>
     </message>
     <message>
         <location filename="../src/gui/urischemehandler.cpp" line="191"/>
         <source>Adding another account is not allowed in this client.</source>
-        <translation type="unfinished"/>
+        <translation>Det är inte tillåtet att lägga till ytterligare ett konto i klienten.</translation>
     </message>
 </context>
 <context>
@@ -7540,73 +7548,73 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="22"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>Onlinestatus</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="99"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Online</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="108"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Borta</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="118"/>
         <source>Busy</source>
-        <translation type="unfinished"/>
+        <translation>Upptagen</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="127"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Stör ej</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="128"/>
         <source>Mute all notifications</source>
-        <translation type="unfinished"/>
+        <translation>Stäng av alla aviseringar</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="139"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Osynlig</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="140"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>Visa som frånkopplad</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="156"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Statusmeddelande</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="182"/>
         <source>Choose emoji</source>
-        <translation type="unfinished"/>
+        <translation>Välj emoji</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="204"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>Vad är din status?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="290"/>
         <location filename="../src/gui/UserStatusWindow.qml" line="311"/>
         <source>Clear status after</source>
-        <translation type="unfinished"/>
+        <translation>Rensa status efter</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="343"/>
         <source>Clear status message</source>
-        <translation type="unfinished"/>
+        <translation>Rensa statusmeddelande</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="354"/>
         <source>Set status message</source>
-        <translation type="unfinished"/>
+        <translation>Sätt statusmeddelande</translation>
     </message>
 </context>
 <context>
@@ -7615,7 +7623,7 @@ Servern svarade med fel: %2</translation>
         <location filename="../src/gui/UserStatusWindowPredefinedStatusRow.qml" line="30"/>
         <source>%1, resets after %2</source>
         <extracomment>%1 is the status text and %2 is a time string.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1, återställs efter %2</translation>
     </message>
 </context>
 <context>
@@ -7699,7 +7707,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/WindowAccountHeader.qml" line="63"/>
         <source>Account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Kontoavatar</translation>
     </message>
 </context>
 <context>
@@ -7951,7 +7959,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="130"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Aktivera experimentell funktion?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="131"/>
@@ -7962,17 +7970,23 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>När läget &quot;virtuella filer&quot; är aktiverat kommer inga filer att laddas ner initialt. Istället kommer en liten &quot;%1&quot;-fil att skapas för varje fil som finns på servern. Innehållet kan laddas ner genom att köra dessa filer eller genom att använda klientens snabbmeny.
+
+Läget för virtuella filer är ömsesidigt uteslutande med selektiv synkronisering. Befintliga omarkerade mappar kommer att översättas till mappar som endast är online och dina selektiva synkroniseringsinställningar återställs.
+
+Om du byter till det här läget avbryts all pågående synkronisering.
+
+Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda det, rapportera eventuella problem som dyker upp.</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="146"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>Aktivera experimentellt platshållarläge</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="147"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Var försiktig</translation>
     </message>
 </context>
 <context>

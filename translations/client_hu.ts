@@ -584,12 +584,12 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="372"/>
+        <location filename="../src/libsync/filesystem.cpp" line="494"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>Hiba a(z) „%1” eltávolításakor: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="420"/>
+        <location filename="../src/libsync/filesystem.cpp" line="542"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>A(z) „%1” mappa nem távolítható el</translation>
     </message>
@@ -6772,7 +6772,7 @@ A kiszolgáló hibával válaszolt: %2</translation>
         <translation>Szinkronizálta: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="410"/>
+        <location filename="../src/libsync/filesystem.cpp" line="532"/>
         <source>Error deleting the file</source>
         <translation>Hiba a fájl törlésekor</translation>
     </message>

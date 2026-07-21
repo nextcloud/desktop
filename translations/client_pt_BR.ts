@@ -584,12 +584,12 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="372"/>
+        <location filename="../src/libsync/filesystem.cpp" line="494"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>Erro ao remover &quot;%1&quot;: %2 </translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="420"/>
+        <location filename="../src/libsync/filesystem.cpp" line="542"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>Não foi possível remover a pasta &quot;%1&quot; </translation>
     </message>
@@ -4383,7 +4383,7 @@ Observe que o uso de qualquer opção de logs na linha de comandos substituirá 
     <message>
         <location filename="../src/gui/networksettings.ui" line="126"/>
         <source>Host</source>
-        <translation>Host</translation>
+        <translation>Hospedeiro</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="176"/>
@@ -4436,7 +4436,7 @@ Observe que o uso de qualquer opção de logs na linha de comandos substituirá 
     <message>
         <location filename="../src/gui/networksettings.cpp" line="39"/>
         <source>Hostname of proxy server</source>
-        <translation>Nome do servidor proxy</translation>
+        <translation>Nome do hospedeiro do servidor proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="40"/>
@@ -6630,7 +6630,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="138"/>
         <source>Hostname of proxy server</source>
-        <translation>Nome do host do servidor proxy</translation>
+        <translation>Nome do hospedeiro do servidor proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="150"/>
@@ -6779,7 +6779,7 @@ Servidor respondeu com erro: %2</translation>
         <translation>%1 sincronizado</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="410"/>
+        <location filename="../src/libsync/filesystem.cpp" line="532"/>
         <source>Error deleting the file</source>
         <translation>Erro ao excluir o arquivo</translation>
     </message>
@@ -8454,7 +8454,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="240"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation>O host &quot;%1&quot; forneceu um certificado inválido. Continuar?</translation>
+        <translation>O hospedeiro &quot;%1&quot; forneceu um certificado inválido. Continuar?</translation>
     </message>
 </context>
 <context>
@@ -8511,7 +8511,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25"/>
         <source>Hostname of proxy server</source>
-        <translation>Nome do host do servidor proxy</translation>
+        <translation>Nome do hospedeiro do servidor proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26"/>
@@ -8659,7 +8659,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="91"/>
         <source>Host</source>
-        <translation>Host</translation>
+        <translation>Hospedeiro</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="142"/>
