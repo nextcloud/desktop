@@ -13,6 +13,7 @@ import com.nextcloud.desktopclient as NC
 import Style
 
 import "./tray"
+import "./common"
 
 ColumnLayout {
     id: rootLayout
@@ -112,14 +113,13 @@ ColumnLayout {
                 }
             }
 
-            TextField {
+            NCContextMenuTextField {
                 id: userStatusMessageTextField
 
                 Layout.fillWidth: true
                 placeholderText: qsTr("What is your status?")
                 text: userStatusSelectorModel ? userStatusSelectorModel.userStatusMessage : ""
                 enabled: rootLayout.userStatusLoaded
-                selectByMouse: true
                 onEditingFinished: {
                     if (rootLayout.userStatusLoaded) {
                         userStatusSelectorModel.userStatusMessage = text

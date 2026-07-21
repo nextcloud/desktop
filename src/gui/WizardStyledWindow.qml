@@ -21,13 +21,19 @@ ApplicationWindow {
         | Qt.WindowCloseButtonHint
     color: Style.wizardWindowBackground
     palette.window: Style.wizardWindowBackground
-    palette.windowText: Style.wizardPrimaryText
     palette.base: Style.wizardFieldBackground
-    palette.text: Style.wizardPrimaryText
     palette.button: Style.wizardFieldBackground
-    palette.buttonText: Style.wizardPrimaryText
     palette.mid: Style.wizardDisabledText
     palette.placeholderText: Style.wizardPlaceholderText
+    palette.active.windowText: Style.wizardPrimaryText
+    palette.inactive.windowText: Style.wizardPrimaryText
+    palette.disabled.windowText: Style.wizardDisabledText
+    palette.active.text: Style.wizardPrimaryText
+    palette.inactive.text: Style.wizardPrimaryText
+    palette.disabled.text: Style.wizardDisabledText
+    palette.active.buttonText: Style.wizardPrimaryText
+    palette.inactive.buttonText: Style.wizardPrimaryText
+    palette.disabled.buttonText: Style.wizardDisabledText
 
     background: Rectangle {
         color: Style.wizardWindowBackground

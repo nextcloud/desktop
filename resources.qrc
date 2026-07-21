@@ -56,6 +56,7 @@
         <file>src/gui/ResolveConflictsDialog.qml</file>
         <file>src/gui/ConflictDelegate.qml</file>
         <file>src/gui/ConflictItemFileInfo.qml</file>
+        <file>src/gui/common/NCContextMenuTextField.qml</file>
         <file>src/gui/wizard/qml/AccountWizardWindow.qml</file>
         <file>src/gui/wizard/qml/AdvancedOptionsDialog.qml</file>
         <file>src/gui/wizard/qml/BasicAuthPage.qml</file>
