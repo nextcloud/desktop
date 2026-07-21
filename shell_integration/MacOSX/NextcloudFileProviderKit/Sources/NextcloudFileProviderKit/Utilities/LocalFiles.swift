@@ -293,9 +293,8 @@ func autoCADSiblingLockFileExists(lockFilename: String, parentServerUrl: String,
 ///
 func affinityLockFileTargetName(_ lockFilename: String) -> String? {
     guard isAffinityLockFileName(lockFilename) else { return nil }
-    var documentName = lockFilename
-    documentName.removeLast(affinityLockFileSuffix.count)
-    return documentName.isEmpty ? nil : documentName
+    let base = String(lockFilename.dropLast(affinityLockFileSuffix.count))
+    return base.isEmpty ? nil : base
 }
 
 ///
