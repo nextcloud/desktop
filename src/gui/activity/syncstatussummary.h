@@ -40,6 +40,11 @@ public:
     [[nodiscard]] qint64 totalFiles() const;
     [[nodiscard]] bool needsSandboxReapproval() const;
 
+    /**
+     * @brief Loads the sync status for an account.
+     *
+     * Does nothing when @p accountState is null.
+     */
     void loadForAccount(const OCC::AccountStatePtr &accountState);
 
 signals:

@@ -103,6 +103,8 @@ public:
     void setCurrentUser(const bool &isCurrent);
     [[nodiscard]] Folder *getFolder() const;
     ActivityListModel *getActivityModel();
+
+    /** @brief Requests a refresh of this user's activities. */
     void refreshActivities();
     void openLocalFolder() const;
 #ifdef BUILD_FILE_PROVIDER_MODULE
