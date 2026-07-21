@@ -180,8 +180,14 @@ set(client_SRCS
     tooltipupdater.cpp
     urischemehandler.h
     urischemehandler.cpp
-    notificationconfirmjob.h
-    notificationconfirmjob.cpp
+    notifications/notificationconfirmjob.h
+    notifications/notificationconfirmjob.cpp
+    notifications/notificationmanager.h
+    notifications/notificationmanager.cpp
+    notifications/servernotificationhandler.h
+    notifications/servernotificationhandler.cpp
+    notifications/talkreply.h
+    notifications/talkreply.cpp
     guiutility.h
     guiutility.cpp
     elidedlabel.h
@@ -243,12 +249,9 @@ set(client_SRCS
     tray/trayaccountappsmodel.cpp
     tray/usermodel.h
     tray/usermodel.cpp
-    tray/notificationhandler.h
-    tray/notificationhandler.cpp
     tray/sortedactivitylistmodel.h
     tray/sortedactivitylistmodel.cpp
     creds/credentialsfactory.h
-    tray/talkreply.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.h
     creds/httpcredentialsgui.cpp
@@ -330,7 +333,12 @@ IF( APPLE )
         macOS/trayaccountpopup/trayaccountpopup_mac.mm)
     list(APPEND client_SRCS macOS/singleinstancemanager_mac.mm)
 
-    list(APPEND client_SRCS systray_mac_usernotifications.mm)
+    list(APPEND client_SRCS
+        notifications/macnotificationcenter.h
+        notifications/macnotificationcenter_p.h
+        notifications/macnotificationcenter.mm
+        notifications/ncnotificationcenterdelegate.h
+        notifications/ncnotificationcenterdelegate.mm)
 
     # FinderSync XPC is independent of File Provider — always built on macOS
     list(APPEND client_SRCS

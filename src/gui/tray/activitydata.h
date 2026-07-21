@@ -152,7 +152,8 @@ public:
         QString label;
     };
 
-    struct RecentActivityPreviewText {
+    /** @brief Title and subtitle shared by compact activity presentation surfaces. */
+    struct PreviewText {
         QString title;
         QString subtitle;
     };
@@ -182,6 +183,7 @@ public:
 
     Type _type;
     qint64 _id = 0LL;
+    QString _app; //!< Server app that created this activity or notification.
     QString _fileAction;
     int _objectId = 0;
     TalkNotificationData _talkNotificationData;
@@ -228,6 +230,8 @@ public:
     [[nodiscard]] bool isDismissableActivity() const;
 
     [[nodiscard]] QVariantList notificationPreviewActions() const;
+    /** @brief Return the title and subtitle shown by notification preview surfaces. */
+    [[nodiscard]] PreviewText notificationPreviewText() const;
 
     [[nodiscard]] QVector<ActivityActionMetadata> activityActionMetadata(const int maximumActionIndex = -1) const;
 
@@ -237,7 +241,7 @@ public:
 
     [[nodiscard]] QString subjectWithoutRichParameter(const QString &parameterKey) const;
 
-    [[nodiscard]] RecentActivityPreviewText recentActivityPreviewText() const;
+    [[nodiscard]] PreviewText recentActivityPreviewText() const;
 
     [[nodiscard]] QString compactNotificationTitle() const;
 

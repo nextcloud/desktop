@@ -11,6 +11,7 @@
 #import "trayaccountpopupmetrics.h"
 #import "trayaccountpopupviewutils.h"
 
+#include "notifications/notificationmanager.h"
 #include "tray/usermodel.h"
 
 #include <QVariantMap>
@@ -61,8 +62,13 @@ using namespace OCC::Mac::TrayPopupViewUtils;
                                                                      width:kNotificationActionsPopupWidth
                                                                    enabled:YES
                                                                     action:^{
+            const auto user = OCC::UserModel::instance()->user(userIndex);
+            const auto notificationManager = user ? user->notificationManager() : nullptr;
+            if (!notificationManager) {
+                return;
+            }
             if (dismisses) {
-                OCC::UserModel::instance()->dismissNotification(userIndex, activityIndex);
+                notificationManager->dismissNotification(activityIndex);
                 [weakSelf orderOut:nil];
                 return;
             }
@@ -72,7 +78,7 @@ using namespace OCC::Mac::TrayPopupViewUtils;
             }
 
             [weakOwner closeAllPopups];
-            OCC::UserModel::instance()->triggerNotificationAction(userIndex, activityIndex, actionIndex);
+            notificationManager->triggerNotificationAction(activityIndex, actionIndex);
         }]);
     }
     addOwnedArrangedSubview(_stack, [[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kNotificationActionsPopupWidth]);

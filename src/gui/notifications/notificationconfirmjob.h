@@ -10,9 +10,7 @@
 #include "accountfwd.h"
 #include "abstractnetworkjob.h"
 
-#include <QVector>
-#include <QList>
-#include <QPair>
+#include <QByteArray>
 #include <QUrl>
 
 namespace OCC {
@@ -30,6 +28,7 @@ class NotificationConfirmJob : public AbstractNetworkJob
     Q_OBJECT
 
 public:
+    /** @brief Create a notification action request for an account. */
     explicit NotificationConfirmJob(AccountPtr account);
 
     /**
@@ -62,4 +61,4 @@ private:
 };
 }
 
-#endif // NotificationConfirmJob_H
+#endif // NOTIFICATIONCONFIRMJOB_H

@@ -492,30 +492,21 @@ QVariantList ActivityListModel::buildNotificationPreviewData() const
 
     auto notifications = QVariantList{};
     for (const auto &candidate : std::as_const(candidates)) {
-        auto title = candidate.activity.compactNotificationTitle();
-        auto subtitle = QString{};
+        const auto previewText = candidate.activity.notificationPreviewText();
         auto systemIconName = candidate.activity.recentActivitySystemIconName();
-        if (candidate.activity._objectType == QStringLiteral("chat")
-            && candidate.activity._subjectRichParameters.contains(QStringLiteral("user"))) {
-            const auto user = candidate.activity._subjectRichParameters.value(QStringLiteral("user")).value<Activity::RichSubjectParameter>();
-            if (!user.name.isEmpty() && !candidate.activity._message.isEmpty()) {
-                title = user.name;
-                subtitle = candidate.activity._message;
-            }
-        }
         if (candidate.activity._objectType == QStringLiteral("chat")
             || candidate.activity._objectType == QStringLiteral("room")) {
             systemIconName = QStringLiteral("message");
         }
-        if (title.isEmpty()) {
+        if (previewText.title.isEmpty()) {
             continue;
         }
 
         const auto modelIndex = index(candidate.row);
         const auto actions = candidate.activity.notificationPreviewActions();
         notifications.push_back(QVariantMap{
-            {QStringLiteral("title"), title},
-            {QStringLiteral("subtitle"), subtitle},
+            {QStringLiteral("title"), previewText.title},
+            {QStringLiteral("subtitle"), previewText.subtitle},
             {QStringLiteral("icon"), data(modelIndex, IconRole).toString()},
             {QStringLiteral("systemIconName"), systemIconName},
             {QStringLiteral("dateTime"), data(modelIndex, PointInTimeRole).toString()},
@@ -819,10 +810,26 @@ void ActivityListModel::removeActivityFromActivityList(const Activity &activity)
     }
 
     if (activityWasRemoved) {
+        if (activity._type == Activity::NotificationType) {
+            emit notificationRemoved(activity._id);
+        }
         setHasSyncConflicts(!_conflictsList.isEmpty());
         refreshPreviewData();
         emit activityListChanged();
     }
+}
+
+void ActivityListModel::removeNotificationFromActivityList(const qint64 notificationId)
+{
+    const auto it = std::find_if(_finalList.cbegin(), _finalList.cend(), [notificationId](const Activity &activity) {
+        return activity._type == Activity::NotificationType && activity._id == notificationId;
+    });
+    if (it == _finalList.cend()) {
+        return;
+    }
+
+    const auto activity = *it;
+    removeActivityFromActivityList(activity);
 }
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
@@ -1176,6 +1183,11 @@ void ActivityListModel::slotRefreshActivityInitial()
 
 void ActivityListModel::slotRemoveAccount()
 {
+    for (const auto &activity : std::as_const(_finalList)) {
+        if (activity._type == Activity::NotificationType) {
+            emit notificationRemoved(activity._id);
+        }
+    }
     _finalList.clear();
     _conflictsList.clear();
     _activityLists.clear();

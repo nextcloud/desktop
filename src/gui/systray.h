@@ -34,20 +34,6 @@ public:
 };
 
 #ifdef Q_OS_MACOS
-#if __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_14
-enum MacNotificationAuthorizationOptions {
-    Default = 0,
-    Provisional
-};
-
-void setUserNotificationCenterDelegate();
-void checkNotificationAuth(MacNotificationAuthorizationOptions authOptions = MacNotificationAuthorizationOptions::Provisional);
-void registerNotificationCategories(const QString &localizedDownloadString);
-bool canOsXSendUserNotification();
-void sendOsXUserNotification(const QString &title, const QString &message);
-void sendOsXUpdateNotification(const QString &title, const QString &message, const QUrl &webUrl);
-void sendOsXTalkNotification(const QString &title, const QString &message, const QString &token, const QString &replyTo, const AccountStatePtr accountState);
-#endif
 void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window);
 double menuBarThickness();
 void showMacOSTrayPopup(const QRect &iconRect);
@@ -128,7 +114,6 @@ public slots:
 
     void showMessage(const QString &title, const QString &message, QSystemTrayIcon::MessageIcon icon = Information);
     void showUpdateMessage(const QString &title, const QString &message, const QUrl &webUrl);
-    void showTalkMessage(const QString &title, const QString &message, const QString &replyTo, const QString &token, const OCC::AccountStatePtr &accountState);
 
     void createCallDialog(const OCC::Activity &callNotification, const OCC::AccountStatePtr accountState);
     void createEditFileLocallyLoadingDialog(const QString &fileName);
@@ -154,6 +139,8 @@ public slots:
     void hideWindow();
     void showQMLWindow();
     void showActivitiesWindow(int userIndex = -1);
+    /** @brief Show the standalone Activities window for an account state. */
+    void showActivitiesWindow(OCC::AccountState *accountState);
     void showAssistantWindow(int userIndex = -1);
     void showSearchWindow(int userIndex = -1);
     void showUserStatusWindow(int userIndex);

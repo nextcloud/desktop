@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include "notificationconfirmjob.h"
+#include "notifications/notificationconfirmjob.h"
 #include "networkjobs.h"
 #include "account.h"
 

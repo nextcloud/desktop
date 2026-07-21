@@ -8,6 +8,7 @@
 #include "accountmanager.h"
 #include "accountstate.h"
 #include "iconjob.h"
+#include "notifications/notificationmanager.h"
 #include "theme.h"
 #include "tray/trayaccountappsmodel.h"
 #include "tray/trayimageutils.h"
@@ -601,8 +602,13 @@ void populateNotificationActionsMenu(QMenu *menu, const int userId, const int ac
         const auto actionIndex = actionData.value(QStringLiteral("actionIndex")).toInt();
         const auto action = addMenuAction(menu, QIcon{}, title);
         QObject::connect(action, &QAction::triggered, action, [userId, activityIndex, actionType, actionIndex] {
+            const auto user = UserModel::instance()->user(userId);
+            const auto notificationManager = user ? user->notificationManager() : nullptr;
+            if (!notificationManager) {
+                return;
+            }
             if (actionType == QStringLiteral("dismiss")) {
-                UserModel::instance()->dismissNotification(userId, activityIndex);
+                notificationManager->dismissNotification(activityIndex);
                 return;
             }
             if (actionType == QStringLiteral("openActivities")) {
@@ -610,7 +616,7 @@ void populateNotificationActionsMenu(QMenu *menu, const int userId, const int ac
                 return;
             }
             closeTrayPopup();
-            UserModel::instance()->triggerNotificationAction(userId, activityIndex, actionIndex);
+            notificationManager->triggerNotificationAction(activityIndex, actionIndex);
         });
     }
 }

@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include "notificationhandler.h"
 #include "usermodel.h"
 #include "common/filesystembase.h"
 
@@ -13,16 +12,13 @@
 #include "userstatusselectormodel.h"
 #include "syncengine.h"
 #include "syncresult.h"
-#include "ocsjob.h"
 #include "configfile.h"
-#include "notificationconfirmjob.h"
-#include "logger.h"
 #include "guiutility.h"
 #include "syncresult.h"
 #include "syncfileitem.h"
 #include "systray.h"
 #include "tray/activitylistmodel.h"
-#include "tray/talkreply.h"
+#include "notifications/notificationmanager.h"
 #include "userstatusconnector.h"
 #include "common/utility.h"
 #include "ocsassistantconnector.h"
@@ -56,8 +52,6 @@ constexpr qint64 activityDefaultExpirationTimeMsecs = 1000 * 60 * 10;
 constexpr qint64 assistantPollIntervalMsecs = 2000;
 constexpr int assistantSuccessMinStatusCode = 200;
 constexpr int assistantSuccessMaxStatusCode = 300;
-constexpr auto debugCallNotificationEnvVar = "NEXTCLOUD_DEBUG_CALL_NOTIFICATION";
-constexpr auto debugCallNotificationAvatarEnvVar = "NEXTCLOUD_DEBUG_CALL_NOTIFICATION_AVATAR_URL";
 
 QString assistantTaskTypeIdFromResponse(const QJsonDocument &json)
 {
@@ -457,47 +451,6 @@ bool accountNeedsSandboxReapproval(const OCC::AccountStatePtr &accountState)
     return false;
 }
 
-bool showDebugCallNotification(const OCC::AccountStatePtr &account)
-{
-    if (!qEnvironmentVariableIsSet(debugCallNotificationEnvVar)) {
-        return false;
-    }
-
-    const auto systray = OCC::Systray::instance();
-    if (!systray || !account || !account->account()) {
-        return true;
-    }
-
-    OCC::Activity activity;
-    activity._id = -QDateTime::currentMSecsSinceEpoch();
-    activity._objectType = QStringLiteral("call");
-    activity._subject = QStringLiteral("Iva Horn would like to talk with you");
-    activity._shouldNotify = true;
-    activity._dateTime = QDateTime::currentDateTime();
-    activity._accName = account->account()->displayName();
-    activity._talkNotificationData.conversationToken = QStringLiteral("debug-call");
-
-    const auto avatarUrl = qEnvironmentVariable(debugCallNotificationAvatarEnvVar);
-    if (!avatarUrl.isEmpty()) {
-        activity._talkNotificationData.userAvatar = avatarUrl;
-    } else if (!account->account()->url().isEmpty() && !account->account()->davUser().isEmpty()) {
-        activity._talkNotificationData.userAvatar = account->account()->url().toString()
-            + QStringLiteral("/index.php/avatar/")
-            + account->account()->davUser()
-            + QStringLiteral("/128");
-    }
-
-    OCC::ActivityLink answer;
-    answer._label = QObject::tr("Answer");
-    answer._verb = "WEB";
-    answer._link = account->account()->url().toString();
-    answer._primary = true;
-    activity._links.append(answer);
-
-    systray->createCallDialog(activity, account);
-    return true;
-}
-
 } // namespace
 
 namespace OCC {
@@ -520,6 +473,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     , _account(account)
     , _isCurrentUser(isCurrent)
     , _activityModel(new ActivityListModel(_account.data(), this))
+    , _notificationManager(new NotificationManager(_account, _activityModel, this))
 {
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo,
         this, &User::slotProgressInfo);
@@ -530,7 +484,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::addErrorToGui,
         this, &User::slotAddErrorToGui);
 
-    connect(&_notificationCheckTimer, &QTimer::timeout,
+    connect(&_refreshTimer, &QTimer::timeout,
         this, &User::slotRefresh);
 
     connect(&_expiredActivitiesCheckTimer, &QTimer::timeout,
@@ -559,14 +513,12 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
 
     connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::slotAccountCapabilitiesChangedRefreshGroupFolders);
 
-    connect(_activityModel, &ActivityListModel::sendNotificationRequest, this, &User::slotSendNotificationRequest);
     connect(_activityModel, &ActivityListModel::showSettingsDialog,
             Systray::instance(), &Systray::openSettings);
     connect(_activityModel, &ActivityListModel::hasSyncConflictsChanged, this, &User::refreshAccountAlert);
     connect(_activityModel, &ActivityListModel::recentActivityPreviewDataChanged, this, &User::recentActivitiesChanged);
     connect(_activityModel, &ActivityListModel::notificationPreviewDataChanged, this, &User::trayNotificationsChanged);
     connect(_activityModel, &ActivityListModel::activityListChanged, this, &User::refreshAccountAlert);
-
     connect(this, &User::sendReplyMessage, this, &User::slotSendReplyMessage);
 
     connect(_account->account().data(), &Account::userCertificateNeedsMigrationChanged, this, [this] () {
@@ -582,7 +534,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
 
         if (_account->account()->e2e()->userCertificateNeedsMigration()) {
             _activityModel->addNotificationToActivityList(certificateNeedMigration);
-            showDesktopNotification(certificateNeedMigration);
+            _notificationManager->showNotification(certificateNeedMigration);
         }
     });
 
@@ -625,181 +577,11 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
 #endif
 }
 
-void User::checkNotifiedNotifications()
-{
-    // clear the gui log notification store after one hour has passed since the last received notification
-    constexpr qint64 clearGuiLogInterval = 60 * 60 * 1000;
-    if (_guiLogTimer.elapsed() > clearGuiLogInterval) {
-        _notifiedNotifications.clear();
-    }
-}
-
-bool User::notificationAlreadyShown(const qint64 notificationId)
-{
-    checkNotifiedNotifications();
-    return _notifiedNotifications.contains(notificationId);
-}
-
-bool User::canShowNotification(const qint64 notificationId)
-{
-    ConfigFile cfg;
-    return cfg.optionalServerNotifications() &&
-            isDesktopNotificationsAllowed() &&
-            !notificationAlreadyShown(notificationId);
-}
-
-void User::showDesktopNotification(const QString &title, const QString &message, const qint64 notificationId)
-{
-    if (!canShowNotification(notificationId)) {
-        return;
-    }
-
-    _notifiedNotifications.insert(notificationId);
-    Logger::instance()->postGuiLog(title, message);
-    // restart the gui log timer now that we show a new notification
-    _guiLogTimer.start();
-}
-
-void User::showDesktopNotification(const Activity &activity)
-{
-    const auto notificationId = activity._id;
-    const auto message = AccountManager::instance()->accounts().count() == 1 ? "" : activity._accName;
-
-    // the user needs to interact with this notification
-    if (activity._links.size() > 0) {
-        _activityModel->addNotificationToActivityList(activity);
-    }
-
-    showDesktopNotification(activity._subject, message, notificationId);
-}
-
-void User::showDesktopNotification(const ActivityList &activityList)
-{
-    const auto subject = tr("%n notification(s)", nullptr, activityList.count());
-    const auto notificationId = -static_cast<int>(qHash(subject));
-
-    if (!canShowNotification(notificationId)) {
-        return;
-    }
-
-    const auto multipleAccounts = AccountManager::instance()->accounts().count() > 1;
-    const auto message = multipleAccounts ? activityList.constFirst()._accName : QString();
-
-    // Notification ids are uints, which are 4 bytes. Error activities don't have ids, however, so we generate one.
-    // To avoid possible collisions between the activity ids which are actually the notification ids received from
-    // the server (which are always positive) and our "fake" error activity ids, we assign a negative id to the
-    // error notification.
-    //
-    // To ensure that we can still treat an unsigned int as normal, we use a long, which is 8 bytes.
-
-    Logger::instance()->postGuiLog(subject, message);
-
-    for (const auto &activity : activityList) {
-        _notifiedNotifications.insert(activity._id);
-        _activityModel->addNotificationToActivityList(activity);
-    }
-}
-
-void User::showDesktopTalkNotification(const Activity &activity)
-{
-    const auto notificationId = activity._id;
-
-    if (!canShowNotification(notificationId) || !ConfigFile().showChatNotifications()) {
-        return;
-    }
-
-    if (activity._talkNotificationData.messageId.isEmpty()) {
-        showDesktopNotification(activity._subject, activity._message, notificationId);
-        return;
-    }
-
-    _notifiedNotifications.insert(notificationId);
-    _activityModel->addNotificationToActivityList(activity);
-
-    Systray::instance()->showTalkMessage(activity._subject,
-                                         activity._message,
-                                         activity._talkNotificationData.conversationToken,
-                                         activity._talkNotificationData.messageId,
-                                         _account);
-    _guiLogTimer.start();
-}
-
-void User::slotBuildNotificationDisplay(const ActivityList &list)
-{
-    ActivityList toNotifyList;
-
-    _activityModel->removeOutdatedNotifications(list);
-
-    std::copy_if(list.constBegin(), list.constEnd(), std::back_inserter(toNotifyList), [&](const Activity &activity) -> bool {
-        if (!activity._shouldNotify) {
-            qCDebug(lcActivity).nospace() << "No notification should be sent for activity with id=" << activity._id << " objectType=" << activity._objectType;
-            return false;
-        }
-
-        if (_notifiedNotifications.contains(activity._id)) {
-            qCInfo(lcActivity).nospace() << "Ignoring already notified activity with id=" << activity._id << " objectType=" << activity._objectType;
-            return false;
-        }
-
-        return true;
-    });
-
-    if (toNotifyList.isEmpty()) {
-        return;
-    }
-
-    if (toNotifyList.size() == 1) {
-        const auto &activity = toNotifyList.constFirst();
-        if (activity._objectType == QStringLiteral("chat")) {
-            // Talk's "call" type is handled in slotBuildIncomingCallDialogs
-            showDesktopTalkNotification(activity);
-            return;
-        }
-
-        showDesktopNotification(activity);
-        return;
-    }
-
-    showDesktopNotification(toNotifyList);
-}
-
-void User::slotNotificationFetchFinished()
-{
-    _isNotificationFetchRunning = false;
-}
-
-void User::slotBuildIncomingCallDialogs(const ActivityList &list)
-{
-    const ConfigFile cfg;
-    const auto userStatus = _account->account()->userStatusConnector()->userStatus().state();
-    if (userStatus == OCC::UserStatus::OnlineStatus::DoNotDisturb ||
-            !cfg.optionalServerNotifications() ||
-            !cfg.showCallNotifications() ||
-            !isDesktopNotificationsAllowed()) {
-        return;
-    }
-
-    const auto systray = Systray::instance();
-    if (!systray) {
-        qCWarning(lcActivity) << "No systray instance available, can not notify about new calls";
-        return;
-    }
-
-    for (const auto &activity : list) {
-        if (!activity._shouldNotify) {
-            qCDebug(lcActivity).nospace() << "No notification should be sent for activity with id=" << activity._id << " objectType=" << activity._objectType;
-            continue;
-        }
-
-        systray->createCallDialog(activity, _account);
-    }
-}
-
-void User::setNotificationRefreshInterval(std::chrono::milliseconds interval)
+void User::setRefreshInterval(std::chrono::milliseconds interval)
 {
     if (!checkPushNotificationsAreReady()) {
-        qCDebug(lcActivity) << "Starting Notification refresh timer with " << interval.count() / 1000 << " sec interval";
-        _notificationCheckTimer.start(interval.count());
+        qCDebug(lcActivity) << "Starting account refresh timer with" << interval.count() / 1000 << "sec interval";
+        _refreshTimer.start(interval.count());
     }
 }
 
@@ -807,9 +589,9 @@ void User::slotPushNotificationsReady()
 {
     qCInfo(lcActivity) << "Push notifications are ready.";
 
-    if (_notificationCheckTimer.isActive()) {
+    if (_refreshTimer.isActive()) {
         // as we are now able to use push notifications - let's stop the polling timer
-        _notificationCheckTimer.stop();
+        _refreshTimer.stop();
     }
 
     connectPushNotifications();
@@ -817,7 +599,8 @@ void User::slotPushNotificationsReady()
 
 void User::slotDisconnectPushNotifications()
 {
-    disconnect(_account->account()->pushNotifications(), &PushNotifications::notificationsChanged, this, &User::slotReceivedPushNotification);
+    disconnect(_account->account()->pushNotifications(), &PushNotifications::notificationsChanged,
+        _notificationManager, &NotificationManager::handlePushNotification);
     disconnect(_account->account()->pushNotifications(), &PushNotifications::activitiesChanged, this, &User::slotReceivedPushActivity);
     disconnect(_account->account()->pushNotifications(), &PushNotifications::filesChanged, this, &User::slotReceivedPushFilesChanges);
     disconnect(_account->account()->pushNotifications(), &PushNotifications::fileIdsChanged, this, &User::slotReceivedPushFileIdsChanges);
@@ -825,7 +608,7 @@ void User::slotDisconnectPushNotifications()
     disconnect(_account->account().data(), &Account::pushNotificationsDisabled, this, &User::slotDisconnectPushNotifications);
 
     // connection to WebSocket may have dropped or an error occurred, so we need to bring back the polling until we have re-established the connection
-    setNotificationRefreshInterval(ConfigFile().notificationRefreshInterval());
+    setRefreshInterval(ConfigFile().notificationRefreshInterval());
 }
 
 void User::slotReceivedPushFilesChanges(Account *account)
@@ -862,13 +645,6 @@ void User::slotReceivedPushFileIdsChanges(Account *account, const QList<qint64> 
         fileProvider->domainManager()->slotHandleFileIdsChanged(account, fileIds);
     }
 #endif
-}
-
-void User::slotReceivedPushNotification(Account *account)
-{
-    if (account->id() == _account->account()->id()) {
-        slotRefreshNotifications();
-    }
 }
 
 void User::slotReceivedPushActivity(Account *account)
@@ -1096,7 +872,8 @@ void User::connectPushNotifications() const
 {
     connect(_account->account().data(), &Account::pushNotificationsDisabled, this, &User::slotDisconnectPushNotifications, Qt::UniqueConnection);
 
-    connect(_account->account()->pushNotifications(), &PushNotifications::notificationsChanged, this, &User::slotReceivedPushNotification, Qt::UniqueConnection);
+    connect(_account->account()->pushNotifications(), &PushNotifications::notificationsChanged,
+        _notificationManager, &NotificationManager::handlePushNotification, Qt::UniqueConnection);
     connect(_account->account()->pushNotifications(), &PushNotifications::activitiesChanged, this, &User::slotReceivedPushActivity, Qt::UniqueConnection);
     connect(_account->account()->pushNotifications(), &PushNotifications::filesChanged, this, &User::slotReceivedPushFilesChanges, Qt::UniqueConnection);
     connect(_account->account()->pushNotifications(), &PushNotifications::fileIdsChanged, this, &User::slotReceivedPushFileIdsChanges, Qt::UniqueConnection);
@@ -1124,7 +901,7 @@ void User::slotRefreshImmediately() {
     if (_account.data() && _account.data()->isConnected() && Systray::instance()->isActivitySurfaceVisible()) {
         slotRefreshActivities();
     }
-    slotRefreshNotifications();
+    _notificationManager->refresh();
 }
 
 void User::slotRefresh()
@@ -1151,7 +928,7 @@ void User::slotRefresh()
     }
     if (_account.data() && _account.data()->isConnected()) {
         slotRefreshActivities();
-        slotRefreshNotifications();
+        _notificationManager->refresh();
         timer.start();
     }
 }
@@ -1197,115 +974,11 @@ void User::slotRefreshUserStatus()
     }
 }
 
-void User::slotRefreshNotifications()
-{
-    static auto debugCallNotificationShown = false;
-    if (!debugCallNotificationShown) {
-        debugCallNotificationShown = showDebugCallNotification(_account);
-    }
-
-    // start a server notification handler if no notification requests
-    // are running
-    if (_notificationRequestsRunning == 0) {
-        if (_isNotificationFetchRunning) {
-            qCDebug(lcActivity) << "Notification fetch is already running.";
-            return;
-        }
-        auto *snh = new ServerNotificationHandler(_account.data());
-        connect(snh, &ServerNotificationHandler::newNotificationList,
-            this, &User::slotBuildNotificationDisplay);
-        connect(snh, &ServerNotificationHandler::newIncomingCallsList,
-            this, &User::slotBuildIncomingCallDialogs);
-        connect(snh, &ServerNotificationHandler::jobFinished,
-            this, &User::slotNotificationFetchFinished);
-        _isNotificationFetchRunning = snh->startFetchNotifications();
-    } else {
-        qCWarning(lcActivity) << "Notification request counter not zero.";
-    }
-}
-
 void User::slotRebuildNavigationAppList()
 {
     emit featuredAppChanged();
     // Rebuild App list
     UserAppsModel::instance()->buildAppList();
-}
-
-void User::slotNotificationRequestFinished(int statusCode)
-{
-    int row = sender()->property("activityRow").toInt();
-
-    // the ocs API returns stat code 100 or 200 or 202 inside the xml if it succeeded.
-    if (statusCode != OCS_SUCCESS_STATUS_CODE
-        && statusCode != OCS_SUCCESS_STATUS_CODE_V2
-        && statusCode != OCS_ACCEPTED_STATUS_CODE) {
-        qCWarning(lcActivity) << "Notification Request to Server failed, leave notification visible.";
-    } else {
-        // to do use the model to rebuild the list or remove the item
-        qCWarning(lcActivity) << "Notification Request to Server succeeded, rebuilding list.";
-        _activityModel->removeActivityFromActivityList(row);
-    }
-}
-
-void User::slotEndNotificationRequest(int replyCode)
-{
-    _notificationRequestsRunning--;
-    slotNotificationRequestFinished(replyCode);
-}
-
-void User::slotSendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row)
-{
-    qCInfo(lcActivity) << "Server Notification Request " << verb << link << "on account" << accountName;
-
-    const QStringList validVerbs = QStringList() << "GET"
-                                                 << "PUT"
-                                                 << "POST"
-                                                 << "DELETE";
-
-    if (validVerbs.contains(verb)) {
-        AccountStatePtr acc = AccountManager::instance()->account(accountName);
-        if (acc) {
-            auto *job = new NotificationConfirmJob(acc->account());
-            QUrl l(link);
-            job->setLinkAndVerb(l, verb);
-            job->setProperty("activityRow", QVariant::fromValue(row));
-            connect(job, &AbstractNetworkJob::networkError,
-                this, &User::slotNotifyNetworkError);
-            connect(job, &NotificationConfirmJob::jobFinished,
-                this, &User::slotNotifyServerFinished);
-            job->start();
-
-            // count the number of running notification requests. If this member var
-            // is larger than zero, no new fetching of notifications is started
-            _notificationRequestsRunning++;
-        }
-    } else {
-        qCWarning(lcActivity) << "Notification Links: Invalid verb:" << verb;
-    }
-}
-
-void User::slotNotifyNetworkError(QNetworkReply *reply)
-{
-    auto *job = qobject_cast<NotificationConfirmJob *>(sender());
-    if (!job) {
-        return;
-    }
-
-    int resultCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-    slotEndNotificationRequest(resultCode);
-    qCWarning(lcActivity) << "Server notify job failed with code " << resultCode;
-}
-
-void User::slotNotifyServerFinished(const QString &reply, int replyCode)
-{
-    auto *job = qobject_cast<NotificationConfirmJob *>(sender());
-    if (!job) {
-        return;
-    }
-
-    slotEndNotificationRequest(replyCode);
-    qCInfo(lcActivity) << "Server Notification reply code" << replyCode << reply;
 }
 
 void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
@@ -1465,7 +1138,7 @@ void User::slotAddErrorToGui(const QString &folderAlias, const SyncFileItem::Sta
 
         _activityModel->addErrorToActivityList(activity, errorType);
 
-        showDesktopNotification(activity);
+        _notificationManager->showNotification(activity);
 
         if (!_expiredActivitiesCheckTimer.isActive()) {
             _expiredActivitiesCheckTimer.start(expiredActivitiesCheckIntervalMsecs);
@@ -1475,12 +1148,7 @@ void User::slotAddErrorToGui(const QString &folderAlias, const SyncFileItem::Sta
 
 void User::slotAddNotification(const Folder *folder, const Activity &activity)
 {
-    if (!isActivityOfCurrentAccount(folder) || _notifiedNotifications.contains(activity._id)) {
-        return;
-    }
-
-    _notifiedNotifications.insert(activity._id);
-    _activityModel->addNotificationToActivityList(activity);
+    _notificationManager->addNotification(folder, activity);
 }
 
 bool User::isActivityOfCurrentAccount(const Folder *folder) const
@@ -1593,7 +1261,7 @@ void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr 
 
                 activity._links = {buttonActivityLink};
 
-                showDesktopNotification(item->_file, activity._subject, activity._id);
+                _notificationManager->showNotification(item->_file, activity._subject, activity._id);
             } else if (item->_status == SyncFileItem::Conflict || item->_status == SyncFileItem::FileNameClash) {
                 ActivityLink buttonActivityLink;
                 buttonActivityLink._label = tr("Resolve conflict");
@@ -1664,6 +1332,11 @@ Folder *User::getFolder() const
 ActivityListModel *User::getActivityModel()
 {
     return _activityModel;
+}
+
+NotificationManager *User::notificationManager() const
+{
+    return _notificationManager;
 }
 
 QVariantList User::recentActivities() const
@@ -2019,11 +1692,7 @@ void User::removeAccount() const
 
 void User::slotSendReplyMessage(const int activityIndex, const QString &token, const QString &message, const QString &replyTo)
 {
-    QPointer<TalkReply> talkReply = new TalkReply(_account.data(), this);
-    talkReply->sendReplyMessage(token, message, replyTo);
-    connect(talkReply, &TalkReply::replyMessageSent, this, [&, activityIndex](const QString &message) {
-        _activityModel->setReplyMessageSent(activityIndex, message);
-    });
+    _notificationManager->sendTalkReply(activityIndex, token, message, replyTo);
 }
 
 void User::submitAssistantQuestion(const QString &question)
@@ -2371,7 +2040,7 @@ void User::slotQuotaChanged(const int64_t &usedBytes, const int64_t &availableBy
         _lastQuotaActivity._subject = tr("Quota Warning - %1 percent or more storage in use").arg(QString::number(thresholdPassed));
         _lastQuotaActivity._accName = account()->displayName();
         _lastQuotaActivity._id = qHash(QDateTime::currentMSecsSinceEpoch());
-        showDesktopNotification(_lastQuotaActivity);
+        _notificationManager->showNotification(_lastQuotaActivity);
         _activityModel->addNotificationToActivityList(_lastQuotaActivity);
     }
     _lastQuotaPercent = percentInt;
@@ -2679,7 +2348,7 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
         }
 
         ConfigFile cfg;
-        u->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
+        u->setRefreshInterval(cfg.notificationRefreshInterval());
     }
 
     updateSyncErrorUsers();
@@ -2975,24 +2644,6 @@ void UserModel::fetchActivityPreview(const int id)
     }
 
     _users[id]->slotRefreshActivityPreview();
-}
-
-void UserModel::dismissNotification(const int id, const int activityIndex)
-{
-    if (id < 0 || id >= _users.size()) {
-        return;
-    }
-
-    _users[id]->getActivityModel()->slotTriggerDismiss(activityIndex);
-}
-
-void UserModel::triggerNotificationAction(const int id, const int activityIndex, const int actionIndex)
-{
-    if (id < 0 || id >= _users.size()) {
-        return;
-    }
-
-    _users[id]->getActivityModel()->slotTriggerAction(activityIndex, actionIndex);
 }
 
 AccountAppList UserModel::appList() const

@@ -75,6 +75,7 @@ OCC::Activity Activity::fromActivityJson(const QJsonObject &json, const AccountP
     const auto activityUser = json.value("user"_L1).toString();
 
     Activity activity;
+    activity._app = json.value("app"_L1).toString();
     activity._type = Activity::ActivityType;
     activity._objectType = json.value("object_type"_L1).toString();
     activity._objectId = json.value("object_id"_L1).toInt();
@@ -320,6 +321,23 @@ QVariantList Activity::notificationPreviewActions() const
     return actions;
 }
 
+Activity::PreviewText Activity::notificationPreviewText() const
+{
+    auto title = compactNotificationTitle();
+    auto subtitle = QString{};
+
+    if (_objectType == QStringLiteral("chat")
+        && _subjectRichParameters.contains(QStringLiteral("user"))) {
+        const auto user = _subjectRichParameters.value(QStringLiteral("user")).value<Activity::RichSubjectParameter>();
+        if (!user.name.isEmpty() && !_message.isEmpty()) {
+            title = user.name;
+            subtitle = _message;
+        }
+    }
+
+    return {title, subtitle};
+}
+
 QString Activity::activitySubjectText() const
 {
     if (!_subjectDisplay.isEmpty()) {
@@ -404,7 +422,7 @@ QString Activity::recentActivitySystemIconName() const
     return QStringLiteral("doc");
 }
 
-Activity::RecentActivityPreviewText Activity::recentActivityPreviewText() const
+Activity::PreviewText Activity::recentActivityPreviewText() const
 {
     auto title = QString{};
     auto subtitle = QString{};
