@@ -1154,11 +1154,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             .allowsReparenting
         ]
 
-        // Excluding from sync is macOS-specific and always added if available
-        var platformExpected = expected
-        platformExpected.insert(.allowsExcludingFromSync)
-
-        XCTAssertEqual(item.capabilities, platformExpected)
+        XCTAssertEqual(item.capabilities, expected)
     }
 
     func testCapabilitiesFullPermissionsFolder() {
@@ -1187,10 +1183,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             .allowsAddingSubItems
         ]
 
-        var platformExpected = expected
-        platformExpected.insert(.allowsExcludingFromSync)
-
-        XCTAssertEqual(item.capabilities, platformExpected)
+        XCTAssertEqual(item.capabilities, expected)
     }
 
     func testCapabilitiesNoPermissions() {
@@ -1208,15 +1201,13 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock()
         )
 
-        // Trashing and Excluding from Sync might still be allowed as they don't depend on the
-        // permission string
-        var expected: NSFileProviderItemCapabilities = [.allowsTrashing]
-        expected.insert(.allowsExcludingFromSync)
+        // Trashing might still be allowed as it does not depend on the permission string
+        let expected: NSFileProviderItemCapabilities = [.allowsTrashing]
 
         XCTAssertEqual(item.capabilities, expected)
     }
 
-    func testCapabilitiesMacOSExclusion() {
+    func testDoesNotVendExcludingFromSync() {
         var metadata = SendableItemMetadata(
             ocId: "macos-exclusion", fileName: "file.txt", account: Self.account
         )
@@ -1232,9 +1223,13 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock()
         )
 
-        XCTAssertTrue(
+        // We deliberately do NOT vend `.allowsExcludingFromSync`. Finder's "Do not
+        // synchronize" arrives as an ordinary `deleteItem` that cannot be distinguished
+        // from a genuine delete, so honouring it would delete the item on the server and
+        // lose data. This guard keeps the capability from being silently re-added.
+        XCTAssertFalse(
             item.capabilities.contains(.allowsExcludingFromSync),
-            "Should allow excluding from sync on supported macOS versions."
+            "Item must not vend .allowsExcludingFromSync; see Item.capabilities for the rationale."
         )
     }
 
