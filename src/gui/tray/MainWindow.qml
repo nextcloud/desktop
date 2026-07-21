@@ -12,6 +12,7 @@ import Qt5Compat.GraphicalEffects
 import Qt.labs.platform as NativeDialogs
 
 import "../"
+import "../common/"
 import "../filedetails/"
 
 // Custom qml modules are in /theme (and included by resources.qrc)
@@ -463,7 +464,7 @@ ApplicationWindow {
             anchors.bottomMargin: Style.trayHorizontalMargin
             spacing: Style.extraSmallSpacing
 
-            TextField {
+            NCContextMenuTextField {
                 id: assistantQuestionInput
                 Layout.fillWidth: true
                 Layout.minimumWidth: 0
