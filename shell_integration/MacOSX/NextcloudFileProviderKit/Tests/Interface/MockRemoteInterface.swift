@@ -591,14 +591,6 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// Use this to simulate server-side upload rejections (e.g. 404 path gone, 507 quota).
     public var uploadError: NKError?
 
-    /// When non-nil, the upload mock reports this as the stored size in its response, regardless
-    /// of the bytes actually written to the mock tree. Use this to simulate a torn/truncated
-    /// transfer (the server stores fewer/more bytes than the client sent) so the upload integrity
-    /// check in the production code can be exercised. The chunked upload path delegates to this
-    /// same `upload(...)`, so the override applies to both the single-shot and chunked paths.
-    /// `nil` echoes the real stored size.
-    public var uploadResponseSizeOverride: Int64?
-
     /// Records the `If-Match` header the most recent upload call carried (nil if none).
     /// Lets tests assert the optimistic-concurrency precondition was sent, and with
     /// which etag. Captured before any injected `uploadError` short-circuit.
@@ -851,7 +843,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             item.identifier,
             item.versionIdentifier,
             responseDate,
-            uploadResponseSizeOverride ?? item.size,
+            item.size,
             nil,
             .success
         )
