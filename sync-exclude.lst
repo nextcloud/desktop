@@ -17,6 +17,10 @@
 *.dwl
 *.dwl2
 
+# Affinity by Canva lock files (~lock~ suffix) created when opening a document.
+# e.g., Screenshot.afphoto~lock~ guards Screenshot.afphoto.
+*~lock~
+
 ]*.~*
 ]Icon\r*
 ].DS_Store
