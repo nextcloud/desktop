@@ -32,8 +32,8 @@
 #include "filedetails/shareemodel.h"
 #include "filedetails/sharemodel.h"
 #include "filedetails/sortedsharemodel.h"
-#include "tray/sortedactivitylistmodel.h"
-#include "tray/syncstatussummary.h"
+#include "activity/sortedactivitylistmodel.h"
+#include "activity/syncstatussummary.h"
 #include "tray/trayaccountappsmodel.h"
 #include "search/unifiedsearchresultslistmodel.h"
 #include "integration/fileactionsmodel.h"
@@ -176,6 +176,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterUncreatableType<TypedWithLabelIdGovernanceNetworkJob>("com.nextcloud.desktopclient", 1, 0, "TypedWithLabelIdGovernanceNetworkJob", "base abstract type for governance labels");
 
     qRegisterMetaType<ActivityListModel *>("ActivityListModel*");
+    qRegisterMetaType<SyncStatusSummary *>("SyncStatusSummary*");
     qRegisterMetaType<UnifiedSearchResultsListModel *>("UnifiedSearchResultsListModel*");
     qRegisterMetaType<UserStatus>("UserStatus");
     qRegisterMetaType<SharePtr>("SharePtr");

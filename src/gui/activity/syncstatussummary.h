@@ -17,8 +17,6 @@
 
 namespace OCC {
 
-class User;
-
 class SyncStatusSummary : public QObject
 {
     Q_OBJECT
@@ -42,6 +40,13 @@ public:
     [[nodiscard]] qint64 totalFiles() const;
     [[nodiscard]] bool needsSandboxReapproval() const;
 
+    /**
+     * @brief Loads the sync status for an account.
+     *
+     * Does nothing when @p accountState is null.
+     */
+    void loadForAccount(const OCC::AccountStatePtr &accountState);
+
 signals:
     void syncProgressChanged();
     void syncIconChanged();
@@ -53,7 +58,6 @@ signals:
 
 public slots:
     void load();
-    void loadForUser(OCC::User *currentUser);
 
 private:
     void connectToFoldersProgress(const Folder::Map &map);

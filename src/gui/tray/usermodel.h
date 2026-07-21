@@ -20,8 +20,8 @@
 
 #include "accountfwd.h"
 #include "accountmanager.h"
-#include "activitydata.h"
-#include "activitylistmodel.h"
+#include "activity/activitydata.h"
+#include "activity/activitylistmodel.h"
 #include "folderman.h"
 #include "userinfo.h"
 #include "userstatusconnector.h"
@@ -103,6 +103,9 @@ public:
     void setCurrentUser(const bool &isCurrent);
     [[nodiscard]] Folder *getFolder() const;
     ActivityListModel *getActivityModel();
+
+    /** @brief Requests a refresh of this user's activities. */
+    void refreshActivities();
     void openLocalFolder() const;
 #ifdef BUILD_FILE_PROVIDER_MODULE
     void openFileProviderDomain() const;
@@ -169,7 +172,6 @@ signals:
     void headerTextColorChanged();
     void accentColorChanged();
     void syncStatusChanged();
-    void sendReplyMessage(const int activityIndex, const QString &conversationToken, const QString &message, const QString &replyTo);
     void groupFoldersChanged();
     void assistantStateChanged();
     void assistantQuestionChanged();
@@ -201,7 +203,6 @@ public slots:
     void slotRefreshImmediately();
     void setNotificationRefreshInterval(std::chrono::milliseconds interval);
     void slotRebuildNavigationAppList();
-    void slotSendReplyMessage(const int activityIndex, const QString &conversationToken, const QString &message, const QString &replyTo);
     void forceSyncNow() const;
     void openServer() const;
     void slotAccountCapabilitiesChangedRefreshGroupFolders();
@@ -409,7 +410,6 @@ signals:
 
 public slots:
     void fetchCurrentActivityModel();
-    Q_INVOKABLE void fetchActivityModel(int id);
     Q_INVOKABLE void fetchActivityPreview(int id);
     Q_INVOKABLE void dismissNotification(int id, int activityIndex);
     Q_INVOKABLE void triggerNotificationAction(int id, int activityIndex, int actionIndex);
