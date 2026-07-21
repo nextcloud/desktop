@@ -40,6 +40,9 @@ let autoCADDocumentExtension = "dwg"
 /// recovered by stripping the trailing `~lock~` suffix.
 let affinityLockFileSuffix = "~lock~"
 
+/// Document extensions guarded by Affinity lock files.
+let affinityDocumentExtensions: Set<String> = ["afphoto", "afdesign", "afpub", "af"]
+
 ///
 /// Determine whether the given filename is a lock file as created by Adobe applications like InDesign or Premiere Pro.
 ///
@@ -278,6 +281,24 @@ func autoCADSiblingLockFileExists(lockFilename: String, parentServerUrl: String,
 }
 
 ///
+/// Resolve the document guarded by an Affinity lock file.
+///
+/// Affinity lock files use the pattern `<base>~lock~` (e.g., `Screenshot.af~lock~`).
+/// Strip the `~lock~` suffix to recover the guarded document name.
+///
+/// - Parameters:
+///     - lockFilename: The Affinity lock file name.
+///
+/// - Returns: The guarded document's file name, or `nil` if it is not an Affinity lock file.
+///
+func affinityLockFileTargetName(_ lockFilename: String) -> String? {
+    guard isAffinityLockFileName(lockFilename) else { return nil }
+    var documentName = lockFilename
+    documentName.removeLast(affinityLockFileSuffix.count)
+    return documentName.isEmpty ? nil : documentName
+}
+
+///
 /// Resolve the document guarded by a lock file, regardless of the application that created it.
 ///
 /// Office and LibreOffice lock file names fully encode the document name, so it is decoded
@@ -285,7 +306,8 @@ func autoCADSiblingLockFileExists(lockFilename: String, parentServerUrl: String,
 /// encode the base name, so the document is resolved by matching a sibling file via
 /// ``adobeLockFileTargetName(lockFilename:parentServerUrl:dbManager:)``. AutoCAD lock files
 /// share the document's base name, so the document is resolved by replacing the extension
-/// with `.dwg` via ``autoCADLockFileTargetName(_:)``.
+/// with `.dwg` via ``autoCADLockFileTargetName(_:)``. Affinity lock files use a `~lock~`
+/// suffix, so the document is resolved by stripping it via ``affinityLockFileTargetName(_:)``.
 ///
 /// - Parameters:
 ///     - lockFilename: The lock file name.
@@ -301,6 +323,10 @@ public func lockFileTargetName(forLockFileName lockFilename: String, parentServe
 
     if isAutoCADLockFileName(lockFilename) {
         return autoCADLockFileTargetName(lockFilename)
+    }
+
+    if isAffinityLockFileName(lockFilename) {
+        return affinityLockFileTargetName(lockFilename)
     }
 
     return originalFileName(fromLockFileName: lockFilename, dbManager: dbManager)
