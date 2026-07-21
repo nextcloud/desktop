@@ -469,6 +469,69 @@ void FileProviderSettingsController::setVfsEnabledForAccount(const QString &user
     });
 }
 
+void FileProviderSettingsController::resetVfsForAccount(const QString &userIdAtHost)
+{
+    // Reset only makes sense while the app-level mode is on: with it off there is no
+    // domain to reset and recreating one would contradict the disabled state.
+    if (!fileProviderModeEnabled()) {
+        qCWarning(lcFileProviderSettingsController)
+            << "File provider mode is disabled, ignoring reset request for" << userIdAtHost;
+        return;
+    }
+
+    // Same single-flight guard the other mutating paths use.
+    if (_isOperationInProgress) {
+        qCWarning(lcFileProviderSettingsController)
+            << "Operation already in progress, ignoring reset request";
+        return;
+    }
+
+    setOperationInProgress(true, tr("Resetting…"));
+
+    // Capture necessary data for the background operation
+    // We need to copy the QString to ensure it's valid in the block
+    const QString capturedUserIdAtHost = userIdAtHost;
+    auto *controller = this;
+
+    // NOTE: the worker still reaches into AccountManager (accountFromUserId /
+    // setFileProviderDomainIdentifier) from this background queue — the same pre-existing
+    // cross-thread access the single-account and bulk paths use; a full fix would marshal
+    // all AccountManager access back to the main thread.
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Disable: removes the domain preserving dirty user data (may async an
+        // "Unsynchronized Content" box + Finder reveal onto the main queue) and clears
+        // the stored identifier. NoAction if the account currently has no domain.
+        const auto disableAction = controller->d->setVfsEnabledForAccount(capturedUserIdAtHost, false);
+
+        // Enable: the identifier was just cleared, so addFileProviderDomain mints a
+        // fresh UUID — a genuinely clean domain — and persists it.
+        const auto enableAction = controller->d->setVfsEnabledForAccount(capturedUserIdAtHost, true);
+
+        const auto reAddFailed = enableAction == MacImplementation::VfsAccountsAction::VfsAccountsFailed;
+
+        // Dispatch back to main queue for UI updates and signal emissions
+        dispatch_async(dispatch_get_main_queue(), ^{
+            controller->setOperationInProgress(false, QString());
+
+            if (disableAction != MacImplementation::VfsAccountsAction::VfsAccountsNoAction
+                || enableAction != MacImplementation::VfsAccountsAction::VfsAccountsNoAction) {
+                emit controller->vfsEnabledForAccountChanged(capturedUserIdAtHost);
+            }
+
+            if (reAddFailed) {
+                qCWarning(lcFileProviderSettingsController)
+                    << "Failed to re-create file provider domain after reset for" << capturedUserIdAtHost;
+                QMessageBox::warning(nullptr,
+                                     tr("File Provider reset failed"),
+                                     tr("The File Provider domain for this account could not be re-created. "
+                                        "File Provider is now turned off for this account; it will be set "
+                                        "up again the next time %1 starts.")
+                                         .arg(Theme::instance()->appNameGUI()));
+            }
+        });
+    });
+}
+
 bool FileProviderSettingsController::fileProviderModeEnabled() const
 {
     return ConfigFile().macFileProviderModeEnabled();
