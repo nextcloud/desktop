@@ -1,5 +1,5 @@
 {
-  "originHash" : "7cb1f4471610dcada5d7746883ed0a21f1993bafabc186c4814d4e3be4fcdfb5",
+  "originHash" : "364df7982426f3d9fca962e82747e58032ff2bac0cb8e67379a1cb30ef1fea9c",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "7595cbcf59809f9977c5f6378500de2ad73b7ddb",
         "version" : "5.12.0"
+      }
+    },
+    {
+      "identity" : "codescanner",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/twostraws/CodeScanner.git",
+      "state" : {
+        "revision" : "5e886430238944c7200fc9e10dbf2d9550dba865",
+        "version" : "2.5.2"
       }
     },
     {
@@ -24,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/nextcloud/NextcloudKit",
       "state" : {
-        "revision" : "ef7b20a5dab6061d4139f943e824981369ef949e",
-        "version" : "7.3.3"
+        "revision" : "71fe462e9bc4620325f4f12656f54849e2316e95",
+        "version" : "7.4.0"
       }
     },
     {
@@ -33,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/realm/realm-core.git",
       "state" : {
-        "revision" : "4cc46f8607516226e5465062fdacd088fbd94552",
-        "version" : "20.1.4"
+        "revision" : "b4192c46305570577c4d08df790fddec5ab3aa04",
+        "version" : "20.1.5"
       }
     },
     {
@@ -42,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/realm/realm-swift.git",
       "state" : {
-        "revision" : "600e187711e5fa4e8e2c0429cacee27e8e44f112",
-        "version" : "20.0.4"
+        "revision" : "ca03df491ec5e4bb8af0bca1e9957d08c10ec2da",
+        "version" : "20.0.5"
       }
     },
     {
@@ -69,8 +78,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/nicklockwood/SwiftFormat",
       "state" : {
-        "revision" : "a5fa7a6a57abeb834df1b3fa43ea9133137d5ade",
-        "version" : "0.61.1"
+        "revision" : "2226e9d89bf05a604cc985bab3dccb44ff7c8ee3",
+        "version" : "0.62.1"
       }
     },
     {
