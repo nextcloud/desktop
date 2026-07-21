@@ -17,6 +17,7 @@
 #include "caseclashfilenamedialog.h"
 #include "activitydata.h"
 #include "systray.h"
+#include "talkreply.h"
 #include "common/utility.h"
 
 #include <QAbstractListModel>
@@ -118,6 +119,19 @@ void ActivityListModel::setAccountState(AccountState *state)
 void ActivityListModel::setCurrentItem(const int currentItem)
 {
     _currentItem = currentItem;
+}
+
+void ActivityListModel::sendReplyMessage(const int activityIndex, const QString &conversationToken, const QString &message, const QString &replyTo)
+{
+    if (!_accountState || conversationToken.isEmpty() || message.isEmpty()) {
+        return;
+    }
+
+    auto *const talkReply = new TalkReply(_accountState, this);
+    connect(talkReply, &TalkReply::replyMessageSent, this, [this, activityIndex](const QString &replyMessage) {
+        setReplyMessageSent(activityIndex, replyMessage);
+    });
+    talkReply->sendReplyMessage(conversationToken, message, replyTo);
 }
 
 void ActivityListModel::setAndRefreshCurrentlyFetching(bool value)

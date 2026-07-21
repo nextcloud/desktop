@@ -124,6 +124,14 @@ public slots:
     void slotTriggerAction(const int activityIndex, const int actionIndex);
     void slotTriggerDismiss(const int activityIndex);
 
+    /**
+     * @brief Sends a Talk reply for an activity.
+     *
+     * Does nothing when no account is set or when @p conversationToken or @p message is empty.
+     * @p replyTo is passed to Talk as the reply target; an empty value is passed unchanged.
+     */
+    Q_INVOKABLE void sendReplyMessage(const int activityIndex, const QString &conversationToken, const QString &message, const QString &replyTo);
+
     void addNotificationToActivityList(const OCC::Activity &activity);
     void addErrorToActivityList(const OCC::Activity &activity, const OCC::ActivityListModel::ErrorType type);
     void addSyncFileItemToActivityList(const OCC::Activity &activity);

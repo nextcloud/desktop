@@ -8,15 +8,16 @@ import QtQuick.Controls
 
 import Style
 import com.nextcloud.desktopclient as NC
+import "../../tray"
 
 ScrollView {
     id: controlRoot
     property alias model: sortedActivityList.sourceModel
-    property var currentUser: NC.UserModel.currentUser
     property alias count: activityList.count
     property alias atYBeginning : activityList.atYBeginning
     property bool isFileActivityList: false
     property int iconSize: Style.trayListItemIconSize
+    property color accentColor: Style.accentColor
     property int delegateHorizontalPadding: 0
 
     property bool scrollingToTop: false
@@ -99,7 +100,7 @@ ScrollView {
             width: activityList.contentItem.width
 
             isFileActivityList: controlRoot.isFileActivityList
-            currentUser: controlRoot.currentUser
+            accentColor: controlRoot.accentColor
             activityModel: controlRoot.model
             iconSize: controlRoot.iconSize
             flickable: activityList

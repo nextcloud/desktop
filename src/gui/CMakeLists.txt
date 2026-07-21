@@ -231,24 +231,24 @@ set(client_SRCS
     governance/governancetypes.h
     tray/svgimageprovider.h
     tray/svgimageprovider.cpp
-    tray/syncstatussummary.h
-    tray/syncstatussummary.cpp
-    tray/activitydata.h
-    tray/activitydata.cpp
-    tray/activitylistmodel.h
-    tray/activitylistmodel.cpp
+    activity/syncstatussummary.h
+    activity/syncstatussummary.cpp
+    activity/activitydata.h
+    activity/activitydata.cpp
+    activity/activitylistmodel.h
+    activity/activitylistmodel.cpp
     tray/asyncimageresponse.cpp
     tray/trayimageprovider.cpp
     tray/trayaccountappsmodel.h
     tray/trayaccountappsmodel.cpp
     tray/usermodel.h
     tray/usermodel.cpp
-    tray/notificationhandler.h
-    tray/notificationhandler.cpp
-    tray/sortedactivitylistmodel.h
-    tray/sortedactivitylistmodel.cpp
+    activity/notificationhandler.h
+    activity/notificationhandler.cpp
+    activity/sortedactivitylistmodel.h
+    activity/sortedactivitylistmodel.cpp
     creds/credentialsfactory.h
-    tray/talkreply.cpp
+    activity/talkreply.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.h
     creds/httpcredentialsgui.cpp
