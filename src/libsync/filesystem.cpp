@@ -173,6 +173,8 @@ std::optional<QString> adobeLockFileTargetFilePath(const QString &lockFilePath)
     return std::nullopt;
 }
 
+
+constexpr std::array<std::string_view, 4> affinityDocumentExtensions = {"afphoto", "afdesign", "afpub", "af"};
 // iterates through the dirPath to find the matching fileName
 QString findMatchingUnlockedFileInDir(const QString &dirPath, const QString &lockFileName)
 {
@@ -252,6 +254,12 @@ bool FileSystem::isMatchingAdobeDocumentExtension(const QString &path)
     return std::ranges::any_of(adobeLockFileDocumentExtensions, [&extension](const auto &entry) {
         return std::ranges::any_of(entry.second, [&extension](const auto &documentExtension) { return documentExtension == extension; });
     });
+}
+
+bool FileSystem::isMatchingAffinityDocumentExtension(const QString &path)
+{
+    const auto extension = QFileInfo{path}.suffix().toLower().toStdString();
+    return std::ranges::any_of(affinityDocumentExtensions, [&extension](const auto &ext) { return ext == extension; });
 }
 
 FileSystem::FileLockingInfo FileSystem::lockFileTargetFilePath(const QString &lockFilePath, const QString &lockFileNamePattern)
