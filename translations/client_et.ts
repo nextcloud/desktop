@@ -584,12 +584,12 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="372"/>
+        <location filename="../src/libsync/filesystem.cpp" line="494"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>Viga „%1“ eemaldamisel: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="420"/>
+        <location filename="../src/libsync/filesystem.cpp" line="542"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>„%1“ kausta eemaldamine ei õnnestunud</translation>
     </message>
@@ -6778,7 +6778,7 @@ Veateade serveri päringuvastuses: %2</translation>
         <translation>Sünkroonitud: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="410"/>
+        <location filename="../src/libsync/filesystem.cpp" line="532"/>
         <source>Error deleting the file</source>
         <translation>Viga faili kustutamisel</translation>
     </message>
