@@ -142,6 +142,7 @@ private slots:
     void removeActionFromEncryptionMessage(const QString &actionId);
     void setEncryptionPanelVisible(bool visible);
     void updateSyncFoldersPanelVisibility();
+    void slotResetFileProviderDomain();
 
 private:
     bool event(QEvent *) override;

@@ -261,6 +261,14 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     connect(_ui->fileProviderConflictResolveButton, &QPushButton::clicked, this, [fpSettingsController] {
         fpSettingsController->performStartupReconciliation();
     });
+    connect(_ui->fileProviderResetButton, &QPushButton::clicked,
+            this, &AccountSettings::slotResetFileProviderDomain);
+    // Re-evaluate the maintenance row when this account's domain is (re)created/removed.
+    connect(fpSettingsController, &Mac::FileProviderSettingsController::vfsEnabledForAccountChanged,
+            this, &AccountSettings::updateSyncFoldersPanelVisibility);
+    // Block the reset while any File Provider operation (mode toggle, another reset) runs.
+    connect(fpSettingsController, &Mac::FileProviderSettingsController::operationInProgressChanged,
+            this, &AccountSettings::updateSyncFoldersPanelVisibility);
 #endif
     updateSyncFoldersPanelVisibility();
 
@@ -2014,6 +2022,16 @@ void AccountSettings::updateSyncFoldersPanelVisibility()
     _ui->syncFoldersPanel->setVisible(!fpModeOn || hasClassicFolders);
     _ui->fileProviderConflictBanner->setVisible(fpModeOn && hasClassicFolders);
 
+    // The maintenance row (Reset File Provider Domain) only makes sense once this account
+    // actually has a domain, i.e. File Provider mode is on and it is not stuck in the
+    // classic-folder conflict state above. Disable the button while any File Provider
+    // operation is running.
+    const auto userIdAtHost = _accountState->account()->userIdAtHostWithPort();
+    const auto fpController = Mac::FileProviderSettingsController::instance();
+    const auto domainReady = fpModeOn && fpController->vfsEnabledForAccount(userIdAtHost);
+    _ui->fileProviderMaintenancePanel->setVisible(domainReady);
+    _ui->fileProviderResetButton->setEnabled(domainReady && !fpController->isOperationInProgress());
+
     if (fpModeOn && hasClassicFolders && _ui->fileProviderConflictBannerIcon->pixmap().isNull()) {
         const auto iconSize = style()->pixelMetric(QStyle::PM_SmallIconSize, nullptr, this);
         const auto warningIcon = Theme::createColorAwareIcon(QStringLiteral(":/client/theme/black/warning.svg"));
@@ -2022,6 +2040,44 @@ void AccountSettings::updateSyncFoldersPanelVisibility()
 #else
     _ui->syncFoldersPanel->setVisible(true);
     _ui->fileProviderConflictBanner->setVisible(false);
+    _ui->fileProviderMaintenancePanel->setVisible(false);
+#endif
+}
+
+void AccountSettings::slotResetFileProviderDomain()
+{
+#if defined(BUILD_FILE_PROVIDER_MODULE)
+    const auto controller = Mac::FileProviderSettingsController::instance();
+    if (controller->isOperationInProgress()) {
+        return;
+    }
+
+    const auto prettyName = _accountState->account()->prettyName();
+
+    const auto text = tr("This resets the File Provider for %1 to its initial state. Use it "
+                         "when this account's files appear stuck, missing, or out of sync in Finder.")
+                          .arg(prettyName)
+        + QStringLiteral("\n\n")
+        + tr("The location will briefly disappear from and reappear in Finder. Any local "
+             "changes that have not been uploaded yet are preserved and revealed in a folder "
+             "in Finder.");
+
+    const auto messageBox = new QMessageBox(QMessageBox::Question,
+                                            tr("Reset File Provider Domain for this account?"),
+                                            text,
+                                            QMessageBox::NoButton,
+                                            this);
+    messageBox->setAttribute(Qt::WA_DeleteOnClose);
+    const auto resetButton = messageBox->addButton(tr("Reset File Provider Domain"), QMessageBox::AcceptRole);
+    const auto cancelButton = messageBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
+    messageBox->setDefaultButton(cancelButton);
+    connect(messageBox, &QMessageBox::finished, this, [this, messageBox, resetButton] {
+        if (messageBox->clickedButton() == resetButton) {
+            Mac::FileProviderSettingsController::instance()->resetVfsForAccount(
+                _accountState->account()->userIdAtHostWithPort());
+        }
+    });
+    messageBox->open();
 #endif
 }
 
