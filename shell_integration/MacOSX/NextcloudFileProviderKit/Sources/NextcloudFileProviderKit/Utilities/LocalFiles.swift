@@ -246,7 +246,7 @@ func autoCADSiblingLockFileExists(lockFilename: String, parentServerUrl: String,
             .where({ $0.serverUrl.equals(parentServerUrl) })
             .where({ $0.fileName.equals(siblingName) })
             .first,
-           !sibling.deleted
+            !sibling.deleted
         {
             return true
         }

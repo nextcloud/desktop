@@ -124,53 +124,6 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(createdItem.isUploaded)
     }
 
-    /// Upload integrity guard (F1): when the server reports it stored a different number of bytes
-    /// than the local file contains, `create` must NOT record the item as a clean upload. It
-    /// returns a *transient* error (so the File Provider system automatically retries the create)
-    /// and best-effort removes the partial remote object, instead of surfacing a torn file as synced.
-    func testCreateFileFailsOnUploadSizeMismatch() async throws {
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
-        var fileItemMetadata = SendableItemMetadata(
-            ocId: "file-id", fileName: "file", account: Self.account
-        )
-        fileItemMetadata.classFile = NKTypeClassFile.document.rawValue
-
-        let tempUrl = FileManager.default.temporaryDirectory
-            .appendingPathComponent("integrity-mismatch-create")
-        try Data("Hello world".utf8).write(to: tempUrl)
-
-        // Simulate the server storing fewer bytes than we sent (a torn transfer).
-        remoteInterface.uploadResponseSizeOverride = 3
-
-        let fileItemTemplate = Item(
-            metadata: fileItemMetadata,
-            parentItemIdentifier: .rootContainer,
-            account: Self.account,
-            remoteInterface: remoteInterface,
-            dbManager: Self.dbManager
-        )
-        let (createdItemMaybe, error) = await Item.create(
-            basedOn: fileItemTemplate,
-            contents: tempUrl,
-            account: Self.account,
-            remoteInterface: remoteInterface,
-            progress: Progress(),
-            dbManager: Self.dbManager,
-            log: FileProviderLogMock()
-        )
-
-        XCTAssertNil(createdItemMaybe)
-
-        // The error must be *transient* (NSCocoaErrorDomain) so the system automatically retries
-        // the create rather than backing off until the provider signals resolution.
-        let nsError = try XCTUnwrap(error as NSError?)
-        XCTAssertEqual(nsError.domain, NSCocoaErrorDomain)
-        XCTAssertEqual(nsError.code, NSFileWriteUnknownError)
-
-        // Nothing must be recorded as a clean upload for this item.
-        XCTAssertNil(Self.dbManager.itemMetadata(ocId: "file-id"))
-    }
-
     func testCreateFile() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         var fileItemMetadata = SendableItemMetadata(

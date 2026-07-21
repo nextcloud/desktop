@@ -63,7 +63,17 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             }
         }
 
-        capabilities.insert(.allowsExcludingFromSync)
+        // Intentionally NOT vending `.allowsExcludingFromSync`: Finder's "Do not
+        // synchronize" is delivered to the extension as an ordinary `deleteItem` call
+        // (the system force-downloads the item, then deletes it), and the framework gives
+        // no way to distinguish that from a genuine delete — `NSFileProviderDeleteItemOptions`
+        // has only `.recursive`, and `NSFileProviderRequest`'s actor flags are documented
+        // as invalid for the sync-up methods (createItem/modifyItem/deleteItem). As a
+        // result `Item.delete` would issue a real server-side DELETE and the file would
+        // disappear from the server and other devices. Do not re-add without a safe,
+        // provider-driven exclusion path (custom action → requestModificationOfFields →
+        // modifyItem returns `.excludedFromSync` → deleteItem recognizes the excluded item
+        // and skips the remote delete).
 
         return capabilities
     }

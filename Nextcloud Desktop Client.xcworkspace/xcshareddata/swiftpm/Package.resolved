@@ -1,5 +1,5 @@
 {
-  "originHash" : "c26c1a092746b0045e21925a0cab5d1826841e2d2331443fcb4eee281bc2ee1d",
+  "originHash" : "09a77c502e437790be000de1eb2b894b4b1d352b35dd71fb31e6522346845201",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/nextcloud/NextcloudKit",
       "state" : {
-        "revision" : "7d2d18a15cea4fd510ff9a81c73f7f17a3f7ba8b",
-        "version" : "7.3.5"
+        "revision" : "71fe462e9bc4620325f4f12656f54849e2316e95",
+        "version" : "7.4.0"
       }
     },
     {
@@ -78,8 +78,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/nicklockwood/SwiftFormat",
       "state" : {
-        "revision" : "a5fa7a6a57abeb834df1b3fa43ea9133137d5ade",
-        "version" : "0.61.1"
+        "revision" : "2226e9d89bf05a604cc985bab3dccb44ff7c8ee3",
+        "version" : "0.62.1"
       }
     },
     {

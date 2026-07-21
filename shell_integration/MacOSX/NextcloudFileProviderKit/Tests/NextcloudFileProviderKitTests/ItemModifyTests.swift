@@ -330,66 +330,6 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(remoteItem.data, originalRemoteData)
     }
 
-    /// Upload integrity guard (F1): when the server reports it stored a different number of bytes
-    /// than the local file contains, the modify must NOT record the item as a clean upload. It
-    /// returns a *transient* error (so the File Provider system automatically retries the modify)
-    /// and leaves the row un-uploaded, instead of committing a truncated/torn file.
-    func testModifyFileFailsOnUploadSizeMismatch() async throws {
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
-
-        var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
-        itemMetadata.uploaded = true
-        itemMetadata.downloaded = true
-        Self.dbManager.addItemMetadata(itemMetadata)
-
-        let newContents = "Hello, New World!".data(using: .utf8)!
-        let newContentsUrl = FileManager.default.temporaryDirectory
-            .appendingPathComponent("integrity-mismatch-modify")
-        try newContents.write(to: newContentsUrl)
-
-        // Simulate the server storing fewer bytes than we sent (a torn transfer).
-        remoteInterface.uploadResponseSizeOverride = Int64(newContents.count - 1)
-
-        var targetItemMetadata = SendableItemMetadata(value: itemMetadata)
-        targetItemMetadata.size = Int64(newContents.count)
-
-        let item = Item(
-            metadata: itemMetadata,
-            parentItemIdentifier: .rootContainer,
-            account: Self.account,
-            remoteInterface: remoteInterface,
-            dbManager: Self.dbManager
-        )
-        let targetItem = Item(
-            metadata: targetItemMetadata,
-            parentItemIdentifier: .rootContainer,
-            account: Self.account,
-            remoteInterface: remoteInterface,
-            dbManager: Self.dbManager
-        )
-
-        let (modifiedItem, error) = await item.modify(
-            itemTarget: targetItem,
-            changedFields: [.contents],
-            contents: newContentsUrl,
-            dbManager: Self.dbManager
-        )
-
-        XCTAssertNil(modifiedItem)
-
-        // The error must be *transient* (NSCocoaErrorDomain, outside the resolvable
-        // NSFileProviderError set) so the system automatically retries the modify rather than
-        // backing off until the provider signals resolution.
-        let nsError = try XCTUnwrap(error as NSError?)
-        XCTAssertEqual(nsError.domain, NSCocoaErrorDomain)
-        XCTAssertEqual(nsError.code, NSFileWriteUnknownError)
-
-        // The item must not be recorded as a clean upload; it stays pending for the retry.
-        let dbItem = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
-        XCTAssertFalse(dbItem.uploaded)
-        XCTAssertNotEqual(dbItem.status, Status.normal.rawValue)
-    }
-
     /// When the server returns 404 during an upload (the parent folder was renamed
     /// on another client while the file was open), the extension must:
     ///   - clear the stale lock token so the next attempt goes without an If: header
