@@ -67,6 +67,14 @@ public slots:
      */
     void setFileProviderModeEnabled(const bool enabled);
 
+    /**
+     * @brief Removes this account's File Provider domain (preserving unsynchronized
+     * local data, exactly like the disable path) and immediately re-creates a fresh
+     * domain with a clean state. Meant as a recovery action for a corrupted local
+     * state. No-op when the app-level File Provider mode is off.
+     */
+    void resetVfsForAccount(const QString &userIdAtHost);
+
 private:
     explicit FileProviderSettingsController(QObject *parent = nullptr);
 
