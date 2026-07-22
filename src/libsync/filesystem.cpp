@@ -291,7 +291,7 @@ FileSystem::FileLockingInfo FileSystem::lockFileTargetFilePath(const QString &lo
         if (!documentName.isEmpty()) {
             result.path = lockFileInfo.dir().absoluteFilePath(documentName);
             if (QFile::exists(result.path)) {
-                result.type = QFile::exists(lockFilePath) ? FileLockingInfo::Type::Locked : FileLockingInfo::Type::Unlocked;
+                result.type = lockFileInfo.exists() ? FileLockingInfo::Type::Locked : FileLockingInfo::Type::Unlocked;
             } else {
                 result.path.clear();
             }
