@@ -94,6 +94,12 @@
             "value" : "Os dados da conta não estão disponíveis, não é possível recarregar os dados!"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontodata är inte tillgängliga. Det går inte att läsa in data igen."
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -232,6 +238,12 @@
             "value" : "Permitir upload e edição"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tillåt uppladdning och redigering"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -356,6 +368,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Autenticando…"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autentiserar …"
           }
         },
         "tr" : {
@@ -524,6 +542,12 @@
             "value" : "Отменить"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avbryt"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -649,6 +673,12 @@
             "value" : "Ícone de cancelamento de criação"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikon för att avbryta skapande"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -766,6 +796,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Marca de verificação em um círculo"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bockmarkering i en cirkel"
           }
         },
         "sw" : {
@@ -900,6 +936,12 @@
             "value" : "Fechar"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stäng"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1026,6 +1068,12 @@
             "value" : "Comunicando com o servidor, trancando o arquivo…"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kommunicerar med servern och låser filen …"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1142,6 +1190,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Comunicando com o servidor, destrancando o arquivo…"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kommunicerar med servern och låser upp filen …"
           }
         },
         "sw" : {
@@ -1261,6 +1315,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Não foi possível obter as capacidades, pois a conta é inválida."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Det gick inte att hämta funktioner eftersom kontot är ogiltigt."
           }
         },
         "sw" : {
@@ -1388,6 +1448,12 @@
             "value" : "Não foi possível obter o identificador do item, não é possível adquirir compartilhamentos."
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Det gick inte att hämta objektets identifierare, så inga delningar kan hämtas."
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1513,6 +1579,12 @@
             "value" : "Não foi possível trancar item desconhecido…"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Det gick inte att låsa det okända objektet …"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1636,6 +1708,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Não foi possível recarregar os dados: %@, tentaremos novamente."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Det gick inte att läsa in data igen: %@. Ett nytt försök görs."
           }
         },
         "sw" : {
@@ -1770,6 +1848,12 @@
             "value" : "Criar novo compartilhamento"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skapa ny delning"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1820,6 +1904,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Löschen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Διαγραφή"
           }
         },
         "en" : {
@@ -1916,6 +2006,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Excluir"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta bort"
           }
         },
         "sw" : {
@@ -2049,6 +2145,12 @@
             "value" : "Ícone de exclusão da lixeira"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Papperskorgsikon för borttagning"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2095,6 +2197,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verwerfen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Απόρριψη"
           }
         },
         "en" : {
@@ -2185,6 +2293,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dispensar"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avfärda"
           }
         },
         "sw" : {
@@ -2312,6 +2426,12 @@
             "value" : "Símbolo de documento"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dokumentsymbol"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2430,6 +2550,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compartilhamento por e-mail"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-postdelning"
           }
         },
         "sw" : {
@@ -2557,6 +2683,12 @@
             "value" : "Compartilhamento por e-mail (%@)"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-postdelning (%@)"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2674,6 +2806,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ícone de compartilhamento por e-mail"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikon för e-postdelning"
           }
         },
         "sw" : {
@@ -2802,6 +2940,12 @@
             "value" : "Digite uma nova senha"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ange ett nytt lösenord"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2925,6 +3069,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Erro ao criar: %@"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fel vid skapande: %@"
           }
         },
         "sw" : {
@@ -3052,6 +3202,12 @@
             "value" : "Erro ao obter compartilhamentos: %@"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fel vid hämtning av delningar: %@"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3175,6 +3331,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Erro ao obter limites do servidor: %@"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fel vid hämtning av serverfunktioner: %@"
           }
         },
         "sw" : {
@@ -3309,6 +3471,12 @@
             "value" : "Data de expiração"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utgångsdatum"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3434,6 +3602,12 @@
             "value" : "Falha ao obter detalhes da Extensão Provedor de Arquivos. Tentando novamente."
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Det gick inte att hämta information från File Provider-tillägget. Försöker igen."
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3545,7 +3719,7 @@
         "lt_LT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Federuotas debesijos bendrinimas"
+            "value" : "Federacinis debesijos bendrinimas"
           }
         },
         "pl" : {
@@ -3558,6 +3732,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compartilhamento de nuvem federada"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Federerad molndelning"
           }
         },
         "tr" : {
@@ -3664,7 +3844,7 @@
         "lt_LT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Federuotas debesijos bendrinimas (%@)"
+            "value" : "Federacinis debesijos bendrinimas (%@)"
           }
         },
         "pl" : {
@@ -3677,6 +3857,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compartilhamento de nuvem federado (%@)"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Federerad molndelning (%@)"
           }
         },
         "sw" : {
@@ -3783,7 +3969,7 @@
         "lt_LT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Federuoto debesijos bendrinimo piktograma"
+            "value" : "Federacinio debesijos bendrinimo piktograma"
           }
         },
         "pl" : {
@@ -3796,6 +3982,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ícone de compartilhamento de nuvem federada"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikon för federerad molndelning"
           }
         },
         "sw" : {
@@ -3916,6 +4108,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Arquivo \"%@\" trancado!"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filen \"%@\" har låsts!"
           }
         },
         "sw" : {
@@ -4040,6 +4238,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Arquivo \"%@\" destrancado!"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filen \"%@\" har låsts upp!"
           }
         },
         "sw" : {
@@ -4168,6 +4372,12 @@
             "value" : "Liberar espaço"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frigör utrymme"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4292,6 +4502,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zdieľanie skupiny"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gruppdelning"
           }
         },
         "sw" : {
@@ -4425,6 +4641,12 @@
             "value" : "Compartilhamento de grupo (%@)"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gruppdelning (%@)"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4542,6 +4764,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ícone de compartilhamento de grupo"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikon för gruppdelning"
           }
         },
         "sw" : {
@@ -4676,6 +4904,12 @@
             "value" : "Ocultar download"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dölj hämtning"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4801,6 +5035,12 @@
             "value" : "Ícone de compartilhamento de link interno"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikon för intern länkdelning"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4918,6 +5158,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compartilhamento interno (requer acesso ao arquivo)"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intern delning (kräver åtkomst till filen)"
           }
         },
         "tr" : {
@@ -5038,6 +5284,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Última modificação: %@"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Senast ändrad: %@"
           }
         },
         "sw" : {
@@ -5172,6 +5424,12 @@
             "value" : "Trancar arquivo"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lås fil"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5283,6 +5541,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Trancando o arquivo \"%@\"…"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Låser filen \"%@\" …"
           }
         },
         "sw" : {
@@ -5402,6 +5666,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "A instância ou conta NextcloudKit não está disponível, não é possível obter compartilhamentos!"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NextcloudKit-instansen eller kontot är inte tillgängligt. Det går inte att hämta delningar."
           }
         },
         "sw" : {
@@ -5527,6 +5797,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sem URL do item, não é possível recarregar os dados!"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Objektets URL saknas. Det går inte att läsa in data igen."
           }
         },
         "sw" : {
@@ -5655,6 +5931,12 @@
             "value" : "Nota para o destinatário"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meddelande till mottagaren"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5779,6 +6061,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proteção por senha"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lösenordsskydda"
           }
         },
         "sw" : {
@@ -5912,6 +6200,12 @@
             "value" : "Ícone de link público copiado"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikon för kopierad offentlig länk"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6036,6 +6330,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compartilhamento de link público"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delning med offentlig länk"
           }
         },
         "sw" : {
@@ -6163,6 +6463,12 @@
             "value" : "Ícone de compartilhamento de link público"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikon för delning med offentlig länk"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6209,6 +6515,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Speichern"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αποθήκευση"
           }
         },
         "en" : {
@@ -6299,6 +6611,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Salvar"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spara"
           }
         },
         "sw" : {
@@ -6426,6 +6744,12 @@
             "value" : "O servidor não suporta compartilhamentos."
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Servern stöder inte delningar."
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6478,6 +6802,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Freigabe-Label"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ετικέτα κοινής χρήσης"
           }
         },
         "en" : {
@@ -6556,6 +6886,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rótulo de compartilhamento"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Etikett för delning"
           }
         },
         "sw" : {
@@ -6690,6 +7026,12 @@
             "value" : "Opções de compartilhamento"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delningsalternativ"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6816,6 +7158,12 @@
             "value" : "Destinatário de compartilhamento"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mottagare"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6934,6 +7282,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compartilhamento de conversa do Talk"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delning med Talk-konversation"
           }
         },
         "sw" : {
@@ -7055,6 +7409,12 @@
             "value" : "Compartilhamento de conversa do Talk (%@)"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delning med Talk-konversation (%@)"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7166,6 +7526,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ícone de compartilhamento de conversa do Talk"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikon för delning med Talk-konversation"
           }
         },
         "tr" : {
@@ -7282,6 +7648,12 @@
             "value" : "Compartilhamento de equipe"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teamdelning"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7390,6 +7762,12 @@
             "value" : "Compartilhamento de equipe (%@)"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teamdelning (%@)"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7488,6 +7866,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ícone do compartilhamento de equipe"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikon för teamdelning"
           }
         },
         "tr" : {
@@ -7601,6 +7985,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Este arquivo não pode ser compartilhado."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filen kan inte delas."
           }
         },
         "sw" : {
@@ -7719,6 +8109,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Não é possível recuperar os metadados do arquivo…"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Det går inte att hämta filens metadata …"
           }
         },
         "sw" : {
@@ -7847,6 +8243,12 @@
             "value" : "Item desconhecido"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Okänt objekt"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7965,6 +8367,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Data de modificação desconhecida"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Okänt ändringsdatum"
           }
         },
         "sw" : {
@@ -8090,6 +8498,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compartilhamento desconhecido"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Okänd delning"
           }
         },
         "tr" : {
@@ -8218,6 +8632,12 @@
             "value" : "Tamanho desconhecido"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Okänd storlek"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8344,6 +8764,12 @@
             "value" : "Destrancar arquivo"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lås upp fil"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8464,6 +8890,12 @@
             "value" : "Destrancando o arquivo \"%@\"…"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Låser upp filen \"%@\" …"
+          }
+        },
         "sw" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8582,6 +9014,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compartilhamento de usuário"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Användardelning"
           }
         },
         "sw" : {
@@ -8709,6 +9147,12 @@
             "value" : "Compartilhamento do usuário (%@)"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Användardelning (%@)"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8820,6 +9264,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ícone de compartilhamento do usuário"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikon för användardelning"
           }
         },
         "tr" : {
