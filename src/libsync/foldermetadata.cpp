@@ -7,11 +7,12 @@
 #include "encryptedfoldermetadatahandler.h"
 #include "foldermetadata.h"
 #include "clientsideencryption.h"
-#include "clientsideencryptionjobs.h"
 #include <common/checksums.h>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QSslCertificate>
+
+using namespace Qt::StringLiterals;
 
 namespace OCC
 {
@@ -84,8 +85,11 @@ FolderMetadata::FolderMetadata(AccountPtr account,
     Q_ASSERT(!_remoteFolderRoot.isEmpty());
     _existingMetadataVersion = setupVersionFromExistingMetadata(metadata);
 
-    const auto doc = QJsonDocument::fromJson(metadata);
-    qCDebug(lcCseMetadata()) << doc.toJson(QJsonDocument::Compact);
+#if defined NEXTCLOUD_DEV && NEXTCLOUD_DEV && defined QT_DEBUG
+    const auto &doc = QJsonDocument::fromJson(metadata);
+    qCDebug(lcCseMetadata()) << "folder metadata";
+    qCDebug(lcCseMetadata()).noquote() << doc.toJson(QJsonDocument::Indented);
+#endif
     if (!_isRootEncryptedFolder
         && !rootEncryptedFolderInfo.keysSet()
         && !rootEncryptedFolderInfo.path.isEmpty()) {
@@ -114,7 +118,10 @@ void FolderMetadata::initMetadata()
 void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
 {
     const auto doc = QJsonDocument::fromJson(metadata);
-    qCDebug(lcCseMetadata()) << "Got existing metadata:" << doc.toJson(QJsonDocument::Compact);
+#if defined NEXTCLOUD_DEV && NEXTCLOUD_DEV && defined QT_DEBUG
+    qCDebug(lcCseMetadata()) << "Got existing metadata:";
+    qCDebug(lcCseMetadata()).noquote() << doc.toJson(QJsonDocument::Indented);
+#endif
 
     if (_existingMetadataVersion < MetadataVersion::Version1) {
         qCWarning(lcCseMetadata()) << "Could not setup metadata. Incorrect version" << _existingMetadataVersion;
@@ -144,11 +151,14 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
         return;
     }
 
+#if defined NEXTCLOUD_DEV && NEXTCLOUD_DEV && defined QT_DEBUG
     if (_isRootEncryptedFolder) {
         QJsonDocument debugHelper;
         debugHelper.setArray(folderUsers);
-        qCDebug(lcCseMetadata()) << "users: " << debugHelper.toJson(QJsonDocument::Compact);
+        qCDebug(lcCseMetadata()) << "users:";
+        qCDebug(lcCseMetadata()).noquote() << debugHelper.toJson(QJsonDocument::Indented);
     }
+#endif
 
     for (auto it = folderUsers.constBegin(); it != folderUsers.constEnd(); ++it) {
         const auto folderUserObject = it->toObject();
@@ -327,8 +337,9 @@ void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
     }
 
     const auto &files = metaDataObj[filesKey].toObject();
-    const auto &metadataKey = metaDataObj[metadataJsonKey].toObject()[metadataKeyKey].toString().toUtf8();
-    const auto &metadataKeyChecksum = metaDataObj[metadataJsonKey].toObject()["checksum"].toString().toUtf8();
+    const auto &metadataObject = metaDataObj[metadataJsonKey].toObject();
+    const auto &metadataKey = metadataObject[metadataKeyKey].toString().toUtf8();
+    const auto &metadataKeyChecksum = metadataObject["checksum"].toString().toUtf8();
 
     setFileDrop(metaDataObj.value("filedrop").toObject());
     // for unit tests
@@ -629,6 +640,9 @@ QByteArray FolderMetadata::encryptedMetadata()
             qCWarning(lcCseMetadata) << "Metadata generation failed for file" << it->encryptedFilename;
             return {};
         }
+#if defined NEXTCLOUD_DEV && NEXTCLOUD_DEV && defined QT_DEBUG
+        qCDebug(lcCseMetadata()) << file;
+#endif
         const auto isDirectory =
             it->mimetype.isEmpty() || it->mimetype == QByteArrayLiteral("inode/directory") || it->mimetype == QByteArrayLiteral("httpd/unix-directory");
         if (isDirectory) {
@@ -646,6 +660,9 @@ QByteArray FolderMetadata::encryptedMetadata()
     }
 
     QJsonObject cipherText = {{counterKey, QJsonValue::fromVariant(newCounter())}, {filesKey, files}, {foldersKey, folders}};
+#if defined NEXTCLOUD_DEV && NEXTCLOUD_DEV && defined QT_DEBUG
+    qCDebug(lcCseMetadata()) << cipherText;
+#endif
 
     const auto isChecksumsArrayValid = (!_isRootEncryptedFolder && keyChecksums.isEmpty()) || (_isRootEncryptedFolder && !keyChecksums.isEmpty());
     Q_ASSERT(isChecksumsArrayValid);
@@ -673,7 +690,7 @@ QByteArray FolderMetadata::encryptedMetadata()
 
     QJsonArray folderUsers;
     if (_isRootEncryptedFolder) {
-        for (const auto &folderUser : _folderUsers) {
+        for (const auto &folderUser : std::as_const(_folderUsers)) {
             const QJsonObject folderUserJson{{usersUserIdKey, folderUser.userId},
                                              {usersCertificateKey, QJsonValue::fromVariant(folderUser.certificatePem)},
                                              {usersEncryptedMetadataKey, QJsonValue::fromVariant(folderUser.encryptedMetadataKey)}};
@@ -941,14 +958,19 @@ const QByteArray FolderMetadata::binaryMetadataKeyForDecryption() const
     return _binaryMetadataKeyForDecryption;
 }
 
-void FolderMetadata::removeEncryptedFile(const EncryptedFile &f)
+bool FolderMetadata::removeEncryptedFile(const QString &originalFilename)
 {
+    auto result = false;
+
     for (int i = 0; i < _files.size(); ++i) {
-        if (_files.at(i).originalFilename == f.originalFilename) {
+        if (_files.at(i).originalFilename == originalFilename) {
             _files.removeAt(i);
+            result = true;
             break;
         }
     }
+
+    return result;
 }
 
 void FolderMetadata::removeAllEncryptedFiles()
