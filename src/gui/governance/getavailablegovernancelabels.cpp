@@ -48,7 +48,7 @@ void GetAvailableGovernanceLabels::start()
 
 QString GetAvailableGovernanceLabels::buildPath() const
 {
-    return u"/ocs/v2.php/apps/governance/%1/labels/%2/%3/%4/available"_s.arg(apiVersionAsString(), entityTypeAsString(), entityId(), labelTypeAsString(TypedGovernanceNetworkJob::Capitalization::LowCase));
+    return u"/ocs/v2.php/apps/governance/%1/labels/%2/%3/%4/available"_s.arg(apiVersionAsString(), entityTypeAsString(), integerEntityIdAsString(), labelTypeAsString(TypedGovernanceNetworkJob::Capitalization::LowCase));
 }
 
 } // namespace OCC

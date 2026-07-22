@@ -8,6 +8,7 @@
 
 #include "governancetypes.h"
 #include "governancelabelinfo.h"
+#include "accountfwd.h"
 
 #include <QAbstractListModel>
 #include <QQmlEngine>
@@ -22,11 +23,23 @@ class GovernanceLabelsListModel : public QAbstractListModel
     Q_OBJECT
     QML_ELEMENT
 
+    Q_PROPERTY(AccountPtr account READ account WRITE setAccount NOTIFY accountChanged FINAL)
+
+    Q_PROPERTY(Governance::ApiVersion apiVersion READ apiVersion WRITE setApiVersion NOTIFY apiVersionChanged FINAL)
+
+    Q_PROPERTY(Governance::EntityType entityType READ entityType WRITE setEntityType NOTIFY entityTypeChanged FINAL)
+
     Q_PROPERTY(Governance::LabelType labelType READ labelType WRITE setLabelType NOTIFY labelTypeChanged FINAL)
 
     Q_PROPERTY(QString entityId READ entityId WRITE setEntityId NOTIFY entityIdChanged FINAL)
 
     Q_PROPERTY(LabelBehavior labelBehavior READ labelBehavior WRITE setLabelBehavior NOTIFY labelBehaviorChanged FINAL)
+
+    Q_PROPERTY(bool busy READ busy NOTIFY busyChanged FINAL)
+
+    Q_PROPERTY(bool isEmpty READ isEmpty NOTIFY isEmptyChanged FINAL)
+
+    Q_PROPERTY(bool hasPendingChanges READ hasPendingChanges NOTIFY hasPendingChangesChanged FINAL)
 
 public:
     enum class LabelsListModelRoles {
@@ -50,6 +63,18 @@ public:
 
     explicit GovernanceLabelsListModel(QObject *parent = nullptr);
 
+    [[nodiscard]] AccountPtr account() const;
+
+    void setAccount(AccountPtr newAccount);
+
+    [[nodiscard]] Governance::ApiVersion apiVersion() const;
+
+    void setApiVersion(Governance::ApiVersion newApiVersion);
+
+    [[nodiscard]] Governance::EntityType entityType() const;
+
+    void setEntityType(Governance::EntityType newEntityType);
+
     [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
     [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
@@ -68,33 +93,47 @@ public:
 
     void setLabelBehavior(LabelBehavior newLabelBehavior);
 
+    [[nodiscard]] bool busy() const;
+
+    [[nodiscard]] bool isEmpty() const;
+
+    [[nodiscard]] bool hasPendingChanges() const;
+
 public Q_SLOTS:
     void setAvailableLabelsJsonData(const QJsonDocument &reply);
 
-    void setExistingLabelsJsonData(const QJsonDocument &reply);
-
-    void toggleLabel(int index, const QString &labelId);
-
-    void toggleLabel(const QString &labelId);
+    void toggleLabel(int row);
 
     void etagChanged();
 
-    void labelWasModified();
+    void labelsWereModified();
+
+    void reset();
+
+    void apply();
 
 Q_SIGNALS:
+    void accountChanged();
+
+    void apiVersionChanged();
+
+    void entityTypeChanged();
+
     void labelTypeChanged();
 
     void entityIdChanged();
 
     void refreshAvailableLabelsData(OCC::Governance::LabelType labelType, const QString &entityId);
 
-    void refreshExistingLabelsData(const QString &entityId);
-
-    void addLabel(const QString &labelId);
-
-    void removeLabel(const QString &labelId);
-
     void labelBehaviorChanged();
+
+    void displayError(const QString &errorMessage);
+
+    void busyChanged();
+
+    void isEmptyChanged();
+
+    void hasPendingChangesChanged();
 
 private:
     void emitRefreshData();
@@ -107,6 +146,20 @@ private:
 
     void refreshModel();
 
+    void addLabel(const QString &labelId);
+
+    void removeLabel(const QString &labelId);
+
+    void setHasPendingChanges(bool newValue);
+
+    [[nodiscard]] bool checksForPendingChanges() const;
+
+    AccountPtr _account;
+
+    Governance::ApiVersion _apiVersion = Governance::ApiVersion::Version_1;
+
+    Governance::EntityType _entityType = Governance::EntityType::Files;
+
     Governance::LabelType _labelType = Governance::LabelType::InvalidLabelType;
 
     QString _entityId;
@@ -117,7 +170,13 @@ private:
 
     QJsonObject _availableLabelsReply;
 
-    QJsonObject _existingLabelsReply;
+    QSet<QString> _pendingRefreshLabelIds;
+
+    bool _busy = false;
+
+    bool _applyingChanges = false;
+
+    bool _hasPendingChanges = false;
 };
 
 } // namespace OCC
