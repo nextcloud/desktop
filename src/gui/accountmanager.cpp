@@ -731,8 +731,28 @@ AccountStatePtr AccountManager::account(const QString &name)
     return it != _accounts.cend() ? *it : AccountStatePtr();
 }
 
+// Decodes the host portion of a "user@host" or "user@host:port" userId string
+// from ACE to Unicode via QUrl::fromAce so that it can be compared against the
+// Unicode host returned by QUrl::host().
+static QString normalizeUserIdHost(const QString &id)
+{
+    const auto atIdx = id.lastIndexOf(QLatin1Char('@'));
+    if (atIdx < 0) {
+        return id;
+    }
+    const auto userPart = id.left(atIdx);
+    const auto hostWithPort = id.mid(atIdx + 1);
+    const auto colonIdx = hostWithPort.lastIndexOf(QLatin1Char(':'));
+    const auto hostPart = (colonIdx >= 0) ? hostWithPort.left(colonIdx) : hostWithPort;
+    const auto portPart = (colonIdx >= 0) ? hostWithPort.mid(colonIdx) : QString{};
+    const auto unicodeHost = QUrl::fromAce(hostPart.toLatin1());
+    return unicodeHost.isEmpty() ? id : (userPart + QLatin1Char('@') + unicodeHost + portPart);
+}
+
 AccountStatePtr AccountManager::accountFromUserId(const QString &id) const
 {
+    const auto normalizedId = normalizeUserIdHost(id);
+
     const auto accountsList = accounts();
     for (const auto &account : accountsList) {
         const auto isUserIdWithPort = id.split(QLatin1Char(':')).size() > 1;
@@ -740,7 +760,7 @@ AccountStatePtr AccountManager::accountFromUserId(const QString &id) const
         const auto portString = (port > 0 && port != 80 && port != 443) ? QStringLiteral(":%1").arg(port) : QStringLiteral("");
         const QString davUserId = QStringLiteral("%1@%2").arg(account->account()->davUser(), account->account()->url().host()) + portString;
 
-        if (davUserId == id) {
+        if (davUserId == normalizedId) {
             return account;
         }
     }
