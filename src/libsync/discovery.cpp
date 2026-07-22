@@ -933,6 +933,19 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
         return;
     }
 
+    if (serverEntry.isValid() && _isInsideEncryptedTree && !item->isDirectory() && !item->isEncrypted()) {
+        qCWarning(lcDisco()) << "remote file inside an encrypted folder" << item->_file
+                             << "serverEntry.isValid()" << (serverEntry.isValid() ? "true" : "false")
+                             << "_isInsideEncryptedTree" << (_isInsideEncryptedTree ? "true" : "false")
+                             << "item->isDirectory()" << (item->isDirectory() ? "true" : "false")
+                             << "item->isEncrypted()" << (item->isEncrypted() ? "true" : "false");
+
+        item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_IGNORE;
+        emit _discoveryData->itemDiscovered(item);
+
+        return;
+    }
+
     if (serverEntry.isValid() && !serverEntry.remotePerm.isNull() && !serverEntry.remotePerm.hasPermission(RemotePermissions::CanRead)) {
         item->_instruction = CSYNC_INSTRUCTION_IGNORE;
         emit _discoveryData->itemDiscovered(item);
@@ -1154,6 +1167,16 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     bool serverModified = item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_SYNC
         || item->_instruction == CSYNC_INSTRUCTION_RENAME || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
+
+    if (serverModified && _isInsideEncryptedTree && !item->isDirectory() && !item->isEncrypted()) {
+        qCWarning(lcDisco()) << "remote file inside an encrypted folder" << item->_file
+                              << "serverModified" << (serverModified ? "true" : "false")
+                              << "_isInsideEncryptedTree" << (_isInsideEncryptedTree ? "true" : "false")
+                              << "item->isDirectory()" << (item->isDirectory() ? "true" : "false")
+                              << "item->isEncrypted()" << (item->isEncrypted() ? "true" : "false");
+
+        item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_IGNORE;
+    }
 
     const auto isTypeChange = item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
 
