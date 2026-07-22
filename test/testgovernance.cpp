@@ -533,6 +533,10 @@ private slots:
 
     void testGovernanceLabelListModel_setData()
     {
+        FakeFolder fakeFolder{{}};
+        GovernanceTestHelper testHelper;
+        testHelper.setup(fakeFolder);
+
         GovernanceLabelsListModel myModel;
         QAbstractItemModelTester myModelTester(&myModel);
 
@@ -553,7 +557,7 @@ private slots:
         "color": "bf4040",
         "canAssign": "no",
         "canRemove": "no",
-        "isAssigned": false
+        "isAssigned": true
       },
       {
         "id": "91345129959310149",
@@ -571,44 +575,13 @@ private slots:
             )json"_ba;
         const auto availableReplyData = QJsonDocument::fromJson(availableReplyJson);
 
-        const auto existingReplyJson = R"json(
-{
-  "ocs": {
-    "meta": {
-      "status": "ok",
-      "statuscode": 200,
-      "message": "OK"
-    },
-    "data": {
-      "retention": [],
-      "sensitivity": [
-        {
-          "id": "91785883351310337",
-          "name": "Test Sensitivity",
-          "priority": 0,
-          "description": "This is a long description",
-          "color": "bf4040",
-          "canAssign": "no",
-          "canRemove": "no",
-          "isAssigned": true
-        }
-      ]
-    }
-  }
-}
-)json"_ba;
-        const auto existingReplyData = QJsonDocument::fromJson(existingReplyJson);
-
+        myModel.setAccount(fakeFolder.account());
         myModel.setEntityId(u"123456"_s);
         myModel.setLabelBehavior(GovernanceLabelsListModel::LabelBehavior::UniqueLabel);
         myModel.setLabelType(Governance::LabelType::Sensitivity);
 
         myModel.setAvailableLabelsJsonData(availableReplyData);
-        QCOMPARE(myModel.rowCount(), 1);
-
-        myModel.setExistingLabelsJsonData(existingReplyData);
-
-        QCOMPARE(myModel.rowCount(), 3);
+        QCOMPARE(myModel.rowCount(), 2);
 
         const auto firstLabelIndex = myModel.index(0);
         QVERIFY(firstLabelIndex.isValid());
@@ -627,23 +600,19 @@ private slots:
         QCOMPARE(myModel.data(secondLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::DescriptionRole)), u"This is a long description for high sensitive label"_s);
         QCOMPARE(myModel.data(secondLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::ColorRole)), u"56cd40"_s);
         QCOMPARE(myModel.data(secondLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::SelectedRole)).toBool(), false);
-
-        const auto noneLabelIndex = myModel.index(2);
-        QVERIFY(noneLabelIndex.isValid());
-        QCOMPARE(myModel.data(noneLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::IdRole)), -1);
-        QCOMPARE(myModel.data(noneLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::NameRole)), u"None"_s);
-        QCOMPARE(myModel.data(noneLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::PriorityRole)), -1);
-        QCOMPARE(myModel.data(noneLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::DescriptionRole)), u"No label"_s);
-        QCOMPARE(myModel.data(noneLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::ColorRole)), {});
-        QCOMPARE(myModel.data(noneLabelIndex, static_cast<int>(GovernanceLabelsListModel::LabelsListModelRoles::SelectedRole)).toBool(), false);
     }
 
     void testGovernanceLabelListModel_refreshData()
     {
+        FakeFolder fakeFolder{{}};
+        GovernanceTestHelper testHelper;
+        testHelper.setup(fakeFolder);
+
         GovernanceLabelsListModel myModel;
         QAbstractItemModelTester myModelTester(&myModel);
         QSignalSpy modelRefreshDataSignalSpy(&myModel, &GovernanceLabelsListModel::refreshAvailableLabelsData);
 
+        myModel.setAccount(fakeFolder.account());
         myModel.setEntityId(u"117"_s);
         myModel.setLabelType(Governance::LabelType::Sensitivity);
 

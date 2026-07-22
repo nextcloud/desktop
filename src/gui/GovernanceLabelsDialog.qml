@@ -69,35 +69,14 @@ ApplicationWindow {
     }
 
     onClosing: function(close) {
-        Systray.destroyDialog(self);
+        Systray.destroyDialog(governanceLabelsDialog);
         close.accepted = true
-    }
-
-    GetGovernanceLabels {
-        id: getGovernanceLabels
-
-        account: governanceLabelsDialog.account
-
-        entityId: governanceLabelsDialog.fileId
-
-        onStarted: function() {
-            clearError()
-        }
-
-        onFinished: function(reply) {
-            sensitivityLabelsModel.setExistingLabelsJsonData(reply)
-            retentionLabelsModel.setExistingLabelsJsonData(reply)
-            legalHoldLabelsModel.setExistingLabelsJsonData(reply)
-        }
-
-        onFinishedWithError: function(errorCode, errorMessage) {
-            displayError(errorMessage)
-        }
     }
 
     GovernanceLabelsListModel {
         id: sensitivityLabelsModel
 
+        account: governanceLabelsDialog.account
         entityId: governanceLabelsDialog.fileId
         labelType: GovernanceNetworkJob.Sensitivity
         labelBehavior: GovernanceLabelsListModel.UniqueLabel
@@ -106,16 +85,8 @@ ApplicationWindow {
             getAvailableGovernanceLabelsForSensitivity.start(labelType, entityId)
         }
 
-        onRefreshExistingLabelsData: function(labelType, entityId) {
-            getGovernanceLabels.start(entityId)
-        }
-
-        onAddLabel: function(labelId) {
-            applySensitivityLabel.start(labelId)
-        }
-
-        onRemoveLabel: function(labelId) {
-            deleteSensitivityLabel.start(labelId)
+        onDisplayError: function(errorMessage) {
+            governanceLabelsDialog.displayError(errorMessage)
         }
     }
 
@@ -123,9 +94,6 @@ ApplicationWindow {
         id: getAvailableGovernanceLabelsForSensitivity
 
         account: governanceLabelsDialog.account
-
-        labelType: GovernanceNetworkJob.Sensitivity
-        entityId: governanceLabelsDialog.fileId
 
         onStarted: function() {
             clearError()
@@ -140,69 +108,20 @@ ApplicationWindow {
         }
     }
 
-    ApplyGovernanceLabel {
-        id: applySensitivityLabel
-
-        account: governanceLabelsDialog.account
-
-        labelType: GovernanceNetworkJob.Sensitivity
-        entityId: governanceLabelsDialog.fileId
-
-        onStarted: function() {
-            clearError()
-        }
-
-        onFinished: function() {
-            sensitivityLabelsModel.labelWasModified()
-        }
-
-        onFinishedWithError: function(errorCode, errorMessage) {
-            displayError(errorMessage)
-        }
-    }
-
-    DeleteGovernanceLabel {
-        id: deleteSensitivityLabel
-
-        account: governanceLabelsDialog.account
-
-        labelType: GovernanceNetworkJob.Sensitivity
-        entityId: governanceLabelsDialog.fileId
-
-        onStarted: function() {
-            clearError()
-        }
-
-        onFinished: function() {
-            sensitivityLabelsModel.labelWasModified()
-        }
-
-        onFinishedWithError: function(errorCode, errorMessage) {
-            displayError(errorMessage)
-        }
-    }
-
     GovernanceLabelsListModel {
         id: retentionLabelsModel
 
+        account: governanceLabelsDialog.account
         entityId: governanceLabelsDialog.fileId
         labelType: GovernanceNetworkJob.Retention
         labelBehavior: GovernanceLabelsListModel.MultipleLabels
 
         onRefreshAvailableLabelsData: function(labelType, entityId) {
-            getAvailableGovernanceLabelsForSensitivity.start(labelType, entityId)
+            getAvailableGovernanceLabelsForRetention.start(labelType, entityId)
         }
 
-        onRefreshExistingLabelsData: function(labelType, entityId) {
-            getGovernanceLabels.start(entityId)
-        }
-
-        onAddLabel: function(labelId) {
-            applyRetentionLabel.start(labelId)
-        }
-
-        onRemoveLabel: function(labelId) {
-            deleteRetentionLabel.start(labelId)
+        onDisplayError: function(errorMessage) {
+            governanceLabelsDialog.displayError(errorMessage)
         }
     }
 
@@ -210,9 +129,6 @@ ApplicationWindow {
         id: getAvailableGovernanceLabelsForRetention
 
         account: governanceLabelsDialog.account
-
-        labelType: GovernanceNetworkJob.Retention
-        entityId: governanceLabelsDialog.fileId
 
         onStarted: function() {
             clearError()
@@ -227,51 +143,10 @@ ApplicationWindow {
         }
     }
 
-    ApplyGovernanceLabel {
-        id: applyRetentionLabel
-
-        account: governanceLabelsDialog.account
-
-        labelType: GovernanceNetworkJob.Retention
-        entityId: governanceLabelsDialog.fileId
-
-        onStarted: function() {
-            clearError()
-        }
-
-        onFinished: function() {
-            retentionLabelsModel.labelWasModified()
-        }
-
-        onFinishedWithError: function(errorCode, errorMessage) {
-            displayError(errorMessage)
-        }
-    }
-
-    DeleteGovernanceLabel {
-        id: deleteRetentionLabel
-
-        account: governanceLabelsDialog.account
-
-        labelType: GovernanceNetworkJob.Retention
-        entityId: governanceLabelsDialog.fileId
-
-        onStarted: function() {
-            clearError()
-        }
-
-        onFinished: function() {
-            retentionLabelsModel.labelWasModified()
-        }
-
-        onFinishedWithError: function(errorCode, errorMessage) {
-            displayError(errorMessage)
-        }
-    }
-
     GovernanceLabelsListModel {
         id: legalHoldLabelsModel
 
+        account: governanceLabelsDialog.account
         entityId: governanceLabelsDialog.fileId
         labelType: GovernanceNetworkJob.LegalHold
         labelBehavior: GovernanceLabelsListModel.MultipleLabels
@@ -280,16 +155,8 @@ ApplicationWindow {
             getAvailableGovernanceLabelsForLegalHold.start(labelType, entityId)
         }
 
-        onRefreshExistingLabelsData: function(labelType, entityId) {
-            getGovernanceLabels.start(entityId)
-        }
-
-        onAddLabel: function(labelId) {
-            applyLegalHoldLabel.start(labelId)
-        }
-
-        onRemoveLabel: function(labelId) {
-            deleteLegalHoldLabel.start(labelId)
+        onDisplayError: function(errorMessage) {
+            governanceLabelsDialog.displayError(errorMessage)
         }
     }
 
@@ -297,9 +164,6 @@ ApplicationWindow {
         id: getAvailableGovernanceLabelsForLegalHold
 
         account: governanceLabelsDialog.account
-
-        labelType: GovernanceNetworkJob.LegalHold
-        entityId: governanceLabelsDialog.fileId
 
         onStarted: function() {
             clearError()
@@ -314,50 +178,10 @@ ApplicationWindow {
         }
     }
 
-    ApplyGovernanceLabel {
-        id: applyLegalHoldLabel
-
-        account: governanceLabelsDialog.account
-
-        labelType: GovernanceNetworkJob.LegalHold
-        entityId: governanceLabelsDialog.fileId
-
-        onStarted: function() {
-            clearError()
-        }
-
-        onFinished: function() {
-            legalHoldLabelsModel.labelWasModified()
-        }
-
-        onFinishedWithError: function(errorCode, errorMessage) {
-            displayError(errorMessage)
-        }
-    }
-
-    DeleteGovernanceLabel {
-        id: deleteLegalHoldLabel
-
-        account: governanceLabelsDialog.account
-
-        labelType: GovernanceNetworkJob.LegalHold
-        entityId: governanceLabelsDialog.fileId
-
-        onStarted: function() {
-            clearError()
-        }
-
-        onFinished: function() {
-            legalHoldLabelsModel.labelWasModified()
-        }
-
-        onFinishedWithError: function(errorCode, errorMessage) {
-            displayError(errorMessage)
-        }
-    }
-
     ColumnLayout {
         id: mainContent
+
+        enabled: !sensitivityLabelsModel.busy && !retentionLabelsModel.busy && !legalHoldLabelsModel.busy
 
         anchors.fill: parent
         anchors.leftMargin: 24
@@ -367,29 +191,30 @@ ApplicationWindow {
         spacing: 14
 
         EnforcedPlainTextLabel {
-            text: lastError
-            color: governanceLabelsDialog.networkErrorTextColor
-            font.pixelSize: Style.pixelSize
+            Layout.fillWidth: true
+
+            text: qsTr("Assign labels to the file to manage its sensitivity, retention, and legal hold policies.")
+            color: governanceLabelsDialog.hintTextColor
+            font.pixelSize: Style.headerFontPtSize
+            wrapMode: Text.WordWrap
+            // width: governanceLabelsDialog.width - 48
         }
 
-        RowLayout {
-            spacing: 4
+        EnforcedPlainTextLabel {
+            Layout.fillWidth: true
 
-            Image {
-                source: "image://svgimage-custom-color/security.svg/" + governanceLabelsDialog.hintTextColor
-                sourceSize.width: Style.smallIconSize
-                sourceSize.height: Style.smallIconSize
-                fillMode: Image.PreserveAspectFit
-                Layout.alignment: Qt.AlignVCenter
-                opacity: governanceLabelsDialog.hintTextColor.a
-            }
+            text: lastError
+            color: governanceLabelsDialog.networkErrorTextColor
+            font.pixelSize: Style.headerFontPtSize
+        }
 
-            EnforcedPlainTextLabel {
-                text: qsTr("Sensitivity:")
-                color: governanceLabelsDialog.hintTextColor
-                font.pixelSize: Style.pixelSize
-                Layout.alignment: Qt.AlignVCenter
-            }
+        EnforcedPlainTextLabel {
+            Layout.fillWidth: true
+
+            text: qsTr("Sensitivity labels")
+            color: governanceLabelsDialog.hintTextColor
+            font.pixelSize: Style.headerFontPtSize
+            Layout.alignment: Qt.AlignVCenter
         }
 
         WizardComboBox {
@@ -398,6 +223,7 @@ ApplicationWindow {
             Accessible.role: Accessible.ComboBox
             Accessible.name: qsTr("Select sensitivity label")
 
+            enabled: !sensitivityLabelsModel.isEmpty
             model: sensitivityLabelsModel
             textRole: "name"
             valueRole: "id"
@@ -405,28 +231,17 @@ ApplicationWindow {
             Layout.fillWidth: true
 
             onActivated: function(index) {
-                sensitivityLabelsModel.toggleLabel(index, currentValue)
+                sensitivityLabelsModel.toggleLabel(index)
             }
         }
 
-        RowLayout {
-            spacing: 4
+        EnforcedPlainTextLabel {
+            Layout.fillWidth: true
 
-            Image {
-                source: "image://svgimage-custom-color/file-clock-outline.svg/" + governanceLabelsDialog.hintTextColor
-                sourceSize.width: Style.smallIconSize
-                sourceSize.height: Style.smallIconSize
-                fillMode: Image.PreserveAspectFit
-                Layout.alignment: Qt.AlignVCenter
-                opacity: governanceLabelsDialog.hintTextColor.a
-            }
-
-            EnforcedPlainTextLabel {
-                text: qsTr("Retention:")
-                color: governanceLabelsDialog.hintTextColor
-                font.pixelSize: Style.pixelSize
-                Layout.alignment: Qt.AlignVCenter
-            }
+            text: qsTr("Retention labels")
+            color: governanceLabelsDialog.hintTextColor
+            font.pixelSize: Style.headerFontPtSize
+            Layout.alignment: Qt.AlignVCenter
         }
 
         WizardComboBox {
@@ -435,21 +250,24 @@ ApplicationWindow {
             Accessible.role: Accessible.ComboBox
             Accessible.name: qsTr("Select retention label")
 
+            enabled: !retentionLabelsModel.isEmpty
             model: retentionLabelsModel
             textRole: "name"
             valueRole: "id"
 
             Layout.fillWidth: true
 
-            onActivated: function() {
-                retentionLabelsModel.toggleLabel(currentValue)
+            onActivated: function(index) {
+                retentionLabelsModel.toggleLabel(index)
             }
         }
 
         EnforcedPlainTextLabel {
-            text: qsTr("Legal hold:")
+            Layout.fillWidth: true
+
+            text: qsTr("Legal hold labels")
             color: governanceLabelsDialog.hintTextColor
-            font.pixelSize: Style.pixelSize
+            font.pixelSize: Style.headerFontPtSize
         }
 
         WizardComboBox {
@@ -458,14 +276,15 @@ ApplicationWindow {
             Accessible.role: Accessible.ComboBox
             Accessible.name: qsTr("Select legal hold label")
 
+            enabled: !legalHoldLabelsModel.isEmpty
             model: legalHoldLabelsModel
             textRole: "name"
             valueRole: "id"
 
             Layout.fillWidth: true
 
-            onActivated: function() {
-                legalHoldLabelsModel.toggleLabel(currentValue)
+            onActivated: function(index) {
+                legalHoldLabelsModel.toggleLabel(index)
             }
         }
 
@@ -473,17 +292,34 @@ ApplicationWindow {
             Layout.fillHeight: true
         }
 
-        RowLayout {
-            Layout.fillWidth: true
-            Layout.topMargin: 8
+        DialogButtonBox {
+            id: buttonBox
 
-            Item {
-                Layout.fillWidth: true
+            Layout.fillWidth: true
+
+            enabled: !sensitivityLabelsModel.busy && !retentionLabelsModel.busy && !legalHoldLabelsModel.busy &&
+                     (sensitivityLabelsModel.hasPendingChanges || retentionLabelsModel.hasPendingChanges || legalHoldLabelsModel.hasPendingChanges)
+
+            onReset: function() {
+                sensitivityLabelsModel.reset()
+                retentionLabelsModel.reset()
+                legalHoldLabelsModel.reset()
+            }
+
+            onAccepted: function() {
+                sensitivityLabelsModel.apply()
+                retentionLabelsModel.apply()
+                legalHoldLabelsModel.apply()
             }
 
             WizardButton {
-                text: qsTr("Done")
-                onClicked: Systray.destroyDialog(governanceLabelsDialog)
+                text: qsTr("Reset")
+                DialogButtonBox.buttonRole: DialogButtonBox.ResetRole
+            }
+
+            WizardButton {
+                text: qsTr("Apply")
+                DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
             }
         }
     }
