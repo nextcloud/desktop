@@ -7,7 +7,9 @@
 #include <cstdlib>
 #include <iostream>
 #include <qcoreapplication.h>
+#include <QDir>
 #include <QStringList>
+#include <QTimer>
 #include <QUrl>
 #include <QFile>
 #include <QFileInfo>
@@ -17,15 +19,22 @@
 #include <qdebug.h>
 
 #include "account.h"
+#include "accountmanager.h"
+#include "accountsetupcommandlinemanager.h"
 #include "configfile.h" // ONLY ACCESS THE STATIC FUNCTIONS!
 #ifdef TOKEN_AUTH_ONLY
 # include "creds/tokencredentials.h"
 #else
 # include "creds/httpcredentials.h"
 #endif
+#include "creds/webflowcredentials.h"
+#include "networkjobs.h"
 #include "simplesslerrorhandler.h"
 #include "syncengine.h"
+#include "common/filesystembase.h"
 #include "common/syncjournaldb.h"
+#include "common/utility.h"
+#include "common/vfs.h"
 #include "config.h"
 #include "csync_exclude.h"
 
@@ -162,6 +171,7 @@ void help()
     std::cout << binaryName << " - command line " APPLICATION_NAME " client tool" << std::endl;
     std::cout << "" << std::endl;
     std::cout << "Usage: " << binaryName << " [OPTION] <source_dir> <server_url>" << std::endl;
+    std::cout << "       " << binaryName << " --userid <user> --serverurl <url> [--apppassword <pass>] [OPTION]" << std::endl;
     std::cout << "" << std::endl;
     std::cout << "A proxy can either be set manually using --httpproxy." << std::endl;
     std::cout << "Otherwise, the setting from a configured sync client will be used." << std::endl;
@@ -188,6 +198,15 @@ void help()
     std::cout << "  --version, -v          Display version and exit" << std::endl;
     std::cout << "  --logdebug             More verbose logging" << std::endl;
     std::cout << "  --path                 Path to a folder on a remote server" << std::endl;
+    std::cout << "  --confdir [dir]        Use the given configuration directory" << std::endl;
+    std::cout << "" << std::endl;
+    std::cout << "Account provisioning options (non-interactive setup):" << std::endl;
+    std::cout << "  --userid [user]        The user ID to configure" << std::endl;
+    std::cout << "  --apppassword [pass]   The app password for authentication (optional)" << std::endl;
+    std::cout << "  --serverurl [url]      The base URL of the Nextcloud server" << std::endl;
+    std::cout << "  --localdirpath [path]  Local folder path for sync (optional)" << std::endl;
+    std::cout << "  --remotedirpath [path] Remote folder path to sync, default /" << std::endl;
+    std::cout << "  --isvfsenabled [0|1]   Enable virtual files (1) or disable (0)" << std::endl;
     std::cout << "" << std::endl;
     exit(0);
 }
@@ -204,28 +223,37 @@ void parseOptions(const QStringList &app_args, CmdOptions *options)
 
     int argCount = args.count();
 
-    if (argCount < 3) {
-        if (argCount >= 2) {
-            const QString option = args.at(1);
-            if (option == "-v" || option == "--version") {
-                showVersion();
+    // Detect provisioning mode: --userid flag present means no positional args required
+    const bool provisionMode = args.contains(QStringLiteral("--userid"));
+
+    if (!provisionMode) {
+        if (argCount < 3) {
+            if (argCount >= 2) {
+                const QString option = args.at(1);
+                if (option == "-v" || option == "--version") {
+                    showVersion();
+                }
             }
+            help();
         }
-        help();
-    }
 
-    options->target_url = args.takeLast();
+        options->target_url = args.takeLast();
 
-    options->source_dir = args.takeLast();
-    if (!options->source_dir.endsWith('/')) {
-        options->source_dir.append('/');
+        options->source_dir = args.takeLast();
+        if (!options->source_dir.endsWith('/')) {
+            options->source_dir.append('/');
+        }
+        QFileInfo fi(options->source_dir);
+        if (!fi.exists()) {
+            std::cerr << "Source dir '" << qPrintable(options->source_dir) << "' does not exist." << std::endl;
+            exit(1);
+        }
+        options->source_dir = fi.absoluteFilePath();
+    } else {
+        if (argCount >= 2 && (args.at(1) == QStringLiteral("-v") || args.at(1) == QStringLiteral("--version"))) {
+            showVersion();
+        }
     }
-    QFileInfo fi(options->source_dir);
-    if (!fi.exists()) {
-        std::cerr << "Source dir '" << qPrintable(options->source_dir) << "' does not exist." << std::endl;
-        exit(1);
-    }
-    options->source_dir = fi.absoluteFilePath();
 
     QStringListIterator it(args);
     // skip file name;
@@ -271,11 +299,14 @@ void parseOptions(const QStringList &app_args, CmdOptions *options)
         } else if (option == u"--confdir"_s && it.hasNext() && !it.peekNext().startsWith(u"--"_s)) {
             options->config_directory = it.next();
         } else {
-            help();
+            QString errorMessage;
+            if (!AccountSetupCommandLineManager::instance()->parseCommandlineOption(option, it, errorMessage)) {
+                help();
+            }
         }
     }
 
-    if (options->target_url.isEmpty() || options->source_dir.isEmpty()) {
+    if (!provisionMode && (options->target_url.isEmpty() || options->source_dir.isEmpty())) {
         help();
     }
 }
@@ -329,6 +360,22 @@ int main(int argc, char **argv)
         qInstallMessageHandler(nullMessageHandler);
     } else {
         qSetMessagePattern("%{time MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}");
+    }
+
+    if (!options.config_directory.isEmpty()) {
+        if (!ConfigFile::setConfDir(options.config_directory)) {
+            std::cerr << "Invalid confdir '" << qPrintable(options.config_directory) << "', disabling." << std::endl;
+        }
+    }
+
+    auto quitInstance = false;
+    if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
+        AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
+        quitInstance = true;
+    }
+    AccountSetupCommandLineManager::destroy();
+    if (quitInstance) {
+        return 0;
     }
 
     AccountPtr account = Account::create();
