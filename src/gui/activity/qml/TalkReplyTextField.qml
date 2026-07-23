@@ -8,7 +8,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import Style
-import "../common"
+import "qrc:/qml/src/gui/common"
 
 NCContextMenuTextField {
     id: replyMessageTextField

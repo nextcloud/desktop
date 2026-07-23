@@ -10,7 +10,7 @@ import Qt5Compat.GraphicalEffects
 import Style
 
 import com.nextcloud.desktopclient
-import "../common"
+import "qrc:/qml/src/gui/common"
 import "qrc:/qml/src/gui/tray"
 
 NCContextMenuTextField {
