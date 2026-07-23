@@ -99,6 +99,14 @@ public protocol ItemMetadata: Equatable {
 }
 
 public extension ItemMetadata {
+    /// Whether two metadata values identify the same account and remote path,
+    /// ignoring Unicode canonical-equivalence differences.
+    func hasSameLocation(as comparingMetadata: any ItemMetadata) -> Bool {
+        account == comparingMetadata.account
+            && serverUrl.canonicalForm == comparingMetadata.serverUrl.canonicalForm
+            && fileName.canonicalForm == comparingMetadata.fileName.canonicalForm
+    }
+
     var livePhoto: Bool {
         livePhotoFile != nil && livePhotoFile?.isEmpty == false
     }
