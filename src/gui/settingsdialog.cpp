@@ -248,7 +248,7 @@ void SettingsDialog::showEvent(QShowEvent *event)
     // constructor via winId()) doesn't stick, because Qt recreates the NSWindow when the dialog is
     // shown, resetting the title-bar separator to its default.
     if (auto *const handle = windowHandle()) {
-        styleNativeTitleBar(handle, /*hideTitleText=*/false);
+        styleNativeTitleBar(handle, /*hideTitleText=*/false, palette().color(QPalette::Window));
     }
 #endif
 }
@@ -266,7 +266,7 @@ void SettingsDialog::changeEvent(QEvent *e)
 #ifdef Q_OS_MACOS
         // macOS resets title-bar styling across appearance changes; re-apply it.
         if (auto *const handle = windowHandle()) {
-            styleNativeTitleBar(handle, /*hideTitleText=*/false);
+            styleNativeTitleBar(handle, /*hideTitleText=*/false, palette().color(QPalette::Window));
         }
 #endif
         break;
@@ -498,14 +498,14 @@ void SettingsDialog::customizeStyle()
         .arg(separatorColor.alpha());
 
     setStyleSheet(QStringLiteral(
-        "#Settings { border-radius: 0; }"
+        "#Settings { background: palette(window); border-radius: 0; }"
 
         /* Navigation */
         "#settings_navigation_scroll { background: palette(" BACKGROUND_PALETTE "); border-radius: 12px; padding: 4px; }"
         "#settings_navigation { background: transparent; border: none; padding: 0px; }"
 
         /* Content area */
-        "#settings_content, #settings_content_scroll { background: transparent; border-radius: 12px; }"
+        "#settings_content, #settings_content_scroll { background: palette(window); border-radius: 12px; }"
 
         /* Panels */
         "#generalGroupBox, #fileProviderGroupBox, #notificationsGroupBox, #advancedGroupBox, #syncBehaviorGroupBox,"
