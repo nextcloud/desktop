@@ -361,6 +361,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
         } else if (errno == ENOTDIR) {
             // Not a directory..
             // Just consider it is empty
+            emit finished(QVector<LocalInfo>{});
             return;
         }
         emit finishedFatalError(errorString);
