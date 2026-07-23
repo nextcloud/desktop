@@ -1396,10 +1396,20 @@ PropagatorJob::JobParallelism PropagateDirectory::parallelism() const
 {
     // If any of the non-finished sub jobs is not parallel, we have to wait
     if (_firstJob && _firstJob->parallelism() != FullParallelism) {
-        return WaitForFinished;
+        // E2EE uses per-folder server-side locking, so different encrypted folders
+        // can safely transfer in parallel. Don't let one E2EE folder's firstJob
+        // block sibling directories. Internal sequencing within the folder is still
+        // handled by scheduleSelfOrChild().
+        if (!(_item && _item->isEncrypted())) {
+            return WaitForFinished;
+        }
     }
     if (_subJobs.parallelism() != FullParallelism) {
-        return WaitForFinished;
+        // Same principle: E2EE sub-job serialization (WaitForFinished) should only
+        // apply within this folder's composite, not block sibling directories.
+        if (!(_item && _item->isEncrypted())) {
+            return WaitForFinished;
+        }
     }
     return FullParallelism;
 }
