@@ -31,7 +31,7 @@ public final class FilesDatabaseManager: Sendable {
         )
     }
 
-    private static let schemaVersion = SchemaVersion.addedIsLockFileOfLocalOriginToRealmItemMetadata
+    private static let schemaVersion = SchemaVersion.addedCanonicalPathKeysToRealmItemMetadata
     let logger: FileProviderLogger
     let account: Account
 
@@ -88,6 +88,17 @@ public final class FilesDatabaseManager: Sendable {
                     }
                 }
 
+                if oldSchemaVersion < SchemaVersion.addedCanonicalPathKeysToRealmItemMetadata.rawValue {
+                    migration.enumerateObjects(ofType: RealmItemMetadata.className()) { _, newObject in
+                        guard let newObject,
+                              let serverUrl = newObject["serverUrl"] as? String,
+                              let fileName = newObject["fileName"] as? String
+                        else { return }
+
+                        newObject["normalizedServerUrl"] = serverUrl.canonicalForm
+                        newObject["normalizedFileName"] = fileName.canonicalForm
+                    }
+                }
             },
             objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self]
         )
@@ -647,6 +658,8 @@ public final class FilesDatabaseManager: Sendable {
                 itemMetadata.fileName = newFileName
                 itemMetadata.fileNameView = newFileName
                 itemMetadata.serverUrl = newServerUrl
+                itemMetadata.normalizedServerUrl = newServerUrl.canonicalForm
+                itemMetadata.normalizedFileName = newFileName.canonicalForm
                 itemMetadata.lockToken = nil
 
                 database.add(itemMetadata, update: .all)
