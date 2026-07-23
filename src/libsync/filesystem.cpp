@@ -173,6 +173,18 @@ std::optional<QString> adobeLockFileTargetFilePath(const QString &lockFilePath)
     return std::nullopt;
 }
 
+// Affinity by Canva creates `~lock~` suffix lock files (e.g., Screenshot.af~lock~)
+// when a document is opened. The guarded document name is recovered by stripping
+// the trailing `~lock~` suffix.
+constexpr std::string_view affinityLockFileSuffix = "~lock~";
+
+constexpr std::array<std::string_view, 4> affinityDocumentExtensions = {"afphoto", "afdesign", "afpub", "af"};
+
+bool isAffinityLockFile(const QString &path)
+{
+    return path.endsWith(QStringLiteral("~lock~"));
+}
+
 // iterates through the dirPath to find the matching fileName
 QString findMatchingUnlockedFileInDir(const QString &dirPath, const QString &lockFileName)
 {
@@ -215,6 +227,12 @@ QString FileSystem::filePathLockFilePatternMatch(const QString &path)
         }
     }
 
+    // Affinity lock files are identified by the `~lock~` suffix.
+    if (isAffinityLockFile(pathSplit.last())) {
+        qCDebug(OCC::lcFileSystem) << "Found an Affinity lock file with suffix ~lock~ in path:" << path;
+        return QString::fromStdString(std::string(affinityLockFileSuffix));
+    }
+
     // AutoCAD lock files (.dwl / .dwl2) are identified by extension, not prefix.
     if (isAutoCADLockFileExtension(pathSplit.last())) {
         const auto suffix = QFileInfo{pathSplit.last()}.suffix().toLower();
@@ -254,9 +272,32 @@ bool FileSystem::isMatchingAdobeDocumentExtension(const QString &path)
     });
 }
 
+bool FileSystem::isMatchingAffinityDocumentExtension(const QString &path)
+{
+    const auto extension = QFileInfo{path}.suffix().toLower().toStdString();
+    return std::ranges::any_of(affinityDocumentExtensions, [&extension](const auto &ext) { return ext == extension; });
+}
+
 FileSystem::FileLockingInfo FileSystem::lockFileTargetFilePath(const QString &lockFilePath, const QString &lockFileNamePattern)
 {
     FileLockingInfo result;
+
+    // Affinity lock files use a `~lock~` suffix (e.g., Screenshot.afphoto~lock~).
+    // Strip the suffix to recover the guarded document path.
+    if (isAffinityLockFile(lockFilePath)) {
+        const QFileInfo lockFileInfo{lockFilePath};
+        auto documentName = lockFileInfo.fileName();
+        documentName.chop(affinityLockFileSuffix.length());
+        if (!documentName.isEmpty()) {
+            result.path = lockFileInfo.dir().absoluteFilePath(documentName);
+            if (QFile::exists(result.path)) {
+                result.type = lockFileInfo.exists() ? FileLockingInfo::Type::Locked : FileLockingInfo::Type::Unlocked;
+            } else {
+                result.path.clear();
+            }
+        }
+        return result;
+    }
 
     // AutoCAD lock files (.dwl / .dwl2) share the document's base name, so the
     // guarded document is resolved by replacing the extension with .dwg.

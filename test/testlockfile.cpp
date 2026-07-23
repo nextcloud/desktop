@@ -1009,6 +1009,83 @@ private slots:
         QCOMPARE(unknownExt.type, OCC::FileSystem::FileLockingInfo::Type::Unset);
     }
 
+    void testLockFile_lockFile_detect_newly_uploaded_affinity_afphoto()
+    {
+        const auto testFileName = QStringLiteral("Screenshot.afphoto");
+        const auto testLockFileName = QStringLiteral("Screenshot.afphoto~lock~");
+
+        const auto testDocumentsDirName = QStringLiteral("documents");
+
+        FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.localModifier().mkdir(testDocumentsDirName);
+        fakeFolder.syncEngine().excludedFiles().addManualExclude(QStringLiteral("*~lock~"));
+
+        fakeFolder.syncEngine().account()->setCapabilities({{"files", QVariantMap{{"locking", QByteArray{"1.0"}}}}});
+        QSignalSpy lockFileDetectedNewlyUploadedSpy(&fakeFolder.syncEngine(), &OCC::SyncEngine::lockFileDetected);
+
+        fakeFolder.localModifier().insert(testDocumentsDirName + QStringLiteral("/") + testLockFileName);
+        fakeFolder.localModifier().insert(testDocumentsDirName + QStringLiteral("/") + testFileName);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(lockFileDetectedNewlyUploadedSpy.count(), 1);
+    }
+
+    void testLockFile_lockFile_detect_newly_uploaded_affinity_afdesign()
+    {
+        const auto testFileName = QStringLiteral("Icon.afdesign");
+        const auto testLockFileName = QStringLiteral("Icon.afdesign~lock~");
+
+        const auto testDocumentsDirName = QStringLiteral("documents");
+
+        FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.localModifier().mkdir(testDocumentsDirName);
+        fakeFolder.syncEngine().excludedFiles().addManualExclude(QStringLiteral("*~lock~"));
+
+        fakeFolder.syncEngine().account()->setCapabilities({{"files", QVariantMap{{"locking", QByteArray{"1.0"}}}}});
+        QSignalSpy lockFileDetectedNewlyUploadedSpy(&fakeFolder.syncEngine(), &OCC::SyncEngine::lockFileDetected);
+
+        fakeFolder.localModifier().insert(testDocumentsDirName + QStringLiteral("/") + testLockFileName);
+        fakeFolder.localModifier().insert(testDocumentsDirName + QStringLiteral("/") + testFileName);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(lockFileDetectedNewlyUploadedSpy.count(), 1);
+    }
+
+    void testLockFile_affinityLockFileTargetFilePath_resolution()
+    {
+        const auto dirPath = QStringLiteral("/tmp/affinityTestDir/");
+
+        QVERIFY(QDir{}.mkpath(dirPath));
+
+        // Create a document and an Affinity lock file for it.
+        const auto docPath = dirPath + QStringLiteral("Screenshot.afphoto");
+        const auto lockPath = dirPath + QStringLiteral("Screenshot.afphoto~lock~");
+        QVERIFY(QFile{docPath}.open(QIODevice::WriteOnly));
+        QVERIFY(QFile{lockPath}.open(QIODevice::WriteOnly));
+
+        const auto resolved = OCC::FileSystem::lockFileTargetFilePath(lockPath, QString{});
+        QCOMPARE(resolved.path, docPath);
+        QCOMPARE(resolved.type, OCC::FileSystem::FileLockingInfo::Type::Locked);
+
+        // Removing the lock file should resolve to Unlocked.
+        QFile::remove(lockPath);
+        const auto unlocked = OCC::FileSystem::lockFileTargetFilePath(lockPath, QString{});
+        QCOMPARE(unlocked.path, docPath);
+        QCOMPARE(unlocked.type, OCC::FileSystem::FileLockingInfo::Type::Unlocked);
+
+        // A non-Affinity file should not match.
+        const auto nonLock = OCC::FileSystem::lockFileTargetFilePath(dirPath + QStringLiteral("notes.txt"), QString{});
+        QVERIFY(nonLock.path.isEmpty());
+
+        // An Affinity lock file with no matching document resolves to nothing.
+        const auto orphanLockPath = dirPath + QStringLiteral("Orphan.afpub~lock~");
+        QVERIFY(QFile{orphanLockPath}.open(QIODevice::WriteOnly));
+        const auto orphan = OCC::FileSystem::lockFileTargetFilePath(orphanLockPath, QString{});
+        QVERIFY(orphan.path.isEmpty());
+    }
+
     void testLockFile_verifyE2eeFilesUseCorrectPath()
     {
         const auto e2eeRoot = QStringLiteral("encrypted");
