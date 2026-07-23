@@ -919,25 +919,36 @@ Je, akaunti inapaswa kuingizwa?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="443"/>
         <location filename="../src/gui/accountsettings.cpp" line="193"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1336"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1344"/>
         <source>Connection settings</source>
         <translation>Mipangilio ya uunganishaji</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="502"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1546"/>
+        <location filename="../src/gui/accountsettings.ui" line="505"/>
+        <source>If this account&apos;s files appear stuck, missing, or out of sync in Finder, reset its File Provider storage. Unsynced local changes are preserved.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="521"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2071"/>
+        <source>Reset File Provider Domain</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="558"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1554"/>
         <source>Log out, log back in, or remove this account from the client.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="518"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1542"/>
+        <location filename="../src/gui/accountsettings.ui" line="574"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1550"/>
         <source>Log out</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="531"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1543"/>
+        <location filename="../src/gui/accountsettings.ui" line="587"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1551"/>
         <source>Remove account</source>
         <translation type="unfinished"/>
     </message>
@@ -953,8 +964,9 @@ Je, akaunti inapaswa kuingizwa?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="325"/>
-        <location filename="../src/gui/accountsettings.cpp" line="977"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1162"/>
+        <location filename="../src/gui/accountsettings.cpp" line="985"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1170"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2072"/>
         <source>Cancel</source>
         <translation>Ghairi</translation>
     </message>
@@ -964,7 +976,7 @@ Je, akaunti inapaswa kuingizwa?</translation>
         <translation>Imeunganishwa na &lt;server&gt; kama &lt;user&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="340"/>
+        <location filename="../src/gui/accountsettings.cpp" line="348"/>
         <source>No account configured.</source>
         <translation>Hakuna akaunti iliyosanidiwa.</translation>
     </message>
@@ -1003,196 +1015,196 @@ Je, akaunti inapaswa kuingizwa?</translation>
 &lt;b&gt;Mchakato huu hauwezi kutenduliwa. Je, una uhakika unataka kuendelea?&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="331"/>
+        <location filename="../src/gui/accountsettings.cpp" line="339"/>
         <source>End-to-end encryption has not been initialized on this account.</source>
         <translation>Usimbaji fiche kutoka mwanzo hadi mwisho haujaanzishwa kwenye akaunti hii.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="358"/>
+        <location filename="../src/gui/accountsettings.cpp" line="366"/>
         <source>Forget encryption setup</source>
         <translation>Sahau usanidi wa usimbaji fiche</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="368"/>
+        <location filename="../src/gui/accountsettings.cpp" line="376"/>
         <source>Display mnemonic</source>
         <translation>Onyesha mnemonic</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="374"/>
+        <location filename="../src/gui/accountsettings.cpp" line="382"/>
         <source>Encryption is set-up. Remember to &lt;b&gt;Encrypt&lt;/b&gt; a folder to end-to-end encrypt any new files added to it.</source>
         <translation>Usimbaji fiche umewekwa. Kumbuka 1Simba kwa njia fiche1 folda ili kusimba kwa njia fiche kutoka mwisho hadi mwisho faili zozote mpya zitakazoongezwa humo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="407"/>
+        <location filename="../src/gui/accountsettings.cpp" line="415"/>
         <source>Warning</source>
         <translation>Onyo</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="468"/>
+        <location filename="../src/gui/accountsettings.cpp" line="476"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
         <translation>Tafadhali subiri folda isawazishwe kabla ya kujaribu kuisimba kwa njia fiche.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="470"/>
+        <location filename="../src/gui/accountsettings.cpp" line="478"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>Folda ina tatizo dogo la kusawazisha. Usimbaji fiche wa folda hii utawezekana baada ya kusawazisha kwa mafanikio</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="472"/>
+        <location filename="../src/gui/accountsettings.cpp" line="480"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>Folda ina hitilafu ya kusawazisha. Usimbaji fiche wa folda hii utawezekana baada ya kusawazisha kwa mafanikio</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="483"/>
+        <location filename="../src/gui/accountsettings.cpp" line="491"/>
         <source>You cannot encrypt this folder because the end-to-end encryption is not set-up yet on this device.
 Would you like to do this now?</source>
         <translation>Huwezi kusimba folda hii kwa njia fiche kwa sababu usimbaji fiche kutoka mwisho hadi mwisho bado haujawekwa kwenye kifaa hiki.
 Je, ungependa kufanya hivi sasa?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="507"/>
+        <location filename="../src/gui/accountsettings.cpp" line="515"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
         <translation>Huwezi kusimba folda yenye yaliyomo kwa njia fiche, tafadhali ondoa faili.
 Subiri usawazishaji mpya, kisha usimbe kwa njia fiche.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="531"/>
+        <location filename="../src/gui/accountsettings.cpp" line="539"/>
         <source>Encryption failed</source>
         <translation>Usimbaji fiche umeshindwa</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="531"/>
+        <location filename="../src/gui/accountsettings.cpp" line="539"/>
         <source>Could not encrypt folder because the folder does not exist anymore</source>
         <translation>Haikuweza kusimba folda kwa sababu folda haipo tena</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="672"/>
+        <location filename="../src/gui/accountsettings.cpp" line="680"/>
         <source>Encrypt</source>
         <translation>Simba</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="680"/>
-        <location filename="../src/gui/accountsettings.cpp" line="750"/>
+        <location filename="../src/gui/accountsettings.cpp" line="688"/>
+        <location filename="../src/gui/accountsettings.cpp" line="758"/>
         <source>Edit Ignored Files</source>
         <translation>Hariri Faili Zilizopuuzwa</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="683"/>
-        <location filename="../src/gui/accountsettings.cpp" line="753"/>
+        <location filename="../src/gui/accountsettings.cpp" line="691"/>
+        <location filename="../src/gui/accountsettings.cpp" line="761"/>
         <source>Create new folder</source>
         <translation>Unda faili mpya</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="689"/>
-        <location filename="../src/gui/accountsettings.cpp" line="779"/>
+        <location filename="../src/gui/accountsettings.cpp" line="697"/>
+        <location filename="../src/gui/accountsettings.cpp" line="787"/>
         <source>Availability</source>
         <translation>Upatikanaji</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="758"/>
+        <location filename="../src/gui/accountsettings.cpp" line="766"/>
         <source>Choose what to sync</source>
         <translation>Chagua kitu cha kusawazisha</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="764"/>
+        <location filename="../src/gui/accountsettings.cpp" line="772"/>
         <source>Force sync now</source>
         <translation>Lazimisha usawazishaji</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="766"/>
+        <location filename="../src/gui/accountsettings.cpp" line="774"/>
         <source>Restart sync</source>
         <translation>Anza kusawazisha upya</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="775"/>
+        <location filename="../src/gui/accountsettings.cpp" line="783"/>
         <source>Remove folder sync connection</source>
         <translation>Ondoa muunganiko wa usawazishaji wa folda</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="788"/>
+        <location filename="../src/gui/accountsettings.cpp" line="796"/>
         <source>Disable virtual file support …</source>
         <translation>Zima usaidizi wa faili inayoonekana</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="800"/>
+        <location filename="../src/gui/accountsettings.cpp" line="808"/>
         <source>Enable virtual file support %1 …</source>
         <translation>Wezesha usaidizi wa faili unayoonekana %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="800"/>
+        <location filename="../src/gui/accountsettings.cpp" line="808"/>
         <source>(experimental)</source>
         <translation>(kivitendo)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="902"/>
-        <location filename="../src/gui/accountsettings.cpp" line="945"/>
+        <location filename="../src/gui/accountsettings.cpp" line="910"/>
+        <location filename="../src/gui/accountsettings.cpp" line="953"/>
         <source>Folder creation failed</source>
         <translation>Uundaji wa folda umeshindwa </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="946"/>
+        <location filename="../src/gui/accountsettings.cpp" line="954"/>
         <source>&lt;p&gt;Could not add the folder sync connection for &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="969"/>
+        <location filename="../src/gui/accountsettings.cpp" line="977"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Thibitisha Uondoaji wa Muunganisho wa Kusawazisha Folda</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="976"/>
+        <location filename="../src/gui/accountsettings.cpp" line="984"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Ondoa Muunganisho wa Usawazishaji wa Folda</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1011"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1019"/>
         <source>Grant access to sync folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1023"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1031"/>
         <source>Access Error</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1024"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1032"/>
         <source>Could not acquire access to the selected folder. Please try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1032"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1040"/>
         <source>Wrong Folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1033"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1041"/>
         <source>Please select the original sync folder: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1042"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1051"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1050"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1059"/>
         <source>Bookmark Error</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1043"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1051"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1052"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1060"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1153"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1161"/>
         <source>Disable virtual file support?</source>
         <translation>Ungependa kuzima usaidizi wa faili za kipekee</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1154"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1162"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as &quot;available online only&quot; will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -1205,87 +1217,87 @@ Faida pekee ya kulemaza usaidizi wa faili pepe ni kwamba kipengele cha kusawazis
 Kitendo hiki kitakomesha ulandanishi wowote unaoendeshwa kwa sasa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1161"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1169"/>
         <source>Disable support</source>
         <translation>Zima usaidizi</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1248"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1256"/>
         <source>End-to-end encryption mnemonic</source>
         <translation>Mnemonic ya usimbaji-mwisho-hadi-mwisho</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1250"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1258"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
         <translation>Ili kulinda Utambulisho wako wa Kriptografia, tunaisimba kwa njia fiche kwa mnemonic ya maneno 12 ya kamusi. Tafadhali kumbuka na uihifadhi salama. Utaihitaji ili kusanidi ulandanishi wa folda zilizosimbwa kwa njia fiche kwenye vifaa vyako vingine.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1275"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1283"/>
         <source>Forget the end-to-end encryption on this device</source>
         <translation>Sahau usimbaji fiche kutoka mwisho hadi mwisho kwenye kifaa hiki</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1276"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1284"/>
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
         <translation>Je, ungependa kusahau mipangilio ya usimbaji fiche kutoka mwisho hadi mwisho ya %1 kwenye kifaa hiki?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1277"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1285"/>
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
         <translation>Kusahau usimbaji fiche kutoka mwanzo hadi mwisho kutaondoa data nyeti na faili zote zilizosimbwa kwa njia fiche kutoka kwa kifaa hiki.&lt;br&gt;Hata hivyo, faili zilizosimbwa zitasalia kwenye seva na vifaa vyako vingine vyote, ikiwa zitasanidiwa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1382"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1390"/>
         <source>Sync Running</source>
         <translation>Uendeshaji wa Usawazishaji</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1383"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1391"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Operesheni ya kusawazisha inaendelea.&lt;br/&gt;Je, unataka kuizima?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1455"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1463"/>
         <source>%1 in use</source>
         <translation>%1 katika matumizi</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1495"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1503"/>
         <source>Connected to %1 (%2).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1542"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1550"/>
         <source>Log in</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1543"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1551"/>
         <source>Leave share</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1545"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1553"/>
         <source>Remove this public share connection from the client.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1732"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1740"/>
         <source>Migrate certificate to a new one</source>
         <translation>Hamisha cheti kwa kipya</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1839"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1847"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Kuna folda ambazo zimekua kwa ukubwa zaidi ya %1MB: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1893"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1901"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
         <translation>Usimbaji fiche wa mwisho hadi mwisho umeanzishwa kwenye akaunti hii kwa kifaa kingine.1Ingiza kumbukumbu ya kipekee ili folda zilizosimbwa zisawazishwe kwenye kifaa hiki pia.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1966"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1974"/>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
         <translation>Akaunti hii inaweza kutumia usimbaji fiche kutoka mwanzo hadi mwisho, lakini inahitaji kusanidiwa kwanza.</translation>
     </message>
@@ -1295,118 +1307,133 @@ Kitendo hiki kitakomesha ulandanishi wowote unaoendeshwa kwa sasa.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1961"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2057"/>
+        <source>This resets the File Provider for %1 to its initial state. Use it when this account&apos;s files appear stuck, missing, or out of sync in Finder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="2061"/>
+        <source>The location will briefly disappear from and reappear in Finder. Any local changes that have not been uploaded yet are preserved and revealed in a folder in Finder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="2066"/>
+        <source>Reset File Provider Domain for this account?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1969"/>
         <source>The File Provider extension does not support end-to-end encryption yet.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1968"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1976"/>
         <source>Set up encryption</source>
         <translation>Sanidi usimbaji fiche</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1493"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1501"/>
         <source>Connected to %1.</source>
         <translation>Imeunganishwa kwenye %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1501"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1509"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Seva %1 haipatikani kwa muda.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1504"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1512"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Seva %1 kwa sasa iko katika hali ya matengenezo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1510"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1518"/>
         <source>Signed out from %1.</source>
         <translation>Umetoka kwenye %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1826"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1834"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Kuna folda ambazo hazikusawazishwa kwa sababu ni kubwa sana.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1827"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1835"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Kuna folda ambazo hazikusawazishwa kwa sababu ni hifadhi za nje:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1828"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1836"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Kuna folda ambazo hazijasawazishwa kwa sababu ni kubwa sana au hifadhi za nje:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="653"/>
-        <location filename="../src/gui/accountsettings.cpp" line="747"/>
+        <location filename="../src/gui/accountsettings.cpp" line="661"/>
+        <location filename="../src/gui/accountsettings.cpp" line="755"/>
         <source>Open folder</source>
         <translation>Fungua folda</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="772"/>
+        <location filename="../src/gui/accountsettings.cpp" line="780"/>
         <source>Resume sync</source>
         <translation>Endelea kusawazisha</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="772"/>
+        <location filename="../src/gui/accountsettings.cpp" line="780"/>
         <source>Pause sync</source>
         <translation>Simamisha kusawazisha</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="903"/>
+        <location filename="../src/gui/accountsettings.cpp" line="911"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Haikuweza kuunda folda ya ndani &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="970"/>
+        <location filename="../src/gui/accountsettings.cpp" line="978"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Je, kweli unataka kuacha kusawazisha folda &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Kumbuka:&lt;/b&gt; Hii &lt;b&gt;si&lt;/b&gt; itafuta faili zozote.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1448"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1456"/>
         <source>%1 of %2 in use</source>
         <translation>%1 ya %2 katika matumizi</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1484"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1492"/>
         <source>%1 as %2</source>
         <translation>%1 kama %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1491"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1499"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Toleo la seva %1 halitumiki! Endelea kwa hatari yako mwenyewe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1507"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1515"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
         <translation>Seva %1 inaelekezwa kwingine kwa sasa, au muunganisho wako upo nyuma ya lango kuu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1513"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1521"/>
         <source>Connecting to %1 …</source>
         <translation>Inaunganisha kwenye %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1517"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1525"/>
         <source>Unable to connect to %1.</source>
         <translation>Haiwezi kuunganisha kwenye %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1522"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1530"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Hitilafu ya usanidi wa seva: %1 kwenye %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1531"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1539"/>
         <source>You need to accept the terms of service at %1.</source>
         <translation>Unahitaji kukubali sheria na masharti katika %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1536"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1544"/>
         <source>No %1 connection configured.</source>
         <translation>Hakuna muunganisho %1 uliosanidiwa.</translation>
     </message>
@@ -2564,16 +2591,16 @@ Hili linaweza kuwa tatizo na maktaba zako za OpenSSL.</translation>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="57"/>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="64"/>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="70"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="173"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="182"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="215"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="176"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="185"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="218"/>
         <source>Error fetching metadata.</source>
         <translation>Hitilafu katika kuleta metadata.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="125"/>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="131"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="229"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="232"/>
         <source>Error locking folder.</source>
         <translation>Hitilafu katika kufunga folda.</translation>
     </message>
@@ -2583,12 +2610,12 @@ Hili linaweza kuwa tatizo na maktaba zako za OpenSSL.</translation>
         <translation>Hitilafu katika kuleta kitambulisho cha folda iliyosimbwa kwa njia fiche.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="197"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="200"/>
         <source>Error parsing or decrypting metadata.</source>
         <translation>Hitilafu katika kuchanganua au kusimbua metadata.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="340"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="343"/>
         <source>Failed to upload metadata</source>
         <translation>Imeshindwa kupakia metadata</translation>
     </message>
@@ -4743,68 +4770,68 @@ Kumbuka kuwa kutumia chaguo zozote za mstari wa amri ya kukata miti kutabatilish
         <translation>Faili haipatikani kwenye seva.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1215"/>
+        <location filename="../src/libsync/discovery.cpp" line="1238"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Haiwezi kusawazisha kwa sababu ya muda batili wa urekebishaji</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1231"/>
+        <location filename="../src/libsync/discovery.cpp" line="1254"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>Upakiaji wa %1 unazidi %2 ya nafasi iliyosalia katika faili za kibinafsi.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1234"/>
+        <location filename="../src/libsync/discovery.cpp" line="1257"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>Upakiaji wa %1 unazidi %2 ya nafasi iliyosalia kwenye folda %3.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1250"/>
+        <location filename="../src/libsync/discovery.cpp" line="1273"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Haikuweza kupakia faili, kwa sababu imefunguliwa katika &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1303"/>
+        <location filename="../src/libsync/discovery.cpp" line="1326"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Hitilafu wakati wa kufuta rekodi ya faili %1 kutoka kwa hifadhidata</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1590"/>
-        <location filename="../src/libsync/discovery.cpp" line="2061"/>
+        <location filename="../src/libsync/discovery.cpp" line="1613"/>
+        <location filename="../src/libsync/discovery.cpp" line="2084"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Imehamishwa hadi kwenye lengo batili, inarejesha</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1918"/>
+        <location filename="../src/libsync/discovery.cpp" line="1941"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Haiwezi kurekebisha kipengee kilichosimbwa kwa sababu cheti kilichochaguliwa si sahihi.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1985"/>
+        <location filename="../src/libsync/discovery.cpp" line="2008"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Imepuuzwa kwa sababu ya orodha isiyoruhusiwa ya &quot;chagua cha kusawazisha&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2019"/>
+        <location filename="../src/libsync/discovery.cpp" line="2042"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Hairuhusiwi kwa sababu huna ruhusa ya kuongeza folda ndogo kwenye folda hiyo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2025"/>
+        <location filename="../src/libsync/discovery.cpp" line="2048"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Hairuhusiwi kwa sababu huna ruhusa ya kuongeza faili katika folda hiyo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2039"/>
+        <location filename="../src/libsync/discovery.cpp" line="2062"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Hairuhusiwi kupakia faili hii kwa sababu inasomwa tu kwenye seva, inarejeshwa</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2075"/>
+        <location filename="../src/libsync/discovery.cpp" line="2098"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Hairuhusiwi kuondoa, kurejesha</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2246"/>
+        <location filename="../src/libsync/discovery.cpp" line="2269"/>
         <source>Error while reading the database</source>
         <translation>Hitilafu wakati wa kusoma hifadhidata</translation>
     </message>
