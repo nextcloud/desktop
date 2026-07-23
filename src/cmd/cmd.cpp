@@ -7,7 +7,9 @@
 #include <cstdlib>
 #include <iostream>
 #include <qcoreapplication.h>
+#include <QDir>
 #include <QStringList>
+#include <QTimer>
 #include <QUrl>
 #include <QFile>
 #include <QFileInfo>
@@ -23,9 +25,15 @@
 #else
 # include "creds/httpcredentials.h"
 #endif
+#include "creds/abstractcredentials.h"
+#include "networkjobs.h"
+#include <qt6keychain/keychain.h>
 #include "simplesslerrorhandler.h"
 #include "syncengine.h"
+#include "common/filesystembase.h"
 #include "common/syncjournaldb.h"
+#include "common/utility.h"
+#include "common/vfs.h"
 #include "config.h"
 #include "csync_exclude.h"
 
@@ -72,6 +80,13 @@ struct CmdOptions
     int restartTimes = 0;
     int downlimit = 0;
     int uplimit = 0;
+    // Provisioning mode fields (--userid, --apppassword, --serverurl, etc.)
+    QString userId;
+    QString appPassword;
+    QUrl serverUrl;
+    QString localDirPath;
+    QString remoteDirPath = QStringLiteral("/");
+    bool isVfsEnabled = false;
 };
 
 // we can't use csync_set_userdata because the SyncEngine sets it already.
@@ -162,6 +177,7 @@ void help()
     std::cout << binaryName << " - command line " APPLICATION_NAME " client tool" << std::endl;
     std::cout << "" << std::endl;
     std::cout << "Usage: " << binaryName << " [OPTION] <source_dir> <server_url>" << std::endl;
+    std::cout << "       " << binaryName << " --userid <user> --apppassword <pass> --serverurl <url> [OPTION]" << std::endl;
     std::cout << "" << std::endl;
     std::cout << "A proxy can either be set manually using --httpproxy." << std::endl;
     std::cout << "Otherwise, the setting from a configured sync client will be used." << std::endl;
@@ -188,6 +204,15 @@ void help()
     std::cout << "  --version, -v          Display version and exit" << std::endl;
     std::cout << "  --logdebug             More verbose logging" << std::endl;
     std::cout << "  --path                 Path to a folder on a remote server" << std::endl;
+    std::cout << "  --confdir [dir]        Use the given configuration directory" << std::endl;
+    std::cout << "" << std::endl;
+    std::cout << "Account provisioning options (non-interactive setup):" << std::endl;
+    std::cout << "  --userid [user]        The user ID to configure" << std::endl;
+    std::cout << "  --apppassword [pass]   The app password to use for authentication" << std::endl;
+    std::cout << "  --serverurl [url]      The base URL of the Nextcloud server" << std::endl;
+    std::cout << "  --localdirpath [path]  Local folder path for sync (optional)" << std::endl;
+    std::cout << "  --remotedirpath [path] Remote folder path to sync, default /" << std::endl;
+    std::cout << "  --isvfsenabled [0|1]   Enable virtual files (1) or disable (0)" << std::endl;
     std::cout << "" << std::endl;
     exit(0);
 }
@@ -204,28 +229,37 @@ void parseOptions(const QStringList &app_args, CmdOptions *options)
 
     int argCount = args.count();
 
-    if (argCount < 3) {
-        if (argCount >= 2) {
-            const QString option = args.at(1);
-            if (option == "-v" || option == "--version") {
-                showVersion();
+    // Detect provisioning mode: --userid flag present means no positional args required
+    const bool provisionMode = args.contains(QStringLiteral("--userid"));
+
+    if (!provisionMode) {
+        if (argCount < 3) {
+            if (argCount >= 2) {
+                const QString option = args.at(1);
+                if (option == "-v" || option == "--version") {
+                    showVersion();
+                }
             }
+            help();
         }
-        help();
-    }
 
-    options->target_url = args.takeLast();
+        options->target_url = args.takeLast();
 
-    options->source_dir = args.takeLast();
-    if (!options->source_dir.endsWith('/')) {
-        options->source_dir.append('/');
+        options->source_dir = args.takeLast();
+        if (!options->source_dir.endsWith('/')) {
+            options->source_dir.append('/');
+        }
+        QFileInfo fi(options->source_dir);
+        if (!fi.exists()) {
+            std::cerr << "Source dir '" << qPrintable(options->source_dir) << "' does not exist." << std::endl;
+            exit(1);
+        }
+        options->source_dir = fi.absoluteFilePath();
+    } else {
+        if (argCount >= 2 && (args.at(1) == QStringLiteral("-v") || args.at(1) == QStringLiteral("--version"))) {
+            showVersion();
+        }
     }
-    QFileInfo fi(options->source_dir);
-    if (!fi.exists()) {
-        std::cerr << "Source dir '" << qPrintable(options->source_dir) << "' does not exist." << std::endl;
-        exit(1);
-    }
-    options->source_dir = fi.absoluteFilePath();
 
     QStringListIterator it(args);
     // skip file name;
@@ -235,48 +269,341 @@ void parseOptions(const QStringList &app_args, CmdOptions *options)
     while (it.hasNext()) {
         const QString option = it.next();
 
-        if (option == "--httpproxy" && !it.peekNext().startsWith("-")) {
+        if (option == QStringLiteral("--httpproxy") && it.hasNext() && !it.peekNext().startsWith("-")) {
             options->proxy = it.next();
-        } else if (option == "-s" || option == "--silent") {
+        } else if (option == QStringLiteral("-s") || option == QStringLiteral("--silent")) {
             options->silent = true;
-        } else if (option == "--trust") {
+        } else if (option == QStringLiteral("--trust")) {
             options->trustSSL = true;
-        } else if (option == "-n") {
+        } else if (option == QStringLiteral("-n")) {
             options->useNetrc = true;
-        } else if (option == "-h") {
+        } else if (option == QStringLiteral("-h")) {
             options->ignoreHiddenFiles = false;
-        } else if (option == "--non-interactive") {
+        } else if (option == QStringLiteral("--non-interactive")) {
             options->interactive = false;
-        } else if ((option == "-u" || option == "--user") && !it.peekNext().startsWith("-")) {
+        } else if ((option == QStringLiteral("-u") || option == QStringLiteral("--user")) && it.hasNext() && !it.peekNext().startsWith("-")) {
             options->user = it.next();
-        } else if ((option == "-p" || option == "--password") && !it.peekNext().startsWith("-")) {
+        } else if ((option == QStringLiteral("-p") || option == QStringLiteral("--password")) && it.hasNext() && !it.peekNext().startsWith("-")) {
             options->password = it.next();
-        } else if (option == "--exclude" && !it.peekNext().startsWith("-")) {
+        } else if (option == QStringLiteral("--exclude") && it.hasNext() && !it.peekNext().startsWith("-")) {
             options->exclude = it.next();
-        } else if (option == "--exclude-anchored" && !it.peekNext().startsWith("-")) {
+        } else if (option == QStringLiteral("--exclude-anchored") && it.hasNext() && !it.peekNext().startsWith("-")) {
             options->excludeAnchored = it.next();
-        } else if (option == "--unsyncedfolders" && !it.peekNext().startsWith("-")) {
+        } else if (option == QStringLiteral("--unsyncedfolders") && it.hasNext() && !it.peekNext().startsWith("-")) {
             options->unsyncedfolders = it.next();
-        } else if (option == "--max-sync-retries" && !it.peekNext().startsWith("-")) {
+        } else if (option == QStringLiteral("--max-sync-retries") && it.hasNext() && !it.peekNext().startsWith("-")) {
             options->restartTimes = it.next().toInt();
-        } else if (option == "--uplimit" && !it.peekNext().startsWith("-")) {
+        } else if (option == QStringLiteral("--uplimit") && it.hasNext() && !it.peekNext().startsWith("-")) {
             options->uplimit = it.next().toInt() * 1000;
-        } else if (option == "--downlimit" && !it.peekNext().startsWith("-")) {
+        } else if (option == QStringLiteral("--downlimit") && it.hasNext() && !it.peekNext().startsWith("-")) {
             options->downlimit = it.next().toInt() * 1000;
-        } else if (option == "--logdebug") {
+        } else if (option == QStringLiteral("--logdebug")) {
             Logger::instance()->setLogFile("-");
             Logger::instance()->setLogDebug(true);
-        } else if (option == "--path" && !it.peekNext().startsWith("-")) {
+        } else if (option == QStringLiteral("--path") && it.hasNext() && !it.peekNext().startsWith("-")) {
             options->remotePath = it.next();
-        }
-        else {
+        } else if (option == QStringLiteral("--confdir") && it.hasNext() && !it.peekNext().startsWith("--")) {
+            options->config_directory = it.next();
+        } else if (option == QStringLiteral("--userid") && it.hasNext() && !it.peekNext().startsWith("--")) {
+            options->userId = it.next();
+        } else if (option == QStringLiteral("--apppassword") && it.hasNext() && !it.peekNext().startsWith("--")) {
+            options->appPassword = it.next();
+        } else if (option == QStringLiteral("--serverurl") && it.hasNext() && !it.peekNext().startsWith("--")) {
+            options->serverUrl = QUrl::fromUserInput(it.next());
+        } else if (option == QStringLiteral("--localdirpath") && it.hasNext() && !it.peekNext().startsWith("--")) {
+            options->localDirPath = it.next();
+        } else if (option == QStringLiteral("--remotedirpath") && it.hasNext() && !it.peekNext().startsWith("--")) {
+            options->remoteDirPath = it.next();
+        } else if (option == QStringLiteral("--isvfsenabled") && it.hasNext() && !it.peekNext().startsWith("--")) {
+            options->isVfsEnabled = it.next().toInt() != 0;
+        } else {
             help();
         }
     }
 
-    if (options->target_url.isEmpty() || options->source_dir.isEmpty()) {
+    if (!provisionMode && (options->target_url.isEmpty() || options->source_dir.isEmpty())) {
         help();
     }
+}
+
+static int runProvisionMode(const CmdOptions &options)
+{
+    // 1. Check for duplicate account in config
+    {
+        auto settings = ConfigFile::settingsWithGroup(QStringLiteral("Accounts"));
+        const auto childGroups = settings->childGroups();
+        for (const auto &accountId : childGroups) {
+            settings->beginGroup(accountId);
+            const QString existingDavUser = settings->value(QStringLiteral("davUser")).toString();
+            const QUrl existingUrl = QUrl(settings->value(QStringLiteral("url")).toString());
+            settings->endGroup();
+            if (existingDavUser == options.userId && existingUrl.host() == options.serverUrl.host()) {
+                std::cerr << "Account " << qPrintable(options.userId) << " already exists!" << std::endl;
+                return EXIT_FAILURE;
+            }
+        }
+    }
+
+    // 2. Create local folder if specified
+    if (!options.localDirPath.isEmpty()) {
+        QDir dir(options.localDirPath);
+        if (dir.exists() && !dir.isEmpty()) {
+            std::cerr << "Local folder '" << qPrintable(QDir::toNativeSeparators(options.localDirPath))
+                      << "' already exists and is non-empty!" << std::endl;
+            return EXIT_FAILURE;
+        }
+        if (!dir.exists() && !dir.mkpath(QStringLiteral("."))) {
+            std::cerr << "Could not create local folder '" << qPrintable(QDir::toNativeSeparators(options.localDirPath))
+                      << "'" << std::endl;
+            return EXIT_FAILURE;
+        }
+        FileSystem::setFolderMinimumPermissions(options.localDirPath);
+        Utility::setupFavLink(options.localDirPath);
+        std::cout << "Created local folder: " << qPrintable(options.localDirPath) << std::endl;
+    }
+
+    // 3. Create account with credentials
+    AccountPtr account = Account::create();
+    if (!account) {
+        std::cerr << "Could not initialize account!" << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    auto *sslErrorHandler = new SimpleSslErrorHandler;
+    account->setSslErrorHandler(sslErrorHandler);
+    account->setUrl(options.serverUrl);
+
+#ifdef TOKEN_AUTH_ONLY
+    auto *cred = new TokenCredentials(options.userId, options.appPassword, QString());
+#else
+    auto *cred = new HttpCredentialsText(options.userId, options.appPassword);
+#endif
+    account->setCredentials(cred);
+
+    QEventLoop loop;
+
+    // 4. Check server connectivity
+    auto *csjob = new CheckServerJob(account);
+    csjob->setIgnoreCredentialFailure(true);
+    bool serverFound = false;
+    QObject::connect(csjob, &CheckServerJob::instanceFound, [&](const QUrl &, const QJsonObject &info) {
+        serverFound = true;
+        const QString serverVersion = CheckServerJob::version(info);
+        if (!serverVersion.isEmpty()) {
+            account->setServerVersion(serverVersion);
+        }
+        loop.quit();
+    });
+    QObject::connect(csjob, &CheckServerJob::instanceNotFound, [&]() { loop.quit(); });
+    QObject::connect(csjob, &CheckServerJob::timeout, [&](const QUrl &) { loop.quit(); });
+    csjob->start();
+    loop.exec();
+
+    if (!serverFound) {
+        std::cerr << "Error connecting to server " << qPrintable(options.serverUrl.toString()) << std::endl;
+        return EXIT_FAILURE;
+    }
+    std::cout << "Server found: " << qPrintable(options.serverUrl.toString()) << std::endl;
+
+    // 5. Fetch capabilities
+    auto *capJob = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/capabilities"));
+    bool capSuccess = false;
+    QObject::connect(capJob, &JsonApiJob::jsonReceived, [&](const QJsonDocument &json, int) {
+        const auto caps = json.object().value(QLatin1String("ocs")).toObject()
+                              .value(QLatin1String("data")).toObject()
+                              .value(QLatin1String("capabilities")).toObject();
+        account->setCapabilities(caps.toVariantMap());
+        const QString serverVersion = caps[QLatin1String("core")].toObject()
+                                          [QLatin1String("status")].toObject()
+                                          [QLatin1String("version")].toString();
+        if (!serverVersion.isEmpty()) {
+            account->setServerVersion(serverVersion);
+        }
+        capSuccess = true;
+        loop.quit();
+    });
+    capJob->start();
+    loop.exec();
+
+    if (!capSuccess) {
+        std::cerr << "Error fetching server capabilities" << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    // 6. Fetch user info
+    auto *userJob = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/user"));
+    bool userSuccess = false;
+    QObject::connect(userJob, &JsonApiJob::jsonReceived, [&](const QJsonDocument &json, int statusCode) {
+        if (statusCode != 100) {
+            loop.quit();
+            return;
+        }
+        const auto objData = json.object().value(QLatin1String("ocs")).toObject()
+                                 .value(QLatin1String("data")).toObject();
+        account->setDavUser(objData.value(QLatin1String("id")).toString());
+        account->setDavDisplayName(objData.value(QLatin1String("display-name")).toString());
+        userSuccess = true;
+        loop.quit();
+    });
+    userJob->start();
+    loop.exec();
+
+    if (!userSuccess || account->davUser().isEmpty()) {
+        std::cerr << "Could not fetch user info from server" << std::endl;
+        return EXIT_FAILURE;
+    }
+    std::cout << "User: " << qPrintable(account->davDisplayName())
+              << " (" << qPrintable(account->davUser()) << ")" << std::endl;
+
+    // 7. Validate credentials with PROPFIND (handle redirect and 404-as-success)
+    bool propfindSuccess = false;
+    for (int retry = 0; retry < 2 && !propfindSuccess; ++retry) {
+        bool retryNeeded = false;
+        auto *propfindJob = new PropfindJob(account, QStringLiteral("/"));
+        propfindJob->setIgnoreCredentialFailure(true);
+        propfindJob->setFollowRedirects(false);
+        propfindJob->setProperties(QList<QByteArray>() << QByteArrayLiteral("getlastmodified"));
+        QObject::connect(propfindJob, &PropfindJob::result, [&](const QVariantMap &) {
+            propfindSuccess = true;
+            loop.quit();
+        });
+        QObject::connect(propfindJob, &PropfindJob::finishedWithError, [&](QNetworkReply *reply) {
+            if (!reply) {
+                loop.quit();
+                return;
+            }
+            const QUrl redirectUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+            if (!redirectUrl.isEmpty()) {
+                auto path = redirectUrl.path();
+                const QString expectedPath = QStringLiteral("/") + account->davPath();
+                if (path.endsWith(expectedPath)) {
+                    path.chop(expectedPath.size());
+                    QUrl newUrl = redirectUrl;
+                    newUrl.setPath(path);
+                    account->setUrl(newUrl);
+                    retryNeeded = true;
+                }
+            } else if (reply->error() == QNetworkReply::ContentNotFoundError) {
+                // 404 means we were authorised — the folder will be created later
+                propfindSuccess = true;
+            }
+            loop.quit();
+        });
+        propfindJob->start();
+        loop.exec();
+
+        if (!retryNeeded) {
+            break;
+        }
+    }
+
+    if (!propfindSuccess) {
+        std::cerr << "Could not validate credentials against server" << std::endl;
+        return EXIT_FAILURE;
+    }
+    std::cout << "Credentials validated successfully" << std::endl;
+
+    // 8. Assign account ID (find next free integer slot in config)
+    {
+        auto settings = ConfigFile::settingsWithGroup(QStringLiteral("Accounts"));
+        int idx = 0;
+        while (settings->childGroups().contains(QString::number(idx))) {
+            ++idx;
+        }
+        account->setProperty("id", QString::number(idx));
+    }
+
+    // 9. Write password to keychain and wait for completion
+    account->setCredentialSetting(QStringLiteral("user"), options.userId);
+    const QString keychainKey = AbstractCredentials::keychainKey(
+        account->url().toString(), options.userId, account->id());
+    if (!keychainKey.isEmpty()) {
+        auto *writeJob = new QKeychain::WritePasswordJob(Theme::instance()->appName());
+        auto keychainSettings = ConfigFile::settingsWithGroup(Theme::instance()->appName());
+        writeJob->setSettings(keychainSettings.release());
+        writeJob->setInsecureFallback(false);
+        writeJob->setKey(keychainKey);
+        writeJob->setTextData(options.appPassword);
+        bool keychainDone = false;
+        QObject::connect(writeJob, &QKeychain::Job::finished, [&](QKeychain::Job *job) {
+            if (job->error() != QKeychain::NoError) {
+                std::cerr << "Warning: could not save credentials to keychain: "
+                          << qPrintable(job->errorString()) << std::endl;
+            }
+            keychainDone = true;
+            loop.quit();
+        });
+        QTimer::singleShot(10000, &loop, [&]() {
+            if (!keychainDone) {
+                std::cerr << "Warning: credential persistence timed out" << std::endl;
+            }
+            loop.quit();
+        });
+        writeJob->start();
+        loop.exec();
+    } else {
+        std::cerr << "Warning: could not generate keychain key, credentials not saved" << std::endl;
+    }
+
+    // 10. Write account settings to disk
+    {
+        auto settings = ConfigFile::settingsWithGroup(QStringLiteral("Accounts"));
+        settings->setValue(QStringLiteral("version"), 13);
+        settings->beginGroup(account->id());
+        settings->setValue(QStringLiteral("version"), 13);
+        settings->setValue(QStringLiteral("url"), account->url().toString());
+        settings->setValue(QStringLiteral("davUser"), account->davUser());
+        settings->setValue(QStringLiteral("displayName"), account->davDisplayName());
+        settings->setValue(QStringLiteral("serverVersion"), account->serverVersion());
+        settings->setValue(QStringLiteral("authType"), account->credentials()->authType());
+        settings->setValue(QStringLiteral("user"), options.userId);
+
+        // 11. Write folder settings if a local path was specified
+        if (!options.localDirPath.isEmpty()) {
+            QString localPath = options.localDirPath;
+            if (!localPath.endsWith(QLatin1Char('/'))) {
+                localPath.append(QLatin1Char('/'));
+            }
+
+            // Normalise remote path: must start with '/', must not end with '/' (except bare "/")
+            QString targetPath = options.remoteDirPath.isEmpty() ? QStringLiteral("/") : options.remoteDirPath;
+            if (targetPath.endsWith(QLatin1Char('/')) && targetPath.size() > 1) {
+                targetPath.chop(1);
+            }
+            if (!targetPath.startsWith(QLatin1Char('/'))) {
+                targetPath.prepend(QLatin1Char('/'));
+            }
+
+            const Vfs::Mode vfsMode = options.isVfsEnabled ? bestAvailableVfsMode() : Vfs::Off;
+            const QString folderGroup = (vfsMode != Vfs::Off)
+                ? QStringLiteral("FoldersWithPlaceholders")
+                : QStringLiteral("Folders");
+            const QString journalPath = SyncJournalDb::makeDbName(localPath, account->url(), targetPath, options.userId);
+
+            settings->beginGroup(folderGroup);
+            settings->beginGroup(QStringLiteral("0"));
+            settings->setValue(QStringLiteral("localPath"), localPath);
+            settings->setValue(QStringLiteral("journalPath"), journalPath);
+            settings->setValue(QStringLiteral("targetPath"), targetPath);
+            settings->setValue(QStringLiteral("paused"), false);
+            settings->setValue(QStringLiteral("ignoreHiddenFiles"), true);
+            settings->setValue(QStringLiteral("virtualFilesMode"), Vfs::modeToString(vfsMode));
+            settings->setValue(QStringLiteral("version"), (vfsMode == Vfs::WindowsCfApi) ? 3 : 2);
+            settings->endGroup();
+            settings->endGroup();
+        }
+
+        settings->endGroup();
+        settings->sync();
+    }
+
+    const QString successMsg = options.localDirPath.isEmpty()
+        ? QStringLiteral("Account %1 set up successfully (no sync folder configured).")
+              .arg(account->davUser())
+        : QStringLiteral("Account %1 set up successfully with folder %2.")
+              .arg(account->davUser(), options.localDirPath);
+    std::cout << qPrintable(successMsg) << std::endl;
+    return EXIT_SUCCESS;
 }
 
 /* If the selective sync list is different from before, we need to disable the read from db
@@ -328,6 +655,16 @@ int main(int argc, char **argv)
         qInstallMessageHandler(nullMessageHandler);
     } else {
         qSetMessagePattern("%{time MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}");
+    }
+
+    if (!options.config_directory.isEmpty()) {
+        if (!ConfigFile::setConfDir(options.config_directory)) {
+            std::cerr << "Invalid confdir '" << qPrintable(options.config_directory) << "', disabling." << std::endl;
+        }
+    }
+
+    if (!options.userId.isEmpty() && options.serverUrl.isValid() && !options.appPassword.isEmpty()) {
+        return runProvisionMode(options);
     }
 
     AccountPtr account = Account::create();
