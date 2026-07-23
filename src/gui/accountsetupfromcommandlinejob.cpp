@@ -80,6 +80,10 @@ void AccountSetupFromCommandLineJob::handleAccountSetupFromCommandLine()
 
     Q_EMIT _account->wantsAccountSaved(_account);
 
+    if (_appPassword.isEmpty()) {
+        return;
+    }
+
     fetchUserName();
 }
 
