@@ -52,6 +52,8 @@ class RealmItemMetadata: Object, ItemMetadata {
     @Persisted var lockToken: String? // Token identifier for token-based locks
     @Persisted var path = ""
     @Persisted var permissions = ""
+    @Persisted(indexed: true) var normalizedServerUrl = ""
+    @Persisted var normalizedFileName = ""
     @Persisted var quotaUsedBytes: Int64 = 0
     @Persisted var quotaAvailableBytes: Int64 = 0
     @Persisted var resourceType = ""
@@ -161,6 +163,8 @@ class RealmItemMetadata: Object, ItemMetadata {
         resourceType = value.resourceType
         richWorkspace = value.richWorkspace
         serverUrl = value.serverUrl
+        normalizedServerUrl = value.serverUrl.canonicalForm
+        normalizedFileName = value.fileName.canonicalForm
         session = value.session
         sessionError = value.sessionError
         sessionTaskIdentifier = value.sessionTaskIdentifier
