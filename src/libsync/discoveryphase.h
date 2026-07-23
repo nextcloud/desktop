@@ -283,6 +283,14 @@ class DiscoveryPhase : public QObject
     /// contains files/folder names that are requested to be deleted permanently
     QSet<QString> _permanentDeletionRequests;
 
+    /** Paths with an async 404 in flight to confirm server deletion.
+     *
+     * While a path is here, children blocked from upload because of quota errors must not
+     * prevent the parent folder from being removed. Rename detection takes priority and
+     * will claim the path once the 404 confirms deletion.
+     */
+    QSet<QString> _pendingRenameSourcePaths;
+
     void markPermanentDeletionRequests();
 
 public:
