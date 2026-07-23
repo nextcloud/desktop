@@ -60,6 +60,8 @@ namespace FileSystem {
     bool OWNCLOUDSYNC_EXPORT isMatchingAutoCADDocumentExtension(const QString &path);
     // check if it is an Adobe document guarded by an Adobe lock file (by extension), ONLY call it for files
     bool OWNCLOUDSYNC_EXPORT isMatchingAdobeDocumentExtension(const QString &path);
+    // check if it is an Affinity document (by extension), ONLY call it for files
+    bool OWNCLOUDSYNC_EXPORT isMatchingAffinityDocumentExtension(const QString &path);
     // finds and fetches FileLockingInfo for the corresponding file that we are locking/unlocking
     FileLockingInfo OWNCLOUDSYNC_EXPORT lockFileTargetFilePath(const QString &lockFilePath, const QString &lockFileNamePattern);
     // lists all files matching a lockfile pattern in dirPath
