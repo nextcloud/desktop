@@ -103,8 +103,8 @@ public extension ItemMetadata {
     /// ignoring Unicode canonical-equivalence differences.
     func hasSameLocation(as comparingMetadata: any ItemMetadata) -> Bool {
         account == comparingMetadata.account
-            && serverUrl.canonicalForm == comparingMetadata.serverUrl.canonicalForm
-            && fileName.canonicalForm == comparingMetadata.fileName.canonicalForm
+            && serverUrl.precomposedStringWithCanonicalMapping == comparingMetadata.serverUrl.precomposedStringWithCanonicalMapping
+            && fileName.precomposedStringWithCanonicalMapping == comparingMetadata.fileName.precomposedStringWithCanonicalMapping
     }
 
     var livePhoto: Bool {
