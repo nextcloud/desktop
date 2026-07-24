@@ -32,8 +32,7 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
         let metadata = RealmItemMetadata()
         metadata.ocId = "lock-1"
         metadata.account = "TestAccount"
-        metadata.serverUrl = "https://cloud.example.com/files/old"
-        metadata.fileName = "doc.txt"
+        metadata.updateLocation(serverUrl: "https://cloud.example.com/files/old", fileName: "doc.txt")
         metadata.lockToken = "opaquelocktoken:abc123"
 
         let realm = Self.dbManager.ncDatabase()
@@ -54,15 +53,13 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
         let dir = RealmItemMetadata()
         dir.ocId = "lock-dir"
         dir.account = "TestAccount"
-        dir.serverUrl = "https://cloud.example.com/files"
-        dir.fileName = "folder"
+        dir.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "folder")
         dir.directory = true
 
         let child = RealmItemMetadata()
         child.ocId = "lock-child"
         child.account = "TestAccount"
-        child.serverUrl = "https://cloud.example.com/files/folder"
-        child.fileName = "important.docx"
+        child.updateLocation(serverUrl: "https://cloud.example.com/files/folder", fileName: "important.docx")
         child.lockToken = "opaquelocktoken:xyz789"
 
         let realm = Self.dbManager.ncDatabase()

@@ -32,27 +32,23 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
         let directoryMetadata = RealmItemMetadata()
         directoryMetadata.ocId = "dir-A"
         directoryMetadata.account = "TestAccount"
-        directoryMetadata.serverUrl = "https://cloud.example.com/files"
-        directoryMetadata.fileName = "photos"
+        directoryMetadata.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "photos")
         directoryMetadata.directory = true
 
         let childMetadata = RealmItemMetadata()
         childMetadata.ocId = "child-1"
         childMetadata.account = "TestAccount"
-        childMetadata.serverUrl = "https://cloud.example.com/files/photos"
-        childMetadata.fileName = "pic.jpg"
+        childMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/photos", fileName: "pic.jpg")
 
         let nestedChild = RealmItemMetadata()
         nestedChild.ocId = "nested-1"
         nestedChild.account = "TestAccount"
-        nestedChild.serverUrl = "https://cloud.example.com/files/photos/vacation"
-        nestedChild.fileName = "beach.jpg"
+        nestedChild.updateLocation(serverUrl: "https://cloud.example.com/files/photos/vacation", fileName: "beach.jpg")
 
         let siblingMetadata = RealmItemMetadata()
         siblingMetadata.ocId = "sibling-1"
         siblingMetadata.account = "TestAccount"
-        siblingMetadata.serverUrl = "https://cloud.example.com/files/photos-backup"
-        siblingMetadata.fileName = "old.jpg"
+        siblingMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/photos-backup", fileName: "old.jpg")
 
         let realm = Self.dbManager.ncDatabase()
         try realm.write {
@@ -76,21 +72,18 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
         let directoryMetadata = RealmItemMetadata()
         directoryMetadata.ocId = "dir-B"
         directoryMetadata.account = "TestAccount"
-        directoryMetadata.serverUrl = "https://cloud.example.com/files"
-        directoryMetadata.fileName = "docs"
+        directoryMetadata.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "docs")
         directoryMetadata.directory = true
 
         let childMetadata = RealmItemMetadata()
         childMetadata.ocId = "child-2"
         childMetadata.account = "TestAccount"
-        childMetadata.serverUrl = "https://cloud.example.com/files/docs"
-        childMetadata.fileName = "report.pdf"
+        childMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/docs", fileName: "report.pdf")
 
         let siblingMetadata = RealmItemMetadata()
         siblingMetadata.ocId = "sibling-2"
         siblingMetadata.account = "TestAccount"
-        siblingMetadata.serverUrl = "https://cloud.example.com/files/docs-archive"
-        siblingMetadata.fileName = "old-report.pdf"
+        siblingMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/docs-archive", fileName: "old-report.pdf")
 
         let realm = Self.dbManager.ncDatabase()
         try realm.write {
@@ -109,21 +102,18 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
         let directoryMetadata = RealmItemMetadata()
         directoryMetadata.ocId = "dir-C"
         directoryMetadata.account = "TestAccount"
-        directoryMetadata.serverUrl = "https://cloud.example.com/files"
-        directoryMetadata.fileName = "work"
+        directoryMetadata.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "work")
         directoryMetadata.directory = true
 
         let childMetadata = RealmItemMetadata()
         childMetadata.ocId = "child-3"
         childMetadata.account = "TestAccount"
-        childMetadata.serverUrl = "https://cloud.example.com/files/work"
-        childMetadata.fileName = "task.txt"
+        childMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/work", fileName: "task.txt")
 
         let siblingMetadata = RealmItemMetadata()
         siblingMetadata.ocId = "sibling-3"
         siblingMetadata.account = "TestAccount"
-        siblingMetadata.serverUrl = "https://cloud.example.com/files/work-old"
-        siblingMetadata.fileName = "task-old.txt"
+        siblingMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/work-old", fileName: "task-old.txt")
 
         let realm = Self.dbManager.ncDatabase()
         try realm.write {
@@ -145,21 +135,18 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
         let directoryMetadata = RealmItemMetadata()
         directoryMetadata.ocId = "dir-D"
         directoryMetadata.account = "TestAccount"
-        directoryMetadata.serverUrl = "https://cloud.example.com/files"
-        directoryMetadata.fileName = "alpha"
+        directoryMetadata.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "alpha")
         directoryMetadata.directory = true
 
         let childMetadata = RealmItemMetadata()
         childMetadata.ocId = "child-4"
         childMetadata.account = "TestAccount"
-        childMetadata.serverUrl = "https://cloud.example.com/files/alpha"
-        childMetadata.fileName = "file.txt"
+        childMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/alpha", fileName: "file.txt")
 
         let siblingMetadata = RealmItemMetadata()
         siblingMetadata.ocId = "sibling-4"
         siblingMetadata.account = "TestAccount"
-        siblingMetadata.serverUrl = "https://cloud.example.com/files/alphabet"
-        siblingMetadata.fileName = "a.txt"
+        siblingMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/alphabet", fileName: "a.txt")
 
         let realm = Self.dbManager.ncDatabase()
         try realm.write {
@@ -199,20 +186,17 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
         let directChild = RealmItemMetadata()
         directChild.ocId = "under-1"
         directChild.account = "TestAccount"
-        directChild.serverUrl = "https://cloud.example.com/files/project"
-        directChild.fileName = "readme.md"
+        directChild.updateLocation(serverUrl: "https://cloud.example.com/files/project", fileName: "readme.md")
 
         let nestedChild = RealmItemMetadata()
         nestedChild.ocId = "under-2"
         nestedChild.account = "TestAccount"
-        nestedChild.serverUrl = "https://cloud.example.com/files/project/src"
-        nestedChild.fileName = "main.swift"
+        nestedChild.updateLocation(serverUrl: "https://cloud.example.com/files/project/src", fileName: "main.swift")
 
         let siblingMetadata = RealmItemMetadata()
         siblingMetadata.ocId = "under-3"
         siblingMetadata.account = "TestAccount"
-        siblingMetadata.serverUrl = "https://cloud.example.com/files/project-v2"
-        siblingMetadata.fileName = "readme.md"
+        siblingMetadata.updateLocation(serverUrl: "https://cloud.example.com/files/project-v2", fileName: "readme.md")
 
         let realm = Self.dbManager.ncDatabase()
         try realm.write {

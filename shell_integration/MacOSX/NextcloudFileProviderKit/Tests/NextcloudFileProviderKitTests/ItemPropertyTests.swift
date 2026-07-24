@@ -285,8 +285,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         let row = RealmItemMetadata()
         row.ocId = ocId
         row.account = Self.account.ncKitAccount
-        row.serverUrl = serverUrl
-        row.fileName = fileName
+        row.updateLocation(serverUrl: serverUrl, fileName: fileName)
         row.directory = directory
         row.downloaded = downloaded
         row.visitedDirectory = visitedDirectory

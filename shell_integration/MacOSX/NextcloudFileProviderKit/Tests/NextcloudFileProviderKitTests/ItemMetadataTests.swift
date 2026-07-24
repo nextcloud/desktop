@@ -16,4 +16,15 @@ struct ItemMetadataTests {
         #expect(expectedUrl != nil)
         #expect(item.thumbnailUrl(size: .init(width: 250, height: 250)) == expectedUrl)
     }
+
+    @Test func canonicalEquivalentLocationsCompareEqual() {
+        let account = Account(user: "user", id: "id", serverUrl: "https://examplecloud.com", password: "bla")
+        var nfcItem = SendableItemMetadata(ocId: "nfc", fileName: "pr\u{00EA}t.pdf", account: account)
+        var nfdItem = SendableItemMetadata(ocId: "nfd", fileName: "pre\u{0302}t.pdf", account: account)
+
+        nfcItem.serverUrl = account.davFilesUrl
+        nfdItem.serverUrl = account.davFilesUrl
+
+        #expect(nfcItem.hasSameLocation(as: nfdItem))
+    }
 }
