@@ -584,12 +584,12 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="494"/>
+        <location filename="../src/libsync/filesystem.cpp" line="535"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>Erro ao remover &quot;%1&quot;: %2 </translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="542"/>
+        <location filename="../src/libsync/filesystem.cpp" line="583"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>Não foi possível remover a pasta &quot;%1&quot; </translation>
     </message>
@@ -804,7 +804,7 @@
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="60"/>
         <source>Select All</source>
-        <translation>Selecionar tudo</translation>
+        <translation>Selecionar todos</translation>
     </message>
 </context>
 <context>
@@ -926,13 +926,13 @@ A conta deve ser importada?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="505"/>
         <source>If this account&apos;s files appear stuck, missing, or out of sync in Finder, reset its File Provider storage. Unsynced local changes are preserved.</source>
-        <translation type="unfinished"/>
+        <translation>Se os arquivos desta conta parecerem travados, ausentes ou fora de sincronia no Finder, redefina o armazenamento do Provedor de arquivos. As alterações locais não sincronizadas serão preservadas.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="521"/>
         <location filename="../src/gui/accountsettings.cpp" line="2071"/>
         <source>Reset File Provider Domain</source>
-        <translation type="unfinished"/>
+        <translation>Redefinir o domínio do provedor de arquivos</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="558"/>
@@ -1309,17 +1309,17 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="2057"/>
         <source>This resets the File Provider for %1 to its initial state. Use it when this account&apos;s files appear stuck, missing, or out of sync in Finder.</source>
-        <translation type="unfinished"/>
+        <translation>Isso redefine o Provedor de arquivos de %1 para seu estado inicial. Use essa opção quando os arquivos desta conta parecerem travados, estiverem faltando ou estiverem fora de sincronia no Finder.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="2061"/>
         <source>The location will briefly disappear from and reappear in Finder. Any local changes that have not been uploaded yet are preserved and revealed in a folder in Finder.</source>
-        <translation type="unfinished"/>
+        <translation>O local desaparecerá por um breve momento do Finder e reaparecerá nele. Quaisquer alterações locais que ainda não tenham sido enviadas são preservadas e exibidas em uma pasta no Finder.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="2066"/>
         <source>Reset File Provider Domain for this account?</source>
-        <translation type="unfinished"/>
+        <translation>Deseja redefinir o domínio do provedor de arquivos para esta conta?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1969"/>
@@ -6844,7 +6844,7 @@ Servidor respondeu com erro: %2</translation>
         <translation>%1 sincronizado</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="532"/>
+        <location filename="../src/libsync/filesystem.cpp" line="573"/>
         <source>Error deleting the file</source>
         <translation>Erro ao excluir o arquivo</translation>
     </message>
