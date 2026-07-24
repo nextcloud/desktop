@@ -41,7 +41,7 @@
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="275"/>
         <source>Back</source>
-        <translation type="unfinished"/>
+        <translation>Πίσω</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="289"/>
@@ -51,7 +51,7 @@
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="300"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Για προχωρημένους</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="309"/>
@@ -76,22 +76,22 @@
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="396"/>
         <source>Open</source>
-        <translation type="unfinished"/>
+        <translation>Άνοιγμα</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="398"/>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>Σύνδεση</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="400"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Ολοκληρώθηκε</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="402"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Σύνδεση</translation>
     </message>
 </context>
 <context>
@@ -99,12 +99,12 @@
     <message>
         <location filename="../src/gui/activity/qml/ActivitiesWindow.qml" line="20"/>
         <source>Activities</source>
-        <translation type="unfinished"/>
+        <translation>Δραστηριότητες</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/qml/ActivitiesWindow.qml" line="127"/>
         <source>New activities</source>
-        <translation type="unfinished"/>
+        <translation>Νέες δραστηριότητες</translation>
     </message>
 </context>
 <context>
@@ -130,12 +130,12 @@
     <message>
         <location filename="../src/gui/activity/qml/ActivityItemContent.qml" line="200"/>
         <source>File details</source>
-        <translation type="unfinished"/>
+        <translation>Λεπτομέρειες αρχείου</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/qml/ActivityItemContent.qml" line="209"/>
         <source>File actions</source>
-        <translation type="unfinished"/>
+        <translation>Ενέργειες αρχείου</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/qml/ActivityItemContent.qml" line="232"/>
@@ -584,12 +584,12 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="494"/>
+        <location filename="../src/libsync/filesystem.cpp" line="535"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>Σφάλμα αφαίρεσης «%1»: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="542"/>
+        <location filename="../src/libsync/filesystem.cpp" line="583"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>Αδυναμία αφαίρεσης φακέλου «%1»</translation>
     </message>
@@ -6824,7 +6824,7 @@ Server replied with error: %2</source>
         <translation>Συγχρονίστηκε %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="532"/>
+        <location filename="../src/libsync/filesystem.cpp" line="573"/>
         <source>Error deleting the file</source>
         <translation>Σφάλμα διαγραφής του αρχείου</translation>
     </message>
