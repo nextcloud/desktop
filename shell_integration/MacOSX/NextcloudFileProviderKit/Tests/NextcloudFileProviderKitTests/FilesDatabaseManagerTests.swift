@@ -972,6 +972,49 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(Self.dbManager.itemMetadata(account: account, locatedAtRemoteUrl: fullUrl))
     }
 
+    func testFindingItemBasedOnCanonicallyEquivalentRemotePath() {
+        let account = "TestAccount"
+        let parentUrl = "https://cloud.example.com/files"
+        let nfcFileName = "pr\u{00EA}t.pdf"
+        let nfdFileName = "pre\u{0302}t.pdf"
+        var metadata = SendableItemMetadata(ocId: "nfc-item", fileName: nfcFileName, account: Self.account)
+        metadata.account = account
+        metadata.serverUrl = parentUrl
+
+        Self.dbManager.addItemMetadata(metadata)
+
+        let result = Self.dbManager.itemMetadata(
+            account: account,
+            locatedAtRemoteUrl: parentUrl + "/" + nfdFileName
+        )
+
+        XCTAssertEqual(result?.ocId, metadata.ocId)
+        XCTAssertEqual(result?.fileName, nfcFileName)
+    }
+
+    func testCanonicalPathDeduplicationPreservesIncomingRemoteSpelling() {
+        let account = "TestAccount"
+        let parentUrl = "https://cloud.example.com/files"
+        let nfcFileName = "pr\u{00EA}t.pdf"
+        let nfdFileName = "pre\u{0302}t.pdf"
+        var existing = SendableItemMetadata(ocId: "nfc-item", fileName: nfcFileName, account: Self.account)
+        existing.account = account
+        existing.serverUrl = parentUrl
+        existing.syncTime = Date(timeIntervalSince1970: 1)
+        Self.dbManager.addItemMetadata(existing)
+
+        var incoming = existing
+        incoming.ocId = "nfd-item"
+        incoming.fileName = nfdFileName
+        incoming.fileNameView = nfdFileName
+        incoming.syncTime = Date(timeIntervalSince1970: 2)
+        Self.dbManager.addItemMetadata(incoming)
+
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: "nfc-item")?.deleted, true)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: "nfd-item")?.fileName, nfdFileName)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: "nfd-item")?.remotePath(), parentUrl + "/" + nfdFileName)
+    }
+
     func testKeepDownloadedSetting() throws {
         let existingMetadata = RealmItemMetadata()
         existingMetadata.ocId = "id-1"
