@@ -46,3 +46,7 @@ It is designed specifically for the implementation of this file provider extensi
 - ``FilesDatabaseManager``
 - ``ItemMetadata``
 - ``SendableItemMetadata``
+
+### Design notes
+
+- <doc:UnicodePathNormalization>
