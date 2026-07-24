@@ -107,6 +107,18 @@ public extension ItemMetadata {
             && fileName.precomposedStringWithCanonicalMapping == comparingMetadata.fileName.precomposedStringWithCanonicalMapping
     }
 
+    /// Whether this item has the given remote path, ignoring Unicode canonical-equivalence differences.
+    func hasSameRemotePath(as path: String) -> Bool {
+        remotePath().precomposedStringWithCanonicalMapping == path.precomposedStringWithCanonicalMapping
+    }
+
+    /// Whether this item is below the given remote directory path, ignoring Unicode canonical-equivalence differences.
+    func isDescendant(of path: String) -> Bool {
+        remotePath().precomposedStringWithCanonicalMapping.hasPrefix(
+            path.precomposedStringWithCanonicalMapping + "/"
+        )
+    }
+
     var livePhoto: Bool {
         livePhotoFile != nil && livePhotoFile?.isEmpty == false
     }
