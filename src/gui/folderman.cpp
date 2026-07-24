@@ -1139,6 +1139,11 @@ void FolderMan::slotEtagPollTimerTimeout()
     for (const auto &accountState : accounts) {
         const auto account = accountState->account();
 
+        if (!accountState->isConnected()) {
+            qCDebug(lcFolderMan) << "Account" << account->displayName() << "is not connected, skipping File Provider ETag check.";
+            continue;
+        }
+
         // Skip accounts that don't have a File Provider domain
         if (!Mac::FileProvider::instance()->domainManager()->domainForAccount(account.data())) {
             qCDebug(lcFolderMan) << "Account" << account->displayName() << "has no file provider domain, skipping.";
