@@ -25,6 +25,50 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(Self.dbManager, "FilesDatabaseManager should be initialized")
     }
 
+    func testSchema203MigrationBackfillsCanonicalPathKeys() throws {
+        let databaseDirectory = makeDatabaseDirectory()
+        let domainIdentifier = NSFileProviderDomainIdentifier("migration-test")
+        let databaseURL = databaseDirectory
+            .appendingPathComponent(domainIdentifier.rawValue)
+            .appendingPathExtension("realm")
+        let nfdServerUrl = "https://example.com/pre\u{0302}t"
+        let nfdFileName = "pre\u{0302}t.pdf"
+
+        autoreleasepool {
+            let oldConfiguration = Realm.Configuration(
+                fileURL: databaseURL,
+                schemaVersion: SchemaVersion.addedIsLockFileOfLocalOriginToRealmItemMetadata.rawValue,
+                objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self]
+            )
+            let oldRealm = try! Realm(configuration: oldConfiguration)
+            try! oldRealm.write {
+                let metadata = RealmItemMetadata()
+                metadata.ocId = "migration-item"
+                metadata.account = Self.account.ncKitAccount
+                metadata.serverUrl = nfdServerUrl
+                metadata.fileName = nfdFileName
+                oldRealm.add(metadata)
+            }
+        }
+
+        let manager = FilesDatabaseManager(
+            account: Self.account,
+            databaseDirectory: databaseDirectory,
+            fileProviderDomainIdentifier: domainIdentifier,
+            log: FileProviderLogMock()
+        )
+
+        let migrated = try XCTUnwrap(manager.itemMetadata(ocId: "migration-item"))
+        XCTAssertEqual(migrated.serverUrl, nfdServerUrl)
+        XCTAssertEqual(migrated.fileName, nfdFileName)
+
+        let migratedObject = try XCTUnwrap(
+            manager.ncDatabase().objects(RealmItemMetadata.self).where { $0.ocId == "migration-item" }.first
+        )
+        XCTAssertEqual(migratedObject.normalizedServerUrl, nfdServerUrl.precomposedStringWithCanonicalMapping)
+        XCTAssertEqual(migratedObject.normalizedFileName, nfdFileName.precomposedStringWithCanonicalMapping)
+    }
+
     func testContainsAnyItemMetadataFileIds() throws {
         let metadata = RealmItemMetadata()
         metadata.ocId = UUID().uuidString
