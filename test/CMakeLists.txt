@@ -79,9 +79,7 @@ nextcloud_add_test(LocalDiscovery)
 nextcloud_add_test(RemoteDiscovery)
 nextcloud_add_test(Governance)
 
-if (NOT APPLE)
-    nextcloud_add_test(Permissions)
-endif()
+nextcloud_add_test(Permissions)
 
 nextcloud_add_test(SelectiveSync)
 nextcloud_add_test(DatabaseError)

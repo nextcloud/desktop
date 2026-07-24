@@ -1660,6 +1660,14 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             return;
         }
 
+        // The move target is in a read-only folder so it can't be uploaded, but its data is safe
+        // at the source (restored below). Emitting remnantReadOnlyFolderDiscovered() schedules this
+        // local copy for deletion at the end of the sync, removing the duplicate. A genuinely new
+        // local file never reaches this move branch and is kept by checkPermissions (#7797/#10099).
+        if (!localEntry.isVirtualFile && item->_instruction == CSYNC_INSTRUCTION_IGNORE) {
+            emit _discoveryData->remnantReadOnlyFolderDiscovered(item);
+        }
+
         // Here we know the new location can't be uploaded: must prevent the source delete.
         // Two cases: either the source item was already processed or not.
         auto wasDeletedOnClient = _discoveryData->findAndCancelDeletedJob(originalPath);
@@ -2040,13 +2048,15 @@ bool ProcessDirectoryJob::checkPermissions(const OCC::SyncFileItemPtr &item)
             qCWarning(lcDisco) << "checkForPermission: Not allowed because you don't have permission to add subfolders to that folder:" << item->_file;
             item->_instruction = CSYNC_INSTRUCTION_IGNORE;
             item->_errorString = tr("Not allowed because you don't have permission to add subfolders to that folder");
-            emit _discoveryData->remnantReadOnlyFolderDiscovered(item);
+            // Do NOT schedule the new local folder for deletion: it may contain data the user just
+            // created and that exists nowhere else. (see read-only folder regression, issues #7797/#10099).
             return false;
         } else if (!item->isDirectory() && !perms.hasPermission(RemotePermissions::CanAddFile)) {
             qCWarning(lcDisco) << "checkForPermission: Not allowed because you don't have permission to add files in that folder:" << item->_file;
             item->_instruction = CSYNC_INSTRUCTION_IGNORE;
             item->_errorString = tr("Not allowed because you don't have permission to add files in that folder");
-            emit _discoveryData->remnantReadOnlyFolderDiscovered(item);
+            // Do NOT schedule the new local file for deletion: it may be data the user just created
+            // and that exists nowhere else. (see read-only folder regression, issues #7797/#10099).
             return false;
         }
         break;
