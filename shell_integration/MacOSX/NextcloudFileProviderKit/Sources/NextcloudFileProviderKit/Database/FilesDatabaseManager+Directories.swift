@@ -250,8 +250,7 @@ public extension FilesDatabaseManager {
                     let movedServerUrl = oldServerUrl.replacingOccurrences(
                         of: oldDirectoryServerUrl, with: newDirectoryServerUrl
                     )
-                    childItem.serverUrl = movedServerUrl
-                    childItem.normalizedServerUrl = movedServerUrl.precomposedStringWithCanonicalMapping
+                    childItem.updateLocation(serverUrl: movedServerUrl, fileName: childItem.fileName)
                     childItem.lockToken = nil
                     database.add(childItem, update: .all)
                     logger.debug(

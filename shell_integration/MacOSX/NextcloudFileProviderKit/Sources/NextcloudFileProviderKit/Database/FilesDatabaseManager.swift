@@ -661,11 +661,8 @@ public final class FilesDatabaseManager: Sendable {
                 let oldFileName = itemMetadata.fileName
                 let oldServerUrl = itemMetadata.serverUrl
 
-                itemMetadata.fileName = newFileName
+                itemMetadata.updateLocation(serverUrl: newServerUrl, fileName: newFileName)
                 itemMetadata.fileNameView = newFileName
-                itemMetadata.serverUrl = newServerUrl
-                itemMetadata.normalizedServerUrl = newServerUrl.precomposedStringWithCanonicalMapping
-                itemMetadata.normalizedFileName = newFileName.precomposedStringWithCanonicalMapping
                 itemMetadata.lockToken = nil
 
                 database.add(itemMetadata, update: .all)
