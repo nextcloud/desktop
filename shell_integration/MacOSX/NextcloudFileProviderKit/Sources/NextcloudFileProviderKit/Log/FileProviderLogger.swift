@@ -133,6 +133,11 @@ public struct FileProviderLogger: Sendable {
                     account.ncKitAccount
                 case let date as Date:
                     date.ISO8601Format()
+                case let nkError as NKError:
+                    // Must precede the NSError case: NKError is a Swift struct with no CustomNSError, so
+                    // `as NSError` would bridge it to domain "NextcloudKit.NKError" code 1 and hide the
+                    // real status. Mirror the JSONL path in FileProviderLogDetail. See nextcloud/desktop#10442.
+                    "code: \(nkError.errorCode), description: \(nkError.errorDescription), underlying: \(nkError.error.localizedDescription)"
                 case let error as NSError:
                     error.debugDescription
                 case let lock as NKLock:
