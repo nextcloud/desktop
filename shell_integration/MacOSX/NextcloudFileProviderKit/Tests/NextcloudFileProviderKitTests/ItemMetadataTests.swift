@@ -28,6 +28,24 @@ struct ItemMetadataTests {
         #expect(nfcItem.hasSameLocation(as: nfdItem))
     }
 
+    @Test func differentLocationsDoNotCompareEqual() {
+        let account = Account(user: "user", id: "id", serverUrl: "https://examplecloud.com", password: "bla")
+        let first = SendableItemMetadata(ocId: "first", fileName: "one.txt", account: account)
+        let second = SendableItemMetadata(ocId: "second", fileName: "two.txt", account: account)
+
+        #expect(!first.hasSameLocation(as: second))
+    }
+
+    @Test func canonicalEquivalentServerUrlsCompareEqual() {
+        let account = Account(user: "user", id: "id", serverUrl: "https://examplecloud.com", password: "bla")
+        var nfcItem = SendableItemMetadata(ocId: "nfc", fileName: "file.txt", account: account)
+        var nfdItem = SendableItemMetadata(ocId: "nfd", fileName: "file.txt", account: account)
+        nfcItem.serverUrl = "\(account.davFilesUrl)/pr\u{00EA}t"
+        nfdItem.serverUrl = "\(account.davFilesUrl)/pre\u{0302}t"
+
+        #expect(nfcItem.hasSameLocation(as: nfdItem))
+    }
+
     @Test func canonicalEquivalentRemotePathsCompareEqual() {
         let account = Account(user: "user", id: "id", serverUrl: "https://examplecloud.com", password: "bla")
         var item = SendableItemMetadata(ocId: "item", fileName: "pr\u{00EA}t.pdf", account: account)
