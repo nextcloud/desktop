@@ -27,4 +27,20 @@ struct ItemMetadataTests {
 
         #expect(nfcItem.hasSameLocation(as: nfdItem))
     }
+
+    @Test func canonicalEquivalentRemotePathsCompareEqual() {
+        let account = Account(user: "user", id: "id", serverUrl: "https://examplecloud.com", password: "bla")
+        var item = SendableItemMetadata(ocId: "item", fileName: "pr\u{00EA}t.pdf", account: account)
+        item.serverUrl = account.davFilesUrl
+
+        #expect(item.hasSameRemotePath(as: "\(account.davFilesUrl)/pre\u{0302}t.pdf"))
+    }
+
+    @Test func canonicalEquivalentRemotePathsIdentifyDescendants() {
+        let account = Account(user: "user", id: "id", serverUrl: "https://examplecloud.com", password: "bla")
+        var item = SendableItemMetadata(ocId: "item", fileName: "document.txt", account: account)
+        item.serverUrl = "\(account.davFilesUrl)/pre\u{0302}t"
+
+        #expect(item.isDescendant(of: "\(account.davFilesUrl)/pr\u{00EA}t"))
+    }
 }
