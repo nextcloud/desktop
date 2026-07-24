@@ -42,6 +42,11 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
     private var anchorKey: String?
     private var remainingUpdated: [SendableItemMetadata] = []
     private var remainingDeleted: [SendableItemMetadata] = []
+    /// Whether the derivation that primed this buffer was incomplete (at least one remote read failed
+    /// and was skipped). The caller uses this to avoid advancing the working-set sync point past changes
+    /// it could not discover this pass. Preserved across the whole `moreComing` drain sequence and cleared
+    /// alongside `anchorKey`.
+    private var primedIncomplete = false
 
     init(log: any FileProviderLogging) {
         logger = FileProviderLogger(category: "ChangeDeliveryBuffer", log: log)
@@ -59,20 +64,36 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
     }
 
     ///
+    /// Whether the currently-primed derivation was incomplete (a remote read failed and was skipped).
+    /// Returns `false` once the buffer has fully drained. See ``prime(key:updated:deleted:incomplete:)``.
+    ///
+    func isPrimedIncomplete() -> Bool {
+        lock.lock()
+        defer { lock.unlock() }
+        return anchorKey != nil && primedIncomplete
+    }
+
+    ///
     /// Store the full derived change set for a drain sequence, keyed by the originating sync anchor.
     ///
     /// `updated` must already be sorted parents-before-children (ascending remote-path length) so that
     /// draining the single combined list front-to-back never reports a child in an earlier batch than
     /// its parent.
     ///
-    func prime(key: String, updated: [SendableItemMetadata], deleted: [SendableItemMetadata]) {
+    func prime(
+        key: String,
+        updated: [SendableItemMetadata],
+        deleted: [SendableItemMetadata],
+        incomplete: Bool = false
+    ) {
         lock.lock()
         defer { lock.unlock() }
         anchorKey = key
         remainingUpdated = updated
         remainingDeleted = deleted
+        primedIncomplete = incomplete
         logger.debug(
-            "Primed change delivery buffer. anchor: \(key), updated: \(updated.count), deleted: \(deleted.count)"
+            "Primed change delivery buffer. anchor: \(key), updated: \(updated.count), deleted: \(deleted.count), incomplete: \(incomplete)."
         )
     }
 
@@ -105,6 +126,7 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
         let moreComing = !remainingUpdated.isEmpty || !remainingDeleted.isEmpty
         if !moreComing {
             anchorKey = nil
+            primedIncomplete = false
         }
 
         logger.debug(
@@ -128,6 +150,7 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
         anchorKey = nil
         remainingUpdated = []
         remainingDeleted = []
+        primedIncomplete = false
 
         // A non-empty discard means an in-progress drain was abandoned (a fresh enumeration arrived under
         // a different anchor). Log it loudly enough to spot potential change loss from a debug archive.

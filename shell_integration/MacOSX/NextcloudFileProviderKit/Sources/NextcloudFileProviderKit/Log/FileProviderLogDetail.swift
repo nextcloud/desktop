@@ -99,6 +99,16 @@ public enum FileProviderLogDetail: Encodable {
                 self = .string(url.absoluteString)
             } else if let account = someValue as? Account {
                 self = .string(account.ncKitAccount)
+            } else if let nkError = someValue as? NKError {
+                // NKError is a Swift struct (Error, no CustomNSError). Without this branch it would fall
+                // through to `as? NSError` below and bridge to domain "NextcloudKit.NKError" code 1,
+                // discarding the real HTTP/URL status. Log the struct's own fields so failures such as
+                // PROPFIND timeouts (-1001) or 5xx are actually visible in debug archives. See #10442.
+                self = .dictionary([
+                    "errorCode": .int(nkError.errorCode),
+                    "errorDescription": .string(nkError.errorDescription),
+                    "underlyingError": .string(nkError.error.localizedDescription)
+                ])
             } else if let error = someValue as? NSFileProviderError {
                 self = .string("NSFileProviderError.Code: \(error.code)")
             } else if let error = someValue as? NSError {
