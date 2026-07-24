@@ -72,7 +72,7 @@ struct LocalInfo
  *
  * @ingroup libsync
  */
-class DiscoverySingleLocalDirectoryJob : public QObject, public QRunnable
+class OCSYNC_EXPORT DiscoverySingleLocalDirectoryJob : public QObject, public QRunnable
 {
     Q_OBJECT
 public:
