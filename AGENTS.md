@@ -30,6 +30,10 @@ All contributions generated or assisted by this agent must fully comply with:
 - Warn the contributor if a pull request is growing too large. A PR approaching several thousand lines of changed code is a signal that it should be split into smaller, focused PRs. Suggest a logical split before the PR is opened, not after.
 - Recommend opening a ticket for discussion before starting implementation whenever a feature or change is sufficiently complex - for example when it touches multiple subsystems, requires architectural decisions, or the right approach is not yet clear. A ticket allows maintainers and the contributor to align on direction before code is written, avoiding wasted effort on a PR that may be rejected or require fundamental rework.
 - Never state anything in a pull request description, commit message, or review comment that is not verifiable. Every claim about what the change does, what was tested, or why it is needed must be backed by the actual diff, real test runs, or a cited source. Do not assert that tests pass, a bug is fixed, or behavior works unless it has been confirmed. If something is unverified, say so explicitly rather than presenting it as fact.
+- Every feature and bugfix implemented by an AI agent must include tests. This is mandatory and applies to all supported platforms and languages.
+- Implement features and bugfixes in a testable form: identify the relevant existing test target before editing, preserve or create suitable seams for isolation, and include the test changes in the same focused change.
+- For a bugfix, add a regression test that demonstrates the failure before the fix and verifies the corrected behavior, including relevant edge cases. For a feature, add tests that cover the new behavior, its important boundaries, and failure paths.
+- Do not consider a feature or bugfix complete when its tests are missing, only described, unrun, or unrelated to the changed behavior. Run the narrowest relevant existing test command and report any unavailable or failing validation explicitly; do not silently waive this requirement.
 
 ### What this agent must never do
 
@@ -200,6 +204,9 @@ These instructions are restricted to `./shell_integration/MacOSX/NextcloudIntegr
 
 ### Tests
 
+- **Mandatory coverage for features and bugfixes.** Every feature or bugfix implemented by an AI agent must ship with corresponding automated tests in the same change. Bugfixes require a regression test for the original failure mode; features require tests for the new behavior and relevant boundary and failure cases. Tests must exercise behavior through a supported public or testable interface rather than merely increasing line coverage.
+- **Testability is part of implementation.** Before changing production code, locate the relevant test target and its existing fixtures, mocks, and helpers. Prefer designs that allow deterministic isolation and reuse existing test infrastructure; if the code is not testable, make the smallest focused production change needed to establish an appropriate test seam.
+- **Validation is required.** Run the smallest existing test command that covers the changed behavior, then broaden validation when the targeted test exposes integration or build issues. A feature or bugfix is incomplete if its tests are absent, unrelated, not executed, or failing without an explicitly documented blocker.
 - When implementing new test suites, prefer Swift Testing over XCTest for implementation.
 - When implementing test cases using Swift Testing, do not prefix test method names with "test".
 - Take the mock implementations in the `NextcloudFileProviderKitMocks` module of the `NextcloudFileProviderKit` package into consideration to avoid generating your own mocks when an already existing and matching mock can be found there.
