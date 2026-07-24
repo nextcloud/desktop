@@ -1794,6 +1794,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             older.account = testAccount
             older.serverUrl = testServerUrl
             older.fileName = fileName
+            older.normalizedServerUrl = testServerUrl.precomposedStringWithCanonicalMapping
+            older.normalizedFileName = fileName.precomposedStringWithCanonicalMapping
             older.syncTime = Date(timeIntervalSince1970: 1000)
             realm.add(older)
 
@@ -1802,6 +1804,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             newer.account = testAccount
             newer.serverUrl = testServerUrl
             newer.fileName = fileName
+            newer.normalizedServerUrl = testServerUrl.precomposedStringWithCanonicalMapping
+            newer.normalizedFileName = fileName.precomposedStringWithCanonicalMapping
             newer.syncTime = Date(timeIntervalSince1970: 2000)
             realm.add(newer)
         }
@@ -1835,6 +1839,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             a.account = testAccount
             a.serverUrl = testServerUrl
             a.fileName = fileName
+            a.normalizedServerUrl = testServerUrl.precomposedStringWithCanonicalMapping
+            a.normalizedFileName = fileName.precomposedStringWithCanonicalMapping
             a.syncTime = sameTime
             realm.add(a)
 
@@ -1843,6 +1849,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             b.account = testAccount
             b.serverUrl = testServerUrl
             b.fileName = fileName
+            b.normalizedServerUrl = testServerUrl.precomposedStringWithCanonicalMapping
+            b.normalizedFileName = fileName.precomposedStringWithCanonicalMapping
             b.syncTime = sameTime
             realm.add(b)
         }
@@ -1873,6 +1881,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             a.account = testAccount
             a.serverUrl = "https://example.com"
             a.fileName = "one.txt"
+            a.normalizedServerUrl = a.serverUrl.precomposedStringWithCanonicalMapping
+            a.normalizedFileName = a.fileName.precomposedStringWithCanonicalMapping
             realm.add(a)
 
             let b = RealmItemMetadata()
@@ -1880,6 +1890,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             b.account = testAccount
             b.serverUrl = "https://example.com"
             b.fileName = "two.txt"
+            b.normalizedServerUrl = b.serverUrl.precomposedStringWithCanonicalMapping
+            b.normalizedFileName = b.fileName.precomposedStringWithCanonicalMapping
             realm.add(b)
 
             // Same fileName but different serverUrl — not a logical duplicate.
@@ -1888,6 +1900,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             c.account = testAccount
             c.serverUrl = "https://example.com/folder"
             c.fileName = "one.txt"
+            c.normalizedServerUrl = c.serverUrl.precomposedStringWithCanonicalMapping
+            c.normalizedFileName = c.fileName.precomposedStringWithCanonicalMapping
             realm.add(c)
         }
 
@@ -1917,6 +1931,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             uploading.account = testAccount
             uploading.serverUrl = testServerUrl
             uploading.fileName = fileName
+            uploading.normalizedServerUrl = testServerUrl.precomposedStringWithCanonicalMapping
+            uploading.normalizedFileName = fileName.precomposedStringWithCanonicalMapping
             uploading.status = Status.uploading.rawValue
             uploading.syncTime = Date(timeIntervalSince1970: 5000)
             realm.add(uploading)
@@ -1926,6 +1942,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             settled.account = testAccount
             settled.serverUrl = testServerUrl
             settled.fileName = fileName
+            settled.normalizedServerUrl = testServerUrl.precomposedStringWithCanonicalMapping
+            settled.normalizedFileName = fileName.precomposedStringWithCanonicalMapping
             settled.status = Status.normal.rawValue
             settled.syncTime = Date(timeIntervalSince1970: 1000)
             realm.add(settled)
