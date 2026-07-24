@@ -10,8 +10,8 @@ extension RealmItemMetadata {
         serverUrl: String,
         fileName: String
     ) -> Query<Bool> {
-        let canonicalServerUrl = serverUrl.canonicalForm
-        let canonicalFileName = fileName.canonicalForm
+        let canonicalServerUrl = serverUrl.precomposedStringWithCanonicalMapping
+        let canonicalFileName = fileName.precomposedStringWithCanonicalMapping
 
         return item.account == account
             && (item.normalizedServerUrl == canonicalServerUrl
@@ -25,7 +25,7 @@ extension RealmItemMetadata {
         equalTo serverUrl: String,
         includingDescendants: Bool
     ) -> Query<Bool> {
-        let canonicalServerUrl = serverUrl.canonicalForm
+        let canonicalServerUrl = serverUrl.precomposedStringWithCanonicalMapping
         let canonicalPrefix = canonicalServerUrl + "/"
 
         if includingDescendants {

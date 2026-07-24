@@ -163,8 +163,8 @@ class RealmItemMetadata: Object, ItemMetadata {
         resourceType = value.resourceType
         richWorkspace = value.richWorkspace
         serverUrl = value.serverUrl
-        normalizedServerUrl = value.serverUrl.canonicalForm
-        normalizedFileName = value.fileName.canonicalForm
+        normalizedServerUrl = value.serverUrl.precomposedStringWithCanonicalMapping
+        normalizedFileName = value.fileName.precomposedStringWithCanonicalMapping
         session = value.session
         sessionError = value.sessionError
         sessionTaskIdentifier = value.sessionTaskIdentifier
