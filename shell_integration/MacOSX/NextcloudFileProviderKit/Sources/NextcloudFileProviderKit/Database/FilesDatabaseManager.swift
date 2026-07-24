@@ -192,8 +192,13 @@ public final class FilesDatabaseManager: Sendable {
         let parentPath = "/\(parentPathComponents.joined(separator: "/"))"
         let rawParentURL = baseURL.absoluteString + parentPath
 
-        if let metadata = itemMetadatas.where({
-            $0.account == account && $0.serverUrl == rawParentURL && $0.fileName == fileName
+        if let metadata = itemMetadatas.where({ item in
+            RealmItemMetadata.hasLocation(
+                item,
+                account: account,
+                serverUrl: rawParentURL,
+                fileName: fileName
+            )
         }).first {
             return SendableItemMetadata(value: metadata)
         }
@@ -224,9 +229,9 @@ public final class FilesDatabaseManager: Sendable {
         account: String, underServerUrl serverUrl: String
     ) -> [SendableItemMetadata] {
         itemMetadatas
-            .where {
-                $0.account == account &&
-                    ($0.serverUrl == serverUrl || $0.serverUrl.starts(with: serverUrl + "/"))
+            .where { item in
+                item.account == account &&
+                    RealmItemMetadata.hasServerUrl(item, equalTo: serverUrl, includingDescendants: true)
             }
             .toUnmanagedResults()
     }
@@ -288,9 +293,7 @@ public final class FilesDatabaseManager: Sendable {
         for var updatedMetadata in updatedMetadatas {
             if let existingMetadata = existingMetadatas.first(where: { $0.ocId == updatedMetadata.ocId }) {
                 if existingMetadata.status == Status.normal.rawValue, !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata) {
-                    let pathChanged =
-                        updatedMetadata.serverUrl != existingMetadata.serverUrl ||
-                        updatedMetadata.fileName != existingMetadata.fileName
+                    let pathChanged = !updatedMetadata.hasSameLocation(as: existingMetadata)
 
                     if updatedMetadata.directory, pathChanged {
                         directoriesNeedingRename.append(updatedMetadata)
@@ -355,13 +358,13 @@ public final class FilesDatabaseManager: Sendable {
                 cleanServerUrl.removeLast()
             }
             let existingMetadatas = database
-                .objects(RealmItemMetadata.self)
-                .where {
-                    // Don't worry — root will be updated at the end of this method if is the target
-                    $0.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue &&
-                        $0.account == account &&
-                        $0.serverUrl == cleanServerUrl &&
-                        $0.uploaded
+            .objects(RealmItemMetadata.self)
+            .where { item in
+                // Don't worry — root will be updated at the end of this method if is the target
+                item.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue &&
+                    RealmItemMetadata.hasServerUrl(item, equalTo: cleanServerUrl, includingDescendants: false) &&
+                    item.account == account &&
+                    item.uploaded
                 }
 
             var updatedChildMetadatas = updatedMetadatas
@@ -565,12 +568,15 @@ public final class FilesDatabaseManager: Sendable {
             // state and choosing one would risk merging from the row about to
             // be evicted. Eviction in `addItemMetadata` will then prune the
             // prior row in the same write that persists the fresh one.
-            let logicalCandidates = metadatas.where {
-                $0.account == metadata.account
-                    && $0.serverUrl == metadata.serverUrl
-                    && $0.fileName == metadata.fileName
-                    && !$0.deleted
-                    && !$0.isLockFileOfLocalOrigin
+            let logicalCandidates = metadatas.where { item in
+                RealmItemMetadata.hasLocation(
+                    item,
+                    account: metadata.account,
+                    serverUrl: metadata.serverUrl,
+                    fileName: metadata.fileName
+                )
+                    && !item.deleted
+                    && !item.isLockFileOfLocalOrigin
             }
 
             if logicalCandidates.count == 1, let existing = logicalCandidates.first {
@@ -777,8 +783,9 @@ public final class FilesDatabaseManager: Sendable {
             }
             .forEach { serverUrl in
                 itemMetadatas
-                    .where {
-                        $0.serverUrl == serverUrl && $0.syncTime > date
+                    .where { item in
+                        RealmItemMetadata.hasServerUrl(item, equalTo: serverUrl, includingDescendants: false) &&
+                            item.syncTime > date
                     }
                     .forEach { child in
                         let sendableMetadata = SendableItemMetadata(value: child)
@@ -811,8 +818,9 @@ public final class FilesDatabaseManager: Sendable {
                 $0.remotePath()
             }
             .forEach { serverUrl in
-                itemMetadatas.where {
-                    $0.serverUrl.starts(with: serverUrl) && $0.syncTime > date
+                itemMetadatas.where { item in
+                    RealmItemMetadata.hasServerUrl(item, equalTo: serverUrl, includingDescendants: true) &&
+                        item.syncTime > date
                 }.forEach { child in
                     guard child.isLockFileOfLocalOrigin == false else {
                         logger.info("Excluding item from deletion because it is a lock file from local origin.", [.item: child.ocId, .name: child.fileName])

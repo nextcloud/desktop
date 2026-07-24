@@ -109,7 +109,7 @@ class RealmItemMetadata: Object, ItemMetadata {
     override func isEqual(_ object: Any?) -> Bool {
         if let object = object as? RealmItemMetadata {
             return fileId == object.fileId && account == object.account && path == object.path
-                && fileName == object.fileName
+                && hasSameLocation(as: object)
         }
 
         return false

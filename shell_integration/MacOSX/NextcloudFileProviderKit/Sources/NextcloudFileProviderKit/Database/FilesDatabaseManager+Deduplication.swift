@@ -68,13 +68,16 @@ public extension FilesDatabaseManager {
 
         let candidates = database
             .objects(RealmItemMetadata.self)
-            .where {
-                $0.account == incomingAccount
-                    && $0.serverUrl == incomingServerUrl
-                    && $0.fileName == incomingFileName
-                    && $0.ocId != incomingOcId
-                    && !$0.deleted
-                    && !$0.isLockFileOfLocalOrigin
+            .where { item in
+                RealmItemMetadata.hasLocation(
+                    item,
+                    account: incomingAccount,
+                    serverUrl: incomingServerUrl,
+                    fileName: incomingFileName
+                )
+                    && item.ocId != incomingOcId
+                    && !item.deleted
+                    && !item.isLockFileOfLocalOrigin
             }
 
         var evicted: [String] = []
@@ -145,7 +148,11 @@ public extension FilesDatabaseManager {
         var buckets: [LogicalKey: [RealmItemMetadata]] = [:]
 
         for candidate in candidates {
-            let key = LogicalKey(account: candidate.account, serverUrl: candidate.serverUrl, fileName: candidate.fileName)
+            let key = LogicalKey(
+                account: candidate.account,
+                serverUrl: candidate.normalizedServerUrl,
+                fileName: candidate.normalizedFileName
+            )
             buckets[key, default: []].append(candidate)
         }
 
