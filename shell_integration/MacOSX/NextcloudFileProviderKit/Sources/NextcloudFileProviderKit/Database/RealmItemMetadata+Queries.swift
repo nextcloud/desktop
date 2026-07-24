@@ -13,7 +13,7 @@ extension RealmItemMetadata {
         let canonicalFileName = fileName.precomposedStringWithCanonicalMapping
 
         return (item.normalizedServerUrl == canonicalServerUrl
-                || (item.normalizedServerUrl == "" && item.serverUrl == serverUrl))
+            || (item.normalizedServerUrl == "" && item.serverUrl == serverUrl))
             && (item.normalizedFileName == canonicalFileName
                 || (item.normalizedFileName == "" && item.fileName == fileName))
     }

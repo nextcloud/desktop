@@ -357,13 +357,13 @@ public final class FilesDatabaseManager: Sendable {
                 cleanServerUrl.removeLast()
             }
             let existingMetadatas = database
-            .objects(RealmItemMetadata.self)
-            .where { item in
-                // Don't worry — root will be updated at the end of this method if is the target
-                item.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue &&
-                    RealmItemMetadata.hasServerUrl(item, equalTo: cleanServerUrl, includingDescendants: false) &&
-                    item.account == account &&
-                    item.uploaded
+                .objects(RealmItemMetadata.self)
+                .where { item in
+                    // Don't worry — root will be updated at the end of this method if is the target
+                    item.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue &&
+                        RealmItemMetadata.hasServerUrl(item, equalTo: cleanServerUrl, includingDescendants: false) &&
+                        item.account == account &&
+                        item.uploaded
                 }
 
             var updatedChildMetadatas = updatedMetadatas
