@@ -36,7 +36,7 @@ public extension Item {
             return nil
         }
 
-        let serverFileNameUrl = metadata.remotePath()
+        var serverFileNameUrl = metadata.remotePath()
 
         guard serverFileNameUrl != "" else {
             return NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
@@ -44,6 +44,34 @@ public extension Item {
 
         guard metadata.classFile != "lock", !isLockFileName(metadata.fileName) else {
             return await deleteLockFile(domain: domain, dbManager: dbManager)
+        }
+
+        // Permanently deleting an item that already lives in the trash. The stored trashbin name can be
+        // the "rough" plain filename set optimistically when the item was moved to trash (see
+        // handleMetadataTrashModification below), rather than the server's real trashbin name — which
+        // carries a ".d<deletion-timestamp>" suffix whenever the name collided with an existing trash
+        // entry. DELETEing the plain path 404s forever, and macOS retries the purge with no backoff
+        // (observed: a handful of items failing thousands of times). Resolve the real trashbin name from
+        // a fresh trash listing; if the item is no longer in the trash, it has already been removed
+        // remotely, so report success and stop the retry loop. See nextcloud/desktop#10442.
+        let isTrashbinPurge = !trashing && metadata.serverUrl.hasPrefix(account.trashUrl)
+        if isTrashbinPurge {
+            switch await resolveTrashbinItemRemotePath(domain: domain) {
+                case let .resolved(resolvedUrl):
+                    serverFileNameUrl = resolvedUrl
+                case .alreadyGone:
+                    logger.info(
+                        "Trashbin item no longer present in a fresh trash listing; treating permanent delete as already complete.",
+                        [.item: ocId, .name: filename]
+                    )
+                    handleMetadataDeletion()
+                    return nil
+                case .unresolved:
+                    logger.info(
+                        "Could not resolve the trashbin item's server name from a fresh listing; falling back to the stored path.",
+                        [.item: ocId, .url: serverFileNameUrl]
+                    )
+            }
         }
 
         let (_, _, error) = await remoteInterface.delete(
@@ -62,6 +90,16 @@ public extension Item {
         )
 
         guard error == .success else {
+            // A purge that 404s means the item is already gone from the trash — the desired end state.
+            // Report success so macOS stops re-issuing the (now pointless) permanent delete.
+            if isTrashbinPurge, error.isNotFoundError {
+                logger.info(
+                    "Trashbin item returned 404 on permanent delete; it is already gone, treating as complete.",
+                    [.item: ocId, .url: serverFileNameUrl]
+                )
+                handleMetadataDeletion()
+                return nil
+            }
             logger.error("Could not delete item.", [.item: ocId, .url: serverFileNameUrl, .error: error])
             return error.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier)
         }
@@ -115,5 +153,54 @@ public extension Item {
         dbManager.addItemMetadata(metadata)
 
         return nil
+    }
+
+    /// Outcome of resolving the true server path for a trashbin item about to be permanently deleted.
+    enum TrashbinItemRemotePathResolution: Sendable {
+        /// The item was found in the remote trash; the associated URL is the correct DELETE target
+        /// (including any server-assigned ".d<deletion-timestamp>" suffix).
+        case resolved(String)
+        /// The item is no longer present in the remote trash — already permanently removed.
+        case alreadyGone
+        /// The trash listing itself failed (e.g. transient error); the caller should fall back.
+        case unresolved
+    }
+
+    /// Look up the item's current entry in the remote trash and return the correct DELETE URL.
+    ///
+    /// The database may hold a "rough" plain trashbin filename (see ``handleMetadataTrashModification()``),
+    /// but the server names collided trash entries `"<name>.d<deletion-timestamp>"`. Matching the fresh
+    /// listing by `ocId`/`fileId` (the server sometimes returns the `fileId` as the trash `ocId`, mirroring
+    /// ``Item/trash(_:account:dbManager:domain:log:)``) yields the real on-server name.
+    private func resolveTrashbinItemRemotePath(
+        domain: NSFileProviderDomain?
+    ) async -> TrashbinItemRemotePathResolution {
+        let (_, items, _, error) = await remoteInterface.listingTrashAsync(
+            filename: nil,
+            showHiddenFiles: true,
+            account: account.ncKitAccount,
+            options: .init(),
+            taskHandler: { task in
+                if let domain {
+                    NSFileProviderManager(for: domain)?.register(
+                        task,
+                        forItemWithIdentifier: self.itemIdentifier,
+                        completionHandler: { _ in }
+                    )
+                }
+            }
+        )
+
+        guard error == .success else {
+            return .unresolved
+        }
+
+        guard let match = items?.first(where: {
+            $0.ocId == metadata.ocId || $0.fileId == metadata.fileId
+        }) else {
+            return .alreadyGone
+        }
+
+        return .resolved(account.trashUrl + "/" + match.fileName)
     }
 }

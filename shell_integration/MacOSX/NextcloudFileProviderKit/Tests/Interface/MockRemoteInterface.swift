@@ -599,6 +599,11 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// Handler to track enumerate calls
     public var enumerateCallHandler: ((String, EnumerateDepth, Bool, [String], Data?, Account, NKRequestOptions, @escaping (URLSessionTask) -> Void) -> Void)?
 
+    /// Test hook: force `enumerate` to fail for remote paths ending with a given suffix, returning the
+    /// associated error instead of reading the mock tree. Lets tests reproduce a working-set scan in
+    /// which one folder's PROPFIND fails (e.g. a large container timing out) while the rest succeed.
+    public var enumerateErrorBySuffix: [String: NKError] = [:]
+
     public init(
         account: Account,
         rootItem: MockRemoteItem? = nil,
@@ -1114,6 +1119,11 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
 
         // Call the enumerate call handler if it exists
         enumerateCallHandler?(remotePath, depth, showHiddenFiles, includeHiddenFiles, requestBody, account, options, taskHandler)
+
+        // Test hook: inject a read failure for a targeted path (see `enumerateErrorBySuffix`).
+        if let injected = enumerateErrorBySuffix.first(where: { remotePath.hasSuffix($0.key) })?.value {
+            return (account.ncKitAccount, [], nil, injected)
+        }
 
         guard let item = item(remotePath: remotePath, account: account.ncKitAccount) else {
             print("Item at \(remotePath) not found.")
