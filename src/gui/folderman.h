@@ -357,6 +357,11 @@ private:
     void runEtagJobsIfPossible(const QList<Folder *> &folderMap);
     void runEtagJobIfPossible(Folder *folder);
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    /** @brief Returns whether the account state permits File Provider ETag polling. */
+    [[nodiscard]] static bool canPollFileProviderEtag(const AccountState &accountState);
+#endif
+
     bool pushNotificationsFilesReady(const OCC::AccountPtr &account);
 
     [[nodiscard]] bool isSwitchToVfsNeeded(const FolderDefinition &folderDefinition) const;

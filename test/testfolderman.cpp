@@ -609,6 +609,30 @@ private slots:
     }
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
+    void testFileProviderEtagPollingRequiresConnectedAccount()
+    {
+        const auto accountState = std::make_unique<FakeAccountState>(Account::create());
+        QVERIFY(FolderMan::canPollFileProviderEtag(*accountState));
+
+        const auto disconnectedStates = {
+            AccountState::SignedOut,
+            AccountState::Disconnected,
+            AccountState::ServiceUnavailable,
+            AccountState::RedirectDetected,
+            AccountState::MaintenanceMode,
+            AccountState::NetworkError,
+            AccountState::ConfigurationError,
+            AccountState::AskingCredentials,
+            AccountState::NeedToSignTermsOfService,
+        };
+
+        for (const auto state : disconnectedStates) {
+            accountState->setStateForTesting(state);
+            QVERIFY2(!FolderMan::canPollFileProviderEtag(*accountState),
+                qPrintable(AccountState::stateString(state)));
+        }
+    }
+
     void testAddFolderRefusedWhenFileProviderModeEnabled()
     {
         _fm.reset({});

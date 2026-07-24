@@ -1109,6 +1109,13 @@ bool FolderMan::isSwitchToVfsNeeded(const FolderDefinition &folderDefinition) co
     return result;
 }
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+bool FolderMan::canPollFileProviderEtag(const AccountState &accountState)
+{
+    return accountState.isConnected();
+}
+#endif
+
 void FolderMan::slotEtagPollTimerTimeout()
 {
     qCInfo(lcFolderMan) << "Etag poll timer timeout";
@@ -1138,6 +1145,11 @@ void FolderMan::slotEtagPollTimerTimeout()
 
     for (const auto &accountState : accounts) {
         const auto account = accountState->account();
+
+        if (!canPollFileProviderEtag(*accountState)) {
+            qCDebug(lcFolderMan) << "Account" << account->displayName() << "is not connected, skipping File Provider ETag check.";
+            continue;
+        }
 
         // Skip accounts that don't have a File Provider domain
         if (!Mac::FileProvider::instance()->domainManager()->domainForAccount(account.data())) {
