@@ -31,7 +31,9 @@ public:
 
     QString _color;
 
-    Status _status = Status::UnknownStatus;
+    Status _serverStatus = Status::UnknownStatus;
+
+    Status _currentStatus = Status::UnknownStatus;
 };
 
 } // namespace OCC
