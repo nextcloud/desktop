@@ -6,15 +6,13 @@ import RealmSwift
 extension RealmItemMetadata {
     static func hasLocation(
         _ item: Query<RealmItemMetadata>,
-        account: String,
         serverUrl: String,
         fileName: String
     ) -> Query<Bool> {
         let canonicalServerUrl = serverUrl.precomposedStringWithCanonicalMapping
         let canonicalFileName = fileName.precomposedStringWithCanonicalMapping
 
-        return item.account == account
-            && (item.normalizedServerUrl == canonicalServerUrl
+        return (item.normalizedServerUrl == canonicalServerUrl
                 || (item.normalizedServerUrl == "" && item.serverUrl == serverUrl))
             && (item.normalizedFileName == canonicalFileName
                 || (item.normalizedFileName == "" && item.fileName == fileName))

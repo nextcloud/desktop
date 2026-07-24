@@ -62,7 +62,6 @@ public extension FilesDatabaseManager {
         }
 
         let incomingOcId = incoming.ocId
-        let incomingAccount = incoming.account
         let incomingServerUrl = incoming.serverUrl
         let incomingFileName = incoming.fileName
 
@@ -71,7 +70,6 @@ public extension FilesDatabaseManager {
             .where { item in
                 RealmItemMetadata.hasLocation(
                     item,
-                    account: incomingAccount,
                     serverUrl: incomingServerUrl,
                     fileName: incomingFileName
                 )
@@ -114,7 +112,7 @@ public extension FilesDatabaseManager {
     /// already persisted in the database.
     ///
     /// Buckets all non-deleted, non-lock-file rows (except the synthetic
-    /// root-container row) by `(account, serverUrl, fileName)`. Within each
+    /// root-container row) by `(serverUrl, fileName)`. Within each
     /// bucket containing more than one row, picks a winner among the
     /// settled (non-in-flight) rows by greatest ``ItemMetadata/syncTime``
     /// — with the lexicographically greater `ocId` breaking ties — and
@@ -140,7 +138,6 @@ public extension FilesDatabaseManager {
             }
 
         struct LogicalKey: Hashable {
-            let account: String
             let serverUrl: String
             let fileName: String
         }
@@ -149,7 +146,6 @@ public extension FilesDatabaseManager {
 
         for candidate in candidates {
             let key = LogicalKey(
-                account: candidate.account,
                 serverUrl: candidate.normalizedServerUrl,
                 fileName: candidate.normalizedFileName
             )
