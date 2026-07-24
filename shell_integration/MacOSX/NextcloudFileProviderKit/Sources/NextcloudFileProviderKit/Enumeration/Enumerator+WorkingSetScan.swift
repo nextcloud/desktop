@@ -208,8 +208,8 @@ extension Enumerator {
                                 let childPath = childDirectory.remotePath()
                                 let childHasMaterialisedDescendant = materialisedItems.contains {
                                     $0.ocId != childDirectory.ocId
-                                        && ($0.serverUrl == childPath
-                                            || $0.serverUrl.hasPrefix(childPath + "/"))
+                                        && ($0.hasSameRemotePath(as: childPath)
+                                            || $0.isDescendant(of: childPath))
                                 }
                                 if childHasMaterialisedDescendant,
                                    enqueuedDirectoryIds.insert(childDirectory.ocId).inserted
@@ -229,7 +229,7 @@ extension Enumerator {
 
                             let hasMaterialisedDescendants = materialisedItems.contains {
                                 $0.ocId != localItem.ocId
-                                    && $0.serverUrl.hasPrefix(localItem.remotePath() + "/")
+                                    && $0.isDescendant(of: localItem.remotePath())
                             }
 
                             if !hasMaterialisedDescendants {
