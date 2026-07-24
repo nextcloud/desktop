@@ -95,8 +95,8 @@ public final class FilesDatabaseManager: Sendable {
                               let fileName = newObject["fileName"] as? String
                         else { return }
 
-                        newObject["normalizedServerUrl"] = serverUrl.canonicalForm
-                        newObject["normalizedFileName"] = fileName.canonicalForm
+                        newObject["normalizedServerUrl"] = serverUrl.precomposedStringWithCanonicalMapping
+                        newObject["normalizedFileName"] = fileName.precomposedStringWithCanonicalMapping
                     }
                 }
             },
@@ -664,8 +664,8 @@ public final class FilesDatabaseManager: Sendable {
                 itemMetadata.fileName = newFileName
                 itemMetadata.fileNameView = newFileName
                 itemMetadata.serverUrl = newServerUrl
-                itemMetadata.normalizedServerUrl = newServerUrl.canonicalForm
-                itemMetadata.normalizedFileName = newFileName.canonicalForm
+                itemMetadata.normalizedServerUrl = newServerUrl.precomposedStringWithCanonicalMapping
+                itemMetadata.normalizedFileName = newFileName.precomposedStringWithCanonicalMapping
                 itemMetadata.lockToken = nil
 
                 database.add(itemMetadata, update: .all)

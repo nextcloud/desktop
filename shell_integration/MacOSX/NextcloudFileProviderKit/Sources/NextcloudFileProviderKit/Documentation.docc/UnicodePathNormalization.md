@@ -35,7 +35,7 @@ https://eclecticlight.co/2021/05/08/explainer-unicode-normalization-and-apfs/
 - `serverUrl` and `fileName` retain the spelling received from the server or
   operating-system boundary.
 - `normalizedServerUrl` and `normalizedFileName` contain NFC values produced
-  by `String.canonicalForm`.
+  by Foundation's `precomposedStringWithCanonicalMapping` property.
 
 The original values must not be replaced globally. They are used for server
 requests, downloads, uploads, deletes, logging, and user-visible metadata.
@@ -123,4 +123,3 @@ The File Provider Kit tests cover:
 - comparing metadata locations with different Unicode forms;
 - startup cleanup of pre-existing canonical duplicates;
 - directory, descendant, trash, rename, and working-set queries.
-
