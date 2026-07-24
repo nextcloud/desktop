@@ -43,29 +43,25 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
         let dir = RealmItemMetadata()
         dir.ocId = "upload-dir"
         dir.account = "TestAccount"
-        dir.serverUrl = "https://cloud.example.com/files"
-        dir.fileName = "uploads"
+        dir.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "uploads")
         dir.directory = true
 
         let normalChild = RealmItemMetadata()
         normalChild.ocId = "normal-child"
         normalChild.account = "TestAccount"
-        normalChild.serverUrl = "https://cloud.example.com/files/uploads"
-        normalChild.fileName = "synced.txt"
+        normalChild.updateLocation(serverUrl: "https://cloud.example.com/files/uploads", fileName: "synced.txt")
         normalChild.status = Status.normal.rawValue
 
         let uploadingChild = RealmItemMetadata()
         uploadingChild.ocId = "uploading-child"
         uploadingChild.account = "TestAccount"
-        uploadingChild.serverUrl = "https://cloud.example.com/files/uploads"
-        uploadingChild.fileName = "uploading.txt"
+        uploadingChild.updateLocation(serverUrl: "https://cloud.example.com/files/uploads", fileName: "uploading.txt")
         uploadingChild.status = Status.uploading.rawValue
 
         let inUploadChild = RealmItemMetadata()
         inUploadChild.ocId = "inupload-child"
         inUploadChild.account = "TestAccount"
-        inUploadChild.serverUrl = "https://cloud.example.com/files/uploads"
-        inUploadChild.fileName = "queued.txt"
+        inUploadChild.updateLocation(serverUrl: "https://cloud.example.com/files/uploads", fileName: "queued.txt")
         inUploadChild.status = Status.inUpload.rawValue
 
         let realm = Self.dbManager.ncDatabase()
@@ -108,15 +104,13 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
         let dir = RealmItemMetadata()
         dir.ocId = "uperr-dir"
         dir.account = "TestAccount"
-        dir.serverUrl = "https://cloud.example.com/files"
-        dir.fileName = "work"
+        dir.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "work")
         dir.directory = true
 
         let uploadErrorChild = RealmItemMetadata()
         uploadErrorChild.ocId = "uperr-child"
         uploadErrorChild.account = "TestAccount"
-        uploadErrorChild.serverUrl = "https://cloud.example.com/files/work"
-        uploadErrorChild.fileName = "failed.txt"
+        uploadErrorChild.updateLocation(serverUrl: "https://cloud.example.com/files/work", fileName: "failed.txt")
         uploadErrorChild.status = Status.uploadError.rawValue
 
         let realm = Self.dbManager.ncDatabase()
@@ -143,15 +137,13 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
         let dir = RealmItemMetadata()
         dir.ocId = "dl-err-dir"
         dir.account = "TestAccount"
-        dir.serverUrl = "https://cloud.example.com/files"
-        dir.fileName = "errors"
+        dir.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "errors")
         dir.directory = true
 
         let dlErrorChild = RealmItemMetadata()
         dlErrorChild.ocId = "dl-err-child"
         dlErrorChild.account = "TestAccount"
-        dlErrorChild.serverUrl = "https://cloud.example.com/files/errors"
-        dlErrorChild.fileName = "broken.pdf"
+        dlErrorChild.updateLocation(serverUrl: "https://cloud.example.com/files/errors", fileName: "broken.pdf")
         dlErrorChild.status = Status.downloadError.rawValue
 
         let realm = Self.dbManager.ncDatabase()
@@ -176,22 +168,19 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
         let dir = RealmItemMetadata()
         dir.ocId = "lock-del-dir"
         dir.account = "TestAccount"
-        dir.serverUrl = "https://cloud.example.com/files"
-        dir.fileName = "work"
+        dir.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "work")
         dir.directory = true
 
         let normalChild = RealmItemMetadata()
         normalChild.ocId = "lock-del-normal"
         normalChild.account = "TestAccount"
-        normalChild.serverUrl = "https://cloud.example.com/files/work"
-        normalChild.fileName = "report.docx"
+        normalChild.updateLocation(serverUrl: "https://cloud.example.com/files/work", fileName: "report.docx")
         normalChild.status = Status.normal.rawValue
 
         let lockFile = RealmItemMetadata()
         lockFile.ocId = "lock-del-lockfile"
         lockFile.account = "TestAccount"
-        lockFile.serverUrl = "https://cloud.example.com/files/work"
-        lockFile.fileName = ".~lock.report.docx#"
+        lockFile.updateLocation(serverUrl: "https://cloud.example.com/files/work", fileName: ".~lock.report.docx#")
         lockFile.isLockFileOfLocalOrigin = true
 
         let realm = Self.dbManager.ncDatabase()

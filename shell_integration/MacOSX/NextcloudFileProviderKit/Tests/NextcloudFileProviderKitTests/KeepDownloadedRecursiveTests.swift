@@ -41,28 +41,24 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
         let folder = RealmItemMetadata()
         folder.ocId = "folder-1"
         folder.account = "TestAccount"
-        folder.serverUrl = "https://cloud.example.com/files"
-        folder.fileName = "documents"
+        folder.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "documents")
         folder.directory = true
 
         let directChildFile = RealmItemMetadata()
         directChildFile.ocId = "direct-child-file"
         directChildFile.account = "TestAccount"
-        directChildFile.serverUrl = "https://cloud.example.com/files/documents"
-        directChildFile.fileName = "report.pdf"
+        directChildFile.updateLocation(serverUrl: "https://cloud.example.com/files/documents", fileName: "report.pdf")
 
         let subfolder = RealmItemMetadata()
         subfolder.ocId = "subfolder-1"
         subfolder.account = "TestAccount"
-        subfolder.serverUrl = "https://cloud.example.com/files/documents"
-        subfolder.fileName = "nested"
+        subfolder.updateLocation(serverUrl: "https://cloud.example.com/files/documents", fileName: "nested")
         subfolder.directory = true
 
         let deepFile = RealmItemMetadata()
         deepFile.ocId = "deep-file"
         deepFile.account = "TestAccount"
-        deepFile.serverUrl = "https://cloud.example.com/files/documents/nested"
-        deepFile.fileName = "note.txt"
+        deepFile.updateLocation(serverUrl: "https://cloud.example.com/files/documents/nested", fileName: "note.txt")
 
         let realm = Self.dbManager.ncDatabase()
         try realm.write {
@@ -216,8 +212,7 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
         let levelOneSibling = RealmItemMetadata()
         levelOneSibling.ocId = "level-1-sibling"
         levelOneSibling.account = "TestAccount"
-        levelOneSibling.serverUrl = "https://cloud.example.com/files/documents/nested"
-        levelOneSibling.fileName = "level-1-sibling.txt"
+        levelOneSibling.updateLocation(serverUrl: "https://cloud.example.com/files/documents/nested", fileName: "level-1-sibling.txt")
 
         let realm = Self.dbManager.ncDatabase()
         try realm.write { realm.add(levelOneSibling) }
@@ -296,8 +291,7 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
         let lateCousin = RealmItemMetadata()
         lateCousin.ocId = "late-cousin"
         lateCousin.account = "TestAccount"
-        lateCousin.serverUrl = "https://cloud.example.com/files/documents/nested"
-        lateCousin.fileName = "late-cousin.txt"
+        lateCousin.updateLocation(serverUrl: "https://cloud.example.com/files/documents/nested", fileName: "late-cousin.txt")
         // No keepDownloaded set — defaults to false.
 
         let realm = Self.dbManager.ncDatabase()
@@ -434,8 +428,7 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
         let sibling = RealmItemMetadata()
         sibling.ocId = "sibling-file"
         sibling.account = "TestAccount"
-        sibling.serverUrl = "https://cloud.example.com/files"
-        sibling.fileName = "documents-archive.zip"
+        sibling.updateLocation(serverUrl: "https://cloud.example.com/files", fileName: "documents-archive.zip")
         // Same parent ("/files") as the target folder, but NOT inside the
         // target folder. A naive prefix match against "/files/documents"
         // would still reject this — but if anyone ever changed the match to
