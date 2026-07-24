@@ -54,6 +54,8 @@ csync_vio_handle_t *csync_vio_local_opendir(const QString &name) {
         int retcode = GetLastError();
         if( retcode == ERROR_FILE_NOT_FOUND ) {
             errno = ENOENT;
+        } else if (retcode == ERROR_DIRECTORY) {
+            errno = ENOTDIR;
         } else {
             errno = EACCES;
         }

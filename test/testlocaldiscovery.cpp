@@ -46,8 +46,7 @@ private slots:
         QSignalSpy finishedSpy(job, &DiscoverySingleLocalDirectoryJob::finished);
         QThreadPool::globalInstance()->start(job);
 
-        QVERIFY(finishedSpy.wait(5000));
-        QCOMPARE(finishedSpy.count(), 1);
+        QTRY_COMPARE_WITH_TIMEOUT(finishedSpy.count(), 1, 5000);
     }
 
     void testSelectiveSyncQuotaExceededDataLoss()
