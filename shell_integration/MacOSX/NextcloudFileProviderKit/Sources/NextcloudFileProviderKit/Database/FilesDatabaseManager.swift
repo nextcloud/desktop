@@ -195,7 +195,6 @@ public final class FilesDatabaseManager: Sendable {
         if let metadata = itemMetadatas.where({ item in
             RealmItemMetadata.hasLocation(
                 item,
-                account: account,
                 serverUrl: rawParentURL,
                 fileName: fileName
             )
@@ -571,7 +570,6 @@ public final class FilesDatabaseManager: Sendable {
             let logicalCandidates = metadatas.where { item in
                 RealmItemMetadata.hasLocation(
                     item,
-                    account: metadata.account,
                     serverUrl: metadata.serverUrl,
                     fileName: metadata.fileName
                 )
