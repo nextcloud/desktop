@@ -3059,116 +3059,116 @@ Bir yanlışlık varsa, silinen tüm dosyaları sunucudan indirerek geri yükley
         <translation> (yedek %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1862"/>
+        <location filename="../src/gui/folderman.cpp" line="1874"/>
         <source>Undefined state.</source>
         <translation>Tanımlanmamış durum.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1865"/>
+        <location filename="../src/gui/folderman.cpp" line="1877"/>
         <source>Waiting to start syncing.</source>
         <translation>Eşitlemenin başlatılması bekleniyor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1868"/>
+        <location filename="../src/gui/folderman.cpp" line="1880"/>
         <source>Preparing for sync.</source>
         <translation>Eşitleme için hazırlanılıyor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1878"/>
+        <location filename="../src/gui/folderman.cpp" line="1890"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation>%1 / %2 eşitleniyor (birkaç saniye kaldı)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1881"/>
+        <location filename="../src/gui/folderman.cpp" line="1893"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>%1 / %2 eşitleniyor (%3 kaldı)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1884"/>
+        <location filename="../src/gui/folderman.cpp" line="1896"/>
         <source>Syncing %1 of %2</source>
         <translation>%1 / %2 eşitleniyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1890"/>
+        <location filename="../src/gui/folderman.cpp" line="1902"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>%1 eşitleniyor (birkaç saniye kaldı)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1892"/>
+        <location filename="../src/gui/folderman.cpp" line="1904"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>%1 eşitleniyor (%2 kaldı)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1895"/>
+        <location filename="../src/gui/folderman.cpp" line="1907"/>
         <source>Syncing %1</source>
         <translation>%1 eşitleniyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1900"/>
+        <location filename="../src/gui/folderman.cpp" line="1912"/>
         <source>Sync is running.</source>
         <translation>Eşitleme çalışıyor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1905"/>
+        <location filename="../src/gui/folderman.cpp" line="1917"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Eşitleme çözümlenmemiş çakışmalar ile tamamlandı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1907"/>
+        <location filename="../src/gui/folderman.cpp" line="1919"/>
         <source>Last sync was successful.</source>
         <translation>Son eşitleme başarılıydı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1913"/>
+        <location filename="../src/gui/folderman.cpp" line="1925"/>
         <source>Setup error.</source>
         <translation>Kurulum sorunu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1916"/>
+        <location filename="../src/gui/folderman.cpp" line="1928"/>
         <source>Sync request was cancelled.</source>
         <translation>Eşitleme isteği iptal edildi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1933"/>
+        <location filename="../src/gui/folderman.cpp" line="1945"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
         <translation>Lütfen farklı bir konum seçin. Seçilmiş klasör bulunamadı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1941"/>
-        <location filename="../src/gui/folderman.cpp" line="2020"/>
+        <location filename="../src/gui/folderman.cpp" line="1953"/>
+        <location filename="../src/gui/folderman.cpp" line="2032"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
         <translation>Lütfen farklı bir konum seçin. %1 zaten bir eşitleme klasörü olarak kullanılıyor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1950"/>
+        <location filename="../src/gui/folderman.cpp" line="1962"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
         <translation>Lütfen farklı bir konum seçin. %1 yolu bulunamadı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1954"/>
+        <location filename="../src/gui/folderman.cpp" line="1966"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
         <translation>Lütfen farklı bir konum seçin. %1 yolu bir klasör değil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1962"/>
-        <location filename="../src/gui/folderman.cpp" line="1967"/>
+        <location filename="../src/gui/folderman.cpp" line="1974"/>
+        <location filename="../src/gui/folderman.cpp" line="1979"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
         <translation>Lütfen farklı bir konum seçin. %1 klasörüne yazma izniniz yok.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2027"/>
+        <location filename="../src/gui/folderman.cpp" line="2039"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
         <translation>Lütfen farklı bir konum seçin. %1, zaten bir eşitleme klasörü olarak kullanılan klasörün içinde bulunuyor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2042"/>
+        <location filename="../src/gui/folderman.cpp" line="2054"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
         <translation>Lütfen farklı bir konum seçin. %1 zaten %2 için bir eşitleme klasörü olarak kullanılıyor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2200"/>
+        <location filename="../src/gui/folderman.cpp" line="2212"/>
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
@@ -3179,7 +3179,7 @@ Bu sorunu çözümlemek için: lütfen %1 klasörünü hesapların birinden kald
 Uzman kullanıcılar için: Bu sorun, bir klasörde bulunan birden fazla eşitleme veri tabanı dosyasıyla ilgili olabilir. Lütfen %1 klasöründeki güncel olmayan ve kullanılmayan .sync_*.db dosyalarını denetleyip kaldırın.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1919"/>
+        <location filename="../src/gui/folderman.cpp" line="1931"/>
         <source>Sync is paused.</source>
         <translation>Eşitleme duraklatıldı.</translation>
     </message>
@@ -3189,7 +3189,7 @@ Uzman kullanıcılar için: Bu sorun, bir klasörde bulunan birden fazla eşitle
         <translation>Eşitleme klasörlerine erişme izni vermek için uygulama ayarlarını açın.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1925"/>
+        <location filename="../src/gui/folderman.cpp" line="1937"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (eşitleme duraklatıldı)</translation>
     </message>

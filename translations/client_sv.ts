@@ -3061,116 +3061,116 @@ Alternativt kan du återställa alla raderade filer genom att ladda ner dem frå
         <translation>(säkerhetkopia %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1862"/>
+        <location filename="../src/gui/folderman.cpp" line="1874"/>
         <source>Undefined state.</source>
         <translation>Okänt tillstånd.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1865"/>
+        <location filename="../src/gui/folderman.cpp" line="1877"/>
         <source>Waiting to start syncing.</source>
         <translation>Väntar på att starta synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1868"/>
+        <location filename="../src/gui/folderman.cpp" line="1880"/>
         <source>Preparing for sync.</source>
         <translation>Förbereder synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1878"/>
+        <location filename="../src/gui/folderman.cpp" line="1890"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation>Synkroniserar %1 av %2 (några sekunder kvar)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1881"/>
+        <location filename="../src/gui/folderman.cpp" line="1893"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Synkroniserar %1 av %2 (%3 kvar)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1884"/>
+        <location filename="../src/gui/folderman.cpp" line="1896"/>
         <source>Syncing %1 of %2</source>
         <translation>Synkroniserar %1 av %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1890"/>
+        <location filename="../src/gui/folderman.cpp" line="1902"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>Synkroniserar %1 (några sekunder kvar)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1892"/>
+        <location filename="../src/gui/folderman.cpp" line="1904"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Synkroniserar %1 (%2 kvar)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1895"/>
+        <location filename="../src/gui/folderman.cpp" line="1907"/>
         <source>Syncing %1</source>
         <translation>Synkroniserar %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1900"/>
+        <location filename="../src/gui/folderman.cpp" line="1912"/>
         <source>Sync is running.</source>
         <translation>Synkronisering pågår.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1905"/>
+        <location filename="../src/gui/folderman.cpp" line="1917"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Synkroniseringen lyckades, men olösta konflikter uppstod.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1907"/>
+        <location filename="../src/gui/folderman.cpp" line="1919"/>
         <source>Last sync was successful.</source>
         <translation>Senaste synkronisering lyckades.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1913"/>
+        <location filename="../src/gui/folderman.cpp" line="1925"/>
         <source>Setup error.</source>
         <translation>Inställningsfel.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1916"/>
+        <location filename="../src/gui/folderman.cpp" line="1928"/>
         <source>Sync request was cancelled.</source>
         <translation>Synkroniseringsbegäran avbröts.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1933"/>
+        <location filename="../src/gui/folderman.cpp" line="1945"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
         <translation>Välj en annan plats. Den valda mappen är inte giltig.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1941"/>
-        <location filename="../src/gui/folderman.cpp" line="2020"/>
+        <location filename="../src/gui/folderman.cpp" line="1953"/>
+        <location filename="../src/gui/folderman.cpp" line="2032"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
         <translation>Välj en annan plats. %1 används redan som en synkroniseringsmapp.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1950"/>
+        <location filename="../src/gui/folderman.cpp" line="1962"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
         <translation>Välj en annan plats. Sökvägen %1 finns inte.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1954"/>
+        <location filename="../src/gui/folderman.cpp" line="1966"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
         <translation>Välj en annan plats. Sökvägen %1 är inte en mapp.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1962"/>
-        <location filename="../src/gui/folderman.cpp" line="1967"/>
+        <location filename="../src/gui/folderman.cpp" line="1974"/>
+        <location filename="../src/gui/folderman.cpp" line="1979"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
         <translation>Välj en annan plats. Du har inte tillräckliga behörigheter för att skriva till %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2027"/>
+        <location filename="../src/gui/folderman.cpp" line="2039"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
         <translation>Välj en annan plats. %1 finns redan i en mapp som används som en synkroniseringsmapp.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2042"/>
+        <location filename="../src/gui/folderman.cpp" line="2054"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
         <translation>Välj en annan plats.. %1 används redan som en synkroniseringsmapp för %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2200"/>
+        <location filename="../src/gui/folderman.cpp" line="2212"/>
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
@@ -3181,7 +3181,7 @@ För att lösa problemet: ta bort %1 från ett av kontona och skapa en ny synkro
 För avancerade användare: det här problemet kan vara relaterat till flera synkdatabasfiler i en mapp. Kontrollera %1 om det finns föråldrade och oanvända .sync_*.db-filer och ta bort dem.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1919"/>
+        <location filename="../src/gui/folderman.cpp" line="1931"/>
         <source>Sync is paused.</source>
         <translation>Synkronisering är pausad.</translation>
     </message>
@@ -3191,7 +3191,7 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
         <translation>Öppna appens inställningar för att ge åtkomst till synkroniseringsmapparna.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1925"/>
+        <location filename="../src/gui/folderman.cpp" line="1937"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (synkronisering pausad)</translation>
     </message>

@@ -3061,116 +3061,116 @@ In alternativa, è possibile ripristinare tutti i file eliminati scaricandoli da
         <translation>(copia di sicurezza %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1862"/>
+        <location filename="../src/gui/folderman.cpp" line="1874"/>
         <source>Undefined state.</source>
         <translation>Stato non definito.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1865"/>
+        <location filename="../src/gui/folderman.cpp" line="1877"/>
         <source>Waiting to start syncing.</source>
         <translation>In attesa di iniziare la sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1868"/>
+        <location filename="../src/gui/folderman.cpp" line="1880"/>
         <source>Preparing for sync.</source>
         <translation>Preparazione della sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1878"/>
+        <location filename="../src/gui/folderman.cpp" line="1890"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation>Sincronizzazione %1 di %2(Mancano pochi secondi)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1881"/>
+        <location filename="../src/gui/folderman.cpp" line="1893"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Sincronizzazione%1 di %2 (%3 rimasto)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1884"/>
+        <location filename="../src/gui/folderman.cpp" line="1896"/>
         <source>Syncing %1 of %2</source>
         <translation>Sincronizzazione %1 di %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1890"/>
+        <location filename="../src/gui/folderman.cpp" line="1902"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>Sincronizzazione %1 (Mancano pochi secondi)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1892"/>
+        <location filename="../src/gui/folderman.cpp" line="1904"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Sincronizzazione %1 (%2 rimasto)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1895"/>
+        <location filename="../src/gui/folderman.cpp" line="1907"/>
         <source>Syncing %1</source>
         <translation>Sincronizzazione %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1900"/>
+        <location filename="../src/gui/folderman.cpp" line="1912"/>
         <source>Sync is running.</source>
         <translation>La sincronizzazione è in corso.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1905"/>
+        <location filename="../src/gui/folderman.cpp" line="1917"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Sincronizzazione terminata con conflitti non risolti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1907"/>
+        <location filename="../src/gui/folderman.cpp" line="1919"/>
         <source>Last sync was successful.</source>
         <translation>L&apos;ultima sincronizzazione è stata completata correttamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1913"/>
+        <location filename="../src/gui/folderman.cpp" line="1925"/>
         <source>Setup error.</source>
         <translation>Errore di configurazione.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1916"/>
+        <location filename="../src/gui/folderman.cpp" line="1928"/>
         <source>Sync request was cancelled.</source>
         <translation>Richiesta di sincronizzazione annullata.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1933"/>
+        <location filename="../src/gui/folderman.cpp" line="1945"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
         <translation>Seleziona una posizione diversa. La cartella selezionata non è valida.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1941"/>
-        <location filename="../src/gui/folderman.cpp" line="2020"/>
+        <location filename="../src/gui/folderman.cpp" line="1953"/>
+        <location filename="../src/gui/folderman.cpp" line="2032"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
         <translation>Si prega di scegliere una posizione diversa. %1 è già utilizzata come cartella di sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1950"/>
+        <location filename="../src/gui/folderman.cpp" line="1962"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
         <translation>Si prega di scegliere una posizione diversa. Il percorso %1 non esiste.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1954"/>
+        <location filename="../src/gui/folderman.cpp" line="1966"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
         <translation>Si prega di scegliere una posizione diversa. Il percorso %1 non è una cartella.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1962"/>
-        <location filename="../src/gui/folderman.cpp" line="1967"/>
+        <location filename="../src/gui/folderman.cpp" line="1974"/>
+        <location filename="../src/gui/folderman.cpp" line="1979"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
         <translation>Seleziona una posizione diversa. Non hai abbastanza permessi per scrivere %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2027"/>
+        <location filename="../src/gui/folderman.cpp" line="2039"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
         <translation>Si prega di scegliere una posizione diversa. %1è già contenuto in una cartella utilizzata come cartella di sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2042"/>
+        <location filename="../src/gui/folderman.cpp" line="2054"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
         <translation>Si prega di scegliere una posizione diversa. %1 è già utilizzato come cartella di sincronizzazione per %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2200"/>
+        <location filename="../src/gui/folderman.cpp" line="2212"/>
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
@@ -3182,7 +3182,7 @@ Per utenti avanzati: questo problema potrebbe essere correlato a più file di da
  Si prega di controllare %1 per i file .sync_*.db obsoleti e inutilizzati e rimuoverli.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1919"/>
+        <location filename="../src/gui/folderman.cpp" line="1931"/>
         <source>Sync is paused.</source>
         <translation>La sincronizzazione è sospesa.</translation>
     </message>
@@ -3192,7 +3192,7 @@ Per utenti avanzati: questo problema potrebbe essere correlato a più file di da
         <translation>Apri le impostazioni dell&apos;app per concedere l&apos;accesso alle cartelle di sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1925"/>
+        <location filename="../src/gui/folderman.cpp" line="1937"/>
         <source>%1 (Sync is paused)</source>
         <translation> %1 (La sincronizzazione è sospesa)</translation>
     </message>
