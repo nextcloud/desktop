@@ -37,5 +37,4 @@ swift run mac-crafter \
     --disable-auto-updater \
     --build-file-provider-module \
     --code-sign-identity="Apple Development" \
-    --without-web-engine \
     "$DESKTOP_CLIENT_PROJECT_ROOT"

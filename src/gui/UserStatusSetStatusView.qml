@@ -16,6 +16,8 @@ ColumnLayout {
     id: root
 
     property NC.UserStatusSelectorModel userStatusSelectorModel
+    readonly property bool userStatusLoaded: userStatusSelectorModel !== null
+        && userStatusSelectorModel.userStatusLoaded
 
     signal finished
     signal showStatusMessageRequested
@@ -24,7 +26,7 @@ ColumnLayout {
     Layout.fillWidth: true
 
     function handleStatusClick(status) {
-        if (!userStatusSelectorModel) {
+        if (!root.userStatusLoaded) {
             return;
         }
 
@@ -44,7 +46,8 @@ ColumnLayout {
     }
 
     UserStatusSelectorButton {
-        checked: userStatusSelectorModel && userStatusSelectorModel.onlineStatus === NC.userStatus.Online
+        enabled: root.userStatusLoaded
+        checked: root.userStatusLoaded && userStatusSelectorModel.onlineStatus === NC.userStatus.Online
         checkable: true
         icon.source: userStatusSelectorModel ? userStatusSelectorModel.onlineIcon : ""
         icon.color: "transparent"
@@ -54,7 +57,8 @@ ColumnLayout {
     }
 
     UserStatusSelectorButton {
-        checked: userStatusSelectorModel && userStatusSelectorModel.onlineStatus === NC.userStatus.Away
+        enabled: root.userStatusLoaded
+        checked: root.userStatusLoaded && userStatusSelectorModel.onlineStatus === NC.userStatus.Away
         checkable: true
         icon.source: userStatusSelectorModel ? userStatusSelectorModel.awayIcon : ""
         icon.color: "transparent"
@@ -65,7 +69,8 @@ ColumnLayout {
 
     UserStatusSelectorButton {
         visible: userStatusSelectorModel && userStatusSelectorModel.busyStatusSupported
-        checked: userStatusSelectorModel && userStatusSelectorModel.onlineStatus === NC.userStatus.Busy
+        enabled: root.userStatusLoaded
+        checked: root.userStatusLoaded && userStatusSelectorModel.onlineStatus === NC.userStatus.Busy
         checkable: true
         icon.source: userStatusSelectorModel ? userStatusSelectorModel.busyIcon : ""
         icon.color: "transparent"
@@ -75,7 +80,8 @@ ColumnLayout {
     }
 
     UserStatusSelectorButton {
-        checked: userStatusSelectorModel && userStatusSelectorModel.onlineStatus === NC.userStatus.DoNotDisturb
+        enabled: root.userStatusLoaded
+        checked: root.userStatusLoaded && userStatusSelectorModel.onlineStatus === NC.userStatus.DoNotDisturb
         checkable: true
         icon.source: userStatusSelectorModel ? userStatusSelectorModel.dndIcon : ""
         icon.color: "transparent"
@@ -86,7 +92,8 @@ ColumnLayout {
     }
 
     UserStatusSelectorButton {
-        checked: userStatusSelectorModel && (userStatusSelectorModel.onlineStatus === NC.userStatus.Invisible
+        enabled: root.userStatusLoaded
+        checked: root.userStatusLoaded && (userStatusSelectorModel.onlineStatus === NC.userStatus.Invisible
             || userStatusSelectorModel.onlineStatus === NC.userStatus.Offline)
         checkable: true
         icon.source: userStatusSelectorModel ? userStatusSelectorModel.invisibleIcon : ""

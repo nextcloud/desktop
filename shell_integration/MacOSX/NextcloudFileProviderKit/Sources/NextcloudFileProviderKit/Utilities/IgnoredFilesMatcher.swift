@@ -8,8 +8,12 @@ public class IgnoredFilesMatcher {
     private let regexes: [NSRegularExpression]
 
     private static func patternToRegex(_ pattern: String, wildcardsMatchSlash: Bool) -> String {
-        let trimmed = pattern.trimmingCharacters(in: .whitespaces)
+        var trimmed = pattern.trimmingCharacters(in: .whitespaces)
         guard !trimmed.isEmpty, !trimmed.hasPrefix("#") else { return "a^" }
+        if trimmed.hasPrefix("]") {
+            trimmed.removeFirst()
+        }
+        guard !trimmed.isEmpty else { return "a^" }
 
         var regex = ""
         var i = trimmed.startIndex

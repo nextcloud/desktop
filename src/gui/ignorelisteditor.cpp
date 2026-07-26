@@ -18,6 +18,14 @@
 #include <QMessageBox>
 #include <QInputDialog>
 
+#ifdef Q_OS_WIN
+    // "light" looks too bright on dark mode on Windows only
+    #define BACKGROUND_PALETTE "alternate-base"
+#else
+    // ...and "alternate-base" looks too bright on macOS only. On Linux/Plasma either one looked fine ...
+    #define BACKGROUND_PALETTE "light"
+#endif
+
 namespace OCC {
 
 IgnoreListEditor::IgnoreListEditor(QWidget *parent)
@@ -26,6 +34,28 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     ui->setupUi(this);
+
+    setStyleSheet(QStringLiteral(
+        "QFrame#globalIgnoreSettingsPanel, QFrame#ignoredPatternsPanel {"
+        " background: palette(" BACKGROUND_PALETTE ");"
+        " border: none;"
+        " border-radius: 12px;"
+        " margin: 0px;"
+        " padding: 6px;"
+        " }"
+        "QWidget#globalIgnoreSettingsPanelContents, QWidget#ignoredPatternsPanelContents {"
+        " background: transparent;"
+        " }"));
+    ui->globalIgnoreSettingsPanel->setAutoFillBackground(true);
+    ui->globalIgnoreSettingsPanel->setAttribute(Qt::WA_StyledBackground, true);
+    ui->globalIgnoreSettingsPanelContents->setAutoFillBackground(false);
+    ui->globalIgnoreSettingsPanelContents->setAttribute(Qt::WA_StyledBackground, false);
+    ui->globalIgnoreSettingsPanelContents->setContentsMargins(0, 0, 0, 0);
+    ui->ignoredPatternsPanel->setAutoFillBackground(true);
+    ui->ignoredPatternsPanel->setAttribute(Qt::WA_StyledBackground, true);
+    ui->ignoredPatternsPanelContents->setAutoFillBackground(false);
+    ui->ignoredPatternsPanelContents->setAttribute(Qt::WA_StyledBackground, false);
+    ui->ignoredPatternsPanelContents->setContentsMargins(0, 0, 0, 0);
 
     ConfigFile cfgFile;
     //FIXME This is not true. The entries are hardcoded below in setupTableReadOnlyItems

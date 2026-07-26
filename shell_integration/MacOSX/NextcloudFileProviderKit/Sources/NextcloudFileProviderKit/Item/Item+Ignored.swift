@@ -55,8 +55,6 @@ extension Item {
             userId: account.id
         )
 
-        dbManager.addItemMetadata(metadata)
-
         let item = await Item(
             metadata: metadata,
             parentItemIdentifier: itemTemplate.parentItemIdentifier,

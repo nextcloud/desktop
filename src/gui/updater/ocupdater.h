@@ -173,11 +173,9 @@ class PassiveUpdateNotifier : public OCUpdater
 public:
     explicit PassiveUpdateNotifier(const QUrl &url);
     bool handleStartup() override { return false; }
-    void backgroundCheckForUpdate() override;
 
 private:
     void versionInfoArrived(const UpdateInfo &info) override;
-    QByteArray _runningAppVersion;
 };
 }
 

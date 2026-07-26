@@ -47,6 +47,12 @@
             "value" : "Luba automaatselt vabastada andmeruumi"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "آزادسازی خودکار فضا"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -77,6 +83,12 @@
             "value" : "自動的な空き容量の解放を許可する"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leisti automatiškai atlaisvinti vietos"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -87,6 +99,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Permitir liberação automática de espaço"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tillåt automatisk frigöring av utrymme"
           }
         },
         "sw" : {
@@ -167,6 +185,12 @@
             "value" : "Jäta allalaaditu alati alles"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "همیشه نگه‌داشتن فایل دانلودشده"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -197,6 +221,12 @@
             "value" : "ダウンロードしたものは常に保持してください"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visada laikykite atsisiųstus"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -207,6 +237,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sempre manter baixados"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Behåll alltid hämtad"
           }
         },
         "sw" : {
@@ -287,6 +323,18 @@
             "value" : "Autentimine ei õnnestunud vigase kasutajanime või salasõna tõttu"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "احراز هویت ناموفق بود؛ اطلاعات ورود معتبر نیست."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L’authentification a échoué en raison d’identifiants invalides."
+          }
+        },
         "ga" : {
           "stringUnit" : {
             "state" : "translated",
@@ -311,6 +359,12 @@
             "value" : "認証情報が無効なため、認証に失敗しました。"
           }
         },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autentifikavimas nepavyko dėl neteisingų prisijungimo duomenų."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -321,6 +375,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "A autenticação falhou devido a credenciais inválidas."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autentiseringen misslyckades på grund av ogiltiga inloggningsuppgifter."
           }
         },
         "sw" : {
@@ -355,14 +415,1220 @@
         }
       }
     },
+    "Copy internal link" : {
+      "comment" : "Context menu item label.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إنسخ الرابط الداخلي"
+          }
+        },
+        "ast" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar l'enllaz internu"
+          }
+        },
+        "bg_BG" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Копиране на вътрешна връзка"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copia l'enllaç intern"
+          }
+        },
+        "cs_CZ" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zkopírovat interní odkaz"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiér internt link"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Internen Link kopieren"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Internen Link kopieren"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αντιγραφή εσωτερικού συνδέσμου"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy internal link"
+          }
+        },
+        "en_GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy internal link"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar enlace interno"
+          }
+        },
+        "es_AR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar enlace interno"
+          }
+        },
+        "es_EC" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar enlace interno"
+          }
+        },
+        "es_MX" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar enlace interno"
+          }
+        },
+        "et_EE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopeeri sisemine link"
+          }
+        },
+        "eu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiatu barne-esteka"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "کپی لینک داخلی"
+          }
+        },
+        "fi_FI" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopioi sisäinen linkki"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copier le lien interne"
+          }
+        },
+        "ga" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cóipeáil an nasc inmheánach"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar a ligazón interna"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "העתקת קישור פנימי"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiraj internu poveznicu"
+          }
+        },
+        "hu_HU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Belső hivatkozás másolása"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salin tautan internal"
+          }
+        },
+        "is" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afrita innri tengil"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copia collegamento interno"
+          }
+        },
+        "ja_JP" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "内部リンクをコピー"
+          }
+        },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nɣel aseɣwen adigan"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "내부 링크 복사"
+          }
+        },
+        "lo" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ສຳເນົາລິງພາຍໃນ"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopijuoti vidinę nuorodą"
+          }
+        },
+        "lv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ievietot iekšējo saiti starpliktuvē"
+          }
+        },
+        "mk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Копирај внатрешен линк"
+          }
+        },
+        "mn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дотоод холбоос хуулах"
+          }
+        },
+        "nb_NO" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopier intern lenke"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopieer interne link"
+          }
+        },
+        "oc" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar lo ligam intèrn"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiuj link wewnętrzny"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar link interno"
+          }
+        },
+        "pt_PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar ligação interna"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiază linkul intern"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Копировать внутреннюю ссылку"
+          }
+        },
+        "sc" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Còpia ligòngiu internu"
+          }
+        },
+        "sk_SK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopírovať interný odkaz"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiraj krajevno povezavo"
+          }
+        },
+        "sq" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopjoni lidhjen e brendshme"
+          }
+        },
+        "sr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Копирај интерну везу"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiera intern länk"
+          }
+        },
+        "sw" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nakili kiungo cha ndani"
+          }
+        },
+        "th_TH" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "คัดลอกลิงค์ภายใน"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İç bağlantıyı kopyala"
+          }
+        },
+        "ug" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ئىچكى ئۇلىنىشنى كۆچۈرۈڭ"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Копіювати посилання"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ichki havoladan nusxa olish"
+          }
+        },
+        "zh_CN" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "复制内部链接"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "複製內部連結"
+          }
+        },
+        "zh_TW" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "複製內部連結"
+          }
+        }
+      }
+    },
     "File actions" : {
       "comment" : "Context menu item label.",
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إجراءات الملفات"
+          }
+        },
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дзеянні з файламі"
+          }
+        },
+        "bg_BG" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Действия с файлове"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arxivar accions"
+          }
+        },
+        "cs_CZ" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akce ohledně souboru"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fil-handlinger"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dateiaktionen"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dateiaktionen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ενέργειες αρχείου"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "File actions"
+          }
+        },
+        "en_GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File actions"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acciones de archivo"
+          }
+        },
+        "es_EC" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acciones de archivo"
+          }
+        },
+        "et_EE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tegevused failidega"
+          }
+        },
+        "eu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fitxategi ekintzak"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "عملیات فایل"
+          }
+        },
+        "fi_FI" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiedostotoiminnot"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actions de fichiers"
+          }
+        },
+        "ga" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gníomhartha comhaid"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accións de ficheiro"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radnje nad datotekom"
+          }
+        },
+        "hu_HU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fájlműveletek"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tindakan file"
+          }
+        },
+        "is" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skráaaðgerðir"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Azioni sui file"
+          }
+        },
+        "ja_JP" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ファイルアクション"
+          }
+        },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tigawin n ufaylu"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "파일 동작"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failo veiksmai"
+          }
+        },
+        "mk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Акции со датотеки"
+          }
+        },
+        "mn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Файлын үйлдлүүд"
+          }
+        },
+        "nb_NO" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filhandlinger"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestandsacties"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akcje na plikach"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ações de arquivos"
+          }
+        },
+        "pt_PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ações sobre ficheiros"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сценарии файла"
+          }
+        },
+        "sk_SK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akcie súboru"
+          }
+        },
+        "sr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Фајл акције"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filåtgärder"
+          }
+        },
+        "sw" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Matendo ya faili"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dosya işlemleri"
+          }
+        },
+        "ug" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ھۆججەت ھەرىكىتى"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дії з файлами"
+          }
+        },
+        "zh_CN" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文件操作"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "檔案操作"
+          }
+        },
+        "zh_TW" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "檔案動作"
+          }
+        }
+      }
+    },
+    "Open in browser" : {
+      "comment" : "Context menu item label.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "af" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open in blaaier"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فتح في المتصفح"
+          }
+        },
+        "ast" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir nel restolador"
+          }
+        },
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Адкрыць у браўзеры"
+          }
+        },
+        "bg_BG" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отваряне в браузъра"
+          }
+        },
+        "br" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Digeriñ er furcher"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obrir al navegador"
+          }
+        },
+        "cs_CZ" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otevřít v prohlížeči"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Åbn i browser"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Im Browser öffnen"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Im Browser öffnen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Άνοιγμα στον περιηγητή ιστού"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open in browser"
+          }
+        },
+        "en_GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open in browser"
+          }
+        },
+        "eo" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Malfermi per retumilo"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir en navegador"
+          }
+        },
+        "es_CL" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir en el navegador"
+          }
+        },
+        "es_CO" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir en el navegador"
+          }
+        },
+        "es_CR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir en el navegador"
+          }
+        },
+        "es_DO" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir en el navegador"
+          }
+        },
+        "es_EC" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir en el navegador"
+          }
+        },
+        "es_GT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir en el navegador"
+          }
+        },
+        "es_HN" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir en el navegador"
+          }
+        },
+        "es_MX" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir en el navegador"
+          }
+        },
+        "es_SV" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir en el navegador"
+          }
+        },
+        "et_EE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ava veebibrauseris"
+          }
+        },
+        "eu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ireki nabigatzailean"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "باز کردن در مرورگر"
+          }
+        },
+        "fi_FI" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avaa selaimessa"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvrir dans le navigateur"
+          }
+        },
+        "ga" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oscail sa bhrabhsálaí"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir no navegador"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "פתיחה בדפדפן"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otvori u pregledniku"
+          }
+        },
+        "hu_HU" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Megnyitás böngészőben"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buka di peramban"
+          }
+        },
+        "is" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opna í vafra"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apri nel browser"
+          }
+        },
+        "ja_JP" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ブラウザーで開く"
+          }
+        },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ldi deg yiminig"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "브라우저에서 열기"
+          }
+        },
+        "lo" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ເປີດໃນເບົາເຊີ"
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atverti naršyklėje"
+          }
+        },
+        "lv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atvērt pārlūkā"
+          }
+        },
+        "mk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отвори во прелистувач"
+          }
+        },
+        "nb_NO" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Åpne i nettleser"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Openen in webbrowser"
+          }
+        },
+        "oc" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dobrir una fenèstra de navigador"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otwórz w przeglądarce"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir no navegador"
+          }
+        },
+        "pt_PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir no navegador"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deschide în Browser"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Открыть в браузере"
+          }
+        },
+        "sc" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aberi in su navigadore"
+          }
+        },
+        "sk_SK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otvoriť v prehliadači"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odpri v brskalniku"
+          }
+        },
+        "sr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отвори у прегледачу"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öppna i webbläsare"
+          }
+        },
+        "sw" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fungua katika kivinjari"
+          }
+        },
+        "th_TH" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "เปิดในเบราว์เซอร์"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tarayıcıda aç"
+          }
+        },
+        "ug" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "توركۆرگۈدە ئېچىڭ"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відкрити у переглядачі"
+          }
+        },
+        "uz" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brauzerda oching"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mở trong trình duyệt"
+          }
+        },
+        "zh_CN" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在浏览器中打开"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用瀏覽器開啟"
+          }
+        },
+        "zh_TW" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "以瀏覽器開啟"
+          }
+        }
+      }
+    },
+    "Remove download" : {
+      "comment" : "Context menu item label.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Downloads entfernen"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Downloads entfernen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove download"
+          }
+        },
+        "en_GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove download"
+          }
+        },
+        "et_EE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eemalda allalaaditud"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retirer le téléchargement"
+          }
+        },
+        "ga" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bain an íoslódáil"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remover download"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta bort hämtning"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вилучити завантажене"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移除下載"
+          }
+        },
+        "zh_TW" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移除下載"
+          }
+        }
+      }
+    },
+    "Remove downloaded items" : {
+      "comment" : "Context menu item label.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heruntergeladene Elemente entfernen"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heruntergeladene Elemente entfernen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove downloaded items"
+          }
+        },
+        "en_GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove downloaded items"
+          }
+        },
+        "et_EE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eemalda allalaaditud failid"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retirer les objets téléchargés"
+          }
+        },
+        "ga" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bain míreanna íoslódáilte"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remover itens baixados"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta bort hämtade objekt"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вилучити завантажені об'єкти"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移除已下載的項目"
+          }
+        },
+        "zh_TW" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移除已下載的項目"
           }
         }
       }
@@ -413,6 +1679,18 @@
             "value" : "Kasutajakonto teave pole saadaval"
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اطلاعات حساب کاربری در دسترس نیست."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les informations du compte ne sont pas disponibles."
+          }
+        },
         "ga" : {
           "stringUnit" : {
             "state" : "translated",
@@ -437,6 +1715,18 @@
             "value" : "アカウント情報は利用できません。"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ulac tilɣa n umiḍan."
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sąskaitos informacija nėra prieinama."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -447,6 +1737,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "As informações da conta não estão disponíveis."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontoinformationen är inte tillgänglig."
           }
         },
         "sw" : {
@@ -527,6 +1823,18 @@
             "value" : "Tekkis võrguühenduse viga."
           }
         },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "خطا در اتصال به شبکه."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une erreur de connexion réseau s’est produite."
+          }
+        },
         "ga" : {
           "stringUnit" : {
             "state" : "translated",
@@ -551,6 +1859,18 @@
             "value" : "ネットワーク接続エラーが発生しました。"
           }
         },
+        "kab" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tella-d tuccḍa deg tuqqna n uẓeṭṭa."
+          }
+        },
+        "lt_LT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Įvyko tinklo ryšio klaida."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -561,6 +1881,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ocorreu um erro na conexão de rede."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ett nätverksfel uppstod."
           }
         },
         "sw" : {

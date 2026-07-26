@@ -774,6 +774,28 @@ void SocketApi::command_FILE_ACTIONS(const QString &localFile, SocketListener *l
     processFileActionsRequest(localFile);
 }
 
+void SocketApi::command_FILES_GOVERNANCE_LABELS(const QString &localFile, SocketListener *listener)
+{
+    Q_UNUSED(listener);
+
+    auto fileData = FileData::get(localFile);
+    if (!fileData.folder) {
+        qCWarning(lcSocketApi) << "Unknown path" << localFile;
+        return;
+    }
+
+    if (!fileData.folder->accountState()->account()->capabilities().governanceAvailable()) {
+        qCWarning(lcSocketApi) << "capability to use governance labels is missing";
+        return;
+    }
+
+    auto record = fileData.journalRecord();
+    if (!record.isValid())
+        return;
+
+    emit governanceLabelsCommandReceived(fileData.folder->accountState()->account(), fileData.localPath, QString::fromLatin1(record._fileId));
+}
+
 // don't pull the share manager into socketapi unittests
 #ifndef OWNCLOUD_TEST
 
@@ -808,7 +830,7 @@ public:
 private slots:
     void sharesFetched(const QList<OCC::SharePtr> &shares)
     {
-        auto shareName = SocketApi::tr("Context menu share");
+        auto shareLabel = SocketApi::tr("Context menu share");
 
         // If there already is a context menu share, reuse it
         for (const auto &share : shares) {
@@ -816,7 +838,7 @@ private slots:
             if (!linkShare)
                 continue;
 
-            if (linkShare->getName() == shareName) {
+            if (linkShare->getLabel() == shareLabel) {
                 qCDebug(lcPublicLink) << "Found existing share, reusing";
                 return success(linkShare->getLink().toString());
             }
@@ -825,9 +847,9 @@ private slots:
         // otherwise create a new one
         qCDebug(lcPublicLink) << "Creating new share";
         if (_isSecureFileDropOnlyFolder) {
-            _shareManager.createSecureFileDropShare(_localFile, shareName, QString());
+            _shareManager.createSecureFileDropShare(_localFile, shareLabel, QString());
         } else {
-            _shareManager.createLinkShare(_localFile, shareName, QString());
+            _shareManager.createLinkShare(_localFile, shareLabel, QString());
         }
     }
 
@@ -1169,7 +1191,7 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
     if (!capabilities.shareAPI() || !(theme->userGroupSharing() || (theme->linkSharing() && capabilities.sharePublicLink())))
         return;
 
-    if (record._isShared && !record._sharedByMe) {
+    if (record._isShared && !record._sharedByMe && itemEncryptionFlag == SharingContextItemEncryptedFlag::NotEncryptedItem) {
         listener->sendMessage(QLatin1String("MENU_ITEM:LEAVESHARE") + flagString + tr("Leave this share"));
     }
 
@@ -1272,6 +1294,15 @@ void SocketApi::sendLockFileInfoMenuEntries(const QFileInfo &fileInfo,
         const auto remainingTime = QDateTime::currentDateTime().secsTo(QDateTime::fromSecsSinceEpoch(lockExpirationTime));
         const auto remainingTimeInMinute = static_cast<int>(remainingTime > 0 ? remainingTime / SECONDS_PER_MINUTE : 0);
         listener->sendMessage(QLatin1String("MENU_ITEM:LOCKED_FILE_DATE:d:") + tr("Expires in %1 minutes", "remaining time before lock expires", remainingTimeInMinute).arg(remainingTimeInMinute));
+    }
+}
+
+void SocketApi::sendFilesGovernanceLabelsMenuOptions(const QFileInfo &fileInfo,
+                                                     const FileData &fileData,
+                                                     SocketListener *listener)
+{
+    if (fileData.folder->accountState()->account()->capabilities().governanceAvailable() && !FileSystem::isDir(fileInfo.absoluteFilePath())) {
+        listener->sendMessage(QLatin1String("MENU_ITEM:FILES_GOVERNANCE_LABELS::") + tr("Apply labels"));
     }
 }
 
@@ -1393,6 +1424,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         const auto rootE2eeFolderFlag = isE2eEncryptedRootFolder ? SharingContextItemRootEncryptedFolderFlag::RootEncryptedFolder : SharingContextItemRootEncryptedFolderFlag::NonRootEncryptedFolder;
         sendSharingContextMenuOptions(fileData, listener, itemEncryptionFlag, rootE2eeFolderFlag);
         sendFileActionsContextMenuOptions(fileData, listener);
+        sendFilesGovernanceLabelsMenuOptions(fileInfo, fileData, listener);
 
         // Conflict files get conflict resolution actions
         bool isConflict = Utility::isConflictFile(fileData.folderRelativePath);

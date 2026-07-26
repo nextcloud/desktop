@@ -731,8 +731,28 @@ AccountStatePtr AccountManager::account(const QString &name)
     return it != _accounts.cend() ? *it : AccountStatePtr();
 }
 
+// Decodes the host portion of a "user@host" or "user@host:port" userId string
+// from ACE to Unicode via QUrl::fromAce so that it can be compared against the
+// Unicode host returned by QUrl::host().
+static QString normalizeUserIdHost(const QString &id)
+{
+    const auto atIdx = id.lastIndexOf(QLatin1Char('@'));
+    if (atIdx < 0) {
+        return id;
+    }
+    const auto userPart = id.left(atIdx);
+    const auto hostWithPort = id.mid(atIdx + 1);
+    const auto colonIdx = hostWithPort.lastIndexOf(QLatin1Char(':'));
+    const auto hostPart = (colonIdx >= 0) ? hostWithPort.left(colonIdx) : hostWithPort;
+    const auto portPart = (colonIdx >= 0) ? hostWithPort.mid(colonIdx) : QString{};
+    const auto unicodeHost = QUrl::fromAce(hostPart.toLatin1());
+    return unicodeHost.isEmpty() ? id : (userPart + QLatin1Char('@') + unicodeHost + portPart);
+}
+
 AccountStatePtr AccountManager::accountFromUserId(const QString &id) const
 {
+    const auto normalizedId = normalizeUserIdHost(id);
+
     const auto accountsList = accounts();
     for (const auto &account : accountsList) {
         const auto isUserIdWithPort = id.split(QLatin1Char(':')).size() > 1;
@@ -740,7 +760,7 @@ AccountStatePtr AccountManager::accountFromUserId(const QString &id) const
         const auto portString = (port > 0 && port != 80 && port != 443) ? QStringLiteral(":%1").arg(port) : QStringLiteral("");
         const QString davUserId = QStringLiteral("%1@%2").arg(account->account()->davUser(), account->account()->url().host()) + portString;
 
-        if (davUserId == id) {
+        if (davUserId == normalizedId) {
             return account;
         }
     }
@@ -767,6 +787,16 @@ AccountState *AccountManager::addAccount(const AccountPtr &newAccount)
 
 void AccountManager::deleteAccount(OCC::AccountState *account)
 {
+    removeAccountState(account, AccountRemovalMode::ForgetSensitiveData);
+}
+
+void AccountManager::removeAccountState(OCC::AccountState *account)
+{
+    removeAccountState(account, AccountRemovalMode::KeepSensitiveData);
+}
+
+void AccountManager::removeAccountState(OCC::AccountState *account, AccountRemovalMode removalMode)
+{
     const auto it = std::find(_accounts.begin(), _accounts.end(), account);
     if (it == _accounts.end()) {
         return;
@@ -774,17 +804,21 @@ void AccountManager::deleteAccount(OCC::AccountState *account)
     const auto copy = *it; // keep a reference to the shared pointer so it does not delete it just yet
     _accounts.erase(it);
 
-    // Forget account credentials, cookies
-    account->account()->credentials()->forgetSensitiveData();
-    QFile::remove(account->account()->cookieJarPath());
+    if (removalMode == AccountRemovalMode::ForgetSensitiveData) {
+        account->account()->deleteAppToken();
+
+        // Forget account credentials, cookies
+        account->account()->credentials()->forgetSensitiveData();
+        QFile::remove(account->account()->cookieJarPath());
+    }
 
     const auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     settings->remove(account->account()->id());
 
-    // Forget E2E keys
-    account->account()->e2e()->forgetSensitiveData();
-
-    account->account()->deleteAppToken();
+    if (removalMode == AccountRemovalMode::ForgetSensitiveData) {
+        // Forget E2E keys
+        account->account()->e2e()->forgetSensitiveData();
+    }
 
     // clean up config from subscriptions and enterprise channel
     updateServerHasValidSubscriptionConfig();
@@ -859,8 +893,10 @@ AccountPtr AccountManager::createAccount()
     acc->setSslErrorHandler(new SslDialogErrorHandler);
     connect(acc.data(), &Account::proxyAuthenticationRequired,
         ProxyAuthHandler::instance(), &ProxyAuthHandler::handleProxyAuthenticationRequired);
-    connect(acc.data(), &Account::lockFileError,
-        Systray::instance(), &Systray::showErrorMessageDialog);
+    if (Systray::instance()) {
+        connect(acc.data(), &Account::lockFileError,
+            Systray::instance(), &Systray::showErrorMessageDialog);
+    }
 
     return acc;
 }

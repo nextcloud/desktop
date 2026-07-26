@@ -7,6 +7,9 @@ import Foundation
 public class MockEnumerationObserver: NSObject, NSFileProviderEnumerationObserver {
     public var items: [NSFileProviderItem] = []
     public var observedPages: [NSFileProviderPage] = []
+    /// Mirrors the system-set `suggestedPageSize`. `@objc` so the optional protocol requirement is seen
+    /// by the production code through the protocol existential; set small to force multi-page delivery.
+    @objc public var suggestedPageSize: Int = 0
     public private(set) var error: Error?
     public private(set) var page: NSFileProviderPage?
     private var isComplete = false

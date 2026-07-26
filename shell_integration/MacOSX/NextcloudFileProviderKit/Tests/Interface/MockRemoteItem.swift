@@ -34,6 +34,12 @@ public class MockRemoteItem: Equatable {
     public var serverUrl: String
     public var trashbinOriginalLocation: String?
 
+    // Defaults to -1 ("unknown / unlimited") so existing tests stay on the
+    // pre-quota-check code path. Tests that exercise the pre-flight quota
+    // gate set this on the upload's parent directory.
+    public var quotaAvailableBytes: Int64 = -1
+    public var quotaUsedBytes: Int64 = 0
+
     public static func == (lhs: MockRemoteItem, rhs: MockRemoteItem) -> Bool {
         lhs.parent == rhs.parent &&
             lhs.children == rhs.children &&
@@ -126,8 +132,10 @@ public class MockRemoteItem: Equatable {
             ? NextcloudKit.shared.nkCommonInstance.rootFileName
             : trashbinOriginalLocation?.split(separator: "/").last?.toString() ?? name
         file.size = size
-        file.date = creationDate
+        file.creationDate = creationDate
+        file.date = modificationDate
         file.directory = isRoot ? false : directory
+        file.permissions = "RGDNVW"
         file.etag = versionIdentifier
         file.ocId = identifier
         file.fileId = identifier.replacingOccurrences(of: trashedItemIdSuffix, with: "")
@@ -141,6 +149,8 @@ public class MockRemoteItem: Equatable {
         file.lockTimeOut = lockTimeOut
         file.trashbinFileName = name
         file.trashbinOriginalLocation = trashbinOriginalLocation ?? ""
+        file.quotaAvailableBytes = quotaAvailableBytes
+        file.quotaUsedBytes = quotaUsedBytes
         return file
     }
 

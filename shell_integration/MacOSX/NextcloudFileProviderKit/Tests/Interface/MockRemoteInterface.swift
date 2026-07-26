@@ -575,8 +575,34 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// Track the number of read operations performed
     public var readOperationCount: Int = 0
 
+    /// When non-nil, the upload mock truncates the modification date returned to
+    /// the caller to this precision (in seconds) — simulating Nextcloud's
+    /// `Last-Modified` IMF-fixdate, which is second-precision even when we sent
+    /// `X-OC-Mtime` with sub-second precision. The stored server-side mtime
+    /// stays precise; only the response value is degraded. `nil` keeps the
+    /// echo-back behaviour every existing test relies on.
+    public var uploadResponseMtimeTruncation: TimeInterval?
+
+    /// When `true`, the upload mock returns `nil` for the response date,
+    /// exercising the locally-known-mtime fallback in the production code.
+    public var uploadReturnsNilDate: Bool = false
+
+    /// When set, every upload call returns this error immediately without touching the mock tree.
+    /// Use this to simulate server-side upload rejections (e.g. 404 path gone, 507 quota).
+    public var uploadError: NKError?
+
+    /// Records the `If-Match` header the most recent upload call carried (nil if none).
+    /// Lets tests assert the optimistic-concurrency precondition was sent, and with
+    /// which etag. Captured before any injected `uploadError` short-circuit.
+    public var lastUploadIfMatchHeader: String?
+
     /// Handler to track enumerate calls
     public var enumerateCallHandler: ((String, EnumerateDepth, Bool, [String], Data?, Account, NKRequestOptions, @escaping (URLSessionTask) -> Void) -> Void)?
+
+    /// Test hook: force `enumerate` to fail for remote paths ending with a given suffix, returning the
+    /// associated error instead of reading the mock tree. Lets tests reproduce a working-set scan in
+    /// which one folder's PROPFIND fails (e.g. a large container timing out) while the rest succeed.
+    public var enumerateErrorBySuffix: [String: NKError] = [:]
 
     public init(
         account: Account,
@@ -643,7 +669,9 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         }
 
         var pathComponents = sanitisedPath?.components(separatedBy: "/")
-        if pathComponents?.first?.isEmpty == true { pathComponents?.removeFirst() }
+        if pathComponents?.first?.isEmpty == true {
+            pathComponents?.removeFirst()
+        }
         var currentNode = remotePath.hasPrefix(account.trashUrl) ? rootTrashItem : rootItem
 
         while pathComponents?.isEmpty == false {
@@ -666,7 +694,9 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     func parentPath(path: String, account: Account) -> String {
         let sanitisedPath = sanitisedPath(path, account: account)
         var pathComponents = sanitisedPath?.components(separatedBy: "/")
-        if pathComponents?.first?.isEmpty == true { pathComponents?.removeFirst() }
+        if pathComponents?.first?.isEmpty == true {
+            pathComponents?.removeFirst()
+        }
         guard pathComponents?.isEmpty == false else { return "/" }
         pathComponents?.removeLast()
         let rootPath = path.hasPrefix(account.trashUrl) ? account.trashUrl : account.davFilesUrl
@@ -735,7 +765,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         creationDate: Date? = .init(),
         modificationDate: Date? = .init(),
         account: Account,
-        options _: NKRequestOptions = .init(),
+        options: NKRequestOptions = .init(),
         requestHandler _: @escaping (Alamofire.UploadRequest) -> Void = { _ in },
         taskHandler _: @escaping (URLSessionTask) -> Void = { _ in },
         progressHandler _: @escaping (Progress) -> Void = { _ in }
@@ -748,6 +778,12 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         response: HTTPURLResponse?,
         remoteError: NKError
     ) {
+        lastUploadIfMatchHeader = options.customHeader?["If-Match"]
+
+        if let uploadError {
+            return (account.ncKitAccount, nil, nil, nil, 0, nil, uploadError)
+        }
+
         var itemName: String
         do {
             itemName = try name(from: remotePath)
@@ -795,11 +831,23 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             print("Created item \(item.name)")
         }
 
+        let responseDate: NSDate? = {
+            if uploadReturnsNilDate {
+                return nil
+            }
+            if let truncation = uploadResponseMtimeTruncation, truncation > 0 {
+                let raw = item.modificationDate.timeIntervalSince1970
+                let truncated = (raw / truncation).rounded(.down) * truncation
+                return Date(timeIntervalSince1970: truncated) as NSDate
+            }
+            return item.modificationDate as NSDate
+        }()
+
         return (
             account.ncKitAccount,
             item.identifier,
             item.versionIdentifier,
-            item.modificationDate as NSDate,
+            responseDate,
             item.size,
             nil,
             .success
@@ -1010,23 +1058,19 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         progressHandler _: @escaping (_ progress: Progress) -> Void = { _ in }
     ) async -> (
         account: String,
-        etag: String?,
-        date: Date?,
-        length: Int64,
-        headers: [AnyHashable: any Sendable]?,
-        afError: AFError?,
+        response: AFDownloadResponse<URL?>?,
         nkError: NKError
     ) {
         guard let serverUrlFileName = serverUrlFileName as? String ?? (serverUrlFileName as? URL)?.absoluteString else {
-            return (account, nil, nil, 0, nil, nil, .urlError)
+            return (account, nil, .urlError)
         }
 
         guard let account = mockedAccounts[account] else {
-            return (account, nil, nil, 0, nil, nil, .urlError)
+            return (account, nil, .urlError)
         }
 
         guard let item = item(remotePath: serverUrlFileName, account: account.ncKitAccount) else {
-            return (account.ncKitAccount, nil, nil, 0, nil, nil, .urlError)
+            return (account.ncKitAccount, nil, .urlError)
         }
 
         let localUrl = URL(fileURLWithPath: fileNameLocalPath)
@@ -1042,18 +1086,10 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             }
         } catch {
             print("Could not write item data: \(error)")
-            return (account.ncKitAccount, nil, nil, 0, nil, nil, .urlError)
+            return (account.ncKitAccount, nil, .urlError)
         }
 
-        return (
-            account.ncKitAccount,
-            item.versionIdentifier,
-            item.creationDate as Date,
-            item.size,
-            nil,
-            nil,
-            .success
-        )
+        return (account.ncKitAccount, nil, .success)
     }
 
     public func enumerate(
@@ -1083,6 +1119,11 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
 
         // Call the enumerate call handler if it exists
         enumerateCallHandler?(remotePath, depth, showHiddenFiles, includeHiddenFiles, requestBody, account, options, taskHandler)
+
+        // Test hook: inject a read failure for a targeted path (see `enumerateErrorBySuffix`).
+        if let injected = enumerateErrorBySuffix.first(where: { remotePath.hasSuffix($0.key) })?.value {
+            return (account.ncKitAccount, [], nil, injected)
+        }
 
         guard let item = item(remotePath: remotePath, account: account.ncKitAccount) else {
             print("Item at \(remotePath) not found.")

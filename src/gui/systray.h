@@ -12,9 +12,11 @@
 
 #include <QSystemTrayIcon>
 #include <QQmlNetworkAccessManagerFactory>
+#include <QHash>
 #include <QStringListModel>
 
 class QScreen;
+class QMenu;
 class QQmlApplicationEngine;
 class QQuickWindow;
 class QWindow;
@@ -48,6 +50,9 @@ void sendOsXTalkNotification(const QString &title, const QString &message, const
 #endif
 void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window);
 double menuBarThickness();
+void showMacOSTrayPopup(const QRect &iconRect);
+void hideMacOSTrayPopup();
+void showMacOSQMLWindow();
 #endif
 
 /**
@@ -87,6 +92,8 @@ public:
     [[nodiscard]] bool syncIsPaused() const;
     [[nodiscard]] bool anySyncFolders() const;
     [[nodiscard]] bool isOpen() const;
+    [[nodiscard]] bool isActivitySurfaceVisible() const;
+    void setTrayContextMenuVisible(const bool visible);
 
     [[nodiscard]] bool enableAddAccount() const;
 
@@ -114,7 +121,7 @@ signals:
     void hideSettingsDialog();
 
 public slots:
-    [[nodiscard]] bool openUrlInBrowser(const QUrl &url) const;
+    void openUrlInBrowser(const QUrl &url) const;
 
     void setTrayEngine(QQmlApplicationEngine *trayEngine);
     void create();
@@ -127,6 +134,7 @@ public slots:
     void createEditFileLocallyLoadingDialog(const QString &fileName);
     void destroyEditFileLocallyLoadingDialog();
     void createResolveConflictsDialog(const OCC::ActivityList &allConflicts);
+    void createGovernanceLabelsDialog(AccountPtr account, const QString &fileName, const QString &fileId);
     void createEncryptionTokenDiscoveryDialog();
     void destroyEncryptionTokenDiscoveryDialog();
 
@@ -142,7 +150,13 @@ public slots:
     void destroyDialog(QQuickWindow *window) const;
 
     void showWindow(OCC::Systray::WindowPosition position = OCC::Systray::WindowPosition::Default);
+    void showTrayPopup(OCC::Systray::WindowPosition position = OCC::Systray::WindowPosition::Default);
     void hideWindow();
+    void showQMLWindow();
+    void showActivitiesWindow(int userIndex = -1);
+    void showAssistantWindow(int userIndex = -1);
+    void showSearchWindow(int userIndex = -1);
+    void showUserStatusWindow(int userIndex);
 
     void setSyncIsPaused(const bool syncIsPaused);
     void setIsOpen(const bool isOpen);
@@ -202,12 +216,16 @@ private:
     [[nodiscard]] QPoint computeNotificationPosition(int width, int height, int spacing = 20, NotificationPosition position = NotificationPosition::Default) const;
 
     bool _isOpen = false;
+    bool _isTrayContextMenuVisible = false;
     bool _syncIsPaused = true;
     bool _anySyncFolders = false;
 
     std::unique_ptr<QQmlApplicationEngine> _trayEngine;
     QPointer<QMenu> _contextMenu;
-    QSharedPointer<QQuickWindow> _trayWindow;
+    QHash<QString, QPointer<QQuickWindow>> _activitiesWindows;
+    QHash<QString, QPointer<QQuickWindow>> _assistantWindows;
+    QHash<QString, QPointer<QQuickWindow>> _searchWindows;
+    QPointer<QQuickWindow> _userStatusWindow;
 
     AccessManagerFactory _accessManagerFactory;
 
@@ -218,6 +236,12 @@ private:
 
     QStringListModel _fakeActivityModel;
 };
+
+#ifndef Q_OS_MACOS
+void setupQtTrayContextMenu(QMenu *menu, Systray *systray);
+bool showQtTrayPopup(Systray *systray, const QRect &iconRect, Systray::WindowPosition position);
+void hideQtTrayPopup();
+#endif
 
 } // namespace OCC
 

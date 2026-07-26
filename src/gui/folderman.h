@@ -80,7 +80,7 @@ public:
     };
 
     ~FolderMan() override;
-    static FolderMan *instance();
+    static FolderMan *instance() { return _instance; }
 
     int setupFolders();
     int setupFoldersMigration();
@@ -129,9 +129,6 @@ public:
      * @returns false if the journal could not be removed, true otherwise.
      */
     static bool ensureJournalGone(const QString &journalDbFile);
-
-    /** Creates a new and empty local directory. */
-    bool startFromScratch(const QString &);
 
     /// Produce text for use in the tray tooltip
     static QString trayTooltipStatusString(SyncResult::Status syncStatus, bool hasUnresolvedConflicts, bool paused, ProgressInfo *progress);
@@ -349,10 +346,6 @@ private:
     /** Will start a sync after a bit of delay. */
     void startScheduledSyncSoon();
 
-    // finds all folder configuration files
-    // and create the folders
-    [[nodiscard]] QString getBackupName(QString fullPathName) const;
-
     // makes the folder known to the socket api
     void registerFolderWithSocketApi(Folder *folder);
 
@@ -363,6 +356,11 @@ private:
 
     void runEtagJobsIfPossible(const QList<Folder *> &folderMap);
     void runEtagJobIfPossible(Folder *folder);
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    /** @brief Returns whether the account state permits File Provider ETag polling. */
+    [[nodiscard]] static bool canPollFileProviderEtag(const AccountState &accountState);
+#endif
 
     bool pushNotificationsFilesReady(const OCC::AccountPtr &account);
 
@@ -403,8 +401,6 @@ private:
 #ifdef Q_OS_WIN
     NavigationPaneHelper _navigationPaneHelper;
 #endif
-
-    QPointer<UpdateE2eeFolderUsersMetadataJob> _removeE2eeShareJob;
 
     bool _appRestartRequired = false;
 

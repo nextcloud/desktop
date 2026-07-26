@@ -217,6 +217,13 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         )
         XCTAssertTrue(canEvictPredicate.evaluate(with: fileproviderItems))
 
+        // Pinned items must NOT advertise the evict action. The framework
+        // would still report `contentPolicy == .downloadEagerlyAndKeepDownloaded`
+        // until its own refresh of the item lands, so a tight unpin-then-evict
+        // path races with -2008 NonEvictable. Gating on `!keepDownloaded`
+        // forces the user to clear the pin first; once the framework has
+        // re-fetched the item, both `displayEvict` and `contentPolicy` flip
+        // together (#9891).
         metadata.keepDownloaded = true
         let keepDownloadedItem = Item(
             metadata: metadata,
@@ -228,10 +235,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(keepDownloadedItem.userInfo?["displayEvict"])
 
         let fileproviderKeepDownloadedItems = ["fileproviderItems": [keepDownloadedItem]]
-        let cannotEvictPredicate = NSPredicate(
-            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayEvict == true ).@count > 0"
-        )
-        XCTAssertFalse(cannotEvictPredicate.evaluate(with: fileproviderKeepDownloadedItems))
+        XCTAssertFalse(canEvictPredicate.evaluate(with: fileproviderKeepDownloadedItems))
     }
 
     func testItemUserInfoNoDisplayEvictState() {
@@ -254,6 +258,229 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayEvict == false ).@count > 0"
         )
         XCTAssertTrue(undownloadedPredicate.evaluate(with: fileproviderItems))
+    }
+
+    // MARK: - "Remove download" visibility on folders (#10085)
+
+    // Unlike the file cases above (which read `displayEvict` straight off the
+    // metadata), directory eviction visibility depends on descendant *file* rows
+    // in the database, so these tests seed the per-test Realm first.
+
+    /// Full server path of the folder produced by `makeFolderItem()`.
+    private var folderServerPath: String {
+        Self.account.davFilesUrl + "/folder"
+    }
+
+    /// Seed one metadata row into the per-test Realm.
+    private func seedMetadataRow(
+        ocId: String,
+        fileName: String,
+        serverUrl: String,
+        directory: Bool,
+        downloaded: Bool = false,
+        visitedDirectory: Bool = false,
+        deleted: Bool = false,
+        keepDownloaded: Bool = false
+    ) throws {
+        let row = RealmItemMetadata()
+        row.ocId = ocId
+        row.account = Self.account.ncKitAccount
+        row.serverUrl = serverUrl
+        row.fileName = fileName
+        row.directory = directory
+        row.downloaded = downloaded
+        row.visitedDirectory = visitedDirectory
+        row.deleted = deleted
+        row.keepDownloaded = keepDownloaded
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write { realm.add(row) }
+    }
+
+    /// A directory `Item` at `folderServerPath`; its descendants are whatever
+    /// rows the test seeded under that path.
+    private func makeFolderItem(keepDownloaded: Bool = false) -> Item {
+        var metadata =
+            SendableItemMetadata(ocId: "folder-id", fileName: "folder", account: Self.account)
+        metadata.directory = true
+        metadata.keepDownloaded = keepDownloaded
+        return Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager
+        )
+    }
+
+    /// A root-container `Item`; its descendants are any rows seeded under
+    /// `Self.account.davFilesUrl`.
+    private func makeRootItem() -> Item {
+        Item.rootContainer(
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: false,
+            log: FileProviderLogMock()
+        )
+    }
+
+    /// Regression for #10085: a folder holding a materialized descendant file
+    /// must offer the folder eviction action ("Remove downloaded items"), gated on
+    /// `displayEvictDescendants` — never the file action `displayEvict`.
+    func testItemUserInfoDisplayEvictDescendantsForFolderWithDownloadedFile() throws {
+        try seedMetadataRow(
+            ocId: "child-file", fileName: "report.pdf", serverUrl: folderServerPath,
+            directory: false, downloaded: true
+        )
+
+        let item = makeFolderItem()
+        XCTAssertEqual(item.userInfo?["displayEvictDescendants"] as? Bool, true)
+        // The file-labelled action ("Remove download") must never show on a folder.
+        XCTAssertEqual(item.userInfo?["displayEvict"] as? Bool, false)
+
+        // Assert against the exact SUBQUERY predicate Finder evaluates.
+        let canEvictPredicate = NSPredicate(
+            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayEvictDescendants == true ).@count > 0"
+        )
+        XCTAssertTrue(
+            canEvictPredicate.evaluate(with: ["fileproviderItems": [item]]),
+            "A folder with a materialized descendant file must qualify for the folder evict action."
+        )
+    }
+
+    /// A materialized file offers "Remove download" (`displayEvict`) but never the
+    /// folder-labelled action (`displayEvictDescendants`) — the two never overlap.
+    func testItemUserInfoFileDoesNotOfferDisplayEvictDescendants() {
+        var metadata =
+            SendableItemMetadata(ocId: "file-id", fileName: "report.pdf", account: Self.account)
+        metadata.downloaded = true
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertEqual(item.userInfo?["displayEvict"] as? Bool, true)
+        XCTAssertEqual(item.userInfo?["displayEvictDescendants"] as? Bool, false)
+    }
+
+    /// A folder whose descendant files are all dataless has nothing to remove.
+    func testItemUserInfoNoDisplayEvictDescendantsForFolderWithoutDownloadedFile() throws {
+        try seedMetadataRow(
+            ocId: "child-file", fileName: "report.pdf", serverUrl: folderServerPath,
+            directory: false, downloaded: false
+        )
+
+        XCTAssertEqual(makeFolderItem().userInfo?["displayEvictDescendants"] as? Bool, false)
+    }
+
+    /// A materialized descendant *sub-folder* (visited, but holding no downloaded
+    /// file) must NOT make the action appear — only files count (#10085).
+    func testItemUserInfoNoDisplayEvictDescendantsForFolderWithOnlyVisitedSubfolder() throws {
+        try seedMetadataRow(
+            ocId: "subfolder", fileName: "nested", serverUrl: folderServerPath,
+            directory: true, visitedDirectory: true
+        )
+        // A dataless file deeper in the tree must not count either.
+        try seedMetadataRow(
+            ocId: "deep-file", fileName: "note.txt", serverUrl: folderServerPath + "/nested",
+            directory: false, downloaded: false
+        )
+
+        XCTAssertEqual(makeFolderItem().userInfo?["displayEvictDescendants"] as? Bool, false)
+    }
+
+    /// Pinned folders must NOT advertise the evict action even with materialized
+    /// content — the -2008 NonEvictable guard applies to folders too (#9891).
+    func testItemUserInfoDisplayEvictDescendantsGatedOnUnpinnedForFolder() throws {
+        try seedMetadataRow(
+            ocId: "child-file", fileName: "report.pdf", serverUrl: folderServerPath,
+            directory: false, downloaded: true
+        )
+
+        XCTAssertEqual(makeFolderItem(keepDownloaded: true).userInfo?["displayEvictDescendants"] as? Bool, false)
+    }
+
+    /// A folder whose only downloaded descendant is individually pinned ("Always
+    /// keep downloaded") has nothing removable — the action must stay hidden, so
+    /// the handler never tries to evict strict-pinned content (-2008, #9891/#10085).
+    func testItemUserInfoNoDisplayEvictDescendantsForFolderWithOnlyPinnedDownloadedFile() throws {
+        try seedMetadataRow(
+            ocId: "pinned-file", fileName: "keep.pdf", serverUrl: folderServerPath,
+            directory: false, downloaded: true, keepDownloaded: true
+        )
+        XCTAssertEqual(makeFolderItem().userInfo?["displayEvictDescendants"] as? Bool, false)
+    }
+
+    /// A downloaded file under a *sibling* folder sharing a name prefix
+    /// (`.../folderX`) must not make `.../folder` advertise the action — guards
+    /// the `+ "/"` boundary in the descendant predicate.
+    func testItemUserInfoNoDisplayEvictDescendantsForPrefixSiblingFile() throws {
+        try seedMetadataRow(
+            ocId: "sibling-file", fileName: "report.pdf",
+            serverUrl: Self.account.davFilesUrl + "/folderX",
+            directory: false, downloaded: true
+        )
+        XCTAssertEqual(makeFolderItem().userInfo?["displayEvictDescendants"] as? Bool, false)
+    }
+
+    /// A downloaded file nested several levels deep must surface the folder action —
+    /// exercises the `starts(with: path + "/")` recursion branch.
+    func testItemUserInfoDisplayEvictDescendantsForDeepDownloadedFile() throws {
+        try seedMetadataRow(
+            ocId: "deep-file", fileName: "note.txt",
+            serverUrl: folderServerPath + "/nested",
+            directory: false, downloaded: true
+        )
+        XCTAssertEqual(makeFolderItem().userInfo?["displayEvictDescendants"] as? Bool, true)
+    }
+
+    /// A soft-deleted (tombstoned) downloaded descendant must not keep the action visible.
+    func testItemUserInfoNoDisplayEvictDescendantsForFolderWithDeletedDownloadedFile() throws {
+        try seedMetadataRow(
+            ocId: "child-file", fileName: "report.pdf", serverUrl: folderServerPath,
+            directory: false, downloaded: true, deleted: true
+        )
+        XCTAssertEqual(makeFolderItem().userInfo?["displayEvictDescendants"] as? Bool, false)
+    }
+
+    /// The root container offers "Remove downloaded items" for any downloaded file
+    /// anywhere in the domain, and hides it when there is none — symmetric with
+    /// pinning the whole file provider (#10085). Exercises the rootContainer branch
+    /// of `fullServerPathUrl`.
+    func testItemUserInfoDisplayEvictDescendantsForRootContainer() throws {
+        XCTAssertEqual(makeRootItem().userInfo?["displayEvictDescendants"] as? Bool, false)
+
+        try seedMetadataRow(
+            ocId: "top-file", fileName: "top.pdf", serverUrl: Self.account.davFilesUrl,
+            directory: false, downloaded: true
+        )
+        XCTAssertEqual(makeRootItem().userInfo?["displayEvictDescendants"] as? Bool, true)
+        // The file-labelled action must never show on the root either.
+        XCTAssertEqual(makeRootItem().userInfo?["displayEvict"] as? Bool, false)
+    }
+
+    /// A folder's `metadataVersion` must change when it gains a materialized
+    /// descendant file, so the framework treats its cached snapshot as stale and
+    /// re-reads the recomputed `displayEvict` instead of dropping the update
+    /// (#10085). Without this, the ancestor-refresh nudge would be deduplicated.
+    func testFolderMetadataVersionReflectsDescendantMaterialization() throws {
+        let versionWithoutDownload = makeFolderItem().itemVersion.metadataVersion
+
+        try seedMetadataRow(
+            ocId: "child-file", fileName: "report.pdf", serverUrl: folderServerPath,
+            directory: false, downloaded: true
+        )
+
+        let versionWithDownload = makeFolderItem().itemVersion.metadataVersion
+        XCTAssertNotEqual(
+            versionWithoutDownload,
+            versionWithDownload,
+            "A folder's metadataVersion must change when a descendant file materializes."
+        )
     }
 
     func testItemUserInfoKeepDownloadedProperties() {
@@ -299,6 +526,9 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         )
         XCTAssertEqual(itemC.userInfo?["displayKeepDownloaded"] as? Bool, false)
         XCTAssertEqual(itemC.userInfo?["displayAllowAutoEvicting"] as? Bool, true)
+        // Pinned + downloaded: NOT offered for "Remove download". The user must
+        // unpin first via "Allow automatic freeing up space"; once the
+        // framework refreshes the item, the evict entry appears (#9891).
         XCTAssertEqual(itemC.userInfo?["displayEvict"] as? Bool, false)
 
         var metadataD =
@@ -315,6 +545,137 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(itemD.userInfo?["displayKeepDownloaded"] as? Bool, true)
         XCTAssertEqual(itemD.userInfo?["displayAllowAutoEvicting"] as? Bool, false)
         XCTAssertEqual(itemD.userInfo?["displayEvict"] as? Bool, true)
+    }
+
+    func testItemUserInfoDisplayOpenInBrowserBareMetadata() {
+        // A bare item without a fileId and not yet uploaded has no server-side
+        // counterpart, so "Open in browser" must be hidden. This covers freshly
+        // created items pre-server-roundtrip as well as ignored items.
+        let metadata = SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
+
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertEqual(item.userInfo?["displayOpenInBrowser"] as? Bool, false)
+    }
+
+    func testItemUserInfoDisplayOpenInBrowserUploadedItem() {
+        // An uploaded item with a numeric fileId is the canonical case the
+        // "Open in browser" action targets: PROPFIND for the private link can
+        // resolve to a web URL the main app opens via QDesktopServices.
+        var metadata = SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
+        metadata.fileId = "42"
+        metadata.uploaded = true
+
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertEqual(item.userInfo?["displayOpenInBrowser"] as? Bool, true)
+
+        // Cross-check the activation rule from `FileProviderExt/Info.plist` so
+        // an accidental rename of the userInfo key would fail this test rather
+        // than silently break the context menu entry.
+        let fileproviderItems = ["fileproviderItems": [item]]
+        let activationPredicate = NSPredicate(
+            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayOpenInBrowser == true ).@count > 0"
+        )
+        XCTAssertTrue(activationPredicate.evaluate(with: fileproviderItems))
+    }
+
+    func testItemUserInfoDisplayOpenInBrowserLockFileOfLocalOrigin() {
+        // Lock files of local origin are placeholders not present on the
+        // server, so "Open in browser" would resolve to nothing. Keep them
+        // hidden even when a synthetic fileId is set.
+        var metadata = SendableItemMetadata(ocId: "test-id", fileName: ".~lock.doc#", account: Self.account)
+        metadata.fileId = "42"
+        metadata.uploaded = true
+        metadata.isLockFileOfLocalOrigin = true
+
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertEqual(item.userInfo?["displayOpenInBrowser"] as? Bool, false)
+    }
+
+    func testItemUserInfoDisplayCopyInternalLinkBareMetadata() {
+        // A bare item without a fileId and not yet uploaded has no server-side
+        // counterpart, so "Copy internal link" must be hidden. Mirrors the
+        // bare-metadata case for `displayOpenInBrowser` because both actions
+        // share the same server-side preconditions.
+        let metadata = SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
+
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertEqual(item.userInfo?["displayCopyInternalLink"] as? Bool, false)
+    }
+
+    func testItemUserInfoDisplayCopyInternalLinkUploadedItem() {
+        // An uploaded item with a numeric fileId is the canonical case the
+        // "Copy internal link" action targets: PROPFIND for the private link
+        // can resolve to the URL the main app writes to the clipboard.
+        var metadata = SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
+        metadata.fileId = "42"
+        metadata.uploaded = true
+
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertEqual(item.userInfo?["displayCopyInternalLink"] as? Bool, true)
+
+        // Cross-check the activation rule from `FileProviderExt/Info.plist` so
+        // an accidental rename of the userInfo key would fail this test rather
+        // than silently break the context menu entry.
+        let fileproviderItems = ["fileproviderItems": [item]]
+        let activationPredicate = NSPredicate(
+            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayCopyInternalLink == true ).@count > 0"
+        )
+        XCTAssertTrue(activationPredicate.evaluate(with: fileproviderItems))
+    }
+
+    func testItemUserInfoDisplayCopyInternalLinkLockFileOfLocalOrigin() {
+        // Lock files of local origin are placeholders not present on the
+        // server, so the "Copy internal link" action would resolve to nothing.
+        // Keep them hidden even when a synthetic fileId is set.
+        var metadata = SendableItemMetadata(ocId: "test-id", fileName: ".~lock.doc#", account: Self.account)
+        metadata.fileId = "42"
+        metadata.uploaded = true
+        metadata.isLockFileOfLocalOrigin = true
+
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertEqual(item.userInfo?["displayCopyInternalLink"] as? Bool, false)
     }
 
     func testItemUserInfoDisplayShare() {
@@ -793,11 +1154,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             .allowsReparenting
         ]
 
-        // Excluding from sync is macOS-specific and always added if available
-        var platformExpected = expected
-        platformExpected.insert(.allowsExcludingFromSync)
-
-        XCTAssertEqual(item.capabilities, platformExpected)
+        XCTAssertEqual(item.capabilities, expected)
     }
 
     func testCapabilitiesFullPermissionsFolder() {
@@ -826,10 +1183,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             .allowsAddingSubItems
         ]
 
-        var platformExpected = expected
-        platformExpected.insert(.allowsExcludingFromSync)
-
-        XCTAssertEqual(item.capabilities, platformExpected)
+        XCTAssertEqual(item.capabilities, expected)
     }
 
     func testCapabilitiesNoPermissions() {
@@ -847,37 +1201,37 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock()
         )
 
-        // Trashing and Excluding from Sync might still be allowed as they don't depend on the
-        // permission string
-        var expected: NSFileProviderItemCapabilities = [.allowsTrashing]
-        expected.insert(.allowsExcludingFromSync)
+        // Trashing might still be allowed as it does not depend on the permission string
+        let expected: NSFileProviderItemCapabilities = [.allowsTrashing]
 
         XCTAssertEqual(item.capabilities, expected)
     }
 
-    #if os(macOS)
-        func testCapabilitiesMacOSExclusion() {
-            var metadata = SendableItemMetadata(
-                ocId: "macos-exclusion", fileName: "file.txt", account: Self.account
-            )
-            metadata.permissions = ""
-            let item = Item(
-                metadata: metadata,
-                parentItemIdentifier: .rootContainer,
-                account: Self.account,
-                remoteInterface: MockRemoteInterface(account: Self.account),
-                dbManager: Self.dbManager,
-                displayFileActions: false,
-                remoteSupportsTrash: true,
-                log: FileProviderLogMock()
-            )
+    func testDoesNotVendExcludingFromSync() {
+        var metadata = SendableItemMetadata(
+            ocId: "macos-exclusion", fileName: "file.txt", account: Self.account
+        )
+        metadata.permissions = ""
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager,
+            displayFileActions: false,
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
+        )
 
-            XCTAssertTrue(
-                item.capabilities.contains(.allowsExcludingFromSync),
-                "Should allow excluding from sync on supported macOS versions."
-            )
-        }
-    #endif
+        // We deliberately do NOT vend `.allowsExcludingFromSync`. Finder's "Do not
+        // synchronize" arrives as an ordinary `deleteItem` that cannot be distinguished
+        // from a genuine delete, so honouring it would delete the item on the server and
+        // lose data. This guard keeps the capability from being silently re-added.
+        XCTAssertFalse(
+            item.capabilities.contains(.allowsExcludingFromSync),
+            "Item must not vend .allowsExcludingFromSync; see Item.capabilities for the rationale."
+        )
+    }
 
     func testItemShared() {
         var sharedMetadata =
@@ -951,5 +1305,82 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             dbManager: Self.dbManager
         )
         XCTAssertEqual(itemB.contentPolicy, .inherited)
+    }
+
+    ///
+    /// Regression coverage for #9891: the "Remove download" custom action must
+    /// only be offered for items that are downloaded **and** not pinned via
+    /// "Always keep downloaded".
+    ///
+    /// Pinning is enforced by `contentPolicy == .downloadEagerlyAndKeepDownloaded`,
+    /// which the framework refuses to evict (-2008 `NonEvictable`).
+    /// `requestModification` cannot signal a `contentPolicy` field change
+    /// (`NSFileProviderItemFields` has no such case) and is queued
+    /// asynchronously — there is no synchronous way to invalidate the
+    /// framework's cached policy, so a tight unpin-then-evict path races. The
+    /// fix is to keep the entry hidden until the framework has refreshed the
+    /// item: both `displayEvict` and `contentPolicy` are read off the same
+    /// `Item` returned by `item(for:)` and therefore flip together. The user
+    /// flow is two-step: "Allow automatic freeing up space" → "Remove download".
+    ///
+    /// The action's activation rule in the file provider extension's
+    /// `Info.plist` is a `SUBQUERY` over `userInfo.displayEvict`, so this
+    /// asserts directly against the predicate Finder evaluates.
+    ///
+    func testItemUserInfoDisplayEvictGatedOnUnpinned() {
+        var pinnedDownloadedMetadata =
+            SendableItemMetadata(ocId: "pd", fileName: "pd.txt", account: Self.account)
+        pinnedDownloadedMetadata.downloaded = true
+        pinnedDownloadedMetadata.keepDownloaded = true
+        let pinnedDownloadedItem = Item(
+            metadata: pinnedDownloadedMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager
+        )
+
+        var unpinnedDownloadedMetadata =
+            SendableItemMetadata(ocId: "ud", fileName: "ud.txt", account: Self.account)
+        unpinnedDownloadedMetadata.downloaded = true
+        let unpinnedDownloadedItem = Item(
+            metadata: unpinnedDownloadedMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager
+        )
+
+        let onlyUnpinnedQualifiesPredicate = NSPredicate(
+            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayEvict == true ).@count == 1"
+        )
+        XCTAssertTrue(
+            onlyUnpinnedQualifiesPredicate.evaluate(
+                with: ["fileproviderItems": [pinnedDownloadedItem, unpinnedDownloadedItem]]
+            ),
+            "Of pinned+downloaded and unpinned+downloaded, only the unpinned item must qualify for the evict action."
+        )
+
+        // Sanity: pinned but undownloaded — nothing to evict — also excluded.
+        var pinnedUndownloadedMetadata =
+            SendableItemMetadata(ocId: "pu", fileName: "pu.txt", account: Self.account)
+        pinnedUndownloadedMetadata.keepDownloaded = true
+        let pinnedUndownloadedItem = Item(
+            metadata: pinnedUndownloadedMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager
+        )
+
+        let noEvictPredicate = NSPredicate(
+            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayEvict == true ).@count == 0"
+        )
+        XCTAssertTrue(
+            noEvictPredicate.evaluate(
+                with: ["fileproviderItems": [pinnedUndownloadedItem]]
+            ),
+            "Pinned but undownloaded items have nothing to evict and must not qualify."
+        )
     }
 }

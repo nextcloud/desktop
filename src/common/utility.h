@@ -232,13 +232,6 @@ namespace Utility {
     // case sensitivity.
     OCSYNC_EXPORT bool fileNamesEqual(const QString &fn1, const QString &fn2);
 
-    // Call the given command with the switch --version and rerun the first line
-    // of the output.
-    // If command is empty, the function calls the running application which, on
-    // Linux, might have changed while this one is running.
-    // For Mac and Windows, it returns QString()
-    OCSYNC_EXPORT QByteArray versionOfInstalledBinary(const QString &command = QString());
-
     OCSYNC_EXPORT QString fileNameForGuiUse(const QString &fName);
 
     OCSYNC_EXPORT QByteArray normalizeEtag(QByteArray etag);

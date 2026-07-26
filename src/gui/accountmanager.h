@@ -96,6 +96,9 @@ public slots:
     /// Delete the AccountState
     void deleteAccount(OCC::AccountState *account);
 
+    /// Remove the AccountState without clearing credentials from the shared account
+    void removeAccountState(OCC::AccountState *account);
+
     /// Remove all accounts
     void shutdown();
 
@@ -116,10 +119,16 @@ signals:
     void accountListInitialized();
 
 private:
+    enum class AccountRemovalMode {
+        KeepSensitiveData,
+        ForgetSensitiveData,
+    };
+
     // saving and loading Account to settings
     void saveAccountHelper(const AccountPtr &account, QSettings &settings, bool saveCredentials = true);
     AccountPtr loadAccountHelper(QSettings &settings);
     void migrateNetworkSettings(const AccountPtr &account, const QSettings &settings);
+    void removeAccountState(OCC::AccountState *account, AccountRemovalMode removalMode);
 
     bool restoreFromLegacySettings();
 

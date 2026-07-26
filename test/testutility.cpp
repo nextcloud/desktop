@@ -130,24 +130,6 @@ private slots:
 
     }
 
-    void testVersionOfInstalledBinary()
-    {
-        if (isLinux()) {
-            // pass the cmd client from our build dir
-            // this is a bit inaccurate as it does not test the "real thing"
-            // but cmd and gui have the same --version handler by now
-            // and cmd works without X in CI
-            QString ver = versionOfInstalledBinary(QStringLiteral(OWNCLOUD_BIN_PATH  "/" APPLICATION_EXECUTABLE "cmd"));
-            qDebug() << "Version of installed Nextcloud: " << ver;
-            QVERIFY(!ver.isEmpty());
-
-            const QRegularExpression rx(QRegularExpression::anchoredPattern(APPLICATION_SHORTNAME R"( version \d+\.\d+\.\d+.*)"));
-            QVERIFY(rx.match(ver).hasMatch());
-        } else {
-            QVERIFY(versionOfInstalledBinary().isEmpty());
-        }
-    }
-
     void testTimeAgo()
     {
         // Both times in same timezone

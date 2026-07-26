@@ -68,6 +68,76 @@ signals:
      */
     void showFileActionsDialog(const QString &fileId, const QString &localFile, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier);
 
+    /**
+     * @brief Emitted when a file provider extension requests to open an item's page in the user's web browser.
+     *
+     * The connected slot resolves the per-item private link via `fetchPrivateLinkUrl`
+     * and opens the resulting URL via `Utility::openBrowser`, matching the classic-sync
+     * "Open in browser" entry. See nextcloud/desktop#10025.
+     *
+     * @param fileId The **numeric** server file id (WebDAV `fileid`). Not the ocId.
+     * @param remoteItemPath The server-side path of the item, used for the PROPFIND that resolves the private link.
+     * @param fileProviderDomainIdentifier The file provider domain identifier for the account that owns the item.
+     */
+    void openItemInBrowserRequested(const QString &fileId, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier);
+
+    /**
+     * @brief Emitted when a file provider extension asks the main app to copy the internal link for an item to the user's clipboard.
+     *
+     * The connected slot resolves the per-item private link via `fetchPrivateLinkUrl`,
+     * writes the resulting URL to `QGuiApplication::clipboard()`, and surfaces a
+     * system notification through the existing systray. Mirrors the classic-sync
+     * "Copy internal link" entry exposed by `SocketApi::command_COPY_PRIVATE_LINK`.
+     * See nextcloud/desktop#10024.
+     *
+     * @param fileId The **numeric** server file id (WebDAV `fileid`). Not the ocId.
+     * @param remoteItemPath The server-side path of the item, used for the PROPFIND that resolves the private link.
+     * @param fileProviderDomainIdentifier The file provider domain identifier for the account that owns the item.
+     */
+    void copyInternalLinkRequested(const QString &fileId, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier);
+
+    /**
+     * @brief Emitted when a file provider extension reports an item it refused to sync (for now: macOS bundles).
+     *
+     * Consumers (e.g. `OCC::User`) surface the item in the systray's activity view — the same
+     * place the classic sync engine reports excluded items. See
+     * https://github.com/nextcloud/desktop/issues/9827.
+     *
+     * @param domainIdentifier The file provider domain identifier for the affected account.
+     * @param relativePath The path of the item relative to the file provider domain root.
+     * @param fileName The display name of the item.
+     * @param reason A localized, human-readable explanation of why the item was excluded. Already translated by the extension.
+     */
+    void itemExcludedFromSync(const QString &domainIdentifier, const QString &relativePath, const QString &fileName, const QString &reason);
+
+    /**
+     * @brief Emitted when a file provider extension reports a single item it refused to upload because of insufficient server-side quota.
+     *
+     * Consumers surface a per-item entry in the activity view — the same shape the classic
+     * sync engine produces via `User::slotAddErrorToGui`. See
+     * https://github.com/nextcloud/desktop/issues/9598.
+     *
+     * @param domainIdentifier The file provider domain identifier for the affected account.
+     * @param relativePath The path of the item relative to the file provider domain root.
+     * @param fileName The display name of the item.
+     * @param fileBytes The size of the file the user tried to upload, in bytes. -1 if unknown.
+     * @param availableBytes Available quota at the upload's parent at the time of refusal, in bytes. -1 if unknown.
+     */
+    void insufficientQuotaForItem(const QString &domainIdentifier, const QString &relativePath, const QString &fileName, qint64 fileBytes, qint64 availableBytes);
+
+    /**
+     * @brief Emitted when a file provider extension reports that one or more uploads were refused by the server quota for the given domain.
+     *
+     * Consumers surface a per-folder summary entry in the activity view with a "Retry all
+     * uploads" button — the same shape `SyncEngine::slotInsufficientRemoteStorage` →
+     * `User::slotAddError(InsufficientRemoteStorage)` produces for classic sync.
+     *
+     * The extension dedupes the report per domain; consumers do not need to dedupe again.
+     *
+     * @param domainIdentifier The file provider domain identifier for the affected account.
+     */
+    void insufficientQuotaSummary(const QString &domainIdentifier);
+
 private:
     class MacImplementation;
     std::unique_ptr<MacImplementation> d;

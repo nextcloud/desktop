@@ -60,7 +60,23 @@ extension NextcloudKit: RemoteInterface {
                 requestHandler: requestHandler,
                 taskHandler: taskHandler,
                 progressHandler: progressHandler
-            ) { account, ocId, etag, date, size, response, nkError in
+            ) { account, response, nkError in
+                let allHeaderFields = response?.response?.allHeaderFields
+                let ocId = self.nkCommonInstance.findHeader("oc-fileid", allHeaderFields: allHeaderFields)
+                let etag = self.nkCommonInstance.normalizedETag(self.nkCommonInstance.findHeader("oc-etag", allHeaderFields: allHeaderFields))
+                let date = self.nkCommonInstance.findHeader("date", allHeaderFields: allHeaderFields)?.parsedDate(using: "EEE, dd MMM y HH:mm:ss zzz")
+
+                // The size the server stored equals the bytes we sent, i.e. the local file's size.
+                // Do NOT read it from the response's `Content-Length`: a successful Nextcloud/SabreDAV
+                // PUT is `201 Created` with an empty body (`Content-Length: 0`), so that header is the
+                // response body length, never the stored-file size. This mirrors the chunked path,
+                // which likewise reports the local total on success.
+                var size: Int64 = 0
+
+                if nkError == .success {
+                    size = (try? FileManager.default.attributesOfItem(atPath: localPath)[.size] as? Int64) ?? 0
+                }
+
                 continuation.resume(returning: (
                     account,
                     ocId,

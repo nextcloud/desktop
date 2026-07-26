@@ -31,4 +31,12 @@ struct IgnoredFilesMatcherTests {
         #expect(!matcher.isExcluded("other/deep/file.txt"))
         #expect(!matcher.isExcluded("random.file"))
     }
+
+    @Test func excludeAndRemovePrefixMatchesDesktopTemporaryFiles() {
+        let matcher = IgnoredFilesMatcher(ignoreList: ["]*.~*"], log: FileProviderLogMock())
+
+        #expect(matcher.isExcluded(".testbestand.docx.~485bd8b"))
+        #expect(matcher.isExcluded("folder/.testbestand.docx.~485bd8b"))
+        #expect(!matcher.isExcluded("testbestand.docx"))
+    }
 }

@@ -18,6 +18,7 @@
 #include "syncenginetestutils.h"
 
 using namespace OCC;
+using namespace Qt::StringLiterals;
 
 class TestAccount: public QObject
 {
@@ -108,9 +109,12 @@ private slots:
         QTest::newRow("root = /; requesting A/") << "" << "A/" << QStringList{ "A/a1", "A/a2", "A/sub1" };
         QTest::newRow("root = /; requesting A/sub1/") << "" << "A/sub1/" << QStringList{ "A/sub1/sub2" };
         QTest::newRow("root = /; requesting A/sub1/sub2") << "" << "A/sub1/sub2/" << QStringList{};
+        QTest::newRow("root = /; requesting A/sub_nodownload/") << "" << "A/sub_nodownload/" << QStringList{};
         QTest::newRow("root = /A; requesting A/") << "/A" << "A/" << QStringList{ "a1", "a2", "sub1" };
         QTest::newRow("root = /A; requesting A/sub1") << "/A" << "A/sub1/" << QStringList{ "sub1/sub2" };
         QTest::newRow("root = /A; requesting A/sub1/sub2") << "/A" << "A/sub1/sub2/" << QStringList{};
+        QTest::newRow("root = /A; requesting A/sub_nodownload/") << "/A" << "A/sub_nodownload/" << QStringList{};
+        QTest::newRow("root = /shared_nodownload; requesting shared_nodownload/") << "/shared_nodownload" << "shared_nodownload/" << QStringList{};
     }
 
     void testAccount_listRemoteFolder()
@@ -122,6 +126,26 @@ private slots:
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.remoteModifier().mkdir("A/sub1");
         fakeFolder.remoteModifier().mkdir("A/sub1/sub2");
+        fakeFolder.remoteModifier().mkdir("A/sub1/sub2");
+
+        // prepare shares that are not allowed to be downloaded
+        std::function<void(FileInfo &)> makeSharedNoDownload;
+        makeSharedNoDownload = [&makeSharedNoDownload](FileInfo &fileInfo) -> void {
+            fileInfo.isShared = true;
+            fileInfo.downloadForbidden = true;
+            for (auto &subItem : fileInfo.children) {
+                makeSharedNoDownload(subItem);
+            }
+        };
+        FileInfo sharedNoDownload { "shared_nodownload"_L1, { { "file1"_L1, 32 }, { "file2"_L1, 32 } } };
+        FileInfo sharedNoDownloadSub { "subdir"_L1, { { "file3"_L1, 32 }, { "file4"_L1, 32 } } };
+        FileInfo aSubSharedNoDownload { "sub_nodownload"_L1, { { "file4"_L1, 32 }, { "file5"_L1, 32 } } };
+        sharedNoDownload.children.insert(sharedNoDownloadSub.name, std::move(sharedNoDownloadSub));
+        makeSharedNoDownload(sharedNoDownload);
+        makeSharedNoDownload(aSubSharedNoDownload);
+        fakeFolder.remoteModifier().children.insert(sharedNoDownload.name, std::move(sharedNoDownload));
+        fakeFolder.remoteModifier().find("A")->children.insert(aSubSharedNoDownload.name, std::move(aSubSharedNoDownload));
+
         const auto account = fakeFolder.account();
 
         QEventLoop localEventLoop;

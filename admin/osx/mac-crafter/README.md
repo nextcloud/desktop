@@ -10,7 +10,7 @@ The tool is built with Apple’s ArgumentParser and it drives the KDE Craft buil
 
 ## System Requirements
 
-- macOS 12 Monterey or newer
+- macOS 13 Ventura or newer
 - Xcode
 - Python3
 - Homebrew (for installing additional tools like `inkscape`, `pyenv`, and `create-dmg`)

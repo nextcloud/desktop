@@ -21,6 +21,8 @@
 
 #include <algorithm>
 
+using namespace Qt::StringLiterals;
+
 namespace OCC
 {
 Q_LOGGING_CATEGORY(lcAccountSetupCommandLineJob, "nextcloud.gui.accountsetupcommandlinejob", QtInfoMsg)
@@ -83,9 +85,16 @@ void AccountSetupFromCommandLineJob::handleAccountSetupFromCommandLine()
 
     const auto credentials = new WebFlowCredentials(_userId, _appPassword);
     _account = AccountManager::createAccount();
+
     _account->setCredentials(credentials);
+    _account->setCredentialSetting(u"user"_s, _userId);
     _account->setUrl(_serverUrl);
     _accountIsNew = true;
+
+    const auto accountState = AccountManager::instance()->addAccount(_account);
+    setupLocalSyncFolders(accountState);
+
+    Q_EMIT _account->wantsAccountSaved(_account);
 
     fetchUserName();
 }

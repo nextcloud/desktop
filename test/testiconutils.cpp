@@ -71,6 +71,13 @@ private slots:
         QVERIFY(!OCC::Ui::IconUtils::createSvgImageWithCustomColor(whiteImages.at(0), QColorConstants::Svg::blue).isNull());
     }
 
+    void testCreateSvgPixmapWithWizardSyncOptionIcons()
+    {
+        QVERIFY(!OCC::Ui::IconUtils::createSvgImageWithCustomColor(QStringLiteral("folder.svg"), QColor(QStringLiteral("#111111"))).isNull());
+        QVERIFY(!OCC::Ui::IconUtils::createSvgImageWithCustomColor(QStringLiteral("sync.svg"), QColor(QStringLiteral("#111111"))).isNull());
+        QVERIFY(!OCC::Ui::IconUtils::createSvgImageWithCustomColor(QStringLiteral("wizard-files.svg"), QColor(QStringLiteral("#111111"))).isNull());
+    }
+
     void testPixmapForBackground()
     {
         const QDir blackSvgDir(QString(QString{OCC::Theme::themePrefix}) + QStringLiteral("black"));

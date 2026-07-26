@@ -17,6 +17,7 @@
 #include <QApplication>
 #include <QMouseEvent>
 #include <QStyleFactory>
+#include <QAbstractItemView>
 
 inline static QFont makeAliasFont(const QFont &normalFont)
 {
@@ -80,7 +81,8 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem &option,
     // Mirrors the inner text width used in paint()'s drawTextBox():
     // box spans from (option.rect.left() + aliasMargin) to (option.rect.right() - margin),
     // with an additional `margin` of inner padding on each side.
-    const int textWidth = qMax(1, option.rect.width() - aliasMargin - 3 * margin);
+    const auto rect = option.widget ? option.widget->rect() : option.rect;
+    const int textWidth = qMax(1, rect.width() - aliasMargin - 3 * margin);
     for (auto role : {FolderConflictMsg, FolderErrorMsg, FolderInfoMsg}) {
         auto msgs = qvariant_cast<QStringList>(index.data(role));
         if (msgs.isEmpty()) {
@@ -154,7 +156,16 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
             opt.state |= QStyle::State_Raised;
         }
         opt.text = addFolderText();
-        opt.rect = addButtonRect(option.rect, option.direction);
+        auto buttonArea = option.rect;
+        auto *view = qobject_cast<const QAbstractItemView *>(option.widget);
+        if (!view && option.widget) {
+            view = qobject_cast<const QAbstractItemView *>(option.widget->parentWidget());
+        }
+        if (view) {
+            buttonArea.setLeft(view->viewport()->rect().left());
+            buttonArea.setWidth(view->viewport()->width());
+        }
+        opt.rect = addButtonRect(buttonArea, option.direction);
         painter->save();
         painter->setFont(qApp->font("QPushButton"));
         QApplication::style()->drawControl(QStyle::CE_PushButton, &opt, painter, option.widget);

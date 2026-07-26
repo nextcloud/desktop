@@ -149,10 +149,6 @@ public:
     [[nodiscard]] bool moveToTrash() const;
     void setMoveToTrash(bool);
 
-    /** If we should force loginflow v2 */
-    [[nodiscard]] bool forceLoginV2() const;
-    void setForceLoginV2(bool);
-
     [[nodiscard]] bool showMainDialogAsNormalWindow() const;
 
     static bool setConfDir(const QString &value);
@@ -238,6 +234,8 @@ public:
     [[nodiscard]] QString desktopEnterpriseChannel() const;
     void setDesktopEnterpriseChannel(const QString &channel);
 
+    [[nodiscard]] bool hasDesktopEnterpriseChannel() const;
+
     /// Enforce a specific language used for the UI
     [[nodiscard]] QString language() const;
     void setLanguage(const QString &language);
@@ -267,6 +265,13 @@ public:
     /// File Provider app sandbox migration flag
     [[nodiscard]] bool fileProviderDomainsAppSandboxMigrationCompleted() const;
     void setFileProviderDomainsAppSandboxMigrationCompleted(bool completed);
+
+    /// App-level macOS File Provider mode: when enabled, every account gets a file
+    /// provider domain and classic sync folders are unavailable (the File Provider
+    /// extension and the FinderSync extension cannot run at the same time).
+    [[nodiscard]] bool macFileProviderModeEnabled() const;
+    [[nodiscard]] bool macFileProviderModeEnabledIsSet() const;
+    void setMacFileProviderModeEnabled(bool enabled);
 
     /// Helper function for migration/upgrade proccess
     enum MigrationPhase {

@@ -10,6 +10,7 @@ import QtQuick.Controls
 import com.nextcloud.desktopclient
 import Style
 import "../tray"
+import "../activity/qml"
 
 ActivityList {
     id: root

@@ -25,7 +25,7 @@ class LegalNotice : public QDialog
     Q_OBJECT
 
 public:
-    explicit LegalNotice(QDialog *parent = nullptr);
+    explicit LegalNotice(QWidget *parent = nullptr);
     ~LegalNotice() override;
 
 protected:

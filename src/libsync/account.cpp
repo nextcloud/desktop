@@ -9,6 +9,7 @@
 #include "accountfwd.h"
 #include "capabilities.h"
 #include "clientsideencryptionjobs.h"
+#include "common/remotepermissions.h"
 #include "common/utility.h"
 #include "configfile.h"
 #include "cookiejar.h"
@@ -19,7 +20,6 @@
 #include "updatechannel.h"
 #include "version.h"
 
-#include "deletejob.h"
 #include "lockfilejobs.h"
 
 #include "common/syncjournaldb.h"
@@ -60,6 +60,17 @@ constexpr int pushNotificationsReconnectInterval = 1000 * 60 * 2;
 constexpr int usernamePrefillServerVersionMinSupportedMajor = 24;
 constexpr int checksumRecalculateRequestServerVersionMinSupportedMajor = 24;
 constexpr auto isSkipE2eeMetadataChecksumValidationAllowedInClientVersion = MIRALL_VERSION_MAJOR == 3 && MIRALL_VERSION_MINOR == 8;
+
+bool isPushNotificationsWebSocketUrlAllowed(const QUrl &accountUrl, const QUrl &webSocketUrl)
+{
+    const auto webSocketScheme = webSocketUrl.scheme();
+    if (webSocketScheme.compare(QLatin1String("wss"), Qt::CaseInsensitive) == 0) {
+        return true;
+    }
+
+    return webSocketScheme.compare(QLatin1String("ws"), Qt::CaseInsensitive) == 0
+        && accountUrl.scheme().compare(QLatin1String("http"), Qt::CaseInsensitive) == 0;
+}
 }
 
 namespace OCC {
@@ -344,6 +355,17 @@ void Account::trySetupPushNotifications()
     _pushNotificationsReconnectTimer.stop();
 
     if (_capabilities.availablePushNotifications() != PushNotificationType::None) {
+        const auto webSocketUrl = _capabilities.pushNotificationsWebSocketUrl();
+        if (!isPushNotificationsWebSocketUrlAllowed(url(), webSocketUrl)) {
+            qCWarning(lcAccount) << "Reject insecure push notifications websocket endpoint" << webSocketUrl << "for account" << url();
+            if (_pushNotifications) {
+                delete _pushNotifications;
+                _pushNotifications = nullptr;
+            }
+            emit pushNotificationsDisabled(sharedFromThis());
+            return;
+        }
+
         qCInfo(lcAccount) << "Try to setup push notifications";
 
         if (!_pushNotifications) {
@@ -959,18 +981,13 @@ void Account::deleteAppPassword()
 
 void Account::deleteAppToken()
 {
-    const auto deleteAppTokenJob = new DeleteJob(sharedFromThis(), QStringLiteral("/ocs/v2.php/core/apppassword"));
-    connect(deleteAppTokenJob, &DeleteJob::finishedSignal, this, [this]() {
-        if (const auto deleteJob = qobject_cast<DeleteJob *>(QObject::sender())) {
-            const auto httpCode = deleteJob->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-            if (httpCode != 200) {
-                qCWarning(lcAccount) << "AppToken remove failed for user: " << displayName() << " with code: " << httpCode;
-            } else {
-                qCInfo(lcAccount) << "AppToken for user: " << displayName() << " has been removed.";
-            }
+    const auto deleteAppTokenJob = new SimpleApiJob(sharedFromThis(), QStringLiteral("/ocs/v2.php/core/apppassword"));
+    deleteAppTokenJob->setVerb(SimpleApiJob::Verb::Delete);
+    connect(deleteAppTokenJob, &SimpleApiJob::resultReceived, this, [this](const int httpCode) {
+        if (httpCode != 200) {
+            qCWarning(lcAccount) << "AppToken remove failed for user: " << displayName() << " with code: " << httpCode;
         } else {
-            Q_ASSERT(false);
-            qCWarning(lcAccount) << "The sender is not a DeleteJob instance.";
+            qCInfo(lcAccount) << "AppToken for user: " << displayName() << " has been removed.";
         }
     });
     deleteAppTokenJob->start();
@@ -1287,6 +1304,11 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
                                           newEntry);
         if (newEntry.isDirectory) {
             newEntry.size = 0;
+        }
+
+        if (!newEntry.remotePerm.isNull() && !newEntry.remotePerm.hasPermission(RemotePermissions::CanRead)) {
+            qCWarning(lcAccount()) << "skip non-readable item" << absoluteItemPathName;
+            return;
         }
 
         promise->emplaceResult(itemFileName, itemFileName.toStdWString(), absoluteItemPathName, newEntry);

@@ -173,6 +173,13 @@ if (WIN32)
     add_definitions(-DUMDF_USING_NTSTATUS)
 endif()
 
+if(APPLE)
+    list(APPEND libsync_SRCS
+        theme_mac.h
+        theme_mac.mm
+    )
+endif()
+
 if(TOKEN_AUTH_ONLY)
     set (libsync_SRCS
         ${libsync_SRCS}

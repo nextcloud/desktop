@@ -27,6 +27,10 @@ RemoteWipe::RemoteWipe(AccountPtr account, QObject *parent)
             return;
         }
 
+        if (!_account->isRemoteWipeRequested_HACK()) {
+            return;
+        }
+
         notifyServerSuccess();
     });
 

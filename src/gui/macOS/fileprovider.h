@@ -28,6 +28,15 @@ public:
     static FileProvider *instance();
     ~FileProvider() override;
 
+    /**
+     * @brief Whether the macOS file provider feature is usable on the current OS.
+     *
+     * Returns false on macOS 13 Ventura, where the extension is incompatible
+     * (see nextcloud/desktop#9927). This runtime check can be removed once
+     * macOS 13 Ventura is no longer supported.
+     */
+    [[nodiscard]] static bool available();
+
     void configureXPC();
     [[nodiscard]] FileProviderXPC *xpc() const;
     [[nodiscard]] FileProviderDomainManager *domainManager() const;

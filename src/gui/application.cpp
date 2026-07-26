@@ -15,13 +15,13 @@
 #include "configfile.h"
 #include "connectionvalidator.h"
 #include "creds/abstractcredentials.h"
-#include "editlocallymanager.h"
 #include "folder.h"
 #include "folderman.h"
 #include "logger.h"
 #include "pushnotifications.h"
 #include "socketapi/socketapi.h"
 #include "theme.h"
+#include "urischemehandler.h"
 
 #if defined(BUILD_UPDATER)
 #include "updater/ocupdater.h"
@@ -39,6 +39,7 @@
 #include "shellextensionsserver.h"
 #elif defined(Q_OS_MACOS)
 #include "macOS/fileprovider.h"
+#include "macOS/fileprovidersettingscontroller.h"
 #include "macOS/findersyncxpc.h"
 #include "macOS/findersyncservice.h"
 #endif
@@ -49,7 +50,6 @@
 #include <QMessageBox>
 #include <QDesktopServices>
 #include <QGuiApplication>
-#include <QUrlQuery>
 #include <QVersionNumber>
 #include <QRandomGenerator>
 #include <QHttp2Configuration>
@@ -227,6 +227,9 @@ Mac::FinderSyncXPC *Application::finderSyncXPC() const
 Application::Application(int &argc, char **argv)
     : QApplication{argc, argv}
     , _gui(nullptr)
+#if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+    , _dbusService{KDBusService::StartupOption::Unique}
+#endif
     , _theme(Theme::instance())
 {
     _startedAt.start();
@@ -274,9 +277,15 @@ Application::Application(int &argc, char **argv)
         return;
     }
 
+#if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+    if (!_dbusService.isRegistered()) {
+        return;
+    }
+#else
     if (!_singleApp.isPrimaryInstance()) {
         return;
     }
+#endif
 
     if (!ConfigFile().exists()) {
         setApplicationName(_theme->appNameGUI());
@@ -335,7 +344,7 @@ Application::Application(int &argc, char **argv)
 
     // try to migrate legacy accounts and folders from a previous client version
     // only copy the settings and check what should be skipped
-    if (!configVersionMigration()) {
+    if (!AccountSetupCommandLineManager::instance()->isCommandLineParsed() && !configVersionMigration()) {
         qCWarning(lcApplication) << "Config version migration was not possible.";
     }
 
@@ -397,12 +406,23 @@ Application::Application(int &argc, char **argv)
 
 #ifdef Q_OS_MACOS
     connect(&_singleApp, &OCC::SingleInstanceManager::messageReceived, this, &Application::slotParseMessage);
+#elif defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+    connect(&_dbusService, &KDBusService::activateRequested, this, &Application::slotActivateRequestedMessage);
 #else
     connect(&_singleApp, &KDSingleApplication::messageReceived, this, &Application::slotParseMessage);
 #endif
 
     // create accounts and folders from a legacy desktop client or from the current config file
     setupAccountsAndFolders();
+
+    if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
+        AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
+        _quitInstance = true;
+    }
+    AccountSetupCommandLineManager::destroy();
+    if (_quitInstance) {
+        return;
+    }
 
     setQuitOnLastWindowClosed(false);
 
@@ -442,6 +462,9 @@ Application::Application(int &argc, char **argv)
     connect(FolderMan::instance()->socketApi(), &SocketApi::shareCommandReceived,
         _gui.data(), &ownCloudGui::slotShowShareDialog);
 
+    connect(FolderMan::instance()->socketApi(), &SocketApi::governanceLabelsCommandReceived,
+            _gui.data(), &ownCloudGui::slotShowGovernanceLabelsDialog);
+
     connect(FolderMan::instance()->socketApi(), &SocketApi::fileActivityCommandReceived,
         _gui.data(), &ownCloudGui::slotShowFileActivityDialog);
 
@@ -476,7 +499,7 @@ Application::Application(int &argc, char **argv)
 
     _gui->createTray();
 
-    handleEditLocallyFromOptions();
+    handleUriFromOptions();
 
 #ifdef Q_OS_MACOS
     // If any sync folder needs sandbox reapproval after upgrading to v33+,
@@ -490,14 +513,25 @@ Application::Application(int &argc, char **argv)
     }
 #endif
 
-    if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
-        AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
-    }
-    AccountSetupCommandLineManager::destroy();
-
 #if defined(BUILD_FILE_PROVIDER_MODULE)
     Mac::FileProvider::instance();
-    Mac::FileProvider::instance()->configureXPC();
+
+    // Instantiating the settings controller runs its startup migrations: initialising
+    // the app-level File Provider mode flag, and — on macOS 13 Ventura, where the file
+    // provider feature is unsupported — gracefully tearing down any pre-existing VFS
+    // domains.
+    Mac::FileProviderSettingsController::instance();
+
+    if (Mac::FileProvider::available()) {
+        Mac::FileProvider::instance()->configureXPC();
+
+        // Deferred so that the event loop is running: reconciles the file provider
+        // domains with the app-level mode and, if both File Provider mode and classic
+        // sync folders are configured, asks the user which one to keep.
+        QTimer::singleShot(0, this, [] {
+            Mac::FileProviderSettingsController::instance()->performStartupReconciliation();
+        });
+    }
 #endif
 
 #if defined(Q_OS_MACOS)
@@ -615,6 +649,43 @@ void Application::setupAccountsAndFolders()
     qCWarning(lcApplication) << "Account(s) setup result:" << accountsRestoreResult;
     qCWarning(lcApplication) << foldersListSize << "folder(s) migrated";
     qCWarning(lcApplication) << accountsListSize << "account(s) migrated:" << prettyNamesList(accounts);
+}
+
+void Application::showMainDialogRemoteCommand()
+{
+    qCInfo(lcApplication) << "Running for" << _startedAt.elapsed() / 1000.0 << "sec";
+    if (_startedAt.elapsed() < 10 * 1000) {
+        // This call is mirrored with the one in int main()
+        qCWarning(lcApplication) << "Ignoring MSG_SHOWMAINDIALOG, possibly double-invocation of client via session restore and auto start";
+        return;
+    }
+
+           // Show the main dialog only if there is at least one account configured
+    if (!AccountManager::instance()->accounts().isEmpty()) {
+        showMainDialog();
+    } else {
+        _gui->slotNewAccountWizard();
+    }
+}
+
+void Application::parseOptionsRemoteCommand(const QStringList &options)
+{
+    _showLogWindow = false;
+    parseOptions(options);
+    setupLogging();
+    if (_showLogWindow) {
+        _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
+    }
+    if (_quitInstance) {
+        qApp->quit();
+    }
+
+    handleUriFromOptions();
+
+    if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
+        AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
+    }
+    AccountSetupCommandLineManager::destroy();
 }
 
 void Application::setupConfigFile()
@@ -762,6 +833,12 @@ void Application::slotSystemOnlineConfigurationChanged()
 void Application::slotCheckConnection()
 {
     if (AccountManager::instance()->accounts().isEmpty()) {
+        if (_suppressNextEmptyAccountCheck) {
+            qCInfo(lcApplication) << "Suppressing empty-account check after handling login URI.";
+            _suppressNextEmptyAccountCheck = false;
+            return;
+        }
+
         // let gui open the setup wizard
         _gui->slotOpenSettingsDialog();
 
@@ -788,7 +865,7 @@ void Application::slotownCloudWizardDone(int res)
 
         Utility::setLaunchOnStartup(_theme->appName(), _theme->appNameGUI(), true);
 
-        Systray::instance()->showWindow();
+        Systray::instance()->showTrayPopup();
     }
 }
 
@@ -824,7 +901,8 @@ void Application::setupLogging()
                           << "locale:" << QLocale::system().name()
                           << "ui_lang:" << property("ui_lang")
                           << "version:" << _theme->version()
-                          << "os:" << Utility::platformName();
+                          << "os:" << Utility::platformName()
+                          << "platform:" << QApplication::platformName();
     qCInfo(lcApplication) << "Arguments:" << qApp->arguments();
 }
 
@@ -834,37 +912,20 @@ void Application::slotParseMessage(const QByteArray &message)
     if (msg.startsWith(QLatin1String("MSG_PARSEOPTIONS:"))) {
         const int lengthOfMsgPrefix = 17;
         const auto options = msg.mid(lengthOfMsgPrefix).split(QLatin1Char{'|'});
-        _showLogWindow = false;
-        parseOptions(options);
-        setupLogging();
-        if (_showLogWindow) {
-            _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
-        }
-        if (_quitInstance) {
-            qApp->quit();
-        }
-
-        handleEditLocallyFromOptions();
-
-        if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
-            AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
-        }
-        AccountSetupCommandLineManager::destroy();
-
+        parseOptionsRemoteCommand(options);
     } else if (msg.startsWith(QLatin1String("MSG_SHOWMAINDIALOG"))) {
-        qCInfo(lcApplication) << "Running for" << _startedAt.elapsed() / 1000.0 << "sec";
-        if (_startedAt.elapsed() < 10 * 1000) {
-            // This call is mirrored with the one in int main()
-            qCWarning(lcApplication) << "Ignoring MSG_SHOWMAINDIALOG, possibly double-invocation of client via session restore and auto start";
-            return;
-        }
+        showMainDialogRemoteCommand();
+    }
+}
 
-        // Show the main dialog only if there is at least one account configured
-        if (!AccountManager::instance()->accounts().isEmpty()) {
-            showMainDialog();
-        } else {
-            _gui->slotNewAccountWizard();
-        }
+void Application::slotActivateRequestedMessage(const QStringList &arguments, const QString &workingDirectory)
+{
+    Q_UNUSED(workingDirectory)
+
+    if (arguments.size() == 1) {
+        showMainDialogRemoteCommand();
+    } else {
+        parseOptionsRemoteCommand(arguments);
     }
 }
 
@@ -931,14 +992,17 @@ void Application::parseOptions(const QStringList &options)
         } else if (option.endsWith(QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX))) {
             // virtual file, open it after the Folder were created (if the app is not terminated)
             QTimer::singleShot(0, this, [this, option] { openVirtualFile(option); });
-        } else if (option.startsWith(QStringLiteral(APPLICATION_URI_HANDLER_SCHEME "://open"))) {
-            // see the section Local file editing of the Architecture page of the user documentation
-            _editFileLocallyUrl = QUrl::fromUserInput(option);
-            if (!_editFileLocallyUrl.isValid()) {
-                _editFileLocallyUrl.clear();
-                const auto errorParsingLocalFileEditingUrl = QStringLiteral("The supplied url for local file editing '%1' is invalid!").arg(option);
-                qCInfo(lcApplication) << errorParsingLocalFileEditingUrl;
-                showHint(errorParsingLocalFileEditingUrl.toStdString());
+        } else if (option.startsWith(QStringLiteral(APPLICATION_URI_HANDLER_SCHEME "://"))) {
+            _uriSchemeUrl = QUrl{option};
+            qCInfo(lcApplication) << "Command line contains custom URI scheme request:"
+                                  << "scheme=" << _uriSchemeUrl.scheme()
+                                  << "host=" << _uriSchemeUrl.host()
+                                  << "path=" << _uriSchemeUrl.path();
+            if (!_uriSchemeUrl.isValid()) {
+                _uriSchemeUrl.clear();
+                const auto errorParsingUri = QStringLiteral("The supplied url '%1' is invalid!").arg(option);
+                qCInfo(lcApplication) << errorParsingUri;
+                showHint(errorParsingUri.toStdString());
             }
         } else if (option == QStringLiteral("--overrideserverurl")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
@@ -1040,12 +1104,22 @@ void Application::showVersion()
 
 bool Application::isRunning() const
 {
+#if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+    return false;
+#else
     return !_singleApp.isPrimaryInstance();
+#endif
 }
 
 bool Application::sendMessage(const QString &message)
 {
+#if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+    Q_UNUSED(message)
+
+    return true;
+#else
     return _singleApp.sendMessage(message.toLatin1());
+#endif
 }
 
 void Application::showHint(std::string errorHint)
@@ -1071,14 +1145,37 @@ void Application::setHelp()
     _helpOnly = true;
 }
 
-void Application::handleEditLocallyFromOptions()
+void Application::handleUriFromOptions()
 {
-    if (!_editFileLocallyUrl.isValid()) {
+    if (!_uriSchemeUrl.isValid()) {
+        qCDebug(lcApplication) << "No pending custom URI scheme request from command line options.";
         return;
     }
 
-    EditLocallyManager::instance()->handleRequest(_editFileLocallyUrl);
-    _editFileLocallyUrl.clear();
+    handleUriSchemeRequest(_uriSchemeUrl);
+    _uriSchemeUrl.clear();
+}
+
+bool Application::handleUriSchemeRequest(const QUrl &url)
+{
+    const auto parsedUri = UriSchemeHandler::parseUri(url);
+    const auto suppressEmptyAccountCheck = parsedUri.action == UriSchemeHandler::Action::Login
+        && AccountManager::instance()->accounts().isEmpty();
+    const auto wasCheckConnectionTimerActive = _checkConnectionTimer.isActive();
+    if (suppressEmptyAccountCheck) {
+        _suppressNextEmptyAccountCheck = true;
+        _checkConnectionTimer.stop();
+    }
+
+    const auto handled = UriSchemeHandler::handleUri(url);
+    if (!handled && suppressEmptyAccountCheck) {
+        _suppressNextEmptyAccountCheck = false;
+        if (wasCheckConnectionTimerActive) {
+            _checkConnectionTimer.start();
+        }
+    }
+
+    return handled;
 }
 
 QString enforcedLanguage()
@@ -1239,8 +1336,11 @@ bool Application::event(QEvent *event)
         } else if (!openEvent->url().isEmpty() && openEvent->url().isValid()) {
             // On macOS, Qt does not handle receiving a custom URI as it does on other systems (as an application argument).
             // Instead, it sends out a QFileOpenEvent. We therefore need custom handling for our URI handling on macOS.
-            qCInfo(lcApplication) << "macOS: Opening local file for editing: " << openEvent->url();
-            EditLocallyManager::instance()->handleRequest(openEvent->url());
+            qCInfo(lcApplication) << "macOS QFileOpenEvent contains custom URI scheme request:"
+                                  << "scheme=" << openEvent->url().scheme()
+                                  << "host=" << openEvent->url().host()
+                                  << "path=" << openEvent->url().path();
+            handleUriSchemeRequest(openEvent->url());
         } else {
             const auto errorParsingLocalFileEditingUrl = QStringLiteral("The supplied url for local file editing '%1' is invalid!").arg(openEvent->url().toString());
             qCInfo(lcApplication) << errorParsingLocalFileEditingUrl;

@@ -11,9 +11,6 @@
 #include "account.h"
 #include "configfile.h"
 #include "theme.h"
-#ifdef WITH_WEBENGINE
-#include "wizard/webview.h"
-#endif // WITH_WEBENGINE
 #include "webflowcredentialsdialog.h"
 #include "networkjobs.h"
 
@@ -148,37 +145,16 @@ void WebFlowCredentials::fetchFromKeychain(const QString &appName) {
 }
 
 void WebFlowCredentials::askFromUser() {
-    // Determine if the old flow has to be used (GS for now)
-    // Do a DetermineAuthTypeJob to make sure that the server is still using Flow2
-    auto job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
-    connect(job, &DetermineAuthTypeJob::authType, [this](DetermineAuthTypeJob::AuthType type) {
-    // LoginFlowV2 > WebViewFlow > Shib > Basic
-#ifdef WITH_WEBENGINE
-        bool useFlow2 = (type != DetermineAuthTypeJob::WebViewFlow);
-#else // WITH_WEBENGINE
-        Q_UNUSED(type)
-        bool useFlow2 = true;
-#endif // WITH_WEBENGINE
+    _askDialog = new WebFlowCredentialsDialog(_account);
 
-        _askDialog = new WebFlowCredentialsDialog(_account, useFlow2);
+    QString msg = tr("You have been logged out of your account %1 at %2. Please login again.")
+                      .arg(_account->prettyName(), _account->url().toDisplayString());
+    _askDialog->setInfo(msg);
 
-        if (!useFlow2) {
-            QUrl url = _account->url();
-            QString path = url.path() + "/index.php/login/flow";
-            url.setPath(path);
-            _askDialog->setUrl(url);
-        }
+    _askDialog->show();
 
-        QString msg = tr("You have been logged out of your account %1 at %2. Please login again.")
-                          .arg(_account->prettyName(), _account->url().toDisplayString());
-        _askDialog->setInfo(msg);
-
-        _askDialog->show();
-
-        connect(_askDialog, &WebFlowCredentialsDialog::urlCatched, this, &WebFlowCredentials::slotAskFromUserCredentialsProvided);
-        connect(_askDialog, &WebFlowCredentialsDialog::onClose, this, &WebFlowCredentials::slotAskFromUserCancelled);
-    });
-    job->start();
+    connect(_askDialog, &WebFlowCredentialsDialog::urlCatched, this, &WebFlowCredentials::slotAskFromUserCredentialsProvided);
+    connect(_askDialog, &WebFlowCredentialsDialog::onClose, this, &WebFlowCredentials::slotAskFromUserCancelled);
 
     qCDebug(lcWebFlowCredentials()) << "User needs to reauth!";
 }
@@ -426,6 +402,7 @@ void WebFlowCredentials::fetchFromKeychainHelper() {
                                           _keychainMigration,
                                           this);
     job->setAppName(_appName);
+    job->setEntryNotFoundExpected(true);
     connect(job, &KeychainChunk::ReadJob::finished, this, &WebFlowCredentials::slotReadClientCertPEMJobDone);
     job->start();
 }
@@ -446,6 +423,7 @@ void WebFlowCredentials::slotReadClientCertPEMJobDone(KeychainChunk::ReadJob *re
                                           _keychainMigration,
                                           this);
     job->setAppName(_appName);
+    job->setEntryNotFoundExpected(true);
     connect(job, &KeychainChunk::ReadJob::finished, this, &WebFlowCredentials::slotReadClientKeyPEMJobDone);
     job->start();
 }
@@ -468,7 +446,7 @@ void WebFlowCredentials::slotReadClientKeyPEMJobDone(KeychainChunk::ReadJob *rea
             qCWarning(lcWebFlowCredentials) << "Could not load SSL key into Qt!";
         }
         clientKeyPEM.clear();
-    } else {
+    } else if (readJob->error() != QKeychain::Error::EntryNotFound) {
         qCWarning(lcWebFlowCredentials) << "Unable to read client key" << readJob->errorString();
     }
 
@@ -487,6 +465,7 @@ void WebFlowCredentials::readSingleClientCaCertPEM()
                                               _keychainMigration,
                                               this);
         job->setAppName(_appName);
+        job->setEntryNotFoundExpected(true);
         connect(job, &KeychainChunk::ReadJob::finished, this, &WebFlowCredentials::slotReadClientCaCertsPEMJobDone);
         job->start();
     } else {
@@ -509,8 +488,7 @@ void WebFlowCredentials::slotReadClientCaCertsPEMJobDone(KeychainChunk::ReadJob 
             readSingleClientCaCertPEM();
             return;
         } else {
-            if (readJob->error() != QKeychain::Error::EntryNotFound ||
-                ((readJob->error() == QKeychain::Error::EntryNotFound) && _clientSslCaCertificates.count() == 0)) {
+            if (readJob->error() != QKeychain::Error::EntryNotFound) {
                 qCWarning(lcWebFlowCredentials) << "Unable to read client CA cert slot" << QString::number(_clientSslCaCertificates.count()) << readJob->errorString();
             }
         }

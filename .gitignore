@@ -18,6 +18,7 @@ build*
 cscope.*
 tags
 t1.cfg
+.idea
 
 ## Ignore Visual Studio Code config & environment files
 

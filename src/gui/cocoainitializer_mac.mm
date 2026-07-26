@@ -7,10 +7,12 @@
 #include "cocoainitializer.h"
 
 #import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSProcessInfo.h>
 #import <AppKit/NSApplication.h>
 
 #include "application.h"
-#include "editlocallymanager.h"
+
+#include <QTimer>
 
 /* In theory, we should be able to just capture QFileOpenEvents
  * when we open our custom URLs in our Application class and be
@@ -51,7 +53,21 @@
 {
     NSURL* url = [NSURL URLWithString:[[event paramDescriptorForKeyword:keyDirectObject] stringValue]];
     const auto qtUrl = QUrl::fromNSURL(url);
-    OCC::EditLocallyManager::instance()->handleRequest(qtUrl);
+    if (qApp) {
+        QTimer::singleShot(0, qApp, [qtUrl] {
+            qCInfo(OCC::lcApplication) << "macOS AppleEvent custom URI scheme request:"
+                                       << "scheme=" << qtUrl.scheme()
+                                       << "host=" << qtUrl.host()
+                                       << "path=" << qtUrl.path();
+            if (auto application = qobject_cast<OCC::Application *>(qApp)) {
+                application->handleUriSchemeRequest(qtUrl);
+            } else {
+                qCWarning(OCC::lcApplication) << "Could not dispatch macOS AppleEvent custom URI scheme request because qApp is not an Application.";
+            }
+        });
+    } else {
+        qCWarning(OCC::lcApplication) << "Could not dispatch macOS AppleEvent custom URI scheme request because qApp is not available yet.";
+    }
 }
 
 @end
@@ -63,6 +79,7 @@ class CocoaInitializer::Private {
 public:
     NSAutoreleasePool* autoReleasePool;
     URLEventHandler* handler;
+    id<NSObject> appNapActivity = nil;
 };
 
 CocoaInitializer::CocoaInitializer() {
@@ -70,9 +87,22 @@ CocoaInitializer::CocoaInitializer() {
     d->handler = [[URLEventHandler alloc] init];
     NSApplicationLoad();
     d->autoReleasePool = [[NSAutoreleasePool alloc] init];
+
+    // As an LSUIElement agent we usually have no visible window, which makes macOS
+    // throttle us via App Nap and lets RunningBoard suspend (and later jetsam-reap)
+    // the process while it is idle in the background. Holding an NSActivityBackground
+    // assertion for our whole lifetime keeps the process out of App Nap so syncing
+    // continues; it still allows normal idle system/display sleep.
+    NSProcessInfo *const processInfo = [NSProcessInfo processInfo];
+    d->appNapActivity = [[processInfo beginActivityWithOptions:NSActivityBackground
+                                                        reason:@"Keep syncing while running in the background"] retain];
 }
 
 CocoaInitializer::~CocoaInitializer() {
+    if (d->appNapActivity) {
+        [[NSProcessInfo processInfo] endActivity:d->appNapActivity];
+        [d->appNapActivity release];
+    }
     [d->autoReleasePool release];
     delete d;
 }

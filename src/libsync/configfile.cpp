@@ -60,6 +60,7 @@ static constexpr char logFlushC[] = "logFlush";
 static constexpr char showExperimentalOptionsC[] = "showExperimentalOptions";
 static constexpr char clientPreviousVersionC[] = "clientPreviousVersion";
 static constexpr char fileProviderDomainsAppSandboxMigrationCompletedC[] = "fileProviderDomainsAppSandboxMigrationCompleted";
+static constexpr char macFileProviderModeEnabledC[] = "macFileProviderModeEnabled";
 static constexpr char fileProviderDomainUuidsGroupC[] = "FileProviderDomainUuids";
 static constexpr char fileProviderAccountIdsGroupC[] = "FileProviderAccountIds";
 
@@ -69,7 +70,6 @@ static constexpr char proxyPortC[] = "Proxy/port";
 static constexpr char proxyUserC[] = "Proxy/user";
 static constexpr char proxyPassC[] = "Proxy/pass";
 static constexpr char proxyNeedsAuthC[] = "Proxy/needsAuth";
-static constexpr char forceLoginV2C[] = "forceLoginV2";
 
 static constexpr char certPath[] = "http_certificatePath";
 static constexpr char certPasswd[] = "http_certificatePasswd";
@@ -679,18 +679,19 @@ int ConfigFile::updateSegment() const
 QStringList ConfigFile::validUpdateChannels() const
 {
     const auto isBranded = Theme::instance()->isBranded();
+    const QString defaultChannel = UpdateChannel::defaultUpdateChannel().toString();
 
     if (isBranded) {
-        return {UpdateChannel::defaultUpdateChannel().toString()};
+        return {defaultChannel};
     }
 
-    const QList<UpdateChannel> *channel_list = &UpdateChannel::defaultUpdateChannelList();
+    const QList<UpdateChannel> *channelList = &UpdateChannel::defaultUpdateChannelList();
     if (serverHasValidSubscription()) {
-        channel_list = &UpdateChannel::enterpriseUpdateChannelsList();
+        channelList = &UpdateChannel::enterpriseUpdateChannelsList();
     }
 
     QStringList list;
-    for (const auto &channel : *channel_list) {
+    for (const auto &channel : *channelList) {
         list.append(channel.toString());
     }
 
@@ -700,35 +701,69 @@ QStringList ConfigFile::validUpdateChannels() const
 QString ConfigFile::defaultUpdateChannel() const
 {
     const auto isBranded = Theme::instance()->isBranded();
-    if (serverHasValidSubscription() && !isBranded) {
-        if (const auto serverChannel = desktopEnterpriseChannel();
-            validUpdateChannels().contains(serverChannel)) {
-            qCWarning(lcConfigFile()) << "Default update channel is" << serverChannel << "because that is the desktop enterprise channel returned by the server.";
+    const QString defaultChannel = UpdateChannel::defaultUpdateChannel().toString();
+
+    if (isBranded) {
+        qCInfo(lcConfigFile()) << "Default update channel is" << defaultChannel
+                               << "because branded clients only support the default channel.";
+        return defaultChannel;
+    }
+
+    const QStringList validChannels = validUpdateChannels();
+    const bool hasSubscription = serverHasValidSubscription();
+    const bool hasServerChannel = hasDesktopEnterpriseChannel();
+
+    if (hasSubscription && hasServerChannel) {
+        const auto serverChannel = desktopEnterpriseChannel();
+        if (validChannels.contains(serverChannel)) {
+            qCInfo(lcConfigFile()) << "Default update channel is" << serverChannel
+                                   << "because it was provided by the server.";
             return serverChannel;
         }
+        qCInfo(lcConfigFile()) << "Ignoring invalid server-provided update channel" << serverChannel;
     }
 
-    if (const auto currentVersionSuffix = Theme::instance()->versionSuffix();
-        validUpdateChannels().contains(currentVersionSuffix) && !isBranded) {
-        qCWarning(lcConfigFile()) << "Default update channel is" << currentVersionSuffix << "because of the version suffix of the current client.";
-        return currentVersionSuffix;
+    if (hasSubscription && !hasServerChannel) {
+        qCDebug(lcConfigFile()) << "No desktop enterprise channel configured by server.";
     }
 
-    qCWarning(lcConfigFile()) << "Default update channel is" << UpdateChannel::defaultUpdateChannel().toString();
-    return UpdateChannel::defaultUpdateChannel().toString();
+    const auto versionSuffix = Theme::instance()->versionSuffix();
+    if (validChannels.contains(versionSuffix)) {
+        qCInfo(lcConfigFile()) << "Default update channel is" << versionSuffix
+                               << "because of the current client build.";
+        return versionSuffix;
+    }
+
+    qCInfo(lcConfigFile()) << "Default update channel is" << defaultChannel;
+    return defaultChannel;
 }
 
 QString ConfigFile::currentUpdateChannel() const
 {
-    if (const auto isBranded = Theme::instance()->isBranded(); isBranded) {
-        return UpdateChannel::defaultUpdateChannel().toString();
+    const auto isBranded = Theme::instance()->isBranded();
+    const QString defaultChannel = UpdateChannel::defaultUpdateChannel().toString();
+
+    if (isBranded) {
+        return defaultChannel;
     }
 
+    const QStringList validChannels = validUpdateChannels();
     QSettings settings(configFile(), QSettings::IniFormat);
-    const auto currentChannel = UpdateChannel::fromString(settings.value(QLatin1String(updateChannelC), defaultUpdateChannel()).toString());
+
+    auto currentChannel = UpdateChannel::fromString(
+        settings.value(QLatin1String(updateChannelC), defaultUpdateChannel()).toString());
+
+    if (!validChannels.contains(currentChannel.toString())) {
+        currentChannel = UpdateChannel::fromString(defaultUpdateChannel());
+    }
+
     if (serverHasValidSubscription()) {
         const auto enterpriseChannel = UpdateChannel::fromString(desktopEnterpriseChannel());
-        return UpdateChannel::mostStable(currentChannel, enterpriseChannel).toString();
+        currentChannel = UpdateChannel::mostStable(currentChannel, enterpriseChannel);
+
+        if (!validChannels.contains(currentChannel.toString())) {
+            currentChannel = UpdateChannel::fromString(defaultUpdateChannel());
+        }
     }
 
     return currentChannel.toString();
@@ -1023,16 +1058,6 @@ void ConfigFile::setMoveToTrash(bool isChecked)
     setValue(moveToTrashC, isChecked);
 }
 
-bool ConfigFile::forceLoginV2() const
-{
-    return getValue(forceLoginV2C, QString(), false).toBool();
-}
-
-void ConfigFile::setForceLoginV2(bool isChecked)
-{
-    setValue(forceLoginV2C, isChecked);
-}
-
 bool ConfigFile::showMainDialogAsNormalWindow() const {
     return getValue(showMainDialogAsNormalWindowC, {}, false).toBool();
 }
@@ -1223,6 +1248,12 @@ QString ConfigFile::desktopEnterpriseChannel() const
     return settings.value(QLatin1String(desktopEnterpriseChannelName), UpdateChannel::defaultUpdateChannel().toString()).toString();
 }
 
+bool ConfigFile::hasDesktopEnterpriseChannel() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.contains(QLatin1String(desktopEnterpriseChannelName));
+}
+
 void ConfigFile::setDesktopEnterpriseChannel(const QString &channel)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
@@ -1333,6 +1364,25 @@ void ConfigFile::setFileProviderDomainsAppSandboxMigrationCompleted(const bool c
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(fileProviderDomainsAppSandboxMigrationCompletedC, completed);
+}
+
+bool ConfigFile::macFileProviderModeEnabled() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(macFileProviderModeEnabledC, false).toBool();
+}
+
+bool ConfigFile::macFileProviderModeEnabledIsSet() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.contains(macFileProviderModeEnabledC);
+}
+
+void ConfigFile::setMacFileProviderModeEnabled(const bool enabled)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(macFileProviderModeEnabledC, enabled);
+    settings.sync();
 }
 
 bool ConfigFile::isUpgrade() const

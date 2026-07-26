@@ -312,7 +312,7 @@ QString Utility::durationToDescriptiveString2(quint64 msecs)
         return firstPart;
     }
 
-    return QCoreApplication::translate("Utility", "%1 %2").arg(firstPart, periods[p + 1].description(secondPartNum));
+    return QStringLiteral("%1 %2").arg(firstPart, periods[p + 1].description(secondPartNum));
 }
 
 QString Utility::durationToDescriptiveString1(quint64 msecs)
@@ -384,35 +384,6 @@ int Utility::convertSizeToInt(size_t &convertVar)
         convertVar = INT_MAX; // intentionally default to wrong value here to not crash: exception handling TBD
     }
     return static_cast<int>(convertVar);
-}
-
-// read the output of the owncloud --version command from the owncloud
-// version that is on disk. This works for most versions of the client,
-// because clients that do not yet know the --version flag return the
-// version in the first line of the help output :-)
-//
-// This version only delivers output on linux, as Mac and Win get their
-// restarting from the installer.
-QByteArray Utility::versionOfInstalledBinary(const QString &command)
-{
-    QByteArray re;
-    if (isLinux()) {
-        QString binary(command);
-        if (binary.isEmpty()) {
-            binary = qApp->arguments()[0];
-        }
-        QStringList params;
-        params << QStringLiteral("--version");
-        QProcess process;
-        process.start(binary, params);
-        process.waitForFinished(); // sets current thread to sleep and waits for pingProcess end
-        re = process.readAllStandardOutput();
-        int newline = re.indexOf('\n');
-        if (newline > 0) {
-            re.truncate(newline);
-        }
-    }
-    return re;
 }
 
 QString Utility::timeAgoInWords(const QDateTime &dt, const QDateTime &from)

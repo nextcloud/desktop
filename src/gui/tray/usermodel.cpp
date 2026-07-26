@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include "notificationhandler.h"
+#include "activity/notificationhandler.h"
 #include "usermodel.h"
 #include "common/filesystembase.h"
 
@@ -21,9 +21,7 @@
 #include "syncresult.h"
 #include "syncfileitem.h"
 #include "systray.h"
-#include "tray/activitylistmodel.h"
-#include "tray/unifiedsearchresultslistmodel.h"
-#include "tray/talkreply.h"
+#include "activity/activitylistmodel.h"
 #include "userstatusconnector.h"
 #include "common/utility.h"
 #include "ocsassistantconnector.h"
@@ -31,6 +29,7 @@
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "gui/macOS/fileprovider.h"
 #include "gui/macOS/fileproviderservice.h"
+#include "gui/macOS/fileprovidersettingscontroller.h"
 #endif
 
 #include <QtCore>
@@ -56,6 +55,8 @@ constexpr qint64 activityDefaultExpirationTimeMsecs = 1000 * 60 * 10;
 constexpr qint64 assistantPollIntervalMsecs = 2000;
 constexpr int assistantSuccessMinStatusCode = 200;
 constexpr int assistantSuccessMaxStatusCode = 300;
+constexpr auto debugCallNotificationEnvVar = "NEXTCLOUD_DEBUG_CALL_NOTIFICATION";
+constexpr auto debugCallNotificationAvatarEnvVar = "NEXTCLOUD_DEBUG_CALL_NOTIFICATION_AVATAR_URL";
 
 QString assistantTaskTypeIdFromResponse(const QJsonDocument &json)
 {
@@ -144,6 +145,12 @@ struct SyncStatusInfo {
     bool ok = true;
 };
 
+enum class SyncIssueKind {
+    None,
+    Warning,
+    Error,
+};
+
 OCC::SyncResult::Status determineSyncStatus(const OCC::SyncResult &syncResult)
 {
     const auto status = syncResult.status();
@@ -165,6 +172,7 @@ SyncStatusInfo syncStatusForAccount(const OCC::AccountStatePtr &accountState)
         return {OCC::Theme::instance()->offline(), false};
     }
 
+    auto hasConfiguredSyncSource = false;
     bool hasError = false;
     bool hasWarning = false;
     bool hasPaused = false;
@@ -174,6 +182,7 @@ SyncStatusInfo syncStatusForAccount(const OCC::AccountStatePtr &accountState)
             continue;
         }
 
+        hasConfiguredSyncSource = true;
         const auto state = determineSyncStatus(folder->syncResult());
 
         switch (state) {
@@ -199,6 +208,40 @@ SyncStatusInfo syncStatusForAccount(const OCC::AccountStatePtr &accountState)
         }
     }
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    const auto account = accountState->account();
+    const auto userIdAtHostWithPort = account->userIdAtHostWithPort();
+    if (OCC::Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(userIdAtHostWithPort)) {
+        hasConfiguredSyncSource = true;
+
+        const auto fileProviderStatus = OCC::Mac::FileProvider::instance()->service()->latestReceivedSyncStatusForAccount(account);
+        switch (fileProviderStatus) {
+        case OCC::SyncResult::Error:
+        case OCC::SyncResult::SetupError:
+            hasError = true;
+            break;
+        case OCC::SyncResult::Problem:
+            hasWarning = true;
+            break;
+        case OCC::SyncResult::Undefined:
+            // The extension has not reported a concrete state yet. Keep the account row neutral
+            // until a real File Provider status arrives.
+            break;
+        case OCC::SyncResult::Paused:
+            hasPaused = true;
+            break;
+        case OCC::SyncResult::SyncPrepare:
+        case OCC::SyncResult::SyncRunning:
+        case OCC::SyncResult::SyncAbortRequested:
+            hasSyncing = true;
+            break;
+        case OCC::SyncResult::Success:
+        case OCC::SyncResult::NotYetStarted:
+            break;
+        }
+    }
+#endif
+
     if (hasError) {
         return {OCC::Theme::instance()->error(), false};
     }
@@ -211,6 +254,9 @@ SyncStatusInfo syncStatusForAccount(const OCC::AccountStatePtr &accountState)
     if (hasSyncing) {
         return {OCC::Theme::instance()->sync(), false};
     }
+    if (!hasConfiguredSyncSource) {
+        return {OCC::Theme::instance()->pause(), false};
+    }
 
     return {OCC::Theme::instance()->ok(), true};
 }
@@ -221,6 +267,7 @@ bool isSyncStatusError(const OCC::SyncResult::Status status)
     case OCC::SyncResult::Error:
     case OCC::SyncResult::SetupError:
     case OCC::SyncResult::Problem:
+    case OCC::SyncResult::Undefined:
         return true;
     case OCC::SyncResult::Success:
     case OCC::SyncResult::SyncPrepare:
@@ -228,10 +275,226 @@ bool isSyncStatusError(const OCC::SyncResult::Status status)
     case OCC::SyncResult::NotYetStarted:
     case OCC::SyncResult::Paused:
     case OCC::SyncResult::SyncAbortRequested:
-    case OCC::SyncResult::Undefined:
         return false;
     }
     return false;
+}
+
+SyncIssueKind syncIssueKindForSyncResult(const OCC::SyncResult::Status status)
+{
+    auto result = SyncIssueKind::None;
+
+    switch (status) {
+    case OCC::SyncResult::Error:
+    case OCC::SyncResult::SetupError:
+        result = SyncIssueKind::Error;
+        break;
+    case OCC::SyncResult::Problem:
+    case OCC::SyncResult::Undefined:
+        result = SyncIssueKind::Warning;
+        break;
+    case OCC::SyncResult::Success:
+    case OCC::SyncResult::SyncPrepare:
+    case OCC::SyncResult::SyncRunning:
+    case OCC::SyncResult::NotYetStarted:
+    case OCC::SyncResult::Paused:
+    case OCC::SyncResult::SyncAbortRequested:
+        result = SyncIssueKind::None;
+        break;
+    }
+    return result;
+}
+
+SyncIssueKind syncIssueKindForSyncFileItem(const OCC::SyncFileItem::Status status)
+{
+    auto result = SyncIssueKind::None;
+
+    switch (status) {
+    case OCC::SyncFileItem::NormalError:
+    case OCC::SyncFileItem::FatalError:
+    case OCC::SyncFileItem::DetailError:
+    case OCC::SyncFileItem::BlacklistedError:
+        result = SyncIssueKind::Error;
+        break;
+    case OCC::SyncFileItem::SoftError:
+    case OCC::SyncFileItem::Conflict:
+    case OCC::SyncFileItem::FileIgnored:
+    case OCC::SyncFileItem::Restoration:
+    case OCC::SyncFileItem::FileLocked:
+    case OCC::SyncFileItem::FileNameInvalid:
+    case OCC::SyncFileItem::FileNameInvalidOnServer:
+    case OCC::SyncFileItem::FileNameClash:
+        result = SyncIssueKind::Warning;
+        break;
+    case OCC::SyncFileItem::NoStatus:
+    case OCC::SyncFileItem::Success:
+        result = SyncIssueKind::None;
+        break;
+    }
+    return result;
+}
+
+SyncIssueKind strongestSyncIssueKind(const SyncIssueKind left, const SyncIssueKind right)
+{
+    auto result = SyncIssueKind::None;
+
+    if (left == SyncIssueKind::Error || right == SyncIssueKind::Error) {
+        result = SyncIssueKind::Error;
+        return result;
+    }
+    if (left == SyncIssueKind::Warning || right == SyncIssueKind::Warning) {
+        result = SyncIssueKind::Warning;
+        return result;
+    }
+
+    return result;
+}
+
+SyncIssueKind syncIssueKindForActivity(const OCC::Activity &activity)
+{
+    auto result = SyncIssueKind::None;
+
+    if (activity._type == OCC::Activity::SyncResultType) {
+        result = syncIssueKindForSyncResult(activity._syncResultStatus);
+        return result;
+    }
+    if (activity._type == OCC::Activity::SyncFileItemType) {
+        result = syncIssueKindForSyncFileItem(activity._syncFileItemStatus);
+        return result;
+    }
+
+    return result;
+}
+
+SyncIssueKind syncIssueKindForActivities(const OCC::ActivityListModel *activityModel)
+{
+    auto result = SyncIssueKind::None;
+
+    if (!activityModel) {
+        return result;
+    }
+
+    for (const auto &activity : activityModel->activityList()) {
+        result = strongestSyncIssueKind(result, syncIssueKindForActivity(activity));
+        if (result == SyncIssueKind::Error) {
+            return result;
+        }
+    }
+    return result;
+}
+
+bool accountHasSyncErrors(const OCC::AccountStatePtr &accountState)
+{
+    if (!accountState || !accountState->isConnected()) {
+        return false;
+    }
+
+    const auto &allFolders = OCC::FolderMan::instance()->map().values();
+    for (const auto folder : allFolders) {
+        if (folder->accountState() != accountState.data()) {
+            continue;
+        }
+        const auto status = determineSyncStatus(folder->syncResult());
+        if (isSyncStatusError(status)) {
+            return true;
+        }
+    }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    const auto fileProviderStatus = OCC::Mac::FileProvider::instance()->service()->latestReceivedSyncStatusForAccount(accountState->account());
+    if (fileProviderStatus != OCC::SyncResult::Undefined && isSyncStatusError(fileProviderStatus)) {
+        return true;
+    }
+#endif
+
+    return false;
+}
+
+SyncIssueKind syncIssueKindForAccount(const OCC::AccountStatePtr &accountState)
+{
+    if (!accountState || !accountState->isConnected()) {
+        return SyncIssueKind::None;
+    }
+
+    auto result = SyncIssueKind::None;
+    const auto &allFolders = OCC::FolderMan::instance()->map().values();
+    for (const auto folder : allFolders) {
+        if (folder->accountState() != accountState.data()) {
+            continue;
+        }
+        result = strongestSyncIssueKind(result, syncIssueKindForSyncResult(determineSyncStatus(folder->syncResult())));
+        if (result == SyncIssueKind::Error) {
+            return result;
+        }
+    }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    const auto fileProviderStatus = OCC::Mac::FileProvider::instance()->service()->latestReceivedSyncStatusForAccount(accountState->account());
+    if (fileProviderStatus != OCC::SyncResult::Undefined) {
+        result = strongestSyncIssueKind(result, syncIssueKindForSyncResult(fileProviderStatus));
+    }
+#endif
+
+    return result;
+}
+
+bool accountNeedsSandboxReapproval(const OCC::AccountStatePtr &accountState)
+{
+#ifdef Q_OS_MACOS
+    if (!accountState || !accountState->isConnected()) {
+        return false;
+    }
+
+    for (const auto folder : OCC::FolderMan::instance()->map().values()) {
+        if (folder && folder->accountState() == accountState.data() && folder->needsSandboxBookmark()) {
+            return true;
+        }
+    }
+#else
+    Q_UNUSED(accountState)
+#endif
+    return false;
+}
+
+bool showDebugCallNotification(const OCC::AccountStatePtr &account)
+{
+    if (!qEnvironmentVariableIsSet(debugCallNotificationEnvVar)) {
+        return false;
+    }
+
+    const auto systray = OCC::Systray::instance();
+    if (!systray || !account || !account->account()) {
+        return true;
+    }
+
+    OCC::Activity activity;
+    activity._id = -QDateTime::currentMSecsSinceEpoch();
+    activity._objectType = QStringLiteral("call");
+    activity._subject = QStringLiteral("Iva Horn would like to talk with you");
+    activity._shouldNotify = true;
+    activity._dateTime = QDateTime::currentDateTime();
+    activity._accName = account->account()->displayName();
+    activity._talkNotificationData.conversationToken = QStringLiteral("debug-call");
+
+    const auto avatarUrl = qEnvironmentVariable(debugCallNotificationAvatarEnvVar);
+    if (!avatarUrl.isEmpty()) {
+        activity._talkNotificationData.userAvatar = avatarUrl;
+    } else if (!account->account()->url().isEmpty() && !account->account()->davUser().isEmpty()) {
+        activity._talkNotificationData.userAvatar = account->account()->url().toString()
+            + QStringLiteral("/index.php/avatar/")
+            + account->account()->davUser()
+            + QStringLiteral("/128");
+    }
+
+    OCC::ActivityLink answer;
+    answer._label = QObject::tr("Answer");
+    answer._verb = "WEB";
+    answer._link = account->account()->url().toString();
+    answer._primary = true;
+    activity._links.append(answer);
+
+    systray->createCallDialog(activity, account);
+    return true;
 }
 
 } // namespace
@@ -256,7 +519,6 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     , _account(account)
     , _isCurrentUser(isCurrent)
     , _activityModel(new ActivityListModel(_account.data(), this))
-    , _unifiedSearchResultsModel(new UnifiedSearchResultsListModel(_account.data(), this))
 {
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo,
         this, &User::slotProgressInfo);
@@ -274,8 +536,9 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
         this, &User::slotCheckExpiredActivities);
 
     connect(_account.data(), &AccountState::stateChanged,
-            [=, this]() { if (isConnected()) {slotRefreshImmediately();} });
+            this, [=, this]() { if (isConnected()) {slotRefreshImmediately();} });
     connect(_account.data(), &AccountState::stateChanged, this, &User::accountStateChanged);
+    connect(_account.data(), &AccountState::stateChanged, this, &User::refreshAccountAlert);
     connect(_account.data(), &AccountState::hasFetchedNavigationApps,
         this, &User::slotRebuildNavigationAppList);
     connect(_account->account().data(), &Account::accountChangedDisplayName, this, &User::nameChanged);
@@ -290,6 +553,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::headerColorChanged);
     connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::headerTextColorChanged);
     connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::accentColorChanged);
+    connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::serverHasUserStatusChanged);
     connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::assistantStateChanged);
 
     connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::slotAccountCapabilitiesChangedRefreshGroupFolders);
@@ -297,8 +561,10 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(_activityModel, &ActivityListModel::sendNotificationRequest, this, &User::slotSendNotificationRequest);
     connect(_activityModel, &ActivityListModel::showSettingsDialog,
             Systray::instance(), &Systray::openSettings);
-
-    connect(this, &User::sendReplyMessage, this, &User::slotSendReplyMessage);
+    connect(_activityModel, &ActivityListModel::hasSyncConflictsChanged, this, &User::refreshAccountAlert);
+    connect(_activityModel, &ActivityListModel::recentActivityPreviewDataChanged, this, &User::recentActivitiesChanged);
+    connect(_activityModel, &ActivityListModel::notificationPreviewDataChanged, this, &User::trayNotificationsChanged);
+    connect(_activityModel, &ActivityListModel::activityListChanged, this, &User::refreshAccountAlert);
 
     connect(_account->account().data(), &Account::userCertificateNeedsMigrationChanged, this, [this] () {
         auto certificateNeedMigration = Activity{};
@@ -325,13 +591,35 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(folderMan, &FolderMan::folderSyncStateChange, this, [this](const Folder *folder) {
         if (!folder || folder->accountState() == _account.data()) {
             updateSyncStatus();
+            refreshAccountAlert();
         }
     });
     connect(folderMan, &FolderMan::folderListChanged, this, [this](const Folder::Map &) {
         updateSyncStatus();
+        refreshAccountAlert();
     });
     connect(_account.data(), &AccountState::isConnectedChanged, this, &User::updateSyncStatus);
+    connect(_account.data(), &AccountState::isConnectedChanged, this, &User::refreshAccountAlert);
     updateSyncStatus();
+    refreshAccountAlert();
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::syncStateChanged,
+            this, [this](const OCC::AccountPtr &account, OCC::SyncResult::Status) {
+        if (account == _account->account()) {
+            updateSyncStatus();
+            refreshAccountAlert();
+        }
+    });
+    connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::itemExcludedFromSync,
+            this, &User::slotFileProviderItemExcludedFromSync);
+    connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::insufficientQuotaForItem,
+            this, &User::slotFileProviderInsufficientQuotaForItem);
+    connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::insufficientQuotaSummary,
+            this, &User::slotFileProviderInsufficientQuotaSummary);
+    connect(_activityModel, &ActivityListModel::fileProviderRetryUploadsRequested,
+            this, &User::slotFileProviderRetryUploads);
+#endif
 }
 
 void User::checkNotifiedNotifications()
@@ -591,7 +879,7 @@ void User::slotCheckExpiredActivities()
 {
     const auto errorsList = _activityModel->errorsList();
     for (const auto &activity : errorsList) {
-        if (activity._expireAtMsecs > 0 && QDateTime::currentDateTime().toMSecsSinceEpoch() >= activity._expireAtMsecs) {
+        if (activity._expireAtMsecs > 0 && QDateTime::currentMSecsSinceEpoch() >= activity._expireAtMsecs) {
             _activityModel->removeActivityFromActivityList(activity);
         }
     }
@@ -599,7 +887,170 @@ void User::slotCheckExpiredActivities()
     if (_activityModel->errorsList().size() == 0) {
         _expiredActivitiesCheckTimer.stop();
     }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    // Bundle-exclusion entries inherit the same expiration cycle as other activity errors. Once
+    // their entries are pruned above, allow the same paths to surface again on the next drop.
+    _reportedExcludedBundles.clear();
+    // Same lifecycle for quota dedup state: once the per-item activity rows have aged out of
+    // the list, allow the same files to re-surface on the next quota event.
+    _reportedQuotaItems.clear();
+#endif
 }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+void User::slotFileProviderItemExcludedFromSync(const QString &domainIdentifier, const QString &relativePath, const QString &fileName, const QString &reason)
+{
+    const auto reportedAccount = AccountManager::instance()->accountFromFileProviderDomainIdentifier(domainIdentifier);
+    if (!reportedAccount || reportedAccount != _account) {
+        return;
+    }
+
+    if (_reportedExcludedBundles.contains(relativePath)) {
+        qCDebug(lcActivity) << "Suppressing duplicate bundle-exclusion entry for" << relativePath;
+        return;
+    }
+    _reportedExcludedBundles.insert(relativePath);
+
+    Activity activity;
+    activity._type = Activity::SyncFileItemType;
+    activity._syncFileItemStatus = SyncFileItem::FileIgnored;
+    activity._subject = tr("“%1” was not synchronized").arg(fileName);
+    activity._message = reason;
+    activity._link = relativePath;
+    const auto currentDateTime = QDateTime::currentDateTime();
+    activity._dateTime = QDateTime::fromString(currentDateTime.toString(), Qt::ISODate);
+    activity._expireAtMsecs = currentDateTime.addMSecs(activityDefaultExpirationTimeMsecs).toMSecsSinceEpoch();
+    activity._accName = _account->account()->displayName();
+    activity._id = -static_cast<int>(qHash(QStringLiteral("bundle-excluded:") + relativePath + fileName));
+
+    _activityModel->addErrorToActivityList(activity, ActivityListModel::ErrorType::SyncError);
+
+    if (!_expiredActivitiesCheckTimer.isActive()) {
+        _expiredActivitiesCheckTimer.start(expiredActivitiesCheckIntervalMsecs);
+    }
+
+    qCInfo(lcActivity) << "Surfaced bundle-exclusion in activity view for" << fileName << "in domain" << domainIdentifier;
+}
+
+void User::slotFileProviderInsufficientQuotaForItem(const QString &domainIdentifier, const QString &relativePath, const QString &fileName, qint64 fileBytes, qint64 availableBytes)
+{
+    const auto reportedAccount = AccountManager::instance()->accountFromFileProviderDomainIdentifier(domainIdentifier);
+    if (!reportedAccount || reportedAccount != _account) {
+        return;
+    }
+
+    // The system retries failing createItem/modifyItem operations transparently, so a single
+    // user-visible refusal can produce many `reportInsufficientQuotaForItem` calls. Dedupe
+    // per (domain, relativePath) so the activity list shows one row per affected file rather
+    // than one per retry. See https://github.com/nextcloud/desktop/issues/9598.
+    const auto dedupKey = domainIdentifier + QLatin1Char('|') + relativePath;
+    if (_reportedQuotaItems.contains(dedupKey)) {
+        qCDebug(lcActivity) << "Suppressing duplicate quota-item entry for" << relativePath << "in domain" << domainIdentifier;
+        return;
+    }
+    _reportedQuotaItems.insert(dedupKey);
+
+    Activity activity;
+    activity._type = Activity::SyncFileItemType;
+    activity._syncFileItemStatus = SyncFileItem::DetailError;
+    activity._subject = tr("“%1” was not synchronized").arg(fileName);
+    if (fileBytes >= 0 && availableBytes >= 0) {
+        activity._message = tr("Insufficient storage on the server. The file requires %1 but only %2 are available.")
+            .arg(Utility::octetsToString(fileBytes), Utility::octetsToString(availableBytes));
+    } else if (fileBytes >= 0) {
+        activity._message = tr("Insufficient storage on the server. The file requires %1.")
+            .arg(Utility::octetsToString(fileBytes));
+    } else {
+        activity._message = tr("Insufficient storage on the server.");
+    }
+    activity._link = relativePath;
+    activity._file = fileName; // also stashed so the retry sweep can recompute the activity id
+    const auto currentDateTime = QDateTime::currentDateTime();
+    activity._dateTime = QDateTime::fromString(currentDateTime.toString(), Qt::ISODate);
+    activity._expireAtMsecs = currentDateTime.addMSecs(activityDefaultExpirationTimeMsecs).toMSecsSinceEpoch();
+    activity._accName = _account->account()->displayName();
+    activity._folder = domainIdentifier; // payload used by the per-domain sweep on retry click
+    activity._id = ActivityListModel::fileProviderQuotaItemActivityId(domainIdentifier, relativePath, fileName);
+
+    _activityModel->addErrorToActivityList(activity, ActivityListModel::ErrorType::SyncError);
+
+    if (!_expiredActivitiesCheckTimer.isActive()) {
+        _expiredActivitiesCheckTimer.start(expiredActivitiesCheckIntervalMsecs);
+    }
+
+    qCInfo(lcActivity) << "Surfaced insufficient-quota item in activity view for" << fileName << "in domain" << domainIdentifier;
+}
+
+void User::slotFileProviderInsufficientQuotaSummary(const QString &domainIdentifier)
+{
+    const auto reportedAccount = AccountManager::instance()->accountFromFileProviderDomainIdentifier(domainIdentifier);
+    if (!reportedAccount || reportedAccount != _account) {
+        return;
+    }
+
+    if (_reportedQuotaSummaryDomains.contains(domainIdentifier)) {
+        qCDebug(lcActivity) << "Suppressing duplicate quota-summary entry for domain" << domainIdentifier;
+        return;
+    }
+    _reportedQuotaSummaryDomains.insert(domainIdentifier);
+
+    Activity activity;
+    activity._type = Activity::SyncResultType;
+    activity._syncResultStatus = SyncResult::Error;
+    activity._subject = tr("There is insufficient space available on the server for some uploads.");
+    // Surface the file provider domain's user-visible root path so the activity entry shows
+    // the affected folder, matching the layout classic sync produces in `User::slotAddError`
+    // where `activity._message = folderInstance->shortGuiLocalPath()`.
+    const auto domainPath = Mac::FileProvider::instance()->domainManager()->userVisibleUrlForDomainIdentifier(domainIdentifier);
+    activity._message = !domainPath.isEmpty() ? domainPath : domainIdentifier;
+    activity._link = domainIdentifier; // payload for the retry handler
+
+    const auto currentDateTime = QDateTime::currentDateTime();
+    activity._dateTime = QDateTime::fromString(currentDateTime.toString(), Qt::ISODate);
+    activity._expireAtMsecs = currentDateTime.addMSecs(activityDefaultExpirationTimeMsecs).toMSecsSinceEpoch();
+    activity._accName = _account->account()->displayName();
+    activity._folder = domainIdentifier; // makes the summary sweepable by the same per-domain key
+    activity._id = ActivityListModel::fileProviderQuotaSummaryActivityId(domainIdentifier);
+
+    ActivityLink retry;
+    retry._label = tr("Retry all uploads");
+    retry._link = domainIdentifier;
+    retry._verb = ActivityLink::FileProviderRetryUploadsVerb;
+    retry._primary = true;
+    activity._links.append(retry);
+
+    _activityModel->addErrorToActivityList(activity, ActivityListModel::ErrorType::SyncError);
+
+    if (!_expiredActivitiesCheckTimer.isActive()) {
+        _expiredActivitiesCheckTimer.start(expiredActivitiesCheckIntervalMsecs);
+    }
+
+    qCInfo(lcActivity) << "Surfaced insufficient-quota summary in activity view for domain" << domainIdentifier;
+}
+
+void User::slotFileProviderRetryUploads(const QString &domainIdentifier)
+{
+    qCInfo(lcActivity) << "User requested retry of file provider uploads for domain" << domainIdentifier;
+
+    // Ask the system to drop the cached `.insufficientQuota` error against affected items
+    // and re-enumerate the working set so retries kick in. Per Apple's documentation for
+    // `signalErrorResolved(_:completionHandler:)`, this is the correct way to clear a
+    // previously-returned error before requesting a re-evaluation.
+    Mac::FileProvider::instance()->domainManager()->clearInsufficientQuotaErrorAndEnumerate(domainIdentifier);
+
+    // Re-arm dedupe so the next quota event for this domain produces a fresh summary entry
+    // and fresh per-item entries (one per affected file, not one per retry).
+    _reportedQuotaSummaryDomains.remove(domainIdentifier);
+    const auto domainPrefix = domainIdentifier + QLatin1Char('|');
+    QMutableSetIterator<QString> it(_reportedQuotaItems);
+    while (it.hasNext()) {
+        if (it.next().startsWith(domainPrefix)) {
+            it.remove();
+        }
+    }
+}
+#endif
 
 void User::parseNewGroupFolderPath(const QString &mountPoint)
 {
@@ -667,7 +1118,7 @@ bool User::checkPushNotificationsAreReady() const
 }
 
 void User::slotRefreshImmediately() {
-    if (_account.data() && _account.data()->isConnected() && Systray::instance()->isOpen()) {
+    if (_account.data() && _account.data()->isConnected() && Systray::instance()->isActivitySurfaceVisible()) {
         slotRefreshActivities();
     }
     slotRefreshNotifications();
@@ -704,14 +1155,34 @@ void User::slotRefresh()
 
 void User::slotRefreshActivitiesInitial()
 {
-    if (_account.data()->isConnected() && Systray::instance()->isOpen()) {
+    if (_account.data()->isConnected() && Systray::instance()->isActivitySurfaceVisible()) {
         _activityModel->slotRefreshActivityInitial();
     }
 }
 
+void User::slotRefreshActivityPreview()
+{
+    if (!_account.data() || !_account.data()->isConnected() || !Systray::instance()->isActivitySurfaceVisible()) {
+        return;
+    }
+
+    if (!_timeSinceLastActivityPreviewCheck.isValid()) {
+        _activityModel->slotRefreshActivityInitial();
+        _timeSinceLastActivityPreviewCheck.start();
+        return;
+    }
+
+    if (_timeSinceLastActivityPreviewCheck.elapsed() < NOTIFICATION_REQUEST_FREE_PERIOD) {
+        return;
+    }
+
+    _activityModel->slotRefreshActivity();
+    _timeSinceLastActivityPreviewCheck.start();
+}
+
 void User::slotRefreshActivities()
 {
-    if (_account.data()->isConnected() && Systray::instance()->isOpen()) {
+    if (_account.data()->isConnected() && Systray::instance()->isActivitySurfaceVisible()) {
         _activityModel->slotRefreshActivity();
     }
 }
@@ -725,6 +1196,11 @@ void User::slotRefreshUserStatus()
 
 void User::slotRefreshNotifications()
 {
+    static auto debugCallNotificationShown = false;
+    if (!debugCallNotificationShown) {
+        debugCallNotificationShown = showDebugCallNotification(_account);
+    }
+
     // start a server notification handler if no notification requests
     // are running
     if (_notificationRequestsRunning == 0) {
@@ -853,7 +1329,7 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
                 continue;
             }
 
-            if (const auto filePath = f->path() + activity._file; !FileSystem::fileExists(filePath)) {
+            if (const auto filePath = QString{f->path() + activity._file}; !FileSystem::fileExists(filePath)) {
                 _activityModel->removeActivityFromActivityList(activity);
                 continue;
             }
@@ -1187,9 +1663,76 @@ ActivityListModel *User::getActivityModel()
     return _activityModel;
 }
 
-UnifiedSearchResultsListModel *User::getUnifiedSearchResultsListModel() const
+void User::refreshActivities()
 {
-    return _unifiedSearchResultsModel;
+    slotRefresh();
+}
+
+QVariantList User::recentActivities() const
+{
+    return _activityModel->recentActivityPreviewData();
+}
+
+QVariantList User::trayNotifications() const
+{
+    return _activityModel->notificationPreviewData();
+}
+
+QVariantMap User::accountAlert() const
+{
+    return _accountAlert;
+}
+
+QVariantMap User::buildAccountAlert() const
+{
+    if (_activityModel->hasSyncConflicts()) {
+        return {
+            {QStringLiteral("title"), tr("Sync conflicts")},
+            {QStringLiteral("icon"), Theme::instance()->warning()},
+            {QStringLiteral("systemIconName"), QStringLiteral("exclamationmark.triangle")},
+        };
+    }
+
+    if (accountNeedsSandboxReapproval(_account)) {
+        return {
+            {QStringLiteral("title"), QCoreApplication::translate("OCC::SyncStatusSummary", "Reauthorization required")},
+            {QStringLiteral("icon"), Theme::instance()->error()},
+            {QStringLiteral("systemIconName"), QStringLiteral("exclamationmark.triangle")},
+        };
+    }
+
+    if (needsToSignTermsOfService()) {
+        return {
+            {QStringLiteral("title"), QCoreApplication::translate("OCC::SyncStatusSummary", "You need to accept the terms of service")},
+            {QStringLiteral("icon"), Theme::instance()->warning()},
+            {QStringLiteral("systemIconName"), QStringLiteral("exclamationmark.triangle")},
+        };
+    }
+
+    const auto syncIssueKind = strongestSyncIssueKind(syncIssueKindForActivities(_activityModel), syncIssueKindForAccount(_account));
+    if (syncIssueKind != SyncIssueKind::None) {
+        const auto hasErrors = syncIssueKind == SyncIssueKind::Error;
+        return {
+            {QStringLiteral("title"), hasErrors
+                    ? QCoreApplication::translate("OCC::SyncStatusSummary", "Some files couldn't be synced!")
+                    : QCoreApplication::translate("OCC::SyncStatusSummary", "Some files could not be synced!")},
+            {QStringLiteral("icon"), hasErrors ? Theme::instance()->error() : Theme::instance()->warning()},
+            {QStringLiteral("systemIconName"), QStringLiteral("exclamationmark.triangle")},
+        };
+    }
+
+    return {};
+}
+
+void User::refreshAccountAlert()
+{
+    const auto accountAlert = buildAccountAlert();
+    if (_accountAlert == accountAlert) {
+        return;
+    }
+
+    _accountAlert = accountAlert;
+    emit accountAlertChanged();
 }
 
 void User::openLocalFolder() const
@@ -1197,6 +1740,16 @@ void User::openLocalFolder() const
     if (const auto folder = getFolder()) {
         QDesktopServices::openUrl(QUrl::fromLocalFile(folder->path()));
     }
+}
+
+void User::openServer() const
+{
+    auto url = server(false);
+    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+        url = "https://" + server(false);
+    }
+
+    QDesktopServices::openUrl(url);
 }
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
@@ -1466,15 +2019,6 @@ void User::removeAccount() const
     AccountManager::instance()->save();
 }
 
-void User::slotSendReplyMessage(const int activityIndex, const QString &token, const QString &message, const QString &replyTo)
-{
-    QPointer<TalkReply> talkReply = new TalkReply(_account.data(), this);
-    talkReply->sendReplyMessage(token, message, replyTo);
-    connect(talkReply, &TalkReply::replyMessageSent, this, [&, activityIndex](const QString &message) {
-        _activityModel->setReplyMessageSent(activityIndex, message);
-    });
-}
-
 void User::submitAssistantQuestion(const QString &question)
 {
     const auto trimmedQuestion = question.trimmed();
@@ -1729,7 +2273,28 @@ void User::slotAssistantRequestError(const QString &context, int statusCode)
 
 void User::forceSyncNow() const
 {
-    FolderMan::instance()->forceSyncForFolder(getFolder());
+    if (const auto folder = getFolder()) {
+        FolderMan::instance()->forceSyncForFolder(folder);
+        return;
+    }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    if (hasFileProvider() && _account && _account->account()) {
+        const auto fileProvider = Mac::FileProvider::instance();
+        if (fileProvider && fileProvider->domainManager()) {
+            // No classic Folder exists for this account — it is managed by the macOS File
+            // Provider Extension. Per Apple's documented pattern, on-demand sync is requested
+            // by signalling the working-set enumerator; the OS then drives the extension's
+            // `enumerator(for: .workingSet)` → `enumerateChanges()` flow, which performs the
+            // actual remote reconciliation. See nextcloud/desktop#9909.
+            fileProvider->domainManager()->signalEnumeratorChanged(_account->account().data());
+            return;
+        }
+    }
+#endif
+
+    qCWarning(lcActivity) << "forceSyncNow: no folder and no file provider domain to sync for"
+                          << (_account ? _account->account()->displayName() : QStringLiteral("<no account>"));
 }
 
 void User::slotAccountCapabilitiesChangedRefreshGroupFolders()
@@ -1951,6 +2516,11 @@ int UserModel::numUsers()
     return _users.size();
 }
 
+int UserModel::count() const
+{
+    return rowCount();
+}
+
 int UserModel::currentUserId() const
 {
     return _currentUserId;
@@ -2002,6 +2572,24 @@ QImage UserModel::avatarById(const int id) const
     return (*foundUserByIdIter)->avatar();
 }
 
+QImage UserModel::avatarForRow(const int row) const
+{
+    if (row < 0 || row >= _users.size()) {
+        return {};
+    }
+    return _users[row]->avatar();
+}
+
+QImage UserModel::syncStatusIconForRow(const int row) const
+{
+    if (row < 0 || row >= _users.size()) {
+        return {};
+    }
+    const auto url = _users[row]->syncStatusIcon();
+    const auto resourcePath = QString{u":"_s + url.path()};
+    return QIcon(resourcePath).pixmap(18, 18).toImage();
+}
+
 QString UserModel::currentUserServer()
 {
     if (_currentUserId < 0 || _currentUserId >= _users.size())
@@ -2021,7 +2609,8 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
     }
 
     if (!containsUser) {
-        int row = rowCount();
+        const auto row = rowCount();
+        const auto selectAddedUser = isCurrent || (_currentUserId < 0 && !_init);
         beginInsertRows(QModelIndex(), row, row);
 
         User *u = new User(user, isCurrent);
@@ -2046,20 +2635,44 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
         });
         connect(u, &User::accountStateChanged, this, &UserModel::updateSyncErrorUsers);
 
+        connect(u, &User::serverHasUserStatusChanged, this, [this, row] {
+            emit dataChanged(index(row, 0), index(row, 0), { UserModel::ServerHasUserStatusRole });
+        });
+
         connect(u, &User::syncStatusChanged, this, [this, row] {
             emit dataChanged(index(row, 0), index(row, 0), { UserModel::SyncStatusIconRole,
                                                             UserModel::SyncStatusOkRole });
         });
 
+        connect(u, &User::recentActivitiesChanged, this, [this, row] {
+            emit dataChanged(index(row, 0), index(row, 0), { UserModel::RecentActivitiesRole });
+        });
+
+        connect(u, &User::trayNotificationsChanged, this, [this, row] {
+            emit dataChanged(index(row, 0), index(row, 0), { UserModel::TrayNotificationsRole });
+        });
+
+        connect(u, &User::accountAlertChanged, this, [this, row] {
+            emit dataChanged(index(row, 0), index(row, 0), { UserModel::AccountAlertRole });
+        });
+
+        connect(u, &User::assistantStateChanged, this, [this, row] {
+            emit dataChanged(index(row, 0), index(row, 0), { UserModel::AssistantEnabledRole });
+        });
+
         _users << u;
-        if (isCurrent || (_currentUserId < 0 && !_init)) {
-            setCurrentUserId(_users.size() - 1);
-        }
 
         endInsertRows();
+        emit countChanged();
+
+        if (selectAddedUser) {
+            setCurrentUserId(_users.size() - 1);
+        } else {
+            emit currentUserChanged();
+        }
+
         ConfigFile cfg;
         u->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
-        emit currentUserChanged();
     }
 
     updateSyncErrorUsers();
@@ -2093,12 +2706,7 @@ void UserModel::openCurrentAccountServer()
     if (_currentUserId < 0 || _currentUserId >= _users.size())
         return;
 
-    QString url = _users[_currentUserId]->server(false);
-    if (!url.startsWith("http://") && !url.startsWith("https://")) {
-        url = "https://" + _users[_currentUserId]->server(false);
-    }
-
-    QDesktopServices::openUrl(url);
+    _users[_currentUserId]->openServer();
 }
 
 void UserModel::openCurrentAccountFolderFromTrayInfo(const QString &fullRemotePath)
@@ -2198,12 +2806,12 @@ void UserModel::removeAccount(const int id)
         return;
     }
 
-    _users[id]->logout();
     _users[id]->removeAccount();
 
     beginRemoveRows(QModelIndex(), id, id);
     _users.removeAt(id);
     endRemoveRows();
+    emit countChanged();
 
     if (_users.size() <= 1) {
         setCurrentUserId(_users.size() - 1);
@@ -2285,6 +2893,18 @@ QVariant UserModel::data(const QModelIndex &index, int role) const
     case SyncStatusOkRole:
         result = _users[index.row()]->syncStatusOk();
         break;
+    case RecentActivitiesRole:
+        result = _users[index.row()]->recentActivities();
+        break;
+    case AssistantEnabledRole:
+        result = _users[index.row()]->isNcAssistantEnabled();
+        break;
+    case TrayNotificationsRole:
+        result = _users[index.row()]->trayNotifications();
+        break;
+    case AccountAlertRole:
+        result = _users[index.row()]->accountAlert();
+        break;
     }
 
     return result;
@@ -2309,6 +2929,10 @@ QHash<int, QByteArray> UserModel::roleNames() const
     roles[RemoveAccountTextRole] = "removeAccountText";
     roles[SyncStatusIconRole] = "syncStatusIcon";
     roles[SyncStatusOkRole] = "syncStatusOk";
+    roles[RecentActivitiesRole] = "recentActivities";
+    roles[AssistantEnabledRole] = "assistantEnabled";
+    roles[TrayNotificationsRole] = "trayNotifications";
+    roles[AccountAlertRole] = "accountAlert";
     return roles;
 }
 
@@ -2328,6 +2952,33 @@ void UserModel::fetchCurrentActivityModel()
     _users[currentUserId()]->slotRefresh();
 }
 
+void UserModel::fetchActivityPreview(const int id)
+{
+    if (id < 0 || id >= _users.size()) {
+        return;
+    }
+
+    _users[id]->slotRefreshActivityPreview();
+}
+
+void UserModel::dismissNotification(const int id, const int activityIndex)
+{
+    if (id < 0 || id >= _users.size()) {
+        return;
+    }
+
+    _users[id]->getActivityModel()->slotTriggerDismiss(activityIndex);
+}
+
+void UserModel::triggerNotificationAction(const int id, const int activityIndex, const int actionIndex)
+{
+    if (id < 0 || id >= _users.size()) {
+        return;
+    }
+
+    _users[id]->getActivityModel()->slotTriggerAction(activityIndex, actionIndex);
+}
+
 AccountAppList UserModel::appList() const
 {
     if (_currentUserId < 0 || _currentUserId >= _users.size())
@@ -2342,6 +2993,15 @@ User *UserModel::currentUser() const
         return nullptr;
 
     return _users[currentUserId()];
+}
+
+User *UserModel::user(const int id) const
+{
+    if (id < 0 || id >= _users.size()) {
+        return nullptr;
+    }
+
+    return _users[id];
 }
 
 User *UserModel::findUserForAccount(AccountState *account) const
@@ -2379,29 +3039,7 @@ bool UserModel::userHasSyncErrors(const User *user) const
         return false;
     }
 
-    const auto accountState = user->accountState();
-    if (!accountState || !accountState->isConnected()) {
-        return false;
-    }
-
-    for (const auto folder : FolderMan::instance()->map().values()) {
-        if (folder->accountState() != accountState.data()) {
-            continue;
-        }
-        const auto status = determineSyncStatus(folder->syncResult());
-        if (isSyncStatusError(status)) {
-            return true;
-        }
-    }
-
-#ifdef BUILD_FILE_PROVIDER_MODULE
-    const auto fileProviderStatus = Mac::FileProvider::instance()->service()->latestReceivedSyncStatusForAccount(accountState->account());
-    if (isSyncStatusError(fileProviderStatus)) {
-        return true;
-    }
-#endif
-
-    return false;
+    return accountHasSyncErrors(user->accountState());
 }
 
 void UserModel::updateSyncErrorUsers()
@@ -2527,14 +3165,8 @@ void UserAppsModel::buildAppList()
     }
 
     if (UserModel::instance()->appList().count() > 0) {
-        const auto talkApp = UserModel::instance()->currentUser()->talkApp();
         const auto &allApps = UserModel::instance()->appList();
         for (const auto &app : allApps) {
-            // Filter out Talk because we have a dedicated button for it
-            if (talkApp && app->id() == talkApp->id() && !UserModel::instance()->currentUser()->isNcAssistantEnabled()) {
-                continue;
-            }
-
             beginInsertRows(QModelIndex(), rowCount(), rowCount());
             _apps << app;
             endInsertRows();

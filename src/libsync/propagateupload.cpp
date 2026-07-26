@@ -15,6 +15,7 @@
 #include "common/utility.h"
 #include "filesystem.h"
 #include "propagatorjobs.h"
+#include "lockfilejobs.h"
 #include "common/checksums.h"
 #include "syncengine.h"
 #include "deletejob.h"
@@ -689,13 +690,26 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
     QString errorString = job->errorStringParsingBody(&replyContent);
     qCWarning(lcPropagateUpload) << replyContent; // display the XML error in the debug
 
-    if (_item->_httpErrorCode == 412) {
-        // Precondition Failed: Either an etag or a checksum mismatch.
-
-        // Maybe the bad etag is in the database, we need to clear the
-        // parent folder etag so we won't read from DB next sync.
-        propagator()->_journal->schedulePathForRemoteDiscovery(_item->_file);
+    if (_item->_httpErrorCode == LockFileJob::PRECONDITION_FAILED_ERROR_CODE
+        || _item->_httpErrorCode == LockFileJob::LOCKED_HTTP_ERROR_CODE) {
+        // Clear any stale lock token from the journal. The token may be absent from
+        // _item when the file was discovered via local (not remote) discovery, so
+        // check the DB record directly rather than guarding on _item->_lockToken.
+        SyncJournalFileRecord record;
+        if (propagator()->_journal->getFileRecord(_item->_file, &record) && record.isValid()
+            && !record._lockstate._lockToken.isEmpty()) {
+            record._lockstate._lockToken.clear();
+            record._lockstate._locked = false;
+            if (const auto result = propagator()->_journal->setFileRecord(record); !result) {
+                qCWarning(lcPropagateUpload) << "Failed to clear stale lock token for" << _item->_file << result.error();
+            }
+        }
+        _item->_lockToken.clear();
+        _item->_locked = SyncFileItem::LockStatus::UnlockedItem;
         propagator()->_anotherSyncNeeded = true;
+        if (_item->_httpErrorCode == LockFileJob::PRECONDITION_FAILED_ERROR_CODE) {
+            propagator()->_journal->schedulePathForRemoteDiscovery(_item->_file);
+        }
     }
 
     // Ensure errors that should eventually reset the chunked upload are tracked.
@@ -773,17 +787,6 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
     headers[QByteArrayLiteral("X-OC-Mtime")] = QByteArray::number(qint64(_item->_modtime));
     if (qEnvironmentVariableIntValue("OWNCLOUD_LAZYOPS"))
         headers[QByteArrayLiteral("OC-LazyOps")] = QByteArrayLiteral("true");
-
-    if (_item->_file.contains(QLatin1String(".sys.admin#recall#"))) {
-        // This is a file recall triggered by the admin.  Note: the
-        // recall list file created by the admin and downloaded by the
-        // client (.sys.admin#recall#) also falls into this category
-        // (albeit users are not supposed to mess up with it)
-
-        // We use a special tag header so that the server may decide to store this file away in some admin stage area
-        // And not directly in the user's area (which would trigger redownloads etc).
-        headers["OC-Tag"] = ".sys.admin#recall#";
-    }
 
     if (!_item->_etag.isEmpty() && _item->_etag != "empty_etag"
         && _item->_instruction != CSYNC_INSTRUCTION_NEW // On new files never send a If-Match

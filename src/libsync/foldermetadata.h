@@ -92,7 +92,7 @@ public:
     };
     Q_ENUM(MetadataVersion)
 
-    FolderMetadata(AccountPtr account, const QString &remoteFolderRoot, FolderType folderType = FolderType::Nested);
+    FolderMetadata(AccountPtr account, const QString &remoteFolderRoot, FolderType folderType);
     /*
     * construct metadata based on RootEncryptedFolderInfo
     * as per E2EE V2, the encryption key and users that have access are only stored in root(top-level) encrypted folder's metadata
@@ -103,6 +103,7 @@ public:
                    const QByteArray &metadata,
                    const RootEncryptedFolderInfo &rootEncryptedFolderInfo,
                    const QByteArray &signature,
+                   FolderType folderType,
                    QObject *parent = nullptr);
 
     [[nodiscard]] QVector<EncryptedFile> files() const;
@@ -146,8 +147,8 @@ public:
     static MetadataVersion setupVersionFromExistingMetadata(const QByteArray &metadata);
 
 public slots:
-    void addEncryptedFile(const OCC::FolderMetadata::EncryptedFile &f);
-    void removeEncryptedFile(const OCC::FolderMetadata::EncryptedFile &f);
+    [[nodiscard]] bool addEncryptedFile(const OCC::FolderMetadata::EncryptedFile &f);
+    [[nodiscard]] bool removeEncryptedFile(const QString &originalFilename);
     void removeAllEncryptedFiles();
 
 private:
@@ -170,6 +171,8 @@ private:
     [[nodiscard]] EncryptedFile parseEncryptedFileFromJson(const QString &encryptedFilename, const QJsonValue &fileJSON) const;
 
     [[nodiscard]] QJsonObject convertFileToJsonObject(const EncryptedFile *encryptedFile) const;
+
+    [[nodiscard]] static bool isOriginalFilenameValid(const QString &originalFilename);
 
     [[nodiscard]] MetadataVersion latestSupportedMetadataVersion() const;
 

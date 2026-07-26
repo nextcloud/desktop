@@ -54,6 +54,11 @@ enum Signer: Signing {
             .appendingPathComponent("Contents")
             .appendingPathComponent("PlugIns")
 
+        guard FileManager.default.fileExists(atPath: pluginsLocation.path) else {
+            Log.info("No PlugIns directory found, skipping extension signing")
+            return []
+        }
+
         Log.info("Looking for extensions in \(pluginsLocation.path)")
         var items = try FileManager.default.contentsOfDirectory(at: pluginsLocation, includingPropertiesForKeys: nil)
         
@@ -120,30 +125,6 @@ enum Signer: Signing {
         let output = String(data: outputData, encoding: .utf8) ?? ""
 
         return output.contains("Mach-O 64-bit executable")
-    }
-
-    ///
-    /// Find and sign the Qt web engine helper app inside the QtWebEngineCore framework.
-    ///
-    /// This needs explicit treatment because codesign does not automatically sign it when signing the upstream framework bundle.
-    ///
-    private static func signQtWebEngineProcessApp(in bundle: URL, with codeSignIdentity: String) async {
-        let location = bundle
-            .appendingPathComponent("Contents")
-            .appendingPathComponent("Frameworks")
-            .appendingPathComponent("QtWebEngineCore.framework")
-            .appendingPathComponent("Versions")
-            .appendingPathComponent("A")
-            .appendingPathComponent("Helpers")
-            .appendingPathComponent("QtWebEngineProcess.app")
-
-        let entitlements = location
-            .appendingPathComponent("Contents")
-            .appendingPathComponent("Resources")
-            .appendingPathComponent("QtWebEngineProcess")
-            .appendingPathExtension("entitlements")
-
-        await sign(at: location, with: codeSignIdentity, entitlements: entitlements)
     }
 
     ///
@@ -273,7 +254,6 @@ enum Signer: Signing {
             await sign(at: extensionInMainBundle, with: codeSignIdentity, entitlements: extensionEntitlements)
         }
 
-        await signQtWebEngineProcessApp(in: location, with: codeSignIdentity)
         await signSparkleDownloader(in: location, with: codeSignIdentity)
         await signSparkleUpdaterApp(in: location, with: codeSignIdentity)
         await signSparkleInstaller(in: location, with: codeSignIdentity)

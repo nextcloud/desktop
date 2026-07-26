@@ -144,19 +144,21 @@ void FakeWebSocketServer::clearTextMessages()
     _processTextMessageSpy->clear();
 }
 
-OCC::AccountPtr FakeWebSocketServer::createAccount(const QString &username, const QString &password)
+OCC::AccountPtr FakeWebSocketServer::createAccount(const QString &username,
+    const QString &password,
+    const QUrl &accountUrl,
+    const QUrl &webSocketUrl)
 {
     auto account = OCC::Account::create();
+    account->setUrl(accountUrl);
 
     QStringList typeList;
     typeList.append("files");
     typeList.append("activities");
     typeList.append("notifications");
 
-    QString websocketUrl("ws://localhost:12345");
-
     QVariantMap endpointsMap;
-    endpointsMap["websocket"] = websocketUrl;
+    endpointsMap["websocket"] = webSocketUrl;
 
     QVariantMap notifyPushMap;
     notifyPushMap["type"] = typeList;

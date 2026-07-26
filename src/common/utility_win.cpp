@@ -123,11 +123,23 @@ void Utility::setupDesktopIni(const QString &folder, const QString localizedReso
     // First create a Desktop.ini so that the folder and favorite link show our application's icon.
     QFile desktopIni(folder + QLatin1String("/Desktop.ini"));
     const auto migration = !localizedResourceName.isEmpty();
-    if (!migration && desktopIni.exists()) {
-        qCWarning(lcUtility) << desktopIni.fileName() << "already exists, not overwriting it to set the folder icon.";
-        return;
+    if (desktopIni.exists()) {
+        if (!migration) {
+            qCWarning(lcUtility) << desktopIni.fileName() << "already exists, not overwriting it to set the folder icon.";
+            return;
+        }
+        if (!desktopIni.open(QFile::ReadOnly)) {
+            qCWarning(lcUtility) << "Cannot read" << desktopIni.fileName() << "to check encoding; skipping icon migration.";
+            return;
+        }
+        const auto desktopIniContent = desktopIni.read(2);
+        desktopIni.close();
+        if (desktopIniContent.startsWith("\xFF\xFE") || desktopIniContent.startsWith("\xFE\xFF")) {
+            qCWarning(lcUtility) << desktopIni.fileName() << "is UTF-16 encoded (Windows Explorer custom icon), preserving it.";
+            return;
+        }
+        // If the file is not UTF-16 encoded, we assume it is not a custom icon: overwritte it with the new icon and set the localized resource name
     }
-
     qCDebug(lcUtility) << "Creating" << desktopIni.fileName() << "to set a folder icon in Explorer.";
     desktopIni.open(QFile::WriteOnly);
     desktopIni.write("[.ShellClassInfo]\r\nIconResource=");

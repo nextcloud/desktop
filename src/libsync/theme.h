@@ -611,6 +611,8 @@ public:
 
     static QColor defaultColor();
 
+    [[nodiscard]] QColor destructiveActionTextColor() const;
+
     static constexpr const char *themePrefix = ":/client/theme/";
 
     [[nodiscard]] QVariantMap systemPalette() const;

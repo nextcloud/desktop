@@ -6,6 +6,7 @@
 #include "fileprovider.h"
 
 #include <QLoggingCategory>
+#include <QOperatingSystemVersion>
 
 #include "libsync/configfile.h"
 #include "gui/macOS/fileproviderxpc.h"
@@ -48,6 +49,11 @@ FileProvider *FileProvider::instance()
     return _instance;
 }
 
+bool FileProvider::available()
+{
+    return QOperatingSystemVersion::current() >= QOperatingSystemVersion::MacOSSonoma;
+}
+
 FileProvider::~FileProvider()
 {
     _instance = nullptr;
@@ -55,6 +61,11 @@ FileProvider::~FileProvider()
 
 void FileProvider::configureXPC()
 {
+    if (!available()) {
+        qCInfo(lcMacFileProvider) << "Skipping file provider XPC configuration on unsupported macOS version.";
+        return;
+    }
+
     _xpc = std::make_unique<FileProviderXPC>(new FileProviderXPC(this));
 
     if (_xpc) {

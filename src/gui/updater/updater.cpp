@@ -38,7 +38,10 @@ Updater *Updater::instance()
 
 QUrl Updater::updateUrl()
 {
-    QUrl updateBaseUrl(QString::fromLocal8Bit(qgetenv("OCC_UPDATE_URL")));
+    QUrl updateBaseUrl;
+#if NEXTCLOUD_DEV
+    updateBaseUrl = QUrl(QString::fromLocal8Bit(qgetenv("OCC_UPDATE_URL")));
+#endif
     if (updateBaseUrl.isEmpty()) {
         updateBaseUrl = QUrl(QLatin1String(APPLICATION_UPDATE_URL));
     }

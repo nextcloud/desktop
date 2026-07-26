@@ -20,6 +20,36 @@ QtObject {
     readonly property color adjustedCurrentUserHeaderColor: Theme.darkMode ? Qt.lighter(currentUserHeaderColor, 2)
                                                                            : Qt.darker(currentUserHeaderColor, 1.5)
 
+    // Account wizard colors
+    readonly property color wizardWindowBackground: darkMode ? "#202124" : "#ffffff"
+    readonly property color wizardPrimaryText: darkMode ? "#f1f3f4" : "#111111"
+    readonly property color wizardSecondaryText: darkMode ? Qt.rgba(1, 1, 1, 0.68) : Qt.rgba(0, 0, 0, 0.62)
+    readonly property color wizardPlaceholderText: darkMode ? Qt.rgba(1, 1, 1, 0.50) : Qt.rgba(0, 0, 0, 0.50)
+    readonly property color wizardDisabledText: "#8a949c"
+    readonly property color wizardFieldBackground: darkMode ? "#292a2d" : "#ffffff"
+    readonly property color wizardFieldBorder: darkMode ? Qt.rgba(1, 1, 1, 0.24) : Qt.rgba(0, 0, 0, 0.24)
+    readonly property color wizardRowBackground: darkMode ? "#292d30" : "#f5f8fa"
+    readonly property color wizardRowBorder: darkMode ? "#3c454c" : "#e1e8ee"
+    readonly property color wizardRowDisabledBackground: darkMode ? "#252729" : "#fafafa"
+    readonly property color wizardRowDisabledBorder: darkMode ? "#343a3f" : "#edf1f4"
+    readonly property color wizardSelectedBackground: darkMode ? "#263b4a" : "#eef5fb"
+    readonly property color wizardSelectedBorder: darkMode ? "#365b73" : "#d8e7f1"
+    readonly property color wizardRadioAccent: darkMode ? "#4da3d4" : "#0076b5"
+    readonly property color wizardRadioDisabled: darkMode ? "#65727a" : "#b7c0c7"
+    readonly property color wizardSecondaryButtonBackground: darkMode ? "#303b43" : "#e7eef4"
+    readonly property color wizardSecondaryButtonPressed: darkMode ? "#394852" : "#dce8f0"
+    readonly property color wizardSecondaryButtonBorder: darkMode ? "#4a5963" : "#d5e0e7"
+    readonly property color wizardDisabledButtonBackground: darkMode ? "#292f33" : "#eef3f7"
+    readonly property color wizardDisabledButtonBorder: darkMode ? "#39434a" : "#dde7ee"
+    readonly property color wizardPrimaryButtonBackground: "#2b659a"
+    readonly property color wizardPrimaryButtonPressed: "#245783"
+    readonly property color wizardWarningBorder: darkMode ? "#d99832" : "#b36b00"
+    readonly property color wizardWarningText: darkMode ? "#f2b84b" : "#8a5200"
+    readonly property color wizardErrorBorder: darkMode ? "#e06c75" : "#d84b4b"
+    readonly property color wizardErrorText: darkMode ? "#ff7b86" : "#b00020"
+    readonly property color wizardAvatarPlaceholder: darkMode ? "#3b464d" : "#dfe8ee"
+    readonly property color wizardSelectedText: "#ffffff"
+
     // ErrorBox colors
     readonly property color errorBoxBackgroundColor: Qt.rgba(0.89, 0.18, 0.18, 1)
     readonly property int errorBoxStripeWidth: 4
@@ -50,6 +80,29 @@ QtObject {
     property int trayHorizontalMargin: 10
     property int trayModalWidth: 380
     property int trayModalHeight: 490
+    property int trayAccountPopupWidth: variableSize(300)
+    property int trayAccountActionsMenuWidth: variableSize(340)
+    property int trayAccountAppsMenuWidth: variableSize(220)
+    property int trayNotificationActionsMenuWidth: variableSize(160)
+    property int trayAccountPopupRowHeight: variableSize(44)
+    property int trayAccountPopupTopPadding: 4
+    property int trayAccountPopupActionHeight: variableSize(26)
+    property int trayAccountPopupPreviewActionHeight: variableSize(52)
+    property int trayAccountPopupDetailedPreviewActionHeight: variableSize(58)
+    property int trayAccountPopupCompactSeparatorHeight: variableSize(5)
+    property int trayAccountPopupActionVerticalPadding: 8
+    property int trayAccountPopupAvatarSize: variableSize(30)
+    property int trayAccountPopupHoverMargin: 5
+    property int trayAccountPopupAccountHoverVerticalMargin: 4
+    property int trayAccountPopupHoverRadius: 5
+    property int trayAccountPopupRowPadding: 12
+    property int trayAccountPopupRowSpacing: 10
+    property real trayAccountPopupRowHoverOpacity: 0.07
+    property int trayAccountPopupHoverAnimationDuration: 80
+    property int trayAccountPopupPrimaryFontSize: topLinePixelSize
+    property int trayAccountPopupSecondaryFontSize: subLinePixelSize
+    property int trayAccountPopupChevronFontSize: 18
+    property int trayAccountPopupSyncIconSize: 16
     property int filesActionsWidth: 380
     property int filesActionsHeight: 350
     property int trayListItemIconSize: accountAvatarSize
@@ -69,6 +122,34 @@ QtObject {
     property int standardPrimaryButtonHeight: 40
     readonly property int smallIconSize: 16
     readonly property int extraSmallIconSize: 8
+
+    readonly property int wizardWindowMargin: 24
+    readonly property int wizardWindowTopMargin: standardSpacing
+    readonly property int wizardFooterButtonHeight: iconButtonWidth
+    readonly property int wizardFooterSpacing: trayAccountPopupActionVerticalPadding
+    readonly property int wizardSectionSpacing: trayAccountPopupRowPadding
+    readonly property int wizardDialogMaximumWidth: 420
+    readonly property int wizardDialogSpacing: wizardSectionSpacing + extraSmallSpacing
+    readonly property int wizardDialogRadius: wizardSectionSpacing
+    readonly property int wizardBodyFontPixelSize: pixelSize + extraSmallSpacing
+    readonly property int wizardHeaderSpacing: trayAccountPopupActionVerticalPadding
+    readonly property int wizardHeaderRowSpacing: trayAccountPopupRowSpacing
+    readonly property int wizardHeaderLabelSpacing: extraExtraSmallSpacing
+    readonly property int wizardHeaderAvatarSize: trayAccountPopupAvatarSize
+    readonly property int wizardHeaderTitleFontPixelSize: pixelSize + trayAccountPopupActionVerticalPadding
+    readonly property int wizardHeaderAccountNameFontPixelSize: topLinePixelSize
+    readonly property int wizardHeaderAccountServerFontPixelSize: subLinePixelSize
+    readonly property int wizardStandaloneWindowMinimumWidth: 520
+    readonly property int wizardStandaloneWindowMinimumHeight: 420
+    readonly property int activitiesWindowWidth: 680
+    readonly property int activitiesWindowHeight: 700
+    readonly property int assistantWindowWidth: 640
+    readonly property int assistantWindowHeight: 620
+    readonly property int searchWindowWidth: 640
+    readonly property int searchWindowHeight: 620
+    readonly property int userStatusWindowWidth: 560
+    readonly property int userStatusWindowHeight: 700
+    readonly property int userStatusWindowMinimumHeight: 560
 
     property int minActivityHeight: variableSize(32)
 
@@ -163,6 +244,9 @@ QtObject {
     readonly property int fontPixelSizeResolveConflictsDialog: 15
     readonly property int minimumWidthResolveConflictsDialog: 600
     readonly property int minimumHeightResolveConflictsDialog: 300
+
+    readonly property int defaultWidthGovernanceLabelsDialog: 400
+    readonly property int defaultHeightGovernanceLabelsDialog: 300
 
     readonly property double smallIconScaleFactor: 0.6
 

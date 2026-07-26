@@ -3,9 +3,10 @@
 name: SonarCloud analysis
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, reopened, synchronize, ready_for_review]
 jobs:
   build:
+    if: ${{ !github.event.pull_request.draft }}
     name: SonarCloud analysis
     runs-on: [ubuntu-latest, self-hosted]
     container: ghcr.io/nextcloud/continuous-integration-client-qt6:client-sid-6.10.2-2
@@ -13,12 +14,12 @@ jobs:
       SONAR_SERVER_URL: "https://sonarcloud.io"
       BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Directory where build-wrapper output will be placed
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
 
       - name: Restore cache
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: /cache
           key: ${{ runner.os }}

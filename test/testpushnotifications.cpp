@@ -106,6 +106,24 @@ private slots:
             }));
     }
 
+    void testSetup_httpsAccountWithPlaintextWebSocket_doesNotSendCredentials()
+    {
+        FakeWebSocketServer fakeServer;
+        const auto account = FakeWebSocketServer::createAccount(
+            QStringLiteral("user"),
+            QStringLiteral("app-password"),
+            QUrl(QStringLiteral("https://cloud.example.test")),
+            QUrl(QStringLiteral("ws://localhost:12345")));
+
+        QVERIFY(!account->pushNotifications());
+        QCOMPARE(fakeServer.textMessagesCount(), 0);
+
+        account->trySetupPushNotifications();
+
+        QVERIFY(!account->pushNotifications());
+        QCOMPARE(fakeServer.textMessagesCount(), 0);
+    }
+
     void testOnWebSocketTextMessageReceived_notifyFileMessage_emitFilesChanged()
     {
         FakeWebSocketServer fakeServer;

@@ -12,6 +12,7 @@
 #include "application.h"
 #include "callstatechecker.h"
 #include "emojimodel.h"
+#include "notificationsoundplayer.h"
 #include "fileactivitylistmodel.h"
 #include "folderman.h"
 #include "guiutility.h"
@@ -25,25 +26,34 @@
 #include "wheelhandler.h"
 #include "syncconflictsmodel.h"
 #include "syncengine.h"
+#include "wizard/accountwizardcontroller.h"
 #include "filedetails/datefieldbackend.h"
 #include "filedetails/filedetails.h"
 #include "filedetails/shareemodel.h"
 #include "filedetails/sharemodel.h"
 #include "filedetails/sortedsharemodel.h"
-#include "tray/sortedactivitylistmodel.h"
-#include "tray/syncstatussummary.h"
-#include "tray/unifiedsearchresultslistmodel.h"
+#include "activity/sortedactivitylistmodel.h"
+#include "activity/syncstatussummary.h"
+#include "tray/trayaccountappsmodel.h"
+#include "search/unifiedsearchresultslistmodel.h"
 #include "integration/fileactionsmodel.h"
+#include "governance/applygovernancelabel.h"
+#include "governance/deletegovernancelabel.h"
+#include "governance/getavailablegovernancelabels.h"
+#include "governance/getgovernancelabels.h"
+#include "governance/governancelabelslistmodel.h"
 #include "filesystem.h"
 
 #ifdef WITH_LIBCLOUDPROVIDERS
 #include "cloudproviders/cloudprovidermanager.h"
 #endif
 
-#include <QQmlApplicationEngine>
+#include <QClipboard>
 #include <QDesktopServices>
 #include <QDir>
+#include <QGuiApplication>
 #include <QMessageBox>
+#include <QQmlApplicationEngine>
 #include <QSignalMapper>
 #ifdef WITH_LIBCLOUDPROVIDERS
 #include <QtDBus/QDBusConnection>
@@ -62,6 +72,7 @@
 #endif
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
+#include "libsync/networkjobs.h"
 #include "macOS/fileprovider.h"
 #include "macOS/fileproviderdomainmanager.h"
 #include "macOS/fileproviderservice.h"
@@ -123,6 +134,8 @@ ownCloudGui::ownCloudGui(Application *parent)
 #ifdef BUILD_FILE_PROVIDER_MODULE
     connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::syncStateChanged, this, &ownCloudGui::slotComputeOverallSyncStatus);
     connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::showFileActionsDialog, _tray.data(), &Systray::slotShowFileProviderFileActionsDialog);
+    connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::openItemInBrowserRequested, this, &ownCloudGui::slotOpenItemInBrowserFromFileProvider);
+    connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::copyInternalLinkRequested, this, &ownCloudGui::slotCopyInternalLinkFromFileProvider);
 #endif
 
     connect(Logger::instance(), &Logger::guiLog, this, &ownCloudGui::slotShowTrayMessage);
@@ -136,6 +149,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<SortedActivityListModel>("com.nextcloud.desktopclient", 1, 0, "SortedActivityListModel");
     qmlRegisterType<WheelHandler>("com.nextcloud.desktopclient", 1, 0, "WheelHandler");
     qmlRegisterType<CallStateChecker>("com.nextcloud.desktopclient", 1, 0, "CallStateChecker");
+    qmlRegisterType<NotificationSoundPlayer>("com.nextcloud.desktopclient", 1, 0, "NotificationSoundPlayer");
     qmlRegisterType<Quick::DateFieldBackend>("com.nextcloud.desktopclient", 1, 0, "DateFieldBackend");
     qmlRegisterType<FileDetails>("com.nextcloud.desktopclient", 1, 0, "FileDetails");
     qmlRegisterType<ShareModel>("com.nextcloud.desktopclient", 1, 0, "ShareModel");
@@ -143,6 +157,12 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<SortedShareModel>("com.nextcloud.desktopclient", 1, 0, "SortedShareModel");
     qmlRegisterType<SyncConflictsModel>("com.nextcloud.desktopclient", 1, 0, "SyncConflictsModel");
     qmlRegisterType<FileActionsModel>("com.nextcloud.desktopclient", 1, 0, "FileActionsModel");
+    qmlRegisterType<AccountWizardController>("com.nextcloud.desktopclient", 1, 0, "AccountWizardController");
+    qmlRegisterType<ApplyGovernanceLabel>("com.nextcloud.desktopclient", 1, 0, "ApplyGovernanceLabel");
+    qmlRegisterType<DeleteGovernanceLabel>("com.nextcloud.desktopclient", 1, 0, "DeleteGovernanceLabel");
+    qmlRegisterType<GetAvailableGovernanceLabels>("com.nextcloud.desktopclient", 1, 0, "GetAvailableGovernanceLabels");
+    qmlRegisterType<GetGovernanceLabels>("com.nextcloud.desktopclient", 1, 0, "GetGovernanceLabels");
+    qmlRegisterType<GovernanceLabelsListModel>("com.nextcloud.desktopclient", 1, 0, "GovernanceLabelsListModel");
 
     qmlRegisterUncreatableType<QAbstractItemModel>("com.nextcloud.desktopclient", 1, 0, "QAbstractItemModel", "QAbstractItemModel");
     qmlRegisterUncreatableType<Activity>("com.nextcloud.desktopclient", 1, 0, "activity", "Activity");
@@ -151,8 +171,12 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterUncreatableType<UserStatus>("com.nextcloud.desktopclient", 1, 0, "userStatus", "Access to Status enum");
     qmlRegisterUncreatableType<Sharee>("com.nextcloud.desktopclient", 1, 0, "sharee", "Access to Type enum");
     qmlRegisterUncreatableType<ClientSideEncryptionTokenSelector>("com.nextcloud.desktopclient", 1, 0, "ClientSideEncryptionTokenSelector", "Access to the certificate selector");
+    qmlRegisterUncreatableType<GovernanceNetworkJob>("com.nextcloud.desktopclient", 1, 0, "GovernanceNetworkJob", "base abstract type for governance labels");
+    qmlRegisterUncreatableType<TypedGovernanceNetworkJob>("com.nextcloud.desktopclient", 1, 0, "TypedGovernanceNetworkJob", "base abstract type for governance labels");
+    qmlRegisterUncreatableType<TypedWithLabelIdGovernanceNetworkJob>("com.nextcloud.desktopclient", 1, 0, "TypedWithLabelIdGovernanceNetworkJob", "base abstract type for governance labels");
 
     qRegisterMetaType<ActivityListModel *>("ActivityListModel*");
+    qRegisterMetaType<SyncStatusSummary *>("SyncStatusSummary*");
     qRegisterMetaType<UnifiedSearchResultsListModel *>("UnifiedSearchResultsListModel*");
     qRegisterMetaType<UserStatus>("UserStatus");
     qRegisterMetaType<SharePtr>("SharePtr");
@@ -162,12 +186,9 @@ ownCloudGui::ownCloudGui(Application *parent)
 
     qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "UserModel", UserModel::instance());
     qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "UserAppsModel", UserAppsModel::instance());
+    qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "TrayAccountAppsModel", TrayAccountAppsModel::instance());
     qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "Theme", Theme::instance());
     qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "Systray", Systray::instance());
-
-#ifdef BUILD_FILE_PROVIDER_MODULE
-    qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "FileProviderSettingsController", Mac::FileProviderSettingsController::instance());
-#endif
 }
 
 void ownCloudGui::createTray()
@@ -215,27 +236,28 @@ void ownCloudGui::slotOpenSettingsDialog()
 
 void ownCloudGui::slotOpenMainDialog()
 {
-    _tray->showWindow();
+    _tray->showActivitiesWindow();
 }
 
 void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
 {
-    if (reason == QSystemTrayIcon::DoubleClick && UserModel::instance()->currentUser()->hasLocalFolder()) {
-        UserModel::instance()->openCurrentAccountLocalFolder();
+    const auto currentUser = UserModel::instance()->currentUser();
+    if (reason == QSystemTrayIcon::DoubleClick && currentUser && currentUser->hasLocalFolder()) {
+        currentUser->openLocalFolder();
     } else if (reason == QSystemTrayIcon::Trigger) {
-        if (OwncloudSetupWizard::bringWizardToFrontIfVisible()) {
-            // brought wizard to front
+        if (AccountManager::instance()->accounts().isEmpty()) {
+            // Without a configured account the tray icon drives the setup wizard
+            // directly: open it, or bring the existing one back to front instead
+            // of opening a second wizard.
+            if (!OwncloudSetupWizard::bringWizardToFrontIfVisible()) {
+                slotNewAccountWizard();
+            }
         } else if (_tray->raiseDialogs()) {
             // Brings dialogs hidden by other apps to front, returns true if any raised
         } else if (_tray->isOpen()) {
             _tray->hideWindow();
         } else {
-            if (AccountManager::instance()->accounts().isEmpty()) {
-                this->slotOpenSettingsDialog();
-            } else {
-                _tray->showWindow();
-            }
-
+            _tray->showTrayPopup();
         }
     }
     // FIXME: Also make sure that any auto updater dialogue https://github.com/owncloud/client/issues/5613
@@ -315,6 +337,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
     QList<QString> problemFileProviderAccounts;
+    QList<QString> errorFileProviderAccounts;
     QList<QString> syncingFileProviderAccounts;
     QList<QString> successFileProviderAccounts;
     QList<QString> idleFileProviderAccounts;
@@ -334,6 +357,9 @@ void ownCloudGui::slotComputeOverallSyncStatus()
         const auto accountTooltipLabel = displayName.isEmpty() ? userIdAtHostWithPort : displayName;
 
         if (!fileProvider->xpc()->fileProviderDomainReachable(accountFpId)) {
+            // Unreachable XPC stays in the yellow "Problem" bucket (legacy behavior); the
+            // domain might just be coming up. Only proper failure states (`Error`/`SetupError`)
+            // earn the red icon.
             problemFileProviderAccounts.append(accountTooltipLabel);
         } else {
             switch (fileProvider->service()->latestReceivedSyncStatusForAccount(accountState->account())) {
@@ -350,9 +376,19 @@ void ownCloudGui::slotComputeOverallSyncStatus()
                 successFileProviderAccounts.append(accountTooltipLabel);
                 break;
             case SyncResult::Problem:
+                // Yellow tray icon — soft warning. Reserve for cases like unresolved
+                // conflicts coexisting with an otherwise successful sync.
+                problemFileProviderAccounts.append(accountTooltipLabel);
+                break;
             case SyncResult::Error:
             case SyncResult::SetupError:
-                problemFileProviderAccounts.append(accountTooltipLabel);
+                // Red tray icon — an actual operation failed (e.g. quota refusal). Tracked
+                // separately from Problem so the icon below can correctly map to
+                // `SyncResult::Error` rather than `Problem`. Without this split, every
+                // `SYNC_FAILED` from the FPE — including insufficient-quota refusals —
+                // landed in the same bucket as soft warnings and showed the yellow icon.
+                // See https://github.com/nextcloud/desktop/issues/9598.
+                errorFileProviderAccounts.append(accountTooltipLabel);
                 break;
             case SyncResult::Paused: // This is not technically possible with VFS
                 break;
@@ -407,7 +443,9 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     FolderMan::trayOverallStatus(map.values(), &overallStatus, &hasUnresolvedConflicts, &overallProgressInfo);
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    if (!problemFileProviderAccounts.isEmpty()) {
+    if (!errorFileProviderAccounts.isEmpty()) {
+        overallStatus = SyncResult::Error;
+    } else if (!problemFileProviderAccounts.isEmpty()) {
         overallStatus = SyncResult::Problem;
     } else if (!syncingFileProviderAccounts.isEmpty() &&
                overallStatus != SyncResult::SyncRunning &&
@@ -415,7 +453,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
                overallStatus != SyncResult::Error &&
                overallStatus != SyncResult::SetupError) {
         overallStatus = SyncResult::SyncRunning;
-    } else if ((!successFileProviderAccounts.isEmpty() || (problemFileProviderAccounts.isEmpty() && syncingFileProviderAccounts.isEmpty() && !idleFileProviderAccounts.isEmpty())) &&
+    } else if ((!successFileProviderAccounts.isEmpty() || (problemFileProviderAccounts.isEmpty() && errorFileProviderAccounts.isEmpty() && syncingFileProviderAccounts.isEmpty() && !idleFileProviderAccounts.isEmpty())) &&
                overallStatus != SyncResult::SyncRunning &&
                overallStatus != SyncResult::Problem &&
                overallStatus != SyncResult::Error &&
@@ -441,7 +479,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 
     // create the tray blob message, check if we have an defined state
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    if (!map.isEmpty() || !syncingFileProviderAccounts.isEmpty() || !successFileProviderAccounts.isEmpty() || !problemFileProviderAccounts.isEmpty()) {
+    if (!map.isEmpty() || !syncingFileProviderAccounts.isEmpty() || !successFileProviderAccounts.isEmpty() || !problemFileProviderAccounts.isEmpty() || !errorFileProviderAccounts.isEmpty()) {
 #else
     if (map.count() > 0) {
 #endif
@@ -468,6 +506,9 @@ void ownCloudGui::slotComputeOverallSyncStatus()
         }
         for (const auto &accountId : problemFileProviderAccounts) {
             allStatusStrings += tr("macOS VFS for %1: A problem was encountered.").arg(accountId);
+        }
+        for (const auto &accountId : errorFileProviderAccounts) {
+            allStatusStrings += tr("macOS VFS for %1: An error was encountered.").arg(accountId);
         }
 #endif
         trayMessage = allStatusStrings.join(QLatin1String("\n"));
@@ -604,7 +645,7 @@ void ownCloudGui::slotNewAccountWizard()
         return;
     }
 #endif
-    OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)));
+    OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)), nullptr, true);
 }
 
 void ownCloudGui::slotShowGuiMessage(const QString &title, const QString &message)
@@ -747,6 +788,13 @@ void ownCloudGui::slotShowShareDialog(const QString &localPath) const
     _tray->createShareDialog(localPath);
 }
 
+void ownCloudGui::slotShowGovernanceLabelsDialog(AccountPtr account,
+                                                 const QString &localPath,
+                                                 const QString &fileId) const
+{
+    _tray->createGovernanceLabelsDialog(account, localPath, fileId);
+}
+
 void ownCloudGui::slotShowFileActivityDialog(const QString &localPath) const
 {
     _tray->createFileActivityDialog(localPath);
@@ -756,5 +804,75 @@ void ownCloudGui::slotShowFileActionsDialog(const QString &localPath) const
 {
     _tray->showFileActionsDialog(localPath);
 }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+void ownCloudGui::slotOpenItemInBrowserFromFileProvider(const QString &fileId, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier)
+{
+    const auto accountState = AccountManager::instance()->accountFromFileProviderDomainIdentifier(fileProviderDomainIdentifier);
+    if (!accountState) {
+        qCWarning(lcOwnCloudGui) << "Cannot open item in browser: no account state for domain identifier" << fileProviderDomainIdentifier;
+        return;
+    }
+
+    const auto account = accountState->account();
+    if (!account) {
+        qCWarning(lcOwnCloudGui) << "Cannot open item in browser: no account for domain identifier" << fileProviderDomainIdentifier;
+        return;
+    }
+
+    // Reuse the same helper the classic sync uses for `SocketApi::command_OPEN_PRIVATE_LINK`:
+    // a PROPFIND for the server-side `privatelink` property, falling back to the deprecated
+    // link assembled from the numeric file id. The callback may run with an empty URL when
+    // both lookups fail (see `fetchPrivateLinkUrl` in libsync/networkjobs.cpp) — guard against
+    // calling `openBrowser` with an empty URL in that case.
+    fetchPrivateLinkUrl(account, remoteItemPath, fileId.toUtf8(), this, [](const QString &url) {
+        if (url.isEmpty()) {
+            qCWarning(lcOwnCloudGui) << "Cannot open item in browser: no private link URL resolved.";
+            return;
+        }
+        Utility::openBrowser(url);
+    });
+}
+
+void ownCloudGui::slotCopyInternalLinkFromFileProvider(const QString &fileId, const QString &remoteItemPath, const QString &fileProviderDomainIdentifier)
+{
+    const auto accountState = AccountManager::instance()->accountFromFileProviderDomainIdentifier(fileProviderDomainIdentifier);
+
+    if (!accountState) {
+        qCWarning(lcOwnCloudGui) << "Cannot copy internal link: no account state for domain identifier" << fileProviderDomainIdentifier;
+        return;
+    }
+
+    const auto account = accountState->account();
+
+    if (!account) {
+        qCWarning(lcOwnCloudGui) << "Cannot copy internal link: no account for domain identifier" << fileProviderDomainIdentifier;
+        return;
+    }
+
+    // Reuse the same helper the classic sync uses for `SocketApi::command_COPY_PRIVATE_LINK`:
+    // a PROPFIND for the server-side `privatelink` property, falling back to the deprecated
+    // link assembled from the numeric file id. The callback may run with an empty URL when
+    // both lookups fail (see `fetchPrivateLinkUrl` in libsync/networkjobs.cpp); guard against
+    // writing an empty string to the clipboard in that case. Capturing `this` is safe because
+    // `fetchPrivateLinkUrl` parents the underlying job to `this` and silently drops the
+    // callback if `this` is destroyed first; `_tray` is a `QPointer<Systray>` and degrades
+    // to null cleanly if the tray was torn down between fetch and callback.
+    fetchPrivateLinkUrl(account, remoteItemPath, fileId.toUtf8(), this, [this](const QString &url) {
+        if (url.isEmpty()) {
+            qCWarning(lcOwnCloudGui) << "Cannot copy internal link: no private link URL resolved.";
+            return;
+        }
+
+        QGuiApplication::clipboard()->setText(url);
+
+        if (_tray) {
+            _tray->showMessage(tr("Internal link copied"),
+                               tr("The internal link has been copied to the clipboard."),
+                               QSystemTrayIcon::Information);
+        }
+    });
+}
+#endif
 
 } // end namespace

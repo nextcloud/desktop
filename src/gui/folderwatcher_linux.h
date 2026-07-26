@@ -41,6 +41,12 @@ protected slots:
     void slotAddFolderRecursive(const QString &path);
 
 protected:
+    /**
+     * @brief Checks whether an inotify watch descriptor is registered.
+     * @param watchDescriptor The inotify watch descriptor to check.
+     */
+    [[nodiscard]] bool testWatchContains(int watchDescriptor) const { return _watchToPath.contains(watchDescriptor); }
+
     bool findFoldersBelow(const QDir &dir, QStringList &fullList);
     void inotifyRegisterPath(const QString &path);
     void removeFoldersBelow(const QString &path);

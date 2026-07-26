@@ -29,6 +29,7 @@ class QListWidgetItem;
 class QLabel;
 class QPushButton;
 class QIcon;
+class QFrame;
 
 namespace OCC {
 
@@ -89,6 +90,7 @@ protected slots:
     void slotScheduleCurrentFolderForceRemoteDiscovery();
     void slotForceSyncCurrentFolder();
     void slotRemoveCurrentFolder();
+    void slotRemoveAccount();
     void slotOpenCurrentFolder(); // sync folder
     void slotOpenCurrentLocalSubFolder(); // selected subfolder in sync folder
     void slotEditCurrentIgnoredFiles();
@@ -130,6 +132,7 @@ private slots:
     void forgetEncryptionOnDeviceForAccount(const OCC::AccountPtr &account) const;
     void migrateCertificateForAccount(const OCC::AccountPtr &account);
     void showConnectionLabel(const QString &message, QStringList errors = QStringList());
+    void showConnectionSettingsDialog();
     void openIgnoredFilesDialog(const QString & absFolderPath);
     void customizeStyle();
 
@@ -137,12 +140,16 @@ private slots:
     void forgetE2eEncryption();
     void checkClientSideEncryptionState();
     void removeActionFromEncryptionMessage(const QString &actionId);
+    void setEncryptionPanelVisible(bool visible);
+    void updateSyncFoldersPanelVisibility();
+    void slotResetFileProviderDomain();
 
 private:
     bool event(QEvent *) override;
     QAction *addActionToEncryptionMessage(const QString &actionTitle, const QString &actionId);
 
     void setupE2eEncryptionMessage();
+    void refreshE2eEncryptionMessage();
     void setEncryptionMessageIcon(const QIcon &icon);
     void updateEncryptionMessageActions();
 
@@ -160,6 +167,8 @@ private:
     QAction *_addAccountAction = nullptr;
 
     bool _menuShown = false;
+    bool _e2eEncryptionSetupDone = false;
+    QFrame *_encryptionPanel = nullptr;
 
     QHash<QString, QMetaObject::Connection> _folderConnections;
     QHash<QAction *, QPushButton *> _encryptionMessageButtons;

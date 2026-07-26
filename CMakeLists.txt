@@ -31,7 +31,7 @@ set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 include(${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake)
 
 set(QT_VERSION_MAJOR "6")
-set(REQUIRED_QT_VERSION "6.8.0")
+set(REQUIRED_QT_VERSION "6.10.0")
 
 # CfAPI Shell Extensions
 set( CFAPI_SHELL_EXTENSIONS_LIB_NAME CfApiShellExtensions )
@@ -93,6 +93,7 @@ include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(ECMMarkNonGuiExecutable)
 include(ECMSetupVersion)
+include(ECMQmlModule)
 
 #include(KDECompilerSettings NO_POLICY_SCOPE)
 include(ECMEnableSanitizers)
@@ -271,41 +272,8 @@ if(BUILD_CLIENT)
     endif()
 endif()
 
-option(BUILD_WITH_WEBENGINE "BUILD_WITH_WEBENGINE" ON)
-if (BUILD_WITH_WEBENGINE)
-    find_package(Qt${QT_VERSION_MAJOR}WebEngineCore ${REQUIRED_QT_VERSION} CONFIG QUIET)
-    if(APPLE)
-        set_package_properties(Qt${QT_VERSION_MAJOR}WebEngineCore PROPERTIES
-            DESCRIPTION "Qt${QT_VERSION_MAJOR} WebEngineCore component."
-            TYPE RECOMMENDED
-        )
-    else()
-        set_package_properties(Qt${QT_VERSION_MAJOR}WebEngineCore PROPERTIES
-            DESCRIPTION "Qt${QT_VERSION_MAJOR} WebEngine component."
-            TYPE REQUIRED
-        )
-    endif()
-
-    find_package(Qt${QT_MAJOR_VERSION}WebEngineWidgets ${REQUIRED_QT_VERSION} CONFIG QUIET)
-    if(APPLE)
-        set_package_properties(Qt${QT_MAJOR_VERSION}WebEngineWidgets PROPERTIES
-            DESCRIPTION "Qt${QT_MAJOR_VERSION} WebEngineWidgets component."
-            TYPE RECOMMENDED
-        )
-    else()
-        set_package_properties(Qt${QT_MAJOR_VERSION}WebEngineWidgets PROPERTIES
-            DESCRIPTION "Qt${QT_MAJOR_VERSION} WebEngineWidgets component."
-            TYPE REQUIRED
-        )
-    endif()
-
-    if(Qt${QT_MAJOR_VERSION}WebEngineCore_FOUND AND Qt${QT_MAJOR_VERSION}WebEngineWidgets_FOUND)
-        message(STATUS "Enable use of Qt6 WebEngine module")
-        set(WITH_WEBENGINE 1)
-    else()
-        unset(WITH_WEBENGINE)
-        message(STATUS "Disable use of Qt6 WebEngine module")
-    endif()
+if (LINUX)
+    find_package(KF6DBusAddons)
 endif()
 
 if (NOT DEFINED APPLICATION_ICON_NAME)
@@ -319,9 +287,12 @@ add_definitions(-D_UNICODE)
 if( WIN32 )
 add_definitions( -D__USE_MINGW_ANSI_STDIO=1 )
 add_definitions( -DNOMINMAX )
-# Get APIs from from Vista onwards.
-add_definitions(-D_WIN32_WINNT=0x0601)
-add_definitions(-DWINVER=0x0601)
+# Target Windows 10 or later, matching the documented supported runtime
+# (see README). NTDDI_VERSION is already on Windows 10 2004 (19041), so
+# the previous Windows 7 values for WINVER / _WIN32_WINNT were merely
+# stale — bringing them in line unlocks Win8+ APIs like XAudio2.
+add_definitions(-D_WIN32_WINNT=0x0A00)
+add_definitions(-DWINVER=0x0A00)
 add_definitions(-DNTDDI_VERSION=0x0A000004)
     if( MSVC )
     # Use automatic overload for suitable CRT safe-functions

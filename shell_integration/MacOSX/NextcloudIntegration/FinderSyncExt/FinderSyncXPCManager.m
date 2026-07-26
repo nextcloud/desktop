@@ -8,6 +8,11 @@
 #import "Services/FinderSyncAppProtocol.h"
 
 #import <os/log.h>
+#import <stdatomic.h>
+
+// If the app accepted the Mach lookup but never replies to the handshake (e.g. it is
+// still launching), no error handler fires — so we time the handshake out and retry.
+static const NSTimeInterval kFinderSyncHandshakeTimeoutSeconds = 5.0;
 
 static os_log_t getXPCManagerLogger(void) {
     static dispatch_once_t onceToken;
@@ -26,7 +31,14 @@ static os_log_t getXPCManagerLogger(void) {
 {
     NSXPCConnection *_connection;
     id<FinderSyncAppProtocol> _appProxy;
-    BOOL _isConnected;
+    // Only true after a handshake round-trip to the app succeeds. Atomic because it is
+    // written on _connectionQueue but read from Finder's thread via -isConnected.
+    atomic_bool _isConnected;
+    // Identifies the current connection attempt. Every asynchronous callback (handshake
+    // reply, handshake error, interruption, invalidation, timeout) captures the generation
+    // it belongs to and is ignored if a newer attempt has superseded it — so a late
+    // callback from a dead connection can never tear down a newer, healthy one.
+    NSUInteger _connectionGeneration;
     NSMutableDictionary *_statusCache;
     dispatch_queue_t _connectionQueue;
     NSUInteger _reconnectDelay;
@@ -44,7 +56,8 @@ static os_log_t getXPCManagerLogger(void) {
     if (self) {
         _log = getXPCManagerLogger();
         _delegate = delegate;
-        _isConnected = NO;
+        atomic_store(&_isConnected, false);
+        _connectionGeneration = 0;
         _statusCache = [NSMutableDictionary dictionary];
         _connectionQueue = dispatch_queue_create("com.nextcloud.FinderSync.XPCQueue", DISPATCH_QUEUE_SERIAL);
         _reconnectDelay = 1;
@@ -102,43 +115,110 @@ static os_log_t getXPCManagerLogger(void) {
         connection.exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(FinderSyncProtocol)];
         connection.exportedObject = self;
 
-        // Set up interruption and invalidation handlers
+        // Tag this attempt. Every callback below is guarded by this generation so a stale
+        // callback from a superseded connection cannot disturb a newer, healthy one.
+        const NSUInteger generation = ++self->_connectionGeneration;
+
         __weak FinderSyncXPCManager *weakSelf = self;
 
         connection.interruptionHandler = ^{
-            FinderSyncXPCManager *strongSelf = weakSelf;
-            if (strongSelf) {
-                os_log_info(strongSelf->_log, "XPC connection interrupted");
-                strongSelf->_isConnected = NO;
-                [strongSelf scheduleReconnect];
-            }
+            [weakSelf handleConnectionFailureForGeneration:generation reason:@"connection interrupted"];
         };
 
         connection.invalidationHandler = ^{
-            FinderSyncXPCManager *strongSelf = weakSelf;
-
-            if (strongSelf) {
-                os_log_info(strongSelf->_log, "XPC connection invalidated");
-                strongSelf->_isConnected = NO;
-                strongSelf->_connection = nil;
-                strongSelf->_appProxy = nil;
-                [strongSelf scheduleReconnect];
-            }
+            [weakSelf handleConnectionFailureForGeneration:generation reason:@"connection invalidated"];
         };
 
-        os_log_info(self->_log, "Resuming XPC connection");
+        os_log_info(self->_log, "Resuming XPC connection (generation %lu)", (unsigned long)generation);
         [connection resume];
 
         self->_connection = connection;
 
-        self->_appProxy = [connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
-            os_log_error(self->_log, "Error getting remote proxy: %{public}@", error.localizedDescription);
+        // NSXPCConnection is lazy: -resume and the proxy below succeed even when no peer has
+        // accepted the connection yet (e.g. the extension launched before the app at login).
+        // So we do NOT mark ourselves connected here — we withhold that until a real handshake
+        // round-trip to the app succeeds. This is the fix for the phantom-connected state
+        // behind issues #10032/#8471/#8363, where the extension believed it was connected to
+        // a dead peer and never recovered until the user toggled it or relaunched Finder.
+        id<FinderSyncAppProtocol> proxy = [connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
+            os_log_error(self->_log, "FinderSync XPC message to app failed: %{public}@", error.localizedDescription);
+            [weakSelf handleConnectionFailureForGeneration:generation reason:@"remote proxy error"];
         }];
 
-        self->_isConnected = YES;
+        os_log_info(self->_log, "Performing XPC handshake with app (generation %lu)", (unsigned long)generation);
 
-        // Request initial localized strings
-        [self requestLocalizedStrings];
+        [proxy performHandshakeWithReply:^{
+            FinderSyncXPCManager *strongSelf = weakSelf;
+            if (!strongSelf) {
+                return;
+            }
+
+            dispatch_async(strongSelf->_connectionQueue, ^{
+                if (generation != strongSelf->_connectionGeneration) {
+                    os_log_info(strongSelf->_log, "Ignoring stale handshake reply (generation %lu, current %lu)",
+                                (unsigned long)generation, (unsigned long)strongSelf->_connectionGeneration);
+                    return;
+                }
+
+                strongSelf->_appProxy = proxy;
+                atomic_store(&strongSelf->_isConnected, true);
+                strongSelf->_reconnectDelay = 1; // reset backoff after a healthy connection
+                os_log_info(strongSelf->_log, "FinderSync XPC handshake succeeded; connection to app is live (generation %lu)",
+                            (unsigned long)generation);
+
+                // Only now that the app is confirmed live do we pull the localized strings.
+                [strongSelf requestLocalizedStrings];
+            });
+        }];
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kFinderSyncHandshakeTimeoutSeconds * NSEC_PER_SEC)), self->_connectionQueue, ^{
+            FinderSyncXPCManager *strongSelf = weakSelf;
+            if (!strongSelf) {
+                return;
+            }
+
+            if (generation == strongSelf->_connectionGeneration && !atomic_load(&strongSelf->_isConnected)) {
+                os_log_error(strongSelf->_log, "FinderSync XPC handshake timed out after %.0f s (generation %lu)",
+                             (double)kFinderSyncHandshakeTimeoutSeconds, (unsigned long)generation);
+                [strongSelf handleConnectionFailureForGeneration:generation reason:@"handshake timeout"];
+            }
+        });
+    });
+}
+
+- (void)handleConnectionFailureForGeneration:(NSUInteger)generation reason:(NSString *)reason
+{
+    dispatch_async(_connectionQueue, ^{
+        if (generation != self->_connectionGeneration) {
+            // A newer connection attempt already superseded this one; nothing to do.
+            return;
+        }
+
+        os_log_error(self->_log, "FinderSync XPC connection lost (%{public}@); scheduling reconnect", reason);
+
+        atomic_store(&self->_isConnected, false);
+
+        // Bump the generation so the invalidation handler we trigger below — and any
+        // in-flight handshake reply/timeout for this attempt — are recognised as stale.
+        self->_connectionGeneration++;
+
+        NSXPCConnection *deadConnection = self->_connection;
+        self->_connection = nil;
+        self->_appProxy = nil;
+        [deadConnection invalidate];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // Release Finder's menu thread if it is blocked waiting for a reply that will
+            // never arrive, then let the extension drop its now-stale badges/registrations.
+            if ([self.delegate respondsToSelector:@selector(menuHasCompleted)]) {
+                [self.delegate menuHasCompleted];
+            }
+            if ([self.delegate respondsToSelector:@selector(connectionDidDie)]) {
+                [self.delegate connectionDidDie];
+            }
+        });
+
+        [self scheduleReconnect];
     });
 }
 
@@ -168,16 +248,19 @@ static os_log_t getXPCManagerLogger(void) {
 - (void)invalidateConnection
 {
     dispatch_sync(_connectionQueue, ^{
+        // Bump the generation so the invalidation handler for this connection is treated
+        // as stale and does not schedule a reconnect after we are being torn down.
+        self->_connectionGeneration++;
         [self->_connection invalidate];
         self->_connection = nil;
         self->_appProxy = nil;
-        self->_isConnected = NO;
+        atomic_store(&self->_isConnected, false);
     });
 }
 
 - (BOOL)isConnected
 {
-    return _isConnected;
+    return atomic_load(&_isConnected);
 }
 
 - (void)requestLocalizedStrings

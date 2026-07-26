@@ -13,7 +13,7 @@
 #include "selectivesyncdialog.h"
 #include "accountstate.h"
 #include "creds/abstractcredentials.h"
-#include "wizard/owncloudwizard.h"
+#include "guiutility.h"
 #include "common/asserts.h"
 
 #ifdef Q_OS_MACOS
@@ -26,6 +26,7 @@
 #include <QFileInfo>
 #include <QFileIconProvider>
 #include <QInputDialog>
+#include <QLoggingCategory>
 #include <QUrl>
 #include <QValidator>
 #include <QWizardPage>
@@ -54,6 +55,8 @@ QPalette yellowWarnWidgetPalette(const QPalette &existingPalette)
 }
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcFolderWizard, "nextcloud.gui.folderwizard", QtInfoMsg)
 
 QString FormatWarningsWizardPage::formatWarnings(const QStringList &warnings) const
 {
@@ -256,7 +259,7 @@ void FolderWizardRemotePath::slotCreateRemoteFolder(const QString &folder)
 
 void FolderWizardRemotePath::slotCreateRemoteFolderFinished()
 {
-    qCDebug(lcWizard) << "webdav mkdir request finished";
+    qCDebug(lcFolderWizard) << "webdav mkdir request finished";
     showWarn(tr("Folder was successfully created on %1.").arg(Theme::instance()->appNameGUI()));
     slotRefreshFolders();
     _ui.folderEntry->setText(dynamic_cast<MkColJob *>(sender())->path());
@@ -265,7 +268,7 @@ void FolderWizardRemotePath::slotCreateRemoteFolderFinished()
 
 void FolderWizardRemotePath::slotHandleMkdirNetworkError(QNetworkReply *reply)
 {
-    qCWarning(lcWizard) << "webdav mkdir request failed:" << reply->error();
+    qCWarning(lcFolderWizard) << "webdav mkdir request failed:" << reply->error();
     if (!_account->credentials()->stillValid(reply)) {
         showWarn(tr("Authentication failed accessing %1").arg(Theme::instance()->appNameGUI()));
     } else {
@@ -668,7 +671,7 @@ void FolderWizardSelectiveSync::virtualFilesCheckboxClicked()
     // The click has already had an effect on the box, so if it's
     // checked it was newly activated.
     if (_virtualFilesCheckBox->isChecked()) {
-        OwncloudWizard::askExperimentalVirtualFilesFeature(this, [this](bool enable) {
+        Utility::askExperimentalVirtualFilesFeature(this, [this](bool enable) {
             if (!enable)
                 _virtualFilesCheckBox->setChecked(false);
         });

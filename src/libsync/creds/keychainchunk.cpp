@@ -93,6 +93,11 @@ void Job::setAppName(const QString &appName)
     _appName = appName;
 }
 
+void Job::setEntryNotFoundExpected(bool expected)
+{
+    _entryNotFoundExpected = expected;
+}
+
 #ifdef Q_OS_WIN
 void Job::jobKeyPrependAppName(QString &key)
 {
@@ -342,11 +347,14 @@ void ReadJob::slotReadJobDone(QKeychain::Job *incomingJob)
         }
 #endif
 
+        const auto entryNotFound = readJob->error() == QKeychain::EntryNotFound;
         if (readJob->error() != QKeychain::EntryNotFound ||
-            ((readJob->error() == QKeychain::EntryNotFound) && _chunkCount == 0)) {
+            (entryNotFound && _chunkCount == 0)) {
             _error = readJob->error();
             _errorString = readJob->errorString();
-            qCWarning(lcKeychainChunk) << "Unable to read" << readJob->key() << "chunk" << QString::number(_chunkCount) << readJob->errorString();
+            if (!entryNotFound || !_entryNotFoundExpected) {
+                qCWarning(lcKeychainChunk) << "Unable to read" << readJob->key() << "chunk" << QString::number(_chunkCount) << readJob->errorString();
+            }
         }
     }
 

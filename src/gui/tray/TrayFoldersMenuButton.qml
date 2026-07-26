@@ -17,7 +17,11 @@ HeaderButton {
     signal folderEntryTriggered(string fullFolderPath, bool isGroupFolder)
 
     required property var currentUser
-    property bool userHasGroupFolders: currentUser.groupFolders.length > 0
+    // Group folders are only navigable from this dropdown when the account has a
+    // classic-sync local folder — sandbox restrictions stop us revealing descendants
+    // of a file-provider domain in Finder, so file-provider accounts always use the
+    // folder button as a single-click "reveal root container" affordance instead.
+    property bool userHasGroupFolders: currentUser.hasLocalFolder && currentUser.groupFolders.length > 0
     property color parentBackgroundColor: "transparent"
 
     function openMenu() {

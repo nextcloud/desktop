@@ -7,15 +7,12 @@
 #ifndef MIRALL_GENERALSETTINGS_H
 #define MIRALL_GENERALSETTINGS_H
 
+// For BUILD_FILE_PROVIDER_MODULE, which gates the File Provider members below.
 #include "config.h"
 
 #include <QWidget>
-#include <QPointer>
 
 namespace OCC {
-class IgnoreListEditor;
-class SyncLogDialog;
-class AccountState;
 
 namespace Ui {
     class GeneralSettings;
@@ -36,12 +33,6 @@ public:
 
 public slots:
     void slotStyleChanged();
-#if defined(BUILD_UPDATER)
-    void loadUpdateChannelsList();
-    [[nodiscard]] QString updateChannelToLocalized(const QString &channel) const;
-    void setAndCheckNewUpdateChannel(const QString &newChannel);
-    void restoreUpdateChannel();
-#endif
 
 private slots:
     void saveMiscSettings();
@@ -50,30 +41,21 @@ private slots:
     void slotToggleChatNotifications(bool);
     void slotToggleCallNotifications(bool);
     void slotToggleQuotaWarningNotifications(bool);
-    void slotShowInExplorerNavigationPane(bool);
-    void slotIgnoreFilesEditor();
-    void slotCreateDebugArchive();
+    void slotFileProviderSwitchClicked(bool checked);
     void loadMiscSettings();
-    void slotShowLegalNotice();
-    void slotRemotePollIntervalChanged(int seconds);
-    void updatePollIntervalVisibility();
-#if defined(BUILD_UPDATER)
-    void slotUpdateInfo();
-    void slotUpdateChannelChanged();
-    void slotUpdateCheckNow();
-    void slotToggleAutoUpdateCheck();
-    void slotRestoreUpdateChannel();
-#endif
 
 private:
     void customizeStyle();
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    void confirmEnableFileProviderMode();
+    void confirmDisableFileProviderMode();
+#endif
+
     Ui::GeneralSettings *_ui;
-    QPointer<IgnoreListEditor> _ignoreEditor;
     bool _currentlyLoading = false;
-    QStringList _currentUpdateChannelList;
 };
 
-
 } // namespace OCC
+
 #endif // MIRALL_GENERALSETTINGS_H

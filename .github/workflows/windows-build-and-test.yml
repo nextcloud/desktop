@@ -3,9 +3,10 @@
 name: Windows Build and Test
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, reopened, synchronize, ready_for_review]
 jobs:
   build:
+    if: ${{ !github.event.pull_request.draft }}
     name: Windows Build and Test
     runs-on: windows-2022
     env:
@@ -14,11 +15,11 @@ jobs:
       CRAFT_MASTER_LOCATION: ${{ github.workspace }}\CraftMaster
       CRAFT_MASTER_CONFIG: ${{ github.workspace }}\craftmaster.ini
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
 
-      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.12'
       - name: Install Craft Master with Nextcloud Client Deps
@@ -31,14 +32,14 @@ jobs:
               if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
           }
           
-          craft --add-blueprint-repository "https://github.com/nextcloud/craft-blueprints-kde.git|master|"
-          craft --add-blueprint-repository "https://github.com/nextcloud/desktop-client-blueprints.git|master|"
+          craft --add-blueprint-repository "https://github.com/nextcloud/craft-blueprints-kde.git|stable-34.0|"
+          craft --add-blueprint-repository "https://github.com/nextcloud/craft-blueprints-nextcloud.git|stable-34.0|"
           craft craft
           craft --install-deps nextcloud-client
           
       - name: Cache Install OpenCppCoverage
         id: cache-install-opencppcoverage
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: C:\Program Files\OpenCppCoverage
           key: ${{ runner.os }}-cache-install-opencppcoverage
@@ -51,7 +52,7 @@ jobs:
 
       #- name: Cache Install inkscape
       #  id: cache-install-inkscape
-      #  uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      #  uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       #  with:
       #    path: C:\Program Files\inkscape
       #    key: ${{ runner.os }}-cache-install-inkscape

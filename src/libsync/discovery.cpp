@@ -218,8 +218,7 @@ void ProcessDirectoryJob::process()
         // If the filename starts with a . we consider it a hidden file
         // For windows, the hidden state is also discovered within the vio
         // local stat function.
-        // Recall file shall not be ignored (#4420)
-        const auto isHidden = e.localEntry.isHidden || (!f.first.isEmpty() && f.first[0] == '.' && f.first != QLatin1String(".sys.admin#recall#"));
+        const auto isHidden = e.localEntry.isHidden || (!f.first.isEmpty() && f.first[0] == '.');
 
         const auto isEncryptedFolderButE2eIsNotSetup = e.serverEntry.isValid() && e.serverEntry.isE2eEncrypted() &&
             _discoveryData->_account->e2e() && !_discoveryData->_account->e2e()->isInitialized();
@@ -755,8 +754,13 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
         Q_ASSERT(item->_e2eEncryptionStatus != SyncFileItem::EncryptionStatus::NotEncrypted);
     }
     item->_encryptedFileName = [=, this] {
+        auto result = QString{};
+
+        if (item->_e2eEncryptionStatus == SyncFileItem::EncryptionStatus::NotEncrypted) {
+            return result;
+        }
         if (serverEntry.e2eMangledName.isEmpty()) {
-            return QString();
+            return result;
         }
 
         Q_ASSERT(_discoveryData->_remoteFolder.startsWith('/'));
@@ -764,7 +768,8 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
 
         const auto rootPath = _discoveryData->_remoteFolder.mid(1);
         Q_ASSERT(serverEntry.e2eMangledName.startsWith(rootPath));
-        return serverEntry.e2eMangledName.mid(rootPath.length());
+        result = serverEntry.e2eMangledName.mid(rootPath.length());
+        return result;
     }();
     item->_locked = serverEntry.locked;
     item->_lockOwnerDisplayName = serverEntry.lockOwnerDisplayName;
@@ -844,7 +849,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
             item->_direction = SyncFileItem::Down;
             item->_instruction = CSYNC_INSTRUCTION_SYNC;
             item->_type = ItemTypeVirtualFileDownload;
-        } else if (serverEntry.isValid() && !serverEntry.isDirectory && !serverEntry.remotePerm.isNull() && !serverEntry.remotePerm.hasPermission(RemotePermissions::CanRead)) {
+        } else if (serverEntry.isValid() && !serverEntry.remotePerm.isNull() && !serverEntry.remotePerm.hasPermission(RemotePermissions::CanRead)) {
             item->_instruction = CSYNC_INSTRUCTION_REMOVE;
             item->_direction = SyncFileItem::Down;
         } else if (dbEntry._etag != serverEntry.etag) {
@@ -939,7 +944,20 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
         return;
     }
 
-    if (serverEntry.isValid() && !serverEntry.isDirectory && !serverEntry.remotePerm.isNull() && !serverEntry.remotePerm.hasPermission(RemotePermissions::CanRead)) {
+    if (serverEntry.isValid() && _isInsideEncryptedTree && !item->isDirectory() && !item->isEncrypted()) {
+        qCWarning(lcDisco()) << "remote file inside an encrypted folder" << item->_file
+                             << "serverEntry.isValid()" << (serverEntry.isValid() ? "true" : "false")
+                             << "_isInsideEncryptedTree" << (_isInsideEncryptedTree ? "true" : "false")
+                             << "item->isDirectory()" << (item->isDirectory() ? "true" : "false")
+                             << "item->isEncrypted()" << (item->isEncrypted() ? "true" : "false");
+
+        item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_IGNORE;
+        emit _discoveryData->itemDiscovered(item);
+
+        return;
+    }
+
+    if (serverEntry.isValid() && !serverEntry.remotePerm.isNull() && !serverEntry.remotePerm.hasPermission(RemotePermissions::CanRead)) {
         item->_instruction = CSYNC_INSTRUCTION_IGNORE;
         emit _discoveryData->itemDiscovered(item);
 
@@ -1160,6 +1178,16 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     bool serverModified = item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_SYNC
         || item->_instruction == CSYNC_INSTRUCTION_RENAME || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
+
+    if (serverModified && _isInsideEncryptedTree && !item->isDirectory() && !item->isEncrypted()) {
+        qCWarning(lcDisco()) << "remote file inside an encrypted folder" << item->_file
+                              << "serverModified" << (serverModified ? "true" : "false")
+                              << "_isInsideEncryptedTree" << (_isInsideEncryptedTree ? "true" : "false")
+                              << "item->isDirectory()" << (item->isDirectory() ? "true" : "false")
+                              << "item->isEncrypted()" << (item->isEncrypted() ? "true" : "false");
+
+        item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_IGNORE;
+    }
 
     const auto isTypeChange = item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
 

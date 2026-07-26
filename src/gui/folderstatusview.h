@@ -21,8 +21,13 @@ class FolderStatusView : public QTreeView
 public:
     explicit FolderStatusView(QWidget *parent = nullptr);
 
+    [[nodiscard]] QSize sizeHint() const override;
+    [[nodiscard]] QSize minimumSizeHint() const override;
     [[nodiscard]] QModelIndex indexAt(const QPoint &point) const override;
     [[nodiscard]] QRect visualRect(const QModelIndex &index) const override;
+
+private:
+    [[nodiscard]] int visibleRowsHeight(const QModelIndex &parent = {}) const;
 };
 
 } // namespace OCC

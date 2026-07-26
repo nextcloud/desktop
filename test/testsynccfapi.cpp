@@ -16,6 +16,8 @@
 
 #include <QtTest>
 
+using namespace Qt::StringLiterals;
+
 namespace cfapi {
 using namespace OCC::CfApiWrapper;
 }
@@ -1578,6 +1580,74 @@ private slots:
         const auto secondFile3Info = fakeFolder.localModifier().find("first folder/second folder/second file3");
         QVERIFY(secondFile3Info.exists());
         const auto wrongSecondFolderInfo = fakeFolder.localModifier().find("first folder/second folder/second folder");
+        QVERIFY(!wrongSecondFolderInfo.exists());
+
+        QVERIFY(fakeFolder.syncOnce());
+    }
+
+    void syncFoldersOnDemandFromSubFolder()
+    {
+        FileInfo localRoot{u"first folder"_s, {}};
+        FileInfo remoteRoot{{}, {localRoot}};
+        FakeFolder fakeFolder {remoteRoot, localRoot, u"/first folder"_s};
+        auto vfs = setupVfs(fakeFolder);
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        const auto cleanup = [&]() {
+            completeSpy.clear();
+        };
+
+        cleanup();
+
+        fakeFolder.remoteModifier().insert("rootfile1");
+        fakeFolder.remoteModifier().insert("first folder/file1");
+        fakeFolder.remoteModifier().insert("first folder/file2");
+        fakeFolder.remoteModifier().insert("first folder/file3");
+        fakeFolder.remoteModifier().mkdir("first folder/second folder");
+        fakeFolder.remoteModifier().insert("first folder/second folder/second file1");
+        fakeFolder.remoteModifier().insert("first folder/second folder/second file2");
+        fakeFolder.remoteModifier().insert("first folder/second folder/second file3");
+        fakeFolder.remoteModifier().mkdir("first folder/second folder/third folder");
+        fakeFolder.remoteModifier().insert("first folder/second folder/third folder/third file1");
+        fakeFolder.remoteModifier().insert("first folder/second folder/third folder/third file2");
+        fakeFolder.remoteModifier().insert("first folder/second folder/third folder/third file3");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(completeSpy.size(), 4);
+        QVERIFY(itemInstruction(completeSpy, "file1", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "file2", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "file3", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "second folder", CSYNC_INSTRUCTION_NEW));
+
+        cleanup();
+
+        OCC::showInFileManager(fakeFolder.localPath() + "second folder");
+
+        QTest::qWait(5000);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        OCC::showInFileManager(fakeFolder.localPath() + "second folder");
+
+        QTest::qWait(5000);
+
+        const auto file3Info = fakeFolder.localModifier().find("second folder/second file3");
+        QVERIFY(file3Info.exists());
+        const auto secondFolderInfo = fakeFolder.localModifier().find("second folder/third folder");
+        QVERIFY(secondFolderInfo.exists());
+        const auto wrongFirstFolderInfo = fakeFolder.localModifier().find("second folder/second folder");
+        QVERIFY(!wrongFirstFolderInfo.exists());
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        OCC::showInFileManager(fakeFolder.localPath() + "second folder/third folder");
+
+        QTest::qWait(5000);
+
+        const auto secondFile3Info = fakeFolder.localModifier().find("second folder/third folder/third file3");
+        QVERIFY(secondFile3Info.exists());
+        const auto wrongSecondFolderInfo = fakeFolder.localModifier().find("second folder/third folder/third folder");
         QVERIFY(!wrongSecondFolderInfo.exists());
 
         QVERIFY(fakeFolder.syncOnce());

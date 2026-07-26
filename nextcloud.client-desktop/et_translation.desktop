@@ -22,7 +22,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Name[et_EE]=@APPLICATION_NAME@ Desktop
-Comment[et_EE]=@APPLICATION_NAME@ töölaua sünkroniseerimise klient
-GenericName[et_EE]=Kausta Sünkroonimine
+Name[et_EE]=@APPLICATION_NAME@i töölauarakendus
+Comment[et_EE]=@APPLICATION_NAME@ sünkroonimisklient töölauale
+GenericName[et_EE]=Kausta sünkroonimine
 Icon[et_EE]=@APPLICATION_ICON_NAME@

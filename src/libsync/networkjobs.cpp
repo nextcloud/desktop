@@ -512,6 +512,7 @@ void LsColJob::start()
     }
 
     QNetworkRequest req;
+    req.setDecompressedSafetyCheckThreshold(-1); // TODO: make use of Nextcloud 31+'s pagination feature and re-enable this
     req.setRawHeader("Depth", "1");
     QByteArray xml("<?xml version=\"1.0\" ?>\n"
                    "<d:propfind xmlns:d=\"DAV:\" xmlns:oc=\"http://owncloud.org/ns\">\n"
@@ -555,14 +556,7 @@ bool LsColJob::finished()
         connect(&parser, &LsColXMLParser::finishedWithoutError,
             this, &LsColJob::finishedWithoutError);
 
-        // bool LsColXMLParser::parse takes a while, let's process some events in attempt to make UI more responsive
-        // from https://doc.qt.io/qt-5/qcoreapplication.html#processEvents-1 
-        // "You can call this function occasionally when your program is busy doing a long operation (e.g. copying a file)."
-        // we should not abuse this function, as it affects QObject instances lifetime (when children are getting deleted or when deleteLater is called)
-        // one reason I had to remove ability for LsColJob to have parent, which, otherwise, leads to a crash later
-        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-
-        QString expectedPath = reply()->request().url().path(); // something like "/owncloud/remote.php/dav/folder"
+        const auto expectedPath = reply()->request().url().path(); // something like "/owncloud/remote.php/dav/folder"
         if (!parser.parse(reply()->readAll(), &_folderInfos, expectedPath)) {
             // XML parse error
             emit finishedWithError(reply());
@@ -1172,7 +1166,6 @@ DetermineAuthTypeJob::DetermineAuthTypeJob(AccountPtr account, QObject *parent)
     : QObject(parent)
     , _account(account)
 {
-    useFlow2 = ConfigFile().forceLoginV2();
 }
 
 void DetermineAuthTypeJob::start()
@@ -1185,7 +1178,7 @@ void DetermineAuthTypeJob::start()
     // Don't reuse previous auth credentials
     req.setAttribute(QNetworkRequest::AuthenticationReuseAttribute, QNetworkRequest::Manual);
 
-    // Start three parallel requests
+    // Start two parallel requests
 
     // 1. determines whether it's a basic auth server
     auto get = _account->sendRequest("GET", _account->url(), req);
@@ -1193,15 +1186,10 @@ void DetermineAuthTypeJob::start()
     // 2. checks the HTTP auth method.
     auto propfind = _account->sendRequest("PROPFIND", _account->davUrl(), req);
 
-    // 3. Determines if the old flow has to be used (GS for now)
-    auto oldFlowRequired = new JsonApiJob(_account, "/ocs/v2.php/cloud/capabilities", this);
-
     get->setTimeout(30 * 1000);
     propfind->setTimeout(30 * 1000);
-    oldFlowRequired->setTimeout(30 * 1000);
     get->setIgnoreCredentialFailure(true);
     propfind->setIgnoreCredentialFailure(true);
-    oldFlowRequired->setIgnoreCredentialFailure(true);
 
     connect(get, &SimpleNetworkJob::finishedSignal, this, [this, get]() {
         const auto reply = get->reply();
@@ -1230,78 +1218,22 @@ void DetermineAuthTypeJob::start()
         _propfindDone = true;
         checkAllDone();
     });
-    connect(oldFlowRequired, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json, int statusCode) {
-        if (statusCode == 200) {
-            _resultOldFlow = LoginFlowV2;
-
-            auto data = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
-            auto gs = data.value("globalscale");
-            if (gs != QJsonValue::Undefined) {
-                auto flow = gs.toObject().value("desktoplogin");
-                if (flow != QJsonValue::Undefined) {
-                    if (flow.toInt() == 1) {
-#ifdef WITH_WEBENGINE
-                        if(!this->useFlow2) {
-                            _resultOldFlow = WebViewFlow;
-                        } else {
-                            qCWarning(lcDetermineAuthTypeJob) << "Server only supports flow1, but this client was configured to only use flow2";
-                        }
-#else // WITH_WEBENGINE
-                        qCWarning(lcDetermineAuthTypeJob) << "Server does only support flow1, but this client was compiled without support for flow1";
-#endif // WITH_WEBENGINE
-                    }
-                }
-            }
-        } else {
-            _resultOldFlow = Basic;
-        }
-        if (_account->isPublicShareLink()) {
-            _resultOldFlow = Basic;
-        }
-        _oldFlowDone = true;
-        checkAllDone();
-    });
-
-    oldFlowRequired->start();
 }
 
 void DetermineAuthTypeJob::checkAllDone()
 {
-    // Do not conitunue until eve
-    if (!_getDone || !_propfindDone || !_oldFlowDone) {
+    if (!_getDone || !_propfindDone) {
         return;
     }
 
     Q_ASSERT(_resultGet != NoAuthType);
     Q_ASSERT(_resultPropfind != NoAuthType);
-    Q_ASSERT(_resultOldFlow != NoAuthType);
 
     auto result = _resultPropfind;
 
-#ifdef WITH_WEBENGINE
-    // WebViewFlow > Basic
-    if (_account->serverVersionInt() >= Account::makeServerVersion(12, 0, 0)) {
-        result = WebViewFlow;
-        if (useFlow2) {
-            result = LoginFlowV2;
-        }
-    }
-#endif // WITH_WEBENGINE
-
-    // LoginFlowV2 > WebViewFlow > Basic
     if (_account->serverVersionInt() >= Account::makeServerVersion(16, 0, 0)) {
         result = LoginFlowV2;
     }
-
-#ifdef WITH_WEBENGINE
-    // If we determined that we need the webview flow (GS for example) then we switch to that
-    if (_resultOldFlow == WebViewFlow) {
-        result = WebViewFlow;
-        if (useFlow2) {
-            result = LoginFlowV2;
-        }
-    }
-#endif // WITH_WEBENGINE
 
     // If we determined that a simple get gave us an authentication required error
     // then the server enforces basic auth and we got no choice but to use this

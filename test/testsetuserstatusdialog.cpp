@@ -42,15 +42,23 @@ public:
         emit predefinedStatusesFetched(_predefinedStatuses);
     }
 
-    void setUserStatus(const OCC::UserStatus &userStatus) override
+    [[nodiscard]] bool setUserStatus(const OCC::UserStatus &userStatus) override
     {
+        ++_setUserStatusCallCount;
+        if (_rejectUserStatusChanges) {
+            return false;
+        }
+
         if (_couldNotSetUserStatusMessage) {
             emit error(Error::CouldNotSetUserStatus);
-            return;
+            return false;
         }
 
         _userStatusSetByCallerOfSetUserStatus = userStatus;
-        emit UserStatusConnector::userStatusSet();
+        if (!_deferUserStatusSetSignal) {
+            emit UserStatusConnector::userStatusSet();
+        }
+        return true;
     }
 
     void clearMessage() override
@@ -59,6 +67,7 @@ public:
             emit error(Error::CouldNotClearMessage);
         } else {
             _isMessageCleared = true;
+            emit UserStatusConnector::messageCleared();
         }
     }
 
@@ -84,8 +93,19 @@ public:
     }
 
     [[nodiscard]] OCC::UserStatus userStatusSetByCallerOfSetUserStatus() const { return _userStatusSetByCallerOfSetUserStatus; }
+    [[nodiscard]] int setUserStatusCallCount() const { return _setUserStatusCallCount; }
 
     [[nodiscard]] bool messageCleared() const { return _isMessageCleared; }
+
+    void emitUserStatusSet()
+    {
+        emit UserStatusConnector::userStatusSet();
+    }
+
+    void emitError(Error error)
+    {
+        emit UserStatusConnector::error(error);
+    }
 
     void setErrorCouldNotFetchPredefinedUserStatuses(bool value)
     {
@@ -117,10 +137,21 @@ public:
         _couldNotClearUserStatusMessage = value;
     }
 
+    void setRejectUserStatusChanges(bool value)
+    {
+        _rejectUserStatusChanges = value;
+    }
+
+    void setDeferUserStatusSetSignal(bool value)
+    {
+        _deferUserStatusSetSignal = value;
+    }
+
 private:
     OCC::UserStatus _userStatusSetByCallerOfSetUserStatus;
     OCC::UserStatus _userStatus;
     QVector<OCC::UserStatus> _predefinedStatuses;
+    int _setUserStatusCallCount = 0;
     bool _isMessageCleared = false;
     bool _couldNotFetchPredefinedUserStatuses = false;
     bool _couldNotFetchUserStatus = false;
@@ -128,6 +159,8 @@ private:
     bool _userStatusNotSupported = false;
     bool _emojisNotSupported = false;
     bool _couldNotClearUserStatusMessage = false;
+    bool _rejectUserStatusChanges = false;
+    bool _deferUserStatusSetSignal = false;
 };
 
 class FakeDateTimeProvider : public OCC::DateTimeProvider
@@ -221,6 +254,7 @@ private slots:
         OCC::UserStatusSelectorModel model(fakeUserStatusJob, std::move(fakeDateTimeProvider));
 
         // Was user status set correctly?
+        QVERIFY(model.userStatusLoaded());
         QCOMPARE(model.userStatusMessage(), userStatusMessage);
         QCOMPARE(model.userStatusEmoji(), userStatusIcon);
         QCOMPARE(model.onlineStatus(), userStatusState);
@@ -246,6 +280,7 @@ private slots:
     {
         OCC::UserStatusSelectorModel model(nullptr, nullptr);
 
+        QVERIFY(!model.userStatusLoaded());
         QCOMPARE(model.userStatusMessage(), "");
         QCOMPARE(model.userStatusEmoji(), "");
         QCOMPARE(model.clearAtDisplayString(), QStringLiteral("Don't clear"));
@@ -258,6 +293,7 @@ private slots:
             OCC::UserStatus::OnlineStatus::Offline, false, {} });
         OCC::UserStatusSelectorModel model(fakeUserStatusJob);
 
+        QVERIFY(model.userStatusLoaded());
         QCOMPARE(model.onlineStatus(), OCC::UserStatus::OnlineStatus::Offline);
         QCOMPARE(model.userStatusMessage(), "");
         QCOMPARE(model.userStatusEmoji(), "");
@@ -275,6 +311,114 @@ private slots:
         model.setOnlineStatus(onlineStatus);
 
         QCOMPARE(userStatusChangedSpy.count(), 1);
+    }
+
+    void testSetOnlineStatus_defaultEmitsFinished()
+    {
+        auto fakeUserStatusJob = std::make_shared<FakeUserStatusConnector>();
+        OCC::UserStatusSelectorModel model(fakeUserStatusJob);
+        QSignalSpy finishedSpy(&model, &OCC::UserStatusSelectorModel::finished);
+
+        model.setOnlineStatus(OCC::UserStatus::OnlineStatus::Away);
+
+        QCOMPARE(fakeUserStatusJob->setUserStatusCallCount(), 1);
+        QCOMPARE(finishedSpy.count(), 1);
+    }
+
+    void testSetOnlineStatus_finishOnOnlineStatusSetFalseDoesNotEmitFinished()
+    {
+        auto fakeUserStatusJob = std::make_shared<FakeUserStatusConnector>();
+        OCC::UserStatusSelectorModel model(fakeUserStatusJob);
+        model.setFinishOnOnlineStatusSet(false);
+        QSignalSpy finishedSpy(&model, &OCC::UserStatusSelectorModel::finished);
+
+        model.setOnlineStatus(OCC::UserStatus::OnlineStatus::Away);
+
+        QCOMPARE(fakeUserStatusJob->setUserStatusCallCount(), 1);
+        QCOMPARE(fakeUserStatusJob->userStatusSetByCallerOfSetUserStatus().state(),
+            OCC::UserStatus::OnlineStatus::Away);
+        QCOMPARE(finishedSpy.count(), 0);
+    }
+
+    void testSetOnlineStatus_finishOnOnlineStatusSetFalseIgnoresExtraFinishedSignal()
+    {
+        auto fakeUserStatusJob = std::make_shared<FakeUserStatusConnector>();
+        OCC::UserStatusSelectorModel model(fakeUserStatusJob);
+        model.setFinishOnOnlineStatusSet(false);
+        QSignalSpy finishedSpy(&model, &OCC::UserStatusSelectorModel::finished);
+
+        model.setOnlineStatus(OCC::UserStatus::OnlineStatus::Away);
+        fakeUserStatusJob->emitUserStatusSet();
+
+        QCOMPARE(finishedSpy.count(), 0);
+    }
+
+    void testSetUserStatus_rejectedSaveAfterOnlineStatusDoesNotFinishOnOnlineStatusCompletion()
+    {
+        auto fakeUserStatusJob = std::make_shared<FakeUserStatusConnector>();
+        fakeUserStatusJob->setDeferUserStatusSetSignal(true);
+        OCC::UserStatusSelectorModel model(fakeUserStatusJob);
+        model.setFinishOnOnlineStatusSet(false);
+        QSignalSpy finishedSpy(&model, &OCC::UserStatusSelectorModel::finished);
+
+        model.setOnlineStatus(OCC::UserStatus::OnlineStatus::Away);
+        fakeUserStatusJob->setRejectUserStatusChanges(true);
+        model.setUserStatusMessage(QStringLiteral("Some status"));
+        model.setUserStatus();
+
+        QCOMPARE(fakeUserStatusJob->setUserStatusCallCount(), 2);
+        fakeUserStatusJob->emitUserStatusSet();
+        fakeUserStatusJob->emitUserStatusSet();
+
+        QCOMPARE(finishedSpy.count(), 0);
+
+        fakeUserStatusJob->setRejectUserStatusChanges(false);
+        fakeUserStatusJob->setDeferUserStatusSetSignal(false);
+        model.setUserStatus();
+
+        QCOMPARE(fakeUserStatusJob->setUserStatusCallCount(), 3);
+        QCOMPARE(finishedSpy.count(), 1);
+    }
+
+    void testSetUserStatus_finishOnOnlineStatusSetFalseStillEmitsFinished()
+    {
+        auto fakeUserStatusJob = std::make_shared<FakeUserStatusConnector>();
+        OCC::UserStatusSelectorModel model(fakeUserStatusJob);
+        model.setFinishOnOnlineStatusSet(false);
+        QSignalSpy finishedSpy(&model, &OCC::UserStatusSelectorModel::finished);
+
+        model.setUserStatusMessage(QStringLiteral("Some status"));
+        model.setUserStatus();
+
+        QCOMPARE(finishedSpy.count(), 1);
+    }
+
+    void testClearUserStatus_finishOnOnlineStatusSetFalseStillEmitsFinished()
+    {
+        auto fakeUserStatusJob = std::make_shared<FakeUserStatusConnector>();
+        OCC::UserStatusSelectorModel model(fakeUserStatusJob);
+        model.setFinishOnOnlineStatusSet(false);
+        QSignalSpy finishedSpy(&model, &OCC::UserStatusSelectorModel::finished);
+
+        model.clearUserStatus();
+
+        QVERIFY(fakeUserStatusJob->messageCleared());
+        QCOMPARE(finishedSpy.count(), 1);
+    }
+
+    void testSetOnlineStatus_errorDoesNotEmitFinished()
+    {
+        auto fakeUserStatusJob = std::make_shared<FakeUserStatusConnector>();
+        fakeUserStatusJob->setErrorCouldNotSetUserStatusMessage(true);
+        OCC::UserStatusSelectorModel model(fakeUserStatusJob);
+        model.setFinishOnOnlineStatusSet(false);
+        QSignalSpy finishedSpy(&model, &OCC::UserStatusSelectorModel::finished);
+
+        model.setOnlineStatus(OCC::UserStatus::OnlineStatus::Away);
+
+        QCOMPARE(fakeUserStatusJob->setUserStatusCallCount(), 1);
+        QCOMPARE(model.errorMessage(), QStringLiteral("Could not set status. Make sure you are connected to the server."));
+        QCOMPARE(finishedSpy.count(), 0);
     }
 
     void testSetUserStatus_setCustomMessage_userStatusSetCorrect()
@@ -676,8 +820,34 @@ private slots:
         fakeUserStatusJob->setErrorCouldNotFetchUserStatus(true);
         OCC::UserStatusSelectorModel model(fakeUserStatusJob);
 
+        QVERIFY(!model.userStatusLoaded());
         QCOMPARE(model.errorMessage(),
             QStringLiteral("Could not fetch status. Make sure you are connected to the server."));
+    }
+
+    void testError_couldNotFetchUserStatus_clearStatusAndDisableWrites()
+    {
+        const OCC::UserStatus userStatus("fake-id", "Old message", "old-icon",
+            OCC::UserStatus::OnlineStatus::DoNotDisturb, false, {});
+        auto fakeUserStatusJob = std::make_shared<FakeUserStatusConnector>();
+        fakeUserStatusJob->setFakeUserStatus(userStatus);
+        OCC::UserStatusSelectorModel model(fakeUserStatusJob);
+
+        QVERIFY(model.userStatusLoaded());
+        QCOMPARE(model.userStatusMessage(), userStatus.message());
+        QCOMPARE(model.userStatusEmoji(), userStatus.icon());
+
+        fakeUserStatusJob->emitError(OCC::UserStatusConnector::Error::CouldNotFetchUserStatus);
+
+        QVERIFY(!model.userStatusLoaded());
+        QCOMPARE(model.userStatusMessage(), "");
+        QCOMPARE(model.userStatusEmoji(), "");
+        QCOMPARE(model.clearAtDisplayString(), QStringLiteral("Don't clear"));
+
+        model.setUserStatusMessage(QStringLiteral("Should not be saved"));
+        model.setUserStatus();
+
+        QCOMPARE(fakeUserStatusJob->setUserStatusCallCount(), 0);
     }
 
     void testError_userStatusNotSupported_emitError()

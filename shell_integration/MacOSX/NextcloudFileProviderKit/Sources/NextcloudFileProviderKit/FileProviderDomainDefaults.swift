@@ -20,6 +20,7 @@ public struct FileProviderDomainDefaults {
         case user
         case userId
         case serverUrl
+        case lastSeenExtensionVersion
         case debugLoggingEnabled
     }
 
@@ -143,6 +144,40 @@ public struct FileProviderDomainDefaults {
                 logger.error("Ignoring new value for \"userId\" because it is an empty string for file provider domain \"\(identifier)\"!")
             } else {
                 internalConfig[ConfigKey.userId.rawValue] = newValue
+            }
+        }
+    }
+
+    ///
+    /// The extension bundle's `CFBundleShortVersionString` as last seen for this domain.
+    ///
+    /// Used by ``FileProviderExtension`` to detect app updates and, on first launch after a bump, iterate the database to call `NSFileProviderManager.requestModification(of: [.lastUsedDate], …)` for every non-deleted item — which nudges the framework to refresh its cached `NSFileProviderItem` snapshots so newly derived `userInfo` / `contentPolicy` / fileSystemFlags reach the system. The value is only persisted after the iteration has issued every nudge, so a launch that's interrupted mid-iteration redoes the work on the next start.
+    ///
+    /// See nextcloud/desktop#10065.
+    ///
+    public var lastSeenExtensionVersion: String? {
+        get {
+            let identifier = identifier.rawValue
+
+            if let value = internalConfig[ConfigKey.lastSeenExtensionVersion.rawValue] as? String {
+                logger.debug("Returning existing value \"\(value)\" for \"lastSeenExtensionVersion\" for file provider domain \"\(identifier)\".")
+                return value
+            } else {
+                logger.debug("No existing value for \"lastSeenExtensionVersion\" for file provider domain \"\(identifier)\" found.")
+                return nil
+            }
+        }
+
+        set {
+            let identifier = identifier.rawValue
+
+            if newValue == nil {
+                logger.debug("Removing key \"lastSeenExtensionVersion\" for file provider domain \"\(identifier)\" because the new value is nil.")
+                internalConfig.removeValue(forKey: ConfigKey.lastSeenExtensionVersion.rawValue)
+            } else if newValue == "" {
+                logger.error("Ignoring new value for \"lastSeenExtensionVersion\" because it is an empty string for file provider domain \"\(identifier)\"!")
+            } else {
+                internalConfig[ConfigKey.lastSeenExtensionVersion.rawValue] = newValue
             }
         }
     }
