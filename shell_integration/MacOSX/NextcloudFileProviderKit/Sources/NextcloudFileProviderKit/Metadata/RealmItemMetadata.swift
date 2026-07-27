@@ -52,6 +52,8 @@ class RealmItemMetadata: Object, ItemMetadata {
     @Persisted var lockToken: String? // Token identifier for token-based locks
     @Persisted var path = ""
     @Persisted var permissions = ""
+    @Persisted(indexed: true) var normalizedServerUrl = ""
+    @Persisted var normalizedFileName = ""
     @Persisted var quotaUsedBytes: Int64 = 0
     @Persisted var quotaAvailableBytes: Int64 = 0
     @Persisted var resourceType = ""
@@ -107,7 +109,7 @@ class RealmItemMetadata: Object, ItemMetadata {
     override func isEqual(_ object: Any?) -> Bool {
         if let object = object as? RealmItemMetadata {
             return fileId == object.fileId && account == object.account && path == object.path
-                && fileName == object.fileName
+                && hasSameLocation(as: object)
         }
 
         return false
@@ -115,6 +117,7 @@ class RealmItemMetadata: Object, ItemMetadata {
 
     convenience init(value: any ItemMetadata) {
         self.init()
+        updateLocation(serverUrl: value.serverUrl, fileName: value.fileName)
         ocId = value.ocId
         account = value.account
         checksums = value.checksums
@@ -133,7 +136,6 @@ class RealmItemMetadata: Object, ItemMetadata {
         etag = value.etag
         favorite = value.favorite
         fileId = value.fileId
-        fileName = value.fileName
         fileNameView = value.fileNameView
         hasPreview = value.hasPreview
         hidden = value.hidden
@@ -160,7 +162,6 @@ class RealmItemMetadata: Object, ItemMetadata {
         quotaAvailableBytes = value.quotaAvailableBytes
         resourceType = value.resourceType
         richWorkspace = value.richWorkspace
-        serverUrl = value.serverUrl
         session = value.session
         sessionError = value.sessionError
         sessionTaskIdentifier = value.sessionTaskIdentifier
@@ -181,5 +182,13 @@ class RealmItemMetadata: Object, ItemMetadata {
         urlBase = value.urlBase
         user = value.user
         userId = value.userId
+    }
+
+    /// Updates the raw location and its normalized comparison keys together.
+    func updateLocation(serverUrl: String, fileName: String) {
+        self.serverUrl = serverUrl
+        self.fileName = fileName
+        normalizedServerUrl = serverUrl.precomposedStringWithCanonicalMapping
+        normalizedFileName = fileName.precomposedStringWithCanonicalMapping
     }
 }

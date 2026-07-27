@@ -99,6 +99,26 @@ public protocol ItemMetadata: Equatable {
 }
 
 public extension ItemMetadata {
+    /// Whether two metadata values identify the same account and remote path,
+    /// ignoring Unicode canonical-equivalence differences.
+    func hasSameLocation(as comparingMetadata: any ItemMetadata) -> Bool {
+        account == comparingMetadata.account
+            && serverUrl.precomposedStringWithCanonicalMapping == comparingMetadata.serverUrl.precomposedStringWithCanonicalMapping
+            && fileName.precomposedStringWithCanonicalMapping == comparingMetadata.fileName.precomposedStringWithCanonicalMapping
+    }
+
+    /// Whether this item has the given remote path, ignoring Unicode canonical-equivalence differences.
+    func hasSameRemotePath(as path: String) -> Bool {
+        remotePath().precomposedStringWithCanonicalMapping == path.precomposedStringWithCanonicalMapping
+    }
+
+    /// Whether this item is below the given remote directory path, ignoring Unicode canonical-equivalence differences.
+    func isDescendant(of path: String) -> Bool {
+        remotePath().precomposedStringWithCanonicalMapping.hasPrefix(
+            path.precomposedStringWithCanonicalMapping + "/"
+        )
+    }
+
     var livePhoto: Bool {
         livePhotoFile != nil && livePhotoFile?.isEmpty == false
     }
