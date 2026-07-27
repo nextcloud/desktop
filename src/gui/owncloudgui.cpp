@@ -40,8 +40,6 @@
 #include "activity/syncstatussummary.h"
 #include "tray/trayactivationpolicy.h"
 #include "tray/trayaccountappsmodel.h"
-#include "search/unifiedsearchpeoplemodel.h"
-#include "search/unifiedsearchresultslistmodel.h"
 #include "tray/usermodel.h"
 #include "integration/fileactionsmodel.h"
 #include "governance/applygovernancelabel.h"
@@ -49,6 +47,9 @@
 #include "governance/getavailablegovernancelabels.h"
 #include "governance/getgovernancelabels.h"
 #include "governance/governancelabelslistmodel.h"
+#include "search/unifiedsearchresultslistmodel.h"
+#include "search/unifiedsearchpeoplemodel.h"
+
 #include "filesystem.h"
 #include "common/utility_mac_sandbox.h"
 
@@ -179,7 +180,6 @@ ownCloudGui::ownCloudGui(Application *parent)
         "com.nextcloud.desktopclient", 1, 0, "AssistantController", "Owned by the Assistant window");
     qmlRegisterUncreatableType<Activity>("com.nextcloud.desktopclient", 1, 0, "activity", "Activity");
     qmlRegisterUncreatableType<TalkNotificationData>("com.nextcloud.desktopclient", 1, 0, "talkNotificationData", "TalkNotificationData");
-    qmlRegisterUncreatableType<UnifiedSearchResultsListModel>("com.nextcloud.desktopclient", 1, 0, "UnifiedSearchResultsListModel", "UnifiedSearchResultsListModel");
     qmlRegisterUncreatableType<UserStatus>("com.nextcloud.desktopclient", 1, 0, "userStatus", "Access to Status enum");
     qmlRegisterUncreatableType<Sharee>("com.nextcloud.desktopclient", 1, 0, "sharee", "Access to Type enum");
     qmlRegisterUncreatableType<ClientSideEncryptionTokenSelector>("com.nextcloud.desktopclient", 1, 0, "ClientSideEncryptionTokenSelector", "Access to the certificate selector");
@@ -189,7 +189,6 @@ ownCloudGui::ownCloudGui(Application *parent)
 
     qRegisterMetaType<ActivityListModel *>("ActivityListModel*");
     qRegisterMetaType<SyncStatusSummary *>("SyncStatusSummary*");
-    qRegisterMetaType<UnifiedSearchResultsListModel *>("UnifiedSearchResultsListModel*");
     qRegisterMetaType<UserStatus>("UserStatus");
     qRegisterMetaType<SharePtr>("SharePtr");
     qRegisterMetaType<ShareePtr>("ShareePtr");
