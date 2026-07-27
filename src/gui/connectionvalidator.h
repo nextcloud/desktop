@@ -15,6 +15,8 @@
 #include "accountfwd.h"
 #include "clientsideencryption.h"
 
+#include <functional>
+
 namespace OCC {
 
 /**

@@ -86,6 +86,7 @@ set(client_SRCS
     conflictsolver.cpp
     connectionvalidator.h
     connectionvalidator.cpp
+    localnetworkpermission.h
     editlocallyjob.h
     editlocallyjob.cpp
     editlocallymanager.h
@@ -295,7 +296,6 @@ IF( APPLE )
     list(APPEND client_SRCS systray_mac_common.mm)
     list(APPEND client_SRCS notificationsoundplayer_mac.mm)
     list(APPEND client_SRCS
-        macOS/localnetworkpermission.h
         macOS/localnetworkpermission.mm)
     list(APPEND client_SRCS
         # macOS tray account popup: one type per header/implementation pair.
@@ -394,7 +394,7 @@ IF( APPLE )
     endif()
 ENDIF()
 IF( NOT APPLE )
-    list(APPEND client_SRCS trayaccountpopup_qt.cpp)
+    list(APPEND client_SRCS trayaccountpopup_qt.cpp localnetworkpermission.cpp)
 ENDIF()
 
 IF( NOT WIN32 AND NOT APPLE )
