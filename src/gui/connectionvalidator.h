@@ -158,6 +158,9 @@ protected slots:
 
     void termsOfServiceCheckDone();
 
+protected:
+    virtual void checkLocalNetworkPermissionDenied(const QUrl &url, std::function<void(bool)> callback);
+
 private:
 #ifndef TOKEN_AUTH_ONLY
     void reportConnected();
