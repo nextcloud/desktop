@@ -582,9 +582,6 @@ target_link_libraries(nextcloudCore
   Qt::QuickWidgets
   KF6::Archive
   KDAB::kdsingleapplication
-
-  nextcloudGuiSearch
-  nextcloudGuiSearchplugin
   )
 
 if(KF6GuiAddons_FOUND)
@@ -695,7 +692,11 @@ set_target_properties(nextcloud PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
 )
 
-target_link_libraries(nextcloud PRIVATE nextcloudCore)
+target_link_libraries(nextcloud PRIVATE
+    nextcloudGuiSearch
+    nextcloudGuiSearchplugin
+    nextcloudCore
+)
 
 if(TARGET PkgConfig::CLOUDPROVIDERS)
     message("Building with libcloudproviderssupport")
