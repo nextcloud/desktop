@@ -10,6 +10,7 @@
 #include <limits>
 
 #include <QtCore>
+#include <qqmlintegration.h>
 
 namespace OCC {
 class AccountState;
@@ -23,6 +24,9 @@ class AccountState;
 class UnifiedSearchResultsListModel : public QAbstractListModel
 {
     Q_OBJECT
+
+    QML_ELEMENT
+    QML_UNCREATABLE("created by Systray")
 
     Q_PROPERTY(bool isSearchInProgress READ isSearchInProgress NOTIFY isSearchInProgressChanged)
     Q_PROPERTY(QString currentFetchMoreInProgressProviderId READ currentFetchMoreInProgressProviderId NOTIFY
