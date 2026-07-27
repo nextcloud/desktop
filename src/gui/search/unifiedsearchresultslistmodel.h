@@ -12,8 +12,10 @@
 #include <QJsonValue>
 #include <QPointer>
 #include <QSet>
+#include <QtCore>
 #include <QTimer>
 #include <QUrlQuery>
+#include <qqmlintegration.h>
 
 #include <limits>
 
@@ -32,6 +34,9 @@ namespace OCC {
 class UnifiedSearchResultsListModel : public QAbstractListModel
 {
     Q_OBJECT
+
+    QML_ELEMENT
+    QML_UNCREATABLE("created by Systray")
 
     Q_PROPERTY(bool isSearchInProgress READ isSearchInProgress NOTIFY isSearchInProgressChanged)
     Q_PROPERTY(QString currentFetchMoreInProgressProviderId READ currentFetchMoreInProgressProviderId NOTIFY currentFetchMoreInProgressProviderIdChanged)
