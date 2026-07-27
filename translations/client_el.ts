@@ -228,7 +228,7 @@
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="236"/>
         <source>Ask Assistant …</source>
-        <translation type="unfinished"/>
+        <translation>Ρωτήστε τον βοηθό …</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="252"/>
@@ -736,7 +736,7 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="473"/>
         <source>Ask Assistant …</source>
-        <translation type="unfinished"/>
+        <translation>Ρωτήστε τον βοηθό …</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="501"/>
@@ -6311,7 +6311,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2073"/>
         <source>Sending your request …</source>
-        <translation type="unfinished"/>
+        <translation> Αποστολή του αιτήματός σας …</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2146"/>
