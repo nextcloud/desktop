@@ -61,7 +61,10 @@
         <file>src/gui/wizard/qml/AccountWizardWindow.qml</file>
         <file>src/gui/wizard/qml/AdvancedOptionsDialog.qml</file>
         <file>src/gui/wizard/qml/BasicAuthPage.qml</file>
+        <file>src/gui/wizard/qml/BrowserAuthFooter.qml</file>
         <file>src/gui/wizard/qml/BrowserAuthPage.qml</file>
+        <file>src/gui/wizard/qml/BrowserReAuthPage.qml</file>
+        <file>src/gui/wizard/qml/BrowserReAuthWindow.qml</file>
         <file>src/gui/wizard/qml/ClientCertificateDialog.qml</file>
         <file>src/gui/wizard/qml/OptionRow.qml</file>
         <file>src/gui/wizard/qml/ProxySettingsDialog.qml</file>
