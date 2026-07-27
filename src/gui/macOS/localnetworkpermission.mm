@@ -66,19 +66,6 @@ struct ConnectionProbe
         invokeCallback(context, std::move(callback), denied);
     }
 
-    void finishForCurrentPath()
-    {
-        if (completed) {
-            return;
-        }
-
-        const auto path = nw_connection_copy_current_path(connection);
-        const auto denied = isLocalNetworkDenied(path);
-        if (path) {
-            nw_release(path);
-        }
-        finish(denied);
-    }
 };
 
 } // namespace
@@ -104,6 +91,9 @@ void checkDeniedForConnection(const QUrl &url, QObject *context, std::function<v
     const auto endpoint = nw_endpoint_create_host(hostUtf8.constData(), portUtf8.constData());
     const auto parameters = nw_parameters_create_secure_tcp(NW_PARAMETERS_DISABLE_PROTOCOL,
                                                             NW_PARAMETERS_DEFAULT_CONFIGURATION);
+    if (parameters) {
+        nw_parameters_set_prefer_no_proxy(parameters, true);
+    }
     if (!endpoint || !parameters) {
         if (endpoint) {
             nw_release(endpoint);
@@ -141,9 +131,20 @@ void checkDeniedForConnection(const QUrl &url, QObject *context, std::function<v
             probe->finish(false);
             break;
         case nw_connection_state_waiting:
-        case nw_connection_state_failed:
-            probe->finishForCurrentPath();
-            break;
+        case nw_connection_state_failed: {
+            if (probe->completed) {
+                break;
+            }
+
+            const auto path = nw_connection_copy_current_path(connection);
+            const auto denied = isLocalNetworkDenied(path);
+            if (path) {
+                nw_release(path);
+            }
+            if (denied) {
+                probe->finish(true);
+            }
+        } break;
         case nw_connection_state_invalid:
         case nw_connection_state_preparing:
         case nw_connection_state_cancelled:
@@ -153,7 +154,16 @@ void checkDeniedForConnection(const QUrl &url, QObject *context, std::function<v
     nw_connection_start(connection);
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC), queue, ^{
-        probe->finishForCurrentPath();
+        if (probe->completed) {
+            return;
+        }
+
+        const auto path = nw_connection_copy_current_path(connection);
+        const auto denied = isLocalNetworkDenied(path);
+        if (path) {
+            nw_release(path);
+        }
+        probe->finish(denied);
     });
 }
 
@@ -163,4 +173,4 @@ QString deniedError()
                                        "Local Network access is disabled. Enable it in System Settings → Privacy & Security → Local Network.");
 }
 
-} // namespace OCC::Mac
+} // namespace OCC::LocalNetworkPermission
