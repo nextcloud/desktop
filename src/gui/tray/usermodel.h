@@ -132,6 +132,7 @@ public:
     [[nodiscard]] QColor headerTextColor() const;
     [[nodiscard]] AccountAppList appList() const;
     [[nodiscard]] QImage avatar() const;
+    /** @brief Signs in a signed-out account or retries another disconnected state. */
     void login() const;
     void logout() const;
     void removeAccount() const;

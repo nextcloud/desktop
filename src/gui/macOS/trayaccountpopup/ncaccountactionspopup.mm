@@ -18,6 +18,7 @@
 
 #include "systray.h"
 #include "tray/trayaccountappsmodel.h"
+#include "tray/trayaccountmenupolicy.h"
 #include "tray/usermodel.h"
 
 #include <QCoreApplication>
@@ -89,7 +90,7 @@ static NSView *compactAccountActionsSeparator()
     NCNotificationActionsPopup *_notificationActionsPopup;
     NCActionRow *_activeSubmenuRow; //!< The row whose sub-popup is currently shown, kept persistently highlighted.
     __unsafe_unretained NCTrayPopup *_owner;
-    QMetaObject::Connection _recentActivitiesConnection; //!< Rebuilds the popup in place when the model reports new activity or notifications.
+    QMetaObject::Connection _accountMenuDataConnection; //!< Rebuilds the popup when visible menu data or connectivity changes.
     int _userIndex;
 }
 
@@ -112,13 +113,13 @@ static NSView *compactAccountActionsSeparator()
 {
     [_appsPopup release];
     [_notificationActionsPopup release];
-    if (_recentActivitiesConnection) {
-        QObject::disconnect(_recentActivitiesConnection);
+    if (_accountMenuDataConnection) {
+        QObject::disconnect(_accountMenuDataConnection);
     }
     [super dealloc];
 }
 
-- (BOOL)isShowingActivitiesForUserIndex:(int)userIndex
+- (BOOL)isShowingUserIndex:(int)userIndex
 {
     return [self isVisible] && _userIndex == userIndex;
 }
@@ -128,9 +129,9 @@ static NSView *compactAccountActionsSeparator()
     [_appsPopup orderOut:nil];
     [_notificationActionsPopup orderOut:nil];
     [self clearActiveSubmenuRow];
-    if (_recentActivitiesConnection) {
-        QObject::disconnect(_recentActivitiesConnection);
-        _recentActivitiesConnection = {};
+    if (_accountMenuDataConnection) {
+        QObject::disconnect(_accountMenuDataConnection);
+        _accountMenuDataConnection = {};
     }
     _userIndex = -1;
     [super orderOut:sender];
@@ -190,6 +191,31 @@ static NSView *compactAccountActionsSeparator()
     [self populateForUserIndex:userIndex owner:owner refreshActivities:YES];
 }
 
+/**
+ * @brief Resizes the popup to its current rows while optionally retaining its top edge.
+ * @param preserveTopEdge Whether a visible popup should grow downwards.
+ * @param topEdge The previous top edge to retain when @p preserveTopEdge is YES.
+ */
+- (void)resizeToFitPreservingTopEdge:(BOOL)preserveTopEdge topEdge:(CGFloat)topEdge
+{
+    [self.contentView layoutSubtreeIfNeeded];
+    NSRect frame = self.frame;
+    frame.size.width = kAccountActionsPopupWidth;
+    frame.size.height = _stack.fittingSize.height;
+    if (preserveTopEdge) {
+        frame.origin.y = topEdge - frame.size.height;
+    }
+    auto screen = self.screen;
+    if (!screen) {
+        screen = NSScreen.mainScreen ?: NSScreen.screens.firstObject;
+    }
+    if (screen) {
+        frame.origin = clampedPopupOrigin(frame.origin, frame.size, screen.visibleFrame);
+    }
+    [self setFrame:frame display:NO];
+    [self invalidateShadow];
+}
+
 - (void)populateForUserIndex:(int)userIndex owner:(NCTrayPopup *)owner refreshActivities:(BOOL)refreshActivities
 {
     const auto preserveTopEdge = [self isVisible];
@@ -197,15 +223,14 @@ static NSView *compactAccountActionsSeparator()
 
     _owner = owner;
     _userIndex = userIndex;
-    [_appsPopup orderOut:nil];
-    [self clearActiveSubmenuRow];
+    [self hideAppsPopup];
 
     clearStack(_stack);
 
     auto model = OCC::UserModel::instance();
-    if (_recentActivitiesConnection) {
-        QObject::disconnect(_recentActivitiesConnection);
-        _recentActivitiesConnection = {};
+    if (_accountMenuDataConnection) {
+        QObject::disconnect(_accountMenuDataConnection);
+        _accountMenuDataConnection = {};
     }
     if (!model || userIndex < 0 || userIndex >= model->rowCount()) {
         return;
@@ -213,9 +238,9 @@ static NSView *compactAccountActionsSeparator()
 
     __unsafe_unretained NCTrayPopup *weakOwner = owner;
     __unsafe_unretained NCAccountActionsPopup *weakSelf = self;
-    _recentActivitiesConnection = QObject::connect(model, &QAbstractItemModel::dataChanged, model,
+    _accountMenuDataConnection = QObject::connect(model, &QAbstractItemModel::dataChanged, model,
         [weakSelf, weakOwner, userIndex](const QModelIndex &topLeft, const QModelIndex &bottomRight, const QList<int> &roles) {
-            if (!weakSelf || ![weakSelf isShowingActivitiesForUserIndex:userIndex]) {
+            if (!weakSelf || ![weakSelf isShowingUserIndex:userIndex]) {
                 return;
             }
             if (userIndex < topLeft.row() || userIndex > bottomRight.row()) {
@@ -223,7 +248,8 @@ static NSView *compactAccountActionsSeparator()
             }
             if (!roles.isEmpty()
                 && !roles.contains(OCC::UserModel::RecentActivitiesRole)
-                && !roles.contains(OCC::UserModel::TrayNotificationsRole)) {
+                && !roles.contains(OCC::UserModel::TrayNotificationsRole)
+                && !roles.contains(OCC::UserModel::IsConnectedRole)) {
                 return;
             }
 
@@ -231,15 +257,51 @@ static NSView *compactAccountActionsSeparator()
         });
 
     const auto userModelIndex = model->index(userIndex);
+    const auto policy = OCC::TrayAccountMenuPolicy{
+        model->data(userModelIndex, OCC::UserModel::IsConnectedRole).toBool(),
+        model->data(userModelIndex, OCC::UserModel::CanLogoutRole).toBool(),
+    };
+    if (!policy.showConnectedSections()) {
+        addOwnedArrangedSubview(_stack, [[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kAccountActionsPopupWidth]);
+        for (const auto entry : policy.disconnectedEntries()) {
+            switch (entry) {
+            case OCC::TrayAccountMenuEntry::LocalFolder:
+                addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:QCoreApplication::translate("TrayFoldersMenuButton", "Reveal in Finder").toNSString()
+                                                                             width:kAccountActionsPopupWidth
+                                                                           enabled:YES
+                                                                            action:^{
+                    [weakOwner openLocalFolderForIndex:userIndex];
+                } hoverAction:^(NSView *) {
+                    [weakSelf hideAppsPopup];
+                }]);
+                break;
+            case OCC::TrayAccountMenuEntry::Separator:
+                [_stack addArrangedSubview:accountActionsSeparator()];
+                break;
+            case OCC::TrayAccountMenuEntry::Reconnect:
+                addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:QCoreApplication::translate("OCC::AccountSettings", "Log in").toNSString()
+                                                                             width:kAccountActionsPopupWidth
+                                                                           enabled:YES
+                                                                            action:^{
+                    [weakOwner reconnectForIndex:userIndex];
+                } hoverAction:^(NSView *) {
+                    [weakSelf hideAppsPopup];
+                }]);
+                break;
+            }
+        }
+        addOwnedArrangedSubview(_stack, [[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kAccountActionsPopupWidth]);
+        [self resizeToFitPreservingTopEdge:preserveTopEdge topEdge:topEdge];
+        return;
+    }
+
     const auto serverHasUserStatus = model->data(userModelIndex, OCC::UserModel::ServerHasUserStatusRole).toBool();
-    const auto onlineStatusEnabled = model->data(userModelIndex, OCC::UserModel::IsConnectedRole).toBool()
-        && serverHasUserStatus;
+    const auto onlineStatusEnabled = policy.showConnectedSections() && serverHasUserStatus;
 
     auto appsModel = OCC::TrayAccountAppsModel::instance();
     appsModel->setUserId(userIndex);
     const auto appsEnabled = appsModel->rowCount() > 0;
     const auto assistantEnabled = model->data(userModelIndex, OCC::UserModel::AssistantEnabledRole).toBool();
-    const auto searchEnabled = model->data(userModelIndex, OCC::UserModel::IsConnectedRole).toBool();
     addOwnedArrangedSubview(_stack, [[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kAccountActionsPopupWidth]);
     if (serverHasUserStatus) {
         const auto status = model->data(userModelIndex, OCC::UserModel::StatusRole).value<OCC::UserStatus::OnlineStatus>();
@@ -278,7 +340,7 @@ static NSView *compactAccountActionsSeparator()
     }
     addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:QCoreApplication::translate("TrayAccountPopup", "Search").toNSString()
                                                                  width:kAccountActionsPopupWidth
-                                                               enabled:searchEnabled
+                                                               enabled:YES
                                                                 action:^{
         [weakOwner openSearchForIndex:userIndex];
     } hoverAction:^(NSView *) {
@@ -370,24 +432,9 @@ static NSView *compactAccountActionsSeparator()
 
     addOwnedArrangedSubview(_stack, [[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kAccountActionsPopupWidth]);
 
-    [self.contentView layoutSubtreeIfNeeded];
-    NSRect frame = self.frame;
-    frame.size.width = kAccountActionsPopupWidth;
-    frame.size.height = _stack.fittingSize.height;
-    if (preserveTopEdge) {
-        frame.origin.y = topEdge - frame.size.height;
-    }
-    auto screen = self.screen;
-    if (!screen) {
-        screen = NSScreen.mainScreen ?: NSScreen.screens.firstObject;
-    }
-    if (screen) {
-        frame.origin = clampedPopupOrigin(frame.origin, frame.size, screen.visibleFrame);
-    }
-    [self setFrame:frame display:NO];
-    [self invalidateShadow];
+    [self resizeToFitPreservingTopEdge:preserveTopEdge topEdge:topEdge];
 
-    if (refreshActivities) {
+    if (refreshActivities && policy.fetchActivityPreview()) {
         model->fetchActivityPreview(userIndex);
     }
 }

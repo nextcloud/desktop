@@ -4,6 +4,7 @@
  */
 
 #include "activity/notificationhandler.h"
+#include "trayaccountmenupolicy.h"
 #include "usermodel.h"
 #include "common/filesystembase.h"
 
@@ -1805,8 +1806,21 @@ void User::openFolderLocallyOrInBrowser(const QString &fullRemotePath)
 
 void User::login() const
 {
-    _account->account()->resetRejectedCertificates();
-    _account->signIn();
+    switch (TrayAccountMenuPolicy::reconnectMode(
+        _account->isConnected(),
+        _account->isSignedOut(),
+        !isPublicShareLink())) {
+    case TrayAccountReconnectMode::None:
+        return;
+    case TrayAccountReconnectMode::SignIn:
+        _account->account()->resetRejectedCertificates();
+        _account->signIn();
+        break;
+    case TrayAccountReconnectMode::RetryConnection:
+        _account->account()->resetRejectedCertificates();
+        _account->freshConnectionAttempt();
+        break;
+    }
 }
 
 void User::logout() const
