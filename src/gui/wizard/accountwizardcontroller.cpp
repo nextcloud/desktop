@@ -53,6 +53,8 @@
 #include <QTimer>
 #include <QUuid>
 
+#include <utility>
+
 using namespace Qt::StringLiterals;
 
 namespace OCC {
@@ -1905,7 +1907,7 @@ void AccountWizardController::discardFlow2Auth()
 
 void AccountWizardController::handleFailedServerConnection(const QUrl &url, bool retryHttpOnly)
 {
-    LocalNetworkPermission::checkDeniedForConnection(url, this, [this, url, retryHttpOnly](bool denied) {
+    checkLocalNetworkPermissionDenied(url, [this, url, retryHttpOnly](bool denied) {
         if (_account && _account->url() != url) {
             return;
         }
@@ -1917,6 +1919,11 @@ void AccountWizardController::handleFailedServerConnection(const QUrl &url, bool
 
         handleSecureConnectionFailure(nullptr, retryHttpOnly);
     });
+}
+
+void AccountWizardController::checkLocalNetworkPermissionDenied(const QUrl &url, std::function<void(bool)> callback)
+{
+    LocalNetworkPermission::checkDeniedForConnection(url, this, std::move(callback));
 }
 
 void AccountWizardController::handleSecureConnectionFailure(QNetworkReply *reply, bool retryHttpOnly)
