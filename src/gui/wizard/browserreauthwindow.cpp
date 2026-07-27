@@ -88,8 +88,9 @@ BrowserReAuthWindow::BrowserReAuthWindow(Account *account, QObject *parent)
         }
     });
 
-    auto *app = dynamic_cast<Application *>(qApp);
-    connect(app, &Application::isShowingSettingsDialog, this, &BrowserReAuthWindow::slotShowSettingsDialog);
+    if (auto *app = dynamic_cast<Application *>(qApp)) {
+        connect(app, &Application::isShowingSettingsDialog, this, &BrowserReAuthWindow::slotShowSettingsDialog);
+    }
 }
 
 BrowserReAuthWindow::~BrowserReAuthWindow()
