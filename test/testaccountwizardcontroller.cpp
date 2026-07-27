@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include "account.h"
 #include "configfile.h"
 #include "gui/localnetworkpermission.h"
 #include "gui/wizard/accountwizardcontroller.h"
@@ -20,23 +21,26 @@
 
 using namespace OCC;
 
-class LocalNetworkPermissionAccountWizardController : public AccountWizardController
+namespace OCC {
+
+class AccountWizardControllerTestAccess
 {
 public:
-    bool localNetworkPermissionDenied = false;
-    int secureConnectionRecoveryCount = 0;
-
-protected:
-    void checkLocalNetworkPermissionDenied(const QUrl &, std::function<void(bool)> callback) override
+    static void setLocalNetworkPermissionDenied(AccountWizardController &controller, bool denied)
     {
-        callback(localNetworkPermissionDenied);
+        controller._localNetworkPermissionCheck = [denied](const QUrl &, QObject *, std::function<void(bool)> callback) {
+            callback(denied);
+        };
     }
 
-    void handleSecureConnectionFailure(QNetworkReply *, bool) override
+    static void setAccountUrl(AccountWizardController &controller, const QUrl &url)
     {
-        ++secureConnectionRecoveryCount;
+        controller._account = Account::create();
+        controller._account->setUrl(url);
     }
 };
+
+}
 
 class TestAccountWizardController : public QObject
 {
@@ -84,28 +88,36 @@ private slots:
 
     void localNetworkPermissionFailureSkipsSecureConnectionRecovery()
     {
-        LocalNetworkPermissionAccountWizardController controller;
-        controller.localNetworkPermissionDenied = true;
+        AccountWizardController controller;
+        AccountWizardControllerTestAccess::setLocalNetworkPermissionDenied(controller, true);
+        QSignalSpy recoverySpy(&controller, &AccountWizardController::secureConnectionFailed);
 
         QVERIFY(QMetaObject::invokeMethod(&controller,
                                           "slotNoServerFoundTimeout",
                                           Qt::DirectConnection,
                                           Q_ARG(QUrl, QUrl(QStringLiteral("https://cloud.example")))));
 
-        QCOMPARE(controller.secureConnectionRecoveryCount, 0);
+        QCOMPARE(recoverySpy.count(), 0);
         QCOMPARE(controller.errorText(), LocalNetworkPermission::deniedError());
     }
 
     void otherServerFailureOffersSecureConnectionRecovery()
     {
-        LocalNetworkPermissionAccountWizardController controller;
+        AccountWizardController controller;
+        const auto serverUrl = QUrl(QStringLiteral("https://cloud.example"));
+        AccountWizardControllerTestAccess::setLocalNetworkPermissionDenied(controller, false);
+        AccountWizardControllerTestAccess::setAccountUrl(controller, serverUrl);
+        QSignalSpy recoverySpy(&controller, &AccountWizardController::secureConnectionFailed);
 
         QVERIFY(QMetaObject::invokeMethod(&controller,
                                           "slotNoServerFoundTimeout",
                                           Qt::DirectConnection,
-                                          Q_ARG(QUrl, QUrl(QStringLiteral("https://cloud.example")))));
+                                          Q_ARG(QUrl, serverUrl)));
 
-        QCOMPARE(controller.secureConnectionRecoveryCount, 1);
+        QCOMPARE(recoverySpy.count(), 1);
+        const auto arguments = recoverySpy.takeFirst();
+        QCOMPARE(arguments.at(0).toString(), serverUrl.host());
+        QCOMPARE(arguments.at(1).toBool(), false);
     }
     void invalidServerUrlStaysOnServerStep()
     {

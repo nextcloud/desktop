@@ -158,10 +158,11 @@ protected slots:
 
     void termsOfServiceCheckDone();
 
-protected:
-    virtual void checkLocalNetworkPermissionDenied(const QUrl &url, std::function<void(bool)> callback);
-
 private:
+    using LocalNetworkPermissionCheck = std::function<void(const QUrl &, QObject *, std::function<void(bool)>)>;
+
+    friend class ConnectionValidatorTestAccess;
+
 #ifndef TOKEN_AUTH_ONLY
     void reportConnected();
 #endif
@@ -182,6 +183,7 @@ private:
     AccountStatePtr _accountState;
     AccountPtr _account;
     TermsOfServiceChecker _termsOfServiceChecker;
+    LocalNetworkPermissionCheck _localNetworkPermissionCheck;
     bool _isCheckingServerAndAuth = false;
 };
 }

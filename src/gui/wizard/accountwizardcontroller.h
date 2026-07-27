@@ -256,11 +256,11 @@ private slots:
     void slotRemoteFolderExists(QNetworkReply *reply);
     void slotCreateRemoteFolderFinished(QNetworkReply *reply);
 
-protected:
-    virtual void checkLocalNetworkPermissionDenied(const QUrl &url, std::function<void(bool)> callback);
-    virtual void handleSecureConnectionFailure(QNetworkReply *reply, bool retryHttpOnly);
-
 private:
+    using LocalNetworkPermissionCheck = std::function<void(const QUrl &, QObject *, std::function<void(bool)>)>;
+
+    friend class AccountWizardControllerTestAccess;
+
     void initialiseAccount();
     void ensureAccount();
     void initialiseOverrideServerChoices();
@@ -304,8 +304,10 @@ private:
     void discardFlow2Auth();
     [[nodiscard]] bool checkDowngradeAdvised(QNetworkReply *reply) const;
     void handleFailedServerConnection(const QUrl &url, bool retryHttpOnly);
+    void handleSecureConnectionFailure(QNetworkReply *reply, bool retryHttpOnly);
 
     AccountPtr _account;
+    LocalNetworkPermissionCheck _localNetworkPermissionCheck;
     std::unique_ptr<Flow2Auth> _flow2Auth;
     QPointer<SelectiveSyncDialog> _selectiveSyncDialog;
     enum class ProxyAuthentication {
