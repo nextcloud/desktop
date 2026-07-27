@@ -18,9 +18,7 @@
 #include "userinfo.h"
 #include "networkjobs.h"
 #include "clientproxy.h"
-#ifdef Q_OS_MACOS
-#include "macOS/localnetworkpermission.h"
-#endif
+#include "localnetworkpermission.h"
 #include <creds/abstractcredentials.h>
 #include "systray.h"
 
@@ -172,36 +170,19 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
         error = job->errorString();
     }
 
-#ifdef Q_OS_MACOS
-    if (Mac::localNetworkPermissionCheckAvailable()) {
-        Mac::checkLocalNetworkPermissionDeniedForConnection(_account->url(), this, [this, error](const bool denied) {
-            _errors.append(denied ? Mac::localNetworkPermissionDeniedError() : error);
-            reportResult(StatusNotFound);
-        });
-        return;
-    }
-#endif
-
-    _errors.append(error);
-    reportResult(StatusNotFound);
+    LocalNetworkPermission::checkDeniedForConnection(_account->url(), this, [this, error](const bool denied) {
+        _errors.append(denied ? LocalNetworkPermission::deniedError() : error);
+        reportResult(StatusNotFound);
+    });
 }
 
 void ConnectionValidator::slotJobTimeout(const QUrl &url)
 {
     //_errors.append(tr("Unable to connect to %1").arg(url.toString()));
-#ifdef Q_OS_MACOS
-    if (Mac::localNetworkPermissionCheckAvailable()) {
-        Mac::checkLocalNetworkPermissionDeniedForConnection(url, this, [this](const bool denied) {
-            _errors.append(denied ? Mac::localNetworkPermissionDeniedError() : tr("Timeout"));
-            reportResult(Timeout);
-        });
-        return;
-    }
-#endif
-
-    Q_UNUSED(url);
-    _errors.append(tr("Timeout"));
-    reportResult(Timeout);
+    LocalNetworkPermission::checkDeniedForConnection(url, this, [this](const bool denied) {
+        _errors.append(denied ? LocalNetworkPermission::deniedError() : tr("Timeout"));
+        reportResult(Timeout);
+    });
 }
 
 void ConnectionValidator::checkAuthentication()

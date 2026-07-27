@@ -37,6 +37,15 @@ bool isLocalNetworkDenied(nw_path_t path)
         && nw_path_get_unsatisfied_reason(path) == nw_path_unsatisfied_reason_local_network_denied;
 }
 
+bool checkAvailable()
+{
+    if (@available(macOS 15.0, *)) {
+        return true;
+    }
+
+    return false;
+}
+
 struct ConnectionProbe
 {
     nw_connection_t connection = nullptr;
@@ -74,21 +83,11 @@ struct ConnectionProbe
 
 } // namespace
 
-namespace OCC::Mac {
+namespace OCC::LocalNetworkPermission {
 
-bool localNetworkPermissionCheckAvailable()
+void checkDeniedForConnection(const QUrl &url, QObject *context, std::function<void(bool)> callback)
 {
-    if (@available(macOS 15.0, *)) {
-        return true;
-    }
-
-    return false;
-}
-
-void checkLocalNetworkPermissionDeniedForConnection(const QUrl &url, QObject *context,
-                                                    std::function<void(bool)> callback)
-{
-    if (!localNetworkPermissionCheckAvailable()) {
+    if (!checkAvailable()) {
         invokeCallback(context, std::move(callback), false);
         return;
     }
@@ -158,7 +157,7 @@ void checkLocalNetworkPermissionDeniedForConnection(const QUrl &url, QObject *co
     });
 }
 
-QString localNetworkPermissionDeniedError()
+QString deniedError()
 {
     return QCoreApplication::translate("LocalNetworkPermission",
                                        "Local Network access is disabled. Enable it in System Settings → Privacy & Security → Local Network.");

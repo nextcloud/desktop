@@ -299,6 +299,7 @@ private:
     void discardFlow2Auth();
     [[nodiscard]] bool checkDowngradeAdvised(QNetworkReply *reply) const;
     void handleSecureConnectionFailure(QNetworkReply *reply, bool retryHttpOnly);
+    void handleFailedServerConnection(const QUrl &url, bool retryHttpOnly);
 
     AccountPtr _account;
     std::unique_ptr<Flow2Auth> _flow2Auth;

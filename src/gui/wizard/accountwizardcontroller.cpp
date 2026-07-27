@@ -18,10 +18,8 @@
 #include "folder.h"
 #include "folderman.h"
 #include "guiutility.h"
+#include "localnetworkpermission.h"
 #include "networkjobs.h"
-#ifdef Q_OS_MACOS
-#include "macOS/localnetworkpermission.h"
-#endif
 #include "owncloudpropagator_p.h"
 #include "selectivesyncdialog.h"
 #include "theme.h"
@@ -882,18 +880,7 @@ void AccountWizardController::slotNoServerFound(QNetworkReply *reply)
     setErrorText(message);
     _account->resetRejectedCertificates();
 
-#ifdef Q_OS_MACOS
-    if (Mac::localNetworkPermissionCheckAvailable()) {
-        const auto failedUrl = _account->url();
-        Mac::checkLocalNetworkPermissionDeniedForConnection(failedUrl, this, [this, failedUrl](bool denied) {
-            if (denied && _account && _account->url() == failedUrl) {
-                setErrorText(Mac::localNetworkPermissionDeniedError());
-            }
-        });
-    }
-#endif
-
-    handleSecureConnectionFailure(reply, checkDowngradeAdvised(reply));
+    handleFailedServerConnection(_account->url(), checkDowngradeAdvised(reply));
 }
 
 void AccountWizardController::slotNoServerFoundTimeout(const QUrl &url)
@@ -901,16 +888,7 @@ void AccountWizardController::slotNoServerFoundTimeout(const QUrl &url)
     setBusy(false);
     setErrorText(tr("Timeout while trying to connect to %1 at %2.")
         .arg(Utility::escape(Theme::instance()->appNameGUI()), Utility::escape(url.toString())));
-#ifdef Q_OS_MACOS
-    if (Mac::localNetworkPermissionCheckAvailable()) {
-        Mac::checkLocalNetworkPermissionDeniedForConnection(url, this, [this, url](bool denied) {
-            if (denied && _account && _account->url() == url) {
-                setErrorText(Mac::localNetworkPermissionDeniedError());
-            }
-        });
-    }
-#endif
-    handleSecureConnectionFailure(nullptr, false);
+    handleFailedServerConnection(url, false);
 }
 
 void AccountWizardController::slotDetermineAuthType()
@@ -1923,6 +1901,22 @@ void AccountWizardController::discardFlow2Auth()
         oldAuth->deleteLater();
     }
     setAuthPolling(false);
+}
+
+void AccountWizardController::handleFailedServerConnection(const QUrl &url, bool retryHttpOnly)
+{
+    LocalNetworkPermission::checkDeniedForConnection(url, this, [this, url, retryHttpOnly](bool denied) {
+        if (_account && _account->url() != url) {
+            return;
+        }
+
+        if (denied) {
+            setErrorText(LocalNetworkPermission::deniedError());
+            return;
+        }
+
+        handleSecureConnectionFailure(nullptr, retryHttpOnly);
+    });
 }
 
 void AccountWizardController::handleSecureConnectionFailure(QNetworkReply *reply, bool retryHttpOnly)
