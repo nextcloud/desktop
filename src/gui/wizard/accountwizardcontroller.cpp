@@ -893,7 +893,7 @@ void AccountWizardController::slotNoServerFound(QNetworkReply *reply)
     }
 #endif
 
-    static_cast<void>(handleSecureConnectionFailure(reply, checkDowngradeAdvised(reply)));
+    handleSecureConnectionFailure(reply, checkDowngradeAdvised(reply));
 }
 
 void AccountWizardController::slotNoServerFoundTimeout(const QUrl &url)
@@ -910,7 +910,7 @@ void AccountWizardController::slotNoServerFoundTimeout(const QUrl &url)
         });
     }
 #endif
-    static_cast<void>(handleSecureConnectionFailure(nullptr, false));
+    handleSecureConnectionFailure(nullptr, false);
 }
 
 void AccountWizardController::slotDetermineAuthType()
@@ -1925,16 +1925,15 @@ void AccountWizardController::discardFlow2Auth()
     setAuthPolling(false);
 }
 
-bool AccountWizardController::handleSecureConnectionFailure(QNetworkReply *reply, bool retryHttpOnly)
+void AccountWizardController::handleSecureConnectionFailure(QNetworkReply *reply, bool retryHttpOnly)
 {
     const auto failedUrl = _account ? _account->url() : reply ? reply->url() : QUrl{};
     if (failedUrl.scheme() != "https"_L1 || !_account) {
-        return false;
+        return;
     }
 
     _secureConnectionFailedUrl = failedUrl;
     emit secureConnectionFailed(failedUrl.host(), retryHttpOnly);
-    return true;
 }
 
 void AccountWizardController::retrySecureConnectionWithoutTls()

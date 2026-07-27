@@ -298,7 +298,7 @@ private:
     void emitProxySettingsChangedIfNeeded(bool previousValidity, bool previousLocalhostWarning);
     void discardFlow2Auth();
     [[nodiscard]] bool checkDowngradeAdvised(QNetworkReply *reply) const;
-    [[nodiscard]] bool handleSecureConnectionFailure(QNetworkReply *reply, bool retryHttpOnly);
+    void handleSecureConnectionFailure(QNetworkReply *reply, bool retryHttpOnly);
 
     AccountPtr _account;
     std::unique_ptr<Flow2Auth> _flow2Auth;
