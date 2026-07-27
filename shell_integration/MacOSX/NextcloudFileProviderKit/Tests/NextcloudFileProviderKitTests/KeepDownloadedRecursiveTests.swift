@@ -519,7 +519,8 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
         let (_, error) = Enumerator.handlePagedReadResults(
             files: [folderMock.toNKFile(), directChildMock.toNKFile(), subfolderMock.toNKFile()],
             pageIndex: 0,
-            dbManager: Self.dbManager
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
         )
         XCTAssertNil(error)
 

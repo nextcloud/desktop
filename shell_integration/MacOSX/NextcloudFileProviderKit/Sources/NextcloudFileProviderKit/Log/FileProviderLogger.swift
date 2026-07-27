@@ -58,14 +58,37 @@ public struct FileProviderLogger: Sendable {
     ///     - line: Implementations should have `#line` as the default value for this.
     ///
     public func debug(_ message: String, _ details: [FileProviderLogDetailKey: (any Sendable)?] = [:], file: StaticString = #filePath, function: StaticString = #function, line: UInt = #line) {
-        Task {
-            guard await log.debugLoggingEnabled else {
-                return
-            }
+        // Gate synchronously BEFORE dispatching the Task. The previous form always spawned a Task and
+        // only checked the gate inside it, so a hot loop of disabled debug calls (e.g. one per item
+        // during a large enumeration) still paid a Task allocation + actor hop per call. Reading the
+        // user default directly is allocation-free and picks up `defaults write` live; the actor's
+        // `write` still backstops the `.debug` gate. The build-configuration fallback mirrors
+        // `FileProviderLog` (enabled in DEBUG, disabled in release) so behaviour is unchanged.
+        guard debugLoggingEnabledFastPath else {
+            return
+        }
 
+        Task {
             writeToUnifiedLoggingSystem(level: .debug, message: message, details: details, file: file, function: function, line: line)
             await log.write(category: category, level: .debug, message: message, details: details, file: file, function: function, line: line)
         }
+    }
+
+    ///
+    /// Synchronous fast-path mirror of ``FileProviderLog/debugLoggingEnabled``, used to gate ``debug(_:_:file:function:line:)``
+    /// before a Task is spawned. Reads the process-global `debugLoggingEnabled` user default live; when unset it falls back to
+    /// the build-configuration default (enabled in DEBUG, disabled in release), exactly as `FileProviderLog` does at startup.
+    ///
+    private var debugLoggingEnabledFastPath: Bool {
+        if let number = UserDefaults.standard.object(forKey: "debugLoggingEnabled") as? NSNumber {
+            return number.boolValue
+        }
+
+        #if DEBUG
+            return true
+        #else
+            return false
+        #endif
     }
 
     ///
@@ -116,6 +139,33 @@ public struct FileProviderLogger: Sendable {
         Task {
             writeToUnifiedLoggingSystem(level: .fault, message: message, details: details, file: file, function: function, line: line)
             await log.write(category: category, level: .fault, message: message, details: details, file: file, function: function, line: line)
+        }
+    }
+
+    ///
+    /// Dispatch a task to write a performance-timing message at `OSLogType.info`, gated by ``FileProviderLogging/performanceLoggingEnabled``.
+    ///
+    /// Use this for wall-clock timing summaries (e.g. per-page network / conversion / database durations during enumeration).
+    /// Unlike ``debug(_:_:file:function:line:)`` this gates *inside* the Task via the actor flag rather than a synchronous fast-path:
+    /// performance lines are emitted at most a couple of times per enumerated page, so the Task overhead is negligible and not
+    /// worth a second user-default fast-path. The flag is independent of `debugLoggingEnabled` so a measurement run is not polluted
+    /// by the per-item debug traces that flag enables.
+    ///
+    /// - Parameters:
+    ///     - message: A human-readable message; interpolate the timing numbers directly (the structured `details` channel has no numeric branch).
+    ///     - details: Structured and contextual details about a message.
+    ///     - file: Implementations should have `#filePath` as the default value for this.
+    ///     - function: Implementations should have `#function` as the default value for this.
+    ///     - line: Implementations should have `#line` as the default value for this.
+    ///
+    public func performance(_ message: String, _ details: [FileProviderLogDetailKey: (any Sendable)?] = [:], file: StaticString = #filePath, function: StaticString = #function, line: UInt = #line) {
+        Task {
+            guard await log.performanceLoggingEnabled else {
+                return
+            }
+
+            writeToUnifiedLoggingSystem(level: .info, message: message, details: details, file: file, function: function, line: line)
+            await log.write(category: category, level: .info, message: message, details: details, file: file, function: function, line: line)
         }
     }
 

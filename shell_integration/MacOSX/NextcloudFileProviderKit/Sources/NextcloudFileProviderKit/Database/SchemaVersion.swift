@@ -10,4 +10,5 @@ enum SchemaVersion: UInt64 {
     case addedLockTokenPropertyToRealmItemMetadata = 201
     case addedIsLockFileOfLocalOriginToRealmItemMetadata = 202
     case addedCanonicalPathKeysToRealmItemMetadata = 203
+    case addedNormalizedFileNameIndexToRealmItemMetadata = 204
 }
