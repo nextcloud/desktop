@@ -901,6 +901,15 @@ void AccountWizardController::slotNoServerFoundTimeout(const QUrl &url)
     setBusy(false);
     setErrorText(tr("Timeout while trying to connect to %1 at %2.")
         .arg(Utility::escape(Theme::instance()->appNameGUI()), Utility::escape(url.toString())));
+#ifdef Q_OS_MACOS
+    if (Mac::localNetworkPermissionCheckAvailable()) {
+        Mac::checkLocalNetworkPermissionDeniedForConnection(url, this, [this, url](bool denied) {
+            if (denied && _account && _account->url() == url) {
+                setErrorText(Mac::localNetworkPermissionDeniedError());
+            }
+        });
+    }
+#endif
     static_cast<void>(handleSecureConnectionFailure(nullptr, false));
 }
 
