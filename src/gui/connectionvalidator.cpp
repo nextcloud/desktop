@@ -18,6 +18,9 @@
 #include "userinfo.h"
 #include "networkjobs.h"
 #include "clientproxy.h"
+#ifdef Q_OS_MACOS
+#include "macOS/localnetworkpermission.h"
+#endif
 #include <creds/abstractcredentials.h>
 #include "systray.h"
 
@@ -160,13 +163,26 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
         return;
     }
 
+    QString error;
     if (!_account->credentials()->stillValid(reply)) {
         // Note: Why would this happen on a status.php request?
-        _errors.append(tr("Authentication error: Either username or password are wrong."));
+        error = tr("Authentication error: Either username or password are wrong.");
     } else {
         //_errors.append(tr("Unable to connect to %1").arg(_account->url().toString()));
-        _errors.append(job->errorString());
+        error = job->errorString();
     }
+
+#ifdef Q_OS_MACOS
+    if (Mac::localNetworkPermissionCheckAvailable()) {
+        Mac::checkLocalNetworkPermissionDeniedForConnection(_account->url(), this, [this, error](const bool denied) {
+            _errors.append(denied ? Mac::localNetworkPermissionDeniedError() : error);
+            reportResult(StatusNotFound);
+        });
+        return;
+    }
+#endif
+
+    _errors.append(error);
     reportResult(StatusNotFound);
 }
 
