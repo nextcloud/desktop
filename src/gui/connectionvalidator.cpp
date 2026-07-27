@@ -188,12 +188,21 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 
 void ConnectionValidator::slotJobTimeout(const QUrl &url)
 {
-    Q_UNUSED(url);
     //_errors.append(tr("Unable to connect to %1").arg(url.toString()));
+#ifdef Q_OS_MACOS
+    if (Mac::localNetworkPermissionCheckAvailable()) {
+        Mac::checkLocalNetworkPermissionDeniedForConnection(url, this, [this](const bool denied) {
+            _errors.append(denied ? Mac::localNetworkPermissionDeniedError() : tr("Timeout"));
+            reportResult(Timeout);
+        });
+        return;
+    }
+#endif
+
+    Q_UNUSED(url);
     _errors.append(tr("Timeout"));
     reportResult(Timeout);
 }
-
 
 void ConnectionValidator::checkAuthentication()
 {
