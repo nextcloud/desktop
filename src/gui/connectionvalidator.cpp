@@ -12,8 +12,6 @@
 #include <QNetworkProxyFactory>
 #include <QXmlStreamReader>
 
-#include <utility>
-
 #include "connectionvalidator.h"
 #include "account.h"
 #include "accountstate.h"
@@ -38,6 +36,7 @@ ConnectionValidator::ConnectionValidator(AccountStatePtr accountState, const QSt
     , _accountState(accountState)
     , _account(accountState->account())
     , _termsOfServiceChecker(_account)
+    , _localNetworkPermissionCheck(LocalNetworkPermission::checkDeniedForConnection)
 {
     connect(&_termsOfServiceChecker, &TermsOfServiceChecker::done,
             this, &ConnectionValidator::termsOfServiceCheckDone);
@@ -172,7 +171,7 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
         error = job->errorString();
     }
 
-    checkLocalNetworkPermissionDenied(_account->url(), [this, error](const bool denied) {
+    _localNetworkPermissionCheck(_account->url(), this, [this, error](const bool denied) {
         _errors.append(denied ? LocalNetworkPermission::deniedError() : error);
         reportResult(StatusNotFound);
     });
@@ -181,15 +180,10 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 void ConnectionValidator::slotJobTimeout(const QUrl &url)
 {
     //_errors.append(tr("Unable to connect to %1").arg(url.toString()));
-    checkLocalNetworkPermissionDenied(url, [this](const bool denied) {
+    _localNetworkPermissionCheck(url, this, [this](const bool denied) {
         _errors.append(denied ? LocalNetworkPermission::deniedError() : tr("Timeout"));
         reportResult(Timeout);
     });
-}
-
-void ConnectionValidator::checkLocalNetworkPermissionDenied(const QUrl &url, std::function<void(bool)> callback)
-{
-    LocalNetworkPermission::checkDeniedForConnection(url, this, std::move(callback));
 }
 
 void ConnectionValidator::checkAuthentication()

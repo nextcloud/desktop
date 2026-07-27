@@ -14,24 +14,25 @@
 
 using namespace OCC;
 
-class LocalNetworkPermissionConnectionValidator : public ConnectionValidator
+namespace OCC {
+
+class ConnectionValidatorTestAccess
 {
 public:
-    using ConnectionValidator::ConnectionValidator;
-
-    bool localNetworkPermissionDenied = false;
-
-    void reportTimeout(const QUrl &url)
+    static void setLocalNetworkPermissionDenied(ConnectionValidator &validator, bool denied)
     {
-        slotJobTimeout(url);
+        validator._localNetworkPermissionCheck = [denied](const QUrl &, QObject *, std::function<void(bool)> callback) {
+            callback(denied);
+        };
     }
 
-protected:
-    void checkLocalNetworkPermissionDenied(const QUrl &, std::function<void(bool)> callback) override
+    static void reportTimeout(ConnectionValidator &validator, const QUrl &url)
     {
-        callback(localNetworkPermissionDenied);
+        validator.slotJobTimeout(url);
     }
 };
+
+}
 
 class TestConnectionValidator : public QObject
 {
@@ -48,11 +49,11 @@ private slots:
         const auto account = Account::create();
         account->setUrl(QUrl(QStringLiteral("https://cloud.example")));
         const auto accountState = AccountStatePtr(new FakeAccountState(account));
-        LocalNetworkPermissionConnectionValidator validator(accountState, {});
-        validator.localNetworkPermissionDenied = true;
+        ConnectionValidator validator(accountState, {});
+        ConnectionValidatorTestAccess::setLocalNetworkPermissionDenied(validator, true);
         QSignalSpy resultSpy(&validator, &ConnectionValidator::connectionResult);
 
-        validator.reportTimeout(account->url());
+        ConnectionValidatorTestAccess::reportTimeout(validator, account->url());
 
         QCOMPARE(resultSpy.count(), 1);
         const auto result = resultSpy.takeFirst();

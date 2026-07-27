@@ -53,8 +53,6 @@
 #include <QTimer>
 #include <QUuid>
 
-#include <utility>
-
 using namespace Qt::StringLiterals;
 
 namespace OCC {
@@ -95,6 +93,7 @@ bool localFolderContainsData(const QString &localSyncFolder)
 
 AccountWizardController::AccountWizardController(QObject *parent)
     : QObject(parent)
+    , _localNetworkPermissionCheck(LocalNetworkPermission::checkDeniedForConnection)
 {
     initialiseAccount();
 
@@ -1907,7 +1906,7 @@ void AccountWizardController::discardFlow2Auth()
 
 void AccountWizardController::handleFailedServerConnection(const QUrl &url, bool retryHttpOnly)
 {
-    checkLocalNetworkPermissionDenied(url, [this, url, retryHttpOnly](bool denied) {
+    _localNetworkPermissionCheck(url, this, [this, url, retryHttpOnly](bool denied) {
         if (_account && _account->url() != url) {
             return;
         }
@@ -1919,11 +1918,6 @@ void AccountWizardController::handleFailedServerConnection(const QUrl &url, bool
 
         handleSecureConnectionFailure(nullptr, retryHttpOnly);
     });
-}
-
-void AccountWizardController::checkLocalNetworkPermissionDenied(const QUrl &url, std::function<void(bool)> callback)
-{
-    LocalNetworkPermission::checkDeniedForConnection(url, this, std::move(callback));
 }
 
 void AccountWizardController::handleSecureConnectionFailure(QNetworkReply *reply, bool retryHttpOnly)
