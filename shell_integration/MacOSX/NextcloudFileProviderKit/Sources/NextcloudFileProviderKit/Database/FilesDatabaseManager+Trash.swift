@@ -7,8 +7,9 @@ extension FilesDatabaseManager {
     func trashedItemMetadatas(account: Account) -> [SendableItemMetadata] {
         ncDatabase()
             .objects(RealmItemMetadata.self)
-            .where {
-                $0.account == account.ncKitAccount && $0.serverUrl.starts(with: account.trashUrl)
+            .where { item in
+                item.account == account.ncKitAccount &&
+                    RealmItemMetadata.hasServerUrl(item, equalTo: account.trashUrl, includingDescendants: true)
             }
             .toUnmanagedResults()
     }

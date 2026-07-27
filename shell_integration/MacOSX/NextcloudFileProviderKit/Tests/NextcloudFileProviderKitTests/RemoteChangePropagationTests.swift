@@ -216,8 +216,7 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         let ghost = RealmItemMetadata()
         ghost.ocId = "staleGhost"
         ghost.account = Self.account.ncKitAccount
-        ghost.serverUrl = storedLive.serverUrl
-        ghost.fileName = storedLive.fileName
+        ghost.updateLocation(serverUrl: storedLive.serverUrl, fileName: storedLive.fileName)
         ghost.uploaded = true
         ghost.syncTime = oldSyncTime
         try realm.write { realm.add(ghost) }
