@@ -19,6 +19,9 @@
 #include "folderman.h"
 #include "guiutility.h"
 #include "networkjobs.h"
+#ifdef Q_OS_MACOS
+#include "macOS/localnetworkpermission.h"
+#endif
 #include "owncloudpropagator_p.h"
 #include "selectivesyncdialog.h"
 #include "theme.h"
@@ -878,6 +881,17 @@ void AccountWizardController::slotNoServerFound(QNetworkReply *reply)
     setBusy(false);
     setErrorText(message);
     _account->resetRejectedCertificates();
+
+#ifdef Q_OS_MACOS
+    if (Mac::localNetworkPermissionCheckAvailable()) {
+        const auto failedUrl = _account->url();
+        Mac::checkLocalNetworkPermissionDeniedForConnection(failedUrl, this, [this, failedUrl](bool denied) {
+            if (denied && _account && _account->url() == failedUrl) {
+                setErrorText(Mac::localNetworkPermissionDeniedError());
+            }
+        });
+    }
+#endif
 
     static_cast<void>(handleSecureConnectionFailure(reply, checkDowngradeAdvised(reply)));
 }
