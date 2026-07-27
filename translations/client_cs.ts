@@ -99,7 +99,7 @@
     <message>
         <location filename="../src/gui/activity/qml/ActivitiesWindow.qml" line="20"/>
         <source>Activities</source>
-        <translation type="unfinished"/>
+        <translation>Aktivity</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/qml/ActivitiesWindow.qml" line="127"/>
@@ -217,7 +217,7 @@
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="119"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Zrušit</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="125"/>
@@ -233,7 +233,7 @@
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="252"/>
         <source>Send</source>
-        <translation type="unfinished"/>
+        <translation>Odeslat</translation>
     </message>
 </context>
 <context>
@@ -663,7 +663,7 @@
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="388"/>
         <source>Sensitivity:</source>
-        <translation type="unfinished"/>
+        <translation>Citlivost:</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="399"/>
@@ -673,7 +673,7 @@
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="425"/>
         <source>Retention:</source>
-        <translation type="unfinished"/>
+        <translation>Uchovávání:</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="436"/>
@@ -693,7 +693,7 @@
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="485"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Dokončeno</translation>
     </message>
 </context>
 <context>
@@ -766,7 +766,7 @@
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="749"/>
         <source>Assistant</source>
-        <translation type="unfinished"/>
+        <translation>Asistent</translation>
     </message>
 </context>
 <context>
@@ -774,32 +774,32 @@
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="20"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>Zpět</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="26"/>
         <source>Redo</source>
-        <translation type="unfinished"/>
+        <translation>Zopakovat</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="34"/>
         <source>Cut</source>
-        <translation type="unfinished"/>
+        <translation>Vyjmout</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="40"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Zkopírovat</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="46"/>
         <source>Paste</source>
-        <translation type="unfinished"/>
+        <translation>Vložit</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="52"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Smazat</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="60"/>
@@ -894,7 +894,7 @@ Chcete ho naimportovat?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="216"/>
         <source>Resolve…</source>
-        <translation type="unfinished"/>
+        <translation>Vyřešit…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="286"/>
@@ -3906,7 +3906,7 @@ Přechod na konzervativnější verze není možný: změna ze stable na enterpr
     <message>
         <location filename="../src/gui/governance/governancelabelslistmodel.cpp" line="62"/>
         <source>None</source>
-        <translation type="unfinished"/>
+        <translation>Žádné</translation>
     </message>
     <message>
         <location filename="../src/gui/governance/governancelabelslistmodel.cpp" line="68"/>
@@ -6115,7 +6115,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="843"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Ukončit</translation>
     </message>
 </context>
 <context>
@@ -7020,7 +7020,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="19"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Hledat</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="74"/>
@@ -7296,12 +7296,12 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="624"/>
         <source>Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Upozornění</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="648"/>
         <source>Open</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="661"/>
@@ -7331,7 +7331,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="757"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Hledat</translation>
     </message>
 </context>
 <context>
@@ -7392,7 +7392,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="765"/>
         <source>Apps</source>
-        <translation type="unfinished"/>
+        <translation>Aplikace</translation>
     </message>
 </context>
 <context>
@@ -7609,17 +7609,17 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="99"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Online</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="108"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Pryč</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="118"/>
         <source>Busy</source>
-        <translation type="unfinished"/>
+        <translation>Zaneprázdněn/a</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="127"/>
@@ -7634,7 +7634,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="139"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Neviditelné</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="140"/>
