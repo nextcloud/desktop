@@ -79,6 +79,13 @@ protected:
     void addPassStatusCode(int code);
 
     /**
+     * Replace the accepted status codes for this request.
+     *
+     * @param codes Complete list of accepted OCS status codes
+     */
+    void setPassStatusCodes(const QList<int> &codes);
+
+    /**
      * The base path for an OcsJob is always the same. But it could be the case that
      * certain operations need to append something to the URL.
      *
