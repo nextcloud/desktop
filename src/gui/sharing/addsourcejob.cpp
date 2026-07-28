@@ -6,6 +6,7 @@
 #include "addsourcejob.h"
 
 #include "share.h"
+#include "sharingconstants.h"
 
 using namespace Qt::StringLiterals;
 
@@ -17,7 +18,7 @@ AddSourceJob::AddSourceJob(AccountPtr account, Share &share, const QString &file
                      share,
                      "/ocs/v2.php/apps/sharing/api/v1/share/%1/source"_L1.arg(share.id()),
                      "POST"_ba,
-                     {.body = QJsonObject{{"class"_L1, "OCA\\Files\\Sharing\\Source\\NodeShareSourceType"_L1}, {"value"_L1, fileId}}}}
+                     {.body = QJsonObject{{"class"_L1, SourceTypeClasses::node}, {"value"_L1, fileId}}}}
 {
 }
 
