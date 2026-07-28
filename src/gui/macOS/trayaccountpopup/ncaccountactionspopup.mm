@@ -265,7 +265,7 @@ static NSView *compactAccountActionsSeparator()
         addOwnedArrangedSubview(_stack, [[NCSpacerView alloc] initWithHeight:kActionVerticalPadding width:kAccountActionsPopupWidth]);
         for (const auto entry : policy.disconnectedEntries()) {
             switch (entry) {
-            case OCC::TrayAccountMenuEntry::LocalFolder:
+            case OCC::TrayAccountMenuPolicy::Entry::LocalFolder:
                 addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:QCoreApplication::translate("TrayFoldersMenuButton", "Reveal in Finder").toNSString()
                                                                              width:kAccountActionsPopupWidth
                                                                            enabled:YES
@@ -275,10 +275,10 @@ static NSView *compactAccountActionsSeparator()
                     [weakSelf hideAppsPopup];
                 }]);
                 break;
-            case OCC::TrayAccountMenuEntry::Separator:
+            case OCC::TrayAccountMenuPolicy::Entry::Separator:
                 [_stack addArrangedSubview:accountActionsSeparator()];
                 break;
-            case OCC::TrayAccountMenuEntry::Reconnect:
+            case OCC::TrayAccountMenuPolicy::Entry::Reconnect:
                 addOwnedArrangedSubview(_stack, [[NCActionRow alloc] initWithTitle:QCoreApplication::translate("OCC::AccountSettings", "Log in").toNSString()
                                                                              width:kAccountActionsPopupWidth
                                                                            enabled:YES

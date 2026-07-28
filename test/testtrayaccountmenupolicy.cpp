@@ -37,9 +37,9 @@ private slots:
         QVERIFY(!policy.showConnectedSections());
         QVERIFY(!policy.fetchActivityPreview());
         QCOMPARE_EQ(entries.size(), std::size_t{3});
-        QVERIFY(entries[0] == TrayAccountMenuEntry::LocalFolder);
-        QVERIFY(entries[1] == TrayAccountMenuEntry::Separator);
-        QVERIFY(entries[2] == TrayAccountMenuEntry::Reconnect);
+        QVERIFY(entries[0] == TrayAccountMenuPolicy::Entry::LocalFolder);
+        QVERIFY(entries[1] == TrayAccountMenuPolicy::Entry::Separator);
+        QVERIFY(entries[2] == TrayAccountMenuPolicy::Entry::Reconnect);
     }
 
     void testDisconnectedPublicShareShowsOnlyLocalFolder()
@@ -50,23 +50,23 @@ private slots:
         QVERIFY(!policy.showConnectedSections());
         QVERIFY(!policy.fetchActivityPreview());
         QCOMPARE_EQ(entries.size(), std::size_t{1});
-        QVERIFY(entries[0] == TrayAccountMenuEntry::LocalFolder);
+        QVERIFY(entries[0] == TrayAccountMenuPolicy::Entry::LocalFolder);
     }
 
     void testReconnectMode()
     {
         QCOMPARE_EQ(
             TrayAccountMenuPolicy::reconnectMode(false, true, true),
-            TrayAccountReconnectMode::SignIn);
+            TrayAccountMenuPolicy::ReconnectMode::SignIn);
         QCOMPARE_EQ(
             TrayAccountMenuPolicy::reconnectMode(false, false, true),
-            TrayAccountReconnectMode::RetryConnection);
+            TrayAccountMenuPolicy::ReconnectMode::RetryConnection);
         QCOMPARE_EQ(
             TrayAccountMenuPolicy::reconnectMode(true, false, true),
-            TrayAccountReconnectMode::None);
+            TrayAccountMenuPolicy::ReconnectMode::None);
         QCOMPARE_EQ(
             TrayAccountMenuPolicy::reconnectMode(false, true, false),
-            TrayAccountReconnectMode::None);
+            TrayAccountMenuPolicy::ReconnectMode::None);
     }
 };
 
