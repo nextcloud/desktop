@@ -391,7 +391,9 @@ Application::Application(int &argc, char **argv)
     setupAccountsAndFolders();
 
     if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
-        AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
+        if (!AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine()) {
+            qCWarning(lcApplication()) << "setup of the account had some issues and could not be completed";
+        }
         _quitInstance = true;
     }
     AccountSetupCommandLineManager::destroy();
@@ -775,7 +777,9 @@ void Application::slotParseMessage(const QString &msg, QObject *)
         handleEditLocallyFromOptions();
 
         if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
-            AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
+            if (!AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine()) {
+                qCWarning(lcApplication()) << "setup of the account had some issues and could not be completed";
+            }
         }
         AccountSetupCommandLineManager::destroy();
 
