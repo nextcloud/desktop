@@ -18,7 +18,6 @@
 #include "setpermissionpresetjob.h"
 #include "share.h"
 #include "sharingconstants.h"
-#include "updatesharejob.h"
 
 Q_LOGGING_CATEGORY(lcSharingController, "nextcloud.gui.sharing.sharingcontroller", QtInfoMsg)
 
@@ -30,6 +29,11 @@ using namespace OCC::Gui::Sharing;
 SharingController::SharingController(QObject *parent)
     : QObject{parent}
 {
+}
+
+SharingController::~SharingController()
+{
+    qDeleteAll(_shares);
 }
 
 AccountPtr SharingController::account() const
@@ -47,9 +51,9 @@ void SharingController::setAccount(AccountPtr account)
     Q_EMIT accountChanged();
 }
 
-Share *SharingController::share() const
+const QList<Share *> &SharingController::shares() const
 {
-    return _share.get();
+    return _shares;
 }
 
 void SharingController::initialize(const QString &fileId)
@@ -65,7 +69,16 @@ void SharingController::initialize(const QString &fileId)
     }
 
     const auto job = new GetSharesJob{_account, SourceTypeClasses::node, fileId};
-    connect(job, &GetSharesJob::sharesFetched, this, &SharingController::handleSharesFetched);
+    connect(job, &GetSharesJob::sharesFetched, this, [this](const QList<QPointer<Share>> &shares) {
+        auto ownedShares = QList<Share *>{};
+        ownedShares.reserve(shares.size());
+        for (const auto &share : shares) {
+            if (share) {
+                ownedShares.append(share);
+            }
+        }
+        replaceShares(ownedShares);
+    });
     job->start();
 }
 
@@ -83,103 +96,91 @@ void SharingController::createShare(const QString &fileId)
             return;
         }
 
-        share->setParent(this);
-        _share = share;
-        Q_EMIT shareChanged();
-        addSourceAfterCreation(fileId);
+        _shares.append(share);
+        Q_EMIT sharesChanged();
+        addSourceAfterCreation(*share, fileId);
     });
     job->start();
 }
 
-void SharingController::destroyShare()
+void SharingController::destroyShare(Share *share)
 {
     if (!_account) {
-        qCWarning(lcSharingController) << "attempted to create a new share without an account set";
+        qCWarning(lcSharingController) << "attempted to destroy a share without an account set";
         return;
     }
 
-    if (!_share) {
-        qCWarning(lcSharingController) << "attempted to destroty a share without a share";
+    if (!containsShare(share)) {
+        qCWarning(lcSharingController) << "attempted to destroy a share not owned by this controller";
         return;
     }
 
-    const auto job = new DestroyShareJob{_account, _share->id()};
-    connect(job, &DestroyShareJob::jobFinished, this, [this](const QJsonDocument &, int) {
-        _share = nullptr;
-        Q_EMIT shareChanged(); // TODO: shareDeleted maybe?
+    const auto job = new DestroyShareJob{_account, share->id()};
+    connect(job, &DestroyShareJob::jobFinished, this, [this, share](const QJsonDocument &, int) {
+        _shares.removeAll(share);
+        share->deleteLater();
+        Q_EMIT sharesChanged();
     });
     job->start();
 }
 
-void SharingController::addRecipient(const QString &recipientType, const QString &recipientValue)
+void SharingController::addRecipient(Share *share, const QString &recipientType, const QString &recipientValue)
 {
     if (!_account) {
         qCWarning(lcSharingController) << "attempted to add a new recipient to a share without an account set";
         return;
     }
 
-    if (!_share) {
-        qCWarning(lcSharingController) << "attempted to add a new recipient without a share";
+    if (!containsShare(share)) {
+        qCWarning(lcSharingController) << "attempted to add a recipient to a share not owned by this controller";
         return;
     }
 
-    const auto job = new AddRecipientJob{_account, *_share, recipientType, recipientValue};
-    connect(job, &UpdateShareJob::shareUpdated, this, [this](QPointer<Share>) {
-        qCDebug(lcSharingController).nospace() << "recipient added"
-                                               << " id=" << _share->id();
-    });
+    const auto job = new AddRecipientJob{_account, *share, recipientType, recipientValue};
     job->start();
 }
 
-void SharingController::removeRecipient(const QString &recipientType, const QString &recipientValue)
+void SharingController::removeRecipient(Share *share, const QString &recipientType, const QString &recipientValue)
 {
     if (!_account) {
         qCWarning(lcSharingController) << "attempted to remove a new recipient to a share without an account set";
         return;
     }
 
-    if (!_share) {
-        qCWarning(lcSharingController) << "attempted to remove a new recipient without a share";
+    if (!containsShare(share)) {
+        qCWarning(lcSharingController) << "attempted to remove a recipient from a share not owned by this controller";
         return;
     }
 
-    const auto job = new RemoveRecipientJob{_account, *_share, recipientType, recipientValue};
-    connect(job, &UpdateShareJob::shareUpdated, this, [this](QPointer<Share>) {
-        qCDebug(lcSharingController).nospace() << "recipient removed"
-                                               << " id=" << _share->id();
-    });
+    const auto job = new RemoveRecipientJob{_account, *share, recipientType, recipientValue};
     job->start();
 }
 
-void SharingController::setPermission(const QString &permissionClass, bool enabled)
+void SharingController::setPermission(Share *share, const QString &permissionClass, bool enabled)
 {
     if (!_account) {
         qCWarning(lcSharingController) << "attempted to set permission without an account set";
         return;
     }
 
-    if (!_share) {
-        qCWarning(lcSharingController) << "attempted to set permission without a share";
+    if (!containsShare(share)) {
+        qCWarning(lcSharingController) << "attempted to set permission on a share not owned by this controller";
         return;
     }
 
-    const auto job = new SetPermissionJob{_account, *_share, permissionClass, enabled};
-    connect(job, &UpdateShareJob::shareUpdated, this, [this](QPointer<Share>) {
-        qCDebug(lcSharingController).nospace() << "permissions updated"
-                                               << " id=" << _share->id();
-    });
+    const auto job = new SetPermissionJob{_account, *share, permissionClass, enabled};
     job->start();
 }
 
-void SharingController::setPermissionPreset(const QString &permissionPreset)
+void SharingController::setPermissionPreset(Share *share, const QString &permissionPreset)
 {
     if (!_account) {
         qCWarning(lcSharingController) << "attempted to set permission preset without an account set";
         return;
     }
 
-    if (!_share) {
-        qCWarning(lcSharingController) << "attempted to set permission preset without a share";
+    if (!containsShare(share)) {
+        qCWarning(lcSharingController) << "attempted to set a permission preset on a share not owned by this controller";
         return;
     }
 
@@ -188,42 +189,24 @@ void SharingController::setPermissionPreset(const QString &permissionPreset)
         return;
     }
 
-    const auto job = new SetPermissionPresetJob{_account, *_share, permissionPreset};
-    connect(job, &UpdateShareJob::shareUpdated, this, [this](QPointer<Share>) {
-        qCDebug(lcSharingController).nospace() << "permissions updated"
-                                               << " id=" << _share->id();
-    });
+    const auto job = new SetPermissionPresetJob{_account, *share, permissionPreset};
     job->start();
 }
 
-void SharingController::addSourceAfterCreation(const QString &fileId)
+bool SharingController::containsShare(const Share *share) const
 {
-    const auto job = new AddSourceJob{_account, *_share, fileId};
-    connect(job, &UpdateShareJob::shareUpdated, this, [this, fileId](QPointer<Share>) {
-        qCDebug(lcSharingController).nospace() << "share created"
-                                               << " id=" << _share->id() << " fileId=" << fileId;
-    });
+    return share && _shares.contains(share);
+}
+
+void SharingController::addSourceAfterCreation(Share &share, const QString &fileId)
+{
+    const auto job = new AddSourceJob{_account, share, fileId};
     job->start();
 }
 
-void SharingController::handleSharesFetched(const QList<QPointer<Share>> &shares)
+void SharingController::replaceShares(const QList<Share *> &shares)
 {
-    for (const auto &share : _shares) {
-        if (share) {
-            share->deleteLater();
-        }
-    }
-
+    qDeleteAll(_shares);
     _shares = shares;
-    for (const auto &share : _shares) {
-        if (share) {
-            share->setParent(this);
-        }
-    }
-
-    if (_share) {
-        _share = nullptr;
-        Q_EMIT shareChanged();
-    }
     Q_EMIT sharesChanged();
 }
