@@ -10,9 +10,10 @@
 #include "accountfwd.h"
 #include "abstractnetworkjob.h"
 
-#include <QVector>
-#include <QHash>
+#include <QList>
+#include <QPair>
 #include <QUrl>
+#include <QVector>
 
 #define OCS_SUCCESS_STATUS_CODE 100
 // Apparently the v2.php URLs can return that
@@ -142,7 +143,7 @@ private Q_SLOTS:
 
 private:
     QByteArray _verb;
-    QHash<QString, QString> _params;
+    QList<QPair<QString, QString>> _params;
     QVector<int> _passStatusCodes;
     QNetworkRequest _request;
 };
