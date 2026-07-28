@@ -46,7 +46,7 @@ WizardStyledWindow {
     }
 
     Component.onCompleted: {
-        sharingController.createShare(root.fileId)
+        sharingController.initialize(root.fileId)
     }
 
     ColumnLayout {

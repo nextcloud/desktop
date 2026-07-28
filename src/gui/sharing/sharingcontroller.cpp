@@ -12,10 +12,12 @@
 #include "addsourcejob.h"
 #include "createsharejob.h"
 #include "destroysharejob.h"
+#include "getsharesjob.h"
 #include "removerecipientjob.h"
 #include "setpermissionjob.h"
 #include "setpermissionpresetjob.h"
 #include "share.h"
+#include "sharingconstants.h"
 #include "updatesharejob.h"
 
 Q_LOGGING_CATEGORY(lcSharingController, "nextcloud.gui.sharing.sharingcontroller", QtInfoMsg)
@@ -48,6 +50,23 @@ void SharingController::setAccount(AccountPtr account)
 Share *SharingController::share() const
 {
     return _share.get();
+}
+
+void SharingController::initialize(const QString &fileId)
+{
+    if (!_account) {
+        qCWarning(lcSharingController) << "attempted to initialize sharing without an account set";
+        return;
+    }
+
+    if (fileId.isEmpty()) {
+        qCWarning(lcSharingController) << "attempted to initialize sharing without a file ID";
+        return;
+    }
+
+    const auto job = new GetSharesJob{_account, SourceTypeClasses::node, fileId};
+    connect(job, &GetSharesJob::sharesFetched, this, &SharingController::handleSharesFetched);
+    job->start();
 }
 
 void SharingController::createShare(const QString &fileId)
@@ -185,4 +204,26 @@ void SharingController::addSourceAfterCreation(const QString &fileId)
                                                << " id=" << _share->id() << " fileId=" << fileId;
     });
     job->start();
+}
+
+void SharingController::handleSharesFetched(const QList<QPointer<Share>> &shares)
+{
+    for (const auto &share : _shares) {
+        if (share) {
+            share->deleteLater();
+        }
+    }
+
+    _shares = shares;
+    for (const auto &share : _shares) {
+        if (share) {
+            share->setParent(this);
+        }
+    }
+
+    if (_share) {
+        _share = nullptr;
+        Q_EMIT shareChanged();
+    }
+    Q_EMIT sharesChanged();
 }

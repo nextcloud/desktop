@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include <QList>
 #include <QObject>
 #include <QPointer>
 #include <qqmlintegration.h>
@@ -30,8 +31,15 @@ public:
     [[nodiscard]] AccountPtr account() const;
     void setAccount(AccountPtr account);
 
+    /** @brief Returns the share currently being created or edited. */
     [[nodiscard]] Share *share() const;
 
+    /**
+     * @brief Loads all shares associated with a file without creating a share.
+     *
+     * @param fileId Server file ID used to filter the shares request
+     */
+    Q_INVOKABLE void initialize(const QString &fileId);
     Q_INVOKABLE void createShare(const QString &fileId);
     Q_INVOKABLE void destroyShare();
     Q_INVOKABLE void addRecipient(const QString &recipientType, const QString &recipientValue);
@@ -43,12 +51,15 @@ public:
 Q_SIGNALS:
     void accountChanged();
     void shareChanged();
+    void sharesChanged();
 
 private:
     AccountPtr _account;
     QPointer<Share> _share;
+    QList<QPointer<Share>> _shares;
 
     void addSourceAfterCreation(const QString &fileId);
+    void handleSharesFetched(const QList<QPointer<Share>> &shares);
 };
 
 }
