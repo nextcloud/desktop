@@ -597,7 +597,7 @@ Application::~Application()
 
 void Application::setupAccountsAndFolders()
 {
-    _folderManager.reset(new FolderMan);
+    _folderManager = FolderMan::instance();
     ConfigFile configFile;
     configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupUsers);
     const auto accountsRestoreResult = restoreLegacyAccount();

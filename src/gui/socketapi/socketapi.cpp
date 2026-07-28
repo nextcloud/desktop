@@ -317,9 +317,6 @@ SocketApi::SocketApi(QObject *parent)
 
     connect(&_localServer, &QLocalServer::newConnection, this, &SocketApi::slotNewConnection);
 #endif
-
-    // folder watcher
-    connect(FolderMan::instance(), &FolderMan::folderSyncStateChange, this, &SocketApi::slotUpdateFolderView);
 }
 
 SocketApi::~SocketApi()

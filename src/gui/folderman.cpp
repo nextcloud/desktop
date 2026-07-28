@@ -54,8 +54,6 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFolderMan, "nextcloud.gui.folder.manager", QtInfoMsg)
 
-FolderMan *FolderMan::_instance = nullptr;
-
 FolderMan::FolderMan(QObject *parent)
     : QObject(parent)
     , _lockWatcher(new LockWatcher)
@@ -63,10 +61,9 @@ FolderMan::FolderMan(QObject *parent)
     , _navigationPaneHelper(this)
 #endif
 {
-    ASSERT(!_instance);
-    _instance = this;
-
     _socketApi.reset(new SocketApi);
+    // folder watcher
+    connect(this, &FolderMan::folderSyncStateChange, _socketApi.data(), &SocketApi::slotUpdateFolderView);
 
     ConfigFile cfg;
     std::chrono::milliseconds polltime = cfg.remotePollInterval();
@@ -100,7 +97,22 @@ FolderMan::FolderMan(QObject *parent)
 FolderMan::~FolderMan()
 {
     qDeleteAll(_folderMap);
-    _instance = nullptr;
+}
+
+std::unique_ptr<FolderMan> FolderMan::_instance = {};
+
+FolderMan *FolderMan::instance()
+{
+    if (!_instance) {
+        _instance.reset(new FolderMan{});
+    }
+
+    return _instance.get();
+}
+
+void FolderMan::resetInstance()
+{
+    _instance.reset();
 }
 
 const OCC::Folder::Map &FolderMan::map() const
