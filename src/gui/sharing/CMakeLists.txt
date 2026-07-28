@@ -27,6 +27,8 @@ target_sources(nextcloudGuiSharing
     share.cpp
     sharingcontroller.h
     sharingcontroller.cpp
+    unifiedsharingapi.h
+    unifiedsharingapi.cpp
 )
 
 ecm_add_qml_module(nextcloudGuiSharing
