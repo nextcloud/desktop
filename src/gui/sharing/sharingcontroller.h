@@ -6,14 +6,16 @@
 #pragma once
 
 #include <QObject>
-#include <qqmlintegration.h>
 #include <QPointer>
+#include <qqmlintegration.h>
 
 #include "accountfwd.h"
 
-namespace OCC::Gui::Sharing {
+namespace OCC::Gui::Sharing
+{
 
 class Share;
+class UnifiedSharingApi;
 
 class SharingController : public QObject
 {
@@ -46,6 +48,7 @@ Q_SIGNALS:
 private:
     AccountPtr _account;
     QPointer<Share> _share;
+    UnifiedSharingApi *_api = nullptr;
 
     void addSourceAfterCreation(const QString &fileId);
 };
