@@ -1086,6 +1086,7 @@ void Application::setupTranslations()
     qCInfo(lcApplication) << "selected application language:" << lang;
 
     auto *translator = new QTranslator(this);
+    auto *fallbackTranslator = new QTranslator(this);
     auto *qtTranslator = new QTranslator(this);
     auto *qtkeychainTranslator = new QTranslator(this);
 
@@ -1105,6 +1106,18 @@ void Application::setupTranslations()
         // have a translation file provided.
         qCInfo(lcApplication) << "Using" << lang << "translation";
         setProperty("ui_lang", lang);
+
+        // Some translatable "keys" are not real sentences but data lookups (e.g. locale-specific
+        // links such as "ExpandMemory-Link"). If a language's .ts file has no entry at all for such
+        // a key, Qt returns the raw source string (the key itself) instead of a sensible value.
+        // Loading English as a fallback catalog - installed before (and therefore checked after,
+        // QTranslator lookups are LIFO) the language-specific one - lets every language fall back
+        // to the English value for keys it doesn't translate, without duplicating English content
+        // into every translation file.
+        if (!lang.startsWith(QLatin1String("en")) && fallbackTranslator->load(QLatin1String("client_en"), trPath) && !fallbackTranslator->isEmpty()) {
+            installTranslator(fallbackTranslator);
+        }
+
         const QString qtTrPath = QLibraryInfo::path(QLibraryInfo::TranslationsPath);
         const QString qtTrFile = QLatin1String("qt_") + lang;
         const QString qtBaseTrFile = QLatin1String("qtbase_") + lang;
