@@ -23,6 +23,7 @@ Page {
     property string shortLocalPath: ""
     required property SharingController sharingController
     property bool isLinkShare: false
+    readonly property Share share: sharingController.shares.length === 1 ? sharingController.shares[0] : null
 
     title: qsTr("Share \"%1\"").arg(root.shortLocalPath)
 
@@ -51,7 +52,9 @@ Page {
                     account: root.sharingController.account
 
                     onRecipientSelected: (recipientType, recipientValue) => {
-                        root.sharingController.addRecipient(recipientType, recipientValue)
+                        if (root.share) {
+                            root.sharingController.addRecipient(root.share, recipientType, recipientValue)
+                        }
                     }
                 }
 
@@ -73,7 +76,9 @@ Page {
                             return;
                         }
 
-                        root.sharingController.setPermissionPreset(currentValue)
+                        if (root.share) {
+                            root.sharingController.setPermissionPreset(root.share, currentValue)
+                        }
                     }
                 }
 
@@ -82,7 +87,7 @@ Page {
                     Layout.fillWidth: true
 
                     model: PermissionModel {
-                        share: root.sharingController.share
+                        share: root.share
                     }
 
                     delegate: ItemDelegate {
@@ -102,7 +107,9 @@ Page {
                                     if (model.enabled === checked) {
                                         return;
                                     }
-                                    root.sharingController.setPermission(model.className, checked)
+                                    if (root.share) {
+                                        root.sharingController.setPermission(root.share, model.className, checked)
+                                    }
                                 }
                             }
                         }
@@ -122,7 +129,7 @@ Page {
                 // }
                 model: PropertyModel {
                     // TODO: only show properties with prio=1
-                    share: root.sharingController.share
+                    share: root.share
                 }
 
                 delegate: FieldDelegate {

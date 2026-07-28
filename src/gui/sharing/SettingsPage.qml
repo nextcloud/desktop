@@ -17,6 +17,7 @@ Page {
     id: root
 
     required property SharingController sharingController
+    property Share share
 
     title: qsTr("Sharing settings")
 
@@ -42,7 +43,7 @@ Page {
                 //     recipientTypes: root.recipientTypes
                 // }
                 model: PropertyModel {
-                    share: root.sharingController.share
+                    share: root.share
                 }
 
                 delegate: FieldDelegate {
