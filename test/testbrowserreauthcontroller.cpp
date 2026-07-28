@@ -136,6 +136,8 @@ private slots:
     void initTestCase()
     {
         QStandardPaths::setTestModeEnabled(true);
+        Q_INIT_RESOURCE(resources);
+        Q_INIT_RESOURCE(theme);
         Systray::instance()->setTrayEngine(new QQmlApplicationEngine(QCoreApplication::instance()));
     }
 
