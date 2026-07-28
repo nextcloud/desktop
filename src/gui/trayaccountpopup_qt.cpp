@@ -724,7 +724,7 @@ void populateAccountMenu(QMenu *menu, const int userId, const bool fetchActivity
     if (!policy.showConnectedSections()) {
         for (const auto entry : policy.disconnectedEntries()) {
             switch (entry) {
-            case TrayAccountMenuEntry::LocalFolder: {
+            case TrayAccountMenuPolicy::Entry::LocalFolder: {
                 const auto openFolderAction = addMenuAction(menu,
                     templateBlackThemeIcon(QStringLiteral("folder.svg"), menuIconSize, menuIconPalette),
                     QCoreApplication::translate("TrayFoldersMenuButton", "Local folder"));
@@ -733,10 +733,10 @@ void populateAccountMenu(QMenu *menu, const int userId, const bool fetchActivity
                 });
                 break;
             }
-            case TrayAccountMenuEntry::Separator:
+            case TrayAccountMenuPolicy::Entry::Separator:
                 menu->addSeparator();
                 break;
-            case TrayAccountMenuEntry::Reconnect: {
+            case TrayAccountMenuPolicy::Entry::Reconnect: {
                 const auto reconnectAction = addMenuAction(menu,
                     QIcon{},
                     QCoreApplication::translate("OCC::AccountSettings", "Log in"));

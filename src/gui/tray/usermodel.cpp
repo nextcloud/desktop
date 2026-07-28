@@ -1810,13 +1810,13 @@ void User::login() const
         _account->isConnected(),
         _account->isSignedOut(),
         !isPublicShareLink())) {
-    case TrayAccountReconnectMode::None:
+    case TrayAccountMenuPolicy::ReconnectMode::None:
         return;
-    case TrayAccountReconnectMode::SignIn:
+    case TrayAccountMenuPolicy::ReconnectMode::SignIn:
         _account->account()->resetRejectedCertificates();
         _account->signIn();
         break;
-    case TrayAccountReconnectMode::RetryConnection:
+    case TrayAccountMenuPolicy::ReconnectMode::RetryConnection:
         _account->account()->resetRejectedCertificates();
         _account->freshConnectionAttempt();
         break;

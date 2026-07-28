@@ -10,26 +10,26 @@
 
 namespace OCC {
 
-/** @brief Semantic entries used by the disconnected account menu. */
-enum class TrayAccountMenuEntry {
-    LocalFolder,
-    Separator,
-    Reconnect,
-};
-
-/** @brief Account operation selected for the reconnect action. */
-enum class TrayAccountReconnectMode {
-    None,
-    SignIn,
-    RetryConnection,
-};
-
 /**
  * @brief Defines which account-menu content is relevant for the connection state.
  */
 class TrayAccountMenuPolicy
 {
 public:
+    /** @brief Semantic entries used by the disconnected account menu. */
+    enum class Entry {
+        LocalFolder,
+        Separator,
+        Reconnect,
+    };
+
+    /** @brief Account operation selected for the reconnect action. */
+    enum class ReconnectMode {
+        None,
+        SignIn,
+        RetryConnection,
+    };
+
     /**
      * @brief Creates the menu policy for an account.
      * @param canReconnect Whether the account supports signing in, which excludes public shares.
@@ -47,7 +47,7 @@ public:
     }
 
     /** @brief Ordered entries to show instead of server-backed sections. */
-    [[nodiscard]] constexpr std::span<const TrayAccountMenuEntry> disconnectedEntries() const
+    [[nodiscard]] constexpr std::span<const Entry> disconnectedEntries() const
     {
         if (_isConnected) {
             return {};
@@ -65,27 +65,27 @@ public:
     }
 
     /** @brief Selects the account operation behind the reconnect menu action. */
-    [[nodiscard]] static constexpr TrayAccountReconnectMode reconnectMode(
+    [[nodiscard]] static constexpr ReconnectMode reconnectMode(
         const bool isConnected,
         const bool isSignedOut,
         const bool canReconnect)
     {
         if (isConnected || !canReconnect) {
-            return TrayAccountReconnectMode::None;
+            return ReconnectMode::None;
         }
         return isSignedOut
-            ? TrayAccountReconnectMode::SignIn
-            : TrayAccountReconnectMode::RetryConnection;
+            ? ReconnectMode::SignIn
+            : ReconnectMode::RetryConnection;
     }
 
 private:
     static constexpr std::array disconnectedReconnectEntries{
-        TrayAccountMenuEntry::LocalFolder,
-        TrayAccountMenuEntry::Separator,
-        TrayAccountMenuEntry::Reconnect,
+        Entry::LocalFolder,
+        Entry::Separator,
+        Entry::Reconnect,
     };
     static constexpr std::array disconnectedEntriesWithoutReconnect{
-        TrayAccountMenuEntry::LocalFolder,
+        Entry::LocalFolder,
     };
 
     bool _isConnected;
