@@ -9,7 +9,6 @@
 #include <QLoggingCategory>
 
 #include "searchrecipientsjob.h"
-#include "unifiedsharingapi.h"
 
 Q_LOGGING_CATEGORY(lcSharingRecipientShareModel, "nextcloud.gui.sharing.recipientsearchmodel", QtInfoMsg)
 
@@ -120,7 +119,7 @@ void RecipientSearchModel::search()
 {
     const auto query = _query;
     const auto account = _account;
-    const auto job = UnifiedSharingApi{account}.searchRecipients(query, 0, 10);
+    const auto job = new SearchRecipientsJob{account, query, 0, 10};
     connect(job, &SearchRecipientsJob::recipientsFound, this, [this, account, query](const QJsonArray &recipients) {
         if (_account != account || _query != query) {
             return;
