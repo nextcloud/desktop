@@ -91,7 +91,7 @@ class TestFileActionsModel : public QObject
 
 private:
     std::unique_ptr<FakeFolder> _fakeFolder;
-    std::unique_ptr<FolderMan> _folderMan;
+    QPointer<FolderMan> _folderMan;
     FileActionsModel _model;
     QString _mimeType;
 
@@ -106,7 +106,8 @@ private slots:
         _fakeFolder.reset(new FakeFolder{FileInfo{}});
         QCOMPARE(_fakeFolder->currentLocalState(), _fakeFolder->currentRemoteState());
 
-        _folderMan.reset(new FolderMan{});
+        FolderMan::resetInstance();
+        _folderMan = FolderMan::instance();
         auto syncFolderDefinition = folderDefinition(_fakeFolder->localPath());
         const auto folder = FolderMan::instance()->addFolder(&_fakeFolder->accountState(),
                                                              syncFolderDefinition);

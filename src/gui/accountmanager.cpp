@@ -891,11 +891,14 @@ AccountPtr AccountManager::createAccount()
 {
     const auto acc = Account::create();
     acc->setSslErrorHandler(new SslDialogErrorHandler);
-    connect(acc.data(), &Account::proxyAuthenticationRequired,
-        ProxyAuthHandler::instance(), &ProxyAuthHandler::handleProxyAuthenticationRequired);
-    if (Systray::instance()) {
-        connect(acc.data(), &Account::lockFileError,
-            Systray::instance(), &Systray::showErrorMessageDialog);
+
+    if (qobject_cast<QGuiApplication*>(QCoreApplication::instance())) {
+        connect(acc.data(), &Account::proxyAuthenticationRequired,
+            ProxyAuthHandler::instance(), &ProxyAuthHandler::handleProxyAuthenticationRequired);
+        if (Systray::instance()) {
+            connect(acc.data(), &Account::lockFileError,
+                Systray::instance(), &Systray::showErrorMessageDialog);
+        }
     }
 
     return acc;
