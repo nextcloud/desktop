@@ -140,7 +140,7 @@ private:
     QString _overrideLocalDir;
     QString _setLanguage;
 
-    QScopedPointer<FolderMan> _folderManager;
+    QPointer<FolderMan> _folderManager;
 #if defined(Q_OS_WIN)
     QScopedPointer<ShellExtensionsServer> _shellExtensionsServer;
 #endif
