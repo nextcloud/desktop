@@ -16,13 +16,29 @@ namespace OCC::Gui::Sharing
 namespace
 {
 constexpr auto requestTimeoutMsec = 10 * 1000;
+
+QList<QPair<QString, QString>> searchRecipientsParameters(const QString &query,
+                                                          qint64 offset,
+                                                          qint64 limit,
+                                                          const QList<QString> &recipientTypeClasses)
+{
+    auto parameters = QList<QPair<QString, QString>>{
+        {"query"_L1, query},
+        {"offset"_L1, QString::number(offset)},
+        {"limit"_L1, QString::number(limit)},
+    };
+    for (const auto &recipientTypeClass : recipientTypeClasses) {
+        parameters.emplaceBack("recipientTypeClasses[]"_L1, recipientTypeClass);
+    }
+    return parameters;
+}
 }
 
-SearchRecipientsJob::SearchRecipientsJob(AccountPtr account, const QString &query, qint64 offset, qint64 limit)
+SearchRecipientsJob::SearchRecipientsJob(AccountPtr account, const QString &query, qint64 offset, qint64 limit, const QList<QString> &recipientTypeClasses)
     : UnifiedSharingRequest{std::move(account),
                             "/ocs/v2.php/apps/sharing/api/v1/recipients"_L1,
                             "GET"_ba,
-                            {{"query"_L1, query}, {"offset"_L1, QString::number(offset)}, {"limit"_L1, QString::number(limit)}}}
+                            {.parameters = searchRecipientsParameters(query, offset, limit, recipientTypeClasses)}}
 {
     setTimeout(requestTimeoutMsec);
     connect(this, &OcsJob::jobFinished, this, [this](const QJsonDocument &json, int) {
