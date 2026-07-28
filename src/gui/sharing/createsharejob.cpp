@@ -13,7 +13,10 @@ namespace OCC::Gui::Sharing
 {
 
 CreateShareJob::CreateShareJob(AccountPtr account)
-    : UnifiedSharingRequest{account, "/ocs/v2.php/apps/sharing/api/v1/share"_L1, "POST"_ba, {}, {201}}
+    : UnifiedSharingRequest{account,
+                            "/ocs/v2.php/apps/sharing/api/v1/share"_L1,
+                            "POST"_ba,
+                            {.passStatusCodes = QList<int>{201}}}
 {
     connect(this, &OcsJob::jobFinished, this, [this, account = std::move(account)](const QJsonDocument &json, int) {
         Q_EMIT shareCreated(Share::fromJson(json, account));

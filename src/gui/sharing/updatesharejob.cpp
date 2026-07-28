@@ -10,8 +10,12 @@
 namespace OCC::Gui::Sharing
 {
 
-UpdateShareJob::UpdateShareJob(AccountPtr account, Share &share, const QString &path, const QByteArray &verb, const QList<QPair<QString, QString>> &parameters)
-    : UnifiedSharingRequest{std::move(account), path, verb, parameters}
+UpdateShareJob::UpdateShareJob(AccountPtr account,
+                               Share &share,
+                               const QString &path,
+                               const QByteArray &verb,
+                               const UnifiedSharingRequestOptions &options)
+    : UnifiedSharingRequest{std::move(account), path, verb, options}
 {
     connect(this, &OcsJob::jobFinished, this, [this, share = QPointer<Share>{&share}](const QJsonDocument &json, int) {
         if (share) {

@@ -13,20 +13,34 @@ target_sources(nextcloudGuiSharing
     createsharejob.cpp
     destroysharejob.h
     destroysharejob.cpp
+    generatesecretjob.h
+    generatesecretjob.cpp
+    getsharejob.h
+    getsharejob.cpp
+    getsharesjob.h
+    getsharesjob.cpp
     searchrecipientsjob.h
     searchrecipientsjob.cpp
     updatesharejob.h
     updatesharejob.cpp
     addsourcejob.h
     addsourcejob.cpp
+    removesourcejob.h
+    removesourcejob.cpp
     addrecipientjob.h
     addrecipientjob.cpp
     removerecipientjob.h
     removerecipientjob.cpp
+    setpropertyjob.h
+    setpropertyjob.cpp
     setpermissionjob.h
     setpermissionjob.cpp
     setpermissionpresetjob.h
     setpermissionpresetjob.cpp
+    setrecipientsecretjob.h
+    setrecipientsecretjob.cpp
+    setsharestatejob.h
+    setsharestatejob.cpp
     permission.h
     permission.cpp
     permissionmodel.h

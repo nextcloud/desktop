@@ -8,21 +8,36 @@
 #include "unifiedsharingrequest.h"
 
 #include <QJsonArray>
+#include <QList>
 
 namespace OCC::Gui::Sharing
 {
 
 /**
- * @brief Searches for recipients and returns the result entries.
+ * @brief Searches for recipients that can be added to a share.
+ *
+ * The server searches registered recipient types, such as users, groups, or
+ * other sharing backends. The optional recipient type list restricts which
+ * backends are searched. This job only returns candidates; it does not add a
+ * recipient to a share.
  */
 class SearchRecipientsJob : public UnifiedSharingRequest
 {
     Q_OBJECT
 
 public:
-    explicit SearchRecipientsJob(AccountPtr account, const QString &query, qint64 offset, qint64 limit);
+    /**
+     * @brief Creates a paginated recipient search request.
+     *
+     * @param query Text used by the server's recipient search backends
+     * @param offset Number of matching entries to skip
+     * @param limit Maximum number of matching entries to return
+     * @param recipientTypeClasses Registered recipient type classes to search, or empty for all
+     */
+    explicit SearchRecipientsJob(AccountPtr account, const QString &query, qint64 offset, qint64 limit, const QList<QString> &recipientTypeClasses = {});
 
 Q_SIGNALS:
+    /** @brief Emitted with the matching recipient descriptions after a successful request. */
     void recipientsFound(const QJsonArray &recipients);
 };
 
