@@ -6,16 +6,21 @@
 #pragma once
 
 #include <QObject>
+#include <QPointer>
 
 #include "accountfwd.h"
 
 namespace OCC::Gui::Sharing
 {
 
-class UnifiedSharingRequest;
+class CreateShareJob;
+class DestroyShareJob;
+class SearchRecipientsJob;
+class Share;
+class UpdateShareJob;
 
 /**
- * @brief Creates one-shot requests for the Unified Sharing API.
+ * @brief Creates typed jobs for the Unified Sharing API.
  */
 class UnifiedSharingApi : public QObject
 {
@@ -24,14 +29,14 @@ class UnifiedSharingApi : public QObject
 public:
     explicit UnifiedSharingApi(AccountPtr account, QObject *parent = nullptr);
 
-    [[nodiscard]] UnifiedSharingRequest *createShare();
-    [[nodiscard]] UnifiedSharingRequest *destroyShare(const QString &shareId);
-    [[nodiscard]] UnifiedSharingRequest *addSource(const QString &shareId, const QString &fileId);
-    [[nodiscard]] UnifiedSharingRequest *addRecipient(const QString &shareId, const QString &recipientType, const QString &recipientValue);
-    [[nodiscard]] UnifiedSharingRequest *removeRecipient(const QString &shareId, const QString &recipientType, const QString &recipientValue);
-    [[nodiscard]] UnifiedSharingRequest *searchRecipients(const QString &query, qint64 offset, qint64 limit);
-    [[nodiscard]] UnifiedSharingRequest *setPermission(const QString &shareId, const QString &permissionClass, bool enabled);
-    [[nodiscard]] UnifiedSharingRequest *setPermissionPreset(const QString &shareId, const QString &permissionPreset);
+    [[nodiscard]] CreateShareJob *createShare() const;
+    [[nodiscard]] DestroyShareJob *destroyShare(const QString &shareId) const;
+    [[nodiscard]] UpdateShareJob *addSource(QPointer<Share> share, const QString &fileId) const;
+    [[nodiscard]] UpdateShareJob *addRecipient(QPointer<Share> share, const QString &recipientType, const QString &recipientValue) const;
+    [[nodiscard]] UpdateShareJob *removeRecipient(QPointer<Share> share, const QString &recipientType, const QString &recipientValue) const;
+    [[nodiscard]] SearchRecipientsJob *searchRecipients(const QString &query, qint64 offset, qint64 limit) const;
+    [[nodiscard]] UpdateShareJob *setPermission(QPointer<Share> share, const QString &permissionClass, bool enabled) const;
+    [[nodiscard]] UpdateShareJob *setPermissionPreset(QPointer<Share> share, const QString &permissionPreset) const;
 
 private:
     AccountPtr _account;

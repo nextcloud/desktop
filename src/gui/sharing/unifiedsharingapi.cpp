@@ -5,7 +5,11 @@
 
 #include "unifiedsharingapi.h"
 
-#include "unifiedsharingrequest.h"
+#include "createsharejob.h"
+#include "destroysharejob.h"
+#include "searchrecipientsjob.h"
+#include "share.h"
+#include "updatesharejob.h"
 
 using namespace Qt::StringLiterals;
 
@@ -14,7 +18,6 @@ namespace OCC::Gui::Sharing
 
 namespace
 {
-constexpr auto sharingV1Base = "/ocs/v2.php/apps/sharing/api/v1"_L1;
 constexpr auto nodeSourceType = "OCA\\Files\\Sharing\\Source\\NodeShareSourceType"_L1;
 }
 
@@ -24,62 +27,64 @@ UnifiedSharingApi::UnifiedSharingApi(AccountPtr account, QObject *parent)
 {
 }
 
-UnifiedSharingRequest *UnifiedSharingApi::createShare()
+CreateShareJob *UnifiedSharingApi::createShare() const
 {
-    return new UnifiedSharingRequest{_account, sharingV1Base % "/share"_L1, "POST"_ba, {}, {201}};
+    return new CreateShareJob{_account};
 }
 
-UnifiedSharingRequest *UnifiedSharingApi::destroyShare(const QString &shareId)
+DestroyShareJob *UnifiedSharingApi::destroyShare(const QString &shareId) const
 {
-    return new UnifiedSharingRequest{_account, sharingV1Base % "/share/%1"_L1.arg(shareId), "DELETE"_ba, {}, {204}};
+    return new DestroyShareJob{_account, shareId};
 }
 
-UnifiedSharingRequest *UnifiedSharingApi::addSource(const QString &shareId, const QString &fileId)
+UpdateShareJob *UnifiedSharingApi::addSource(QPointer<Share> share, const QString &fileId) const
 {
-    return new UnifiedSharingRequest{_account,
-                                     sharingV1Base % "/share/%1/source"_L1.arg(shareId),
-                                     "POST"_ba,
-                                     {{"class"_L1, nodeSourceType}, {"value"_L1, fileId}}};
+    return new UpdateShareJob{_account,
+                              share,
+                              "/ocs/v2.php/apps/sharing/api/v1/share/%1/source"_L1.arg(share->id()),
+                              "POST"_ba,
+                              {{"class"_L1, nodeSourceType}, {"value"_L1, fileId}}};
 }
 
-UnifiedSharingRequest *UnifiedSharingApi::addRecipient(const QString &shareId, const QString &recipientType, const QString &recipientValue)
+UpdateShareJob *UnifiedSharingApi::addRecipient(QPointer<Share> share, const QString &recipientType, const QString &recipientValue) const
 {
-    return new UnifiedSharingRequest{_account,
-                                     sharingV1Base % "/share/%1/recipient"_L1.arg(shareId),
-                                     "POST"_ba,
-                                     {{"class"_L1, recipientType}, {"value"_L1, recipientValue}}};
+    return new UpdateShareJob{_account,
+                              share,
+                              "/ocs/v2.php/apps/sharing/api/v1/share/%1/recipient"_L1.arg(share->id()),
+                              "POST"_ba,
+                              {{"class"_L1, recipientType}, {"value"_L1, recipientValue}}};
 }
 
-UnifiedSharingRequest *UnifiedSharingApi::removeRecipient(const QString &shareId, const QString &recipientType, const QString &recipientValue)
+UpdateShareJob *UnifiedSharingApi::removeRecipient(QPointer<Share> share, const QString &recipientType, const QString &recipientValue) const
 {
-    return new UnifiedSharingRequest{_account,
-                                     sharingV1Base % "/share/%1/recipient"_L1.arg(shareId),
-                                     "DELETE"_ba,
-                                     {{"class"_L1, recipientType}, {"value"_L1, recipientValue}}};
+    return new UpdateShareJob{_account,
+                              share,
+                              "/ocs/v2.php/apps/sharing/api/v1/share/%1/recipient"_L1.arg(share->id()),
+                              "DELETE"_ba,
+                              {{"class"_L1, recipientType}, {"value"_L1, recipientValue}}};
 }
 
-UnifiedSharingRequest *UnifiedSharingApi::searchRecipients(const QString &query, qint64 offset, qint64 limit)
+SearchRecipientsJob *UnifiedSharingApi::searchRecipients(const QString &query, qint64 offset, qint64 limit) const
 {
-    return new UnifiedSharingRequest{_account,
-                                     sharingV1Base % "/recipients"_L1,
-                                     "GET"_ba,
-                                     {{"query"_L1, query}, {"offset"_L1, QString::number(offset)}, {"limit"_L1, QString::number(limit)}}};
+    return new SearchRecipientsJob{_account, query, offset, limit};
 }
 
-UnifiedSharingRequest *UnifiedSharingApi::setPermission(const QString &shareId, const QString &permissionClass, bool enabled)
+UpdateShareJob *UnifiedSharingApi::setPermission(QPointer<Share> share, const QString &permissionClass, bool enabled) const
 {
-    return new UnifiedSharingRequest{_account,
-                                     sharingV1Base % "/share/%1/permission"_L1.arg(shareId),
-                                     "PUT"_ba,
-                                     {{"class"_L1, permissionClass}, {"enabled"_L1, enabled ? "true"_L1 : "false"_L1}}};
+    return new UpdateShareJob{_account,
+                              share,
+                              "/ocs/v2.php/apps/sharing/api/v1/share/%1/permission"_L1.arg(share->id()),
+                              "PUT"_ba,
+                              {{"class"_L1, permissionClass}, {"enabled"_L1, enabled ? "true"_L1 : "false"_L1}}};
 }
 
-UnifiedSharingRequest *UnifiedSharingApi::setPermissionPreset(const QString &shareId, const QString &permissionPreset)
+UpdateShareJob *UnifiedSharingApi::setPermissionPreset(QPointer<Share> share, const QString &permissionPreset) const
 {
-    return new UnifiedSharingRequest{_account,
-                                     sharingV1Base % "/share/%1/permission/preset"_L1.arg(shareId),
-                                     "PUT"_ba,
-                                     {{"permissionPreset"_L1, permissionPreset}}};
+    return new UpdateShareJob{_account,
+                              share,
+                              "/ocs/v2.php/apps/sharing/api/v1/share/%1/permission/preset"_L1.arg(share->id()),
+                              "PUT"_ba,
+                              {{"permissionPreset"_L1, permissionPreset}}};
 }
 
 }
