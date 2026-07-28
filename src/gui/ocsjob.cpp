@@ -12,6 +12,9 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
+#include <algorithm>
+#include <utility>
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcOcs, "nextcloud.gui.sharing.ocs", QtInfoMsg)
@@ -33,6 +36,11 @@ void OcsJob::setVerb(const QByteArray &verb)
 void OcsJob::addParam(const QString &name, const QString &value)
 {
     _params.emplaceBack(name, value);
+}
+
+void OcsJob::setJsonBody(const QJsonObject &body)
+{
+    _jsonBody = QJsonDocument{body}.toJson(QJsonDocument::Compact);
 }
 
 void OcsJob::addPassStatusCode(int code)
@@ -75,7 +83,6 @@ static QUrlQuery percentEncodeQueryItems(
 void OcsJob::start()
 {
     addRawHeader("Ocs-APIREQUEST", "true");
-    addRawHeader("Content-Type", "application/x-www-form-urlencoded");
 
     auto *buffer = new QBuffer;
 
@@ -83,7 +90,11 @@ void OcsJob::start()
     if (_verb == "GET" || _verb == "DELETE") {
         queryItems = percentEncodeQueryItems(_params);
     } else if (_verb == "POST" || _verb == "PUT") {
-        // Url encode the _postParams and put them in a buffer.
+        if (_jsonBody.has_value()) {
+            addRawHeader("Content-Type", "application/json");
+            buffer->setData(*_jsonBody);
+        } else {
+            addRawHeader("Content-Type", "application/x-www-form-urlencoded");
         QByteArray postData;
             for (const auto &[name, value] : std::as_const(_params)) {
             if (!postData.isEmpty()) {
@@ -94,6 +105,7 @@ void OcsJob::start()
                 postData.append(QUrl::toPercentEncoding(value));
         }
         buffer->setData(postData);
+    }
     }
     queryItems.addQueryItem(QLatin1String("format"), QLatin1String("json"));
     QUrl url = Utility::concatUrlPath(account()->url(), path(), queryItems);
