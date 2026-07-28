@@ -17,9 +17,18 @@ using namespace Qt::StringLiterals;
 using namespace OCC;
 using namespace OCC::Gui::Sharing;
 
+namespace
+{
+constexpr auto searchDelayMsec = 300;
+}
+
 RecipientSearchModel::RecipientSearchModel(QObject *parent)
     : QAbstractListModel{parent}
-{}
+{
+    _searchTimer.setSingleShot(true);
+    _searchTimer.setInterval(searchDelayMsec);
+    connect(&_searchTimer, &QTimer::timeout, this, &RecipientSearchModel::search);
+}
 
 int RecipientSearchModel::rowCount(const QModelIndex &parent) const
 {
@@ -70,7 +79,9 @@ void RecipientSearchModel::setAccount(AccountPtr account)
     }
 
     beginResetModel();
+    _searchTimer.stop();
     _account = account;
+    _searchResults = {};
     Q_EMIT accountChanged();
     endResetModel();
 }
@@ -95,15 +106,26 @@ void RecipientSearchModel::setQuery(const QString &query)
     Q_EMIT queryChanged();
 
     if (_query.isEmpty()) {
+        _searchTimer.stop();
         beginResetModel();
         _searchResults = {};
         endResetModel();
         return;
     }
 
-    // TODO: start timer for search job
-    const auto job = UnifiedSharingApi{_account}.searchRecipients(query, 0, 10);
-    connect(job, &SearchRecipientsJob::recipientsFound, this, [this](const QJsonArray &recipients) {
+    _searchTimer.start();
+}
+
+void RecipientSearchModel::search()
+{
+    const auto query = _query;
+    const auto account = _account;
+    const auto job = UnifiedSharingApi{account}.searchRecipients(query, 0, 10);
+    connect(job, &SearchRecipientsJob::recipientsFound, this, [this, account, query](const QJsonArray &recipients) {
+        if (_account != account || _query != query) {
+            return;
+        }
+
         beginResetModel();
         _searchResults = recipients;
         endResetModel();
