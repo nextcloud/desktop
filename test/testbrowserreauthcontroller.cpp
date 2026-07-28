@@ -135,7 +135,7 @@ class TestBrowserReAuthController : public QObject
 {
     Q_OBJECT
 
-    std::unique_ptr<FolderMan> _fm;
+    QPointer<FolderMan> _fm;
 
 private slots:
     void initTestCase()
@@ -150,7 +150,8 @@ private slots:
         qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "UserModel", UserModel::instance());
         qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "Theme", Theme::instance());
 
-        _fm.reset(new FolderMan{});
+        FolderMan::resetInstance();
+        _fm = FolderMan::instance();
 
         Systray::instance()->setTrayEngine(new QQmlApplicationEngine(QCoreApplication::instance()));
     }
