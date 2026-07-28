@@ -661,38 +661,48 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="388"/>
-        <source>Sensitivity:</source>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="196"/>
+        <source>Assign labels to the file to manage its sensitivity, retention, and legal hold policies.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="399"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="214"/>
+        <source>Sensitivity labels</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="241"/>
+        <source>Retention labels</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="268"/>
+        <source>Legal hold labels</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="316"/>
+        <source>Reset</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
+        <source>Apply</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="224"/>
         <source>Select sensitivity label</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="425"/>
-        <source>Retention:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="436"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="251"/>
         <source>Select retention label</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="450"/>
-        <source>Legal hold:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="459"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="277"/>
         <source>Select legal hold label</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="485"/>
-        <source>Done</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -3881,19 +3891,6 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>Невъзможност да се извлече или да се създаде публичната връзка за споделяне. Грешка:
 
 %1</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::GovernanceLabelsListModel</name>
-    <message>
-        <location filename="../src/gui/governance/governancelabelslistmodel.cpp" line="62"/>
-        <source>None</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/governance/governancelabelslistmodel.cpp" line="68"/>
-        <source>No label</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
