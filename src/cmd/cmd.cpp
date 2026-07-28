@@ -46,7 +46,7 @@
 #endif
 
 using namespace OCC;
-
+using namespace Qt::StringLiterals;
 
 static void nullMessageHandler(QtMsgType, const QMessageLogContext &, const QString &)
 {
@@ -56,7 +56,7 @@ struct CmdOptions
 {
     QString source_dir;
     QString target_url;
-    QString remotePath = QStringLiteral("/");
+    QString remotePath = u"/"_s;
     QString config_directory;
     QString user;
     QString password;
@@ -230,39 +230,40 @@ void parseOptions(const QStringList &app_args, CmdOptions *options)
     while (it.hasNext()) {
         const QString option = it.next();
 
-        if (option == "--httpproxy" && !it.peekNext().startsWith("-")) {
+        if (option == u"--httpproxy"_s && it.hasNext() && !it.peekNext().startsWith(u"-"_s)) {
             options->proxy = it.next();
-        } else if (option == "-s" || option == "--silent") {
+        } else if (option == u"-s"_s || option == u"--silent"_s) {
             options->silent = true;
-        } else if (option == "--trust") {
+        } else if (option == u"--trust"_s) {
             options->trustSSL = true;
-        } else if (option == "-n") {
+        } else if (option == u"-n"_s) {
             options->useNetrc = true;
-        } else if (option == "-h") {
+        } else if (option == u"-h"_s) {
             options->ignoreHiddenFiles = false;
-        } else if (option == "--non-interactive") {
+        } else if (option == u"--non-interactive"_s) {
             options->interactive = false;
-        } else if ((option == "-u" || option == "--user") && !it.peekNext().startsWith("-")) {
+        } else if ((option == u"-u"_s || option == u"--user"_s) && it.hasNext() && !it.peekNext().startsWith(u"-"_s)) {
             options->user = it.next();
-        } else if ((option == "-p" || option == "--password") && !it.peekNext().startsWith("-")) {
+        } else if ((option == u"-p"_s || option == u"--password"_s) && it.hasNext() && !it.peekNext().startsWith(u"-"_s)) {
             options->password = it.next();
-        } else if (option == "--exclude" && !it.peekNext().startsWith("-")) {
+        } else if (option == u"--exclude"_s && it.hasNext() && !it.peekNext().startsWith(u"-"_s)) {
             options->exclude = it.next();
-        } else if (option == "--unsyncedfolders" && !it.peekNext().startsWith("-")) {
+        } else if (option == u"--unsyncedfolders"_s && it.hasNext() && !it.peekNext().startsWith(u"-"_s)) {
             options->unsyncedfolders = it.next();
-        } else if (option == "--max-sync-retries" && !it.peekNext().startsWith("-")) {
+        } else if (option == u"--max-sync-retries"_s && it.hasNext() && !it.peekNext().startsWith(u"-"_s)) {
             options->restartTimes = it.next().toInt();
-        } else if (option == "--uplimit" && !it.peekNext().startsWith("-")) {
+        } else if (option == u"--uplimit"_s && it.hasNext() && !it.peekNext().startsWith(u"-"_s)) {
             options->uplimit = it.next().toInt() * 1000;
-        } else if (option == "--downlimit" && !it.peekNext().startsWith("-")) {
+        } else if (option == u"--downlimit"_s && it.hasNext() && !it.peekNext().startsWith(u"-"_s)) {
             options->downlimit = it.next().toInt() * 1000;
-        } else if (option == "--logdebug") {
+        } else if (option == u"--logdebug"_s) {
             Logger::instance()->setLogFile("-");
             Logger::instance()->setLogDebug(true);
-        } else if (option == "--path" && !it.peekNext().startsWith("-")) {
+        } else if (option == u"--path"_s && it.hasNext() && !it.peekNext().startsWith(u"-"_s)) {
             options->remotePath = it.next();
-        }
-        else {
+        } else if (option == u"--confdir"_s && it.hasNext() && !it.peekNext().startsWith(u"--"_s)) {
+            options->config_directory = it.next();
+        } else {
             help();
         }
     }
@@ -301,7 +302,7 @@ int main(int argc, char **argv)
 
 #ifdef Q_OS_WIN
     // Ensure OpenSSL config file is only loaded from app directory
-    QString opensslConf = QCoreApplication::applicationDirPath() + QStringLiteral("/openssl.cnf");
+    QString opensslConf = QCoreApplication::applicationDirPath() + u"/openssl.cnf"_s;
     qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());
 #endif
 
