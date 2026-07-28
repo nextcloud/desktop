@@ -11,8 +11,6 @@ namespace OCC::Gui::Sharing
 {
 
 class Share;
-class UnifiedSharingApi;
-
 /**
  * @brief Applies a server response to an existing share.
  */
@@ -20,16 +18,11 @@ class UpdateShareJob : public UnifiedSharingRequest
 {
     Q_OBJECT
 
+protected:
+    explicit UpdateShareJob(AccountPtr account, Share &share, const QString &path, const QByteArray &verb, const QList<QPair<QString, QString>> &parameters);
+
 Q_SIGNALS:
     void shareUpdated(QPointer<Share> share);
-
-private:
-    friend class UnifiedSharingApi;
-    explicit UpdateShareJob(AccountPtr account,
-                            QPointer<Share> share,
-                            const QString &path,
-                            const QByteArray &verb,
-                            const QList<QPair<QString, QString>> &parameters);
 };
 
 }

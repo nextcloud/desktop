@@ -8,10 +8,14 @@
 #include <QJsonDocument>
 #include <QLoggingCategory>
 
+#include "addrecipientjob.h"
+#include "addsourcejob.h"
 #include "createsharejob.h"
 #include "destroysharejob.h"
+#include "removerecipientjob.h"
+#include "setpermissionjob.h"
+#include "setpermissionpresetjob.h"
 #include "share.h"
-#include "unifiedsharingapi.h"
 #include "updatesharejob.h"
 
 Q_LOGGING_CATEGORY(lcSharingController, "nextcloud.gui.sharing.sharingcontroller", QtInfoMsg)
@@ -38,8 +42,6 @@ void SharingController::setAccount(AccountPtr account)
     }
 
     _account = account;
-    delete _api;
-    _api = _account ? new UnifiedSharingApi{_account, this} : nullptr;
     Q_EMIT accountChanged();
 }
 
@@ -55,7 +57,7 @@ void SharingController::createShare(const QString &fileId)
         return;
     }
 
-    const auto job = _api->createShare();
+    const auto job = new CreateShareJob{_account};
     connect(job, &CreateShareJob::shareCreated, this, [this, fileId](QPointer<Share> share) -> void {
         if (!share) {
             qCWarning(lcSharingController) << "share created without a valid Share object";
@@ -82,7 +84,7 @@ void SharingController::destroyShare()
         return;
     }
 
-    const auto job = _api->destroyShare(_share->id());
+    const auto job = new DestroyShareJob{_account, _share->id()};
     connect(job, &DestroyShareJob::jobFinished, this, [this](const QJsonDocument &, int) {
         _share = nullptr;
         Q_EMIT shareChanged(); // TODO: shareDeleted maybe?
@@ -102,7 +104,7 @@ void SharingController::addRecipient(const QString &recipientType, const QString
         return;
     }
 
-    const auto job = _api->addRecipient(_share, recipientType, recipientValue);
+    const auto job = new AddRecipientJob{_account, *_share, recipientType, recipientValue};
     connect(job, &UpdateShareJob::shareUpdated, this, [this](QPointer<Share>) {
         qCDebug(lcSharingController).nospace() << "recipient added"
                                                << " id=" << _share->id();
@@ -122,7 +124,7 @@ void SharingController::removeRecipient(const QString &recipientType, const QStr
         return;
     }
 
-    const auto job = _api->removeRecipient(_share, recipientType, recipientValue);
+    const auto job = new RemoveRecipientJob{_account, *_share, recipientType, recipientValue};
     connect(job, &UpdateShareJob::shareUpdated, this, [this](QPointer<Share>) {
         qCDebug(lcSharingController).nospace() << "recipient removed"
                                                << " id=" << _share->id();
@@ -142,7 +144,7 @@ void SharingController::setPermission(const QString &permissionClass, bool enabl
         return;
     }
 
-    const auto job = _api->setPermission(_share, permissionClass, enabled);
+    const auto job = new SetPermissionJob{_account, *_share, permissionClass, enabled};
     connect(job, &UpdateShareJob::shareUpdated, this, [this](QPointer<Share>) {
         qCDebug(lcSharingController).nospace() << "permissions updated"
                                                << " id=" << _share->id();
@@ -167,7 +169,7 @@ void SharingController::setPermissionPreset(const QString &permissionPreset)
         return;
     }
 
-    const auto job = _api->setPermissionPreset(_share, permissionPreset);
+    const auto job = new SetPermissionPresetJob{_account, *_share, permissionPreset};
     connect(job, &UpdateShareJob::shareUpdated, this, [this](QPointer<Share>) {
         qCDebug(lcSharingController).nospace() << "permissions updated"
                                                << " id=" << _share->id();
@@ -177,7 +179,7 @@ void SharingController::setPermissionPreset(const QString &permissionPreset)
 
 void SharingController::addSourceAfterCreation(const QString &fileId)
 {
-    const auto job = _api->addSource(_share, fileId);
+    const auto job = new AddSourceJob{_account, *_share, fileId};
     connect(job, &UpdateShareJob::shareUpdated, this, [this, fileId](QPointer<Share>) {
         qCDebug(lcSharingController).nospace() << "share created"
                                                << " id=" << _share->id() << " fileId=" << fileId;
