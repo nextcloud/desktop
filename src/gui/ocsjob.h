@@ -15,6 +15,8 @@
 #include <QUrl>
 #include <QVector>
 
+#include <optional>
+
 #define OCS_SUCCESS_STATUS_CODE 100
 // Apparently the v2.php URLs can return that
 #define OCS_SUCCESS_STATUS_CODE_V2 200
@@ -24,6 +26,7 @@
 #define OCS_NOT_MODIFIED_STATUS_CODE_V2 304
 
 class QJsonDocument;
+class QJsonObject;
 
 namespace OCC {
 
@@ -60,12 +63,11 @@ protected:
     void addParam(const QString &name, const QString &value);
 
     /**
-     * Set the post parameters
+     * Send a JSON object as the request body.
      *
-     * @param postParams list of pairs to add (urlEncoded) to the body of the
-     * request
+     * @param body JSON body for a POST or PUT request
      */
-    void setPostParams(const QList<QPair<QString, QString>> &postParams);
+    void setJsonBody(const QJsonObject &body);
 
     /**
      * List of expected statuscodes for this request
@@ -144,6 +146,7 @@ private Q_SLOTS:
 private:
     QByteArray _verb;
     QList<QPair<QString, QString>> _params;
+    std::optional<QByteArray> _jsonBody;
     QVector<int> _passStatusCodes;
     QNetworkRequest _request;
 };
