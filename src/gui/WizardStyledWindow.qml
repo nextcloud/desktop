@@ -18,7 +18,6 @@ ApplicationWindow {
         | Qt.CustomizeWindowHint
         | Qt.WindowTitleHint
         | Qt.WindowSystemMenuHint
-        | Qt.WindowMinimizeButtonHint
         | Qt.WindowCloseButtonHint
     color: Style.wizardWindowBackground
     palette.window: Style.wizardWindowBackground

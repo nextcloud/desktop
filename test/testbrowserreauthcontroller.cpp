@@ -185,7 +185,7 @@ private slots:
 
         QQuickWindow *window = nullptr;
         QTRY_VERIFY_WITH_TIMEOUT((window = findBrowserReAuthWindow()) != nullptr, 5000);
-        QVERIFY(window->flags().testFlag(Qt::WindowMinimizeButtonHint));
+        QVERIFY(!window->flags().testFlag(Qt::WindowMinimizeButtonHint));
         QPointer<QQuickWindow> windowGuard(window);
         QTRY_COMPARE_WITH_TIMEOUT(browserSpy.count(), 1, 5000);
 
