@@ -21,6 +21,7 @@
 #include "account.h"
 #include "accountmanager.h"
 #include "accountsetupcommandlinemanager.h"
+#include "folderman.h"
 #include "configfile.h" // ONLY ACCESS THE STATIC FUNCTIONS!
 #ifdef TOKEN_AUTH_ONLY
 # include "creds/tokencredentials.h"
@@ -208,7 +209,6 @@ void help()
     std::cout << "  --remotedirpath [path] Remote folder path to sync, default /" << std::endl;
     std::cout << "  --isvfsenabled [0|1]   Enable virtual files (1) or disable (0)" << std::endl;
     std::cout << "" << std::endl;
-    exit(0);
 }
 
 void showVersion()
@@ -217,14 +217,26 @@ void showVersion()
     exit(0);
 }
 
-void parseOptions(const QStringList &app_args, CmdOptions *options)
-{
-    QStringList args(app_args);
+enum class CommandMode {
+    HelpMode,
+    SyncingMode,
+    ProvisioningMode,
+    UnknownMode,
+};
 
-    int argCount = args.count();
+CommandMode parseOptions(const QStringList &app_args, CmdOptions *options)
+{
+    auto result = CommandMode::UnknownMode;
+
+    auto args(app_args);
+
+    const auto argCount = args.count();
 
     // Detect provisioning mode: --userid flag present means no positional args required
-    const bool provisionMode = args.contains(QStringLiteral("--userid"));
+    const auto provisionMode = args.contains(QStringLiteral("--userid"));
+    if (provisionMode) {
+        result = CommandMode::ProvisioningMode;
+    }
 
     if (!provisionMode) {
         if (argCount < 3) {
@@ -235,6 +247,8 @@ void parseOptions(const QStringList &app_args, CmdOptions *options)
                 }
             }
             help();
+            result = CommandMode::HelpMode;
+            return result;
         }
 
         options->target_url = args.takeLast();
@@ -243,25 +257,21 @@ void parseOptions(const QStringList &app_args, CmdOptions *options)
         if (!options->source_dir.endsWith('/')) {
             options->source_dir.append('/');
         }
-        QFileInfo fi(options->source_dir);
-        if (!fi.exists()) {
+        auto sourceDirFileInfo = QFileInfo{options->source_dir};
+        if (!sourceDirFileInfo.exists()) {
             std::cerr << "Source dir '" << qPrintable(options->source_dir) << "' does not exist." << std::endl;
             exit(1);
         }
-        options->source_dir = fi.absoluteFilePath();
-    } else {
-        if (argCount >= 2 && (args.at(1) == QStringLiteral("-v") || args.at(1) == QStringLiteral("--version"))) {
-            showVersion();
-        }
+        options->source_dir = sourceDirFileInfo.absoluteFilePath();
     }
 
-    QStringListIterator it(args);
+    auto it = QStringListIterator{args};
     // skip file name;
     if (it.hasNext())
         it.next();
 
     while (it.hasNext()) {
-        const QString option = it.next();
+        const auto option = it.next();
 
         if (option == u"--httpproxy"_s && it.hasNext() && !it.peekNext().startsWith(u"-"_s)) {
             options->proxy = it.next();
@@ -302,13 +312,21 @@ void parseOptions(const QStringList &app_args, CmdOptions *options)
             QString errorMessage;
             if (!AccountSetupCommandLineManager::instance()->parseCommandlineOption(option, it, errorMessage)) {
                 help();
+                result = CommandMode::HelpMode;
+                return result;
             }
         }
     }
 
     if (!provisionMode && (options->target_url.isEmpty() || options->source_dir.isEmpty())) {
+        result = CommandMode::HelpMode;
         help();
+        return result;
+    } else if (!provisionMode) {
+        result = CommandMode::SyncingMode;
     }
+
+    return result;
 }
 
 /* If the selective sync list is different from before, we need to disable the read from db
@@ -329,6 +347,56 @@ void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
 
         journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, newList);
     }
+}
+
+[[nodiscard]] bool setupAccountsOnly()
+{
+    auto result = false;
+
+    ConfigFile cfg;
+    const auto tryMigrate = cfg.overrideServerUrl().isEmpty();
+    auto accountsRestoreResult = AccountManager::AccountsRestoreFailure;
+    if (accountsRestoreResult = AccountManager::instance()->restore(tryMigrate);
+        accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
+        qWarning() << "restoring existing user accounts failed";
+        return result;
+    }
+
+    result = true;
+    return result;
+}
+
+[[nodiscard]] bool setupAccountsAndFolders()
+{
+    auto result = false;
+
+    auto folderManager = FolderMan::instance();
+    ConfigFile configFile;
+    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupUsers);
+    if (!setupAccountsOnly()) {
+        return result;
+    }
+
+    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupFolders);
+    const auto foldersListSize = folderManager->setupFolders();
+    folderManager->setSyncEnabled(true);
+
+    const auto prettyNamesList = [](const QList<AccountStatePtr> &accounts) {
+        QStringList list;
+        for (const auto &account : accounts) {
+            list << account->account()->prettyName().prepend("- ");
+        }
+        return list.join("\n");
+    };
+
+    const auto accounts = AccountManager::instance()->accounts();
+    const auto accountsListSize = accounts.size();
+
+    qWarning() << foldersListSize << "folder(s) migrated";
+    qWarning() << accountsListSize << "account(s) migrated:" << prettyNamesList(accounts);
+
+    result = true;
+    return result;
 }
 
 int main(int argc, char **argv)
@@ -354,7 +422,11 @@ int main(int argc, char **argv)
     options.uplimit = 0;
     options.downlimit = 0;
 
-    parseOptions(app.arguments(), &options);
+    const auto commandMode = parseOptions(app.arguments(), &options);
+
+    if (commandMode == CommandMode::HelpMode) {
+        return 0;
+    }
 
     if (options.silent) {
         qInstallMessageHandler(nullMessageHandler);
@@ -368,14 +440,25 @@ int main(int argc, char **argv)
         }
     }
 
-    auto quitInstance = false;
-    if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
-        AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
-        quitInstance = true;
-    }
-    AccountSetupCommandLineManager::destroy();
-    if (quitInstance) {
-        return 0;
+    if (commandMode == CommandMode::ProvisioningMode) {
+        if (!setupAccountsAndFolders()) {
+            qWarning() << "Restoring existing accounts failed. Skip creation of a new account. See prior messages for a detailed error.";
+            return -1;
+        }
+
+        if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
+            if (AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine()) {
+                return 0;
+            } else {
+                qWarning() << "Creation of the account failed. See prior messages for a detailed error.";
+                return -1;
+            }
+        } else {
+            AccountSetupCommandLineManager::destroy();
+            qWarning() << "Missing mandatory command line options for provisioning mode";
+            help();
+            return -1;
+        }
     }
 
     AccountPtr account = Account::create();
