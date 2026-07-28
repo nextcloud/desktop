@@ -53,7 +53,13 @@ class RealmItemMetadata: Object, ItemMetadata {
     @Persisted var path = ""
     @Persisted var permissions = ""
     @Persisted(indexed: true) var normalizedServerUrl = ""
-    @Persisted var normalizedFileName = ""
+    // Indexed because it is the selective key for logical-address lookups
+    // (`RealmItemMetadata.hasLocation`) within a single directory. `normalizedServerUrl`'s index is
+    // useless for a large *flat* folder — every child shares the parent url, so it narrows to the whole
+    // sibling set — whereas the (near-unique) file name lets Realm's planner drive off this index
+    // instead of scanning all siblings. This is what collapses the O(N²) per-item eviction/dedup scans
+    // during enumeration of a big folder (e.g. /Talk).
+    @Persisted(indexed: true) var normalizedFileName = ""
     @Persisted var quotaUsedBytes: Int64 = 0
     @Persisted var quotaAvailableBytes: Int64 = 0
     @Persisted var resourceType = ""

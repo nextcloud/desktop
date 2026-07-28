@@ -24,17 +24,30 @@ extension Enumerator {
         handleInvalidParent: Bool = true
     ) {
         Task {
+            let signposter = EnumerationSignposter.signposter
+            let toItemsState = signposter.beginInterval(
+                "ToFileProviderItems",
+                id: signposter.makeSignpostID(),
+                "count=\(itemMetadatas.count)"
+            )
             do {
                 let items = try await itemMetadatas.toFileProviderItems(
                     account: account, remoteInterface: remoteInterface, dbManager: dbManager, log: self.logger.log
                 )
+                signposter.endInterval("ToFileProviderItems", toItemsState)
 
                 Task { @MainActor in
+                    // Begin/end stay in this MainActor scope; both observer calls are synchronous.
+                    let reportState = signposter.beginInterval(
+                        "ObserverReport", id: signposter.makeSignpostID(), "items=\(items.count)"
+                    )
                     observer.didEnumerate(items)
                     logger.info("Did enumerate \(items.count) items. Next page is nil: \(nextPage == nil)")
                     observer.finishEnumerating(upTo: nextPage)
+                    signposter.endInterval("ObserverReport", reportState)
                 }
             } catch let error as NSError { // This error can only mean a missing parent item identifier
+                signposter.endInterval("ToFileProviderItems", toItemsState)
                 guard handleInvalidParent else {
                     logger.info("Not handling invalid parent in enumeration.")
                     observer.finishEnumeratingWithError(error)
