@@ -7,8 +7,16 @@ target_sources(nextcloudGuiSharing
   PRIVATE
     abstractsharemodel.h
     abstractsharemodel.cpp
-    ocssharingjob.h
-    ocssharingjob.cpp
+    unifiedsharingrequest.h
+    unifiedsharingrequest.cpp
+    createsharejob.h
+    createsharejob.cpp
+    destroysharejob.h
+    destroysharejob.cpp
+    searchrecipientsjob.h
+    searchrecipientsjob.cpp
+    updatesharejob.h
+    updatesharejob.cpp
     permission.h
     permission.cpp
     permissionmodel.h
