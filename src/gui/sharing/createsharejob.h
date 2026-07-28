@@ -11,7 +11,6 @@ namespace OCC::Gui::Sharing
 {
 
 class Share;
-class UnifiedSharingApi;
 
 /**
  * @brief Creates a share and returns its parsed representation.
@@ -20,12 +19,11 @@ class CreateShareJob : public UnifiedSharingRequest
 {
     Q_OBJECT
 
+public:
+    explicit CreateShareJob(AccountPtr account);
+
 Q_SIGNALS:
     void shareCreated(QPointer<Share> share);
-
-private:
-    friend class UnifiedSharingApi;
-    explicit CreateShareJob(AccountPtr account);
 };
 
 }

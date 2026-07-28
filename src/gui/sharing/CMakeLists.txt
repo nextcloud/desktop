@@ -17,6 +17,16 @@ target_sources(nextcloudGuiSharing
     searchrecipientsjob.cpp
     updatesharejob.h
     updatesharejob.cpp
+    addsourcejob.h
+    addsourcejob.cpp
+    addrecipientjob.h
+    addrecipientjob.cpp
+    removerecipientjob.h
+    removerecipientjob.cpp
+    setpermissionjob.h
+    setpermissionjob.cpp
+    setpermissionpresetjob.h
+    setpermissionpresetjob.cpp
     permission.h
     permission.cpp
     permissionmodel.h
@@ -35,8 +45,6 @@ target_sources(nextcloudGuiSharing
     share.cpp
     sharingcontroller.h
     sharingcontroller.cpp
-    unifiedsharingapi.h
-    unifiedsharingapi.cpp
 )
 
 ecm_add_qml_module(nextcloudGuiSharing

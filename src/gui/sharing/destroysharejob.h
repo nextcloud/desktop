@@ -10,15 +10,12 @@
 namespace OCC::Gui::Sharing
 {
 
-class UnifiedSharingApi;
-
 /**
  * @brief Destroys a share.
  */
 class DestroyShareJob : public UnifiedSharingRequest
 {
-private:
-    friend class UnifiedSharingApi;
+public:
     explicit DestroyShareJob(AccountPtr account, const QString &shareId);
 };
 
