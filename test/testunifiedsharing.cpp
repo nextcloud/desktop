@@ -3,12 +3,16 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include "gui/sharing/addrecipientjob.h"
+#include "gui/sharing/addsourcejob.h"
 #include "gui/sharing/createsharejob.h"
 #include "gui/sharing/destroysharejob.h"
 #include "gui/sharing/recipientsearchmodel.h"
+#include "gui/sharing/removerecipientjob.h"
 #include "gui/sharing/searchrecipientsjob.h"
+#include "gui/sharing/setpermissionjob.h"
+#include "gui/sharing/setpermissionpresetjob.h"
 #include "gui/sharing/share.h"
-#include "gui/sharing/unifiedsharingapi.h"
 #include "gui/sharing/unifiedsharingrequest.h"
 #include "gui/sharing/updatesharejob.h"
 #include "syncenginetestutils.h"
@@ -73,7 +77,7 @@ private slots:
                                         this};
         });
 
-        UnifiedSharingApi api{fakeFolder.account()};
+        const auto account = fakeFolder.account();
         const auto share = Share::fromJson(QJsonDocument::fromJson(R"json({"ocs":{"data":{"id":"share-1"}}})json"), fakeFolder.account());
 
         const auto verifyRequest = [&](UnifiedSharingRequest *job,
@@ -91,29 +95,29 @@ private slots:
             QVERIFY2(requestPath.endsWith(expectedPath), qPrintable(requestPath));
         };
 
-        verifyRequest(api.createShare(), "POST", "/ocs/v2.php/apps/sharing/api/v1/share");
-        verifyRequest(api.destroyShare("share-1"_L1), "DELETE", "/ocs/v2.php/apps/sharing/api/v1/share/share-1");
-        verifyRequest(api.addSource(share, "42"_L1),
+        verifyRequest(new CreateShareJob{account}, "POST", "/ocs/v2.php/apps/sharing/api/v1/share");
+        verifyRequest(new DestroyShareJob{account, "share-1"_L1}, "DELETE", "/ocs/v2.php/apps/sharing/api/v1/share/share-1");
+        verifyRequest(new AddSourceJob{account, *share, "42"_L1},
                       "POST",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1/source",
                       {{"class"_L1, "OCA\\Files\\Sharing\\Source\\NodeShareSourceType"_L1}, {"value"_L1, "42"_L1}});
-        verifyRequest(api.addRecipient(share, "recipient-class"_L1, "alice"_L1),
+        verifyRequest(new AddRecipientJob{account, *share, "recipient-class"_L1, "alice"_L1},
                       "POST",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1/recipient",
                       {{"class"_L1, "recipient-class"_L1}, {"value"_L1, "alice"_L1}});
-        verifyRequest(api.removeRecipient(share, "recipient-class"_L1, "alice"_L1),
+        verifyRequest(new RemoveRecipientJob{account, *share, "recipient-class"_L1, "alice"_L1},
                       "DELETE",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1/recipient",
                       {{"class"_L1, "recipient-class"_L1}, {"value"_L1, "alice"_L1}});
-        verifyRequest(api.searchRecipients("ali"_L1, 10, 20),
+        verifyRequest(new SearchRecipientsJob{account, "ali"_L1, 10, 20},
                       "GET",
                       "/ocs/v2.php/apps/sharing/api/v1/recipients",
                       {{"query"_L1, "ali"_L1}, {"offset"_L1, "10"_L1}, {"limit"_L1, "20"_L1}});
-        verifyRequest(api.setPermission(share, "permission-class"_L1, true),
+        verifyRequest(new SetPermissionJob{account, *share, "permission-class"_L1, true},
                       "PUT",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1/permission",
                       {{"class"_L1, "permission-class"_L1}, {"enabled"_L1, "true"_L1}});
-        verifyRequest(api.setPermissionPreset(share, "preset-class"_L1),
+        verifyRequest(new SetPermissionPresetJob{account, *share, "preset-class"_L1},
                       "PUT",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1/permission/preset",
                       {{"permissionPreset"_L1, "preset-class"_L1}});
@@ -143,8 +147,7 @@ private slots:
                                         this};
         });
 
-        UnifiedSharingApi api{fakeFolder.account()};
-        const auto job = api.searchRecipients("alice"_L1, 0, 10);
+        const auto job = new SearchRecipientsJob{fakeFolder.account(), "alice"_L1, 0, 10};
         QSignalSpy finishedSpy{job, &UnifiedSharingRequest::jobFinished};
 
         job->start();
@@ -168,10 +171,10 @@ private slots:
             return new FakePayloadReply{operation, request, payload, this};
         });
 
-        UnifiedSharingApi api{fakeFolder.account()};
+        const auto account = fakeFolder.account();
 
         QPointer<Share> createdShare;
-        const auto createJob = api.createShare();
+        const auto createJob = new CreateShareJob{account};
         connect(createJob, &CreateShareJob::shareCreated, this, [&](QPointer<Share> share) {
             createdShare = share;
         });
@@ -180,7 +183,7 @@ private slots:
         QCOMPARE(createdShare->id(), "share-1"_L1);
 
         auto updateReceived = false;
-        const auto updateJob = api.setPermission(createdShare, "permission-class"_L1, true);
+        const auto updateJob = new SetPermissionJob{account, *createdShare, "permission-class"_L1, true};
         connect(updateJob, &UpdateShareJob::shareUpdated, this, [&](QPointer<Share> share) {
             updateReceived = share == createdShare;
         });
@@ -189,7 +192,7 @@ private slots:
         QCOMPARE(createdShare->state(), Share::ShareState::Active);
 
         auto recipients = QJsonArray{};
-        const auto searchJob = api.searchRecipients("ali"_L1, 0, 10);
+        const auto searchJob = new SearchRecipientsJob{account, "ali"_L1, 0, 10};
         QCOMPARE(searchJob->timeoutMsec(), 10'000);
         connect(searchJob, &SearchRecipientsJob::recipientsFound, this, [&](const QJsonArray &result) {
             recipients = result;
@@ -199,7 +202,7 @@ private slots:
         QCOMPARE(recipients.at(0).toObject().value("label"_L1).toString(), "Alice"_L1);
 
         auto destroyed = false;
-        const auto destroyJob = api.destroyShare(createdShare->id());
+        const auto destroyJob = new DestroyShareJob{account, createdShare->id()};
         connect(destroyJob, &DestroyShareJob::jobFinished, this, [&](const QJsonDocument &, int) {
             destroyed = true;
         });
