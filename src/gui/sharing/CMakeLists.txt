@@ -7,6 +7,7 @@ target_sources(nextcloudGuiSharing
   PRIVATE
     abstractsharemodel.h
     abstractsharemodel.cpp
+    sharingconstants.h
     unifiedsharingrequest.h
     unifiedsharingrequest.cpp
     createsharejob.h
