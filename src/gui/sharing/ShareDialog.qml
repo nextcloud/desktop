@@ -116,6 +116,7 @@ WizardStyledWindow {
 
                 onClicked: stack.push(Qt.createComponent("com.nextcloud.desktopclient.sharing", "SettingsPage").createObject(root, {
                     sharingController: sharingController,
+                    share: mainPage.share,
                 }))
             }
         }
@@ -146,12 +147,15 @@ WizardStyledWindow {
                 ButtonGroup.group: shareType
 
                 onCheckedChanged: {
-                    const parameters = ["OC\\Core\\Sharing\\Recipient\\TokenShareRecipientType", "somevaluethatislongerthan32characters12345678"]
-                    if (checked) {
-                        sharingController.addRecipient(...parameters)
+                    if (!mainPage.share) {
                         return
                     }
-                    sharingController.removeRecipient(...parameters)
+                    const parameters = ["OC\\Core\\Sharing\\Recipient\\TokenShareRecipientType", "somevaluethatislongerthan32characters12345678"]
+                    if (checked) {
+                        sharingController.addRecipient(mainPage.share, ...parameters)
+                        return
+                    }
+                    sharingController.removeRecipient(mainPage.share, ...parameters)
                 }
             }
         }
