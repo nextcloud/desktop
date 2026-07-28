@@ -6,13 +6,15 @@
 #pragma once
 
 #include <QAbstractListModel>
+#include <QTimer>
 
-#include <qqmlintegration.h>
 #include <QJsonArray>
+#include <qqmlintegration.h>
 
 #include "accountfwd.h"
 
-namespace OCC::Gui::Sharing {
+namespace OCC::Gui::Sharing
+{
 
 class RecipientSearchModel : public QAbstractListModel
 {
@@ -50,6 +52,9 @@ private:
     AccountPtr _account = nullptr;
     QJsonArray _searchResults;
     QString _query;
+    QTimer _searchTimer;
+
+    void search();
 };
 
 }
