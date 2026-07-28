@@ -11,7 +11,12 @@
 #include <QtTest>
 #include "syncenginetestutils.h"
 #include <syncengine.h>
+#include <discoveryphase.h>
 #include <localdiscoverytracker.h>
+#include <QFile>
+#include <QSignalSpy>
+#include <QThreadPool>
+#include <QTemporaryDir>
 
 using namespace OCC;
 using namespace Qt::StringLiterals;
@@ -27,6 +32,21 @@ private slots:
         OCC::Logger::instance()->setLogDebug(true);
 
         QStandardPaths::setTestModeEnabled(true);
+    }
+
+    void testFileOpenedAsDirectoryCompletesDiscoveryJob()
+    {
+        QTemporaryDir temporaryDirectory;
+        QVERIFY(temporaryDirectory.isValid());
+
+        QFile file(temporaryDirectory.filePath(QStringLiteral("file")));
+        QVERIFY(file.open(QIODevice::WriteOnly));
+
+        const auto job = new DiscoverySingleLocalDirectoryJob({}, file.fileName(), nullptr, false);
+        QSignalSpy finishedSpy(job, &DiscoverySingleLocalDirectoryJob::finished);
+        QThreadPool::globalInstance()->start(job);
+
+        QTRY_COMPARE_WITH_TIMEOUT(finishedSpy.count(), 1, 5000);
     }
 
     void testSelectiveSyncQuotaExceededDataLoss()
