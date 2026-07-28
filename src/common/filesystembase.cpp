@@ -732,7 +732,7 @@ bool FileSystem::isFileLocked(const QString &fileName, LockMode mode)
         if (error == ERROR_SHARING_VIOLATION || error == ERROR_LOCK_VIOLATION) {
             return true;
         } else if (error != ERROR_FILE_NOT_FOUND && error != ERROR_PATH_NOT_FOUND) {
-            qCWarning(lcFileSystem()) << Q_FUNC_INFO << Utility::formatWinError(error);
+            qCWarning(lcFileSystem()) << Q_FUNC_INFO << Utility::formatWinError(error) << fileName;
         }
     }
 #else
