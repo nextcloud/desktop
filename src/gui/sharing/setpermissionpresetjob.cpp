@@ -17,7 +17,7 @@ SetPermissionPresetJob::SetPermissionPresetJob(AccountPtr account, Share &share,
                      share,
                      "/ocs/v2.php/apps/sharing/api/v1/share/%1/permission/preset"_L1.arg(share.id()),
                      "PUT"_ba,
-                     {{"permissionPreset"_L1, permissionPreset}}}
+                     {.body = QJsonObject{{"permissionPresetClass"_L1, permissionPreset}}}}
 {
 }
 

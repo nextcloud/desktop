@@ -15,17 +15,19 @@ using namespace OCC::Gui::Sharing;
 UnifiedSharingRequest::UnifiedSharingRequest(AccountPtr account,
                                              const QString &path,
                                              const QByteArray &verb,
-                                             const QList<QPair<QString, QString>> &parameters,
-                                             const QList<int> &passStatusCodes)
+                                             const UnifiedSharingRequestOptions &options)
     : OcsJob{account}
 {
     setPath(path);
     setVerb(verb);
-    for (const auto &[name, value] : parameters) {
+    for (const auto &[name, value] : options.parameters) {
         addParam(name, value);
     }
-    for (const auto statusCode : passStatusCodes) {
-        addPassStatusCode(statusCode);
+    if (options.passStatusCodes) {
+        setPassStatusCodes(*options.passStatusCodes);
+    }
+    if (options.body) {
+        setJsonBody(*options.body);
     }
 }
 

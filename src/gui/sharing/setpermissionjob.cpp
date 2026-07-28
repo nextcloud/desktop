@@ -17,7 +17,7 @@ SetPermissionJob::SetPermissionJob(AccountPtr account, Share &share, const QStri
                      share,
                      "/ocs/v2.php/apps/sharing/api/v1/share/%1/permission"_L1.arg(share.id()),
                      "PUT"_ba,
-                     {{"class"_L1, permissionClass}, {"enabled"_L1, enabled ? "true"_L1 : "false"_L1}}}
+                     {.body = QJsonObject{{"class"_L1, permissionClass}, {"enabled"_L1, enabled}}}}
 {
 }
 
