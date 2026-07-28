@@ -212,6 +212,147 @@ private slots:
         delete createdShare;
     }
 
+    void ocsErrorsAreSeparateFromSuccessfulResults()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *) {
+            return new FakePayloadReply{operation,
+                                        request,
+                                        R"json({
+                "ocs": {
+                    "meta": {
+                        "status": "failure",
+                        "statuscode": 400,
+                        "message": "Invalid permission"
+                    },
+                    "data": {
+                        "id": "changed-share",
+                        "state": "active"
+                    }
+                }
+            })json",
+                                        this};
+        });
+
+        auto jobFinished = false;
+        auto ocsError = false;
+        const auto job = new UnifiedSharingRequest{fakeFolder.account(), "/ocs/v2.php/apps/sharing/api/v1/share"_L1, "GET"_ba};
+        connect(job, &UnifiedSharingRequest::jobFinished, this, [&](const QJsonDocument &, int) {
+            jobFinished = true;
+        });
+        connect(job, &UnifiedSharingRequest::ocsError, this, [&](int, const QString &) {
+            ocsError = true;
+        });
+
+        job->start();
+
+        QTRY_VERIFY(ocsError);
+        QVERIFY(!jobFinished);
+    }
+
+    void failedUpdatesDoNotMutateShares()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *) {
+            return new FakePayloadReply{operation,
+                                        request,
+                                        R"json({
+                "ocs": {
+                    "meta": {
+                        "status": "failure",
+                        "statuscode": 400,
+                        "message": "Invalid update"
+                    },
+                    "data": {
+                        "id": "changed-share",
+                        "state": "active"
+                    }
+                }
+            })json",
+                                        this};
+        });
+
+        const auto account = fakeFolder.account();
+        const auto share = Share::fromJson(QJsonDocument::fromJson(R"json({"ocs":{"data":{"id":"share-1","state":"draft"}}})json"), account);
+        const auto jobs = QList<UpdateShareJob *>{
+            new AddSourceJob{account, *share, "42"_L1},
+            new AddRecipientJob{account, *share, "recipient-class"_L1, "alice"_L1},
+            new RemoveRecipientJob{account, *share, "recipient-class"_L1, "alice"_L1},
+            new SetPermissionJob{account, *share, "permission-class"_L1, true},
+            new SetPermissionPresetJob{account, *share, "preset-class"_L1},
+        };
+
+        for (const auto job : jobs) {
+            auto shareUpdated = false;
+            auto ocsError = false;
+            connect(job, &UpdateShareJob::shareUpdated, this, [&](QPointer<Share>) {
+                shareUpdated = true;
+            });
+            connect(job, &UpdateShareJob::ocsError, this, [&](int, const QString &) {
+                ocsError = true;
+            });
+
+            job->start();
+
+            QTRY_VERIFY(ocsError);
+            QVERIFY(!shareUpdated);
+            QCOMPARE(share->id(), "share-1"_L1);
+            QCOMPARE(share->state(), Share::ShareState::Draft);
+        }
+
+        delete share;
+    }
+
+    void networkErrorsAreSeparateFromSuccessfulResults()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *) {
+            return new FakeErrorReply{operation, request, this, 500};
+        });
+
+        auto jobFinished = false;
+        auto networkError = false;
+        const auto job = new UnifiedSharingRequest{fakeFolder.account(), "/ocs/v2.php/apps/sharing/api/v1/share"_L1, "GET"_ba};
+        connect(job, &UnifiedSharingRequest::jobFinished, this, [&](const QJsonDocument &, int) {
+            jobFinished = true;
+        });
+        connect(job, &UnifiedSharingRequest::networkError, this, [&](QNetworkReply *) {
+            networkError = true;
+        });
+
+        job->start();
+
+        QTRY_VERIFY(networkError);
+        QVERIFY(!jobFinished);
+    }
+
+    void timeoutsAreSeparateFromSuccessfulResults()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *) {
+            return new FakeHangingReply{operation, request, this};
+        });
+
+        auto jobFinished = false;
+        auto networkError = false;
+        auto timedOut = false;
+        const auto job = new UnifiedSharingRequest{fakeFolder.account(), "/ocs/v2.php/apps/sharing/api/v1/share"_L1, "GET"_ba};
+        job->setTimeout(10);
+        connect(job, &UnifiedSharingRequest::jobFinished, this, [&](const QJsonDocument &, int) {
+            jobFinished = true;
+        });
+        connect(job, &UnifiedSharingRequest::networkError, this, [&, job](QNetworkReply *) {
+            networkError = true;
+            timedOut = job->timedOut();
+        });
+
+        job->start();
+
+        QTRY_VERIFY(networkError);
+        QVERIFY(!jobFinished);
+        QVERIFY(timedOut);
+    }
+
     void recipientSearchIsDebouncedAndIgnoresStaleResults()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};
