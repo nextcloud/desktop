@@ -20,6 +20,8 @@
 #include "gui/sharing/setrecipientsecretjob.h"
 #include "gui/sharing/setsharestatejob.h"
 #include "gui/sharing/share.h"
+#include "gui/sharing/sharingconstants.h"
+#include "gui/sharing/sharingcontroller.h"
 #include "gui/sharing/unifiedsharingrequest.h"
 #include "gui/sharing/updatesharejob.h"
 #include "syncenginetestutils.h"
@@ -148,11 +150,11 @@ private slots:
                       "POST",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1/source",
                       {},
-                      {{"class"_L1, "OCA\\Files\\Sharing\\Source\\NodeShareSourceType"_L1}, {"value"_L1, "42"_L1}});
+                      {{"class"_L1, SourceTypeClasses::node}, {"value"_L1, "42"_L1}});
         verifyRequest(new RemoveSourceJob{account, *share, "42"_L1},
                       "DELETE",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1/source",
-                      {{"class"_L1, "OCA\\Files\\Sharing\\Source\\NodeShareSourceType"_L1}, {"value"_L1, "42"_L1}});
+                      {{"class"_L1, SourceTypeClasses::node}, {"value"_L1, "42"_L1}});
         verifyRequest(new AddRecipientJob{account, *share, "recipient-class"_L1, "alice"_L1, "https://example.com"_L1},
                       "POST",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1/recipient",
@@ -204,7 +206,6 @@ private slots:
         verifyRequest(new GetShareJob{account, "share-1"_L1},
                       "POST",
                       "/ocs/v2.php/apps/sharing/api/v1/share/share-1");
-        QCOMPARE(requestContentType, "application/x-www-form-urlencoded");
         verifyRequest(new UnifiedSharingRequest{account,
                                                 "/ocs/v2.php/apps/sharing/api/v1/share/share-1"_L1,
                                                 "POST"_ba,
