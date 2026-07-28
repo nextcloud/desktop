@@ -252,6 +252,55 @@ private slots:
         QCOMPARE(requestCount, 1);
     }
 
+    void sharingControllerLoadsAllSharesWithoutCreatingOne()
+    {
+        FakeFolder fakeFolder{{}, {}, {}, false};
+        auto requestCount = 0;
+        auto requestVerb = QByteArray{};
+        auto requestQuery = QList<QPair<QString, QString>>{};
+        fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *) {
+            ++requestCount;
+            requestVerb = request.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray();
+            requestQuery = QUrlQuery{request.url()}.queryItems();
+            requestQuery.removeAll({"format"_L1, "json"_L1});
+            return new FakePayloadReply{operation,
+                                        request,
+                                        R"json({
+                "ocs": {
+                    "meta": {
+                        "status": "ok",
+                        "statuscode": 200,
+                        "message": "OK"
+                    },
+                    "data": [
+                        {"id": "share-1", "state": "active"},
+                        {"id": "share-2", "state": "draft"}
+                    ]
+                }
+            })json",
+                                        this};
+        });
+
+        SharingController controller;
+        controller.setAccount(fakeFolder.account());
+        QSignalSpy sharesChangedSpy{&controller, &SharingController::sharesChanged};
+
+        controller.initialize("42"_L1);
+
+        QTRY_COMPARE(sharesChangedSpy.size(), 1);
+        QCOMPARE(requestCount, 1);
+        QCOMPARE(requestVerb, "GET");
+        QCOMPARE(requestQuery,
+                 (QList<QPair<QString, QString>>{
+                     {"limit"_L1, "100"_L1},
+                     {"filterSourceTypeClass"_L1, SourceTypeClasses::node},
+                     {"filterSourceTypeValue"_L1, "42"_L1},
+                 }));
+        QCOMPARE(controller.shares().size(), 2);
+        QCOMPARE(controller.shares().at(0)->id(), "share-1"_L1);
+        QCOMPARE(controller.shares().at(1)->id(), "share-2"_L1);
+    }
+
     void operationSpecificStatusCodesAreEnforced()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};
