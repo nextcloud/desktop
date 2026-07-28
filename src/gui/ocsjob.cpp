@@ -48,6 +48,11 @@ void OcsJob::addPassStatusCode(int code)
     _passStatusCodes.append(code);
 }
 
+void OcsJob::setPassStatusCodes(const QList<int> &codes)
+{
+    _passStatusCodes = codes;
+}
+
 void OcsJob::appendPath(const QString &id)
 {
     setPath(path() + QLatin1Char('/') + id);
@@ -95,17 +100,17 @@ void OcsJob::start()
             buffer->setData(*_jsonBody);
         } else {
             addRawHeader("Content-Type", "application/x-www-form-urlencoded");
-        QByteArray postData;
+            QByteArray postData;
             for (const auto &[name, value] : std::as_const(_params)) {
-            if (!postData.isEmpty()) {
-                postData.append("&");
-            }
+                if (!postData.isEmpty()) {
+                    postData.append("&");
+                }
                 postData.append(QUrl::toPercentEncoding(name));
-            postData.append("=");
+                postData.append("=");
                 postData.append(QUrl::toPercentEncoding(value));
+            }
+            buffer->setData(postData);
         }
-        buffer->setData(postData);
-    }
     }
     queryItems.addQueryItem(QLatin1String("format"), QLatin1String("json"));
     QUrl url = Utility::concatUrlPath(account()->url(), path(), queryItems);
