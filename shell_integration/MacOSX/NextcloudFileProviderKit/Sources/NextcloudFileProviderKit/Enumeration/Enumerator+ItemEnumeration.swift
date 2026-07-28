@@ -67,6 +67,21 @@ extension Enumerator {
         logger.debug("Enumerating page: \(String(data: page.rawValue, encoding: .utf8) ?? "")", [.account: account.ncKitAccount, .url: serverUrl])
 
         Task {
+            // Bound the synchronous page work (cursor decode + capabilities + network + convert +
+            // persist) for a trace, and record its wall-clock for the JSONL fallback. The `defer` ends
+            // the interval on every exit — including the error returns below — so no interval dangles.
+            // The trailing observer conversion/report runs in a detached Task and is captured by the
+            // separate `ToFileProviderItems` / `ObserverReport` signposts.
+            let signposter = EnumerationSignposter.signposter
+            let pageWorkState = signposter.beginInterval(
+                "EnumeratePageWork",
+                id: signposter.makeSignpostID(),
+                "serverUrl=\(self.serverUrl, privacy: .public)"
+            )
+            defer { signposter.endInterval("EnumeratePageWork", pageWorkState) }
+            let pageWorkClock = ContinuousClock()
+            let pageWorkStart = pageWorkClock.now
+
             let cursor = paginationCursor(from: page)
 
             // Check server version to determine if pagination should be enabled.
@@ -148,6 +163,12 @@ extension Enumerator {
             } else {
                 rawNextPage = nil
             }
+
+            let pageWorkElapsed = pageWorkClock.now - pageWorkStart
+            logger.performance(
+                "PERF EnumeratePageWork items=\(items.count) page_work_s=\(pageWorkElapsed.fpSeconds) hasNextPage=\(rawNextPage != nil)",
+                [.url: self.serverUrl]
+            )
 
             completeEnumerationObserver(observer, nextPage: rawNextPage, itemMetadatas: items)
         }

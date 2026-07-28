@@ -16,6 +16,15 @@ public protocol FileProviderLogging: Actor {
     var debugLoggingEnabled: Bool { get }
 
     ///
+    /// Whether performance-timing messages emitted by ``FileProviderLogger/performance(_:_:file:function:line:)`` are written.
+    ///
+    /// Controlled at runtime via the `performanceLoggingEnabled` user default and defaults to `false`, so the extra
+    /// per-page timing lines only appear when explicitly requested for a measurement run — independent of `debugLoggingEnabled`,
+    /// which floods the log with per-item traces that would themselves distort the timings.
+    ///
+    var performanceLoggingEnabled: Bool { get }
+
+    ///
     /// Write a message to the current JSON Lines log file.
     ///
     /// Usually, you do not need or want to use this but the methods provided by ``FileProviderLogger`` instead.

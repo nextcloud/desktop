@@ -7,6 +7,7 @@ import os
 
 public actor FileProviderLogMock: FileProviderLogging {
     public let debugLoggingEnabled: Bool = true
+    public let performanceLoggingEnabled: Bool = true
 
     let logger: Logger
 
