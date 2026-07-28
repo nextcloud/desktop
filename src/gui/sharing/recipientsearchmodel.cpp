@@ -5,10 +5,11 @@
 
 #include "recipientsearchmodel.h"
 
-#include <QLoggingCategory>
 #include <QJsonObject>
+#include <QLoggingCategory>
 
-#include "ocssharingjob.h"
+#include "searchrecipientsjob.h"
+#include "unifiedsharingapi.h"
 
 Q_LOGGING_CATEGORY(lcSharingRecipientShareModel, "nextcloud.gui.sharing.recipientsearchmodel", QtInfoMsg)
 
@@ -50,10 +51,10 @@ QVariant RecipientSearchModel::data(const QModelIndex &index, int role) const
 QHash<int, QByteArray> RecipientSearchModel::roleNames() const
 {
     return {
-        { TypeRole, "type"_ba},
-        { ValueRole, "value"_ba},
-        { DisplayNameRole, "displayName"_ba},
-        { IconRole, "iconUrl"_ba},
+        {TypeRole, "type"_ba},
+        {ValueRole, "value"_ba},
+        {DisplayNameRole, "displayName"_ba},
+        {IconRole, "iconUrl"_ba},
     };
 };
 
@@ -101,11 +102,11 @@ void RecipientSearchModel::setQuery(const QString &query)
     }
 
     // TODO: start timer for search job
-    auto job = new OcsSharingJob(_account);
-    connect(job, &OcsSharingJob::jobFinished, this, [this](const QJsonDocument &json, int statusCode) -> void {
+    const auto job = UnifiedSharingApi{_account}.searchRecipients(query, 0, 10);
+    connect(job, &SearchRecipientsJob::recipientsFound, this, [this](const QJsonArray &recipients) {
         beginResetModel();
-        _searchResults = json.object().value("ocs"_L1).toObject().value("data"_L1).toArray();
+        _searchResults = recipients;
         endResetModel();
     });
-    job->searchRecipients(query, 0, 10);
+    job->start();
 }

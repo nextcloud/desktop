@@ -8,8 +8,11 @@
 #include <QJsonDocument>
 #include <QLoggingCategory>
 
+#include "createsharejob.h"
+#include "destroysharejob.h"
 #include "share.h"
-#include "ocssharingjob.h"
+#include "unifiedsharingapi.h"
+#include "updatesharejob.h"
 
 Q_LOGGING_CATEGORY(lcSharingController, "nextcloud.gui.sharing.sharingcontroller", QtInfoMsg)
 
@@ -35,6 +38,8 @@ void SharingController::setAccount(AccountPtr account)
     }
 
     _account = account;
+    delete _api;
+    _api = _account ? new UnifiedSharingApi{_account, this} : nullptr;
     Q_EMIT accountChanged();
 }
 
@@ -50,8 +55,8 @@ void SharingController::createShare(const QString &fileId)
         return;
     }
 
-    const auto job = new OcsSharingJob(_account);
-    connect(job, &OcsSharingJob::shareCreated, this, [this, fileId](QPointer<Share> share) -> void {
+    const auto job = _api->createShare();
+    connect(job, &CreateShareJob::shareCreated, this, [this, fileId](QPointer<Share> share) -> void {
         if (!share) {
             qCWarning(lcSharingController) << "share created without a valid Share object";
             return;
@@ -62,7 +67,7 @@ void SharingController::createShare(const QString &fileId)
         Q_EMIT shareChanged();
         addSourceAfterCreation(fileId);
     });
-    job->createShare();
+    job->start();
 }
 
 void SharingController::destroyShare()
@@ -77,12 +82,12 @@ void SharingController::destroyShare()
         return;
     }
 
-    const auto job = new OcsSharingJob(_account);
-    connect(job, &OcsSharingJob::jobFinished, this, [this](const QJsonDocument &json, int statusCode) -> void {
+    const auto job = _api->destroyShare(_share->id());
+    connect(job, &DestroyShareJob::jobFinished, this, [this](const QJsonDocument &, int) {
         _share = nullptr;
         Q_EMIT shareChanged(); // TODO: shareDeleted maybe?
     });
-    job->createShare();
+    job->start();
 }
 
 void SharingController::addRecipient(const QString &recipientType, const QString &recipientValue)
@@ -97,13 +102,12 @@ void SharingController::addRecipient(const QString &recipientType, const QString
         return;
     }
 
-    const auto job = new OcsSharingJob(_account, _share->id());
-    connect(job, &OcsSharingJob::jobFinished, this, [this](const QJsonDocument &json, int statusCode) -> void {
+    const auto job = _api->addRecipient(_share, recipientType, recipientValue);
+    connect(job, &UpdateShareJob::shareUpdated, this, [this](QPointer<Share>) {
         qCDebug(lcSharingController).nospace() << "recipient added"
-            << " id=" << _share->id();
-        _share->updateFromJson(json);
+                                               << " id=" << _share->id();
     });
-    job->addRecipient(recipientType, recipientValue);
+    job->start();
 }
 
 void SharingController::removeRecipient(const QString &recipientType, const QString &recipientValue)
@@ -118,13 +122,12 @@ void SharingController::removeRecipient(const QString &recipientType, const QStr
         return;
     }
 
-    const auto job = new OcsSharingJob(_account, _share->id());
-    connect(job, &OcsSharingJob::jobFinished, this, [this](const QJsonDocument &json, int statusCode) -> void {
+    const auto job = _api->removeRecipient(_share, recipientType, recipientValue);
+    connect(job, &UpdateShareJob::shareUpdated, this, [this](QPointer<Share>) {
         qCDebug(lcSharingController).nospace() << "recipient removed"
-            << " id=" << _share->id();
-        _share->updateFromJson(json);
+                                               << " id=" << _share->id();
     });
-    job->addRecipient(recipientType, recipientValue);
+    job->start();
 }
 
 void SharingController::setPermission(const QString &permissionClass, bool enabled)
@@ -139,13 +142,12 @@ void SharingController::setPermission(const QString &permissionClass, bool enabl
         return;
     }
 
-    const auto job = new OcsSharingJob(_account, _share->id());
-    connect(job, &OcsSharingJob::jobFinished, this, [this](const QJsonDocument &json, int statusCode) -> void {
+    const auto job = _api->setPermission(_share, permissionClass, enabled);
+    connect(job, &UpdateShareJob::shareUpdated, this, [this](QPointer<Share>) {
         qCDebug(lcSharingController).nospace() << "permissions updated"
-            << " id=" << _share->id();
-        _share->updateFromJson(json);
+                                               << " id=" << _share->id();
     });
-    job->setPermission(permissionClass, enabled);
+    job->start();
 }
 
 void SharingController::setPermissionPreset(const QString &permissionPreset)
@@ -165,23 +167,20 @@ void SharingController::setPermissionPreset(const QString &permissionPreset)
         return;
     }
 
-    const auto job = new OcsSharingJob(_account, _share->id());
-    connect(job, &OcsSharingJob::jobFinished, this, [this](const QJsonDocument &json, int statusCode) -> void {
+    const auto job = _api->setPermissionPreset(_share, permissionPreset);
+    connect(job, &UpdateShareJob::shareUpdated, this, [this](QPointer<Share>) {
         qCDebug(lcSharingController).nospace() << "permissions updated"
-            << " id=" << _share->id();
-        _share->updateFromJson(json);
+                                               << " id=" << _share->id();
     });
-    job->setPermissionPreset(permissionPreset);
+    job->start();
 }
 
 void SharingController::addSourceAfterCreation(const QString &fileId)
 {
-    const auto job = new OcsSharingJob(_account, _share->id());
-    connect(job, &OcsSharingJob::jobFinished, this, [this, fileId](const QJsonDocument &json, int statusCode) -> void {
+    const auto job = _api->addSource(_share, fileId);
+    connect(job, &UpdateShareJob::shareUpdated, this, [this, fileId](QPointer<Share>) {
         qCDebug(lcSharingController).nospace() << "share created"
-            << " id=" << _share->id()
-            << " fileId=" << fileId;
-        _share->updateFromJson(json);
+                                               << " id=" << _share->id() << " fileId=" << fileId;
     });
-    job->addSource(fileId);
+    job->start();
 }
