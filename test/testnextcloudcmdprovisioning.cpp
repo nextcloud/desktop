@@ -48,7 +48,7 @@ private slots:
         int exitCode = 0;
         const auto output = runCmd({QStringLiteral("--userid"), QStringLiteral("alice")}, &exitCode);
 
-        QCOMPARE(exitCode, 1);
+        QCOMPARE(exitCode, 255);
         QVERIFY2(output.contains("--serverurl"), output.constData());
         QVERIFY2(!output.contains("Please enter username"), output.constData());
     }
@@ -65,7 +65,7 @@ private slots:
              QStringLiteral("--serverurl"), QStringLiteral("http://127.0.0.1:1")},
             &exitCode);
 
-        QCOMPARE(exitCode, 1);
+        QCOMPARE(exitCode, 255);
         // Must NOT fall through into interactive sync mode.
         QVERIFY2(!output.contains("Please enter username"), output.constData());
         QVERIFY2(!output.contains("Password for account with username"), output.constData());
@@ -84,7 +84,7 @@ private slots:
              QStringLiteral("--serverurl"), QStringLiteral("http://127.0.0.1:1")},
             &exitCode);
 
-        QCOMPARE(exitCode, 1);
+        QCOMPARE(exitCode, 255);
         // Provisioning mode must NOT fall through into interactive sync mode.
         QVERIFY2(!output.contains("Please enter username"), output.constData());
         QVERIFY2(!output.contains("Password for account with username"), output.constData());
@@ -113,7 +113,7 @@ private slots:
              QStringLiteral("--userid"), QStringLiteral("alice")},
             &exitCode);
 
-        QCOMPARE(exitCode, 1);
+        QCOMPARE(exitCode, 255);
         QVERIFY2(output.contains("--serverurl"), output.constData());
         QVERIFY2(!output.contains("Please enter username"), output.constData());
     }
