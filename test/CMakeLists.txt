@@ -96,6 +96,8 @@ if (NOT WIN32)
 endif()
 
 nextcloud_add_test(Capabilities)
+nextcloud_add_test(UnifiedSharing)
+target_link_libraries(UnifiedSharingTest PRIVATE nextcloudGuiSharing)
 nextcloud_add_test(PushNotifications)
 nextcloud_add_test(Theme)
 nextcloud_add_test(IconUtils)
