@@ -6,8 +6,10 @@
 #include "gui/accountmanager.h"
 #include "gui/creds/webflowcredentials.h"
 #include "gui/systray.h"
+#include "gui/tray/usermodel.h"
 #include "gui/wizard/browserreauthcontroller.h"
 #include "syncenginetestutils.h"
+#include "theme.h"
 
 #include <QCoreApplication>
 #include <QDesktopServices>
@@ -18,6 +20,7 @@
 #include <QPointer>
 #include <QQmlApplicationEngine>
 #include <QQmlComponent>
+#include <QQmlEngine>
 #include <QQuickWindow>
 #include <QSignalSpy>
 #include <QStandardPaths>
@@ -138,6 +141,8 @@ private slots:
         QStandardPaths::setTestModeEnabled(true);
         Q_INIT_RESOURCE(resources);
         Q_INIT_RESOURCE(theme);
+        qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "UserModel", UserModel::instance());
+        qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "Theme", Theme::instance());
         Systray::instance()->setTrayEngine(new QQmlApplicationEngine(QCoreApplication::instance()));
     }
 
