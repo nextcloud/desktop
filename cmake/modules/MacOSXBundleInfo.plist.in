@@ -45,6 +45,8 @@
     <true/>
     <key>NSRequiresAquaSystemAppearance</key>
     <false/>
+    <key>NSLocalNetworkUsageDescription</key>
+    <string>Nextcloud needs access to your local network to connect to Nextcloud servers hosted there.</string>
     <key>SUShowReleaseNotes</key>
     <false/>
     <key>SUPublicDSAKeyFile</key>
