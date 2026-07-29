@@ -211,6 +211,12 @@ void AbstractNetworkJob::slotFinished()
     }
 
     if (_reply->error() != QNetworkReply::NoError) {
+        if (!_wasRetriedAfterConnectionClosed && _reply->error() == QNetworkReply::RemoteHostClosedError) {
+            qCWarning(lcNetworkJob()) << "Will retry sending the request once when we detect a remote host closed error";
+            _wasRetriedAfterConnectionClosed = true;
+            retry();
+            return;
+        }
 
         if (_account->credentials()->retryIfNeeded(this))
             return;
