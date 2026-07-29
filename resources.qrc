@@ -41,6 +41,7 @@
         <file>src/gui/activity/qml/ActivityItemContextMenu.qml</file>
         <file>src/gui/activity/qml/ActivityItemActions.qml</file>
         <file>src/gui/activity/qml/ActivityFileMenu.qml</file>
+        <file>src/gui/activity/qml/ActivityFileMenuButton.qml</file>
         <file>src/gui/activity/qml/ActivityItemContent.qml</file>
         <file>src/gui/activity/qml/TalkReplyTextField.qml</file>
         <file>src/gui/tray/CallNotificationDialog.qml</file>
