@@ -191,26 +191,15 @@ RowLayout {
                     visible: model.showFileDetails
                     onClicked: fileMoreButtonMenu.visible ? fileMoreButtonMenu.close() : fileMoreButtonMenu.popup()
 
-                    AutoSizingMenu {
+                    ActivityFileMenu {
                         id: fileMoreButtonMenu
-                        closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
-                        MenuItem {
-                            height: visible ? implicitHeight : 0
-                            text: qsTr("File details")
-                            font.pixelSize: Style.topLinePixelSize
-                            hoverEnabled: true
-                            onClicked: Systray.presentShareViewInTray(model.openablePath)
-                        }
+                        filePath: root.activityData.openablePath
+                        serverHasIntegration: root.activityData.serverHasIntegration
+                        itemFontPixelSize: Style.topLinePixelSize
 
-                        MenuItem {
-                            visible: model.serverHasIntegration
-                            height: visible ? implicitHeight : 0
-                            text: qsTr("File actions")
-                            font.pixelSize: Style.topLinePixelSize
-                            hoverEnabled: true
-                            onClicked: Systray.presentFileActionsViewInSystray(model.openablePath)
-                        }
+                        onFileDetailsRequested: path => Systray.presentShareViewInTray(path)
+                        onFileActionsRequested: path => Systray.presentFileActionsViewInSystray(path)
                     }
                 }
 
