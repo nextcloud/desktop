@@ -5,7 +5,6 @@
 
 import QtQuick
 import QtQuick.Controls
-import Style
 
 Menu {
     popupType: Popup.Window
