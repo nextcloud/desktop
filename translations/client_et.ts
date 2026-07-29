@@ -663,32 +663,32 @@
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="196"/>
         <source>Assign labels to the file to manage its sensitivity, retention, and legal hold policies.</source>
-        <translation type="unfinished"/>
+        <translation>Lisa failile silte haldamaks neid delikaatsuse, säilitamise ja juriidiliste reeglite alusel.</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="214"/>
         <source>Sensitivity labels</source>
-        <translation type="unfinished"/>
+        <translation>Delikaatsuse sildid</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="241"/>
         <source>Retention labels</source>
-        <translation type="unfinished"/>
+        <translation>Säilituse sildid</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="268"/>
         <source>Legal hold labels</source>
-        <translation type="unfinished"/>
+        <translation>Juriidiliste nõuete alusel säilitamise sildid</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="316"/>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Lähtesta</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Rakenda</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="224"/>
@@ -2395,23 +2395,23 @@ Samuti katkevad kõik hetkel toimivad sünkroonimised.</translation>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="573"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="574"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Viga serveris: PROPFIND-päringu vastus pole XML-vormingus!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="603"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="604"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
         <translation>Päringu vastus serverist on loetamatu. Palun võta ühendust oma serveri haldajaga.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="634"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="688"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="635"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="689"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Krüptitud meataandmete seadistamise viga!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="667"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="668"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Krüptitud metaandmete seadistamise viga: serverist saadud esmane allkiri on tühi.</translation>
     </message>
@@ -2434,12 +2434,12 @@ Samuti katkevad kõik hetkel toimivad sünkroonimised.</translation>
         <translation>Kausta ei leidu: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="391"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="392"/>
         <source>Filename encoding is not valid</source>
         <translation>Failinime kodeering pole korrektne</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="412"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="413"/>
         <source>Error while reading directory %1</source>
         <translation>Viga „%1“ kausta lugemisel</translation>
     </message>

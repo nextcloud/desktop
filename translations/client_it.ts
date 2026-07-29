@@ -2394,23 +2394,23 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="573"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="574"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Errore del server: la risposta PROPFIND non è in formato XML!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="603"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="604"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
         <translation>Il server ha restituito una risposta inaspettata che non è stato possibile leggere. Contatta l&apos;amministratore del server.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="634"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="688"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="635"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="689"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Eerrore nell&apos;impostazione dei metadati di crittografia!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="667"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="668"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Errore di configurazione dei metadati crittografati: la firma iniziale del server è vuota.</translation>
     </message>
@@ -2433,12 +2433,12 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
         <translation>Cartella non trovata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="391"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="392"/>
         <source>Filename encoding is not valid</source>
         <translation>La codifica del nome del file non è valida</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="412"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="413"/>
         <source>Error while reading directory %1</source>
         <translation>Errore durante la lettura della cartella %1</translation>
     </message>
