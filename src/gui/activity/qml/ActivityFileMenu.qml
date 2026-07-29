@@ -7,7 +7,7 @@ import QtQuick
 import QtQuick.Controls
 import "../../tray"
 
-AutoSizingMenu {
+Menu {
     id: root
 
     required property string filePath
@@ -18,16 +18,15 @@ AutoSizingMenu {
     signal fileActionsRequested(string filePath)
 
     closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
-    height: implicitHeight
 
-    Action {
+    property Action fileDetailsAction: Action {
         id: fileDetailsAction
         objectName: "fileDetailsAction"
         text: qsTr("File details")
         onTriggered: root.fileDetailsRequested(root.filePath)
     }
 
-    Action {
+    property Action fileActionsAction: Action {
         id: fileActionsAction
         objectName: "fileActionsAction"
         text: qsTr("File actions")
@@ -35,16 +34,13 @@ AutoSizingMenu {
     }
 
     MenuItem {
-        action: fileDetailsAction
-        font.pixelSize: root.itemFontPixelSize
-        hoverEnabled: true
+        id: fileDetailsMenuItem
+        action: root.fileDetailsAction
     }
 
     MenuItem {
-        action: fileActionsAction
+        id: fileActionsMenuItem
+        action: root.fileActionsAction
         visible: root.serverHasIntegration
-        height: visible ? implicitHeight : 0
-        font.pixelSize: root.itemFontPixelSize
-        hoverEnabled: true
     }
 }

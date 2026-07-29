@@ -53,10 +53,14 @@ Item {
             fileActionsRequestedSpy.target = button;
         }
 
-        function test_usesFullImplicitHeight()
+        function test_contentFitsWithoutScrolling()
         {
-            compare(button.menu.height, button.menu.implicitHeight);
-            verify(button.menu.height > 0);
+            button.menu.popup();
+            tryCompare(button.menu, "opened", true);
+            compare(button.menu.count, 2);
+            const lastItem = button.menu.itemAt(button.menu.count - 1);
+            verify(lastItem);
+            verify(button.menu.availableHeight >= lastItem.y + lastItem.height);
         }
 
         function openMenu()
