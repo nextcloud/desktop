@@ -6,144 +6,76 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
-import QtQuick.Window
 import QtQuick.Layouts
 import QtQuick.Controls
 
 import com.nextcloud.desktopclient
 import Style
-// import "qrc:/qml/src/gui"
-// import "qrc:/qml/src/gui/tray"
-import "qrc:/qml/src/gui/wizard/qml"
 
 Page {
     id: root
 
     property string localPath: ""
     property string shortLocalPath: ""
+    property string fileId: ""
     required property SharingController sharingController
-    property bool isLinkShare: false
-    readonly property Share share: sharingController.shares.length === 1 ? sharingController.shares[0] : null
+
+    signal shareSelected(Share share)
 
     title: qsTr("Share \"%1\"").arg(root.shortLocalPath)
 
     ColumnLayout {
-        id: windowContent
         anchors.fill: parent
 
-        ScrollView {
+        EnforcedPlainTextLabel {
+                    Layout.fillWidth: true
+
+            text: qsTr("Shares")
+            font.bold: true
+                }
+
+        EnforcedPlainTextLabel {
+                    Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.fillWidth: true
 
-            ScrollBar.vertical.policy: propertyList.contentHeight > propertyList.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
-            contentWidth: availableWidth
-            contentHeight: availableHeight
-            rightPadding: ScrollBar.vertical.policy == ScrollBar.AlwaysOn ? ScrollBar.vertical.width + Style.standardSpacing : 0
+            text: qsTr("This item has not been shared yet.")
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            wrapMode: Text.Wrap
 
-            ColumnLayout {
-                width: parent.width
-
-                RecipientSearchField {
-                    id: searchField
-                    Layout.fillWidth: true
-
-                    visible: !root.isLinkShare
-
-                    account: root.sharingController.account
-
-                    onRecipientSelected: (recipientType, recipientValue) => {
-                        if (root.share) {
-                            root.sharingController.addRecipient(root.share, recipientType, recipientValue)
-                        }
-                    }
-                }
-
-                WizardComboBox {
-                    id: permissionPresetSelector
-                    Layout.fillWidth: true
-
-                    model: [
-                        { preset: "view", text: qsTr("Can view") },
-                        { preset: "edit", text: qsTr("Can edit") },
-                        { preset: null,   text: qsTr("Can…") },
-                    ]
-                    textRole: "text"
-                    valueRole: "preset"
-
-                    // value: root.sharingController.share.permissionPreset
-                    onCurrentValueChanged: {
-                        if (!currentValue) {
-                            return;
-                        }
-
-                        if (root.share) {
-                            root.sharingController.setPermissionPreset(root.share, currentValue)
-                        }
-                    }
-                }
-
-                Repeater {
-                    id: permissionsList
-                    Layout.fillWidth: true
-
-                    model: PermissionModel {
-                        share: root.share
+            visible: root.sharingController.shares.length === 0
                     }
 
-                    delegate: ItemDelegate {
-                        // Layout.fillWidth: true
-                        visible: !permissionPresetSelector.currentValue
+        ListView {
+            id: sharesList
 
-                        required property var model
-                        RowLayout {
                             Layout.fillWidth: true
-                            EnforcedPlainTextLabel {
-                                text: model.label
-                                Layout.fillWidth: true
-                            }
-                            Switch {
-                                checked: model.enabled
-                                onCheckedChanged: {
-                                    if (model.enabled === checked) {
-                                        return;
-                                    }
-                                    if (root.share) {
-                                        root.sharingController.setPermission(root.share, model.className, checked)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            Layout.fillHeight: true
 
-            }
-
-            ListView {
-                id: propertyList
                 clip: true
+            spacing: Style.smallSpacing
+            model: root.sharingController.shares
+            visible: count > 0
 
-                // model: SharingFilterModel {
-                //     filterType: SharingFilterModel.General
-                //     sourceModel: root.sharingModel
-                //     recipientTypes: root.recipientTypes
-                // }
-                model: PropertyModel {
-                    // TODO: only show properties with prio=1
-                    share: root.share
-                }
+            delegate: ShareEntry {
+                required property Share modelData
 
-                delegate: FieldDelegate {
-                    width: propertyList.contentItem.width
-                }
+                width: sharesList.width
+                share: modelData
+
+                onClicked: root.shareSelected(share)
             }
         }
 
-        RowLayout {
-            Button {
+        EnforcedPlainTextLabel {
                 Layout.fillWidth: true
 
-                text: root.isLinkShare ? qsTr("Copy public link") : qsTr("Copy private link")
+            text: root.sharingController.shareCreationError
+            color: Style.wizardErrorText
+            wrapMode: Text.Wrap
+            visible: text.length > 0
             }
+
             Button {
                 Layout.fillWidth: true
 
