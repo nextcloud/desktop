@@ -7,72 +7,93 @@ import QtQuick
 import QtTest
 import "../../../src/gui/activity/qml"
 
-TestCase {
-    id: testCase
+Item {
+    id: testRoot
 
-    name: "ActivityFileMenu"
-    when: windowShown
+    width: 200
+    height: 100
 
-    property ActivityFileMenu menu
+    TestCase {
+        id: testCase
 
-    SignalSpy {
-        id: fileDetailsRequestedSpy
-        signalName: "fileDetailsRequested"
-    }
+        name: "ActivityFileMenu"
+        when: windowShown
 
-    SignalSpy {
-        id: fileActionsRequestedSpy
-        signalName: "fileActionsRequested"
-    }
+        property ActivityFileMenuButton button
 
-    Component {
-        id: menuComponent
-
-        ActivityFileMenu {
-            filePath: "/sync/folder/file.txt"
-            serverHasIntegration: true
-            itemFontPixelSize: 14
+        SignalSpy {
+            id: fileDetailsRequestedSpy
+            signalName: "fileDetailsRequested"
         }
-    }
 
-    function init()
-    {
-        menu = createTemporaryObject(menuComponent, testCase);
-        verify(menu);
+        SignalSpy {
+            id: fileActionsRequestedSpy
+            signalName: "fileActionsRequested"
+        }
 
-        fileDetailsRequestedSpy.target = menu;
-        fileActionsRequestedSpy.target = menu;
-    }
+        Component {
+            id: buttonComponent
 
-    function test_usesFullImplicitHeight()
-    {
-        compare(menu.height, menu.implicitHeight);
-        verify(menu.height > 0);
-    }
+            ActivityFileMenuButton {
+                filePath: "/sync/folder/file.txt"
+                serverHasIntegration: true
+                itemFontPixelSize: 14
+                buttonWidth: 44
+                buttonHeight: 32
+                buttonIconSize: 16
+            }
+        }
 
-    function test_fileDetailsItemEmitsCapturedPath()
-    {
-        menu.popup();
-        tryCompare(menu, "opened", true);
+        function init()
+        {
+            button = createTemporaryObject(buttonComponent, testRoot);
+            verify(button);
 
-        const fileDetailsItem = menu.itemAt(0);
-        verify(fileDetailsItem);
-        mouseClick(fileDetailsItem);
+            fileDetailsRequestedSpy.target = button;
+            fileActionsRequestedSpy.target = button;
+        }
 
-        compare(fileDetailsRequestedSpy.count, 1);
-        compare(fileDetailsRequestedSpy.signalArguments[0][0], "/sync/folder/file.txt");
-    }
+        function test_usesFullImplicitHeight()
+        {
+            compare(button.menu.height, button.menu.implicitHeight);
+            verify(button.menu.height > 0);
+        }
 
-    function test_fileActionsItemEmitsCapturedPath()
-    {
-        menu.popup();
-        tryCompare(menu, "opened", true);
+        function openMenu()
+        {
+            mouseClick(button);
+            tryCompare(button.menu, "opened", true);
+        }
 
-        const fileActionsItem = menu.itemAt(1);
-        verify(fileActionsItem);
-        mouseClick(fileActionsItem);
+        function test_buttonOpensMenu()
+        {
+            verify(!button.menu.opened);
+            openMenu();
+            verify(button.menu.opened);
+        }
 
-        compare(fileActionsRequestedSpy.count, 1);
-        compare(fileActionsRequestedSpy.signalArguments[0][0], "/sync/folder/file.txt");
+        function test_fileDetailsItemEmitsCapturedPath()
+        {
+            openMenu();
+
+            const fileDetailsItem = button.menu.itemAt(0);
+            verify(fileDetailsItem);
+            mouseClick(fileDetailsItem);
+
+            compare(fileDetailsRequestedSpy.count, 1);
+            compare(fileDetailsRequestedSpy.signalArguments[0][0], "/sync/folder/file.txt");
+        }
+
+        function test_fileActionsItemEmitsCapturedPath()
+        {
+            openMenu();
+
+            const fileActionsItem = button.menu.itemAt(1);
+            verify(fileActionsItem);
+            mouseClick(fileActionsItem);
+
+            compare(fileActionsRequestedSpy.count, 1);
+            compare(fileActionsRequestedSpy.signalArguments[0][0], "/sync/folder/file.txt");
+        }
     }
 }
