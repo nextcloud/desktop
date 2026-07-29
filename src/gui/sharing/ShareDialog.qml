@@ -31,10 +31,6 @@ WizardStyledWindow {
     minimumWidth: Style.wizardStandaloneWindowMinimumWidth
     minimumHeight: Style.wizardStandaloneWindowMinimumHeight
 
-    ButtonGroup {
-        id: shareType
-    }
-
     SharingController {
         id: sharingController
         account: root.account
@@ -112,51 +108,12 @@ WizardStyledWindow {
                 id: settingsButton
                 iconSource: "image://svgimage-custom-color/settings.svg/" + palette.windowText
 
-                visible: stack.depth < 2
+                visible: stack.depth === 2 && stack.currentItem && stack.currentItem.share
 
                 onClicked: stack.push(Qt.createComponent("com.nextcloud.desktopclient.sharing", "SettingsPage").createObject(root, {
                     sharingController: sharingController,
-                    share: mainPage.share,
+                    share: stack.currentItem.share,
                 }))
-            }
-        }
-
-        RowLayout {
-            Layout.fillWidth: true
-
-            WizardButton {
-                Layout.fillWidth: true
-
-                id: viewInvitedPeople
-                text: qsTr("Invited people")
-
-                checkable: true
-                checked: true
-                primary: checked // TODO: extend WizardButton for checked state
-                ButtonGroup.group: shareType
-            }
-
-            WizardButton {
-                Layout.fillWidth: true
-
-                id: viewAnyone
-                text: qsTr("Anyone")
-
-                checkable: true
-                primary: checked // TODO: extend WizardButton for checked state
-                ButtonGroup.group: shareType
-
-                onCheckedChanged: {
-                    if (!mainPage.share) {
-                        return
-                    }
-                    const parameters = ["OC\\Core\\Sharing\\Recipient\\TokenShareRecipientType", "somevaluethatislongerthan32characters12345678"]
-                    if (checked) {
-                        sharingController.addRecipient(mainPage.share, ...parameters)
-                        return
-                    }
-                    sharingController.removeRecipient(mainPage.share, ...parameters)
-                }
             }
         }
 
@@ -175,6 +132,11 @@ WizardStyledWindow {
         sharingController: sharingController
         localPath: root.localPath
         shortLocalPath: root.shortLocalPath
-        isLinkShare: viewAnyone.checked
+        fileId: root.fileId
+
+        onShareSelected: share => stack.push(Qt.createComponent("com.nextcloud.desktopclient.sharing", "ShareDetailsPage").createObject(root, {
+            sharingController: sharingController,
+            share: share,
+        }))
     }
 }
