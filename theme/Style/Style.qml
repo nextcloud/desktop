@@ -141,6 +141,9 @@ QtObject {
     readonly property int wizardHeaderAccountServerFontPixelSize: subLinePixelSize
     readonly property int wizardStandaloneWindowMinimumWidth: 520
     readonly property int wizardStandaloneWindowMinimumHeight: 420
+    readonly property int accountWizardWindowWidth: 600
+    readonly property int accountWizardCompactHeight: 420
+    readonly property int accountWizardSyncOptionsHeight: 520
     readonly property int activitiesWindowWidth: 680
     readonly property int activitiesWindowHeight: 700
     readonly property int assistantWindowWidth: 640

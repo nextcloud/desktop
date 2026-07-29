@@ -11,7 +11,7 @@
 #include "account.h"
 #include "configfile.h"
 #include "theme.h"
-#include "webflowcredentialsdialog.h"
+#include "wizard/browserreauthwindow.h"
 #include "networkjobs.h"
 
 #include <QAuthenticator>
@@ -19,9 +19,6 @@
 #include <QNetworkReply>
 #include <QPointer>
 #include <QTimer>
-#include <QDialog>
-#include <QVBoxLayout>
-#include <QLabel>
 
 using namespace QKeychain;
 
@@ -145,22 +142,31 @@ void WebFlowCredentials::fetchFromKeychain(const QString &appName) {
 }
 
 void WebFlowCredentials::askFromUser() {
-    _askDialog = new WebFlowCredentialsDialog(_account);
+    if (_reAuthWindow) {
+        _reAuthWindow->show();
+        return;
+    }
+
+    _reAuthWindow = new BrowserReAuthWindow(_account, this);
 
     QString msg = tr("You have been logged out of your account %1 at %2. Please login again.")
                       .arg(_account->prettyName(), _account->url().toDisplayString());
-    _askDialog->setInfo(msg);
+    _reAuthWindow->setInfoText(msg);
 
-    _askDialog->show();
+    connect(_reAuthWindow, &BrowserReAuthWindow::credentialsReady, this, &WebFlowCredentials::slotAskFromUserCredentialsProvided);
+    connect(_reAuthWindow, &BrowserReAuthWindow::cancelled, this, &WebFlowCredentials::slotAskFromUserCancelled);
 
-    connect(_askDialog, &WebFlowCredentialsDialog::urlCatched, this, &WebFlowCredentials::slotAskFromUserCredentialsProvided);
-    connect(_askDialog, &WebFlowCredentialsDialog::onClose, this, &WebFlowCredentials::slotAskFromUserCancelled);
+    _reAuthWindow->show();
 
     qCDebug(lcWebFlowCredentials()) << "User needs to reauth!";
 }
 
-void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user, const QString &pass, const QString &host) {
-    Q_UNUSED(host)
+void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user, const QString &pass) {
+    auto *const reAuthWindow = qobject_cast<BrowserReAuthWindow *>(sender());
+    if (!reAuthWindow || reAuthWindow != _reAuthWindow) {
+        return;
+    }
+    _reAuthWindow = nullptr;
 
     qCInfo(lcWebFlowCredentials()) << "Obtained a new password";
 
@@ -170,18 +176,18 @@ void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user,
     _credentialsValid = true;
     persist();
     emit asked();
-
-    _askDialog->close();
-    _askDialog = nullptr;
 }
 
 void WebFlowCredentials::slotAskFromUserCancelled() {
+    auto *const reAuthWindow = qobject_cast<BrowserReAuthWindow *>(sender());
+    if (!reAuthWindow || reAuthWindow != _reAuthWindow) {
+        return;
+    }
+    _reAuthWindow = nullptr;
+
     qCDebug(lcWebFlowCredentials()) << "User cancelled reauth!";
 
     emit asked();
-
-    _askDialog->deleteLater();
-    _askDialog = nullptr;
 }
 
 bool WebFlowCredentials::stillValid(QNetworkReply *reply) {

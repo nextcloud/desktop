@@ -6,56 +6,24 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Window
 import com.nextcloud.desktopclient
 import Style
+import "../.."
 import "../../tray"
 
-ApplicationWindow {
+WizardStyledWindow {
     id: root
 
-    property var controller
+    required property QtObject controller
     property bool controllerFinished: false
-    readonly property int compactHeight: 420
-    readonly property int syncOptionsHeight: 520
+    readonly property int compactHeight: Style.accountWizardCompactHeight
+    readonly property int syncOptionsHeight: Style.accountWizardSyncOptionsHeight
 
-    LayoutMirroring.enabled: Application.layoutDirection === Qt.RightToLeft
-    LayoutMirroring.childrenInherit: true
-
-    width: 600
+    width: Style.accountWizardWindowWidth
     height: compactHeight
-    minimumWidth: 600
+    minimumWidth: Style.accountWizardWindowWidth
     minimumHeight: compactHeight
     title: ""
-    // Explicit decoration set so macOS disables the green zoom/full-screen button (no maximize or
-    // full-screen hint) — full screen makes no sense for this window — while keeping a normal,
-    // draggable native title bar with close and minimize.
-    flags: Qt.Window
-        | Qt.CustomizeWindowHint
-        | Qt.WindowTitleHint
-        | Qt.WindowSystemMenuHint
-        | Qt.WindowMinimizeButtonHint
-        | Qt.WindowCloseButtonHint
-    color: Style.wizardWindowBackground
-    palette.window: Style.wizardWindowBackground
-    palette.base: Style.wizardFieldBackground
-    palette.button: Style.wizardFieldBackground
-    palette.mid: Style.wizardDisabledText
-    palette.placeholderText: Style.wizardPlaceholderText
-    palette.active.windowText: Style.wizardPrimaryText
-    palette.inactive.windowText: Style.wizardPrimaryText
-    palette.disabled.windowText: Style.wizardDisabledText
-    palette.active.text: Style.wizardPrimaryText
-    palette.inactive.text: Style.wizardPrimaryText
-    palette.disabled.text: Style.wizardDisabledText
-    palette.active.buttonText: Style.wizardPrimaryText
-    palette.inactive.buttonText: Style.wizardPrimaryText
-    palette.disabled.buttonText: Style.wizardDisabledText
-
-    background: Rectangle {
-        color: Style.wizardWindowBackground
-    }
-
     function defaultHeightForCurrentStep() {
         return controller && controller.currentStep === AccountWizardController.SyncOptionsStep
             ? syncOptionsHeight
@@ -255,27 +223,31 @@ ApplicationWindow {
         }
 
         footer: [
+            BrowserAuthFooter {
+                controller: root.controller
+                visible: root.controller && root.controller.currentStep === AccountWizardController.BrowserAuthStep
+                Layout.fillWidth: visible
+                Layout.fillHeight: visible
+            },
+
             WizardButton {
-                visible: root.controller && root.controller.currentStep !== AccountWizardController.ServerStep
+                visible: root.controller
+                    && root.controller.currentStep !== AccountWizardController.ServerStep
+                    && root.controller.currentStep !== AccountWizardController.BrowserAuthStep
                 enabled: root.controller && !root.controller.busy
                 Layout.fillWidth: root.controller
-                    && (root.controller.currentStep === AccountWizardController.BrowserAuthStep
-                        || root.controller.currentStep === AccountWizardController.BasicAuthStep
+                    && (root.controller.currentStep === AccountWizardController.BasicAuthStep
                         || root.controller.currentStep === AccountWizardController.SyncOptionsStep)
                 Layout.preferredWidth: root.controller
-                    && (root.controller.currentStep === AccountWizardController.BrowserAuthStep
-                        || root.controller.currentStep === AccountWizardController.BasicAuthStep
+                    && (root.controller.currentStep === AccountWizardController.BasicAuthStep
                         || root.controller.currentStep === AccountWizardController.SyncOptionsStep)
                     ? 1
                     : implicitWidth
-                text: root.controller && root.controller.currentStep === AccountWizardController.BrowserAuthStep
-                    ? qsTr("Cancel")
-                    : root.controller && root.controller.currentStep === AccountWizardController.SyncOptionsStep
+                text: root.controller && root.controller.currentStep === AccountWizardController.SyncOptionsStep
                         ? qsTr("Cancel")
                         : qsTr("Back")
                 onClicked: {
-                    if (root.controller.currentStep === AccountWizardController.BrowserAuthStep
-                            || root.controller.currentStep === AccountWizardController.SyncOptionsStep) {
+                    if (root.controller.currentStep === AccountWizardController.SyncOptionsStep) {
                         root.controller.cancel()
                     } else {
                         root.controller.goBack()
@@ -358,18 +330,9 @@ ApplicationWindow {
             },
 
             WizardButton {
-                visible: root.controller && root.controller.currentStep === AccountWizardController.BrowserAuthStep
-                enabled: root.controller && !root.controller.busy && root.controller.loginUrl.toString() !== ""
-                text: qsTr("Copy link")
-                iconSource: "image://svgimage-custom-color/copy.svg/" + palette.buttonText
-                iconBeforeText: true
-                Layout.fillWidth: true
-                Layout.preferredWidth: 1
-                onClicked: root.controller.copyLoginLink()
-            },
-
-            WizardButton {
-                visible: root.controller && root.controller.currentStep !== AccountWizardController.ServerStep
+                visible: root.controller
+                    && root.controller.currentStep !== AccountWizardController.ServerStep
+                    && root.controller.currentStep !== AccountWizardController.BrowserAuthStep
                 primary: true
                 enabled: root.controller
                     && !root.controller.busy
@@ -378,12 +341,10 @@ ApplicationWindow {
                     && (root.controller.currentStep !== AccountWizardController.BasicAuthStep
                         || root.controller.basicAuthValid)
                 Layout.fillWidth: root.controller
-                    && (root.controller.currentStep === AccountWizardController.BrowserAuthStep
-                        || root.controller.currentStep === AccountWizardController.BasicAuthStep
+                    && (root.controller.currentStep === AccountWizardController.BasicAuthStep
                         || root.controller.currentStep === AccountWizardController.SyncOptionsStep)
                 Layout.preferredWidth: root.controller
-                    && (root.controller.currentStep === AccountWizardController.BrowserAuthStep
-                        || root.controller.currentStep === AccountWizardController.BasicAuthStep
+                    && (root.controller.currentStep === AccountWizardController.BasicAuthStep
                         || root.controller.currentStep === AccountWizardController.SyncOptionsStep)
                     ? 1
                     : implicitWidth
@@ -392,8 +353,6 @@ ApplicationWindow {
                         return ""
                     }
                     switch (root.controller.currentStep) {
-                    case AccountWizardController.BrowserAuthStep:
-                        return qsTr("Open")
                     case AccountWizardController.BasicAuthStep:
                         return qsTr("Connect")
                     case AccountWizardController.SyncOptionsStep:
@@ -402,14 +361,8 @@ ApplicationWindow {
                         return qsTr("Log in")
                     }
                 }
-                textSuffix: root.controller && root.controller.currentStep === AccountWizardController.BrowserAuthStep
-                    ? "\u2197"
-                    : ""
                 onClicked: {
                     switch (root.controller.currentStep) {
-                    case AccountWizardController.BrowserAuthStep:
-                        root.controller.openBrowserLogin()
-                        break
                     case AccountWizardController.BasicAuthStep:
                         root.controller.submitBasicAuth()
                         break
