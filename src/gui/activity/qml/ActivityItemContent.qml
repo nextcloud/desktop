@@ -170,37 +170,19 @@ RowLayout {
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 spacing: Style.extraSmallSpacing
 
-                Button {
+                ActivityFileMenuButton {
                     id: fileDetailsButton
 
-                    width: Style.activityListButtonWidth
-                    height: Style.activityListButtonHeight
-
-                    icon.name: 'view-more-symbolic'
-                    icon.source: "image://svgimage-custom-color/more.svg/" + palette.buttonText
-                    icon.width: Style.activityListButtonIconSize
-                    icon.height: Style.activityListButtonIconSize
-
-                    ToolTip {
-                        popupType: Qt.platform.os === "windows" ? Popup.Item : Qt.platform.os === "windows" ? Popup.Item : Popup.Native
-                        text: qsTr("Open file details")
-                        visible: parent.hovered
-                    }
-
-                    display: Button.IconOnly
+                    buttonWidth: Style.activityListButtonWidth
+                    buttonHeight: Style.activityListButtonHeight
+                    buttonIconSize: Style.activityListButtonIconSize
+                    itemFontPixelSize: Style.topLinePixelSize
+                    filePath: root.activityData.openablePath
+                    serverHasIntegration: root.activityData.serverHasIntegration
                     visible: model.showFileDetails
-                    onClicked: fileMoreButtonMenu.visible ? fileMoreButtonMenu.close() : fileMoreButtonMenu.popup()
 
-                    ActivityFileMenu {
-                        id: fileMoreButtonMenu
-
-                        filePath: root.activityData.openablePath
-                        serverHasIntegration: root.activityData.serverHasIntegration
-                        itemFontPixelSize: Style.topLinePixelSize
-
-                        onFileDetailsRequested: path => Systray.presentShareViewInTray(path)
-                        onFileActionsRequested: path => Systray.presentFileActionsViewInSystray(path)
-                    }
+                    onFileDetailsRequested: path => Systray.presentShareViewInTray(path)
+                    onFileActionsRequested: path => Systray.presentFileActionsViewInSystray(path)
                 }
 
                 Button {
