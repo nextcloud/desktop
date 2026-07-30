@@ -707,6 +707,14 @@
     </message>
 </context>
 <context>
+    <name>LocalNetworkPermission</name>
+    <message>
+        <location filename="../src/gui/localnetworkpermission.cpp" line="21"/>
+        <source>Local Network access is disabled. Enable it to connect to the server.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="245"/>
@@ -6514,7 +6522,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="150"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation>Tika veikta atteikšanās no Tava konta %1 %2. Lūgums pieteikties vēlreiz.</translation>
+        <translation>Tika veikta atteikšanās no Tava %2 konta %1. Lūgums pieteikties vēlreiz.</translation>
     </message>
 </context>
 <context>

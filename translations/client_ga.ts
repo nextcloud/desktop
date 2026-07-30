@@ -707,6 +707,14 @@
     </message>
 </context>
 <context>
+    <name>LocalNetworkPermission</name>
+    <message>
+        <location filename="../src/gui/localnetworkpermission.cpp" line="21"/>
+        <source>Local Network access is disabled. Enable it to connect to the server.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="245"/>
