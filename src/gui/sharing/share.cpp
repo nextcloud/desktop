@@ -31,12 +31,24 @@ void Share::updateFromJson(const QJsonDocument &json)
 {
     qCDebug(lcSharingShare) << "updating share from json" << json;
     const auto data = json.object().value("ocs"_L1).toObject().value("data"_L1).toObject();
-    setId(data.value("id"_L1).toString());
-    setState(data.value("state"_L1).toString());
-    setPermissionPreset(data.value("permission_preset"_L1).toString());
-    setPermissions(data.value("permissions"_L1).toArray());
-    setProperties(data.value("properties"_L1).toArray());
-    setRecipients(data.value("recipients"_L1).toArray());
+    if (data.contains("id"_L1)) {
+        setId(data.value("id"_L1).toString());
+    }
+    if (data.contains("state"_L1)) {
+        setState(data.value("state"_L1).toString());
+    }
+    if (data.contains("permission_preset"_L1)) {
+        setPermissionPreset(data.value("permission_preset"_L1).toString());
+    }
+    if (data.contains("permissions"_L1)) {
+        setPermissions(data.value("permissions"_L1).toArray());
+    }
+    if (data.contains("properties"_L1)) {
+        setProperties(data.value("properties"_L1).toArray());
+    }
+    if (data.contains("recipients"_L1)) {
+        setRecipients(data.value("recipients"_L1).toArray());
+    }
 }
 
 Share::Share(const AccountPtr &account)
