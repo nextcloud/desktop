@@ -76,6 +76,12 @@ Q_SIGNALS:
     /** @brief Emitted when shareCreationError changes. */
     void shareCreationErrorChanged();
 
+    /** @brief Emitted after a recipient was added and the Share was updated. */
+    void recipientAdded(Share *share);
+
+    /** @brief Emitted when adding a recipient failed. */
+    void recipientAdditionFailed(Share *share, const QString &error);
+
 private:
     AccountPtr _account;
     QList<Share *> _shares;
