@@ -201,7 +201,7 @@
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="19"/>
         <source>Nextcloud Assistant</source>
-        <translation>Nextcloud asistentas</translation>
+        <translation>„Nextcloud Asistentas“</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="91"/>
@@ -282,12 +282,12 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="165"/>
         <source>Talk notification caller avatar</source>
-        <translation>„Talk‟ pranešimas, skambinančiojo avataras</translation>
+        <translation>„Pokalbiai‟ pranešimas, skambinančiojo avataras</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="224"/>
         <source>Answer Talk call notification</source>
-        <translation>Atsakyti į „Talk“ skambučio pranešimą</translation>
+        <translation>Atsakyti į „Pokalbiai“ skambučio pranešimą</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="231"/>
@@ -297,7 +297,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="241"/>
         <source>Decline Talk call notification</source>
-        <translation>Atsisakyti „Talk“ skambučio pranešimo</translation>
+        <translation>Atsisakyti „Pokalbiai“ skambučio pranešimo</translation>
     </message>
 </context>
 <context>
@@ -704,6 +704,14 @@
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="277"/>
         <source>Select legal hold label</source>
         <translation>Pasirinkti teisinio išsaugojimo etiketę</translation>
+    </message>
+</context>
+<context>
+    <name>LocalNetworkPermission</name>
+    <message>
+        <location filename="../src/gui/localnetworkpermission.cpp" line="21"/>
+        <source>Local Network access is disabled. Enable it to connect to the server.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1773,7 +1781,7 @@ Vienintelis virtualių failų palaikymo išjungimo privalumas yra tai, kad vėl 
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="203"/>
         <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
-        <translation>sekundžių (jei &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;kliento siuntimas&lt;/a&gt; nepasiekiamas)</translation>
+        <translation>sekundžių (jei &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;„Client Push“&lt;/a&gt; nepasiekiamas)</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="243"/>
@@ -8341,7 +8349,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="624"/>
         <source>creating folder on Nextcloud: %1</source>
-        <translation>kuriamas aplankas Nextcloud: %1</translation>
+        <translation>kuriamas aplankas „Nextcloud“: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="629"/>
