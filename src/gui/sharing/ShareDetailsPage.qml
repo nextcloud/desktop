@@ -89,6 +89,23 @@ Page {
                         ""
                     ]
                     model: [qsTr("Can view"), qsTr("Can edit"), qsTr("Custom permissions")]
+                    delegate: ItemDelegate {
+                        id: permissionPresetDelegate
+
+                        required property int index
+                        required property string modelData
+
+                        width: permissionPresetSelector.width
+                        text: modelData
+                        highlighted: permissionPresetSelector.highlightedIndex === index
+
+                        contentItem: EnforcedPlainTextLabel {
+                            text: permissionPresetDelegate.text
+                            color: permissionPresetDelegate.highlighted ? palette.highlightedText : palette.text
+                            verticalAlignment: Text.AlignVCenter
+                            elide: Text.ElideRight
+                        }
+                    }
                     currentIndex: {
                         const preset = root.share.permissionPreset
                         if (preset.endsWith("\\ViewSharePermissionPreset")) {
@@ -108,33 +125,28 @@ Page {
                     }
                 }
 
-                Repeater {
+                ListView {
                     Layout.fillWidth: true
+                    Layout.preferredHeight: visible ? contentHeight : 0
 
+                    interactive: false
+                    visible: permissionPresetSelector.currentIndex === 2
                     model: PermissionModel {
                         share: root.share
                     }
 
-                    delegate: RowLayout {
-                        visible: permissionPresetSelector.currentIndex === 2
+                    delegate: SwitchDelegate {
                         required property var model
 
-                        Layout.fillWidth: true
-
-                        EnforcedPlainTextLabel {
+                        width: ListView.view.width
                             text: model.label
-                            Layout.fillWidth: true
-                        }
-                        Switch {
                             checked: model.enabled
-                            onCheckedChanged: {
-                                if (model.enabled !== checked) {
+
+                        onToggled: {
                                     root.sharingController.setPermission(root.share, model.className, checked)
                                 }
                             }
                         }
-                    }
-                }
 
                 EnforcedPlainTextLabel {
                     Layout.fillWidth: true
