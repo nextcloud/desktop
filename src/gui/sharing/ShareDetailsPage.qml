@@ -18,6 +18,7 @@ Page {
 
     required property SharingController sharingController
     required property Share share
+    property string recipientAdditionError: ""
 
     title: qsTr("Share details")
 
@@ -43,8 +44,18 @@ Page {
                     account: root.sharingController.account
 
                     onRecipientSelected: (recipientType, recipientValue) => {
+                        root.recipientAdditionError = ""
                         root.sharingController.addRecipient(root.share, recipientType, recipientValue)
                     }
+                }
+
+                Label {
+                    Layout.fillWidth: true
+
+                    text: root.recipientAdditionError
+                    color: Style.wizardErrorText
+                    wrapMode: Text.Wrap
+                    visible: text.length > 0
                 }
 
                 ListView {
@@ -134,18 +145,25 @@ Page {
 
                 delegate: FieldDelegate {
                     width: propertyList.contentItem.width
+                    height: item ? item.implicitHeight : 0
                 }
             }
         }
 
-        RowLayout {
-            Button {
-                Layout.fillWidth: true
-                text: qsTr("Copy link")
             }
-            Button {
-                Layout.fillWidth: true
-                text: qsTr("Send")
+
+    Connections {
+        target: root.sharingController
+
+        function onRecipientAdded(share) {
+            if (share === root.share) {
+                recipientSearch.clear()
+            }
+        }
+
+        function onRecipientAdditionFailed(share, error) {
+            if (share === root.share) {
+                root.recipientAdditionError = error
             }
         }
     }
