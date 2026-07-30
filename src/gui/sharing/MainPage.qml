@@ -18,11 +18,15 @@ Page {
     property string localPath: ""
     property string shortLocalPath: ""
     property string fileId: ""
+    property Share selectedShare: null
     required property SharingController sharingController
 
     signal shareSelected(Share share)
 
     title: qsTr("Share \"%1\"").arg(root.shortLocalPath)
+    background: Rectangle {
+        color: palette.alternateBase
+    }
 
     ColumnLayout {
         anchors.fill: parent
@@ -62,6 +66,7 @@ Page {
 
                 width: sharesList.width
                 share: modelData
+                selected: share === root.selectedShare
 
                 onClicked: root.shareSelected(share)
             }
