@@ -19,6 +19,7 @@ Page {
     required property SharingController sharingController
     required property Share share
     property string recipientAdditionError: ""
+    property string propertyUpdateError: ""
 
     title: qsTr("Share details")
 
@@ -116,22 +117,22 @@ Page {
                         visible: permissionPresetSelector.currentIndex === 2
                         required property var model
 
-                            Layout.fillWidth: true
+                        Layout.fillWidth: true
 
-                            Label {
-                                text: model.label
-                                Layout.fillWidth: true
-                            }
-                            Switch {
-                                checked: model.enabled
-                                onCheckedChanged: {
-                                    if (model.enabled !== checked) {
-                                        root.sharingController.setPermission(root.share, model.className, checked)
-                                    }
+                        Label {
+                            text: model.label
+                            Layout.fillWidth: true
+                        }
+                        Switch {
+                            checked: model.enabled
+                            onCheckedChanged: {
+                                if (model.enabled !== checked) {
+                                    root.sharingController.setPermission(root.share, model.className, checked)
                                 }
                             }
                         }
                     }
+                }
 
                 Label {
                     Layout.fillWidth: true
@@ -142,28 +143,42 @@ Page {
                     visible: propertyList.count > 0
                 }
 
-            ListView {
-                id: propertyList
+                ListView {
+                    id: propertyList
 
                     Layout.fillWidth: true
                     Layout.preferredHeight: contentHeight
                     interactive: false
                     spacing: Style.standardSpacing
 
-                model: PropertyModel {
-                    // TODO: only show properties with prio=1
-                    share: root.share
-                }
+                    model: PropertyModel {
+                        // TODO: only show properties with prio=1
+                        share: root.share
+                    }
 
-                delegate: FieldDelegate {
+                    delegate: FieldDelegate {
                         width: propertyList.width
-                    height: item ? item.implicitHeight : 0
+                        height: item ? item.implicitHeight : 0
+
+                        onValueEdited: (propertyClass, value) => {
+                            root.propertyUpdateError = ""
+                            root.sharingController.setProperty(root.share, propertyClass, value)
+                        }
+                    }
+                }
+
+                Label {
+                    Layout.fillWidth: true
+
+                    text: root.propertyUpdateError
+                    color: Style.wizardErrorText
+                    wrapMode: Text.Wrap
+                    visible: text.length > 0
                 }
             }
         }
-        }
 
-            }
+    }
 
     Connections {
         target: root.sharingController
@@ -177,6 +192,12 @@ Page {
         function onRecipientAdditionFailed(share, error) {
             if (share === root.share) {
                 root.recipientAdditionError = error
+            }
+        }
+
+        function onPropertyUpdateFailed(share, error) {
+            if (share === root.share) {
+                root.propertyUpdateError = error
             }
         }
     }
