@@ -441,7 +441,7 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
     _fileToUpload._size = FileSystem::getSize(fullFilePath);
     _item->_size = FileSystem::getSize(originalFilePath);
 
-    auto fileSizesChangedForNewItem = _item->_instruction == CSYNC_INSTRUCTION_NEW
+    const auto fileSizesChangedForNewItem = _item->_instruction == CSYNC_INSTRUCTION_NEW
         && !(prevItemSize == 0 && prevFileToUploadSize == 0) // file conflict items created during propagation may not have a file size, ignore those
         && !(prevFileToUploadSize == _fileToUpload._size && prevItemSize == _item->_size);
     if (fileSizesChangedForNewItem) {
