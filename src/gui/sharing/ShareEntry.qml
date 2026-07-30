@@ -30,22 +30,12 @@ ItemDelegate {
     contentItem: RowLayout {
         ColumnLayout {
             Layout.fillWidth: true
-            spacing: Style.extraSmallSpacing
 
             Label {
                 Layout.fillWidth: true
 
                 text: root.recipientNames()
                 elide: Text.ElideRight
-            }
-
-            Label {
-                Layout.fillWidth: true
-
-                text: root.share.permissionPreset
-                color: palette.placeholderText
-                elide: Text.ElideRight
-                visible: text.length > 0
             }
         }
 
