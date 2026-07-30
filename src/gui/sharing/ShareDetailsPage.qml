@@ -34,6 +34,7 @@ Page {
 
             ColumnLayout {
                 width: parent.width
+                spacing: Style.standardSpacing
 
                 RecipientSearchField {
                     id: recipientSearch
@@ -66,11 +67,12 @@ Page {
                         share: root.share
                     }
 
-                    delegate: ItemDelegate {
+                    delegate: EnforcedPlainTextLabel {
                         required property var model
 
                         width: ListView.view.width
                         text: model.label
+                        elide: Text.ElideRight
                     }
                 }
 
@@ -133,6 +135,7 @@ Page {
 
                 EnforcedPlainTextLabel {
                     Layout.fillWidth: true
+                    Layout.topMargin: Style.standardSpacing
 
                     text: qsTr("Sharing settings")
                     font.bold: true
