@@ -70,8 +70,6 @@ ecm_add_qml_module(nextcloudGuiSharing
     MainPage.qml
     RecipientSearchField.qml
     ShareDetailsPage.qml
-    ShareSettingsPopup.qml
-    SettingsPage.qml
     ShareEntry.qml
     ShareDialog.qml
 )
