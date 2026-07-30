@@ -1,7 +1,5 @@
-/*
- * SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
- */
+//  SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import Foundation
 import NCDesktopClientSocketKit
@@ -10,10 +8,12 @@ import OSLog
 
 class FileProviderSocketLineProcessor: NSObject, LineProcessor {
     var delegate: FileProviderExtension
+    let log: any FileProviderLogging
     let logger: FileProviderLogger
 
     required init(delegate: FileProviderExtension, log: any FileProviderLogging) {
         self.delegate = delegate
+        self.log = log
         self.logger = FileProviderLogger(category: "FileProviderSocketLineProcessor", log: log)
     }
 
@@ -62,8 +62,8 @@ class FileProviderSocketLineProcessor: NSObject, LineProcessor {
                 return
             }
             let ignoreList = ignoreListSubsequence.components(separatedBy: "_~IL$~_")
-            logger.debug("Applying \(ignoreList.count) ignore file patterns")
-            delegate.ignoredFiles = IgnoredFilesMatcher(ignoreList: ignoreList)
+            logger.debug("Applying \(ignoreList.count) ignore file patterns.")
+            delegate.ignoredFiles = IgnoredFilesMatcher(ignoreList: ignoreList, log: log)
         }
     }
 }

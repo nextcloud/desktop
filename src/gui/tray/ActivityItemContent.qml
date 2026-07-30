@@ -188,6 +188,7 @@ RowLayout {
 
                     ToolTip {
                         popupType: Qt.platform.os === "windows" ? Popup.Item : Qt.platform.os === "windows" ? Popup.Item : Popup.Native
+                        text: qsTr("Open file details")
                         visible: parent.hovered
                         background: Rectangle {
                             color: Style.sesBackgroundColor
@@ -205,9 +206,27 @@ RowLayout {
                     rightPadding: 0
 
                     visible: model.showFileDetails
-                    onClicked: {
-                        if (model.openablePath) {
-                            Systray.presentShareViewInTray(model.openablePath)
+                    onClicked: fileMoreButtonMenu.visible ? fileMoreButtonMenu.close() : fileMoreButtonMenu.popup()
+
+                    AutoSizingMenu {
+                        id: fileMoreButtonMenu
+                        closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
+
+                        MenuItem {
+                            height: visible ? implicitHeight : 0
+                            text: qsTr("File details")
+                            font.pixelSize: Style.topLinePixelSize
+                            hoverEnabled: true
+                            onClicked: Systray.presentShareViewInTray(model.openablePath)
+                        }
+
+                        MenuItem {
+                            visible: model.serverHasIntegration
+                            height: visible ? implicitHeight : 0
+                            text: qsTr("File actions")
+                            font.pixelSize: Style.topLinePixelSize
+                            hoverEnabled: true
+                            onClicked: Systray.presentFileActionsViewInSystray(model.openablePath)
                         }
                     }
                 }

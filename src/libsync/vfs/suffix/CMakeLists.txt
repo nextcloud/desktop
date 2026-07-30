@@ -31,6 +31,11 @@ if(APPLE)
         PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY ${vfs_buildoutputdir}
         RUNTIME_OUTPUT_DIRECTORY ${vfs_buildoutputdir}
+        # macdeployqt (POST_BUILD) removes the build-tree RPATH (work/build/bin) that CMake
+        # adds because this target depends on nextcloudsync. Without this flag CMake then tries
+        # to delete that RPATH at cmake --install time via install_name_tool and fails because
+        # macdeployqt has already eliminated it.
+        BUILD_WITH_INSTALL_RPATH TRUE
     )
     # For being loadable when client run from install dir (after make macdeployqt)
     set(vfs_installdir "${LIB_INSTALL_DIR}/../PlugIns")

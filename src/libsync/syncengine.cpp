@@ -763,6 +763,7 @@ void SyncEngine::startSync()
     _discoveryPhase->startJob(discoveryJob);
     connect(discoveryJob, &ProcessDirectoryJob::etag, this, &SyncEngine::slotRootEtagReceived);
     connect(discoveryJob, &ProcessDirectoryJob::updatedRootFolderQuota, account().data(), &Account::rootFolderQuotaChanged);
+    connect(discoveryJob, &ProcessDirectoryJob::rootFileIdReceived, this, &SyncEngine::slotRootFileIdReceived);
     connect(_discoveryPhase.get(), &DiscoveryPhase::addErrorToGui, this, &SyncEngine::addErrorToGui);
 }
 
@@ -792,6 +793,16 @@ void SyncEngine::slotRootEtagReceived(const QByteArray &e, const QDateTime &time
         _remoteRootEtag = e;
         emit rootEtag(_remoteRootEtag, time);
     }
+}
+
+void SyncEngine::slotRootFileIdReceived(const qint64 fileId)
+{
+    if (_rootFileIdReceived) {
+        return;
+    }
+    _rootFileId = fileId;
+    _rootFileIdReceived = true;
+    emit rootFileIdReceived(fileId);
 }
 
 void SyncEngine::slotNewItem(const SyncFileItemPtr &item)
@@ -1132,15 +1143,13 @@ bool SyncEngine::shouldRestartSync() const
         return false;
     }
 
-    auto hasDeletionInstructions = false;
     for (const auto &syncItem : _syncItems) {
-        // If there's at least one remove instruction: bail out, we might have lost a rename.
-        hasDeletionInstructions = syncItem->_instruction == CSYNC_INSTRUCTION_REMOVE;
-        if (hasDeletionInstructions) {
-            break;
+        // If there's at least one remove instruction to be propagated to the remote: bail out, we might have lost a local rename.
+        if (syncItem->_instruction == CSYNC_INSTRUCTION_REMOVE && syncItem->_direction == SyncFileItem::Up) {
+            return true;
         }
     }
-    return hasDeletionInstructions;
+    return false;
 }
 
 bool SyncEngine::handleMassDeletion()

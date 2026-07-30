@@ -30,6 +30,10 @@
 #include "settingsdialog.h"
 #include "vfsdownloaderrordialog.h"
 
+#ifdef Q_OS_MACOS
+#include "common/utility_mac_sandbox.h"
+#endif
+
 #include <QTimer>
 #include <QUrl>
 #include <QDir>
@@ -92,6 +96,7 @@ Folder::Folder(const FolderDefinition &definition,
 
     connect(_accountState.data(), &AccountState::isConnectedChanged, this, &Folder::canSyncChanged);
     connect(_engine.data(), &SyncEngine::rootEtag, this, &Folder::etagRetrievedFromSyncEngine);
+    connect(_engine.data(), &SyncEngine::rootFileIdReceived, this, &Folder::rootFileIdReceivedFromSyncEngine);
 
     connect(_engine.data(), &SyncEngine::started, this, &Folder::slotSyncStarted, Qt::QueuedConnection);
     connect(_engine.data(), &SyncEngine::finished, this, &Folder::slotSyncFinished, Qt::QueuedConnection);
@@ -163,7 +168,50 @@ Folder::~Folder()
 
     // Reset then engine first as it will abort and try to access members of the Folder
     _engine.reset();
+
+    // macOS sandbox: _securityScopedAccess is declared as the first member,
+    // so it is destroyed last by C++ reverse-declaration-order destruction.
+    // This ensures sandbox access outlives all filesystem-accessing members.
 }
+
+#ifdef Q_OS_MACOS
+void Folder::setSecurityScopedAccess(std::unique_ptr<Utility::MacSandboxPersistentAccess> access)
+{
+    _securityScopedAccess = std::move(access);
+}
+
+bool Folder::needsSandboxBookmark() const
+{
+    return _needsSandboxBookmark;
+}
+
+void Folder::setNeedsSandboxBookmark(bool needs)
+{
+    if (_needsSandboxBookmark == needs) {
+        return;
+    }
+    _needsSandboxBookmark = needs;
+    if (needs) {
+        // Clear the misleading error from checkLocalPath() which ran in the constructor
+        // before we knew this folder needs sandbox bookmark re-approval.
+        // Keep SetupError status so canSync() returns false and prevents sync attempts.
+        _syncResult.clearErrors();
+    }
+}
+
+void Folder::applySandboxBookmark(const QByteArray &bookmarkData,
+                                  std::unique_ptr<Utility::MacSandboxPersistentAccess> access)
+{
+    _definition.securityScopedBookmarkData = bookmarkData;
+    setSecurityScopedAccess(std::move(access));
+    _needsSandboxBookmark = false;
+    // Clear the SetupError state so canSync() returns true and sync can proceed
+    _syncResult.clearErrors();
+    _syncResult.setStatus(SyncResult::NotYetStarted);
+    saveToSettings();
+    emit syncStateChange();
+}
+#endif
 
 bool Folder::checkLocalPath()
 {
@@ -394,6 +442,12 @@ void Folder::etagRetrievedFromSyncEngine(const QByteArray &etag, const QDateTime
     qCInfo(lcFolder) << "Root etag from during sync:" << etag;
     accountState()->tagLastSuccessfullETagRequest(time);
     _lastEtag = etag;
+}
+
+void Folder::rootFileIdReceivedFromSyncEngine(const qint64 fileId)
+{
+    qCDebug(lcFolder).nospace() << "retrieved root fileId=" << fileId;
+    _rootFileId = fileId;
 }
 
 void Folder::showSyncResultPopup()
@@ -1004,6 +1058,11 @@ void Folder::migrateBlackListPath(const QString &legacyPath)
     }
 }
 
+bool Folder::hasFileIds(const QList<qint64>& fileIds) const
+{
+    return fileIds.contains(_rootFileId) || journalDb()->hasFileIds(fileIds);
+}
+
 QString Folder::filePath(const QString& fileName)
 {
     const auto folderDir = QDir(_canonicalLocalPath);
@@ -1222,7 +1281,7 @@ void Folder::setDirtyNetworkLimits()
 
     ConfigFile cfg;
 
-    int downloadLimit = -75; // 75%
+    int downloadLimit = 0;
     const auto useDownLimit = static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(account->downloadLimitSetting());
     if (useDownLimit >= 1) {
         downloadLimit = account->downloadLimit() * 1000;
@@ -1230,7 +1289,7 @@ void Folder::setDirtyNetworkLimits()
         downloadLimit = 0;
     }
 
-    int uploadLimit = -75; // 75%
+    int uploadLimit = 0;
     const auto useUpLimit = static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(account->uploadLimitSetting());
     if (useUpLimit >= 1) {
         uploadLimit = account->uploadLimit() * 1000;
@@ -1849,6 +1908,12 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
         settings.setValue(QLatin1String("navigationPaneClsid"), folder.navigationPaneClsid);
     else
         settings.remove(QLatin1String("navigationPaneClsid"));
+
+    // macOS sandbox: persist security-scoped bookmark data
+    if (!folder.securityScopedBookmarkData.isEmpty())
+        settings.setValue(QLatin1String("securityScopedBookmarkData"), folder.securityScopedBookmarkData);
+    else
+        settings.remove(QLatin1String("securityScopedBookmarkData"));
 }
 
 bool FolderDefinition::load(QSettings &settings, const QString &alias,
@@ -1876,6 +1941,9 @@ bool FolderDefinition::load(QSettings &settings, const QString &alias,
             folder->upgradeVfsMode = true; // maybe winvfs is available?
         }
     }
+
+    // macOS sandbox: load security-scoped bookmark data
+    folder->securityScopedBookmarkData = settings.value(QLatin1String("securityScopedBookmarkData")).toByteArray();
 
     // Old settings can contain paths with native separators. In the rest of the
     // code we assume /, so clean it up now.

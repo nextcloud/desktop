@@ -31,19 +31,24 @@ void FileProviderEditLocallyJob::openFileProviderFile(const QString &ocId)
     const auto nsOcId = ocId.toNSString();
     const auto userId = _accountState->account()->userIdAtHostWithPort();
     const auto ncDomainManager = FileProvider::instance()->domainManager();
-    const auto voidDomain = ncDomainManager->domainForAccount(_accountState.data());
+    const auto account = _accountState ? _accountState->account() : AccountPtr{};
+    const auto voidDomain = ncDomainManager->domainForAccount(account.data());
     
     NSFileProviderDomain *const domain = (NSFileProviderDomain *)voidDomain;
+    
     if (domain == nil) {
         qCWarning(lcFileProviderEditLocallyMacJob) << "Could not get domain for account:" << userId;
         emit notAvailable();
+        return;
     }
 
-    NSFileProviderManager *const manager = [NSFileProviderManager managerForDomain:domain]; 
+    NSFileProviderManager *const manager = [NSFileProviderManager managerForDomain:domain];
+
     if (manager == nil) {
         qCWarning(lcFileProviderEditLocallyMacJob) << "Could not get file provider manager"
                                                       "for domain of account:" << userId;;
         emit notAvailable();
+        return;
     }
 
     [manager retain];

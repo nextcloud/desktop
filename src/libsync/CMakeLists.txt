@@ -144,6 +144,8 @@ set(libsync_SRCS
     rootencryptedfolderinfo.cpp
     foldermetadata.h
     foldermetadata.cpp
+    ocsassistantconnector.h
+    ocsassistantconnector.cpp
     ocsuserstatusconnector.h
     ocsuserstatusconnector.cpp
     rootencryptedfolderinfo.cpp
@@ -276,6 +278,24 @@ set_target_properties(
       ARCHIVE_OUTPUT_NAME
         ${APPLICATION_EXECUTABLE}sync
 )
+
+if(BUILD_OWNCLOUD_OSX_BUNDLE)
+    # macdeployqt (POST_BUILD on nextcloud) replaces the build-tree RPATH with
+    # @loader_path/../Frameworks.  Setting BUILD_WITH_INSTALL_RPATH prevents CMake
+    # from trying to adjust RPATHs at cmake --install time (which would conflict
+    # with changes macdeployqt has already made).
+    #
+    # INSTALL_NAME_DIR "@rpath" keeps the dylib's install_name as
+    # @rpath/libnextcloudsync.0.dylib through cmake --install.  Without it CMake
+    # defaults to ${CMAKE_INSTALL_PREFIX}/lib/libnextcloudsync.0.dylib and rewrites
+    # the nextcloud executable's @rpath reference to that absolute path during
+    # install -- a path nothing is ever installed to -- causing dyld to fail at
+    # launch with "Library not loaded: .../build/.../lib/libnextcloudsync.0.dylib".
+    set_target_properties(nextcloudsync PROPERTIES
+        BUILD_WITH_INSTALL_RPATH TRUE
+        INSTALL_NAME_DIR "@rpath"
+    )
+endif()
 
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     install(TARGETS nextcloudsync

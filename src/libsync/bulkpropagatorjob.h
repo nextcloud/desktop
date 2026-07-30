@@ -64,8 +64,8 @@ private slots:
     void slotComputeTransmissionChecksum(OCC::SyncFileItemPtr item,
                                          OCC::BulkPropagatorJob::UploadFileInfo fileToUpload);
 
-    void slotComputeMd5Checksum(SyncFileItemPtr item,
-                                UploadFileInfo fileToUpload,
+    void slotComputeMd5Checksum(OCC::SyncFileItemPtr item,
+                                OCC::BulkPropagatorJob::UploadFileInfo fileToUpload,
                                 const QByteArray &transmissionChecksumType,
                                 const QByteArray &transmissionChecksum);
 

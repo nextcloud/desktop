@@ -18,6 +18,10 @@
 #include "wizard/owncloudwizard.h"
 #include "common/asserts.h"
 
+#ifdef Q_OS_MACOS
+#include "common/utility_mac_sandbox.h"
+#endif
+
 #include <QDesktopServices>
 #include <QDir>
 #include <QFileDialog>
@@ -82,9 +86,6 @@ FolderWizardLocalPath::FolderWizardLocalPath(const AccountPtr &account)
 
     QUrl serverUrl = _account->url();
     serverUrl.setUserName(_account->credentials()->user());
-    QString defaultPath = QDir::homePath() + QLatin1Char('/') + Theme::instance()->appName();
-    defaultPath = FolderMan::instance()->findGoodPathForNewSyncFolder(defaultPath, serverUrl, FolderMan::GoodPathStrategy::AllowOnlyNewPath);
-    _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(defaultPath));
     _ui.localFolderLineEdit->setToolTip(tr("Enter the path to the local folder."));
 
     _ui.sesSnackBar->setWordWrap(true);
@@ -100,6 +101,12 @@ FolderWizardLocalPath::~FolderWizardLocalPath() = default;
 void FolderWizardLocalPath::initializePage()
 {
     _ui.sesSnackBar->hide();
+    
+    // Automatically trigger folder selection dialog on first appearance
+    if (_initialFolderSelection) {
+        // Use QTimer to defer the dialog until the page is fully shown
+        QTimer::singleShot(0, this, &FolderWizardLocalPath::slotChooseLocalFolder);
+    }
 }
 
 void FolderWizardLocalPath::cleanupPage()
@@ -138,24 +145,30 @@ bool FolderWizardLocalPath::isComplete() const
 
 void FolderWizardLocalPath::slotChooseLocalFolder()
 {
-    QString sf = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    QDir d(sf);
+    const bool isInitialSelection = _initialFolderSelection;
+    QString sf;
 
-    // open the first entry of the home dir. Otherwise the dir picker comes
-    // up with the closed home dir icon, stupid Qt default...
-    QStringList dirs = d.entryList(QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks,
-        QDir::DirsFirst | QDir::Name);
-
-    if (dirs.count() > 0)
-        sf += "/" + dirs.at(0); // Take the first dir in home dir.
+    #ifdef Q_OS_MACOS
+        // On macOS with app sandbox, QStandardPaths returns the sandbox container directory,
+        // not the actual user home directory. Use NSHomeDirectory() to get the real path.
+        sf = Utility::getRealHomeDirectory();
+    #else
+        sf = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    #endif
 
     QString dir = QFileDialog::getExistingDirectory(this,
         tr("Select the source folder"),
         sf,
         QFileDialog::ShowDirsOnly);
     if (!dir.isEmpty()) {
-        // set the last directory component name as alias
         _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(dir));
+        _initialFolderSelection = false;
+    } else {
+        // If this was the initial folder selection and the user canceled,
+        // emit signal to close the wizard
+        if (isInitialSelection) {
+            emit initialFolderSelectionCanceled();
+        }
     }
 
     SyncDirValidator syncDirValidator(_ui.localFolderLineEdit->text());
@@ -989,6 +1002,9 @@ FolderWizard::FolderWizard(AccountPtr account, QWidget *parent)
     adjustWizardSize();
     setWizardStyle(QWizard::ClassicStyle);
     customizeStyle();
+    
+    // Close the wizard if initial folder selection is canceled
+    connect(_folderWizardSourcePage, &FolderWizardLocalPath::initialFolderSelectionCanceled,
 }
 
 FolderWizard::~FolderWizard() = default;

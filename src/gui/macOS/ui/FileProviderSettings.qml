@@ -32,91 +32,37 @@ Page {
     background: Rectangle {
         color: Style.sesBackgroundColor
         border.width: root.showBorder ? Style.normalBorderWidth : 0
-        border.color: root.palette.dark
+        border.color: palette.mid
     }
 
-    padding: Style.standardSpacing
+    leftPadding: 0
+    rightPadding: 0
+    topPadding: 12 // Style.standardSpacing is 10, the QtWidgets layout uses 12.  set it here as well to avoid a rough cutoff
+    bottomPadding: 12
+    // 1. Tell the Page how tall it actually is
+    implicitHeight: rootColumn.implicitHeight + topPadding + bottomPadding
 
     ColumnLayout {
         id: rootColumn
 
-        anchors {
-            top: parent.top
-            left: parent.left
-            right: parent.right
-        }
+        anchors.left: parent.left
+        anchors.right: parent.right
+        spacing: Style.standardSpacing
 
-        EnforcedPlainTextLabel {
+        RowLayout {
             Layout.fillWidth: true
-            text: qsTr("General settings")
-            font.bold: true
-            font.pointSize: Style.subheaderFontPtSize
-            elide: Text.ElideRight
-        }
 
-        CheckBox {
-            id: vfsEnabledCheckBox
-            text: qsTr("Enable virtual files")
-            checked: root.controller.vfsEnabledForAccount(root.accountUserIdAtHost)
-            onClicked: root.controller.setVfsEnabledForAccount(root.accountUserIdAtHost, checked)
-        }
-
-        Loader {
-            id: vfsSettingsLoader
-
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-
-            active: vfsEnabledCheckBox.checked
-            sourceComponent: ColumnLayout {
-                Rectangle {
-                    Layout.fillWidth: true
-                    height: Style.normalBorderWidth
-                    color: palette.dark
-                }
-
-                FileProviderSyncStatus {
-                    syncStatus: root.controller.domainSyncStatusForAccount(root.accountUserIdAtHost)
-                    onDomainSignalRequested: root.controller.signalFileProviderDomain(root.accountUserIdAtHost)
-                }
-
-                FileProviderStorageInfo {
-                    id: storageInfo
-                    localUsedStorage: root.controller.localStorageUsageGbForAccount(root.accountUserIdAtHost)
-                    remoteUsedStorage: root.controller.remoteStorageUsageGbForAccount(root.accountUserIdAtHost)
-
-                    onEvictDialogRequested: root.controller.createEvictionWindowForAccount(root.accountUserIdAtHost)
-
-                    Connections {
-                        target: root.controller
-
-                        function onLocalStorageUsageForAccountChanged(accountUserIdAtHost) {
-                            if (root.accountUserIdAtHost !== accountUserIdAtHost) {
-                                return;
-                            }
-                            storageInfo.localUsedStorage = root.controller.localStorageUsageGbForAccount(root.accountUserIdAtHost);
-                        }
-
-                        function onRemoteStorageUsageForAccountChanged(accountUserIdAtHost) {
-                            if (root.accountUserIdAtHost !== accountUserIdAtHost) {
-                                return;
-                            }
-                            storageInfo.remoteUsedStorage = root.controller.remoteStorageUsageGbForAccount(root.accountUserIdAtHost);
-                        }
-                    }
-                }
-
-                Button {
-                    id: resetVfsButton
-                    text: qsTr("Reset virtual files environment")
-                    onPressed: root.controller.resetVfsForAccount(root.accountUserIdAtHost);
-
-                    background: Rectangle {
-                        color: resetVfsButton.hovered ? resetVfsButton.pressed ? Style.sesButtonPressed : Style.sesHover : Style.sesBackgroundColor
-                        border.width: 1
-                        border.color: Style.sesBorderColor
-                    }
-                }
+            EnforcedPlainTextLabel {
+                Layout.fillWidth: true
+                horizontalAlignment: Text.AlignLeft
+                wrapMode: Text.WordWrap
+                text: qsTr("Virtual files appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. Virtual files and classic sync can not be used at the same time.")
+            }
+            Switch {
+                id: vfsEnabledCheckBox
+                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                checked: root.controller.vfsEnabledForAccount(root.accountUserIdAtHost)
+                onClicked: root.controller.setVfsEnabledForAccount(root.accountUserIdAtHost, checked)
             }
         }
     }

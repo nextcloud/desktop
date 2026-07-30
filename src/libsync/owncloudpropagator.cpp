@@ -577,6 +577,7 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
             } else {
                 qCWarning(lcPropagator) << "WARNING:  Job within a removed directory?  This should not happen!"
                                         << item->_file << item->_instruction;
+                Q_ASSERT(false);
             }
         }
 

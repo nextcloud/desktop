@@ -148,6 +148,9 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
         if (bname.startsWith(QLatin1String(".nextcloudpermissions.log"), Qt::CaseInsensitive)) { // ".nextcloudpermissions.log*"
             return CSYNC_FILE_SILENTLY_EXCLUDED;
         }
+        if (bname.startsWith(QLatin1String(".nextcloudpermissions.log"), Qt::CaseInsensitive)) { // ".nextcloudpermissions.log*"
+            return CSYNC_FILE_SILENTLY_EXCLUDED;
+        }
     }
 
     // check the strlen and ignore the file if its name is longer than 254 chars.
@@ -293,12 +296,23 @@ void ExcludedFiles::loadExcludeFilePatterns(const QString &basePath, QFile &file
     QStringList patterns;
     while (!file.atEnd()) {
         QByteArray line = file.readLine().trimmed();
-        if (line.startsWith("#!version")) {
-            if (!versionDirectiveKeepNextLine(line))
-                file.readLine();
+        if (file.error()) {
+            // e.g. "Access to the cloud file is denied." when the exclude list is dehydrated on a VFS-enabled sync folder
+            qWarning().nospace() << "failed to load exclude patterns from file, assume empty ignore list"
+                << " fileName=" << file.fileName()
+                << " error=" << file.error()
+                << " errorString=" << file.errorString();
+            break;
         }
-        if (line.isEmpty() || line.startsWith('#'))
+
+        if (line.startsWith("#!version")) {
+            if (!versionDirectiveKeepNextLine(line)) {
+                file.readLine();
+            }
+        }
+        if (line.isEmpty() || line.startsWith('#')) {
             continue;
+        }
         const auto patternStr = QString::fromUtf8(line);
         if (QStringView{patternStr}.trimmed() == QLatin1StringView("*")) {
             continue;

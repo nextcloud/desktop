@@ -5,19 +5,19 @@
 
 # Read the available environment paths which include (for example) Homebrew.
 for f in /etc/paths.d/*; do
+    echo "Found to source: $f"
+
     while read -r line; do
+        echo "Adding to PATH: $line"
         export PATH="$PATH:$line"
     done < "$f"
 done
 
+echo "Final PATH: $PATH"
+
 if [ -f "$HOME/.zprofile" ]; then
     echo "Sourcing $HOME/.zprofile to include possible PATH definitions..."
     source "$HOME/.zprofile"
-fi
-
-if [ -z "${CODE_SIGN_IDENTITY}" ]; then
-    echo "Error: CODE_SIGN_IDENTITY is not defined or is empty!"
-    exit 1
 fi
 
 DESKTOP_CLIENT_PROJECT_ROOT="$SOURCE_ROOT/../../.."
@@ -30,11 +30,12 @@ else
 fi
 
 swift run mac-crafter \
-    --build-path="$SOURCE_ROOT/DerivedData" \
+    --build-path="$DESKTOP_CLIENT_PROJECT_ROOT/build" \
     --product-path="/Applications" \
     --build-type="Debug" \
     --dev \
     --disable-auto-updater \
     --build-file-provider-module \
-    --code-sign-identity="$CODE_SIGN_IDENTITY" \
+    --code-sign-identity="Apple Development" \
+    --without-web-engine \
     "$DESKTOP_CLIENT_PROJECT_ROOT"

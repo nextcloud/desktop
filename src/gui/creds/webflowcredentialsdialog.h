@@ -43,7 +43,7 @@ protected:
     void changeEvent(QEvent *) override;
 
 public slots:
-    void slotFlow2AuthResult(Flow2Auth::Result, const QString &errorString, const QString &user, const QString &appPassword);
+    void slotFlow2AuthResult(OCC::Flow2Auth::Result, const QString &errorString, const QString &user, const QString &appPassword);
     void slotShowSettingsDialog();
 
 signals:

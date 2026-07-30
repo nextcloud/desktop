@@ -46,7 +46,9 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             }
         }
     }
+
     private(set) var userAgent: String = "IONOS HiDrive Next/FileProviderUIExt"
+
     private(set) var account: Account? {
         didSet {
             guard let account = account else {
@@ -57,7 +59,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 account: account.ncKitAccount,
                 urlBase: account.serverUrl,
                 user: account.username,
-                userId: account.username,
+                userId: account.id,
                 password: account.password,
                 userAgent: userAgent,
                 groupIdentifier: ""
@@ -93,19 +95,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             return
         }
 
-        guard let itemIdentifier = await withCheckedContinuation({
-            (continuation: CheckedContinuation<NSFileProviderItemIdentifier?, Never>) -> Void in
-            NSFileProviderManager.getIdentifierForUserVisibleFile(at: itemURL) { identifier, domainIdentifier, error in
-                defer {
-                    continuation.resume(returning: identifier)
-                }
-
-                guard error == nil else {
-                    self.presentError("No item with identifier: \(error.debugDescription)")
-                    return
-                }
-            }
-        }) else {
+        guard let (itemIdentifier, _) = try? await NSFileProviderManager.identifierForUserVisibleFile(at: itemURL) else {
             presentError(String(localized: "Could not get identifier for item, no shares can be acquired."))
             return
         }

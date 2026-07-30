@@ -8,6 +8,7 @@
 #include <QObject>
 
 #include "fileproviderdomainmanager.h"
+#include "fileproviderservice.h"
 #include "fileprovidersocketserver.h"
 #include "fileproviderxpc.h"
 
@@ -28,19 +29,26 @@ public:
     static FileProvider *instance();
     ~FileProvider() override;
 
-    [[nodiscard]] static bool fileProviderAvailable();
+    /**
+     * @brief Whether the macOS file provider feature is usable on the current OS.
+     *
+     * Returns false on macOS 13 Ventura, where the extension is incompatible
+     * (see nextcloud/desktop#9927). This runtime check can be removed once
+     * macOS 13 Ventura is no longer supported.
+     */
+    [[nodiscard]] static bool available();
 
+    void configureXPC();
     [[nodiscard]] FileProviderXPC *xpc() const;
     [[nodiscard]] FileProviderDomainManager *domainManager() const;
     [[nodiscard]] FileProviderSocketServer *socketServer() const;
-
-private slots:
-    void configureXPC();
+    [[nodiscard]] FileProviderService *service() const;
 
 private:
     std::unique_ptr<FileProviderDomainManager> _domainManager;
     std::unique_ptr<FileProviderSocketServer> _socketServer;
     std::unique_ptr<FileProviderXPC> _xpc;
+    std::unique_ptr<FileProviderService> _service;
 
     static FileProvider *_instance;
     explicit FileProvider(QObject * const parent = nullptr);

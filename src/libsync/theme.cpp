@@ -473,9 +473,8 @@ Theme::Theme()
 
 QString Theme::developerStringInfo() const
 {
-    const auto devString = tr("%1 Desktop Client Version %2", "%1 is application name. %2 is the human version string.")
+    const auto devString = QString(tr("%1 Desktop Client Version %2", "%1 is application name. %2 is the human version string."))
     .arg(APPLICATION_NAME, QString::fromLatin1(MIRALL_HUMAN_VERSION_STRING));
-
     return devString;
 }
 
@@ -988,6 +987,24 @@ QIcon Theme::createColorAwareIcon(const QString &name, const QPalette &palette, 
     icon.addPixmap(QPixmap::fromImage(img));
     icon.addPixmap(QPixmap::fromImage(img), QIcon::Normal, QIcon::On);
 
+    const auto defaultPixmap = Theme::isDarkColor(palette.color(QPalette::Base))
+        ? QPixmap::fromImage(inverted)
+        : QPixmap::fromImage(img);
+    const auto highlightedPixmap = Theme::isDarkColor(palette.color(QPalette::HighlightedText))
+        ? QPixmap::fromImage(img)
+        : QPixmap::fromImage(inverted);
+
+    QIcon icon;
+    icon.addPixmap(defaultPixmap, QIcon::Normal, QIcon::Off);
+    icon.addPixmap(defaultPixmap, QIcon::Active, QIcon::Off);
+    icon.addPixmap(defaultPixmap, QIcon::Selected, QIcon::Off);
+
+    icon.addPixmap(highlightedPixmap, QIcon::Normal, QIcon::On);
+    icon.addPixmap(highlightedPixmap, QIcon::Active, QIcon::On);
+    icon.addPixmap(highlightedPixmap, QIcon::Selected, QIcon::On);
+
+    icon.addPixmap(defaultPixmap, QIcon::Disabled, QIcon::Off);
+    icon.addPixmap(highlightedPixmap, QIcon::Disabled, QIcon::On);
     return icon;
 }
 

@@ -23,6 +23,8 @@
 #include <memory>
 #include <filesystem>
 
+using namespace Qt::StringLiterals;
+
 PathComponents::PathComponents(const char *path)
     : PathComponents { QString::fromUtf8(path) }
 {
@@ -66,8 +68,13 @@ void DiskFileModifier::remove(const QString &relativePath)
 void DiskFileModifier::insert(const QString &relativePath, qint64 size, char contentChar)
 {
     QFile file { _rootDir.filePath(relativePath) };
-    QVERIFY(!file.exists());
-    file.open(QFile::WriteOnly);
+    if (!file.exists()) {
+        QVERIFY(!file.exists());
+    }
+    const auto openResult = file.open(QFile::WriteOnly);
+    if (!openResult) {
+        qWarning() << "error while opening the file" << relativePath << _rootDir.filePath(relativePath);
+    }
     QByteArray buf(1024, contentChar);
     for (int x = 0; x < size / buf.size(); ++x) {
         file.write(buf);
@@ -86,7 +93,10 @@ void DiskFileModifier::setContents(const QString &relativePath, char contentChar
     QFile file { _rootDir.filePath(relativePath) };
     QVERIFY(file.exists());
     qint64 size = file.size();
-    file.open(QFile::WriteOnly);
+    const auto openResult = file.open(QFile::WriteOnly);
+    if (!openResult) {
+        qWarning() << "error while opening the file" << relativePath << _rootDir.filePath(relativePath);
+    }
     file.write(QByteArray {}.fill(contentChar, size));
 }
 
@@ -94,7 +104,10 @@ void DiskFileModifier::appendByte(const QString &relativePath)
 {
     QFile file { _rootDir.filePath(relativePath) };
     QVERIFY(file.exists());
-    file.open(QFile::ReadWrite);
+    const auto openResult = file.open(QFile::ReadWrite);
+    if (!openResult) {
+        qWarning() << "error while opening the file" << relativePath << _rootDir.filePath(relativePath);
+    }
     QByteArray contents = file.read(1);
     file.seek(file.size());
     file.write(contents);
@@ -317,7 +330,9 @@ FileInfo *FileInfo::create(const QString &relativePath, qint64 size, char conten
 {
     const PathComponents pathComponents { relativePath };
     FileInfo *parent = findInvalidatingEtags(pathComponents.parentDirComponents());
-    Q_ASSERT(parent);
+    if (!parent) {
+        return nullptr;
+    }
     FileInfo &child = parent->children[pathComponents.fileName()] = FileInfo { pathComponents.fileName(), size };
     child.parentPath = parent->path();
     child.contentChar = contentChar;
@@ -343,6 +358,11 @@ QString FileInfo::path() const
 QString FileInfo::absolutePath() const
 {
     return OCC::Utility::trailingSlashPath(parentPath) + name;
+}
+
+QByteArray FileInfo::numericFileId() const
+{
+    return fileId.left(fileId.indexOf("oc1x2y3z4w"));
 }
 
 void FileInfo::fixupParentPathRecursively()
@@ -433,7 +453,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
                                                                                                                                 OCC::SharePermissionDelete |
                                                                                                                                 OCC::SharePermissionShare))));
         xml.writeTextElement(ocUri, QStringLiteral("id"), QString::fromUtf8(fileInfo.fileId));
-        xml.writeTextElement(ocUri, QStringLiteral("fileid"), QString::fromUtf8(fileInfo.fileId));
+        xml.writeTextElement(ocUri, QStringLiteral("fileid"), QString::fromUtf8(fileInfo.numericFileId()));
         xml.writeTextElement(ocUri, QStringLiteral("checksums"), QString::fromUtf8(fileInfo.checksums));
         xml.writeTextElement(ocUri, QStringLiteral("privatelink"), href);
         xml.writeTextElement(ncUri, QStringLiteral("lock-owner"), fileInfo.lockOwnerId);
@@ -443,6 +463,9 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
         xml.writeTextElement(ncUri, QStringLiteral("lock-owner-editor"), fileInfo.lockOwnerId);
         xml.writeTextElement(ncUri, QStringLiteral("lock-time"), QString::number(fileInfo.lockTime));
         xml.writeTextElement(ncUri, QStringLiteral("lock-timeout"), QString::number(fileInfo.lockTimeout));
+        if (!fileInfo.lockToken.isEmpty()) {
+            xml.writeTextElement(ncUri, QStringLiteral("lock-token"), fileInfo.lockToken);
+        }
         xml.writeTextElement(ncUri, QStringLiteral("is-encrypted"), fileInfo.isEncrypted ? QString::number(1) : QString::number(0));
         xml.writeTextElement(ncUri, QStringLiteral("metadata-files-live-photo"), fileInfo.isLivePhoto ? QString::number(1) : QString::number(0));
         buffer.write(fileInfo.extraDavProperties);
@@ -528,6 +551,9 @@ FileInfo *FakePutReply::perform(FileInfo &remoteRootFileInfo, const QNetworkRequ
     } else {
         // Assume that the file is filled with the same character
         fileInfo = remoteRootFileInfo.create(fileName, putPayload.size(), putPayload.isEmpty() ? ' ' : putPayload.at(0));
+        if (!fileInfo) {
+            return fileInfo;
+        }
     }
     fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("X-OC-Mtime").toLongLong());
     remoteRootFileInfo.find(fileName, /*invalidateEtags=*/FileInfo::EtagsAction::Invalidate);
@@ -536,6 +562,13 @@ FileInfo *FakePutReply::perform(FileInfo &remoteRootFileInfo, const QNetworkRequ
 
 void FakePutReply::respond()
 {
+    if (!fileInfo) {
+        setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 412);
+        emit metaDataChanged();
+        emit finished();
+        return;
+    }
+
     emit uploadProgress(fileInfo->size, fileInfo->size);
     setRawHeader("OC-ETag", fileInfo->etag);
     setRawHeader("ETag", fileInfo->etag);
@@ -1218,9 +1251,11 @@ void FakeQNAM::setServerVersion(const QString &version)
     _serverVersion = version;
 }
 
-FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo, const QString &remotePath)
+FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo, const QString &remotePath, const bool performInitialSync)
     : _tempDirLocalPath(QFileInfo(_tempDir.path()).canonicalFilePath())
+    , _remotePath{remotePath}
     , _localModifier(_tempDirLocalPath)
+    , _accountState(nullptr)
 {
     // Needs to be done once
     OCC::SyncEngine::minimumFileAgeForUpload = std::chrono::milliseconds(0);
@@ -1237,6 +1272,7 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInf
 
     _fakeQnam = new FakeQNAM(fileTemplate);
     _account = OCC::Account::create();
+    _accountState = new FakeAccountState(_account);
     _account->setUrl(QUrl(QStringLiteral("http://admin:admin@localhost/owncloud")));
     _account->setCredentials(new FakeCredentials { _fakeQnam });
     _account->setDavDisplayName(QStringLiteral("fakename"));
@@ -1244,8 +1280,9 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInf
     _fakeQnam->setServerVersion(_serverVersion);
 
     _journalDb = std::make_unique<OCC::SyncJournalDb>(localPath() + QStringLiteral(".sync_test.db"));
-    _syncEngine = std::make_unique<OCC::SyncEngine>(_account, localPath(), OCC::SyncOptions{}, remotePath, _journalDb.get());
+    _syncEngine = std::make_unique<OCC::SyncEngine>(_account, localPath(), OCC::SyncOptions{}, _remotePath, _journalDb.get());
     // Ignore temporary files from the download. (This is in the default exclude list, but we don't load it)
+    _syncEngine->excludedFiles().addManualExclude(u".~lock.*#"_s);
     _syncEngine->excludedFiles().addManualExclude(QStringLiteral("]*.~*"));
 
     // handle aboutToRemoveAllFiles with a timeout in case our test does not handle it
@@ -1258,10 +1295,12 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInf
     // Ensure we have a valid VfsOff instance "running"
     switchToVfs(_syncEngine->syncOptions()._vfs);
 
-    // A new folder will update the local file state database on first sync.
-    // To have a state matching what users will encounter, we have to a sync
-    // using an identical local/remote file tree first.
-    ENFORCE(syncOnce());
+    if (performInitialSync) {
+        // A new folder will update the local file state database on first sync.
+        // To have a state matching what users will encounter, we have to a sync
+        // using an identical local/remote file tree first.
+        ENFORCE(syncOnce());
+    }
 }
 
 void FakeFolder::switchToVfs(QSharedPointer<OCC::Vfs> vfs)
@@ -1276,7 +1315,7 @@ void FakeFolder::switchToVfs(QSharedPointer<OCC::Vfs> vfs)
 
     OCC::VfsSetupParams vfsParams;
     vfsParams.filesystemPath = localPath();
-    vfsParams.remotePath = QLatin1Char('/');
+    vfsParams.remotePath = _remotePath + u"/"_s;
     vfsParams.account = _account;
     vfsParams.journal = _journalDb.get();
     vfsParams.providerName = QStringLiteral("OC-TEST");
@@ -1429,7 +1468,10 @@ void FakeFolder::toDisk(QDir &dir, const FileInfo &templateFi)
             toDisk(subDir, child);
         } else {
             QFile file { dir.filePath(child.name) };
-            file.open(QFile::WriteOnly);
+            const auto openResult = file.open(QFile::WriteOnly);
+            if (!openResult) {
+                qWarning() << "error while opening the file" << child.name << dir.filePath(child.name);
+            }
             file.write(QByteArray {}.fill(child.contentChar, child.size));
             file.close();
             OCC::FileSystem::setModTime(file.fileName(), OCC::Utility::qDateTimeToTime_t(child.lastModified));
@@ -1448,7 +1490,10 @@ void FakeFolder::fromDisk(QDir &dir, FileInfo &templateFi)
             fromDisk(subDir, subFi);
         } else {
             QFile f { diskChild.filePath() };
-            f.open(QFile::ReadOnly);
+            const auto openResult = f.open(QFile::ReadOnly);
+            if (!openResult) {
+                qWarning() << "error while opening the file" << diskChild.filePath();
+            }
             auto content = f.read(1);
             if (content.size() == 0) {
                 qWarning() << "Empty file at:" << diskChild.filePath();

@@ -437,6 +437,74 @@ QStringList Capabilities::forbiddenFilenameExtensions() const
     return _capabilities["files"].toMap()["forbidden_filename_extensions"].toStringList();
 }
 
+bool Capabilities::serverHasClientIntegration() const
+{
+    return !_capabilities[QStringLiteral("client_integration")].toMap().isEmpty();
+}
+
+QList<QVariantMap> Capabilities::fileActionsByMimeType(const QMimeType &fileMimeType) const
+{
+    const auto fileActionsMap = _capabilities.value("client_integration").toMap();
+    QVariantList contextMenuMapList;
+    for (const auto &fileContextMenu : fileActionsMap) {
+        const auto fileContextMenuMap = fileContextMenu.toMap();
+        if (!fileContextMenuMap.contains("context-menu")) {
+            continue;
+        }
+
+        contextMenuMapList.append(fileContextMenuMap.value("context-menu").toList());
+    }
+
+    if (contextMenuMapList.empty()) {
+        qCDebug(lcServerCapabilities) << "There is no context menu available in the capabilities.";
+        return {};
+    }
+
+    const auto fileMimeTypeName = fileMimeType.name();
+    qCDebug(lcServerCapabilities) << "Filtering file actions by mimeType:" << fileMimeTypeName;
+
+    QList<QVariantMap> fileActionsByMimeType;
+    for (const auto &contextMenu : std::as_const(contextMenuMapList)) {
+        const auto contextMenuMap = contextMenu.toMap();
+        const auto mimetypeFilters = contextMenuMap.value("mimetype_filters").toString();
+        const auto filesMimeTypeFilterList = mimetypeFilters.split(",", Qt::SkipEmptyParts);
+
+        if (filesMimeTypeFilterList.isEmpty()) {
+            qCDebug(lcServerCapabilities) << "Found file action for all mimetypes:" << contextMenuMap;
+            fileActionsByMimeType.append(contextMenuMap);
+            continue;
+        }
+
+        for (const auto &mimeType : filesMimeTypeFilterList) {
+            const auto capabilitiesMimeType = mimeType.trimmed();
+            QString mimeTypeAlias;
+            if (const auto capabilitiesMimeTypeSplit = capabilitiesMimeType.split("/");
+                !capabilitiesMimeTypeSplit.isEmpty()){
+                mimeTypeAlias = capabilitiesMimeTypeSplit.last();
+            }
+
+            qCDebug(lcServerCapabilities) << "Context menu for mimeType:" << mimeTypeAlias << capabilitiesMimeType;
+            qCDebug(lcServerCapabilities) << fileMimeTypeName << "inherits" << capabilitiesMimeType << "?"
+                                          << fileMimeType.inherits(capabilitiesMimeType);
+
+            if (!capabilitiesMimeType.isEmpty()
+                && !fileMimeTypeName.startsWith(capabilitiesMimeType)
+                && !fileMimeTypeName.contains(capabilitiesMimeType)
+                && !fileMimeType.inherits(capabilitiesMimeType) &&
+                !fileMimeTypeName.startsWith(mimeTypeAlias)
+                && !fileMimeTypeName.contains(mimeTypeAlias)
+                && !fileMimeType.inherits(mimeTypeAlias)) {
+                continue;
+            }
+
+            qCDebug(lcServerCapabilities) << "Found file action:" << contextMenuMap;
+            fileActionsByMimeType.append(contextMenuMap);
+        }
+    }
+
+    return fileActionsByMimeType;
+}
+
 /*-------------------------------------------------------------------------------------*/
 
 // Direct Editing
@@ -465,6 +533,7 @@ DirectEditor* Capabilities::getDirectEditorForOptionalMimetype(const QMimeType &
 
     return nullptr;
 }
+
 
 /*-------------------------------------------------------------------------------------*/
 

@@ -210,7 +210,11 @@ void PropagateRemoteMkdir::slotMkdir()
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::finalized,
       this, &PropagateRemoteMkdir::slotStartEncryptedMkcolJob);
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::error,
-      []{ qCWarning(lcPropagateRemoteMkdir) << "Error setting up encryption."; });
+      this, [this] {
+          qCWarning(lcPropagateRemoteMkdir) << "Error setting up encryption.";
+          propagator()->_activeJobList.removeOne(this);
+          done(SyncFileItem::FatalError, tr("Failed to create encrypted folder."), ErrorCategory::GenericError);
+      });
     _uploadEncryptedHelper->start();
 }
 

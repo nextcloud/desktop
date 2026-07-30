@@ -339,6 +339,7 @@ void WebFlowCredentials::slotWriteJobDone(QKeychain::Job *job)
     default:
         qCWarning(lcWebFlowCredentials) << "Error while writing password" << job->errorString();
     }
+    emit credentialsPersisted();
 }
 
 void WebFlowCredentials::invalidateToken() {

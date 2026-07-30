@@ -87,7 +87,7 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
         for (const auto &it : deleted) {
             if (!it.first.startsWith(propagator()->localPath()))
                 continue;
-            if (!deletedDir.isEmpty() && it.first.startsWith(deletedDir))
+            if (isPathInsideDeletedDir(it.first, deletedDir))
                 continue;
             if (it.second) {
                 deletedDir = it.first;
@@ -361,7 +361,7 @@ void PropagateLocalRename::start()
     // if the file is a file underneath a moved dir, the _item->file is equal
     // to _item->renameTarget and the file is not moved as a result.
     qCDebug(lcPropagateLocalRename) << _item->_file << _item->_renameTarget << _item->_originalFile << previousNameInDb << (fileAlreadyMoved ? "original file has already moved" : "original file is still there");
-    qCDebug(lcPropagateLocalRename()) << (FileSystem::fileExists(originalFile) ? "original file exists" : "orignal file is missing") << originalFile << _item->_originalFile;
+    qCDebug(lcPropagateLocalRename()) << (FileSystem::fileExists(originalFile) ? "original file exists" : "original file is missing") << originalFile << _item->_originalFile;
     qCDebug(lcPropagateLocalRename()) << (FileSystem::fileExists(existingFile) ? "existing file exists" : "existing file is missing") << existingFile << previousNameInDb;
     Q_ASSERT(FileSystem::fileExists(propagator()->fullLocalPath(_item->_originalFile)) || FileSystem::fileExists(existingFile));
     if (_item->_file != _item->_renameTarget) {
@@ -544,6 +544,8 @@ void PropagateLocalRename::start()
 
             const auto newItem = SyncFileItem::fromSyncJournalFileRecord(oldRecord);
             newItem->_file = newFileNameString;
+            newItem->_lockToken.clear();
+            newItem->_locked = SyncFileItem::LockStatus::UnlockedItem;
             const auto result = propagator()->updateMetadata(*newItem);
             if (!result) {
                 return;

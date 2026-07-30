@@ -218,7 +218,7 @@ class LockViewController: NSViewController {
             logger.info("About to \(self.locking ? "lock" : "unlock")...", [.item: itemIdentifier, .name: itemMetadata.fileName, .url: serverUrlFileName])
 
             do {
-                let lock = try await kit.lockUnlockFile(serverUrlFileName: serverUrlFileName, shouldLock: locking, account: account.ncKitAccount)
+                let _ = try await kit.lockUnlockFile(serverUrlFileName: serverUrlFileName, shouldLock: locking, account: account.ncKitAccount)
                 logger.info(locking ? "Successfully locked file." : "Successfully unlocked file.", [.item: itemIdentifier, .name: itemMetadata.fileName, .url: serverUrlFileName])
             } catch {
                 presentError("Could not lock file: \(error.localizedDescription)")

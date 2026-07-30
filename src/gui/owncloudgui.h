@@ -49,7 +49,7 @@ public:
     bool checkAccountExists(bool openSettings);
 
     static void raiseDialog(QWidget *raiseWidget);
-    static QSize settingsDialogSize() { return {800, 500}; }
+    static QSize settingsDialogSize() { return {720, 500}; }
     void setupOverlayIcons();
 #ifdef WITH_LIBCLOUDPROVIDERS
     void setupCloudProviders();
@@ -72,6 +72,9 @@ public slots:
     void slotUpdateProgress(const QString &folder, const OCC::ProgressInfo &progress);
     void slotShowGuiMessage(const QString &title, const QString &message);
     void slotShowSettings();
+#ifdef Q_OS_MACOS
+    void slotShowSettingsForSandboxReapproval();
+#endif
     void slotShowSyncProtocol();
     void slotShutdown();
     void slotSyncStateChange(OCC::Folder *);
@@ -95,6 +98,7 @@ public slots:
      */
     void slotShowShareDialog(const QString &localPath) const;
     void slotShowFileActivityDialog(const QString &localPath) const;
+    void slotShowFileActionsDialog(const QString &localPath) const;
     void slotNewAccountWizard();
 
 private slots:

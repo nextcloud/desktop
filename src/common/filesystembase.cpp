@@ -707,6 +707,9 @@ Utility::Handle lockFile(const QString &fileName, FileSystem::LockMode mode)
             LARGE_INTEGER end;
             end.QuadPart = -1;
             if (LockFile(out.handle(), start.LowPart, start.HighPart, end.LowPart, end.HighPart)) {
+                // Lock acquired -> release it immediately
+                // just closing a file handle does not immediately release the lock leading to system instability
+                UnlockFile(out.handle(), start.LowPart, start.HighPart, end.LowPart, end.HighPart);
                 return out;
             } else {
                 return {};

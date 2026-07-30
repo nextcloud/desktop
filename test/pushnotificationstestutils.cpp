@@ -67,6 +67,11 @@ QWebSocket *FakeWebSocketServer::authenticateAccount(const OCC::AccountPtr accou
         return nullptr;
     }
 
+    // Wait for notify_file_id opt-in
+    if (!waitForTextMessages()) {
+        return nullptr;
+    }
+
     afterAuthentication();
 
     return socket;

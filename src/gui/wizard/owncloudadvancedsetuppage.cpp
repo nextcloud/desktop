@@ -114,7 +114,7 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
 #ifdef Q_OS_WIN
         bestAvailableVfsMode() == Vfs::WindowsCfApi
 #elif defined(BUILD_FILE_PROVIDER_MODULE)
-        Mac::FileProvider::fileProviderAvailable()
+        Mac::FileProvider::available()
 #else
         false
 #endif
@@ -157,14 +157,14 @@ void OwncloudAdvancedSetupPage::initializePage()
 {
     WizardCommon::initErrorLabel(_ui.errorLabel);
 
-    if (Theme::instance()->disableVirtualFilesSyncFolder()
-            || !(Theme::instance()->showVirtualFilesOption()
+    const auto hideVfsOption = Theme::instance()->disableVirtualFilesSyncFolder()
 #ifdef BUILD_FILE_PROVIDER_MODULE
-                 || Mac::FileProvider::fileProviderAvailable()
+        || !Mac::FileProvider::available();
 #else
-                 && bestAvailableVfsMode() != Vfs::Off
+        || !(Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() != Vfs::Off);
 #endif
-    )) {
+
+    if (hideVfsOption) {
         // If the layout were wrapped in a widget, the auto-grouping of the
         // radio buttons no longer works and there are surprising margins.
         // Just manually hide the button and remove the layout.
@@ -790,10 +790,6 @@ void OwncloudAdvancedSetupPage::setRadioChecked(QRadioButton *radio)
 #ifdef BUILD_FILE_PROVIDER_MODULE
 void OwncloudAdvancedSetupPage::updateMacOsFileProviderRelatedViews()
 {
-    if (!Mac::FileProvider::fileProviderAvailable()) {
-        return;
-    }
-
     const auto freeSpaceHidden = _ui.rVirtualFileSync->isChecked();
     const auto folderSelectionButtonHidden = _ui.rVirtualFileSync->isChecked();
     const auto filePathLabelText =

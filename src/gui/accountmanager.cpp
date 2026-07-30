@@ -56,6 +56,9 @@ constexpr auto networkDownloadLimitSettingC = "networkDownloadLimitSetting";
 constexpr auto networkUploadLimitC = "networkUploadLimit";
 constexpr auto networkDownloadLimitC = "networkDownloadLimit";
 constexpr auto encryptionCertificateSha256FingerprintC = "encryptionCertificateSha256Fingerprint";
+#ifdef BUILD_FILE_PROVIDER_MODULE
+constexpr auto fileProviderDomainIdentifierC = "fileProviderDomainIdentifier";
+#endif
 
 constexpr auto dummyAuthTypeC = "dummy";
 constexpr auto httpAuthTypeC = "http";
@@ -108,18 +111,24 @@ AccountManager::AccountsRestoreResult AccountManager::restore(const bool alsoRes
     if (skipSettingsKeys.contains(settings->group())) {
         // Should not happen: bad container keys should have been deleted
         qCWarning(lcAccountManager) << "Accounts structure is too new, ignoring";
+        emit(accountListInitialized());
         return AccountsRestoreSuccessWithSkipped;
     }
 
     // If there are no accounts, check the old format.
 #if !DISABLE_ACCOUNT_MIGRATION
     if (settings->childGroups().isEmpty() && !settings->contains(QLatin1String(versionC)) && alsoRestoreLegacySettings) {
-        restoreFromLegacySettings();
+        if(!restoreFromLegacySettings()) {
+            return AccountsNotFound;
+        }
+
+        emit(accountListInitialized());
         return AccountsRestoreSuccessFromLegacyVersion;
     }
 #endif
 
     if (settings->childGroups().isEmpty()) {
+        emit(accountListInitialized());
         return AccountsNotFound;
     }
 
@@ -148,6 +157,8 @@ AccountManager::AccountsRestoreResult AccountManager::restore(const bool alsoRes
             result = AccountsRestoreSuccessWithSkipped;
         }
     }
+
+    emit(accountListInitialized());
 
     ConfigFile().cleanupGlobalNetworkConfiguration();
     ClientProxy().cleanupGlobalNetworkConfiguration();   
@@ -423,6 +434,9 @@ void AccountManager::saveAccountHelper(const AccountPtr &account, QSettings &set
     settings.setValue(QLatin1String(serverHasValidSubscriptionC), account->serverHasValidSubscription());
     settings.setValue(QLatin1String(serverDesktopEnterpriseUpdateChannelC), account->enterpriseUpdateChannel().toString());
     settings.setValue(QLatin1String(encryptionCertificateSha256FingerprintC), account->encryptionCertificateFingerprint());
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    settings.setValue(QLatin1String(fileProviderDomainIdentifierC), account->fileProviderDomainIdentifier());
+#endif
     if (!account->_skipE2eeMetadataChecksumValidation) {
         settings.remove(QLatin1String(skipE2eeMetadataChecksumValidationC));
     } else {
@@ -638,6 +652,9 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
         settings.value(QLatin1String(serverDesktopEnterpriseUpdateChannelC), QVariant::fromValue(UpdateChannel::Invalid.toString())).toString());
     acc->_skipE2eeMetadataChecksumValidation = settings.value(QLatin1String(skipE2eeMetadataChecksumValidationC), {}).toBool();
     acc->_davUser = settings.value(QLatin1String(davUserC)).toString();
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    acc->setFileProviderDomainIdentifier(settings.value(QLatin1String(fileProviderDomainIdentifierC)).toString());
+#endif
 
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
     acc->setDavDisplayName(settings.value(QLatin1String(displayNameC), "").toString());
@@ -651,16 +668,27 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     }
     acc->setCredentials(CredentialsFactory::create(authType));
 
-    acc->setUploadLimitSetting(
-        settings.value(
-            networkUploadLimitSettingC,
-            QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::NoLimit)
-        ).value<Account::AccountNetworkTransferLimitSetting>());
-    acc->setDownloadLimitSetting(
-        settings.value(
-            networkDownloadLimitSettingC,
-            QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::NoLimit)
-        ).value<Account::AccountNetworkTransferLimitSetting>());
+    auto uploadLimitSetting = settings.value(
+        networkUploadLimitSettingC,
+        QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::NoLimit)
+    ).value<Account::AccountNetworkTransferLimitSetting>();
+    if (uploadLimitSetting == Account::AccountNetworkTransferLimitSetting::AutoLimit) {
+        qCInfo(lcAccountManager) << "Upload limit setting was set to deprecated auto limit, falling back to unlimited";
+        uploadLimitSetting = Account::AccountNetworkTransferLimitSetting::NoLimit;
+        settings.setValue(networkUploadLimitSettingC, static_cast<int>(uploadLimitSetting));
+    }
+    acc->setUploadLimitSetting(uploadLimitSetting);
+
+    auto downloadLimitSetting = settings.value(
+        networkDownloadLimitSettingC,
+        QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::NoLimit)
+    ).value<Account::AccountNetworkTransferLimitSetting>();
+    if (downloadLimitSetting == Account::AccountNetworkTransferLimitSetting::AutoLimit) {
+        qCInfo(lcAccountManager) << "Download limit setting was set to deprecated auto limit, falling back to unlimited";
+        downloadLimitSetting = Account::AccountNetworkTransferLimitSetting::NoLimit;
+        settings.setValue(networkDownloadLimitSettingC, static_cast<int>(downloadLimitSetting));
+    }
+    acc->setDownloadLimitSetting(downloadLimitSetting);
     acc->setUploadLimit(settings.value(networkUploadLimitC).toInt());
     acc->setDownloadLimit(settings.value(networkDownloadLimitC).toInt());
 
@@ -729,6 +757,11 @@ AccountState *AccountManager::addAccount(const AccountPtr &newAccount)
 
     const auto newAccountState = new AccountState(newAccount);
     addAccountState(newAccountState);
+
+    if (_accounts.size() == 1) {
+        emit(accountListInitialized());
+    }
+
     return newAccountState;
 }
 
@@ -788,6 +821,37 @@ void AccountManager::updateServerDesktopEnterpriseUpdateChannel()
 
     ConfigFile().setDesktopEnterpriseChannel(most_stable_channel.toString());
 }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+void AccountManager::setFileProviderDomainIdentifier(const QString &accountUserIdAtHost, const QString &identifier)
+{
+    if (const auto accState = accountFromUserId(accountUserIdAtHost)) {
+        const auto acc = accState->account();
+        if (acc->fileProviderDomainIdentifier() == identifier) {
+            return;
+        }
+
+        acc->setFileProviderDomainIdentifier(identifier);
+        saveAccount(acc);
+    }
+}
+
+AccountStatePtr AccountManager::accountFromFileProviderDomainIdentifier(const QString &identifier) const
+{
+    if (identifier.isEmpty()) {
+        return {};
+    }
+
+    const auto accountsList = accounts();
+    
+    for (const auto &account : accountsList) {
+        if (account->account()->fileProviderDomainIdentifier() == identifier) {
+            return account;
+        }
+    }
+    return {};
+}
+#endif
 
 AccountPtr AccountManager::createAccount()
 {

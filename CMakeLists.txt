@@ -9,7 +9,7 @@ project(client)
 add_compile_definitions(IONOS_BUILD)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 if(APPLE)
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "12.0" CACHE STRING "Minimum OSX deployment version")
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "13.0" CACHE STRING "Minimum OSX deployment version")
 endif()
 
 set(CMAKE_CXX_STANDARD 20)
@@ -253,6 +253,8 @@ if(BUILD_CLIENT)
 
     find_package(ZLIB REQUIRED)
     find_package(SQLite3 3.9.0 REQUIRED)
+
+    find_package(KDSingleApplication-qt6 REQUIRED)
 
     if(NOT WIN32 AND NOT APPLE)
         find_package(PkgConfig REQUIRED)

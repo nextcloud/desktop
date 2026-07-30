@@ -290,13 +290,12 @@ void SparkleUpdater::checkForUpdate()
 
 void SparkleUpdater::backgroundCheckForUpdate()
 {
-    const ConfigFile config;
-    if (autoUpdaterAllowed() && config.autoUpdateCheck()) {
-        qCInfo(OCC::lcUpdater) << "launching background check";
-        [_interface->updaterController.updater checkForUpdatesInBackground];
-    } else {
-        qCInfo(OCC::lcUpdater) << "not launching background check, auto updater not allowed or update check skipped in config";
+    if (!autoUpdaterAllowed()) {
+        qCInfo(OCC::lcUpdater) << "not launching background check, auto updater not allowed";
+        return;
     }
+
+    const ConfigFile config;
 
     if (!config.autoUpdateCheck()) {
         qCInfo(OCC::lcUpdater) << "not launching background check, update check skipped in config";

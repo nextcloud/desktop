@@ -134,7 +134,7 @@ void cfApiSendTransferInfo(const CF_CONNECTION_KEY &connectionKey, const CF_TRAN
 void cfApiSendPlaceholdersTransferInfo(const CF_CONNECTION_KEY &connectionKey,
                                        const CF_TRANSFER_KEY &transferKey,
                                        NTSTATUS status,
-                                       const QList<OCC::PlaceholderCreateInfo> &newEntries,
+                                       QList<OCC::PlaceholderCreateInfo> &newEntries,
                                        qint64 currentPlaceholdersCount,
                                        qint64 totalPlaceholdersCount,
                                        const QString &serverPath)
@@ -197,7 +197,24 @@ void cfApiSendPlaceholdersTransferInfo(const CF_CONNECTION_KEY &connectionKey,
 
     const qint64 cfExecuteresult = CfExecute(&opInfo, &opParams);
     if (cfExecuteresult != S_OK) {
-        qCCritical(lcCfApiWrapper) << "Couldn't send transfer info" << QString::number(transferKey.QuadPart, 16) << ":" << cfExecuteresult << QString::fromWCharArray(_com_error(cfExecuteresult).ErrorMessage());
+        qCCritical(lcCfApiWrapper).nospace() << "Couldn't send transfer info, consider placeholders to be invalid"
+            << " transferKey=" << QString::number(transferKey.QuadPart, 16)
+            << " cfExecuteresult=" << cfExecuteresult
+            << " errorMessage="<< QString::fromWCharArray(_com_error(cfExecuteresult).ErrorMessage());
+
+        for (auto &newEntry : newEntries) {
+            newEntry.creationStatus = OCC::VirtualItemCreationStatus::Error;
+        }
+        return;
+    }
+
+    for (auto virtualItemIndex = 0; virtualItemIndex < newEntries.size(); ++virtualItemIndex) {
+        auto oneItem = opParams.TransferPlaceholders.PlaceholderArray[virtualItemIndex];
+        if (oneItem.Result == S_OK) {
+            newEntries[virtualItemIndex].creationStatus = OCC::VirtualItemCreationStatus::Success;
+        } else {
+            newEntries[virtualItemIndex].creationStatus = OCC::VirtualItemCreationStatus::Error;
+        }
     }
 
     qCInfo(lcCfApiWrapper()) << "number of processes entries:" << opParams.TransferPlaceholders.EntriesProcessed;
@@ -418,7 +435,7 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderStat
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.ChangeTime);
 
     qCInfo(lcCfApiWrapper) << "updatePlaceholderState" << path << modtime;
-    const auto updateFlags = CF_UPDATE_FLAG_MARK_IN_SYNC; // item.isDirectory() ? CF_UPDATE_FLAG_MARK_IN_SYNC | CF_UPDATE_FLAG_ENABLE_ON_DEMAND_POPULATION : CF_UPDATE_FLAG_MARK_IN_SYNC;
+    const auto updateFlags = item.isDirectory() && !item.isEncrypted() ? CF_UPDATE_FLAG_MARK_IN_SYNC | CF_UPDATE_FLAG_ENABLE_ON_DEMAND_POPULATION : CF_UPDATE_FLAG_MARK_IN_SYNC;
 
     const auto result = CfUpdatePlaceholder(OCC::CfApiWrapper::handleForPath(path).get(), updateType == CfApiUpdateMetadataType::AllMetadata ? &metadata : nullptr,
                                               fileId.data(), static_cast<DWORD>(fileId.size()),
@@ -521,16 +538,17 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
     }
 
     const auto sendTransferError = [=] {
+        auto emptyList = QList<OCC::PlaceholderCreateInfo>{};
         cfApiSendPlaceholdersTransferInfo(callbackInfo->ConnectionKey,
                                           callbackInfo->TransferKey,
                                           STATUS_UNSUCCESSFUL,
-                                          {},
+                                          emptyList,
                                           0,
                                           0,
                                           {});
     };
 
-    const auto sendTransferInfo = [=](const QList<OCC::PlaceholderCreateInfo> &newEntries, const QString &serverPath) {
+    const auto sendTransferInfo = [=](QList<OCC::PlaceholderCreateInfo> &newEntries, const QString &serverPath) {
         cfApiSendPlaceholdersTransferInfo(callbackInfo->ConnectionKey,
                                           callbackInfo->TransferKey,
                                           STATUS_SUCCESS,
@@ -559,14 +577,10 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
         return;
     }
     const auto remoteSyncRootPath = vfs->params().remotePath; // with leading slash
-    const auto serverPath = QString{remoteSyncRootPath + pathString.mid(rootPath.length() + 1)}.mid(1);
+    const auto relativeLocalPath = pathString.mid(rootPath.length() + 1);
+    const auto serverPath = QString{remoteSyncRootPath + relativeLocalPath}.mid(1);
 
-    // to allow navigating to a folder if it's still a virtual directory:
-    qCDebug(lcCfApiWrapper) << "sending empty placeholders for" << path << serverPath << requestId;
-    sendTransferInfo({}, serverPath);
-
-#if 0
-    qCDebug(lcCfApiWrapper) << "fetch placeholder:" << path << serverPath << requestId;
+    qCDebug(lcCfApiWrapper) << "fetch placeholder:" << path << serverPath << relativeLocalPath << requestId;
 
     QEventLoop localEventLoop;
 
@@ -607,7 +621,7 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
 
     auto newPlaceholdersResult = 0;
     const auto invokeFinalizeResult = QMetaObject::invokeMethod(vfs,
-                                                                [&newPlaceholdersResult, vfs, &newEntries, &serverPath] () -> int { return vfs->finalizeNewPlaceholders(newEntries, serverPath); },
+                                                                [&newPlaceholdersResult, vfs, &newEntries, &relativeLocalPath] () -> int { return vfs->finalizeNewPlaceholders(newEntries, relativeLocalPath); },
                                                                 Qt::BlockingQueuedConnection,
                                                                 qReturnArg(newPlaceholdersResult));
     if (!invokeFinalizeResult) {

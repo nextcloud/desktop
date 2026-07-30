@@ -70,14 +70,14 @@ private slots:
     void slotAskFromUserCredentialsProvided(const QString &user, const QString &pass, const QString &host);
     void slotAskFromUserCancelled();
 
-    void slotReadClientCertPEMJobDone(KeychainChunk::ReadJob *readJob);
-    void slotReadClientKeyPEMJobDone(KeychainChunk::ReadJob *readJob);
-    void slotReadClientCaCertsPEMJobDone(KeychainChunk::ReadJob *readJob);
+    void slotReadClientCertPEMJobDone(OCC::KeychainChunk::ReadJob *readJob);
+    void slotReadClientKeyPEMJobDone(OCC::KeychainChunk::ReadJob *readJob);
+    void slotReadClientCaCertsPEMJobDone(OCC::KeychainChunk::ReadJob *readJob);
     void slotReadPasswordJobDone(QKeychain::Job *incomingJob);
 
-    void slotWriteClientCertPEMJobDone(KeychainChunk::WriteJob *writeJob);
-    void slotWriteClientKeyPEMJobDone(KeychainChunk::WriteJob *writeJob);
-    void slotWriteClientCaCertsPEMJobDone(KeychainChunk::WriteJob *writeJob);
+    void slotWriteClientCertPEMJobDone(OCC::KeychainChunk::WriteJob *writeJob);
+    void slotWriteClientKeyPEMJobDone(OCC::KeychainChunk::WriteJob *writeJob);
+    void slotWriteClientCaCertsPEMJobDone(OCC::KeychainChunk::WriteJob *writeJob);
     void slotWriteJobDone(QKeychain::Job *);
 
 private:

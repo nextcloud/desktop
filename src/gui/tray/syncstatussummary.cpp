@@ -15,7 +15,7 @@
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "gui/macOS/fileprovider.h"
-#include "gui/macOS/fileprovidersocketserver.h"
+#include "gui/macOS/fileproviderservice.h"
 #include "gui/macOS/fileprovidersettingscontroller.h"
 #endif
 
@@ -37,6 +37,31 @@ OCC::SyncResult::Status determineSyncStatus(const OCC::SyncResult &syncResult)
     }
     return status;
 }
+
+bool hasConfiguredSyncSource(const OCC::AccountStatePtr &accountState)
+{
+    if (!accountState) {
+        return false;
+    }
+    
+ #ifdef BUILD_FILE_PROVIDER_MODULE
+    const auto account = accountState->account();
+    const auto userIdAtHostWithPort = account->userIdAtHostWithPort();
+    if (OCC::Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(userIdAtHostWithPort)) {
+        return true;
+    }
+#endif
+
+    for (const auto &folder : OCC::FolderMan::instance()->map()) {
+        if (folder->accountState() != accountState.data()) {
+            continue;
+        }
+        
+        return true;
+    }
+
+    return false;
+}
 }
 
 namespace OCC {
@@ -50,7 +75,7 @@ SyncStatusSummary::SyncStatusSummary(QObject *parent)
     connect(folderMan, &FolderMan::folderListChanged, this, &SyncStatusSummary::onFolderListChanged);
     connect(folderMan, &FolderMan::folderSyncStateChange, this, &SyncStatusSummary::onFolderSyncStateChanged);
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    connect(Mac::FileProvider::instance()->socketServer(), &Mac::FileProviderSocketServer::syncStateChanged, this, &SyncStatusSummary::onFileProviderDomainSyncStateChanged);
+    connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::syncStateChanged, this, &SyncStatusSummary::onFileProviderDomainSyncStateChanged);
 #endif
 }
 
@@ -133,6 +158,19 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
         return;
     }
 
+#ifdef Q_OS_MACOS
+    if (folder->needsSandboxBookmark()) {
+        markFolderAsError(folder);
+        setSyncing(false);
+        setTotalFiles(0);
+        setSyncStatusString(tr("Reauthorization required"));
+        setSyncStatusDetailString(tr("Please grant access to your sync folders"));
+        setSyncIcon(Theme::instance()->error());
+        setNeedsSandboxReapproval(true);
+        return;
+    }
+#endif
+
     const auto state = determineSyncStatus(folder->syncResult());
 
     switch (state) {
@@ -152,6 +190,7 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
         break;
     }
 
+    updateNeedsSandboxReapproval();
     setSyncState(state);
 }
 
@@ -250,7 +289,9 @@ void SyncStatusSummary::onFileProviderDomainSyncStateChanged(const AccountPtr &a
     case SyncResult::SetupError:
     case SyncResult::Problem:
     case SyncResult::Undefined:
-        _fileProviderDomainsWithErrors.insert(account->userIdAtHostWithPort());
+        _fileProviderDomainsWithErrors.erase(account->userIdAtHostWithPort());
+        state = SyncResult::Success;
+        break;
     case SyncResult::SyncRunning:
     case SyncResult::NotYetStarted:
     case SyncResult::Paused:
@@ -407,6 +448,9 @@ void SyncStatusSummary::setSyncStateToConnectedState()
     if (_accountState && !_accountState->isConnected()) {
         setSyncStatusString(tr("Offline"));
         setSyncIcon(Theme::instance()->folderOffline());
+    } else if (!hasConfiguredSyncSource(_accountState)) {
+        setSyncStatusString(tr("No synchronisation configured"));
+        setSyncIcon(Theme::instance()->pause());
     } else {
         setSyncStatusString(tr("All synced!"));
         setSyncIcon(Theme::instance()->syncStatusOk());
@@ -430,16 +474,21 @@ void SyncStatusSummary::initSyncState()
 {
     auto syncStateFallbackNeeded = true;
     for (const auto &folder : FolderMan::instance()->map()) {
+        if (!folder || folder->accountState() != _accountState.data()) {
+            continue;
+        }
+
         onFolderSyncStateChanged(folder);
         syncStateFallbackNeeded = false;
     }
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    if (Mac::FileProvider::fileProviderAvailable() && _accountState) {
+    if (_accountState) {
         const auto account = _accountState->account();
         const auto userIdAtHostWithPort = account->userIdAtHostWithPort();
+
         if (Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(userIdAtHostWithPort)) {
-            const auto lastKnownSyncState = Mac::FileProvider::instance()->socketServer()->latestReceivedSyncStatusForAccount(account);
+            const auto lastKnownSyncState = Mac::FileProvider::instance()->service()->latestReceivedSyncStatusForAccount(account);
             onFileProviderDomainSyncStateChanged(account, lastKnownSyncState);
             syncStateFallbackNeeded = false;
         }
@@ -449,5 +498,33 @@ void SyncStatusSummary::initSyncState()
     if (syncStateFallbackNeeded) {
         setSyncStateToConnectedState();
     }
+}
+
+bool SyncStatusSummary::needsSandboxReapproval() const
+{
+    return _needsSandboxReapproval;
+}
+
+void SyncStatusSummary::setNeedsSandboxReapproval(bool value)
+{
+    if (_needsSandboxReapproval == value) {
+        return;
+    }
+
+    _needsSandboxReapproval = value;
+    emit needsSandboxReapprovalChanged();
+}
+
+void SyncStatusSummary::updateNeedsSandboxReapproval()
+{
+#ifdef Q_OS_MACOS
+    for (const auto &folder : FolderMan::instance()->map()) {
+        if (folder && folder->accountState() == _accountState.data() && folder->needsSandboxBookmark()) {
+            setNeedsSandboxReapproval(true);
+            return;
+        }
+    }
+#endif
+    setNeedsSandboxReapproval(false);
 }
 }

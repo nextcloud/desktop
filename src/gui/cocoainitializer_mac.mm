@@ -7,6 +7,7 @@
 #include "cocoainitializer.h"
 
 #import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSProcessInfo.h>
 #import <AppKit/NSApplication.h>
 
 #include "application.h"
@@ -63,6 +64,7 @@ class CocoaInitializer::Private {
 public:
     NSAutoreleasePool* autoReleasePool;
     URLEventHandler* handler;
+    id<NSObject> appNapActivity = nil;
 };
 
 CocoaInitializer::CocoaInitializer() {
@@ -70,9 +72,22 @@ CocoaInitializer::CocoaInitializer() {
     d->handler = [[URLEventHandler alloc] init];
     NSApplicationLoad();
     d->autoReleasePool = [[NSAutoreleasePool alloc] init];
+
+    // As an LSUIElement agent we usually have no visible window, which makes macOS
+    // throttle us via App Nap and lets RunningBoard suspend (and later jetsam-reap)
+    // the process while it is idle in the background. Holding an NSActivityBackground
+    // assertion for our whole lifetime keeps the process out of App Nap so syncing
+    // continues; it still allows normal idle system/display sleep.
+    NSProcessInfo *const processInfo = [NSProcessInfo processInfo];
+    d->appNapActivity = [[processInfo beginActivityWithOptions:NSActivityBackground
+                                                        reason:@"Keep syncing while running in the background"] retain];
 }
 
 CocoaInitializer::~CocoaInitializer() {
+    if (d->appNapActivity) {
+        [[NSProcessInfo processInfo] endActivity:d->appNapActivity];
+        [d->appNapActivity release];
+    }
     [d->autoReleasePool release];
     delete d;
 }

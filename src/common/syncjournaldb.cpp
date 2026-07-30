@@ -6,6 +6,8 @@
 
 #include <QCryptographicHash>
 #include <QFile>
+#include <QJsonArray>
+#include <QJsonDocument>
 #include <QLoggingCategory>
 #include <QStringList>
 #include <QElapsedTimer>
@@ -32,6 +34,8 @@
 
 static constexpr auto MAJOR_VERSION_3 = 3;
 static constexpr auto MINOR_VERSION_16 = 16;
+
+using namespace Qt::StringLiterals;
 
 namespace OCC {
 
@@ -1767,6 +1771,58 @@ bool SyncJournalDb::updateLocalMetadata(const QString &filename,
         return false;
     }
     return true;
+}
+
+bool SyncJournalDb::hasFileIds(const QList<qint64> &fileIds)
+{
+    if (fileIds.isEmpty()) {
+        // no need to check the db if no file id matches
+        return false;
+    }
+
+    QMutexLocker locker(&_mutex);
+
+    if (!checkConnect()) {
+        return false;
+    }
+
+    // quick workaround for looking up pure numeric file IDs: cast it to integer
+    //
+    // using `IN` with a list of IDs does not allow for a prepared query: the execution plan
+    // would be different depending on the amount of elements as each element is added to a
+    // temporary table one-by-one.  with `json_each()`, all that changes is one string
+    // parameter which is perfect for creating a prepared query :)
+    const auto query = _queryManager.get(
+        PreparedSqlQueryManager::HasFileIdQuery,
+        "SELECT 1 FROM metadata, json_each(?1) file_ids WHERE CAST(metadata.fileid AS INTEGER) = CAST(file_ids.value AS INTEGER) LIMIT 1;"_ba,
+        _db
+    );
+    if (!query) {
+        qCWarning(lcDb) << "database error:" << query->error();
+        return false;
+    }
+
+    // we have a prepared query, so let's build up a JSON array of file IDs to check for.
+    // Strings are used here to avoid any surprises during serialisation: JSON only really
+    // has a double type, and who knows when the representation changes to the +e* variant.
+    QJsonArray fileIdStrings = {};
+    for (const auto &fileId : fileIds) {
+        fileIdStrings.append(QString::number(fileId));
+    }
+    const auto fileIdsParameter = QJsonDocument(fileIdStrings).toJson(QJsonDocument::Compact);
+    query->bindValue(1, fileIdsParameter);
+
+    if (!query->exec()) {
+        qCWarning(lcDb) << "file id query failed:" << query->error();
+        return false;
+    }
+
+    if (query->next().hasData && query->intValue(0) == 1) {
+        // at least one file ID from the passed list is present
+        return true;
+    }
+
+    return false;
 }
 
 Optional<SyncJournalDb::HasHydratedDehydrated> SyncJournalDb::hasHydratedOrDehydratedFiles(const QByteArray &filename)

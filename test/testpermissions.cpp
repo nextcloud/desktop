@@ -876,11 +876,19 @@ private slots:
         });
 
         fakeFolder.remoteModifier().insert("file");
+        fakeFolder.remoteModifier().mkdir("folder");
+        fakeFolder.remoteModifier().insert("folder/file");
 
-        auto fileItem = fakeFolder.remoteModifier().find("file");
-        Q_ASSERT(fileItem);
-        fileItem->isShared = true;
-        fileItem->downloadForbidden = true;
+        const auto setDownloadForbiddenShare = [&fakeFolder](const QString &relativePath) -> void {
+            auto fileInfo = fakeFolder.remoteModifier().find(relativePath);
+            Q_ASSERT(fileInfo);
+            fileInfo->isShared = true;
+            fileInfo->downloadForbidden = true;
+        };
+
+        setDownloadForbiddenShare("file");
+        setDownloadForbiddenShare("folder");
+        setDownloadForbiddenShare("folder/file");
 
         // also hook into discovery!!
         SyncFileItemVector discovery;
@@ -890,6 +898,8 @@ private slots:
 
         QVERIFY(itemInstruction(completeSpy, "file", CSYNC_INSTRUCTION_IGNORE));
         QVERIFY(discoveryInstruction(discovery, "file", CSYNC_INSTRUCTION_IGNORE));
+        QVERIFY(itemInstruction(completeSpy, "folder", CSYNC_INSTRUCTION_IGNORE));
+        QVERIFY(discoveryInstruction(discovery, "folder", CSYNC_INSTRUCTION_IGNORE));
     }
 
     void testExistingFileBecomeForbiddenDownload()
@@ -898,9 +908,18 @@ private slots:
         QObject parent;
 
         fakeFolder.remoteModifier().insert("file");
-        auto fileInfo = fakeFolder.remoteModifier().find("file");
-        Q_ASSERT(fileInfo);
-        fileInfo->isShared = true;
+        fakeFolder.remoteModifier().mkdir("folder");
+        fakeFolder.remoteModifier().insert("folder/file");
+
+        const auto setShared = [&fakeFolder](const QString &relativePath) -> void {
+            auto fileInfo = fakeFolder.remoteModifier().find(relativePath);
+            Q_ASSERT(fileInfo);
+            fileInfo->isShared = true;
+        };
+
+        setShared("file");
+        setShared("folder");
+        setShared("folder/file");
 
         QVERIFY(fakeFolder.syncOnce());
 
@@ -914,10 +933,16 @@ private slots:
             return nullptr;
         });
 
-        auto fileItem = fakeFolder.remoteModifier().find("file", FileInfo::Invalidate);
-        Q_ASSERT(fileItem);
-        fileItem->isShared = true;
-        fileItem->downloadForbidden = true;
+        const auto setDownloadForbidden = [&fakeFolder](const QString &relativePath) -> void {
+            auto fileInfo = fakeFolder.remoteModifier().find(relativePath, FileInfo::Invalidate);
+            Q_ASSERT(fileInfo);
+            fileInfo->isShared = true;
+            fileInfo->downloadForbidden = true;
+        };
+
+        setDownloadForbidden("file");
+        setDownloadForbidden("folder");
+        setDownloadForbidden("folder/file");
 
         // also hook into discovery!!
         SyncFileItemVector discovery;
@@ -927,6 +952,10 @@ private slots:
 
         QVERIFY(itemInstruction(completeSpy, "file", CSYNC_INSTRUCTION_REMOVE));
         QVERIFY(discoveryInstruction(discovery, "file", CSYNC_INSTRUCTION_REMOVE));
+        QVERIFY(itemInstruction(completeSpy, "folder", CSYNC_INSTRUCTION_REMOVE));
+        QVERIFY(discoveryInstruction(discovery, "folder", CSYNC_INSTRUCTION_REMOVE));
+        QVERIFY(itemInstruction(completeSpy, "folder/file", CSYNC_INSTRUCTION_NONE));
+        QVERIFY(discoveryInstruction(discovery, "folder/file", CSYNC_INSTRUCTION_REMOVE));
     }
 
     void testChangingPermissionsWithoutEtagChange()

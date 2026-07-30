@@ -45,7 +45,7 @@ private slots:
     void slotStartMkcolJob();
     void slotStartEncryptedMkcolJob(const QString &path, const QString &filename, quint64 size);
     void slotMkcolJobFinished();
-    void slotEncryptFolderFinished(int status, EncryptionStatusEnums::ItemEncryptionStatus encryptionStatus);
+    void slotEncryptFolderFinished(int status, OCC::EncryptionStatusEnums::ItemEncryptionStatus encryptionStatus);
     void success();
 
 private:

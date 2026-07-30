@@ -92,7 +92,6 @@ dlldata.c
 # macOS specific
 xcuserdata/
 **/.DS_Store
-**/Carthage/
 
 # Visual C++ cache files
 ipch/
@@ -196,6 +195,9 @@ convert.exe
 theme.qrc
 ionos-theme.qrc
 *.AppImage
+
+# Swift Package Manager Build Artifacts
+.swiftpm_codeql_detected_source_root
 
 .idea/
 

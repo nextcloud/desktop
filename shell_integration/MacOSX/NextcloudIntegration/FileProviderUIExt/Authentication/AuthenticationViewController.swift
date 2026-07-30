@@ -31,12 +31,6 @@ class AuthenticationViewController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        guard let domainIdentifier = extensionContext.domainIdentifier else {
-            fatalError("Domain identifier is not provided by the extension context!")
-            return
-        }
-
         activityDescription.stringValue = String(localized: "Authenticating…")
         cancellationButton.title = String(localized: "Cancel")
     }
@@ -62,16 +56,6 @@ class AuthenticationViewController: NSViewController {
     /// Action for the cancellation button in the user interface.
     ///
     @IBAction func cancel(_ sender: NSButton) {
-        let code: FPUIExtensionErrorCode
-
-        if let authenticationError = self.authenticationError {
-            code = FPUIExtensionErrorCode.failed
-        } else {
-            code = FPUIExtensionErrorCode.userCancelled
-        }
-
-        let error = NSError(domain: FPUIErrorDomain, code: Int(code.rawValue))
-        // extensionContext.cancelRequest(withError: error)
         extensionContext.completeRequest()
     }
 
@@ -97,10 +81,6 @@ class AuthenticationViewController: NSViewController {
         }
 
         let url = try await manager.getUserVisibleURL(for: .rootContainer)
-
-        guard let log else {
-            fatalError("Log is not available yet!")
-        }
 
         guard let serviceResolver else {
             fatalError("Service resolver is not available yet!")

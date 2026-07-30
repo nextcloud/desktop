@@ -14,4 +14,13 @@ if [ -x "$(command -v pluginkit)" ]; then
     pluginkit -e use -i @APPLICATION_REV_DOMAIN@.FinderSyncExt
 fi
 
+# Remove legacy LaunchAgent plist from all users if present, became obsolete with version 33.0.0
+dscl . -list /Users NFSHomeDirectory 2>/dev/null | awk '{print $2}' | while read -r USER_HOME; do
+    LAUNCH_AGENT_PLIST="$USER_HOME/Library/LaunchAgents/@APPLICATION_REV_DOMAIN@.plist"
+
+    if [ -f "$LAUNCH_AGENT_PLIST" ]; then
+        rm "$LAUNCH_AGENT_PLIST"
+    fi
+done
+
 exit 0

@@ -147,8 +147,8 @@ public:
     static MetadataVersion setupVersionFromExistingMetadata(const QByteArray &metadata);
 
 public slots:
-    void addEncryptedFile(const FolderMetadata::EncryptedFile &f);
-    void removeEncryptedFile(const FolderMetadata::EncryptedFile &f);
+    [[nodiscard]] bool addEncryptedFile(const OCC::FolderMetadata::EncryptedFile &f);
+    [[nodiscard]] bool removeEncryptedFile(const QString &originalFilename);
     void removeAllEncryptedFiles();
 
 private:
@@ -171,6 +171,8 @@ private:
     [[nodiscard]] EncryptedFile parseEncryptedFileFromJson(const QString &encryptedFilename, const QJsonValue &fileJSON) const;
 
     [[nodiscard]] QJsonObject convertFileToJsonObject(const EncryptedFile *encryptedFile) const;
+
+    [[nodiscard]] static bool isOriginalFilenameValid(const QString &originalFilename);
 
     [[nodiscard]] MetadataVersion latestSupportedMetadataVersion() const;
 

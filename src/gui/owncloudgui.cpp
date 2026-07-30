@@ -33,6 +33,7 @@
 #include "tray/sortedactivitylistmodel.h"
 #include "tray/syncstatussummary.h"
 #include "tray/unifiedsearchresultslistmodel.h"
+#include "integration/fileactionsmodel.h"
 #include "filesystem.h"
 #include "whitelabeltheme.h"
 
@@ -65,6 +66,7 @@
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "macOS/fileprovider.h"
 #include "macOS/fileproviderdomainmanager.h"
+#include "macOS/fileproviderservice.h"
 #include "macOS/fileprovidersettingscontroller.h"
 #endif
 
@@ -103,6 +105,11 @@ ownCloudGui::ownCloudGui(Application *parent)
     connect(_tray.data(), &Systray::openSettings,
         this, &ownCloudGui::slotShowSettings);
 
+#ifdef Q_OS_MACOS
+    connect(_tray.data(), &Systray::openSettingsForSandboxReapproval,
+        this, &ownCloudGui::slotShowSettingsForSandboxReapproval);
+#endif
+
     connect(_tray.data(), &Systray::shutdown,
         this, &QCoreApplication::quit);
 
@@ -116,7 +123,8 @@ ownCloudGui::ownCloudGui(Application *parent)
 
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    connect(Mac::FileProvider::instance()->socketServer(), &Mac::FileProviderSocketServer::syncStateChanged, this, &ownCloudGui::slotComputeOverallSyncStatus);
+    connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::syncStateChanged, this, &ownCloudGui::slotComputeOverallSyncStatus);
+    connect(Mac::FileProvider::instance()->service(), &Mac::FileProviderService::showFileActionsDialog, _tray.data(), &Systray::slotShowFileProviderFileActionsDialog);
 #endif
 
     connect(Logger::instance(), &Logger::guiLog, this, &ownCloudGui::slotShowTrayMessage);
@@ -136,6 +144,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<ShareeModel>("com.strato.hidrivenext.desktopclient", 1, 0, "ShareeModel");
     qmlRegisterType<SortedShareModel>("com.strato.hidrivenext.desktopclient", 1, 0, "SortedShareModel");
     qmlRegisterType<SyncConflictsModel>("com.strato.hidrivenext.desktopclient", 1, 0, "SyncConflictsModel");
+    qmlRegisterType<FileActionsModel>("com.strato.hidrivenext.desktopclient", 1, 0, "FileActionsModel");
 
 // TODO SES-459 check casing / spelling
     qmlRegisterUncreatableType<QAbstractItemModel>("com.strato.hidrivenext.desktopclient", 1, 0, "QAbstractItemModel", "QAbstractItemModel");
@@ -313,10 +322,12 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     QVector<AccountStatePtr> problemAccounts;
 
     const auto &allAccounts = AccountManager::instance()->accounts();
+
     for (const auto &account : allAccounts) {
         if (!account->isSignedOut()) {
             allSignedOut = false;
         }
+
         if (!account->isConnected()) {
             problemAccounts.append(account);
         }
@@ -333,44 +344,43 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     QList<QString> successFileProviderAccounts;
     QList<QString> idleFileProviderAccounts;
 
-    if (Mac::FileProvider::fileProviderAvailable()) {
-        const auto &allAccounts = AccountManager::instance()->accounts();
-        for (const auto &accountState : allAccounts) {
-            const auto account = accountState->account();
-            const auto userIdAtHostWithPort = account->userIdAtHostWithPort();
-            if (!Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(userIdAtHostWithPort)) {
-                continue;
-            }
-            allPaused = false;
-            const auto fileProvider = Mac::FileProvider::instance();
-            const auto accountFpId = fileProvider->domainManager()->fileProviderDomainIdentifierFromAccountId(userIdAtHostWithPort);
-            const auto displayName = account->displayName();
-            const auto accountTooltipLabel = displayName.isEmpty() ? userIdAtHostWithPort : displayName;
+    for (const auto &accountState : allAccounts) {
+        const auto account = accountState->account();
+        const auto userIdAtHostWithPort = account->userIdAtHostWithPort();
 
-            if (!fileProvider->xpc()->fileProviderDomainReachable(accountFpId)) {
+        if (!Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(userIdAtHostWithPort)) {
+            continue;
+        }
+
+        allPaused = false;
+        const auto fileProvider = Mac::FileProvider::instance();
+        const auto accountFpId = account->fileProviderDomainIdentifier();
+        const auto displayName = account->displayName();
+        const auto accountTooltipLabel = displayName.isEmpty() ? userIdAtHostWithPort : displayName;
+
+        if (!fileProvider->xpc()->fileProviderDomainReachable(accountFpId)) {
+            problemFileProviderAccounts.append(accountTooltipLabel);
+        } else {
+            switch (fileProvider->service()->latestReceivedSyncStatusForAccount(accountState->account())) {
+            case SyncResult::Undefined:
+            case SyncResult::NotYetStarted:
+                idleFileProviderAccounts.append(accountTooltipLabel);
+                break;
+            case SyncResult::SyncPrepare:
+            case SyncResult::SyncRunning:
+            case SyncResult::SyncAbortRequested:
+                syncingFileProviderAccounts.append(accountTooltipLabel);
+                break;
+            case SyncResult::Success:
+                successFileProviderAccounts.append(accountTooltipLabel);
+                break;
+            case SyncResult::Problem:
+            case SyncResult::Error:
+            case SyncResult::SetupError:
                 problemFileProviderAccounts.append(accountTooltipLabel);
-            } else {
-                switch (fileProvider->socketServer()->latestReceivedSyncStatusForAccount(accountState->account())) {
-                case SyncResult::Undefined:
-                case SyncResult::NotYetStarted:
-                    idleFileProviderAccounts.append(accountTooltipLabel);
-                    break;
-                case SyncResult::SyncPrepare:
-                case SyncResult::SyncRunning:
-                case SyncResult::SyncAbortRequested:
-                    syncingFileProviderAccounts.append(accountTooltipLabel);
-                    break;
-                case SyncResult::Success:
-                    successFileProviderAccounts.append(accountTooltipLabel);
-                    break;
-                case SyncResult::Problem:
-                case SyncResult::Error:
-                case SyncResult::SetupError:
-                    problemFileProviderAccounts.append(accountTooltipLabel);
-                    break;
-                case SyncResult::Paused: // This is not technically possible with VFS
-                    break;
-                }
+                break;
+            case SyncResult::Paused: // This is not technically possible with VFS
+                break;
             }
         }
     }
@@ -675,6 +685,34 @@ void ownCloudGui::slotSettingsDialogActivated()
     emit isShowingSettingsDialog();
 }
 
+#ifdef Q_OS_MACOS
+void ownCloudGui::slotShowSettingsForSandboxReapproval()
+{
+    AccountState *targetAccount = nullptr;
+    for (const auto &folder : FolderMan::instance()->map()) {
+        if (folder->needsSandboxBookmark()) {
+            targetAccount = folder->accountState();
+            break;
+        }
+    }
+
+    const auto dialogAlreadyExisted = !_settingsDialog.isNull();
+    slotShowSettings();
+
+    if (targetAccount && !_settingsDialog.isNull()) {
+        if (dialogAlreadyExisted) {
+            // Dialog was already open — no timer race, switch page directly.
+            _settingsDialog->showAccount(targetAccount);
+        } else {
+            // Dialog was just created — its constructor queued a 1 ms
+            // QTimer::singleShot for showFirstPage(). Store the account so
+            // showFirstPage() navigates there instead of the General tab.
+            _settingsDialog->setInitialAccount(targetAccount);
+        }
+    }
+}
+#endif
+
 void ownCloudGui::slotShowSyncProtocol()
 {
     slotShowSettings();
@@ -759,6 +797,11 @@ void ownCloudGui::slotShowShareDialog(const QString &localPath) const
 void ownCloudGui::slotShowFileActivityDialog(const QString &localPath) const
 {
     _tray->createFileActivityDialog(localPath);
+}
+
+void ownCloudGui::slotShowFileActionsDialog(const QString &localPath) const
+{
+    _tray->showFileActionsDialog(localPath);
 }
 
 } // end namespace

@@ -251,6 +251,11 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             // the error message might contain new lines, the delegate only expect multiple single line values
             errors.append(legacyError.error().split(QLatin1Char('\n')));
         }
+#ifdef Q_OS_MACOS
+        if (folder->needsSandboxBookmark()) {
+            errors.prepend(tr("Due to recent security improvements, the client no longer has access to the folder. Your approval is required one time to restore access. Please select the synchronization folder root."));
+        }
+#endif
         return errors;
     }
     case FolderStatusDelegate::FolderInfoMsg:
@@ -265,6 +270,12 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return folder->syncPaused();
     case FolderStatusDelegate::FolderAccountConnected:
         return accountConnected;
+    case FolderStatusDelegate::FolderNeedsSandboxBookmark:
+#ifdef Q_OS_MACOS
+        return folder->needsSandboxBookmark();
+#else
+        return false;
+#endif
     case Qt::ToolTipRole: {
         if (!progress.isNull()) {
             // e.g. 13 seconds left, 500 MB of 1 GB, file 3 of 6

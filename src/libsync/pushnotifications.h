@@ -66,6 +66,11 @@ signals:
     void filesChanged(OCC::Account *account);
 
     /**
+     * Will be emitted if specific files on the server changed
+     */
+    void fileIdsChanged(OCC::Account *account, const QList<qint64> &fileIds);
+
+    /**
      * Will be emitted if activities have been changed on the server
      */
     void activitiesChanged(OCC::Account *account);
@@ -111,6 +116,7 @@ private:
 
     void handleAuthenticated();
     void handleNotifyFile();
+    void handleNotifyFileId(const QString &message);
     void handleInvalidCredentials();
     void handleNotifyNotification();
     void handleNotifyActivity();

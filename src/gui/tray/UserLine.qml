@@ -31,6 +31,8 @@ AbstractButton {
     signal showUserStatusSelector(int id)
     signal showUserStatusMessageSelector(int id)
 
+    property color parentBackgroundColor: userLine.palette.base
+
     Accessible.role: Accessible.MenuItem
     Accessible.name: qsTr("Switch to account") + " " + model.name
 
@@ -75,6 +77,22 @@ AbstractButton {
                 color: Style.sesTrayFontColor
             }
 
+            EnforcedPlainTextLabel {
+                id: accountServer
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+                verticalAlignment: Text.AlignTop
+                text: server
+                elide: Text.ElideRight
+                font.pixelSize: Style.subLinePixelSize
+
+                color: !userLine.parent.enabled
+                    ? userLine.parent.palette.mid
+                    : ((userLine.parent.highlighted || userLine.parent.down) && Qt.platform.os !== "windows"
+                        ? userLine.parent.palette.highlightedText
+                        : userLine.parent.palette.text)
+            }
+
             RowLayout {
                 id: statusLayout
                 Layout.fillWidth: true
@@ -105,6 +123,29 @@ AbstractButton {
             }
         }
 
+        Item { // Spacer
+            Layout.fillWidth: true
+        }
+
+        Item {
+            id: syncStatusColumn
+            Layout.preferredWidth: Style.headerButtonIconSize
+            Layout.fillHeight: true
+
+            Image {
+                id: syncStatusIndicator
+                visible: !model.syncStatusOk
+                source: model.syncStatusIcon
+                cache: false
+                anchors.centerIn: parent
+                sourceSize.width: Style.accountAvatarStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset
+                sourceSize.height: Style.accountAvatarStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset
+
+                Accessible.role: Accessible.Indicator
+                Accessible.name: qsTr("Account sync status requires attention")
+            }
+        }
+
         IconButton {
             id: userMoreButton
             Layout.preferredWidth: Style.headerButtonIconSize
@@ -129,6 +170,7 @@ AbstractButton {
                 width: Style.sesAccountMenuWidth
                 height: Math.min(implicitHeight, maxMenuHeight)
                 closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
+                height: implicitHeight
 
                 bottomInset: 0
                 topInset: 0

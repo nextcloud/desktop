@@ -674,13 +674,14 @@ void ProcessDirectoryJob::postProcessServerNew(const SyncFileItemPtr &item,
     const auto opts = _discoveryData->_syncOptions;
 
     if (item->isDirectory()) {
-        // // Turn new remote folders into virtual folders if the option is enabled.
-        // if (!localEntry.isValid() &&
-        //     opts._vfs->mode() == Vfs::WindowsCfApi &&
-        //     _pinState != PinState::AlwaysLocal &&
-        //     !FileSystem::isExcludeFile(item->_file)) {
-        //     item->_type = ItemTypeVirtualDirectory;
-        // }
+        // Turn new remote folders into virtual folders if the option is enabled.
+        if (!localEntry.isValid() &&
+            opts._vfs->mode() == Vfs::WindowsCfApi &&
+            _pinState != PinState::AlwaysLocal &&
+            !FileSystem::isExcludeFile(item->_file) &&
+            !item->isEncrypted()) {
+            item->_type = ItemTypeVirtualDirectory;
+        }
 
         _pendingAsyncJobs++;
         _discoveryData->checkSelectiveSyncNewFolder(path._server,
@@ -841,7 +842,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
             item->_direction = SyncFileItem::Down;
             item->_instruction = CSYNC_INSTRUCTION_SYNC;
             item->_type = ItemTypeVirtualFileDownload;
-        } else if (serverEntry.isValid() && !serverEntry.isDirectory && !serverEntry.remotePerm.isNull() && !serverEntry.remotePerm.hasPermission(RemotePermissions::CanRead)) {
+        } else if (serverEntry.isValid() && !serverEntry.remotePerm.isNull() && !serverEntry.remotePerm.hasPermission(RemotePermissions::CanRead)) {
             item->_instruction = CSYNC_INSTRUCTION_REMOVE;
             item->_direction = SyncFileItem::Down;
         } else if (dbEntry._etag != serverEntry.etag) {
@@ -936,7 +937,20 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
         return;
     }
 
-    if (serverEntry.isValid() && !serverEntry.isDirectory && !serverEntry.remotePerm.isNull() && !serverEntry.remotePerm.hasPermission(RemotePermissions::CanRead)) {
+    if (serverEntry.isValid() && _isInsideEncryptedTree && !item->isDirectory() && !item->isEncrypted()) {
+        qCWarning(lcDisco()) << "remote file inside an encrypted folder" << item->_file
+                             << "serverEntry.isValid()" << (serverEntry.isValid() ? "true" : "false")
+                             << "_isInsideEncryptedTree" << (_isInsideEncryptedTree ? "true" : "false")
+                             << "item->isDirectory()" << (item->isDirectory() ? "true" : "false")
+                             << "item->isEncrypted()" << (item->isEncrypted() ? "true" : "false");
+
+        item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_IGNORE;
+        emit _discoveryData->itemDiscovered(item);
+
+        return;
+    }
+
+    if (serverEntry.isValid() && !serverEntry.remotePerm.isNull() && !serverEntry.remotePerm.hasPermission(RemotePermissions::CanRead)) {
         item->_instruction = CSYNC_INSTRUCTION_IGNORE;
         emit _discoveryData->itemDiscovered(item);
 
@@ -1158,6 +1172,16 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     bool serverModified = item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_SYNC
         || item->_instruction == CSYNC_INSTRUCTION_RENAME || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
 
+    if (serverModified && _isInsideEncryptedTree && !item->isDirectory() && !item->isEncrypted()) {
+        qCWarning(lcDisco()) << "remote file inside an encrypted folder" << item->_file
+                              << "serverModified" << (serverModified ? "true" : "false")
+                              << "_isInsideEncryptedTree" << (_isInsideEncryptedTree ? "true" : "false")
+                              << "item->isDirectory()" << (item->isDirectory() ? "true" : "false")
+                              << "item->isEncrypted()" << (item->isEncrypted() ? "true" : "false");
+
+        item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_IGNORE;
+    }
+
     const auto isTypeChange = item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
 
     qCDebug(lcDisco) << "File" << item->_file << "- servermodified:" << serverModified
@@ -1287,7 +1311,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             }
         } else if (noServerEntry) {
             // Not locally, not on the server. The entry is stale!
-            qCInfo(lcDisco) << "Stale DB entry";
+            qCInfo(lcDisco).nospace() << "Stale DB entry (missing local/server entries)"
+                << " path=" << path._original
+                << " db_etag=" << dbEntry._etag
+                << " db_inode=" << dbEntry._inode;
             if (!_discoveryData->_statedb->deleteFileRecord(path._original, true)) {
                 emit _discoveryData->fatalError(tr("Error while deleting file record %1 from the database").arg(path._original), ErrorCategory::GenericError);
                 qCWarning(lcDisco) << "Failed to delete a file record from the local DB" << path._original;
@@ -2283,6 +2310,7 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
     }
 
     connect(serverJob, &DiscoverySingleDirectoryJob::etag, this, &ProcessDirectoryJob::etag);
+    connect(serverJob, &DiscoverySingleDirectoryJob::firstDirectoryFileId, this, &ProcessDirectoryJob::rootFileIdReceived);
     connect(serverJob, &DiscoverySingleDirectoryJob::setfolderQuota, this, &ProcessDirectoryJob::setFolderQuota);
     _discoveryData->_currentlyActiveJobs++;
     _pendingAsyncJobs++;

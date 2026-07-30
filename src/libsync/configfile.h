@@ -246,6 +246,10 @@ public:
     [[nodiscard]] QString language() const;
     void setLanguage(const QString &language);
 
+    /// Store and retrieve the last selected account identifier
+    [[nodiscard]] uint lastSelectedAccount() const;
+    void setLastSelectedAccount(const uint accountId);
+
     /**  Returns a new settings pre-set in a specific group.  The Settings will be created
          with the given parent. If no parent is specified, the caller must destroy the settings */
     static std::unique_ptr<QSettings> settingsWithGroup(const QString &group, QObject *parent = nullptr);
@@ -258,11 +262,38 @@ public:
     static void setDiscoveredLegacyConfigPath(const QString &discoveredLegacyConfigPath);
 
     /// File Provider Domain UUID to Account ID mapping
-    [[nodiscard]] QString fileProviderDomainUuidFromAccountId(const QString &accountId) const;
-    void setFileProviderDomainUuidForAccountId(const QString &accountId, const QString &domainUuid);
-    [[nodiscard]] QString accountIdFromFileProviderDomainUuid(const QString &domainUuid) const;
-    void removeFileProviderDomainUuidMapping(const QString &accountId);
-    void removeFileProviderDomainMappingByDomainIdentifier(const QString domainIdentifier);
+
+    /**
+     * @brief Completely removes the now obsolete "FileProviderAccountIds" and "FileProviderDomainUuids" groups from the configuration file.
+     */
+    void removeFileProviderDomainMapping();
+
+    /// File Provider app sandbox migration flag
+    [[nodiscard]] bool fileProviderDomainsAppSandboxMigrationCompleted() const;
+    void setFileProviderDomainsAppSandboxMigrationCompleted(bool completed);
+
+    /// Helper function for migration/upgrade proccess
+    enum MigrationPhase {
+        NotStarted,
+        SetupConfigFile,
+        SetupUsers,
+        SetupFolders,
+        Done
+    };
+    [[nodiscard]] bool isUpgrade() const;
+    [[nodiscard]] bool isDowngrade() const;
+    [[nodiscard]] bool shouldTryUnbrandedToBrandedMigration() const;
+    [[nodiscard]] bool isUnbrandedToBrandedMigrationInProgress() const;
+    [[nodiscard]] bool shouldTryToMigrate() const;
+    /// Does the current app has a different version of the config version
+    [[nodiscard]] bool hasVersionChanged() const;
+    [[nodiscard]] bool isMigrationInProgress() const;
+    [[nodiscard]] MigrationPhase migrationPhase() const;
+    void setMigrationPhase(const MigrationPhase phase);
+    static constexpr char unbrandedAppName[] = "Nextcloud";
+    static constexpr char legacyAppName[] = "Owncloud";
+
+    static constexpr char clientVersionC[] = "clientVersion";
 
     /// Helper function for migration/upgrade proccess
     enum MigrationPhase {

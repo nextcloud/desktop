@@ -50,6 +50,12 @@
 #include <KZip>
 #include <chrono>
 
+Q_LOGGING_CATEGORY(lcGeneralSettings, "com.nextcloud.settings.general")
+
+#ifdef Q_OS_MACOS
+#include "common/utility_mac_sandbox.h"
+#endif
+
 namespace {
 struct ZipEntry {
     QString localFilename;
@@ -122,24 +128,28 @@ QVector<ZipEntry> createDebugArchiveFileList()
 
 bool createDebugArchive(const QString &filename)
 {
-    const auto fileInfo = QFileInfo(filename);
-    const auto dirInfo = QFileInfo(fileInfo.dir().absolutePath());
-    if (!dirInfo.isWritable()) {
+    const auto entries = createDebugArchiveFileList();
+
+    // Create the ZIP archive in a temporary directory first
+    const auto tempDir = QDir::temp();
+    const auto tempFilePath = tempDir.filePath(QStringLiteral("nextcloud-debug-archive-temp.zip"));
+    
+    KZip zip(tempFilePath);
+
+    if (!zip.open(QIODevice::WriteOnly)) {
+        qWarning() << "Failed to open debug archive for writing:"
+                 << tempFilePath
+                 << "because of error:"
+                 << zip.errorString();
+
         QMessageBox::critical(
             nullptr,
             QObject::tr("Failed to create debug archive"),
             QObject::tr("Could not create debug archive in selected location!"),
             QMessageBox::Ok
         );
+
         return false;
-    }
-
-    const auto entries = createDebugArchiveFileList();
-
-    KZip zip(filename);
-    const auto zipStatus = zip.open(QIODevice::WriteOnly);
-    if (!zipStatus) {
-        qWarning() << "error when opening debug archive file" << filename;
     }
 
     for (const auto &entry : entries) {
@@ -147,26 +157,25 @@ bool createDebugArchive(const QString &filename)
     }
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    qDebug() << "Trying to add file provider domain log files...";
-    const auto fileProviderExtensionLogDirectory = OCC::Mac::FileProviderUtils::fileProviderExtensionLogDirectory();
+    qDebug() << "Trying to add file provider domain database and log files...";
+    const auto fileProviderDomainsSupportDirectory = OCC::Mac::FileProviderUtils::fileProviderDomainsSupportDirectory();
 
-    if (fileProviderExtensionLogDirectory.exists()) {
+    if (fileProviderDomainsSupportDirectory.exists()) {
         // Recursively add all files from the container log directory
-        QDirIterator it(fileProviderExtensionLogDirectory.path(), QDir::Files | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
+        QDirIterator it(fileProviderDomainsSupportDirectory.path(), QStringList() << "*.jsonl" << "*.realm", QDir::Files | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
 
         while (it.hasNext()) {
-            const auto logFilePath = it.next();
+            const auto filePath = it.next();
 
-            // Calculate relative path from the base container log directory
-            const auto relativePath = fileProviderExtensionLogDirectory.relativeFilePath(logFilePath);
+            // Calculate relative path from the base container log  directory
+            const auto relativePath = fileProviderDomainsSupportDirectory.relativeFilePath(filePath);
             const auto zipPath = QStringLiteral("File Provider Domains/%1").arg(relativePath);
 
-            zip.addLocalFile(logFilePath, zipPath);
+            zip.addLocalFile(filePath, zipPath);
+            qDebug() << "Added file from" << filePath;
         }
-
-        qDebug() << "Added file provider domain log files from" << fileProviderExtensionLogDirectory.path();
     } else {
-        qWarning() << "file provider domain container log directory not found at" << fileProviderExtensionLogDirectory.path();
+        qWarning() << "file provider domain container log directory not found at" << fileProviderDomainsSupportDirectory.path();
     }
 
     qDebug() << "Trying to add file provider database files...";
@@ -199,6 +208,50 @@ bool createDebugArchive(const QString &filename)
     zip.prepareWriting("_client_buildinfo.txt", {}, {}, buildInfo.size());
     zip.writeData(buildInfo, buildInfo.size());
     zip.finishWriting(buildInfo.size());
+    
+    zip.close();
+    
+    // Now move the temporary ZIP file to the desired destination
+    QFile tempFile(tempFilePath);
+    if (!tempFile.exists()) {
+        qWarning() << "Temporary debug archive file does not exist:" << tempFilePath;
+        QMessageBox::critical(
+            nullptr,
+            QObject::tr("Failed to create debug archive"),
+            QObject::tr("Could not create debug archive in temporary location!"),
+            QMessageBox::Ok
+        );
+        return false;
+    }
+    
+    // Remove destination file if it already exists
+    if (QFile::exists(filename)) {
+        if (!QFile::remove(filename)) {
+            qWarning() << "Failed to remove existing file at destination:" << filename;
+            tempFile.remove();
+            QMessageBox::critical(
+                nullptr,
+                QObject::tr("Failed to create debug archive"),
+                QObject::tr("Could not remove existing file at destination!"),
+                QMessageBox::Ok
+            );
+            return false;
+        }
+    }
+    
+    // Move the temporary file to the final destination
+    if (!tempFile.rename(filename)) {
+        qWarning() << "Failed to move debug archive from" << tempFilePath << "to" << filename;
+        tempFile.remove();
+        QMessageBox::critical(
+            nullptr,
+            QObject::tr("Failed to create debug archive"),
+            QObject::tr("Could not move debug archive to selected location!"),
+            QMessageBox::Ok
+        );
+        return false;
+    }
+    
     return true;
 }
 
@@ -250,7 +303,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         _ui->autostartCheckBox->setToolTip(tr("You cannot disable autostart because system-wide autostart is enabled."));
     } else {
         connect(_ui->autostartCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleLaunchOnStartup);
-        _ui->autostartCheckBox->setChecked(ConfigFile().launchOnSystemStartup());
+        _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup(Theme::instance()->appName()));
     }
 
     // setup about section
@@ -510,6 +563,15 @@ void GeneralSettings::slotUpdateInfo()
         connect(_ui->restartButton, &QAbstractButton::clicked, ocupdater, &OCUpdater::slotStartInstaller, Qt::UniqueConnection);
 
         auto status = ocupdater->statusString(OCUpdater::UpdateStatusStringFormat::Html);
+        if (config.serverHasValidSubscription()) {
+            auto currentChannel = updateChannelToLocalized(config.currentUpdateChannel());
+            if (currentChannel.isEmpty()) {
+                currentChannel = config.currentUpdateChannel();
+            }
+            status.append(QStringLiteral("<br/>%1")
+                              .arg(tr("Connected to an enterprise system. Update channel (%1) cannot be changed.")
+                                       .arg(currentChannel)));
+        }
         Theme::replaceLinkColorStringBackgroundAware(status);
 
         _ui->updateStateLabel->setOpenExternalLinks(false);
@@ -527,7 +589,18 @@ void GeneralSettings::slotUpdateInfo()
 #if defined(Q_OS_MACOS) && defined(HAVE_SPARKLE)
     else if (const auto sparkleUpdater = qobject_cast<SparkleUpdater *>(updater)) {
         connect(sparkleUpdater, &SparkleUpdater::statusChanged, this, &GeneralSettings::slotUpdateInfo, Qt::UniqueConnection);
-        _ui->updateStateLabel->setText(sparkleUpdater->statusString());
+        auto status = sparkleUpdater->statusString();
+        if (config.serverHasValidSubscription()) {
+            const auto currentChannel = config.currentUpdateChannel();
+            if (Qt::mightBeRichText(status)) {
+                status.append(QStringLiteral("<br/>"));
+            } else {
+                status.append(QStringLiteral("\n"));
+            }
+            status.append(tr("Connected to an enterprise system. Update channel (%1) cannot be changed.")
+                        .arg(currentChannel));
+        }
+        _ui->updateStateLabel->setText(status);
         _ui->restartButton->setVisible(false);
 
         const auto updaterState = sparkleUpdater->state();
@@ -710,9 +783,27 @@ void GeneralSettings::slotToggleLaunchOnStartup(bool enable)
         return;
     }
 
-    ConfigFile configFile;
-    configFile.setLaunchOnSystemStartup(enable);
     Utility::setLaunchOnStartup(theme->appName(), theme->appNameGUI(), enable);
+
+    const auto actualState = Utility::hasLaunchOnStartup(theme->appName());
+    ConfigFile configFile;
+    configFile.setLaunchOnSystemStartup(actualState);
+
+    if (actualState != enable) {
+        const QSignalBlocker blocker(_ui->autostartCheckBox);
+        _ui->autostartCheckBox->setChecked(actualState);
+    }
+
+#ifdef Q_OS_MACOS
+    if (enable && Utility::launchOnStartupRequiresApproval()) {
+        QMessageBox::information(
+            this,
+            tr("Login Item Requires Approval"),
+            tr("The login item has been registered but needs your approval to become active. "
+               "Please open System Settings → General → Login Items and enable %1 there.")
+                .arg(theme->appNameGUI()));
+    }
+#endif
 }
 
 void GeneralSettings::slotToggleOptionalServerNotifications(bool enable)
@@ -767,22 +858,38 @@ void GeneralSettings::slotIgnoreFilesEditor()
 
 void GeneralSettings::slotCreateDebugArchive()
 {
-    const auto filename = QFileDialog::getSaveFileName(
+    const auto destination = QFileDialog::getSaveFileUrl(
         this,
         tr("Create Debug Archive"),
         QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
         tr("Zip Archives") + " (*.zip)"
     );
 
-    if (filename.isEmpty()) {
+    if (!destination.isLocalFile() || destination.toLocalFile().isEmpty()) {
         return;
     }
 
-    if (createDebugArchive(filename)) {
+#ifdef Q_OS_MACOS
+    // On macOS with app sandbox, we need to explicitly access the security-scoped resource
+    // that was selected by the user via the file dialog. This is required even though we have
+    // the com.apple.security.files.user-selected.read-write entitlement.
+    auto scopedAccess = Utility::MacSandboxSecurityScopedAccess::create(destination);
+    
+    if (!scopedAccess->isValid()) {
+        QMessageBox::critical(
+            this,
+            tr("Failed to Access File"),
+            tr("Could not access the selected location. Please try again or choose a different location.")
+        );
+        return;
+    }
+#endif
+
+    if (createDebugArchive(destination.toLocalFile())) {
         QMessageBox::information(
             this,
             tr("Debug Archive Created"),
-            tr("Redact information deemed sensitive before sharing! Debug archive created at %1").arg(filename)
+            tr("Redact information deemed sensitive before sharing! Debug archive created at %1").arg(destination.toLocalFile())
         );
     }
 }

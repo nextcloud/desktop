@@ -87,7 +87,7 @@ private slots:
             encryptedFile.originalFilename = fakeFileName;
             encryptedFile.mimetype = "application/octet-stream";
             encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
-            metadata->addEncryptedFile(encryptedFile);
+            QVERIFY(metadata->addEncryptedFile(encryptedFile));
         }
 
         QJsonObject fakeFileDropPart;

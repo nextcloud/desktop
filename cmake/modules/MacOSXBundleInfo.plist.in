@@ -5,7 +5,7 @@
     <key>NSPrincipalClass</key>
     <string>NSApplication</string>
     <key>LSMinimumSystemVersion</key>
-    <string>12.0</string>
+    <string>13.0</string>
     <key>LSUIElement</key>
     <true/>
     <key>CFBundleDevelopmentRegion</key>
@@ -44,6 +44,8 @@
     <false/>
     <key>SUPublicEDKey</key>
         <string>FQ8Dq6AiSDDv4XpnyJ3b6mQBFYLPKgj9ziEg/+VNGHg=</string>
+    <key>SUEnableInstallerLauncherService</key>
+    <true/>
     <key>UTExportedTypeDeclarations</key>
     <array>
         <dict>
@@ -60,6 +62,18 @@
             <array>
                 <string>public.data</string>
             </array>
+        </dict>
+        <dict>
+            <key>UTTypeIdentifier</key>
+            <string>@APPLICATION_REV_DOMAIN@.decoration.keep-downloaded</string>
+            <key>UTTypeDescription</key>
+            <string>Always keep downloaded</string>
+            <key>UTTypeConformsTo</key>
+            <array>
+                <string>com.apple.icon-decoration.badge</string>
+            </array>
+            <key>UTTypeIconFile</key>
+            <string>KeepDownloaded.icns</string>
         </dict>
     </array>
     <key>CFBundleDocumentTypes</key>
@@ -89,6 +103,11 @@
         </dict>
     </array>
     <key>NCFPKAppGroupIdentifier</key>
-    <string>@SOCKETAPI_TEAM_IDENTIFIER_PREFIX@@APPLICATION_REV_DOMAIN@</string>
+    <string>@DEVELOPMENT_TEAM@.@APPLICATION_REV_DOMAIN@</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

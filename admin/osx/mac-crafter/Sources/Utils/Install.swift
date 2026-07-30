@@ -29,12 +29,12 @@ func installIfMissing(
     installCommandEnv: [String: String]? = nil
 ) async throws {
     if await commandExists(command) {
-        print("Required command \"\(command)\" already is installed.")
+        Log.info("Required command \"\(command)\" already is installed.")
     } else {
-        print("Required command \"\(command)\" is missing, installing...")
+        Log.info("Required command \"\(command)\" is missing, installing...")
         guard await shell(installCommand, env: installCommandEnv) == 0 else {
             throw InstallError.failedToInstall("Failed to install \"\(command)\"!")
         }
-        print("\"\(command)\" installed.")
+        Log.info("\"\(command)\" installed.")
     }
 }

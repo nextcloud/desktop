@@ -58,11 +58,8 @@ extension NKShare {
         }
 
         var config = NSImage.SymbolConfiguration(textStyle: .body, scale: .large)
-        if #available(macOS 12.0, *) {
-            config = config.applying(
-                .init(paletteColors: [.controlBackgroundColor, .controlAccentColor])
-            )
-        }
+        config = config.applying(.init(paletteColors: [.controlBackgroundColor, .controlAccentColor]))
+
         return image?.withSymbolConfiguration(config)
     }
 

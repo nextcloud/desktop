@@ -120,7 +120,7 @@ configure_file(fakefiledrope2eefoldermetadata.json "${PROJECT_BINARY_DIR}/bin/fa
 configure_file(e2etestsfakecert.pem "${PROJECT_BINARY_DIR}/bin/e2etestsfakecert.pem" COPYONLY)
 configure_file(e2etestsfakecertprivatekey.pem "${PROJECT_BINARY_DIR}/bin/e2etestsfakecertprivatekey.pem" COPYONLY)
 configure_file(e2etestsfakecertpublickey.pem "${PROJECT_BINARY_DIR}/bin/e2etestsfakecertpublickey.pem" COPYONLY)
-configure_file(fake2eelocksucceeded.json "${PROJECT_BINARY_DIR}/bin/fakeshortcut.base64" COPYONLY)
+configure_file(fakeshortcut.base64 "${PROJECT_BINARY_DIR}/bin/fakeshortcut.base64" COPYONLY)
 
 
 if(ADD_E2E_TESTS)
@@ -161,7 +161,9 @@ if(NOT BUILD_FILE_PROVIDER_MODULE)
     nextcloud_add_test(AccountSettings)
 endif()
 
+nextcloud_add_test(NetworkSettings)
 nextcloud_add_test(UpdateChannel)
+nextcloud_add_test(FileActionsModel)
 
 configure_file(test_journal.db "${PROJECT_BINARY_DIR}/bin/test_journal.db" COPYONLY)
 

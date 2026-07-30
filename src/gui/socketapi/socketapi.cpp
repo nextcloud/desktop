@@ -63,6 +63,7 @@
 
 #ifdef Q_OS_MACOS
 #include <CoreFoundation/CoreFoundation.h>
+#include "common/utility_mac_sandbox.h"
 #endif
 
 #ifdef HAVE_KGUIADDONS
@@ -257,29 +258,10 @@ SocketApi::SocketApi(QObject *parent)
         // See issue #2388
         // + Theme::instance()->appName();
     } else if (Utility::isMac()) {
-#ifdef Q_OS_MACOS
+    #ifdef Q_OS_MACOS
         socketPath = socketApiSocketUrl().toLocalFile();
         qCDebug(lcSocketApi) << "macOS socket path:" << socketPath;
-        /*
-        CFURLRef url = (CFURLRef)CFAutorelease((CFURLRef)CFBundleCopyBundleURL(CFBundleGetMainBundle()));
-        QString bundlePath = QUrl::fromCFURL(url).path();
-
-        auto _system = [](const QString &cmd, const QStringList &args) {
-            QProcess process;
-            process.setProcessChannelMode(QProcess::MergedChannels);
-            process.start(cmd, args);
-            if (!process.waitForFinished()) {
-                qCWarning(lcSocketApi) << "Failed to load shell extension:" << cmd << args.join(" ") << process.errorString();
-            } else {
-                qCInfo(lcSocketApi) << (process.exitCode() != 0 ? "Failed to load" : "Loaded") << "shell extension:" << cmd << args.join(" ") << process.readAll();
-            }
-        };
-        // Add it again. This was needed for Mojave to trigger a load.
-        _system(QStringLiteral("pluginkit"), { QStringLiteral("-a"), QStringLiteral("%1Contents/PlugIns/FinderSyncExt.appex/").arg(bundlePath) });
-        // Tell Finder to use the Extension (checking it from System Preferences -> Extensions)
-        _system(QStringLiteral("pluginkit"), { QStringLiteral("-e"), QStringLiteral("use"), QStringLiteral("-i"), QStringLiteral(APPLICATION_REV_DOMAIN ".FinderSyncExt") });
-        */
-#endif
+    #endif
     } else if (Utility::isLinux() || Utility::isBSD()) {
         QString runtimeDir;
         runtimeDir = QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation);
@@ -303,6 +285,7 @@ SocketApi::SocketApi(QObject *parent)
             }
         }
     }
+
     const bool result = _localServer.listen(socketPath);
     qCDebug(lcSocketApi) << "Full server name:" << _localServer.fullServerName();
 
@@ -644,6 +627,12 @@ void SocketApi::processLeaveShareRequest(const QString &localFile, SocketListene
     FolderMan::instance()->leaveShare(QDir::fromNativeSeparators(localFile));
 }
 
+void SocketApi::processFileActionsRequest(const QString &localFile)
+{
+    const auto fileData = FileData::get(localFile);
+    emit fileActionsCommandReceived(fileData.localPath);
+}
+
 void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus)
 {
     QString msg = buildMessage(QLatin1String("STATUS"), systemPath, fileStatus.toSocketAPIString());
@@ -750,6 +739,13 @@ void SocketApi::command_EDIT(const QString &localFile, SocketListener *listener)
             Utility::openBrowser(url);
     });
     job->start();
+}
+
+void SocketApi::command_FILE_ACTIONS(const QString &localFile, SocketListener *listener)
+{
+    Q_UNUSED(listener);
+
+    processFileActionsRequest(localFile);
 }
 
 // don't pull the share manager into socketapi unittests
@@ -887,20 +883,6 @@ public:
 };
 
 #endif
-
-void SocketApi::command_COPY_SECUREFILEDROP_LINK(const QString &localFile, SocketListener *)
-{
-    const auto fileData = FileData::get(localFile);
-    if (!fileData.folder) {
-        return;
-    }
-
-    const auto account = fileData.folder->accountState()->account();
-    const auto getOrCreatePublicLinkShareJob = new GetOrCreatePublicLinkShare(account, fileData.serverRelativePath, true, this);
-    connect(getOrCreatePublicLinkShareJob, &GetOrCreatePublicLinkShare::done, this, [](const QString &url) { copyUrlToClipboard(url); });
-    connect(getOrCreatePublicLinkShareJob, &GetOrCreatePublicLinkShare::error, this, [=, this]() { emit shareCommandReceived(fileData.localPath); });
-    getOrCreatePublicLinkShareJob->run();
-}
 
 // Fetches the private link url asynchronously and then calls the target slot
 void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFile, const std::function<void(const QString &url)> &targetFun)
@@ -1048,13 +1030,26 @@ void SocketApi::command_MOVE_ITEM(const QString &localFile, SocketListener *)
     // Add back the folder path
     defaultDirAndName = QDir(fileData.folder->path()).filePath(defaultDirAndName);
 
-    const auto target = QFileDialog::getSaveFileName(
+    // Use getSaveFileUrl for sandbox compatibility
+    const auto targetUrl = QFileDialog::getSaveFileUrl(
         nullptr,
         tr("Select new location …"),
-        defaultDirAndName,
+        QUrl::fromLocalFile(defaultDirAndName),
         QString(), nullptr, QFileDialog::HideNameFilterDetails);
-    if (target.isEmpty())
+    if (targetUrl.isEmpty())
         return;
+
+#ifdef Q_OS_MACOS
+    // On macOS with app sandbox, we need to explicitly access the security-scoped resource
+    auto scopedAccess = Utility::MacSandboxSecurityScopedAccess::create(targetUrl);
+    
+    if (!scopedAccess->isValid()) {
+        qCWarning(lcSocketApi) << "Could not access security-scoped resource for conflict resolution:" << targetUrl;
+        return;
+    }
+#endif
+
+    const auto target = targetUrl.toLocalFile();
 
     ConflictSolver solver;
     solver.setLocalVersionFilename(localFile);
@@ -1118,8 +1113,9 @@ void OCC::SocketApi::openPrivateLink(const QString &link)
 
 void SocketApi::command_GET_STRINGS(const QString &argument, SocketListener *listener)
 {
-    static std::array<std::pair<const char *, QString>, 6> strings { {
+    static std::array<std::pair<const char *, QString>, 7> strings { {
         { "SHARE_MENU_TITLE", tr("Share options") },
+        { "FILE_ACTIONS_MENU_TITLE", tr("File actions") },
         { "FILE_ACTIVITY_MENU_TITLE", tr("Activity") },
         { "CONTEXT_MENU_TITLE", Theme::instance()->appNameGUI() },
         { "COPY_PRIVATE_LINK_MENU_TITLE", tr("Copy private link to clipboard") },
@@ -1166,6 +1162,23 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
     // Disabled: only providing email option for private links would look odd,
     // and the copy option is more general.
     //listener->sendMessage(QLatin1String("MENU_ITEM:EMAIL_PRIVATE_LINK") + flagString + tr("Send private link by email …"));
+}
+
+void SocketApi::sendFileActionsContextMenuOptions(const FileData &fileData, SocketListener *listener)
+{
+    const auto record = fileData.journalRecord();
+    const auto isOnTheServer = record.isValid();
+    auto serverHasIntegration = false;
+    if (const auto folder = fileData.folder;folder) {
+        if (const auto accountState = folder->accountState();
+            accountState && accountState->account()) {
+            serverHasIntegration = accountState->account()->serverHasIntegration();
+        }
+    }
+
+    const auto flagString = isOnTheServer && serverHasIntegration ? QLatin1String("::")
+                                                                  : QLatin1String(":d:");
+    listener->sendMessage(QLatin1String("MENU_ITEM:FILE_ACTIONS") + flagString + tr("File actions"));
 }
 
 void SocketApi::sendEncryptFolderCommandMenuEntries(const QFileInfo &fileInfo,
@@ -1355,6 +1368,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         const auto itemEncryptionFlag = isE2eEncryptedPath ? SharingContextItemEncryptedFlag::EncryptedItem : SharingContextItemEncryptedFlag::NotEncryptedItem;
         const auto rootE2eeFolderFlag = isE2eEncryptedRootFolder ? SharingContextItemRootEncryptedFolderFlag::RootEncryptedFolder : SharingContextItemRootEncryptedFolderFlag::NonRootEncryptedFolder;
         sendSharingContextMenuOptions(fileData, listener, itemEncryptionFlag, rootE2eeFolderFlag);
+        sendFileActionsContextMenuOptions(fileData, listener);
 
         // Conflict files get conflict resolution actions
         bool isConflict = Utility::isConflictFile(fileData.folderRelativePath);

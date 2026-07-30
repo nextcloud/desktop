@@ -19,6 +19,7 @@
 #include "common/syncjournalfilerecord.h"
 #include "common/vfs.h"
 #include "csync_exclude.h"
+#include "testhelper.h"
 
 #include <QDir>
 #include <QNetworkReply>
@@ -59,8 +60,9 @@ inline QString getFilePathFromUrl(const QUrl &url)
 inline QByteArray generateEtag() {
     return QByteArray::number(QDateTime::currentDateTimeUtc().toMSecsSinceEpoch(), 16) + QByteArray::number(OCC::Utility::rand(), 16);
 }
+// generates a value as seen in `oc:id` attributes (file ID + instance ID)
 inline QByteArray generateFileId() {
-    return QByteArray::number(OCC::Utility::rand(), 16);
+    return QByteArray::number(OCC::Utility::rand(), 10) + "oc1x2y3z4w";
 }
 
 class PathComponents : public QStringList {
@@ -200,6 +202,10 @@ public:
     [[nodiscard]] QString path() const;
     [[nodiscard]] QString absolutePath() const;
 
+    // value of `oc:fileid` from PROPFIND responses, unlike `oc:id` this does
+    // not include the instance ID (i.e. only the numbers)
+    [[nodiscard]] QByteArray numericFileId() const;
+
     void fixupParentPathRecursively();
 
     QString name;
@@ -217,6 +223,7 @@ public:
     char contentChar = 'W';
     LockState lockState = LockState::FileUnlocked;
     int lockType = 0;
+    QString lockToken;
     QString lockOwner;
     QString lockOwnerId;
     QString lockEditorId;
@@ -590,16 +597,18 @@ class FakeFolder
 {
     QTemporaryDir _tempDir;
     QString _tempDirLocalPath;
+    QString _remotePath;
     DiskFileModifier _localModifier;
     // FIXME: Clarify ownership, double delete
     FakeQNAM *_fakeQnam;
     OCC::AccountPtr _account;
+    FakeAccountState *_accountState;
     std::unique_ptr<OCC::SyncJournalDb> _journalDb;
     std::unique_ptr<OCC::SyncEngine> _syncEngine;
     QString _serverVersion = QStringLiteral("10.0.0");
 
 public:
-    FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo = {}, const QString &remotePath = {});
+    FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo = {}, const QString &remotePath = {}, const bool performInitialSync = true);
 
     void switchToVfs(QSharedPointer<OCC::Vfs> vfs);
 
@@ -611,6 +620,7 @@ public:
     [[nodiscard]] OCC::SyncEngine &syncEngine() const { return *_syncEngine; }
     [[nodiscard]] OCC::SyncJournalDb &syncJournal() const { return *_journalDb; }
     [[nodiscard]] FakeQNAM* networkAccessManager() const { return _fakeQnam; }
+    [[nodiscard]] FakeAccountState &accountState() { return *_accountState; }
 
     DiskFileModifier &localModifier() { return _localModifier; }
     FileInfo &remoteModifier() { return _fakeQnam->currentRemoteState(); }

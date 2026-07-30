@@ -15,6 +15,11 @@
  */
 - (void)getFileProviderDomainIdentifierWithCompletionHandler:(void(^)(NSString *extensionAccountId, NSError *error))completionHandler;
 
+/**
+ * @brief Ask the file provider extension whether it has dirty user data.
+ */
+- (void)hasDirtyUserDataWithCompletionHandler:(void(^)(BOOL hasDirtyUserData))completionHandler;
+
 - (void)configureAccountWithUser:(NSString *)user
                           userId:(NSString *)userId
                        serverUrl:(NSString *)serverUrl
@@ -22,6 +27,15 @@
                        userAgent:(NSString *)userAgent;
 - (void)removeAccountConfig;
 - (void)setIgnoreList:(NSArray<NSString *> *)ignoreList;
+
+/**
+ * @brief Process numeric WebDAV file IDs received from notify-push.
+ *
+ * An empty array represents a legacy notification without file IDs and must trigger a refresh.
+ * Otherwise, the extension refreshes only if at least one file ID belongs to locally known metadata.
+ */
+- (void)processFileIdsChanged:(NSArray<NSNumber *> *)fileIds
+             completionHandler:(void(^)(BOOL processed))completionHandler;
 
 @end
 

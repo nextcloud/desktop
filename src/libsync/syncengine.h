@@ -150,13 +150,14 @@ public slots:
      * revert afterwards. Use _lastLocalDiscoveryStyle to discover the last
      * sync's style.
      */
-    void setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle style, std::set<QString> paths = {});
+    void setLocalDiscoveryOptions(OCC::LocalDiscoveryEnums::LocalDiscoveryStyle style, std::set<QString> paths = {});
     void addAcceptedInvalidFileName(const QString& filePath);
     void setLocalDiscoveryEnforceWindowsFileNameCompatibility(bool value);
 
 signals:
     // During update, before reconcile
     void rootEtag(const QByteArray &, const QDateTime &);
+    void rootFileIdReceived(qint64 fileId);
 
     // after the above signals. with the items that actually need propagating
     void aboutToPropagate(OCC::SyncFileItemVector &);
@@ -199,6 +200,7 @@ signals:
 private slots:
     void slotFolderDiscovered(bool local, const QString &folder);
     void slotRootEtagReceived(const QByteArray &, const QDateTime &time);
+    void slotRootFileIdReceived(qint64 fileId);
 
     /** When the discovery phase discovers an item */
     void slotItemDiscovered(const OCC::SyncFileItemPtr &item);
@@ -213,7 +215,7 @@ private slots:
 
     void slotItemCompleted(const OCC::SyncFileItemPtr &item, const OCC::ErrorCategory category);
     void slotDiscoveryFinished();
-    void slotPropagationFinished(SyncFileItem::Status status);
+    void slotPropagationFinished(OCC::SyncFileItem::Status status);
     void slotProgress(const OCC::SyncFileItem &item, qint64 current);
     void slotCleanPollsJobAborted(const QString &error, const OCC::ErrorCategory category);
     void detectFileLock(const OCC::SyncFileItemPtr &item);
@@ -328,6 +330,8 @@ private:
     QString _localPath;
     QString _remotePath;
     QByteArray _remoteRootEtag;
+    bool _rootFileIdReceived = false;
+    qint64 _rootFileId = 0;
     SyncJournalDb *_journal;
     std::unique_ptr<DiscoveryPhase> _discoveryPhase;
     QSharedPointer<OwncloudPropagator> _propagator;
@@ -359,7 +363,7 @@ private:
 
     void finishSync();
 
-    bool shouldRestartSync() const;
+    [[nodiscard]] bool shouldRestartSync() const;
 
     bool handleMassDeletion();
 

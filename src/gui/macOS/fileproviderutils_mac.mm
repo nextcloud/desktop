@@ -35,160 +35,73 @@ bool illegalDomainIdentifier(const QString &domainId)
     return !domainId.isEmpty() && !illegalChars.match(domainId).hasMatch() && hasBundleExtension(domainId);
 }
 
-NSFileProviderDomain *domainForIdentifier(const QString &domainIdentifier)
+QString applicationGroupContainer()
 {
-    __block NSFileProviderDomain *foundDomain = nil;
-    NSString *const nsDomainIdentifier = domainIdentifier.toNSString();
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    NSString *const groupId = (NSString *)[NSBundle.mainBundle objectForInfoDictionaryKey:@"NCFPKAppGroupIdentifier"];
 
-    // getDomainsWithCompletionHandler is asynchronous -- we create a dispatch semaphore in order
-    // to wait until it is done. This should tell you that we should not call this method very
-    // often!
-
-    [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> *const domains, NSError *const error) {
-        if (error != nil) {
-            qCWarning(lcMacFileProviderUtils) << "Error fetching file provider domains:"
-                                              << error.localizedDescription;
-            dispatch_semaphore_signal(semaphore);
-            return;
-        }
-
-        for (NSFileProviderDomain *const domain in domains) {
-            qCInfo(lcMacFileProviderUtils) << "Found file provider domain with identifier:"
-                                           << domain.identifier;
-
-            if ([domain.identifier isEqualToString:nsDomainIdentifier]) {
-                [domain retain];
-                foundDomain = domain;
-                break;
-            }
-        }
-
-        dispatch_semaphore_signal(semaphore);
-    }];
-
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-    dispatch_release(semaphore);
-
-    if (foundDomain == nil) {
-        qCWarning(lcMacFileProviderUtils) << "No matching file provider domain found for identifier: "
-                                          << domainIdentifier;
+    if (groupId == nil) {
+        qCWarning(lcMacFileProviderUtils) << "No app group identifier found in Info.plist, cannot determine application group container.";
+        return QString::fromNSString([NSFileManager.defaultManager temporaryDirectory].path);
     }
 
-    return foundDomain;
-}
-
-QString domainIdentifierForAccountIdentifier(const QString &accountId)
-{
-    qCDebug(lcMacFileProviderUtils) << "Resolving file provider domain identifier by account id:"
-                                         << accountId;
-
-    OCC::ConfigFile cfg;
-    const QString existingUuid = cfg.fileProviderDomainUuidFromAccountId(accountId);
-
-    if (!existingUuid.isEmpty()) {
-        qCDebug(lcMacFileProviderUtils) << "Found existing file provider domain UUID to return:"
-                                                     << existingUuid
-                                                     << "for account id:"
-                                                     << accountId;
-
-        return existingUuid;
-    }
-
-    auto domainId = accountId;
-    Q_ASSERT(!domainId.isEmpty());
-
-    domainId.replace(illegalChars, "-");
-
-    // Some url domains like .app cause issues on macOS as these are also bundle extensions.
-    // Under the hood, fileproviderd will create a folder for the user to access the files named
-    // after the domain identifier. If the url domain is the same as a bundle extension, Finder
-    // will interpret this folder as a bundle and will not allow the user to access the files.
-    // Here we wrap the dot in the url domain extension to prevent this from happening.
-    for (const auto &ext : bundleExtensions) {
-        if (domainId.endsWith(ext)) {
-            domainId = domainId.left(domainId.length() - ext.length());
-            domainId += "(.)" + ext.right(ext.length() - 1);
-            break;
-        }
-    }
-
-    return domainId;
-}
-
-QString domainIdentifierForAccountIdentifier(const NSString *accountId)
-{
-    const auto qAccountId = QString::fromNSString(accountId);
-
-    return domainIdentifierForAccountIdentifier(qAccountId);
-}
-
-QString domainIdentifierForAccount(const OCC::Account * const account)
-{
-    Q_ASSERT(account);
-    auto accountId = account->userIdAtHostWithPort();
-
-    return domainIdentifierForAccountIdentifier(accountId);
-}
-
-QString domainIdentifierForAccount(const OCC::AccountPtr account)
-{
-    return domainIdentifierForAccount(account.get());
-}
-
-QDir fileProviderExtensionContainer()
-{
-    const auto baseBundleId = QCoreApplication::organizationDomain();
-    const auto extensionBundleId = baseBundleId + QStringLiteral(".FileProviderExt");
-
-    auto dir = QDir::home();
-    dir.cd("Library");
-    dir.cd("Containers");
-    dir.cd(extensionBundleId);
-
-    return dir;
-}
-
-QDir fileProviderExtensionLogDirectory()
-{
-    auto dir = fileProviderExtensionContainer();
-    dir.cd("Data");
-    dir.cd("Library");
-    dir.cd("Logs");
-
-    return dir;
+    return QString::fromNSString([NSFileManager.defaultManager containerURLForSecurityApplicationGroupIdentifier:groupId].path);
 }
 
 QDir fileProviderDomainLogDirectory(const QString domainIdentifier)
 {
-    auto dir = fileProviderExtensionLogDirectory();
-    dir.cd(domainIdentifier);
+    auto logsDirectory = fileProviderDomainSupportDirectory(domainIdentifier);
+    auto domainLogsPath = logsDirectory.filePath("Logs");
+    auto directory = QDir(domainLogsPath);
 
-    return dir;
+    return directory;
 }
 
 QDir fileProviderDomainsSupportDirectory()
 {
-    auto dir = fileProviderExtensionContainer();
-    dir.cd("Data");
-    dir.cd("Library");
-    dir.cd("Application Support");
-    dir.cd("File Provider Domains");
+    auto applicationGroupContainerPath = applicationGroupContainer();
+    auto supportPath = applicationGroupContainerPath + "/File Provider Domains";
+    auto directory = QDir(supportPath);
 
-    return dir;
+    return directory;
 }
 
 QDir fileProviderDomainSupportDirectory(const QString domainIdentifier)
 {
-    auto dir = fileProviderDomainsSupportDirectory();
-    dir.cd(domainIdentifier);
+    auto supportDirectory = fileProviderDomainsSupportDirectory();
+    auto domainSupportPath = supportDirectory.filePath(domainIdentifier);
+    auto directory = QDir(domainSupportPath);
 
-    return dir;
+    return directory;
 }
 
 NSFileProviderManager *managerForDomainIdentifier(const QString &domainIdentifier)
 {
-    NSFileProviderDomain * const domain = domainForIdentifier(domainIdentifier);
+    dispatch_group_t dispatchGroup = dispatch_group_create();
+    dispatch_group_enter(dispatchGroup);
+
+    __block NSFileProviderDomain *domain = nil;
+
+    [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> * const domains, NSError * const error) {
+        if (error != nil) {
+            qCWarning(lcMacFileProviderUtils) << "Could not get existing domains because of error:"
+                                              << error.code
+                                              << error.localizedDescription;
+            dispatch_group_leave(dispatchGroup);
+            return;
+        }
+
+        for (NSFileProviderDomain * const candidate in domains) {
+            if (domainIdentifier == QString::fromNSString(candidate.identifier)) {
+                domain = [candidate retain];
+                break;
+            }
+        }
+
+        dispatch_group_leave(dispatchGroup);
+    }];
+
+    dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER);
+
     if (domain == nil) {
         qCWarning(lcMacFileProviderUtils) << "Received null domain for identifier"
                                           << domainIdentifier
@@ -209,10 +122,12 @@ NSFileProviderManager *managerForDomainIdentifier(const QString &domainIdentifie
 QString groupContainerPath()
 {
     NSString *const groupId = (NSString *)[NSBundle.mainBundle objectForInfoDictionaryKey:@"NCFPKAppGroupIdentifier"];
+
     if (groupId == nil) {
         qCWarning(lcMacFileProviderUtils) << "No app group identifier found in Info.plist, cannot determine group container path.";
         return QString();
     }
+
     return QString::fromNSString([NSFileManager.defaultManager containerURLForSecurityApplicationGroupIdentifier:groupId].path);
 }
 
