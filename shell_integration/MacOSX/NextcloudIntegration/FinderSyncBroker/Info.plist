@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>$(OC_APPLICATION_NAME) Finder Integration</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<!--
+		Do NOT spell the identifier out here, and do NOT copy the sibling extensions'
+		$(OC_APPLICATION_REV_DOMAIN).$(PRODUCT_NAME:rfc1034identifier) form. This target's
+		PRODUCT_BUNDLE_IDENTIFIER carries an extra $(DEVELOPMENT_TEAM). component, and that
+		component is load-bearing (see above). Because GENERATE_INFOPLIST_FILE is NO, a literal
+		here silently overrides the build setting: the wrapper would be named after the
+		team-prefixed identifier while the bundle answered to the un-prefixed one, SMAppService
+		would fail to resolve it with EINVAL on both -status and -register, and the broker would
+		never be registered at all.
+	-->
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(OC_APPLICATION_NAME) Finder Integration</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSBackgroundOnly</key>
+	<true/>
+	<key>LSMinimumSystemVersion</key>
+	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
+	<key>NCApplicationGroupIdentifier</key>
+	<string>$(DEVELOPMENT_TEAM).$(OC_APPLICATION_REV_DOMAIN)</string>
+	<key>NCApplicationRevDomain</key>
+	<string>$(OC_APPLICATION_REV_DOMAIN)</string>
+	<key>NCDevelopmentTeam</key>
+	<string>$(DEVELOPMENT_TEAM)</string>
+</dict>
+</plist>

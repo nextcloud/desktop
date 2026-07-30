@@ -21,6 +21,31 @@ else()
     set(DEBUG_ENTITLEMENTS "")
 endif()
 
+# Sparkle needs a Mach lookup exception, but only when it is actually built in.
+#
+# MacOSXBundleInfo.plist.in sets SUEnableInstallerLauncherService, which makes Sparkle run its
+# installation through the Installer XPC service in Sparkle.framework/XPCServices. A sandboxed
+# app can only reach that service's <bundle id>-spki / -spks Mach names via a temporary
+# exception, so with BUILD_UPDATER on these entitlements are load-bearing: dropping them breaks
+# updating, and only at update time.
+#
+# With BUILD_UPDATER off there is no Sparkle in the bundle at all (see find_package(Sparkle) in
+# the top-level CMakeLists.txt) and the names are genuinely dead. That is the configuration a
+# Mac App Store submission has to use, since App Store apps cannot self-update — and it is also
+# where temporary exceptions are prohibited. Making this conditional is therefore what lets the
+# App Store build carry no temporary-exception entitlements whatsoever.
+if(BUILD_UPDATER)
+    set(SPARKLE_ENTITLEMENTS
+        "\t<key>com.apple.security.temporary-exception.mach-lookup.global-name</key>\n"
+        "\t<array>\n"
+        "\t\t<string>${APPLICATION_REV_DOMAIN}-spks</string>\n"
+        "\t\t<string>${APPLICATION_REV_DOMAIN}-spki</string>\n"
+        "\t</array>")
+    string(JOIN "" SPARKLE_ENTITLEMENTS ${SPARKLE_ENTITLEMENTS})
+else()
+    set(SPARKLE_ENTITLEMENTS "")
+endif()
+
 # Sandbox migration description
 configure_file(container-migration.plist.cmake ${CMAKE_CURRENT_BINARY_DIR}/container-migration.plist @ONLY)
 install(FILES ${CMAKE_BINARY_DIR}/admin/osx/container-migration.plist

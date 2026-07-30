@@ -190,6 +190,11 @@ Q_LOGGING_CATEGORY(lcMacFinderSyncService, "nextcloud.gui.macfindersyncservice",
 
     // Whitelist of commands the FinderSync extension is allowed to invoke.
     // This prevents untrusted XPC clients from calling arbitrary SocketApi methods.
+    //
+    // Must cover everything command_GET_MENU_ITEMS can emit as *enabled*, or the menu offers
+    // an entry that is then rejected here — which looks to the user like a dead menu item and
+    // leaves only a log line behind. FILE_ACTIONS and FILES_GOVERNANCE_LABELS were exactly
+    // that: both shipped enabled in 34.0.0 and both failed on click.
     static const QSet<QString> allowedCommands = {
         QStringLiteral("SHARE"),
         QStringLiteral("LEAVESHARE"),
@@ -207,6 +212,8 @@ Q_LOGGING_CATEGORY(lcMacFinderSyncService, "nextcloud.gui.macfindersyncservice",
         QStringLiteral("ENCRYPT"),
         QStringLiteral("COPYASPATH"),
         QStringLiteral("EDIT"),
+        QStringLiteral("FILE_ACTIONS"),
+        QStringLiteral("FILES_GOVERNANCE_LABELS"),
     };
 
     if (!allowedCommands.contains(qCommand)) {
