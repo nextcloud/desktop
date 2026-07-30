@@ -78,6 +78,10 @@ jobs:
     timeout-minutes: 60
     runs-on: macos-26
     steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+
       - name: Restore cached Craft directories containing the built client
         uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
