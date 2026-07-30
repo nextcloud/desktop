@@ -18,6 +18,7 @@
 #include "folder.h"
 #include "folderman.h"
 #include "guiutility.h"
+#include "localnetworkpermission.h"
 #include "networkjobs.h"
 #include "owncloudpropagator_p.h"
 #include "selectivesyncdialog.h"
@@ -92,6 +93,7 @@ bool localFolderContainsData(const QString &localSyncFolder)
 
 AccountWizardController::AccountWizardController(QObject *parent)
     : QObject(parent)
+    , _localNetworkPermissionCheck(LocalNetworkPermission::checkDeniedForConnection)
 {
     initialiseAccount();
 
@@ -879,7 +881,7 @@ void AccountWizardController::slotNoServerFound(QNetworkReply *reply)
     setErrorText(message);
     _account->resetRejectedCertificates();
 
-    static_cast<void>(handleSecureConnectionFailure(reply, checkDowngradeAdvised(reply)));
+    handleFailedServerConnection(_account->url(), checkDowngradeAdvised(reply));
 }
 
 void AccountWizardController::slotNoServerFoundTimeout(const QUrl &url)
@@ -887,7 +889,7 @@ void AccountWizardController::slotNoServerFoundTimeout(const QUrl &url)
     setBusy(false);
     setErrorText(tr("Timeout while trying to connect to %1 at %2.")
         .arg(Utility::escape(Theme::instance()->appNameGUI()), Utility::escape(url.toString())));
-    static_cast<void>(handleSecureConnectionFailure(nullptr, false));
+    handleFailedServerConnection(url, false);
 }
 
 void AccountWizardController::slotDetermineAuthType()
@@ -1902,16 +1904,31 @@ void AccountWizardController::discardFlow2Auth()
     setAuthPolling(false);
 }
 
-bool AccountWizardController::handleSecureConnectionFailure(QNetworkReply *reply, bool retryHttpOnly)
+void AccountWizardController::handleFailedServerConnection(const QUrl &url, bool retryHttpOnly)
+{
+    _localNetworkPermissionCheck(url, this, [this, url, retryHttpOnly](bool denied) {
+        if (_account && _account->url() != url) {
+            return;
+        }
+
+        if (denied) {
+            setErrorText(LocalNetworkPermission::deniedError());
+            return;
+        }
+
+        handleSecureConnectionFailure(nullptr, retryHttpOnly);
+    });
+}
+
+void AccountWizardController::handleSecureConnectionFailure(QNetworkReply *reply, bool retryHttpOnly)
 {
     const auto failedUrl = _account ? _account->url() : reply ? reply->url() : QUrl{};
     if (failedUrl.scheme() != "https"_L1 || !_account) {
-        return false;
+        return;
     }
 
     _secureConnectionFailedUrl = failedUrl;
     emit secureConnectionFailed(failedUrl.host(), retryHttpOnly);
-    return true;
 }
 
 void AccountWizardController::retrySecureConnectionWithoutTls()
