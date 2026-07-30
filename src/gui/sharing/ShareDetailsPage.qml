@@ -29,10 +29,8 @@ Page {
             Layout.fillHeight: true
             Layout.fillWidth: true
 
-            ScrollBar.vertical.policy: propertyList.contentHeight > propertyList.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
             contentWidth: availableWidth
-            contentHeight: availableHeight
-            rightPadding: ScrollBar.vertical.policy == ScrollBar.AlwaysOn ? ScrollBar.vertical.width + Style.standardSpacing : 0
+            rightPadding: ScrollBar.vertical.visible ? ScrollBar.vertical.width + Style.standardSpacing : 0
 
             ColumnLayout {
                 width: parent.width
@@ -132,11 +130,22 @@ Page {
                             }
                         }
                     }
+
+                Label {
+                    Layout.fillWidth: true
+
+                    text: qsTr("Sharing settings")
+                    font.bold: true
+                    visible: propertyList.count > 0
                 }
 
             ListView {
                 id: propertyList
-                clip: true
+
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: contentHeight
+                    interactive: false
+                    spacing: Style.standardSpacing
 
                 model: PropertyModel {
                     // TODO: only show properties with prio=1
@@ -144,10 +153,11 @@ Page {
                 }
 
                 delegate: FieldDelegate {
-                    width: propertyList.contentItem.width
+                        width: propertyList.width
                     height: item ? item.implicitHeight : 0
                 }
             }
+        }
         }
 
             }
