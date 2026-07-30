@@ -27,10 +27,10 @@ WizardStyledWindow {
     property Share selectedShare: null
 
     title: qsTr("Share \"%1\"").arg(dialog.shortLocalPath)
-    width: 720
-    height: 500
-    minimumWidth: 600
-    minimumHeight: Style.wizardStandaloneWindowMinimumHeight
+    width: Style.sharingDialogWidth
+    height: Style.sharingDialogHeight
+    minimumWidth: Style.sharingDialogMinimumWidth
+    minimumHeight: Style.sharingDialogMinimumHeight
 
     function reconcileSelectedShare() {
         const shares = sharingController.shares
@@ -65,19 +65,26 @@ WizardStyledWindow {
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.leftMargin: Style.wizardWindowMargin
-        anchors.rightMargin: Style.wizardWindowMargin
-        anchors.topMargin: Style.wizardWindowTopMargin
-        anchors.bottomMargin: Style.wizardWindowMargin
-        spacing: Style.wizardSectionSpacing
+        anchors.topMargin: Style.standardSpacing
+        spacing: 0
 
         EnforcedPlainTextLabel {
+            Layout.leftMargin: Style.sharingDialogWindowMargin
+            Layout.rightMargin: Style.sharingDialogWindowMargin
+            Layout.bottomMargin: Style.standardSpacing
+
             text: dialog.title
             elide: Text.ElideRight
-            font.pixelSize: Style.wizardHeaderTitleFontPixelSize
+            font.pointSize: Style.titleFontPtSize
             font.weight: Font.DemiBold
             color: palette.text
             Layout.fillWidth: true
+        }
+
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.preferredHeight: Style.normalBorderWidth
+            color: Style.sharingDialogSeparatorColor
         }
 
         SplitView {
@@ -85,16 +92,16 @@ WizardStyledWindow {
             Layout.fillHeight: true
             orientation: Qt.Horizontal
             handle: Rectangle {
-                implicitWidth: 1
-                color: Style.wizardRowBorder
+                implicitWidth: Style.normalBorderWidth
+                color: Style.sharingDialogSeparatorColor
             }
 
             MainPage {
                 id: mainPage
 
-                SplitView.minimumWidth: 180
-                SplitView.preferredWidth: 240
-                SplitView.maximumWidth: 320
+                SplitView.minimumWidth: Style.sharingDialogSidebarMinimumWidth
+                SplitView.preferredWidth: Style.sharingDialogSidebarPreferredWidth
+                SplitView.maximumWidth: Style.sharingDialogSidebarMaximumWidth
 
                 sharingController: sharingController
                 fileId: dialog.fileId
@@ -111,14 +118,20 @@ WizardStyledWindow {
                 ColumnLayout {
                     anchors.fill: parent
                     anchors.leftMargin: Style.standardSpacing
+                    anchors.rightMargin: Style.sharingDialogWindowMargin + Style.standardSpacing
+                    anchors.topMargin: Style.standardSpacing
+                    anchors.bottomMargin: Style.standardSpacing
 
                     RowLayout {
                         Layout.fillWidth: true
+                        Layout.preferredHeight: Style.sharingDialogPaneHeaderHeight
 
                         EnforcedPlainTextLabel {
+                            Layout.alignment: Qt.AlignVCenter
+
                             text: qsTr("Share details")
                             elide: Text.ElideRight
-                            font.pixelSize: Style.wizardHeaderTitleFontPixelSize
+                            font.pointSize: Style.subheaderFontPtSize
                             font.weight: Font.DemiBold
                             color: palette.text
                             Layout.fillWidth: true
