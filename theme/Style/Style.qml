@@ -144,6 +144,19 @@ QtObject {
     readonly property int accountWizardWindowWidth: 600
     readonly property int accountWizardCompactHeight: 420
     readonly property int accountWizardSyncOptionsHeight: 520
+
+    // Sharing dialog
+    readonly property int sharingDialogWidth: 720
+    readonly property int sharingDialogHeight: 500
+    readonly property int sharingDialogMinimumWidth: 600
+    readonly property int sharingDialogMinimumHeight: 420
+    readonly property int sharingDialogWindowMargin: 2 * standardSpacing
+    readonly property int sharingDialogPaneHeaderHeight: iconButtonWidth
+    readonly property int sharingDialogSidebarMinimumWidth: sharingDialogWidth / 4
+    readonly property int sharingDialogSidebarPreferredWidth: sharingDialogWidth / 3
+    readonly property int sharingDialogSidebarMaximumWidth: sharingDialogWidth / 2
+    readonly property color sharingDialogSeparatorColor: darkMode ? "#3c454c" : "#e1e8ee"
+
     readonly property int activitiesWindowWidth: 680
     readonly property int activitiesWindowHeight: 700
     readonly property int assistantWindowWidth: 640
