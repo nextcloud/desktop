@@ -62,7 +62,7 @@ WizardStyledWindow {
                 flat: true
                 padding: Style.extraSmallSpacing
                 spacing: 0
-                icon.source: "image://svgimage-custom-color/confirm.svg/" + palette.windowText // TODO: back button icon!
+                icon.source: "image://svgimage-custom-color/back.svg/" + palette.windowText
                 icon.width: Style.extraSmallIconSize
                 icon.height: Style.extraSmallIconSize
                 Layout.alignment: Qt.AlignTop | Qt.AlignRight
