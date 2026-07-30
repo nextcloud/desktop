@@ -27,7 +27,8 @@ ItemDelegate {
                 names.push(recipient.displayName)
             }
         }
-        return names.length > 0 ? names.join(", ") : qsTr("No recipients")
+        return names.join(", ")
+    }
 
     background: Rectangle {
         color: root.selected
@@ -45,7 +46,12 @@ ItemDelegate {
             EnforcedPlainTextLabel {
                 Layout.fillWidth: true
 
-                text: root.recipientNames()
+                text: {
+                    const recipients = root.recipientNames()
+                    return recipients.length > 0
+                        ? qsTr("Shared with %1").arg(recipients)
+                        : qsTr("Share without recipients")
+                }
                 elide: Text.ElideRight
             }
         }
