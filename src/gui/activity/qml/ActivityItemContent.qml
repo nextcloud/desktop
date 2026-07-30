@@ -170,48 +170,19 @@ RowLayout {
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 spacing: Style.extraSmallSpacing
 
-                Button {
+                ActivityFileMenuButton {
                     id: fileDetailsButton
 
-                    width: Style.activityListButtonWidth
-                    height: Style.activityListButtonHeight
-
-                    icon.name: 'view-more-symbolic'
-                    icon.source: "image://svgimage-custom-color/more.svg/" + palette.buttonText
-                    icon.width: Style.activityListButtonIconSize
-                    icon.height: Style.activityListButtonIconSize
-
-                    ToolTip {
-                        popupType: Qt.platform.os === "windows" ? Popup.Item : Qt.platform.os === "windows" ? Popup.Item : Popup.Native
-                        text: qsTr("Open file details")
-                        visible: parent.hovered
-                    }
-
-                    display: Button.IconOnly
+                    buttonWidth: Style.activityListButtonWidth
+                    buttonHeight: Style.activityListButtonHeight
+                    buttonIconSize: Style.activityListButtonIconSize
+                    itemFontPixelSize: Style.topLinePixelSize
+                    filePath: root.activityData.openablePath
+                    serverHasIntegration: root.activityData.serverHasIntegration
                     visible: model.showFileDetails
-                    onClicked: fileMoreButtonMenu.visible ? fileMoreButtonMenu.close() : fileMoreButtonMenu.popup()
 
-                    AutoSizingMenu {
-                        id: fileMoreButtonMenu
-                        closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
-
-                        MenuItem {
-                            height: visible ? implicitHeight : 0
-                            text: qsTr("File details")
-                            font.pixelSize: Style.topLinePixelSize
-                            hoverEnabled: true
-                            onClicked: Systray.presentShareViewInTray(model.openablePath)
-                        }
-
-                        MenuItem {
-                            visible: model.serverHasIntegration
-                            height: visible ? implicitHeight : 0
-                            text: qsTr("File actions")
-                            font.pixelSize: Style.topLinePixelSize
-                            hoverEnabled: true
-                            onClicked: Systray.presentFileActionsViewInSystray(model.openablePath)
-                        }
-                    }
+                    onFileDetailsRequested: path => Systray.presentShareViewInTray(path)
+                    onFileActionsRequested: path => Systray.presentFileActionsViewInSystray(path)
                 }
 
                 Button {
