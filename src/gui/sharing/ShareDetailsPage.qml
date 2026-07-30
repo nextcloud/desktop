@@ -178,6 +178,44 @@ Page {
             }
         }
 
+        Label {
+            Layout.fillWidth: true
+
+            text: root.shareActivationError
+            color: Style.wizardErrorText
+            wrapMode: Text.Wrap
+            visible: text.length > 0
+        }
+
+        Label {
+            Layout.fillWidth: true
+
+            text: qsTr("Changes to this share are applied immediately.")
+            color: palette.placeholderText
+            wrapMode: Text.Wrap
+            visible: root.share.state === Share.Active
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+            visible: root.share.state === Share.Draft
+
+            Item {
+                Layout.fillWidth: true
+            }
+
+            WizardButton {
+                primary: true
+                text: root.activatingShare ? qsTr("Sending…") : qsTr("Send share")
+                enabled: !root.activatingShare
+
+                onClicked: {
+                    root.shareActivationError = ""
+                    root.activatingShare = true
+                    root.sharingController.activateShare(root.share)
+                }
+            }
+        }
     }
 
     Connections {
