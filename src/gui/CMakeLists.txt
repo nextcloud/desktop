@@ -240,6 +240,7 @@ set(client_SRCS
     activity/activitylistmodel.cpp
     tray/asyncimageresponse.cpp
     tray/trayimageprovider.cpp
+    tray/trayaccountmenupolicy.h
     tray/trayaccountappsmodel.h
     tray/trayaccountappsmodel.cpp
     tray/usermodel.h

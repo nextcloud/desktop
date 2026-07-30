@@ -10,6 +10,7 @@
 #include "iconjob.h"
 #include "theme.h"
 #include "tray/trayaccountappsmodel.h"
+#include "tray/trayaccountmenupolicy.h"
 #include "tray/trayimageutils.h"
 #include "tray/usermodel.h"
 
@@ -509,6 +510,15 @@ void openLocalFolderForUser(const int userId)
 #endif
 }
 
+void reconnectUser(const int userId)
+{
+    closeTrayPopup();
+
+    if (const auto userModel = UserModel::instance()) {
+        userModel->login(userId);
+    }
+}
+
 void openUserStatusForUser(const int userId)
 {
     closeTrayPopup();
@@ -699,16 +709,49 @@ void populateAccountMenu(QMenu *menu, const int userId, const bool fetchActivity
         return;
     }
 
-    if (fetchActivityPreview) {
+    const auto userModelIndex = userModel->index(userId);
+    const auto policy = TrayAccountMenuPolicy{
+        userModel->data(userModelIndex, UserModel::IsConnectedRole).toBool(),
+        userModel->data(userModelIndex, UserModel::CanLogoutRole).toBool(),
+    };
+    if (fetchActivityPreview && policy.fetchActivityPreview()) {
         userModel->fetchActivityPreview(userId);
     }
 
-    const auto userModelIndex = userModel->index(userId);
     const auto menuIconPalette = nativeMenuIconPalette(menu);
     const auto menuIconSize = nativeMenuIconSize(menu);
-    const auto serverHasUserStatus = userModel->data(userModelIndex, UserModel::ServerHasUserStatusRole).toBool();
-    const auto onlineStatusEnabled = userModel->data(userModelIndex, UserModel::IsConnectedRole).toBool() && serverHasUserStatus;
 
+    if (!policy.showConnectedSections()) {
+        for (const auto entry : policy.disconnectedEntries()) {
+            switch (entry) {
+            case TrayAccountMenuPolicy::Entry::LocalFolder: {
+                const auto openFolderAction = addMenuAction(menu,
+                    templateBlackThemeIcon(QStringLiteral("folder.svg"), menuIconSize, menuIconPalette),
+                    QCoreApplication::translate("TrayFoldersMenuButton", "Local folder"));
+                QObject::connect(openFolderAction, &QAction::triggered, openFolderAction, [userId] {
+                    openLocalFolderForUser(userId);
+                });
+                break;
+            }
+            case TrayAccountMenuPolicy::Entry::Separator:
+                menu->addSeparator();
+                break;
+            case TrayAccountMenuPolicy::Entry::Reconnect: {
+                const auto reconnectAction = addMenuAction(menu,
+                    QIcon{},
+                    QCoreApplication::translate("OCC::AccountSettings", "Log in"));
+                QObject::connect(reconnectAction, &QAction::triggered, reconnectAction, [userId] {
+                    reconnectUser(userId);
+                });
+                break;
+            }
+            }
+        }
+        return;
+    }
+
+    const auto serverHasUserStatus = userModel->data(userModelIndex, UserModel::ServerHasUserStatusRole).toBool();
+    const auto onlineStatusEnabled = policy.showConnectedSections() && serverHasUserStatus;
     const auto accountAlert = userModel->data(userModelIndex, UserModel::AccountAlertRole).toMap();
     const auto accountAlertTitle = accountAlert.value(QStringLiteral("title")).toString();
     if (!accountAlertTitle.isEmpty()) {
@@ -755,7 +798,6 @@ void populateAccountMenu(QMenu *menu, const int userId, const bool fetchActivity
     const auto searchAction = addMenuAction(menu,
         templateBlackThemeIcon(QStringLiteral("search.svg"), menuIconSize, menuIconPalette),
         QCoreApplication::translate("TrayAccountPopup", "Search"));
-    searchAction->setEnabled(userModel->data(userModelIndex, UserModel::IsConnectedRole).toBool());
     QObject::connect(searchAction, &QAction::triggered, searchAction, [userId] {
         openSearchForUser(userId);
     });
@@ -812,7 +854,8 @@ void populateTrayMenu(QMenu *menu, Systray *systray)
                     }
                     if (!roles.isEmpty()
                         && !roles.contains(UserModel::RecentActivitiesRole)
-                        && !roles.contains(UserModel::TrayNotificationsRole)) {
+                        && !roles.contains(UserModel::TrayNotificationsRole)
+                        && !roles.contains(UserModel::IsConnectedRole)) {
                         return;
                     }
                     populateAccountMenu(accountMenu, userId, false);
