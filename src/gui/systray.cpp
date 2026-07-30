@@ -4,22 +4,23 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include "systray.h"
+#include "accessmanager.h"
 #include "accountmanager.h"
 #include "accountstate.h"
 #include "activity/syncstatussummary.h"
-#include "systray.h"
-#include "theme.h"
-#include "config.h"
+#include "callstatechecker.h"
+#include "common/syncjournalfilerecord.h"
 #include "common/utility.h"
-#include "tray/svgimageprovider.h"
+#include "config.h"
+#include "configfile.h"
+#include "guiutility.h"
 #include "search/unifiedsearchresultslistmodel.h"
+#include "theme.h"
+#include "tray/svgimageprovider.h"
+#include "tray/trayimageprovider.h"
 #include "tray/usermodel.h"
 #include "wheelhandler.h"
-#include "tray/trayimageprovider.h"
-#include "configfile.h"
-#include "accessmanager.h"
-#include "callstatechecker.h"
-#include "guiutility.h"
 
 #ifdef Q_OS_MACOS
 #include "foregroundbackground_interface.h"
@@ -863,6 +864,15 @@ void Systray::createFileDetailsDialog(const QString &localPath, const QString &f
         return;
     }
 
+    auto resolvedFileId = fileId;
+    if (resolvedFileId.isEmpty()) {
+        const auto relativePath = localPath.mid(folder->cleanPath().length() + 1);
+        auto fileRecord = SyncJournalFileRecord{};
+        if (folder->journalDb()->getFileRecord(relativePath, &fileRecord)) {
+            resolvedFileId = QString::fromUtf8(fileRecord._fileId);
+        }
+    }
+
     if (folder->accountState()->account()->capabilities().unifiedSharingAvailable()) {
         // we have a server with the new unified sharing system, let's show the new fancy one
         // TODO: reduce code duplication
@@ -870,7 +880,7 @@ void Systray::createFileDetailsDialog(const QString &localPath, const QString &f
         const QVariantMap initialProperties{
             {"account", QVariant::fromValue(folder->accountState()->account())},
             {"localPath", localPath},
-            {"fileId", fileId},
+            {"fileId", resolvedFileId},
         };
 
         QQmlComponent fileDetailsDialog(trayEngine(), "com.nextcloud.desktopclient.sharing"_L1, "ShareDialog"_L1);
