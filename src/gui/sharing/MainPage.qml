@@ -24,18 +24,32 @@ Page {
     signal shareSelected(Share share)
 
     title: qsTr("Share \"%1\"").arg(root.shortLocalPath)
-    background: Rectangle {
-        color: palette.alternateBase
-    }
 
     ColumnLayout {
         anchors.fill: parent
+        anchors.margins: Style.standardSpacing
 
-        EnforcedPlainTextLabel {
+        RowLayout {
             Layout.fillWidth: true
 
-            text: qsTr("Shares")
-            font.bold: true
+            EnforcedPlainTextLabel {
+                Layout.fillWidth: true
+
+                text: qsTr("Shares")
+                font.bold: true
+            }
+
+            ToolButton {
+                text: root.sharingController.creatingShare ? qsTr("Creating share…") : qsTr("Create share")
+                display: AbstractButton.IconOnly
+                icon.source: "image://svgimage-custom-color/add.svg/" + palette.buttonText
+                enabled: !root.sharingController.creatingShare && root.fileId.length > 0
+
+                ToolTip.visible: hovered
+                ToolTip.text: text
+
+                onClicked: root.sharingController.createShare(root.fileId)
+            }
         }
 
         EnforcedPlainTextLabel {
@@ -60,13 +74,22 @@ Page {
             spacing: Style.smallSpacing
             model: root.sharingController.shares
             visible: count > 0
+            currentIndex: {
+                for (let row = 0; row < count; ++row) {
+                    if (root.sharingController.shares[row] === root.selectedShare) {
+                        return row
+                    }
+                }
+                return -1
+            }
 
             delegate: ShareEntry {
+                required property int index
                 required property Share modelData
 
                 width: sharesList.width
                 share: modelData
-                selected: share === root.selectedShare
+                highlighted: ListView.isCurrentItem
 
                 onClicked: root.shareSelected(share)
             }
@@ -81,13 +104,5 @@ Page {
             visible: text.length > 0
         }
 
-        Button {
-            Layout.fillWidth: true
-
-            text: root.sharingController.creatingShare ? qsTr("Creating share…") : qsTr("Create share")
-            enabled: !root.sharingController.creatingShare && root.fileId.length > 0
-
-            onClicked: root.sharingController.createShare(root.fileId)
-        }
     }
 }
