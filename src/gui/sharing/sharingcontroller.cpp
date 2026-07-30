@@ -9,6 +9,8 @@
 #include <QLoggingCategory>
 #include <QNetworkReply>
 
+#include <optional>
+
 #include "addrecipientjob.h"
 #include "addsourcejob.h"
 #include "createsharejob.h"
@@ -17,6 +19,7 @@
 #include "removerecipientjob.h"
 #include "setpermissionjob.h"
 #include "setpermissionpresetjob.h"
+#include "setpropertyjob.h"
 #include "share.h"
 #include "sharingconstants.h"
 
@@ -232,6 +235,40 @@ void SharingController::setPermissionPreset(Share *share, const QString &permiss
     }
 
     const auto job = new SetPermissionPresetJob{_account, *share, permissionPreset};
+    job->start();
+}
+
+void SharingController::setProperty(Share *share, const QString &propertyClass, const QString &value)
+{
+    if (!_account) {
+        qCWarning(lcSharingController) << "attempted to set a share property without an account set";
+        return;
+    }
+
+    if (!containsShare(share)) {
+        qCWarning(lcSharingController) << "attempted to set a property on a share not owned by this controller";
+        return;
+    }
+
+    if (propertyClass.isEmpty()) {
+        qCWarning(lcSharingController) << "attempted to set a share property without a property class";
+        return;
+    }
+
+    const auto guardedShare = QPointer<Share>{share};
+    const auto propertyValue = value.isEmpty() ? std::nullopt : std::optional{value};
+    const auto job = new SetPropertyJob{_account, *share, propertyClass, propertyValue};
+    connect(job, &SetPropertyJob::shareUpdated, this, [this](QPointer<Share> updatedShare) {
+        if (updatedShare) {
+            Q_EMIT propertyUpdated(updatedShare);
+        }
+    });
+    connect(job, &SetPropertyJob::ocsError, this, [this, guardedShare](int, const QString &message) {
+        Q_EMIT propertyUpdateFailed(guardedShare, message.isEmpty() ? tr("Could not update the sharing setting.") : message);
+    });
+    connect(job, &SetPropertyJob::networkError, this, [this, guardedShare](const QNetworkReply *reply) {
+        Q_EMIT propertyUpdateFailed(guardedShare, reply ? reply->errorString() : tr("Could not update the sharing setting."));
+    });
     job->start();
 }
 

@@ -17,6 +17,8 @@ Loader {
     id: instantiator
     required property var model
 
+    signal valueEdited(string propertyClass, string value)
+
     sourceComponent: switch (model.type) {
         case PropertyModel.Switch:
             return switchComponent;
@@ -41,7 +43,7 @@ Loader {
                     if (instantiator.model.value === checked) {
                         return;
                     }
-                    instantiator.model.value = checked
+                    instantiator.valueEdited(instantiator.model.property, checked ? "true" : "false")
                 }
             }
         }
@@ -61,7 +63,7 @@ Loader {
                     if (instantiator.model.value === text) {
                         return;
                     }
-                    instantiator.model.value = text
+                    instantiator.valueEdited(instantiator.model.property, text)
                 }
             }
         }
@@ -81,7 +83,7 @@ Loader {
                     if (instantiator.model.value === text) {
                         return;
                     }
-                    instantiator.model.value = text
+                    instantiator.valueEdited(instantiator.model.property, text)
                 }
             }
         }
