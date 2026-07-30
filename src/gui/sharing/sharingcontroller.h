@@ -65,6 +65,7 @@ public:
 
     Q_INVOKABLE void setPermission(Share *share, const QString &permissionClass, bool enabled);
     Q_INVOKABLE void setPermissionPreset(Share *share, const QString &permissionPreset);
+    Q_INVOKABLE void setProperty(Share *share, const QString &propertyClass, const QString &value);
 
 Q_SIGNALS:
     void accountChanged();
@@ -81,6 +82,12 @@ Q_SIGNALS:
 
     /** @brief Emitted when adding a recipient failed. */
     void recipientAdditionFailed(Share *share, const QString &error);
+
+    /** @brief Emitted after a share property was updated. */
+    void propertyUpdated(Share *share);
+
+    /** @brief Emitted when updating a share property failed. */
+    void propertyUpdateFailed(Share *share, const QString &error);
 
 private:
     AccountPtr _account;
