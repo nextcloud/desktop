@@ -166,7 +166,19 @@ void SharingController::addRecipient(Share *share, const QString &recipientType,
         return;
     }
 
+    const auto guardedShare = QPointer<Share>{share};
     const auto job = new AddRecipientJob{_account, *share, recipientType, recipientValue};
+    connect(job, &AddRecipientJob::shareUpdated, this, [this](QPointer<Share> updatedShare) {
+        if (updatedShare) {
+            Q_EMIT recipientAdded(updatedShare);
+        }
+    });
+    connect(job, &AddRecipientJob::ocsError, this, [this, guardedShare](int, const QString &message) {
+        Q_EMIT recipientAdditionFailed(guardedShare, message.isEmpty() ? tr("Could not add the recipient.") : message);
+    });
+    connect(job, &AddRecipientJob::networkError, this, [this, guardedShare](const QNetworkReply *reply) {
+        Q_EMIT recipientAdditionFailed(guardedShare, reply ? reply->errorString() : tr("Could not add the recipient."));
+    });
     job->start();
 }
 
