@@ -87,7 +87,7 @@ WizardStyledWindow {
             orientation: Qt.Horizontal
             handle: Rectangle {
                 implicitWidth: 1
-                color: palette.mid
+                color: Style.wizardRowBorder
             }
 
             MainPage {
@@ -112,6 +112,7 @@ WizardStyledWindow {
 
                 ColumnLayout {
                     anchors.fill: parent
+                    anchors.leftMargin: Style.standardSpacing
 
                     RowLayout {
                         Layout.fillWidth: true
@@ -125,10 +126,10 @@ WizardStyledWindow {
                             Layout.fillWidth: true
                         }
 
-                        WizardButton {
-                            iconSource: "image://svgimage-custom-color/settings.svg/" + palette.windowText
+                        ToolButton {
+                            icon.source: "image://svgimage-custom-color/settings.svg/" + palette.windowText
 
-                            visible: dialog.selectedShare
+                            visible: dialog.selectedShare && dialog.selectedShare.properties.length > 0
                             onClicked: settingsPopup.open()
                         }
                     }

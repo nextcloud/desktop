@@ -6,7 +6,6 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
-import QtQuick.Layouts
 import QtQuick.Controls
 
 import com.nextcloud.desktopclient
@@ -16,9 +15,6 @@ ItemDelegate {
     id: root
 
     required property Share share
-    property bool selected: false
-
-    highlighted: root.selected
 
     function recipientNames(): string {
         const names = []
@@ -30,31 +26,17 @@ ItemDelegate {
         return names.join(", ")
     }
 
-    background: Rectangle {
-        color: root.selected
-            ? palette.midlight
-            : root.hovered
-                ? palette.alternateBase
-                : "transparent"
-        radius: Style.smallSpacing
+    text: {
+        const recipients = root.recipientNames()
+        return recipients.length > 0
+            ? qsTr("Shared with %1").arg(recipients)
+            : qsTr("New share")
     }
 
-    contentItem: RowLayout {
-        ColumnLayout {
-            Layout.fillWidth: true
-
-            EnforcedPlainTextLabel {
-                Layout.fillWidth: true
-
-                text: {
-                    const recipients = root.recipientNames()
-                    return recipients.length > 0
-                        ? qsTr("Shared with %1").arg(recipients)
-                        : qsTr("Share without recipients")
-                }
-                elide: Text.ElideRight
-            }
-        }
-
+    contentItem: EnforcedPlainTextLabel {
+        text: root.text
+        color: root.highlighted ? root.palette.highlightedText : root.palette.text
+        verticalAlignment: Text.AlignVCenter
+        elide: Text.ElideRight
     }
 }
