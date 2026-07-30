@@ -139,21 +139,21 @@ Page {
                         required property var model
 
                         width: ListView.view.width
-                            text: model.label
-                            checked: model.enabled
+                        text: model.label
+                        checked: model.enabled
 
                         onToggled: {
-                                    root.sharingController.setPermission(root.share, model.className, checked)
-                                }
-                            }
+                            root.sharingController.setPermission(root.share, model.className, checked)
                         }
+                    }
+                }
 
                 EnforcedPlainTextLabel {
                     Layout.fillWidth: true
                     Layout.topMargin: Style.standardSpacing
 
                     text: qsTr("Sharing settings")
-                    font.bold: true
+                    font.weight: Font.DemiBold
                     visible: propertyList.count > 0
                 }
 

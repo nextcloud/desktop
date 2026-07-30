@@ -27,19 +27,30 @@ Page {
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.margins: Style.standardSpacing
+        anchors.leftMargin: Style.sharingDialogWindowMargin + Style.standardSpacing
+        anchors.rightMargin: Style.standardSpacing
+        anchors.topMargin: Style.standardSpacing
+        anchors.bottomMargin: Style.standardSpacing
 
         RowLayout {
             Layout.fillWidth: true
+            Layout.preferredHeight: Style.sharingDialogPaneHeaderHeight
 
             EnforcedPlainTextLabel {
                 Layout.fillWidth: true
+                Layout.alignment: Qt.AlignVCenter
 
                 text: qsTr("Shares")
-                font.bold: true
+                font.pointSize: Style.subheaderFontPtSize
+                font.weight: Font.DemiBold
+                color: palette.text
             }
 
             ToolButton {
+                Layout.preferredWidth: Style.sharingDialogPaneHeaderHeight
+                Layout.preferredHeight: Style.sharingDialogPaneHeaderHeight
+                Layout.alignment: Qt.AlignVCenter
+
                 text: root.sharingController.creatingShare ? qsTr("Creating share…") : qsTr("Create share")
                 display: AbstractButton.IconOnly
                 icon.source: "image://svgimage-custom-color/add.svg/" + palette.buttonText
