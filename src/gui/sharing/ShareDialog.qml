@@ -39,7 +39,6 @@ WizardStyledWindow {
         }
 
         dialog.selectedShare = shares.length > 0 ? shares[0] : null
-        settingsPopup.close()
     }
 
     SharingController {
@@ -103,7 +102,6 @@ WizardStyledWindow {
 
                 onShareSelected: share => {
                     dialog.selectedShare = share
-                    settingsPopup.close()
                 }
             }
 
@@ -124,13 +122,6 @@ WizardStyledWindow {
                             font.weight: Font.DemiBold
                             color: palette.text
                             Layout.fillWidth: true
-                        }
-
-                        ToolButton {
-                            icon.source: "image://svgimage-custom-color/settings.svg/" + palette.windowText
-
-                            visible: dialog.selectedShare && dialog.selectedShare.properties.length > 0
-                            onClicked: settingsPopup.open()
                         }
                     }
 
@@ -153,13 +144,6 @@ WizardStyledWindow {
                             verticalAlignment: Text.AlignVCenter
                             wrapMode: Text.Wrap
                             visible: dialog.selectedShare === null
-                        }
-
-                        ShareSettingsPopup {
-                            id: settingsPopup
-
-                            sharingController: sharingController
-                            share: dialog.selectedShare
                         }
                     }
                 }
