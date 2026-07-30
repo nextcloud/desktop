@@ -25,7 +25,6 @@ WizardStyledWindow {
     property string shortLocalPath: dialog.localPath.split("/").reverse()[0]
     property string fileId: ""
     property Share selectedShare: null
-    property bool showingSettings: false
 
     title: qsTr("Share \"%1\"").arg(dialog.shortLocalPath)
     width: 720
@@ -40,7 +39,7 @@ WizardStyledWindow {
         }
 
         dialog.selectedShare = shares.length > 0 ? shares[0] : null
-        dialog.showingSettings = false
+        settingsPopup.close()
     }
 
     SharingController {
@@ -104,7 +103,7 @@ WizardStyledWindow {
 
                 onShareSelected: share => {
                     dialog.selectedShare = share
-                    dialog.showingSettings = false
+                    settingsPopup.close()
                 }
             }
 
@@ -117,20 +116,8 @@ WizardStyledWindow {
                     RowLayout {
                         Layout.fillWidth: true
 
-                        Button {
-                            flat: true
-                            padding: Style.extraSmallSpacing
-                            spacing: 0
-                            icon.source: "image://svgimage-custom-color/back.svg/" + palette.windowText
-                            icon.width: Style.extraSmallIconSize
-                            icon.height: Style.extraSmallIconSize
-
-                            visible: dialog.showingSettings
-                            onClicked: dialog.showingSettings = false
-                        }
-
                         EnforcedPlainTextLabel {
-                            text: dialog.showingSettings ? qsTr("Sharing settings") : qsTr("Share details")
+                            text: qsTr("Share details")
                             elide: Text.ElideRight
                             font.pixelSize: Style.wizardHeaderTitleFontPixelSize
                             font.weight: Font.DemiBold
@@ -141,28 +128,38 @@ WizardStyledWindow {
                         WizardButton {
                             iconSource: "image://svgimage-custom-color/settings.svg/" + palette.windowText
 
-                            visible: dialog.selectedShare && !dialog.showingSettings
-                            onClicked: dialog.showingSettings = true
+                            visible: dialog.selectedShare
+                            onClicked: settingsPopup.open()
                         }
                     }
 
-                    Loader {
+                    Item {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
 
-                        active: dialog.selectedShare !== null
-                        sourceComponent: dialog.showingSettings ? settingsComponent : detailsComponent
-                    }
+                        Loader {
+                            anchors.fill: parent
 
-                    EnforcedPlainTextLabel {
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
+                            active: dialog.selectedShare !== null
+                            sourceComponent: detailsComponent
+                        }
 
-                        text: qsTr("Select a share to view its details.")
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                        wrapMode: Text.Wrap
-                        visible: dialog.selectedShare === null
+                        EnforcedPlainTextLabel {
+                            anchors.fill: parent
+
+                            text: qsTr("Select a share to view its details.")
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            wrapMode: Text.Wrap
+                            visible: dialog.selectedShare === null
+                        }
+
+                        ShareSettingsPopup {
+                            id: settingsPopup
+
+                            sharingController: sharingController
+                            share: dialog.selectedShare
+                        }
                     }
                 }
             }
@@ -178,12 +175,4 @@ WizardStyledWindow {
         }
     }
 
-    Component {
-        id: settingsComponent
-
-        SettingsPage {
-            sharingController: sharingController
-            share: dialog.selectedShare
-        }
-    }
 }
