@@ -16,6 +16,9 @@ ItemDelegate {
     id: root
 
     required property Share share
+    property bool selected: false
+
+    highlighted: root.selected
 
     function recipientNames(): string {
         const names = []
@@ -25,6 +28,14 @@ ItemDelegate {
             }
         }
         return names.length > 0 ? names.join(", ") : qsTr("No recipients")
+
+    background: Rectangle {
+        color: root.selected
+            ? palette.midlight
+            : root.hovered
+                ? palette.alternateBase
+                : "transparent"
+        radius: Style.smallSpacing
     }
 
     contentItem: RowLayout {
@@ -39,10 +50,5 @@ ItemDelegate {
             }
         }
 
-        EnforcedPlainTextLabel {
-            text: "›"
-            font.pixelSize: Style.largeIconSize
-            color: palette.placeholderText
-        }
     }
 }

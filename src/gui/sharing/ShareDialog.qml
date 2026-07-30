@@ -17,32 +17,52 @@ import "qrc:/qml/src/gui/tray"
 import "qrc:/qml/src/gui/wizard/qml"
 
 WizardStyledWindow {
-    id: root
+    id: dialog
     visible: true
 
     property var account
     property string localPath: ""
-    property string shortLocalPath: root.localPath.split("/").reverse()[0]
+    property string shortLocalPath: dialog.localPath.split("/").reverse()[0]
     property string fileId: ""
+    property Share selectedShare: null
+    property bool showingSettings: false
 
-    title: mainPage.title
-    width: 400
+    title: qsTr("Share \"%1\"").arg(dialog.shortLocalPath)
+    width: 720
     height: 500
-    minimumWidth: Style.wizardStandaloneWindowMinimumWidth
+    minimumWidth: 600
     minimumHeight: Style.wizardStandaloneWindowMinimumHeight
+
+    function reconcileSelectedShare() {
+        const shares = sharingController.shares
+        if (dialog.selectedShare && shares.indexOf(dialog.selectedShare) !== -1) {
+            return
+        }
+
+        dialog.selectedShare = shares.length > 0 ? shares[0] : null
+        dialog.showingSettings = false
+    }
 
     SharingController {
         id: sharingController
-        account: root.account
+        account: dialog.account
     }
 
     Shortcut {
         sequences: [StandardKey.Cancel]
-        onActivated: root.close()
+        onActivated: dialog.close()
     }
 
     Component.onCompleted: {
-        sharingController.initialize(root.fileId)
+        sharingController.initialize(dialog.fileId)
+    }
+
+    Connections {
+        target: sharingController
+
+        function onSharesChanged() {
+            dialog.reconcileSelectedShare()
+        }
     }
 
     ColumnLayout {
@@ -53,90 +73,117 @@ WizardStyledWindow {
         anchors.bottomMargin: Style.wizardWindowMargin
         spacing: Style.wizardSectionSpacing
 
-        RowLayout {
-            id: windowHeader
+        EnforcedPlainTextLabel {
+            text: dialog.title
+            elide: Text.ElideRight
+            font.pixelSize: Style.wizardHeaderTitleFontPixelSize
+            font.weight: Font.DemiBold
+            color: palette.text
             Layout.fillWidth: true
-
-            Button {
-                id: backButton
-                flat: true
-                padding: Style.extraSmallSpacing
-                spacing: 0
-                icon.source: "image://svgimage-custom-color/back.svg/" + palette.windowText
-                icon.width: Style.extraSmallIconSize
-                icon.height: Style.extraSmallIconSize
-                Layout.alignment: Qt.AlignTop | Qt.AlignRight
-                Layout.rightMargin: Style.extraSmallSpacing
-                Layout.topMargin: Style.extraSmallSpacing
-                background: Rectangle {
-                    color: "transparent"
-                    border.width: parent.hovered ? Style.trayWindowBorderWidth : 0
-                    border.color: palette.dark
-                    anchors.fill: parent
-                    Layout.margins: Style.extraSmallSpacing
-                }
-
-                onClicked: stack.pop()
-                visible: stack.depth > 1
-            }
-
-            ColumnLayout {
-                EnforcedPlainTextLabel {
-                    id: headerSettings
-                    text: stack.currentItem.title
-                    elide: Text.ElideRight
-                    font.pixelSize: Style.wizardHeaderTitleFontPixelSize
-                    font.weight: Font.DemiBold
-                    color: palette.text
-                    Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                }
-                EnforcedPlainTextLabel {
-                    id: headerSettingsLocalPath
-                    text: root.shortLocalPath
-                    elide: Text.ElideRight
-                    color: Style.wizardSecondaryText
-                    font.pixelSize: Style.wizardHeaderAccountServerFontPixelSize
-                    Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-
-                    visible: stack.depth > 1
-                }
-            }
-
-            WizardButton {
-                id: settingsButton
-                iconSource: "image://svgimage-custom-color/settings.svg/" + palette.windowText
-
-                visible: stack.depth === 2 && stack.currentItem && stack.currentItem.share
-
-                onClicked: stack.push(Qt.createComponent("com.nextcloud.desktopclient.sharing", "SettingsPage").createObject(root, {
-                    sharingController: sharingController,
-                    share: stack.currentItem.share,
-                }))
-            }
         }
 
-        StackView {
+        SplitView {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            id: stack
+            orientation: Qt.Horizontal
+            handle: Rectangle {
+                implicitWidth: 1
+                color: palette.mid
+            }
 
-            initialItem: mainPage
+            MainPage {
+                id: mainPage
+
+                SplitView.minimumWidth: 180
+                SplitView.preferredWidth: 240
+                SplitView.maximumWidth: 320
+
+                sharingController: sharingController
+                fileId: dialog.fileId
+                selectedShare: dialog.selectedShare
+
+                onShareSelected: share => {
+                    dialog.selectedShare = share
+                    dialog.showingSettings = false
+                }
+            }
+
+            Page {
+                SplitView.fillWidth: true
+
+                ColumnLayout {
+                    anchors.fill: parent
+
+                    RowLayout {
+                        Layout.fillWidth: true
+
+                        Button {
+                            flat: true
+                            padding: Style.extraSmallSpacing
+                            spacing: 0
+                            icon.source: "image://svgimage-custom-color/back.svg/" + palette.windowText
+                            icon.width: Style.extraSmallIconSize
+                            icon.height: Style.extraSmallIconSize
+
+                            visible: dialog.showingSettings
+                            onClicked: dialog.showingSettings = false
+                        }
+
+                        EnforcedPlainTextLabel {
+                            text: dialog.showingSettings ? qsTr("Sharing settings") : qsTr("Share details")
+                            elide: Text.ElideRight
+                            font.pixelSize: Style.wizardHeaderTitleFontPixelSize
+                            font.weight: Font.DemiBold
+                            color: palette.text
+                            Layout.fillWidth: true
+                        }
+
+                        WizardButton {
+                            iconSource: "image://svgimage-custom-color/settings.svg/" + palette.windowText
+
+                            visible: dialog.selectedShare && !dialog.showingSettings
+                            onClicked: dialog.showingSettings = true
+                        }
+                    }
+
+                    Loader {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+
+                        active: dialog.selectedShare !== null
+                        sourceComponent: dialog.showingSettings ? settingsComponent : detailsComponent
+                    }
+
+                    EnforcedPlainTextLabel {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+
+                        text: qsTr("Select a share to view its details.")
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        wrapMode: Text.Wrap
+                        visible: dialog.selectedShare === null
+                    }
+                }
+            }
         }
     }
 
-    MainPage {
-        id: mainPage
+    Component {
+        id: detailsComponent
 
-        sharingController: sharingController
-        localPath: root.localPath
-        shortLocalPath: root.shortLocalPath
-        fileId: root.fileId
+        ShareDetailsPage {
+            sharingController: sharingController
+            share: dialog.selectedShare
+        }
+    }
 
-        onShareSelected: share => stack.push(Qt.createComponent("com.nextcloud.desktopclient.sharing", "ShareDetailsPage").createObject(root, {
-            sharingController: sharingController,
-            share: share,
-        }))
+    Component {
+        id: settingsComponent
+
+        SettingsPage {
+            sharingController: sharingController
+            share: dialog.selectedShare
+        }
     }
 }
