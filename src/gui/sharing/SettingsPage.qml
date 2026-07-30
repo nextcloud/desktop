@@ -6,8 +6,6 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
-import QtQuick.Window
-import QtQuick.Layouts
 import QtQuick.Controls
 
 import com.nextcloud.desktopclient
@@ -20,36 +18,36 @@ Page {
     property Share share
 
     title: qsTr("Sharing settings")
+    implicitWidth: 360
+    implicitHeight: Math.min(settingsList.contentHeight, 320)
 
-    ColumnLayout {
-        id: windowContent
+    ListView {
+        id: settingsList
+
         anchors.fill: parent
+        clip: true
+        spacing: Style.standardSpacing
 
-        ScrollView {
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-
-            ScrollBar.vertical.policy: propertyList.contentHeight > propertyList.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
-            contentWidth: availableWidth
-            rightPadding: ScrollBar.vertical.policy == ScrollBar.AlwaysOn ? ScrollBar.vertical.width + Style.standardSpacing : 0
-
-            ListView {
-                id: propertyList
-                clip: true
-
-                // model: SharingFilterModel {
-                //     filterType: SharingFilterModel.Settings
-                //     sourceModel: root.sharingModel
-                //     recipientTypes: root.recipientTypes
-                // }
-                model: PropertyModel {
-                    share: root.share
-                }
-
-                delegate: FieldDelegate {
-                    width: propertyList.contentItem.width
-                }
-            }
+        model: PropertyModel {
+            share: root.share
         }
+
+        delegate: FieldDelegate {
+            required property var model
+
+            width: settingsList.width
+        }
+
+        ScrollBar.vertical: ScrollBar {}
+    }
+
+    Label {
+        anchors.centerIn: parent
+        width: parent.width
+
+        text: qsTr("No additional sharing settings are available.")
+        horizontalAlignment: Text.AlignHCenter
+        wrapMode: Text.Wrap
+        visible: settingsList.count === 0
     }
 }
