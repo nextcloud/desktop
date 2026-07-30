@@ -5,10 +5,10 @@
 
 #include "propertymodel.h"
 
-#include <QPointer>
-
 #include "share.h"
 #include "property.h"
+
+#include <algorithm>
 
 using namespace Qt::StringLiterals;
 using namespace OCC;
@@ -20,73 +20,53 @@ PropertyModel::PropertyModel(QObject *parent)
 
 int PropertyModel::rowCount(const QModelIndex &parent) const
 {
-    if (parent.isValid() || !_share) {
+    if (parent.isValid()) {
         return 0;
     }
 
-    return _share->properties().size();
+    return _properties.size();
 }
 
 QVariant PropertyModel::data(const QModelIndex &index, int role) const
 {
-    if (!_share) {
+    if (!index.isValid() || index.row() >= _properties.size()) {
         return {};
     }
 
-    const auto properties = _share->properties();
-    const auto property = properties.at(index.row());
+    const auto property = _properties.at(index.row());
 
     switch (role) {
     case LabelRole:
         return property->displayName();
     case PropertyRole:
         return property->className();
-    case TypeRole:
-        if (property->className() == "string"_L1) {
-            return FieldTypes::TextField;
-        }
-        // TODO: date etc.
-        return FieldTypes::TextField;
+    case TypeRole: {
+        static const auto fieldTypes = QHash<QString, FieldTypes>{
+            {"boolean"_L1, FieldTypes::Boolean},
+            {"date"_L1, FieldTypes::Date},
+            {"enum"_L1, FieldTypes::Enum},
+            {"password"_L1, FieldTypes::Password},
+            {"string"_L1, FieldTypes::String},
+        };
+        return fieldTypes.value(property->type(), FieldTypes::Unknown);
+    }
     case PlaceholderRole:
         return property->hint();
     case ValueRole:
-        // return _fieldValues.value(feature->type());
         return property->value();
+    case RequiredRole:
+        return property->required();
+    case AdvancedRole:
+        return property->advanced();
+    case ValidValuesRole:
+        return property->validValues();
+    case MinimumRole:
+        return property->type() == "date"_L1 ? property->minDate() : property->minLength();
+    case MaximumRole:
+        return property->type() == "date"_L1 ? property->maxDate() : property->maxLength();
     default:
         return {};
     }
-}
-
-bool PropertyModel::setData(const QModelIndex &index, const QVariant &value, int role)
-{
-    return false;
-
-    qCritical() << "setData called with" << index << value << role;
-
-    if (role != ValueRole) {
-        return false;
-    }
-
-    if (index.row() == 0) {
-        qCritical() << "changing" << "recipients"_L1 << "to" << value;
-        _fieldValues.insert("recipients"_L1, value); // TODO
-    } else {
-        // TODO: cache this after setting accountstate
-        // const auto sharing = account()->account()->sharing();
-        // const auto features = sharing->features().values();
-        // const auto feature = features.at(index.row() - 1); // TODO: -1 to adjust the special feature for searching
-        // qCritical() << "changing" << feature->type() << "to" << value;
-        // _fieldValues.insert(feature->type(), value);
-    }
-
-    Q_EMIT dataChanged(index, index, {ValueRole});
-    return true;
-}
-
-Qt::ItemFlags PropertyModel::flags(const QModelIndex &index) const
-{
-    qCritical() << "flags for" << index << QAbstractListModel::flags(index) << Qt::ItemIsEditable << "returning" << (QAbstractListModel::flags(index) | Qt::ItemIsEditable);
-    return QAbstractListModel::flags(index) | Qt::ItemIsEditable;
 }
 
 QHash<int, QByteArray> PropertyModel::roleNames() const
@@ -97,18 +77,56 @@ QHash<int, QByteArray> PropertyModel::roleNames() const
         { TypeRole, "type"_ba},
         { PlaceholderRole, "placeholder"_ba},
         { ValueRole, "value"_ba},
+        { RequiredRole, "required"_ba},
+        { AdvancedRole, "advanced"_ba},
+        { ValidValuesRole, "validValues"_ba},
+        { MinimumRole, "minimum"_ba},
+        { MaximumRole, "maximum"_ba},
     };
-};
+}
 
 void PropertyModel::setShare(Share *share)
 {
     AbstractShareModel::setShare(share);
+    resetProperties();
+
     if (!_share) {
         return;
     }
 
     connect(_share, &Share::propertiesChanged, this, [this]() -> void {
-        beginResetModel();
-        endResetModel();
+        resetProperties();
     });
+}
+
+bool PropertyModel::advanced() const
+{
+    return _advanced;
+}
+
+void PropertyModel::setAdvanced(bool advanced)
+{
+    if (_advanced == advanced) {
+        return;
+    }
+
+    _advanced = advanced;
+    resetProperties();
+    Q_EMIT advancedChanged();
+}
+
+void PropertyModel::resetProperties()
+{
+    beginResetModel();
+    _properties.clear();
+    if (_share) {
+        const auto properties = _share->properties();
+        std::ranges::copy_if(properties, std::back_inserter(_properties), [this](const auto &property) {
+            return property->advanced() == _advanced;
+        });
+        std::sort(_properties.begin(), _properties.end(), [](const auto &left, const auto &right) {
+            return left->priority() > right->priority();
+        });
+    }
+    endResetModel();
 }
