@@ -201,7 +201,7 @@
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="19"/>
         <source>Nextcloud Assistant</source>
-        <translation>Nextcloud asistentas</translation>
+        <translation>„Nextcloud Asistentas“</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="91"/>
@@ -282,12 +282,12 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="165"/>
         <source>Talk notification caller avatar</source>
-        <translation>„Talk‟ pranešimas, skambinančiojo avataras</translation>
+        <translation>„Pokalbiai‟ pranešimas, skambinančiojo avataras</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="224"/>
         <source>Answer Talk call notification</source>
-        <translation>Atsakyti į „Talk“ skambučio pranešimą</translation>
+        <translation>Atsakyti į „Pokalbiai“ skambučio pranešimą</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="231"/>
@@ -297,7 +297,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="241"/>
         <source>Decline Talk call notification</source>
-        <translation>Atsisakyti „Talk“ skambučio pranešimo</translation>
+        <translation>Atsisakyti „Pokalbiai“ skambučio pranešimo</translation>
     </message>
 </context>
 <context>
@@ -661,39 +661,57 @@
         <translation>Taikyti etiketes</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="388"/>
-        <source>Sensitivity:</source>
-        <translation>Jautrumas:</translation>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="196"/>
+        <source>Assign labels to the file to manage its sensitivity, retention, and legal hold policies.</source>
+        <translation>Priskirkite failui žymas, kad galėtumėte valdyti jo konfidencialumo, saugojimo ir teisinės informacijos išsaugojimo taisykles.</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="399"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="214"/>
+        <source>Sensitivity labels</source>
+        <translation>Jautrumo žymos</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="241"/>
+        <source>Retention labels</source>
+        <translation>Išaugojimo žymos</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="268"/>
+        <source>Legal hold labels</source>
+        <translation>Teisinio išsaugojimo etiketės</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="316"/>
+        <source>Reset</source>
+        <translation>Atstatyti</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
+        <source>Apply</source>
+        <translation>Taikyti</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="224"/>
         <source>Select sensitivity label</source>
         <translation>Pasirinkite jautrumo etiketę</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="425"/>
-        <source>Retention:</source>
-        <translation>Išlaikymas:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="436"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="251"/>
         <source>Select retention label</source>
         <translation>Pasirinkite išlaikymo etiketę</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="450"/>
-        <source>Legal hold:</source>
-        <translation>Teisinis informacijos išsaugojimas</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="459"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="277"/>
         <source>Select legal hold label</source>
         <translation>Pasirinkti teisinio išsaugojimo etiketę</translation>
     </message>
+</context>
+<context>
+    <name>LocalNetworkPermission</name>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="485"/>
-        <source>Done</source>
-        <translation>Atlikta</translation>
+        <location filename="../src/gui/localnetworkpermission.cpp" line="21"/>
+        <source>Local Network access is disabled. Enable it to connect to the server.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1763,7 +1781,7 @@ Vienintelis virtualių failų palaikymo išjungimo privalumas yra tai, kad vėl 
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="203"/>
         <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
-        <translation>sekundžių (jei &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;kliento siuntimas&lt;/a&gt; nepasiekiamas)</translation>
+        <translation>sekundžių (jei &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;„Client Push“&lt;/a&gt; nepasiekiamas)</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="243"/>
@@ -2385,23 +2403,23 @@ Vienintelis virtualių failų palaikymo išjungimo privalumas yra tai, kad vėl 
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="573"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="574"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Serverio klaida: PROPFIND atsakymas nėra XML formato!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="603"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="604"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
         <translation>Serveris pateikė nenumatytą atsakymą, kurio nepavyko perskaityti. Susisiekite su serverio administratoriumi.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="634"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="688"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="635"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="689"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Šifruotų metaduomenų sąrankos klaida!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="667"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="668"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Užšifruotų metaduomenų sąrankos klaida: pradinis serverio parašas tuščias.</translation>
     </message>
@@ -2424,12 +2442,12 @@ Vienintelis virtualių failų palaikymo išjungimo privalumas yra tai, kad vėl 
         <translation>Katalogas nerastas: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="391"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="392"/>
         <source>Filename encoding is not valid</source>
         <translation>Neteisinga failo pavadinimo koduotė</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="412"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="413"/>
         <source>Error while reading directory %1</source>
         <translation>Klaida skaitant katalogą %1</translation>
     </message>
@@ -3901,19 +3919,6 @@ Versijos negalima iškart pakeisti į senesnę: norint pereiti iš stabilios ver
         <translation>Nepavyko gauti ar sukurti viešinio per viešąją nuorodą. Klaida:
 
 %1</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::GovernanceLabelsListModel</name>
-    <message>
-        <location filename="../src/gui/governance/governancelabelslistmodel.cpp" line="62"/>
-        <source>None</source>
-        <translation>Nėra</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/governance/governancelabelslistmodel.cpp" line="68"/>
-        <source>No label</source>
-        <translation>Nėra etiketės</translation>
     </message>
 </context>
 <context>
@@ -8344,7 +8349,7 @@ Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome 
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="624"/>
         <source>creating folder on Nextcloud: %1</source>
-        <translation>kuriamas aplankas Nextcloud: %1</translation>
+        <translation>kuriamas aplankas „Nextcloud“: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="629"/>

@@ -101,6 +101,18 @@ public actor FileProviderLog: FileProviderLogging {
     nonisolated(unsafe) var debugLoggingObservation: NSKeyValueObservation?
 
     ///
+    /// Whether performance-timing messages are written; see ``FileProviderLogging/performanceLoggingEnabled``.
+    ///
+    /// Read live from `UserDefaults.standard` (key `"performanceLoggingEnabled"`) on each access rather than cached
+    /// via KVO like ``debugLoggingEnabled``: performance lines are emitted at most a couple of times per enumerated
+    /// page, so a live read is cheap and picks up `defaults write` immediately without any observation machinery.
+    /// Defaults to `false` when the key is unset or not a boolean, in both DEBUG and release builds.
+    ///
+    public var performanceLoggingEnabled: Bool {
+        (UserDefaults.standard.object(forKey: "performanceLoggingEnabled") as? NSNumber)?.boolValue ?? false
+    }
+
+    ///
     /// Initialize a new log file abstraction.
     ///
     /// - Parameters:

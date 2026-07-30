@@ -661,39 +661,57 @@
         <translation>套用標籤</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="388"/>
-        <source>Sensitivity:</source>
-        <translation>敏感度：</translation>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="196"/>
+        <source>Assign labels to the file to manage its sensitivity, retention, and legal hold policies.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="399"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="214"/>
+        <source>Sensitivity labels</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="241"/>
+        <source>Retention labels</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="268"/>
+        <source>Legal hold labels</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="316"/>
+        <source>Reset</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
+        <source>Apply</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="224"/>
         <source>Select sensitivity label</source>
         <translation>選擇敏感度標籤</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="425"/>
-        <source>Retention:</source>
-        <translation>保留期：</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="436"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="251"/>
         <source>Select retention label</source>
         <translation>選擇保留期標籤</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="450"/>
-        <source>Legal hold:</source>
-        <translation>法律保留：</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="459"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="277"/>
         <source>Select legal hold label</source>
         <translation>選擇法律保留標籤</translation>
     </message>
+</context>
+<context>
+    <name>LocalNetworkPermission</name>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="485"/>
-        <source>Done</source>
-        <translation>完成</translation>
+        <location filename="../src/gui/localnetworkpermission.cpp" line="21"/>
+        <source>Local Network access is disabled. Enable it to connect to the server.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2389,23 +2407,23 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="573"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="574"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>伺服器錯誤：PROPFIND回覆未採用XML格式！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="603"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="604"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
         <translation>伺服器返回了一個無法讀取的意外回應。請聯絡你的伺服器管理員。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="634"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="688"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="635"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="689"/>
         <source>Encrypted metadata setup error!</source>
         <translation>已加密的元數據設置錯誤！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="667"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="668"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>加密中繼資料設定錯誤：來自伺服器的初始簽章為空。</translation>
     </message>
@@ -2428,12 +2446,12 @@ This action will abort any currently running synchronization.</source>
         <translation>找不到目錄：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="391"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="392"/>
         <source>Filename encoding is not valid</source>
         <translation>檔案名稱編碼無效</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="412"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="413"/>
         <source>Error while reading directory %1</source>
         <translation>讀取目錄 %1 發生錯誤</translation>
     </message>
@@ -3903,19 +3921,6 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>無法取回或生成公開分享連結。錯誤：
 
 %1</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::GovernanceLabelsListModel</name>
-    <message>
-        <location filename="../src/gui/governance/governancelabelslistmodel.cpp" line="62"/>
-        <source>None</source>
-        <translation>無</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/governance/governancelabelslistmodel.cpp" line="68"/>
-        <source>No label</source>
-        <translation>無標籤</translation>
     </message>
 </context>
 <context>

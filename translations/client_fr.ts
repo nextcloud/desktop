@@ -274,7 +274,7 @@
     <message>
         <location filename="../src/gui/wizard/qml/BrowserAuthPage.qml" line="38"/>
         <source>Switch to your browser</source>
-        <translation>Basculer vers votre navigateur</translation>
+        <translation>Basculer vers votre navigateur web</translation>
     </message>
 </context>
 <context>
@@ -661,39 +661,57 @@
         <translation>Appliquer des libellés</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="388"/>
-        <source>Sensitivity:</source>
-        <translation>Sensibilité :</translation>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="196"/>
+        <source>Assign labels to the file to manage its sensitivity, retention, and legal hold policies.</source>
+        <translation>Attribuez des étiquettes au fichier pour gérer ses politiques de sensibilité, de conservation et de conservation à des fins juridiques.</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="399"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="214"/>
+        <source>Sensitivity labels</source>
+        <translation>Étiquettes de sensibilité</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="241"/>
+        <source>Retention labels</source>
+        <translation>Étiquettes de conservation</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="268"/>
+        <source>Legal hold labels</source>
+        <translation>Étiquettes de conservation à des fins juridiques</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="316"/>
+        <source>Reset</source>
+        <translation>Réinitialiser</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
+        <source>Apply</source>
+        <translation>Appliquer</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="224"/>
         <source>Select sensitivity label</source>
         <translation>Sélectionner un libellé de sensibilité</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="425"/>
-        <source>Retention:</source>
-        <translation>Conservation :</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="436"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="251"/>
         <source>Select retention label</source>
         <translation>Sélectionner un libellé de conservation</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="450"/>
-        <source>Legal hold:</source>
-        <translation>Gel juridique :</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="459"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="277"/>
         <source>Select legal hold label</source>
         <translation>Sélectionner un libellé de gel juridique</translation>
     </message>
+</context>
+<context>
+    <name>LocalNetworkPermission</name>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="485"/>
-        <source>Done</source>
-        <translation>Terminé</translation>
+        <location filename="../src/gui/localnetworkpermission.cpp" line="21"/>
+        <source>Local Network access is disabled. Enable it to connect to the server.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1547,7 +1565,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="849"/>
         <source>Preparing browser login</source>
-        <translation>Préparation de la connexion via le navigateur</translation>
+        <translation>Préparation de la connexion via le navigateur web</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="870"/>
@@ -1569,7 +1587,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="975"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation>Impossible d&apos;ouvrir le navigateur. Veuillez copier le lien dans votre navigateur.</translation>
+        <translation>Impossible d&apos;ouvrir le navigateur. Veuillez copier le lien dans votre navigateur web.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1000"/>
@@ -1601,7 +1619,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1095"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
-        <translation>Accès refusé par le serveur. Pour vérifier vos droits d&apos;accès, ouvrez le service dans votre navigateur.</translation>
+        <translation>Accès refusé par le serveur. Pour vérifier vos droits d&apos;accès, ouvrez le service dans votre navigateur web.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1113"/>
@@ -1775,7 +1793,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="324"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
-        <translation>Afficher les dossiers synchronisés dans le volet de navigation de l&apos;Explorateur</translation>
+        <translation>Afficher les dossiers synchronisés dans le volet de navigation de l&apos;&amp;Explorateur</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="363"/>
@@ -2382,23 +2400,23 @@ Vous prenez vos propres risques.</translation>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="573"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="574"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Erreur du serveur : La réponse PROPFIND n&apos;est pas au format XML !</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="603"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="604"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
         <translation>Le serveur a renvoyé une réponse inattendue et illisible. Veuillez contacter l&apos;administrateur de votre serveur.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="634"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="688"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="635"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="689"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Erreur lors de la configuration des métadonnées chiffrées !</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="667"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="668"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Erreur de configuration des métadonnées chiffrées: la signature initiale du serveur est vide.</translation>
     </message>
@@ -2421,12 +2439,12 @@ Vous prenez vos propres risques.</translation>
         <translation>Dossier non trouvé : %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="391"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="392"/>
         <source>Filename encoding is not valid</source>
         <translation>L’encodage du nom de fichier n’est pas valide</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="412"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="413"/>
         <source>Error while reading directory %1</source>
         <translation>Erreur de lecture du dossier %1</translation>
     </message>
@@ -2765,12 +2783,12 @@ Cela peut être un problème avec vos bibliothèques OpenSSL.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="95"/>
         <source>Complete your provider signup in your browser</source>
-        <translation>Terminez l&apos;inscription auprès du fournisseur dans votre navigateur</translation>
+        <translation>Terminez l&apos;inscription auprès du fournisseur dans votre navigateur web</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="96"/>
         <source>Please complete the provider signup in your browser. After the completion, confirm to open the Nextcloud application popup in your browser.</source>
-        <translation>Veuillez terminer l&apos;inscription auprès du fournisseur dans votre navigateur. Une fois l&apos;opération terminée, confirmez l&apos;ouverture de la fenêtre contextuelle de l&apos;application Nextcloud dans votre navigateur.</translation>
+        <translation>Veuillez terminer l&apos;inscription auprès du fournisseur dans votre navigateur. Une fois l&apos;opération terminée, confirmez l&apos;ouverture de la fenêtre contextuelle de l&apos;application Nextcloud dans votre navigateur web.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="252"/>
@@ -3575,7 +3593,7 @@ Pour les utilisateurs avancés: ce problème peut aussi venir de plusieurs fichi
     <message>
         <location filename="../src/gui/generalsettings.ui" line="134"/>
         <source>Enable &amp;File Provider</source>
-        <translation>Activer le &amp;File Provider</translation>
+        <translation>Activer le &amp;fournisseur de fichiers</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="158"/>
@@ -3902,19 +3920,6 @@ La rétrogradation des versions n&apos;est pas possible immédiatement: passer d
     </message>
 </context>
 <context>
-    <name>OCC::GovernanceLabelsListModel</name>
-    <message>
-        <location filename="../src/gui/governance/governancelabelslistmodel.cpp" line="62"/>
-        <source>None</source>
-        <translation>Aucun</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/governance/governancelabelslistmodel.cpp" line="68"/>
-        <source>No label</source>
-        <translation>Aucun libellé</translation>
-    </message>
-</context>
-<context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="53"/>
@@ -4046,12 +4051,12 @@ Les éléments dont la suppression est autorisée seront supprimés s&apos;ils e
     <message>
         <location filename="../src/gui/infosettings.ui" line="172"/>
         <source>Restore &amp;Default</source>
-        <translation>Rétablir les valeurs par &amp;défaut</translation>
+        <translation>Rétablir la valeur par &amp;défaut</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="193"/>
         <source>&amp;Automatically check for updates</source>
-        <translation>Vérifier &amp;automatiquement les mises à jour</translation>
+        <translation>Rechercher &amp;automatiquement les mises à jour</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="216"/>
@@ -4066,7 +4071,7 @@ Les éléments dont la suppression est autorisée seront supprimés s&apos;ils e
     <message>
         <location filename="../src/gui/infosettings.cpp" line="110"/>
         <source>Restore to &amp;%1</source>
-        <translation>Rétablir vers &amp;%1</translation>
+        <translation>Rétablir le canal &amp;%1</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="151"/>
@@ -4077,22 +4082,22 @@ Les éléments dont la suppression est autorisée seront supprimés s&apos;ils e
     <message>
         <location filename="../src/gui/infosettings.cpp" line="208"/>
         <source>stable</source>
-        <translation>À TRADUIRE</translation>
+        <translation>stable</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="212"/>
         <source>beta</source>
-        <translation>À TRADUIRE</translation>
+        <translation>bêta</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="216"/>
         <source>daily</source>
-        <translation>À TRADUIRE</translation>
+        <translation>quotidien</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="220"/>
         <source>enterprise</source>
-        <translation>À TRADUIRE</translation>
+        <translation>enterprise</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="255"/>
@@ -4101,7 +4106,10 @@ Les éléments dont la suppression est autorisée seront supprimés s&apos;ils e
 
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
         <comment>list of available update channels to non enterprise users and downgrading warning</comment>
-        <translation>À TRADUIRE</translation>
+        <translation>- bêta : contient des versions avec de nouvelles fonctionnalités qui peuvent ne pas avoir été entièrement testées
+- quotidien : contient des versions générées chaque jour, uniquement pour les tests et le développement
+
+Il n&apos;est pas possible de revenir immédiatement à une version antérieure : passer de bêta à stable implique d&apos;attendre la prochaine version stable.</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="260"/>
@@ -4109,12 +4117,14 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
         <comment>list of available update channels to enterprise users and downgrading warning</comment>
-        <translation>À TRADUIRE</translation>
+        <translation>- enterprise : contient des versions stables destinées aux clients.
+
+Il n&apos;est pas possible de revenir immédiatement à une version antérieure : passer de stable à enterprise implique d&apos;attendre la prochaine version enterprise.</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="267"/>
         <source>Changing update channel?</source>
-        <translation>À TRADUIRE</translation>
+        <translation>Changer le canal de mise à jour ?</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="268"/>
@@ -4122,17 +4132,19 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 - stable: contains tested versions considered reliable
 </source>
         <comment>starts list of available update channels, stable is always available</comment>
-        <translation>À TRADUIRE</translation>
+        <translation>Le canal détermine les mises à jour qui vous seront proposées :
+- stable : contient des versions testées considérées comme fiables
+</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="274"/>
         <source>Change update channel</source>
-        <translation>À TRADUIRE</translation>
+        <translation>Changer le canal de mise à jour</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.cpp" line="275"/>
         <source>Cancel</source>
-        <translation>À TRADUIRE</translation>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
@@ -4286,7 +4298,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="47"/>
         <source>&lt;p&gt;Copyright 2017-2026 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
-        <translation>À TRADUIRE</translation>
+        <translation>&lt;p&gt;Copyright 2017-2026 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="50"/>
@@ -5104,7 +5116,7 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="216"/>
         <source>Failed to create encrypted folder.</source>
-        <translation>À TRADUIRE</translation>
+        <translation>Impossible de créer le dossier chiffré.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="255"/>
@@ -5234,7 +5246,7 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
         <location filename="../src/libsync/propagateuploadng.cpp" line="364"/>
         <source>File is locked preventing syncing it</source>
         <comment>Generic warning message when a locked file cannot be synced</comment>
-        <translation>À TRADUIRE</translation>
+        <translation>Le fichier est verrouillé, ce qui empêche sa synchronisation.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="459"/>
@@ -5280,7 +5292,7 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
         <location filename="../src/libsync/propagateuploadv1.cpp" line="141"/>
         <source>File is locked preventing syncing it</source>
         <comment>Generic warning message when a locked file cannot be synced</comment>
-        <translation>À TRADUIRE</translation>
+        <translation>Le fichier est verrouillé, ce qui empêche sa synchronisation.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="233"/>
@@ -5407,12 +5419,12 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="184"/>
         <source>Advanced</source>
-        <translation>À TRADUIRE</translation>
+        <translation>Avancé</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="185"/>
         <source>Info</source>
-        <translation>À TRADUIRE</translation>
+        <translation>Informations</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="335"/>
@@ -5438,7 +5450,7 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="570"/>
         <source>%1 day</source>
-        <translation>À TRADUIRE</translation>
+        <translation>%1 jour</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="571"/>
@@ -6114,7 +6126,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="843"/>
         <source>Quit</source>
-        <translation>À TRADUIRE</translation>
+        <translation>Quitter</translation>
     </message>
 </context>
 <context>
@@ -6123,7 +6135,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/libsync/theme.cpp" line="462"/>
         <source>%1 Desktop Client Version %2</source>
         <comment>%1 is application name. %2 is the human version string.</comment>
-        <translation>À TRADUIRE</translation>
+        <translation>Client de bureau %1 version %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="646"/>
@@ -6276,7 +6288,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1690"/>
         <source>Sync conflicts</source>
-        <translation>À TRADUIRE</translation>
+        <translation>Conflits de synchronisation</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1820"/>
@@ -6287,17 +6299,17 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="1932"/>
         <source>Open %1 Assistant</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation>À TRADUIRE</translation>
+        <translation>Ouvrir l’assistant %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2030"/>
         <source>Assistant is not available for this account.</source>
-        <translation>À TRADUIRE</translation>
+        <translation>L’assistant n’est pas disponible pour ce compte.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2036"/>
         <source>Assistant is already processing a request.</source>
-        <translation>À TRADUIRE</translation>
+        <translation>L’assistant traite déjà une demande.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1507"/>
@@ -6307,27 +6319,27 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2073"/>
         <source>Sending your request …</source>
-        <translation>À TRADUIRE</translation>
+        <translation>Envoi de votre demande…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2146"/>
         <source>No response yet. Please try again later.</source>
-        <translation>À TRADUIRE</translation>
+        <translation>Aucune réponse pour le moment. Veuillez réessayer plus tard.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2165"/>
         <source>No supported assistant task types were returned.</source>
-        <translation>À TRADUIRE</translation>
+        <translation>Aucun type de tâche d’assistant pris en charge n’a été renvoyé.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2247"/>
         <source>Waiting for the assistant response…</source>
-        <translation>À TRADUIRE</translation>
+        <translation>En attente de la réponse de l’assistant…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2269"/>
         <source>Assistant request failed (%1).</source>
-        <translation>À TRADUIRE</translation>
+        <translation>La demande à l’assistant a échoué (%1).</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2344"/>
@@ -6492,7 +6504,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="39"/>
         <source>Could not be downloaded</source>
-        <translation>À TRADUIRE</translation>
+        <translation>Impossible de télécharger</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="61"/>
@@ -6617,7 +6629,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="870"/>
         <source>Internal link copied</source>
-        <translation>À TRADUIRE</translation>
+        <translation>Lien interne copié</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="871"/>
@@ -7047,7 +7059,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="38"/>
         <source>Enter the link to your %1 web interface from the browser or the link to a folder shared with you.</source>
-        <translation>Saisissez le lien vers l’interface web %1 depuis votre navigateur ou le lien vers un dossier partagé avec vous.</translation>
+        <translation>Saisissez le lien vers l’interface web %1 depuis votre navigateur web ou le lien vers un dossier partagé avec vous.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="181"/>

@@ -31,7 +31,7 @@ public final class FilesDatabaseManager: Sendable {
         )
     }
 
-    private static let schemaVersion = SchemaVersion.addedCanonicalPathKeysToRealmItemMetadata
+    private static let schemaVersion = SchemaVersion.addedNormalizedFileNameIndexToRealmItemMetadata
     let logger: FileProviderLogger
     let account: Account
 
@@ -269,14 +269,18 @@ public final class FilesDatabaseManager: Sendable {
         existingMetadatas: Results<RealmItemMetadata>,
         updatedMetadatas: [SendableItemMetadata]
     ) -> [RealmItemMetadata] {
+        // O(1) membership test instead of a per-existing linear scan of `updatedMetadatas`. The previous
+        // `updatedMetadatas.contains(where:)` made this loop O(existing × updated) — with the linear scan
+        // in `processItemMetadatasToUpdate` it was the dominant cost of a large non-paginated depth-1
+        // write (measured ≈19 min, never completing, for a 6982-item flat folder; no index can fix an
+        // in-memory scan). `existingMetadata` is already the managed row from the caller's `database`
+        // handle and is value-copied before the write, so it is used directly — this also removes the
+        // per-item `itemMetadatas` (`ncDatabase()`) re-open the old `.where{}.first` fetch incurred.
+        let updatedOcIds = Set(updatedMetadatas.map(\.ocId))
         var deletedMetadatas: [RealmItemMetadata] = []
 
-        for existingMetadata in existingMetadatas {
-            guard !updatedMetadatas.contains(where: { $0.ocId == existingMetadata.ocId }),
-                  let metadataToDelete = itemMetadatas.where({ $0.ocId == existingMetadata.ocId }).first
-            else { continue }
-
-            deletedMetadatas.append(metadataToDelete)
+        for existingMetadata in existingMetadatas where !updatedOcIds.contains(existingMetadata.ocId) {
+            deletedMetadatas.append(existingMetadata)
 
             logger.debug("Deleting item metadata during update.", [.item: existingMetadata.ocId])
         }
@@ -289,8 +293,22 @@ public final class FilesDatabaseManager: Sendable {
         var returningUpdatedMetadatas: [SendableItemMetadata] = []
         var directoriesNeedingRename: [SendableItemMetadata] = []
 
+        // O(1) ocId lookup instead of `existingMetadatas.first(where:)` — the old per-item linear scan of
+        // a Realm `Results` was O(updated × existing), the other half of the measured O(N²) large-folder
+        // write. Keyed once up front (first occurrence wins, matching `.first(where:)`).
+        var existingByOcId: [String: RealmItemMetadata] = [:]
+        existingByOcId.reserveCapacity(existingMetadatas.count)
+        for existingMetadata in existingMetadatas where existingByOcId[existingMetadata.ocId] == nil {
+            existingByOcId[existingMetadata.ocId] = existingMetadata
+        }
+
+        // `inheritedKeepDownloaded` depends on the item only through (account, parent serverUrl); every
+        // child of a folder shares one serverUrl, so cache per serverUrl to collapse N parent lookups
+        // (each a DB query) to one per distinct parent.
+        var inheritedKeepDownloadedByServerUrl: [String: Bool] = [:]
+
         for var updatedMetadata in updatedMetadatas {
-            if let existingMetadata = existingMetadatas.first(where: { $0.ocId == updatedMetadata.ocId }) {
+            if let existingMetadata = existingByOcId[updatedMetadata.ocId] {
                 if existingMetadata.status == Status.normal.rawValue, !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata) {
                     let pathChanged = !updatedMetadata.hasSameLocation(as: existingMetadata)
 
@@ -325,7 +343,13 @@ public final class FilesDatabaseManager: Sendable {
 
             } else { // This is a new metadata
                 // Inherit the parent's "Always keep downloaded" flag so a file surfacing here via remote enumeration acquires the same pin as its already-pinned siblings (#10054).
-                updatedMetadata.keepDownloaded = inheritedKeepDownloaded(for: updatedMetadata)
+                if let cached = inheritedKeepDownloadedByServerUrl[updatedMetadata.serverUrl] {
+                    updatedMetadata.keepDownloaded = cached
+                } else {
+                    let inherited = inheritedKeepDownloaded(for: updatedMetadata)
+                    inheritedKeepDownloadedByServerUrl[updatedMetadata.serverUrl] = inherited
+                    updatedMetadata.keepDownloaded = inherited
+                }
 
                 returningNewMetadatas.append(updatedMetadata)
 

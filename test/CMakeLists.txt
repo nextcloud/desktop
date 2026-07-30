@@ -102,6 +102,10 @@ nextcloud_add_test(UnifiedSearchListmodel)
 nextcloud_add_test(ActivityListModel)
 nextcloud_add_test(SortedActivityListModel)
 nextcloud_add_test(ActivityData)
+add_test(NAME ActivityFileMenuQmlTest
+    COMMAND Qt6::qmltestrunner
+        -input "${CMAKE_CURRENT_SOURCE_DIR}/qml/activityfilemenu/testactivityfilemenu.qml"
+)
 nextcloud_add_test(TalkReply)
 nextcloud_add_test(LockFile)
 nextcloud_add_test(ShareModel)
@@ -156,6 +160,7 @@ nextcloud_add_benchmark(LargeSync)
 nextcloud_add_test(Account)
 nextcloud_add_test(AccountManager)
 nextcloud_add_test(AccountWizardController)
+nextcloud_add_test(ConnectionValidator)
 nextcloud_add_test(Folder)
 nextcloud_add_test(FolderMan)
 nextcloud_add_test(ForceSyncNow)
