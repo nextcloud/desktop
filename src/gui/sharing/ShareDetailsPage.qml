@@ -20,6 +20,8 @@ Page {
     required property Share share
     property string recipientAdditionError: ""
     property string propertyUpdateError: ""
+    property string shareActivationError: ""
+    property bool activatingShare: false
 
     title: qsTr("Share details")
 
@@ -178,6 +180,44 @@ Page {
             }
         }
 
+        EnforcedPlainTextLabel {
+            Layout.fillWidth: true
+
+            text: root.shareActivationError
+            color: Style.wizardErrorText
+            wrapMode: Text.Wrap
+            visible: text.length > 0
+        }
+
+        EnforcedPlainTextLabel {
+            Layout.fillWidth: true
+
+            text: qsTr("Changes to this share are applied immediately.")
+            color: palette.placeholderText
+            wrapMode: Text.Wrap
+            visible: root.share.state === Share.Active
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+            visible: root.share.state === Share.Draft
+
+            Item {
+                Layout.fillWidth: true
+            }
+
+            WizardButton {
+                primary: true
+                text: root.activatingShare ? qsTr("Sending…") : qsTr("Send share")
+                enabled: !root.activatingShare
+
+                onClicked: {
+                    root.shareActivationError = ""
+                    root.activatingShare = true
+                    root.sharingController.activateShare(root.share)
+                }
+            }
+        }
     }
 
     Connections {
@@ -198,6 +238,19 @@ Page {
         function onPropertyUpdateFailed(share, error) {
             if (share === root.share) {
                 root.propertyUpdateError = error
+            }
+        }
+
+        function onShareActivated(share) {
+            if (share === root.share) {
+                root.activatingShare = false
+            }
+        }
+
+        function onShareActivationFailed(share, error) {
+            if (share === root.share) {
+                root.activatingShare = false
+                root.shareActivationError = error
             }
         }
     }
