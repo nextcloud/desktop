@@ -296,6 +296,15 @@ using namespace OCC::Mac::TrayPopupViewUtils;
 #endif
 }
 
+- (void)reconnectForIndex:(int)index
+{
+    [self closeAllPopups];
+
+    if (auto userModel = OCC::UserModel::instance()) {
+        userModel->login(index);
+    }
+}
+
 - (void)openAssistantForIndex:(int)index
 {
     [_accountActionsPopup orderOut:nil];
